@@ -7,7 +7,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is where every strategy does its work, since both precompute the whole combination
 // list up front - and drains it, returning every combination Next produced in order. The
 // alphabet is the first CharacterCount letters and the combination length is half of that,
-// the widest point of the combination space.
+// the widest point of the combination space. Draining C(n, n/2) combinations makes
+// 2 * C(n, n/2) + 1 next/hasNext calls, so CharacterCount stops at 14 (6,865 calls):
+// at LC 1286's 15-letter cap that is 12,871, past its 10^4-call bound.
 public class IteratorForCombinationBenchmarks
 {
     private const int CombinationLengthDivisor = 2;
@@ -17,7 +19,7 @@ public class IteratorForCombinationBenchmarks
     private int _combinationLength;
 
     private List<string> _combinations = [];
-    [Params(10, 16)]
+    [Params(10, 14)]
     public int CharacterCount { get; set; }
 
     [GlobalSetup]

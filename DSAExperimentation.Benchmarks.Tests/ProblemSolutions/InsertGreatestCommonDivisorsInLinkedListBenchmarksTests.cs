@@ -12,7 +12,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // which is the real answer rather than a proxy. The expected answer is stated as plain values, so a linked node is
 // not an enumerable sequence, so each result is walked into its values first. The expected
 // sequence is derived from the fixture, not read back out of an arm: [GlobalSetup] builds the
-// values 1..Length in order, and two consecutive integers always have a greatest common divisor
+// values 1..Length in order (wrapping only past LC 2807's 1,000 value cap, beyond the smallest
+// length), and two consecutive integers always have a greatest common divisor
 // of one, so every inserted node holds one and the answer is fixed. Each arm clones the shared
 // list inside the measured call (the splice rewrites .Next in place), so one harness is safe to
 // call twice in either order.

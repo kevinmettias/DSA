@@ -18,7 +18,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // calls the arm to prove the harness is constructible.
 public sealed partial class InvertBinaryTreeBenchmarksTests
 {
-    private const int SmallestNodeCount = 255;
+    private const int SmallestNodeCount = 10;
 
     // Heap-layout offsets, restated from the fixture's documented child arithmetic.
     private const int LeftChildOffset = 1;

@@ -13,10 +13,10 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // but the two are free to reach it through different float arithmetic.
 public sealed partial class LargestTriangleAreaBenchmarksTests
 {
-    private const int SmallestLength = 60;
+    private const int SmallestLength = 5;
     private const double RelativeTolerance = 1e-9;
 
-    // Areas at this coordinate bound are in the hundreds of thousands, but a degenerate fixture
+    // Areas inside LC 812's coordinate square reach the thousands, but a degenerate fixture
     // could return 0; the floor keeps the tolerance band a real number rather than a bare zero.
     private const double AreaScaleFloor = 1.0;
 

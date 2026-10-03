@@ -14,12 +14,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LC 703 guarantees at least k elements whenever the kth largest is asked for, so each
 // instance opens with K - 1 values as its initial nums and every timed Add - the
 // StreamLength of them - is the k-th or later element: none asks for an order statistic
-// the stream cannot yet have.
+// the stream cannot yet have. Values are drawn from [1, 10^4], inside LC 703's
+// [-10^4, 10^4].
 public class KthLargestElementInAStreamBenchmarks
 {
     private const int K = 10;
     private const int RandomSeed = 703; // LC problem number
-    private const int StreamValueExclusiveBound = 1_000_000;
+    private const int StreamValueExclusiveBound = 10_001;
 
     private int[] _initial = [];
 

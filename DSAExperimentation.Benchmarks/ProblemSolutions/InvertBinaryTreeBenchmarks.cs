@@ -17,11 +17,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BinaryTreeNode<int> - the accommodation ReverseLinkedList, SortList and friends
 // make, since a public [Benchmark] method cannot name an internal return type
 // (CS0050). It returned void before, which dropped the arm's only answer.
+//
+// NodeCount stops at LC 226's 100-node cap; the tree's values 0..NodeCount-1 stay
+// inside its [-100, 100].
 public class InvertBinaryTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
 
-    [Params(255, 65_535)]
+    [Params(10, 100)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

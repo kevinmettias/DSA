@@ -11,7 +11,8 @@ public sealed partial class IntersectionOfTwoLinkedListsWorkloadsTests
     private const int PrefixLength = 8;
     private const int HeadBPrefixMultiplier = 2; // the workload gives HeadB twice HeadA's prefix
     private const int SharedTailNodeCount = 1;
-    private const int SharedTailValue = -1;
+    private const int SharedTailValue = 100_000; // LC 160's largest node value
+    private const int FirstPosition = 1;
 
     [Fact]
     public void Build_HeadA_LeadsToTheSharedTailThroughOnePrefixNodePerStep()
@@ -42,14 +43,15 @@ public sealed partial class IntersectionOfTwoLinkedListsWorkloadsTests
 
     // The fixture's own note is that the two-pointer walk's cost depends on each list's length and
     // not on its node values, so the order the prefix positions were prepended in is not part of what
-    // the walk reads: the prefix holds each of its own positions exactly once, in whatever order.
+    // the walk reads: the prefix holds each of its own one-based positions exactly once, in whatever
+    // order, which keeps every value inside LC 160's [1, 10^5].
     [Fact]
     public void Build_EveryPrefixNode_HoldsOneOfItsOwnPrefixPositionsAsItsValue()
     {
         var (headA, _) = IntersectionOfTwoLinkedListsWorkloads.Build(PrefixLength);
 
         Assert.Equal(
-            Enumerable.Range(0, PrefixLength),
+            Enumerable.Range(FirstPosition, PrefixLength),
             Nodes(headA).Take(PrefixLength).Select(node => node.Value).Order());
     }
 

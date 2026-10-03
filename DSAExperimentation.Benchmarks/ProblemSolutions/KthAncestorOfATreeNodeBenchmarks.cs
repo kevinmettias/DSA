@@ -19,11 +19,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // make node i's ancestor array length i, so the precompute itself would be O(n^2)
 // and no repo-only technique could beat the O(1)-space naive walk on it. A
 // heap-shaped tree keeps every ancestor array at O(log n), which is also why the
-// query batch below is large.
+// query batch below is LC 1483's full 5 * 10^4 queries.
 public class KthAncestorOfATreeNodeBenchmarks
 {
     private const int RandomSeed = 1483; // LC problem number
-    private const int QueryCount = 1_000_000;
+    private const int QueryCount = 50_000;
     private const int RootParent = -1;
 
     private int[] _parent = [];

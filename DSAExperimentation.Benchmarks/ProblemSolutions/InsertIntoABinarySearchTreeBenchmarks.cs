@@ -15,7 +15,7 @@ public class InsertIntoABinarySearchTreeBenchmarks
     private int[] _insertionOrder = [];
 
     private int _newValue;
-    [Params(500, 20_000)]
+    [Params(500, 10_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

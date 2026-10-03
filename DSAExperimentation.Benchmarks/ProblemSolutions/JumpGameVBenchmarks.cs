@@ -7,9 +7,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // there is no hoisted overload to take - building the reachability DAG is part of
 // what the TopologicalSortLongestPath arm has to pay for, which is exactly the
 // trade being measured against the memoized DFS's zero-setup recursion. Values are
-// a random shuffle (no ties) so every index has a genuinely different rank,
+// a random shuffle of 1..Length (no ties) so every index has a genuinely different rank,
 // keeping the DAG's longest path - and therefore the DFS's recursion depth -
-// realistic instead of degenerate.
+// realistic instead of degenerate. Length stops at LC 1340's 1,000-element cap.
 public class JumpGameVBenchmarks
 {
     private const int MaxJumpDistance = 5;
@@ -19,14 +19,14 @@ public class JumpGameVBenchmarks
 
     private int[] _arr = [];
 
-    [Params(200, 2_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _arr = [.. Enumerable.Range(0, Length)];
+        _arr = [.. Enumerable.Range(1, Length)];
 
         for (var i = _arr.Length - 1; i > 0; i--)
         {

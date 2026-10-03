@@ -12,15 +12,23 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // .Next in place: reusing one pre-built list would let the first iteration's
 // insertions make every later iteration measure an already-expanded list
 // (SetMatrixZeroesBenchmarks precedent).
+//
+// The list counts 1, 2, 3, ... and wraps back to 1 after LC 2807's 1,000 value cap,
+// so a 5,000-node list stays inside it; every adjacent pair is still coprime.
 public class InsertGreatestCommonDivisorsInLinkedListBenchmarks
 {
+    private const int MaxNodeValue = 1_000;
+
     private SinglyLinkedListNode<int> _head = null!;
 
     [Params(200, 5_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _head = Build(Enumerable.Range(1, Length).ToArray());
+    public void Setup() => _head = Build(CountingValues(Length));
+
+    private static int[] CountingValues(int length) =>
+        [.. Enumerable.Range(0, length).Select(index => (index % MaxNodeValue) + 1)];
 
     private static SinglyLinkedListNode<int> Build(int[] values)
     {

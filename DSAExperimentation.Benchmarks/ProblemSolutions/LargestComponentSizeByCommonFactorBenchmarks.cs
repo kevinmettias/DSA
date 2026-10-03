@@ -1,20 +1,18 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.LargestComponentSizeByCommonFactor;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LargestComponentSizeByCommonFactorSolution's, the same
 // methods LargestComponentSizeByCommonFactorSolutionTests proves correct. Values are drawn once
-// in [GlobalSetup] as products of a small shared prime pool, so real overlaps - and
-// therefore real merge work - actually occur, the same "force genuine matches, not
-// coincidental ones" intent AccountsMergeBenchmarks' own generator uses. What is
-// measured is the O(n^2) pairwise gcd sweep against the O(n*sqrt(maxValue)) per-factor
-// union.
+// in [GlobalSetup] by LargestComponentSizeByCommonFactorWorkloads: distinct values built only
+// from a small shared prime pool, so real overlaps - and therefore real merge work - actually
+// occur. What is measured is the O(n^2) pairwise gcd sweep against the
+// O(n*sqrt(maxValue)) per-factor union.
 public class LargestComponentSizeByCommonFactorBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.
     private const int RandomSeed = 952;
-
-    private static readonly int[] SharedPrimes = [2, 3, 5, 7, 11, 13];
 
     private int[] _values = [];
 
@@ -22,13 +20,7 @@ public class LargestComponentSizeByCommonFactorBenchmarks
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(RandomSeed);
-        _values = Enumerable.Range(0, Length)
-            .Select(_ => SharedPrimes[random.Next(SharedPrimes.Length)] * SharedPrimes[random.Next(SharedPrimes.Length)])
-            .ToArray();
-    }
+    public void Setup() => _values = LargestComponentSizeByCommonFactorWorkloads.Build(Length, RandomSeed);
 
     [Benchmark(Baseline = true)]
     public int PairwiseGcdScan() =>

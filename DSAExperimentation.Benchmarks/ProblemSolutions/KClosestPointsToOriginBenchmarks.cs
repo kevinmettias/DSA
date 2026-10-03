@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // KClosestPointsToOriginSolutionTests proves correct. The point cloud is generated once in
 // [GlobalSetup]; it is already LeetCode's own input shape, so each arm is handed it
 // directly and only the selection is measured - a full O(n log n) sort of every point
-// against an O(n log k) size-k max-heap that never orders more than k of them.
+// against an O(n log k) size-k max-heap that never orders more than k of them. Length
+// stops at LC 973's 10^4-point cap.
 public class KClosestPointsToOriginBenchmarks
 {
     private const int K = 10;
@@ -15,7 +16,7 @@ public class KClosestPointsToOriginBenchmarks
 
     private int[][] _points = [];
 
-    [Params(1_000, 50_000)]
+    [Params(1_000, 10_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

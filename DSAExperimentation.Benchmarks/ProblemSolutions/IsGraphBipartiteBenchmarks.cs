@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.IsGraphBipartite;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,80 +11,30 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // NaturalChildOrder with a Dictionary<TNode,bool> color map. Both walk every
 // node/edge exactly once at O(V+E); the split under [MemoryDiagnoser] is the
 // dictionary/heap-object overhead the composed primitive pays for its generality
-// against the raw array baseline. The generated graph is genuinely bipartite
-// (every edge crosses a fixed A/B split) so neither strategy short-circuits on
-// an early color conflict - both are forced through their full worst-case walk.
+// against the raw array baseline. The generated graph (IsGraphBipartiteWorkloads)
+// is genuinely bipartite - every edge crosses a fixed A/B split - so neither
+// strategy short-circuits on an early color conflict; both are forced through their
+// full worst-case walk.
 //
 // Materializing the BipartiteNode graph is input construction, so it is charged
 // to [GlobalSetup] and handed to the strategy's prepared-input overload.
+//
+// NodeCount stops at LC 785's 100-node cap.
 public class IsGraphBipartiteBenchmarks
 {
-    // The graph is split into exactly two sides (A and B) to stay bipartite by
-    // construction.
-    private const int PartitionCount = 2;
-
-    // Extra cross-only edges added per node for density.
-    private const int DensityEdgesPerNode = 2;
+    private const int RandomSeed = 1;
 
     private int[][] _adjacency = [];
 
     private BipartiteGraph _graph = null!;
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1);
-        var half = NodeCount / PartitionCount;
-        var edges = new List<(int From, int To)>();
-
-        AddConnectivityEdges(edges, random, half);
-        AddDensityEdges(edges, random, half);
-
-        _adjacency = BuildAdjacency(NodeCount, edges);
+        _adjacency = IsGraphBipartiteWorkloads.BuildAdjacency(NodeCount, RandomSeed);
         _graph = BipartiteGraph.Build(_adjacency);
-    }
-
-    // Guarantee connectivity: every B-side node gets one cross edge back to a
-    // random A-side node.
-    private void AddConnectivityEdges(List<(int From, int To)> edges, Random random, int half)
-    {
-        for (var i = half; i < NodeCount; i++)
-        {
-            edges.Add((random.Next(half), i));
-        }
-    }
-
-    // Extra cross-only edges for density - still strictly A-to-B, so the graph
-    // stays bipartite by construction.
-    private void AddDensityEdges(List<(int From, int To)> edges, Random random, int half)
-    {
-        for (var i = 0; i < NodeCount; i++)
-        {
-            for (var e = 0; e < DensityEdgesPerNode; e++)
-            {
-                var inA = i < half;
-                var target = inA ? RandomBNode(random, half) : random.Next(half);
-                edges.Add((i, target));
-            }
-        }
-    }
-
-    // A random node on the B side: the B nodes are the upper half of the range.
-    private int RandomBNode(Random random, int half) => half + random.Next(NodeCount - half);
-
-    private static int[][] BuildAdjacency(int nodeCount, List<(int From, int To)> edges)
-    {
-        var adjacency = Enumerable.Range(0, nodeCount).Select(_ => new List<int>()).ToArray();
-
-        foreach (var (from, to) in edges)
-        {
-            adjacency[from].Add(to);
-            adjacency[to].Add(from);
-        }
-
-        return adjacency.Select(neighbors => neighbors.ToArray()).ToArray();
     }
 
     [Benchmark(Baseline = true)]

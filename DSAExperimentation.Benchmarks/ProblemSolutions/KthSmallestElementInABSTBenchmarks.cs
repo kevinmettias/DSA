@@ -12,7 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LongestValidParenthesesBenchmarks's DP-array-vs-stack pairing already uses, not
 // an asymptotic win. The tree itself is built via this repo's own
 // BinarySearchTree<int>, inserted in shuffled order so height stays close to
-// O(log n) instead of the degenerate O(n) ascending-insertion case.
+// O(log n) instead of the degenerate O(n) ascending-insertion case. NodeCount stops
+// at LC 230's 10^4-node cap.
 public class KthSmallestElementInABSTBenchmarks
 {
     private const int MedianDivisor = 2;
@@ -21,7 +22,7 @@ public class KthSmallestElementInABSTBenchmarks
 
     private int _targetRank;
 
-    [Params(500, 20_000)]
+    [Params(500, 10_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]
