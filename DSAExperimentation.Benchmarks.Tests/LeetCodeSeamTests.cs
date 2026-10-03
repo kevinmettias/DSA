@@ -25,6 +25,9 @@ public sealed partial class LeetCodeSeamTests
     private const int SmallestLength = 200;
     private const int SmallestCodeLength = 8;
 
+    // LC 394 caps the encoded string at 30 characters, so its harness starts below the others.
+    private const int SmallestEncodedLength = 10;
+
     [Fact]
     public void RecursiveDescent_ExpressionBuiltFromTheWorkload_ReturnsWhatTheLeetCodeStrategyReturns()
     {
@@ -47,7 +50,7 @@ public sealed partial class LeetCodeSeamTests
     public void RecursiveDescent_EncodedTextBuiltFromTheWorkload_ReturnsWhatTheLeetCodeStrategyReturns()
     {
         var harness = BuildDecodeStringHarness();
-        var encoded = DecodeStringWorkloads.BuildEncoded(SmallestLength);
+        var encoded = DecodeStringWorkloads.BuildEncoded(SmallestEncodedLength);
 
         Assert.Equal(DecodeStringSolution.DecodeByRecursiveDescent(encoded), harness.RecursiveDescent());
     }
@@ -56,7 +59,7 @@ public sealed partial class LeetCodeSeamTests
     public void StackScan_EncodedTextBuiltFromTheWorkload_ReturnsWhatTheLeetCodeStrategyReturns()
     {
         var harness = BuildDecodeStringHarness();
-        var encoded = DecodeStringWorkloads.BuildEncoded(SmallestLength);
+        var encoded = DecodeStringWorkloads.BuildEncoded(SmallestEncodedLength);
 
         Assert.Equal(DecodeStringSolution.DecodeByStackScan(encoded), harness.StackScan());
     }
@@ -96,7 +99,7 @@ public sealed partial class LeetCodeSeamTests
 
     private static DecodeStringBenchmarks BuildDecodeStringHarness()
     {
-        var harness = new DecodeStringBenchmarks { Length = SmallestLength };
+        var harness = new DecodeStringBenchmarks { Length = SmallestEncodedLength };
         harness.Setup();
 
         return harness;

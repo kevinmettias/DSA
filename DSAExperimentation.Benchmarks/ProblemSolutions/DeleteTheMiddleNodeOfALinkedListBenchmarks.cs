@@ -29,7 +29,7 @@ public class DeleteTheMiddleNodeOfALinkedListBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = SeededDraws.Values(Length, 0, ValueRangeExclusive, random);
+        _values = SeededDraws.Values(Length, 1, ValueRangeExclusive, random);
     }
 
     // Returns object, not SinglyLinkedListNode<int> - the node type is internal,

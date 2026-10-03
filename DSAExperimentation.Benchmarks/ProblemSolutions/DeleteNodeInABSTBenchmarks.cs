@@ -22,7 +22,7 @@ public class DeleteNodeInABSTBenchmarks
     private int[] _insertionOrder = [];
 
     private int _target;
-    [Params(500, 20_000)]
+    [Params(500, 10_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

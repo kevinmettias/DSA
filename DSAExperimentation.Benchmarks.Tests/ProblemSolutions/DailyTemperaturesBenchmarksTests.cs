@@ -5,11 +5,10 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for DailyTemperaturesBenchmarks (ARCHITECTURE 17.9): its two arms are competing
 // strategies for the same question - the per-day brute-force scan ahead against one monotonic-stack
-// sweep - so a harness whose arms disagree is timing two different problems. Setup derives the days
-// from one fixed seed as a permutation of 1..Length, so no day's scan short-circuits early; the
-// reading's documented shape is one wait per day, each inside the day count, and the last day has
-// nothing ahead of it at all. The same Length must rebuild the same permutation and with it the same
-// waits.
+// sweep - so a harness whose arms disagree is timing two different problems. Setup draws the days
+// from one fixed seed inside LC 739's 30..100 range; the reading's documented shape is one wait per
+// day, each inside the day count, and the last day has nothing ahead of it at all. The same Length
+// must rebuild the same draws and with it the same waits.
 public sealed partial class DailyTemperaturesBenchmarksTests
 {
     private const int SmallestLength = 200;

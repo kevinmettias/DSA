@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // the same encoding and with it the same decoded string.
 public sealed partial class DecodeStringBenchmarksTests
 {
-    private const int SmallestLength = 200;
+    private const int SmallestLength = 10;
 
     // DecodeStringWorkloads repeats "2[ab]" until the encoding reaches the requested length; each tile
     // is five encoded characters and decodes to the four characters of "abab".
@@ -26,7 +26,7 @@ public sealed partial class DecodeStringBenchmarksTests
     }
 
     [Fact]
-    public void RecursiveDescent_TwoHundredCharacterEncoding_AgreesWithStackScan()
+    public void RecursiveDescent_TenCharacterEncoding_AgreesWithStackScan()
     {
         var harness = BuildHarness();
 
@@ -34,7 +34,7 @@ public sealed partial class DecodeStringBenchmarksTests
     }
 
     [Fact]
-    public void StackScan_TwoHundredCharacterEncoding_AgreesWithRecursiveDescent()
+    public void StackScan_TenCharacterEncoding_AgreesWithRecursiveDescent()
     {
         var harness = BuildHarness();
 

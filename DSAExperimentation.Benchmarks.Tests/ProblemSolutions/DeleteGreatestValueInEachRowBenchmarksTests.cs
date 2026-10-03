@@ -7,19 +7,20 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // against sorting each row once and taking a column-wise maximum pass - so a harness whose arms
 // disagree is timing two different problems. Setup draws the grid from one fixed seed, and neither
 // strategy writes to it, so every call sees the same grid. Each round removes one value per row and
-// every value lies inside the seeded bound, so the reading's documented shape is at most one bound's
-// worth of value per column; the same Columns must rebuild the same grid and with it the same total.
+// every value lies inside LC 2500's 1..100 range, so the reading's documented shape is between one
+// smallest and one largest value per column; the same Columns must rebuild the same grid and with it
+// the same total.
 public sealed partial class DeleteGreatestValueInEachRowBenchmarksTests
 {
-    private const int SmallestColumns = 50;
+    private const int SmallestColumns = 5;
 
-    // [GlobalSetup] fixes the row count and the exclusive value bound.
-    private const int Rows = 20;
-    private const int ValueBound = 100_000;
+    // [GlobalSetup] draws every cell from LC 2500's range.
+    private const int LowestValue = 1;
+    private const int HighestValue = 100;
 
-    // One value is removed per column per round, so the total is one bounded value per column at most.
-    private const int MinimumRemovedValueTotal = 0;
-    private const int MaximumRemovedValueTotal = SmallestColumns * ValueBound;
+    // One value is removed per column per round, so the total is one in-range value per column.
+    private const int MinimumRemovedValueTotal = SmallestColumns * LowestValue;
+    private const int MaximumRemovedValueTotal = SmallestColumns * HighestValue;
 
     [Fact]
     public void Setup_SameColumns_RebuildsTheSameWorkload()
@@ -32,7 +33,7 @@ public sealed partial class DeleteGreatestValueInEachRowBenchmarksTests
     }
 
     [Fact]
-    public void RepeatedRowMaxScan_TwentyByFiftySeededGrid_AgreesWithMergeSortColumnMax()
+    public void RepeatedRowMaxScan_TwentyByFiveSeededGrid_AgreesWithMergeSortColumnMax()
     {
         var harness = BuildHarness();
 
@@ -40,7 +41,7 @@ public sealed partial class DeleteGreatestValueInEachRowBenchmarksTests
     }
 
     [Fact]
-    public void MergeSortColumnMax_TwentyByFiftySeededGrid_AgreesWithRepeatedRowMaxScan()
+    public void MergeSortColumnMax_TwentyByFiveSeededGrid_AgreesWithRepeatedRowMaxScan()
     {
         var harness = BuildHarness();
 

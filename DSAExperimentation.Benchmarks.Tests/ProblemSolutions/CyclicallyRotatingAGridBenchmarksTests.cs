@@ -14,6 +14,9 @@ public sealed partial class CyclicallyRotatingAGridBenchmarksTests
 {
     private const int SmallestSize = 10;
 
+    // The template counts its cells up from LC 1914's smallest cell value.
+    private const int FirstCellValue = 1;
+
     [Fact]
     public void Setup_SameSize_RebuildsTheSameWorkload()
     {
@@ -22,7 +25,7 @@ public sealed partial class CyclicallyRotatingAGridBenchmarksTests
         Assert.Equal(SmallestSize, rotated.Length);
         Assert.All(rotated, row => Assert.Equal(SmallestSize, row.Length));
         Assert.Equal(
-            Enumerable.Range(0, SmallestSize * SmallestSize),
+            Enumerable.Range(FirstCellValue, SmallestSize * SmallestSize),
             rotated.SelectMany(row => row).Order());
         Assert.Equal(
             AnswerGraphText.Of(BuildHarness().StepwiseQueue()),

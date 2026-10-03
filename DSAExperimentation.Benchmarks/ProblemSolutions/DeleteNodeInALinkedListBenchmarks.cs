@@ -19,7 +19,7 @@ public class DeleteNodeInALinkedListBenchmarks
 {
     private int[] _values = [];
 
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

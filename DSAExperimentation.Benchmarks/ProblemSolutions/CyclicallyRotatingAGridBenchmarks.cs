@@ -14,6 +14,10 @@ public class CyclicallyRotatingAGridBenchmarks
     // happens to fall out even.
     private const int UnreducedSteps = 1_000_003;
 
+    // LC 1914's smallest cell value; the cells count up from it, so even the 40x40 grid
+    // stays well under its 5000 cap.
+    private const int FirstCellValue = 1;
+
     private int[][] _template = [];
 
     [Params(10, 40)]
@@ -23,7 +27,7 @@ public class CyclicallyRotatingAGridBenchmarks
     public void Setup()
     {
         _template = new int[Size][];
-        var value = 0;
+        var value = FirstCellValue;
 
         for (var row = 0; row < Size; row++)
         {

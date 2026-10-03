@@ -9,14 +9,14 @@ namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 public sealed partial class FolderPathWorkloadsTests
 {
     private const int TopLevelCount = 8;
-    private const int PathsPerTopLevelFolder = 2;
+    private const int PathsPerTopLevelFolder = 4;
     private const string TopLevelPrefix = "t";
     private const string NestedFolderX = "x";
     private const string NestedFolderY = "y";
     private const string NestedFolderZ = "z";
 
     [Fact]
-    public void BuildIdenticalTopLevelFolders_TopLevelCount_ReturnsTwoPathsPerFolder() =>
+    public void BuildIdenticalTopLevelFolders_TopLevelCount_ReturnsFourPathsPerFolder() =>
         Assert.Equal(
             TopLevelCount * PathsPerTopLevelFolder,
             FolderPathWorkloads.BuildIdenticalTopLevelFolders(TopLevelCount).Length);
@@ -28,9 +28,22 @@ public sealed partial class FolderPathWorkloadsTests
 
         foreach (var folder in Enumerable.Range(0, TopLevelCount))
         {
-            Assert.Equal(Path(folder, NestedFolderX, NestedFolderY), paths[folder * PathsPerTopLevelFolder]);
-            Assert.Equal(Path(folder, NestedFolderZ), paths[(folder * PathsPerTopLevelFolder) + 1]);
+            string[][] expected =
+                [Path(folder), Path(folder, NestedFolderX), Path(folder, NestedFolderX, NestedFolderY), Path(folder, NestedFolderZ)];
+
+            Assert.Equal(expected, paths.Skip(folder * PathsPerTopLevelFolder).Take(PathsPerTopLevelFolder));
         }
+    }
+
+    // LC 1948 guarantees that a nested folder's parent is in the input as a path of its own.
+    [Fact]
+    public void BuildIdenticalTopLevelFolders_EveryNestedFolder_HasItsParentListed()
+    {
+        var paths = FolderPathWorkloads.BuildIdenticalTopLevelFolders(TopLevelCount);
+        var listed = paths.Select(Key).ToHashSet();
+        var parents = paths.Where(path => path.Length > 1).Select(path => Key(path[..^1]));
+
+        Assert.All(parents, parent => Assert.Contains(parent, listed));
     }
 
     // The identical shape is shared between folders, never within one: the top-level names have to
@@ -51,4 +64,6 @@ public sealed partial class FolderPathWorkloadsTests
 
     private static string[] Path(int folder, params string[] nested) =>
         [TopLevelPrefix + folder, .. nested];
+
+    private static string Key(string[] path) => string.Join('/', path);
 }
