@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
 
@@ -20,8 +21,6 @@ namespace DSAExperimentation.LeetCode.TrappingRainWaterII;
 // contrast ARCHITECTURE.md documents for 1D shortest paths, here for a 2D grid.
 internal static class TrappingRainWaterIISolution
 {
-    private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // Deliberately written without this repo's primitives - a plain int[,]
     // relaxed to a fixed point is what you would write without this repo.
     public static int TrapRainWaterByRelaxationSweep(int[][] heightMap)
@@ -186,7 +185,7 @@ internal static class TrappingRainWaterIISolution
         var height = entry.Priority;
         var addedWater = 0;
 
-        foreach (var (dr, dc) in Directions)
+        foreach (var (dr, dc) in GridDirections.Orthogonal)
         {
             addedWater += VisitNeighbor((row + dr, col + dc), height, state);
         }

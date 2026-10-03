@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.NumberOfEnclaves;
 
@@ -15,8 +16,6 @@ internal static class NumberOfEnclavesSolution
 {
     private const int Land = 1;
     private const int Water = 0;
-
-    private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
     // The textbook answer: a hand-specialized recursive flood fill from every
     // border cell. Deliberately written without this repo's traversal primitive -
@@ -73,7 +72,7 @@ internal static class NumberOfEnclavesSolution
         var rows = grid.Length;
         var cols = grid[0].Length;
 
-        foreach (var (dRow, dCol) in Directions)
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
         {
             var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
 

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.CountSubIslands;
 
@@ -16,8 +17,6 @@ namespace DSAExperimentation.LeetCode.CountSubIslands;
 internal static class CountSubIslandsSolution
 {
     private const int Land = 1;
-
-    private static readonly (int DeltaRow, int DeltaCol)[] Orthogonal = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
     // The textbook answer: a hand-rolled recursive flood fill that carries the
     // "still covered by grid1?" flag along with it, so the sub-island test happens
@@ -104,7 +103,7 @@ internal static class CountSubIslandsSolution
 
     private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] remaining, (int Row, int Col) cell)
     {
-        foreach (var (deltaRow, deltaCol) in Orthogonal)
+        foreach (var (deltaRow, deltaCol) in GridDirections.Orthogonal)
         {
             var row = cell.Row + deltaRow;
             var col = cell.Col + deltaCol;

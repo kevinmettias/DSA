@@ -11,19 +11,13 @@ namespace DSAExperimentation.LeetCode.MaximumNumberOfMovesToKillAllPawns;
 // check is all IsPassable needs to do here.
 internal readonly struct KnightChildren(GridNode node) : IChildren<GridNode>
 {
-    private static readonly (int DRow, int DCol)[] Offsets =
-    [
-        (-2, -1), (-2, 1), (-1, -2), (-1, 2),
-        (1, -2), (1, 2), (2, -1), (2, 1),
-    ];
-
     public int Count
     {
         get
         {
             var count = 0;
 
-            for (var i = 0; i < Offsets.Length; i++)
+            for (var i = 0; i < GridDirections.Knight.Length; i++)
             {
                 if (IsOnBoard(i))
                 {
@@ -37,13 +31,13 @@ internal readonly struct KnightChildren(GridNode node) : IChildren<GridNode>
 
     public GridNode Get(int index)
     {
-        for (var i = 0; i < Offsets.Length; i++)
+        for (var i = 0; i < GridDirections.Knight.Length; i++)
         {
             if (IsOnBoard(i))
             {
                 if (index == 0)
                 {
-                    var (deltaRow, deltaCol) = Offsets[i];
+                    var (deltaRow, deltaCol) = GridDirections.Knight[i];
                     return new GridNode(node.Row + deltaRow, node.Col + deltaCol, node.Grid);
                 }
 
@@ -56,7 +50,7 @@ internal readonly struct KnightChildren(GridNode node) : IChildren<GridNode>
 
     private bool IsOnBoard(int offset)
     {
-        var (deltaRow, deltaCol) = Offsets[offset];
+        var (deltaRow, deltaCol) = GridDirections.Knight[offset];
         return node.Grid.IsPassable(node.Row + deltaRow, node.Col + deltaCol);
     }
 }

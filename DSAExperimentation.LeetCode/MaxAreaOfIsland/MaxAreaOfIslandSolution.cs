@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.MaxAreaOfIsland;
 
@@ -10,8 +11,6 @@ namespace DSAExperimentation.LeetCode.MaxAreaOfIsland;
 // a benchmark fixture reused across iterations) is never left half-zeroed.
 internal static class MaxAreaOfIslandSolution
 {
-    private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
-
     // The textbook answer: a hand-specialized recursive flood fill, BCL only.
     // Deliberately written without this repo's traversal primitive - it is the arm
     // the composed solution below has to justify itself against.
@@ -85,7 +84,7 @@ internal static class MaxAreaOfIslandSolution
         var rows = grid.Length;
         var cols = grid[0].Length;
 
-        foreach (var (dRow, dCol) in Directions)
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
         {
             var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
 
