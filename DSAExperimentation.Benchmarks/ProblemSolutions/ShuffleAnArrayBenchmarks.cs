@@ -7,6 +7,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // element" baseline (a List<int>.RemoveAt shifts every trailing element on almost
 // every draw - O(n^2) worst case) vs. in-place Fisher-Yates over this repo's own
 // DynamicArray<int> - O(n), no auxiliary "remaining pool" collection at all.
+// Each call seeds a fresh Random rather than sharing one built in [GlobalSetup]:
+// the strategy advances the generator it is handed, so a shared one would draw a
+// different shuffle every iteration. Seeding it is timed on purpose, and every arm
+// pays the same cost.
 public class ShuffleAnArrayBenchmarks
 {
     private int[] _original = [];

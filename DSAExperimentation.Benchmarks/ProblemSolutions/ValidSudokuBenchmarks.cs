@@ -3,7 +3,9 @@ using DSAExperimentation.LeetCode.ValidSudoku;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ValidSudokuSolution's, the same methods
-// ValidSudokuSolutionTests proves correct.
+// ValidSudokuSolutionTests proves correct. The board is LeetCode 36's own first
+// example, kept rather than generated because LC 36 fixes the input at one 9x9
+// board, so there is no size to scale. Neither strategy writes to the board.
 public class ValidSudokuBenchmarks
 {
     private char[][] _board = [];

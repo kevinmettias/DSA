@@ -5,8 +5,9 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for WiggleSortIIBenchmarks (ARCHITECTURE 17.9): both arms are competing sorts
 // feeding one shared interleave, so a harness whose arms disagree is timing two different problems.
-// Each arm clones the shared workload internally rather than mutating a hoisted array, so one
-// harness instance is safe to call twice in either order. The interleave is the part both arms
+// Each arm copies the shared workload into its scratch buffer before rearranging it, so one harness
+// instance is safe to call twice in either order as long as each answer is read before the next
+// call reuses that buffer, which every comparison below does. The interleave is the part both arms
 // share, which is exactly what arm agreement cannot witness - so LC 324's alternating inequality is
 // also asserted directly against the returned arrangement.
 public sealed partial class WiggleSortIIBenchmarksTests

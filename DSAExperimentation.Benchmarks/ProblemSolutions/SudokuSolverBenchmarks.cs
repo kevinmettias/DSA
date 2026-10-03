@@ -8,13 +8,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // TwoSum's input length does - the board is always 9x9, the same reason
 // NQueensBenchmarks fixes Size rather than [Params]-ing it), so this isolates
 // the constant-factor cost of Backtrack.TrySearch's generic delegate dispatch
-// from an equivalent purpose-built recursion. Each arm clones the parsed
-// puzzle itself - both strategies mutate their board argument in place, so
-// every iteration needs its own pristine copy, which [GlobalSetup] cannot
-// hand out once.
+// from an equivalent purpose-built recursion. The puzzle is LeetCode 37's own
+// example, kept because the input space is fixed at one 9x9 board. Both
+// strategies fill their board argument in place, so every iteration needs a
+// pristine copy: each arm copies the parsed puzzle into a scratch board
+// [GlobalSetup] allocated once. The copy is timed on purpose because the
+// strategies mutate their input, and every arm pays the same cost.
 public class SudokuSolverBenchmarks
 {
     private char[][] _puzzle = [];
+    private char[][] _board = [];
 
     private static readonly string[] Puzzle =
     [
@@ -30,13 +33,31 @@ public class SudokuSolverBenchmarks
     ];
 
     [GlobalSetup]
-    public void Setup() => _puzzle = Puzzle.Select(row => row.ToCharArray()).ToArray();
+    public void Setup()
+    {
+        _puzzle = Puzzle.Select(row => row.ToCharArray()).ToArray();
+        _board = Puzzle.Select(row => new char[row.Length]).ToArray();
+    }
 
     [Benchmark(Baseline = true)]
-    public bool TrySolveBySpecializedRecursion() => SudokuSolverSolution.TrySolveBySpecializedRecursion(Clone(_puzzle));
+    public bool TrySolveBySpecializedRecursion()
+    {
+        ResetBoard();
+        return SudokuSolverSolution.TrySolveBySpecializedRecursion(_board);
+    }
 
     [Benchmark]
-    public bool TrySolveByBacktrackEngine() => SudokuSolverSolution.TrySolveByBacktrackEngine(Clone(_puzzle));
+    public bool TrySolveByBacktrackEngine()
+    {
+        ResetBoard();
+        return SudokuSolverSolution.TrySolveByBacktrackEngine(_board);
+    }
 
-    private static char[][] Clone(char[][] board) => board.Select(row => (char[])row.Clone()).ToArray();
+    private void ResetBoard()
+    {
+        for (var row = 0; row < _puzzle.Length; row++)
+        {
+            _puzzle[row].CopyTo(_board[row], 0);
+        }
+    }
 }

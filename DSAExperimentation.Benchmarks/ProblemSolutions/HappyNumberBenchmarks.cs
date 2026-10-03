@@ -7,7 +7,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // "PrimitiveComposed") were compile-smoke placeholders that returned a constant
 // and never invoked any algorithm; these replace them with the problem's actual
 // two textbook approaches, both walking the canonical non-happy cycle so
-// neither strategy gets to exit early.
+// neither strategy gets to exit early. No [Params] axis: the input is one int,
+// and its digit-square chain drops below 1,000 after a single step (ten digits
+// of at most 81 each), so the walk is bounded by a small constant and there is no
+// size to scale.
 public class HappyNumberBenchmarks
 {
     // A member of the canonical non-happy cycle (4 -> 16 -> ... -> 4), forcing

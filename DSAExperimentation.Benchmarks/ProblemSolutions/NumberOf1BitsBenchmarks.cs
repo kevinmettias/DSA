@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a compile-smoke placeholder (`=> 1` on both arms) that measured nothing; this
 // measures two counting loops against a dense worst case (31 of 32 bits set).
 // Kernighan's loop then runs its full 31 iterations, while the shift-and-mask
-// arm always runs all 32 positions.
+// arm always runs all 32 positions. No [Params] axis: the input is one 32-bit word,
+// so there is no size to scale.
 public class NumberOf1BitsBenchmarks
 {
     private const uint Value = 4294967293u;

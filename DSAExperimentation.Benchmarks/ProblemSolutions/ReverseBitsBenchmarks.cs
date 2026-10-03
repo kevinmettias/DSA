@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ReverseBitsSolutionTests proves correct. Pre-migration this class was an untested
 // compile-smoke placeholder (Baseline() => 1, PrimitiveComposed() => 1) rather
 // than a second strategy to reconcile. The operand sets every bit but one, so
-// every shift/mask step runs and each of the four lookup bytes is dense.
+// every shift/mask step runs and each of the four lookup bytes is dense. No
+// [Params] axis: the input is one 32-bit word, so there is no size to scale.
 public class ReverseBitsBenchmarks
 {
     // LeetCode's own second example: every bit but one set, exercising every
