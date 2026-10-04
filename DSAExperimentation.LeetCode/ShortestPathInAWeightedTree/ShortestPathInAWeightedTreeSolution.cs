@@ -2,7 +2,6 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.RangeFenwickTree;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
-using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.RootedTreeNode>;
 
 namespace DSAExperimentation.LeetCode.ShortestPathInAWeightedTree;
 
@@ -117,20 +116,18 @@ internal static class ShortestPathInAWeightedTreeSolution
     // Composed: edges[] becomes a parent array via a BFS over this repo's own
     // Queue<int> (the same conversion MaximumPointsAfterCollectingCoinsFromAll-
     // NodesSolution uses), materialized as DataStructures' RootedTreeNode via
-    // ParentArrayTree.Build, then walked with this repo's own Stack<RootedTree-
-    // Node> for an iterative pre-order Euler tour: TimeIn[v] is v's visit order,
-    // and because a stack-based pre-order never starts a sibling subtree before
-    // finishing the current one, [TimeIn[v], TimeOut[v]] is exactly the
-    // contiguous range of every node in v's subtree.
+    // ParentArrayTree.Build, then laid out by DataStructures' PreOrderTour: every
+    // subtree is one contiguous run of positions, SubtreeOf(v), and the tour's
+    // ParentOf names which endpoint of an edge hangs below the other.
     //
     // Node v's distance from the root is the sum of every ancestor edge's
     // weight, and updating one edge changes that sum for exactly the subtree
     // below it - a range-add. This repo's own RangeFenwickTree<long,
     // SumOperation<long>> (RangeFenwickTree.cs's own doc comment: "a point
     // query is just Query(i, i)") is exactly a range-add/point-query structure,
-    // so each edge's weight is posted once as RangeAdd(TimeIn[child],
-    // TimeOut[child], weight), an update re-posts the delta over the same range,
-    // and a [2, x] query is one point query at TimeIn[x]. O((n + q) log n).
+    // so each edge's weight is posted once as a RangeAdd over its child's
+    // subtree, an update re-posts the delta over the same range, and a [2, x]
+    // query is one point query at x's position. O((n + q) log n).
     public static int[] ShortestPathQueriesByEulerFenwick(int nodeCount, int[][] edges, int[][] queries)
     {
         var state = BuildEulerSweepState(nodeCount, edges);
@@ -139,22 +136,20 @@ internal static class ShortestPathInAWeightedTreeSolution
     }
 
     // The Euler-tour sweep's whole working set, built once from edges[] and then
-    // walked by the query loop: parent pointers and subtree ranges name which
-    // edge a node hangs from, CurrentWeight is what was last posted for it, and
-    // Fenwick is the range-add / point-query structure those weights live in.
+    // walked by the query loop: the tour names which edge a node hangs from and
+    // the range below it, CurrentWeight is what was last posted for each edge,
+    // and Fenwick is the range-add / point-query structure those weights live in.
     private static (
-        int[] Parent,
-        int[] TimeIn,
-        int[] TimeOut,
+        PreOrderTour Tour,
         int[] CurrentWeight,
         RangeFenwickTree<long, SumOperation<long>> Fenwick) BuildEulerSweepState(int nodeCount, int[][] edges)
     {
         var (parent, parentWeight) = BuildParentArrays(nodeCount, edges);
         var nodes = ParentArrayTree.Build(parent);
-        var (timeIn, timeOut) = BuildEulerTour(nodes[0], parent, nodeCount);
-        var (currentWeight, fenwick) = PostInitialEdgeWeights(nodeCount, parentWeight, timeIn, timeOut);
+        var tour = PreOrderTour.Build(nodes[0], nodeCount);
+        var (currentWeight, fenwick) = PostInitialEdgeWeights(parentWeight, tour);
 
-        return (parent, timeIn, timeOut, currentWeight, fenwick);
+        return (tour, currentWeight, fenwick);
     }
 
     // edges[] is undirected, so a BFS from the root turns it into the
@@ -219,89 +214,29 @@ internal static class ShortestPathInAWeightedTreeSolution
         }
     }
 
-    private static (int[] TimeIn, int[] TimeOut) BuildEulerTour(RootedTreeNode root, int[] parent, int nodeCount)
-    {
-        var (timeIn, visitOrder) = TraversePreOrder(root, nodeCount);
-        var timeOut = ComputeSubtreeEnds(parent, nodeCount, timeIn, visitOrder);
-
-        return (timeIn, timeOut);
-    }
-
-    // An iterative pre-order walk of root's RootedTreeNode.Children (repo Stack,
-    // not recursion - LC's own worst case is a straight-line chain of up to 1e5
-    // nodes, deep enough to risk overflowing the call stack). Because a stack
-    // based pre-order never starts a sibling subtree before finishing the
-    // current one, [TimeIn[v], TimeOut[v]] is exactly the contiguous range of
-    // every node in v's subtree.
-    private static (int[] TimeIn, int[] VisitOrder) TraversePreOrder(RootedTreeNode root, int nodeCount)
-    {
-        var timeIn = new int[nodeCount];
-        var visitOrder = new int[nodeCount];
-        var stack = new RepoStack();
-        stack.Push(root);
-        var timer = 0;
-
-        while (stack.TryPop(out var node))
-        {
-            timeIn[node.Id] = timer;
-            visitOrder[timer] = node.Id;
-            timer++;
-
-            foreach (var child in node.Children)
-            {
-                stack.Push(child);
-            }
-        }
-
-        return (timeIn, visitOrder);
-    }
-
-    // Subtree size is read off in one reverse pass over that same pre-order:
-    // every node's entire subtree already precedes it there, so accumulating
-    // each node's size into its parent's needs no second traversal.
-    private static int[] ComputeSubtreeEnds(int[] parent, int nodeCount, int[] timeIn, int[] visitOrder)
-    {
-        var size = new int[nodeCount];
-        Array.Fill(size, 1);
-
-        for (var i = nodeCount - 1; i >= 1; i--)
-        {
-            var id = visitOrder[i];
-            size[parent[id]] += size[id];
-        }
-
-        var timeOut = new int[nodeCount];
-
-        for (var id = 0; id < nodeCount; id++)
-        {
-            timeOut[id] = timeIn[id] + size[id] - 1;
-        }
-
-        return timeOut;
-    }
-
     // Every edge's weight is posted once as a range-add over the child's subtree:
     // that is what makes an update a delta over the same range and a [2, x] query
     // a single point read. CurrentWeight records what was posted, so an update
-    // can post only the difference.
+    // can post only the difference. Node 0 is the root and hangs from no edge.
     private static (int[] CurrentWeight, RangeFenwickTree<long, SumOperation<long>> Fenwick)
-        PostInitialEdgeWeights(int nodeCount, int[] parentWeight, int[] timeIn, int[] timeOut)
+        PostInitialEdgeWeights(int[] parentWeight, PreOrderTour tour)
     {
-        var fenwick = new RangeFenwickTree<long, SumOperation<long>>(nodeCount);
-        var currentWeight = new int[nodeCount];
+        var fenwick = new RangeFenwickTree<long, SumOperation<long>>(tour.NodeCount);
+        var currentWeight = new int[tour.NodeCount];
 
-        for (var id = 1; id < nodeCount; id++)
+        for (var id = 1; id < tour.NodeCount; id++)
         {
+            var (first, last) = tour.SubtreeOf(id);
             currentWeight[id] = parentWeight[id];
-            fenwick.RangeAdd(timeIn[id], timeOut[id], parentWeight[id]);
+            fenwick.RangeAdd(first, last, parentWeight[id]);
         }
 
         return (currentWeight, fenwick);
     }
 
     private static List<int> AnswerQueriesByEulerSweep(
-        (int[] Parent, int[] TimeIn, int[] TimeOut, int[] CurrentWeight,
-            RangeFenwickTree<long, SumOperation<long>> Fenwick) state, int[][] queries)
+        (PreOrderTour Tour, int[] CurrentWeight, RangeFenwickTree<long, SumOperation<long>> Fenwick) state,
+        int[][] queries)
     {
         var answers = new List<int>();
 
@@ -310,20 +245,31 @@ internal static class ShortestPathInAWeightedTreeSolution
             if (query[0] == 1)
             {
                 var (u, v, w) = (query[1] - 1, query[2] - 1, query[3]);
-                var uIsChild = state.Parent[u] == v;
-                var child = uIsChild ? u : v;
-                var delta = w - state.CurrentWeight[child];
-
-                state.Fenwick.RangeAdd(state.TimeIn[child], state.TimeOut[child], delta);
-                state.CurrentWeight[child] = w;
+                var uIsChild = state.Tour.ParentOf(u) == v;
+                RepostEdgeWeight(state, uIsChild ? u : v, w);
             }
             else
             {
-                var x = query[1] - 1;
-                answers.Add((int)state.Fenwick.Query(state.TimeIn[x], state.TimeIn[x]));
+                var position = state.Tour.PositionOf(query[1] - 1);
+                answers.Add((int)state.Fenwick.Query(position, position));
             }
         }
 
         return answers;
+    }
+
+    // A [1, u, v, w'] query lands on the edge above child, the endpoint whose parent
+    // is the other: the new weight's difference from the posted one is re-posted
+    // over child's subtree, and the new weight becomes the posted one.
+    private static void RepostEdgeWeight(
+        (PreOrderTour Tour, int[] CurrentWeight, RangeFenwickTree<long, SumOperation<long>> Fenwick) state,
+        int child,
+        int weight)
+    {
+        var delta = weight - state.CurrentWeight[child];
+        var (first, last) = state.Tour.SubtreeOf(child);
+
+        state.Fenwick.RangeAdd(first, last, delta);
+        state.CurrentWeight[child] = weight;
     }
 }
