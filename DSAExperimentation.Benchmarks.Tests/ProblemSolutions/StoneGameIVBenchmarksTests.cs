@@ -4,9 +4,9 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for StoneGameIVBenchmarks (ARCHITECTURE 17.9): both arms answer the same
 // question - whether the player to move wins LC 1510 from a given stone count - one by plain
-// un-memoized recursion, one by memoizing the remaining count, so a harness whose arms disagree
-// is timing two different problems. This class has no [GlobalSetup]: the workload is the
-// stone count each arm is called with.
+// un-memoized recursion, one by settling every count bottom-up in a table, so a harness whose
+// arms disagree is timing two different problems. This class has no [GlobalSetup]: the workload
+// is the stone count each arm is called with.
 public sealed partial class StoneGameIVBenchmarksTests
 {
     private const int SmallestStoneCount = 16;
@@ -16,12 +16,12 @@ public sealed partial class StoneGameIVBenchmarksTests
     private const bool ExpectedAliceWins = true;
 
     [Fact]
-    public void CanAliceWinByUnmemoizedRecursion_AgreesWithCanAliceWinByMemoizedRecursion()
+    public void CanAliceWinByUnmemoizedRecursion_AgreesWithCanAliceWinByBottomUpTable()
     {
         var harness = BuildHarness();
         var unmemoized = harness.CanAliceWinByUnmemoizedRecursion(SmallestStoneCount);
 
-        Assert.Equal(unmemoized, harness.CanAliceWinByMemoizedRecursion(SmallestStoneCount));
+        Assert.Equal(unmemoized, harness.CanAliceWinByBottomUpTable(SmallestStoneCount));
         Assert.Equal(ExpectedAliceWins, unmemoized);
     }
 
