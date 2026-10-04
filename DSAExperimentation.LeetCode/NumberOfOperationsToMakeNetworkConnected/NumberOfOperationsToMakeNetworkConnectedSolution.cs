@@ -49,19 +49,7 @@ internal static class NumberOfOperationsToMakeNetworkConnectedSolution
 
     private static int[][] BuildAdjacency(int computerCount, int[][] connections)
     {
-        var neighbors = new List<int>[computerCount];
-
-        for (var computer = 0; computer < computerCount; computer++)
-        {
-            neighbors[computer] = [];
-        }
-
-        foreach (var connection in connections)
-        {
-            neighbors[connection[From]].Add(connection[To]);
-            neighbors[connection[To]].Add(connection[From]);
-        }
-
+        var neighbors = LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(computerCount, connections, new NeighborIdSlots());
         var adjacency = new int[computerCount][];
 
         for (var computer = 0; computer < computerCount; computer++)

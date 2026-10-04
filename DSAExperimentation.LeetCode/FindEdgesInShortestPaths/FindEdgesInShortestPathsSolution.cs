@@ -24,30 +24,12 @@ internal static class FindEdgesInShortestPathsSolution
     // against.
     public static bool[] AnswerByBruteForceDijkstra(int nodeCount, int[][] edges)
     {
-        var adjacency = BuildAdjacency(nodeCount, edges);
+        var adjacency = LeetCodeAdjacency.ZeroBased<List<(int To, long Weight)>, WeightedNeighborSlots<long>>(
+            nodeCount, edges, new WeightedNeighborSlots<long>(edges));
         var distFromStart = Dijkstra(adjacency, 0);
         var distFromEnd = Dijkstra(adjacency, nodeCount - 1);
 
         return BuildAnswer(edges, distFromStart, distFromEnd);
-    }
-
-    private static List<(int Neighbor, long Weight)>[] BuildAdjacency(int nodeCount, int[][] edges)
-    {
-        var adjacency = new List<(int Neighbor, long Weight)>[nodeCount];
-
-        for (var i = 0; i < nodeCount; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            var (a, b, w) = (edge[0], edge[1], (long)edge[2]);
-            adjacency[a].Add((b, w));
-            adjacency[b].Add((a, w));
-        }
-
-        return adjacency;
     }
 
     private static long[] Dijkstra(List<(int Neighbor, long Weight)>[] adjacency, int source)

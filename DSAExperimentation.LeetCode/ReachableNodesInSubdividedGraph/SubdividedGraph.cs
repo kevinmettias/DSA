@@ -26,21 +26,12 @@ internal sealed class SubdividedGraph
 
     public static SubdividedGraph Build(int nodeCount, int[][] edges)
     {
-        var nodes = new SubdividedGraphNode[nodeCount];
-
-        for (var i = 0; i < nodeCount; i++)
-        {
-            nodes[i] = new SubdividedGraphNode(i);
-        }
-
-        foreach (var edge in edges)
-        {
-            var (u, v, cnt) = (edge[0], edge[1], edge[2]);
-            var weight = cnt + 1;
-            nodes[u].Edges.Add((weight, nodes[v]));
-            nodes[v].Edges.Add((weight, nodes[u]));
-        }
+        var nodes = LeetCodeAdjacency.ZeroBased<SubdividedGraphNode>(
+            nodeCount, edges, id => new SubdividedGraphNode(id), (node, _, farNode, edgeIndex) => node.Edges.Add((ChainMoves(edges[edgeIndex]), farNode)));
 
         return new SubdividedGraph(nodes, edges);
     }
+
+    // An edge's cnt subdivision nodes, plus the final hop onto its far endpoint.
+    private static int ChainMoves(int[] edge) => edge[2] + 1;
 }

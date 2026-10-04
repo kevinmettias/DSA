@@ -185,20 +185,6 @@ internal static class MinimumHeightTreesSolution
         return roots;
     }
 
-    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges)
-    {
-        var adjacency = new List<int>[nodeCount];
-        for (var i = 0; i < nodeCount; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            adjacency[edge[0]].Add(edge[1]);
-            adjacency[edge[1]].Add(edge[0]);
-        }
-
-        return adjacency;
-    }
+    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges) =>
+        LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(nodeCount, edges, new NeighborIdSlots());
 }

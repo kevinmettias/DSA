@@ -23,7 +23,7 @@ internal static class MinimizeHammingDistanceAfterSwapOperationsSolution
     // the arm the DisjointSet composition below has to justify itself against.
     public static int MinimumHammingDistanceByAdjacencyListBfs(int[] source, int[] target, int[][] allowedSwaps)
     {
-        var adjacency = BuildAdjacencyList(source.Length, allowedSwaps);
+        var adjacency = LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(source.Length, allowedSwaps, new NeighborIdSlots());
         var visited = new bool[source.Length];
         var values = new ValueArrays(source, target);
         var distance = 0;
@@ -34,24 +34,6 @@ internal static class MinimizeHammingDistanceAfterSwapOperationsSolution
         }
 
         return distance;
-    }
-
-    private static List<int>[] BuildAdjacencyList(int length, int[][] allowedSwaps)
-    {
-        var adjacency = new List<int>[length];
-
-        for (var index = 0; index < length; index++)
-        {
-            adjacency[index] = [];
-        }
-
-        foreach (var swap in allowedSwaps)
-        {
-            adjacency[swap[0]].Add(swap[1]);
-            adjacency[swap[1]].Add(swap[0]);
-        }
-
-        return adjacency;
     }
 
     // Contributes nothing for an index an earlier component already reached, so

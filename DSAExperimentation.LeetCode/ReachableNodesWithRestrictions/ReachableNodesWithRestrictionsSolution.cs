@@ -35,7 +35,7 @@ internal static class ReachableNodesWithRestrictionsSolution
 
     public static int ReachableNodesByDepthFirstFloodFill(int nodeCount, int[][] edges, Set<int> restricted)
     {
-        var adjacency = BuildAdjacency(nodeCount, edges);
+        var adjacency = LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(nodeCount, edges, new NeighborIdSlots());
         var visited = new bool[nodeCount];
         var stack = new Stack<int>();
 
@@ -51,24 +51,6 @@ internal static class ReachableNodesWithRestrictionsSolution
         }
 
         return reachable;
-    }
-
-    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges)
-    {
-        var adjacency = new List<int>[nodeCount];
-
-        for (var node = 0; node < nodeCount; node++)
-        {
-            adjacency[node] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            adjacency[edge[From]].Add(edge[To]);
-            adjacency[edge[To]].Add(edge[From]);
-        }
-
-        return adjacency;
     }
 
     private static void PushOpenNeighbors(

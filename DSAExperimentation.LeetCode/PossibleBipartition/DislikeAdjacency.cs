@@ -21,8 +21,7 @@ internal sealed class DislikeAdjacency
     // (n, edges) pair.
     public static DislikeAdjacency Build(int personCount, int[][] dislikes)
     {
-        var neighbors = LeetCodeAdjacency.OneBased<List<int>>(
-            personCount, dislikes, _ => [], (list, farId, _, _) => list.Add(farId));
+        var neighbors = LeetCodeAdjacency.OneBased<List<int>, NeighborIdSlots>(personCount, dislikes, new NeighborIdSlots());
 
         return new DislikeAdjacency(neighbors.Select(list => list.ToArray()).ToArray());
     }

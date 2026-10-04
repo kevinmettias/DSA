@@ -10,19 +10,7 @@ internal sealed class TimedAdjacency
 
     public static TimedAdjacency Build(int nodeCount, int[][] edges)
     {
-        var neighbors = new List<(int Neighbor, int Weight)>[nodeCount];
-
-        for (var i = 0; i < nodeCount; i++)
-        {
-            neighbors[i] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            var (u, v, weight) = (edge[0], edge[1], edge[2]);
-            neighbors[u].Add((v, weight));
-            neighbors[v].Add((u, weight));
-        }
+        var neighbors = LeetCodeAdjacency.ZeroBased<List<(int To, int Weight)>, WeightedNeighborSlots<int>>(nodeCount, edges, new WeightedNeighborSlots<int>(edges));
 
         return new TimedAdjacency(neighbors);
     }

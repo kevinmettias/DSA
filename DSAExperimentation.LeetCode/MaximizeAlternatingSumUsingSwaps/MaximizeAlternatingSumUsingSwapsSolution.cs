@@ -12,13 +12,13 @@ namespace DSAExperimentation.LeetCode.MaximizeAlternatingSumUsingSwaps;
 // connectivity is discovered.
 internal static class MaximizeAlternatingSumUsingSwapsSolution
 {
-    // The textbook answer: a hand-rolled adjacency list plus BFS, no repo primitive -
+    // The textbook answer: a BCL adjacency list plus BFS, no repo primitive -
     // deliberately written this way, the arm the composed strategy below has to
     // justify itself against.
     public static long MaximumAlternatingSumByComponentBfs(int[] nums, int[][] swaps)
     {
         var n = nums.Length;
-        var neighbors = BuildAdjacencyList(n, swaps);
+        var neighbors = LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(n, swaps, new NeighborIdSlots());
         var visited = new bool[n];
         long total = 0;
 
@@ -33,24 +33,6 @@ internal static class MaximizeAlternatingSumUsingSwapsSolution
         }
 
         return total;
-    }
-
-    private static List<int>[] BuildAdjacencyList(int indexCount, int[][] swaps)
-    {
-        var neighbors = new List<int>[indexCount];
-
-        for (var i = 0; i < indexCount; i++)
-        {
-            neighbors[i] = [];
-        }
-
-        foreach (var swap in swaps)
-        {
-            neighbors[swap[0]].Add(swap[1]);
-            neighbors[swap[1]].Add(swap[0]);
-        }
-
-        return neighbors;
     }
 
     private static long ComponentSumFromBfs(int start, List<int>[] neighbors, bool[] visited, int[] nums)

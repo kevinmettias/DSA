@@ -22,7 +22,7 @@ internal static class NumberOfGoodPathsSolution
     // the composed strategy below has to justify itself against.
     public static int CountGoodPathsByPairwisePathWalk(int[] vals, int[][] edges)
     {
-        var adjacency = BuildAdjacency(vals.Length, edges);
+        var adjacency = LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(vals.Length, edges, new NeighborIdSlots());
         var goodPaths = vals.Length;
 
         for (var first = 0; first < vals.Length; first++)
@@ -37,24 +37,6 @@ internal static class NumberOfGoodPathsSolution
         }
 
         return goodPaths;
-    }
-
-    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges)
-    {
-        var adjacency = new List<int>[nodeCount];
-
-        for (var node = 0; node < nodeCount; node++)
-        {
-            adjacency[node] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            adjacency[edge[0]].Add(edge[1]);
-            adjacency[edge[1]].Add(edge[0]);
-        }
-
-        return adjacency;
     }
 
     // Depth-first from one endpoint, never stepping onto a node whose value

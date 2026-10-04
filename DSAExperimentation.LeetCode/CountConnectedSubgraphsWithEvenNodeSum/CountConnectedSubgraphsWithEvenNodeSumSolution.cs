@@ -18,7 +18,7 @@ internal static class CountConnectedSubgraphsWithEvenNodeSumSolution
     public static int CountEvenSumSubgraphsByBruteForceBfs(int[] nums, int[][] edges)
     {
         var n = nums.Length;
-        var adjacency = BuildAdjacency(n, edges);
+        var adjacency = LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(n, edges, new NeighborIdSlots());
         var count = 0;
 
         for (var mask = 1; mask < (1 << n); mask++)
@@ -30,24 +30,6 @@ internal static class CountConnectedSubgraphsWithEvenNodeSumSolution
         }
 
         return count;
-    }
-
-    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges)
-    {
-        var adjacency = new List<int>[nodeCount];
-
-        for (var i = 0; i < nodeCount; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            adjacency[edge[0]].Add(edge[1]);
-            adjacency[edge[1]].Add(edge[0]);
-        }
-
-        return adjacency;
     }
 
     private static bool IsConnectedByBfs(int mask, int nodeCount, List<int>[] adjacency)

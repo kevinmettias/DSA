@@ -19,7 +19,7 @@ internal static class CountTheNumberOfCompleteComponentsSolution
     // scan per component. Deliberately all BCL (ARCHITECTURE.md 17.5).
     public static int CountCompleteComponentsByAdjacencySetScan(int nodeCount, int[][] edges)
     {
-        var adjacency = BuildAdjacency(nodeCount, edges);
+        var adjacency = LeetCodeAdjacency.ZeroBased<HashSet<int>, NeighborSetSlots>(nodeCount, edges, new NeighborSetSlots());
         var visited = new bool[nodeCount];
         var complete = 0;
 
@@ -41,25 +41,7 @@ internal static class CountTheNumberOfCompleteComponentsSolution
         return complete;
     }
 
-    private static List<HashSet<int>> BuildAdjacency(int nodeCount, int[][] edges)
-    {
-        var adjacency = new List<HashSet<int>>(nodeCount);
-
-        for (var i = 0; i < nodeCount; i++)
-        {
-            adjacency.Add([]);
-        }
-
-        foreach (var edge in edges)
-        {
-            adjacency[edge[0]].Add(edge[1]);
-            adjacency[edge[1]].Add(edge[0]);
-        }
-
-        return adjacency;
-    }
-
-    private static List<int> CollectComponentByBfs(int start, List<HashSet<int>> adjacency, bool[] visited)
+    private static List<int> CollectComponentByBfs(int start, HashSet<int>[] adjacency, bool[] visited)
     {
         var component = new List<int>();
         var queue = new Queue<int>();
@@ -84,7 +66,7 @@ internal static class CountTheNumberOfCompleteComponentsSolution
         return component;
     }
 
-    private static bool IsCompleteByPairwiseScan(List<int> component, List<HashSet<int>> adjacency)
+    private static bool IsCompleteByPairwiseScan(List<int> component, HashSet<int>[] adjacency)
     {
         for (var i = 0; i < component.Count; i++)
         {
@@ -147,5 +129,13 @@ internal static class CountTheNumberOfCompleteComponentsSolution
         }
 
         return complete;
+    }
+
+    // Each node's neighbours as a set, so the pairwise scan's membership test is a lookup.
+    private readonly struct NeighborSetSlots : IAdjacencySlots<HashSet<int>>
+    {
+        public HashSet<int> SlotFor(int id) => [];
+
+        public void Wire(HashSet<int> slot, int farId, HashSet<int> farSlot, int edgeIndex) => slot.Add(farId);
     }
 }

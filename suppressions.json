@@ -2499,7 +2499,7 @@
       "check": "check-duplicate-constant",
       "path": "DSAExperimentation.LeetCode/FindIfPathExistsInGraph/FindIfPathExistsInGraphSolution.cs",
       "anchor": "`From = ",
-      "reason": "`From = 0` is declared in 7 independent units (FindIfPathExistsInGraph/FindIfPathExistsInGraphSolution.cs, MinimumScoreOfAPathBetweenTwoCities/MinimumScoreOfAPathBetweenTwoCitiesSolution.cs, NumberOfOperationsToMakeNetworkConnected/NumberOfOperationsToMakeNetworkConnectedSolution.cs, NumberOfRestrictedPathsFromFirstToLastNode/RestrictedPathGraph.cs and 3 more), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 7 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "reason": "`From = 0` is declared in 6 independent units (FindIfPathExistsInGraph/FindIfPathExistsInGraphSolution.cs, MinimumScoreOfAPathBetweenTwoCities/MinimumScoreOfAPathBetweenTwoCitiesSolution.cs, NumberOfOperationsToMakeNetworkConnected/NumberOfOperationsToMakeNetworkConnectedSolution.cs, NumberOfRestrictedPathsFromFirstToLastNode/RestrictedPathGraph.cs and 2 more), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 6 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -2507,7 +2507,7 @@
       "check": "check-duplicate-constant",
       "path": "DSAExperimentation.LeetCode/FindIfPathExistsInGraph/FindIfPathExistsInGraphSolution.cs",
       "anchor": "`To = ",
-      "reason": "`To = 1` is declared in 7 independent units (FindIfPathExistsInGraph/FindIfPathExistsInGraphSolution.cs, MinimumScoreOfAPathBetweenTwoCities/MinimumScoreOfAPathBetweenTwoCitiesSolution.cs, NumberOfOperationsToMakeNetworkConnected/NumberOfOperationsToMakeNetworkConnectedSolution.cs, NumberOfRestrictedPathsFromFirstToLastNode/RestrictedPathGraph.cs and 3 more), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 7 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "reason": "`To = 1` is declared in 6 independent units (FindIfPathExistsInGraph/FindIfPathExistsInGraphSolution.cs, MinimumScoreOfAPathBetweenTwoCities/MinimumScoreOfAPathBetweenTwoCitiesSolution.cs, NumberOfOperationsToMakeNetworkConnected/NumberOfOperationsToMakeNetworkConnectedSolution.cs, NumberOfRestrictedPathsFromFirstToLastNode/RestrictedPathGraph.cs and 2 more), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 6 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -2620,22 +2620,6 @@
       "path": "DSAExperimentation.LeetCode/MinimumCostToConvertStringII/MinimumCostToConvertStringIISolution.cs",
       "anchor": "`Unreachable = ",
       "reason": "`Unreachable` is each declaring file's own value rather than one shared fact: the same name is also declared as `int.MaxValue / 2`, `int.MinValue / 2`, `long.MinValue / 2`, `long.MinValue / 4` elsewhere in the corpus, so this group agrees on a value its 3 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.LeetCode/MinimumCostToReachDestinationInTime/RoadNetwork.cs",
-      "anchor": "`FromColumn = ",
-      "reason": "`FromColumn = 0` is declared in 2 independent units (MinimumCostToReachDestinationInTime/RoadNetwork.cs, SecondMinimumTimeToReachDestination/IntersectionNetwork.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.LeetCode/MinimumCostToReachDestinationInTime/RoadNetwork.cs",
-      "anchor": "`ToColumn = ",
-      "reason": "`ToColumn = 1` is declared in 2 independent units (MinimumCostToReachDestinationInTime/RoadNetwork.cs, SecondMinimumTimeToReachDestination/IntersectionNetwork.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -3875,7 +3859,7 @@
       "check": "check-callable-shape",
       "path": "DSAExperimentation.LeetCode/LeetCodeAdjacency.cs",
       "message": "is a named callable type",
-      "reason": "The remedy this check ranks first is an interface with a named method, and C# has no lambda-to-interface conversion: `wire` arrives as a lambda at all 8 call sites (GroupAdjacency, CityGraph, GardenNetwork, MinimumEdgeTogglesOnATreeSolution, ToggleTree, BranchNetwork, DislikeAdjacency, DislikeGraph), and a one-method interface cannot be satisfied by one - so the interface would cost a hand-written adapter type in each of those 8 unrelated problem files to express what a delegate already expresses. The declaration is already the check's SECOND-ranked form rather than the third (a named delegate, not a bare `Func`), and it is the one place the contract can be stated: the 7-line comment above it names each parameter (`slot`, `farId`, `farSlot`, `edgeIndex`) and records why both endpoints travel together and why the caller's own edge list is the only place an index can be read from. What it is FOR is also named where a caller meets it: `Build<TSlot>` calls `wire` twice per edge, once from each endpoint, which is what the delegate's shape has to support.",
+      "reason": "The remedy this check ranks first is an interface with a named method, and the slot shapes many problems share already take it: `IAdjacencySlots` is that interface, and `NeighborIdSlots` and `WeightedNeighborSlots<TWeight>` implement it for the 22 call sites (mostly baselines, building inside their timed region) whose slot is a bare neighbour id or a neighbour beside a weight. What stays a delegate is the one-off: `wire` arrives as a lambda at 13 call sites when last counted (2026-10-04: ServerNetwork, GroupGraph, EdgeGraph, CityGraph, GardenNetwork, ComponentGraph, MinimumEdgeTogglesOnATreeSolution, ToggleTree, BranchNetwork, WaysGraph, PalindromicPathQueriesInATreeSolution, DislikeGraph, SubdividedGraph), each filling a slot shape no other problem uses - mostly a composed arm's node graph, built once in setup - and C# has no lambda-to-interface conversion, so the interface would cost a hand-written adapter type in each of those unrelated problem files to express what a delegate already expresses. The declaration is already the check's SECOND-ranked form rather than the third (a named delegate, not a bare `Func`), and it is the one place the contract can be stated: the comment above it names each parameter (`slot`, `farId`, `farSlot`, `edgeIndex`) and records why both endpoints travel together and why the caller's own edge list is the only place an index can be read from. `CallbackSlots` carries the two lambdas as the same slot rule `Build` takes, so both forms share one layout loop, which calls the rule twice per edge, once from each endpoint.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },

@@ -19,7 +19,7 @@ internal static class SmallestStringWithSwapsSolution
     // the arm the DisjointSet composition below has to justify itself against.
     public static string SmallestStringByAdjacencyListBfs(string source, int[][] pairs)
     {
-        var adjacency = BuildAdjacencyList(source.Length, pairs);
+        var adjacency = LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(source.Length, pairs, new NeighborIdSlots());
         var visited = new bool[source.Length];
         var result = source.ToCharArray();
 
@@ -29,24 +29,6 @@ internal static class SmallestStringWithSwapsSolution
         }
 
         return new string(result);
-    }
-
-    private static List<int>[] BuildAdjacencyList(int length, int[][] pairs)
-    {
-        var adjacency = new List<int>[length];
-
-        for (var index = 0; index < length; index++)
-        {
-            adjacency[index] = [];
-        }
-
-        foreach (var pair in pairs)
-        {
-            adjacency[pair[0]].Add(pair[1]);
-            adjacency[pair[1]].Add(pair[0]);
-        }
-
-        return adjacency;
     }
 
     // BFSes out of `start` (unless it was already reached from an earlier component),

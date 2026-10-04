@@ -1315,18 +1315,39 @@ public static int MinTurnsByReduceGraph(IEnumerable<string> deadends, string tar
 public static int MinTurnsByReduceGraph(LockGraph graph, string target)                // pre-built
 ```
 
-The prepared-input overload takes a domain object or one of this repo's own containers — never a
-BCL collection type that the LeetCode-shaped overload's parameter could also bind to. `Set<string>`
-is ideal precisely because it does not implement `IEnumerable<T>`, so the two overloads can never
-be ambiguous. This is why `Set<T>` gained a bulk-seeding `Set(IEnumerable<Element>)` constructor in
-this reorg.
+The prepared-input overload's parameter must be a type the LeetCode-shaped overload's arguments can
+never bind to, so every call says which of the two it means. A domain object or one of this repo's
+own containers meets that by construction: `Set<string>` is ideal precisely because it does not
+implement `IEnumerable<T>`, which is why `Set<T>` gained a bulk-seeding `Set(IEnumerable<Element>)`
+constructor in this reorg. A BCL type meets it too when it cannot collide. `List<int>[] adjacency`
+beside `(int[][] edges, int[] coins)`, or a `HashSet<int>` beside an `int[]`, is as unambiguous as a
+named type, and more than forty problems' hoisted overloads take one. What is never acceptable is a
+prepared type the LeetCode-shaped parameter could also accept: `IEnumerable<string>` beside
+`List<string>` resolves by specificity, silently, so a harness can time the overload it did not
+mean. Name the prepared input when the BCL shape would collide, or when preparing it establishes
+something a bare collection cannot state — `DislikeGraph`'s both-direction wiring, a sorted copy, a
+labelled distance.
 
 ### 17.5 What a baseline arm may use
 
 A baseline exists to represent "what you would write without this repo." Its *internals* therefore
 stay BCL — `MinTurnsByMutationQueue` uses a BCL `Queue` and `HashSet` deliberately. Only the
-*input container* the harness hands it is a repo type, because that is the caller's choice, not
+*input container* the harness hands it may be a repo type, because that is the caller's choice, not
 part of the algorithm's textbook character.
+
+Laying LeetCode's input out is not part of that character either. A tier-4 input-layout helper —
+`LeetCodeAdjacency`, which states once how an `(n, edges)` pair becomes one slot per node — may build
+a baseline's input, provided every slot it fills is a BCL value: `NeighborIdSlots`' `List<int>`,
+`WeightedNeighborSlots`' `List<(int To, TWeight Weight)>`, a `HashSet<int>`. Those shared slot rules
+are struct witnesses (`IAdjacencySlots`), so a baseline that builds its lists inside the timed region
+pays no delegate call per edge. The helper decides only where each edge is written, writes
+what the hand-written loop would in the same order, and leaves the walk to the baseline;
+PossibleBipartition, DivideNodesIntoTheMaximumNumberOfGroups and MinimumEdgeTogglesOnATree built
+their baselines' neighbour lists this way before the rule was written down. Apart from the input
+container the harness hands it, no tier-1, tier-2 or tier-3 type enters a baseline: not a repo
+container, a traversal engine, `GridSize` or `GridNeighbors` as a slot or a call, and not even a
+compile-time constant read from one, such as `ModularArithmetic.Modulo` or
+`AlgorithmConstants.HalvingFactor`. A baseline states its own constants.
 
 ### 17.6 Tier 3: what earns a `Domain/` folder — and the criterion that first got this wrong
 

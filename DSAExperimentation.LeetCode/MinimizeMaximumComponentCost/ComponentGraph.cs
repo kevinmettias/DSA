@@ -20,19 +20,8 @@ internal sealed class ComponentGraph
 
     public static ComponentGraph Build(int nodeCount, int[][] edges)
     {
-        var vertices = new List<ComponentNode>(nodeCount);
-
-        for (var id = 0; id < nodeCount; id++)
-        {
-            vertices.Add(new ComponentNode(id));
-        }
-
-        foreach (var edge in edges)
-        {
-            var (u, v, weight) = (edge[0], edge[1], edge[2]);
-            vertices[u].Edges.Add((weight, vertices[v]));
-            vertices[v].Edges.Add((weight, vertices[u]));
-        }
+        var vertices = LeetCodeAdjacency.ZeroBased<ComponentNode>(
+            nodeCount, edges, id => new ComponentNode(id), (vertex, _, farVertex, edgeIndex) => vertex.Edges.Add((edges[edgeIndex][2], farVertex)));
 
         return new ComponentGraph(vertices);
     }

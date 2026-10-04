@@ -48,6 +48,7 @@ public sealed partial class Tier5WitnessTests
         "IReduceOrderStrategy",
         "IPathHeuristic",
         "IGridCellFilter",
+        "IAdjacencySlots",
         "IHeapOrder",
         "ICombineOperation",
         "IRangeUpdateOperation",
@@ -57,6 +58,7 @@ public sealed partial class Tier5WitnessTests
         "IIndexedSequence",
         "IRecurrence",
         "IMonotonePredicate",
+        "IWindowOrder",
     ];
 
     // The traversal engines' callbacks: an assertion device in a test, the algorithm

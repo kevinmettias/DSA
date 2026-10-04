@@ -20,7 +20,7 @@ internal static class CheckingExistenceOfEdgeLengthLimitedPathsSolution
     // pay writing this without the repo.
     public static bool[] DistanceLimitedPathsExistByPerQueryDfs(int nodeCount, int[][] edgeList, int[][] queries)
     {
-        var adjacency = BuildAdjacency(nodeCount, edgeList);
+        var adjacency = LeetCodeAdjacency.ZeroBased<List<(int To, int Weight)>, WeightedNeighborSlots<int>>(nodeCount, edgeList, new WeightedNeighborSlots<int>(edgeList));
         var results = new bool[queries.Length];
 
         for (var i = 0; i < queries.Length; i++)
@@ -30,25 +30,6 @@ internal static class CheckingExistenceOfEdgeLengthLimitedPathsSolution
         }
 
         return results;
-    }
-
-    private static List<(int To, int Weight)>[] BuildAdjacency(int nodeCount, int[][] edgeList)
-    {
-        var adjacency = new List<(int To, int Weight)>[nodeCount];
-
-        for (var i = 0; i < nodeCount; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        foreach (var edge in edgeList)
-        {
-            var (from, to, weight) = (edge[0], edge[1], edge[2]);
-            adjacency[from].Add((to, weight));
-            adjacency[to].Add((from, weight));
-        }
-
-        return adjacency;
     }
 
     // A node always reaches itself, however tight the limit - there is no edge to

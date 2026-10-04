@@ -23,7 +23,7 @@ internal static class FindIfPathExistsInGraphSolution
     // It is the arm the union-find strategy below has to justify itself against.
     public static bool HasPathByDepthFirstSearch(int nodeCount, int[][] edges, int source, int destination)
     {
-        var adjacency = BuildAdjacency(nodeCount, edges);
+        var adjacency = LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(nodeCount, edges, new NeighborIdSlots());
         var visited = new bool[nodeCount];
         var stack = new Stack<int>();
 
@@ -32,24 +32,6 @@ internal static class FindIfPathExistsInGraphSolution
         TraverseDepthFirst(adjacency, visited, stack);
 
         return visited[destination];
-    }
-
-    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges)
-    {
-        var adjacency = new List<int>[nodeCount];
-
-        for (var id = 0; id < nodeCount; id++)
-        {
-            adjacency[id] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            adjacency[edge[From]].Add(edge[To]);
-            adjacency[edge[To]].Add(edge[From]);
-        }
-
-        return adjacency;
     }
 
     private static void TraverseDepthFirst(List<int>[] adjacency, bool[] visited, Stack<int> stack)

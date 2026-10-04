@@ -252,23 +252,8 @@ internal static class CountValidPathsInATreeSolution
         return total;
     }
 
-    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges)
-    {
-        var adjacency = new List<int>[nodeCount + 1];
-
-        for (var i = 0; i <= nodeCount; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            adjacency[edge[0]].Add(edge[1]);
-            adjacency[edge[1]].Add(edge[0]);
-        }
-
-        return adjacency;
-    }
+    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges) =>
+        LeetCodeAdjacency.OneBased<List<int>, NeighborIdSlots>(nodeCount, edges, new NeighborIdSlots());
 
     // The three things a prime's arm sweep reads: which labels are prime, which
     // blob each non-prime label fell into, and how large each blob is.

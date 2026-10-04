@@ -214,23 +214,8 @@ internal static class CollectCoinsInATreeSolution
         return endpoints / 2;
     }
 
-    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges)
-    {
-        var adjacency = new List<int>[nodeCount];
-
-        for (var node = 0; node < nodeCount; node++)
-        {
-            adjacency[node] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            adjacency[edge[0]].Add(edge[1]);
-            adjacency[edge[1]].Add(edge[0]);
-        }
-
-        return adjacency;
-    }
+    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges) =>
+        LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(nodeCount, edges, new NeighborIdSlots());
 
     // The per-run scratch the peel mutates. The adjacency lists themselves are never
     // written to, so a caller that hands the same prepared tree to both strategies

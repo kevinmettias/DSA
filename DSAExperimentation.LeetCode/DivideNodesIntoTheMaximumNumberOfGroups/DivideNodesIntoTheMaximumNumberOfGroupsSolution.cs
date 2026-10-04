@@ -24,8 +24,9 @@ namespace DSAExperimentation.LeetCode.DivideNodesIntoTheMaximumNumberOfGroups;
 internal static class DivideNodesIntoTheMaximumNumberOfGroupsSolution
 {
     // LeetCode numbers nodes from 1, so index 0 of a prepared adjacency array is
-    // an unused placeholder that every walk here starts past.
-    private const int FirstNode = 1;
+    // an unused placeholder that every walk here starts past, and GroupGraph slices
+    // it off.
+    internal const int FirstNode = 1;
 
     // Uncolored; the two sides are +1 and -1 so switching sides is a negation.
     private const sbyte Uncolored = 0;

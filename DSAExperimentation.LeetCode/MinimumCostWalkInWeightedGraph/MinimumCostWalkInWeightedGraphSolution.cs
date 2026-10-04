@@ -15,7 +15,7 @@ internal static class MinimumCostWalkInWeightedGraphSolution
     // write without this repo," recomputed per query rather than precomputed once.
     public static int[] MinimumCostByBruteForceWalk(int vertexCount, int[][] edges, int[][] query)
     {
-        var adjacency = BuildAdjacency(vertexCount, edges);
+        var adjacency = LeetCodeAdjacency.ZeroBased<List<(int To, int Weight)>, WeightedNeighborSlots<int>>(vertexCount, edges, new WeightedNeighborSlots<int>(edges));
         var answers = new int[query.Length];
 
         for (var i = 0; i < query.Length; i++)
@@ -24,24 +24,6 @@ internal static class MinimumCostWalkInWeightedGraphSolution
         }
 
         return answers;
-    }
-
-    private static List<(int Neighbor, int Weight)>[] BuildAdjacency(int vertexCount, int[][] edges)
-    {
-        var adjacency = new List<(int Neighbor, int Weight)>[vertexCount];
-
-        for (var i = 0; i < vertexCount; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            adjacency[edge[0]].Add((edge[1], edge[2]));
-            adjacency[edge[1]].Add((edge[0], edge[2]));
-        }
-
-        return adjacency;
     }
 
     // Every edge incident to any node this BFS ever dequeues belongs to source's

@@ -39,19 +39,7 @@ internal static class CountUnreachablePairsOfNodesInAnUndirectedGraphSolution
 
     private static int[][] BuildAdjacency(int nodeCount, int[][] edges)
     {
-        var adjacency = new List<int>[nodeCount];
-
-        for (var node = 0; node < nodeCount; node++)
-        {
-            adjacency[node] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            adjacency[edge[0]].Add(edge[1]);
-            adjacency[edge[1]].Add(edge[0]);
-        }
-
+        var adjacency = LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(nodeCount, edges, new NeighborIdSlots());
         var result = new int[nodeCount][];
 
         for (var node = 0; node < nodeCount; node++)

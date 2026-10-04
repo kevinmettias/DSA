@@ -21,8 +21,7 @@ internal sealed class GroupAdjacency
     // layout LeetCodeAdjacency states once for every problem taking an (n, edges) pair.
     public static GroupAdjacency Build(int nodeCount, int[][] edges)
     {
-        var neighbors = LeetCodeAdjacency.OneBased<List<int>>(
-            nodeCount, edges, _ => [], (list, farId, _, _) => list.Add(farId));
+        var neighbors = LeetCodeAdjacency.OneBased<List<int>, NeighborIdSlots>(nodeCount, edges, new NeighborIdSlots());
 
         return new GroupAdjacency(neighbors.Select(list => list.ToArray()).ToArray());
     }

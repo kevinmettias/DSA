@@ -13,10 +13,7 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToArriveAtDestination;
 // its Dist is not yet this problem's graph.
 internal sealed class WaysGraph
 {
-    // The endpoints' and the travel time's slots in LeetCode's own three-element
-    // road array.
-    private const int From = 0;
-    private const int To = 1;
+    // The travel time's slot in LeetCode's own three-element road array.
     private const int Time = 2;
 
     // Intersection 0, where every counted journey begins.
@@ -34,24 +31,9 @@ internal sealed class WaysGraph
     }
 
     // LeetCode labels the intersections 0..n-1, so slot i holds intersection i.
-    private static WaysNode[] BuildNodes(int intersectionCount, int[][] roads)
-    {
-        var nodes = new WaysNode[intersectionCount];
-
-        for (var id = 0; id < intersectionCount; id++)
-        {
-            nodes[id] = new WaysNode(id);
-        }
-
-        foreach (var road in roads)
-        {
-            var (from, to, time) = (road[From], road[To], (long)road[Time]);
-            nodes[from].Edges.Add((time, nodes[to]));
-            nodes[to].Edges.Add((time, nodes[from]));
-        }
-
-        return nodes;
-    }
+    private static WaysNode[] BuildNodes(int intersectionCount, int[][] roads) =>
+        LeetCodeAdjacency.ZeroBased<WaysNode>(
+            intersectionCount, roads, id => new WaysNode(id), (node, _, farNode, roadIndex) => node.Edges.Add(((long)roads[roadIndex][Time], farNode)));
 
     // Every road is bi-directional, so a single Dijkstra sourced at intersection
     // n - 1 gives every other intersection its distance *to* the destination in one

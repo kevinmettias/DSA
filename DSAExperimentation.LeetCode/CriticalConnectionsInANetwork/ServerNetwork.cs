@@ -21,22 +21,12 @@ internal sealed class ServerNetwork
 
     private ServerNetwork(IReadOnlyList<ServerNode> servers) => Servers = servers;
 
+    // A ServerNode per server id, then both directions of every connection - the
+    // layout LeetCodeAdjacency states once for every problem taking an (n, edges) pair.
     public static ServerNetwork Build(int serverCount, int[][] connections)
     {
-        var servers = new ServerNode[serverCount];
-
-        for (var id = 0; id < serverCount; id++)
-        {
-            servers[id] = new ServerNode(id);
-        }
-
-        foreach (var connection in connections)
-        {
-            var first = servers[connection[0]];
-            var second = servers[connection[1]];
-            first.Neighbors.Add(second);
-            second.Neighbors.Add(first);
-        }
+        var servers = LeetCodeAdjacency.ZeroBased<ServerNode>(
+            serverCount, connections, id => new ServerNode(id), (server, _, farServer, _) => server.Neighbors.Add(farServer));
 
         return new ServerNetwork(servers);
     }

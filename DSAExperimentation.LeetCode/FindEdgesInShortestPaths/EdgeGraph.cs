@@ -11,7 +11,6 @@ namespace DSAExperimentation.LeetCode.FindEdgesInShortestPaths;
 // (BranchNetwork's own framing for LC 2959). Edges is kept alongside Nodes so the
 // solution can walk the input's own edge order when it builds the per-edge answer
 // array, without a second pass over the raw input.
-// without a second pass over the raw input.
 internal sealed class EdgeGraph
 {
     public EdgeGraphNode[] Nodes { get; }
@@ -24,21 +23,13 @@ internal sealed class EdgeGraph
         Edges = edges;
     }
 
+    // An EdgeGraphNode per vertex id, then both directions of every edge, each beside
+    // the edge's weight widened to long - LeetCodeAdjacency's layout, with the weight
+    // read from the edge's third value.
     public static EdgeGraph Build(int nodeCount, int[][] edges)
     {
-        var nodes = new EdgeGraphNode[nodeCount];
-
-        for (var i = 0; i < nodeCount; i++)
-        {
-            nodes[i] = new EdgeGraphNode(i);
-        }
-
-        foreach (var edge in edges)
-        {
-            var (a, b, weight) = (edge[0], edge[1], (long)edge[2]);
-            nodes[a].Edges.Add((weight, nodes[b]));
-            nodes[b].Edges.Add((weight, nodes[a]));
-        }
+        var nodes = LeetCodeAdjacency.ZeroBased<EdgeGraphNode>(
+            nodeCount, edges, id => new EdgeGraphNode(id), (node, _, farNode, edgeIndex) => node.Edges.Add(((long)edges[edgeIndex][2], farNode)));
 
         return new EdgeGraph(nodes, edges);
     }

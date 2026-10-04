@@ -28,14 +28,9 @@ internal sealed class GroupGraph
         // Slot i holds node i, so LeetCode's 1..n numbering indexes directly;
         // slot 0 is an unused placeholder that carries no edges and is dropped
         // before the graph is returned.
-        var byId = Enumerable.Range(0, nodeCount + 1).Select(id => new GroupNode(id)).ToList();
+        var byId = LeetCodeAdjacency.OneBased<GroupNode>(
+            nodeCount, edges, id => new GroupNode(id), (node, _, farNode, _) => node.Neighbors.Add(farNode));
 
-        foreach (var edge in edges)
-        {
-            byId[edge[0]].Neighbors.Add(byId[edge[1]]);
-            byId[edge[1]].Neighbors.Add(byId[edge[0]]);
-        }
-
-        return new GroupGraph(byId.Skip(1).ToList());
+        return new GroupGraph(byId[DivideNodesIntoTheMaximumNumberOfGroupsSolution.FirstNode..]);
     }
 }

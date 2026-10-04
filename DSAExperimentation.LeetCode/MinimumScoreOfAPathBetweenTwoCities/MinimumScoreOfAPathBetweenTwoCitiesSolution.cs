@@ -27,7 +27,7 @@ internal static class MinimumScoreOfAPathBetweenTwoCitiesSolution
     // the arm the union-find pass has to justify itself against.
     public static int MinScoreByBreadthFirstFloodFill(int cityCount, int[][] roads)
     {
-        var adjacency = BuildAdjacency(cityCount, roads);
+        var adjacency = LeetCodeAdjacency.OneBased<List<(int To, int Weight)>, WeightedNeighborSlots<int>>(cityCount, roads, new WeightedNeighborSlots<int>(roads));
         var flood = new CityFlood(new bool[cityCount + 1], new Queue<int>());
         flood.Reach(1);
         var minScore = int.MaxValue;
@@ -40,24 +40,6 @@ internal static class MinimumScoreOfAPathBetweenTwoCitiesSolution
         }
 
         return minScore;
-    }
-
-    private static List<(int Neighbor, int Weight)>[] BuildAdjacency(int cityCount, int[][] roads)
-    {
-        var adjacency = new List<(int Neighbor, int Weight)>[cityCount + 1];
-
-        for (var city = 1; city <= cityCount; city++)
-        {
-            adjacency[city] = [];
-        }
-
-        foreach (var road in roads)
-        {
-            adjacency[road[From]].Add((road[To], road[Distance]));
-            adjacency[road[To]].Add((road[From], road[Distance]));
-        }
-
-        return adjacency;
     }
 
     // Every road out of a reached city counts towards the answer, whether or not it

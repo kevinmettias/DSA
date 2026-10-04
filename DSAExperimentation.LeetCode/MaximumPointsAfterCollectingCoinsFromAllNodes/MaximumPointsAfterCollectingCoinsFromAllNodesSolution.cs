@@ -20,7 +20,7 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
 {
     private const int NoParentAssignedYet = -2;
 
-    // Plain recursive memoized DP over a hand-rolled adjacency list -
+    // Plain recursive memoized DP over a BCL adjacency list -
     // Dictionary<(node,h),long> keyed lookups, no repo primitive involved beyond
     // the adjacency BFS's own Queue<int>. The arm the tree-fold strategy has to
     // beat.
@@ -141,20 +141,6 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
         return (take, halve);
     }
 
-    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges)
-    {
-        var adjacency = new List<int>[nodeCount];
-        for (var i = 0; i < nodeCount; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            adjacency[edge[0]].Add(edge[1]);
-            adjacency[edge[1]].Add(edge[0]);
-        }
-
-        return adjacency;
-    }
+    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges) =>
+        LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(nodeCount, edges, new NeighborIdSlots());
 }
