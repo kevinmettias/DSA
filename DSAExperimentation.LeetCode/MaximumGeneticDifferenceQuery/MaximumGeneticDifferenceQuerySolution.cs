@@ -1,5 +1,5 @@
+using DSAExperimentation.DataStructures.CountedBitTrie;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.HashMap;
 
 namespace DSAExperimentation.LeetCode.MaximumGeneticDifferenceQuery;
 
@@ -13,11 +13,6 @@ namespace DSAExperimentation.LeetCode.MaximumGeneticDifferenceQuery;
 // they re-walk per query.
 internal static class MaximumGeneticDifferenceQuerySolution
 {
-    // Bit 31 is the most significant bit of a 32-bit int; every bit walk below
-    // processes all 32 bits, MSB first, because a higher bit always dominates every
-    // lower one and only an MSB-first greedy walk maximizes the result.
-    private const int MostSignificantBitIndex = 31;
-
     // Marks the root in LeetCode's parent-array encoding.
     private const int NoParent = -1;
 
@@ -51,17 +46,11 @@ internal static class MaximumGeneticDifferenceQuerySolution
     }
 
     // Composed: one offline depth-first pass over the ParentArrayTree.Build tree.
-    // Each node's id is inserted into this repo's own BitTrie on the way down and
-    // undone on the way back up, so while a node is being visited the trie holds
-    // exactly its ancestor set - every query parked on that node is then answered by
-    // one O(32) greedy max-XOR walk instead of an O(depth) climb.
-    //
-    // BitTrie has no Remove, so "undo" is the subtree-count technique
-    // CountPairsWithXorInARange uses: a HashMap<BitTrieNode, int> counts how many
-    // currently-live values pass through each trie node, bumped +1 on the way down
-    // and -1 on the way back up, and the greedy walk only prefers the opposite-bit
-    // child while that count is still greater than zero. The structural Zero/One
-    // links persist across a removal; only the counts say what is in scope.
+    // Each node's id is inserted into this repo's own CountedBitTrie on the way down
+    // and removed again on the way back up, so while a node is being visited the trie
+    // holds exactly its ancestor set - every query parked on that node is then
+    // answered by one O(32) greedy max-XOR walk over the live values instead of an
+    // O(depth) climb.
     public static int[] MaxGeneticDifferenceByBitTrieDfs(int[] parents, int[][] queries)
     {
         var nodes = ParentArrayTree.Build(parents);
@@ -73,8 +62,7 @@ internal static class MaximumGeneticDifferenceQuerySolution
     {
         var answers = new int[queries.Length];
 
-        Visit(root, new AncestorWalk(
-            GroupQueriesByNode(queries, nodeCount), new BitTrie(), new HashMap<BitTrieNode, int>(), answers));
+        Visit(root, new AncestorWalk(GroupQueriesByNode(queries, nodeCount), new CountedBitTrie(), answers));
 
         return answers;
     }
@@ -111,22 +99,23 @@ internal static class MaximumGeneticDifferenceQuerySolution
         return queriesByNode;
     }
 
-    // The DFS's own query index, live-XOR state and output buffer - every field here
+    // The DFS's own query index, ancestor trie and output buffer - every field here
     // is the same reference at every level of the recursion; only the node (Visit's
     // other parameter) changes between calls.
     private readonly record struct AncestorWalk(
         List<(int QueryIndex, int Value)>[] QueriesByNode,
-        BitTrie Trie,
-        HashMap<BitTrieNode, int> SubtreeCount,
+        CountedBitTrie Ancestors,
         int[] Answers);
 
+    // The ancestor set always holds node itself while its queries are answered, so
+    // TryMaxXor always finds a live value and its result is the answer.
     private static void Visit(RootedTreeNode node, AncestorWalk walk)
     {
-        Insert(walk.Trie, walk.SubtreeCount, node.Id);
+        walk.Ancestors.Insert(node.Id);
 
         foreach (var (queryIndex, value) in walk.QueriesByNode[node.Id])
         {
-            walk.Answers[queryIndex] = MaxXorAmongLive(walk.Trie.Root, walk.SubtreeCount, value);
+            walk.Ancestors.TryMaxXor(value, out walk.Answers[queryIndex]);
         }
 
         foreach (var child in node.Children)
@@ -134,95 +123,6 @@ internal static class MaximumGeneticDifferenceQuerySolution
             Visit(child, walk);
         }
 
-        Remove(walk.Trie, walk.SubtreeCount, node.Id);
+        walk.Ancestors.TryRemove(node.Id);
     }
-
-    private static void Insert(BitTrie trie, HashMap<BitTrieNode, int> subtreeCount, int value)
-    {
-        trie.Insert(value);
-        AdjustSubtreeCounts(trie.Root, subtreeCount, value, delta: 1);
-    }
-
-    private static void Remove(BitTrie trie, HashMap<BitTrieNode, int> subtreeCount, int value)
-        => AdjustSubtreeCounts(trie.Root, subtreeCount, value, delta: -1);
-
-    // Shared walk Insert/Remove both do: follow the value's bit path from the root,
-    // bumping each visited trie node's live count by delta (+1 to insert, -1 to undo).
-    // The path always runs the full 32 levels - a matching Insert laid every node on
-    // it down first - so stopping early is the compiler's null check being answered,
-    // not a case that arises.
-    private static void AdjustSubtreeCounts(
-        BitTrieNode root, HashMap<BitTrieNode, int> subtreeCount, int value, int delta)
-    {
-        var current = root;
-        var bits = unchecked((uint)value);
-
-        for (var i = MostSignificantBitIndex; i >= 0; i--)
-        {
-            var child = ChildForBit(current, (bits >> i) & 1u);
-
-            if (child is null)
-            {
-                return;
-            }
-
-            subtreeCount.TryGetValue(child, out var existing);
-            subtreeCount.Set(child, existing + delta);
-            current = child;
-        }
-    }
-
-    // The child a value's bit at this level selects, absent until some Insert has
-    // created it.
-    private static BitTrieNode? ChildForBit(BitTrieNode node, uint bit) =>
-        bit == 0 ? node.Zero : node.One;
-
-    // The same greedy "prefer the opposite bit" walk BitTrie.TryMaxXor performs,
-    // except a child is only eligible while it still has at least one live value
-    // passing through it. Falling back to the same-bit child always finds a node, by
-    // BitTrie.Walk's own precondition note - every node reached here has at least one
-    // non-null child - so the loop runs all 32 levels and the null test only answers
-    // the compiler.
-    private static int MaxXorAmongLive(BitTrieNode root, HashMap<BitTrieNode, int> subtreeCount, int value)
-    {
-        BitTrieNode? current = root;
-        var bits = unchecked((uint)value);
-        var xor = 0u;
-
-        for (var i = MostSignificantBitIndex; i >= 0 && current is not null; i--)
-        {
-            var (next, matchedOpposite) = DescendToLiveChild(current, subtreeCount, (bits >> i) & 1u);
-
-            if (matchedOpposite)
-            {
-                xor |= 1u << i;
-            }
-
-            current = next;
-        }
-
-        return unchecked((int)xor);
-    }
-
-    // BitTrie.DescendOneLevel with a liveness test bolted on: prefer the opposite-bit
-    // child while it still carries a live value, and report whether that preference
-    // was satisfied so the caller can set the corresponding result bit.
-    private static (BitTrieNode? Next, bool MatchedOpposite) DescendToLiveChild(
-        BitTrieNode current, HashMap<BitTrieNode, int> subtreeCount, uint bit)
-    {
-        var opposite = ChildForBit(current, bit == 0 ? 1u : 0u);
-
-        if (HasLiveValues(opposite, subtreeCount))
-        {
-            return (opposite, true);
-        }
-
-        return (ChildForBit(current, bit), false);
-    }
-
-    // A child is in scope for the node currently being visited only while at least
-    // one not-yet-removed value still passes through it - BitTrie has no delete, so
-    // its structural links outlive the values that created them.
-    private static bool HasLiveValues(BitTrieNode? child, HashMap<BitTrieNode, int> subtreeCount) =>
-        child is not null && subtreeCount.TryGetValue(child, out var count) && count > 0;
 }
