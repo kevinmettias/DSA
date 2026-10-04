@@ -3758,14 +3758,6 @@
     },
     {
       "check": "check-boolean-predicate",
-      "path": "DSAExperimentation.LeetCode/StoneGameIV/StoneGameIVSolution.cs",
-      "message": "`Replay` answers",
-      "reason": "`Replay` is declared by `IRecurrence`, a repo primitive in the shared tier, and its return type is a generic parameter that happens to be `bool` in the instantiations here. The name describes the operation, not a boolean - `IRecurrence<TState, TResult>.Replay` returns `TResult`, and `IRandomAccessSequence<Element>.Get` returns `Element` - so it reads correctly at every other instantiation and the objection exists only for the one that returned a bool. Renaming it to satisfy this rule would make the generic contract worse (a `TryReplay` that usually returns a count), and it would edit the shared tier, which reports zero findings across all seven naming checks. Same shape as the Contract_Bound exclusion the check already makes; the C# front end cannot reach it because the declared return type is a generic parameter, not `bool`.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-boolean-predicate",
       "path": "DSAExperimentation.LeetCode/SumGame/SumGameSolution.cs",
       "message": "`Replay` answers",
       "reason": "`Replay` is declared by `IRecurrence`, a repo primitive in the shared tier, and its return type is a generic parameter that happens to be `bool` in the instantiations here. The name describes the operation, not a boolean - `IRecurrence<TState, TResult>.Replay` returns `TResult`, and `IRandomAccessSequence<Element>.Get` returns `Element` - so it reads correctly at every other instantiation and the objection exists only for the one that returned a bool. Renaming it to satisfy this rule would make the generic contract worse (a `TryReplay` that usually returns a count), and it would edit the shared tier, which reports zero findings across all seven naming checks. Same shape as the Contract_Bound exclusion the check already makes; the C# front end cannot reach it because the declared return type is a generic parameter, not `bool`.",
