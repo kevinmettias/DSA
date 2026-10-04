@@ -9,15 +9,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // sizes are 2^k-1 so the complete tree BinaryTrees.Complete builds is a genuinely perfect
 // tree, matching this problem's guarantee. Its level-order values wrap within LC 116's
 // [-1000, 1000] rather than counting up to NodeCount: both strategies key their maps on
-// node identity, so the values only have to stay in range.
-//
-// Each arm returns .Count of its next-pointer map - a proxy, and deliberately one of the
-// few left. The two strategies answer with different map types, the baseline a BCL
-// Dictionary and the level-grouped arm the repo's HashMap, so returning the maps would
-// compare two representations rather than two answers; rendering them alike would
-// mean walking the tree inside the timed region. The fix belongs in the solution - one
-// answer type for both strategies - and each strategy's own tests assert its map
-// against LeetCode's examples meanwhile.
+// node identity, so the values only have to stay in range. Each arm returns LeetCode's
+// readout of the connected tree - every level along its next pointers, null for '#' -
+// which both strategies produce through the same walk, so the arms differ only in how
+// they link.
 public class PopulatingNextRightPointersInEachNodeBenchmarks
 {
     // The values 0..1000, every one of them inside LC 116's [-1000, 1000].
@@ -35,9 +30,9 @@ public class PopulatingNextRightPointersInEachNodeBenchmarks
         [.. Enumerable.Range(0, nodeCount).Select(index => index % ValueSpan)];
 
     [Benchmark(Baseline = true)]
-    public int ManualQueueBfs() => PopulatingNextRightPointersInEachNodeSolution.ConnectByManualQueueBfs(_root).Count;
+    public int?[] ManualQueueBfs() => PopulatingNextRightPointersInEachNodeSolution.ConnectByManualQueueBfs(_root);
 
     [Benchmark]
-    public int LevelGroupedTraversal() =>
-        PopulatingNextRightPointersInEachNodeSolution.ConnectByLevelGroupedTraversal(_root).Count;
+    public int?[] LevelGroupedTraversal() =>
+        PopulatingNextRightPointersInEachNodeSolution.ConnectByLevelGroupedTraversal(_root);
 }

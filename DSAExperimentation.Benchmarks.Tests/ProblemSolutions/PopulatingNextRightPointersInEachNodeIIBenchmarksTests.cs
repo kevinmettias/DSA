@@ -1,43 +1,26 @@
-using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for PopulatingNextRightPointersInEachNodeIIBenchmarks (ARCHITECTURE 17.9): its two
-// arms are competing strategies for one question - the node-to-next-right-neighbor map of an
-// arbitrary tree - so a harness whose arms disagree is timing two different problems. NodeCount is
-// the only [Params] axis and Setup builds the tree from it, so the same NodeCount must rebuild the
-// same tree.
-//
-// Both arms return only .Count of that map, because BinaryTreeNode<int> is internal and a public
-// [Benchmark] method cannot return a type built over it. That is a proxy: two arms that linked the
-// nodes differently but visited the same number of them would still agree. The count is at least the
-// one thing the fixture pins - the right-only chain Setup builds has exactly n nodes, one per level -
-// so each arm is also asserted against that independently derived total, which an arm that dropped a
-// node fails.
+// Harness coverage for PopulatingNextRightPointersInEachNodeIIBenchmarks (ARCHITECTURE 17.9). Arm
+// agreement is BenchmarkArmsTests' job; this pins the full readout from the fixture's construction.
+// Setup builds a right-only chain whose i-th node holds i mod 101, one node per level, so
+// LeetCode's readout is each node's value followed by '#' (null): every level ends where it starts.
 public sealed partial class PopulatingNextRightPointersInEachNodeIIBenchmarksTests
 {
     private const int SmallestNodeCount = 200;
+    private const int ValueSpan = 101;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameTree() =>
-        Assert.Equal(BuildHarness().ManualQueueBfs(), BuildHarness().ManualQueueBfs());
+    public void ManualQueueBfs_RightChain_ReadsOneNodePerLevel() =>
+        Assert.Equal(ExpectedReadout(), BuildHarness().ManualQueueBfs());
 
     [Fact]
-    public void ManualQueueBfs_AgreesWithLevelGroupedTraversal()
-    {
-        var harness = BuildHarness();
+    public void LevelGroupedTraversal_RightChain_ReadsOneNodePerLevel() =>
+        Assert.Equal(ExpectedReadout(), BuildHarness().LevelGroupedTraversal());
 
-        Assert.Equal(harness.LevelGroupedTraversal(), harness.ManualQueueBfs());
-    }
-
-    [Fact]
-    public void ManualQueueBfs_SkewedTree_LinksEveryNode() =>
-        Assert.Equal(SmallestNodeCount, BuildHarness().ManualQueueBfs());
-
-    [Fact]
-    public void LevelGroupedTraversal_SkewedTree_LinksEveryNode() =>
-        Assert.Equal(SmallestNodeCount, BuildHarness().LevelGroupedTraversal());
+    private static int?[] ExpectedReadout() =>
+        [.. Enumerable.Range(0, SmallestNodeCount).SelectMany(index => new int?[] { index % ValueSpan, null })];
 
     private static PopulatingNextRightPointersInEachNodeIIBenchmarks BuildHarness()
     {

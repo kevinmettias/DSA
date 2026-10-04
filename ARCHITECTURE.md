@@ -1438,9 +1438,10 @@ proxy — `nums[0]` after an in-place rearrangement, the sum of reported name le
 replay, `.Length`, a checksum — lets two arms "agree" while answering differently, and puts the
 proxy's own walk inside the timed region. A design problem's arm returns the sequence of outputs its
 operation script observed, written into a buffer sized in `[GlobalSetup]`; a script of operations
-that return nothing ends with the reads LeetCode would use to observe it. The two
-`PopulatingNextRightPointers` benchmarks are the documented exceptions: their strategies answer in
-different map types.
+that return nothing ends with the reads LeetCode would use to observe it. A problem whose answer is
+a mutation the repo's types cannot hold - LC 116/117's next pointers, which `BinaryTreeNode` has no
+field for - answers with what LeetCode's judge reads back from it: there, each level along its next
+pointers with `#` between levels.
 
 ### 17.9 Gate-compliance notes for the new tiers
 

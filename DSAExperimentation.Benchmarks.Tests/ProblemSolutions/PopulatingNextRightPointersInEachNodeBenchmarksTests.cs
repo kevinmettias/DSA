@@ -1,42 +1,42 @@
-using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.DataStructures;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for PopulatingNextRightPointersInEachNodeBenchmarks (ARCHITECTURE 17.9): its two
-// arms are competing strategies for one question - the node-to-next-right-neighbor map of a perfect
-// tree - so a harness whose arms disagree is timing two different problems. NodeCount is the only
-// [Params] axis and Setup builds the tree from it, so the same NodeCount must rebuild the same tree.
-//
-// Both arms return only .Count of that map, because BinaryTreeNode<int> is internal and a public
-// [Benchmark] method cannot return a type built over it. That is a proxy: two arms that linked the
-// nodes differently but visited the same number of them would still agree. The count is at least the
-// one thing the fixture pins - BinaryTrees.Complete over n values allocates exactly n nodes - so each
-// arm is also asserted against that independently derived total, which an arm that dropped a node
-// fails.
+// Harness coverage for PopulatingNextRightPointersInEachNodeBenchmarks (ARCHITECTURE 17.9). Arm
+// agreement is BenchmarkArmsTests' job; this pins the full readout from the fixture's construction.
+// Setup builds the perfect tree whose level-order values are index mod 1001, so depth d holds the
+// indices 2^d - 1 through 2^(d+1) - 2 left to right, and LeetCode's readout is each depth's values
+// followed by '#' (null).
 public sealed partial class PopulatingNextRightPointersInEachNodeBenchmarksTests
 {
     private const int SmallestNodeCount = 63;
+    private const int ValueSpan = 1_001;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameTree() =>
-        Assert.Equal(BuildHarness().ManualQueueBfs(), BuildHarness().ManualQueueBfs());
+    public void ManualQueueBfs_PerfectTree_ReadsEveryDepthAlongItsNextPointers() =>
+        Assert.Equal(ExpectedReadout(), BuildHarness().ManualQueueBfs());
 
     [Fact]
-    public void ManualQueueBfs_AgreesWithLevelGroupedTraversal()
+    public void LevelGroupedTraversal_PerfectTree_ReadsEveryDepthAlongItsNextPointers() =>
+        Assert.Equal(ExpectedReadout(), BuildHarness().LevelGroupedTraversal());
+
+    private static int?[] ExpectedReadout()
     {
-        var harness = BuildHarness();
+        var readout = new List<int?>();
 
-        Assert.Equal(harness.LevelGroupedTraversal(), harness.ManualQueueBfs());
+        for (var levelStart = 0; levelStart < SmallestNodeCount; levelStart = (AlgorithmConstants.BranchingFactor * levelStart) + 1)
+        {
+            for (var index = levelStart; index <= AlgorithmConstants.BranchingFactor * levelStart; index++)
+            {
+                readout.Add(index % ValueSpan);
+            }
+
+            readout.Add(null);
+        }
+
+        return [.. readout];
     }
-
-    [Fact]
-    public void ManualQueueBfs_PerfectTree_LinksEveryNode() =>
-        Assert.Equal(SmallestNodeCount, BuildHarness().ManualQueueBfs());
-
-    [Fact]
-    public void LevelGroupedTraversal_PerfectTree_LinksEveryNode() =>
-        Assert.Equal(SmallestNodeCount, BuildHarness().LevelGroupedTraversal());
 
     private static PopulatingNextRightPointersInEachNodeBenchmarks BuildHarness()
     {

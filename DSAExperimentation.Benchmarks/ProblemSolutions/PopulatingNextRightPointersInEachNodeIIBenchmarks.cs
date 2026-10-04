@@ -9,12 +9,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // that neither strategy needs perfect-tree-specific code to stay correct here. It is
 // built here rather than by BinaryTrees.Skewed, whose values count up to NodeCount:
 // these wrap within LC 117's [-100, 100], and since both strategies key their maps on
-// node identity, the values only have to stay in range.
-//
-// Each arm returns .Count of its next-pointer map, a proxy kept for the reason
-// PopulatingNextRightPointersInEachNodeBenchmarks gives: the strategies answer with a BCL
-// Dictionary and a repo HashMap, two representations no rendering compares without
-// walking the tree in the timed region.
+// node identity, the values only have to stay in range. Each arm returns LeetCode's
+// readout of the connected tree - here one value and a '#' (null) per level.
 public class PopulatingNextRightPointersInEachNodeIIBenchmarks
 {
     // The values 0..100, every one of them inside LC 117's [-100, 100].
@@ -43,10 +39,10 @@ public class PopulatingNextRightPointersInEachNodeIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ManualQueueBfs() =>
-        PopulatingNextRightPointersInEachNodeIISolution.ConnectByManualQueueBfs(_root).Count;
+    public int?[] ManualQueueBfs() =>
+        PopulatingNextRightPointersInEachNodeIISolution.ConnectByManualQueueBfs(_root);
 
     [Benchmark]
-    public int LevelGroupedTraversal() =>
-        PopulatingNextRightPointersInEachNodeIISolution.ConnectByLevelGroupedTraversal(_root).Count;
+    public int?[] LevelGroupedTraversal() =>
+        PopulatingNextRightPointersInEachNodeIISolution.ConnectByLevelGroupedTraversal(_root);
 }
