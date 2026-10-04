@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.MinimumNumberOfDaysToDisconnectIsland;
 
@@ -112,23 +113,13 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
     // primitive - the one step the two counting strategies do not share.
     private static void MarkIslandByTraversal(IslandScan scan, bool[,] visited, (int Row, int Col) start)
     {
+        var size = new GridSize(scan.Rows, scan.Cols);
+        var land = new LandExceptSkipped(scan);
+
         foreach (var (islandRow, islandCol) in
-                 DepthFirstSearch.Traverse(start, cell => LandNeighbors(scan, cell)))
+                 DepthFirstSearch.Traverse(start, cell => GridNeighbors.Of(cell, size, GridDirections.Orthogonal, land)))
         {
             visited[islandRow, islandCol] = true;
-        }
-    }
-
-    private static IEnumerable<(int Row, int Col)> LandNeighbors(IslandScan scan, (int Row, int Col) cell)
-    {
-        foreach (var (dRow, dCol) in Directions)
-        {
-            var neighbor = (Row: cell.Row + dRow, Col: cell.Col + dCol);
-
-            if (IsLandInside(scan, neighbor))
-            {
-                yield return neighbor;
-            }
         }
     }
 
@@ -184,10 +175,20 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
     private static bool IsLandInside(IslandScan scan, (int Row, int Col) cell)
         => cell.Row >= 0 && cell.Row < scan.Rows &&
            cell.Col >= 0 && cell.Col < scan.Cols &&
-           scan.Grid[cell.Row][cell.Col] == Land &&
-           cell != scan.Skip;
+           IsUnskippedLand(scan, cell.Row, cell.Col);
+
+    // Land the query has not pretended away - the one cell rule both walks share, whichever
+    // bounds check guards it.
+    private static bool IsUnskippedLand(IslandScan scan, int row, int col)
+        => scan.Grid[row][col] == Land && (row, col) != scan.Skip;
 
     // One connectivity query: the grid, its bounds, and the single cell this query
     // pretends has already been removed.
     private readonly record struct IslandScan(int[][] Grid, int Rows, int Cols, (int Row, int Col) Skip);
+
+    // The cells the traversal may step into: land other than the cell this query treats as water.
+    private readonly struct LandExceptSkipped(IslandScan scan) : IGridCellFilter
+    {
+        public bool CanEnter(int row, int col) => IsUnskippedLand(scan, row, col);
+    }
 }

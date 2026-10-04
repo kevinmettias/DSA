@@ -37,6 +37,15 @@ public sealed partial class GridNeighborsTests
             [(0, 0), (0, 2)],
             GridNeighbors.Of((0, 1), new GridSize(1, 3), GridDirections.Orthogonal, default(EveryCell)));
 
+    // The first enumeration reuses the scan itself; a second must start again from the first direction.
+    [Fact]
+    public void Of_EnumeratedTwice_YieldsTheSameNeighboursEachTime()
+    {
+        var neighbours = GridNeighbors.Of((0, 0), ThreeByThree, GridDirections.Orthogonal, default(EveryCell));
+
+        Assert.Equal(neighbours.ToList(), neighbours.ToList());
+    }
+
     // The guarantee that lets a filter index its grid unguarded: a corner probes four offsets,
     // and only the two that land on the board reach the filter.
     [Fact]

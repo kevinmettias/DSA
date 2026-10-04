@@ -223,7 +223,7 @@ internal static class MaximumNumberOfMovesToKillAllPawnsSolution
     public static KnightDistances BuildKnightDistances(int kx, int ky, int[][] positions)
     {
         var points = BuildPoints(kx, ky, positions);
-        var grid = new Grid(AllPassable());
+        var grid = new Grid(BoardSize, BoardSize);
         var distances = DistanceMatrixByReduceGraph(points, grid);
 
         return new KnightDistances(distances, positions.Length);
@@ -251,21 +251,6 @@ internal static class MaximumNumberOfMovesToKillAllPawnsSolution
         }
 
         return distances;
-    }
-
-    private static bool[,] AllPassable()
-    {
-        var passable = new bool[BoardSize, BoardSize];
-
-        for (var row = 0; row < BoardSize; row++)
-        {
-            for (var col = 0; col < BoardSize; col++)
-            {
-                passable[row, col] = true;
-            }
-        }
-
-        return passable;
     }
 
     // Index 0 = the knight's start; 1..positions.Length = the pawns, in their

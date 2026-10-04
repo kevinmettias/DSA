@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.ContainVirus;
 
@@ -57,18 +58,12 @@ internal static class ContainVirusSolution
 
     private sealed class RegionByDepthFirstSearchTraversal : IRegionCollector
     {
-        public List<(int Row, int Col)> Collect(int[][] grid, (int Row, int Col) start) =>
-            DepthFirstSearch.Traverse(start, cell => InfectedNeighbors(grid, cell));
-    }
-
-    private static IEnumerable<(int Row, int Col)> InfectedNeighbors(int[][] grid, (int Row, int Col) cell)
-    {
-        foreach (var neighbor in FourNeighbors(cell, grid))
+        public List<(int Row, int Col)> Collect(int[][] grid, (int Row, int Col) start)
         {
-            if (grid[neighbor.Row][neighbor.Col] == 1)
-            {
-                yield return neighbor;
-            }
+            var size = GridSize.Of(grid);
+            var infected = new InfectedCell(grid);
+
+            return DepthFirstSearch.Traverse(start, cell => GridNeighbors.Of(cell, size, GridDirections.Orthogonal, infected));
         }
     }
 
@@ -256,4 +251,10 @@ internal static class ContainVirusSolution
         List<(int Row, int Col)> Cells,
         HashSet<(int Row, int Col)> Threatened,
         int WallsNeeded);
+
+    // The cells a region's walk may step into: infected ones, neither walled off nor healthy.
+    private readonly struct InfectedCell(int[][] grid) : IGridCellFilter
+    {
+        public bool CanEnter(int row, int col) => grid[row][col] == 1;
+    }
 }

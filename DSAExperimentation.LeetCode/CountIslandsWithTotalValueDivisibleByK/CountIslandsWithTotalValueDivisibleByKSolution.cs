@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.CountIslandsWithTotalValueDivisibleByK;
 
@@ -80,6 +81,7 @@ internal static class CountIslandsWithTotalValueDivisibleByKSolution
     // function" - a land cell's 4 orthogonal land neighbors is exactly that
     // relation, so the whole per-island collection step is one call; this
     // strategy only supplies the successor function and sums the returned cells.
+    // The successor is GridNeighbors.Of, with a filter that reads each cell's value.
     // Grid/GridTopology (DataStructures.Graph.Grids) isn't the fit here instead:
     // its nodes carry only passability, not a cell value, and IGraphTopology's
     // GetChildren is static-abstract so it cannot close over the runtime grid to
@@ -115,28 +117,18 @@ internal static class CountIslandsWithTotalValueDivisibleByKSolution
     private static bool IsDivisibleIsland(
         int[][] grid, HashSet<(int Row, int Col)> visited, (int Row, int Col) start, int divisor)
     {
-        var island = DepthFirstSearch.Traverse<(int Row, int Col)>(start, cell => LandNeighbors(grid, cell));
+        var size = GridSize.Of(grid);
+        var land = new PositiveCell(grid);
+        var island = DepthFirstSearch.Traverse<(int Row, int Col)>(
+            start, cell => GridNeighbors.Of(cell, size, GridDirections.Orthogonal, land));
         visited.UnionWith(island);
 
         return island.Sum(cell => (long)grid[cell.Row][cell.Col]) % divisor == 0;
     }
 
-    private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] grid, (int Row, int Col) cell)
+    // A cell of the island worth walking to: positive land rather than a zero or negative gap.
+    private readonly struct PositiveCell(int[][] grid) : IGridCellFilter
     {
-        foreach (var (deltaRow, deltaCol) in Orthogonal)
-        {
-            var row = cell.Row + deltaRow;
-            var col = cell.Col + deltaCol;
-
-            if (IsLandOnBoard(grid, row, col))
-            {
-                yield return (row, col);
-            }
-        }
+        public bool CanEnter(int row, int col) => grid[row][col] > 0;
     }
-
-    // A cell of the island worth walking to: on the grid, and positive land rather
-    // than a zero or negative gap.
-    private static bool IsLandOnBoard(int[][] grid, int row, int col)
-        => row >= 0 && row < grid.Length && col >= 0 && col < grid[row].Length && grid[row][col] > 0;
 }

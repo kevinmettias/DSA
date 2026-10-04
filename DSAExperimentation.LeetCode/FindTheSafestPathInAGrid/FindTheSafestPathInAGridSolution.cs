@@ -191,7 +191,7 @@ internal static class FindTheSafestPathInAGridSolution
     {
         var safeness = ComputeSafenessByRepoQueue(grid);
         var n = grid.Length;
-        var passableGrid = new Grid(AllPassable(n));
+        var passableGrid = new Grid(n, n);
 
         var start = new GridNode(0, 0, passableGrid);
         var bestBottleneck = new Dictionary<GridNode, int> { [start] = safeness[0][0] };
@@ -199,7 +199,7 @@ internal static class FindTheSafestPathInAGridSolution
         var frontier = new Heap<(GridNode Node, int Priority), ByPriorityOrder<GridNode, int>>();
         frontier.Push((start, -safeness[0][0]));
 
-        // Unreachable in practice: the grid is fully connected (AllPassable), so
+        // Unreachable in practice: every cell of the grid is open, so
         // (n-1,n-1) is always eventually popped.
         return DrainFrontierByBottleneck(frontier, settled, safeness, bestBottleneck);
     }
@@ -242,21 +242,6 @@ internal static class FindTheSafestPathInAGridSolution
                 frontier.Enqueue((nextRow, nextCol));
             }
         }
-    }
-
-    private static bool[,] AllPassable(int gridSize)
-    {
-        var passable = new bool[gridSize, gridSize];
-
-        for (var r = 0; r < gridSize; r++)
-        {
-            for (var c = 0; c < gridSize; c++)
-            {
-                passable[r, c] = true;
-            }
-        }
-
-        return passable;
     }
 
     // Pop the best-bottleneck node first, skipping any already settled, until the

@@ -211,17 +211,10 @@ internal static class TrappingRainWaterIISolution
     // board - the board's own extent is read here rather than threaded in from above.
     private static bool IsNeighborBlocked(FloodState state, (int Row, int Col) neighbor)
     {
-        var rows = state.HeightMap.Length;
-        var cols = state.HeightMap[0].Length;
+        var board = GridSize.Of(state.HeightMap);
 
-        return IsOffBoard(neighbor.Row, neighbor.Col, rows, cols)
-            || state.Visited[neighbor.Row, neighbor.Col];
+        return !board.HasCell(neighbor.Row, neighbor.Col) || state.Visited[neighbor.Row, neighbor.Col];
     }
-
-    // Both coordinates outside the map is one idea, and the flood asks it of every
-    // neighbor before anything else.
-    private static bool IsOffBoard(int row, int col, int rows, int cols)
-        => row < 0 || row >= rows || col < 0 || col >= cols;
 
     private static bool IsBoundary(int rowIndex, int columnIndex, int rows, int cols)
         => rowIndex == 0 || rowIndex == rows - 1 || columnIndex == 0 || columnIndex == cols - 1;

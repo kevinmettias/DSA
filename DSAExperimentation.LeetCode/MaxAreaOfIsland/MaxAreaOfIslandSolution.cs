@@ -69,7 +69,10 @@ internal static class MaxAreaOfIslandSolution
             return 0;
         }
 
-        var island = DepthFirstSearch.Traverse((rowIndex, columnIndex), cell => LandNeighbors(working, cell));
+        var size = GridSize.Of(working);
+        var land = new LandCell(working);
+        var island = DepthFirstSearch.Traverse(
+            (rowIndex, columnIndex), cell => GridNeighbors.Of(cell, size, GridDirections.Orthogonal, land));
 
         foreach (var (row, col) in island)
         {
@@ -77,32 +80,6 @@ internal static class MaxAreaOfIslandSolution
         }
 
         return island.Count;
-    }
-
-    private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] grid, (int Row, int Col) cell)
-    {
-        var rows = grid.Length;
-        var cols = grid[0].Length;
-
-        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
-        {
-            var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
-
-            if (IsLand(next, rows, cols, grid))
-            {
-                yield return next;
-            }
-        }
-    }
-
-    private static bool IsLand((int Row, int Col) next, int rows, int cols, int[][] grid)
-    {
-        if (!IsOnBoard(next, rows, cols))
-        {
-            return false;
-        }
-
-        return grid[next.Row][next.Col] == 1;
     }
 
     // Whether the cell lies on the board at all.
@@ -140,5 +117,11 @@ internal static class MaxAreaOfIslandSolution
         }
 
         return clone;
+    }
+
+    // The cells the island's walk may step into: land not yet zeroed.
+    private readonly struct LandCell(int[][] grid) : IGridCellFilter
+    {
+        public bool CanEnter(int row, int col) => grid[row][col] == 1;
     }
 }

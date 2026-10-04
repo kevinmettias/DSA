@@ -119,7 +119,8 @@ internal static class MaximumNumberOfPointsFromGridQueriesSolution
         var rows = grid.Length;
         var cols = grid[0].Length;
 
-        var start = new GridNode(0, 0, new Grid(AllPassable(rows, cols)));
+        var openGrid = new Grid(rows, cols);
+        var start = new GridNode(0, 0, openGrid);
         var walk = new HeapWalk(new CellFrontier(), new HashSet<GridNode> { start }, grid);
         walk.Frontier.Push((start, grid[0][0]));
 
@@ -137,21 +138,6 @@ internal static class MaximumNumberOfPointsFromGridQueriesSolution
         }
 
         return answers;
-    }
-
-    private static bool[,] AllPassable(int rows, int cols)
-    {
-        var passable = new bool[rows, cols];
-
-        for (var row = 0; row < rows; row++)
-        {
-            for (var col = 0; col < cols; col++)
-            {
-                passable[row, col] = true;
-            }
-        }
-
-        return passable;
     }
 
     private static int AdvanceFrontier(HeapWalk walk, int query, int points)

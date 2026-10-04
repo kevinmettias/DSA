@@ -2329,9 +2329,9 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.LeetCode/AvailableCapturesForRook/AvailableCapturesForRookSolution.cs",
+      "path": "DSAExperimentation.LeetCode/CatAndMouseII/CatAndMouseIISolution.cs",
       "anchor": "`Directions = ",
-      "reason": "`Directions` is each declaring file's own value rather than one shared fact: the same name is also declared as `[(-1`, `[(0`, `[(1` elsewhere in the corpus, so this group agrees on a value its 16 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
+      "reason": "`Directions` is each declaring file's own value rather than one shared fact: the same name is also declared as `[(-1`, `[(0`, `[(1` elsewhere in the corpus, so this group agrees on a value its 13 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },

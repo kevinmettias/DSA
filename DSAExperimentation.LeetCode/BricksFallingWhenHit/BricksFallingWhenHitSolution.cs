@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.BricksFallingWhenHit;
 
@@ -120,7 +121,8 @@ internal static class BricksFallingWhenHitSolution
 
         var present = BuildPresentGridAfterHits(grid, hits);
         var (components, size) = InitializeComponents(present, rows, cols, roof);
-        var gridState = new GridState(components, size, present, rows, cols, roof);
+        var board = new GridSize(rows, cols);
+        var gridState = new GridState(components, size, present, board, roof);
 
         ConnectAllStandingBricks(gridState);
 
@@ -174,9 +176,9 @@ internal static class BricksFallingWhenHitSolution
 
     private static void ConnectAllStandingBricks(GridState state)
     {
-        for (var r = 0; r < state.Rows; r++)
+        for (var r = 0; r < state.Board.Rows; r++)
         {
-            for (var c = 0; c < state.Cols; c++)
+            for (var c = 0; c < state.Board.Cols; c++)
             {
                 if (state.Present[r, c])
                 {
@@ -206,7 +208,7 @@ internal static class BricksFallingWhenHitSolution
 
         var beforeSize = state.Size[state.Components.Find(state.Roof)];
         state.Present[row, col] = true;
-        state.Size[(row * state.Cols) + col] = 1;
+        state.Size[(row * state.Board.Cols) + col] = 1;
         ConnectToStandingNeighbors(state, row, col);
         var afterSize = state.Size[state.Components.Find(state.Roof)];
 
@@ -228,28 +230,28 @@ internal static class BricksFallingWhenHitSolution
 
     private static void ConnectToStandingNeighbors(GridState state, int row, int col)
     {
-        var cellId = (row * state.Cols) + col;
+        var cellId = (row * state.Board.Cols) + col;
 
         if (row == 0)
         {
             Union(state.Components, state.Size, cellId, state.Roof);
         }
 
-        (int Row, int Col)[] neighbors = [(row - 1, col), (row + 1, col), (row, col - 1), (row, col + 1)];
-
-        foreach (var (neighborRow, neighborCol) in neighbors)
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
         {
+            var neighborRow = row + dRow;
+            var neighborCol = col + dCol;
+
             if (IsStandingBrick(state, neighborRow, neighborCol))
             {
-                Union(state.Components, state.Size, cellId, (neighborRow * state.Cols) + neighborCol);
+                Union(state.Components, state.Size, cellId, (neighborRow * state.Board.Cols) + neighborCol);
             }
         }
     }
 
     // A neighbour on the board that still has its brick.
     private static bool IsStandingBrick(GridState state, int row, int col)
-        => row >= 0 && row < state.Rows && col >= 0 && col < state.Cols
-            && state.Present[row, col];
+        => state.Board.HasCell(row, col) && state.Present[row, col];
 
     private static void Union(DisjointSet components, int[] size, int first, int second)
     {
@@ -269,7 +271,7 @@ internal static class BricksFallingWhenHitSolution
     private readonly record struct RoofGrid(bool[,] Standing, bool[,] Visited, int Rows, int Cols);
 
     private readonly record struct GridState(
-        DisjointSet Components, int[] Size, bool[,] Present, int Rows, int Cols, int Roof);
+        DisjointSet Components, int[] Size, bool[,] Present, GridSize Board, int Roof);
 
     private readonly record struct HitProcessingContext(int[][] Hits, int[][] Grid, int[] FallenReversed);
 }

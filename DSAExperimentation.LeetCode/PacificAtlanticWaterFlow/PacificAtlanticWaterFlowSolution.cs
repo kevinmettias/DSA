@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.DataStructures.Set;
 
 namespace DSAExperimentation.LeetCode.PacificAtlanticWaterFlow;
@@ -85,33 +86,20 @@ internal static class PacificAtlanticWaterFlowSolution
             return;
         }
 
-        foreach (var node in DepthFirstSearch.Traverse(start, cell => Neighbors(cell, heights)))
+        var size = GridSize.Of(heights);
+
+        foreach (var node in DepthFirstSearch.Traverse(start, cell => UphillNeighbors(cell, size, heights)))
         {
             reached.TryAdd(node);
         }
     }
 
-    private static IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) cell, int[][] heights)
+    // Walking back from the ocean, water could have flowed down from a neighbour no lower than this cell.
+    private static IEnumerable<(int Row, int Col)> UphillNeighbors((int Row, int Col) cell, GridSize size, int[][] heights)
     {
-        var rows = heights.Length;
-        var cols = heights[0].Length;
+        var noLower = new NoLowerThan(heights, heights[cell.Row][cell.Col]);
 
-        foreach (var (dRow, dCol) in Directions)
-        {
-            var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
-
-            if (!IsInside(next.Row, next.Col, rows, cols))
-            {
-                continue;
-            }
-
-            if (heights[next.Row][next.Col] < heights[cell.Row][cell.Col])
-            {
-                continue;
-            }
-
-            yield return next;
-        }
+        return GridNeighbors.Of(cell, size, GridDirections.Orthogonal, noLower);
     }
 
     private static List<(int Row, int Col)> CellsReachingBothOceans(
@@ -221,4 +209,10 @@ internal static class PacificAtlanticWaterFlowSolution
     // one value - which is also what keeps HasPathToBorder and its two helpers within the
     // parameter-count limit.
     private readonly record struct DownhillSearch(int[][] Heights, bool[,] Visited, Ocean Ocean);
+
+    // The cells a flood may climb into from a cell of height `floor`.
+    private readonly struct NoLowerThan(int[][] heights, int floor) : IGridCellFilter
+    {
+        public bool CanEnter(int row, int col) => heights[row][col] >= floor;
+    }
 }

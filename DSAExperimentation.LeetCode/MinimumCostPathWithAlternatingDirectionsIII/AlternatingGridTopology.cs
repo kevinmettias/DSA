@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.MinimumCostPathWithAlternatingDirectionsIII;
 
@@ -17,8 +18,7 @@ internal readonly struct AlternatingGridTopology
     public static ListEdges<AlternatingGridNode, long> GetEdges(AlternatingGridNode node)
     {
         var penalty = node.Penalty;
-        var rows = penalty.Length;
-        var cols = penalty[0].Length;
+        var bounds = GridSize.Of(penalty);
         var stayPenalty = penalty[node.Row][node.Col];
         var flipped = !node.NextActionIsOdd;
 
@@ -29,7 +29,7 @@ internal readonly struct AlternatingGridTopology
 
         foreach (var (deltaRow, deltaCol, matchesOddAction) in AlternatingGridMoveTable.Moves)
         {
-            AddMoveEdge(edges, node, (deltaRow, deltaCol, matchesOddAction), (rows, cols));
+            AddMoveEdge(edges, node, (deltaRow, deltaCol, matchesOddAction), bounds);
         }
 
         return new ListEdges<AlternatingGridNode, long>(edges);
@@ -43,12 +43,12 @@ internal readonly struct AlternatingGridTopology
         List<(long Weight, AlternatingGridNode Target)> edges,
         AlternatingGridNode node,
         (int DeltaRow, int DeltaCol, bool MatchesOddAction) move,
-        (int Rows, int Cols) bounds)
+        GridSize bounds)
     {
         var row = node.Row + move.DeltaRow;
         var col = node.Col + move.DeltaCol;
 
-        if (IsOutsideGrid(row, col, bounds.Rows, bounds.Cols))
+        if (!bounds.HasCell(row, col))
         {
             return;
         }
@@ -60,9 +60,4 @@ internal readonly struct AlternatingGridTopology
 
         edges.Add((weight, target));
     }
-
-    // A move that leaves the penalty grid on any of its four edges has no target
-    // cell to move to.
-    private static bool IsOutsideGrid(int row, int col, int rows, int cols)
-        => row < 0 || row >= rows || col < 0 || col >= cols;
 }

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.Set;
 
@@ -14,8 +15,6 @@ namespace DSAExperimentation.LeetCode.MakingALargeIsland;
 internal static class MakingALargeIslandSolution
 {
     private const int FirstIslandId = 2;
-
-    private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
     // The textbook answer: flip each water cell in turn and run a fresh recursive
     // flood fill from scratch, BCL only. Deliberately written without this repo's
@@ -75,7 +74,7 @@ internal static class MakingALargeIslandSolution
     public static int LargestIslandByLabeledFloodFill(int[][] grid)
     {
         var working = CloneGrid(grid);
-        var context = new IslandGrid(working, new HashMap<int, int>(), working.Length, working[0].Length);
+        var context = new IslandGrid(working, new HashMap<int, int>(), GridSize.Of(working));
 
         LabelAllIslands(context);
 
@@ -86,9 +85,9 @@ internal static class MakingALargeIslandSolution
     {
         var nextId = FirstIslandId;
 
-        for (var r = 0; r < context.Rows; r++)
+        for (var r = 0; r < context.Size.Rows; r++)
         {
-            for (var c = 0; c < context.Cols; c++)
+            for (var c = 0; c < context.Size.Cols; c++)
             {
                 nextId = LabelIslandIfLand(context, (r, c), nextId);
             }
@@ -102,7 +101,8 @@ internal static class MakingALargeIslandSolution
             return nextId;
         }
 
-        var island = DepthFirstSearch.Traverse(cell, p => LandNeighbors(context, p));
+        var land = new UnlabeledLand(context.Grid);
+        var island = DepthFirstSearch.Traverse(cell, p => GridNeighbors.Of(p, context.Size, GridDirections.Orthogonal, land));
         context.AreaById.Set(nextId, island.Count);
 
         foreach (var (row, col) in island)
@@ -113,44 +113,13 @@ internal static class MakingALargeIslandSolution
         return nextId + 1;
     }
 
-    private static IEnumerable<(int Row, int Col)> LandNeighbors(IslandGrid context, (int Row, int Col) cell)
-    {
-        foreach (var (dRow, dCol) in Directions)
-        {
-            if (TryGetLandNeighbor(context, cell, (dRow, dCol), out var neighbor))
-            {
-                yield return neighbor;
-            }
-        }
-    }
-
-    private static bool TryGetLandNeighbor(IslandGrid context, (int Row, int Col) cell, (int DRow, int DCol) direction, out (int Row, int Col) neighbor)
-    {
-        var (nextRow, nextCol) = CellInDirection(cell, direction);
-
-        if (!IsInside(nextRow, nextCol, context.Rows, context.Cols) || context.Grid[nextRow][nextCol] != 1)
-        {
-            neighbor = default;
-            return false;
-        }
-
-        neighbor = (nextRow, nextCol);
-        return true;
-    }
-
-    // The square one step from a cell along one of the four directions; whether that
-    // square is on the board - or is still land - is the caller's question, not this
-    // one's, so this only moves.
-    private static (int Row, int Col) CellInDirection((int Row, int Col) cell, (int DRow, int DCol) direction)
-        => (cell.Row + direction.DRow, cell.Col + direction.DCol);
-
     private static int MaxMergedWaterArea(IslandGrid context, int currentBest)
     {
         var best = currentBest;
 
-        for (var r = 0; r < context.Rows; r++)
+        for (var r = 0; r < context.Size.Rows; r++)
         {
-            for (var c = 0; c < context.Cols; c++)
+            for (var c = 0; c < context.Size.Cols; c++)
             {
                 var merged = MergedAreaForWaterCell(context, (r, c));
                 best = Math.Max(best, merged);
@@ -170,7 +139,7 @@ internal static class MakingALargeIslandSolution
         var seenIslandIds = new Set<int>();
         var merged = 1;
 
-        foreach (var (dRow, dCol) in Directions)
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
         {
             merged += NeighborIslandArea(context, cell, (dRow, dCol), seenIslandIds);
         }
@@ -183,7 +152,7 @@ internal static class MakingALargeIslandSolution
         var nextRow = cell.Row + direction.DRow;
         var nextCol = cell.Col + direction.DCol;
 
-        if (!IsInside(nextRow, nextCol, context.Rows, context.Cols))
+        if (!context.Size.HasCell(nextRow, nextCol))
         {
             return 0;
         }
@@ -251,5 +220,11 @@ internal static class MakingALargeIslandSolution
 
     private readonly record struct FloodFillGrid(int[][] Grid, bool[,] Visited, int Rows, int Cols);
 
-    private readonly record struct IslandGrid(int[][] Grid, HashMap<int, int> AreaById, int Rows, int Cols);
+    private readonly record struct IslandGrid(int[][] Grid, HashMap<int, int> AreaById, GridSize Size);
+
+    // The cells a labelling walk may step into: land no island id has been written over yet.
+    private readonly struct UnlabeledLand(int[][] grid) : IGridCellFilter
+    {
+        public bool CanEnter(int row, int col) => grid[row][col] == 1;
+    }
 }

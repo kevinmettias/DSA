@@ -1,15 +1,18 @@
+using DSAExperimentation.DataStructures.Graph.Grids;
+
 namespace DSAExperimentation.LeetCode.AvailableCapturesForRook;
 
 // LeetCode 999. Available Captures for Rook: how many pawns the single white rook
 // can capture in one move - walking outward until the edge, a bishop ('B', which
 // blocks), or a pawn ('p', which is captured and stops the walk).
 //
-// No repo Representation/Operations primitive is composed here, and that is a
-// judgement rather than an omission: Grid/GridNode/GridChildren model unordered
-// single-step orthogonal adjacency for graph walks, whereas this problem is a
-// directional ray cast that stops at the first non-empty square, so routing it
-// through Grid/** would not be a genuine fit - the same shape TransposeMatrix and
-// SpiralMatrix already establish for fixed-shape grid index arithmetic.
+// The ray walk takes its four directions from GridDirections.Orthogonal and its edge
+// from GridSize, and nothing heavier, which is a judgement rather than an omission:
+// Grid/GridNode/GridChildren model unordered single-step orthogonal adjacency for
+// graph walks, whereas this problem is a directional ray cast that stops at the
+// first non-empty square, so routing it through a graph walk would not be a genuine
+// fit - the same shape TransposeMatrix and SpiralMatrix already establish for
+// fixed-shape grid index arithmetic.
 //
 // The two strategies are therefore both plain board walks, and the whole point of
 // the pair is the cost difference: scan every square looking for a pawn that
@@ -21,8 +24,6 @@ internal static class AvailableCapturesForRookSolution
     private const char Empty = '.';
     private const char Pawn = 'p';
     private const char Rook = 'R';
-
-    private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
     // The textbook baseline: look at every square on the board, and for each pawn
     // that happens to share a line with the rook, confirm nothing stands between
@@ -62,20 +63,21 @@ internal static class AvailableCapturesForRookSolution
 
     public static int CountRookCapturesByRayWalk(char[][] board, RookSquare rook)
     {
+        var size = GridSize.Of(board);
         var captures = 0;
 
-        foreach (var (dRow, dCol) in Directions)
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
         {
             var row = rook.Row + dRow;
             var col = rook.Col + dCol;
 
-            while (IsInBounds(board, row, col) && board[row][col] == Empty)
+            while (size.HasCell(row, col) && board[row][col] == Empty)
             {
                 row += dRow;
                 col += dCol;
             }
 
-            if (IsInBounds(board, row, col) && board[row][col] == Pawn)
+            if (size.HasCell(row, col) && board[row][col] == Pawn)
             {
                 captures++;
             }
@@ -106,9 +108,6 @@ internal static class AvailableCapturesForRookSolution
 
         return true;
     }
-
-    private static bool IsInBounds(char[][] board, int row, int col) =>
-        row >= 0 && row < board.Length && col >= 0 && col < board[0].Length;
 
     // Only a pawn sharing the rook's row or column can ever be captured, so the full
     // board scan drops every other square before it pays for the path check.

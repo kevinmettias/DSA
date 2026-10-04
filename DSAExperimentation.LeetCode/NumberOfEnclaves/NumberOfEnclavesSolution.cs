@@ -59,38 +59,15 @@ internal static class NumberOfEnclavesSolution
             return;
         }
 
-        var component = DepthFirstSearch.Traverse((startRow, startCol), cell => LandNeighbors(grid, cell));
+        var size = GridSize.Of(grid);
+        var land = new LandCell(grid);
+        var component = DepthFirstSearch.Traverse(
+            (startRow, startCol), cell => GridNeighbors.Of(cell, size, GridDirections.Orthogonal, land));
 
         foreach (var (row, col) in component)
         {
             grid[row][col] = Water;
         }
-    }
-
-    private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] grid, (int Row, int Col) cell)
-    {
-        var rows = grid.Length;
-        var cols = grid[0].Length;
-
-        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
-        {
-            var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
-
-            if (IsLand(next, rows, cols, grid))
-            {
-                yield return next;
-            }
-        }
-    }
-
-    private static bool IsLand((int Row, int Col) next, int rows, int cols, int[][] grid)
-    {
-        if (IsOutsideGrid(next.Row, next.Col, rows, cols))
-        {
-            return false;
-        }
-
-        return grid[next.Row][next.Col] == Land;
     }
 
     // Off the grid on any of its four edges - there is no land to step onto.
@@ -158,5 +135,11 @@ internal static class NumberOfEnclavesSolution
         }
 
         return clone;
+    }
+
+    // The cells a border component's walk may step into: land not yet sunk.
+    private readonly struct LandCell(int[][] grid) : IGridCellFilter
+    {
+        public bool CanEnter(int row, int col) => grid[row][col] == Land;
     }
 }

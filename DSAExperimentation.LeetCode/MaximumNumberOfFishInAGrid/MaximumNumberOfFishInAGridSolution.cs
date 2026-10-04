@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.MaximumNumberOfFishInAGrid;
 
@@ -15,8 +16,6 @@ namespace DSAExperimentation.LeetCode.MaximumNumberOfFishInAGrid;
 // fixture reused across iterations) is never left half-zeroed.
 internal static class MaximumNumberOfFishInAGridSolution
 {
-    private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
-
     // The textbook answer: a hand-specialized recursive flood fill that adds each
     // cell's fish as it sinks it. Deliberately written without this repo's
     // traversal primitive - it is the arm the composed solution below has to
@@ -73,7 +72,10 @@ internal static class MaximumNumberOfFishInAGridSolution
 
     private static int SinkComponentFishTotal(int[][] grid, int row, int col)
     {
-        var component = DepthFirstSearch.Traverse((Row: row, Col: col), cell => WaterNeighbors(grid, cell));
+        var size = GridSize.Of(grid);
+        var water = new WaterCell(grid);
+        var component = DepthFirstSearch.Traverse(
+            (Row: row, Col: col), cell => GridNeighbors.Of(cell, size, GridDirections.Orthogonal, water));
         var total = component.Sum(cell => grid[cell.Row][cell.Col]);
 
         foreach (var (componentRow, componentCol) in component)
@@ -82,29 +84,6 @@ internal static class MaximumNumberOfFishInAGridSolution
         }
 
         return total;
-    }
-
-    private static IEnumerable<(int Row, int Col)> WaterNeighbors(int[][] grid, (int Row, int Col) cell)
-    {
-        var rows = grid.Length;
-        var cols = grid[0].Length;
-
-        foreach (var (dRow, dCol) in Directions)
-        {
-            var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
-
-            if (IsWater(next, rows, cols, grid))
-            {
-                yield return next;
-            }
-        }
-    }
-
-    private static bool IsWater((int Row, int Col) next, int rows, int cols, int[][] grid)
-    {
-        var outsideGrid = next.Row < 0 || next.Row >= rows || next.Col < 0 || next.Col >= cols;
-
-        return !outsideGrid && grid[next.Row][next.Col] > 0;
     }
 
     // The naive arm's recursive fill: sink the cell, bank its fish, recurse into
@@ -143,4 +122,10 @@ internal static class MaximumNumberOfFishInAGridSolution
     // The recursive fill's four bounds checks travel together on every frame, so
     // they ride as one parameter rather than two.
     private readonly record struct GridBounds(int Rows, int Cols);
+
+    // The cells a component's walk may step into: water, which holds at least one fish.
+    private readonly struct WaterCell(int[][] grid) : IGridCellFilter
+    {
+        public bool CanEnter(int row, int col) => grid[row][col] > 0;
+    }
 }

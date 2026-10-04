@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.NumberOfClosedIslands;
 
@@ -17,8 +18,6 @@ internal static class NumberOfClosedIslandsSolution
     private const int Water = 0;
 
     private const int Land = 1;
-
-    private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
     // The textbook answer: a hand-specialized recursive flood fill, BCL only,
     // threading "this component reached the edge" out of the recursion by ref.
@@ -86,7 +85,9 @@ internal static class NumberOfClosedIslandsSolution
             return false;
         }
 
-        var island = DepthFirstSearch.Traverse((row, col), cell => WaterNeighbors(grid, cell));
+        var size = new GridSize(grid.Rows, grid.Cols);
+        var water = new WaterCell(grid.Cells);
+        var island = DepthFirstSearch.Traverse((row, col), cell => GridNeighbors.Of(cell, size, GridDirections.Orthogonal, water));
         var closed = true;
 
         foreach (var (islandRow, islandCol) in island)
@@ -100,26 +101,6 @@ internal static class NumberOfClosedIslandsSolution
         }
 
         return closed;
-    }
-
-    private static IEnumerable<(int Row, int Col)> WaterNeighbors(LandGrid grid, (int Row, int Col) cell)
-    {
-        foreach (var (dRow, dCol) in Directions)
-        {
-            var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
-
-            if (!IsInside(grid, next.Row, next.Col))
-            {
-                continue;
-            }
-
-            if (grid.Cells[next.Row][next.Col] != Water)
-            {
-                continue;
-            }
-
-            yield return next;
-        }
     }
 
     private static void Flood(LandGrid grid, int row, int col, ref BorderContact contact)
@@ -142,7 +123,7 @@ internal static class NumberOfClosedIslandsSolution
         Flood(grid, row, col - 1, ref contact);
     }
 
-    // Both coordinates within the board is one idea, and two scans here ask it.
+    // Both coordinates within the board: the recursive flood's guard before it reads a cell.
     private static bool IsInside(LandGrid grid, int row, int col) =>
         row >= 0 && row < grid.Rows && col >= 0 && col < grid.Cols;
 
@@ -172,5 +153,11 @@ internal static class NumberOfClosedIslandsSolution
     {
         Enclosed,
         TouchesBorder,
+    }
+
+    // The cells a component's walk may step into: water not yet filled in.
+    private readonly struct WaterCell(int[][] cells) : IGridCellFilter
+    {
+        public bool CanEnter(int row, int col) => cells[row][col] == Water;
     }
 }

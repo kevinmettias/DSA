@@ -62,7 +62,8 @@ internal static class CountSubIslandsSolution
     // "collect every node reachable from a root through an arbitrary successor
     // function", and "this land cell's land neighbours" is exactly that relation,
     // so one call collects a whole island and the grid1 coverage test becomes a
-    // pass over the returned cells. Grid/GridTopology (DataStructures.Graph.Grids)
+    // pass over the returned cells. The successor is GridNeighbors.Of, with a filter
+    // that reads the working copy. Grid/GridTopology (DataStructures.Graph.Grids)
     // is not the fit: IGraphTopology.GetChildren is static-abstract, so it cannot
     // close over the runtime pair of grids one walk has to consult - the
     // "arbitrary successor relation" case DepthFirstSearch's own doc comment
@@ -95,28 +96,16 @@ internal static class CountSubIslandsSolution
             return false;
         }
 
+        var size = GridSize.Of(remaining);
+        var land = new LandCell(remaining);
         var island = DepthFirstSearch.Traverse<(int Row, int Col)>(
-            (row, col), cell => LandNeighbors(remaining, cell));
+            (row, col), cell => GridNeighbors.Of(cell, size, GridDirections.Orthogonal, land));
 
         return IsIslandCovered(grid1, remaining, island);
     }
 
-    private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] remaining, (int Row, int Col) cell)
-    {
-        foreach (var (deltaRow, deltaCol) in GridDirections.Orthogonal)
-        {
-            var row = cell.Row + deltaRow;
-            var col = cell.Col + deltaCol;
-
-            if (IsLand(remaining, row, col))
-            {
-                yield return (row, col);
-            }
-        }
-    }
-
     // Runs after the traversal, never during it: the walk reads `remaining` lazily
-    // through LandNeighbors, so zeroing cells mid-walk would truncate the island.
+    // through its LandCell filter, so zeroing cells mid-walk would truncate the island.
     // Clears the island out of `remaining` as it checks each cell against grid1.
     private static bool IsIslandCovered(
         int[][] grid1, int[][] remaining, List<(int Row, int Col)> island)
@@ -183,5 +172,11 @@ internal static class CountSubIslandsSolution
         }
 
         return clone;
+    }
+
+    // The cells the island's walk may step into: grid2 land not yet cleared from the working copy.
+    private readonly struct LandCell(int[][] remaining) : IGridCellFilter
+    {
+        public bool CanEnter(int row, int col) => remaining[row][col] == Land;
     }
 }

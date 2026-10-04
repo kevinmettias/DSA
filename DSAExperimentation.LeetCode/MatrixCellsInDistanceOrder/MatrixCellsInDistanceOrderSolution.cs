@@ -66,20 +66,7 @@ internal static class MatrixCellsInDistanceOrderSolution
 
     // Every cell of a LC 1030 matrix is reachable, so the grid the BFS walks is
     // uniformly passable - the geometry alone supplies the adjacency.
-    public static Grid BuildOpenGrid(int rows, int cols)
-    {
-        var passable = new bool[rows, cols];
-
-        for (var row = 0; row < rows; row++)
-        {
-            for (var col = 0; col < cols; col++)
-            {
-                passable[row, col] = true;
-            }
-        }
-
-        return new Grid(passable);
-    }
+    public static Grid BuildOpenGrid(int rows, int cols) => new(rows, cols);
 
     private static int ByDistance((int Row, int Col, int Distance) left, (int Row, int Col, int Distance) right) =>
         left.Distance.CompareTo(right.Distance);
