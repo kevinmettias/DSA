@@ -25,8 +25,10 @@ public sealed partial class MinimumAbsoluteDifferenceInBSTSolutionTests
     public void GetMinimumDifferenceByRecursiveScan_LeetCodeExamples_ReturnsSmallestAdjacentGap(
         int?[] values, int expected)
     {
-        var minimumDifference =
-            MinimumAbsoluteDifferenceInBSTSolution.GetMinimumDifferenceByRecursiveScan(LeetCodeWireFormat.ToBinaryTree(values));
+        var root = LeetCodeWireFormat.ToBinaryTree(values);
+        Assert.NotNull(root);
+
+        var minimumDifference = MinimumAbsoluteDifferenceInBSTSolution.GetMinimumDifferenceByRecursiveScan(root);
 
         Assert.Equal(expected, minimumDifference);
     }
@@ -36,8 +38,10 @@ public sealed partial class MinimumAbsoluteDifferenceInBSTSolutionTests
     public void GetMinimumDifferenceByInOrderHooks_LeetCodeExamples_ReturnsSmallestAdjacentGap(
         int?[] values, int expected)
     {
-        var minimumDifference =
-            MinimumAbsoluteDifferenceInBSTSolution.GetMinimumDifferenceByInOrderHooks(LeetCodeWireFormat.ToBinaryTree(values));
+        var root = LeetCodeWireFormat.ToBinaryTree(values);
+        Assert.NotNull(root);
+
+        var minimumDifference = MinimumAbsoluteDifferenceInBSTSolution.GetMinimumDifferenceByInOrderHooks(root);
 
         Assert.Equal(expected, minimumDifference);
     }

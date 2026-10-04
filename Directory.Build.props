@@ -12,4 +12,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <!-- A warning is a finding the build has already made, so it fails the build rather
+       than scrolling past: Nullable=enable above only means something while CS86xx
+       stops a build, and the xUnit analyzers only while they stop a test project.
+       NuGet's vulnerability audit (NU1901-NU1904) stays a warning, because a new
+       advisory against a test-only package is published about the world, not about
+       the commit being built, and would turn an unchanged tree red. -->
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1902;NU1903;NU1904</WarningsNotAsErrors>
+  </PropertyGroup>
+
 </Project>

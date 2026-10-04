@@ -1,0 +1,42 @@
+# Build every project and run every test project on each push and pull request. The
+# architecture rules are tests, so this is also where they are enforced; warnings fail
+# the build through Directory.Build.props, and the SDK is the one global.json pins.
+#
+# Nomos is not run here yet. The BenchmarkDotNet entry-point exemption it needs is still
+# uncommitted in nomos (IMPROVEMENT-WORKLIST.md, P6), so committed nomos would judge this
+# tree differently from the binary the gates were last run with.
+name: CI
+
+on:
+  push:
+    branches: [dsa-workspace-project]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore DSA.slnx
+
+      - name: Build
+        run: dotnet build DSA.slnx --no-restore
+
+      - name: Test
+        run: dotnet test DSA.slnx --no-build

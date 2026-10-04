@@ -86,7 +86,8 @@ the Go prototype that became [Nomos](https://github.com/kevinmettias/nomos).
 
 ## Try it
 
-Requires the .NET 10 SDK.
+Requires the .NET 10 SDK, at the feature band `global.json` pins. The build treats warnings as
+errors, and CI runs the same build and every test project on each push.
 
 ```sh
 # every test project at once

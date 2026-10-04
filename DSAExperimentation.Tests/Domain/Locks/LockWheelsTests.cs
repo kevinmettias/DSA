@@ -19,7 +19,7 @@ public sealed partial class LockWheelsTests
             i => Assert.Equal(LockWheels.Count, LockWheels.Combination(i).Length));
 
     [Fact]
-    public void CombinationSpace_IsModulusRaisedToTheWheelCount() => Assert.Equal((int)Math.Pow(LockWheels.Modulus, LockWheels.Count), LockWheels.CombinationSpace);
+    public void CombinationSpace_IsModulusRaisedToTheWheelCount() => Assert.Equal(LockWheels.CombinationSpace, (int)Math.Pow(LockWheels.Modulus, LockWheels.Count));
 
     [Fact]
     public void Combination_IsInjectiveAcrossTheWholeSpace()

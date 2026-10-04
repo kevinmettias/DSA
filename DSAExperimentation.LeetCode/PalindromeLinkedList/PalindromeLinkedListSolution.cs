@@ -31,10 +31,10 @@ internal static class PalindromeLinkedListSolution
         var slow = head;
         var fast = head;
 
-        while (fast.Next is not null && fast.Next.Next is not null)
+        while (fast.Next?.Next is { } twoAhead && slow.Next is { } oneAhead)
         {
-            slow = slow.Next;
-            fast = fast.Next.Next;
+            slow = oneAhead;
+            fast = twoAhead;
         }
 
         var reversedHalf = Reverse(slow.Next);

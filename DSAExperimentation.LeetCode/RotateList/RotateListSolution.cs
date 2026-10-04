@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 
@@ -64,12 +65,12 @@ internal static class RotateListSolution
 
     // A list of fewer than two nodes, or a rotation by nothing, is already the
     // answer.
-    private static bool IsNoRotationNeeded(SinglyLinkedListNode<int>? head, int rotationCount)
+    private static bool IsNoRotationNeeded([NotNullWhen(false)] SinglyLinkedListNode<int>? head, int rotationCount)
         => head is null || head.Next is null || rotationCount == 0;
 
     // The list's node count and its current tail, found in a single walk from the
     // head - the head is not null here, so there is always at least one node.
-    private static (int Length, SinglyLinkedListNode<int>? Tail) MeasureList(SinglyLinkedListNode<int>? head)
+    private static (int Length, SinglyLinkedListNode<int> Tail) MeasureList(SinglyLinkedListNode<int> head)
     {
         var length = 1;
         var tail = head;
@@ -87,13 +88,13 @@ internal static class RotateListSolution
     // takes three pointer writes - detach the new head, terminate the new tail,
     // and splice the old tail back onto the old head.
     private static SinglyLinkedListNode<int>? RewireAtNewTail(
-        SinglyLinkedListNode<int>? head, SinglyLinkedListNode<int>? tail, int stepsToNewTail)
+        SinglyLinkedListNode<int> head, SinglyLinkedListNode<int> tail, int stepsToNewTail)
     {
         var newTail = AdvanceToNewTail(head, stepsToNewTail);
         return CutAndSplice(newTail, tail, head);
     }
 
-    private static SinglyLinkedListNode<int>? AdvanceToNewTail(SinglyLinkedListNode<int>? head, int steps)
+    private static SinglyLinkedListNode<int> AdvanceToNewTail(SinglyLinkedListNode<int> head, int steps)
     {
         var newTail = head;
 
@@ -106,7 +107,7 @@ internal static class RotateListSolution
     }
 
     private static SinglyLinkedListNode<int>? CutAndSplice(
-        SinglyLinkedListNode<int>? newTail, SinglyLinkedListNode<int>? tail, SinglyLinkedListNode<int>? head)
+        SinglyLinkedListNode<int> newTail, SinglyLinkedListNode<int> tail, SinglyLinkedListNode<int> head)
     {
         var newHead = newTail.Next;
         newTail.Next = null;

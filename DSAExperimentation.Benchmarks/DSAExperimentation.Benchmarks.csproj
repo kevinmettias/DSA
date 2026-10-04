@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+    <PackageReference Include="BenchmarkDotNet" />
   </ItemGroup>
 
   <!-- Every benchmark class declares [Params], [GlobalSetup] and [Benchmark], so the namespace

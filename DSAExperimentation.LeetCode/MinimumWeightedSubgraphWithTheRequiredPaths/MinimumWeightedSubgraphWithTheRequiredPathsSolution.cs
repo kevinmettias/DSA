@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using RequiredPathsNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<long>;
@@ -61,7 +62,8 @@ internal static class MinimumWeightedSubgraphWithTheRequiredPathsSolution
 
     // A meeting vertex only counts as a candidate when all three legs of the route -
     // both sources in, the destination out - have a distance at all.
-    private static bool HasAnUnreachableLeg(long? fromSrc1, long? fromSrc2, long? toDest) =>
+    private static bool HasAnUnreachableLeg(
+        [NotNullWhen(false)] long? fromSrc1, [NotNullWhen(false)] long? fromSrc2, [NotNullWhen(false)] long? toDest) =>
         fromSrc1 is null || fromSrc2 is null || toDest is null;
 
     private static List<(int Neighbor, long Weight)>[] BuildAdjacency(int nodeCount, int[][] edges)

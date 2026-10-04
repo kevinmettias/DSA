@@ -12,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 public sealed partial class WordBreakIIBenchmarksTests
 {
     private const int SmallestLength = 6;
-    private const int ExpectedSentenceCount = 1;
 
     // Restated from the benchmark: the one dictionary word the source tiles.
     private const string RepeatedWord = "cat";
@@ -33,8 +32,8 @@ public sealed partial class WordBreakIIBenchmarksTests
 
     private static void AssertTheTilingSentence(List<string> sentences)
     {
-        Assert.Equal(ExpectedSentenceCount, sentences.Count);
-        Assert.Equal(string.Join(' ', Enumerable.Repeat(RepeatedWord, SmallestLength / RepeatedWord.Length)), sentences[0]);
+        var sentence = Assert.Single(sentences);
+        Assert.Equal(string.Join(' ', Enumerable.Repeat(RepeatedWord, SmallestLength / RepeatedWord.Length)), sentence);
     }
 
     private static WordBreakIIBenchmarks BuildHarness()
