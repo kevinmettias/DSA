@@ -3,60 +3,47 @@ using DSAExperimentation.LeetCode.EscapeALargeMaze;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are EscapeALargeMazeSolution's - a full unbounded flood
-// fill of the whole board (O(BoardSize^2), the only option once the board is
-// actually materialized as a bool[,] visited grid) against the capped
-// DepthFirstSearch.Traverse over an implicit Set<(int, int)>-backed successor
-// closure, which is independent of BoardSize entirely.
+// Harness only: the one arm is EscapeALargeMazeSolution's capped implicit-graph
+// search - the accepted algorithm - on LC 1036's real 10^6 x 10^6 board. Its old
+// baseline flood-filled a materialized board, which cannot run on 10^12 cells, so it
+// timed shrunken boards LeetCode never poses and was dropped. The search stops after
+// BlockedCount * (BlockedCount - 1) / 2 cells from each end, so the blocked-cell count
+// is what sets its cost, and BlockedCount runs to LC's 200.
 //
-// BoardSize stands in for LC 1036's real 10^6 bound (a full flood fill at the real
-// scale would never finish); growing it here while BlockedCount stays fixed is what
-// makes the capped strategy's board-size independence visible against the baseline's
-// O(BoardSize^2) growth.
+// The blocked cells are scattered over a square at the source's corner, twice
+// BlockedCount on a side, but never on row 0 or column 0: the source's edge row stays
+// open, so the source always escapes, the far corner is untouched, and the answer is
+// true by construction - while the cells still shape the search near the source.
 public class EscapeALargeMazeBenchmarks
 {
-    private const int BlockedCount = 40;
     private const int RandomSeed = 1036; // LC problem number
-    private const int BoardMargin = 2;
-
-    private (int Row, int Col)[] _blockedCells = [];
+    private const int WindowPerBlockedCell = 2;
 
     private Set<(int Row, int Col)> _blocked = new();
     private (int Row, int Col) _source;
     private (int Row, int Col) _target;
-    [Params(500, 2_000)]
-    public int BoardSize { get; set; }
+
+    [Params(50, 200)]
+    public int BlockedCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
+        var window = WindowPerBlockedCell * BlockedCount;
         var blocked = new Set<(int Row, int Col)>();
-        var blockedList = new List<(int Row, int Col)>();
 
-        // Scatter blocked cells away from both corners so neither source nor target
-        // is ever sealed in - both arms below are expected to agree: true.
-        while (blockedList.Count < BlockedCount)
+        while (blocked.Count < BlockedCount)
         {
-            var cell = (Row: random.Next(BoardMargin, BoardSize - BoardMargin), Col: random.Next(BoardMargin, BoardSize - BoardMargin));
-
-            if (blocked.TryAdd(cell))
-            {
-                blockedList.Add(cell);
-            }
+            blocked.TryAdd((Row: random.Next(1, window), Col: random.Next(1, window)));
         }
 
         _blocked = blocked;
-        _blockedCells = [.. blockedList];
         _source = (Row: 0, Col: 0);
-        _target = (Row: BoardSize - 1, Col: BoardSize - 1);
+        _target = (Row: EscapeALargeMazeBoard.Size - 1, Col: EscapeALargeMazeBoard.Size - 1);
     }
 
     [Benchmark(Baseline = true)]
-    public bool CanEscapeByFullBoardFloodFill() =>
-        EscapeALargeMazeSolution.CanEscapeByFullBoardFloodFill(_blockedCells, _source, _target, BoardSize);
-
-    [Benchmark]
     public bool CanEscapeByCappedTraversal() =>
-        EscapeALargeMazeSolution.CanEscapeByCappedTraversal(_blocked, _source, _target, BoardSize);
+        EscapeALargeMazeSolution.CanEscapeByCappedTraversal(_blocked, _source, _target, EscapeALargeMazeBoard.Size);
 }

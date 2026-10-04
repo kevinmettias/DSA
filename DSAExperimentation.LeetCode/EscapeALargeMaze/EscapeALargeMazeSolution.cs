@@ -20,84 +20,20 @@ namespace DSAExperimentation.LeetCode.EscapeALargeMaze;
 // target, and checking whether either reaches the other, is the accepted
 // algorithm.
 //
-// Both strategies take the board's side length. For the capped search it is only
-// the coordinate clamp, so the LeetCode-shaped overloads default it to the real
-// 10^6. The flood fill allocates two boardSize x boardSize grids and cannot be run
-// at that size at all - which is precisely the point of the comparison - so it has
-// no defaulted overload and is measured, and tested, on a reduced board.
+// The textbook alternative - flood-filling a materialized board - allocates the
+// board itself, and LeetCode's board has 10^12 cells, so it cannot answer the
+// problem as posed and is not kept as a strategy. The hoisted overload takes the
+// board's side length only as the coordinate clamp; the LeetCode-shaped one passes
+// the real 10^6.
 internal static class EscapeALargeMazeSolution
 {
     private const int PairCountDivisor = 2; // n choose 2: n * (n - 1) / PairCountDivisor
     private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
-    // The textbook answer once the board is small enough to store: materialize the
-    // blocked cells and a visited grid, flood fill from source, then ask whether
-    // target was reached. O(boardSize^2) in both time and space, independent of how
-    // few cells are actually blocked. Deliberately BCL throughout - it is the arm
-    // the capped search below has to justify itself against.
-    public static bool CanEscapeByFullBoardFloodFill(int[][] blockedCells, int[] source, int[] target, int boardSize) =>
-        CanEscapeByFullBoardFloodFill(ToCells(blockedCells), ToCell(source), ToCell(target), boardSize);
-
-    public static bool CanEscapeByFullBoardFloodFill(
-        (int Row, int Col)[] blockedCells, (int Row, int Col) source, (int Row, int Col) target, int boardSize)
-    {
-        var blocked = new bool[boardSize, boardSize];
-
-        foreach (var (row, col) in blockedCells)
-        {
-            blocked[row, col] = true;
-        }
-
-        var visited = new bool[boardSize, boardSize];
-        var stack = new Stack<(int Row, int Col)>();
-        stack.Push(source);
-        visited[source.Row, source.Col] = true;
-
-        var state = new FloodFillState(blocked, visited, stack, boardSize);
-
-        while (stack.Count > 0)
-        {
-            VisitNeighbors(state, stack.Pop());
-        }
-
-        return visited[target.Row, target.Col];
-    }
-
-    private static void VisitNeighbors(FloodFillState state, (int Row, int Col) cell)
-    {
-        foreach (var (dRow, dCol) in Directions)
-        {
-            var nextRow = cell.Row + dRow;
-            var nextCol = cell.Col + dCol;
-
-            if (!IsInBounds(nextRow, nextCol, state.BoardSize))
-            {
-                continue;
-            }
-
-            if (state.Visited[nextRow, nextCol] || state.Blocked[nextRow, nextCol])
-            {
-                continue;
-            }
-
-            state.Visited[nextRow, nextCol] = true;
-            state.Stack.Push((nextRow, nextCol));
-        }
-    }
-
-    private readonly record struct FloodFillState(
-        bool[,] Blocked,
-        bool[,] Visited,
-        Stack<(int Row, int Col)> Stack,
-        int BoardSize);
-
     // This repo's own implicit-graph search, capped at the pocket bound so its cost
     // depends on the blocked-cell count alone and not on the board size at all.
     public static bool CanEscapeByCappedTraversal(int[][] blockedCells, int[] source, int[] target) =>
-        CanEscapeByCappedTraversal(blockedCells, source, target, EscapeALargeMazeBoard.Size);
-
-    public static bool CanEscapeByCappedTraversal(int[][] blockedCells, int[] source, int[] target, int boardSize) =>
-        CanEscapeByCappedTraversal(BuildBlocked(blockedCells), ToCell(source), ToCell(target), boardSize);
+        CanEscapeByCappedTraversal(BuildBlocked(blockedCells), ToCell(source), ToCell(target), EscapeALargeMazeBoard.Size);
 
     public static bool CanEscapeByCappedTraversal(
         Set<(int Row, int Col)> blocked, (int Row, int Col) source, (int Row, int Col) target, int boardSize)
@@ -181,8 +117,6 @@ internal static class EscapeALargeMazeSolution
 
         return blocked;
     }
-
-    private static (int Row, int Col)[] ToCells(int[][] cells) => [.. cells.Select(ToCell)];
 
     private static (int Row, int Col) ToCell(int[] cell) => (cell[0], cell[1]);
 }

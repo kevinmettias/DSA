@@ -2,17 +2,11 @@ using DSAExperimentation.LeetCode.EscapeALargeMaze;
 
 namespace DSAExperimentation.LeetCode.Tests.EscapeALargeMaze;
 
-// Harness only. Both strategies are EscapeALargeMazeSolution's.
-//
-// Two example sets, because the two strategies do not fit on the same board: the
-// capped traversal runs on LC 1036's real 10^6 x 10^6 board, while the full-board
-// flood fill allocates boardSize^2 cells and can only be asserted on a reduced
-// board. The reduced set is the same five scenarios, so the capped traversal is
-// pinned to it as well and the two strategies are shown to agree cell for cell.
+// Harness only. The strategy is EscapeALargeMazeSolution's, run on LC 1036's own
+// 10^6 x 10^6 board: LeetCode's two published examples, then three scenarios that
+// each decide the answer a different way.
 public sealed partial class EscapeALargeMazeSolutionTests
 {
-    private const int ReducedBoardSize = 500;
-    private const int ReducedBoardMaxCoordinate = ReducedBoardSize - 1;
     private const int LeetCodeBoardMaxCoordinate = EscapeALargeMazeBoard.Size - 1;
 
     // blocked, source, target, canEscape - on LC 1036's own 10^6 x 10^6 board.
@@ -49,29 +43,6 @@ public sealed partial class EscapeALargeMazeSolutionTests
             { new EscapeExample(Blocked: [[0, 1]], Source: [0, 0], Target: [5, 5], CanEscape: true) },
         };
 
-    // The same scenarios on a board small enough to materialize.
-    public static TheoryData<EscapeExample> ReducedBoardExamples =>
-        new()
-        {
-            { new EscapeExample(Blocked: [[0, 1], [1, 0]], Source: [0, 0], Target: [0, 2], CanEscape: false) },
-            {
-                new EscapeExample(
-                    Blocked: [],
-                    Source: [0, 0],
-                    Target: [ReducedBoardMaxCoordinate, ReducedBoardMaxCoordinate],
-                    CanEscape: true)
-            },
-            { new EscapeExample(Blocked: [[1, 3], [1, 4], [1, 6]], Source: [0, 5], Target: [50, 50], CanEscape: true) },
-            {
-                new EscapeExample(
-                    Blocked: [[ReducedBoardMaxCoordinate - 1, ReducedBoardMaxCoordinate], [ReducedBoardMaxCoordinate, ReducedBoardMaxCoordinate - 1]],
-                    Source: [0, 0],
-                    Target: [ReducedBoardMaxCoordinate, ReducedBoardMaxCoordinate],
-                    CanEscape: false)
-            },
-            { new EscapeExample(Blocked: [[0, 1]], Source: [0, 0], Target: [5, 5], CanEscape: true) },
-        };
-
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanEscapeByCappedTraversal_LeetCodeExamples_ReturnsWhetherSourceReachesTarget(
@@ -83,30 +54,8 @@ public sealed partial class EscapeALargeMazeSolutionTests
         Assert.Equal(example.CanEscape, canEscape);
     }
 
-    [Theory]
-    [MemberData(nameof(ReducedBoardExamples))]
-    public void CanEscapeByCappedTraversal_ReducedBoard_AgreesWithTheFullBoardFloodFill(
-        EscapeExample example)
-    {
-        var canEscape = EscapeALargeMazeSolution.CanEscapeByCappedTraversal(
-            example.Blocked, example.Source, example.Target, ReducedBoardSize);
-
-        Assert.Equal(example.CanEscape, canEscape);
-    }
-
-    [Theory]
-    [MemberData(nameof(ReducedBoardExamples))]
-    public void CanEscapeByFullBoardFloodFill_ReducedBoard_ReturnsWhetherSourceReachesTarget(
-        EscapeExample example)
-    {
-        var canEscape = EscapeALargeMazeSolution.CanEscapeByFullBoardFloodFill(
-            example.Blocked, example.Source, example.Target, ReducedBoardSize);
-
-        Assert.Equal(example.CanEscape, canEscape);
-    }
-
     // One scenario on a maze: the blocked cells, the coordinates the search runs between,
     // and whether it gets there. The escape flag is named at the row that states it, so a
-    // reader of the two example sets never has to remember which position it sits in.
+    // reader of the examples never has to remember which position it sits in.
     public readonly record struct EscapeExample(int[][] Blocked, int[] Source, int[] Target, bool CanEscape);
 }
