@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.CountOfRangeSum;
 
@@ -50,10 +49,9 @@ internal static class CountOfRangeSumSolution
     {
         var prefix = BuildPrefixSums(nums);
         var sortedDistinct = prefix.Distinct().OrderBy(value => value).ToArray();
-        var sequence = new ArraySequence<long>(sortedDistinct);
         var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
         var count = 0;
-        var index = new RangeSumIndex(sequence, tree);
+        var index = new RangeSumIndex(sortedDistinct, tree);
 
         foreach (var prefixSum in prefix)
         {
@@ -65,12 +63,12 @@ internal static class CountOfRangeSumSolution
 
     private static int AccumulatePrefixSumContribution(RangeSumIndex index, long prefixSum, int lower, int upper)
     {
-        var loRank = BinarySearch.LowerBound(index.Sequence, prefixSum - upper);
-        var hiRank = BinarySearch.UpperBound(index.Sequence, prefixSum - lower) - 1;
+        var loRank = BinarySearch.LowerBound(index.SortedDistinct, prefixSum - upper);
+        var hiRank = BinarySearch.UpperBound(index.SortedDistinct, prefixSum - lower) - 1;
 
         var contribution = loRank <= hiRank ? index.Tree.Query(loRank, hiRank) : 0;
 
-        var insertRank = BinarySearch.LowerBound(index.Sequence, prefixSum);
+        var insertRank = BinarySearch.LowerBound(index.SortedDistinct, prefixSum);
         index.Tree.Add(insertRank, 1);
 
         return contribution;
@@ -88,5 +86,5 @@ internal static class CountOfRangeSumSolution
         return prefix;
     }
 
-    private readonly record struct RangeSumIndex(ArraySequence<long> Sequence, FenwickTree<int, SumOperation<int>> Tree);
+    private readonly record struct RangeSumIndex(long[] SortedDistinct, FenwickTree<int, SumOperation<int>> Tree);
 }

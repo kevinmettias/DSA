@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.DisjointSet;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.GCDSortOfAnArray;
 
@@ -121,7 +120,7 @@ internal static class GCDSortOfAnArraySolution
     private static int[] SortedCopy(int[] nums)
     {
         var sorted = (int[])nums.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         return sorted;
     }

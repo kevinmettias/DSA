@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.DistributeElementsIntoTwoArraysII;
 
@@ -67,16 +66,15 @@ internal static class DistributeElementsIntoTwoArraysIISolution
     public static int[] DistributeByFenwickTree(int[] nums)
     {
         var sortedDistinct = nums.Distinct().OrderBy(value => value).ToArray();
-        var sequence = new ArraySequence<int>(sortedDistinct);
 
         var tree1 = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
         var tree2 = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
         var arr1 = new List<int> { nums[0] };
         var arr2 = new List<int> { nums[1] };
 
-        var firstRank = BinarySearch.LowerBound(sequence, nums[0]);
+        var firstRank = BinarySearch.LowerBound(sortedDistinct, nums[0]);
         tree1.Add(firstRank, 1);
-        var secondRank = BinarySearch.LowerBound(sequence, nums[1]);
+        var secondRank = BinarySearch.LowerBound(sortedDistinct, nums[1]);
         tree2.Add(secondRank, 1);
 
         var first = (Values: arr1, Tree: tree1);
@@ -84,7 +82,7 @@ internal static class DistributeElementsIntoTwoArraysIISolution
 
         for (var i = 2; i < nums.Length; i++)
         {
-            PlaceByGreaterCount(sequence, nums[i], first, second);
+            PlaceByGreaterCount(sortedDistinct, nums[i], first, second);
         }
 
         return Concatenate(arr1, arr2);
@@ -95,12 +93,12 @@ internal static class DistributeElementsIntoTwoArraysIISolution
     // ShouldGoToFirstArray breaks the remaining ties; the rank is the same
     // coordinate-compressed lookup the two greater-counts are read at.
     private static void PlaceByGreaterCount(
-        ArraySequence<int> sequence,
+        int[] sortedDistinct,
         int value,
         (List<int> Values, FenwickTree<int, SumOperation<int>> Tree) first,
         (List<int> Values, FenwickTree<int, SumOperation<int>> Tree) second)
     {
-        var rank = BinarySearch.LowerBound(sequence, value);
+        var rank = BinarySearch.LowerBound(sortedDistinct, value);
         var greater1 = first.Values.Count - first.Tree.PrefixQuery(rank);
         var greater2 = second.Values.Count - second.Tree.PrefixQuery(rank);
 

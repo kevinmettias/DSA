@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.SortingTheSentence;
 
@@ -32,7 +31,7 @@ internal static class SortingTheSentenceSolution
     {
         var byPosition = Comparer<string>.Create((a, b) => PositionOf(a).CompareTo(PositionOf(b)));
 
-        MergeSort.Sort<string, ArrayIndexedSequence<string>>(new ArrayIndexedSequence<string>(words), byPosition);
+        MergeSort.Sort(words, byPosition);
 
         return string.Join(' ', words.Select(StripPosition));
     }

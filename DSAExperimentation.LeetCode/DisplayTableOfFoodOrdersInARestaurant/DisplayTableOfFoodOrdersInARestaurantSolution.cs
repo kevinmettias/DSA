@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.DisplayTableOfFoodOrdersInARestaurant;
 
@@ -143,8 +142,7 @@ internal static class DisplayTableOfFoodOrdersInARestaurantSolution
     private static string[] SortedFoodNames(HashMap<string, bool> foodNames)
     {
         var sortedFoods = foodNames.Keys.ToArray();
-        MergeSort.Sort<string, ArrayIndexedSequence<string>>(
-            new ArrayIndexedSequence<string>(sortedFoods), StringComparer.Ordinal);
+        MergeSort.Sort(sortedFoods, StringComparer.Ordinal);
 
         return sortedFoods;
     }
@@ -152,7 +150,7 @@ internal static class DisplayTableOfFoodOrdersInARestaurantSolution
     private static int[] SortedTableNumbers(HashMap<int, HashMap<string, int>> countsByTable)
     {
         var sortedTables = countsByTable.Keys.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedTables));
+        MergeSort.Sort(sortedTables);
 
         return sortedTables;
     }

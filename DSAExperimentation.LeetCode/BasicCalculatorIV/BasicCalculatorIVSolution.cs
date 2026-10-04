@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.BasicCalculatorIV;
 
@@ -387,6 +386,6 @@ internal static class BasicCalculatorIVSolution
     private static void SortTerms(Term[] termsArray)
     {
         var comparer = Comparer<Term>.Create((a, b) => CompareByDegreeThenKey(a.Key, b.Key));
-        MergeSort.Sort<Term, ArrayIndexedSequence<Term>>(new ArrayIndexedSequence<Term>(termsArray), comparer);
+        MergeSort.Sort(termsArray, comparer);
     }
 }

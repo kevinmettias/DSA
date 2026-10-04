@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MyCalendarIII;
 
@@ -61,7 +60,7 @@ internal static class MyCalendarIIISolution
         private int MaxOverlapAcrossDeltas()
         {
             var keys = _delta.Keys.ToArray();
-            MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(keys));
+            MergeSort.Sort(keys);
 
             var running = 0;
             var maxOverlap = 0;

@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.CountNumberOfRectanglesContainingEachPoint;
 
@@ -62,12 +61,11 @@ internal static class CountNumberOfRectanglesContainingEachPointSolution
     public static int[] CountRectanglesByGroupedLowerBound(int[][] rectangles, int[][] points)
     {
         var (heights, lengthsByHeight) = GroupSortedLengthsByHeight(rectangles);
-        var heightSequence = new ArraySequence<int>(heights);
 
         var counts = new int[points.Length];
         for (var i = 0; i < points.Length; i++)
         {
-            counts[i] = CountForPoint(points[i], heights, heightSequence, lengthsByHeight);
+            counts[i] = CountForPoint(points[i], heights, lengthsByHeight);
         }
 
         return counts;
@@ -87,12 +85,12 @@ internal static class CountNumberOfRectanglesContainingEachPointSolution
         {
             grouped.TryGetValue(height, out var lengths);
             var array = lengths.ToArray();
-            MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(array));
+            MergeSort.Sort(array);
             lengthsByHeight.Set(height, array);
         }
 
         var heights = lengthsByHeight.Keys.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(heights));
+        MergeSort.Sort(heights);
 
         return new(heights, lengthsByHeight);
     }
@@ -112,18 +110,17 @@ internal static class CountNumberOfRectanglesContainingEachPointSolution
     }
 
     private static int CountForPoint(
-        int[] point, int[] heights, ArraySequence<int> heightSequence, HashMap<int, int[]> lengthsByHeight)
+        int[] point, int[] heights, HashMap<int, int[]> lengthsByHeight)
     {
         var x = point[0];
         var y = point[1];
-        var startIndex = BinarySearch.LowerBound(heightSequence, y);
+        var startIndex = BinarySearch.LowerBound(heights, y);
         var count = 0;
 
         for (var i = startIndex; i < heights.Length; i++)
         {
             lengthsByHeight.TryGetValue(heights[i], out var lengths);
-            var lengthSequence = new ArraySequence<int>(lengths);
-            var firstAtLeastX = BinarySearch.LowerBound(lengthSequence, x);
+            var firstAtLeastX = BinarySearch.LowerBound(lengths, x);
             count += lengths.Length - firstAtLeastX;
         }
 

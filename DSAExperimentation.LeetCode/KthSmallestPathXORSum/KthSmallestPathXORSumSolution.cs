@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
 using NodeStack = DSAExperimentation.DataStructures.Stack.Stack<DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.RootedTreeNode>;
 using XorStack = DSAExperimentation.DataStructures.Stack.Stack<(DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.RootedTreeNode Node, int Xor)>;
 
@@ -168,7 +167,7 @@ internal static class KthSmallestPathXORSumSolution
         var values = new List<int>(seen.Keys);
         var array = values.ToArray();
 
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(array));
+        MergeSort.Sort(array);
 
         return array;
     }

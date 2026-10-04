@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.DeleteDuplicateFoldersInSystem;
 
@@ -150,8 +149,7 @@ internal static class DeleteDuplicateFoldersInSystemSolution
             pieces[i++] = name + SignatureOpen + child.Signature + SignatureClose;
         }
 
-        var sequence = new ArrayIndexedSequence<string>(pieces);
-        MergeSort.Sort<string, ArrayIndexedSequence<string>>(sequence, StringComparer.Ordinal);
+        MergeSort.Sort(pieces, StringComparer.Ordinal);
 
         node.Signature = string.Concat(pieces);
         var newCount = signatureCounts.TryGetValue(node.Signature, out var existing) ? NextSignatureCount(existing) : 1;

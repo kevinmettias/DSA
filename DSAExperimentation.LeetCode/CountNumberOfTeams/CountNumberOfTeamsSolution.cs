@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.CountNumberOfTeams;
 
@@ -73,10 +72,9 @@ internal static class CountNumberOfTeamsSolution
         }
 
         var sortedDistinct = rating.Distinct().OrderBy(value => value).ToArray();
-        var sequence = new ArraySequence<int>(sortedDistinct);
 
-        var (leftLess, leftGreater) = SweepCounts(rating, sequence, sortedDistinct.Length, SweepDirection.Forward);
-        var (rightLess, rightGreater) = SweepCounts(rating, sequence, sortedDistinct.Length, SweepDirection.Backward);
+        var (leftLess, leftGreater) = SweepCounts(rating, sortedDistinct, sortedDistinct.Length, SweepDirection.Forward);
+        var (rightLess, rightGreater) = SweepCounts(rating, sortedDistinct, sortedDistinct.Length, SweepDirection.Backward);
 
         var teams = 0;
         for (var j = 0; j < n; j++)
@@ -92,7 +90,7 @@ internal static class CountNumberOfTeamsSolution
     // SweepDirection.Backward walks right-to-left over the same indices to build
     // rightLess/rightGreater instead.
     private static (int[] Less, int[] Greater) SweepCounts(
-        int[] rating, ArraySequence<int> sequence, int distinctCount, SweepDirection direction)
+        int[] rating, int[] sortedDistinct, int distinctCount, SweepDirection direction)
     {
         var n = rating.Length;
         var less = new int[n];
@@ -103,8 +101,8 @@ internal static class CountNumberOfTeamsSolution
         for (var step = 0; step < n; step++)
         {
             var j = direction == SweepDirection.Forward ? step : IndexFromEnd(step, n);
-            var lower = BinarySearch.LowerBound(sequence, rating[j]);
-            var upper = BinarySearch.UpperBound(sequence, rating[j]);
+            var lower = BinarySearch.LowerBound(sortedDistinct, rating[j]);
+            var upper = BinarySearch.UpperBound(sortedDistinct, rating[j]);
 
             less[j] = lower == 0 ? 0 : tree.PrefixQuery(lower - 1);
             var lessOrEqual = upper == 0 ? 0 : tree.PrefixQuery(upper - 1);

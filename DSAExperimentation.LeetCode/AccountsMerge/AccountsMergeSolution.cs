@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.AccountsMerge;
 
@@ -223,7 +222,7 @@ internal static class AccountsMergeSolution
     {
         emailsByRoot.TryGetValue(root, out var emails);
         var sortedEmails = emails.Keys.ToArray();
-        MergeSort.Sort<string, ArrayIndexedSequence<string>>(new ArrayIndexedSequence<string>(sortedEmails), StringComparer.Ordinal);
+        MergeSort.Sort(sortedEmails, StringComparer.Ordinal);
 
         var account = new string[sortedEmails.Length + 1];
         account[0] = accounts[root][0];

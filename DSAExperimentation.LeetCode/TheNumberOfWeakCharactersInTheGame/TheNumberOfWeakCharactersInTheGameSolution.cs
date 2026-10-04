@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.TheNumberOfWeakCharactersInTheGame;
 
@@ -75,8 +74,7 @@ internal static class TheNumberOfWeakCharactersInTheGameSolution
         var byAttackDescendingDefenseAscending = Comparer<(int Attack, int Defense)>.Create(
             (a, b) => a.Attack != b.Attack ? b.Attack.CompareTo(a.Attack) : a.Defense.CompareTo(b.Defense));
 
-        MergeSort.Sort<(int Attack, int Defense), ArrayIndexedSequence<(int Attack, int Defense)>>(
-            new ArrayIndexedSequence<(int Attack, int Defense)>(characters), byAttackDescendingDefenseAscending);
+        MergeSort.Sort(characters, byAttackDescendingDefenseAscending);
     }
 
     private static int CountBelowRunningMaximumDefense((int Attack, int Defense)[] characters)

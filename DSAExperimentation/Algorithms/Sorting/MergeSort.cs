@@ -15,8 +15,22 @@ namespace DSAExperimentation.Algorithms.Sorting;
 // postcondition, not an assumed input. The comparer stays a plain IComparer<Element> parameter for the
 // same reason BinarySearch's does (ARCHITECTURE.md §9.2) - any Element, any total order, is a valid
 // comparer, an open-ended space no witness could usefully close over.
+//
+// The Element[] overloads pick ArrayIndexedSequence for the caller, as Reduce's natural-child-order
+// overloads pick NaturalChildOrder: the merge never sees the array, only the witness, so the
+// instantiation that runs is the one a caller spelling it out would get. An array satisfies
+// IIndexedSequence's aliasing law because it is a reference type. No call can reach the overload it did
+// not mean: an Element[] fails TSequence's struct constraint, and no sequence witness converts to an
+// Element[].
 internal static class MergeSort
 {
+    public static void Sort<Element>(Element[] items)
+        where Element : IComparable<Element>
+        => Sort<Element, ArrayIndexedSequence<Element>>(new ArrayIndexedSequence<Element>(items));
+
+    public static void Sort<Element>(Element[] items, IComparer<Element> comparer)
+        => Sort<Element, ArrayIndexedSequence<Element>>(new ArrayIndexedSequence<Element>(items), comparer);
+
     public static void Sort<Element, TSequence>(TSequence sequence)
         where TSequence : struct, IIndexedSequence<Element>
         where Element : IComparable<Element>

@@ -10,8 +10,8 @@ namespace DSAExperimentation.LeetCode.RussianDollEnvelopes;
 // Longest Increasing Subsequence of the resulting heights.
 //
 // Both strategies share that same two-step shape and differ only in what each step is built
-// from - MaxEnvelopesBySortThenPatience composes this repo's own MergeSort.Sort over an
-// ArrayIndexedSequence for the O(n log n) sort and BinarySearch.LowerBound-driven patience
+// from - MaxEnvelopesBySortThenPatience composes this repo's own MergeSort.Sort for the
+// O(n log n) sort and BinarySearch.LowerBound-driven patience
 // sorting for the O(n log n) LIS step (the exact approach LongestIncreasingSubsequenceSolutionTests.cs
 // already exercises, reused here over a DynamicArraySequence<int> "tails" buffer);
 // MaxEnvelopesByBruteForceDp is the textbook BCL Array.Sort + O(n^2) DP baseline it has to
@@ -68,8 +68,7 @@ internal static class RussianDollEnvelopesSolution
         var byWidthThenHeightDescending = Comparer<(int Width, int Height)>.Create(
             (a, b) => a.Width != b.Width ? a.Width.CompareTo(b.Width) : b.Height.CompareTo(a.Height));
 
-        MergeSort.Sort<(int Width, int Height), ArrayIndexedSequence<(int Width, int Height)>>(
-            new ArrayIndexedSequence<(int Width, int Height)>(items), byWidthThenHeightDescending);
+        MergeSort.Sort(items, byWidthThenHeightDescending);
     }
 
     // Patience-sorting LIS over the heights, once width ties can no longer chain.

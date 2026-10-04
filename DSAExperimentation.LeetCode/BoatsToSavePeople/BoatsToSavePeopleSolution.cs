@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.BoatsToSavePeople;
 
@@ -105,7 +104,7 @@ internal static class BoatsToSavePeopleSolution
     public static int NumberOfRescueBoatsBySortThenTwoPointer(int[] people, int limit)
     {
         var sorted = (int[])people.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         var light = 0;
         var heavy = sorted.Length - 1;

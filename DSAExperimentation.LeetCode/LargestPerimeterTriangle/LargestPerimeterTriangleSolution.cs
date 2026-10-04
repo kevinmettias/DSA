@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.LargestPerimeterTriangle;
 
@@ -69,7 +68,7 @@ internal static class LargestPerimeterTriangleSolution
     public static int LargestPerimeterBySortedScan(int[] nums)
     {
         var sorted = (int[])nums.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         for (var i = sorted.Length - 1; i >= TripleWindowOffset; i--)
         {

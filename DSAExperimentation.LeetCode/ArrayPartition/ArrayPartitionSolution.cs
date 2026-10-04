@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.ArrayPartition;
 
@@ -63,7 +62,7 @@ internal static class ArrayPartitionSolution
     public static int MaxSumByMergeSort(int[] nums)
     {
         var sorted = nums.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         var sum = 0;
         for (var i = 0; i < sorted.Length; i += PairSize)

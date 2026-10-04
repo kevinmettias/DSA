@@ -30,7 +30,7 @@ public class CountElementsWithAtLeastKGreaterValuesBenchmarks
         _nums = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
 
         var sorted = (int[])_nums.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
         _sortedNums = new ArraySequence<int>(sorted);
     }
 

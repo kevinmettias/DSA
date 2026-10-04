@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.RandomPickWithWeight;
 
@@ -78,10 +77,9 @@ internal static class RandomPickWithWeightSolution
 
         public int PickIndex()
         {
-            var sequence = new ArraySequence<int>(_prefixSums);
             var draw = _random.Next(_prefixSums[^1]);
 
-            return BinarySearch.UpperBound(sequence, draw);
+            return BinarySearch.UpperBound(_prefixSums, draw);
         }
     }
 

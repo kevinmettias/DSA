@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.PathExistenceQueriesInAGraphII;
 
@@ -171,12 +170,11 @@ internal static class PathExistenceQueriesInAGraphIISolution
     // sortedValues[p] - the last index UpperBound places before it overshoots.
     private static int[] BuildFarPointers(int[] sortedValues, int maxDiff)
     {
-        var sequence = new ArraySequence<int>(sortedValues);
         var far = new int[sortedValues.Length];
 
         for (var p = 0; p < sortedValues.Length; p++)
         {
-            far[p] = BinarySearch.UpperBound(sequence, sortedValues[p] + maxDiff) - 1;
+            far[p] = BinarySearch.UpperBound(sortedValues, sortedValues[p] + maxDiff) - 1;
         }
 
         return far;

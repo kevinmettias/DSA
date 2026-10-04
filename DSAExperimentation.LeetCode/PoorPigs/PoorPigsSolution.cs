@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.PoorPigs;
 
@@ -58,8 +57,6 @@ internal static class PoorPigsSolution
             powers.Add(powers[^1] * basis);
         }
 
-        var sequence = new ArraySequence<long>(powers.ToArray());
-
-        return BinarySearch.LowerBound<long, ArraySequence<long>>(sequence, buckets);
+        return BinarySearch.LowerBound(powers.ToArray(), buckets);
     }
 }

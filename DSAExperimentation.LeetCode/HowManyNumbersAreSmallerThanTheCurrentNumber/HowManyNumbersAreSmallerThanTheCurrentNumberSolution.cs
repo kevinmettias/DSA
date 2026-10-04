@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.HowManyNumbersAreSmallerThanTheCurrentNumber;
 
@@ -44,14 +43,13 @@ internal static class HowManyNumbersAreSmallerThanTheCurrentNumberSolution
     public static int[] SmallerNumbersThanCurrentBySortAndLowerBound(int[] nums)
     {
         var sorted = (int[])nums.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
-        var sequence = new ArraySequence<int>(sorted);
         var result = new int[nums.Length];
 
         for (var i = 0; i < nums.Length; i++)
         {
-            result[i] = BinarySearch.LowerBound<int, ArraySequence<int>>(sequence, nums[i]);
+            result[i] = BinarySearch.LowerBound(sorted, nums[i]);
         }
 
         return result;

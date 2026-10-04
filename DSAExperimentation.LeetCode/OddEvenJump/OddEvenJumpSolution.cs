@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 using JumpIndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.OddEvenJump;
@@ -126,7 +125,7 @@ internal static class OddEvenJumpSolution
         var indices = Enumerable.Range(0, arr.Length).ToArray();
         var comparer = BuildIndexComparer(arr, direction);
 
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(indices), comparer);
+        MergeSort.Sort(indices, comparer);
 
         return indices;
     }

@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.NumberOfWaysToReconstructATree;
 
@@ -190,8 +189,8 @@ internal static class NumberOfWaysToReconstructATreeSolution
     private static int[] SortNodesByDegree(HashMap<int, HashMap<int, bool>> adjacency)
     {
         var nodes = adjacency.Keys.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(
-            new ArrayIndexedSequence<int>(nodes),
+        MergeSort.Sort(
+            nodes,
             Comparer<int>.Create((a, b) =>
             {
                 var degreeA = Degree(adjacency, a);

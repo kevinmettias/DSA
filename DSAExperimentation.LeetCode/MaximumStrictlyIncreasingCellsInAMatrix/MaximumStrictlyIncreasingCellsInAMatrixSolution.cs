@@ -1,7 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 
-using CellSequence = DSAExperimentation.DataStructures.Sequence.ArrayIndexedSequence<(int Value, int Row, int Col)>;
-
 namespace DSAExperimentation.LeetCode.MaximumStrictlyIncreasingCellsInAMatrix;
 
 // LeetCode 2713. Maximum Strictly Increasing Cells in a Matrix: from a cell you may
@@ -88,9 +86,8 @@ internal static class MaximumStrictlyIncreasingCellsInAMatrixSolution
     private static void SortCellsByValue((int Value, int Row, int Col)[] cells)
     {
         var byValue = Comparer<(int Value, int Row, int Col)>.Create((a, b) => a.Value.CompareTo(b.Value));
-        var sequence = new CellSequence(cells);
 
-        MergeSort.Sort<(int Value, int Row, int Col), CellSequence>(sequence, byValue);
+        MergeSort.Sort(cells, byValue);
     }
 
     // Advances past the batch of equal-value cells starting at `index`, computing each

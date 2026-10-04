@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.SortIntegersByThePowerValue;
 
@@ -47,8 +46,7 @@ internal static class SortIntegersByThePowerValueSolution
     {
         var pairs = BuildPowerPairs(lo, hi);
 
-        MergeSort.Sort<(int Power, int Value), ArrayIndexedSequence<(int Power, int Value)>>(
-            new ArrayIndexedSequence<(int Power, int Value)>(pairs));
+        MergeSort.Sort(pairs);
 
         return pairs[rank - 1].Value;
     }

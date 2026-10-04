@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.NumberOfLongestIncreasingSubsequence;
@@ -79,12 +78,11 @@ internal static class NumberOfLongestIncreasingSubsequenceSolution
     public static int FindNumberOfLisBySegmentTree(int[] nums)
     {
         var sortedDistinct = nums.Distinct().Order().ToArray();
-        var ranks = new ArraySequence<int>(sortedDistinct);
         var tree = new SegmentTree<(int Length, int Count), LisAggregate>(new (int, int)[sortedDistinct.Length]);
 
         foreach (var num in nums)
         {
-            var rank = BinarySearch.LowerBound<int, ArraySequence<int>>(ranks, num);
+            var rank = BinarySearch.LowerBound(sortedDistinct, num);
             var best = rank == 0 ? NoSubsequence() : tree.Query(0, rank - 1);
             var candidate = best.Length == 0 ? NewSubsequence() : ExtendedSubsequence(best);
             var existing = tree.Query(rank, rank);

@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.DataStructures.Set;
 
 namespace DSAExperimentation.LeetCode.Finding3DigitEvenNumbers;
@@ -44,7 +43,7 @@ internal static class Finding3DigitEvenNumbersSolution
         ForEachCandidateNumber(digits, new SetDedupeCollector(found));
 
         var result = found.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(result));
+        MergeSort.Sort(result);
         return result;
     }
 

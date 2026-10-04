@@ -154,7 +154,7 @@ internal static class PartitionArrayIntoTwoArraysToMinimizeSumDifferenceSolution
     private static int BestDifferenceForSplit(int taken, SplitSearchContext context)
     {
         var rightSums = context.RightSumsByCount[context.Half - taken].ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(rightSums));
+        MergeSort.Sort(rightSums);
 
         // The right sum closest to half the total minus the left sum minimizes the
         // difference; comparing 2*candidate against the un-halved target keeps the

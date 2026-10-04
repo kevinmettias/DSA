@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.FindPolygonWithTheLargestPerimeter;
 
@@ -83,7 +82,7 @@ internal static class FindPolygonWithTheLargestPerimeterSolution
     private static int[] SortedCopy(int[] nums)
     {
         var sorted = (int[])nums.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         return sorted;
     }

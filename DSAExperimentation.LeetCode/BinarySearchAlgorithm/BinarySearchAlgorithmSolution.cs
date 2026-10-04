@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.BinarySearchAlgorithm;
 
@@ -32,5 +31,5 @@ internal static class BinarySearchAlgorithmSolution
     }
 
     public static int FindIndexByBinarySearch(int[] nums, int target) =>
-        BinarySearch.Find(new ArraySequence<int>(nums), target) ?? LeetCodeAnswer.None;
+        BinarySearch.Find(nums, target) ?? LeetCodeAnswer.None;
 }

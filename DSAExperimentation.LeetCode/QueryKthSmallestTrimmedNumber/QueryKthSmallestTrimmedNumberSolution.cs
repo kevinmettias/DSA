@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.QueryKthSmallestTrimmedNumber;
 
@@ -100,7 +99,7 @@ internal static class QueryKthSmallestTrimmedNumberSolution
         var indices = Enumerable.Range(0, nums.Length).ToArray();
         var comparer = Comparer<int>.Create((a, b) => CompareTrimmed(nums[a], nums[b], trim));
 
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(indices), comparer);
+        MergeSort.Sort(indices, comparer);
 
         return indices[rank - FirstRank];
     }

@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MinimizeManhattanDistances;
 
@@ -131,9 +130,7 @@ internal static class MinimizeManhattanDistancesSolution
     {
         var byValue = Comparer<(long Value, int PointIndex)>.Create((a, b) => a.Value.CompareTo(b.Value));
 
-        MergeSort.Sort<(long Value, int PointIndex), ArrayIndexedSequence<(long Value, int PointIndex)>>(
-            new ArrayIndexedSequence<(long Value, int PointIndex)>(byU), byValue);
-        MergeSort.Sort<(long Value, int PointIndex), ArrayIndexedSequence<(long Value, int PointIndex)>>(
-            new ArrayIndexedSequence<(long Value, int PointIndex)>(byV), byValue);
+        MergeSort.Sort(byU, byValue);
+        MergeSort.Sort(byV, byValue);
     }
 }

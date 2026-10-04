@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 
@@ -18,7 +17,7 @@ internal static class SortListSolution
     public static SinglyLinkedListNode<int>? SortByMergeSortOverSequence(SinglyLinkedListNode<int>? head)
     {
         var array = LeetCodeWireFormat.FromLinkedList(head);
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(array));
+        MergeSort.Sort(array);
 
         return LeetCodeWireFormat.ToLinkedList(array);
     }

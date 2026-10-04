@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MaximumIceCreamBars;
 
@@ -63,7 +62,7 @@ internal static class MaximumIceCreamBarsSolution
     public static int MaxIceCreamByMergeSortGreedy(int[] costs, int coins)
     {
         var sorted = costs.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         var count = 0;
 

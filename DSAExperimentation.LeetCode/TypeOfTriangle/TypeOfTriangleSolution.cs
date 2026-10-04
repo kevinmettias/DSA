@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.TypeOfTriangle;
 
@@ -56,7 +55,7 @@ internal static class TypeOfTriangleSolution
     public static string ClassifyByMergeSort(int[] sides)
     {
         var sorted = new[] { sides[0], sides[1], sides[2] };
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         var (smallest, middle, largest) = (sorted[0], sorted[1], sorted[2]);
 

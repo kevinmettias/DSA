@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.StatisticsFromALargeSample;
 
@@ -168,15 +167,13 @@ internal static class StatisticsFromALargeSampleSolution
     // LowerBound's definition exactly.
     private static double MedianFromCumulative(long[] cumulative, long total)
     {
-        var sequence = new ArraySequence<long>(cumulative);
-
         if (total % MedianParityDivisor == 1)
         {
-            return BinarySearch.LowerBound(sequence, (total / MedianIndexDivisor) + 1);
+            return BinarySearch.LowerBound(cumulative, (total / MedianIndexDivisor) + 1);
         }
 
-        var lowerMiddle = BinarySearch.LowerBound(sequence, total / MedianIndexDivisor);
-        var upperMiddle = BinarySearch.LowerBound(sequence, (total / MedianIndexDivisor) + 1);
+        var lowerMiddle = BinarySearch.LowerBound(cumulative, total / MedianIndexDivisor);
+        var upperMiddle = BinarySearch.LowerBound(cumulative, (total / MedianIndexDivisor) + 1);
 
         return (lowerMiddle + upperMiddle) / MedianPairAverageDivisor;
     }

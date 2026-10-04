@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.QueueReconstructionByHeight;
 
@@ -53,8 +52,7 @@ internal static class QueueReconstructionByHeightSolution
         var byHeightDescendingThenKAscending = Comparer<(int Height, int K)>.Create(
             (a, b) => a.Height != b.Height ? b.Height.CompareTo(a.Height) : a.K.CompareTo(b.K));
 
-        MergeSort.Sort<(int Height, int K), ArrayIndexedSequence<(int Height, int K)>>(
-            new ArrayIndexedSequence<(int Height, int K)>(items), byHeightDescendingThenKAscending);
+        MergeSort.Sort(items, byHeightDescendingThenKAscending);
 
         var queue = new DynamicArray<(int Height, int K)>();
 

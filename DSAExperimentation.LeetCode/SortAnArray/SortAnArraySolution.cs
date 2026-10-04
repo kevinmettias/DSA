@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.SortAnArray;
 
@@ -39,12 +38,12 @@ internal static class SortAnArraySolution
     }
 
     // This repo's own O(n log n) MergeSort, which sorts anything satisfying
-    // IIndexedSequence<Element> in place - so an int[] wrapped in
-    // ArrayIndexedSequence<int> is the whole solution.
+    // IIndexedSequence<Element> in place - and takes a plain array directly, so one
+    // call on a copy is the whole solution.
     public static int[] SortArrayByMergeSort(int[] nums)
     {
         var sorted = nums.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         return sorted;
     }

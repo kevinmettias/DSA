@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MaximumXORWithAnElementFromArray;
 
@@ -67,7 +66,7 @@ internal static class MaximumXORWithAnElementFromArraySolution
     private static int[] AscendingCopyOf(int[] nums)
     {
         var sorted = nums.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         return sorted;
     }
@@ -77,8 +76,8 @@ internal static class MaximumXORWithAnElementFromArraySolution
     private static int[] QueryIndicesByLimit(int[][] queries)
     {
         var order = Enumerable.Range(0, queries.Length).ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(
-            new ArrayIndexedSequence<int>(order),
+        MergeSort.Sort(
+            order,
             Comparer<int>.Create((a, b) => queries[a][1].CompareTo(queries[b][1])));
 
         return order;

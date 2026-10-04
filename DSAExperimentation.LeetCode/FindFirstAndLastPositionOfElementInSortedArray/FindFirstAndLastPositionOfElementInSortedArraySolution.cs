@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.FindFirstAndLastPositionOfElementInSortedArray;
 
@@ -36,9 +35,8 @@ internal static class FindFirstAndLastPositionOfElementInSortedArraySolution
     // pair and a length check.
     public static int[] SearchRangeByBinarySearchBounds(int[] nums, int target)
     {
-        var sequence = new ArraySequence<int>(nums);
-        var lower = BinarySearch.LowerBound(sequence, target);
-        var upper = BinarySearch.UpperBound(sequence, target);
+        var lower = BinarySearch.LowerBound(nums, target);
+        var upper = BinarySearch.UpperBound(nums, target);
 
         return lower == upper
             ? AbsentRange()

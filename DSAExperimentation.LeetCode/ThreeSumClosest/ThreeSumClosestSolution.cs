@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.ThreeSumClosest;
 
@@ -57,7 +56,7 @@ internal static class ThreeSumClosestSolution
     public static int ClosestSumByMergeSortTwoPointers(int[] nums, int target)
     {
         var sorted = nums.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         var best = sorted[0] + sorted[1] + sorted[ThirdElementIndex];
 

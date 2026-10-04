@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MaximumNumberOfCoinsYouCanGet;
 
@@ -76,13 +75,13 @@ internal static class MaximumNumberOfCoinsYouCanGetSolution
         values.RemoveAt(minIndex);
     }
 
-    // This repo's own MergeSort over the array wrapped as an IIndexedSequence<int>
+    // This repo's own MergeSort over the array
     // - the same composition SortAnArray uses - with the picking arithmetic on top:
     // one O(n log n) sort, then a walk over your n indices.
     public static int MaxCoinsByMergeSort(int[] piles)
     {
         var sorted = piles.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         var rounds = sorted.Length / GroupSize;
         var total = 0;

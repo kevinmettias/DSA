@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.AssignCookies;
 
@@ -77,8 +76,8 @@ internal static class AssignCookiesSolution
         var sortedGreed = (int[])greed.Clone();
         var sortedSizes = (int[])sizes.Clone();
 
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedGreed));
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedSizes));
+        MergeSort.Sort(sortedGreed);
+        MergeSort.Sort(sortedSizes);
 
         var child = 0;
         var cookie = 0;

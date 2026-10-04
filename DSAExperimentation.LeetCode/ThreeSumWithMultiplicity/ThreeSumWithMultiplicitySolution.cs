@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.ThreeSumWithMultiplicity;
@@ -65,7 +64,7 @@ internal static class ThreeSumWithMultiplicitySolution
         // The input is sorted in place, so the caller's array is left untouched -
         // which also keeps repeated benchmark invocations measuring the same work.
         var sorted = arr.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         long count = 0;
 

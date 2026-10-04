@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.RelativeSortArray;
 
@@ -38,9 +37,8 @@ internal static class RelativeSortArraySolution
     }
 
     // Precompute every value's rank once into this repo's own HashMap<int,int> -
-    // O(n + m) - then sort by that O(1) lookup with MergeSort.Sort<Element,TSequence>
-    // over an ArrayIndexedSequence, the same custom-comparer shape ArrayPartition
-    // and TwoCityScheduling use.
+    // O(n + m) - then sort by that O(1) lookup with MergeSort.Sort, the same
+    // custom-comparer shape ArrayPartition and TwoCityScheduling use.
     public static int[] RelativeSortByHashMapMergeSort(int[] arr1, int[] arr2)
     {
         var rank = new HashMap<int, int>();
@@ -57,7 +55,7 @@ internal static class RelativeSortArraySolution
             return aKey != bKey ? aKey.CompareTo(bKey) : a.CompareTo(b);
         });
 
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted), byRelativeOrder);
+        MergeSort.Sort(sorted, byRelativeOrder);
         return sorted;
     }
 }

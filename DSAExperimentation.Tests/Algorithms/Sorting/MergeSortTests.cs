@@ -87,6 +87,37 @@ public sealed partial class MergeSortTests
         Assert.Equal(ToArray(arraySequence), ToArray(dynamicArraySequence));
     }
 
+    [Fact]
+    public void Sort_Array_SortsTheArrayInPlace()
+    {
+        int[] values = [5, 3, 8, 1, 9, 2, 7];
+
+        MergeSort.Sort(values);
+
+        Assert.Equal([1, 2, 3, 5, 7, 8, 9], values);
+    }
+
+    [Fact]
+    public void Sort_ArrayWithComparer_SortsByTheComparer()
+    {
+        string[] words = ["pear", "Apple", "fig", "apple"];
+
+        MergeSort.Sort(words, StringComparer.Ordinal);
+
+        Assert.Equal(["Apple", "apple", "fig", "pear"], words);
+    }
+
+    [Fact]
+    public void Sort_ArrayWithComparer_KeepsEqualKeysInTheirOriginalOrder()
+    {
+        (int Key, char Label)[] pairs = [(2, 'a'), (1, 'b'), (2, 'c'), (1, 'd')];
+        var byKey = Comparer<(int Key, char Label)>.Create((left, right) => left.Key.CompareTo(right.Key));
+
+        MergeSort.Sort(pairs, byKey);
+
+        Assert.Equal([(1, 'b'), (1, 'd'), (2, 'a'), (2, 'c')], pairs);
+    }
+
     private static int[] ToArray<TSequence>(TSequence sequence)
         where TSequence : struct, IIndexedSequence<int>
     {

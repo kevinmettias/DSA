@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MergeSimilarItems;
 
@@ -108,7 +107,7 @@ internal static class MergeSimilarItemsSolution
     private static int[] SortedDistinctValues(HashMap<int, int> totals)
     {
         var values = totals.Keys.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(values));
+        MergeSort.Sort(values);
 
         return values;
     }

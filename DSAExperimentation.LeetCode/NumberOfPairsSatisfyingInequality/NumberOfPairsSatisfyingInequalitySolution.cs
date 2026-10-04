@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.NumberOfPairsSatisfyingInequality;
 
@@ -48,17 +47,16 @@ internal static class NumberOfPairsSatisfyingInequalitySolution
     {
         var differences = DifferencesOf(nums1, nums2);
         var sortedDistinct = differences.Distinct().OrderBy(value => value).ToArray();
-        var sequence = new ArraySequence<int>(sortedDistinct);
         var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
 
         var count = 0L;
 
         foreach (var value in differences)
         {
-            var upperRank = BinarySearch.UpperBound(sequence, value + diff);
+            var upperRank = BinarySearch.UpperBound(sortedDistinct, value + diff);
             count += upperRank == 0 ? 0 : tree.PrefixQuery(upperRank - 1);
 
-            var ownRank = BinarySearch.LowerBound(sequence, value);
+            var ownRank = BinarySearch.LowerBound(sortedDistinct, value);
             tree.Add(ownRank, 1);
         }
 

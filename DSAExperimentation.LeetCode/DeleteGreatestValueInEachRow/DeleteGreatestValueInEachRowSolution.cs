@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.DeleteGreatestValueInEachRow;
 
@@ -79,7 +78,7 @@ internal static class DeleteGreatestValueInEachRowSolution
 
         foreach (var row in rows)
         {
-            MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(row));
+            MergeSort.Sort(row);
         }
 
         var sum = 0;

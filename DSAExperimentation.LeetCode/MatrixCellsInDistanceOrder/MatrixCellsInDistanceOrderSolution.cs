@@ -2,7 +2,6 @@ using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Grids;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MatrixCellsInDistanceOrder;
 
@@ -57,9 +56,7 @@ internal static class MatrixCellsInDistanceOrderSolution
 
         var cells = distances.Select(entry => (entry.Key.Row, entry.Key.Col, Distance: entry.Value)).ToArray();
 
-        MergeSort.Sort<(int Row, int Col, int Distance), ArrayIndexedSequence<(int Row, int Col, int Distance)>>(
-            new ArrayIndexedSequence<(int Row, int Col, int Distance)>(cells),
-            Comparer<(int Row, int Col, int Distance)>.Create(ByDistance));
+        MergeSort.Sort(cells, Comparer<(int Row, int Col, int Distance)>.Create(ByDistance));
 
         return ToRowColPairs(cells);
     }

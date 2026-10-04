@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.SearchSuggestionsSystem;
 
@@ -81,26 +80,24 @@ internal static class SearchSuggestionsSystemSolution
     public static List<string[]> SuggestedProductsBySortedPrefixSearch(string[] products, string searchWord)
     {
         var sorted = (string[])products.Clone();
-        MergeSort.Sort<string, ArrayIndexedSequence<string>>(
-            new ArrayIndexedSequence<string>(sorted), StringComparer.Ordinal);
+        MergeSort.Sort(sorted, StringComparer.Ordinal);
 
-        var sequence = new ArraySequence<string>(sorted);
         var result = new List<string[]>(searchWord.Length);
         var prefix = string.Empty;
 
         foreach (var character in searchWord)
         {
             prefix += character;
-            var matches = MatchesFromLowerBound(sorted, sequence, prefix);
+            var matches = MatchesFromLowerBound(sorted, prefix);
             result.Add(matches);
         }
 
         return result;
     }
 
-    private static string[] MatchesFromLowerBound(string[] sorted, ArraySequence<string> sequence, string prefix)
+    private static string[] MatchesFromLowerBound(string[] sorted, string prefix)
     {
-        var start = BinarySearch.LowerBound(sequence, prefix, StringComparer.Ordinal);
+        var start = BinarySearch.LowerBound(sorted, prefix, StringComparer.Ordinal);
         var matches = new List<string>(MaxSuggestions);
 
         for (var i = start; i < sorted.Length && matches.Count < MaxSuggestions; i++)

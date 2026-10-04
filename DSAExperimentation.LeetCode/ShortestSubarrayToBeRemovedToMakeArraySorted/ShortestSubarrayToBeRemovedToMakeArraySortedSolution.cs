@@ -65,7 +65,7 @@ internal static class ShortestSubarrayToBeRemovedToMakeArraySortedSolution
     // suffix ([right, n-1]) in O(n) - plain array scanning, no primitive needed for
     // that half. What DOES compose this repo's own primitives is stitching the two
     // runs together: for every prefix index i, this repo's own BinarySearch.LowerBound
-    // over an ArraySequence<int> witness wrapping the (already-sorted) suffix slice
+    // over an OffsetSequence<int> window onto the (already-sorted) suffix, uncopied,
     // finds the smallest suffix value >= arr[i] in O(log n) instead of a second
     // nested scan - the same "search on a derived monotonic sequence" idiom
     // MinimumSizeSubarraySum and ReversePairs already establish, here applied to the
@@ -118,7 +118,7 @@ internal static class ShortestSubarrayToBeRemovedToMakeArraySortedSolution
         var n = arr.Length;
         var best = Math.Min(n - left - 1, right);
 
-        var suffix = new ArraySequence<int>(arr[right..]);
+        var suffix = new OffsetSequence<int>(arr, right, n - right);
 
         for (var i = 0; i <= left; i++)
         {

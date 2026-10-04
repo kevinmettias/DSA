@@ -13,8 +13,35 @@ namespace DSAExperimentation.Algorithms.Searching;
 // error and no failing test to catch it. Find's duplicate targets resolve to some
 // matching index, not necessarily the leftmost one - use LowerBound/UpperBound below
 // when the leftmost/rightmost occurrence (or the whole run of equal elements) matters.
+//
+// Each search also takes a plain Element[], wrapping it in ArraySequence for the caller, as Reduce's
+// natural-child-order overloads pick NaturalChildOrder: the bisection never sees the array, only the
+// witness, so the instantiation that runs is the one a caller spelling it out would get. No call can
+// reach the overload it did not mean: an Element[] fails TSequence's struct constraint, and no sequence
+// witness converts to an Element[].
 internal static class BinarySearch
 {
+    public static int? Find<Element>(Element[] items, Element target)
+        where Element : IComparable<Element>
+        => Find<Element, ArraySequence<Element>>(new ArraySequence<Element>(items), target);
+
+    public static int? Find<Element>(Element[] items, Element target, IComparer<Element> comparer)
+        => Find<Element, ArraySequence<Element>>(new ArraySequence<Element>(items), target, comparer);
+
+    public static int LowerBound<Element>(Element[] items, Element target)
+        where Element : IComparable<Element>
+        => LowerBound<Element, ArraySequence<Element>>(new ArraySequence<Element>(items), target);
+
+    public static int LowerBound<Element>(Element[] items, Element target, IComparer<Element> comparer)
+        => LowerBound<Element, ArraySequence<Element>>(new ArraySequence<Element>(items), target, comparer);
+
+    public static int UpperBound<Element>(Element[] items, Element target)
+        where Element : IComparable<Element>
+        => UpperBound<Element, ArraySequence<Element>>(new ArraySequence<Element>(items), target);
+
+    public static int UpperBound<Element>(Element[] items, Element target, IComparer<Element> comparer)
+        => UpperBound<Element, ArraySequence<Element>>(new ArraySequence<Element>(items), target, comparer);
+
     public static int? Find<Element, TSequence>(TSequence sequence, Element target)
         where TSequence : struct, IRandomAccessSequence<Element>
         where Element : IComparable<Element>

@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.WiggleSortII;
 
@@ -40,7 +39,7 @@ internal static class WiggleSortIISolution
     public static void WiggleSortByMergeSort(int[] nums)
     {
         var sorted = (int[])nums.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         InterleaveReversedHalves(sorted, nums);
     }

@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.HeightChecker;
 
@@ -43,7 +42,7 @@ internal static class HeightCheckerSolution
     public static int CountMismatchesByMergeSort(int[] heights)
     {
         var expected = heights.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(expected));
+        MergeSort.Sort(expected);
 
         return CountMismatches(heights, expected);
     }

@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<long, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<long>>;
 
@@ -80,7 +79,7 @@ internal static class MaximumSumQueriesSolution
     {
         var distinct = nums2.Distinct().ToArray();
 
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(distinct));
+        MergeSort.Sort(distinct);
 
         return distinct;
     }
@@ -108,11 +107,10 @@ internal static class MaximumSumQueriesSolution
         int[] nums1, int[] nums2, int[] distinctNums2)
     {
         var pairs = new (int Nums1, int Rank, long Sum)[nums1.Length];
-        var ranks = new ArraySequence<int>(distinctNums2);
 
         for (var j = 0; j < nums1.Length; j++)
         {
-            var rank = BinarySearch.LowerBound(ranks, nums2[j]);
+            var rank = BinarySearch.LowerBound(distinctNums2, nums2[j]);
             pairs[j] = (nums1[j], rank, (long)nums1[j] + nums2[j]);
         }
 
@@ -122,10 +120,8 @@ internal static class MaximumSumQueriesSolution
     private static void SortPairsByNums1Descending((int Nums1, int Rank, long Sum)[] pairs)
     {
         var byNums1Descending = Comparer<(int Nums1, int Rank, long Sum)>.Create((a, b) => b.Nums1.CompareTo(a.Nums1));
-        var sequence = new ArrayIndexedSequence<(int Nums1, int Rank, long Sum)>(pairs);
 
-        MergeSort.Sort<(int Nums1, int Rank, long Sum), ArrayIndexedSequence<(int Nums1, int Rank, long Sum)>>(
-            sequence, byNums1Descending);
+        MergeSort.Sort(pairs, byNums1Descending);
     }
 
     private static (int X, int Y, int OriginalIndex)[] BuildQueriesDescendingByX(int[][] queries)
@@ -153,10 +149,8 @@ internal static class MaximumSumQueriesSolution
     private static void SortQueriesByXDescending((int X, int Y, int OriginalIndex)[] sorted)
     {
         var byXDescending = Comparer<(int X, int Y, int OriginalIndex)>.Create((a, b) => b.X.CompareTo(a.X));
-        var sequence = new ArrayIndexedSequence<(int X, int Y, int OriginalIndex)>(sorted);
 
-        MergeSort.Sort<(int X, int Y, int OriginalIndex), ArrayIndexedSequence<(int X, int Y, int OriginalIndex)>>(
-            sequence, byXDescending);
+        MergeSort.Sort(sorted, byXDescending);
     }
 
     private static int AdmitPairsUpTo(
@@ -176,7 +170,7 @@ internal static class MaximumSumQueriesSolution
 
     private static int BestSumAtLeast(RepoSegmentTree tree, int[] distinctNums2, int minimumNums2)
     {
-        var lowerRank = BinarySearch.LowerBound(new ArraySequence<int>(distinctNums2), minimumNums2);
+        var lowerRank = BinarySearch.LowerBound(distinctNums2, minimumNums2);
 
         if (lowerRank >= distinctNums2.Length)
         {

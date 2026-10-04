@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.HIndex;
 
@@ -45,7 +44,7 @@ internal static class HIndexSolution
     public static int HIndexByMergeSortScan(int[] citations)
     {
         var sorted = citations.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         var h = 0;
         for (var i = sorted.Length - 1; i >= 0; i--)

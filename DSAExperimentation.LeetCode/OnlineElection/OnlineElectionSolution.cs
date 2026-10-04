@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.OnlineElection;
 
@@ -66,12 +65,11 @@ internal static class OnlineElectionSolution
     public static int[] LeadersByPrecomputedBinarySearch(int[] persons, int[] times, int[] queries)
     {
         var leaderAfterVote = LeaderAfterEachVote(persons);
-        var voteTimes = new ArraySequence<int>(times);
         var leaders = new int[queries.Length];
 
         for (var i = 0; i < queries.Length; i++)
         {
-            var index = BinarySearch.UpperBound(voteTimes, queries[i]) - 1;
+            var index = BinarySearch.UpperBound(times, queries[i]) - 1;
             leaders[i] = leaderAfterVote[index];
         }
 

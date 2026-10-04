@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MaximumMedianSumOfSubsequencesOfSizeThree;
 
@@ -35,7 +34,7 @@ internal static class MaximumMedianSumOfSubsequencesOfSizeThreeSolution
     {
         var sorted = (int[])nums.Clone();
 
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         var sum = 0L;
 

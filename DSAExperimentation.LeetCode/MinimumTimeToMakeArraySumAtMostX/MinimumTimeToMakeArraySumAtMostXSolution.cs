@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MinimumTimeToMakeArraySumAtMostX;
 
@@ -92,8 +91,7 @@ internal static class MinimumTimeToMakeArraySumAtMostXSolution
     {
         var byNums2Ascending = Comparer<(int Nums1, int Nums2)>.Create((a, b) => a.Nums2.CompareTo(b.Nums2));
 
-        MergeSort.Sort<(int Nums1, int Nums2), ArrayIndexedSequence<(int Nums1, int Nums2)>>(
-            new ArrayIndexedSequence<(int Nums1, int Nums2)>(pairs), byNums2Ascending);
+        MergeSort.Sort(pairs, byNums2Ascending);
     }
 
     private static (int Nums1, int Nums2)[] Pairs(int[] nums1, int[] nums2)

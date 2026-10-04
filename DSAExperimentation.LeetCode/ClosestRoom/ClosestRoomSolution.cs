@@ -89,8 +89,8 @@ internal static class ClosestRoomSolution
             roomEntries[i] = new Room(rooms[i][0], rooms[i][1]);
         }
 
-        MergeSort.Sort<Room, ArrayIndexedSequence<Room>>(
-            new ArrayIndexedSequence<Room>(roomEntries),
+        MergeSort.Sort(
+            roomEntries,
             Comparer<Room>.Create((first, second) => second.Size.CompareTo(first.Size)));
 
         return roomEntries;
@@ -104,8 +104,8 @@ internal static class ClosestRoomSolution
             queryEntries[i] = new Query(queries[i][0], queries[i][1], i);
         }
 
-        MergeSort.Sort<Query, ArrayIndexedSequence<Query>>(
-            new ArrayIndexedSequence<Query>(queryEntries),
+        MergeSort.Sort(
+            queryEntries,
             Comparer<Query>.Create((first, second) => second.MinSize.CompareTo(first.MinSize)));
 
         return queryEntries;

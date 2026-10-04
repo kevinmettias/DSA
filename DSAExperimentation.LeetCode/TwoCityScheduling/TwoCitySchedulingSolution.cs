@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.TwoCityScheduling;
 
@@ -48,8 +47,7 @@ internal static class TwoCitySchedulingSolution
         var byCostDifferenceAscending = Comparer<(int ACost, int BCost)>.Create(
             (a, b) => (a.ACost - a.BCost).CompareTo(b.ACost - b.BCost));
 
-        MergeSort.Sort<(int ACost, int BCost), ArrayIndexedSequence<(int ACost, int BCost)>>(
-            new ArrayIndexedSequence<(int ACost, int BCost)>(items), byCostDifferenceAscending);
+        MergeSort.Sort(items, byCostDifferenceAscending);
 
         return SumCheapestHalfFirst(items);
     }

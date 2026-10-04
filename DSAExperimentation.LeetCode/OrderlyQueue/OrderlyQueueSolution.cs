@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.DataStructures.SuffixArray;
 
 namespace DSAExperimentation.LeetCode.OrderlyQueue;
@@ -62,7 +61,7 @@ internal static class OrderlyQueueSolution
         if (movablePrefixLength > RotationOnly)
         {
             var chars = text.ToCharArray();
-            MergeSort.Sort<char, ArrayIndexedSequence<char>>(new ArrayIndexedSequence<char>(chars));
+            MergeSort.Sort(chars);
             return new string(chars);
         }
 

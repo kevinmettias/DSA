@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MaximumNumberOfGroupsWithIncreasingLength;
 
@@ -55,7 +54,7 @@ internal static class MaximumNumberOfGroupsWithIncreasingLengthSolution
     public static int MaxIncreasingGroupsByMergeSort(int[] usageLimits)
     {
         var sorted = (int[])usageLimits.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         return GreedySweep(sorted);
     }

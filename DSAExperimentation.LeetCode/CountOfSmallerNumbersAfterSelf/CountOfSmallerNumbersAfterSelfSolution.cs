@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.CountOfSmallerNumbersAfterSelf;
 
@@ -42,13 +41,12 @@ internal static class CountOfSmallerNumbersAfterSelfSolution
     public static int[] CountSmallerByFenwickTreeSweep(int[] nums)
     {
         var sortedDistinct = nums.Distinct().OrderBy(value => value).ToArray();
-        var sequence = new ArraySequence<int>(sortedDistinct);
         var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
         var counts = new int[nums.Length];
 
         for (var i = nums.Length - 1; i >= 0; i--)
         {
-            var rank = BinarySearch.LowerBound(sequence, nums[i]);
+            var rank = BinarySearch.LowerBound(sortedDistinct, nums[i]);
             counts[i] = rank == 0 ? 0 : tree.PrefixQuery(rank - 1);
             tree.Add(rank, 1);
         }

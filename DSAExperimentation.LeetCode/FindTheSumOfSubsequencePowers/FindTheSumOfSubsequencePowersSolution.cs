@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.FindTheSumOfSubsequencePowers;
@@ -53,7 +52,7 @@ internal static class FindTheSumOfSubsequencePowersSolution
     private static int[] SortedByRepoSort(int[] values)
     {
         var sorted = (int[])values.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         return sorted;
     }

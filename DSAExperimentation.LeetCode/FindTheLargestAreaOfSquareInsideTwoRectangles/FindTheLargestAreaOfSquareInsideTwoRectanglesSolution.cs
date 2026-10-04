@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.FindTheLargestAreaOfSquareInsideTwoRectangles;
 
@@ -55,7 +54,7 @@ internal static class FindTheLargestAreaOfSquareInsideTwoRectanglesSolution
         }
 
         var byLeftX = Comparer<int>.Create((x, y) => bottomLeft[x][0].CompareTo(bottomLeft[y][0]));
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(order), byLeftX);
+        MergeSort.Sort(order, byLeftX);
 
         var bestSide = 0;
 

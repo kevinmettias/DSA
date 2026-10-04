@@ -79,7 +79,7 @@ internal static class MaximumTotalBeautyOfTheGardensSolution
         int[] flowers, long newFlowers, int target, BeautyWeights weights)
     {
         var sorted = (int[])flowers.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         var (context, prefixSum, suffixCost) =
             PrepareSplitState(sorted, newFlowers, target, weights);

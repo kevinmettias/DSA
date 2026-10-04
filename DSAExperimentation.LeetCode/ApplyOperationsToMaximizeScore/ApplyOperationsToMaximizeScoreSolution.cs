@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.ApplyOperationsToMaximizeScore;
@@ -114,8 +113,8 @@ internal static class ApplyOperationsToMaximizeScoreSolution
     {
         var order = IndexedValues(nums);
 
-        MergeSort.Sort<IndexedValue, ArrayIndexedSequence<IndexedValue>>(
-            new ArrayIndexedSequence<IndexedValue>(order),
+        MergeSort.Sort(
+            order,
             Comparer<IndexedValue>.Create((first, second) => second.Value.CompareTo(first.Value)));
 
         return order;

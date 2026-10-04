@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MaximumProductDifferenceBetweenTwoPairs;
 
@@ -44,7 +43,7 @@ internal static class MaximumProductDifferenceBetweenTwoPairsSolution
     public static int MaxProductDifferenceByMergeSortExtremes(int[] nums)
     {
         var sorted = nums.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         var n = sorted.Length;
         return (sorted[n - 1] * sorted[n - SecondFromEndOffset]) - (sorted[0] * sorted[1]);

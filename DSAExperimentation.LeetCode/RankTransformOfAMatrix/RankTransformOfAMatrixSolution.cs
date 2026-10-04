@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.DisjointSet;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.RankTransformOfAMatrix;
 
@@ -134,8 +133,7 @@ internal static class RankTransformOfAMatrixSolution
     private static void SortCellsByValue((int Value, int Row, int Col)[] cells)
     {
         var byValue = Comparer<(int Value, int Row, int Col)>.Create((a, b) => a.Value.CompareTo(b.Value));
-        MergeSort.Sort<(int Value, int Row, int Col), ArrayIndexedSequence<(int Value, int Row, int Col)>>(
-            new ArrayIndexedSequence<(int Value, int Row, int Col)>(cells), byValue);
+        MergeSort.Sort(cells, byValue);
     }
 
     private static int[][] CreateEmptyResult(int rows, int cols)

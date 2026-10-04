@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.RemoveSubFoldersFromTheFilesystem;
 
@@ -51,8 +50,8 @@ internal static class RemoveSubFoldersFromTheFilesystemSolution
 
     // Sorting ordinally puts every folder immediately after its own ancestors, so a
     // single linear scan only ever has to compare against the last folder it kept.
-    // The sort is this repo's own MergeSort over an ArrayIndexedSequence<string>,
-    // ordinal-compared so the result never depends on the current culture.
+    // The sort is this repo's own MergeSort, ordinal-compared so the result never
+    // depends on the current culture.
     //
     // The input array is copied first: MergeSort sorts in place, and a strategy that
     // reordered the caller's array would make the two arms non-interchangeable on the
@@ -61,8 +60,7 @@ internal static class RemoveSubFoldersFromTheFilesystemSolution
     public static List<string> RemoveSubfoldersByMergeSortThenScan(string[] folders)
     {
         var sorted = folders.ToArray();
-        var sequence = new ArrayIndexedSequence<string>(sorted);
-        MergeSort.Sort<string, ArrayIndexedSequence<string>>(sequence, StringComparer.Ordinal);
+        MergeSort.Sort(sorted, StringComparer.Ordinal);
 
         var kept = new List<string>();
         string? lastKept = null;

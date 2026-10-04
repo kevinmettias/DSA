@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MinimumLinesToRepresentALineChart;
 
@@ -73,8 +72,7 @@ internal static class MinimumLinesToRepresentALineChartSolution
     {
         var points = ToPointsByDay(stockPrices);
         var byDay = Comparer<(int Day, int Price)>.Create((a, b) => a.Day.CompareTo(b.Day));
-        MergeSort.Sort<(int Day, int Price), ArrayIndexedSequence<(int Day, int Price)>>(
-            new ArrayIndexedSequence<(int Day, int Price)>(points), byDay);
+        MergeSort.Sort(points, byDay);
 
         return CountLinesByIntegerSlope(points);
     }

@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.ThreeSum;
 
@@ -54,7 +53,7 @@ internal static class ThreeSumSolution
     public static List<(int First, int Second, int Third)> FindTripletsByMergeSortTwoPointers(int[] nums)
     {
         var sorted = nums.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         var results = new List<(int First, int Second, int Third)>();
 

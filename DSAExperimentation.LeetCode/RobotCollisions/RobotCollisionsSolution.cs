@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.RobotCollisions;
@@ -10,8 +9,8 @@ namespace DSAExperimentation.LeetCode.RobotCollisions;
 // survivors in the order the robots were given.
 //
 // Both strategies establish position order the same way - this repo's own
-// MergeSort.Sort<Element,TSequence> over an ArrayIndexedSequence of
-// (Position, Index) pairs, the same custom-comparer shape
+// MergeSort.Sort over an array of (Position, Index) pairs, the same
+// custom-comparer shape
 // QueueReconstructionByHeightSolution uses - so the only difference between
 // them is how collisions are resolved afterward.
 internal static class RobotCollisionsSolution
@@ -140,8 +139,7 @@ internal static class RobotCollisionsSolution
         var ascendingByPosition = Comparer<(int Position, int Index)>.Create(
             (a, b) => a.Position.CompareTo(b.Position));
 
-        MergeSort.Sort<(int Position, int Index), ArrayIndexedSequence<(int Position, int Index)>>(
-            new ArrayIndexedSequence<(int Position, int Index)>(byPosition), ascendingByPosition);
+        MergeSort.Sort(byPosition, ascendingByPosition);
 
         return [.. byPosition.Select(item => item.Index)];
     }

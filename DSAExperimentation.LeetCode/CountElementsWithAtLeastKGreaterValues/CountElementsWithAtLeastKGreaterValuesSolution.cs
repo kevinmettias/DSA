@@ -49,7 +49,7 @@ internal static class CountElementsWithAtLeastKGreaterValuesSolution
     public static int CountQualifiedBySortedUpperBound(int[] nums, int requiredGreaterCount)
     {
         var sorted = (int[])nums.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         return CountQualifiedBySortedUpperBound(new ArraySequence<int>(sorted), requiredGreaterCount);
     }

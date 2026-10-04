@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountKSubsequencesOfAStringWithMaximumBeauty;
@@ -120,7 +119,7 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
 
         var values = chars.Select(c => frequency[c]).ToArray();
         var descending = Comparer<int>.Create((a, b) => b.CompareTo(a));
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(values), descending);
+        MergeSort.Sort(values, descending);
 
         var product = 1L;
         var remaining = subsequenceLength;

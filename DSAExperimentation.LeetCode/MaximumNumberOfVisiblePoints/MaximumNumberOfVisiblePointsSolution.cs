@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MaximumNumberOfVisiblePoints;
 
@@ -71,7 +70,7 @@ internal static class MaximumNumberOfVisiblePointsSolution
     {
         var (angles, atLocation) = CollectAngles(points, location);
 
-        MergeSort.Sort<double, ArrayIndexedSequence<double>>(new ArrayIndexedSequence<double>(angles));
+        MergeSort.Sort(angles);
 
         var doubled = DuplicateWithWrap(angles);
         var widestWindow = WidestWindow(doubled, angle);

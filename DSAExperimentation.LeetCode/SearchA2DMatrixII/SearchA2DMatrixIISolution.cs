@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.SearchA2DMatrixII;
 
@@ -33,14 +32,13 @@ internal static class SearchA2DMatrixIISolution
     }
 
     // Each row is independently sorted ascending, so this repo's own
-    // BinarySearch.Find over an ArraySequence<int> witness finds a target
+    // BinarySearch.Find over each row's array finds a target
     // within one row in O(log cols) - O(rows * log cols) overall.
     public static bool HasTargetByPerRowBinarySearch(int[][] matrix, int target)
     {
         foreach (var row in matrix)
         {
-            var sequence = new ArraySequence<int>(row);
-            if (BinarySearch.Find(sequence, target) is not null)
+            if (BinarySearch.Find(row, target) is not null)
             {
                 return true;
             }

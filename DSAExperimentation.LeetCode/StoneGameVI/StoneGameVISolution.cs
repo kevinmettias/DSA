@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 using Stone = (int Alice, int Bob);
 
 namespace DSAExperimentation.LeetCode.StoneGameVI;
@@ -48,8 +47,7 @@ internal static class StoneGameVISolution
     {
         var stones = PairBySwing(aliceValues, bobValues);
 
-        MergeSort.Sort<Stone, ArrayIndexedSequence<Stone>>(
-            new ArrayIndexedSequence<Stone>(stones), BySwingDescending);
+        MergeSort.Sort(stones, BySwingDescending);
 
         return OutcomeOfAlternatingPicks(stones);
     }

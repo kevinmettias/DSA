@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.RandomPointInNonOverlappingRectangles;
 
@@ -44,9 +43,8 @@ internal static class RandomPointInNonOverlappingRectanglesSolution
 
     public static int[] PickByBinarySearchUpperBound(int[][] rects, int[] prefixAreas, Random random)
     {
-        var sequence = new ArraySequence<int>(prefixAreas);
         var draw = random.Next(prefixAreas[^1]);
-        var index = BinarySearch.UpperBound(sequence, draw);
+        var index = BinarySearch.UpperBound(prefixAreas, draw);
 
         return PointWithin(rects[index], random);
     }

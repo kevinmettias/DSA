@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.HandOfStraights;
 
@@ -125,7 +124,7 @@ internal static class HandOfStraightsSolution
     private static int[] SortedCopy(int[] hand)
     {
         var sortedHand = (int[])hand.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedHand));
+        MergeSort.Sort(sortedHand);
 
         return sortedHand;
     }

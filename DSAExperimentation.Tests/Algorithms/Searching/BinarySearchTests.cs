@@ -242,6 +242,68 @@ public sealed partial class BinarySearchTests
     }
 
     [Fact]
+    public void Find_Array_ReturnsIndexOfTarget()
+    {
+        int[] items = [1, 3, 5, 7, 9];
+
+        var index = BinarySearch.Find(items, 7);
+
+        Assert.Equal(3, index);
+    }
+
+    [Fact]
+    public void Find_ArrayWithComparer_UsesComparerInsteadOfDefaultOrder()
+    {
+        int[] items = [9, 7, 5, 3, 1];
+        var descendingComparer = Comparer<int>.Create((left, right) => right.CompareTo(left));
+
+        var index = BinarySearch.Find(items, 3, descendingComparer);
+
+        Assert.Equal(3, index);
+    }
+
+    [Fact]
+    public void LowerBound_Array_ReturnsFirstIndexNotBeforeTarget()
+    {
+        long[] items = [1, 3, 3, 3, 9];
+
+        var index = BinarySearch.LowerBound(items, 3);
+
+        Assert.Equal(1, index);
+    }
+
+    [Fact]
+    public void LowerBound_ArrayWithComparer_UsesComparerInsteadOfDefaultOrder()
+    {
+        string[] items = ["Apple", "apple", "banana"];
+
+        var index = BinarySearch.LowerBound(items, "apple", StringComparer.Ordinal);
+
+        Assert.Equal(1, index);
+    }
+
+    [Fact]
+    public void UpperBound_Array_ReturnsIndexPastLastOccurrence()
+    {
+        int[] items = [1, 3, 3, 3, 9];
+
+        var index = BinarySearch.UpperBound(items, 3);
+
+        Assert.Equal(4, index);
+    }
+
+    [Fact]
+    public void UpperBound_ArrayWithComparer_UsesComparerInsteadOfDefaultOrder()
+    {
+        int[] items = [9, 7, 5, 5, 3, 1];
+        var descendingComparer = Comparer<int>.Create((left, right) => right.CompareTo(left));
+
+        var index = BinarySearch.UpperBound(items, 5, descendingComparer);
+
+        Assert.Equal(4, index);
+    }
+
+    [Fact]
     public void LowerBoundAndUpperBound_TargetAbsent_ProduceEmptyRange()
     {
         var sequence = new ArraySequence<int>([1, 3, 5, 7, 9]);

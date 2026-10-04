@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MinimumDeletionsToMakeArrayDivisible;
 
@@ -56,14 +55,14 @@ internal static class MinimumDeletionsToMakeArrayDivisibleSolution
         return count;
     }
 
-    // Sort nums once with this repo's own MergeSort over ArrayIndexedSequence<int>, then walk
+    // Sort nums once with this repo's own MergeSort, then walk
     // it for the first value that divides the gcd - every element before it has to go, and
     // nothing after it is cheaper. O(n log n) plus one scan.
     public static int MinDeletionsByMergeSort(int[] nums, int[] numsDivide)
     {
         var divisor = GcdOfArray(numsDivide);
         var sorted = nums.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         for (var i = 0; i < sorted.Length; i++)
         {

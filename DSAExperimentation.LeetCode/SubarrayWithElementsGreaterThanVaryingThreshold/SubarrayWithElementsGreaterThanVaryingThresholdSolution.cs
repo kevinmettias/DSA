@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.DisjointSet;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.SubarrayWithElementsGreaterThanVaryingThreshold;
 
@@ -85,8 +84,7 @@ internal static class SubarrayWithElementsGreaterThanVaryingThresholdSolution
         var order = Enumerable.Range(0, nums.Length).ToArray();
         var byDescendingValueThenIndex = Comparer<int>.Create((a, b) => CompareByValueDescending(nums, a, b));
 
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(
-            new ArrayIndexedSequence<int>(order), byDescendingValueThenIndex);
+        MergeSort.Sort(order, byDescendingValueThenIndex);
 
         return order;
     }

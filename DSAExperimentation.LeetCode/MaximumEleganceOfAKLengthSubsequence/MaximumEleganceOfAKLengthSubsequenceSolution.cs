@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.DataStructures.Set;
 
 using BclProfitStack = System.Collections.Generic.Stack<int>;
@@ -123,8 +122,7 @@ internal static class MaximumEleganceOfAKLengthSubsequenceSolution
         var sorted = items.Select(item => (Profit: item[0], Category: item[1])).ToArray();
         var byProfitDescending = Comparer<(int Profit, int Category)>.Create((a, b) => b.Profit.CompareTo(a.Profit));
 
-        MergeSort.Sort<(int Profit, int Category), ArrayIndexedSequence<(int Profit, int Category)>>(
-            new ArrayIndexedSequence<(int Profit, int Category)>(sorted), byProfitDescending);
+        MergeSort.Sort(sorted, byProfitDescending);
 
         return sorted;
     }

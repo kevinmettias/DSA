@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MinimumSizeSubarraySum;
 
@@ -56,12 +55,11 @@ internal static class MinimumSizeSubarraySumSolution
             prefix[i + 1] = prefix[i] + nums[i];
         }
 
-        var sequence = new ArraySequence<int>(prefix);
         var best = int.MaxValue;
 
         for (var i = 0; i < nums.Length; i++)
         {
-            var end = BinarySearch.LowerBound<int, ArraySequence<int>>(sequence, target + prefix[i]);
+            var end = BinarySearch.LowerBound(prefix, target + prefix[i]);
 
             if (end <= nums.Length)
             {

@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.SortedGcdPairQueries;
 
@@ -119,5 +118,5 @@ internal sealed class GcdPairCountIndex
     // The smallest gcd value v for which more than rank pairs have gcd <= v - LC's
     // 0-indexed "k-th smallest" restated as a lower-bound lookup for rank + 1.
     public int KthSmallestGcd(int rank)
-        => BinarySearch.LowerBound<long, ArraySequence<long>>(new ArraySequence<long>(_cumulativePairCountUpTo), rank + 1);
+        => BinarySearch.LowerBound(_cumulativePairCountUpTo, rank + 1);
 }

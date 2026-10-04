@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.SpecialBinaryString;
 
@@ -100,7 +99,7 @@ internal static class SpecialBinaryStringSolution
             }
 
             var pieces = SplitIntoPieces(specialString, this).ToArray();
-            MergeSort.Sort<string, ArrayIndexedSequence<string>>(new ArrayIndexedSequence<string>(pieces), Descending);
+            MergeSort.Sort(pieces, Descending);
 
             return string.Concat(pieces);
         }

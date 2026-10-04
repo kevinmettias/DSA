@@ -84,7 +84,7 @@ internal static class NumberOfFlowersInFullBloomSolution
         SortTimes(ends);
     }
 
-    private static void SortTimes(int[] times) => MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(times));
+    private static void SortTimes(int[] times) => MergeSort.Sort(times);
 
     private static int[] CountBloomsPerPerson(
         int[] persons, ArraySequence<int> startSequence, ArraySequence<int> endSequence)

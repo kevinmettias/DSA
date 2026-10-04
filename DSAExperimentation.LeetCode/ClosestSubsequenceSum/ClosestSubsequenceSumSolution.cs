@@ -2,7 +2,6 @@ using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.ClosestSubsequenceSum;
 
@@ -59,9 +58,9 @@ internal static class ClosestSubsequenceSumSolution
         var mid = nums.Length / AlgorithmConstants.HalvingFactor;
         var leftSums = SubsetSums(nums[..mid]);
         var rightSums = SubsetSums(nums[mid..]).ToArray();
-        var sequence = SortAndWrap(rightSums);
+        MergeSort.Sort(rightSums);
 
-        return FindClosestSumToGoal(leftSums, rightSums, sequence, goal);
+        return FindClosestSumToGoal(leftSums, rightSums, goal);
     }
 
     // Every subset sum of one half, as a take/skip decision per position: the choice
@@ -107,26 +106,19 @@ internal static class ClosestSubsequenceSumSolution
         }
     }
 
-    private static ArraySequence<int> SortAndWrap(int[] rightSums)
-    {
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(rightSums));
-        return new ArraySequence<int>(rightSums);
-    }
-
     // LowerBound lands on the first right-hand sum that is not below the shortfall
     // goal - leftSum; the closest partner is that one or the one just before it, so
     // both are priced.
     private static int FindClosestSumToGoal(
         List<int> leftSums,
         int[] rightSums,
-        ArraySequence<int> sequence,
         int goal)
     {
         var best = int.MaxValue;
 
         foreach (var leftSum in leftSums)
         {
-            var index = BinarySearch.LowerBound<int, ArraySequence<int>>(sequence, goal - leftSum);
+            var index = BinarySearch.LowerBound(rightSums, goal - leftSum);
 
             if (index < rightSums.Length)
             {

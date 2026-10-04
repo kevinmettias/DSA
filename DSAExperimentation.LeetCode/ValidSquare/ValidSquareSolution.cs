@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.ValidSquare;
 
@@ -30,7 +29,7 @@ internal static class ValidSquareSolution
     public static bool IsValidSquareByMergeSort(int[][] points)
     {
         var distances = SquaredDistances(points);
-        MergeSort.Sort<long, ArrayIndexedSequence<long>>(new ArrayIndexedSequence<long>(distances));
+        MergeSort.Sort(distances);
 
         var side = distances[0];
         return side > 0

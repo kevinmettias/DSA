@@ -410,6 +410,19 @@ zero changes to `DynamicArray.cs` — exactly the demonstration §8's "implement
 argument calls for, using a structure this repo already had for an unrelated reason instead of a
 contrived second example.
 
+### 9.5 Array overloads: the witness picked for the caller
+
+Every search, and `MergeSort.Sort` (§11), also takes a plain `T[]` and wraps it in
+`ArraySequence`/`ArrayIndexedSequence` itself. Eighty-eight solution call sites spelled out
+`MergeSort.Sort<T, ArrayIndexedSequence<T>>(new ArrayIndexedSequence<T>(items))`, because a sequence
+type argument gives inference nothing to read `T` from, and more than forty solutions built an
+`ArraySequence` only to search it. This is the move `Reduce`'s "in the topology's own child order" overloads
+already make with `NaturalChildOrder`: one axis defaults to the witness the caller would have written
+anyway. The loops still bind to `IRandomAccessSequence`/`IIndexedSequence` alone and never see the
+array, so the instantiation that runs is the one the long spelling produced. What keeps a call from
+reaching the overload it did not mean is §17.4's argument, not arity: a `T[]` fails `TSequence`'s
+`struct` constraint, and no sequence witness converts to a `T[]`.
+
 ## 10. Worked example: `Collections/DisjointSet`
 
 > Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
@@ -543,7 +556,8 @@ into a type" recipe (§6), reducing `SortRange`/`Merge`/`MergeRunsIntoBuffer`/
 The comparer stays a plain `IComparer<T>` parameter, same §9.2 reasoning as `BinarySearch`'s: any
 `T`, any total order, is a valid comparer, an open-ended space no witness could usefully close
 over. There is no precondition law analogous to `BinarySearch`'s sortedness, either — sortedness
-is `MergeSort`'s postcondition, not an assumed input.
+is `MergeSort`'s postcondition, not an assumed input. `Sort` takes a plain `T[]` as well, for §9.5's
+reason; an array meets §11.2's aliasing law because it is a reference type.
 
 ### 11.4 Element algebras: one chain across four structures, and why §11.1 does not split it
 

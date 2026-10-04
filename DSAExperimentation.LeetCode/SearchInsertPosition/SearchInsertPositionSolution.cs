@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.SearchInsertPosition;
 
@@ -30,5 +29,5 @@ internal static class SearchInsertPositionSolution
     // LowerBound's own definition - "the leftmost index at which target could be
     // inserted without disturbing sort order" - is LeetCode's answer verbatim.
     public static int SearchInsertByBinarySearchLowerBound(int[] nums, int target) =>
-        BinarySearch.LowerBound(new ArraySequence<int>(nums), target);
+        BinarySearch.LowerBound(nums, target);
 }

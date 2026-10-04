@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.ShortestUnsortedContinuousSubarray;
 
@@ -35,12 +34,12 @@ internal static class ShortestUnsortedContinuousSubarraySolution
         return UnsortedSpanLength(nums, sorted);
     }
 
-    // This repo's own O(n log n) MergeSort over ArrayIndexedSequence - the same
-    // composition MaximumGapSolutionTests uses.
+    // This repo's own O(n log n) MergeSort - the same composition MaximumGapSolutionTests
+    // uses.
     public static int FindUnsortedSubarrayByMergeSortScan(int[] nums)
     {
         var sorted = nums.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        MergeSort.Sort(sorted);
 
         return UnsortedSpanLength(nums, sorted);
     }

@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MinimumNumberOfMovesToSeatEveryone;
 
@@ -63,7 +62,7 @@ internal static class MinimumNumberOfMovesToSeatEveryoneSolution
     private static int[] MergeSorted(int[] source)
     {
         var values = source.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(values));
+        MergeSort.Sort(values);
 
         return values;
     }
