@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<long, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<long>>;
 
@@ -60,8 +59,8 @@ internal static class MaximumBalancedSubsequenceSumSolution
     }
 
     // Composed: coordinate-compress b[i] = nums[i] - i via this repo's own
-    // BinarySearch.LowerBound over the sorted distinct b-values (same idiom
-    // CountOfSmallerNumbersAfterSelfSolutionTests uses for a Fenwick-tree sweep), then
+    // CompressedCoordinates (same idiom CountOfSmallerNumbersAfterSelfSolution
+    // uses for a Fenwick-tree sweep), then
     // sweep left to right through a SegmentTree<long, MaxOperation<long>> holding,
     // per rank, the best subsequence sum achieved by any earlier index whose
     // b-value compresses to that rank. Query(0, rank) reads the best sum among
@@ -78,9 +77,8 @@ internal static class MaximumBalancedSubsequenceSumSolution
             b[i] = (long)nums[i] - i;
         }
 
-        var sortedDistinct = b.Distinct().OrderBy(value => value).ToArray();
-        var sequence = new ArraySequence<long>(sortedDistinct);
-        var initial = new long[sortedDistinct.Length];
+        var coordinates = new CompressedCoordinates<long>(b);
+        var initial = new long[coordinates.Count];
         Array.Fill(initial, long.MinValue);
         var tree = new RepoSegmentTree(initial);
 
@@ -88,7 +86,7 @@ internal static class MaximumBalancedSubsequenceSumSolution
 
         for (var i = 0; i < n; i++)
         {
-            var dp = AdvanceSegmentTreeSweep(tree, sequence, b[i], nums[i]);
+            var dp = AdvanceSegmentTreeSweep(tree, coordinates, b[i], nums[i]);
             answer = Math.Max(answer, dp);
         }
 
@@ -99,9 +97,9 @@ internal static class MaximumBalancedSubsequenceSumSolution
     // among every b-value at or below it, then fold the new sum into the tree at
     // that rank - keeping the larger of what was already recorded and this sum.
     private static long AdvanceSegmentTreeSweep(
-        RepoSegmentTree tree, ArraySequence<long> sequence, long bValue, int value)
+        RepoSegmentTree tree, CompressedCoordinates<long> coordinates, long bValue, int value)
     {
-        var rank = BinarySearch.LowerBound(sequence, bValue);
+        var rank = coordinates.RankOf(bValue);
         var bestBefore = tree.Query(0, rank);
         var dp = value + Math.Max(0, bestBefore);
 

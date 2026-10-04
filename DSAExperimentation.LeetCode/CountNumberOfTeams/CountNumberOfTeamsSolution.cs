@@ -57,12 +57,12 @@ internal static class CountNumberOfTeamsSolution
         (first < middle && middle < last) || (first > middle && middle > last);
 
     // Each of the four counts comes from a coordinate-compressed sweep: rank a
-    // rating via BinarySearch.LowerBound/UpperBound over the sorted distinct
-    // values, tally it in a FenwickTree<int, SumOperation<int>> (this repo's own
-    // Binary Indexed Tree), and read the prefix sums back out. The same
-    // rank-then-Fenwick-sweep shape CountOfSmallerNumbersAfterSelfSolution uses,
-    // run once left-to-right and once right-to-left so every index learns how many
-    // soldiers on each side rank below and above it.
+    // rating via the CompressedCoordinates' LowerBound/UpperBound, tally it in a
+    // FenwickTree<int, SumOperation<int>> (this repo's own Binary Indexed Tree),
+    // and read the prefix sums back out. The same rank-then-Fenwick-sweep shape
+    // CountOfSmallerNumbersAfterSelfSolution uses, run once left-to-right and once
+    // right-to-left so every index learns how many soldiers on each side rank below
+    // and above it.
     public static int CountTeamsByFenwickSweeps(int[] rating)
     {
         var n = rating.Length;
@@ -71,10 +71,10 @@ internal static class CountNumberOfTeamsSolution
             return 0;
         }
 
-        var sortedDistinct = rating.Distinct().OrderBy(value => value).ToArray();
+        var coordinates = new CompressedCoordinates<int>(rating);
 
-        var (leftLess, leftGreater) = SweepCounts(rating, sortedDistinct, sortedDistinct.Length, SweepDirection.Forward);
-        var (rightLess, rightGreater) = SweepCounts(rating, sortedDistinct, sortedDistinct.Length, SweepDirection.Backward);
+        var (leftLess, leftGreater) = SweepCounts(rating, coordinates, SweepDirection.Forward);
+        var (rightLess, rightGreater) = SweepCounts(rating, coordinates, SweepDirection.Backward);
 
         var teams = 0;
         for (var j = 0; j < n; j++)
@@ -90,19 +90,19 @@ internal static class CountNumberOfTeamsSolution
     // SweepDirection.Backward walks right-to-left over the same indices to build
     // rightLess/rightGreater instead.
     private static (int[] Less, int[] Greater) SweepCounts(
-        int[] rating, int[] sortedDistinct, int distinctCount, SweepDirection direction)
+        int[] rating, CompressedCoordinates<int> coordinates, SweepDirection direction)
     {
         var n = rating.Length;
         var less = new int[n];
         var greater = new int[n];
-        var tree = new FenwickTree<int, SumOperation<int>>(distinctCount);
+        var tree = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
         var seenSoFar = 0;
 
         for (var step = 0; step < n; step++)
         {
             var j = direction == SweepDirection.Forward ? step : IndexFromEnd(step, n);
-            var lower = BinarySearch.LowerBound(sortedDistinct, rating[j]);
-            var upper = BinarySearch.UpperBound(sortedDistinct, rating[j]);
+            var lower = coordinates.LowerBound(rating[j]);
+            var upper = coordinates.UpperBound(rating[j]);
 
             less[j] = lower == 0 ? 0 : tree.PrefixQuery(lower - 1);
             var lessOrEqual = upper == 0 ? 0 : tree.PrefixQuery(upper - 1);

@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<int, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<int>>;
 
@@ -57,7 +56,7 @@ internal static class LengthOfTheLongestIncreasingPathSolution
     // (queried) against the tree before any of them is WRITTEN back, so two points
     // sharing an x - which can never both sit on a strictly increasing path - never
     // see each other as a valid predecessor. y is coordinate-compressed via this
-    // repo's own BinarySearch.LowerBound so the tree only needs as many leaves as
+    // repo's own CompressedCoordinates so the tree only needs as many leaves as
     // there are distinct y-values.
     private static int[] ChainLengths(int[][] points)
     {
@@ -68,10 +67,10 @@ internal static class LengthOfTheLongestIncreasingPathSolution
             return chain;
         }
 
-        var ySequence = new ArraySequence<long>(points.Select(p => (long)p[1]).Distinct().OrderBy(y => y).ToArray());
-        var tree = new RepoSegmentTree(new int[ySequence.Length]);
+        var yCoordinates = new CompressedCoordinates<long>(points.Select(p => (long)p[1]).ToArray());
+        var tree = new RepoSegmentTree(new int[yCoordinates.Count]);
         var sweep = Enumerable.Range(0, points.Length)
-            .Select(i => (Index: i, X: (long)points[i][0], Rank: BinarySearch.LowerBound(ySequence, (long)points[i][1])))
+            .Select(i => (Index: i, X: (long)points[i][0], Rank: yCoordinates.RankOf(points[i][1])))
             .OrderBy(point => point.X)
             .ToArray();
 

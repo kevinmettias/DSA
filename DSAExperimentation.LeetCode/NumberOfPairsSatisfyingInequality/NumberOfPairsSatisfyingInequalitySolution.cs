@@ -36,9 +36,9 @@ internal static class NumberOfPairsSatisfyingInequalitySolution
         return count;
     }
 
-    // Coordinate-compress the differences via the sorted distinct values, then
-    // sweep left to right: BinarySearch.UpperBound finds how many distinct values
-    // are <= d[j]+diff, and FenwickTree<int, SumOperation<int>>.PrefixQuery sums
+    // Coordinate-compress the differences via CompressedCoordinates, then sweep
+    // left to right: its UpperBound finds how many distinct values are
+    // <= d[j]+diff, and FenwickTree<int, SumOperation<int>>.PrefixQuery sums
     // how many already-swept d[i] (so i < j by construction) sit at or below that
     // rank. Add(ownRank, 1) admits the current element before moving on.
     // O(n log n) - the same compress-and-sweep shape LC 315 uses, generalized from
@@ -46,17 +46,17 @@ internal static class NumberOfPairsSatisfyingInequalitySolution
     public static long CountPairsByFenwickTreeSweep(int[] nums1, int[] nums2, int diff)
     {
         var differences = DifferencesOf(nums1, nums2);
-        var sortedDistinct = differences.Distinct().OrderBy(value => value).ToArray();
-        var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
+        var coordinates = new CompressedCoordinates<int>(differences);
+        var tree = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
 
         var count = 0L;
 
         foreach (var value in differences)
         {
-            var upperRank = BinarySearch.UpperBound(sortedDistinct, value + diff);
+            var upperRank = coordinates.UpperBound(value + diff);
             count += upperRank == 0 ? 0 : tree.PrefixQuery(upperRank - 1);
 
-            var ownRank = BinarySearch.LowerBound(sortedDistinct, value);
+            var ownRank = coordinates.RankOf(value);
             tree.Add(ownRank, 1);
         }
 

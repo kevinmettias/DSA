@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<long, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<long>>;
 
@@ -64,9 +63,9 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
         return (bestFromValley, bestFromPeak);
     }
 
-    // Composed: coordinate-compress nums via this repo's own BinarySearch.LowerBound
-    // over the sorted distinct values (the same idiom
-    // MaximumBalancedSubsequenceSumSolution uses for its own value-ranked sweep),
+    // Composed: coordinate-compress nums via this repo's own CompressedCoordinates
+    // (the same idiom MaximumBalancedSubsequenceSumSolution uses for its own
+    // value-ranked sweep),
     // then sweep left to right through two SegmentTree<long, MaxOperation<long>>
     // instances ranked by value - one holding valleyEnd (queried by rank range
     // "< nums[i]" to extend into a peak), the other holding peakEnd (queried by
@@ -76,12 +75,11 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
     // minimumDistance.
     public static long MaxAlternatingSumBySegmentTree(int[] nums, int minimumDistance)
     {
-        var sortedDistinct = nums.Distinct().OrderBy(value => value).ToArray();
-        var sequence = new ArraySequence<int>(sortedDistinct);
-        var trees = (PeakByValley: BuildRankedTree(sortedDistinct.Length), ValleyByPeak: BuildRankedTree(sortedDistinct.Length));
+        var coordinates = new CompressedCoordinates<int>(nums);
+        var trees = (PeakByValley: BuildRankedTree(coordinates.Count), ValleyByPeak: BuildRankedTree(coordinates.Count));
         var state = (Nums: nums, PeakEnd: new long[nums.Length], ValleyEnd: new long[nums.Length]);
 
-        return SweepByValueRank(minimumDistance, sequence, trees, state);
+        return SweepByValueRank(minimumDistance, coordinates, trees, state);
     }
 
     private static RepoSegmentTree BuildRankedTree(int rankCount)
@@ -96,7 +94,7 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
     // chains at i out of the trees.
     private static long SweepByValueRank(
         int minimumDistance,
-        ArraySequence<int> sequence,
+        CompressedCoordinates<int> coordinates,
         (RepoSegmentTree PeakByValley, RepoSegmentTree ValleyByPeak) trees,
         (int[] Nums, long[] PeakEnd, long[] ValleyEnd) state)
     {
@@ -107,11 +105,11 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
         {
             while (activated <= i - minimumDistance)
             {
-                RaisePredecessor(state, activated, sequence, trees);
+                RaisePredecessor(state, activated, coordinates, trees);
                 activated++;
             }
 
-            var extensions = BestExtensionsFromRank(state.Nums[i], sequence, trees);
+            var extensions = BestExtensionsFromRank(state.Nums[i], coordinates, trees);
             answer = CommitChainsAt(state, i, extensions, answer);
         }
 
@@ -123,10 +121,10 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
     private static void RaisePredecessor(
         (int[] Nums, long[] PeakEnd, long[] ValleyEnd) state,
         int index,
-        ArraySequence<int> sequence,
+        CompressedCoordinates<int> coordinates,
         (RepoSegmentTree PeakByValley, RepoSegmentTree ValleyByPeak) trees)
     {
-        var rank = BinarySearch.LowerBound(sequence, state.Nums[index]);
+        var rank = coordinates.RankOf(state.Nums[index]);
         Raise(trees.PeakByValley, rank, state.ValleyEnd[index]);
         Raise(trees.ValleyByPeak, rank, state.PeakEnd[index]);
     }
@@ -145,11 +143,11 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
     // contributes 0 - the sum of a chain that starts fresh at `value`.
     private static (long BestFromValley, long BestFromPeak) BestExtensionsFromRank(
         int value,
-        ArraySequence<int> sequence,
+        CompressedCoordinates<int> coordinates,
         (RepoSegmentTree PeakByValley, RepoSegmentTree ValleyByPeak) trees)
     {
-        var rank = BinarySearch.LowerBound(sequence, value);
-        var lastRank = sequence.Length - 1;
+        var rank = coordinates.RankOf(value);
+        var lastRank = coordinates.Count - 1;
         var lowerExtension = rank > 0 ? trees.PeakByValley.Query(0, rank - 1) : 0L;
         var bestFromValley = Math.Max(0L, lowerExtension);
         var higherExtension = rank < lastRank ? trees.ValleyByPeak.Query(rank + 1, lastRank) : 0L;

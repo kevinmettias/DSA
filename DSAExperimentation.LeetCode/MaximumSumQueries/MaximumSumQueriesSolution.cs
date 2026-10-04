@@ -45,9 +45,9 @@ internal static class MaximumSumQueriesSolution
         return best;
     }
 
-    // Composed: coordinate-compress nums2's distinct values (the same
-    // BinarySearch.LowerBound-over-a-sorted-array idiom BookingConcertTicketsInGroups
-    // and MaximumBalancedSubsequenceSum use to turn a threshold into a rank), then sweep
+    // Composed: coordinate-compress nums2's values with this repo's own
+    // CompressedCoordinates (the idiom MaximumBalancedSubsequenceSum uses too; its
+    // LowerBound turns a threshold that need not be a member into a rank), then sweep
     // indices and queries together in decreasing nums1/x order with this repo's own
     // MergeSort. Every index whose nums1 has just become >= the current query's x is
     // folded into a SegmentTree<long, MaxOperation<long>> keyed by its nums2's compressed
@@ -58,9 +58,9 @@ internal static class MaximumSumQueriesSolution
     // no extra bookkeeping. O((n + q) log n) in total, against the baseline's O(n*q).
     public static int[] MaxSumsBySweepWithSegmentTree(int[] nums1, int[] nums2, int[][] queries)
     {
-        var distinctNums2 = SortedDistinct(nums2);
-        var tree = BuildEmptyMaxTree(distinctNums2.Length);
-        var pairs = BuildPairsDescendingByNums1(nums1, nums2, distinctNums2);
+        var nums2Coordinates = new CompressedCoordinates<int>(nums2);
+        var tree = BuildEmptyMaxTree(nums2Coordinates.Count);
+        var pairs = BuildPairsDescendingByNums1(nums1, nums2, nums2Coordinates);
         var sortedQueries = BuildQueriesDescendingByX(queries);
 
         var results = new int[queries.Length];
@@ -69,19 +69,10 @@ internal static class MaximumSumQueriesSolution
         foreach (var query in sortedQueries)
         {
             pairIndex = AdmitPairsUpTo(pairs, pairIndex, query.X, tree);
-            results[query.OriginalIndex] = BestSumAtLeast(tree, distinctNums2, query.Y);
+            results[query.OriginalIndex] = BestSumAtLeast(tree, nums2Coordinates, query.Y);
         }
 
         return results;
-    }
-
-    private static int[] SortedDistinct(int[] nums2)
-    {
-        var distinct = nums2.Distinct().ToArray();
-
-        MergeSort.Sort(distinct);
-
-        return distinct;
     }
 
     private static RepoSegmentTree BuildEmptyMaxTree(int rankCount)
@@ -93,9 +84,9 @@ internal static class MaximumSumQueriesSolution
     }
 
     private static (int Nums1, int Rank, long Sum)[] BuildPairsDescendingByNums1(
-        int[] nums1, int[] nums2, int[] distinctNums2)
+        int[] nums1, int[] nums2, CompressedCoordinates<int> nums2Coordinates)
     {
-        var pairs = BuildRankedPairs(nums1, nums2, distinctNums2);
+        var pairs = BuildRankedPairs(nums1, nums2, nums2Coordinates);
         SortPairsByNums1Descending(pairs);
 
         return pairs;
@@ -104,13 +95,13 @@ internal static class MaximumSumQueriesSolution
     // Each index as the (nums1, compressed nums2 rank, nums1 + nums2) triple the sweep
     // admits, before the descending-nums1 order that pass needs.
     private static (int Nums1, int Rank, long Sum)[] BuildRankedPairs(
-        int[] nums1, int[] nums2, int[] distinctNums2)
+        int[] nums1, int[] nums2, CompressedCoordinates<int> nums2Coordinates)
     {
         var pairs = new (int Nums1, int Rank, long Sum)[nums1.Length];
 
         for (var j = 0; j < nums1.Length; j++)
         {
-            var rank = BinarySearch.LowerBound(distinctNums2, nums2[j]);
+            var rank = nums2Coordinates.RankOf(nums2[j]);
             pairs[j] = (nums1[j], rank, (long)nums1[j] + nums2[j]);
         }
 
@@ -168,16 +159,17 @@ internal static class MaximumSumQueriesSolution
         return pairIndex;
     }
 
-    private static int BestSumAtLeast(RepoSegmentTree tree, int[] distinctNums2, int minimumNums2)
+    private static int BestSumAtLeast(
+        RepoSegmentTree tree, CompressedCoordinates<int> nums2Coordinates, int minimumNums2)
     {
-        var lowerRank = BinarySearch.LowerBound(distinctNums2, minimumNums2);
+        var lowerRank = nums2Coordinates.LowerBound(minimumNums2);
 
-        if (lowerRank >= distinctNums2.Length)
+        if (lowerRank >= nums2Coordinates.Count)
         {
             return LeetCodeAnswer.None;
         }
 
-        var best = tree.Query(lowerRank, distinctNums2.Length - 1);
+        var best = tree.Query(lowerRank, nums2Coordinates.Count - 1);
 
         return best == long.MinValue ? LeetCodeAnswer.None : (int)best;
     }

@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.ReversePairs;
 
@@ -9,7 +8,7 @@ namespace DSAExperimentation.LeetCode.ReversePairs;
 //
 // The naive strategy is the textbook O(n^2) pairwise scan; the composed strategy
 // coordinate-compresses nums (as long, since 2*value can overflow a 32-bit int) via
-// BinarySearch.LowerBound/UpperBound over the sorted distinct values, then sweeps
+// CompressedCoordinates and its RankOf/UpperBound, then sweeps
 // left-to-right through a FenwickTree<int, SumOperation<int>> (this repo's own Binary
 // Indexed Tree) - before inserting nums[j]'s own rank, UpperBound locates the first
 // rank strictly greater than 2*nums[j], and a single Query over [rank, end] counts
@@ -44,21 +43,20 @@ internal static class ReversePairsSolution
     // Coordinate-compression-plus-Fenwick sweep, O(n log n) overall.
     public static int CountByFenwickTreeSweep(int[] nums)
     {
-        var sortedDistinct = nums.Select(value => (long)value).Distinct().OrderBy(value => value).ToArray();
-        var sequence = new ArraySequence<long>(sortedDistinct);
-        var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
+        var coordinates = new CompressedCoordinates<long>(nums.Select(value => (long)value).ToArray());
+        var tree = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
         var count = 0;
 
         foreach (var value in nums)
         {
-            var firstGreaterRank = BinarySearch.UpperBound(sequence, ReversePairMultiplier * value);
+            var firstGreaterRank = coordinates.UpperBound(ReversePairMultiplier * value);
 
-            if (firstGreaterRank < sortedDistinct.Length)
+            if (firstGreaterRank < coordinates.Count)
             {
-                count += tree.Query(firstGreaterRank, sortedDistinct.Length - 1);
+                count += tree.Query(firstGreaterRank, coordinates.Count - 1);
             }
 
-            var rank = BinarySearch.LowerBound(sequence, (long)value);
+            var rank = coordinates.RankOf(value);
             tree.Add(rank, 1);
         }
 

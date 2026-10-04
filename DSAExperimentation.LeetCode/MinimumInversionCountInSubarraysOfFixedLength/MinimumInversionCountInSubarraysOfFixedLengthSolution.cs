@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MinimumInversionCountInSubarraysOfFixedLength;
 
@@ -58,23 +57,23 @@ internal static class MinimumInversionCountInSubarraysOfFixedLengthSolution
 
     public static long MinInversionCountBySlidingWindowFenwick(int[] nums, int windowLength)
     {
-        var (tree, sequence) = BuildRankIndex(nums);
+        var (tree, coordinates) = BuildRankIndex(nums);
 
         var inversions = 0L;
         var windowCount = 0;
 
         for (var i = 0; i < windowLength; i++)
         {
-            inversions += Insert(tree, sequence, nums[i], windowCount++);
+            inversions += Insert(tree, coordinates, nums[i], windowCount++);
         }
 
         var minInversions = inversions;
 
         for (var end = windowLength; end < nums.Length; end++)
         {
-            inversions -= Remove(tree, sequence, nums[end - windowLength]);
+            inversions -= Remove(tree, coordinates, nums[end - windowLength]);
             windowCount--;
-            inversions += Insert(tree, sequence, nums[end], windowCount++);
+            inversions += Insert(tree, coordinates, nums[end], windowCount++);
             minInversions = Math.Min(minInversions, inversions);
         }
 
@@ -85,20 +84,22 @@ internal static class MinimumInversionCountInSubarraysOfFixedLengthSolution
     // rank among the distinct values of nums, and a tree sized to those ranks.
     private static RankIndex BuildRankIndex(int[] nums)
     {
-        var sortedDistinct = nums.Distinct().OrderBy(value => value).ToArray();
-        var sequence = new ArraySequence<int>(sortedDistinct);
-        var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
+        var coordinates = new CompressedCoordinates<int>(nums);
+        var tree = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
 
-        return new RankIndex(tree, sequence);
+        return new RankIndex(tree, coordinates);
     }
 
     // Newly entering the window at the right: every already-present value
     // greater than this one now forms an inversion with it (earlier
     // position, larger value).
     private static long Insert(
-        FenwickTree<int, SumOperation<int>> tree, ArraySequence<int> sequence, int value, int windowCountBeforeInsert)
+        FenwickTree<int, SumOperation<int>> tree,
+        CompressedCoordinates<int> coordinates,
+        int value,
+        int windowCountBeforeInsert)
     {
-        var rank = BinarySearch.LowerBound(sequence, value);
+        var rank = coordinates.RankOf(value);
         var lessOrEqualCount = tree.PrefixQuery(rank);
         tree.Add(rank, 1);
 
@@ -108,9 +109,10 @@ internal static class MinimumInversionCountInSubarraysOfFixedLengthSolution
     // Leaving the window at the left: it was the earliest position in the
     // window, so every remaining value smaller than it was already forming
     // an inversion with it - undo exactly that contribution.
-    private static long Remove(FenwickTree<int, SumOperation<int>> tree, ArraySequence<int> sequence, int value)
+    private static long Remove(
+        FenwickTree<int, SumOperation<int>> tree, CompressedCoordinates<int> coordinates, int value)
     {
-        var rank = BinarySearch.LowerBound(sequence, value);
+        var rank = coordinates.RankOf(value);
         var lessCount = rank == 0 ? 0 : tree.PrefixQuery(rank - 1);
         tree.Add(rank, -1);
 

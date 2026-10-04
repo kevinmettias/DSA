@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.CountOfRangeSum;
 // direct O(n^2) scan over every pair, or coordinate-compressing the prefix sums and
 // sweeping left-to-right through this repo's own FenwickTree<int, SumOperation<int>>
 // (a Binary Indexed Tree of counts), with each query's compressed bounds found via
-// BinarySearch.LowerBound/UpperBound. Same coordinate-compression-plus-Fenwick-sweep
+// CompressedCoordinates.LowerBound/UpperBound. Same coordinate-compression-plus-Fenwick-sweep
 // shape CountOfSmallerNumbersAfterSelfSolution uses for LC 315, generalized from a
 // single one-sided query to a two-sided [lower, upper] range.
 internal static class CountOfRangeSumSolution
@@ -48,10 +48,10 @@ internal static class CountOfRangeSumSolution
     public static int CountByFenwickSweep(int[] nums, int lower, int upper)
     {
         var prefix = BuildPrefixSums(nums);
-        var sortedDistinct = prefix.Distinct().OrderBy(value => value).ToArray();
-        var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
+        var coordinates = new CompressedCoordinates<long>(prefix);
+        var tree = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
         var count = 0;
-        var index = new RangeSumIndex(sortedDistinct, tree);
+        var index = new RangeSumIndex(coordinates, tree);
 
         foreach (var prefixSum in prefix)
         {
@@ -63,12 +63,12 @@ internal static class CountOfRangeSumSolution
 
     private static int AccumulatePrefixSumContribution(RangeSumIndex index, long prefixSum, int lower, int upper)
     {
-        var loRank = BinarySearch.LowerBound(index.SortedDistinct, prefixSum - upper);
-        var hiRank = BinarySearch.UpperBound(index.SortedDistinct, prefixSum - lower) - 1;
+        var loRank = index.Coordinates.LowerBound(prefixSum - upper);
+        var hiRank = index.Coordinates.UpperBound(prefixSum - lower) - 1;
 
         var contribution = loRank <= hiRank ? index.Tree.Query(loRank, hiRank) : 0;
 
-        var insertRank = BinarySearch.LowerBound(index.SortedDistinct, prefixSum);
+        var insertRank = index.Coordinates.RankOf(prefixSum);
         index.Tree.Add(insertRank, 1);
 
         return contribution;
@@ -86,5 +86,6 @@ internal static class CountOfRangeSumSolution
         return prefix;
     }
 
-    private readonly record struct RangeSumIndex(long[] SortedDistinct, FenwickTree<int, SumOperation<int>> Tree);
+    private readonly record struct RangeSumIndex(
+        CompressedCoordinates<long> Coordinates, FenwickTree<int, SumOperation<int>> Tree);
 }

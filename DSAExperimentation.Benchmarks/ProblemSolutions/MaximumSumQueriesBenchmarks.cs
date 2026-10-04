@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MergeSorts indices and queries by descending nums1/x, admits indices into a
 // SegmentTree<long, MaxOperation<long>> keyed by nums2's coordinate-compressed rank as
 // their nums1 threshold is met, and answers each query with one range-max query over
-// BinarySearch.LowerBound(y)..lastRank - O((n + q) log n).
+// CompressedCoordinates.LowerBound(y)..lastRank - O((n + q) log n).
 //
 // Both arms take LeetCode's own arrays, which are already the prepared input, so there
 // is nothing for [GlobalSetup] to hoist beyond generating them (#17.4).

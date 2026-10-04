@@ -6,8 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are NumberOfLongestIncreasingSubsequenceSolution's,
 // the same methods NumberOfLongestIncreasingSubsequenceSolutionTests proves correct.
 // The textbook O(n^2) DP vs. this repo's own SegmentTree<Element,
-// ICombineOperation<Element>> keyed by a BinarySearch.LowerBound-compressed
-// rank - O(n log n). Length stops at LC 673's own bound of 2,000, where this seed's
+// ICombineOperation<Element>> keyed by a CompressedCoordinates rank -
+// O(n log n). Length stops at LC 673's own bound of 2,000, where this seed's
 // count of longest subsequences (213,770,240) still fits the 32-bit answer LC 673
 // guarantees.
 public class NumberOfLongestIncreasingSubsequenceBenchmarks

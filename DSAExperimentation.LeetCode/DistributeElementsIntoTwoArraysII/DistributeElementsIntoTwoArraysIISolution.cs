@@ -55,26 +55,25 @@ internal static class DistributeElementsIntoTwoArraysIISolution
         return count;
     }
 
-    // Composed: coordinate-compress nums via BinarySearch.LowerBound over the
-    // sorted distinct values (the same idiom CountOfSmallerNumbersAfterSelfSolutionTests
-    // uses for a Fenwick-tree sweep), then keep one FenwickTree<int,
-    // SumOperation<int>> per array recording which ranks it has taken so far.
-    // greaterCount(x) is the array's own element count minus
-    // PrefixQuery(rank(x)) - every element at or below x's rank - so what is
+    // Composed: coordinate-compress nums via CompressedCoordinates (the same
+    // idiom CountOfSmallerNumbersAfterSelfSolution uses for a Fenwick-tree sweep),
+    // then keep one FenwickTree<int, SumOperation<int>> per array recording which
+    // ranks it has taken so far. greaterCount(x) is the array's own element count
+    // minus PrefixQuery(rank(x)) - every element at or below x's rank - so what is
     // left over is exactly the count strictly greater than x. O(n log n)
     // overall.
     public static int[] DistributeByFenwickTree(int[] nums)
     {
-        var sortedDistinct = nums.Distinct().OrderBy(value => value).ToArray();
+        var coordinates = new CompressedCoordinates<int>(nums);
 
-        var tree1 = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
-        var tree2 = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
+        var tree1 = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
+        var tree2 = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
         var arr1 = new List<int> { nums[0] };
         var arr2 = new List<int> { nums[1] };
 
-        var firstRank = BinarySearch.LowerBound(sortedDistinct, nums[0]);
+        var firstRank = coordinates.RankOf(nums[0]);
         tree1.Add(firstRank, 1);
-        var secondRank = BinarySearch.LowerBound(sortedDistinct, nums[1]);
+        var secondRank = coordinates.RankOf(nums[1]);
         tree2.Add(secondRank, 1);
 
         var first = (Values: arr1, Tree: tree1);
@@ -82,7 +81,7 @@ internal static class DistributeElementsIntoTwoArraysIISolution
 
         for (var i = 2; i < nums.Length; i++)
         {
-            PlaceByGreaterCount(sortedDistinct, nums[i], first, second);
+            PlaceByGreaterCount(coordinates, nums[i], first, second);
         }
 
         return Concatenate(arr1, arr2);
@@ -93,12 +92,12 @@ internal static class DistributeElementsIntoTwoArraysIISolution
     // ShouldGoToFirstArray breaks the remaining ties; the rank is the same
     // coordinate-compressed lookup the two greater-counts are read at.
     private static void PlaceByGreaterCount(
-        int[] sortedDistinct,
+        CompressedCoordinates<int> coordinates,
         int value,
         (List<int> Values, FenwickTree<int, SumOperation<int>> Tree) first,
         (List<int> Values, FenwickTree<int, SumOperation<int>> Tree) second)
     {
-        var rank = BinarySearch.LowerBound(sortedDistinct, value);
+        var rank = coordinates.RankOf(value);
         var greater1 = first.Values.Count - first.Tree.PrefixQuery(rank);
         var greater2 = second.Values.Count - second.Tree.PrefixQuery(rank);
 

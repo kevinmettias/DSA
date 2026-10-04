@@ -12,9 +12,7 @@ namespace DSAExperimentation.LeetCode.NumberOfLongestIncreasingSubsequence;
 // it, written without this repo's primitives.
 //
 // FindNumberOfLisBySegmentTree coordinate-compresses nums into a rank per
-// distinct value (this repo's own BinarySearch.LowerBound over an
-// ArraySequence<int> of sorted distinct values - the same LowerBound engine
-// LongestIncreasingSubsequenceSolutionTests already exercises), then sweeps left to
+// distinct value (this repo's own CompressedCoordinates), then sweeps left to
 // right maintaining a SegmentTree<(Length,Count),LisAggregate> keyed by rank.
 // Query(0, rank-1) gives the best (longest length ending strictly before this
 // value, and how many subsequences reach that length) among every smaller value
@@ -77,12 +75,12 @@ internal static class NumberOfLongestIncreasingSubsequenceSolution
 
     public static int FindNumberOfLisBySegmentTree(int[] nums)
     {
-        var sortedDistinct = nums.Distinct().Order().ToArray();
-        var tree = new SegmentTree<(int Length, int Count), LisAggregate>(new (int, int)[sortedDistinct.Length]);
+        var coordinates = new CompressedCoordinates<int>(nums);
+        var tree = new SegmentTree<(int Length, int Count), LisAggregate>(new (int, int)[coordinates.Count]);
 
         foreach (var num in nums)
         {
-            var rank = BinarySearch.LowerBound(sortedDistinct, num);
+            var rank = coordinates.RankOf(num);
             var best = rank == 0 ? NoSubsequence() : tree.Query(0, rank - 1);
             var candidate = best.Length == 0 ? NewSubsequence() : ExtendedSubsequence(best);
             var existing = tree.Query(rank, rank);
@@ -91,7 +89,7 @@ internal static class NumberOfLongestIncreasingSubsequenceSolution
             tree.Update(rank, combined);
         }
 
-        return tree.Query(0, sortedDistinct.Length - 1).Count;
+        return tree.Query(0, coordinates.Count - 1).Count;
     }
 
     // The best-so-far aggregate when no smaller value has been seen yet: there is

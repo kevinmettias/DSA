@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.LazySegmentTree;
 
 namespace DSAExperimentation.LeetCode.FallingSquares;
@@ -54,8 +55,9 @@ internal static class FallingSquaresSolution
     private static bool HasFootprintOverlap(int left, int right, int otherLeft, int otherRight) =>
         left < otherRight && otherLeft < right;
 
-    // Coordinate-compresses every square's footprint onto a dense leaf-index range,
-    // then tracks the current stack height over that range with this repo's own
+    // Coordinate-compresses every square's footprint onto a dense leaf-index range
+    // with CompressedCoordinates, then tracks the current stack height over that
+    // range with this repo's own
     // LazySegmentTree<int,int?,RangeAssignMaxOperation<int>> - range-max Query
     // answers "what's already stacked directly under this square" and range-assign
     // UpdateRange plants the new height across that same footprint, exactly the
@@ -63,16 +65,16 @@ internal static class FallingSquaresSolution
     // always overwrites - see its own doc comment).
     public static List<int> HeightsByLazySegmentTree(int[][] positions)
     {
-        var coordinates = CompressCoordinates(positions);
-        var tree = new LazySegmentTree<int, int?, RangeAssignMaxOperation<int>>(new int[coordinates.Length - 1]);
+        var coordinates = new CompressedCoordinates<int>(FootprintEdges(positions));
+        var tree = new LazySegmentTree<int, int?, RangeAssignMaxOperation<int>>(new int[coordinates.Count - 1]);
 
         var result = new List<int>(positions.Length);
         var overallMax = 0;
 
         foreach (var position in positions)
         {
-            var left = Array.BinarySearch(coordinates, position[0]);
-            var right = Array.BinarySearch(coordinates, position[0] + position[1]) - 1;
+            var left = coordinates.RankOf(position[0]);
+            var right = coordinates.RankOf(position[0] + position[1]) - 1;
 
             var heightBelow = tree.Query(left, right);
             var newHeight = heightBelow + position[1];
@@ -85,20 +87,19 @@ internal static class FallingSquaresSolution
         return result;
     }
 
-    // Every square's left/right edge is added to this list before sorting, so the
-    // resulting array always contains an exact match for every edge
-    // Array.BinarySearch above looks up - no "insertion point" (~index) handling
-    // needed.
-    private static int[] CompressCoordinates(int[][] positions)
+    // Every square's left/right edge goes into the compressed coordinates, so each
+    // edge the sweep above ranks is a member - RankOf is exact, with no insertion
+    // point to reason about.
+    private static int[] FootprintEdges(int[][] positions)
     {
-        var coordinates = new List<int>(positions.Length * CoordinatesPerPosition);
+        var edges = new List<int>(positions.Length * CoordinatesPerPosition);
 
         foreach (var position in positions)
         {
-            coordinates.Add(position[0]);
-            coordinates.Add(position[0] + position[1]);
+            edges.Add(position[0]);
+            edges.Add(position[0] + position[1]);
         }
 
-        return coordinates.Distinct().OrderBy(x => x).ToArray();
+        return edges.ToArray();
     }
 }

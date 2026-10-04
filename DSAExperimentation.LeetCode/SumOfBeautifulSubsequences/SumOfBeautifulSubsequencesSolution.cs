@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.SumOfBeautifulSubsequences;
@@ -21,7 +20,7 @@ namespace DSAExperimentation.LeetCode.SumOfBeautifulSubsequences;
 // original order, which is DataStructures.FenwickTree's classic role: dp[i] = 1 +
 // (sum of dp[j] for earlier j with a strictly smaller value), and the Fenwick tree
 // over coordinate-compressed values turns that sum into one prefix query -
-// Algorithms.Searching.BinarySearch.LowerBound supplies each value's compressed
+// Algorithms.Searching.CompressedCoordinates supplies each value's compressed
 // rank - the custom-operation extension point MinimumStabilityFactorOfArray uses
 // with the core GcdOperation, here applied to Fenwick instead of SegmentTree.
 internal static class SumOfBeautifulSubsequencesSolution
@@ -149,49 +148,28 @@ internal static class SumOfBeautifulSubsequencesSolution
     // one O(log n) prefix query instead of an O(n) rescan.
     private static long CountIncreasingSubsequences(List<int> values)
     {
-        var distinct = DistinctValues(values);
-        var ranks = new ArraySequence<int>(distinct);
-        var fenwick = new FenwickTree<long, SumOperation<long>>(distinct.Length);
+        var coordinates = new CompressedCoordinates<int>(values.ToArray());
+        var fenwick = new FenwickTree<long, SumOperation<long>>(coordinates.Count);
         var total = 0L;
 
         foreach (var value in values)
         {
-            total = AccumulateValue(ranks, fenwick, value, total);
+            total = AccumulateValue(coordinates, fenwick, value, total);
         }
 
         return total;
-    }
-
-    // The distinct values in ascending order - the coordinate-compressed ranks' own
-    // values, so a value's index in this array is its rank.
-    private static int[] DistinctValues(List<int> values)
-    {
-        var sortedValues = values.ToArray();
-        Array.Sort(sortedValues);
-
-        var distinctCount = 0;
-
-        foreach (var value in sortedValues)
-        {
-            if (distinctCount == 0 || sortedValues[distinctCount - 1] != value)
-            {
-                sortedValues[distinctCount++] = value;
-            }
-        }
-
-        return sortedValues[..distinctCount];
     }
 
     // One element's contribution: its dp is one plus the sum of dp over the earlier
     // elements whose value is strictly smaller, which the Fenwick tree answers with a
     // single prefix query.
     private static long AccumulateValue(
-        ArraySequence<int> ranks,
+        CompressedCoordinates<int> coordinates,
         FenwickTree<long, SumOperation<long>> fenwick,
         int value,
         long total)
     {
-        var rank = BinarySearch.LowerBound(ranks, value);
+        var rank = coordinates.RankOf(value);
         var before = rank == 0 ? 0 : fenwick.Query(0, rank - 1);
         var dp = (before + 1) % ModularArithmetic.Modulo;
 

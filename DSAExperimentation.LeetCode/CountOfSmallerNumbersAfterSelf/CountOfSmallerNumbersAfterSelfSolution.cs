@@ -33,20 +33,20 @@ internal static class CountOfSmallerNumbersAfterSelfSolution
         return counts;
     }
 
-    // Coordinate-compress nums via BinarySearch.LowerBound over the sorted
-    // distinct values, then sweep right-to-left through a
-    // FenwickTree<int, SumOperation<int>> (this repo's own Binary Indexed Tree) -
-    // PrefixQuery(rank-1) counts every smaller value already added on the way in,
-    // and Add(rank, 1) records the current one before moving further left.
+    // Coordinate-compress nums via CompressedCoordinates, then sweep right-to-left
+    // through a FenwickTree<int, SumOperation<int>> (this repo's own Binary
+    // Indexed Tree) - PrefixQuery(rank-1) counts every smaller value already added
+    // on the way in, and Add(rank, 1) records the current one before moving
+    // further left.
     public static int[] CountSmallerByFenwickTreeSweep(int[] nums)
     {
-        var sortedDistinct = nums.Distinct().OrderBy(value => value).ToArray();
-        var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
+        var coordinates = new CompressedCoordinates<int>(nums);
+        var tree = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
         var counts = new int[nums.Length];
 
         for (var i = nums.Length - 1; i >= 0; i--)
         {
-            var rank = BinarySearch.LowerBound(sortedDistinct, nums[i]);
+            var rank = coordinates.RankOf(nums[i]);
             counts[i] = rank == 0 ? 0 : tree.PrefixQuery(rank - 1);
             tree.Add(rank, 1);
         }
