@@ -1,4 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.DataStructures.PrefixSums;
 
 namespace DSAExperimentation.LeetCode.MinimumSizeSubarraySum;
 
@@ -6,13 +8,13 @@ namespace DSAExperimentation.LeetCode.MinimumSizeSubarraySum;
 // subarray of a positive-integer array whose sum is >= target, or 0 if no such
 // subarray exists.
 //
-// nums are all positive, so the running prefix-sum array is strictly increasing -
+// nums are all positive, so the running prefix-sum totals are strictly increasing -
 // already "sorted ascending" in exactly the shape this repo's own
-// BinarySearch.LowerBound assumes. For each start index i, LowerBound over an
-// ArraySequence<int> witness finds the smallest end index whose cumulative sum
+// BinarySearch.LowerBound assumes. For each start index i, LowerBound over
+// PrefixSums' Totals view finds the smallest end index whose cumulative sum
 // first reaches target - an O(n log n) alternative to the textbook O(n)
 // two-pointer/every-subarray scan, composing two existing production primitives
-// (BinarySearch.LowerBound, ArraySequence<int>) instead of a hand-rolled scan, the
+// (BinarySearch.LowerBound, PrefixSums) instead of a hand-rolled scan, the
 // same search-on-a-derived-monotonic-sequence idiom
 // MedianOfTwoSortedArraysSolutionTests already established.
 internal static class MinimumSizeSubarraySumSolution
@@ -44,22 +46,17 @@ internal static class MinimumSizeSubarraySumSolution
         return best == int.MaxValue ? 0 : best;
     }
 
-    // The composed answer: prefix sums over ArraySequence<int>, binary-searched via
+    // The composed answer: PrefixSums' running totals, binary-searched via
     // BinarySearch.LowerBound for each start index's earliest qualifying end.
     public static int MinLengthByBinarySearchPrefixSum(int target, int[] nums)
     {
-        var prefix = new int[nums.Length + 1];
-
-        for (var i = 0; i < nums.Length; i++)
-        {
-            prefix[i + 1] = prefix[i] + nums[i];
-        }
+        var prefix = new PrefixSums<int, SumOperation<int>>(nums);
 
         var best = int.MaxValue;
 
         for (var i = 0; i < nums.Length; i++)
         {
-            var end = BinarySearch.LowerBound(prefix, target + prefix[i]);
+            var end = BinarySearch.LowerBound(prefix.Totals, target + prefix.TotalBefore(i));
 
             if (end <= nums.Length)
             {

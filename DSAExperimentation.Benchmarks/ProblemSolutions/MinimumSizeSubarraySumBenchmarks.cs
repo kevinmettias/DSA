@@ -6,8 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MinimumSizeSubarraySumSolution's, the same methods
 // MinimumSizeSubarraySumSolutionTests proves correct - the brute-force O(n^2)
 // every-subarray scan against the O(n log n) prefix-sum + BinarySearch.LowerBound
-// approach, genuinely composing this repo's own BinarySearch.LowerBound over an
-// ArraySequence<int> witness. Target is set one above the array's own total sum so
+// approach, genuinely composing this repo's own BinarySearch.LowerBound over
+// PrefixSums' Totals view. Target is set one above the array's own total sum so
 // neither strategy ever early-exits on a found window, forcing both through their
 // real worst-case cost. Only the raw array/target - LeetCode's own input shape -
 // is prepared in [GlobalSetup]; each strategy's own prefix-sum/sequence

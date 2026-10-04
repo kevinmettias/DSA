@@ -1,4 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.DataStructures.PrefixSums;
 
 namespace DSAExperimentation.LeetCode.SortedGcdPairQueries;
 
@@ -8,17 +10,21 @@ namespace DSAExperimentation.LeetCode.SortedGcdPairQueries;
 // over divisor counts (how many numbers are divisible by d) turns into an exact
 // gcd-equals-d count by subtracting off every multiple of d already accounted for,
 // high to low. Once built, answering "the k-th smallest gcd" is one
-// BinarySearch.LowerBound lookup over the resulting cumulative-count array, the
+// BinarySearch.LowerBound lookup over the PrefixSums totals of those counts, the
 // same "reduce the whole structure once, then binary-search it" shape
 // FindMaximumNonDecreasingArrayLength already uses.
 internal sealed class GcdPairCountIndex
 {
-    // Index v holds the number of pairs whose gcd is <= v; index 0 is the sentinel
+    // TotalBefore(v) is the number of pairs whose gcd is <= v; total 0 is the sentinel
     // "no pairs have gcd <= 0" (gcd is always positive), never itself a query answer.
-    private readonly long[] _cumulativePairCountUpTo;
+    private readonly PrefixSums<long, SumOperation<long>> _cumulativePairCountUpTo;
 
-    private GcdPairCountIndex(long[] cumulativePairCountUpTo) => _cumulativePairCountUpTo = cumulativePairCountUpTo;
+    private GcdPairCountIndex(PrefixSums<long, SumOperation<long>> cumulativePairCountUpTo) =>
+        _cumulativePairCountUpTo = cumulativePairCountUpTo;
 
+    // countGcdExactly's slot 0 is gcd 0, which no pair has, so the totals start at gcd 1:
+    // total v then sums gcds 1 through v, and a lower-bound over them lands on the gcd
+    // value itself rather than one past it.
     public static GcdPairCountIndex Build(int[] nums)
     {
         var maxValue = LargestValue(nums);
@@ -28,7 +34,7 @@ internal sealed class GcdPairCountIndex
         var countDivisibleBy = CountDivisibleByEachValue(countOfValue, maxValue);
         var countGcdExactly = CountGcdExactlyEachValue(countDivisibleBy, maxValue);
 
-        var cumulative = ToCumulativeCounts(countGcdExactly);
+        var cumulative = new PrefixSums<long, SumOperation<long>>(countGcdExactly.AsSpan(1));
 
         return new GcdPairCountIndex(cumulative);
     }
@@ -101,22 +107,8 @@ internal sealed class GcdPairCountIndex
         return countGcdExactly;
     }
 
-    // Index v in the result holds sum(countGcdExactly[1..v]), so a query's
-    // lower-bound lookup is one read rather than a range sum.
-    private static long[] ToCumulativeCounts(long[] countGcdExactly)
-    {
-        var cumulative = new long[countGcdExactly.Length];
-
-        for (var value = 1; value < countGcdExactly.Length; value++)
-        {
-            cumulative[value] = cumulative[value - 1] + countGcdExactly[value];
-        }
-
-        return cumulative;
-    }
-
     // The smallest gcd value v for which more than rank pairs have gcd <= v - LC's
     // 0-indexed "k-th smallest" restated as a lower-bound lookup for rank + 1.
     public int KthSmallestGcd(int rank)
-        => BinarySearch.LowerBound(_cumulativePairCountUpTo, rank + 1);
+        => BinarySearch.LowerBound(_cumulativePairCountUpTo.Totals, rank + 1L);
 }

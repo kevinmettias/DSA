@@ -1,4 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.DataStructures.PrefixSums;
 
 namespace DSAExperimentation.LeetCode.StatisticsFromALargeSample;
 
@@ -96,25 +98,22 @@ internal static class StatisticsFromALargeSampleSolution
         return (lowerMiddle + upperMiddle) / MedianPairAverageDivisor;
     }
 
-    // This repo's own answer: one pass builds the running cumulative sum of the
-    // buckets, which is sorted by construction, so the positional median query is
-    // exactly BinarySearch.LowerBound over an ArraySequence<long> of it. The index
-    // LowerBound lands on IS the sample value, because bucket i holds value i, so
+    // This repo's own answer: PrefixSums over the buckets gives their running
+    // cumulative sum, which is sorted by construction, so the positional median
+    // query is exactly BinarySearch.LowerBound over its Totals. The end LowerBound
+    // lands on is one past the sample value, because bucket i holds value i, so
     // the sample is never materialized and the work stays O(count.Length)
     // regardless of how large the sample is.
     public static double[] ComputeStatisticsByCumulativeBinarySearch(long[] count)
     {
         var accumulator = new SampleAccumulator();
-        var cumulative = new long[count.Length];
-        long running = 0;
 
         for (var value = 0; value < count.Length; value++)
         {
             accumulator.Accumulate(value, count[value]);
-            running += count[value];
-            cumulative[value] = running;
         }
 
+        var cumulative = new PrefixSums<long, SumOperation<long>>(count);
         var mean = (double)accumulator.WeightedSum / accumulator.Total;
         var median = MedianFromCumulative(cumulative, accumulator.Total);
 
@@ -162,19 +161,23 @@ internal static class StatisticsFromALargeSampleSolution
         }
     }
 
-    // cumulative[i] is how many sample elements are <= i, so "the value at sorted
-    // position p" (1-based) is the first index whose cumulative count reaches p -
-    // LowerBound's definition exactly.
-    private static double MedianFromCumulative(long[] cumulative, long total)
+    private static double MedianFromCumulative(PrefixSums<long, SumOperation<long>> cumulative, long total)
     {
         if (total % MedianParityDivisor == 1)
         {
-            return BinarySearch.LowerBound(cumulative, (total / MedianIndexDivisor) + 1);
+            return ValueAtSortedPosition(cumulative, (total / MedianIndexDivisor) + 1);
         }
 
-        var lowerMiddle = BinarySearch.LowerBound(cumulative, total / MedianIndexDivisor);
-        var upperMiddle = BinarySearch.LowerBound(cumulative, (total / MedianIndexDivisor) + 1);
+        var lowerMiddle = ValueAtSortedPosition(cumulative, total / MedianIndexDivisor);
+        var upperMiddle = ValueAtSortedPosition(cumulative, (total / MedianIndexDivisor) + 1);
 
         return (lowerMiddle + upperMiddle) / MedianPairAverageDivisor;
     }
+
+    // TotalBefore(i + 1) is how many sample elements are <= i, so "the value at
+    // sorted position p" (1-based) is i for the first end i + 1 whose total
+    // reaches p - LowerBound's definition exactly, one slot along because
+    // TotalBefore(0) is 0 and never reaches a position p >= 1.
+    private static int ValueAtSortedPosition(PrefixSums<long, SumOperation<long>> cumulative, long position)
+        => BinarySearch.LowerBound(cumulative.Totals, position) - 1;
 }

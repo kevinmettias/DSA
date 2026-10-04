@@ -1,4 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.DataStructures.PrefixSums;
 using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.SumOfTotalStrengthOfWizards;
@@ -18,9 +20,10 @@ namespace DSAExperimentation.LeetCode.SumOfTotalStrengthOfWizards;
 // asymmetry between the two sweeps, resolving a run of equal minimums to its
 // leftmost occurrence so no subarray is ever counted twice - and both boundary
 // arrays come from one NearestBoundary sweep each. What is new here is the weight: instead of counting those subarrays,
-// each one contributes its sum, and the total of all of them is read off a
-// prefix-sum-of-prefix-sums array (PP[i+1] = PP[i] + prefix[i]) in O(1) per index
-// rather than re-summing each subarray. The whole pass stays O(n).
+// each one contributes its sum, and the total of all of them is read off PrefixSums
+// taken over the prefix-sum array itself (PP.TotalBefore(i+1) = PP.TotalBefore(i) +
+// prefix[i]) in O(1) per index rather than re-summing each subarray. The whole pass
+// stays O(n).
 internal static class SumOfTotalStrengthOfWizardsSolution
 {
     private const int NoSmallerElementToTheLeft = -1;
@@ -54,15 +57,18 @@ internal static class SumOfTotalStrengthOfWizardsSolution
         // back to the left takes a value equal to this one, the sweep forward to the right
         // refuses it, so an equal minimum resolves against the earlier index and no subarray
         // is claimed twice. Both sentinels are one step outside the array, which is what lets
-        // SumWeightedContributions index prefixOfPrefix[left + 1] and [right + 1] unchecked.
+        // SumWeightedContributions read prefixOfPrefix.TotalBefore(left + 1) and
+        // TotalBefore(right + 1) with no special case at either end.
         var previousSmaller = NearestBoundary.SmallerToTheLeft(strength, NoSmallerElementToTheLeft);
         var nextSmallerOrEqual = NearestBoundary.SmallerOrEqualToTheRight(strength, strength.Length);
         var prefix = ComputePrefixSums(strength);
-        var prefixOfPrefix = ComputePrefixOfPrefixSums(prefix);
+        var prefixOfPrefix = new PrefixSums<long, SumOperation<long>>(prefix);
 
         return SumWeightedContributions(strength, previousSmaller, nextSmallerOrEqual, prefixOfPrefix);
     }
 
+    // The prefix sums are themselves the values the outer PrefixSums totals, so they are
+    // built as an array here: PrefixSums keeps its totals to itself.
     private static long[] ComputePrefixSums(int[] strength)
     {
         var prefix = new long[strength.Length + 1];
@@ -75,20 +81,8 @@ internal static class SumOfTotalStrengthOfWizardsSolution
         return prefix;
     }
 
-    private static long[] ComputePrefixOfPrefixSums(long[] prefix)
-    {
-        var prefixOfPrefix = new long[prefix.Length + 1];
-
-        for (var i = 0; i < prefix.Length; i++)
-        {
-            prefixOfPrefix[i + 1] = prefixOfPrefix[i] + prefix[i];
-        }
-
-        return prefixOfPrefix;
-    }
-
     private static int SumWeightedContributions(
-        int[] strength, int[] previousSmaller, int[] nextSmallerOrEqual, long[] prefixOfPrefix)
+        int[] strength, int[] previousSmaller, int[] nextSmallerOrEqual, PrefixSums<long, SumOperation<long>> prefixOfPrefix)
     {
         long total = 0;
 
@@ -97,8 +91,8 @@ internal static class SumOfTotalStrengthOfWizardsSolution
             var left = previousSmaller[i];
             var right = nextSmallerOrEqual[i];
 
-            var sumOfSumsEndingAtOrAfterI = prefixOfPrefix[right + 1] - prefixOfPrefix[i + 1];
-            var sumOfSumsStartingAtOrBeforeI = prefixOfPrefix[i + 1] - prefixOfPrefix[left + 1];
+            var sumOfSumsEndingAtOrAfterI = prefixOfPrefix.TotalBefore(right + 1) - prefixOfPrefix.TotalBefore(i + 1);
+            var sumOfSumsStartingAtOrBeforeI = prefixOfPrefix.TotalBefore(i + 1) - prefixOfPrefix.TotalBefore(left + 1);
 
             var weightedSum = ((long)(i - left) * sumOfSumsEndingAtOrAfterI) - ((long)(right - i) * sumOfSumsStartingAtOrBeforeI);
             var contribution = Mod(strength[i]) * Mod(weightedSum) % ModularArithmetic.Modulo;

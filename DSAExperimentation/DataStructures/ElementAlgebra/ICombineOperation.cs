@@ -5,7 +5,8 @@ namespace DSAExperimentation.DataStructures.ElementAlgebra;
 // demanding exactly the position its own arithmetic needs:
 //
 //   ICombineOperation           SegmentTree        merge two adjacent ranges' values
-//   - IGroupOperation           FenwickTree        + Invert: a range is a difference of two prefixes
+//   - IGroupOperation           FenwickTree,       + Invert: a range is a difference of two prefixes
+//                               PrefixSums
 //     - IScaledGroupOperation   RangeFenwickTree   + Scale: a range update is a scaled prefix
 //   IRangeUpdateOperation       LazySegmentTree    + an update action, kept structure-local
 //
