@@ -1391,7 +1391,8 @@ Two things, and only two:
   examples once as a
   `public static TheoryData<...> Examples`, then carries one
   `[Theory] [MemberData(nameof(Examples))]` method *per strategy*, so a failure names the strategy
-  that broke rather than reporting a disagreement between two anonymous arms.
+  that broke rather than reporting a disagreement between two anonymous arms, and at least one test
+  named for each input-preparation helper §17.4 makes public, asserting what that helper builds.
 - **Workload sizing.** How *large* an input to measure is a measurement decision, so it stays in
   `Benchmarks/Fixtures/`: `LockWorkloads.BuildDeadends(count, seed)`, `HammingWorkloads.BuildChain`,
   `WeightedGridWorkloads.OpenGrid(size)`. What each of those builds *from* is domain code.
