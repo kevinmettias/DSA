@@ -3,9 +3,12 @@ using DSAExperimentation.LeetCode.RankTransformOfAMatrix;
 namespace DSAExperimentation.LeetCode.Tests.RankTransformOfAMatrix;
 
 // Harness only. Both ranking strategies are RankTransformOfAMatrixSolution's -
-// this file just pins them to LeetCode's four published examples, plus an
-// all-equal matrix (every cell shares one row or column, so one rank) and a
-// single cell.
+// this file just pins them to LeetCode's four published examples, plus a single
+// cell and two hand-worked tie cases. In the first, the three 5s share a rank of
+// 4 although (0, 0)'s own row and column hold nothing above rank 1: (0, 2) is
+// raised by the 3 below it and (2, 0) by the 4 beside it, and the tie rule carries
+// both up to (0, 0). In the second, the two 3s share no row or column, so they are
+// ranked apart - 3 after the 1 and 2 in their row, 2 after the 0s in theirs.
 public sealed partial class RankTransformOfAMatrixSolutionTests
 {
     public static TheoryData<int[][], int[][]> Examples =>
@@ -60,6 +63,28 @@ public sealed partial class RankTransformOfAMatrixSolutionTests
             {
                 [[42]],
                 [[1]]
+            },
+            {
+                [
+                    [5, 1, 5],
+                    [1, 2, 3],
+                    [5, 4, 9],
+                ],
+                [
+                    [4, 1, 4],
+                    [1, 2, 3],
+                    [4, 3, 5],
+                ]
+            },
+            {
+                [
+                    [1, 2, 3],
+                    [3, 0, 0],
+                ],
+                [
+                    [1, 2, 3],
+                    [2, 1, 1],
+                ]
             },
         };
 

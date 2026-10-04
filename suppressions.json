@@ -4497,6 +4497,14 @@
       "reason": "`Root = 0` is declared in 2 independent units (PalindromicPathQueriesInATree/TreeTour.cs, ReachableNodesWithRestrictions/ReachableNodesWithRestrictionsSolution.cs), each the node its own solution starts its own walk from: LC 2368 names node 0 itself, and LC 3841's tree is undirected, so TreeTour picks 0 to root its tour. Two walks that happen to start at the same index are not one fact. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.LeetCode/RankTransformOfAMatrix/RankTransformOfAMatrixSolution.cs",
+      "anchor": "`NoPosition = ",
+      "reason": "`NoPosition = -1` is declared in 2 independent units (RankTransformOfAMatrix/RankTransformOfAMatrixSolution.cs, SmallestKLengthSubsequenceWithOccurrencesOfALetter/SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution.cs), each answering one problem on its own: one marks a row or column no cell of the current value has reached yet, the other a scan that has not found its best character yet. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
     }
   ]
 }
