@@ -1379,8 +1379,19 @@ public or thread a dozen `InternalsVisibleTo` attributes through the tree.
 Second, one upward edge is **intended**: `IntervalSet` (a Representation) composes
 `BinarySearch.LowerBound` through a private `IRandomAccessSequence` view rather than carrying a
 second bisection loop, and its doc comment defends that as sanctioned reuse. A `ProjectReference`
-cannot express "this one edge, for this reason"; the test's allow-list can, and a companion test
-fails if an allow-listed edge disappears so the entry cannot go stale.
+cannot express "this one edge, for this reason"; the test's allow-list can. An entry names the file
+*and* the one namespace it may reach — `IntervalSet.cs` → `DSAExperimentation.Algorithms.Searching`
+— so any other upward reference from that file still fails. A companion test fails once the
+file's code no longer names that namespace, so an entry cannot outlive its edge.
+
+The test reads each file's code, with comments and string literals blanked, not only its `using`
+lines. A fully qualified `DSAExperimentation.Algorithms.X`, a `using static` or alias, and a
+partially qualified `Algorithms.X` all count as references. The partial form needs no `using`
+because it resolves the same way inside any `DSAExperimentation` namespace. Global usings are
+judged more strictly, because they put a namespace in scope for every tier at once. That covers a
+`global using` directive in any of the project's files and a `<Using>` item in its project file or
+a `Directory.Build` file. A global using may name `DataStructures` and nothing above it, and no
+allow-list entry can sanction one.
 
 ### 17.7 Tier 5: what stays in a harness
 
@@ -1631,7 +1642,9 @@ whoever was editing remembered them. They are now asserted by
 would be blind in precisely the place duplication happens.
 
 - **§17.2's tier order** — `LayeringTests`: a file in `DSAExperimentation` may reference its own
-  tier or a lower one, with a named allow-list for the one deliberate inversion. The LeetCode tier
+  tier or a lower one, whether in a `using` directive or inline in its code. The one deliberate
+  inversion is allow-listed by file and target namespace, and a global using may name only the
+  lowest tier (§17.6a). The LeetCode tier
   has no row: it is the top tier in a project of its own, so nothing it references can sit above
   it, and a row for it could never fail.
 - **§17.7's "a harness holds assertions and workload sizing"** — `Tier5WitnessTests`. A type that
