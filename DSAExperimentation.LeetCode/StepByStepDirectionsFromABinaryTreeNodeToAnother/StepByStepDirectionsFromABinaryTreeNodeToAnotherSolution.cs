@@ -114,7 +114,7 @@ internal static class StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
     // This repo's own engines: LowestCommonAncestor.Find (the same ancestry walk
     // LowestCommonAncestorOfABinaryTreeSolution composes) locates the turnaround
     // point, and AllRootToLeafPaths.Find rooted AT that ancestor (the engine
-    // PathSumII/PathSumIII/KthAncestorOfATreeNode already lean on) hands back the
+    // PathSumII/PathSumIII already lean on) hands back the
     // chains both endpoints sit on. It collects EVERY leaf path under the ancestor
     // rather than just the two this problem needs, so it is expected to do
     // strictly more work than the bespoke search - the same "a generic primitive
