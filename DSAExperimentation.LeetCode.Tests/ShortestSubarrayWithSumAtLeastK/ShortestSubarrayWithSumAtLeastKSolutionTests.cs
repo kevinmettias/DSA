@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ShortestSubarrayWithSumAtLeastK;
 namespace DSAExperimentation.LeetCode.Tests.ShortestSubarrayWithSumAtLeastK;
 
 // Harness only. Both strategies are ShortestSubarrayWithSumAtLeastKSolution's - the
-// O(n^2) prefix-pair scan and this repo's own Deque<int> monotonic prefix window -
+// O(n^2) prefix-pair scan and this repo's MonotonicDeque over the prefix sums -
 // and this file pins both to LeetCode's published examples plus the negative-value
 // cases a plain sliding window would get wrong.
 public sealed partial class ShortestSubarrayWithSumAtLeastKSolutionTests

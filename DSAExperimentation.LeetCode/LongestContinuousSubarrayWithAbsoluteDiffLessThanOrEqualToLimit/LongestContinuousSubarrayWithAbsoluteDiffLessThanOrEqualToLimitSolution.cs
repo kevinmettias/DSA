@@ -1,4 +1,4 @@
-using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
+using DSAExperimentation.DataStructures.MonotonicDeque;
 
 namespace DSAExperimentation.LeetCode.LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit;
 
@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.LongestContinuousSubarrayWithAbsoluteDiffL
 //
 // Both strategies answer the same question and differ only in how they learn a
 // window's max and min: the baseline rescans each window from its own start, while
-// the composed strategy keeps them incrementally in two of this repo's own Deques.
+// the composed strategy keeps them incrementally in two of this repo's MonotonicDeques.
 internal static class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitSolution
 {
     // The textbook answer: every starting index grows its own window from scratch,
@@ -42,11 +42,11 @@ internal static class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualTo
         return best;
     }
 
-    // Two Deque<int> instances, each a monotonic index window over the same
-    // expanding/shrinking range - one decreasing-value (so its front is the window's
-    // max) and one increasing-value (so its front is the window's min) - the exact
-    // SlidingWindowMaximum precedent doubled up. The spread is always
-    // nums[maxFront] - nums[minFront]; once it exceeds limit the left edge advances
+    // Two MonotonicDeque instances over the same expanding/shrinking range - one under
+    // MaxWindowOrder (so its front is the window's max) and one under MinWindowOrder
+    // (so its front is the window's min) - the exact SlidingWindowMaximum precedent
+    // doubled up. The spread is always the max front's value minus the min front's;
+    // once it exceeds limit the left edge advances
     // until it doesn't, with each index pushed and popped from each deque at most
     // once for O(n) total instead of the baseline's O(n^2) rescan.
     public static int LongestSubarrayByMonotonicDeques(int[] nums, int limit)
@@ -64,70 +64,40 @@ internal static class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualTo
 
     private sealed class MinMaxWindow(int[] nums, int limit)
     {
-        private readonly RepoDeque _maxWindow = new();
-        private readonly RepoDeque _minWindow = new();
+        private readonly MonotonicDeque<int, MaxWindowOrder<int>> _maxWindow = new();
+        private readonly MonotonicDeque<int, MinWindowOrder<int>> _minWindow = new();
         private int _left;
 
         // Admits index right, restores the limit, and reports the resulting window's
         // length.
         public int Advance(int right)
         {
-            PushMax(right);
-            PushMin(right);
+            _maxWindow.Push(right, nums[right]);
+            _minWindow.Push(right, nums[right]);
             ShrinkToLimit();
 
             return right - _left + 1;
         }
 
-        private void PushMax(int right)
-        {
-            while (_maxWindow.TryPeekBack(out var maxBack) && nums[maxBack] <= nums[right])
-            {
-                _maxWindow.TryPopBack(out _);
-            }
-
-            _maxWindow.PushBack(right);
-        }
-
-        private void PushMin(int right)
-        {
-            while (_minWindow.TryPeekBack(out var minBack) && nums[minBack] >= nums[right])
-            {
-                _minWindow.TryPopBack(out _);
-            }
-
-            _minWindow.PushBack(right);
-        }
-
+        // Each step past the left edge drops whatever front entries it leaves behind
+        // in both deques.
         private void ShrinkToLimit()
         {
-            while (IsWindowSpreadOverLimit(_maxWindow, _minWindow, nums, limit))
+            while (IsWindowSpreadOverLimit(_maxWindow, _minWindow, limit))
             {
                 _left++;
-                DropStaleFronts();
+                _maxWindow.EvictBefore(_left);
+                _minWindow.EvictBefore(_left);
             }
         }
 
         // The window is over its limit while both deques still hold a front and the spread
         // between those two fronts - largest value minus smallest - is past limit.
         private static bool IsWindowSpreadOverLimit(
-            RepoDeque maxWindow, RepoDeque minWindow, int[] nums, int limit) =>
-            maxWindow.TryPeekFront(out var maxFront) && minWindow.TryPeekFront(out var minFront) &&
-            nums[maxFront] - nums[minFront] > limit;
-
-        // At most one index per deque can fall behind the left edge per step, since
-        // the edge advances by one.
-        private void DropStaleFronts()
-        {
-            if (_maxWindow.TryPeekFront(out var maxFront) && maxFront < _left)
-            {
-                _maxWindow.TryPopFront(out _);
-            }
-
-            if (_minWindow.TryPeekFront(out var minFront) && minFront < _left)
-            {
-                _minWindow.TryPopFront(out _);
-            }
-        }
+            MonotonicDeque<int, MaxWindowOrder<int>> maxWindow,
+            MonotonicDeque<int, MinWindowOrder<int>> minWindow,
+            int limit) =>
+            maxWindow.TryPeekFront(out var maximum) && minWindow.TryPeekFront(out var minimum) &&
+            maximum.Key - minimum.Key > limit;
     }
 }

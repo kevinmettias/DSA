@@ -1,4 +1,4 @@
-using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
+using DSAExperimentation.DataStructures.MonotonicDeque;
 
 namespace DSAExperimentation.LeetCode.JumpGameVI;
 
@@ -39,8 +39,8 @@ internal static class JumpGameVISolution
         return bestResults[^1];
     }
 
-    // This repo's own Deque<int> as a monotonic window: indices are held in decreasing
-    // best-result order, so the front is always the window's maximum - the same
+    // This repo's MonotonicDeque under MaxWindowOrder: indices are held with their best
+    // results in decreasing order, so the front is always the window's maximum - the same
     // technique ConstrainedSubsequenceSumSolution uses for LC 1425, where the compared
     // values are computed by the very loop that maintains the window rather than read
     // from a fixed input array. Every index is pushed and popped at most once, so the
@@ -62,7 +62,7 @@ internal static class JumpGameVISolution
         private readonly int[] _nums;
         private readonly int _jumpLimit;
         private readonly int[] _bestResults;
-        private readonly RepoDeque _indices = new();
+        private readonly MonotonicDeque<int, MaxWindowOrder<int>> _window = new();
 
         public int BestAtLastIndex => _bestResults[^1];
 
@@ -72,29 +72,21 @@ internal static class JumpGameVISolution
             _jumpLimit = jumpLimit;
             _bestResults = new int[nums.Length];
             _bestResults[0] = nums[0];
-            _indices.PushBack(0);
+            _window.Push(0, nums[0]);
         }
 
+        // The front index leaves the window once it is further than jumpLimit behind
+        // the current one. Pushing the new best result evicts every index whose best
+        // result it matches or beats: those can never be the window maximum again,
+        // since they also leave the window no later than this one.
         public void ExtendTo(int index)
         {
-            DropExpiredFront(index);
+            _window.EvictBefore(index - _jumpLimit);
 
             var value = _nums[index] + WindowMaximum();
             _bestResults[index] = value;
 
-            DropDominatedBack(value);
-            _indices.PushBack(index);
-        }
-
-        // The front index leaves the window once it is further than jumpLimit behind
-        // the current one; at most one expires per step, because the index advances by
-        // one.
-        private void DropExpiredFront(int index)
-        {
-            while (_indices.TryPeekFront(out var frontIndex) && frontIndex < index - _jumpLimit)
-            {
-                _indices.TryPopFront(out _);
-            }
+            _window.Push(index, value);
         }
 
         // The front holds the window's largest best-result by construction. The window
@@ -102,20 +94,6 @@ internal static class JumpGameVISolution
         // and cannot have expired, since the jump limit is at least 1. Every jump is mandatory, so
         // unlike LC 1425 there is no clamp at zero here.
         private int WindowMaximum()
-            => _indices.TryPeekFront(out var maximumIndex) ? BestResultAt(maximumIndex) : 0;
-
-        // The best result at the window's front index, which is the window's largest by
-        // construction.
-        private int BestResultAt(int index) => _bestResults[index];
-
-        // Indices whose best-result this one matches or beats can never be the window
-        // maximum again, since they also leave the window no later than this one.
-        private void DropDominatedBack(int value)
-        {
-            while (_indices.TryPeekBack(out var backIndex) && _bestResults[backIndex] <= value)
-            {
-                _indices.TryPopBack(out _);
-            }
-        }
+            => _window.TryPeekFront(out var maximum) ? maximum.Key : 0;
     }
 }

@@ -1,4 +1,4 @@
-using WindowDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
+using DSAExperimentation.DataStructures.MonotonicDeque;
 
 namespace DSAExperimentation.LeetCode.DeliveringBoxesFromStorageToPorts;
 
@@ -17,9 +17,9 @@ namespace DSAExperimentation.LeetCode.DeliveringBoxesFromStorageToPorts;
 // sweep.
 //
 // The strategies differ only in how that minimum is found: rescanned from scratch
-// at every position, or carried in this repo's own Deque<int> as a monotonic index
-// window - the same technique ConstrainedSubsequenceSum applies to LC 1425, here
-// tracking a MINIMUM instead of a maximum.
+// at every position, or carried in this repo's MonotonicDeque - the same technique
+// ConstrainedSubsequenceSum applies to LC 1425, here under MinWindowOrder because
+// it tracks a MINIMUM instead of a maximum.
 internal static class DeliveringBoxesFromStorageToPortsSolution
 {
     // Every trip pays one leg out to its first port and one leg back to storage,
@@ -67,7 +67,7 @@ internal static class DeliveringBoxesFromStorageToPortsSolution
         => MinTripsByMonotonicDeque(BoxDeliverySchedule.Build(boxes), maxBoxes, maxWeight);
 
     // The composed arm: the same dp, with the window's minimum carried in a
-    // monotonic Deque<int> of candidate indices. Each index is pushed and popped at
+    // MonotonicDeque of candidate split points. Each index is pushed and popped at
     // most once, so the rescan collapses into a single O(n) sweep.
     public static int MinTripsByMonotonicDeque(BoxDeliverySchedule schedule, int maxBoxes, int maxWeight)
     {
@@ -84,18 +84,19 @@ internal static class DeliveringBoxesFromStorageToPortsSolution
     }
 
     // The sliding window itself: its left edge tracks the two load constraints, and
-    // its contents stay increasing in dp[j] - switches(j + 1), so the front is
-    // always the best split point still reachable.
+    // it is keyed on each split point's carry-over dp[j] - switches(j + 1), so the
+    // front is always the best split point still reachable.
     private sealed class TripWindow(BoxDeliverySchedule schedule, int maxBoxes, int maxWeight)
     {
-        private readonly WindowDeque _window = CreateSeededWindow();
+        private readonly MonotonicDeque<int, MinWindowOrder<int>> _window = CreateSeededWindow();
         private int _left;
 
-        // Delivering nothing costs nothing, so index 0 is always a valid split.
-        private static WindowDeque CreateSeededWindow()
+        // Delivering nothing costs nothing, so index 0 is always a valid split, and its
+        // carry-over is 0: dp[0] is 0 and no port can switch within the first box.
+        private static MonotonicDeque<int, MinWindowOrder<int>> CreateSeededWindow()
         {
-            var window = new WindowDeque();
-            window.PushBack(0);
+            var window = new MonotonicDeque<int, MinWindowOrder<int>>();
+            window.Push(0, 0);
 
             return window;
         }
@@ -103,7 +104,7 @@ internal static class DeliveringBoxesFromStorageToPortsSolution
         public void AdvanceAndComputeTrip(int deliveredCount, int[] dp)
         {
             AdvanceLeftBound(deliveredCount);
-            dp[deliveredCount] = ComputeTripCost(deliveredCount, dp);
+            dp[deliveredCount] = ComputeTripCost(deliveredCount);
             MaintainBackWindow(deliveredCount, dp);
         }
 
@@ -116,20 +117,17 @@ internal static class DeliveringBoxesFromStorageToPortsSolution
             }
         }
 
-        private int ComputeTripCost(int deliveredCount, int[] dp)
+        private int ComputeTripCost(int deliveredCount)
         {
-            while (_window.TryPeekFront(out var frontIndex) && frontIndex < _left)
-            {
-                _window.TryPopFront(out _);
-            }
+            _window.EvictBefore(_left);
+            _window.TryPeekFront(out var best);
 
-            _window.TryPeekFront(out var bestIndex);
-
-            return TripBaseCost + schedule.PortSwitchesAmongFirst(deliveredCount) + CarryOver(bestIndex, dp);
+            return TripBaseCost + schedule.PortSwitchesAmongFirst(deliveredCount) + best.Key;
         }
 
         // The last position has no successor to split at, and its switch prefix
-        // would read past the end of the schedule.
+        // would read past the end of the schedule. Pushing evicts every split point
+        // whose carry-over this one matches or beats.
         private void MaintainBackWindow(int deliveredCount, int[] dp)
         {
             if (deliveredCount == dp.Length - 1)
@@ -137,14 +135,8 @@ internal static class DeliveringBoxesFromStorageToPortsSolution
                 return;
             }
 
-            var candidate = CarryOver(deliveredCount, dp);
-
-            while (_window.TryPeekBack(out var backIndex) && CarryOver(backIndex, dp) >= candidate)
-            {
-                _window.TryPopBack(out _);
-            }
-
-            _window.PushBack(deliveredCount);
+            var carryOver = CarryOver(deliveredCount, dp);
+            _window.Push(deliveredCount, carryOver);
         }
 
         private int CarryOver(int index, int[] dp) => dp[index] - schedule.PortSwitchesAmongFirst(index + 1);

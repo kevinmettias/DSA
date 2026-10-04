@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ContinuousSubarraysSolution's, the same methods
 // ContinuousSubarraysSolutionTests proves correct - the O(n^2) rescan from every starting
-// index against the two monotonic Deque<int> windows at O(n) total, the same contrast
+// index against the two MonotonicDeque windows at O(n) total, the same contrast
 // LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitBenchmarks draws for
 // LC 1438. [GlobalSetup] draws values from a range narrow enough relative to the
 // problem's fixed limit of 2 that windows run long, so the baseline's quadratic cost

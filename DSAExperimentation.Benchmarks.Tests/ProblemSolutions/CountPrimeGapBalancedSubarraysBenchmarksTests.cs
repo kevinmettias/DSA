@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for CountPrimeGapBalancedSubarraysBenchmarks (ARCHITECTURE 17.9): its two arms are
 // competing strategies for the same question - re-tracking the window's running prime extremes
-// against the compact-prime sliding window over this repo's Deque - so a harness whose arms disagree
+// against the compact-prime sliding window over this repo's MonotonicDeque - so a harness whose arms disagree
 // is timing two different problems. Setup seeds nums, so the same Length must rebuild the array.
 public sealed partial class CountPrimeGapBalancedSubarraysBenchmarksTests
 {

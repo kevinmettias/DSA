@@ -1,4 +1,4 @@
-using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
+using DSAExperimentation.DataStructures.MonotonicDeque;
 
 namespace DSAExperimentation.LeetCode.ShortestSubarrayWithSumAtLeastK;
 
@@ -10,11 +10,11 @@ namespace DSAExperimentation.LeetCode.ShortestSubarrayWithSumAtLeastK;
 // Both strategies start from the same prefix-sum array: a subarray (i, j] sums to
 // prefix[j] - prefix[i], so the question becomes "for each j, the largest i < j with
 // prefix[j] - prefix[i] >= k". The baseline answers that by scanning every pair,
-// O(n^2). The composed strategy keeps candidate prefix indices in this repo's own
-// Deque<int> as a monotonic increasing-prefix-value window - the same "Deque<int> as
-// a monotonic index window" composition SlidingWindowMaximumSolution establishes for
-// LC 239, applied to prefix-sum indices instead of raw values. Each index is pushed
-// and popped at most once, giving O(n).
+// O(n^2). The composed strategy keeps candidate prefix indices in this repo's
+// MonotonicDeque under MinWindowOrder, keyed on their prefix values - the same
+// monotonic window SlidingWindowMaximumSolution composes for LC 239, applied to
+// prefix sums instead of raw values. Each index is pushed and popped at most once,
+// giving O(n).
 internal static class ShortestSubarrayWithSumAtLeastKSolution
 {
     // The textbook answer: build the prefix sums, then for every start scan forward
@@ -50,48 +50,43 @@ internal static class ShortestSubarrayWithSumAtLeastKSolution
         return NoWindow(prefix.Length - 1);
     }
 
-    // This repo's own Deque<int> holding prefix indices in increasing-prefix-value
-    // order. The front is popped while it already answers the current index (no later
-    // index can pair with it more cheaply), and the back is popped while it holds a
+    // This repo's MonotonicDeque under MinWindowOrder, keyed on the prefix value at each
+    // index. The front is popped while it already answers the current index (no later
+    // index can pair with it more cheaply), and Push evicts every back entry holding a
     // prefix no smaller than the current one (a larger, earlier prefix can never beat
     // the current index as a window start).
     public static int ShortestSubarrayByMonotonicDeque(int[] nums, int targetSum)
     {
         var prefix = BuildPrefixSums(nums);
         var best = NoWindow(nums.Length);
-        var window = new RepoDeque();
+        var window = new MonotonicDeque<long, MinWindowOrder<long>>();
 
         for (var i = 0; i < prefix.Length; i++)
         {
             var candidate = ClaimReachableStarts(prefix, window, i, targetSum);
 
             best = Math.Min(best, candidate);
-            DropDominatedStarts(prefix, window, i);
-            window.PushBack(i);
+            window.Push(i, prefix[i]);
         }
 
         return ReportLength(best, nums.Length);
     }
 
-    private static int ClaimReachableStarts(long[] prefix, RepoDeque window, int endIndex, int targetSum)
+    private static int ClaimReachableStarts(
+        long[] prefix,
+        MonotonicDeque<long, MinWindowOrder<long>> window,
+        int endIndex,
+        int targetSum)
     {
         var best = NoWindow(prefix.Length - 1);
 
-        while (window.TryPeekFront(out var frontIndex) && prefix[endIndex] - prefix[frontIndex] >= targetSum)
+        while (window.TryPeekFront(out var start) && prefix[endIndex] - start.Key >= targetSum)
         {
-            best = Math.Min(best, endIndex - frontIndex);
+            best = Math.Min(best, endIndex - start.Position);
             window.TryPopFront(out _);
         }
 
         return best;
-    }
-
-    private static void DropDominatedStarts(long[] prefix, RepoDeque window, int endIndex)
-    {
-        while (window.TryPeekBack(out var backIndex) && prefix[backIndex] >= prefix[endIndex])
-        {
-            window.TryPopBack(out _);
-        }
     }
 
     private static long[] BuildPrefixSums(int[] nums)

@@ -1,4 +1,4 @@
-using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
+using DSAExperimentation.DataStructures.MonotonicDeque;
 
 namespace DSAExperimentation.LeetCode.ConstrainedSubsequenceSum;
 
@@ -35,12 +35,13 @@ internal static class ConstrainedSubsequenceSumSolution
         return answer;
     }
 
-    // This repo's own Deque<int> as a monotonic window: indices are held in
-    // decreasing best-sum order, so the front is always the window's maximum -
+    // This repo's MonotonicDeque under MaxWindowOrder: indices are held with their
+    // best sums in decreasing order, so the front is always the window's maximum -
     // exactly the technique SlidingWindowMaximum uses, except the values being
     // compared are computed by the same loop that maintains the window rather than
-    // read from a fixed input array. Every index is pushed and popped at most once,
-    // so the whole walk is O(n) instead of O(n*k).
+    // read from a fixed input array, so the deque's stored key is the only copy the
+    // walk needs. Every index is pushed and popped at most once, so the whole walk is
+    // O(n) instead of O(n*k).
     public static int MaxSumByMonotonicDeque(int[] nums, int maxGap)
     {
         var window = new BestSumWindow(nums, maxGap);
@@ -57,45 +58,26 @@ internal static class ConstrainedSubsequenceSumSolution
 
     private sealed class BestSumWindow(int[] nums, int maxGap)
     {
-        private readonly int[] _bestSums = new int[nums.Length];
-        private readonly RepoDeque _indices = new();
+        private readonly MonotonicDeque<int, MaxWindowOrder<int>> _window = new();
 
+        // The front index leaves the window once it is further than maxGap behind the
+        // current one. Pushing the new best sum evicts every index whose best sum it
+        // matches or beats: those can never be the window maximum again, since they
+        // also leave the window no later than this one.
         public int ComputeBestSumAt(int index)
         {
-            DropExpiredFront(index);
+            _window.EvictBefore(index - maxGap);
 
             var value = nums[index] + WindowMaximum();
 
-            DropDominatedBack(value);
-            _indices.PushBack(index);
-            _bestSums[index] = value;
+            _window.Push(index, value);
 
             return value;
-        }
-
-        // The front index leaves the window once it is further than maxGap behind the
-        // current one; at most one expires per step, because the index advances by one.
-        private void DropExpiredFront(int index)
-        {
-            if (_indices.TryPeekFront(out var frontIndex) && frontIndex < index - maxGap)
-            {
-                _indices.TryPopFront(out _);
-            }
         }
 
         // The front holds the window's largest best-sum by construction; a negative
         // one is clamped away, which is how "start a fresh subsequence here" is said.
         private int WindowMaximum() =>
-            _indices.TryPeekFront(out var maximumIndex) ? Math.Max(0, _bestSums[maximumIndex]) : 0;
-
-        // Indices whose best-sum this one matches or beats can never be the window
-        // maximum again, since they also leave the window no later than this one.
-        private void DropDominatedBack(int value)
-        {
-            while (_indices.TryPeekBack(out var backIndex) && _bestSums[backIndex] <= value)
-            {
-                _indices.TryPopBack(out _);
-            }
-        }
+            _window.TryPeekFront(out var maximum) ? Math.Max(0, maximum.Key) : 0;
     }
 }

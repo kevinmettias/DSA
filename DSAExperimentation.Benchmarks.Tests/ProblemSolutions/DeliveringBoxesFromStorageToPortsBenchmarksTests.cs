@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for DeliveringBoxesFromStorageToPortsBenchmarks (ARCHITECTURE 17.9): its two arms are
 // competing strategies for the same question - rescanning the valid window at every position against this
-// repo's Deque<int> carrying the window's minimum - so a harness whose arms disagree is timing two
+// repo's MonotonicDeque carrying the window's minimum - so a harness whose arms disagree is timing two
 // different problems. [GlobalSetup] builds the boxes and their prefix scans from one fixed seed into the
 // schedule both arms are handed, so only the sweep is measured; every trip carries at most MaxBoxes, so
 // the reading's documented floor is one trip per full load, and the same Length must rebuild the same

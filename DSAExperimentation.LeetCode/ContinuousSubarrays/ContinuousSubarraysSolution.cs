@@ -1,4 +1,4 @@
-using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
+using DSAExperimentation.DataStructures.MonotonicDeque;
 
 namespace DSAExperimentation.LeetCode.ContinuousSubarrays;
 
@@ -47,10 +47,10 @@ internal static class ContinuousSubarraysSolution
         return total;
     }
 
-    // Two of this repo's own Deque<int> instances, each a monotonic index window over
-    // the same expanding/shrinking range - one decreasing-value (so its front is the
-    // window's max) and one increasing-value (so its front is the window's min) - the
-    // exact LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit precedent,
+    // Two of this repo's MonotonicDeque instances over the same expanding/shrinking
+    // range - one under MaxWindowOrder (so its front is the window's max) and one
+    // under MinWindowOrder (so its front is the window's min) - the exact
+    // LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit precedent,
     // accumulating window lengths instead of taking the largest. Each index is pushed
     // and popped from each deque at most once, so the whole sweep is O(n) rather than
     // the baseline's O(n^2) rescan.
@@ -69,8 +69,8 @@ internal static class ContinuousSubarraysSolution
 
     private sealed class MinMaxWindow(int[] nums)
     {
-        private readonly RepoDeque _maxWindow = new();
-        private readonly RepoDeque _minWindow = new();
+        private readonly MonotonicDeque<int, MaxWindowOrder<int>> _maxWindow = new();
+        private readonly MonotonicDeque<int, MinWindowOrder<int>> _minWindow = new();
         private readonly int[] _nums = nums;
         private int _left;
 
@@ -78,63 +78,31 @@ internal static class ContinuousSubarraysSolution
         // at right - one per starting point from the left edge through right.
         public int Advance(int right)
         {
-            PushMax(right);
-            PushMin(right);
+            _maxWindow.Push(right, _nums[right]);
+            _minWindow.Push(right, _nums[right]);
             ShrinkToLimit();
 
             return right - _left + 1;
         }
 
-        private void PushMax(int right)
-        {
-            while (_maxWindow.TryPeekBack(out var maxBack) && _nums[maxBack] <= _nums[right])
-            {
-                _maxWindow.TryPopBack(out _);
-            }
-
-            _maxWindow.PushBack(right);
-        }
-
-        private void PushMin(int right)
-        {
-            while (_minWindow.TryPeekBack(out var minBack) && _nums[minBack] >= _nums[right])
-            {
-                _minWindow.TryPopBack(out _);
-            }
-
-            _minWindow.PushBack(right);
-        }
-
+        // Each step past the left edge drops whatever front entries it leaves behind
+        // in both deques.
         private void ShrinkToLimit()
         {
             while (IsSpreadBeyondLimit())
             {
                 _left++;
-                DropStaleFronts();
+                _maxWindow.EvictBefore(_left);
+                _minWindow.EvictBefore(_left);
             }
         }
 
-        // The live window's spread is the value at the max deque's front minus the
-        // value at the min deque's front; an empty deque means there is no window
-        // left to measure, so nothing can exceed the limit.
+        // The live window's spread is the max deque's front value minus the min
+        // deque's front value; an empty deque means there is no window left to
+        // measure, so nothing can exceed the limit.
         private bool IsSpreadBeyondLimit()
-            => _maxWindow.TryPeekFront(out var maxFront)
-                && _minWindow.TryPeekFront(out var minFront)
-                && _nums[maxFront] - _nums[minFront] > Limit;
-
-        // At most one index per deque can fall behind the left edge per step, since
-        // the edge advances by one.
-        private void DropStaleFronts()
-        {
-            if (_maxWindow.TryPeekFront(out var maxFront) && maxFront < _left)
-            {
-                _maxWindow.TryPopFront(out _);
-            }
-
-            if (_minWindow.TryPeekFront(out var minFront) && minFront < _left)
-            {
-                _minWindow.TryPopFront(out _);
-            }
-        }
+            => _maxWindow.TryPeekFront(out var maximum)
+                && _minWindow.TryPeekFront(out var minimum)
+                && maximum.Key - minimum.Key > Limit;
     }
 }
