@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.DistinctEchoSubstrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,8 +13,6 @@ public class DistinctEchoSubstringsBenchmarks
     // The LeetCode problem number, reused as the deterministic random seed.
     private const int RandomSeed = 1316;
 
-    private const int LowercaseAlphabetSize = 26;
-
     private string _text = "";
 
     [Params(80, 400)]
@@ -27,7 +26,7 @@ public class DistinctEchoSubstringsBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = (char)('a' + random.Next(LowercaseAlphabetSize));
+            chars[i] = LowercaseAlphabet.LetterAt(random.Next(LowercaseAlphabet.Size));
         }
 
         _text = new string(chars);

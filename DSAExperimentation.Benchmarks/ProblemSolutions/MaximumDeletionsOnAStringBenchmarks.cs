@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.MaximumDeletionsOnAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MaximumDeletionsOnAStringBenchmarks
 {
     private const int RandomSeed = 2430; // LC problem number
-    private const int LowercaseAlphabetSize = 26;
 
     private string _text = "";
 
@@ -25,7 +25,7 @@ public class MaximumDeletionsOnAStringBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = (char)('a' + random.Next(LowercaseAlphabetSize));
+            chars[i] = LowercaseAlphabet.LetterAt(random.Next(LowercaseAlphabet.Size));
         }
 
         _text = new string(chars);

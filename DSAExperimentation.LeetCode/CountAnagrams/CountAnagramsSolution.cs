@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountAnagrams;
@@ -11,8 +12,6 @@ namespace DSAExperimentation.LeetCode.CountAnagrams;
 // without either restating the algorithm (TwoSumSolution precedent).
 internal static class CountAnagramsSolution
 {
-    private const int AlphabetSize = 26;
-
     // Textbook baseline: recursively enumerates every permutation of each word into
     // a HashSet<string> to dedupe, then multiplies the per-word counts (reduced mod
     // 1e9+7 after every word, the same running-product LeetCode itself asks for, so
@@ -65,7 +64,7 @@ internal static class CountAnagramsSolution
 
     private static long DistinctPermutationsByModularFactorial(string word, FactorialTable table)
     {
-        var counts = new int[AlphabetSize];
+        var counts = new int[LowercaseAlphabet.Size];
 
         foreach (var c in word)
         {

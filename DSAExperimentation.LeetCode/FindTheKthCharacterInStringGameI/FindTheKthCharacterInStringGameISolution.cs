@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures;
+
 namespace DSAExperimentation.LeetCode.FindTheKthCharacterInStringGameI;
 
 // LeetCode 3304. Find the K-th Character in String Game I: word starts as
@@ -10,8 +12,6 @@ namespace DSAExperimentation.LeetCode.FindTheKthCharacterInStringGameI;
 // hides, not because the brute force needs replacing.
 internal static class FindTheKthCharacterInStringGameISolution
 {
-    private const int AlphabetSize = 26;
-
     // The textbook answer: build the actual string one round at a time -
     // shift every existing character and append the shifted copy - until it
     // reaches kthPosition. Deliberately written without this repo's
@@ -49,6 +49,6 @@ internal static class FindTheKthCharacterInStringGameISolution
     {
         var shift = System.Numerics.BitOperations.PopCount(
             (uint)(kthPosition - 1));
-        return (char)('a' + shift % AlphabetSize);
+        return LowercaseAlphabet.LetterAt(shift % LowercaseAlphabet.Size);
     }
 }

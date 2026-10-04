@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.ReplaceWords;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -18,8 +19,6 @@ public class ReplaceWordsBenchmarks
     // Alternates sentence words between "prefixed with a real dictionary root" and
     // "fully random" so half the words exercise each strategy.
     private const int AlternationModulus = 2;
-
-    private const int LowercaseAlphabetSize = 26;
 
     private string[] _dictionary = [];
 
@@ -55,5 +54,5 @@ public class ReplaceWordsBenchmarks
     public string LowercaseTrieWalk() => ReplaceWordsSolution.ReplaceByTrieWalk(_dictionary, _sentence);
 
     private static string RandomWord(Random random, int length)
-        => new(Enumerable.Range(0, length).Select(_ => (char)('a' + random.Next(LowercaseAlphabetSize))).ToArray());
+        => new(Enumerable.Range(0, length).Select(_ => LowercaseAlphabet.LetterAt(random.Next(LowercaseAlphabet.Size))).ToArray());
 }

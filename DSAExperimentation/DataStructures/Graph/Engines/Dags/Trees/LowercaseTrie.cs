@@ -15,8 +15,6 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // this type exists alongside Trie<TValue>, not an incidental restriction.
 internal sealed class LowercaseTrie<TValue>
 {
-    private const string InvalidKeyCharacterMessage = "Key must contain only lowercase English letters ('a'-'z').";
-
     private readonly LowercaseTrieNode<TValue> _root = new();
 
     public int Count { get; private set; }
@@ -29,7 +27,7 @@ internal sealed class LowercaseTrie<TValue>
 
         foreach (var ch in key)
         {
-            current = current.Children[IndexOf(ch)] ??= new LowercaseTrieNode<TValue>();
+            current = current.Children[LowercaseAlphabet.IndexOf(ch)] ??= new LowercaseTrieNode<TValue>();
         }
 
         if (!current.HasValue)
@@ -72,7 +70,7 @@ internal sealed class LowercaseTrie<TValue>
 
         foreach (var ch in key)
         {
-            current = current.Children[IndexOf(ch)];
+            current = current.Children[LowercaseAlphabet.IndexOf(ch)];
 
             if (current is null)
             {
@@ -81,17 +79,5 @@ internal sealed class LowercaseTrie<TValue>
         }
 
         return current;
-    }
-
-    private static int IndexOf(char ch)
-    {
-        var index = ch - 'a';
-
-        if (index < 0 || index >= LowercaseAlphabet.Size)
-        {
-            throw new ArgumentOutOfRangeException(nameof(ch), ch, InvalidKeyCharacterMessage);
-        }
-
-        return index;
     }
 }

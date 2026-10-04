@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures;
+
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
 // Benchmark workload sizing for LC 2063 - everything about the strategies
@@ -7,8 +9,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // neither strategy meets a degenerate all-vowel or vowel-free word.
 internal static class VowelsOfAllSubstringsWorkloads
 {
-    private const int LowercaseAlphabetSize = 26;
-
     public static string BuildRandomLowercaseWord(int length, int seed)
     {
         var random = new Random(seed);
@@ -16,7 +16,8 @@ internal static class VowelsOfAllSubstringsWorkloads
 
         for (var i = 0; i < length; i++)
         {
-            chars[i] = (char)('a' + random.Next(0, LowercaseAlphabetSize));
+            var slot = random.Next(0, LowercaseAlphabet.Size);
+            chars[i] = LowercaseAlphabet.LetterAt(slot);
         }
 
         return new string(chars);

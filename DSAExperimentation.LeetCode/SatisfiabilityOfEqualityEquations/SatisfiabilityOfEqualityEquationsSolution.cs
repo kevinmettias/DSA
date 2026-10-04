@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.DisjointSet;
 
 namespace DSAExperimentation.LeetCode.SatisfiabilityOfEqualityEquations;
@@ -17,7 +18,6 @@ internal static class SatisfiabilityOfEqualityEquationsSolution
 {
     // The problem fixes single lowercase variable names, so an equation is always
     // exactly four characters: variable, operator, operator, variable.
-    private const int AlphabetSize = 26;
     private const int SecondVariableIndex = 3;
 
     // The naive baseline: a Dictionary-of-Lists adjacency graph over the equality
@@ -153,7 +153,7 @@ internal static class SatisfiabilityOfEqualityEquationsSolution
     // instead of account indices.
     public static bool IsSatisfiableByDisjointSet(string[] equations)
     {
-        var components = new DisjointSet(AlphabetSize);
+        var components = new DisjointSet(LowercaseAlphabet.Size);
 
         foreach (var equation in equations)
         {

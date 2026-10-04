@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures;
+
 namespace DSAExperimentation.LeetCode.FindTheKthCharacterInStringGameII;
 
 // LeetCode 3307. Find the K-th Character in String Game II: word starts as
@@ -9,8 +11,6 @@ namespace DSAExperimentation.LeetCode.FindTheKthCharacterInStringGameII;
 // character it descends from.
 internal static class FindTheKthCharacterInStringGameIISolution
 {
-    private const int AlphabetSize = 26;
-
     // The textbook answer: build the actual string exactly as the operations
     // describe, then index it directly. Correct for any input, but the word
     // doubles on every operations[i] == 0, so this only stays usable while
@@ -61,7 +61,7 @@ internal static class FindTheKthCharacterInStringGameIISolution
 
         var shift = TraceShiftBackward(targetPosition, operations, lengths);
 
-        return (char)('a' + shift % AlphabetSize);
+        return LowercaseAlphabet.LetterAt(shift % LowercaseAlphabet.Size);
     }
 
     // The round's length as it stands, and the same length one doubling on.

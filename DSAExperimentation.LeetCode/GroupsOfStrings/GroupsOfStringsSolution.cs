@@ -1,4 +1,5 @@
 using System.Numerics;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.Sequence;
@@ -16,8 +17,6 @@ namespace DSAExperimentation.LeetCode.GroupsOfStrings;
 // enumerated directly and looked up.
 internal static class GroupsOfStringsSolution
 {
-    private const int AlphabetSize = 26;
-
     // Two set bits differing at equal popcount is a REPLACE; one bit differing is
     // an add or a delete; zero is equality.
     private const int ReplaceLetterBitDifference = 2;
@@ -165,7 +164,7 @@ internal static class GroupsOfStringsSolution
 
         var context = new UnionContext(representativeByMask, components);
 
-        for (var removedBit = 0; removedBit < AlphabetSize; removedBit++)
+        for (var removedBit = 0; removedBit < LowercaseAlphabet.Size; removedBit++)
         {
             UnionNeighborsWithoutBit(wordIndex, mask, removedBit, context);
         }
@@ -182,7 +181,7 @@ internal static class GroupsOfStringsSolution
         var withoutLetter = mask & ~(1 << removedBit);
         UnionIfPresent(wordIndex, withoutLetter, context);
 
-        for (var addedBit = 0; addedBit < AlphabetSize; addedBit++)
+        for (var addedBit = 0; addedBit < LowercaseAlphabet.Size; addedBit++)
         {
             if ((mask & (1 << addedBit)) == 0)
             {

@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures;
+
 namespace DSAExperimentation.LeetCode.MinimumCostToConvertStringI;
 
 // All 26 lowercase-letter nodes, built once - the domain model, not an
@@ -8,9 +10,6 @@ namespace DSAExperimentation.LeetCode.MinimumCostToConvertStringI;
 // AllPairsShortestPaths already takes the cheaper one on relax.
 internal sealed class LetterNetwork
 {
-    // One node per lowercase English letter, the alphabet the conversion rules run over.
-    private const int AlphabetSize = 26;
-
     // Index i is the node for letter 'a' + i.
     public LetterNode[] Nodes { get; }
 
@@ -18,11 +17,11 @@ internal sealed class LetterNetwork
 
     public static LetterNetwork Build(char[] original, char[] changed, int[] cost)
     {
-        var nodes = new LetterNode[AlphabetSize];
+        var nodes = new LetterNode[LowercaseAlphabet.Size];
 
         for (var i = 0; i < nodes.Length; i++)
         {
-            nodes[i] = new LetterNode((char)('a' + i));
+            nodes[i] = new LetterNode(LowercaseAlphabet.LetterAt(i));
         }
 
         for (var i = 0; i < original.Length; i++)

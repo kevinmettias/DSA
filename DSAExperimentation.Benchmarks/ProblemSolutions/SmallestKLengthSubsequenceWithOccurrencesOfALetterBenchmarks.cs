@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.SmallestKLengthSubsequenceWithOccurrencesOfALetter;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +15,6 @@ public class SmallestKLengthSubsequenceWithOccurrencesOfALetterBenchmarks
 {
     private const char Letter = 'a';
     private const int Repetition = 2;
-    private const int LowercaseAlphabetSize = 26;
     private const int SubsequenceLengthDivisor = 2;
     private const int RandomSeed = 1;
 
@@ -31,7 +31,8 @@ public class SmallestKLengthSubsequenceWithOccurrencesOfALetterBenchmarks
         var chars = new char[Length];
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = (char)('a' + random.Next(0, LowercaseAlphabetSize));
+            var slot = random.Next(0, LowercaseAlphabet.Size);
+            chars[i] = LowercaseAlphabet.LetterAt(slot);
         }
 
         // Force at least Repetition occurrences of Letter so both strategies stay feasible.
