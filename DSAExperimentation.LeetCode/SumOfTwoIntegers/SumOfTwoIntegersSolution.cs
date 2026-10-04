@@ -1,23 +1,40 @@
 namespace DSAExperimentation.LeetCode.SumOfTwoIntegers;
 
 // LeetCode 371. Sum of Two Integers: the problem's own constraint (no + or -) rules
-// out every arithmetic operator, and no data structure applies either - this is a
-// pure bitwise carry-propagation loop, the same "no stronger reusable primitive"
-// shape MaximumSubarrayBenchmarks/GasStation/BestTimeToBuyAndSellStock already
-// establish.
+// out every arithmetic operator, and no data structure applies either - this is
+// pure bitwise carry propagation, the same "no stronger reusable primitive" shape
+// MaximumSubarrayBenchmarks/GasStation/BestTimeToBuyAndSellStock already establish.
 //
-// BuiltInAddition is the textbook baseline - "what you would write without this
-// problem's constraint" (17.5) - and GetSumByBitwiseCarryLoop is the
-// actually-compliant algorithm: XOR gives the carry-less sum of each bit pair,
-// AND-then-shift gives the carry to fold back in next iteration, repeat until
-// no carry remains.
+// Both strategies are compliant and differ in how far a carry moves per step.
+// GetSumByRippleCarryAdder, the baseline, is the circuit written out: one bit
+// position at a time, 32 steps whatever the addends. GetSumByBitwiseCarryLoop works
+// on every position at once: XOR gives the carry-less sum of each bit pair,
+// AND-then-shift gives the carries to fold back in next iteration, repeat until no
+// carry remains - as many steps as the longest carry chain.
 internal static class SumOfTwoIntegersSolution
 {
-    // The baseline: plain integer addition. Violates the problem's own
-    // no-arithmetic-operator constraint by construction, which is exactly why it
-    // is the thing GetSumByBitwiseCarryLoop is measured against rather than a
-    // valid submission on its own.
-    public static int GetSumByBuiltInAddition(int firstAddend, int secondAddend) => firstAddend + secondAddend;
+    // A ripple-carry adder: a one-bit mask walks the 32 positions, low to high, and
+    // shifting it is the loop's only step, so not even the loop counter adds. At each
+    // position the sum bit is the XOR of the two addend bits and the incoming carry,
+    // and the outgoing carry is set when at least two of those three are. Two's
+    // complement makes the same 32 positions right for negative addends, and the
+    // carry out of the top bit falls off the shift, as int addition drops it.
+    public static int GetSumByRippleCarryAdder(int firstAddend, int secondAddend)
+    {
+        var sum = 0;
+        var carry = 0;
+
+        for (var position = 1; position != 0; position <<= 1)
+        {
+            var firstBit = firstAddend & position;
+            var secondBit = secondAddend & position;
+
+            sum |= firstBit ^ secondBit ^ carry;
+            carry = ((firstBit & secondBit) | (carry & (firstBit ^ secondBit))) << 1;
+        }
+
+        return sum;
+    }
 
     public static int GetSumByBitwiseCarryLoop(int firstAddend, int secondAddend)
     {
