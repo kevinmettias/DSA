@@ -15,11 +15,10 @@ namespace DSAExperimentation.LeetCode.KthSmallestPathXORSum;
 // distinct sums exist there.
 //
 // Both strategies walk the same ParentArrayTree.Build tree iteratively (a
-// repo Stack<T>, never recursion - LC's own worst case is a straight-line
-// chain of up to 5e4 nodes, deep enough to risk overflowing the call stack,
-// the same concern ShortestPathInAWeightedTreeSolution's Euler tour was
-// written to avoid) and differ only in how much of that walk is shared across
-// queries.
+// repo Stack<T> here, PreOrderTour's own stack in the composed arm, never
+// recursion - LC's own worst case is a straight-line chain of up to 5e4 nodes,
+// deep enough to risk overflowing the call stack) and differ only in how much
+// of that walk is shared across queries.
 internal static class KthSmallestPathXORSumSolution
 {
     // Textbook: no memoization at all. Every query redoes the full root-to-
@@ -92,13 +91,12 @@ internal static class KthSmallestPathXORSumSolution
         return values;
     }
 
-    // Composed: one iterative pre-order walk (repo Stack<T> again) builds every
-    // node's path XOR sum AND its Euler-tour [timeIn, timeOut] range in a single
-    // pass - subtree u is then exactly the contiguous visitOrder slice
-    // [timeIn[u], timeOut[u]], the same "stack-based pre-order never starts a
-    // sibling before finishing the current subtree" fact
-    // ShortestPathInAWeightedTreeSolution.BuildEulerTour relies on. Each distinct
-    // node queried gets its distinct/sorted XOR list built at most ONCE
+    // Composed: DataStructures' PreOrderTour lays the tree out in pre-order, so
+    // subtree u is exactly the contiguous run of positions SubtreeOf(u). One pass
+    // over the tour then gives every position its node's path XOR sum - a parent
+    // always sits before its children, so its sum is already final when they are
+    // reached - and a subtree's sums are a contiguous slice of that array. Each
+    // distinct node queried gets its distinct/sorted XOR list built at most ONCE
     // (memoized in a cache keyed by node id) via this repo's own
     // HashMap<TKey, TValue> for dedup and MergeSort over an
     // ArrayIndexedSequence<int> for the sort - repeat queries against the same
@@ -113,7 +111,8 @@ internal static class KthSmallestPathXORSumSolution
     public static int[] KthSmallestXorSumByEulerTourCache(
         RootedTreeNode[] nodes, int[] par, int[] vals, int[][] queries)
     {
-        var (pathXor, visitOrder, timeIn, timeOut) = BuildEulerTourWithPathXor(nodes, par, vals);
+        var tour = PreOrderTour.Build(nodes[0], nodes.Length);
+        var pathXorAt = PathXorsInTourOrder(tour, par, vals);
         var cache = new Dictionary<int, int[]>();
         var answers = new int[queries.Length];
 
@@ -123,7 +122,8 @@ internal static class KthSmallestPathXORSumSolution
 
             if (!cache.TryGetValue(u, out var sorted))
             {
-                sorted = DistinctSortedXorsInRange(pathXor, visitOrder, timeIn[u], timeOut[u]);
+                var (first, last) = tour.SubtreeOf(u);
+                sorted = DistinctSortedXorsInRange(pathXorAt, first, last);
                 cache[u] = sorted;
             }
 
@@ -138,84 +138,31 @@ internal static class KthSmallestPathXORSumSolution
     // enough.
     private static int KthSmallestDistinctSum(IReadOnlyList<int> sortedDistinct, int rank) => sortedDistinct[rank - 1];
 
-    private static (int[] PathXor, int[] VisitOrder, int[] TimeIn, int[] TimeOut) BuildEulerTourWithPathXor(
-        RootedTreeNode[] nodes, int[] parent, int[] vals)
+    // At each tour position, the path XOR sum of the node there: the root's own value,
+    // and below it the parent's sum with the node's value folded in. The root takes
+    // position 0, and every other parent sits before its children.
+    private static int[] PathXorsInTourOrder(PreOrderTour tour, int[] parent, int[] vals)
     {
-        var n = nodes.Length;
-        var pathXor = new int[n];
-        var visitOrder = new int[n];
-        var timeIn = new int[n];
-        var stack = new XorStack();
-        stack.Push((nodes[0], vals[0]));
-        var timer = 0;
+        var pathXorAt = new int[tour.NodeCount];
+        pathXorAt[0] = vals[tour.NodeAt(0)];
 
-        while (stack.TryPop(out var frame))
+        for (var position = 1; position < tour.NodeCount; position++)
         {
-            timer = RecordVisit((pathXor, visitOrder, timeIn), frame, timer);
-
-            foreach (var child in frame.Node.Children)
-            {
-                stack.Push((child, frame.Xor ^ vals[child.Id]));
-            }
+            var node = tour.NodeAt(position);
+            var parentPosition = tour.PositionOf(parent[node]);
+            pathXorAt[position] = pathXorAt[parentPosition] ^ vals[node];
         }
 
-        var timeOut = BuildTimeOutRanges(visitOrder, parent, timeIn);
-
-        return (pathXor, visitOrder, timeIn, timeOut);
+        return pathXorAt;
     }
 
-    // Writes one visit of the pre-order walk into the three parallel tour arrays: the
-    // node's entry time, its position in the visit order, and its root-to-node XOR sum.
-    // Returns the timer slot the next visit will take.
-    private static int RecordVisit(
-        (int[] PathXor, int[] VisitOrder, int[] TimeIn) tour, (RootedTreeNode Node, int Xor) frame, int timer)
-    {
-        tour.TimeIn[frame.Node.Id] = timer;
-        tour.VisitOrder[timer] = frame.Node.Id;
-        tour.PathXor[frame.Node.Id] = frame.Xor;
-
-        return timer + 1;
-    }
-
-    // The [timeIn, timeOut] range each node's subtree occupies: the last of its
-    // descendants in the visit order, found by closing the range from its size.
-    private static int[] BuildTimeOutRanges(int[] visitOrder, int[] parent, int[] timeIn)
-    {
-        var size = BuildSubtreeSizes(visitOrder, parent);
-        var timeOut = new int[size.Length];
-
-        for (var id = 0; id < timeOut.Length; id++)
-        {
-            timeOut[id] = timeIn[id] + size[id] - 1;
-        }
-
-        return timeOut;
-    }
-
-    // How many nodes each node's subtree holds: one reverse sweep of the visit order
-    // accumulates every node's count into its parent, since a child is always visited
-    // after the node that heads its subtree.
-    private static int[] BuildSubtreeSizes(int[] visitOrder, int[] parent)
-    {
-        var size = new int[visitOrder.Length];
-        Array.Fill(size, 1);
-
-        for (var i = size.Length - 1; i >= 1; i--)
-        {
-            var id = visitOrder[i];
-            size[parent[id]] += size[id];
-        }
-
-        return size;
-    }
-
-    private static int[] DistinctSortedXorsInRange(int[] pathXor, int[] visitOrder, int start, int end)
+    private static int[] DistinctSortedXorsInRange(int[] pathXorAt, int first, int last)
     {
         var seen = new HashMap<int, bool>();
 
-        for (var t = start; t <= end; t++)
+        for (var position = first; position <= last; position++)
         {
-            seen.Set(pathXor[visitOrder[t]], true);
+            seen.Set(pathXorAt[position], true);
         }
 
         var values = new List<int>(seen.Keys);
