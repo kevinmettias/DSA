@@ -1,7 +1,6 @@
-using DSAExperimentation.Algorithms.Ancestry;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
-namespace DSAExperimentation.Tests.Algorithms.Ancestry;
+namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
 // Expected ancestors come from a hand derivation on a seven-node sample and, on a seeded random
 // tree, from climbing the parent array itself: the first of second's ancestors (itself

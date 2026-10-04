@@ -1,8 +1,7 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using ParentPositionTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<
     int, DSAExperimentation.DataStructures.ElementAlgebra.MinOperation<int>>;
 
-namespace DSAExperimentation.Algorithms.Ancestry;
+namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 // Lowest common ancestors read off a PreOrderTour: O(n) to prepare, then O(log n) per query,
 // with no recursion deeper than the segment tree's O(log n).
@@ -16,7 +15,9 @@ namespace DSAExperimentation.Algorithms.Ancestry;
 //   ids, because the tour it reads is laid out by id. For a single query that preparation is
 //   pure overhead; for LeetCode's 5 * 10^4 queries on a 5 * 10^4-node chain, Find would be
 //   quadratic and 5 * 10^4 frames deep.
-// So Find and its callers are left as they are.
+// So Find and its callers are left as they are. Find lives in Algorithms/Ancestry because it is
+// generic over a capability interface; this is hardwired to one concrete type, PreOrderTour, so
+// it lives beside that type instead (ARCHITECTURE 13.5).
 //
 // The technique: for two distinct nodes at positions p < q, every node at a position in
 // (p, q] lies strictly below their lowest common ancestor, and the ancestor's child on the way
