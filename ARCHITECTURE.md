@@ -801,6 +801,9 @@ generic over (§5 step 7, §13.5) — `Buffers`, `Heap`, `HashMap`, `DynamicArra
 | Heap | `Heap/{IHeapOrder,MinHeapOrder,MaxHeapOrder,HeapArrayIndex,HeapArray,Heap}.cs` |
 | Stack | `Stack/Stack.cs` (composes `DynamicArray`) |
 | Queue | `Queue/Queue.cs` (composes `Deque`) |
+| MonotonicDeque | `MonotonicDeque/{IWindowOrder,MaxWindowOrder,MinWindowOrder,MonotonicDeque}.cs` (composes `Deque`, §19.1) |
+| PrefixSums | `PrefixSums/PrefixSums.cs` (consumes `ElementAlgebra`'s `IGroupOperation`, §19.2) |
+| LowercaseAlphabet | `LowercaseAlphabet.cs` at the `DataStructures/` root, beside `AlgorithmConstants` (§19.6) |
 | Set | `Set/Set.cs` (composes `HashMap<T,bool>`) |
 | Sequence | `Sequence/{IRandomAccessSequence,ArraySequence,DynamicArraySequence,IIndexedSequence,ArrayIndexedSequence,DynamicArrayIndexedSequence}.cs` (§13.6) |
 | ElementAlgebra | `ElementAlgebra/{ICombineOperation,IGroupOperation,IScaledGroupOperation,SumOperation,MinOperation,MaxOperation,XorOperation}.cs` — the element algebras `SegmentTree`, `FenwickTree`, `RangeFenwickTree` and `LazySegmentTree` draw from, as one refinement chain (§11.4) |
@@ -829,11 +832,11 @@ the distinguishing question is interface substitutability, not the topology axis
 | `Reducing/` | `{BreadthFirstReduceOrder,DepthFirstReduceOrder,DistanceMapReduceAlgebra,IReduceAlgebra,IReduceOrderStrategy,Reduce,ZipReduceAlgebra}.cs` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
 | `Traversal/` | `BreadthFirst/**`, `DepthFirst/{DepthFirstSearch,DepthFirstTraversal,IDepthFirstHooks}.cs`, `TopDown/**` | `DepthFirstSearch` is the weakest tier (no topology witness at all, a bare `Func`), nested beside `DepthFirstTraversal` |
 | `Walking/` | `{BreadthFirstWalk,DepthFirstWalk,TopDownWalk,IVisitGuard,TrackedVisitGuard,UnguardedVisit,Unit}.cs` | flat — the guard tier (tree vs. graph) is a constructor parameter, not a file split |
-| `ShortestPaths/` | `{IPathHeuristic,ShortestPath,ZeroHeuristic,BellmanFord,AllPairsShortestPaths}.cs` (general edge-weighted tier) + `Grids/GridShortestPath.cs` (Grid tier) | two tiers, `Grids/` nested as the second (§16) |
-| `Searching/` | `BinarySearch.cs`, `SearchRange.cs`, `NearestBoundary.cs`, `{MonotonePredicateSearch,IMonotonePredicate}.cs` | flat — no topology axis at all; `BinarySearch` is generic over `Sequence.IRandomAccessSequence<T>` (§13.6), `MonotonePredicateSearch` over a rule on an integer interval (§9.6) |
+| `ShortestPaths/` | `{IPathHeuristic,ShortestPath,ZeroHeuristic,BellmanFord,AllPairsShortestPaths}.cs` (general edge-weighted tier) + `BreadthFirstDistances.cs` (unweighted, §19.4) + `Grids/GridShortestPath.cs` (Grid tier) | two tiers, `Grids/` nested as the second (§16) |
+| `Searching/` | `BinarySearch.cs`, `SearchRange.cs`, `NearestBoundary.cs`, `{MonotonePredicateSearch,IMonotonePredicate}.cs`, `CompressedCoordinates.cs` (§19.3) | flat — no topology axis at all; `BinarySearch` is generic over `Sequence.IRandomAccessSequence<T>` (§13.6), `MonotonePredicateSearch` over a rule on an integer interval (§9.6) |
 | `Sorting/` | `MergeSort.cs`, `SortBounds.cs` | flat — no topology axis at all, generic over `Sequence.IIndexedSequence<T>` instead (§13.6) |
 | `TopologicalSort/` | `TopologicalSort.cs` | flat — only one tier exists today (§15) |
-| `NumberTheory/` | `{GreatestCommonDivisor,LeastCommonMultiple,Primality,PrimeFactorization,PrimeSieve,ModularPower,IntegerSquareRoot,SquareExceeds}.cs` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `Domain/Modular` keeps only LeetCode's modulus and delegates its exponentiation here (§17.6) |
+| `NumberTheory/` | `{GreatestCommonDivisor,LeastCommonMultiple,Primality,PrimeFactorization,PrimeSieve,ModularPower,IntegerSquareRoot,SquareExceeds,PascalTriangle}.cs` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `Domain/Modular` keeps only LeetCode's modulus and delegates its exponentiation here (§17.6) |
 
 `DSAExperimentation.Tests/` mirrors both trees one level deeper. Fixture files distribute to the
 utility folder matching the interface they implement, not a shared grab-bag — e.g. the
@@ -1737,3 +1740,90 @@ would be blind in precisely the place duplication happens.
 
 Every harness file is in scope of the witness rule; the whole catalogue has reached tier 4, so
 there is no unmigrated problem for a harness to be waiting on.
+
+## 19. The pieces the solutions kept writing
+
+A survey of the solution tier found the same mechanisms hand-written dozens of times over, each
+copy a little different: the long spelling of `MergeSort`/`BinarySearch` over an array (§9.5),
+binary search on the answer (§9.6), a one-way union-find link (§10.1), and the six below. Each was
+added to tiers 1–2 with its own tests (§18.4), and then the *composed* arms were moved onto it.
+Baselines were left alone, along with any helper or constant a baseline reaches, because a baseline
+is what you would write without this repo (§17.5). The classification calls, each made before the
+code and reviewed against this document, follow.
+
+### 19.1 `MonotonicDeque`: a window order, not a heap order or an element algebra
+
+Fifteen solutions kept a `Deque<int>` of indices, popping from the back every entry the new value
+dominated and from the front every index the window had passed. `DataStructures/MonotonicDeque/`
+does it once, storing each key beside its position so a key computed on the fly (`dp[i]`, `y - x`)
+needs no array to be read back from. Positions must be pushed in non-decreasing order, a
+precondition law. Like Queue and Stack, it sits in a folder of its own beside the structure it
+composes (§13.5).
+
+Its one axis is `IWindowOrder.IsDominatedBy(resident, arriving)`: does the arriving key make the
+resident unable ever to be the window's extremum again? That is a Topology witness under §5's first
+row, because it is re-derived on every push and max versus min changes what the front reports.
+Neither ready-made contract fits. `IHeapOrder` is `Heap`'s own Topology contract (§5 step 5).
+`MaxOperation`/`MinOperation` are monoids, and a monoid does not promise that `Combine` returns one
+of its arguments, so a deque over `SumOperation` would compile and mean nothing. Ties are dominated,
+because every hand-written copy evicted them; a "keep ties" order would be a third witness.
+
+### 19.2 `PrefixSums`: a consumer of the group chain, with a view rather than an interface
+
+`DataStructures/PrefixSums/` is the static sibling of `FenwickTree`: running totals under an
+`IGroupOperation` (§11.4), answering an inclusive range by one `Invert`. It joins the element-algebra
+chain as a consumer and adds no contract to it. It is a sealed class that *exposes* an
+`ArraySequence` view, `Totals`, for `BinarySearch`, rather than implementing
+`IRandomAccessSequence` itself. That is §9.4's shape: the Sequence contracts belong to the algorithms
+that consume them. The exclusive read is named `TotalBefore(end)`, not `PrefixQuery`, because
+`FenwickTree.PrefixQuery` includes its index, and an exclusive member under the same name would be
+the off-by-one this type exists to remove. Widening `int` input to `long` totals stays the caller's
+choice, as choosing `SumOperation<long>` already is.
+
+### 19.3 `CompressedCoordinates`: a data structure by shape, filed by what it composes
+
+The sorted distinct values of an input, ranked so a Fenwick or segment tree can be sized by `Count`
+and indexed by rank. By §5 step 7 it would be a data structure, hardwired to its one array. It
+builds with `MergeSort` and answers with `BinarySearch`, though, so it lives in `Algorithms/Searching/`
+for the reason `HammingDistances` lives in `Algorithms/` (§17.6): in `DataStructures/` it would
+invert the tiers. `RankOf` throws for a value the set was not built from. A caller ranking a derived
+value finds out at once instead of reading a neighbour's slot, and `LowerBound`/`UpperBound` stay
+for thresholds that need not be members.
+
+### 19.4 `BreadthFirstDistances`: naming an engine call, not a new mechanism
+
+`Reduce.Graph` in breadth-first order with `DistanceMapReduceAlgebra` was written out with all six
+type arguments at a dozen call sites. `Algorithms/ShortestPaths/BreadthFirstDistances.From` names
+it once with the three that vary. `GridShortestPath` and `HammingDistances` now forward to it and
+stay, because each still fixes those three types for its own family. It is its own file rather than
+a `ShortestPath` method for §16.1's reason: same output shape, no shared mechanism.
+
+### 19.5 `PascalTriangle`: the general form of `FactorialTable`
+
+`FactorialTable` sits in `Domain/Modular` because 1e9+7 fixes its content (§17.6), and it divides by
+factorials through modular inverses, which a composite modulus does not have. `PascalTriangle`
+builds by addition, so any modulus works — 10 and 5 are the ones LeetCode asks for — and an exact
+mode holds coefficients through row 66, the last whose middle entry fits in `long`. The modulus is
+the caller's, so it is an `Algorithms/NumberTheory` type beside `ModularPower`, not a `Domain` one.
+Only three composed arms use it today, fewer than the eight that moved `FactorialTable`. It was built
+anyway, on the owner's call that an exact and composite-modulus binomial table belongs in the library
+before more solutions hand-roll one.
+
+### 19.6 `LowercaseAlphabet` leaves the trie's folder
+
+`LowercaseAlphabet` was declared beside `LowercaseTrieNode`, while twenty-two solutions declared their
+own `AlphabetSize = 26`. It now sits at the root of `DataStructures/` beside `AlgorithmConstants`,
+still in tier 1 because the trie reads it (§17.6a), and gains `IndexOf`/`LetterAt`. Both throw
+outside `a`–`z` rather than return -1, because a wrong slot silently reads another letter's count.
+Graph/Hamming's `Alphabet` is a different thing — a runtime-chosen set a mutation substitutes from —
+and stays separate (§5 step 5). A solution adopts it only when no baseline reads its constant. The
+owner ruled that a baseline may not read even a compile-time constant from a core type, so a
+constant shared with a baseline stays local.
+
+### 19.7 `NearestBoundary` dispatches statically
+
+The monotonic-stack sweep chose its relation and direction through two private enums, switched on
+every comparison inside the pop loop. Both are now private struct witnesses, so each of the eight
+public forms is its own instantiation with the comparison inlined. The public surface is unchanged,
+and the sweep was then adopted by the composed arms whose hand-written stacks computed exactly a
+boundary array.
