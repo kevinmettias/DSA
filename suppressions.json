@@ -3032,7 +3032,7 @@
     {
       "check": "check-transposable-parameters",
       "path": "DSAExperimentation.LeetCode/MultiplyStrings/MultiplyStringsSolution.cs",
-      "reason": "Multiplication of non-negative integers is commutative, and all three arms (:28 via long conversion, :35 digit stack, :75 decimal-string addition) compute that same product. The asymmetric loop bounds inside the digit stack are internal to the multiplication, and the returned product string is identical either way. A distinct type per position would assert a directionality the operation does not have, which is why this is waived rather than rewritten.",
+      "reason": "Multiplication and addition of non-negative integers are commutative: both arms (:30 column sums, :80 digit stack) compute that same product, and the digit stack's helper (:120 decimal-string addition) that same sum. The asymmetric loop bounds inside each arm are internal to the arithmetic, and the returned string is identical either way. A distinct type per position would assert a directionality the operation does not have, which is why this is waived rather than rewritten.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
