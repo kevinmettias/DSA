@@ -10,7 +10,8 @@ namespace DSAExperimentation.LeetCode.Tests.FindSubstringWithGivenHashValue;
 // an answer exists, but the benchmark deliberately asks for an unreachable hash so
 // neither strategy can exit early, and that is the path both of its arms actually
 // measure - so it is asserted here rather than left to the unasserted baseline
-// ARCHITECTURE.md section 17.1 describes.
+// ARCHITECTURE.md section 17.1 describes. The reversed prefix table the rolling-hash
+// strategy is handed is asserted on its own, window by hand-computed window.
 public sealed partial class FindSubstringWithGivenHashValueSolutionTests
 {
     public static TheoryData<HashExample> Examples =>
@@ -63,6 +64,38 @@ public sealed partial class FindSubstringWithGivenHashValueSolutionTests
             out var substring);
 
         AssertFirstMatch(example, new WindowSearch(Found: found, Substring: substring));
+    }
+
+    // "leetcode" reversed is "edocteel". LeetCode's answer "ee" sits at [1, 3), which maps
+    // to [8 - 1 - 2, 8 - 1) = [5, 7) of the reversed text: e then e, each valued 5, so
+    // 5 * 7 + 5 = 40, and 40 mod 20 = 0 - the published hashValue. The one lane serves as
+    // both of RollingHash's lanes, so the second component is 0 too.
+    [Fact]
+    public void BuildReversedWindowHash_LeetCodeFirstExample_HashesTheAnswerWindowToZero()
+    {
+        var reversedHash = FindSubstringWithGivenHashValueSolution.BuildReversedWindowHash(
+            "leetcode", new RollingHashLane(7, 20));
+        var answerWindow = reversedHash.Hash(5, 2);
+
+        Assert.Equal(8, reversedHash.Length);
+        Assert.Equal(new RollingHashValue(0, 0), answerWindow);
+    }
+
+    // "abc" reversed is "cba", letters valued from 1: its first character is c (3), its
+    // last a (1), and the whole text under base 10 is 3 * 100 + 2 * 10 + 1 = 321 - which is
+    // LC 2156's 1 + 2 * 10 + 3 * 100 for "abc", the powers running the other way.
+    [Fact]
+    public void BuildReversedWindowHash_ThreeLetters_ReversesTheTextAndValuesLettersFromOne()
+    {
+        var reversedHash = FindSubstringWithGivenHashValueSolution.BuildReversedWindowHash(
+            "abc", new RollingHashLane(10, 1_000));
+        var firstLetter = reversedHash.Hash(0, 1);
+        var lastLetter = reversedHash.Hash(2, 1);
+        var wholeText = reversedHash.Hash(0, 3);
+
+        Assert.Equal(new RollingHashValue(3, 3), firstLetter);
+        Assert.Equal(new RollingHashValue(1, 1), lastLetter);
+        Assert.Equal(new RollingHashValue(321, 321), wholeText);
     }
 
     private static void AssertFirstMatch(HashExample example, WindowSearch search)
