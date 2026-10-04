@@ -9,17 +9,14 @@ namespace DSAExperimentation.LeetCode.NumberOfPairsAfterIncrement;
 // which - since nums1 is so small - is really "for each of <= 5 targets
 // tot - nums1[j], how many nums2[k] currently equal it".
 //
-// Both arms below rebuild nums2's current value at every index for each type-2
-// query and tally it into a frequency map; they differ only in how a "current
-// value" is obtained after a range of prior increments. Neither is the fully
-// optimal answer to this problem - the textbook approach needs a block/"sqrt"
-// decomposition (per-block value histograms under a lazy per-block add) to
-// answer "how many elements now equal v" without visiting every index, and this
-// repo has no such structure: FenwickTree/RangeFenwickTree/SegmentTree/
-// LazySegmentTree all aggregate by INDEX (sum/min/max over a range), none tracks
-// frequency-by-VALUE under a range shift. That is a genuine primitive gap, not
-// an effort shortcut - see the composed arm's own comment for what it proves
-// instead.
+// The first two arms rebuild nums2's current value at every index for each
+// type-2 query; they differ only in how a "current value" is obtained after a
+// range of prior increments, and both are O(n) per count - about 2.5 * 10^9 steps
+// at LeetCode's limits. The third is the textbook answer: a square-root
+// decomposition, ShiftedValueBlocks in this folder, that keeps per-block counts by
+// value under a lazy per-block addition and answers either kind of query in
+// O(sqrt n). The core library's Fenwick and segment trees aggregate by index, not
+// by value, so that structure is this problem's own.
 internal static class NumberOfPairsAfterIncrementSolution
 {
     // Textbook baseline: nums2 as a plain mutable array, a range-add applied by
@@ -123,6 +120,46 @@ internal static class NumberOfPairsAfterIncrementSolution
         foreach (var a in nums1)
         {
             count += frequency.GetValueOrDefault(tot - a);
+        }
+
+        return count;
+    }
+
+    // Composed: nums2 lives in ShiftedValueBlocks, so a type-1 query costs the two
+    // blocks it cuts plus one pending-addition bump per block it covers, and a type-2
+    // query asks every block for each of nums1's at most five targets - O(sqrt n)
+    // for either, against the rebuilds' O(n) per count.
+    public static int[] CountPairsByValueBlocks(int[] nums1, int[] nums2, int[][] queries) =>
+        CountPairsByValueBlocks(nums1, nums2, ParseQueries(queries));
+
+    public static int[] CountPairsByValueBlocks(int[] nums1, int[] nums2, IReadOnlyList<PairQuery> queries)
+    {
+        var blocks = new ShiftedValueBlocks(nums2);
+        var results = new List<int>();
+
+        foreach (var query in queries)
+        {
+            if (query.Kind == PairQueryKind.Increment)
+            {
+                blocks.AddRange(query.Left, query.Right, query.Delta);
+            }
+            else
+            {
+                var matches = CountMatchesByBlocks(nums1, blocks, query.Tot);
+                results.Add(matches);
+            }
+        }
+
+        return [.. results];
+    }
+
+    private static int CountMatchesByBlocks(int[] nums1, ShiftedValueBlocks blocks, long tot)
+    {
+        var count = 0;
+
+        foreach (var a in nums1)
+        {
+            count += blocks.CountEqual(tot - a);
         }
 
         return count;
