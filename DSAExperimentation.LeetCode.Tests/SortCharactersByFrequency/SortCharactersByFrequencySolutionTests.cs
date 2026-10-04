@@ -8,8 +8,10 @@ namespace DSAExperimentation.LeetCode.Tests.SortCharactersByFrequency;
 // property directly rather than one fixed expected string.
 public sealed partial class SortCharactersByFrequencySolutionTests
 {
+    // LeetCode examples 1-3, published with the answers "eert", "aaaccc" and "bbAa"
+    // among others it accepts ("eetr", "cccaaa", "bbaA"), then a single character.
     public static TheoryData<string> Examples =>
-        new() { "tree", "cccaaa", "a" };
+        new() { "tree", "cccaaa", "Aabb", "a" };
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -45,11 +47,13 @@ public sealed partial class SortCharactersByFrequencySolutionTests
         Assert.Equal(result.Input.OrderBy(c => c), result.Sorted.OrderBy(c => c));
     }
 
-    // The grouping property, read off the result alone: each run of one repeated
-    // character is no longer than the run before it.
+    // The grouping property, read off the result alone: each character occupies one
+    // run - LeetCode's example 2 rejects "cacaca" - and each run is no longer than the
+    // run before it.
     private static void AssertRunsDescendInLength(string sorted)
     {
         var previousRunLength = int.MaxValue;
+        var runCharacters = new HashSet<char>();
         var index = 0;
 
         while (index < sorted.Length)
@@ -63,6 +67,7 @@ public sealed partial class SortCharactersByFrequencySolutionTests
                 index++;
             }
 
+            Assert.True(runCharacters.Add(current), $"'{current}' is split across more than one run.");
             Assert.True(
                 runLength <= previousRunLength,
                 $"Run of '{current}' (length {runLength}) follows a shorter run (length {previousRunLength}).");
