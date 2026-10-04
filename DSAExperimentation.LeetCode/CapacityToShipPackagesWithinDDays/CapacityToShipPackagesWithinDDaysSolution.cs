@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.CapacityToShipPackagesWithinDDays;
 
@@ -13,8 +12,8 @@ namespace DSAExperimentation.LeetCode.CapacityToShipPackagesWithinDDays;
 // implicit [false...false, true...true] sequence over capacities in
 // [max(weights), sum(weights)]. The baseline bisects that range with a hand-rolled
 // lo/hi loop; the composed strategy states the same predicate as an
-// IRandomAccessSequence<bool> computed on demand and hands it to this repo's own
-// BinarySearch.LowerBound - the same "binary search on the answer" shape
+// IMonotonePredicate<int> and hands it, with the capacity range, to this repo's own
+// MonotonePredicateSearch.FirstTrue - the same "binary search on the answer" shape
 // KokoEatingBananas and SplitArrayLargestSum use, where this problem's
 // "capacity"/"days" are that problem's "limit"/"k" under a different name.
 internal static class CapacityToShipPackagesWithinDDaysSolution
@@ -65,28 +64,18 @@ internal static class CapacityToShipPackagesWithinDDaysSolution
         return daysNeeded <= days;
     }
 
-    // This repo's own BinarySearch.LowerBound over the feasibility sequence: the
-    // capacities are never materialized, each probe just replays the loading walk,
-    // and the leftmost feasible index maps back to its capacity.
-    public static int ShipWithinDaysBySequenceLowerBound(int[] weights, int days)
+    // This repo's own MonotonePredicateSearch over the capacity range: the capacities
+    // are never materialized, each probe just replays the loading walk, and the first
+    // capacity that clears every package is the answer.
+    public static int ShipWithinDaysByPredicateSearch(int[] weights, int days) =>
+        MonotonePredicateSearch.FirstTrue(weights.Max(), weights.Sum(), new ShipsWithinDays(weights, days));
+
+    // Holds(capacity) is "a ship of this capacity clears every package within days" -
+    // false up to the answer and true from there on, the monotonicity
+    // MonotonePredicateSearch assumes but never checks. A rule for this problem alone:
+    // the loading rule is LC 1011's own content.
+    private readonly struct ShipsWithinDays(int[] weights, int days) : IMonotonePredicate<int>
     {
-        var floor = weights.Max();
-        var ceiling = weights.Sum();
-        var sequence = new FeasibleCapacitySequence(weights, days, floor, ceiling);
-
-        return floor + BinarySearch.LowerBound<bool, FeasibleCapacitySequence>(sequence, true);
-    }
-
-    // Get(index) is "a ship of capacity floor + index clears every package within
-    // days" - false up to the answer and true from there on, the monotonicity
-    // BinarySearch.LowerBound assumes but never checks. A witness for this problem
-    // alone: the loading rule is LC 1011's own content, not a general
-    // monotone-predicate shape.
-    private readonly struct FeasibleCapacitySequence(int[] weights, int days, int floor, int ceiling)
-        : IRandomAccessSequence<bool>
-    {
-        public int Length => ceiling - floor + 1;
-
-        public bool Get(int index) => CanShipWithinDays(weights, days, floor + index);
+        public bool Holds(int capacity) => CanShipWithinDays(weights, days, capacity);
     }
 }

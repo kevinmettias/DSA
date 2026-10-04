@@ -5,10 +5,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeTheMinimumPoweredCitySolution's, the same
 // methods MaximizeTheMinimumPoweredCitySolutionTests proves correct - a descending linear scan
-// over every candidate target against this repo's own BinarySearch.LowerBound over an
-// on-demand IRandomAccessSequence<bool> feasibility sequence, the same
-// search-on-the-answer shape MaximumNumberOfTasksYouCanAssignBenchmarks and
-// KokoEatingBananasBenchmarks already run, so the comparison is O(upperBound)
+// over every candidate target against this repo's own MonotonePredicateSearch.LastTrue
+// over the target range, the same search-on-the-answer shape
+// MaximumNumberOfTasksYouCanAssignBenchmarks and KokoEatingBananasBenchmarks already run, so the comparison is O(upperBound)
 // feasibility sweeps against O(log upperBound) of them. Station values and the station
 // budget are kept modest so upperBound (= sum(stations) + k) stays in the low thousands
 // - large enough to separate the two strategies, small enough that the linear scan's
@@ -40,5 +39,5 @@ public class MaximizeTheMinimumPoweredCityBenchmarks
     public long LinearScan() => MaximizeTheMinimumPoweredCitySolution.MaxPowerByDescendingLinearScan(_plan);
 
     [Benchmark]
-    public long SequenceLowerBound() => MaximizeTheMinimumPoweredCitySolution.MaxPowerBySequenceLowerBound(_plan);
+    public long PredicateSearch() => MaximizeTheMinimumPoweredCitySolution.MaxPowerByPredicateSearch(_plan);
 }

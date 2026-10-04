@@ -4,8 +4,8 @@ namespace DSAExperimentation.LeetCode.Tests.CapacityToShipPackagesWithinDDays;
 
 // Harness only. Both strategies are CapacityToShipPackagesWithinDDaysSolution's -
 // the hand-rolled lo/hi bisection that used to live only in the benchmark's baseline
-// arm, and the BinarySearch.LowerBound walk over the feasibility sequence the test
-// used to inline.
+// arm, and the predicate search over the capacity range that the test used to
+// inline as a feasibility sequence.
 public sealed partial class CapacityToShipPackagesWithinDDaysSolutionTests
 {
     public static TheoryData<int[], int, int> Examples =>
@@ -49,11 +49,11 @@ public sealed partial class CapacityToShipPackagesWithinDDaysSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ShipWithinDaysBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleCapacity(
+    public void ShipWithinDaysByPredicateSearch_LeetCodeExamples_ReturnsSmallestFeasibleCapacity(
         int[] weights, int days, int expected)
     {
         var capacity =
-            CapacityToShipPackagesWithinDDaysSolution.ShipWithinDaysBySequenceLowerBound(weights, days);
+            CapacityToShipPackagesWithinDDaysSolution.ShipWithinDaysByPredicateSearch(weights, days);
 
         Assert.Equal(expected, capacity);
     }

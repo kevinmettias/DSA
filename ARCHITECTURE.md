@@ -423,6 +423,24 @@ array, so the instantiation that runs is the one the long spelling produced. Wha
 reaching the overload it did not mean is §17.4's argument, not arity: a `T[]` fails `TSequence`'s
 `struct` constraint, and no sequence witness converts to a `T[]`.
 
+### 9.6 Binary search on the answer is a rule over an interval, not a sequence
+
+Twenty-odd solutions searched for the smallest (or largest) value a feasibility rule accepts — a
+ship capacity, an eating speed, a day — and most spelled it as an `IRandomAccessSequence<bool>`
+whose `Get(i)` asked the rule about `floor + i`, handed to `LowerBound(sequence, true)`. That
+borrowed `BinarySearch`'s laws (a sorted sequence, a comparer) for a problem that has neither, and
+it borrowed an `int` index too: three solutions truncated or threw on ranges LeetCode's own limits
+allow. `MonotonePredicateSearch.FirstTrue`/`LastTrue` search an integer interval stated by two
+numbers, generic over `IBinaryInteger`, so a range past `int` is searched in `long`.
+
+The rule is `IMonotonePredicate<Integer>`. Its space is open — §12.1's successor relation, not a
+set this library enumerates — so §5's second row applies; §12.4's question then makes `Holds` an
+instance member on a struct type parameter, because the arrays and budgets a rule reads never
+arrive through its signature. `IGridCellFilter` is the precedent. Monotonicity is a precondition
+law, like sortedness (§9.1). It stays a separate class rather than a `BinarySearch` method, and
+`LowerBound` is not re-expressed through it: for a reference-type element the rule would be shared
+generic code, and every probe would pay the runtime lookup §12.4 measured.
+
 ## 10. Worked example: `Collections/DisjointSet`
 
 > Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
@@ -801,10 +819,10 @@ the distinguishing question is interface substitutability, not the topology axis
 | `Traversal/` | `BreadthFirst/**`, `DepthFirst/{DepthFirstSearch,DepthFirstTraversal,IDepthFirstHooks}.cs`, `TopDown/**` | `DepthFirstSearch` is the weakest tier (no topology witness at all, a bare `Func`), nested beside `DepthFirstTraversal` |
 | `Walking/` | `{BreadthFirstWalk,DepthFirstWalk,TopDownWalk,IVisitGuard,TrackedVisitGuard,UnguardedVisit,Unit}.cs` | flat — the guard tier (tree vs. graph) is a constructor parameter, not a file split |
 | `ShortestPaths/` | `{IPathHeuristic,ShortestPath,ZeroHeuristic,BellmanFord,AllPairsShortestPaths}.cs` (general edge-weighted tier) + `Grids/GridShortestPath.cs` (Grid tier) | two tiers, `Grids/` nested as the second (§16) |
-| `Searching/` | `BinarySearch.cs`, `SearchRange.cs` | flat — no topology axis at all, generic over `Sequence.IRandomAccessSequence<T>` instead (§13.6) |
+| `Searching/` | `BinarySearch.cs`, `SearchRange.cs`, `NearestBoundary.cs`, `{MonotonePredicateSearch,IMonotonePredicate}.cs` | flat — no topology axis at all; `BinarySearch` is generic over `Sequence.IRandomAccessSequence<T>` (§13.6), `MonotonePredicateSearch` over a rule on an integer interval (§9.6) |
 | `Sorting/` | `MergeSort.cs`, `SortBounds.cs` | flat — no topology axis at all, generic over `Sequence.IIndexedSequence<T>` instead (§13.6) |
 | `TopologicalSort/` | `TopologicalSort.cs` | flat — only one tier exists today (§15) |
-| `NumberTheory/` | `{GreatestCommonDivisor,LeastCommonMultiple,Primality,PrimeFactorization,PrimeSieve,ModularPower,IntegerSquareRoot,SquareExceedsSequence}.cs` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `Domain/Modular` keeps only LeetCode's modulus and delegates its exponentiation here (§17.6) |
+| `NumberTheory/` | `{GreatestCommonDivisor,LeastCommonMultiple,Primality,PrimeFactorization,PrimeSieve,ModularPower,IntegerSquareRoot,SquareExceeds}.cs` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `Domain/Modular` keeps only LeetCode's modulus and delegates its exponentiation here (§17.6) |
 
 `DSAExperimentation.Tests/` mirrors both trees one level deeper. Fixture files distribute to the
 utility folder matching the interface they implement, not a shared grab-bag — e.g. the

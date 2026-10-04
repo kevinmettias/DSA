@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // NthMagicalNumberSolutionTests proves correct. firstFactor = 6 and secondFactor = 10 share a
 // factor, so the inclusion-exclusion term does real work instead of collapsing to
 // zero, and counting candidates one at a time (O(answer)) is measured against
-// BinarySearch.LowerBound over the monotone "count(x) >= rank" sequence
+// MonotonePredicateSearch.FirstTrue over the monotone "count(x) >= rank" rule
 // (O(log(answer))).
 public class NthMagicalNumberBenchmarks
 {

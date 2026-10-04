@@ -6,8 +6,8 @@ namespace DSAExperimentation.LeetCode.Tests.BookingConcertTicketsInGroups;
 // BookMyShowByRowScan keeps one int[] of remaining seats per row and is the problem
 // statement read literally; BookMyShowBySegmentTreeBinarySearch replaces that array
 // with two DataStructures.SegmentTree instances - one under MaxOperation<int>, one
-// under SumOperation<int> - plus BinarySearch.LowerBound over the prefix-max
-// predicate HasCapacitySequence claims is monotone.
+// under SumOperation<int> - plus MonotonePredicateSearch.FirstTrue over the
+// prefix-max rule PrefixHasCapacity claims is monotone.
 //
 // Everything that can go wrong here is between the two trees: Gather writes both
 // through SetAvailable, Scatter writes both per row it touches, and no single tree
@@ -78,9 +78,9 @@ public sealed partial class BookMyShowSegmentTreeSeamTests
     }
 
     // maxRow is inclusive and the search runs from row 0, so row 0 alone must be able
-    // to satisfy a Gather whose maxRow is 0 - the one case where the prefix-max
-    // predicate HasCapacitySequence builds has length 1 and BinarySearch.LowerBound
-    // can only return 0 or that length.
+    // to satisfy a Gather whose maxRow is 0 - the one case where the row range
+    // MonotonePredicateSearch.FirstTrue searches holds a single row and its answer
+    // can only be that row or the one past it.
     [Fact]
     public void Gather_LimitedToTheFirstRow_MatchesRowScan()
     {

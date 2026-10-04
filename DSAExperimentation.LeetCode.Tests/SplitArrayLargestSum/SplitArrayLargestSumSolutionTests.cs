@@ -29,10 +29,10 @@ public sealed partial class SplitArrayLargestSumSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinimizedLargestSumBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleMax(
+    public void MinimizedLargestSumByPredicateSearch_LeetCodeExamples_ReturnsSmallestFeasibleMax(
         int[] nums, int subarrayCount, int expected)
     {
-        var actual = SplitArrayLargestSumSolution.MinimizedLargestSumBySequenceLowerBound(nums, subarrayCount);
+        var actual = SplitArrayLargestSumSolution.MinimizedLargestSumByPredicateSearch(nums, subarrayCount);
 
         Assert.Equal(expected, actual);
     }

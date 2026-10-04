@@ -9,9 +9,9 @@ namespace DSAExperimentation.LeetCode.UglyNumberIII;
 // (three-set inclusion-exclusion over the multiples of each factor) is
 // non-decreasing in x, so the answer is the first candidate whose count reaches
 // the requested rank. The baseline finds it by walking every candidate one at a
-// time; the composed strategy hands the same monotone predicate to
-// BinarySearch.LowerBound over UglyCountSequence - the same shape NthMagicalNumber
-// already uses for two factors, extended to three.
+// time; the composed strategy states the same monotone predicate as
+// UglyCountReachesRank and hands it to MonotonePredicateSearch.FirstTrue - the same
+// shape NthMagicalNumber already uses for two factors, extended to three.
 internal static class UglyNumberIIISolution
 {
     // Deliberately written without this repo's primitives - a plain counting walk
@@ -43,14 +43,16 @@ internal static class UglyNumberIIISolution
         value % firstFactor == 0 || value % secondFactor == 0 || value % thirdFactor == 0;
 
     // The rank-th ugly number is at most rank times the smallest factor - rank
-    // multiples of the smallest factor alone already reach it - so UglyCountSequence
-    // derives that bound as its own window, and LowerBound spends O(log(answer))
-    // counting steps inside it.
+    // multiples of the smallest factor alone already reach it - so UglyCountReachesRank
+    // derives that bound as its own window, and FirstTrue spends O(log(window))
+    // counting steps inside it. The window is long, as it can pass int long before the
+    // answer does; the answer itself narrows back to int because LeetCode guarantees
+    // it is at most 2 * 10^9.
     public static int NthUglyNumberByBinarySearch(
         int rank, int firstFactor, int secondFactor, int thirdFactor)
     {
-        var sequence = new UglyCountSequence(rank, firstFactor, secondFactor, thirdFactor);
+        var rule = new UglyCountReachesRank(rank, firstFactor, secondFactor, thirdFactor);
 
-        return BinarySearch.LowerBound<int, UglyCountSequence>(sequence, 1);
+        return (int)MonotonePredicateSearch.FirstTrue(1L, rule.UpperBound, rule);
     }
 }

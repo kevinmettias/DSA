@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.LazySegmentTree;
 
@@ -27,10 +28,11 @@ namespace DSAExperimentation.LeetCode.LongestBalancedSubarrayII;
 // - future, not-yet-reached positions are pre-filled with a contribution that is
 // only actually read once r catches up to them, by which point every relevant
 // (de)activation has already landed. Finding the leftmost matching Balance[l] is
-// then a binary descent driven purely by the tree's own Query(left, right) -
-// BalanceRangeAddOperation's own doc comment explains why comparing a target
-// against a range's [Min, Max] is enough to decide which half actually contains
-// it, so no change to LazySegmentTree is needed to support the search.
+// then a MonotonePredicateSearch over l whose every probe is the tree's own
+// Query(left, right) - BalanceRangeAddOperation's own doc comment explains why
+// comparing a target against a range's [Min, Max] is enough to decide whether that
+// range actually contains it, so no change to LazySegmentTree is needed to support
+// the search.
 internal static class LongestBalancedSubarrayIISolution
 {
     // The textbook answer: reset a fresh pair of hash sets at every start index
@@ -63,10 +65,9 @@ internal static class LongestBalancedSubarrayIISolution
     }
 
     // One left-to-right pass: activate/deactivate the current value's contribution
-    // in the balance tree, then binary-descend it for the leftmost equal-balance
-    // position. Each of the n steps does O(1) range-adds plus an O(log^2 n)
-    // search (O(log n) halvings of the query range, each an O(log n) tree Query),
-    // for O(n log^2 n) overall.
+    // in the balance tree, then search it for the leftmost equal-balance position.
+    // Each of the n steps does O(1) range-adds plus an O(log^2 n) search (O(log n)
+    // probes, each an O(log n) tree Query), for O(n log^2 n) overall.
     public static int FindLongestBalancedLengthByPrefixBalanceSegmentTree(int[] nums)
     {
         var count = nums.Length;
@@ -109,56 +110,37 @@ internal static class LongestBalancedSubarrayIISolution
         lastSeenPosition.Set(value, position);
     }
 
-    // Balance[position] is always attained at position itself, so it always lies
-    // within the [0, position - 1] prefix's own [Min, Max] whenever some earlier
-    // index shares it - the precondition BinaryDescendForBalance's invariant
-    // needs. When it doesn't, no balanced subarray ends here.
+    // The leftmost earlier index sharing Balance[position] is where the longest
+    // balanced run ending here starts, and this repo's own
+    // MonotonePredicateSearch.FirstTrue finds it over [0, position - 1], one Query per
+    // probe - no access to LazySegmentTree's own internals. When no earlier index
+    // shares it, FirstTrue answers high + 1, which is position itself: a run of length
+    // 0, exactly "no balanced subarray ends here".
     private static int LongestEndingAt(
         LazySegmentTree<BalanceRange, int, BalanceRangeAddOperation> balance, int position)
     {
         var target = balance.Query(position, position).Min;
-        var prefix = balance.Query(0, position - 1);
+        var matchPosition =
+            MonotonePredicateSearch.FirstTrue(0, position - 1, new SpansBalance(balance, target));
 
-        if (target < prefix.Min || target > prefix.Max)
-        {
-            return 0;
-        }
-
-        return SpanToLeftmostBalance(balance, position, target);
-    }
-
-    // Reached only once the target is known to lie within the [0, position - 1] prefix's own
-    // [Min, Max], so the leftmost index holding it is somewhere in that prefix and the
-    // balanced run ending here reaches back exactly that far.
-    private static int SpanToLeftmostBalance(
-        LazySegmentTree<BalanceRange, int, BalanceRangeAddOperation> balance, int position, int target)
-    {
-        var matchPosition = BinaryDescendForBalance(balance, 0, position - 1, target);
         return position - matchPosition;
     }
 
-    // Repeated halving over the index range [low, high], each half's membership
-    // decided by one Query call - no access to LazySegmentTree's own internals.
-    // Preferring the left half first is what makes the result leftmost.
-    private static int BinaryDescendForBalance(
-        LazySegmentTree<BalanceRange, int, BalanceRangeAddOperation> balance, int low, int high, int target)
+    // Holds(last) is "the balances over [0, last] span target" - false up to the
+    // answer and true from there on, since widening a range only widens its [Min, Max].
+    // Because adjacent balances differ by at most 1 (see BalanceRangeAddOperation), the
+    // first last at which the span reaches target is an index holding target itself, so
+    // the boundary is the leftmost match, not merely the first range that brackets it.
+    private readonly struct SpansBalance(
+        LazySegmentTree<BalanceRange, int, BalanceRangeAddOperation> balance, int target)
+        : IMonotonePredicate<int>
     {
-        while (low < high)
+        public bool Holds(int last)
         {
-            var mid = low + ((high - low) / 2);
-            var leftHalf = balance.Query(low, mid);
+            var span = balance.Query(0, last);
 
-            if (target >= leftHalf.Min && target <= leftHalf.Max)
-            {
-                high = mid;
-            }
-            else
-            {
-                low = mid + 1;
-            }
+            return target >= span.Min && target <= span.Max;
         }
-
-        return low;
     }
 
     // Parity is what decides which side of a balance a value counts toward.

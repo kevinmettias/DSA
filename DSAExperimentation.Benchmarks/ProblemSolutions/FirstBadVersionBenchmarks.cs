@@ -21,6 +21,6 @@ public class FirstBadVersionBenchmarks
     public int LinearScan() => FirstBadVersionSolution.FirstBadVersionByLinearScan(VersionCount, _firstBad);
 
     [Benchmark]
-    public int BinarySearchLowerBound() =>
-        FirstBadVersionSolution.FirstBadVersionByLowerBound(VersionCount, _firstBad);
+    public int PredicateSearch() =>
+        FirstBadVersionSolution.FirstBadVersionByPredicateSearch(VersionCount, _firstBad);
 }

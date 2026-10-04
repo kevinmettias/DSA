@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumNumberOfTasksYouCanAssign;
 namespace DSAExperimentation.LeetCode.Tests.MaximumNumberOfTasksYouCanAssign;
 
 // Harness only. Both strategies - the linear walk down k and the
-// BinarySearch.LowerBound bisection over the same greedy feasibility check - live in
+// MonotonePredicateSearch bisection over the same greedy feasibility check - live in
 // MaximumNumberOfTasksYouCanAssignSolution. This file pins them to LeetCode's
 // published examples plus the cases that separate the greedy's two hard choices:
 // spending a pill on the weakest qualifying worker rather than the strongest, and
@@ -54,10 +54,10 @@ public sealed partial class MaximumNumberOfTasksYouCanAssignSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxTaskAssignmentBySequenceLowerBound_LeetCodeExamples_ReturnsMostAssignableTasks(
+    public void MaxTaskAssignmentByPredicateSearch_LeetCodeExamples_ReturnsMostAssignableTasks(
         TaskAssignmentExample example)
     {
-        var actual = MaximumNumberOfTasksYouCanAssignSolution.MaxTaskAssignmentBySequenceLowerBound(
+        var actual = MaximumNumberOfTasksYouCanAssignSolution.MaxTaskAssignmentByPredicateSearch(
             example.Tasks, example.Workers, example.Pills, example.Strength);
 
         Assert.Equal(example.Expected, actual);

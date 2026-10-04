@@ -4,11 +4,19 @@ namespace DSAExperimentation.LeetCode.Tests.MaximizeTheMinimumPoweredCity;
 
 // Harness only. Both strategies are MaximizeTheMinimumPoweredCitySolution's - the
 // descending linear scan that used to live only in the benchmark's baseline arm, and
-// the BinarySearch.LowerBound walk over the infeasibility sequence the test used to
-// inline. The greedy feasibility sweep and the IRandomAccessSequence<bool> witness
-// both moved down beside the solution.
+// the predicate search over the target range that the test used to inline as an
+// infeasibility sequence. The greedy feasibility sweep and the rule the search asks
+// about both moved down beside the solution.
 public sealed partial class MaximizeTheMinimumPoweredCitySolutionTests
 {
+    // LC 2528's own ceilings: 10^5 cities, 10^5 stations at each, a budget of 10^9.
+    private const int CityCountAtScale = 100_000;
+    private const int StationsPerCityAtScale = 100_000;
+    private const int ExtraStationsAtScale = 1_000_000_000;
+
+    // Each city is covered by its own stations alone.
+    private const int SelfOnlyRadius = 0;
+
     public static TheoryData<int[], int, int, long> Examples =>
         new()
         {
@@ -46,12 +54,29 @@ public sealed partial class MaximizeTheMinimumPoweredCitySolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxPowerBySequenceLowerBound_LeetCodeExamples_ReturnsMaximizedMinimumPower(
+    public void MaxPowerByPredicateSearch_LeetCodeExamples_ReturnsMaximizedMinimumPower(
         int[] stations, int radius, int extraStations, long expected)
     {
-        var actual = MaximizeTheMinimumPoweredCitySolution.MaxPowerBySequenceLowerBound(
+        var actual = MaximizeTheMinimumPoweredCitySolution.MaxPowerByPredicateSearch(
             stations, radius, extraStations);
 
         Assert.Equal(expected, actual);
+    }
+
+    // At the problem's ceilings sum(stations) + extraStations is 1.1 * 10^10, past
+    // int.MaxValue, so a target range cut down to an int index loses its top and the
+    // search answers for a range that does not exist. With radius 0 no station helps a
+    // neighbour, so the best the budget can do is lift every city by the same share -
+    // a closed form, not another arm. Only the bisecting arm is asked: the descending
+    // scan would walk 10^10 targets.
+    [Fact]
+    public void MaxPowerByPredicateSearch_TargetRangePastIntMaxValue_LiftsEveryCityByAnEvenShare()
+    {
+        int[] stations = [.. Enumerable.Repeat(StationsPerCityAtScale, CityCountAtScale)];
+
+        var actual = MaximizeTheMinimumPoweredCitySolution.MaxPowerByPredicateSearch(
+            stations, SelfOnlyRadius, ExtraStationsAtScale);
+
+        Assert.Equal(StationsPerCityAtScale + ((long)ExtraStationsAtScale / CityCountAtScale), actual);
     }
 }

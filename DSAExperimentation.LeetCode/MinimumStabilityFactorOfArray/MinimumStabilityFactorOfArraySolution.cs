@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.MinimumStabilityFactorOfArray;
@@ -100,30 +101,16 @@ internal static class MinimumStabilityFactorOfArraySolution
     // Composed: builds a SegmentTree<int, GcdOperation<int>> once so every window's gcd
     // is an O(log n) range query instead of an O(windowLength) rescan - the
     // Query-with-a-custom-ICombineOperation extensibility point
-    // DataStructures.SegmentTree.SegmentTree<Element,TOperation> exists for.
+    // DataStructures.SegmentTree.SegmentTree<Element,TOperation> exists for - and hands
+    // the cut-budget rule, with every factor from 0 to n, to this repo's own
+    // MonotonePredicateSearch.FirstTrue. A factor of n always holds - a window of n + 1
+    // elements does not fit in the array, so nothing needs a cut - so the search always
+    // lands inside the range.
     public static int MinStabilityBySegmentTreeGcd(int[] nums, int maxC) =>
         MinStabilityBySegmentTreeGcd(new SegmentTree<int, GcdOperation<int>>(nums), maxC);
 
-    public static int MinStabilityBySegmentTreeGcd(SegmentTree<int, GcdOperation<int>> gcdTree, int maxC)
-    {
-        var (low, high) = (0, gcdTree.Count);
-
-        while (low < high)
-        {
-            var mid = low + ((high - low) / 2);
-
-            if (CutsNeededByRangeQuery(gcdTree, mid) <= maxC)
-            {
-                high = mid;
-            }
-            else
-            {
-                low = mid + 1;
-            }
-        }
-
-        return low;
-    }
+    public static int MinStabilityBySegmentTreeGcd(SegmentTree<int, GcdOperation<int>> gcdTree, int maxC) =>
+        MonotonePredicateSearch.FirstTrue(0, gcdTree.Count, new FactorReachableWithinChanges(gcdTree, maxC));
 
     private static int CutsNeededByRangeQuery(SegmentTree<int, GcdOperation<int>> gcdTree, int windowLength)
     {
@@ -145,6 +132,16 @@ internal static class MinimumStabilityFactorOfArraySolution
         }
 
         return cuts;
+    }
+
+    // Holds(factor) is "at most maxC cuts cap every stable run at this length" - false
+    // below the answer and true from there on, since a placement that caps runs at L
+    // also caps them at any longer L. A rule for this problem alone: the stabbing greedy
+    // is LC 3605's own content.
+    private readonly struct FactorReachableWithinChanges(SegmentTree<int, GcdOperation<int>> gcdTree, int maxC)
+        : IMonotonePredicate<int>
+    {
+        public bool Holds(int factor) => CutsNeededByRangeQuery(gcdTree, factor) <= maxC;
     }
 
     // Euclid's algorithm, written out here rather than taken from the core GcdOperation: the

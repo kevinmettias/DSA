@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.LastDayWhereYouCanStillCross;
 
@@ -54,24 +53,20 @@ internal static class LastDayWhereYouCanStillCrossSolution
         return low - 1;
     }
 
-    // This repo's own bisection: BinarySearch.LowerBound over a sequence whose
-    // elements are computed on demand, so "binary search on the answer" is the same
-    // call as binary search over an array - the composition Koko Eating Bananas and
-    // Split Array Largest Sum already use. The first blocked day minus one is the
-    // last crossable day.
-    public static int LatestDayToCrossBySequenceLowerBound(int row, int col, int[][] cells)
+    // This repo's own bisection: MonotonePredicateSearch.LastTrue over the days, the
+    // "binary search on the answer" Koko Eating Bananas and Split Array Largest Sum
+    // already use, asked for the other end. The question is the last day the rule
+    // holds, so the rule is stated as crossability itself rather than as "blocked"
+    // with the answer recovered one day back.
+    public static int LatestDayToCrossByPredicateSearch(int row, int col, int[][] cells)
     {
         var flooding = FloodSchedule.Build(row, col, cells);
 
-        return LatestDayToCrossBySequenceLowerBound(flooding);
+        return LatestDayToCrossByPredicateSearch(flooding);
     }
 
-    public static int LatestDayToCrossBySequenceLowerBound(FloodSchedule flooding)
-    {
-        var blocked = new IsBlockedSequence(flooding);
-
-        return BinarySearch.LowerBound(blocked, true) - 1;
-    }
+    public static int LatestDayToCrossByPredicateSearch(FloodSchedule flooding) =>
+        MonotonePredicateSearch.LastTrue(0, flooding.LastDay, new CrossableOnDay(flooding));
 
     private static bool CanCross(FloodSchedule flooding, int day)
         => DepthFirstSearch.Traverse(
@@ -105,13 +100,13 @@ internal static class LastDayWhereYouCanStillCrossSolution
         }
     }
 
-    // Day d, indexed directly: Get(d) answers "is the grid blocked on day d", the
-    // monotone predicate LowerBound bisects. Length runs one past the last flood day
-    // because day 0 (nothing flooded yet) is a legitimate answer to ask about.
-    private readonly struct IsBlockedSequence(FloodSchedule flooding) : IRandomAccessSequence<bool>
+    // Holds(day) answers "can the grid still be crossed on this day" - true up to the
+    // answer and false from there on, the monotonicity LastTrue assumes but never
+    // checks. The range starts at day 0 because nothing flooded yet is a legitimate
+    // day to ask about, and LastTrue's "none holds" answer of day -1 is never reached
+    // for a grid with a dry day 0.
+    private readonly struct CrossableOnDay(FloodSchedule flooding) : IMonotonePredicate<int>
     {
-        public int Length => flooding.LastDay + 1;
-
-        public bool Get(int index) => !CanCross(flooding, index);
+        public bool Holds(int day) => CanCross(flooding, day);
     }
 }

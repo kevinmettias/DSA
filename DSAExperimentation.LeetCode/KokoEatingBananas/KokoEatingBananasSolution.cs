@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.KokoEatingBananas;
 
@@ -11,12 +10,12 @@ namespace DSAExperimentation.LeetCode.KokoEatingBananas;
 // speed stays feasible - so the answer is the leftmost true in an implicit
 // [false...false, true...true] sequence over k in [1, max(piles)]. The baseline
 // bisects that range with a hand-rolled lo/hi loop; the composed strategy states the
-// same predicate as an IRandomAccessSequence<bool> computed on demand and hands it to
-// this repo's own BinarySearch.LowerBound, the same search-on-answer shape
+// same predicate as an IMonotonePredicate<int> and hands it, with the speed range, to
+// this repo's own MonotonePredicateSearch.FirstTrue, the same search-on-answer shape
 // SplitArrayLargestSum uses.
 internal static class KokoEatingBananasSolution
 {
-    // Speeds are 1-based while sequence indices are 0-based.
+    // Koko eats at least one banana an hour, so the speed range starts at 1.
     private const int SlowestSpeed = 1;
 
     // The textbook answer: a hand-written bisection over the speed range, BCL-only.
@@ -59,26 +58,18 @@ internal static class KokoEatingBananasSolution
         return hours;
     }
 
-    // This repo's own BinarySearch.LowerBound over the feasibility sequence: the
-    // speeds are never materialized, each probe just recomputes the hour count, and
-    // the leftmost feasible index maps back to its speed.
-    public static int MinEatingSpeedBySequenceLowerBound(int[] piles, int hourBudget)
+    // This repo's own MonotonePredicateSearch over the speed range: the speeds are
+    // never materialized, each probe just recomputes the hour count, and the first
+    // speed that clears every pile is the answer.
+    public static int MinEatingSpeedByPredicateSearch(int[] piles, int hourBudget) =>
+        MonotonePredicateSearch.FirstTrue(SlowestSpeed, piles.Max(), new ClearsEveryPile(piles, hourBudget));
+
+    // Holds(speed) is "this speed clears every pile within hourBudget hours" - false
+    // up to the answer and true from there on, the monotonicity
+    // MonotonePredicateSearch assumes but never checks. A rule for this problem
+    // alone: the feasibility rule is Koko's own content.
+    private readonly struct ClearsEveryPile(int[] piles, int hourBudget) : IMonotonePredicate<int>
     {
-        var sequence = new FeasibleSpeedSequence(piles, hourBudget);
-
-        return SlowestSpeed + BinarySearch.LowerBound<bool, FeasibleSpeedSequence>(sequence, true);
-    }
-
-    // Get(index) is "speed index + 1 clears every pile within hourBudget hours" -
-    // false up to the answer and true from there on, the monotonicity
-    // BinarySearch.LowerBound assumes but never checks. A witness for this problem
-    // alone: the feasibility rule is Koko's own content, not a general
-    // monotone-predicate shape.
-    private readonly struct FeasibleSpeedSequence(
-        int[] piles, int hourBudget) : IRandomAccessSequence<bool>
-    {
-        public int Length => piles.Max();
-
-        public bool Get(int index) => CanClearEveryPile(piles, SlowestSpeed + index, hourBudget);
+        public bool Holds(int speed) => CanClearEveryPile(piles, speed, hourBudget);
     }
 }

@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 using RepoRangeFenwickTree = DSAExperimentation.DataStructures.RangeFenwickTree.RangeFenwickTree<
     long, DSAExperimentation.DataStructures.ElementAlgebra.SumOperation<long>>;
 
@@ -18,9 +17,11 @@ namespace DSAExperimentation.LeetCode.MaximizeTheMinimumPoweredCity;
 // city, which is the placement that helps the most cities still ahead. They differ in
 // how they search for the target, and in what they sweep with - the baseline walks the
 // targets down one at a time over a plain difference array, the composed strategy
-// bisects them with this repo's own BinarySearch.LowerBound over an on-demand
-// IRandomAccessSequence<bool> and sweeps with RangeFenwickTree, the same
-// search-on-the-answer shape MaximumNumberOfTasksYouCanAssignSolution uses.
+// bisects them with this repo's own MonotonePredicateSearch.LastTrue and sweeps with
+// RangeFenwickTree, the same search-on-the-answer shape
+// MaximumNumberOfTasksYouCanAssignSolution uses. The bisection runs in long because
+// the range does: 10^5 stations of up to 10^5 each plus a budget of up to 10^9 put
+// the top target past int.MaxValue.
 internal static class MaximizeTheMinimumPoweredCitySolution
 {
     // The prepared input both hoisted overloads take (ARCHITECTURE.md section 17.4):
@@ -59,21 +60,17 @@ internal static class MaximizeTheMinimumPoweredCitySolution
         return 0;
     }
 
-    // This repo's own BinarySearch.LowerBound over the infeasibility sequence: the
-    // candidate targets are never materialized, each probe just reruns the greedy
-    // sweep, and the leftmost infeasible target sits one past the answer.
-    public static long MaxPowerBySequenceLowerBound(int[] stations, int radius, int extraStations)
+    // This repo's own MonotonePredicateSearch over the target range: the candidate
+    // targets are never materialized, each probe just reruns the greedy sweep, and the
+    // last target every city can reach is the answer.
+    public static long MaxPowerByPredicateSearch(int[] stations, int radius, int extraStations)
     {
         var plan = PoweredCityPlan.From(stations, radius, extraStations);
-        return MaxPowerBySequenceLowerBound(plan);
+        return MaxPowerByPredicateSearch(plan);
     }
 
-    public static long MaxPowerBySequenceLowerBound(PoweredCityPlan plan)
-    {
-        var sequence = new InfeasibleTargetSequence(plan);
-
-        return BinarySearch.LowerBound<bool, InfeasibleTargetSequence>(sequence, true) - 1;
-    }
+    public static long MaxPowerByPredicateSearch(PoweredCityPlan plan) =>
+        MonotonePredicateSearch.LastTrue(0L, plan.UpperBound, new EveryCityReachesTarget(plan));
 
     // The composed sweep: RangeFenwickTree<long, SumOperation<long>> absorbs both
     // the initial coverage (one RangeAdd per existing station) and every greedy top-up
@@ -220,14 +217,12 @@ internal static class MaximizeTheMinimumPoweredCitySolution
         return (true, target, remaining);
     }
 
-    // Get(index) is "target = index cannot be reached by every city" - false up to the
-    // answer and true from there on, the monotonicity BinarySearch.LowerBound assumes
-    // but never checks. A witness for this problem alone: the feasibility rule is LC
-    // 2528's own content, not a general monotone-predicate shape.
-    private readonly struct InfeasibleTargetSequence(PoweredCityPlan plan) : IRandomAccessSequence<bool>
+    // Holds(target) is "every city can be raised to at least target within the budget"
+    // - true up to the answer and false from there on, the monotonicity LastTrue
+    // assumes but never checks. A rule for this problem alone: the feasibility rule is
+    // LC 2528's own content.
+    private readonly struct EveryCityReachesTarget(PoweredCityPlan plan) : IMonotonePredicate<long>
     {
-        public int Length => (int)plan.UpperBound + 1;
-
-        public bool Get(int index) => !IsFeasibleByRangeFenwickTree(plan, index);
+        public bool Holds(long target) => IsFeasibleByRangeFenwickTree(plan, target);
     }
 }

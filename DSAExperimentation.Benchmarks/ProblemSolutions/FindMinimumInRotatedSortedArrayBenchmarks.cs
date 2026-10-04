@@ -28,5 +28,5 @@ public class FindMinimumInRotatedSortedArrayBenchmarks
     public int LinearScan() => FindMinimumInRotatedSortedArraySolution.FindMinByLinearScan(_nums);
 
     [Benchmark]
-    public int PivotLowerBound() => FindMinimumInRotatedSortedArraySolution.FindMinByPivotLowerBound(_nums);
+    public int PredicateSearch() => FindMinimumInRotatedSortedArraySolution.FindMinByPredicateSearch(_nums);
 }

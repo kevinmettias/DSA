@@ -34,10 +34,10 @@ public sealed partial class HouseRobberIVSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinCapabilityBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleCapability(
+    public void MinCapabilityByPredicateSearch_LeetCodeExamples_ReturnsSmallestFeasibleCapability(
         int[] nums, int requiredHouseCount, int expected)
     {
-        var actual = HouseRobberIVSolution.MinCapabilityBySequenceLowerBound(nums, requiredHouseCount);
+        var actual = HouseRobberIVSolution.MinCapabilityByPredicateSearch(nums, requiredHouseCount);
 
         Assert.Equal(expected, actual);
     }

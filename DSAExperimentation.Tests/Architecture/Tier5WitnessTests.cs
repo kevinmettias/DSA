@@ -56,6 +56,7 @@ public sealed partial class Tier5WitnessTests
         "IRandomAccessSequence",
         "IIndexedSequence",
         "IRecurrence",
+        "IMonotonePredicate",
     ];
 
     // The traversal engines' callbacks: an assertion device in a test, the algorithm

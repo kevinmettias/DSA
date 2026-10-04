@@ -30,5 +30,5 @@ public class SplitArrayLargestSumBenchmarks
     public int ManualBinarySearch() => SplitArrayLargestSumSolution.MinimizedLargestSumByManualBinarySearch(_nums, _subarrayCount);
 
     [Benchmark]
-    public int SequenceLowerBound() => SplitArrayLargestSumSolution.MinimizedLargestSumBySequenceLowerBound(_nums, _subarrayCount);
+    public int PredicateSearch() => SplitArrayLargestSumSolution.MinimizedLargestSumByPredicateSearch(_nums, _subarrayCount);
 }

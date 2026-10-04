@@ -4,9 +4,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimizeTheMaximumOfTwoArraysSolution's, the same
 // methods MinimizeTheMaximumOfTwoArraysSolutionTests proves correct - a hand-rolled lo/hi
-// bisection against BinarySearch.LowerBound over an on-demand feasibility sequence.
+// bisection against MonotonePredicateSearch.FirstTrue over the candidate maximums.
 // Both binary-search the same monotone predicate over the same range, so what is
-// measured is the cost of routing it through the reusable IRandomAccessSequence
+// measured is the cost of routing it through the reusable IMonotonePredicate
 // abstraction. Divisors are fixed and coprime (2, 3) so every UniqueCountScale
 // forces a real lcm=6 inclusion-exclusion check instead of degenerating to a
 // single-divisor case.
@@ -34,7 +34,7 @@ public class MinimizeTheMaximumOfTwoArraysBenchmarks
             Divisor1, Divisor2, _uniqueCnt1, _uniqueCnt2);
 
     [Benchmark]
-    public int SequenceLowerBound() =>
-        MinimizeTheMaximumOfTwoArraysSolution.MinimizeSetBySequenceLowerBound(
+    public int PredicateSearch() =>
+        MinimizeTheMaximumOfTwoArraysSolution.MinimizeSetByPredicateSearch(
             Divisor1, Divisor2, _uniqueCnt1, _uniqueCnt2);
 }

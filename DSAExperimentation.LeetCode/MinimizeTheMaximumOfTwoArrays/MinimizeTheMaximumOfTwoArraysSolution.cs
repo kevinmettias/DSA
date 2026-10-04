@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MinimizeTheMaximumOfTwoArrays;
 
@@ -13,9 +12,9 @@ namespace DSAExperimentation.LeetCode.MinimizeTheMaximumOfTwoArrays;
 // the cap only ever adds eligible numbers - so the answer is the leftmost true in an
 // implicit [false...false, true...true] sequence over m in [1, 2 * (uniqueCnt1 +
 // uniqueCnt2)]. The baseline bisects that range with a hand-rolled lo/hi loop; the
-// composed strategy states the same predicate as an IRandomAccessSequence<bool>
-// computed on demand and hands it to this repo's own BinarySearch.LowerBound, the
-// same search-on-answer shape KokoEatingBananas and SplitArrayLargestSum use.
+// composed strategy states the same predicate as an IMonotonePredicate<long> and
+// hands it, with the same range, to this repo's own MonotonePredicateSearch.FirstTrue,
+// the same search-on-answer shape KokoEatingBananas and SplitArrayLargestSum use.
 //
 // Feasibility is inclusion-exclusion over [1, m]: eligible1 = the numbers not
 // divisible by divisor1 (candidates for arr1), eligible2 = those not divisible by
@@ -24,7 +23,7 @@ namespace DSAExperimentation.LeetCode.MinimizeTheMaximumOfTwoArrays;
 // eligible2 covers uniqueCnt2, and eligibleEither covers both counts at once.
 internal static class MinimizeTheMaximumOfTwoArraysSolution
 {
-    // Maximums are 1-based while sequence indices are 0-based.
+    // Both arrays hold positive integers, so no maximum below 1 is worth asking about.
     private const int SmallestMaximum = 1;
 
     // 2 * (uniqueCnt1 + uniqueCnt2) is always feasible: the worst divisor, 2, still
@@ -54,8 +53,8 @@ internal static class MinimizeTheMaximumOfTwoArraysSolution
         return (int)low;
     }
 
-    // One past the largest maximum either search ever has to consider, so the
-    // bisection and the sequence cover exactly the same candidate range.
+    // One past the largest maximum either search ever has to consider, so the two
+    // bisections cover exactly the same candidate range.
     private static long SmallestFeasibleUpperBound(int uniqueCnt1, int uniqueCnt2)
         => ((long)WorstCaseMaximumFactor * (uniqueCnt1 + (long)uniqueCnt2)) + 1;
 
@@ -78,15 +77,20 @@ internal static class MinimizeTheMaximumOfTwoArraysSolution
     private static long Lcm(int firstDivisor, int secondDivisor)
         => (long)firstDivisor / Gcd(firstDivisor, secondDivisor) * secondDivisor;
 
-    // This repo's own BinarySearch.LowerBound over the feasibility sequence: the
-    // candidate maximums are never materialized, each probe just recomputes the
-    // inclusion-exclusion counts, and the leftmost feasible index maps back to its
-    // maximum.
-    public static int MinimizeSetBySequenceLowerBound(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2)
+    // This repo's own MonotonePredicateSearch over the candidate maximums: they are
+    // never materialized, each probe just recomputes the inclusion-exclusion counts,
+    // and the first maximum that fills both arrays is the answer. Searched in long
+    // over the baseline's own range, which at LC 2513's limits tops out at
+    // 2 * 10^9 + 1, close enough to int.MaxValue that only the answer - at most
+    // 2 * 10^9 - is narrowed back to LeetCode's int.
+    public static int MinimizeSetByPredicateSearch(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2)
     {
-        var sequence = new FeasibleMaximumSequence(divisor1, divisor2, uniqueCnt1, uniqueCnt2);
+        var smallestFeasible = MonotonePredicateSearch.FirstTrue(
+            SmallestMaximum,
+            SmallestFeasibleUpperBound(uniqueCnt1, uniqueCnt2),
+            new FillsBothArrays((divisor1, uniqueCnt1), (divisor2, uniqueCnt2)));
 
-        return SmallestMaximum + BinarySearch.LowerBound<bool, FeasibleMaximumSequence>(sequence, true);
+        return (int)smallestFeasible;
     }
 
     private static int Gcd(int firstDivisor, int secondDivisor)
@@ -94,16 +98,13 @@ internal static class MinimizeTheMaximumOfTwoArraysSolution
             ? firstDivisor
             : Gcd(secondDivisor, firstDivisor % secondDivisor);
 
-    // Get(index) is "maximum index + 1 fills both arrays" - false up to the answer
-    // and true from there on, the monotonicity BinarySearch.LowerBound assumes but
-    // never checks. A witness for this problem alone: the two-divisor eligibility
-    // rule is LC 2513's own content, not a general monotone-predicate shape.
-    private readonly struct FeasibleMaximumSequence(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2)
-        : IRandomAccessSequence<bool>
+    // Holds(max) is "numbers in [1, max] fill both arrays" - false up to the answer
+    // and true from there on, the monotonicity MonotonePredicateSearch assumes but
+    // never checks. A rule for this problem alone: the two-divisor eligibility rule
+    // is LC 2513's own content.
+    private readonly struct FillsBothArrays(
+        (int Divisor, int UniqueCount) first, (int Divisor, int UniqueCount) second) : IMonotonePredicate<long>
     {
-        public int Length => (WorstCaseMaximumFactor * (uniqueCnt1 + uniqueCnt2)) + 1;
-
-        public bool Get(int index)
-            => IsFeasible((divisor1, uniqueCnt1), (divisor2, uniqueCnt2), SmallestMaximum + index);
+        public bool Holds(long max) => IsFeasible(first, second, max);
     }
 }

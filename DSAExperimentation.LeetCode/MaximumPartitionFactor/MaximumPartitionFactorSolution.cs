@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Bipartiteness;
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 namespace DSAExperimentation.LeetCode.MaximumPartitionFactor;
@@ -64,30 +65,24 @@ internal static class MaximumPartitionFactorSolution
         return LargestFeasibleDistance(nodes, distances);
     }
 
-    // The binary search itself: the distances arrive sorted ascending, so the
-    // feasible ones form a prefix and the answer is its last element.
+    // The search itself: the distances arrive sorted ascending, so the feasible ones
+    // form a prefix, and this repo's own MonotonePredicateSearch.LastTrue finds the
+    // index of its last element. LastTrue's low - 1, here -1, means no distance was
+    // feasible, which falls back to the trivial factor.
     private static int LargestFeasibleDistance(List<PartitionNode> nodes, int[] distances)
     {
-        var low = 0;
-        var high = distances.Length - 1;
-        var best = TrivialPairFactor;
+        var last = MonotonePredicateSearch.LastTrue(0, distances.Length - 1, new SplitsAtDistance(nodes, distances));
 
-        while (low <= high)
-        {
-            var mid = low + ((high - low) / 2);
+        return last < 0 ? TrivialPairFactor : distances[last];
+    }
 
-            if (IsBipartiteAtThreshold(nodes, distances[mid]))
-            {
-                best = distances[mid];
-                low = mid + 1;
-            }
-            else
-            {
-                high = mid - 1;
-            }
-        }
-
-        return best;
+    // Holds(distanceIndex) is "the too-close graph at distances[distanceIndex] is
+    // bipartite" - true up to the answer and false from there on, since a larger
+    // threshold only adds edges. A rule for this problem alone: the conflict graph is
+    // LC 3710's own content. Each probe rebuilds the shared nodes' edges in place.
+    private readonly struct SplitsAtDistance(List<PartitionNode> nodes, int[] distances) : IMonotonePredicate<int>
+    {
+        public bool Holds(int distanceIndex) => IsBipartiteAtThreshold(nodes, distances[distanceIndex]);
     }
 
     private static bool IsBipartiteAtThreshold(List<PartitionNode> nodes, int threshold)

@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.RollingHash;
 
@@ -58,37 +59,21 @@ internal static class SmallestUniqueSubarraySolution
     // Composed: coordinate-compress nums into a shared char alphabet via this
     // repo's own HashMap<int,char> - the same compression the LongestCommonSubpath
     // coverage already uses, since RollingHash itself only operates over
-    // ReadOnlySpan<char> - then binary-search the smallest feasible length,
-    // screening each candidate with one RollingHash sweep whose window hashes are
-    // grouped in this repo's own HashMap<RollingHashValue,int>. A bucket of size 1
-    // is certain, never a false positive: two genuinely equal windows are the same
-    // bytes and so always hash identically, so a truly duplicated window can never
-    // land alone in its bucket. Only a false NEGATIVE is possible (a unique window
-    // colliding into someone else's bucket), at RollingHash's own already-documented
-    // double-hashing collision probability.
+    // ReadOnlySpan<char> - then let this repo's own MonotonePredicateSearch.FirstTrue
+    // find the smallest feasible length in [1, n], screening each candidate with one
+    // RollingHash sweep whose window hashes are grouped in this repo's own
+    // HashMap<RollingHashValue,int>. A bucket of size 1 is certain, never a false
+    // positive: two genuinely equal windows are the same bytes and so always hash
+    // identically, so a truly duplicated window can never land alone in its bucket.
+    // Only a false NEGATIVE is possible (a unique window colliding into someone else's
+    // bucket), at RollingHash's own already-documented double-hashing collision
+    // probability.
     public static int SmallestUniqueLengthByRollingHash(int[] nums)
     {
         var n = nums.Length;
         var hash = new RollingHash(Encode(nums));
 
-        var low = 1;
-        var high = n;
-
-        while (low < high)
-        {
-            var mid = low + (high - low) / 2;
-
-            if (HasUniqueWindowByRollingHash(hash, n, mid))
-            {
-                high = mid;
-            }
-            else
-            {
-                low = mid + 1;
-            }
-        }
-
-        return low;
+        return MonotonePredicateSearch.FirstTrue(1, n, new SomeWindowIsUnique(hash, n));
     }
 
     private static char[] Encode(int[] nums)
@@ -125,5 +110,13 @@ internal static class SmallestUniqueSubarraySolution
         }
 
         return counts.Values.Any(count => count == 1);
+    }
+
+    // Holds(length) is "some length-L window occurs exactly once" - false below the
+    // answer and true from there on, by the extension argument in the class header. A
+    // rule for this problem alone: the uniqueness screen is LC 3934's own content.
+    private readonly struct SomeWindowIsUnique(RollingHash hash, int arrayLength) : IMonotonePredicate<int>
+    {
+        public bool Holds(int length) => HasUniqueWindowByRollingHash(hash, arrayLength, length);
     }
 }

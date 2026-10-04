@@ -31,5 +31,5 @@ public class HouseRobberIVBenchmarks
     public int LinearScan() => HouseRobberIVSolution.MinCapabilityByLinearScan(_nums, _requiredHouseCount);
 
     [Benchmark]
-    public int SequenceLowerBound() => HouseRobberIVSolution.MinCapabilityBySequenceLowerBound(_nums, _requiredHouseCount);
+    public int PredicateSearch() => HouseRobberIVSolution.MinCapabilityByPredicateSearch(_nums, _requiredHouseCount);
 }

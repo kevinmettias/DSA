@@ -9,9 +9,9 @@ namespace DSAExperimentation.LeetCode.MedianOfTwoSortedArrays;
 // The two strategies differ only in whether they notice each array already arrived
 // sorted. The baseline throws that away and re-sorts from scratch; the composed
 // strategy binary-searches the smaller array for the correct partition using this
-// repo's own generic BinarySearch.LowerBound, reused unmodified against
-// PartitionFeasibilitySequence - a monotonic 0..0,1..1 witness over the partition
-// index, exactly the "sorted ascending" shape LowerBound already assumes.
+// repo's own MonotonePredicateSearch.LastTrue, reused unmodified against
+// PartitionLeftFits - a monotone true..true,false..false rule over the partition
+// index, exactly the shape LastTrue assumes.
 internal static class MedianOfTwoSortedArraysSolution
 {
     private const int ParityModulus = 2;
@@ -61,8 +61,7 @@ internal static class MedianOfTwoSortedArraysSolution
 
     private static (int I, int J) FindPartitionIndices(int[] nums1, int[] nums2, int half)
     {
-        var feasibility = new PartitionFeasibilitySequence(nums1, nums2, half);
-        var i = BinarySearch.LowerBound<int, PartitionFeasibilitySequence>(feasibility, 1) - 1;
+        var i = MonotonePredicateSearch.LastTrue(0, nums1.Length, new PartitionLeftFits(nums1, nums2, half));
         var j = half - i;
 
         return (i, j);

@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.SegmentTree;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.BookingConcertTicketsInGroups;
 
@@ -99,12 +98,12 @@ internal static class BookingConcertTicketsInGroupsSolution
     // under MaxOperation<int> and once under SumOperation<int>. The max tree turns
     // "the leftmost row in [fromRow, maxRow] with at least threshold free seats"
     // into a binary search on the answer: a prefix max over a growing window is
-    // monotonically non-decreasing, so HasCapacitySequence below is
-    // [false...false, true...true] and BinarySearch.LowerBound finds its boundary -
-    // the same search-on-the-answer idiom KokoEatingBananasSolution uses, just with
-    // the monotone answer being a row index rather than a numeric parameter. The sum
-    // tree answers Scatter's feasibility check with one range query instead of a
-    // per-row total. Each booking is one point Update on each tree.
+    // monotonically non-decreasing, so PrefixHasCapacity below is
+    // [false...false, true...true] over the rows and MonotonePredicateSearch.FirstTrue
+    // finds its boundary - the same search-on-the-answer idiom KokoEatingBananasSolution
+    // uses, just with the monotone answer being a row index rather than a numeric
+    // parameter. The sum tree answers Scatter's feasibility check with one range
+    // query instead of a per-row total. Each booking is one point Update on each tree.
     internal sealed class BookMyShowBySegmentTreeBinarySearch : IBookMyShowStrategy
     {
         private const int OneSeat = 1;
@@ -172,15 +171,15 @@ internal static class BookingConcertTicketsInGroupsSolution
             return (row, groupSize);
         }
 
+        // The search runs over the rows themselves, so its answer is already a row; one
+        // past maxRow is FirstTrue reporting that no row in the window qualifies.
         private int? FindLeftmostRowWithCapacity(int fromRow, int maxRow, int threshold)
         {
-            var sequence = new HasCapacitySequence(_maxAvailable, fromRow, maxRow, threshold);
-            var offset = BinarySearch.LowerBound(sequence, true);
+            var row = MonotonePredicateSearch.FirstTrue(
+                fromRow, maxRow, new PrefixHasCapacity(_maxAvailable, fromRow, threshold));
 
-            return offset >= sequence.Length ? null : RowAtOffset(fromRow, offset);
+            return row > maxRow ? null : row;
         }
-
-        private static int RowAtOffset(int fromRow, int offset) => fromRow + offset;
 
         private void SetAvailable(int row, int available)
         {
@@ -188,19 +187,16 @@ internal static class BookingConcertTicketsInGroupsSolution
             _sumAvailable.Update(row, available);
         }
 
-        // Get(index) is "some row in [fromRow, fromRow + index] still has at least
-        // threshold free seats". A prefix max over a growing window only ever rises,
-        // so this is false up to the qualifying row and true from there on - the
-        // monotonicity BinarySearch.LowerBound assumes but never checks. A witness
-        // for this problem alone: the predicate is BookMyShow's own seating rule,
-        // not a general monotone-predicate shape.
-        private readonly struct HasCapacitySequence(
-            SegmentTree<int, MaxOperation<int>> availableSeats, int fromRow, int maxRow, int threshold)
-            : IRandomAccessSequence<bool>
+        // Holds(row) is "some row in [fromRow, row] still has at least threshold free
+        // seats". A prefix max over a growing window only ever rises, so this is false
+        // up to the qualifying row and true from there on - the monotonicity
+        // MonotonePredicateSearch assumes but never checks. A rule for this problem
+        // alone: the predicate is BookMyShow's own seating rule.
+        private readonly struct PrefixHasCapacity(
+            SegmentTree<int, MaxOperation<int>> availableSeats, int fromRow, int threshold)
+            : IMonotonePredicate<int>
         {
-            public int Length => maxRow - fromRow + 1;
-
-            public bool Get(int index) => availableSeats.Query(fromRow, fromRow + index) >= threshold;
+            public bool Holds(int row) => availableSeats.Query(fromRow, row) >= threshold;
         }
     }
 }

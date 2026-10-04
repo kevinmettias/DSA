@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures;
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
@@ -50,14 +50,13 @@ internal static class FruitsIntoBasketsIIISolution
     // makes on its own gap tree. "Leftmost basket whose capacity is >=
     // quantity" is a leftmost-index-satisfying-a-monotonic-predicate search,
     // which SegmentTree does not expose as a single tree descent - Query only
-    // aggregates a range - so LeftmostBasketAtLeast binary-searches the split
-    // point directly: Query(low, mid) >= quantity is monotonic in mid once
-    // true (widening a range can only raise its max), the same shape
-    // BinarySearch.LowerBound exploits over a sorted sequence. That costs
-    // O(log^2 n) per fruit instead of O(log n) - each probe is itself a Query -
-    // the price of composing the tree through its public Query/Update surface
-    // rather than a bespoke descent, but still a clean asymptotic win over the
-    // O(n) rescan above.
+    // aggregates a range - so LeftmostBasketAtLeast hands the rule
+    // Query(0, mid) >= quantity to this repo's own MonotonePredicateSearch.FirstTrue:
+    // it is monotone in mid once true (widening a range can only raise its max).
+    // That costs O(log^2 n) per fruit instead of O(log n) - each probe is itself a
+    // Query - the price of composing the tree through its public Query/Update
+    // surface rather than a bespoke descent, but still a clean asymptotic win over
+    // the O(n) rescan above.
     public static int CountUnplacedBySegmentTreeSearch(int[] fruits, int[] baskets)
     {
         var tree = new SegmentTree<int, MaxOperation<int>>(baskets);
@@ -80,38 +79,24 @@ internal static class FruitsIntoBasketsIIISolution
         return unplaced;
     }
 
+    // The first basket whose prefix max reaches capacity is the leftmost free basket
+    // that fits it. FirstTrue's high + 1 - one past the last basket - means even the
+    // whole row's max falls short, so no free basket fits at all.
     private static int? LeftmostBasketAtLeast(SegmentTree<int, MaxOperation<int>> baskets, int capacity)
     {
-        if (baskets.Query(0, baskets.Count - 1) < capacity)
-        {
-            return null;
-        }
+        var lastBasket = baskets.Count - 1;
+        var basket = MonotonePredicateSearch.FirstTrue(0, lastBasket, new ReachesCapacity(baskets, capacity));
 
-        return LeftmostSatisfyingIndex(baskets, capacity);
+        return basket > lastBasket ? null : basket;
     }
 
-    // Binary-searches the first index whose range max reaches `capacity`. The
-    // predicate is monotonic in the probe's midpoint - widening a range can only
-    // raise its max - so the search never has to look left again.
-    private static int LeftmostSatisfyingIndex(SegmentTree<int, MaxOperation<int>> baskets, int capacity)
+    // Holds(last) is "some basket in [0, last] still holds at least capacity" -
+    // false up to the answer and true from there on, since widening a range can only
+    // raise its max. A rule for this problem alone: the fit test is LC 3479's own
+    // content.
+    private readonly struct ReachesCapacity(SegmentTree<int, MaxOperation<int>> baskets, int capacity)
+        : IMonotonePredicate<int>
     {
-        var low = 0;
-        var high = baskets.Count - 1;
-
-        while (low < high)
-        {
-            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
-
-            if (baskets.Query(low, mid) >= capacity)
-            {
-                high = mid;
-            }
-            else
-            {
-                low = mid + 1;
-            }
-        }
-
-        return low;
+        public bool Holds(int last) => baskets.Query(0, last) >= capacity;
     }
 }

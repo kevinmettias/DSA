@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.SplitArrayLargestSum;
 
@@ -11,11 +10,10 @@ namespace DSAExperimentation.LeetCode.SplitArrayLargestSum;
 // [false...false, true...true] sequence over limit in [max(nums), sum(nums)].
 //
 // ManualBinarySearch is a hand-rolled int lo/hi bisection loop - what you
-// would write without this repo. SequenceLowerBound computes the same
-// feasibility boolean on demand via FeasibleSplitSequence (GridChildren's
-// "computed, not stored" precedent, applied to IRandomAccessSequence<bool>
-// instead of IChildren) so this repo's own BinarySearch.LowerBound can locate
-// it directly, instead of hand-rolling a second bisection loop. Both arms
+// would write without this repo. PredicateSearch states the same feasibility
+// rule as SplitsWithinLimit, an IMonotonePredicate<int>, so this repo's own
+// MonotonePredicateSearch.FirstTrue can locate its boundary over the limit range
+// directly, instead of hand-rolling a second bisection loop. Both arms
 // binary-search the same monotone predicate in
 // O(nums.Length * log(sum - max)).
 internal static class SplitArrayLargestSumSolution
@@ -61,22 +59,15 @@ internal static class SplitArrayLargestSumSolution
         return subarrays <= subarrayCount;
     }
 
-    public static int MinimizedLargestSumBySequenceLowerBound(int[] nums, int subarrayCount)
-    {
-        var floor = nums.Max();
-        var ceiling = nums.Sum();
-        var sequence = new FeasibleSplitSequence(nums, subarrayCount, floor, ceiling);
+    public static int MinimizedLargestSumByPredicateSearch(int[] nums, int subarrayCount) =>
+        MonotonePredicateSearch.FirstTrue(nums.Max(), nums.Sum(), new SplitsWithinLimit(nums, subarrayCount));
 
-        return floor + BinarySearch.LowerBound(sequence, true);
-    }
-
-    // Meaningless outside this one problem's feasibility check - stays beside
-    // the solution rather than in DataStructures/ or Algorithms/ (§17.3's
+    // Holds(limit) is "nums splits into at most k subarrays, none summing past
+    // limit". Meaningless outside this one problem's feasibility check - stays
+    // beside the solution rather than in DataStructures/ or Algorithms/ (§17.3's
     // CountWaysToBuildRoomsInAnAntColony precedent).
-    private readonly struct FeasibleSplitSequence(int[] nums, int k, int floor, int ceiling) : IRandomAccessSequence<bool>
+    private readonly struct SplitsWithinLimit(int[] nums, int k) : IMonotonePredicate<int>
     {
-        public int Length => ceiling - floor + 1;
-
-        public bool Get(int index) => CanSplitWithinLimit(nums, k, floor + index);
+        public bool Holds(int limit) => CanSplitWithinLimit(nums, k, limit);
     }
 }

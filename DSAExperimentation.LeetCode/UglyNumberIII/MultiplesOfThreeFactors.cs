@@ -1,3 +1,5 @@
+using DSAExperimentation.Algorithms.NumberTheory;
+
 namespace DSAExperimentation.LeetCode.UglyNumberIII;
 
 // LC 1201's counting rule on its own: how many positive integers at or below a
@@ -6,8 +8,8 @@ namespace DSAExperimentation.LeetCode.UglyNumberIII;
 //
 //   x/a + x/b + x/c - x/lcm(a,b) - x/lcm(a,c) - x/lcm(b,c) + x/lcm(a,b,c)
 //
-// and it is non-decreasing in that candidate, which is the one property
-// UglyCountSequence's binary search leans on. The three factors are its whole input, and
+// and it is non-decreasing in that candidate, which is the one property the binary
+// search over UglyCountReachesRank leans on. The three factors are its whole input, and
 // everything else it needs is derived from them here rather than asked of a caller: the
 // four LCMs depend on no argument but the factors, so they are computed once into the
 // single value they are, and the cap they are computed against is the end of the window
@@ -30,9 +32,13 @@ internal readonly struct MultiplesOfThreeFactors
         _firstFactor = firstFactor;
         _secondFactor = secondFactor;
         _thirdFactor = thirdFactor;
-        var lcmAb = Lcm(firstFactor, secondFactor);
+        // Widened to long before multiplying: two factors near 10^9 have an lcm near
+        // 10^18, which int inference would wrap.
+        var lcmAb = LeastCommonMultiple.Of<long>(firstFactor, secondFactor);
         _commonMultiples = new SubsetCommonMultiples(
-            lcmAb, Lcm(firstFactor, thirdFactor), Lcm(secondFactor, thirdFactor),
+            lcmAb,
+            LeastCommonMultiple.Of<long>(firstFactor, thirdFactor),
+            LeastCommonMultiple.Of<long>(secondFactor, thirdFactor),
             LcmCapped(lcmAb, thirdFactor, cap));
     }
 
@@ -43,17 +49,13 @@ internal readonly struct MultiplesOfThreeFactors
         - (upperLimit / _commonMultiples.LcmAb) - (upperLimit / _commonMultiples.LcmAc)
         - (upperLimit / _commonMultiples.LcmBc) + (upperLimit / _commonMultiples.LcmAbc);
 
-    // first is only ever multiplied once it is already within cap, so the product never
-    // exceeds cap * second - safely inside long's range for this problem's 10^9-bounded
-    // factors.
+    // first is only ever multiplied once it is already within cap. The product is then
+    // lcm(a, b, c) itself, at most a * b * c, which LeetCode bounds at 10^18 - inside
+    // long's range, though cap * second alone would not be once the window nears 10^18.
     private static long LcmCapped(long first, long second, long cap) =>
-        first > cap ? OnePastCap(cap) : Lcm(first, second);
+        first > cap ? OnePastCap(cap) : LeastCommonMultiple.Of(first, second);
 
     // The first value past the window, which is all a clamped LCM has to say: its exact
     // value stopped mattering the moment it exceeded the cap.
     private static long OnePastCap(long cap) => cap + 1;
-
-    private static long Lcm(long first, long second) => first / Gcd(first, second) * second;
-
-    private static long Gcd(long first, long second) => second == 0 ? first : Gcd(second, first % second);
 }

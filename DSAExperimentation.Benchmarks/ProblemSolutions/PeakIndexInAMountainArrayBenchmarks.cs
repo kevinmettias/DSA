@@ -35,6 +35,6 @@ public class PeakIndexInAMountainArrayBenchmarks
     public int LinearScan() => PeakIndexInAMountainArraySolution.PeakIndexByLinearScan(_mountain);
 
     [Benchmark]
-    public int BinarySearchLowerBound() =>
-        PeakIndexInAMountainArraySolution.PeakIndexByBinarySearchLowerBound(_mountain);
+    public int PredicateSearch() =>
+        PeakIndexInAMountainArraySolution.PeakIndexByPredicateSearch(_mountain);
 }

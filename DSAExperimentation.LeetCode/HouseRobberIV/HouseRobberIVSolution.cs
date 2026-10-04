@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.HouseRobberIV;
 
@@ -15,9 +14,8 @@ namespace DSAExperimentation.LeetCode.HouseRobberIV;
 // and take every affordable house whose predecessor was not taken.
 //
 // LinearScan tries each candidate cap in turn - what you would write without this
-// repo. SequenceLowerBound states the same predicate as an
-// IRandomAccessSequence<bool> computed on demand (GridChildren's "computed, not
-// stored" precedent) so this repo's own BinarySearch.LowerBound can bisect it,
+// repo. PredicateSearch states the same predicate as an IMonotonePredicate<int>
+// so this repo's own MonotonePredicateSearch.FirstTrue can bisect the cap range,
 // turning O(range * n) into O(n * log range) - the same search-on-the-answer
 // shape LC 410 and LC 875 use.
 internal static class HouseRobberIVSolution
@@ -67,28 +65,18 @@ internal static class HouseRobberIVSolution
         return count >= requiredHouseCount;
     }
 
-    // Bisect the same monotone predicate instead of scanning it. LowerBound
-    // returns the offset of the first "true" within [floor, ceiling], so the
-    // capability itself is floor plus that offset.
-    public static int MinCapabilityBySequenceLowerBound(int[] nums, int requiredHouseCount)
+    // Bisect the same monotone predicate instead of scanning it. The search runs
+    // over the caps themselves, so the first cap the rule holds for is the answer.
+    public static int MinCapabilityByPredicateSearch(int[] nums, int requiredHouseCount) =>
+        MonotonePredicateSearch.FirstTrue(nums.Min(), nums.Max(), new RobsEnoughWithinCap(nums, requiredHouseCount));
+
+    // Holds(cap) is "at least requiredHouseCount non-adjacent houses are affordable
+    // under this cap". Meaningless outside this one problem's feasibility check -
+    // stays beside the solution rather than in DataStructures/ or Algorithms/
+    // (§17.3's CountWaysToBuildRoomsInAnAntColony precedent, and LC 410's own
+    // SplitsWithinLimit).
+    private readonly struct RobsEnoughWithinCap(int[] nums, int requiredHouseCount) : IMonotonePredicate<int>
     {
-        var floor = nums.Min();
-        var ceiling = nums.Max();
-        var sequence = new FeasibleCapabilitySequence(nums, requiredHouseCount, floor, ceiling);
-
-        return floor + BinarySearch.LowerBound(sequence, true);
-    }
-
-    // Meaningless outside this one problem's feasibility check - stays beside the
-    // solution rather than in DataStructures/ or Algorithms/ (§17.3's
-    // CountWaysToBuildRoomsInAnAntColony precedent, and LC 410's own
-    // FeasibleSplitSequence).
-    private readonly struct FeasibleCapabilitySequence(int[] nums, int requiredHouseCount, int floor, int ceiling)
-        : IRandomAccessSequence<bool>
-    {
-        public int Length => ceiling - floor + 1;
-
-        public bool Get(int index) =>
-            CanRobAtLeastHousesWithinCap(nums, requiredHouseCount, floor + index);
+        public bool Holds(int cap) => CanRobAtLeastHousesWithinCap(nums, requiredHouseCount, cap);
     }
 }

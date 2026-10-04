@@ -39,4 +39,20 @@ public sealed partial class NthMagicalNumberSolutionTests
 
         Assert.Equal(expected, actual);
     }
+
+    // LeetCode's limits, n = 10^9 and a = b = 4 * 10^4: with one factor the magical
+    // numbers are its multiples, so the nth is n * a = 4 * 10^13 - far past int, which
+    // the search window has to reach before the answer is reduced modulo 1e9+7. Kept
+    // off the shared examples because the count scan would walk all 4 * 10^13 of them.
+    [Fact]
+    public void NthMagicalNumberByBinarySearch_AnswerPastIntRange_ReturnsAnswerModuloPrime()
+    {
+        const int Rank = 1_000_000_000;
+        const int Factor = 40_000;
+        const long Modulus = 1_000_000_007;
+
+        var actual = NthMagicalNumberSolution.NthMagicalNumberByBinarySearch(Rank, Factor, Factor);
+
+        Assert.Equal((int)((long)Rank * Factor % Modulus), actual);
+    }
 }

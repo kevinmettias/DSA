@@ -4,8 +4,8 @@ namespace DSAExperimentation.LeetCode.Tests.MinimizeTheMaximumOfTwoArrays;
 
 // Harness only. Both strategies are MinimizeTheMaximumOfTwoArraysSolution's - the
 // hand-rolled lo/hi bisection that used to live only in the benchmark's baseline
-// arm, and the BinarySearch.LowerBound walk over the feasibility sequence the test
-// used to inline.
+// arm, and the predicate search over the candidate maximums that the test used to
+// inline as a feasibility sequence.
 public sealed partial class MinimizeTheMaximumOfTwoArraysSolutionTests
 {
     public static TheoryData<MinimizeSetExample> Examples =>
@@ -50,10 +50,10 @@ public sealed partial class MinimizeTheMaximumOfTwoArraysSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinimizeSetBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleMaximum(
+    public void MinimizeSetByPredicateSearch_LeetCodeExamples_ReturnsSmallestFeasibleMaximum(
         MinimizeSetExample example)
     {
-        var actual = MinimizeTheMaximumOfTwoArraysSolution.MinimizeSetBySequenceLowerBound(
+        var actual = MinimizeTheMaximumOfTwoArraysSolution.MinimizeSetByPredicateSearch(
             example.Divisor1, example.Divisor2, example.UniqueCnt1, example.UniqueCnt2);
 
         Assert.Equal(example.Expected, actual);

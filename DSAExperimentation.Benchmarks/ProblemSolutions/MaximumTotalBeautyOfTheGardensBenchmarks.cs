@@ -8,9 +8,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same n+1 "complete vs. incomplete" splits over the sorted array but differ in how
 // they answer "how many of the incomplete prefix are below height h" and "what is
 // the tallest affordable h" - a linear scan of the prefix and a linear walk down
-// from the cap (no repo primitive) vs. this repo's own MergeSort and
-// BinarySearch.LowerBound. Length drives both the number of splits and, since
-// Target scales with Length too, the per-split scan cost, so the O(n^2 * target) vs.
+// from the cap (no repo primitive) vs. this repo's own MergeSort,
+// BinarySearch.LowerBound for the count and MonotonePredicateSearch.LastTrue for the
+// height. Length drives both the number of splits and, since Target scales with
+// Length too, the per-split scan cost, so the O(n^2 * target) vs.
 // O(n log n * log target) gap widens with it instead of staying flat at a fixed
 // target. Sorting stays inside each measured method on purpose: which sort each arm
 // uses is part of what is being compared.

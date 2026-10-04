@@ -5,8 +5,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CapacityToShipPackagesWithinDDaysSolution's, the same
 // methods CapacityToShipPackagesWithinDDaysSolutionTests proves correct - a hand-rolled lo/hi
-// bisection against BinarySearch.LowerBound over an on-demand
-// IRandomAccessSequence<bool>. Both binary-search the same monotone feasibility
+// bisection against MonotonePredicateSearch.FirstTrue over the capacity range.
+// Both binary-search the same monotone feasibility
 // predicate in O(weights.Length * log(sum - max)), so what is measured is the cost of
 // routing it through the reusable abstraction. The weights are generated once in
 // [GlobalSetup].
@@ -36,6 +36,6 @@ public class CapacityToShipPackagesWithinDDaysBenchmarks
         CapacityToShipPackagesWithinDDaysSolution.ShipWithinDaysByManualBisection(_weights, _days);
 
     [Benchmark]
-    public int SequenceLowerBound() =>
-        CapacityToShipPackagesWithinDDaysSolution.ShipWithinDaysBySequenceLowerBound(_weights, _days);
+    public int PredicateSearch() =>
+        CapacityToShipPackagesWithinDDaysSolution.ShipWithinDaysByPredicateSearch(_weights, _days);
 }

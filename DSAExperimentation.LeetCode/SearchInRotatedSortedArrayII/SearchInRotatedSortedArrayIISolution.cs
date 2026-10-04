@@ -14,12 +14,12 @@ namespace DSAExperimentation.LeetCode.SearchInRotatedSortedArrayII;
 // witness still sits at nums[right], so no value's last remaining occurrence is
 // ever trimmed away. Once nums[left] != nums[right] (or the range collapses to one
 // element), the remaining slice has no duplicate-boundary ambiguity left, so it is
-// handed to this repo's own BinarySearch.LowerBound/Find over the same
-// PivotSequence/OffsetSequence shape SearchInRotatedSortedArraySolution (LC 33)
-// uses, just offset into the trimmed slice. Worst case (e.g. an all-equal array)
-// still degrades to O(n), matching the well-known result that duplicates rule out
-// a guaranteed O(log n) solution here. HasTargetByLinearScan is the O(n) arm it has
-// to beat regardless.
+// handed to this repo's own MonotonePredicateSearch.FirstTrue (for the pivot) and
+// BinarySearch.Find over an OffsetSequence window (for the target) - the same shape
+// SearchInRotatedSortedArraySolution (LC 33) uses, just offset into the trimmed
+// slice. Worst case (e.g. an all-equal array) still degrades to O(n), matching the
+// well-known result that duplicates rule out a guaranteed O(log n) solution here.
+// HasTargetByLinearScan is the O(n) arm it has to beat regardless.
 internal static class SearchInRotatedSortedArrayIISolution
 {
     // The textbook O(n) scan. Written without this repo's own BinarySearch - the
@@ -56,33 +56,27 @@ internal static class SearchInRotatedSortedArrayIISolution
 
     private static int? FindInTrimmedRange(int[] nums, TrimmedRange range, int target)
     {
-        var pivot = BinarySearch.LowerBound<int, PivotSequence>(
-            new PivotSequence(nums, range.Left, range.Length, range.LastValue), 1);
+        var pivot = MonotonePredicateSearch.FirstTrue(
+            0, range.Length - 1, new InTailRun(nums, range.Left, range.LastValue));
         var searchRight = target <= range.LastValue;
         var start = searchRight ? pivot : 0;
         var length = searchRight ? TailLength(range, pivot) : pivot;
 
-        return BinarySearch.Find<int, OffsetSequence>(new OffsetSequence(nums, range.Left + start, length), target);
+        // The chosen half is a plain sorted window of nums, reindexed from 0 so
+        // BinarySearch.Find can treat it like any other sorted sequence.
+        return BinarySearch.Find<int, OffsetSequence<int>>(
+            new OffsetSequence<int>(nums, range.Left + start, length), target);
     }
 
     // How many entries of the trimmed range lie past the pivot, in its tail run.
     private static int TailLength(TrimmedRange range, int pivot) => range.Length - pivot;
 
-    // 1 past the pivot, 0 up to and including it: LowerBound on this predicate
-    // lands exactly on the first index belonging to the trimmed slice's tail run.
-    private readonly struct PivotSequence(int[] nums, int start, int length, int lastValue) : IRandomAccessSequence<int>
+    // Holds(offset) is true exactly when the trimmed slice's entry at that offset
+    // belongs to its tail run - at or below the slice's last value: false before the
+    // pivot and true from it on, so FirstTrue lands exactly on the pivot. The last
+    // offset always holds, so the pivot always lies inside the slice.
+    private readonly struct InTailRun(int[] nums, int start, int lastValue) : IMonotonePredicate<int>
     {
-        public int Length => length;
-        public int Get(int index) => IsInTailRun(index) ? 1 : 0;
-
-        private bool IsInTailRun(int index) => nums[start + index] <= lastValue;
-    }
-
-    // A plain sorted window [start, start + length) of nums, reindexed from 0 so
-    // BinarySearch.Find can treat it like any other sorted sequence.
-    private readonly struct OffsetSequence(int[] nums, int start, int length) : IRandomAccessSequence<int>
-    {
-        public int Length => length;
-        public int Get(int index) => nums[start + index];
+        public bool Holds(int offset) => nums[start + offset] <= lastValue;
     }
 }

@@ -20,9 +20,8 @@ namespace DSAExperimentation.LeetCode.MaximumTotalBeautyOfTheGardens;
 //     scan of the prefix, or a BinarySearch.LowerBound count over the sorted array,
 //     the same counting technique ClosestSubsequenceSum uses;
 //   - "what is the tallest affordable h" - a walk down from the cap one height at a
-//     time, or the leftmost infeasible height found by BinarySearch.LowerBound over
-//     an implicit feasibility sequence, the same search-on-the-answer shape
-//     KokoEatingBananas uses.
+//     time, or MonotonePredicateSearch.LastTrue over the heights up to the cap, the
+//     same search-on-the-answer shape KokoEatingBananas uses.
 internal static class MaximumTotalBeautyOfTheGardensSolution
 {
     // The textbook answer: BCL Array.Sort, a linear count of the prefix below a
@@ -71,10 +70,10 @@ internal static class MaximumTotalBeautyOfTheGardensSolution
     }
 
     // This repo's own MergeSort over an ArrayIndexedSequence to order the gardens,
-    // then BinarySearch.LowerBound twice per probe: once over the sorted heights to
-    // count what sits below a candidate height, once over an implicit
-    // IRandomAccessSequence<bool> of infeasibility to find the tallest height the
-    // remaining budget can pay for.
+    // then two searches nested per split: MonotonePredicateSearch.LastTrue over the
+    // candidate heights to find the tallest one the remaining budget can pay for, and
+    // inside each of its probes BinarySearch.LowerBound over the sorted heights to
+    // count what sits below that candidate.
     public static long MaximumBeautyBySortAndBinarySearch(
         int[] flowers, long newFlowers, int target, BeautyWeights weights)
     {
@@ -89,16 +88,11 @@ internal static class MaximumTotalBeautyOfTheGardensSolution
     }
 
     // The largest height every one of the bottom prefix.Count gardens can be raised
-    // to without exceeding remaining, found as the first infeasible height minus one
-    // over the implicit feasibility sequence below - height 0 is always feasible
-    // (it costs nothing), so the result is never negative.
+    // to without exceeding remaining - height 0 always holds (it costs nothing), so
+    // LastTrue never reports that none does and the result is never negative.
     private static long BinarySearchMaxAchievableHeight(
-        ArraySequence<int> sequence, PrefixContext prefix, long remaining, int capHeight)
-    {
-        var infeasibility = new HeightInfeasibleSequence(sequence, prefix, remaining, capHeight);
-
-        return BinarySearch.LowerBound(infeasibility, true) - 1;
-    }
+        ArraySequence<int> sequence, PrefixContext prefix, long remaining, int capHeight) =>
+        MonotonePredicateSearch.LastTrue(0, capHeight, new AffordsHeight(sequence, prefix, remaining));
 
     private static long BinarySearchCostToRaise(ArraySequence<int> sequence, PrefixContext prefix, int height)
     {
@@ -200,18 +194,14 @@ internal static class MaximumTotalBeautyOfTheGardensSolution
     // height-cost computation needs both together, and they always travel as a pair.
     private readonly record struct PrefixContext(long[] Sum, int Count);
 
-    // Get(index) is "raising the bottom prefix.Count gardens to height index costs
-    // more than remaining" - false up to the tallest affordable height and true from
-    // there on, the monotonicity BinarySearch.LowerBound assumes but never checks. A
-    // witness for this problem alone: the cost rule is LC 2234's own content, not a
-    // general monotone-predicate shape.
-    private readonly struct HeightInfeasibleSequence(
-        ArraySequence<int> sequence, PrefixContext prefix, long remaining, int capHeight)
-        : IRandomAccessSequence<bool>
+    // Holds(height) is "raising the bottom prefix.Count gardens to this height costs
+    // no more than remaining" - true up to the tallest affordable height and false
+    // from there on, the monotonicity LastTrue assumes but never checks. A rule for
+    // this problem alone: the cost rule is LC 2234's own content.
+    private readonly struct AffordsHeight(ArraySequence<int> sequence, PrefixContext prefix, long remaining)
+        : IMonotonePredicate<int>
     {
-        public int Length => capHeight + 1;
-
-        public bool Get(int index) => BinarySearchCostToRaise(sequence, prefix, index) > remaining;
+        public bool Holds(int height) => BinarySearchCostToRaise(sequence, prefix, height) <= remaining;
     }
 
     // The baseline arm's mechanism: walk candidate heights down from the cap one at a
@@ -222,8 +212,8 @@ internal static class MaximumTotalBeautyOfTheGardensSolution
             LinearMaxAchievableHeight(sorted, new PrefixContext(prefixSum, prefixCount), remaining, capHeight);
     }
 
-    // The composed arm's mechanism: the leftmost infeasible height over the implicit
-    // feasibility sequence, found by BinarySearch.LowerBound.
+    // The composed arm's mechanism: the tallest affordable height, found by
+    // MonotonePredicateSearch.LastTrue.
     private sealed class MaxHeightByBinarySearch(ArraySequence<int> sequence, long[] prefixSum, int capHeight) : IMaxAchievableHeight
     {
         public long Compute(int prefixCount, long remaining) =>

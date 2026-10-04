@@ -4,7 +4,8 @@ namespace DSAExperimentation.LeetCode.Tests.KokoEatingBananas;
 
 // Harness only. Both strategies are KokoEatingBananasSolution's - the hand-rolled
 // bisection that used to live only in the benchmark's baseline arm, and the
-// BinarySearch.LowerBound walk over the feasibility sequence the test used to inline.
+// predicate search over the speed range that the test used to inline as a
+// feasibility sequence.
 public sealed partial class KokoEatingBananasSolutionTests
 {
     public static TheoryData<int[], int, int> Examples =>
@@ -44,11 +45,11 @@ public sealed partial class KokoEatingBananasSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinEatingSpeedBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleSpeed(
+    public void MinEatingSpeedByPredicateSearch_LeetCodeExamples_ReturnsSmallestFeasibleSpeed(
         int[] piles, int hourBudget, int expected)
     {
         var actual =
-            KokoEatingBananasSolution.MinEatingSpeedBySequenceLowerBound(piles, hourBudget);
+            KokoEatingBananasSolution.MinEatingSpeedByPredicateSearch(piles, hourBudget);
 
         Assert.Equal(expected, actual);
     }

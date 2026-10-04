@@ -4,8 +4,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for MaximumNumberOfTasksYouCanAssignBenchmarks (ARCHITECTURE 17.9): both arms
 // are MaximumNumberOfTasksYouCanAssignSolution's competing strategies for one question - a linear
-// walk down "try k = maxK, maxK - 1, ..." against BinarySearch.LowerBound over an on-demand
-// feasibility sequence - so a harness whose arms disagree is timing two different problems. Both
+// walk down "try k = maxK, maxK - 1, ..." against MonotonePredicateSearch.LastTrue over the
+// candidate counts - so a harness whose arms disagree is timing two different problems. Both
 // answer with a single assignment count, compared directly.
 public sealed partial class MaximumNumberOfTasksYouCanAssignBenchmarksTests
 {
@@ -28,23 +28,23 @@ public sealed partial class MaximumNumberOfTasksYouCanAssignBenchmarksTests
         // through the count they produce: the same Length must sort the same seeded tasks and
         // workers into the same prepared assignment.
         Assert.Equal(ExpectedAssignableTasks, first.LinearScan());
-        Assert.Equal(ExpectedAssignableTasks, second.SequenceLowerBound());
+        Assert.Equal(ExpectedAssignableTasks, second.PredicateSearch());
     }
 
     [Fact]
-    public void LinearScan_UnassignableWorkload_AgreesWithSequenceLowerBound()
+    public void LinearScan_UnassignableWorkload_AgreesWithPredicateSearch()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.SequenceLowerBound(), harness.LinearScan());
+        Assert.Equal(harness.PredicateSearch(), harness.LinearScan());
     }
 
     [Fact]
-    public void SequenceLowerBound_UnassignableWorkload_AgreesWithLinearScan()
+    public void PredicateSearch_UnassignableWorkload_AgreesWithLinearScan()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.LinearScan(), harness.SequenceLowerBound());
+        Assert.Equal(harness.LinearScan(), harness.PredicateSearch());
     }
 
     private static MaximumNumberOfTasksYouCanAssignBenchmarks BuildHarness()

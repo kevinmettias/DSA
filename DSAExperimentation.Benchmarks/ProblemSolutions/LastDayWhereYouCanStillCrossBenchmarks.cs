@@ -44,6 +44,6 @@ public class LastDayWhereYouCanStillCrossBenchmarks
         LastDayWhereYouCanStillCrossSolution.LatestDayToCrossByManualBisection(_flooding);
 
     [Benchmark]
-    public int SequenceLowerBound() =>
-        LastDayWhereYouCanStillCrossSolution.LatestDayToCrossBySequenceLowerBound(_flooding);
+    public int PredicateSearch() =>
+        LastDayWhereYouCanStillCrossSolution.LatestDayToCrossByPredicateSearch(_flooding);
 }

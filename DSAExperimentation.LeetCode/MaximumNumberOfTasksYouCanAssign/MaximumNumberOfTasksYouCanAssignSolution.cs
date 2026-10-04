@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
 
 namespace DSAExperimentation.LeetCode.MaximumNumberOfTasksYouCanAssign;
@@ -16,9 +15,8 @@ namespace DSAExperimentation.LeetCode.MaximumNumberOfTasksYouCanAssign;
 // with a pill, let the strongest available worker take it unaided if it can, and
 // spend a pill on the weakest available worker only when it must. They differ in how
 // they search for k: the baseline walks k downwards one at a time, the composed
-// strategy bisects it with this repo's own BinarySearch.LowerBound over an on-demand
-// IRandomAccessSequence<bool>, the same search-on-the-answer shape
-// KokoEatingBananasSolution uses.
+// strategy bisects it with this repo's own MonotonePredicateSearch.LastTrue, the same
+// search-on-the-answer shape KokoEatingBananasSolution uses.
 internal static class MaximumNumberOfTasksYouCanAssignSolution
 {
     // The textbook answer: try k = maxK, maxK - 1, ... and stop at the first k that
@@ -45,22 +43,18 @@ internal static class MaximumNumberOfTasksYouCanAssignSolution
         return 0;
     }
 
-    // This repo's own BinarySearch.LowerBound over the infeasibility sequence: the
-    // candidate counts are never materialized, each probe just reruns the greedy
-    // check, and the leftmost infeasible k sits one past the answer.
-    public static int MaxTaskAssignmentBySequenceLowerBound(int[] tasks, int[] workers, int pills, int strength)
+    // This repo's own MonotonePredicateSearch over the candidate counts: they are never
+    // materialized, each probe just reruns the greedy check, and the last k that can
+    // be assigned is the answer. k = 0 always can, so the search never reports none.
+    public static int MaxTaskAssignmentByPredicateSearch(int[] tasks, int[] workers, int pills, int strength)
     {
         var assignment = SortedTaskAssignment.From(tasks, workers, pills, strength);
 
-        return MaxTaskAssignmentBySequenceLowerBound(assignment);
+        return MaxTaskAssignmentByPredicateSearch(assignment);
     }
 
-    public static int MaxTaskAssignmentBySequenceLowerBound(SortedTaskAssignment assignment)
-    {
-        var sequence = new InfeasibleAssignmentSequence(assignment);
-
-        return BinarySearch.LowerBound<bool, InfeasibleAssignmentSequence>(sequence, true) - 1;
-    }
+    public static int MaxTaskAssignmentByPredicateSearch(SortedTaskAssignment assignment) =>
+        MonotonePredicateSearch.LastTrue(0, assignment.MaxAssignable, new AssignsEasiestTasks(assignment));
 
     // The k easiest tasks handed out hardest first, which is what makes the greedy
     // choice safe: the hardest remaining task has the fewest workers who could take
@@ -116,16 +110,12 @@ internal static class MaximumNumberOfTasksYouCanAssignSolution
         public int StrongestWorkerOffset(int taskCount) => WorkersAscending.Length - taskCount;
     }
 
-    // Get(index) is "k = index cannot be assigned" - false up to the answer and true
-    // from there on, the monotonicity BinarySearch.LowerBound assumes but never
-    // checks. A witness for this problem alone: the feasibility rule is LC 2071's own
-    // content, not a general monotone-predicate shape.
-    private readonly struct InfeasibleAssignmentSequence(SortedTaskAssignment assignment)
-        : IRandomAccessSequence<bool>
+    // Holds(k) is "the k easiest tasks can all be assigned" - true up to the answer and
+    // false from there on, the monotonicity LastTrue assumes but never checks. A rule
+    // for this problem alone: the feasibility rule is LC 2071's own content.
+    private readonly struct AssignsEasiestTasks(SortedTaskAssignment assignment) : IMonotonePredicate<int>
     {
-        public int Length => assignment.MaxAssignable + 1;
-
-        public bool Get(int index) => !CanAssignByDequePool(index, assignment);
+        public bool Holds(int taskCount) => CanAssignByDequePool(taskCount, assignment);
     }
 
     // The composed pool: this repo's own Deque<int>, kept sorted ascending because

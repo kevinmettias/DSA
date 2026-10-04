@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.FirstBadVersion;
 
@@ -28,27 +27,21 @@ internal static class FirstBadVersionSolution
 
     private static bool IsBadVersion(int version, int firstBad) => version >= firstBad;
 
-    // This repo's own BinarySearch.LowerBound over a monotone virtual sequence - the
-    // oracle is computed on demand via Get, so the O(n) version history is never
-    // materialized, and LowerBound finds the flip point in O(log n) probes.
-    public static int FirstBadVersionByLowerBound(int versionCount, int firstBad)
+    // This repo's own MonotonePredicateSearch over the versions 1..versionCount - the
+    // oracle is asked on demand, so the O(n) version history is never materialized,
+    // and FirstTrue finds the flip point in O(log n) probes. The range is stated in
+    // long because LeetCode allows versionCount = int.MaxValue, and an int range
+    // ending there leaves no room for the "none is bad" answer one past it.
+    public static int FirstBadVersionByPredicateSearch(int versionCount, int firstBad) =>
+        (int)MonotonePredicateSearch.FirstTrue(1L, versionCount, new VersionIsBad(firstBad));
+
+    // Holds(version) asks the same oracle the linear scan asks - good before firstBad,
+    // bad from there on and never good again, the monotonicity FirstTrue assumes but
+    // never checks. Every version asked about lies in 1..versionCount, so narrowing it
+    // back to int is exact. A rule for this problem alone: the oracle is First Bad
+    // Version's own content.
+    private readonly struct VersionIsBad(int firstBad) : IMonotonePredicate<long>
     {
-        var sequence = new IsBadVersionSequence(firstBad, versionCount);
-
-        return BinarySearch.LowerBound<int, IsBadVersionSequence>(sequence, 1) + 1;
-    }
-
-    // index is the 0-based version-1: every version from firstBad onward is bad, and
-    // the sequence never actually allocates the versions it represents. A witness
-    // for this problem alone - the flip-point formula is First Bad Version's own
-    // content, not a general "virtual monotone sequence" shape.
-    private readonly struct IsBadVersionSequence(int firstBad, int length) : IRandomAccessSequence<int>
-    {
-        public int Length => length;
-
-        public int Get(int index) => IsBadVersion(index) ? 1 : 0;
-
-        // index is the 0-based version-1, so version index + 1 is bad from firstBad on.
-        private bool IsBadVersion(int index) => index + 1 >= firstBad;
+        public bool Holds(long version) => IsBadVersion((int)version, firstBad);
     }
 }

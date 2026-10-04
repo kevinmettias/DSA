@@ -4,10 +4,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumNumberOfTasksYouCanAssignSolution's, the same
 // methods MaximumNumberOfTasksYouCanAssignSolutionTests proves correct - a linear walk down
-// "try k = maxK, maxK - 1, ..." against this repo's own BinarySearch.LowerBound over
-// an on-demand IRandomAccessSequence<bool> feasibility sequence, the same shape
-// KokoEatingBananasBenchmarks measures, so the comparison is O(maxK) feasibility
-// checks against O(log maxK) of them. Tasks are drawn from a strength range far
+// "try k = maxK, maxK - 1, ..." against this repo's own MonotonePredicateSearch.LastTrue
+// over the candidate counts, the same shape KokoEatingBananasBenchmarks measures, so
+// the comparison is O(maxK) feasibility checks against O(log maxK) of them. Tasks
+// are drawn from a strength range far
 // above what any worker can reach even with every pill, so the true answer is always
 // 0 - the worst case for the linear scan, which must walk all the way down from maxK
 // before stopping. [GlobalSetup] sorts both arrays into the prepared
@@ -48,5 +48,5 @@ public class MaximumNumberOfTasksYouCanAssignBenchmarks
     public int LinearScan() => MaximumNumberOfTasksYouCanAssignSolution.MaxTaskAssignmentByLinearScan(_assignment);
 
     [Benchmark]
-    public int SequenceLowerBound() => MaximumNumberOfTasksYouCanAssignSolution.MaxTaskAssignmentBySequenceLowerBound(_assignment);
+    public int PredicateSearch() => MaximumNumberOfTasksYouCanAssignSolution.MaxTaskAssignmentByPredicateSearch(_assignment);
 }

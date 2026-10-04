@@ -130,7 +130,7 @@ internal static class FindPositiveIntegerSolutionForAGivenEquationSolution
     // and xValue is the row this instance was built for.
     // A witness for this problem alone - "row of the hidden CustomFunction" is LC
     // 1237's own content, not a general sequence shape - so it lives beside the
-    // solution, the same placement FirstBadVersion's IsBadVersionSequence gets.
+    // solution, the same placement FirstBadVersion's VersionIsBad rule gets.
     private readonly struct FunctionRowSequence(ICustomFunction function, int xValue, int length)
         : IRandomAccessSequence<int>
     {

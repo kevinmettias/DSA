@@ -22,9 +22,9 @@ public sealed partial class PeakIndexInAMountainArraySolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PeakIndexByBinarySearchLowerBound_MountainArrayExamples_ReturnsPeakIndex(
+    public void PeakIndexByPredicateSearch_MountainArrayExamples_ReturnsPeakIndex(
         int[] mountain, int expected) =>
-        Assert.Equal(expected, PeakIndexInAMountainArraySolution.PeakIndexByBinarySearchLowerBound(mountain));
+        Assert.Equal(expected, PeakIndexInAMountainArraySolution.PeakIndexByPredicateSearch(mountain));
 
     [Theory]
     [MemberData(nameof(Examples))]

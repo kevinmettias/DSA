@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.FindMinimumTimeToFinishAllJobs;
 
@@ -13,10 +12,6 @@ namespace DSAExperimentation.LeetCode.FindMinimumTimeToFinishAllJobs;
 // each candidate.
 internal static class FindMinimumTimeToFinishAllJobsSolution
 {
-    // Candidate time limits run over [maxJob, total] inclusive, so the virtual
-    // sequence is one longer than the difference between its endpoints.
-    private const int InclusiveSpan = 1;
-
     // The textbook answer: try all k^n worker assignments depth-first, tracking the
     // smallest max-load seen. Deliberately written without this repo's primitives -
     // plain arrays and a hand-rolled recursion - because it is the arm the composed
@@ -28,8 +23,8 @@ internal static class FindMinimumTimeToFinishAllJobsSolution
         return AssignJobs(workload, index: 0, best: int.MaxValue);
     }
 
-    // This repo's own answer: BinarySearch.LowerBound anchors the smallest feasible
-    // per-worker time limit over a monotone virtual sequence - the same "candidate
+    // This repo's own answer: MonotonePredicateSearch.FirstTrue anchors the smallest
+    // feasible per-worker time limit in [maxJob, total] - the same "candidate
     // answer" binary-search shape ClosestDivisors/TheKthFactorOfN use, just with a
     // feasibility predicate instead of a square comparison - and that predicate
     // reuses PartitionToKEqualSumSubsets' exact k-bucket Backtrack.TrySearch shape,
@@ -43,13 +38,7 @@ internal static class FindMinimumTimeToFinishAllJobsSolution
         Array.Sort(sorted);
         Array.Reverse(sorted);
 
-        var maxJob = sorted[0];
-        var total = sorted.Sum();
-
-        var sequence = new FeasibleTimeSequence(sorted, workerCount, maxJob, total - maxJob + InclusiveSpan);
-        var offset = BinarySearch.LowerBound<int, FeasibleTimeSequence>(sequence, 1);
-
-        return maxJob + offset;
+        return MonotonePredicateSearch.FirstTrue(sorted[0], sorted.Sum(), new FinishesWithin(sorted, workerCount));
     }
 
     // The feasibility question the binary search asks at each candidate limit: can
@@ -102,17 +91,14 @@ internal static class FindMinimumTimeToFinishAllJobsSolution
     // budget.
     private readonly record struct Workload(int[] Jobs, int[] Loads);
 
-    // Virtual sequence over candidate time limits [maxJob, total]: 0 while
-    // infeasible, 1 from the first feasible limit onward - CanFinishWithin only gets
-    // easier as the limit grows, so this is monotone and LowerBound(sequence, 1)
-    // lands on the smallest feasible limit directly. Meaningless outside this
-    // problem, so it stays here rather than in DataStructures/Sequence.
-    private readonly struct FeasibleTimeSequence(int[] jobs, int workerCount, int maxJob, int length)
-        : IRandomAccessSequence<int>
+    // Holds(maxTime) over candidate time limits [maxJob, total]: false while
+    // infeasible, true from the first feasible limit onward - CanFinishWithin only
+    // gets easier as the limit grows, so this is monotone and FirstTrue lands on the
+    // smallest feasible limit directly. Meaningless outside this problem, so it
+    // stays here.
+    private readonly struct FinishesWithin(int[] jobs, int workerCount) : IMonotonePredicate<int>
     {
-        public int Length => length;
-
-        public int Get(int index) => CanFinishWithin(jobs, workerCount, maxJob + index) ? 1 : 0;
+        public bool Holds(int maxTime) => CanFinishWithin(jobs, workerCount, maxTime);
     }
 
     // One feasibility probe's mutable bucket loads, exposed as the Choose/Unchoose

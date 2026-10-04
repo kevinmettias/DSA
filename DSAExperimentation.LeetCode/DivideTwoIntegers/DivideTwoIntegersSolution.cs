@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.DivideTwoIntegers;
 
@@ -7,9 +6,10 @@ namespace DSAExperimentation.LeetCode.DivideTwoIntegers;
 // using multiplication, division or mod - except for the baseline, which is
 // exactly the built-in division this puzzle forbids, and exists to be beaten.
 //
-// The composed strategy turns the search into "find the first quotient candidate
-// whose product with the divisor exceeds the dividend" and hands that monotone
-// predicate to this repo's own BinarySearch.LowerBound.
+// The composed strategy turns the search into "find the last quotient candidate
+// whose product with the divisor still fits within the dividend" and hands that
+// monotone rule, with the candidate range, to this repo's own
+// MonotonePredicateSearch.LastTrue.
 internal static class DivideTwoIntegersSolution
 {
     // What you would write without the "no division operator" constraint. Still
@@ -45,48 +45,27 @@ internal static class DivideTwoIntegersSolution
         var absDividend = Math.Abs((long)dividend);
         var absDivisor = Math.Abs((long)divisor);
 
-        var quotient = QuotientByLowerBound(absDividend, absDivisor);
+        var quotient = Quotient(absDividend, absDivisor);
 
         return negative ? -quotient : quotient;
     }
 
-    // Binary search over quotient candidates: ProductExceedsSequence(q) is 0 while
-    // divisor*q <= dividend and flips to 1 the first time it overshoots, so
-    // LowerBound(1) lands one past the true quotient.
-    private static int QuotientByLowerBound(long absDividend, long absDivisor)
+    // Binary search over quotient candidates in [0, absDividend]: the product fits
+    // up to the true quotient and overshoots from the next candidate on, so the last
+    // candidate that fits is the answer. The range is searched in long because its
+    // top, absDividend, can be 2^31 and a quotient of exactly int.MaxValue
+    // (int.MaxValue / 1) must stay inside it. The result narrows to int safely: the
+    // only quotient magnitude past int.MaxValue, 2^31 from int.MinValue / +-1, is
+    // answered before the search.
+    private static int Quotient(long absDividend, long absDivisor) =>
+        (int)MonotonePredicateSearch.LastTrue(0L, absDividend, new ProductFitsDividend(absDivisor, absDividend));
+
+    // Bespoke to LC 29: "does q's product with the divisor still fit within the
+    // dividend" is this problem's own monotone rule - true from 0 up to the
+    // quotient, false past it. Both factors stay at or below 2^31, so the product
+    // cannot overflow long.
+    private readonly struct ProductFitsDividend(long divisor, long dividend) : IMonotonePredicate<long>
     {
-        // maxCandidate + 1 is the sequence length we want (indices 0..maxCandidate
-        // must all be valid), but that overflows int32 exactly when maxCandidate is
-        // already int.MaxValue - which happens whenever absDividend itself reaches
-        // int.MaxValue, including this repo's own int.MaxValue-dividend benchmark
-        // workload. Clamping the length to int.MaxValue in long arithmetic instead avoids
-        // that overflow and is exact for every quotient this repo's tests and
-        // benchmarks ever ask for (all comfortably under int.MaxValue); it is not
-        // exact in the one case an IRandomAccessSequence<int> cannot represent
-        // regardless - a true quotient of exactly int.MaxValue itself (only
-        // reachable via dividend == int.MaxValue, divisor == 1), which would need
-        // a length one past int32's own range.
-        var maxCandidate = (int)Math.Min(int.MaxValue, absDividend);
-        var length = (int)Math.Min(maxCandidate + 1L, int.MaxValue);
-        var sequence = new ProductExceedsSequence(absDivisor, absDividend, length);
-        var firstTooLarge = BinarySearch.LowerBound<int, ProductExceedsSequence>(sequence, 1);
-
-        return firstTooLarge - 1;
-    }
-
-    // Bespoke to LC 29: "does q's product with the divisor already exceed the
-    // dividend" is this problem's own monotone predicate, not a general-purpose
-    // sequence anything else would want.
-    private readonly struct ProductExceedsSequence(long divisor, long dividend, int length)
-        : IRandomAccessSequence<int>
-    {
-        public int Length => length;
-
-        public int Get(int quotient) => IsProductExceedingDividend(quotient) ? 1 : 0;
-
-        // The predicate, named: "does q's product with the divisor already exceed the
-        // dividend" is what LowerBound is really searching, and a call in the arm keeps
-        // that search reading as one.
-        private bool IsProductExceedingDividend(int quotient) => divisor * quotient > dividend;
+        public bool Holds(long quotient) => divisor * quotient <= dividend;
     }
 }

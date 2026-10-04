@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.LongestCommonPrefix;
 
@@ -34,8 +33,9 @@ internal static class LongestCommonPrefixSolution
     }
 
     // "All strings share a prefix of length n" is monotone in n, so
-    // BinarySearch.LowerBound finds the first failing length directly instead
-    // of shrinking a candidate one character at a time.
+    // MonotonePredicateSearch.LastTrue finds the longest shared length directly
+    // instead of shrinking a candidate one character at a time. Length 0 is always
+    // shared, so the search never comes back empty.
     public static string PrefixByBinarySearch(string[] values)
     {
         if (values.Length == 0)
@@ -44,20 +44,17 @@ internal static class LongestCommonPrefixSolution
         }
 
         var shortest = values.Min(value => value.Length);
-        var sequence = new PrefixFeasibilitySequence(values, shortest);
-        var firstFailingLength = BinarySearch.LowerBound<int, PrefixFeasibilitySequence>(sequence, 1);
-        var prefixLength = firstFailingLength - 1;
+        var prefixLength = MonotonePredicateSearch.LastTrue(0, shortest, new PrefixSharedByAll(values));
 
         return values[0][..prefixLength];
     }
 
-    private readonly struct PrefixFeasibilitySequence(string[] values, int maxLength) : IRandomAccessSequence<int>
+    // Holds(length) is "every string starts with the first string's prefix of this
+    // length" - true up to the answer and false past it. Lengths only run up to the
+    // shortest string's, so every span taken is in range.
+    private readonly struct PrefixSharedByAll(string[] values) : IMonotonePredicate<int>
     {
-        public int Length => maxLength + 1;
-
-        public int Get(int length) => IsPrefixSharedByAll(length) ? 0 : 1;
-
-        private bool IsPrefixSharedByAll(int length)
+        public bool Holds(int length)
         {
             var firstSpan = values[0].AsSpan(0, length);
 

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.Heap;
 
 namespace DSAExperimentation.LeetCode.KthSmallestAmountWithSingleDenominationCombination;
@@ -77,31 +78,14 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
     // exactly inclusion-exclusion over every non-empty subset of coins: a subset's
     // multiples of ALL its coins are exactly its multiples of lcm(subset), added
     // back for an odd-sized subset and subtracted for an even one so every amount is
-    // counted exactly once regardless of how many coins divide it. Binary searching
-    // that predicate for its smallest true finds the answer - the k-th smallest
-    // achievable amount - directly in O(log(rank * min(coins)) * 2^coins.Length),
-    // independent of rank itself; coins.Length <= 15 keeps that subset walk small.
-    public static long KthSmallestAmountByInclusionExclusionSearch(int[] coins, long rank)
-    {
-        var low = 1L;
-        var high = rank * coins.Min();
-
-        while (low < high)
-        {
-            var mid = low + ((high - low) / 2);
-
-            if (CountAchievableAtMost(mid, coins) >= rank)
-            {
-                high = mid;
-            }
-            else
-            {
-                low = mid + 1;
-            }
-        }
-
-        return low;
-    }
+    // counted exactly once regardless of how many coins divide it. This repo's own
+    // MonotonePredicateSearch.FirstTrue finds that predicate's smallest true - the k-th
+    // smallest achievable amount - directly in O(log(rank * min(coins)) * 2^coins.Length),
+    // independent of rank itself; coins.Length <= 15 keeps that subset walk small. The
+    // range is searched in long because rank * min(coins) reaches 5 * 10^10, and its top
+    // always holds: the smallest coin alone already has rank multiples up to it.
+    public static long KthSmallestAmountByInclusionExclusionSearch(int[] coins, long rank) =>
+        MonotonePredicateSearch.FirstTrue(1L, rank * coins.Min(), new ReachesRank(coins, rank));
 
     private static long CountAchievableAtMost(long limit, int[] coins)
     {
@@ -114,6 +98,14 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
         }
 
         return total;
+    }
+
+    // Holds(limit) is "at least rank achievable amounts are <= limit" - false below the
+    // answer and true from there on, since raising the limit only admits more amounts. A
+    // rule for this problem alone: the inclusion-exclusion count is LC 3116's own content.
+    private readonly struct ReachesRank(int[] coins, long rank) : IMonotonePredicate<long>
+    {
+        public bool Holds(long limit) => CountAchievableAtMost(limit, coins) >= rank;
     }
 
     // One non-empty subset of coins, named by its bit mask: it covers exactly its

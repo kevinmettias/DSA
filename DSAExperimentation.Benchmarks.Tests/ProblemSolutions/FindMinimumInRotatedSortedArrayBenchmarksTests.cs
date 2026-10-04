@@ -4,8 +4,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for FindMinimumInRotatedSortedArrayBenchmarks (ARCHITECTURE 17.9): its two arms
 // are competing strategies for the same question - a linear scan of every element against this
-// repo's own BinarySearch.LowerBound over the pivot proxy sequence - so a harness whose arms
-// disagree has found two different minima. Both answers are one int, so they are compared directly.
+// repo's own MonotonePredicateSearch.FirstTrue over the low-side-of-rotation rule - so a harness
+// whose arms disagree has found two different minima. Both answers are one int, so they are compared directly.
 //
 // Setup rotates the run 0..Length-1 at a fixed non-zero pivot, so the array always holds exactly one
 // 0 and never starts with it: the minimum is 0 on every run, which makes the assertion decisive
@@ -23,21 +23,21 @@ public sealed partial class FindMinimumInRotatedSortedArrayBenchmarksTests
         Assert.Equal(BuildHarness().LinearScan(), BuildHarness().LinearScan());
 
     [Fact]
-    public void LinearScan_DistinctValuesRotatedAtNonZeroPivot_AgreesWithPivotLowerBound()
+    public void LinearScan_DistinctValuesRotatedAtNonZeroPivot_AgreesWithPredicateSearch()
     {
         var harness = BuildHarness();
 
         Assert.Equal(ExpectedMinimum, harness.LinearScan());
-        Assert.Equal(harness.PivotLowerBound(), harness.LinearScan());
+        Assert.Equal(harness.PredicateSearch(), harness.LinearScan());
     }
 
     [Fact]
-    public void PivotLowerBound_DistinctValuesRotatedAtNonZeroPivot_AgreesWithLinearScan()
+    public void PredicateSearch_DistinctValuesRotatedAtNonZeroPivot_AgreesWithLinearScan()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(ExpectedMinimum, harness.PivotLowerBound());
-        Assert.Equal(harness.LinearScan(), harness.PivotLowerBound());
+        Assert.Equal(ExpectedMinimum, harness.PredicateSearch());
+        Assert.Equal(harness.LinearScan(), harness.PredicateSearch());
     }
 
     private static FindMinimumInRotatedSortedArrayBenchmarks BuildHarness()

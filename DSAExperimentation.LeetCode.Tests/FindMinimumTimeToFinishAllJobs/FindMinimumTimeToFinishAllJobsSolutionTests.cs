@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindMinimumTimeToFinishAllJobs;
 namespace DSAExperimentation.LeetCode.Tests.FindMinimumTimeToFinishAllJobs;
 
 // Harness only. Both strategies - the exhaustive k^n assignment walk and the
-// LowerBound-over-feasibility search - are FindMinimumTimeToFinishAllJobsSolution's,
+// predicate search over feasible time limits - are FindMinimumTimeToFinishAllJobsSolution's,
 // so this file only pins them to LeetCode's published examples plus the cases that
 // separate "minimum achievable maximum load" from the greedy answer.
 public sealed partial class FindMinimumTimeToFinishAllJobsSolutionTests

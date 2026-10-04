@@ -36,10 +36,10 @@ public sealed partial class LastDayWhereYouCanStillCrossSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LatestDayToCrossBySequenceLowerBound_LeetCodeExamples_ReturnsLastCrossableDay(
+    public void LatestDayToCrossByPredicateSearch_LeetCodeExamples_ReturnsLastCrossableDay(
         int row, int col, int[][] cells, int expected)
     {
-        var actual = LastDayWhereYouCanStillCrossSolution.LatestDayToCrossBySequenceLowerBound(row, col, cells);
+        var actual = LastDayWhereYouCanStillCrossSolution.LatestDayToCrossByPredicateSearch(row, col, cells);
 
         Assert.Equal(expected, actual);
     }

@@ -70,6 +70,25 @@ public sealed partial class UglyNumberIIISolutionTests
         Assert.Equal(example.Expected, actual);
     }
 
+    // A window past int around an answer inside it. With factors 3, 4 and 6 the ugly
+    // numbers are the multiples of 3 or 4: six in every twelve integers (3, 4, 6, 8, 9,
+    // 12, then the same pattern shifted by 12), so the n-th for n = 6k + 4 is 12k + 8.
+    // 10^9 = 6 * 166_666_666 + 4, which puts the answer at exactly 2 * 10^9, LeetCode's
+    // own limit - while the window searched, rank times the smallest factor, is
+    // 3 * 10^9, past int.
+    [Fact]
+    public void NthUglyNumberByBinarySearch_WindowPastIntRange_ReturnsAnswerInsideIt()
+    {
+        const int CompleteBlocksOfTwelve = 166_666_666;
+        const int FourthUglyNumberInABlock = 8;
+        var example = new UglyExample(
+            N: 1_000_000_000, A: 3, B: 4, C: 6, Expected: (12 * CompleteBlocksOfTwelve) + FourthUglyNumberInABlock);
+
+        var actual = UglyNumberIIISolution.NthUglyNumberByBinarySearch(example.N, example.A, example.B, example.C);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
     // One LeetCode example: how many multiples to count to, the three factors, and the
     // number that lands there. The five travel together at every row - three adjacent
     // ints and the count they are answered against - so they are one thing with a name

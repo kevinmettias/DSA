@@ -16,6 +16,10 @@ public sealed partial class DivideTwoIntegersSolutionTests
             { int.MinValue, 1, int.MinValue },
             { int.MaxValue, 7, 306_783_378 },
             { int.MinValue, 2, -1_073_741_824 },
+            // A quotient of exactly int.MaxValue, since dividing by one is the identity:
+            // the last candidate an int-indexed search over 0..int.MaxValue cannot hold.
+            { int.MaxValue, 1, int.MaxValue },
+            { int.MaxValue, -1, -int.MaxValue },
         };
 
     [Theory]

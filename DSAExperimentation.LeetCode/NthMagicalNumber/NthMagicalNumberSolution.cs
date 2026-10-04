@@ -11,9 +11,9 @@ namespace DSAExperimentation.LeetCode.NthMagicalNumber;
 // each factor, subtracting the shared multiples counted twice) is non-decreasing in
 // x, so the answer is the first x whose count reaches the requested rank. The
 // baseline finds that x by walking every candidate one at a time; the composed
-// strategy hands the same monotone predicate to BinarySearch.LowerBound over
-// MagicalCountSequence - the "monotone virtual sequence" shape SqrtX and
-// FirstBadVersion already use, just with a two-term counting predicate per index
+// strategy states the same monotone predicate as MagicalCountReachesRank and hands
+// it to MonotonePredicateSearch.FirstTrue - the "binary search on the answer" shape
+// FirstBadVersion uses, just with a two-term counting predicate per candidate
 // instead of a single comparison.
 internal static class NthMagicalNumberSolution
 {
@@ -40,15 +40,16 @@ internal static class NthMagicalNumberSolution
 
     // The nth magical number is at most rank * min(firstFactor, secondFactor) - rank
     // multiples of the smaller factor alone already reach it - so the search window is
-    // bounded before the first probe, and LowerBound spends O(log(answer)) counting
-    // steps inside it.
+    // bounded before the first probe, and FirstTrue spends O(log(answer)) counting
+    // steps inside it. That bound reaches 4 * 10^13 at LeetCode's limits, so the window
+    // is searched in long and only the reduced answer comes back as an int.
     public static int NthMagicalNumberByBinarySearch(int rank, int firstFactor, int secondFactor)
     {
         var lcm = LeastCommonMultiple.Of((long)firstFactor, secondFactor);
-        var upperBound = checked((int)((long)rank * Math.Min(firstFactor, secondFactor)));
-        var sequence = new MagicalCountSequence(rank, firstFactor, secondFactor, lcm, upperBound);
+        var upperBound = (long)rank * Math.Min(firstFactor, secondFactor);
+        var rule = new MagicalCountReachesRank(rank, firstFactor, secondFactor, lcm);
 
-        var x = BinarySearch.LowerBound<int, MagicalCountSequence>(sequence, 1);
+        var x = MonotonePredicateSearch.FirstTrue(1L, upperBound, rule);
 
         return (int)(x % ModularArithmetic.Modulo);
     }

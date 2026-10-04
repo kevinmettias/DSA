@@ -6,9 +6,9 @@ namespace DSAExperimentation.LeetCode.LongestBalancedSubarrayII;
 // positions (each position contributes -1, 0 or +1), a range's [Min, Max] is not
 // just a bound - by the discrete intermediate value property every integer
 // between them is actually attained somewhere in that range. That is what lets
-// LongestBalancedSubarrayIISolution binary-descend the tree from outside (via
-// repeated Query calls alone) to find the leftmost index holding a target value,
-// with no change to LazySegmentTree itself.
+// LongestBalancedSubarrayIISolution search the tree from outside (one Query call
+// per MonotonePredicateSearch probe) for the leftmost index holding a target
+// value, with no change to LazySegmentTree itself.
 internal readonly struct BalanceRangeAddOperation : IRangeUpdateOperation<BalanceRange, int>
 {
     public static BalanceRange Identity => new(int.MaxValue, int.MinValue);
