@@ -1,4 +1,6 @@
 using System.Numerics;
+using DSAExperimentation.Algorithms.Ancestry;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using RootMaskTree = DSAExperimentation.DataStructures.FenwickTree.FenwickTree<
     int, DSAExperimentation.DataStructures.ElementAlgebra.XorOperation<int>>;
 
@@ -58,7 +60,8 @@ internal static class PalindromicPathQueriesInATreeSolution
 
     // A tree's only neighbor of a node that is not its child is its parent, so the
     // search needs no visited set. Ends once the queue drains, every node having
-    // been enqueued exactly once.
+    // been enqueued exactly once. The composed arm roots the tree with it too, before
+    // laying it out: rooting is not what either arm is measured on.
     private static (int[] Parent, int[] Depth) RootByBreadthFirst(int nodeCount, int[][] edges)
     {
         var neighbors = LeetCodeAdjacency.ZeroBased<List<int>>(
@@ -106,11 +109,11 @@ internal static class PalindromicPathQueriesInATreeSolution
         return mask ^ LetterBit(tree.Letters[deeper]);
     }
 
-    // Composed: TreeTour lays the tree out in pre-order, where every subtree is one
-    // contiguous run of positions. A node's root mask - the parity mask of the path
-    // from the root down to it - changes, on an update at v, by the same
-    // old-letter-XOR-new-letter delta at every position in v's subtree and nowhere
-    // else: a range update with point reads. This repo's FenwickTree<int,
+    // Composed: DataStructures' PreOrderTour lays the tree out in pre-order, where
+    // every subtree is one contiguous run of positions. A node's root mask - the
+    // parity mask of the path from the root down to it - changes, on an update at v,
+    // by the same old-letter-XOR-new-letter delta at every position in v's subtree
+    // and nowhere else: a range update with point reads. This repo's FenwickTree<int,
     // XorOperation<int>> holds the root masks as a difference array: toggling a
     // subtree is two point Adds, at its first position and one past its last, and a
     // node's root mask is the PrefixQuery at its position. XOR is a group, each mask
@@ -121,18 +124,20 @@ internal static class PalindromicPathQueriesInATreeSolution
     //
     // A path's mask is then rootMask(u) XOR rootMask(v) XOR bit(letter at lca): every
     // node from the root down to the lca sits on both root paths and cancels, the
-    // lca included, so its letter goes back in once. TreeTour finds the lca by a
-    // range minimum over its own SegmentTree. Every command is O(log n), and the
-    // initial masks are n subtree toggles, O(n log n).
+    // lca included, so its letter goes back in once. Algorithms/Ancestry's
+    // PreOrderLowestCommonAncestor finds the lca over the same tour, by one range
+    // minimum. Every command is O(log n), and the initial masks are n subtree
+    // toggles, O(n log n).
     public static bool[] GetPalindromePathFlagsByEulerFenwick(
         int nodeCount, int[][] edges, string nodeLetters, string[] queries)
     {
-        var tour = TreeTour.Build(nodeCount, edges);
+        var (tour, ancestors) = LayOutTree(nodeCount, edges);
 
-        return GetPalindromePathFlagsByEulerFenwick(tour, nodeLetters, queries);
+        return GetPalindromePathFlagsByEulerFenwick(tour, ancestors, nodeLetters, queries);
     }
 
-    public static bool[] GetPalindromePathFlagsByEulerFenwick(TreeTour tour, string nodeLetters, string[] queries)
+    public static bool[] GetPalindromePathFlagsByEulerFenwick(
+        PreOrderTour tour, PreOrderLowestCommonAncestor ancestors, string nodeLetters, string[] queries)
     {
         var letters = nodeLetters.ToCharArray();
         var rootMasks = new RootMaskTree(letters.Length);
@@ -142,11 +147,24 @@ internal static class PalindromicPathQueriesInATreeSolution
             ToggleSubtree((tour, rootMasks), node, LetterBit(letters[node]));
         }
 
-        return AnswerCommands((tour, rootMasks, letters), queries);
+        return AnswerCommands((tour, ancestors, rootMasks, letters), queries);
+    }
+
+    // The part of the input no command changes: the tree rooted at node 0, laid out in
+    // pre-order with its ancestor index beside it. Built once, so a benchmark charges it
+    // to [GlobalSetup] (ARCHITECTURE.md 17.4) and hands both to the hoisted overload.
+    public static (PreOrderTour Tour, PreOrderLowestCommonAncestor Ancestors) LayOutTree(int nodeCount, int[][] edges)
+    {
+        var (parent, _) = RootByBreadthFirst(nodeCount, edges);
+        var nodes = ParentArrayTree.Build(parent);
+        var tour = PreOrderTour.Build(nodes[0], nodeCount);
+
+        return (tour, new PreOrderLowestCommonAncestor(tour));
     }
 
     private static bool[] AnswerCommands(
-        (TreeTour Tour, RootMaskTree RootMasks, char[] Letters) state, string[] queries)
+        (PreOrderTour Tour, PreOrderLowestCommonAncestor Ancestors, RootMaskTree RootMasks, char[] Letters) state,
+        string[] queries)
     {
         var answers = new List<bool>();
 
@@ -173,7 +191,7 @@ internal static class PalindromicPathQueriesInATreeSolution
     // XORs letterBits into the root mask of node and of everything below it: the
     // difference array takes it at the subtree's first position and takes it back
     // one past the last, unless the subtree runs to the end of the tour.
-    private static void ToggleSubtree((TreeTour Tour, RootMaskTree RootMasks) masks, int node, int letterBits)
+    private static void ToggleSubtree((PreOrderTour Tour, RootMaskTree RootMasks) masks, int node, int letterBits)
     {
         var (first, last) = masks.Tour.SubtreeOf(node);
         var pastLast = last + 1;
@@ -186,9 +204,11 @@ internal static class PalindromicPathQueriesInATreeSolution
     }
 
     private static int PathMaskByRootMasks(
-        (TreeTour Tour, RootMaskTree RootMasks, char[] Letters) state, int first, int second)
+        (PreOrderTour Tour, PreOrderLowestCommonAncestor Ancestors, RootMaskTree RootMasks, char[] Letters) state,
+        int first,
+        int second)
     {
-        var ancestor = state.Tour.LowestCommonAncestor(first, second);
+        var ancestor = state.Ancestors.Find(first, second);
         var firstRootMask = state.RootMasks.PrefixQuery(state.Tour.PositionOf(first));
         var secondRootMask = state.RootMasks.PrefixQuery(state.Tour.PositionOf(second));
 
