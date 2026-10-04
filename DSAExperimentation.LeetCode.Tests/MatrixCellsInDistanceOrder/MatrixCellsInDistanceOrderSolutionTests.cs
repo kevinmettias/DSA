@@ -7,7 +7,8 @@ namespace DSAExperimentation.LeetCode.Tests.MatrixCellsInDistanceOrder;
 // equidistant cells, so an example states the distance sequence the answer must
 // produce rather than one exact permutation; together with "every cell exactly once"
 // that pins the answer as tightly as LeetCode itself does, and exactly on the
-// tie-free single-row case.
+// tie-free single-row case. The open grid the BFS strategy walks is asserted on its
+// own.
 public sealed partial class MatrixCellsInDistanceOrderSolutionTests
 {
     public static TheoryData<MatrixExample> Examples =>
@@ -38,6 +39,20 @@ public sealed partial class MatrixCellsInDistanceOrderSolutionTests
             example.Rows, example.Cols, example.RCenter, example.CCenter);
 
         AssertDistanceOrder(result, example);
+    }
+
+    // LeetCode's third example is a 2 x 3 matrix: the grid is that size, and all six of
+    // its cells are passable, since LC 1030 blocks none.
+    [Fact]
+    public void BuildOpenGrid_LeetCodeThirdExampleSize_MakesEveryCellPassable()
+    {
+        var grid = MatrixCellsInDistanceOrderSolution.BuildOpenGrid(2, 3);
+        var cells = AllCells(2, 3);
+        var passableCells = cells.Where(cell => grid.IsPassable(cell[0], cell[1]));
+
+        Assert.Equal(2, grid.Rows);
+        Assert.Equal(3, grid.Cols);
+        Assert.Equal(cells, passableCells);
     }
 
     private static void AssertDistanceOrder(int[][] result, MatrixExample example)
