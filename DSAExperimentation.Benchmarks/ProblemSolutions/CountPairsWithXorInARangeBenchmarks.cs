@@ -5,9 +5,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountPairsWithXorInARangeSolution's, the same methods
 // CountPairsWithXorInARangeSolutionTests proves correct - the textbook O(n^2) pairwise scan
-// against this repo's own BitTrie plus a HashMap of per-node subtree counts, which
-// answers each value's range query in O(32) instead of rescanning every earlier
-// value. The values themselves are drawn once in [GlobalSetup] so neither arm is
+// against this repo's own CountedBitTrie, whose per-node subtree counts answer each
+// value's range query in O(32) instead of rescanning every earlier value. The values themselves are drawn once in [GlobalSetup] so neither arm is
 // charged for building its input.
 public class CountPairsWithXorInARangeBenchmarks
 {
