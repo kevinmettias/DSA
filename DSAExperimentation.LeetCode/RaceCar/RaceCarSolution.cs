@@ -1,4 +1,4 @@
-using DSAExperimentation.Algorithms.Reducing;
+using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 namespace DSAExperimentation.LeetCode.RaceCar;
@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.RaceCar;
 // answers. The state space is unbounded on its own (speed doubles every 'A'), so
 // both strategies search inside RaceCarStateSpace's target-scaled box: the textbook
 // arm generates states on the fly and just refuses to leave it, the composed arm
-// pre-materializes it as a graph and hands the whole thing to Reduce.Graph.
+// pre-materializes it as a graph and hands the whole thing to BreadthFirstDistances.
 internal static class RaceCarSolution
 {
     // The textbook answer: BCL Queue + HashSet over mutated (position, speed)
@@ -72,19 +72,15 @@ internal static class RaceCarSolution
         HashSet<(int Position, int Speed)> Visited,
         Queue<(int Position, int Speed, int Commands)> Queue);
 
-    // This repo's own BFS: Reduce.Graph in BreadthFirstReduceOrder with
-    // DistanceMapReduceAlgebra is already "distance from a root to every node", so
-    // the puzzle reduces to the cheapest of the states that share the target
-    // position - the car may arrive at any speed.
+    // This repo's own BFS: BreadthFirstDistances is already "distance from a root to
+    // every node", so the puzzle reduces to the cheapest of the states that share the
+    // target position - the car may arrive at any speed.
     public static int MinCommandsByReduceGraph(int target) =>
         MinCommandsByReduceGraph(RaceCarStateGraph.Build(target), target);
 
     public static int MinCommandsByReduceGraph(RaceCarStateGraph graph, int target)
     {
-        var distances = Reduce.Graph<
-            RaceCarNode, RaceCarTopology, ListChildren<RaceCarNode>,
-            BreadthFirstReduceOrder<RaceCarNode>,
-            DistanceMapReduceAlgebra<RaceCarNode>, Dictionary<RaceCarNode, int>>(graph.Start);
+        var distances = BreadthFirstDistances.From<RaceCarNode, RaceCarTopology, ListChildren<RaceCarNode>>(graph.Start);
 
         var best = BestArrival(distances, graph, target);
 

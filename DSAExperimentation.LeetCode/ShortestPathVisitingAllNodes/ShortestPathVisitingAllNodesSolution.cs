@@ -1,4 +1,4 @@
-using DSAExperimentation.Algorithms.Reducing;
+using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 namespace DSAExperimentation.LeetCode.ShortestPathVisitingAllNodes;
@@ -84,12 +84,11 @@ internal static class ShortestPathVisitingAllNodesSolution
         }
     }
 
-    // This repo's own BFS: Reduce.Graph in BreadthFirstReduceOrder with
-    // DistanceMapReduceAlgebra is already "distance from a root to every node",
-    // so one call per possible start gives every full-mask state's depth and the
-    // answer is the minimum over all of them. Min-of-mins commutes with the
-    // multi-source frontier above because every edge here costs 1 - the same
-    // reasoning DistanceMapReduceAlgebra's own doc comment relies on - so this
+    // This repo's own BFS: BreadthFirstDistances is already "distance from a root
+    // to every node", so one call per possible start gives every full-mask state's
+    // depth and the answer is the minimum over all of them. Min-of-mins commutes
+    // with the multi-source frontier above because every edge here costs 1 - the
+    // same reasoning DistanceMapReduceAlgebra's own doc comment relies on - so this
     // arm computes the same number while doing strictly more total work, which
     // is the honest cost the benchmark measures.
     public static int ShortestPathLengthByReduceGraph(int[][] graph) =>
@@ -116,10 +115,8 @@ internal static class ShortestPathVisitingAllNodesSolution
     // depth at which any state has visited every node.
     private static int ShortestPathFromStart(VisitStateNode startNode, int fullMask)
     {
-        var distances = Reduce.Graph<
-            VisitStateNode, VisitStateTopology, ListChildren<VisitStateNode>,
-            BreadthFirstReduceOrder<VisitStateNode>,
-            DistanceMapReduceAlgebra<VisitStateNode>, Dictionary<VisitStateNode, int>>(startNode);
+        var distances = BreadthFirstDistances.From<
+            VisitStateNode, VisitStateTopology, ListChildren<VisitStateNode>>(startNode);
 
         var shortest = int.MaxValue;
 

@@ -1,5 +1,4 @@
-using DSAExperimentation.Algorithms.Reducing;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.Algorithms.ShortestPaths;
 
 namespace DSAExperimentation.LeetCode.MinimumNumberOfVisitedCellsInAGrid;
 
@@ -7,12 +6,11 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfVisitedCellsInAGrid;
 // stored value v, you may jump to any of (row, col+1..col+v) or (row+1..row+v, col).
 // The fewest cells to reach the bottom-right corner is exactly a shortest-path query
 // over the implicit graph where cells are nodes and one jump is one edge -
-// Reduce.Graph's own BreadthFirstReduceOrder + DistanceMapReduceAlgebra already
-// answers "distance from a root to every node" (the same composition
-// OpenTheLockSolution uses), so this problem reduces to supplying the right
-// IGraphTopology: JumpGridTopology, whose JumpGridChildren computes each cell's
-// reachable jumps directly from its stored value instead of scanning the whole
-// row/column. LeetCode counts cells visited, not edges walked, so every strategy
+// BreadthFirstDistances already answers "distance from a root to every node"
+// (the same composition OpenTheLockSolution uses), so this problem reduces to
+// supplying the right IGraphTopology: JumpGridTopology, whose JumpGridChildren
+// computes each cell's reachable jumps directly from its stored value instead of
+// scanning the whole row/column. LeetCode counts cells visited, not edges walked, so every strategy
 // here answers distance + 1.
 internal static class MinimumNumberOfVisitedCellsInAGridSolution
 {
@@ -97,9 +95,9 @@ internal static class MinimumNumberOfVisitedCellsInAGridSolution
     public static int MinVisitedCellsByReduceGraph(int[][] grid)
         => MinVisitedCellsByReduceGraph(new JumpGrid(grid));
 
-    // This repo's own Reduce.Graph: JumpGridChildren only ever produces the cells
-    // actually reachable in one jump, so each pop does O(v) work instead of the
-    // O(rows + cols) scan MinVisitedCellsByBruteForceScan needs.
+    // This repo's own BreadthFirstDistances: JumpGridChildren only ever produces the
+    // cells actually reachable in one jump, so each pop does O(v) work instead of
+    // the O(rows + cols) scan MinVisitedCellsByBruteForceScan needs.
     //
     // #17.4's hoisted overload: JumpGrid is not IEnumerable, so this can never be
     // confused with the LeetCode-shaped overload above, and a benchmark can charge
@@ -109,10 +107,7 @@ internal static class MinimumNumberOfVisitedCellsInAGridSolution
         var source = new JumpGridNode(0, 0, grid);
         var target = new JumpGridNode(grid.Rows - 1, grid.Cols - 1, grid);
 
-        var distanceByNode = Reduce.Graph<
-            JumpGridNode, JumpGridTopology, JumpGridChildren,
-            BreadthFirstReduceOrder<JumpGridNode>,
-            DistanceMapReduceAlgebra<JumpGridNode>, Dictionary<JumpGridNode, int>>(source);
+        var distanceByNode = BreadthFirstDistances.From<JumpGridNode, JumpGridTopology, JumpGridChildren>(source);
 
         return distanceByNode.TryGetValue(target, out var distance) ? CellsVisitedFor(distance) : LeetCodeAnswer.None;
     }

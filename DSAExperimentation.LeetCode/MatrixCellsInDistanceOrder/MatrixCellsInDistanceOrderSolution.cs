@@ -1,6 +1,5 @@
-using DSAExperimentation.Algorithms.Reducing;
+using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.MatrixCellsInDistanceOrder;
@@ -34,10 +33,10 @@ internal static class MatrixCellsInDistanceOrderSolution
     }
 
     // This repo's own primitives: on a fully-open grid, BFS distance from the center
-    // IS Manhattan distance, so Reduce.Graph over GridTopology/GridChildren with
-    // DistanceMapReduceAlgebra - GridShortestPath.cs's own combination - produces
-    // every cell's distance in one O(rows*cols) pass, and MergeSort.Sort over an
-    // ArrayIndexedSequence orders them by it.
+    // IS Manhattan distance, so BreadthFirstDistances over GridTopology/GridChildren -
+    // the call GridShortestPath forwards to, read here for every cell instead of one -
+    // produces every cell's distance in one O(rows*cols) pass, and MergeSort.Sort over
+    // an ArrayIndexedSequence orders them by it.
     public static int[][] AllCellsDistOrderByGridBfs(int rows, int cols, int rCenter, int cCenter)
     {
         var grid = BuildOpenGrid(rows, cols);
@@ -49,10 +48,7 @@ internal static class MatrixCellsInDistanceOrderSolution
     {
         var start = new GridNode(rCenter, cCenter, grid);
 
-        var distances = Reduce.Graph<
-            GridNode, GridTopology, GridChildren,
-            BreadthFirstReduceOrder<GridNode>,
-            DistanceMapReduceAlgebra<GridNode>, Dictionary<GridNode, int>>(start);
+        var distances = BreadthFirstDistances.From<GridNode, GridTopology, GridChildren>(start);
 
         var cells = distances.Select(entry => (entry.Key.Row, entry.Key.Col, Distance: entry.Value)).ToArray();
 

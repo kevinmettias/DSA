@@ -1,8 +1,7 @@
 using System.Numerics;
 
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Algorithms.Reducing;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.MaximumNumberOfMovesToKillAllPawns;
@@ -21,9 +20,9 @@ namespace DSAExperimentation.LeetCode.MaximumNumberOfMovesToKillAllPawns;
 // Both strategies need the same input: pairwise knight-move distances between
 // the start and every pawn. They differ in where those distances and the
 // minimax come from - a hand-rolled BFS plus a hand-rolled Dictionary-memoized
-// recursion, or this repo's own Reduce.Graph (over a knight-move IGraphTopology
-// local to this problem, since GridChildren's 4-orthogonal offsets don't fit a
-// knight) plus Memoizer.
+// recursion, or this repo's own BreadthFirstDistances (over a knight-move
+// IGraphTopology local to this problem, since GridChildren's 4-orthogonal offsets
+// don't fit a knight) plus Memoizer.
 internal static class MaximumNumberOfMovesToKillAllPawnsSolution
 {
     private const int BoardSize = 50;
@@ -169,8 +168,8 @@ internal static class MaximumNumberOfMovesToKillAllPawnsSolution
         return best;
     }
 
-    // This repo's own composition: knight-move distances via Reduce.Graph over
-    // the KnightTopology witness (this folder), the minimax recursion via
+    // This repo's own composition: knight-move distances via BreadthFirstDistances
+    // over the KnightTopology witness (this folder), the minimax recursion via
     // Memoizer.
     public static int MaxMovesByReduceGraphMinimax(int kx, int ky, int[][] positions)
     {
@@ -229,7 +228,7 @@ internal static class MaximumNumberOfMovesToKillAllPawnsSolution
         return new KnightDistances(distances, positions.Length);
     }
 
-    // One Reduce.Graph reachability search per point of interest, read off into the
+    // One BreadthFirstDistances search per point of interest, read off into the
     // pairwise distance matrix.
     private static int[,] DistanceMatrixByReduceGraph((int Row, int Col)[] points, Grid grid)
     {
@@ -238,10 +237,7 @@ internal static class MaximumNumberOfMovesToKillAllPawnsSolution
         for (var i = 0; i < points.Length; i++)
         {
             var source = new GridNode(points[i].Row, points[i].Col, grid);
-            var reach = Reduce.Graph<
-                GridNode, KnightTopology, KnightChildren,
-                BreadthFirstReduceOrder<GridNode>,
-                DistanceMapReduceAlgebra<GridNode>, Dictionary<GridNode, int>>(source);
+            var reach = BreadthFirstDistances.From<GridNode, KnightTopology, KnightChildren>(source);
 
             for (var j = 0; j < points.Length; j++)
             {

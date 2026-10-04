@@ -1,4 +1,4 @@
-using DSAExperimentation.Algorithms.Reducing;
+using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 namespace DSAExperimentation.LeetCode.ShortestDistanceToTargetStringInACircularArray;
@@ -12,9 +12,9 @@ namespace DSAExperimentation.LeetCode.ShortestDistanceToTargetStringInACircularA
 // ClosestTargetByLinearScan is the textbook closed form - scan the raw array and
 // take min(diff, n - diff) at every match. ClosestTargetByReduceGraph makes each
 // index a node with exactly two edges and hands the circle to this repo's own
-// Reduce.Graph in BreadthFirstReduceOrder with DistanceMapReduceAlgebra, which is
-// already "distance from a root to every node"; exploring both directions at once
-// is what BFS does anyway, so no wraparound formula appears anywhere.
+// BreadthFirstDistances, which is already "distance from a root to every node";
+// exploring both directions at once is what BFS does anyway, so no wraparound
+// formula appears anywhere.
 internal static class ShortestDistanceToTargetStringInACircularArraySolution
 {
     // The textbook answer: one pass over the raw array, closing the circle with
@@ -51,10 +51,8 @@ internal static class ShortestDistanceToTargetStringInACircularArraySolution
 
     public static int ClosestTargetByReduceGraph(CircularArrayGraph graph, string target, int startIndex)
     {
-        var distances = Reduce.Graph<
-            CircularArrayNode, CircularArrayTopology, ListChildren<CircularArrayNode>,
-            BreadthFirstReduceOrder<CircularArrayNode>,
-            DistanceMapReduceAlgebra<CircularArrayNode>, Dictionary<CircularArrayNode, int>>(graph.Nodes[startIndex]);
+        var distances = BreadthFirstDistances.From<
+            CircularArrayNode, CircularArrayTopology, ListChildren<CircularArrayNode>>(graph.Nodes[startIndex]);
 
         var best = LeetCodeAnswer.None;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.Algorithms.Reducing;
+using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Locks;
@@ -65,10 +65,9 @@ internal static class OpenTheLockSolution
         HashSet<string> Visited,
         Queue<(string Combination, int Turns)> Queue);
 
-    // This repo's own BFS: Reduce.Graph in BreadthFirstReduceOrder with
-    // DistanceMapReduceAlgebra is already exactly "distance from a root to every
-    // node", so the puzzle reduces to one lookup in the result - the same
-    // composition WordLadder uses for LC 127.
+    // This repo's own BFS: BreadthFirstDistances is already exactly "distance from
+    // a root to every node", so the puzzle reduces to one lookup in the result -
+    // the same composition WordLadder uses for LC 127.
     public static int MinTurnsByReduceGraph(IEnumerable<string> deadends, string target)
     {
         var graph = LockGraph.Build(deadends);
@@ -84,10 +83,7 @@ internal static class OpenTheLockSolution
             return LeetCodeAnswer.None;
         }
 
-        var distances = Reduce.Graph<
-            LockNode, LockTopology, ListChildren<LockNode>,
-            BreadthFirstReduceOrder<LockNode>,
-            DistanceMapReduceAlgebra<LockNode>, Dictionary<LockNode, int>>(startNode);
+        var distances = BreadthFirstDistances.From<LockNode, LockTopology, ListChildren<LockNode>>(startNode);
 
         return distances.TryGetValue(targetNode, out var distance) ? distance : LeetCodeAnswer.None;
     }

@@ -1,4 +1,4 @@
-using DSAExperimentation.Algorithms.Reducing;
+using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 namespace DSAExperimentation.LeetCode.SmallestIntegerDivisibleByK;
@@ -9,9 +9,9 @@ namespace DSAExperimentation.LeetCode.SmallestIntegerDivisibleByK;
 // Remainders mod the divisor are the nodes of an implicit graph with one edge from
 // remainder to (remainder*10+1) % divisor - the remainder after appending one more '1'
 // digit. The fewest extra digits needed to reach remainder 0, plus the first digit
-// already placed, is exactly a BFS distance, so the composed strategy is Reduce.Graph in
-// BreadthFirstReduceOrder with DistanceMapReduceAlgebra, the same composition OpenTheLock
-// and WordLadder use, just over a single-successor graph. That also gets "no such integer
+// already placed, is exactly a BFS distance, so the composed strategy is
+// BreadthFirstDistances, the same composition OpenTheLock and WordLadder use, just over a
+// single-successor graph. That also gets "no such integer
 // exists" for free: BFS's own visited-tracking, not a separate gcd(divisor, 10) check, is
 // what proves remainder 0 unreachable when the divisor shares a factor with 10.
 internal static class SmallestIntegerDivisibleByKSolution
@@ -44,10 +44,8 @@ internal static class SmallestIntegerDivisibleByKSolution
 
     public static int SmallestRepunitLengthByReduceGraph(RemainderGraph graph)
     {
-        var distances = Reduce.Graph<
-            RemainderNode, RemainderTopology, ListChildren<RemainderNode>,
-            BreadthFirstReduceOrder<RemainderNode>,
-            DistanceMapReduceAlgebra<RemainderNode>, Dictionary<RemainderNode, int>>(graph.Start);
+        var distances = BreadthFirstDistances.From<
+            RemainderNode, RemainderTopology, ListChildren<RemainderNode>>(graph.Start);
 
         return distances.TryGetValue(graph.Zero, out var distance)
             ? RepunitLength(distance)

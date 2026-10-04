@@ -1,5 +1,4 @@
-using DSAExperimentation.Algorithms.Reducing;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.Algorithms.ShortestPaths;
 
 namespace DSAExperimentation.LeetCode.MinimizeTheMaximumEdgeWeightOfGraph;
 
@@ -13,7 +12,7 @@ namespace DSAExperimentation.LeetCode.MinimizeTheMaximumEdgeWeightOfGraph;
 // reachability question: with only edges of weight <= W kept, can every node still
 // reach 0? That is monotonic in W (a higher W only keeps more edges), so both
 // strategies binary search on W over the same EdgeWeightGraph and differ only in
-// how "is W feasible" gets answered - a plain BFS or a Reduce.Graph walk.
+// how "is W feasible" gets answered - a plain BFS or a BreadthFirstDistances walk.
 internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
 {
     // The textbook approach: a BCL Queue<int>/bool[] BFS over the graph's own
@@ -55,7 +54,7 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
     }
 
     // Composed: the same binary search, but feasibility is answered by
-    // Reduce.Graph over EdgeWeightTopology - the reversed, weight-filtered
+    // BreadthFirstDistances over EdgeWeightTopology - the reversed, weight-filtered
     // adjacency this problem alone needs - the same way GridShortestPath answers
     // "how far" over GridTopology.
     public static int MinMaxWeightByReduceGraphBinarySearch(int nodeCount, int[][] edges, int threshold)
@@ -72,10 +71,7 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
     {
         var root = new EdgeWeightNode(0, graph, maxWeight);
 
-        var distances = Reduce.Graph<
-            EdgeWeightNode, EdgeWeightTopology, EdgeWeightChildren,
-            BreadthFirstReduceOrder<EdgeWeightNode>,
-            DistanceMapReduceAlgebra<EdgeWeightNode>, Dictionary<EdgeWeightNode, int>>(root);
+        var distances = BreadthFirstDistances.From<EdgeWeightNode, EdgeWeightTopology, EdgeWeightChildren>(root);
 
         return distances.Count == graph.NodeCount;
     }
@@ -133,8 +129,8 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
         public bool IsFeasibleFor(int maxWeight) => IsFeasibleByBfs(graph, maxWeight);
     }
 
-    // The composed arm's mechanism: Reduce.Graph over EdgeWeightTopology - the
-    // reversed, weight-filtered adjacency this problem alone needs.
+    // The composed arm's mechanism: BreadthFirstDistances over EdgeWeightTopology -
+    // the reversed, weight-filtered adjacency this problem alone needs.
     private sealed class ReduceGraphFeasibility(EdgeWeightGraph graph) : IWeightFeasibility
     {
         public bool IsFeasibleFor(int maxWeight) => IsFeasibleByReduceGraph(graph, maxWeight);

@@ -1,4 +1,4 @@
-using DSAExperimentation.Algorithms.Reducing;
+using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 namespace DSAExperimentation.LeetCode.MinimumOperationsToEqualizeBinaryString;
@@ -77,10 +77,9 @@ internal static class MinimumOperationsToEqualizeBinaryStringSolution
         return zeroCount;
     }
 
-    // This repo's own BFS: Reduce.Graph in BreadthFirstReduceOrder with
-    // DistanceMapReduceAlgebra is already exactly "distance from a root to every
-    // node", so the puzzle reduces to one lookup in the result - the same
-    // composition OpenTheLockSolution uses for LC 752.
+    // This repo's own BFS: BreadthFirstDistances is already exactly "distance from
+    // a root to every node", so the puzzle reduces to one lookup in the result -
+    // the same composition OpenTheLockSolution uses for LC 752.
     public static int MinOperationsByReduceGraph(string binary, int flipCount)
     {
         var stringLength = binary.Length;
@@ -99,10 +98,8 @@ internal static class MinimumOperationsToEqualizeBinaryStringSolution
 
         var startNode = graph.Node(zeroCount);
 
-        var distances = Reduce.Graph<
-            EqualizeStateNode, EqualizeStateTopology, ListChildren<EqualizeStateNode>,
-            BreadthFirstReduceOrder<EqualizeStateNode>,
-            DistanceMapReduceAlgebra<EqualizeStateNode>, Dictionary<EqualizeStateNode, int>>(startNode);
+        var distances = BreadthFirstDistances.From<
+            EqualizeStateNode, EqualizeStateTopology, ListChildren<EqualizeStateNode>>(startNode);
 
         var targetNode = graph.Node(0);
 
