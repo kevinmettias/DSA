@@ -5,8 +5,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FinalPricesWithASpecialDiscountInAShopSolution's,
 // the same methods FinalPricesWithASpecialDiscountInAShopSolutionTests proves correct -
-// the O(n^2) forward scan against the O(n) monotonic-stack pass over this repo's
-// own Stack<int>, the same brute-force-vs-primitive shape TwoSumBenchmarks makes.
+// the O(n^2) forward scan against the O(n) monotonic-stack pass of this repo's
+// own NearestBoundary, the same brute-force-vs-primitive shape TwoSumBenchmarks makes.
 // Prices are random with no forced worst case, matching the distribution
 // LeetCode's own constraints describe; the price array is LeetCode's own argument
 // shape, so [GlobalSetup] hands it to both arms directly. LC 1475 caps the prices at

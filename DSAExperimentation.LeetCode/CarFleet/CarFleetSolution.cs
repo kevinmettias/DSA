@@ -60,8 +60,7 @@ internal static class CarFleetSolution
     }
 
     // This repo's own Stack<double> carries the fleet arrival times
-    // (DailyTemperatures/AsteroidCollision precedent for the repo's own Stack over the
-    // CLR's). Each car is compared against the current top - the slowest arrival time
+    // (AsteroidCollision precedent for the repo's own Stack over the CLR's). Each car is compared against the current top - the slowest arrival time
     // among every fleet already ahead of it - so the stack is monotonically increasing
     // and only ever grows: a car whose own time is <= the top merges into that fleet
     // and is never pushed, a strictly slower car starts a new one. The final stack

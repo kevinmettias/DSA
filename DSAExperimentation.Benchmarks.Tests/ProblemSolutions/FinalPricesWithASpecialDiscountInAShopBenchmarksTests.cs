@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for FinalPricesWithASpecialDiscountInAShopBenchmarks (ARCHITECTURE 17.9): its two
 // arms are competing strategies for the same question - the O(n^2) forward scan against the O(n)
-// monotonic-stack pass over this repo's own Stack<int> - so a harness whose arms disagree is
+// monotonic-stack pass of this repo's own NearestBoundary - so a harness whose arms disagree is
 // discounting two different shops. Both arms return the final price of every item, and the position
 // in that array is the item, so it is the answer rather than an incidental order and the two arrays
 // are compared as ordered sequences. The price array is drawn from a fixed seed, so the same Length

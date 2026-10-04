@@ -1,4 +1,4 @@
-using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.Algorithms.Searching;
 
 namespace DSAExperimentation.LeetCode.FinalPricesWithASpecialDiscountInAShop;
 
@@ -7,6 +7,8 @@ namespace DSAExperimentation.LeetCode.FinalPricesWithASpecialDiscountInAShop;
 // not-greater element" query, asked once per position.
 internal static class FinalPricesWithASpecialDiscountInAShopSolution
 {
+    private const int NoDiscountingItem = -1;
+
     // The textbook baseline: for each item, scan forward until a price undercuts
     // (or matches) it. Deliberately plain BCL arrays and nested loops, O(n^2) -
     // the arm the monotonic-stack strategy below has to justify itself against.
@@ -29,24 +31,21 @@ internal static class FinalPricesWithASpecialDiscountInAShopSolution
         return result;
     }
 
-    // One left-to-right pass keeping indices whose discount is still pending on
-    // this repo's own Stack<int> (LIFO over DynamicArray<int>,
-    // ARCHITECTURE.md §4.1). The stack's prices are decreasing downward, so the
-    // current price settles every pending index it undercuts and nothing else.
+    // One NearestBoundary.SmallerOrEqualToTheRight sweep: the discount for each item
+    // is the nearest later price that undercuts or matches it - exactly the boundary
+    // that monotonic stack leaves standing - and an item with no such price keeps
+    // its full price.
     public static int[] FinalPricesByMonotonicStack(int[] prices)
     {
+        var discountingItem = NearestBoundary.SmallerOrEqualToTheRight(prices, NoDiscountingItem);
         var result = (int[])prices.Clone();
-        var pendingIndices = new RepoStack();
 
         for (var i = 0; i < prices.Length; i++)
         {
-            while (pendingIndices.TryPeek(out var top) && prices[i] <= prices[top])
+            if (discountingItem[i] != NoDiscountingItem)
             {
-                pendingIndices.TryPop(out _);
-                result[top] -= prices[i];
+                result[i] -= prices[discountingItem[i]];
             }
-
-            pendingIndices.Push(i);
         }
 
         return result;

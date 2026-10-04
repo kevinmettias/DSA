@@ -1,17 +1,19 @@
-using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.Algorithms.Searching;
 
 namespace DSAExperimentation.LeetCode.DailyTemperatures;
 
 // LeetCode 739. Daily Temperatures: for each day, how many days until a warmer one.
 //
 // The naive baseline rescans forward from every day until it finds a warmer one -
-// O(n^2) worst case on a strictly decreasing run. The composed strategy walks once,
-// keeping a monotonic decreasing Stack<int> of day indices still waiting for a
-// warmer day; each newly warmer day pops every colder day still on top and records
-// its wait as the index gap (NextGreaterElementI/II precedent for this repo's own
-// Stack) - every day is pushed once and popped at most once.
+// O(n^2) worst case on a strictly decreasing run. The composed strategy is one
+// NearestBoundary.GreaterToTheRight sweep - each day's nearest strictly warmer day
+// ahead, found by a monotonic stack that pushes every day once and pops it at most
+// once - and records each wait as the index gap to that day; a day with no warmer
+// day ahead keeps the 0 LeetCode expects.
 internal static class DailyTemperaturesSolution
 {
+    private const int NoWarmerDay = -1;
+
     // The textbook answer: rescan forward from every day until a warmer one turns
     // up. Deliberately written without this repo's primitives - it is the arm the
     // composed solution below has to justify itself against.
@@ -36,18 +38,15 @@ internal static class DailyTemperaturesSolution
 
     public static int[] WaitDaysByMonotonicStackSweep(int[] temperatures)
     {
+        var nextWarmerDay = NearestBoundary.GreaterToTheRight(temperatures, NoWarmerDay);
         var result = new int[temperatures.Length];
-        var pendingIndices = new RepoIntStack();
 
         for (var day = 0; day < temperatures.Length; day++)
         {
-            while (pendingIndices.TryPeek(out var previousDay) && temperatures[previousDay] < temperatures[day])
+            if (nextWarmerDay[day] != NoWarmerDay)
             {
-                pendingIndices.TryPop(out _);
-                result[previousDay] = day - previousDay;
+                result[day] = nextWarmerDay[day] - day;
             }
-
-            pendingIndices.Push(day);
         }
 
         return result;

@@ -1,5 +1,5 @@
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Domain.Modular;
-using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.SumOfSubarrayMinimums;
 
@@ -14,14 +14,15 @@ namespace DSAExperimentation.LeetCode.SumOfSubarrayMinimums;
 // owns every subarray whose start lies in the run back to the previous strictly
 // smaller element and whose end lies in the run forward to the next
 // smaller-or-equal element, so its total contribution is arr[i] * left[i] *
-// right[i]. Both distance arrays come from one sweep each over this repo's own
-// Stack<int> of pending indices (the DailyTemperatures/NextGreaterElementI
-// precedent), popping every index the new element dominates. The >= / > asymmetry
-// between the two passes is what stops a run of equal minimums being counted
-// twice: a tie is only ever owned by its leftmost occurrence. Every index enters
-// and leaves each stack once, so the whole thing is O(n).
+// right[i]. Both distances are index gaps to a boundary from one NearestBoundary
+// sweep each - SmallerToTheLeft back, SmallerOrEqualToTheRight forward. That strict /
+// or-equal asymmetry between the two sweeps is what stops a run of equal minimums
+// being counted twice: a tie is only ever owned by its leftmost occurrence. Every
+// index enters and leaves each sweep's stack once, so the whole thing is O(n).
 internal static class SumOfSubarrayMinimumsSolution
 {
+    private const int NoSmallerElementToTheLeft = -1;
+
     // The textbook answer: every subarray's minimum, computed directly.
     // Deliberately written without this repo's primitives - it is the arm the
     // composed solution below has to justify itself against.
@@ -45,75 +46,28 @@ internal static class SumOfSubarrayMinimumsSolution
 
     public static int SumSubarrayMinsByMonotonicStack(int[] arr)
     {
-        var left = DistancesToPreviousSmaller(arr);
-        var right = DistancesToNextSmallerOrEqual(arr);
+        // Both sentinels are one step outside the array, so the distances below need no
+        // special case when nothing blocks: i + 1 start positions back to the array's
+        // start, length - i end positions forward to its end.
+        var previousSmaller = NearestBoundary.SmallerToTheLeft(arr, NoSmallerElementToTheLeft);
+        var nextSmallerOrEqual = NearestBoundary.SmallerOrEqualToTheRight(arr, arr.Length);
 
-        return SumWeightedContributions(arr, left, right);
+        return SumWeightedContributions(arr, previousSmaller, nextSmallerOrEqual);
     }
 
-    // left[i] = how many subarray start positions end at i without meeting a
-    // strictly smaller element first (i + 1 when no smaller element exists to the
-    // left at all).
-    private static int[] DistancesToPreviousSmaller(int[] arr)
-    {
-        var left = new int[arr.Length];
-        var pendingIndices = new RepoIntStack();
-
-        for (var i = 0; i < arr.Length; i++)
-        {
-            while (pendingIndices.TryPeek(out var top) && arr[top] >= arr[i])
-            {
-                pendingIndices.TryPop(out _);
-            }
-
-            left[i] = pendingIndices.TryPeek(out var previous)
-                ? DistanceToPrevious(i, previous)
-                : DistanceFromStart(i);
-            pendingIndices.Push(i);
-        }
-
-        return left;
-    }
-
-    private static int DistanceToPrevious(int index, int previous) => index - previous;
-
-    private static int DistanceFromStart(int index) => index + 1;
-
-    // right[i] = the mirror image, stopping at the next smaller-or-equal element
-    // rather than the next strictly smaller one, so equal values never both claim
-    // the same subarray.
-    private static int[] DistancesToNextSmallerOrEqual(int[] arr)
-    {
-        var right = new int[arr.Length];
-        var pendingIndices = new RepoIntStack();
-
-        for (var i = arr.Length - 1; i >= 0; i--)
-        {
-            while (pendingIndices.TryPeek(out var top) && arr[top] > arr[i])
-            {
-                pendingIndices.TryPop(out _);
-            }
-
-            right[i] = pendingIndices.TryPeek(out var next)
-                ? DistanceToNext(i, next)
-                : DistanceToEnd(i, arr.Length);
-            pendingIndices.Push(i);
-        }
-
-        return right;
-    }
-
-    private static int DistanceToNext(int index, int next) => next - index;
-
-    private static int DistanceToEnd(int index, int length) => length - index;
-
-    private static int SumWeightedContributions(int[] arr, int[] left, int[] right)
+    // left = how many subarray start positions reach i without meeting a strictly
+    // smaller element first; right = the mirror image, stopping at the next
+    // smaller-or-equal element rather than the next strictly smaller one, so equal
+    // values never both claim the same subarray.
+    private static int SumWeightedContributions(int[] arr, int[] previousSmaller, int[] nextSmallerOrEqual)
     {
         long sum = 0;
 
         for (var i = 0; i < arr.Length; i++)
         {
-            sum = (sum + ((long)arr[i] * left[i] * right[i])) % ModularArithmetic.Modulo;
+            var left = i - previousSmaller[i];
+            var right = nextSmallerOrEqual[i] - i;
+            sum = (sum + ((long)arr[i] * left * right)) % ModularArithmetic.Modulo;
         }
 
         return (int)sum;

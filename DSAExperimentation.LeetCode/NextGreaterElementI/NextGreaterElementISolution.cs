@@ -1,5 +1,5 @@
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.HashMap;
-using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.NextGreaterElementI;
 
@@ -12,6 +12,8 @@ namespace DSAExperimentation.LeetCode.NextGreaterElementI;
 // this repo's own HashMap<int,int>, so nums1's answers become O(1) lookups.
 internal static class NextGreaterElementISolution
 {
+    private const int NoGreaterPosition = -1;
+
     // The textbook per-query rescan: for each nums1 value, find it in nums2 and
     // walk right until a larger value turns up. O(n*m); the arm the sweep below
     // has to justify itself against.
@@ -39,23 +41,21 @@ internal static class NextGreaterElementISolution
         return result;
     }
 
-    // A monotonic-decreasing Stack<int> walk over nums2 builds each value's
-    // next-greater element in one O(n) pass, recorded into a HashMap<int,int>;
-    // nums1's answers then become O(1) lookups into that map, for O(n+m) overall.
+    // One NearestBoundary.GreaterToTheRight sweep over nums2 - the monotonic-decreasing
+    // stack walk - finds each value's next strictly greater element in one O(n) pass,
+    // recorded into a HashMap<int,int>; nums1's answers then become O(1) lookups into
+    // that map, for O(n+m) overall.
     public static int[] NextGreaterElementByMonotonicStackSweep(int[] nums1, int[] nums2)
     {
+        var nextGreaterPosition = NearestBoundary.GreaterToTheRight(nums2, NoGreaterPosition);
         var nextGreater = new HashMap<int, int>();
-        var decreasing = new RepoIntStack();
 
-        foreach (var value in nums2)
+        for (var position = 0; position < nums2.Length; position++)
         {
-            while (decreasing.TryPeek(out var top) && top < value)
+            if (nextGreaterPosition[position] != NoGreaterPosition)
             {
-                decreasing.TryPop(out _);
-                nextGreater.Set(top, value);
+                nextGreater.Set(nums2[position], nums2[nextGreaterPosition[position]]);
             }
-
-            decreasing.Push(value);
         }
 
         var result = new int[nums1.Length];

@@ -1,4 +1,4 @@
-using MonotonicStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.Algorithms.Searching;
 
 namespace DSAExperimentation.LeetCode.BeautifulTowersI;
 
@@ -11,10 +11,10 @@ namespace DSAExperimentation.LeetCode.BeautifulTowersI;
 // The two strategies differ only in how many times that clamped walk runs. The
 // baseline re-walks the whole array once per candidate peak (O(n^2)). The composed
 // strategy computes the clamped one-sided sum for EVERY index in a single sweep per
-// direction, using this repo's own Stack<int> to hold indices whose maxHeights are
-// strictly increasing - the same LargestRectangleInHistogramSolution precedent
-// (Stack<int> of indices, each popped at most once) applied to clamped sums rather
-// than to rectangle area.
+// direction, reading each index's nearest not-taller neighbour off one
+// NearestBoundary sweep - the same monotonic stack of indices, each popped at most
+// once, that LargestRectangleInHistogramSolution applies to rectangle area, applied
+// here to clamped sums.
 //
 // Both strategies take LeetCode's own int[], so neither needs a hoisted
 // prepared-input overload - there is no input structure to build.
@@ -86,35 +86,32 @@ internal static class BeautifulTowersISolution
 
     // sums[i] = the best total over the side of i the sweep has already covered,
     // every tower clamped to the running cap and maxHeights[i] itself at the
-    // boundary. The stack holds indices with strictly increasing maxHeights; popping
-    // past every taller-or-equal one lands on the nearest shorter index, whose
-    // already-clamped sum covers everything beyond it, so the gap in between is a
-    // flat run at maxHeights[i] and costs one multiplication. With nothing left on
-    // the stack the run reaches the end of the array.
+    // boundary. NearestBoundary's or-equal sweep on that side lands on the nearest
+    // index whose maxHeight does not exceed maxHeights[i], whose already-clamped sum
+    // covers everything beyond it, so the gap in between is a flat run at
+    // maxHeights[i] and costs one multiplication. With no such index the run reaches
+    // the end of the array.
     //
     // The forward and backward passes are exact mirrors - offsets negate, the
     // boundary moves from just before index 0 to just past the last index - so one
-    // loop keyed on the step direction is the whole of both.
+    // loop keyed on the step direction is the whole of both. Each sums[i] reads only
+    // the sum at its boundary, which the loop's direction has already filled in.
     private static long[] ClampedRunSums(int[] maxHeights, int step)
     {
         var n = maxHeights.Length;
         var sums = new long[n];
-        var stack = new MonotonicStack();
         var start = step == Forward ? 0 : LastIndex(n);
         var boundary = step == Forward ? -1 : n;
+        var nearestNotTaller = step == Forward
+            ? NearestBoundary.SmallerOrEqualToTheLeft(maxHeights, boundary)
+            : NearestBoundary.SmallerOrEqualToTheRight(maxHeights, boundary);
 
         for (var i = start; i >= 0 && i < n; i += step)
         {
-            while (stack.TryPeek(out var top) && maxHeights[top] > maxHeights[i])
-            {
-                stack.TryPop(out _);
-            }
-
-            var nearestShorter = stack.TryPeek(out var shorter) ? shorter : boundary;
+            var nearestShorter = nearestNotTaller[i];
             var runSoFar = nearestShorter == boundary ? 0L : SumAt(sums, nearestShorter);
 
             sums[i] = runSoFar + ((long)maxHeights[i] * (i - nearestShorter) * step);
-            stack.Push(i);
         }
 
         return sums;

@@ -9,8 +9,8 @@ namespace DSAExperimentation.LeetCode.NumberOfVisiblePeopleInAQueue;
 //
 // The naive baseline reads that definition literally and rescans rightwards from
 // every person - O(n^2) worst case. The composed strategy sweeps once from the right
-// through a monotonic non-increasing Stack<int> of heights
-// (DailyTemperatures/NextGreaterElementI precedent for this repo's own Stack): every
+// through a monotonic non-increasing Stack<int> of heights - this repo's own Stack,
+// because the answer is a count of pops, which no boundary array records: every
 // shorter person still on top is popped and counted, one more is counted for the
 // taller-or-equal blocker left on top afterwards, and heights tied with the current
 // person are popped before it is pushed so a later, taller person can never see past

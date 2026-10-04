@@ -1,5 +1,5 @@
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
-using JumpIndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.OddEvenJump;
 
@@ -19,10 +19,10 @@ namespace DSAExperimentation.LeetCode.OddEvenJump;
 //   MergeSortStackSweep orders the indices by (value, index) with this repo's own
 //   MergeSort.Sort<int, ArrayIndexedSequence<int>> - ascending for odd jumps,
 //   descending for even, always tie-broken toward the smaller index - then sweeps that
-//   order once with a monotonic Stack<int> of positions still waiting for a target (the
-//   DailyTemperatures precedent). An index reached later in the sort order already
-//   qualifies for every pending position to its left, so each pop resolves one target
-//   in O(1), for O(n log n) overall.
+//   order once with NearestBoundary.GreaterToTheRight (the DailyTemperatures
+//   precedent). An index reached later in the sort order already qualifies for every
+//   position to its left, so the nearest later entry holding a larger index is the
+//   target, each found in amortized O(1), for O(n log n) overall.
 internal static class OddEvenJumpSolution
 {
     // An index with no qualifying later index to jump to.
@@ -103,8 +103,8 @@ internal static class OddEvenJumpSolution
         return candidate > best;
     }
 
-    // The composed arm: MergeSort over the index order plus one monotonic Stack<int>
-    // sweep per jump direction.
+    // The composed arm: MergeSort over the index order plus one NearestBoundary
+    // monotonic-stack sweep per jump direction.
     public static int OddEvenJumpsByMergeSortStackSweep(int[] arr) =>
         CountGoodStarts(new JumpTargets(
             SortedNext(arr, JumpDirection.Odd),
@@ -151,24 +151,19 @@ internal static class OddEvenJumpSolution
         return valuesDiffer ? arr[rightIndex].CompareTo(arr[leftIndex]) : leftIndex.CompareTo(rightIndex);
     }
 
+    // Walking the sort order, an index's jump target is the first entry after it that
+    // holds a strictly larger index - the nearest strictly greater value to its right in
+    // `indices`. An entry with none keeps NoJump.
     private static void FillNextViaStackSweep(int[] indices, int[] next)
     {
-        var pending = new JumpIndexStack();
+        var targetPosition = NearestBoundary.GreaterToTheRight(indices, NoJump);
 
-        foreach (var i in indices)
+        for (var position = 0; position < indices.Length; position++)
         {
-            PopSatisfied(pending, next, i);
-
-            pending.Push(i);
-        }
-    }
-
-    private static void PopSatisfied(JumpIndexStack pending, int[] next, int currentIndex)
-    {
-        while (pending.TryPeek(out var left) && left < currentIndex)
-        {
-            pending.TryPop(out _);
-            next[left] = currentIndex;
+            if (targetPosition[position] != NoJump)
+            {
+                next[indices[position]] = indices[targetPosition[position]];
+            }
         }
     }
 

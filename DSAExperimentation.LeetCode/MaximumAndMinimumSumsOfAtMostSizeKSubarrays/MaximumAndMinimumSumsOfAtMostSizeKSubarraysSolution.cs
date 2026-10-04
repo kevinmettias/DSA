@@ -1,4 +1,4 @@
-using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.Algorithms.Searching;
 
 namespace DSAExperimentation.LeetCode.MaximumAndMinimumSumsOfAtMostSizeKSubarrays;
 
@@ -16,6 +16,8 @@ namespace DSAExperimentation.LeetCode.MaximumAndMinimumSumsOfAtMostSizeKSubarray
 // arithmetic, not a walk.
 internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
 {
+    private const int NoDominantToTheLeft = -1;
+
     // The textbook answer: slide the window end forward from every start,
     // tracking the running max/min in O(1) per step - O(n*k) overall, no repo
     // primitives. The baseline SumByMonotonicStackContribution is measured
@@ -64,52 +66,20 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
 
     // Index of the nearest strictly-dominant element to the left (nums[left] >
     // nums[i] for Extreme.Maximum, nums[left] < nums[i] for Extreme.Minimum), or
-    // -1. This repo's own Stack<int> holds candidate indices in the classic
-    // monotonic order, each popped the moment it can no longer be any later
-    // element's nearest dominant neighbor.
-    private static int[] PreviousDominantIndex(int[] nums, Extreme extreme)
-    {
-        var n = nums.Length;
-        var boundary = new int[n];
-        var stack = new RepoIntStack();
+    // -1 - one NearestBoundary sweep with the strict relation.
+    private static int[] PreviousDominantIndex(int[] nums, Extreme extreme) =>
+        extreme == Extreme.Maximum
+            ? NearestBoundary.GreaterToTheLeft(nums, NoDominantToTheLeft)
+            : NearestBoundary.SmallerToTheLeft(nums, NoDominantToTheLeft);
 
-        for (var i = 0; i < n; i++)
-        {
-            while (stack.TryPeek(out var top) && !IsDominantOver(nums[top], nums[i], extreme, DominanceRule.Strict))
-            {
-                stack.TryPop(out _);
-            }
-
-            boundary[i] = stack.TryPeek(out var kept) ? kept : -1;
-            stack.Push(i);
-        }
-
-        return boundary;
-    }
-
-    // Index of the nearest non-strictly-dominant element to the right, or n.
-    // DominanceRule.Inclusive here (paired with DominanceRule.Strict on the left)
-    // is what gives every duplicate value exactly one owning index instead of
-    // over- or under-counting it.
-    private static int[] NextDominantIndex(int[] nums, Extreme extreme)
-    {
-        var n = nums.Length;
-        var boundary = new int[n];
-        var stack = new RepoIntStack();
-
-        for (var i = n - 1; i >= 0; i--)
-        {
-            while (stack.TryPeek(out var top) && !IsDominantOver(nums[top], nums[i], extreme, DominanceRule.Inclusive))
-            {
-                stack.TryPop(out _);
-            }
-
-            boundary[i] = stack.TryPeek(out var kept) ? kept : n;
-            stack.Push(i);
-        }
-
-        return boundary;
-    }
+    // Index of the nearest non-strictly-dominant element to the right, or n. The
+    // or-equal relation here (paired with the strict one on the left) is what
+    // gives every duplicate value exactly one owning index instead of over- or
+    // under-counting it.
+    private static int[] NextDominantIndex(int[] nums, Extreme extreme) =>
+        extreme == Extreme.Maximum
+            ? NearestBoundary.GreaterOrEqualToTheRight(nums, nums.Length)
+            : NearestBoundary.SmallerOrEqualToTheRight(nums, nums.Length);
 
     // Subarrays [s, e] with left <= s <= dominantIndex <= e <= right and
     // e-s+1 <= maxSubarrayLength, counted directly: for each start s the valid
@@ -142,33 +112,11 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
         return total;
     }
 
-    // The nearest-dominant test as a decision table: Extreme names which side of
-    // the value counts as beyond it, and DominanceRule says whether landing level
-    // with it counts too - only the left boundary is DominanceRule.Strict, which
-    // is what gives every duplicate value exactly one owning index.
-    private static bool IsDominantOver(int candidate, int value, Extreme extreme, DominanceRule rule) =>
-        (extreme, rule) switch
-    {
-        (Extreme.Maximum, DominanceRule.Strict) => candidate > value,
-        (Extreme.Maximum, DominanceRule.Inclusive) => candidate >= value,
-        (Extreme.Minimum, DominanceRule.Strict) => candidate < value,
-        _ => candidate <= value,
-    };
-
     // Which of a subarray's two extremes a pass over the array is attributing:
     // the largest element or the smallest.
     private enum Extreme
     {
         Maximum,
         Minimum,
-    }
-
-    // Whether an element level with the candidate counts as dominated by it, or
-    // only one strictly beyond it does. Named where a rewritten `true`/`false` at
-    // the call site said it only by position.
-    private enum DominanceRule
-    {
-        Strict,
-        Inclusive,
     }
 }

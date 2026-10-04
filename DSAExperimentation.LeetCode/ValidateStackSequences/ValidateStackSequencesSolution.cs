@@ -13,8 +13,8 @@ namespace DSAExperimentation.LeetCode.ValidateStackSequences;
 //   baseline, so its internals are a plain BCL stack and recursion.
 // - IsValidByGreedyStackSweep pushes onto this repo's own Stack<int> and drains it
 //   whenever the top matches the value `popped` expects next - the same "push, then
-//   drain whatever matches" idiom NextGreaterElementI uses this Stack<int> for, just
-//   draining against a target sequence instead of a monotonic condition. Greedy
+//   drain whatever matches" idiom a monotonic-stack sweep uses, just draining
+//   against a target sequence instead of a monotonic condition. Greedy
 //   popping is never wrong here: once the top equals the value popped expects next,
 //   nothing pushed later can ever be needed before it, so there is never anything to
 //   undo and one O(n) sweep settles it.

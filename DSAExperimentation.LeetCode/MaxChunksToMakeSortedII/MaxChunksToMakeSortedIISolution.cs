@@ -48,9 +48,9 @@ internal static class MaxChunksToMakeSortedIISolution
         return true;
     }
 
-    // A monotonic non-decreasing Stack<int> of each closed chunk's max value
-    // (DailyTemperaturesSolutionTests' Stack<int> precedent, applied here to chunk-merging
-    // instead of a wait-day sweep). A value smaller than the top merges every chunk
+    // A monotonic non-decreasing Stack<int> of each closed chunk's max value - a
+    // monotonic stack that merges chunks rather than reporting a boundary, which is why
+    // it is not NearestBoundary's sweep. A value smaller than the top merges every chunk
     // whose max exceeds it into one, since all of them must now sort together with
     // it; the final stack size is the chunk count.
     public static int MaxChunksByMonotonicStackMerge(int[] arr)

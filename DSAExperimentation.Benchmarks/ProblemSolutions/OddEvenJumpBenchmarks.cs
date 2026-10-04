@@ -6,9 +6,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are OddEvenJumpSolution's, the same methods OddEvenJumpSolutionTests
 // proves correct. The array is generated once in [GlobalSetup] and is already
 // LeetCode's own input shape, so each arm is handed it directly - the quadratic
-// per-index forward scan for each jump target against MergeSort plus a monotonic
-// Stack<int> sweep, O(n^2) against O(n log n), with the same backward reachability
-// pass on both sides.
+// per-index forward scan for each jump target against MergeSort plus a
+// NearestBoundary monotonic-stack sweep, O(n^2) against O(n log n), with the same
+// backward reachability pass on both sides.
 public class OddEvenJumpBenchmarks
 {
     // LC problem number, used as the deterministic setup seed.

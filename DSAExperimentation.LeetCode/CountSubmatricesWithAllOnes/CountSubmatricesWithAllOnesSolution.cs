@@ -1,4 +1,4 @@
-using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.Algorithms.Searching;
 
 namespace DSAExperimentation.LeetCode.CountSubmatricesWithAllOnes;
 
@@ -15,6 +15,8 @@ namespace DSAExperimentation.LeetCode.CountSubmatricesWithAllOnes;
 internal static class CountSubmatricesWithAllOnesSolution
 {
     private const int One = 1;
+
+    private const int NoSmallerHeightToTheLeft = -1;
 
     // The textbook answer: for each right boundary column, walk left while the run of ones
     // survives, tracking the running minimum height. O(rows * cols^2), plain BCL throughout -
@@ -52,8 +54,8 @@ internal static class CountSubmatricesWithAllOnesSolution
         return rowTotal;
     }
 
-    // This repo's own Stack<int> as a previous-smaller-height monotonic stack, the same
-    // precedent SumOfSubarrayMinimums and LargestRectangleInHistogram use:
+    // NearestBoundary.SmallerToTheLeft as the previous-smaller-height monotonic stack, the
+    // same boundary SumOfSubarrayMinimums and LargestRectangleInHistogram rest on:
     // dp[j] = dp[previousSmaller] + (j - previousSmaller) * height[j] accumulates the row's
     // whole sum-of-minimums in one O(cols) sweep, taking the total to O(rows * cols).
     public static int CountByMonotonicStackDp(int[][] mat)
@@ -73,22 +75,18 @@ internal static class CountSubmatricesWithAllOnesSolution
 
     private static int CountRowByMonotonicStack(int[] heights)
     {
-        var indices = new RepoStack();
+        var previousSmaller = NearestBoundary.SmallerToTheLeft(heights, NoSmallerHeightToTheLeft);
         var dp = new int[heights.Length];
         var rowTotal = 0;
 
         for (var j = 0; j < heights.Length; j++)
         {
-            while (indices.TryPeek(out var top) && heights[top] >= heights[j])
-            {
-                indices.TryPop(out _);
-            }
+            var hasPreviousSmaller = previousSmaller[j] != NoSmallerHeightToTheLeft;
 
-            dp[j] = indices.TryPeek(out var previousSmaller)
-                ? RowTotalWithPreviousSmaller(dp, heights, previousSmaller, j)
+            dp[j] = hasPreviousSmaller
+                ? RowTotalWithPreviousSmaller(dp, heights, previousSmaller[j], j)
                 : RowTotalWithoutPreviousSmaller(heights, j);
 
-            indices.Push(j);
             rowTotal += dp[j];
         }
 

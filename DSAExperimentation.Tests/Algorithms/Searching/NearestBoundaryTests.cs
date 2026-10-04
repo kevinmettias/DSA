@@ -144,4 +144,54 @@ public sealed partial class NearestBoundaryTests
 
         return walked;
     }
+
+    // The relations and directions are private witnesses the sweep is generic over - each a unit of
+    // its own, so each is named from a test class nested the same way, driving it through the one
+    // public form that instantiates it (§18.3's HooksStepTests precedent). [2, 2] is the input that
+    // separates every relation from its strict or or-equal sibling: the second 2 has an equal left
+    // neighbour and nothing else.
+    public sealed partial class StrictlySmallerTests
+    {
+        [Fact]
+        public void IsBoundaryFor_EqualNeighbour_IsNotABoundary() =>
+            Assert.Equal([-1, -1], NearestBoundary.SmallerToTheLeft([2, 2], NoPositionToTheLeft));
+    }
+
+    public sealed partial class SmallerOrEqualTests
+    {
+        [Fact]
+        public void IsBoundaryFor_EqualNeighbour_IsABoundary() =>
+            Assert.Equal([-1, 0], NearestBoundary.SmallerOrEqualToTheLeft([2, 2], NoPositionToTheLeft));
+    }
+
+    public sealed partial class StrictlyGreaterTests
+    {
+        [Fact]
+        public void IsBoundaryFor_EqualNeighbour_IsNotABoundary() =>
+            Assert.Equal([-1, -1], NearestBoundary.GreaterToTheLeft([2, 2], NoPositionToTheLeft));
+    }
+
+    public sealed partial class GreaterOrEqualTests
+    {
+        [Fact]
+        public void IsBoundaryFor_EqualNeighbour_IsABoundary() =>
+            Assert.Equal([-1, 0], NearestBoundary.GreaterOrEqualToTheLeft([2, 2], NoPositionToTheLeft));
+    }
+
+    // A direction decides only the order positions are visited in, so the same relation over the
+    // same values finds the boundary on the side it names: 1 is smaller than both 3s, and each 3
+    // finds it on the side its sweep came from.
+    public sealed partial class ToTheLeftTests
+    {
+        [Fact]
+        public void PositionAt_VisitsLeftToRight_SoTheBoundaryIsBehind() =>
+            Assert.Equal([-1, -1, 1], NearestBoundary.SmallerToTheLeft([3, 1, 3], NoPositionToTheLeft));
+    }
+
+    public sealed partial class ToTheRightTests
+    {
+        [Fact]
+        public void PositionAt_VisitsRightToLeft_SoTheBoundaryIsAhead() =>
+            Assert.Equal([1, 3, 3], NearestBoundary.SmallerToTheRight([3, 1, 3], 3));
+    }
 }

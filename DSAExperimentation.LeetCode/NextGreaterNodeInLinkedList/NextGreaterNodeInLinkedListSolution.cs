@@ -1,5 +1,6 @@
+using System.Runtime.InteropServices;
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.NextGreaterNodeInLinkedList;
 
@@ -14,6 +15,8 @@ namespace DSAExperimentation.LeetCode.NextGreaterNodeInLinkedList;
 // the nodes still waiting for an answer.
 internal static class NextGreaterNodeInLinkedListSolution
 {
+    private const int NoLargerNode = -1;
+
     // The textbook answer: from every node, scan forward until a larger value
     // turns up. Deliberately BCL only - it is the arm the composed solution below
     // has to justify itself against.
@@ -37,26 +40,23 @@ internal static class NextGreaterNodeInLinkedListSolution
         return result;
     }
 
-    // This repo's own Stack<int> held in monotonic decreasing order, the same
-    // sweep NextGreaterElementI/DailyTemperatures already use over an array: the
-    // stack holds the indices still waiting for a larger value, and each newly
-    // arriving value pops - and answers - every smaller index on top of it. Every
-    // index is pushed once and popped at most once.
+    // One NearestBoundary.GreaterToTheRight sweep, the same monotonic decreasing
+    // stack NextGreaterElementI/DailyTemperatures already use over an array: each
+    // node's nearest strictly larger node after it, found with every index pushed
+    // once and popped at most once. The sweep reads ToValues' list in place, since
+    // that list is the baseline's too and stays as it is.
     public static int[] NextLargerNodesByMonotonicStackSweep(SinglyLinkedListNode<int>? head)
     {
         var values = ToValues(head);
+        var nextLarger = NearestBoundary.GreaterToTheRight(CollectionsMarshal.AsSpan(values), NoLargerNode);
         var result = new int[values.Count];
-        var decreasingIndices = new RepoIntStack();
 
         for (var i = 0; i < values.Count; i++)
         {
-            while (decreasingIndices.TryPeek(out var previousIndex) && values[previousIndex] < values[i])
+            if (nextLarger[i] != NoLargerNode)
             {
-                decreasingIndices.TryPop(out _);
-                result[previousIndex] = values[i];
+                result[i] = values[nextLarger[i]];
             }
-
-            decreasingIndices.Push(i);
         }
 
         return result;

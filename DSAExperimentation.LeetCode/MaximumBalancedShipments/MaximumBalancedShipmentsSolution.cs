@@ -1,4 +1,4 @@
-using IndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.Algorithms.Searching;
 
 namespace DSAExperimentation.LeetCode.MaximumBalancedShipments;
 
@@ -14,6 +14,9 @@ namespace DSAExperimentation.LeetCode.MaximumBalancedShipments;
 // only in how they find each index's nearest earlier strictly-greater element.
 internal static class MaximumBalancedShipmentsSolution
 {
+    // No earlier element is greater, so no balanced shipment ends at that index.
+    private const int NoGreaterToTheLeft = -1;
+
     // The textbook O(n^2) DP: for each end index, walk backward maintaining the
     // running max directly, no auxiliary structure - the monotonic-stack strategy
     // below has to beat it.
@@ -41,48 +44,27 @@ internal static class MaximumBalancedShipmentsSolution
         return dp[n];
     }
 
-    // This repo's own Stack<int> finds every index's nearest earlier strictly-
+    // NearestBoundary.GreaterToTheLeft finds every index's nearest earlier strictly-
     // greater element in one O(n) pass (the classic monotonic-stack reduction),
     // turning the O(n^2) backward walk above into an O(1) dp transition per index.
     public static int MaxBalancedShipmentsByPreviousGreaterStack(int[] weight)
     {
         var n = weight.Length;
-        var previousGreater = PreviousGreaterIndices(weight);
+        var previousGreater = NearestBoundary.GreaterToTheLeft(weight, NoGreaterToTheLeft);
         var dp = new int[n + 1];
 
         for (var i = 1; i <= n; i++)
         {
             dp[i] = dp[i - 1];
 
-            if (previousGreater[i - 1] is int start)
+            var start = previousGreater[i - 1];
+
+            if (start != NoGreaterToTheLeft)
             {
                 dp[i] = Math.Max(dp[i], 1 + dp[start]);
             }
         }
 
         return dp[n];
-    }
-
-    // result[i] = the largest index j < i with weight[j] > weight[i], or null when
-    // no earlier element is greater. A decreasing stack of candidate indices: any
-    // index whose weight doesn't exceed the current one can never be *anyone's*
-    // previous-greater from here on, so it is popped for good before i is pushed.
-    private static int?[] PreviousGreaterIndices(int[] weight)
-    {
-        var result = new int?[weight.Length];
-        var candidates = new IndexStack();
-
-        for (var i = 0; i < weight.Length; i++)
-        {
-            while (candidates.TryPeek(out var top) && weight[top] <= weight[i])
-            {
-                candidates.TryPop(out _);
-            }
-
-            result[i] = candidates.TryPeek(out var previous) ? previous : null;
-            candidates.Push(i);
-        }
-
-        return result;
     }
 }
