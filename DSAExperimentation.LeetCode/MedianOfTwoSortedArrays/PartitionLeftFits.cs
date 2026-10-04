@@ -2,7 +2,7 @@ using DSAExperimentation.Algorithms.Searching;
 
 namespace DSAExperimentation.LeetCode.MedianOfTwoSortedArrays;
 
-// The partition rule over nums1's partition index in [0, nums1.Length]: Holds(index) is
+// The partition rule over nums1's partition index in [0, nums1.Length]: IsSatisfiedBy(index) is
 // true while nums1[index-1] <= nums2[half-index] (this partition still leaves every
 // element to nums1's left no bigger than nums2's right-hand neighbor) and turns false
 // once it doesn't - a single monotone step, so MonotonePredicateSearch.LastTrue finds
@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.MedianOfTwoSortedArrays;
 // DataStructures or Domain.
 internal readonly struct PartitionLeftFits(int[] nums1, int[] nums2, int half) : IMonotonePredicate<int>
 {
-    public bool Holds(int index)
+    public bool IsSatisfiedBy(int index)
     {
         var j = half - index;
         var leftOfNums1 = index == 0 ? int.MinValue : ValueAt(nums1, index - 1);

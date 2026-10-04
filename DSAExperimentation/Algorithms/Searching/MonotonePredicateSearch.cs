@@ -93,7 +93,7 @@ internal static class MonotonePredicateSearch
         {
             var mid = first + ((pastLast - first) / halving);
 
-            if (predicate.Holds(mid) == soughtAnswer)
+            if (predicate.IsSatisfiedBy(mid) == soughtAnswer)
             {
                 pastLast = mid;
             }

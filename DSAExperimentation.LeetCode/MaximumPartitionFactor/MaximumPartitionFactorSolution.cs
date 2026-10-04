@@ -76,13 +76,13 @@ internal static class MaximumPartitionFactorSolution
         return last < 0 ? TrivialPairFactor : distances[last];
     }
 
-    // Holds(distanceIndex) is "the too-close graph at distances[distanceIndex] is
+    // IsSatisfiedBy(distanceIndex) is "the too-close graph at distances[distanceIndex] is
     // bipartite" - true up to the answer and false from there on, since a larger
     // threshold only adds edges. A rule for this problem alone: the conflict graph is
     // LC 3710's own content. Each probe rebuilds the shared nodes' edges in place.
     private readonly struct SplitsAtDistance(List<PartitionNode> nodes, int[] distances) : IMonotonePredicate<int>
     {
-        public bool Holds(int distanceIndex) => IsBipartiteAtThreshold(nodes, distances[distanceIndex]);
+        public bool IsSatisfiedBy(int distanceIndex) => IsBipartiteAtThreshold(nodes, distances[distanceIndex]);
     }
 
     private static bool IsBipartiteAtThreshold(List<PartitionNode> nodes, int threshold)

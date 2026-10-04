@@ -31,7 +31,7 @@ internal readonly struct UglyCountReachesRank : IMonotonePredicate<long>
         _multiples = new MultiplesOfThreeFactors(firstFactor, secondFactor, thirdFactor, UpperBound);
     }
 
-    // Holds(candidate) treats the candidate itself as the ugly number in question, the
+    // IsSatisfiedBy(candidate) treats the candidate itself as the ugly number in question, the
     // same "the answer is the search space" shape MagicalCountReachesRank uses.
-    public bool Holds(long candidate) => _multiples.CountUpTo(candidate) >= _target;
+    public bool IsSatisfiedBy(long candidate) => _multiples.CountUpTo(candidate) >= _target;
 }

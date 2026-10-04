@@ -71,12 +71,12 @@ internal static class SearchInRotatedSortedArrayIISolution
     // How many entries of the trimmed range lie past the pivot, in its tail run.
     private static int TailLength(TrimmedRange range, int pivot) => range.Length - pivot;
 
-    // Holds(offset) is true exactly when the trimmed slice's entry at that offset
+    // IsSatisfiedBy(offset) is true exactly when the trimmed slice's entry at that offset
     // belongs to its tail run - at or below the slice's last value: false before the
     // pivot and true from it on, so FirstTrue lands exactly on the pivot. The last
     // offset always holds, so the pivot always lies inside the slice.
     private readonly struct InTailRun(int[] nums, int start, int lastValue) : IMonotonePredicate<int>
     {
-        public bool Holds(int offset) => nums[start + offset] <= lastValue;
+        public bool IsSatisfiedBy(int offset) => nums[start + offset] <= lastValue;
     }
 }

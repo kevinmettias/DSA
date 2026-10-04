@@ -110,12 +110,12 @@ internal static class MaximumNumberOfTasksYouCanAssignSolution
         public int StrongestWorkerOffset(int taskCount) => WorkersAscending.Length - taskCount;
     }
 
-    // Holds(k) is "the k easiest tasks can all be assigned" - true up to the answer and
+    // IsSatisfiedBy(k) is "the k easiest tasks can all be assigned" - true up to the answer and
     // false from there on, the monotonicity LastTrue assumes but never checks. A rule
     // for this problem alone: the feasibility rule is LC 2071's own content.
     private readonly struct AssignsEasiestTasks(SortedTaskAssignment assignment) : IMonotonePredicate<int>
     {
-        public bool Holds(int taskCount) => CanAssignByDequePool(taskCount, assignment);
+        public bool IsSatisfiedBy(int taskCount) => CanAssignByDequePool(taskCount, assignment);
     }
 
     // The composed pool: this repo's own Deque<int>, kept sorted ascending because

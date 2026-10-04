@@ -434,8 +434,8 @@ allow. `MonotonePredicateSearch.FirstTrue`/`LastTrue` search an integer interval
 numbers, generic over `IBinaryInteger`, so a range past `int` is searched in `long`.
 
 The rule is `IMonotonePredicate<Integer>`. Its space is open — §12.1's successor relation, not a
-set this library enumerates — so §5's second row applies; §12.4's question then makes `Holds` an
-instance member on a struct type parameter, because the arrays and budgets a rule reads never
+set this library enumerates — so §5's second row applies; §12.4's question then makes
+`IsSatisfiedBy` an instance member on a struct type parameter, because the arrays and budgets a rule reads never
 arrive through its signature. `IGridCellFilter` is the precedent. Monotonicity is a precondition
 law, like sortedness (§9.1). It stays a separate class rather than a `BinarySearch` method, and
 `LowerBound` is not re-expressed through it: for a reference-type element the rule would be shared

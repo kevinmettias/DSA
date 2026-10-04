@@ -112,28 +112,28 @@ public sealed partial class MonotonePredicateSearchTests
 
     private readonly struct AtLeast(int threshold) : IMonotonePredicate<int>
     {
-        public bool Holds(int candidate) => candidate >= threshold;
+        public bool IsSatisfiedBy(int candidate) => candidate >= threshold;
     }
 
     private readonly struct AtMost(int threshold) : IMonotonePredicate<int>
     {
-        public bool Holds(int candidate) => candidate <= threshold;
+        public bool IsSatisfiedBy(int candidate) => candidate <= threshold;
     }
 
     private readonly struct LongAtLeast(long threshold) : IMonotonePredicate<long>
     {
-        public bool Holds(long candidate) => candidate >= threshold;
+        public bool IsSatisfiedBy(long candidate) => candidate >= threshold;
     }
 
     private readonly struct NeverAsked : IMonotonePredicate<int>
     {
-        public bool Holds(int candidate) => throw new InvalidOperationException("An empty range has no candidate to ask about.");
+        public bool IsSatisfiedBy(int candidate) => throw new InvalidOperationException("An empty range has no candidate to ask about.");
     }
 
     // The list is a reference, so the copy the search makes still records into it.
     private readonly struct RecordingAtLeast(int threshold, List<int> probes) : IMonotonePredicate<int>
     {
-        public bool Holds(int candidate)
+        public bool IsSatisfiedBy(int candidate)
         {
             probes.Add(candidate);
             return candidate >= threshold;
@@ -142,7 +142,7 @@ public sealed partial class MonotonePredicateSearchTests
 
     private readonly struct RecordingAtMost(int threshold, List<int> probes) : IMonotonePredicate<int>
     {
-        public bool Holds(int candidate)
+        public bool IsSatisfiedBy(int candidate)
         {
             probes.Add(candidate);
             return candidate <= threshold;

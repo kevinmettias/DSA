@@ -187,7 +187,7 @@ internal static class BookingConcertTicketsInGroupsSolution
             _sumAvailable.Update(row, available);
         }
 
-        // Holds(row) is "some row in [fromRow, row] still has at least threshold free
+        // IsSatisfiedBy(row) is "some row in [fromRow, row] still has at least threshold free
         // seats". A prefix max over a growing window only ever rises, so this is false
         // up to the qualifying row and true from there on - the monotonicity
         // MonotonePredicateSearch assumes but never checks. A rule for this problem
@@ -196,7 +196,7 @@ internal static class BookingConcertTicketsInGroupsSolution
             SegmentTree<int, MaxOperation<int>> availableSeats, int fromRow, int threshold)
             : IMonotonePredicate<int>
         {
-            public bool Holds(int row) => availableSeats.Query(fromRow, row) >= threshold;
+            public bool IsSatisfiedBy(int row) => availableSeats.Query(fromRow, row) >= threshold;
         }
     }
 }

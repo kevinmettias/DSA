@@ -34,12 +34,12 @@ internal static class PeakIndexInAMountainArraySolution
     public static int PeakIndexByPredicateSearch(int[] mountain) =>
         MonotonePredicateSearch.FirstTrue(0, mountain.Length - 2, new StepIsDownhill(mountain));
 
-    // Holds(index) is true exactly when the step from mountain[index] to
+    // IsSatisfiedBy(index) is true exactly when the step from mountain[index] to
     // mountain[index + 1] is downhill - the peak itself is the first such index,
     // and the unimodal precondition is what keeps this rule monotone, a law
     // MonotonePredicateSearch assumes but never checks.
     private readonly struct StepIsDownhill(int[] mountain) : IMonotonePredicate<int>
     {
-        public bool Holds(int index) => mountain[index] > mountain[index + 1];
+        public bool IsSatisfiedBy(int index) => mountain[index] > mountain[index + 1];
     }
 }

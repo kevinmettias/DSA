@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.NthMagicalNumber;
 internal readonly struct MagicalCountReachesRank(int rank, int firstFactor, int secondFactor, long lcm)
     : IMonotonePredicate<long>
 {
-    public bool Holds(long candidate)
+    public bool IsSatisfiedBy(long candidate)
     {
         var multiplesUpToCandidate = (candidate / firstFactor) + (candidate / secondFactor) - (candidate / lcm);
 

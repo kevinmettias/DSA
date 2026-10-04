@@ -29,12 +29,12 @@ internal static class FindMinimumInRotatedSortedArraySolution
     public static int FindMinByPredicateSearch(int[] nums) =>
         nums[MonotonePredicateSearch.FirstTrue(0, nums.Length - 1, new OnLowSideOfRotation(nums))];
 
-    // Holds(index) is true exactly when nums[index] is on the low side of the
+    // IsSatisfiedBy(index) is true exactly when nums[index] is on the low side of the
     // rotation (at or below the last element) - the pivot itself is the first
     // such index, and the no-duplicates precondition is what keeps this rule
     // monotone, a law MonotonePredicateSearch assumes but never checks.
     private readonly struct OnLowSideOfRotation(int[] nums) : IMonotonePredicate<int>
     {
-        public bool Holds(int index) => nums[index] <= nums[^1];
+        public bool IsSatisfiedBy(int index) => nums[index] <= nums[^1];
     }
 }

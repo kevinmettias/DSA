@@ -66,6 +66,6 @@ internal static class DivideTwoIntegersSolution
     // cannot overflow long.
     private readonly struct ProductFitsDividend(long divisor, long dividend) : IMonotonePredicate<long>
     {
-        public bool Holds(long quotient) => divisor * quotient <= dividend;
+        public bool IsSatisfiedBy(long quotient) => divisor * quotient <= dividend;
     }
 }

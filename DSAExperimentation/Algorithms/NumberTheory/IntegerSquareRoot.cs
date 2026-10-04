@@ -18,6 +18,8 @@ internal static class IntegerSquareRoot
     {
         ArgumentOutOfRangeException.ThrowIfNegative(value);
 
-        return MonotonePredicateSearch.FirstTrue(0, Math.Min(value, SquareRootCeiling), new SquareExceeds(value)) - 1;
+        var lastCandidate = Math.Min(value, SquareRootCeiling);
+
+        return MonotonePredicateSearch.FirstTrue(0, lastCandidate, new SquareExceeds(value)) - 1;
     }
 }

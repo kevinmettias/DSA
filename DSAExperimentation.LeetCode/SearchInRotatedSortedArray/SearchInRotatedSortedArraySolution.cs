@@ -43,12 +43,12 @@ internal static class SearchInRotatedSortedArraySolution
 
     private static int AbsoluteIndex(int start, int offset) => start + offset;
 
-    // Holds(index) is true exactly when nums[index] belongs to the original sorted
+    // IsSatisfiedBy(index) is true exactly when nums[index] belongs to the original sorted
     // run's tail - at or below the last element: false before the pivot and true
     // from it on, so FirstTrue lands exactly on the pivot. The last index always
     // holds, so the pivot always lies inside the array.
     private readonly struct InTailRun(int[] nums) : IMonotonePredicate<int>
     {
-        public bool Holds(int index) => nums[index] <= nums[^1];
+        public bool IsSatisfiedBy(int index) => nums[index] <= nums[^1];
     }
 }

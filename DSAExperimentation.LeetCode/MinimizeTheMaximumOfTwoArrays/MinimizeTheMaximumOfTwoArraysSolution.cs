@@ -98,13 +98,13 @@ internal static class MinimizeTheMaximumOfTwoArraysSolution
             ? firstDivisor
             : Gcd(secondDivisor, firstDivisor % secondDivisor);
 
-    // Holds(max) is "numbers in [1, max] fill both arrays" - false up to the answer
+    // IsSatisfiedBy(max) is "numbers in [1, max] fill both arrays" - false up to the answer
     // and true from there on, the monotonicity MonotonePredicateSearch assumes but
     // never checks. A rule for this problem alone: the two-divisor eligibility rule
     // is LC 2513's own content.
     private readonly struct FillsBothArrays(
         (int Divisor, int UniqueCount) first, (int Divisor, int UniqueCount) second) : IMonotonePredicate<long>
     {
-        public bool Holds(long max) => IsFeasible(first, second, max);
+        public bool IsSatisfiedBy(long max) => IsFeasible(first, second, max);
     }
 }

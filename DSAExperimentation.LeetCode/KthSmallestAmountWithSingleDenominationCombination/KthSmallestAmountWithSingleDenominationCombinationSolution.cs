@@ -100,12 +100,12 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
         return total;
     }
 
-    // Holds(limit) is "at least rank achievable amounts are <= limit" - false below the
+    // IsSatisfiedBy(limit) is "at least rank achievable amounts are <= limit" - false below the
     // answer and true from there on, since raising the limit only admits more amounts. A
     // rule for this problem alone: the inclusion-exclusion count is LC 3116's own content.
     private readonly struct ReachesRank(int[] coins, long rank) : IMonotonePredicate<long>
     {
-        public bool Holds(long limit) => CountAchievableAtMost(limit, coins) >= rank;
+        public bool IsSatisfiedBy(long limit) => CountAchievableAtMost(limit, coins) >= rank;
     }
 
     // One non-empty subset of coins, named by its bit mask: it covers exactly its

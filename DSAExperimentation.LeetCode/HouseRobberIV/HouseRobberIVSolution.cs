@@ -70,13 +70,13 @@ internal static class HouseRobberIVSolution
     public static int MinCapabilityByPredicateSearch(int[] nums, int requiredHouseCount) =>
         MonotonePredicateSearch.FirstTrue(nums.Min(), nums.Max(), new RobsEnoughWithinCap(nums, requiredHouseCount));
 
-    // Holds(cap) is "at least requiredHouseCount non-adjacent houses are affordable
+    // IsSatisfiedBy(cap) is "at least requiredHouseCount non-adjacent houses are affordable
     // under this cap". Meaningless outside this one problem's feasibility check -
     // stays beside the solution rather than in DataStructures/ or Algorithms/
     // (§17.3's CountWaysToBuildRoomsInAnAntColony precedent, and LC 410's own
     // SplitsWithinLimit).
     private readonly struct RobsEnoughWithinCap(int[] nums, int requiredHouseCount) : IMonotonePredicate<int>
     {
-        public bool Holds(int cap) => CanRobAtLeastHousesWithinCap(nums, requiredHouseCount, cap);
+        public bool IsSatisfiedBy(int cap) => CanRobAtLeastHousesWithinCap(nums, requiredHouseCount, cap);
     }
 }

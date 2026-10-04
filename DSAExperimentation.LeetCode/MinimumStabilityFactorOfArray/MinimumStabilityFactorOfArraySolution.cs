@@ -134,14 +134,14 @@ internal static class MinimumStabilityFactorOfArraySolution
         return cuts;
     }
 
-    // Holds(factor) is "at most maxC cuts cap every stable run at this length" - false
+    // IsSatisfiedBy(factor) is "at most maxC cuts cap every stable run at this length" - false
     // below the answer and true from there on, since a placement that caps runs at L
     // also caps them at any longer L. A rule for this problem alone: the stabbing greedy
     // is LC 3605's own content.
     private readonly struct FactorReachableWithinChanges(SegmentTree<int, GcdOperation<int>> gcdTree, int maxC)
         : IMonotonePredicate<int>
     {
-        public bool Holds(int factor) => CutsNeededByRangeQuery(gcdTree, factor) <= maxC;
+        public bool IsSatisfiedBy(int factor) => CutsNeededByRangeQuery(gcdTree, factor) <= maxC;
     }
 
     // Euclid's algorithm, written out here rather than taken from the core GcdOperation: the

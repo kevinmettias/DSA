@@ -194,14 +194,14 @@ internal static class MaximumTotalBeautyOfTheGardensSolution
     // height-cost computation needs both together, and they always travel as a pair.
     private readonly record struct PrefixContext(long[] Sum, int Count);
 
-    // Holds(height) is "raising the bottom prefix.Count gardens to this height costs
+    // IsSatisfiedBy(height) is "raising the bottom prefix.Count gardens to this height costs
     // no more than remaining" - true up to the tallest affordable height and false
     // from there on, the monotonicity LastTrue assumes but never checks. A rule for
     // this problem alone: the cost rule is LC 2234's own content.
     private readonly struct AffordsHeight(ArraySequence<int> sequence, PrefixContext prefix, long remaining)
         : IMonotonePredicate<int>
     {
-        public bool Holds(int height) => BinarySearchCostToRaise(sequence, prefix, height) <= remaining;
+        public bool IsSatisfiedBy(int height) => BinarySearchCostToRaise(sequence, prefix, height) <= remaining;
     }
 
     // The baseline arm's mechanism: walk candidate heights down from the cap one at a

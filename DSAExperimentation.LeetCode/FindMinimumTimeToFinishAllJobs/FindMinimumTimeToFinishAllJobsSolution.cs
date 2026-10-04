@@ -91,14 +91,14 @@ internal static class FindMinimumTimeToFinishAllJobsSolution
     // budget.
     private readonly record struct Workload(int[] Jobs, int[] Loads);
 
-    // Holds(maxTime) over candidate time limits [maxJob, total]: false while
+    // IsSatisfiedBy(maxTime) over candidate time limits [maxJob, total]: false while
     // infeasible, true from the first feasible limit onward - CanFinishWithin only
     // gets easier as the limit grows, so this is monotone and FirstTrue lands on the
     // smallest feasible limit directly. Meaningless outside this problem, so it
     // stays here.
     private readonly struct FinishesWithin(int[] jobs, int workerCount) : IMonotonePredicate<int>
     {
-        public bool Holds(int maxTime) => CanFinishWithin(jobs, workerCount, maxTime);
+        public bool IsSatisfiedBy(int maxTime) => CanFinishWithin(jobs, workerCount, maxTime);
     }
 
     // One feasibility probe's mutable bucket loads, exposed as the Choose/Unchoose

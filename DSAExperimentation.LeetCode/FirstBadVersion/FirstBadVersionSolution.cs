@@ -35,13 +35,13 @@ internal static class FirstBadVersionSolution
     public static int FirstBadVersionByPredicateSearch(int versionCount, int firstBad) =>
         (int)MonotonePredicateSearch.FirstTrue(1L, versionCount, new VersionIsBad(firstBad));
 
-    // Holds(version) asks the same oracle the linear scan asks - good before firstBad,
+    // IsSatisfiedBy(version) asks the same oracle the linear scan asks - good before firstBad,
     // bad from there on and never good again, the monotonicity FirstTrue assumes but
     // never checks. Every version asked about lies in 1..versionCount, so narrowing it
     // back to int is exact. A rule for this problem alone: the oracle is First Bad
     // Version's own content.
     private readonly struct VersionIsBad(int firstBad) : IMonotonePredicate<long>
     {
-        public bool Holds(long version) => IsBadVersion((int)version, firstBad);
+        public bool IsSatisfiedBy(long version) => IsBadVersion((int)version, firstBad);
     }
 }

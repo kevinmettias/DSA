@@ -112,11 +112,11 @@ internal static class SmallestUniqueSubarraySolution
         return counts.Values.Any(count => count == 1);
     }
 
-    // Holds(length) is "some length-L window occurs exactly once" - false below the
+    // IsSatisfiedBy(length) is "some length-L window occurs exactly once" - false below the
     // answer and true from there on, by the extension argument in the class header. A
     // rule for this problem alone: the uniqueness screen is LC 3934's own content.
     private readonly struct SomeWindowIsUnique(RollingHash hash, int arrayLength) : IMonotonePredicate<int>
     {
-        public bool Holds(int length) => HasUniqueWindowByRollingHash(hash, arrayLength, length);
+        public bool IsSatisfiedBy(int length) => HasUniqueWindowByRollingHash(hash, arrayLength, length);
     }
 }

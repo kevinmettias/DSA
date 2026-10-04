@@ -126,7 +126,7 @@ internal static class LongestBalancedSubarrayIISolution
         return position - matchPosition;
     }
 
-    // Holds(last) is "the balances over [0, last] span target" - false up to the
+    // IsSatisfiedBy(last) is "the balances over [0, last] span target" - false up to the
     // answer and true from there on, since widening a range only widens its [Min, Max].
     // Because adjacent balances differ by at most 1 (see BalanceRangeAddOperation), the
     // first last at which the span reaches target is an index holding target itself, so
@@ -135,7 +135,7 @@ internal static class LongestBalancedSubarrayIISolution
         LazySegmentTree<BalanceRange, int, BalanceRangeAddOperation> balance, int target)
         : IMonotonePredicate<int>
     {
-        public bool Holds(int last)
+        public bool IsSatisfiedBy(int last)
         {
             var span = balance.Query(0, last);
 

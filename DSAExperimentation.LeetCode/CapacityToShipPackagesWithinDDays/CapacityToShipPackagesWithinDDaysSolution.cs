@@ -70,12 +70,12 @@ internal static class CapacityToShipPackagesWithinDDaysSolution
     public static int ShipWithinDaysByPredicateSearch(int[] weights, int days) =>
         MonotonePredicateSearch.FirstTrue(weights.Max(), weights.Sum(), new ShipsWithinDays(weights, days));
 
-    // Holds(capacity) is "a ship of this capacity clears every package within days" -
+    // IsSatisfiedBy(capacity) is "a ship of this capacity clears every package within days" -
     // false up to the answer and true from there on, the monotonicity
     // MonotonePredicateSearch assumes but never checks. A rule for this problem alone:
     // the loading rule is LC 1011's own content.
     private readonly struct ShipsWithinDays(int[] weights, int days) : IMonotonePredicate<int>
     {
-        public bool Holds(int capacity) => CanShipWithinDays(weights, days, capacity);
+        public bool IsSatisfiedBy(int capacity) => CanShipWithinDays(weights, days, capacity);
     }
 }

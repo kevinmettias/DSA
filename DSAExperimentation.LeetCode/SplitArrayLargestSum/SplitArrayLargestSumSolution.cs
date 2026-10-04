@@ -62,12 +62,12 @@ internal static class SplitArrayLargestSumSolution
     public static int MinimizedLargestSumByPredicateSearch(int[] nums, int subarrayCount) =>
         MonotonePredicateSearch.FirstTrue(nums.Max(), nums.Sum(), new SplitsWithinLimit(nums, subarrayCount));
 
-    // Holds(limit) is "nums splits into at most k subarrays, none summing past
+    // IsSatisfiedBy(limit) is "nums splits into at most k subarrays, none summing past
     // limit". Meaningless outside this one problem's feasibility check - stays
     // beside the solution rather than in DataStructures/ or Algorithms/ (§17.3's
     // CountWaysToBuildRoomsInAnAntColony precedent).
     private readonly struct SplitsWithinLimit(int[] nums, int k) : IMonotonePredicate<int>
     {
-        public bool Holds(int limit) => CanSplitWithinLimit(nums, k, limit);
+        public bool IsSatisfiedBy(int limit) => CanSplitWithinLimit(nums, k, limit);
     }
 }

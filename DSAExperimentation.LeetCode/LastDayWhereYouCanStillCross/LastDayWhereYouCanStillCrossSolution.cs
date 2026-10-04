@@ -100,13 +100,13 @@ internal static class LastDayWhereYouCanStillCrossSolution
         }
     }
 
-    // Holds(day) answers "can the grid still be crossed on this day" - true up to the
+    // IsSatisfiedBy(day) answers "can the grid still be crossed on this day" - true up to the
     // answer and false from there on, the monotonicity LastTrue assumes but never
     // checks. The range starts at day 0 because nothing flooded yet is a legitimate
     // day to ask about, and LastTrue's "none holds" answer of day -1 is never reached
     // for a grid with a dry day 0.
     private readonly struct CrossableOnDay(FloodSchedule flooding) : IMonotonePredicate<int>
     {
-        public bool Holds(int day) => CanCross(flooding, day);
+        public bool IsSatisfiedBy(int day) => CanCross(flooding, day);
     }
 }

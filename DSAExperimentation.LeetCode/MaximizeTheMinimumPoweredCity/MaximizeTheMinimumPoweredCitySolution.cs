@@ -217,12 +217,12 @@ internal static class MaximizeTheMinimumPoweredCitySolution
         return (true, target, remaining);
     }
 
-    // Holds(target) is "every city can be raised to at least target within the budget"
+    // IsSatisfiedBy(target) is "every city can be raised to at least target within the budget"
     // - true up to the answer and false from there on, the monotonicity LastTrue
     // assumes but never checks. A rule for this problem alone: the feasibility rule is
     // LC 2528's own content.
     private readonly struct EveryCityReachesTarget(PoweredCityPlan plan) : IMonotonePredicate<long>
     {
-        public bool Holds(long target) => IsFeasibleByRangeFenwickTree(plan, target);
+        public bool IsSatisfiedBy(long target) => IsFeasibleByRangeFenwickTree(plan, target);
     }
 }

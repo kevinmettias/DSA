@@ -64,12 +64,12 @@ internal static class KokoEatingBananasSolution
     public static int MinEatingSpeedByPredicateSearch(int[] piles, int hourBudget) =>
         MonotonePredicateSearch.FirstTrue(SlowestSpeed, piles.Max(), new ClearsEveryPile(piles, hourBudget));
 
-    // Holds(speed) is "this speed clears every pile within hourBudget hours" - false
+    // IsSatisfiedBy(speed) is "this speed clears every pile within hourBudget hours" - false
     // up to the answer and true from there on, the monotonicity
     // MonotonePredicateSearch assumes but never checks. A rule for this problem
     // alone: the feasibility rule is Koko's own content.
     private readonly struct ClearsEveryPile(int[] piles, int hourBudget) : IMonotonePredicate<int>
     {
-        public bool Holds(int speed) => CanClearEveryPile(piles, speed, hourBudget);
+        public bool IsSatisfiedBy(int speed) => CanClearEveryPile(piles, speed, hourBudget);
     }
 }

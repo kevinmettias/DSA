@@ -90,13 +90,13 @@ internal static class FruitsIntoBasketsIIISolution
         return basket > lastBasket ? null : basket;
     }
 
-    // Holds(last) is "some basket in [0, last] still holds at least capacity" -
+    // IsSatisfiedBy(last) is "some basket in [0, last] still holds at least capacity" -
     // false up to the answer and true from there on, since widening a range can only
     // raise its max. A rule for this problem alone: the fit test is LC 3479's own
     // content.
     private readonly struct ReachesCapacity(SegmentTree<int, MaxOperation<int>> baskets, int capacity)
         : IMonotonePredicate<int>
     {
-        public bool Holds(int last) => baskets.Query(0, last) >= capacity;
+        public bool IsSatisfiedBy(int last) => baskets.Query(0, last) >= capacity;
     }
 }

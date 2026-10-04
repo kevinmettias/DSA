@@ -49,12 +49,12 @@ internal static class LongestCommonPrefixSolution
         return values[0][..prefixLength];
     }
 
-    // Holds(length) is "every string starts with the first string's prefix of this
+    // IsSatisfiedBy(length) is "every string starts with the first string's prefix of this
     // length" - true up to the answer and false past it. Lengths only run up to the
     // shortest string's, so every span taken is in range.
     private readonly struct PrefixSharedByAll(string[] values) : IMonotonePredicate<int>
     {
-        public bool Holds(int length)
+        public bool IsSatisfiedBy(int length)
         {
             var firstSpan = values[0].AsSpan(0, length);
 
