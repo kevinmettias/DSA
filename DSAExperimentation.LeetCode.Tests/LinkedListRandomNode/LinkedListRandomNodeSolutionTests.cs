@@ -11,7 +11,8 @@ namespace DSAExperimentation.LeetCode.Tests.LinkedListRandomNode;
 // GetRandomByDynamicArrayCache is exercised through its LeetCode-shaped overload,
 // which itself delegates to the prepared-cache overload (CacheValues + the
 // DynamicArray<int> overload), so both are covered transitively - the same
-// pattern OpenTheLockTests uses for MinTurnsByReduceGraph. The repeated-draw
+// pattern OpenTheLockTests uses for MinTurnsByReduceGraph - and CacheValues also
+// has a test of its own that reads the cache back. The repeated-draw
 // cases share one assertion helper, which takes the strategy as the named
 // IRandomDraw type below rather than as a bare Func.
 public sealed partial class LinkedListRandomNodeSolutionTests
@@ -51,6 +52,18 @@ public sealed partial class LinkedListRandomNodeSolutionTests
     [Fact]
     public void GetRandomByDynamicArrayCache_MultiNodeList_EventuallyReturnsEveryValue()
         => AssertEventuallyReturnsEveryValue(new DynamicArrayCacheDraw());
+
+    // LeetCode's example list 1 -> 2 -> 3: the walk appends each value once, in list
+    // order.
+    [Fact]
+    public void CacheValues_LeetCodeExampleList_HoldsEveryValueInListOrder()
+    {
+        var third = new SinglyLinkedListNode<int>(3);
+        var second = new SinglyLinkedListNode<int>(2) { Next = third };
+        var cache = LinkedListRandomNodeSolution.CacheValues(new SinglyLinkedListNode<int>(1) { Next = second });
+
+        Assert.Equal([1, 2, 3], Enumerable.Range(0, cache.Count).Select(cache.Get));
+    }
 
     // The two strategies differ only in how one draw is taken, so the sampling shape
     // - a three-node list, drawn from many times - is written once and handed the

@@ -6,7 +6,8 @@ namespace DSAExperimentation.LeetCode.Tests.CheckIfAWordOccursAsAPrefixOfAnyWord
 // round trip are CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution's; this
 // file pins them to LeetCode's published examples plus the boundary cases the two
 // have to agree on - a whole-word match, a first-word match, and a search word that
-// occurs inside words without ever starting one.
+// occurs inside words without ever starting one. The word split both are handed is
+// asserted on its own.
 public sealed partial class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolutionTests
 {
     public static TheoryData<PrefixWordExample> Examples =>
@@ -44,6 +45,15 @@ public sealed partial class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolut
                 new CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SearchedPrefix(example.SearchWord));
 
         Assert.Equal(example.Expected, position);
+    }
+
+    // LeetCode's first sentence holds four single-spaced words, kept in sentence order.
+    [Fact]
+    public void SplitWords_LeetCodeFirstExample_KeepsEveryWordInSentenceOrder()
+    {
+        var words = CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SplitWords("i love eating burger");
+
+        Assert.Equal(["i", "love", "eating", "burger"], Enumerable.Range(0, words.Count).Select(words.Get));
     }
 
     // One LeetCode example: the sentence to search, the prefix to look for, and the

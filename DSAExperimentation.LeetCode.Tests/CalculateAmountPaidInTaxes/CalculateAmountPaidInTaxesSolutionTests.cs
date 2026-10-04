@@ -5,7 +5,8 @@ namespace DSAExperimentation.LeetCode.Tests.CalculateAmountPaidInTaxes;
 // Harness only. Both the raw jagged-array walk and the ArraySequence<T> walk are
 // CalculateAmountPaidInTaxesSolution's - this file pins them to LeetCode's published
 // examples plus the zero-income, single-bracket and income-above-the-top-bracket
-// cases, where the loop either never taxes anything or never gets to break early.
+// cases, where the loop either never taxes anything or never gets to break early. The
+// bracket sequence the second walk is handed is asserted on its own.
 public sealed partial class CalculateAmountPaidInTaxesSolutionTests
 {
     private const int Precision = 5;
@@ -41,5 +42,15 @@ public sealed partial class CalculateAmountPaidInTaxesSolutionTests
             CalculateAmountPaidInTaxesSolution.CalculateTaxByRandomAccessSequence(brackets, income);
 
         Assert.Equal(expected, taxDue, Precision);
+    }
+
+    // Each [upper, percent] row becomes one (Upper, Percent) pair, in the order given:
+    // [3, 50] -> (3, 50), [7, 10] -> (7, 10) and [12, 25] -> (12, 25).
+    [Fact]
+    public void ToBracketSequence_LeetCodeFirstExample_PairsEachUpperBoundWithItsPercent()
+    {
+        var brackets = CalculateAmountPaidInTaxesSolution.ToBracketSequence([[3, 50], [7, 10], [12, 25]]);
+
+        Assert.Equal([(3, 50), (7, 10), (12, 25)], Enumerable.Range(0, brackets.Length).Select(brackets.Get));
     }
 }
