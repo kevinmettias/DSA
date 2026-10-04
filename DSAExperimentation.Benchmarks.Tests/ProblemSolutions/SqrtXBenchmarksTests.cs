@@ -3,9 +3,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for SqrtXBenchmarks (ARCHITECTURE 17.9): both arms are SqrtXSolution's integer
-// square roots of the same Value - the BCL's own double square root against a hand-rolled binary
-// search - so a harness whose arms disagree is timing two different problems. There is no
-// [GlobalSetup] to rebuild: the whole input is Value, which the caller hands each arm directly.
+// square roots of the same Value - integer Newton's method against a binary search - so a harness
+// whose arms disagree is timing two different problems. There is no [GlobalSetup] to rebuild: the
+// whole input is Value, which the caller hands each arm directly.
 //
 // The smallest param is a perfect square, so the fixture itself names the answer: the floor of its
 // square root is exactly the number whose square it is. Asserting that alongside the agreement is
@@ -18,21 +18,21 @@ public sealed partial class SqrtXBenchmarksTests
     private const int ExpectedRoot = 100;
 
     [Fact]
-    public void BinarySearchRoot_TenThousand_AgreesWithMathSqrt()
+    public void BinarySearchRoot_TenThousand_AgreesWithNewtonIteration()
     {
         var harness = BuildHarness();
 
         Assert.Equal(ExpectedRoot, harness.BinarySearchRoot());
-        Assert.Equal(harness.MathSqrt(), harness.BinarySearchRoot());
+        Assert.Equal(harness.NewtonIteration(), harness.BinarySearchRoot());
     }
 
     [Fact]
-    public void MathSqrt_TenThousand_AgreesWithBinarySearchRoot()
+    public void NewtonIteration_TenThousand_AgreesWithBinarySearchRoot()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(ExpectedRoot, harness.MathSqrt());
-        Assert.Equal(harness.BinarySearchRoot(), harness.MathSqrt());
+        Assert.Equal(ExpectedRoot, harness.NewtonIteration());
+        Assert.Equal(harness.BinarySearchRoot(), harness.NewtonIteration());
     }
 
     private static SqrtXBenchmarks BuildHarness() => new() { Value = SmallestValue };
