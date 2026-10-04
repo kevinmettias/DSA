@@ -2,64 +2,51 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ImplementRand10UsingRand7Benchmarks (ARCHITECTURE 17.9). This harness's
-// two arms are NOT competing strategies for one answer: NaiveModuloFold is the deliberately
-// wrong contrast the solution's own comment names (a single draw folded by ten can never leave
-// the die's own 1..7 range), while RejectionSampling is the only LeetCode-accepted algorithm. So
-// the arms are not asserted to agree; each is asserted against its own declared contract over the
-// draws one call returns. Those contracts are decisive here: because the fold's expression
-// `1 + (draw - 1) % 10` is the identity for every draw a Rand7 can produce, the fold's smallest
-// and largest drawn values pin the die's range exactly - which is also the only observable
-// route to the private stand-in's Draw - and a uniform 1..10 must reach ten, which the fold can
-// never do.
+// Harness coverage for ImplementRand10UsingRand7Benchmarks (ARCHITECTURE 17.9). Both arms are
+// uniform Rand10() strategies, but they consume the seeded Rand7 stream differently - the recycled
+// sampler draws fewer times per value - so they return different draws and are not asserted to
+// agree (ArmAgreement lists the class as a random draw). What each arm owes instead is LeetCode's
+// contract over the draws one call returns: one value per call, every value in 1..10, and every
+// value about a tenth of the time. Over the smallest Calls, 1,000, a value is expected 100 times
+// with a standard deviation of sqrt(1000 * 0.1 * 0.9), about 9.5, so the band of 50..150 is over
+// five of those either side, and a strategy that never reached some value, or reached one twice as
+// often as it should, falls outside it. The stream is seeded, so the counts are fixed from run to
+// run either way.
 public sealed partial class ImplementRand10UsingRand7BenchmarksTests
 {
-    // Enough calls that the extremes of a correct uniform range are certain to appear: over this
-    // many samples a missing 1 or 10 is vanishingly unlikely. The stream is seeded, so the drawn
-    // values are fixed from run to run either way.
     private const int SmallestCalls = 1_000;
 
-    private const int MinimumDieValue = 1;
-    private const int Rand7Maximum = 7;
+    private const int MinimumRand10 = 1;
     private const int Rand10Maximum = 10;
+
+    private const int FewestDrawsOfAValue = 50;
+    private const int MostDrawsOfAValue = 150;
 
     [Fact]
     public void Setup_SameCalls_RebuildsTheSameDrawStream()
     {
-        Assert.Equal(BuildHarness().NaiveModuloFold(), BuildHarness().NaiveModuloFold());
         Assert.Equal(BuildHarness().RejectionSampling(), BuildHarness().RejectionSampling());
+        Assert.Equal(BuildHarness().RecycledRejectionSampling(), BuildHarness().RecycledRejectionSampling());
     }
 
     [Fact]
-    public void NaiveModuloFold_OneDrawFoldedByTen_StaysInsideTheDieRange()
-    {
-        var draws = BuildHarness().NaiveModuloFold();
+    public void RejectionSampling_SeededStream_SpreadsEvenlyOverOneToTen() =>
+        AssertSpreadEvenlyOverOneToTen(BuildHarness().RejectionSampling());
 
+    [Fact]
+    public void RecycledRejectionSampling_SeededStream_SpreadsEvenlyOverOneToTen() =>
+        AssertSpreadEvenlyOverOneToTen(BuildHarness().RecycledRejectionSampling());
+
+    private static void AssertSpreadEvenlyOverOneToTen(int[] draws)
+    {
         Assert.Equal(SmallestCalls, draws.Length);
-        Assert.Equal(MinimumDieValue, draws.Min());
-        Assert.Equal(Rand7Maximum, draws.Max());
-    }
+        Assert.All(draws, draw => Assert.InRange(draw, MinimumRand10, Rand10Maximum));
 
-    [Fact]
-    public void RejectionSampling_UniformOverTen_ReachesValuesTheFoldCannotProduce()
-    {
-        var draws = BuildHarness().RejectionSampling();
-
-        Assert.Equal(SmallestCalls, draws.Length);
-        Assert.Equal(MinimumDieValue, draws.Min());
-        Assert.Equal(Rand10Maximum, draws.Max());
-    }
-
-    // The stand-in is a private nested type, so Draw is only observable through the two arms that
-    // call it - and only the fold's own arithmetic exposes it: `1 + (draw - 1) % 10` returns the
-    // draw itself for every value a Rand7 can produce, so the fold's floor and ceiling are the
-    // die's, and a draw outside 1..7 would move them.
-    [Fact]
-    public void Draw_SeededRand7StandIn_DrawsOnlyInsideTheDieRange()
-    {
-        var draws = BuildHarness().NaiveModuloFold();
-
-        Assert.All(draws, draw => Assert.InRange(draw, MinimumDieValue, Rand7Maximum));
+        for (var value = MinimumRand10; value <= Rand10Maximum; value++)
+        {
+            var drawsOfValue = draws.Count(draw => draw == value);
+            Assert.InRange(drawsOfValue, FewestDrawsOfAValue, MostDrawsOfAValue);
+        }
     }
 
     private static ImplementRand10UsingRand7Benchmarks BuildHarness()

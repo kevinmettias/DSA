@@ -5,9 +5,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are ImplementRand10UsingRand7Solution's, called Calls
 // times against the same seeded System.Random-backed Rand7() (this suite's
 // established randomness-problem convention - see ShuffleAnArrayBenchmarks,
-// RandomPickIndexBenchmarks). NaiveModuloFold is the "fast but wrong" contrast, not
-// a correctness baseline; RejectionSampling is the actual LeetCode-accepted answer.
-// Each arm returns every value it drew, in call order.
+// RandomPickIndexBenchmarks). RejectionSampling is the textbook answer, retrying
+// from scratch on a rejected pair of draws; RecycledRejectionSampling is LeetCode's
+// follow-up, carrying a rejected draw's leftover randomness into the next round for
+// about 2.19 Rand7() calls per Rand10() instead of 2.45. Calls runs to LeetCode's
+// 10^5. Each arm returns every value it drew, in call order.
 public class ImplementRand10UsingRand7Benchmarks
 {
     private IRand7 _rand7 = null!;
@@ -26,22 +28,22 @@ public class ImplementRand10UsingRand7Benchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int[] NaiveModuloFold()
+    public int[] RejectionSampling()
     {
         for (var i = 0; i < Calls; i++)
         {
-            _draws[i] = ImplementRand10UsingRand7Solution.Rand10ByNaiveModuloFold(_rand7);
+            _draws[i] = ImplementRand10UsingRand7Solution.Rand10ByRejectionSampling(_rand7);
         }
 
         return _draws;
     }
 
     [Benchmark]
-    public int[] RejectionSampling()
+    public int[] RecycledRejectionSampling()
     {
         for (var i = 0; i < Calls; i++)
         {
-            _draws[i] = ImplementRand10UsingRand7Solution.Rand10ByRejectionSampling(_rand7);
+            _draws[i] = ImplementRand10UsingRand7Solution.Rand10ByRecycledRejectionSampling(_rand7);
         }
 
         return _draws;

@@ -9,12 +9,12 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // runs SeededRandomRand7.Draw is the outer benchmark's arm, which passes the Setup-built Rand7 into
 // the solution. These tests drive that arm and assert what Draw must be doing.
 //
-// The benchmark's own comment says its arms are not competing strategies - NaiveModuloFold is the
-// "fast but wrong" contrast, not a correctness baseline - so this class does not assert that they
-// agree. It uses the accepted arm, RejectionSampling, purely as the way to observe Draw: one arm
-// call returns one Draw-derived value per call it makes, so it reads out Draw's stream. Both facts below are properties of Draw rather than of the arm - a Draw that returned a
-// value outside 1..7 would push the fold outside 1..10, and Draw's seeded stream must keep covering
-// all seven values rather than collapsing onto a subset.
+// The benchmark's two arms consume Draw's stream differently - the recycled sampler draws fewer times
+// per value - so this class does not assert that they agree. It uses the textbook arm,
+// RejectionSampling, purely as the way to observe Draw: one arm call returns one Draw-derived value
+// per call it makes, so it reads out Draw's stream. Both facts below are properties of Draw rather
+// than of the arm - a Draw that returned 0 would fold a value to 0, outside 1..10, and Draw's seeded
+// stream must keep covering all seven values rather than collapsing onto a subset.
 public sealed partial class SeededRandomRand7Tests
 {
     private const int SmallestCallCount = 1_000;
