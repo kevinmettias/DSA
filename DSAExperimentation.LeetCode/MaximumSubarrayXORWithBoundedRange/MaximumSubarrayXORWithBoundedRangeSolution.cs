@@ -1,5 +1,4 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.DataStructures.CountedBitTrie;
 using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
 
 namespace DSAExperimentation.LeetCode.MaximumSubarrayXORWithBoundedRange;
@@ -10,10 +9,6 @@ namespace DSAExperimentation.LeetCode.MaximumSubarrayXORWithBoundedRange;
 // qualifies (k >= 0), so there is always an answer.
 internal static class MaximumSubarrayXORWithBoundedRangeSolution
 {
-    // Bit 31 is the most significant bit of a 32-bit int; the greedy walks below
-    // run MSB first over all 32 levels, as BitTrie itself lays its paths out.
-    private const int MostSignificantBitIndex = 31;
-
     // The textbook O(n^2) scan: from every start index, extend the end one element
     // at a time, keeping the running max, min and XOR, until the spread passes
     // maxSpread. Deliberately written without this repo's primitives - the arm the
@@ -61,29 +56,28 @@ internal static class MaximumSubarrayXORWithBoundedRangeSolution
     // with two monotonic Deques. A subarray [l, r]'s XOR is prefix[r + 1] XOR
     // prefix[l], so the best subarray ending at r is the best XOR of prefix[r + 1]
     // against the live prefixes prefix[left..r] - one greedy walk down this repo's
-    // BitTrie. BitTrie has no Remove, so the prefixes the left edge passes are
-    // retired with the subtree-count technique MaximumGeneticDifferenceQuery uses:
-    // each trie node counts the live values through it, and the walk only takes a
-    // child that still has one. O(n * 32) against the scan's O(n * window).
+    // CountedBitTrie, which takes back each prefix the left edge passes. The window
+    // always holds prefix[right], so that walk always finds a live value.
+    // O(n * 32) against the scan's O(n * window).
     public static int MaxSubarrayXorBySlidingWindowBitTrie(int[] nums, int maxSpread)
     {
         var prefix = PrefixXors(nums);
-        var live = new LivePrefixes(new BitTrie(), new HashMap<BitTrieNode, int>());
+        var live = new CountedBitTrie();
         var window = new MinMaxWindow(nums, maxSpread);
         var left = 0;
         var best = 0;
 
         for (var right = 0; right < nums.Length; right++)
         {
-            Insert(live, prefix[right]);
+            live.Insert(prefix[right]);
             var newLeft = window.Advance(right);
 
             for (; left < newLeft; left++)
             {
-                Remove(live, prefix[left]);
+                live.TryRemove(prefix[left]);
             }
 
-            var bestEndingHere = MaxXorAmongLive(live, prefix[right + 1]);
+            live.TryMaxXor(prefix[right + 1], out var bestEndingHere);
             best = Math.Max(best, bestEndingHere);
         }
 
@@ -102,84 +96,6 @@ internal static class MaximumSubarrayXORWithBoundedRangeSolution
 
         return prefix;
     }
-
-    private static void Remove(LivePrefixes live, int value) => AdjustSubtreeCounts(live, value, delta: -1);
-
-    // BitTrie.TryMaxXor's greedy "prefer the opposite bit" walk, restricted to
-    // children that still carry a live value. The window always holds at least
-    // prefix[right], so some child is live at every level.
-    private static int MaxXorAmongLive(LivePrefixes live, int value)
-    {
-        BitTrieNode? current = live.Trie.Root;
-        var bits = unchecked((uint)value);
-        var xor = 0u;
-
-        for (var i = MostSignificantBitIndex; i >= 0 && current is not null; i--)
-        {
-            var (next, matchedOpposite) = DescendToLiveChild(current, live.SubtreeCount, (bits >> i) & 1u);
-
-            if (matchedOpposite)
-            {
-                xor |= 1u << i;
-            }
-
-            current = next;
-        }
-
-        return unchecked((int)xor);
-    }
-
-    private static (BitTrieNode? Next, bool MatchedOpposite) DescendToLiveChild(
-        BitTrieNode current, HashMap<BitTrieNode, int> subtreeCount, uint bit)
-    {
-        var opposite = ChildForBit(current, bit == 0 ? 1u : 0u);
-
-        if (HasLiveValues(opposite, subtreeCount))
-        {
-            return (opposite, true);
-        }
-
-        return (ChildForBit(current, bit), false);
-    }
-
-    private static bool HasLiveValues(BitTrieNode? child, HashMap<BitTrieNode, int> subtreeCount) =>
-        child is not null && subtreeCount.TryGetValue(child, out var count) && count > 0;
-
-    private static void Insert(LivePrefixes live, int value)
-    {
-        live.Trie.Insert(value);
-        AdjustSubtreeCounts(live, value, delta: 1);
-    }
-
-    // Follows the value's bit path from the root, bumping each visited node's live
-    // count by delta. A matching Insert laid every node on the path down first, so
-    // the walk always runs the full 32 levels and the null test only answers the
-    // compiler.
-    private static void AdjustSubtreeCounts(LivePrefixes live, int value, int delta)
-    {
-        var current = live.Trie.Root;
-        var bits = unchecked((uint)value);
-
-        for (var i = MostSignificantBitIndex; i >= 0; i--)
-        {
-            var child = ChildForBit(current, (bits >> i) & 1u);
-
-            if (child is null)
-            {
-                return;
-            }
-
-            live.SubtreeCount.TryGetValue(child, out var existing);
-            live.SubtreeCount.Set(child, existing + delta);
-            current = child;
-        }
-    }
-
-    private static BitTrieNode? ChildForBit(BitTrieNode node, uint bit) =>
-        bit == 0 ? node.Zero : node.One;
-
-    // The trie and its per-node live counts, always used together.
-    private readonly record struct LivePrefixes(BitTrie Trie, HashMap<BitTrieNode, int> SubtreeCount);
 
     // Two monotonic index Deques over the same window - one decreasing in value (its
     // front is the window's max), one increasing (its front is the min) - exactly as
