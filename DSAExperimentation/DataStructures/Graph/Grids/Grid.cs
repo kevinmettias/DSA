@@ -8,9 +8,31 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // other topology in this library.
 internal sealed class Grid(bool[,] passable)
 {
-    public int Rows => passable.GetLength(0);
-    public int Cols => passable.GetLength(1);
+    public GridSize Size { get; } = new(passable.GetLength(0), passable.GetLength(1));
 
-    public bool IsPassable(int row, int col)
-        => row >= 0 && row < Rows && col >= 0 && col < Cols && passable[row, col];
+    public int Rows => Size.Rows;
+    public int Cols => Size.Cols;
+
+    // Every cell open: a board whose only walls are its edges.
+    public Grid(int rows, int cols)
+        : this(AllOpen(rows, cols))
+    {
+    }
+
+    public bool IsPassable(int row, int col) => Size.HasCell(row, col) && passable[row, col];
+
+    private static bool[,] AllOpen(int rows, int cols)
+    {
+        var passable = new bool[rows, cols];
+
+        for (var row = 0; row < rows; row++)
+        {
+            for (var col = 0; col < cols; col++)
+            {
+                passable[row, col] = true;
+            }
+        }
+
+        return passable;
+    }
 }

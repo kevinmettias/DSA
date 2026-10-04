@@ -5,7 +5,7 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // The neighbour offsets a grid move set is made of, as (DeltaRow, DeltaCol). Order is part of the
 // contract: Orthogonal is up, down, left, right - the order GridChildren yields neighbours in - and
 // the other three are row-major, so an answer that lists cells in the order they were reached comes
-// out the same from every caller. A table whose order means something else - a turning cycle for a
+// out the same from every caller. GridNeighbors yields in the order of whichever table it is given. A table whose order means something else - a turning cycle for a
 // spiral walk or a robot's heading, a puzzle's own numbered direction codes - is not a neighbour set,
 // and keeps its own table.
 //

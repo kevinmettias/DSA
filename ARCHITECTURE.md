@@ -658,10 +658,10 @@ The rule is one question: **does every runtime value the contract needs arrive t
 signatures?** If it does, the contract stays a static-abstract witness — `IReduceAlgebra`,
 `ITopDownHooks`, `IPathHeuristic`, `IChildOrder`, `IHeapOrder`, the element algebras of §11.4. If it
 does not, its members are instance members on a `struct` type parameter — `IFoldAlgebra`,
-`IDepthFirstHooks`, `IBreadthFirstHooks`, `ILevelGroupedHooks`, `IInOrderHooks`, and `IVisitGuard`
-before them. The engine takes the struct as a value; each kind is still its own instantiation, and
-its members are constrained calls, so nothing boxes and nothing dispatches through an interface.
-Three consequences follow:
+`IDepthFirstHooks`, `IBreadthFirstHooks`, `ILevelGroupedHooks`, `IInOrderHooks`, `IGridCellFilter`,
+and `IVisitGuard` before them. The engine takes the struct as a value; each kind is still its own
+instantiation, and its members are constrained calls, so nothing boxes and nothing dispatches
+through an interface. Three consequences follow:
 
 - **Every member is required.** A default interface member reached through a struct type parameter
   boxes the struct, so an empty body is how a hook ignores an event.
@@ -764,7 +764,7 @@ generic over (§5 step 7, §13.5) — `Buffers`, `Heap`, `HashMap`, `DynamicArra
 | Graph — Contracts/Ordering | `Graph/Contracts/Ordering/**` |
 | Graph — Topology chain | `Graph/Contracts/Topologies/**`, `Graph/Engines/Dags/IDagTopology.cs`, `Graph/Engines/Dags/Trees/ITreeTopology.cs` |
 | Graph — Trees | `Graph/Engines/Dags/Trees/{BinaryTreeNode,BinaryTreeChildren,BinaryTreeTopology,ChildSide,FindClosest,IInOrderHooks,InOrderTraversal,BinarySearchTree,LowercaseTrieNode,LowercaseTrieTopology,LowercaseTrie,BitTrieNode,BitTrieChildren,BitTrieTopology,BitTrie,RootedTreeNode,RootedTreeTopology,ParentArrayTree,PreOrderTour,PreOrderLowestCommonAncestor}.cs` (§13.7, §13.8, §13.9, §17.6). `PreOrderTour` lays a `RootedTreeNode` tree out in pre-order, so every subtree is one contiguous range of positions; `PreOrderLowestCommonAncestor` reads ancestors off that layout with one range minimum, O(log n) per query after O(n) preparation. It is hardwired to the tour, so it lives here rather than beside `Algorithms/Ancestry/LowestCommonAncestor`, which is generic over `ITreeTopology` (§13.5) |
-| Graph — Grids | `Graph/Grids/{Grid,GridNode,GridChildren,GridDirections,GridTopology,WeightedGridNode,WeightedGridTopology,WeightedGrid}.cs` (§17.6) |
+| Graph — Grids | `Graph/Grids/{Grid,GridNode,GridChildren,GridDirections,GridSize,GridNeighbors,IGridCellFilter,GridTopology,WeightedGridNode,WeightedGridTopology,WeightedGrid}.cs` (§17.6). `GridSize` is a board's extent and its one bounds rule; `GridNeighbors` is a cell's on-board neighbours in a direction table's order, filtered by an `IGridCellFilter`, for a `DepthFirstSearch.Traverse` successor whose "open" is decided by the problem's cells rather than a fixed map like `Grid`'s |
 | Graph — Adjacency | `Graph/Adjacency/{AdjacencyNode,AdjacencyTopology,WeightedAdjacencyNode,WeightedAdjacencyTopology}.cs` — the general-graph sibling of `RootedTreeNode`/`RootedTreeTopology`, graph tier only: an adjacency list promises no acyclicity, so a DAG or tree witness over it is written by the caller who can vouch for one. The LeetCode problems whose node was exactly this shape use it through a per-file `using` alias that keeps the problem's own name (`using CourseNode = …AdjacencyNode;`), and the file that wires the edges says what an edge means there, since that is the caller's reading of the list, not a property of the node |
 | Graph — Hamming | `Graph/Hamming/{HammingNode,HammingTopology,HammingGraph,HammingSearch,Alphabet,StandardAlphabets}.cs` (§17.6) |
 | Graph — ShortestPaths | `Graph/ShortestPaths/ByPriorityOrder.cs` |

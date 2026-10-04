@@ -4,27 +4,12 @@ namespace DSAExperimentation.Tests.DataStructures.Graph.Grids;
 
 public sealed partial class GridChildrenTests
 {
-    private static Grid Open(int rows, int cols)
-    {
-        var passable = new bool[rows, cols];
-
-        for (var r = 0; r < rows; r++)
-        {
-            for (var c = 0; c < cols; c++)
-            {
-                passable[r, c] = true;
-            }
-        }
-
-        return new Grid(passable);
-    }
-
     // The top-left corner of an open 3x3 grid. Its up and left neighbours are off-grid, so
     // only down and right are passable and they take the first two entries of the index
     // space.
     private static GridChildren TopLeftCornerChildren()
     {
-        var grid = Open(3, 3);
+        var grid = new Grid(3, 3);
 
         return new GridChildren(new GridNode(0, 0, grid));
     }
@@ -32,7 +17,7 @@ public sealed partial class GridChildrenTests
     [Fact]
     public void Count_InteriorCell_HasFourNeighbours()
     {
-        var grid = Open(3, 3);
+        var grid = new Grid(3, 3);
 
         Assert.Equal(4, new GridChildren(new GridNode(1, 1, grid)).Count);
     }
@@ -59,7 +44,7 @@ public sealed partial class GridChildrenTests
     [Fact]
     public void Get_YieldsNeighboursInUpDownLeftRightOrder()
     {
-        var grid = Open(3, 3);
+        var grid = new Grid(3, 3);
         var children = new GridChildren(new GridNode(1, 1, grid));
 
         var coordinates = Enumerable.Range(0, children.Count)

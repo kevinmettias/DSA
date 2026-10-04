@@ -4,25 +4,10 @@ namespace DSAExperimentation.Tests.DataStructures.Graph.Grids;
 
 public sealed partial class GridTopologyTests
 {
-    private static Grid OpenThreeByThree()
-    {
-        var passable = new bool[3, 3];
-
-        for (var r = 0; r < 3; r++)
-        {
-            for (var c = 0; c < 3; c++)
-            {
-                passable[r, c] = true;
-            }
-        }
-
-        return new Grid(passable);
-    }
-
     [Fact]
     public void GetChildren_ComputesNeighboursFromTheNodesOwnGridReference()
     {
-        var node = new GridNode(1, 1, OpenThreeByThree());
+        var node = new GridNode(1, 1, new Grid(3, 3));
 
         Assert.Equal(4, GridTopology.GetChildren(node).Count);
     }

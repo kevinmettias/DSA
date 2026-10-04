@@ -51,4 +51,25 @@ public sealed partial class GridTests
     [MemberData(nameof(OutOfBoundsCells))]
     public void IsPassable_OutOfBounds_ReturnsFalse(int row, int col)
         => Assert.False(TwoByThree().IsPassable(row, col));
+
+    [Fact]
+    public void Size_IsRowsByColsOfThePassableMap() => Assert.Equal(new GridSize(2, 3), TwoByThree().Size);
+
+    [Fact]
+    public void Size_AllOpenGrid_IsTheRowsAndColsItWasGiven() => Assert.Equal(new GridSize(2, 3), new Grid(2, 3).Size);
+
+    [Fact]
+    public void IsPassable_AllOpenGrid_EveryCellIsOpen()
+    {
+        var grid = new Grid(2, 3);
+
+        Assert.All(
+            Enumerable.Range(0, 2).SelectMany(row => Enumerable.Range(0, 3).Select(col => (Row: row, Col: col))),
+            cell => Assert.True(grid.IsPassable(cell.Row, cell.Col)));
+    }
+
+    [Theory]
+    [MemberData(nameof(OutOfBoundsCells))]
+    public void IsPassable_AllOpenGridOutOfBounds_ReturnsFalse(int row, int col)
+        => Assert.False(new Grid(2, 3).IsPassable(row, col));
 }
