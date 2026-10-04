@@ -31,7 +31,7 @@ internal static class DesignSQLSolution
 
     // The id of a table's first row; each later one is one greater than the last
     // inserted, removed or not. Column ids count from 1 the same way.
-    private const int FirstId = 1;
+    internal const int FirstId = 1;
 
     // The shared surface both strategies implement, so a harness can replay one
     // call script against either without restating it. Each method is one of

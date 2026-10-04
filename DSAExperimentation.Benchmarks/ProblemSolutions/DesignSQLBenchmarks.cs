@@ -38,7 +38,6 @@ public class DesignSQLBenchmarks
     private const string RowPrefix = "r";
     private const string ColumnPrefix = "c";
 
-    private const int FirstId = 1;
     private const int ExportStride = 50;
 
     // Every second id is removed, starting at the first even one, so the odd ids are left.
@@ -83,7 +82,7 @@ public class DesignSQLBenchmarks
     {
         _names = [TableName];
         _columns = [ColumnCount];
-        _rows = [.. Enumerable.Range(FirstId, RowCount + InsertsAfterRemovals).Select(RowOf)];
+        _rows = [.. Enumerable.Range(DesignSQLSolution.FirstId, RowCount + InsertsAfterRemovals).Select(RowOf)];
         _misfitRow = [.. _rows[0].Take(ColumnCount - 1)];
         _cellProbes = [.. Enumerable.Range(0, CellProbeCount).Select(ProbeOf)];
         _inserted = new bool[RefusedInsertCount + RowCount + InsertsAfterRemovals];
@@ -92,10 +91,10 @@ public class DesignSQLBenchmarks
     }
 
     private static string[] RowOf(int rowId) =>
-        [.. Enumerable.Range(FirstId, ColumnCount).Select(columnId => CellText(rowId, columnId))];
+        [.. Enumerable.Range(DesignSQLSolution.FirstId, ColumnCount).Select(columnId => CellText(rowId, columnId))];
 
     private static string CellText(int rowId, int columnId) =>
-        RowPrefix + LowercaseNames.Of(rowId - FirstId) + ColumnPrefix + LowercaseNames.Of(columnId - FirstId);
+        RowPrefix + LowercaseNames.Of(rowId - DesignSQLSolution.FirstId) + ColumnPrefix + LowercaseNames.Of(columnId - DesignSQLSolution.FirstId);
 
     // Probe p reads row id p mod (RowCount + 2) - 0 through RowCount + 1 - at the column its
     // sweep is on.
@@ -132,16 +131,16 @@ public class DesignSQLBenchmarks
     {
         _inserted[0] = sql.TryInsert(MissingTableName, _rows[0]);
         _inserted[1] = sql.TryInsert(TableName, _misfitRow);
-        sql.Remove(MissingTableName, FirstId);
-        _selected[0] = sql.Select(MissingTableName, FirstId, FirstId);
+        sql.Remove(MissingTableName, DesignSQLSolution.FirstId);
+        _selected[0] = sql.Select(MissingTableName, DesignSQLSolution.FirstId, DesignSQLSolution.FirstId);
         _exported[0] = sql.Export(MissingTableName);
     }
 
     private void FillAndExport(DesignSQLSolution.ISqlStrategy sql)
     {
-        for (var rowId = FirstId; rowId <= RowCount; rowId++)
+        for (var rowId = DesignSQLSolution.FirstId; rowId <= RowCount; rowId++)
         {
-            _inserted[RefusedInsertCount + rowId - FirstId] = sql.TryInsert(TableName, _rows[rowId - FirstId]);
+            _inserted[RefusedInsertCount + rowId - DesignSQLSolution.FirstId] = sql.TryInsert(TableName, _rows[rowId - DesignSQLSolution.FirstId]);
 
             if (rowId % ExportStride == 0)
             {
