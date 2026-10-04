@@ -31,8 +31,16 @@ strategy members had no test method named for them, and four tests asserted priv
   design problem's per-strategy class or an input-preparation helper (before the rename it
   absorbed about 4,590).
 
-Open: the 29 public input-preparation helpers on solution classes (`BuildHopGraph`,
-`BuildDistanceMatrix`, …) are not yet required to have a named test.
+The 30 public input-preparation helpers on solution classes (`BuildHopGraph`, `BuildDistanceMatrix`,
+…, counting LC 3841's new `LayOutTree`) were not required to have a named test. A second theory in
+`LeetCodeStrategyCoverageTests` now requires one for every non-private static method that is not a
+strategy. It first failed listing exactly those 30.
+
+- 41 tests now assert what each helper builds: the edges, matrix entries, index contents and trie
+  keys, against values derived by hand beside each test (`e315c526`, `09bf0c0d`, `3b6557ca`,
+  `d2ddc79b`, `67540137`).
+- Nine of them were proved load-bearing by breaking the helper and watching its test fail.
+- None of the helpers was wrong.
 
 ### P2 was half a rename job — DONE
 
@@ -389,9 +397,13 @@ using) removed from 1,111 files.
   category discoverer above.
 - **P4, scope gaps — DONE.** Its follow-on (registrations for six newly armed problems) is moot:
   the registry is gone and `LeetCodeStrategyCoverageTests` covers every solution.
-- **P5, hygiene — DONE except one.** Neither `BenchmarkDotNet.Artifacts/` is tracked (both are
-  ignored); `LeetCodeCatalog` lives in `DSAExperimentation.LeetCode.Tests` (§17.6a). Open, minor:
-  the `InternalsVisibleTo` lists are still hand-maintained per project (5, 3 and 1 entries).
+- **P5, hygiene — DONE.** Neither `BenchmarkDotNet.Artifacts/` is tracked (both are ignored), and
+  `LeetCodeCatalog` lives in `DSAExperimentation.LeetCode.Tests` (§17.6a). The `InternalsVisibleTo`
+  lists (5, 3 and 1 entries) stay hand-written, by decision.
+  - Each entry names a project that really consumes the declaring one's internals.
+  - A project cannot discover at build time who references it.
+  - A `DSAExperimentation.*` wildcard would also grant the solution tier's internals to
+    `DSAExperimentation.Tests`, which is kept unable to reach them.
 - **P6, the companion tree — two steps open.** The nomos exemption for BenchmarkDotNet entry points
   (`[Benchmark]`, `[GlobalSetup]`, `[Params]`, `[ArgumentsSource]`, …) is still uncommitted in
   `code-standards`, so committed nomos reports the deleted companions' classes as uncovered. And
@@ -408,7 +420,9 @@ Not everything here is debt, and the worklist should not obscure that:
 - The tier order is enforced by tests that read the repo as text — `Architecture/LayeringTests.cs`,
   `Tier5WitnessTests.cs`, `RepositoryFiles.cs` — not by prose.
 - Corpus coverage is complete: every one of the 1,105 solutions has a test class, and
-  `LeetCodeStrategyCoverageTests` requires a named test method for every strategy it exposes.
+  `LeetCodeStrategyCoverageTests` requires a named test method for every strategy and every
+  input-preparation helper it exposes. Every solution has also either run on LeetCode's published
+  examples or has tests that state them.
 - Every `[Benchmark]` arm is run and compared with its baseline by `BenchmarkArmsTests`, which
   asserts by reflection that the arms agree on the full answer and that the workload and answers
   rebuild identically, at the smallest size the arms share.

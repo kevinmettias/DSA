@@ -1646,7 +1646,9 @@ would be blind in precisely the place duplication happens.
 - **§17.3's "the solution class holds every strategy" and §17.7's "one test method per strategy"**
   — `LeetCodeStrategyCoverageTests`. Every non-private `<Operation>By<Strategy>` member of every
   `<Problem>Solution` needs a test method in the problem's test namespace whose first
-  underscore-separated word is the member's name. This is the check the
+  underscore-separated word is the member's name, and so does every other non-private static
+  method - the input-preparation helpers §17.4 makes public so a benchmark can hoist them, each
+  asserted on what it builds. This is the check the
   `check-test-coverage` waiver over `DSAExperimentation.LeetCode/**` rests on; before it existed the
   waiver's "complete by construction" was a claim, and `KthSmallestElementInABSTSolution` had no
   caller at all.
