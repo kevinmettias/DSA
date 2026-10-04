@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.LeetCode.CheckIfDigitsAreEqualInStringAfterOperationsI;
 
 namespace DSAExperimentation.LeetCode.CheckIfDigitsAreEqualInStringAfterOperationsII;
@@ -19,7 +20,9 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsIISolution
     private const int ModTwo = 2;
     private const int ModFive = 5;
 
-    private static readonly int[,] BinomialModFiveTable = BuildBinomialModFiveTable();
+    // C(a, b) mod 5 for 0 <= b <= a <= 4 - the only inputs Lucas' theorem ever
+    // hands BinomialModFive - read off Pascal's triangle rows 0..4 mod 5, built once.
+    private static readonly PascalTriangle BinomialModFiveTable = PascalTriangle.Modulo(ModFive - 1, ModFive);
 
     // The textbook answer: perform the reduction exactly as stated. O(n^2) - the
     // arm the Lucas strategy has to beat once n approaches the 10^5 bound, and the
@@ -80,7 +83,7 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsIISolution
                 return 0;
             }
 
-            result = result * BinomialModFiveTable[totalDigit, selectedDigit] % ModFive;
+            result = (int)(result * BinomialModFiveTable.Choose(totalDigit, selectedDigit) % ModFive);
             totalCount /= ModFive;
             selectedCount /= ModFive;
         }
@@ -98,23 +101,4 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsIISolution
     private static bool IsParityAlreadyMatched(int modFive, int modTwo) => modFive % ModTwo == modTwo;
 
     private static int ParityFlipped(int modFive) => modFive + ModFive;
-
-    // C(a, b) mod 5 for 0 <= b <= a <= 4 - the only inputs Lucas' theorem ever
-    // hands BinomialModFive - built once as Pascal's triangle rows 0..4 mod 5.
-    private static int[,] BuildBinomialModFiveTable()
-    {
-        var table = new int[ModFive, ModFive];
-
-        for (var row = 0; row < ModFive; row++)
-        {
-            table[row, 0] = 1;
-
-            for (var col = 1; col <= row; col++)
-            {
-                table[row, col] = (table[row - 1, col - 1] + table[row - 1, col]) % ModFive;
-            }
-        }
-
-        return table;
-    }
 }

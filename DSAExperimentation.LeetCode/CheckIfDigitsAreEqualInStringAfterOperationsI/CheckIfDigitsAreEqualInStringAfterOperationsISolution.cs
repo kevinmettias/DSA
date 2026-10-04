@@ -1,16 +1,16 @@
+using DSAExperimentation.Algorithms.NumberTheory;
+
 namespace DSAExperimentation.LeetCode.CheckIfDigitsAreEqualInStringAfterOperationsI;
 
 // LeetCode 3461. Check If Digits Are Equal in String After Operations I: repeatedly
 // replace s with the length-(n-1) string of (s[i]+s[i+1]) % 10 for consecutive
 // pairs, until exactly two digits remain, and report whether they're equal.
 //
-// s.Length is at most 100, and no repo primitive earns its place here - both
-// strategies below are plain digit-array composition, the same "internals stay
-// BCL" the naive arm of every migrated problem already keeps. The two strategies
-// are genuinely different algorithms, not one primitive-composing and one
-// textbook: direct repeated reduction versus reading the two final digits straight
-// off row (n-2) of Pascal's triangle, since n-2 reduction steps is exactly what
-// Pascal's triangle's addition rule computes.
+// s.Length is at most 100. The two strategies are genuinely different algorithms:
+// direct repeated reduction over plain digit arrays, the textbook arm, versus
+// reading the two final digits straight off row (n-2) of Pascal's triangle - a
+// PascalTriangle row - since n-2 reduction steps is exactly what Pascal's
+// triangle's addition rule computes.
 internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
 {
     // Both strategies reduce modulo the same thing - a single decimal digit - and the
@@ -40,39 +40,23 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
     // after k steps, the digit at position i is sum_j C(k, j) * original[i + j] mod
     // 10. With k = s.Length - 2, position 0 and position 1 of that row are exactly
     // the two digits IsEqualByAdjacentSumReduction ends with - computed here by
-    // building the coefficient row once instead of materializing every
-    // intermediate string. The row is built modulo 10: only the final digit is ever
-    // read, Pascal's rule is a sum, and a sum's last digit depends only on its terms'
-    // last digits. Built exactly, the row overflows an int from s.Length 36 on -
-    // C(34, 17) is already past int.MaxValue - and the answer silently goes wrong.
+    // reading the coefficient row off a PascalTriangle once instead of materializing
+    // every intermediate string. The triangle is built modulo 10: only the final
+    // digit is ever read, Pascal's rule is a sum, and a sum's last digit depends only
+    // on its terms' last digits. Built exactly, the row outgrows even a long past
+    // row 66 (PascalTriangle.MaxExactRow), short of the 98 steps s.Length 100 needs.
     public static bool IsEqualByPascalRowCoefficients(string digitString)
     {
         var digits = ToDigits(digitString);
         var steps = digits.Length - 2;
-        var row = PascalRow(steps);
+        var row = PascalTriangle.Modulo(steps, DecimalDigitModulus).Row(steps);
 
         return Reduce(digits, row, 0) == Reduce(digits, row, 1);
     }
 
-    private static int[] PascalRow(int row)
+    private static long Reduce(int[] digits, ReadOnlySpan<long> coefficients, int offset)
     {
-        var coefficients = new int[row + 1];
-        coefficients[0] = 1;
-
-        for (var i = 1; i <= row; i++)
-        {
-            for (var j = i; j > 0; j--)
-            {
-                coefficients[j] = (coefficients[j] + coefficients[j - 1]) % DecimalDigitModulus;
-            }
-        }
-
-        return coefficients;
-    }
-
-    private static int Reduce(int[] digits, int[] coefficients, int offset)
-    {
-        var sum = 0;
+        var sum = 0L;
 
         for (var i = 0; i < coefficients.Length; i++)
         {

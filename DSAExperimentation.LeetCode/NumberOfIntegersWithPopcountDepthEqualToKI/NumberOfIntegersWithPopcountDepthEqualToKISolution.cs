@@ -1,5 +1,7 @@
 using System.Numerics;
 
+using DSAExperimentation.Algorithms.NumberTheory;
+
 namespace DSAExperimentation.LeetCode.NumberOfIntegersWithPopcountDepthEqualToKI;
 
 // LeetCode 3621. Number of Integers With Popcount-Depth Equal to K I:
@@ -91,7 +93,7 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKISolution
     // Classic binary digit-DP: for every '1' bit of binary, fix it to 0 and freely
     // choose every lower bit, weighting each choice of how many of those free
     // bits are set by the binomial coefficient C(remaining bits, ones needed)
-    // (Pascal's triangle - no modulus is involved here, unlike
+    // (PascalTriangle.Exact - no modulus is involved here, unlike
     // CountKReducibleNumbersLessThanNSolution's factorial/inverse-factorial
     // table, since the input number never exceeds 10^15 here, which keeps every
     // count well within a long). The number binary spells out is then folded in as
@@ -100,7 +102,7 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKISolution
     private static long[] CountNumbersByPopcount(string binary)
     {
         var length = binary.Length;
-        var pascal = BuildPascalsTriangle(length);
+        var pascal = PascalTriangle.Exact(length);
         var counts = new long[length + 1];
         var onesInPrefix = 0;
 
@@ -109,7 +111,7 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKISolution
             if (binary[i] == '1')
             {
                 var remainingBits = length - 1 - i;
-                AddFreeSuffixCounts(pascal[remainingBits], onesInPrefix, counts);
+                AddFreeSuffixCounts(pascal.Row(remainingBits), onesInPrefix, counts);
                 onesInPrefix++;
             }
         }
@@ -119,28 +121,9 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKISolution
         return counts;
     }
 
-    private static long[][] BuildPascalsTriangle(int size)
-    {
-        var pascal = new long[size + 1][];
-
-        for (var row = 0; row <= size; row++)
-        {
-            pascal[row] = new long[row + 1];
-            pascal[row][0] = 1;
-            pascal[row][row] = 1;
-
-            for (var col = 1; col < row; col++)
-            {
-                pascal[row][col] = pascal[row - 1][col - 1] + pascal[row - 1][col];
-            }
-        }
-
-        return pascal;
-    }
-
     // One fixed 1-bit turned to 0: every way the remaining bits below it can be
     // chosen, C(remainingBits, onesInSuffix), lands at baseIndex + onesInSuffix.
-    private static void AddFreeSuffixCounts(long[] row, int baseIndex, long[] counts)
+    private static void AddFreeSuffixCounts(ReadOnlySpan<long> row, int baseIndex, long[] counts)
     {
         for (var onesInSuffix = 0; onesInSuffix < row.Length; onesInSuffix++)
         {
