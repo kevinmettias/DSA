@@ -2,36 +2,81 @@ using DecimalStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.MultiplyStrings;
 
-// LeetCode 43. Multiply Strings: multiply two arbitrarily large non-negative
-// integers given as decimal strings, without converting either operand to a
-// built-in numeric type - LeetCode itself bans that shortcut once the
-// product would overflow a 64-bit integer.
+// LeetCode 43. Multiply Strings: multiply two non-negative integers of up to
+// 200 decimal digits each, given as strings, without a BigInteger library and
+// without converting either operand to an integer - a product of two 200-digit
+// operands has up to 400 digits, far past any machine integer.
 //
-// The two strategies are the shortcut most people reach for first anyway
-// (parse both operands as a machine integer, multiply, convert back), which
-// stays correct only while the product fits in a long; and elementary-school
-// digit-by-digit multiplication built the same way AddBinarySolution composes
-// this repo's Stack<char> for base-b string arithmetic - multiply num1 by one
-// digit of num2 at a time, shift each partial product by that digit's place,
-// then fold it into the running total with stack-based decimal-string
-// addition (AddBinary's carry walk, base 10 instead of base 2).
+// Both strategies are grade-school multiplication and differ in how they hold
+// the running total. The textbook baseline adds every digit pair's product into
+// the column it lands in and carries once at the end. The composed strategy is
+// built the way AddBinarySolution composes this repo's Stack<char> for base-b
+// string arithmetic: multiply num1 by one digit of num2 at a time, shift each
+// partial product by that digit's place, then fold it into the running total
+// with stack-based decimal-string addition (AddBinary's carry walk, base 10
+// instead of base 2).
 internal static class MultiplyStringsSolution
 {
     private const int DecimalBase = 10;
     private const string ZeroDigitString = "0";
 
-    // The shortcut most people reach for first: parse both operands as a
-    // machine integer and multiply directly. Deliberately written without
-    // this repo's primitives - it is the arm the digit-by-digit strategy
-    // below has to justify itself against, and it is also the one LeetCode's
-    // own constraints rule out for large inputs.
-    public static string MultiplyByLongConversion(string num1, string num2) =>
-        (long.Parse(num1) * long.Parse(num2)).ToString();
+    // The textbook baseline: num1[i] * num2[j] belongs to column i + j + 1 of
+    // an (m + n)-column int[], so every digit pair's product is added straight
+    // into its column, and one right-to-left carry pass at the end turns the
+    // column sums into digits. A column collects at most min(m, n) products of
+    // two digits - 200 * 81 at LeetCode's bound - so an int holds it without a
+    // carry per product. Deliberately written without this repo's primitives
+    // (ARCHITECTURE.md §17.5).
+    public static string MultiplyByColumnSums(string num1, string num2)
+    {
+        var columns = new int[num1.Length + num2.Length];
+
+        for (var i = 0; i < num1.Length; i++)
+        {
+            for (var j = 0; j < num2.Length; j++)
+            {
+                columns[i + j + 1] += (num1[i] - '0') * (num2[j] - '0');
+            }
+        }
+
+        CarryOnce(columns);
+
+        return TrimLeadingZeros(DigitsOf(columns));
+    }
+
+    // Leaves one decimal digit per column. A product of an m-digit and an
+    // n-digit number has at most m + n digits, so no carry is left over once
+    // the leftmost column is reached.
+    private static void CarryOnce(int[] columns)
+    {
+        var carry = 0;
+
+        for (var column = columns.Length - 1; column >= 0; column--)
+        {
+            var total = columns[column] + carry;
+            columns[column] = total % DecimalBase;
+            carry = total / DecimalBase;
+        }
+    }
+
+    // The carried columns read left to right, leading zeros included: the
+    // product can have m + n - 1 digits rather than m + n, and is "0" when
+    // either operand is.
+    private static string DigitsOf(int[] columns)
+    {
+        var chars = new char[columns.Length];
+
+        for (var column = 0; column < columns.Length; column++)
+        {
+            chars[column] = (char)('0' + columns[column]);
+        }
+
+        return new string(chars);
+    }
 
     // Elementary-school long multiplication: multiply num1 by each digit of
     // num2 in turn, shift that partial product into place, and accumulate
-    // with stack-based decimal addition. Stays correct at any length, unlike
-    // the long-conversion baseline above.
+    // with stack-based decimal addition.
     public static string MultiplyByDigitStack(string num1, string num2)
     {
         var result = ZeroDigitString;
