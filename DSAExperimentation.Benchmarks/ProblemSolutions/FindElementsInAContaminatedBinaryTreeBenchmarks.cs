@@ -16,8 +16,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // node i's recovered value is exactly i - the same array-index-as-value shape a
 // binary heap has. Half the sampled targets therefore miss, which is the worst case
 // for the linear scan and the case the hashed lookup exists for. Recovery writes the
-// values over the tree without reading the old ones, so a later invocation, handed
-// the recovered tree, does the same work.
+// recovered values over the tree it is handed, so each arm recovers a fresh copy of
+// the contaminated tree - LC 1261's input is always all -1 - and the copy is timed
+// on purpose, the same O(n) for every arm.
 public class FindElementsInAContaminatedBinaryTreeBenchmarks
 {
     private const int TargetSampleCount = 200;
@@ -33,6 +34,7 @@ public class FindElementsInAContaminatedBinaryTreeBenchmarks
 
     // Every Find verdict, in target order; sized in setup so the queries allocate nothing.
     private bool[] _found = [];
+
     [Params(200, 2_000)]
     public int NodeCount { get; set; }
 
@@ -48,12 +50,22 @@ public class FindElementsInAContaminatedBinaryTreeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool[] ListRecoverThenLinearScan() =>
-        FindAll(FindElementsInAContaminatedBinaryTreeSolution.CreateByListScan(_root));
+    public bool[] ListRecoverThenLinearScan()
+    {
+        var contaminated = BinaryTrees.Clone(_root);
+        var elements = FindElementsInAContaminatedBinaryTreeSolution.CreateByListScan(contaminated);
+
+        return FindAll(elements);
+    }
 
     [Benchmark]
-    public bool[] TopDownRecoverThenSetLookup() =>
-        FindAll(FindElementsInAContaminatedBinaryTreeSolution.CreateByTopDownSet(_root));
+    public bool[] TopDownRecoverThenSetLookup()
+    {
+        var contaminated = BinaryTrees.Clone(_root);
+        var elements = FindElementsInAContaminatedBinaryTreeSolution.CreateByTopDownSet(contaminated);
+
+        return FindAll(elements);
+    }
 
     private bool[] FindAll(IFindElements elements)
     {
