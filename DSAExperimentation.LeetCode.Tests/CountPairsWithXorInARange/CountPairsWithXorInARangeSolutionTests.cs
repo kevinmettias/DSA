@@ -7,7 +7,8 @@ namespace DSAExperimentation.LeetCode.Tests.CountPairsWithXorInARange;
 // [5, 14] band the original coverage replaced with a narrower one of its own - plus
 // the wide-open band, a single value with no pair at all, a duplicate-heavy input
 // whose only in-range XOR is zero, and the low == high == 0 band that makes the
-// trie arm subtract a CountLessThan(0) it must answer without descending.
+// trie arm subtract a CountXorBelow(value, 0) that must come to zero: no XOR is below
+// 0, so the walk passes every level without adding a count.
 public sealed partial class CountPairsWithXorInARangeSolutionTests
 {
     public static TheoryData<int[], int, int, int> Examples =>
