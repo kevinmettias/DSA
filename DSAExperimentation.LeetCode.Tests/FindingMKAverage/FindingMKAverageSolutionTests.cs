@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindingMKAverage;
 namespace DSAExperimentation.LeetCode.Tests.FindingMKAverage;
 
 // Harness only. Both strategies are FindingMKAverageSolution's - this file replays
-// LeetCode's published call script against each IMKAverage instance, so a failure
+// LeetCode's call script and this file's own against each IMKAverage, so a failure
 // still names the strategy that broke even though the "input" here is a sequence of
 // addElement/calculateMKAverage calls rather than a single argument tuple, the same
 // shape AllOneDataStructureTests uses for its own instance-API problem. The
@@ -17,8 +17,20 @@ public sealed partial class FindingMKAverageSolutionTests
         new()
         {
             {
-                // LeetCode's own example: -1 until the window of 3 fills, then the
-                // single middle element of each window.
+                // LeetCode example 1: -1 until the window of 3 fills, then the single
+                // middle element of each window - 3 of [3,1,10], then 5 of [5,5,5].
+                3, 1,
+                [
+                    MKAverageOp.AddElement(3), MKAverageOp.AddElement(1), MKAverageOp.Calculate(),
+                    MKAverageOp.AddElement(10), MKAverageOp.Calculate(),
+                    MKAverageOp.AddElement(5), MKAverageOp.AddElement(5), MKAverageOp.AddElement(5),
+                    MKAverageOp.Calculate(),
+                ],
+                [null, null, -1, null, 3, null, null, null, 5]
+            },
+            {
+                // LeetCode's script without its third addElement(5): the last window is
+                // [10,5,5], whose middle element is still 5.
                 3, 1,
                 [
                     MKAverageOp.AddElement(3), MKAverageOp.AddElement(1), MKAverageOp.Calculate(),

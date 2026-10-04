@@ -10,8 +10,10 @@ public sealed partial class InterleavingStringSolutionTests
     public static TheoryData<InterleavingCase> Examples =>
         new()
         {
+            // LeetCode examples 1-3.
             { new InterleavingCase(new InterleavingStrings("aabcc", "dbbca", "aadbbcbcac"), Expected: true) },
             { new InterleavingCase(new InterleavingStrings("aabcc", "dbbca", "aadbbbaccc"), Expected: false) },
+            { new InterleavingCase(new InterleavingStrings("", "", ""), Expected: true) },
         };
 
     [Theory]

@@ -11,11 +11,17 @@ public sealed partial class WordsWithinTwoEditsOfDictionarySolutionTests
     public static TheoryData<string[], string[], string[]> Examples =>
         new()
         {
-            // LeetCode example 1: "ants" is three edits from every dictionary word.
-            { ["word", "note", "ants", "wood"], ["word", "note", "cash"], ["word", "note", "wood"] },
+            // LeetCode example 1: "word" is one edit from "wood", "note" two from "joke",
+            // "wood" zero from itself, and "ants" four from every dictionary word.
+            { ["word", "note", "ants", "wood"], ["wood", "joke", "moat"], ["word", "note", "wood"] },
 
             // LeetCode example 2: nothing is within budget.
             { ["yes"], ["not"], [] },
+
+            // Example 1's queries against a dictionary of this file's own: "word" and
+            // "note" are in it, "wood" is one edit from "word", and "ants" is at least
+            // three edits from every word.
+            { ["word", "note", "ants", "wood"], ["word", "note", "cash"], ["word", "note", "wood"] },
 
             // An exact dictionary word costs zero edits, which is inside the budget.
             { ["hello"], ["hello"], ["hello"] },

@@ -11,9 +11,15 @@ public sealed partial class GreatestCommonDivisorOfStringsSolutionTests
     public static TheoryData<GcdExample> Examples =>
         new()
         {
+            // LeetCode examples 1-4.
             { new GcdExample(Str1: "ABCABC", Str2: "ABC", Expected: "ABC") },
             { new GcdExample(Str1: "ABABAB", Str2: "ABAB", Expected: "AB") },
             { new GcdExample(Str1: "LEET", Str2: "CODE", Expected: "") },
+            { new GcdExample(Str1: "AAAAAB", Str2: "AAA", Expected: "") },
+
+            // A string divides itself, so two equal strings answer the whole string;
+            // "ABCDEF" shares the prefix "ABC" but is not "ABC" repeated, so nothing
+            // divides both.
             { new GcdExample(Str1: "ABCABC", Str2: "ABCABC", Expected: "ABCABC") },
             { new GcdExample(Str1: "ABCDEF", Str2: "ABC", Expected: "") },
         };

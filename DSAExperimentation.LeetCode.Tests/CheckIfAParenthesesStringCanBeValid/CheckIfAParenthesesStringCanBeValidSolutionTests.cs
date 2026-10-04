@@ -4,7 +4,7 @@ namespace DSAExperimentation.LeetCode.Tests.CheckIfAParenthesesStringCanBeValid;
 
 // Harness only: both strategies live in
 // CheckIfAParenthesesStringCanBeValidSolution and are asserted against the same
-// examples - LeetCode's three published ones plus the odd-length free position that
+// examples - LeetCode's four published ones plus the odd-length free position that
 // the benchmark's stack arm used to get wrong, a free position that has to become
 // '(' to save a locked ')', and a free position sitting before a locked '(' that no
 // rewriting can rescue.
@@ -19,6 +19,8 @@ public sealed partial class CheckIfAParenthesesStringCanBeValidSolutionTests
             { new ValidityCase(S: "()()", Locked: "0000", Expected: true) },
             // LeetCode example 3
             { new ValidityCase(S: ")", Locked: "0", Expected: false) },
+            // LeetCode example 4
+            { new ValidityCase(S: "(((())(((())", Locked: "111111010111", Expected: true) },
             // odd length: a free position must still become a bracket
             { new ValidityCase(S: "(", Locked: "0", Expected: false) },
             // fully locked and already balanced
@@ -61,7 +63,7 @@ public sealed partial class CheckIfAParenthesesStringCanBeValidSolutionTests
         Assert.Equal(example.Expected, valid);
     }
 
-    // One LeetCode example: the bracket string, its lock mask, and whether the two can
+    // One example: the bracket string, its lock mask, and whether the two can
     // be made into a balanced string. The two strings are the same type and the relation
     // between them is not symmetric, so the row names which is which rather than leaving
     // two interchangeable positions. Nested because it is only ever used inside this test

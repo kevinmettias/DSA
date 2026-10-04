@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FancySequence;
 namespace DSAExperimentation.LeetCode.Tests.FancySequence;
 
 // Harness only. Both strategies are FancySequenceSolution's - this file replays
-// LeetCode's published call sequences against each IFancySequence instance, so a
+// LeetCode's call script and this file's own against each IFancySequence, so a
 // failure still names the strategy that broke even though the "input" here is a
 // sequence of append/addAll/multAll/getIndex calls rather than a single argument
 // tuple, the same shape AllOneDataStructureTests already uses for its own
@@ -20,8 +20,20 @@ public sealed partial class FancySequenceSolutionTests
         new()
         {
             {
-                // LeetCode's own published example: [2] -> [5] -> [5,7] -> [10,14],
-                // then -> [13,17] -> [26,34].
+                // LeetCode example 1: [2] -> [5] -> [5,7] -> [10,14], then -> [13,17]
+                // -> [13,17,10] -> [26,34,20].
+                3,
+                [
+                    FancyOp.Append(2), FancyOp.AddAll(3), FancyOp.Append(7), FancyOp.MultAll(2),
+                    FancyOp.GetIndex(0),
+                    FancyOp.AddAll(3), FancyOp.Append(10), FancyOp.MultAll(2),
+                    FancyOp.GetIndex(0), FancyOp.GetIndex(1), FancyOp.GetIndex(2),
+                ],
+                [null, null, null, null, 10, null, null, null, 26, 34, 20]
+            },
+            {
+                // LeetCode's example without its append(10) and the getIndex(2) that
+                // reads it back: [2] -> [5] -> [5,7] -> [10,14], then -> [13,17] -> [26,34].
                 2,
                 [
                     FancyOp.Append(2), FancyOp.AddAll(3), FancyOp.Append(7), FancyOp.MultAll(2),

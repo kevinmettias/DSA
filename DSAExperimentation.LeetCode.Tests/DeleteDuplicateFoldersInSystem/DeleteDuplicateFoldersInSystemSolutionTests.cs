@@ -22,10 +22,18 @@ public sealed partial class DeleteDuplicateFoldersInSystemSolutionTests
                 [["d"], ["d", "a"]]
             },
 
+            // LeetCode example 2: "/a/b/x" and "/w" both hold a single empty "y", so both
+            // go; "/a" and "/c" are identical only after that deletion, which marks
+            // nothing new, so both survive.
+            {
+                [["a"], ["c"], ["a", "b"], ["c", "b"], ["a", "b", "x"], ["a", "b", "x", "y"], ["w"], ["w", "y"]],
+                [["c"], ["c", "b"], ["a"], ["a", "b"]]
+            },
+
             // LeetCode example 3: nothing repeats, so nothing is deleted.
             {
                 [["a", "b"], ["c", "d"], ["c"], ["a"]],
-                [["a"], ["a", "b"], ["c"], ["c", "d"]]
+                [["c"], ["c", "d"], ["a"], ["a", "b"]]
             },
 
             // "a" and "b" are exact duplicates of each other two levels deep (each has

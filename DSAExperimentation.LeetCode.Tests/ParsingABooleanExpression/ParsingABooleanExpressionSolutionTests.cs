@@ -3,13 +3,22 @@ using DSAExperimentation.LeetCode.ParsingABooleanExpression;
 namespace DSAExperimentation.LeetCode.Tests.ParsingABooleanExpression;
 
 // Harness only: both strategies live in ParsingABooleanExpressionSolution and are
-// asserted against the same expressions - the leaf cases, each operator on its own,
-// and the nested expression LeetCode itself publishes.
+// asserted against the same expressions - LeetCode's three published examples, the
+// leaf cases, each operator on its own, and three nested expressions of this file's
+// own.
 public sealed partial class ParsingABooleanExpressionSolutionTests
 {
     public static TheoryData<ExpressionExample> Examples =>
         new()
         {
+            // LeetCode examples 1-3.
+            { new ExpressionExample(Expression: "&(|(f))", Expected: false) },
+            { new ExpressionExample(Expression: "|(f,f,f,t)", Expected: true) },
+            { new ExpressionExample(Expression: "!(&(f,t))", Expected: true) },
+
+            // The leaves and each operator alone. Then three nestings, evaluated inside
+            // out: &(t,f,t) = f and !(t) = f, so their OR is f; |(f) = f, so its AND with
+            // t is f; &(t,f) = f, its NOT is t, so the OR with f is t.
             { new ExpressionExample(Expression: "t", Expected: true) },
             { new ExpressionExample(Expression: "f", Expected: false) },
             { new ExpressionExample(Expression: "!(f)", Expected: true) },
@@ -41,7 +50,7 @@ public sealed partial class ParsingABooleanExpressionSolutionTests
             ParsingABooleanExpressionSolution.IsBoolExprTrueByParserStack(
                 example.Expression));
 
-    // One LeetCode example: the expression and the value it evaluates to. The answer
+    // One example: the expression and the value it evaluates to. The answer
     // is the datum under test, so the row names it rather than leaving a bare `bool`
     // beside the expression - a bare
     // `IsBoolExprTrueByRecursiveDescent("t", true)` does not say whether that `true`

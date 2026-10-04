@@ -28,8 +28,23 @@ public sealed partial class SubrectangleQueriesSolutionTests
                 [1, null, 5, 5, null, 10, 5]
             },
 
-            // LeetCode's published example 2: two overlapping full-grid
-            // overwrites, so the second has to win at every cell.
+            // LeetCode's published example 2: a whole-grid overwrite, then a second one
+            // over the lower-right 2x2 that has to win where the two overlap.
+            {
+                [[1, 1, 1], [2, 2, 2], [3, 3, 3]],
+                [
+                    SubrectangleQueryOp.GetValue(0, 0),
+                    SubrectangleQueryOp.Update(new SubrectangleQueriesSolution.SubrectangleBounds(0, 0, 2, 2), 100),
+                    SubrectangleQueryOp.GetValue(0, 0),
+                    SubrectangleQueryOp.GetValue(2, 2),
+                    SubrectangleQueryOp.Update(new SubrectangleQueriesSolution.SubrectangleBounds(1, 1, 2, 2), 20),
+                    SubrectangleQueryOp.GetValue(2, 2),
+                ],
+                [1, null, 100, 100, null, 20]
+            },
+
+            // Two overlapping full-grid overwrites, so the second has to win at every
+            // cell: 4 everywhere, then 5 everywhere.
             {
                 [[1, 1, 1], [2, 2, 2], [3, 3, 3]],
                 [
@@ -42,7 +57,7 @@ public sealed partial class SubrectangleQueriesSolutionTests
                 [null, 4, null, 5, 5]
             },
 
-            // Whole-grid overwrite read at the far corner.
+            // Example 2's opening alone: a whole-grid overwrite read at the far corner.
             {
                 [[1, 1, 1], [2, 2, 2], [3, 3, 3]],
                 [

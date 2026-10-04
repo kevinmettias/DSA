@@ -17,8 +17,29 @@ public sealed partial class SequentiallyOrdinalRankTrackerSolutionTests
         new()
         {
             {
-                // LeetCode's published call script, whose last two calls are two
-                // consecutive gets with no add between them.
+                // LeetCode example 1, whose last two calls are two consecutive gets with
+                // no add between them.
+                [
+                    RankTrackerOp.Add("bradford", 2),
+                    RankTrackerOp.Add("branford", 3),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Add("alps", 2),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Add("orland", 2),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Add("orlando", 3),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Add("alpine", 2),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Get(),
+                ],
+                [null, null, "branford", null, "alps", null, "bradford", null, "bradford", null, "bradford", "orland"]
+            },
+            {
+                // LeetCode's script with "orl" for "orland" and "antibs" for "alpine".
+                // "antibs" ties at 2 but sorts after "alps", so the ranking ends
+                // branford, orlando, alps, antibs, bradford, orl: the fifth get is still
+                // "bradford" and the sixth is "orl".
                 [
                     RankTrackerOp.Add("bradford", 2),
                     RankTrackerOp.Add("branford", 3),

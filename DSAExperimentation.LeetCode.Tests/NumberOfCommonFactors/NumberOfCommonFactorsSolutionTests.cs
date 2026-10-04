@@ -11,8 +11,11 @@ public sealed partial class NumberOfCommonFactorsSolutionTests
     public static TheoryData<int, int, int> Examples =>
         new()
         {
-            // LeetCode's own two examples.
+            // LeetCode examples 1 and 2.
             { 12, 6, 4 },
+            { 25, 30, 2 },
+
+            // gcd = 5, whose divisors are 1 and 5.
             { 25, 15, 2 },
 
             // The smallest possible input.

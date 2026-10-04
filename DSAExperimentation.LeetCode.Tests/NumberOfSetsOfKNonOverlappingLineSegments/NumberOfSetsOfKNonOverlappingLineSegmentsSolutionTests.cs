@@ -13,9 +13,18 @@ public sealed partial class NumberOfSetsOfKNonOverlappingLineSegmentsSolutionTes
     public static TheoryData<int, int, int> Examples =>
         new()
         {
+            // LeetCode examples 1-3.
             { 4, 2, 5 },
-            { 5, 3, 7 },
             { 3, 1, 3 },
+            { 30, 7, 796_297_179 },
+
+            // k segments over n points number C(n + k - 1, 2k): k - 1 extra points stand
+            // in for the endpoints touching segments may share, and a set is then any 2k
+            // distinct endpoints, paired off left to right. So C(7, 6) = 7, C(2, 2) = 1,
+            // C(6, 4) = 15, C(7, 4) = 35, C(8, 6) = 28, C(0, 0) = 1 for no segments over
+            // one point, C(4, 4) = 1 for two touching segments over three points, and
+            // C(3, 4) = 0 for two segments that two points cannot seat.
+            { 5, 3, 7 },
             { 2, 1, 1 },
             { 5, 2, 15 },
             { 6, 2, 35 },

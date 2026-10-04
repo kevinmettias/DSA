@@ -22,8 +22,10 @@ public sealed partial class FindElementsInAContaminatedBinaryTreeSolutionTests
             // LeetCode example 1: root -> right only, recovering to {0, 2}.
             { [-1, null, -1], [1, 2], [false, true] },
 
-            // LeetCode example 2, widened to the full 0..6 sweep the pre-migration
-            // test asserted: a five-node complete tree recovering to {0, 1, 2, 3, 4}.
+            // LeetCode example 2: a five-node complete tree recovering to {0, 1, 2, 3, 4}.
+            { [-1, -1, -1, -1, -1], [1, 3, 5], [true, true, false] },
+
+            // Example 2's tree swept over 0..6, as the pre-migration test asserted.
             { [-1, -1, -1, -1, -1], [0, 1, 2, 3, 4, 5, 6], [true, true, true, true, true, false, false] },
 
             // LeetCode example 3: a left-leaning chain hanging off the right child,
