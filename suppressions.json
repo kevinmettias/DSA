@@ -803,13 +803,6 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/CountPairsWithXorInARange/CountPairsWithXorInARangeSolution.cs",
-      "reason": "ZeroChild's node.Zero! and OneChild's node.One! promise the child on the inserted value's bit path exists: Insert calls trie.Insert(value) first, which creates every node on that value's path, and its loop then retraces the same bits from the same top bit, so each child it takes is one trie.Insert just created or found. Only Insert calls the two helpers.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
       "path": "DSAExperimentation.LeetCode/CrackingTheSafe/CrackingTheSafeSolution.cs",
       "reason": "answer! promises the search reached a solution and ran OnSolution: TrySearch is given IsSolution = every password visited, and a de Bruijn sequence exists for every k \u003e= 1, so the search always completes a full cover and OnSolution assigns answer before returning to this line.",
       "owner": "@kmettias",
@@ -2458,7 +2451,7 @@
       "check": "check-duplicate-constant",
       "path": "DSAExperimentation.LeetCode/DetectCyclesIn2DGrid/DetectCyclesIn2DGridSolution.cs",
       "anchor": "`NoParent = ",
-      "reason": "`NoParent` is each declaring file's own value rather than one shared fact: the same name is also declared as `LeetCodeAnswer.None` elsewhere in the corpus, so this group agrees on a value its 3 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
+      "reason": "`NoParent` is each declaring file's own value rather than one shared fact: the same name is also declared as `LeetCodeAnswer.None` elsewhere in the corpus, so this group agrees on a value its 4 files (three solutions and the core PreOrderTour) are each free to pick for their own tree. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -4366,7 +4359,7 @@
       "check": "check-duplicate-constant",
       "path": "DSAExperimentation.LeetCode/NumberOf1Bits/NumberOf1BitsSolution.cs",
       "anchor": "`BitWidth = ",
-      "reason": "`BitWidth = 32` is declared in 4 independent units (NumberOf1Bits/NumberOf1BitsSolution.cs, ReverseBits/ReverseBitsSolution.cs, SingleNumberII/SingleNumberIISolution.cs and 1 more), each the width of the 32-bit word its own problem hands it. The same name is also declared as 30 elsewhere in the corpus, so this is each file's own value rather than one shared fact - the parallel vocabulary the rule's own doc routes to this ledger.",
+      "reason": "`BitWidth = 32` is declared in 5 independent units: three solutions (NumberOf1Bits/NumberOf1BitsSolution.cs, ReverseBits/ReverseBitsSolution.cs, SingleNumberII/SingleNumberIISolution.cs), each the width of the 32-bit word its own problem hands it, and the core BitTrie and CountedBitTrie, each the depth of its own walk down an int's bits - two structures kept apart on purpose, so neither leans on the other for its height. The same name is also declared as 30 elsewhere in the corpus, so this is each file's own value rather than one shared fact - the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2027-01-01"
     },
@@ -4479,22 +4472,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/StoneGameVBenchmarks.cs",
       "anchor": "`MaxStoneValue = ",
       "reason": "`MaxStoneValue = 100` is declared in 2 independent units (ProblemSolutions/StoneGameVBenchmarks.cs, ProblemSolutions/StoneGameVIBenchmarks.cs), each the largest stone value its own workload draws: LC 1686's stated bound for one, a workload choice inside LC 1563's for the other. Two problems agreeing on a value is not one fact. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2027-01-01"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.LeetCode/MaximumGeneticDifferenceQuery/MaximumGeneticDifferenceQuerySolution.cs",
-      "anchor": "`MostSignificantBitIndex = ",
-      "reason": "`MostSignificantBitIndex = 31` is declared in 2 independent units (MaximumGeneticDifferenceQuery/MaximumGeneticDifferenceQuerySolution.cs, MaximumSubarrayXORWithBoundedRange/MaximumSubarrayXORWithBoundedRangeSolution.cs), each the starting bit of its own greedy walk down a BitTrie path. BitTrie keeps its own width private and each solution's walk is its own code, so the BitWidth = 32 group's reasoning applies: each file's own value, the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2027-01-01"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.LeetCode/PalindromicPathQueriesInATree/TreeTour.cs",
-      "anchor": "`Root = ",
-      "reason": "`Root = 0` is declared in 2 independent units (PalindromicPathQueriesInATree/TreeTour.cs, ReachableNodesWithRestrictions/ReachableNodesWithRestrictionsSolution.cs), each the node its own solution starts its own walk from: LC 2368 names node 0 itself, and LC 3841's tree is undirected, so TreeTour picks 0 to root its tour. Two walks that happen to start at the same index are not one fact. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2027-01-01"
     },
