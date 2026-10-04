@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.NonOverlappingIntervals;
-
 namespace DSAExperimentation.LeetCode.MinimumNumberOfArrowsToBurstBalloons;
 
 // LeetCode 452. Minimum Number of Arrows to Burst Balloons: fewest points needed so
@@ -8,9 +6,9 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfArrowsToBurstBalloons;
 // FindMinArrowShotsByBruteForceRescan is the textbook O(n^2) baseline: repeatedly
 // rescan every unburst balloon for the minimum end, then burst everything that
 // reaches it. FindMinArrowShotsBySortEndsThenGreedyScan reads the end order
-// NonOverlappingIntervals' IntervalEndOrder states - the same
+// LeetCodeIntervals states - the same
 // MergeSort.Sort<Element,TSequence> over an ArrayIndexedSequence LC 435 sorts with,
-// declared once for both - then makes a single O(n) greedy pass: an arrow placed at
+// declared once at the LeetCode tier's root for both - then makes a single O(n) greedy pass: an arrow placed at
 // the end of the earliest-ending unburst balloon always bursts the largest possible
 // set of remaining balloons, so sorting once is enough. This is NOT IntervalSet.Count: transitively-merged overlap
 // groups can still need more than one stabbing point, e.g. [1,2],[2,3],[3,4] merge
@@ -76,7 +74,7 @@ internal static class MinimumNumberOfArrowsToBurstBalloonsSolution
     // unpack isn't charged to the measured method.
     public static int FindMinArrowShotsBySortEndsThenGreedyScan((int Start, int End)[] points)
     {
-        var sorted = IntervalEndOrder.SortedByEnd(points);
+        var sorted = LeetCodeIntervals.SortedByEnd(points);
         var arrows = 1;
         var arrowPosition = sorted[0].End;
 

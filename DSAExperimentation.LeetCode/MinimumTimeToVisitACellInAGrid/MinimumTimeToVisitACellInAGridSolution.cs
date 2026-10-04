@@ -1,3 +1,5 @@
+using DSAExperimentation.Algorithms.ShortestPaths.Grids;
+
 namespace DSAExperimentation.LeetCode.MinimumTimeToVisitACellInAGrid;
 
 // LeetCode 2577. Minimum Time to Visit a Cell In a Grid: grid[row][col] is the
@@ -6,22 +8,25 @@ namespace DSAExperimentation.LeetCode.MinimumTimeToVisitACellInAGrid;
 // bouncing back and forth with an already-visited neighbor two seconds at a time. This
 // is still a non-negative-weight shortest-path relaxation (settle each cell once, at
 // its true minimum arrival time), just with a per-edge cost that depends on the
-// caller's current time rather than a static per-edge weight - one degree more dynamic
-// than ShortestPath.Dijkstra's IEdgeTopology (a fixed weight per edge) can express. The
-// relaxation itself is therefore GridArrivalDijkstra's, declared in this folder because
-// this class is the one that states what makes a grid search dynamic; only the arrival rule
-// below - ParityBounceArrivalRule, the parity wait this problem's bounce forces - and the
-// "is there any first move at all" precondition are this problem's own, since LC 3341's grid
-// has neither a bounce nor an unsolvable opening.
-// Both arms below run the identical algorithm; only the frontier's own type differs (BCL
-// PriorityQueue vs. this repo's Heap), so the benchmark measures that one primitive
-// swap in isolation (TwoSumBenchmarks/MinimumCostToMakeAtLeastOneValidPathInAGrid
-// Benchmarks precedent - §17.5's "baseline stays BCL internally").
+// caller's current time rather than a static per-edge weight - the time-dependent grid
+// search Algorithms.ShortestPaths.Grids.GridEarliestArrival runs, priced here by
+// ParityBounceArrival. The one thing that rule cannot know is this problem's opening:
+// the very first move has no cell behind it to bounce with, so a start whose
+// neighbours all open after second 1 makes the grid unsolvable rather than just slow.
+// Both arms check that first.
 internal static class MinimumTimeToVisitACellInAGridSolution
 {
-    // Baseline: the same dynamic-wait relaxation, fronted by the BCL's own
-    // PriorityQueue<TElement,TPriority> instead of this repo's Heap - "what you'd
-    // write without this repo" (§17.5).
+    // The latest second the first move may land, there being nothing to bounce with yet.
+    private const int LatestFirstArrival = 1;
+
+    // There and back with the predecessor: the wait an early arrival can make.
+    private const int SecondsPerBounce = 2;
+
+    private static readonly (int DRow, int DCol)[] Directions = [(0, 1), (0, -1), (1, 0), (-1, 0)];
+
+    // Baseline: the textbook Dijkstra over the grid - a BCL PriorityQueue frontier, plain
+    // arrays for each cell's best arrival and whether it has settled, and the bounce wait
+    // written inline - "what you'd write without this repo" (ARCHITECTURE.md 17.5).
     public static int MinimumTimeByBclPriorityQueue(int[][] grid)
     {
         var (rows, cols) = (grid.Length, grid[0].Length);
@@ -36,13 +41,11 @@ internal static class MinimumTimeToVisitACellInAGridSolution
             return LeetCodeAnswer.None;
         }
 
-        return GridArrivalDijkstra.ByBclQueue(grid, new ParityBounceArrivalRule());
+        return EarliestArrivalByBclQueue(grid);
     }
 
-    // Composed: identical algorithm, fronted by this repo's own Heap<Element,TOrder>
-    // ordered by ByPriorityOrder<TNode,TWeight> - the same production heap
-    // ShortestPath.Dijkstra/AStar and every other grid-Dijkstra coverage test in this
-    // repo already use as their frontier.
+    // Composed: GridEarliestArrival, this repo's time-dependent grid search over its own
+    // Heap, priced by ParityBounceArrival.
     public static int MinimumTimeByHeap(int[][] grid)
     {
         var (rows, cols) = (grid.Length, grid[0].Length);
@@ -57,7 +60,7 @@ internal static class MinimumTimeToVisitACellInAGridSolution
             return LeetCodeAnswer.None;
         }
 
-        return GridArrivalDijkstra.ByHeap(grid, new ParityBounceArrivalRule());
+        return GridEarliestArrival.Time<ParityBounceArrival>(grid, (0, 0), (rows - 1, cols - 1));
     }
 
     // The only move out of (0,0) at second 0 with no predecessor yet to bounce with -
@@ -66,39 +69,101 @@ internal static class MinimumTimeToVisitACellInAGridSolution
     // the grid genuinely unsolvable rather than just "worth waiting for".
     private static bool CanMakeAnyFirstMove(int[][] grid, int rows, int cols)
     {
-        var canGoRight = cols > 1 && grid[0][1] <= 1;
-        var canGoDown = rows > 1 && grid[1][0] <= 1;
+        var canGoRight = cols > 1 && grid[0][1] <= LatestFirstArrival;
+        var canGoDown = rows > 1 && grid[1][0] <= LatestFirstArrival;
         return canGoRight || canGoDown;
     }
 
-    // Earliest arrival at a cell requiring `requiredTime` seconds, moving on from
-    // `currentTime`: one second to step in, then - if that's still too early - an even
-    // number of extra seconds bouncing with the predecessor, since the grid is
-    // bipartite by (row + col) parity and every second flips it, so an odd shortfall
-    // needs one more second than the shortfall itself to land back on a valid parity.
-    //
-    // This is the whole of what LC 2577 asks of the shared relaxation: everything else
-    // GridArrivalDijkstra already knows, so the rule is an IArrivalRule implementation and
-    // no other part of this problem's answer needs to live outside the two arms above.
-    private sealed class ParityBounceArrivalRule : IArrivalRule
+    // Settle cells in nondecreasing arrival order until the bottom-right one comes off the
+    // queue. A better arrival re-enters the queue rather than replacing the earlier entry,
+    // and the stale entry is skipped when it surfaces because its cell has settled.
+    private static int EarliestArrivalByBclQueue(int[][] grid)
     {
-        public int Arrive(int currentTime, int requiredTime)
+        var search = new BounceSearch(
+            grid, Unreached(grid), new bool[grid.Length, grid[0].Length], new PriorityQueue<(int Row, int Col), int>());
+        var lastCell = (grid.Length - 1, grid[0].Length - 1);
+
+        search.Best[0, 0] = 0;
+        search.Frontier.Enqueue((0, 0), 0);
+
+        while (search.Frontier.TryDequeue(out var cell, out var time))
         {
-            var earliest = currentTime + 1;
-
-            if (earliest >= requiredTime)
+            if (cell == lastCell)
             {
-                return earliest;
+                return time;
             }
 
-            var wait = requiredTime - earliest;
-
-            if (wait % 2 != 0)
+            if (!search.Settled[cell.Row, cell.Col])
             {
-                wait++;
+                search.Settled[cell.Row, cell.Col] = true;
+                OfferNeighbours(search, cell, time);
+            }
+        }
+
+        return LeetCodeAnswer.None;
+    }
+
+    // Every cell's best arrival before the search has reached it.
+    private static int[,] Unreached(int[][] grid)
+    {
+        var best = new int[grid.Length, grid[0].Length];
+
+        for (var row = 0; row < grid.Length; row++)
+        {
+            for (var col = 0; col < grid[0].Length; col++)
+            {
+                best[row, col] = int.MaxValue;
+            }
+        }
+
+        return best;
+    }
+
+    // Every unsettled neighbour the move from `cell` reaches sooner than any route found so far.
+    private static void OfferNeighbours(BounceSearch search, (int Row, int Col) cell, int time)
+    {
+        foreach (var (dRow, dCol) in Directions)
+        {
+            var (row, col) = (cell.Row + dRow, cell.Col + dCol);
+
+            if (!IsUnsettledCell(search, row, col))
+            {
+                continue;
             }
 
-            return earliest + wait;
+            var arrival = BounceArrival(time, search.Grid[row][col]);
+
+            if (arrival < search.Best[row, col])
+            {
+                search.Best[row, col] = arrival;
+                search.Frontier.Enqueue((row, col), arrival);
+            }
         }
     }
+
+    // On the grid, and not yet settled.
+    private static bool IsUnsettledCell(BounceSearch search, int row, int col) =>
+        row >= 0 && row < search.Grid.Length && col >= 0 && col < search.Grid[0].Length && !search.Settled[row, col];
+
+    // One second to step in, then - if that is still too early - an even number of extra
+    // seconds bouncing with the predecessor, since every second flips the (row + col)
+    // parity: an odd shortfall needs one more second than the shortfall itself.
+    private static int BounceArrival(int departure, int enterableAt)
+    {
+        var earliest = departure + 1;
+
+        if (earliest >= enterableAt)
+        {
+            return earliest;
+        }
+
+        var leftOverSecond = (enterableAt - earliest) % SecondsPerBounce;
+
+        return enterableAt + leftOverSecond;
+    }
+
+    // One search's state: the grid, each cell's best arrival so far, which cells have
+    // settled, and the queue of pending arrivals.
+    private sealed record BounceSearch(
+        int[][] Grid, int[,] Best, bool[,] Settled, PriorityQueue<(int Row, int Col), int> Frontier);
 }

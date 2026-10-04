@@ -71,7 +71,7 @@ internal static class NonOverlappingIntervalsSolution
         return removedCount;
     }
 
-    // The end order IntervalEndOrder states - this repo's own O(n log n) MergeSort
+    // The end order LeetCodeIntervals states - this repo's own O(n log n) MergeSort
     // over ArrayIndexedSequence, applied once - followed by a single O(n) greedy
     // pass: keep an interval whenever its start does not precede the previously kept
     // interval's end. The removal count is simply the leftover.
@@ -80,7 +80,7 @@ internal static class NonOverlappingIntervalsSolution
 
     public static int EraseOverlapIntervalsBySortThenGreedy((int Start, int End)[] intervals)
     {
-        var sorted = IntervalEndOrder.SortedByEnd(intervals);
+        var sorted = LeetCodeIntervals.SortedByEnd(intervals);
         var kept = 1;
         var lastEnd = sorted[0].End;
 

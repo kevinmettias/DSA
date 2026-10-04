@@ -47,6 +47,7 @@ public sealed partial class Tier5WitnessTests
         "IFoldEvaluationStrategy",
         "IReduceOrderStrategy",
         "IPathHeuristic",
+        "IArrivalRule",
         "IGridCellFilter",
         "IAdjacencySlots",
         "IHeapOrder",

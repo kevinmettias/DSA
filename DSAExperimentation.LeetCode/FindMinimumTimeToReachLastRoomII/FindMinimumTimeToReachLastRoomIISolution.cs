@@ -12,10 +12,11 @@ namespace DSAExperimentation.LeetCode.FindMinimumTimeToReachLastRoomII;
 // one degree more dynamic than ShortestPath.Dijkstra's IEdgeTopology (a fixed
 // weight per edge) can express, plus a second axis LC 2577 didn't have: the
 // move's own cost alternates with how many moves have been taken, so the search
-// state is (row, col, parity) rather than just (row, col). Both arms compose
-// Collections.Heap<Element,TOrder>/BCL PriorityQueue directly with a bespoke
-// relaxation loop, the same precedent MinimumTimeToVisitACellInAGridSolution
-// already set for this exact shape of problem.
+// state is (row, col, parity) rather than just (row, col). GridEarliestArrival
+// (Algorithms.ShortestPaths.Grids), which LC 2577 and LC 3341 use, keys its search
+// by cell alone and prices a move without knowing how many came before it, so both
+// arms here write the relaxation directly - over the BCL PriorityQueue and over
+// this repo's Heap<Element,TOrder>.
 internal static class FindMinimumTimeToReachLastRoomIISolution
 {
     private static readonly (int DRow, int DCol)[] Directions = [(0, 1), (0, -1), (1, 0), (-1, 0)];

@@ -1,5 +1,4 @@
-using DSAExperimentation.LeetCode.ErectTheFence;
-using HullStack = DSAExperimentation.DataStructures.Stack.Stack<(int X, int Y)>;
+using DSAExperimentation.Algorithms.Geometry;
 
 namespace DSAExperimentation.LeetCode.LargestTriangleArea;
 
@@ -14,13 +13,10 @@ namespace DSAExperimentation.LeetCode.LargestTriangleArea;
 // interior vertex outward along the direction perpendicular to the opposite side
 // can only grow the triangle - so no candidate that could win is discarded.
 //
-// The hull is Andrew's monotone chain over this repo's own primitives, the same
-// composition ErectTheFenceSolution (LC 587) uses: the (X, Y) order LC 587's own
-// CoordinateOrder declares, then Stack<(int,int)> for the
-// pop-while-not-a-left-turn sweep. The order is shared because it is the sweep's
-// precondition; what each problem does with the swept chain is not, since LC 587
-// needs the *boundary* points (corners plus every point collinear-and-between),
-// while this one needs only the strict corners.
+// The hull is Algorithms.Geometry.ConvexHull - Andrew's monotone chain over
+// MergeSort - the same one ErectTheFenceSolution (LC 587) starts from. This problem
+// needs only the strict corners it returns; LC 587 goes on to fold in every point
+// collinear-and-between on an edge.
 //
 // A degenerate all-collinear input has no hull triangle at all - the sweep leaves
 // fewer than three corners - so the composed strategy falls back to the original
@@ -30,9 +26,6 @@ internal static class LargestTriangleAreaSolution
     // A triangle needs three vertices; fewer hull corners than this means the
     // input is degenerate (collinear) and there is nothing to reduce to.
     private const int MinHullVerticesForTriangle = 3;
-
-    // A cross product needs two points already on the chain plus the incoming one.
-    private const int MinStackSizeForCrossCheck = 2;
 
     // The shoelace formula gives twice the triangle's area.
     private const double TriangleAreaDivisor = 2.0;
@@ -47,76 +40,10 @@ internal static class LargestTriangleAreaSolution
     // and for points drawn from a filled region h is a small fraction of n.
     public static double LargestAreaByConvexHullReduction((int X, int Y)[] points)
     {
-        var hull = ConvexHull(points);
+        var hull = ConvexHull.Corners(points);
 
-        return LargestOver(hull.Count >= MinHullVerticesForTriangle ? HullVertices(hull) : points);
+        return LargestOver(hull.Length >= MinHullVerticesForTriangle ? hull : points);
     }
-
-    private static List<(int X, int Y)> ConvexHull((int X, int Y)[] points)
-    {
-        var sorted = CoordinateOrder.SortedByCoordinates(points);
-        var lower = HalfHull(sorted);
-        var upper = HalfHull(sorted.Reverse().ToArray());
-
-        return [.. lower.Take(lower.Count - 1), .. upper.Take(upper.Count - 1)];
-    }
-
-    private static List<(int X, int Y)> HalfHull((int X, int Y)[] points)
-    {
-        var stack = BuildMonotoneStack(points);
-
-        return DrainToChain(stack);
-    }
-
-    // Sweeps the (already X,Y-sorted) points left to right, popping any point that
-    // would make the chain turn right or run straight, so only strict corners survive.
-    private static HullStack BuildMonotoneStack((int X, int Y)[] points)
-    {
-        var stack = new HullStack();
-
-        foreach (var p in points)
-        {
-            while (stack.Count >= MinStackSizeForCrossCheck && TryDiscardTrailingPoint(stack, p))
-            {
-            }
-
-            stack.Push(p);
-        }
-
-        return stack;
-    }
-
-    private static bool TryDiscardTrailingPoint(HullStack stack, (int X, int Y) point)
-    {
-        stack.TryPop(out var top);
-        stack.TryPeek(out var second);
-
-        if (Cross(second, top, point) <= 0)
-        {
-            return true;
-        }
-
-        stack.Push(top);
-        return false;
-    }
-
-    // Pops the stack (LIFO, so back-to-front relative to the sweep) into a list,
-    // then reverses it back to the original left-to-right chain order.
-    private static List<(int X, int Y)> DrainToChain(HullStack stack)
-    {
-        var chain = new List<(int X, int Y)>();
-
-        while (stack.TryPop(out var item))
-        {
-            chain.Add(item);
-        }
-
-        chain.Reverse();
-        return chain;
-    }
-
-    // The convex hull's own vertices, as the candidate array to enumerate.
-    private static (int X, int Y)[] HullVertices(List<(int X, int Y)> hull) => [.. hull];
 
     private static double LargestOver((int X, int Y)[] points)
     {

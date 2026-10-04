@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumTimeToVisitACellInAGrid;
+using DSAExperimentation.Algorithms.ShortestPaths.Grids;
 
 namespace DSAExperimentation.LeetCode.FindMinimumTimeToReachLastRoomI;
 
@@ -8,54 +8,78 @@ namespace DSAExperimentation.LeetCode.FindMinimumTimeToReachLastRoomI;
 // neighbor before its moveTime just means waiting first, so the earliest arrival
 // is max(currentTime, moveTime[neighbor]) + 1 - a non-negative-weight relaxation
 // with a per-edge cost that depends on the caller's current time rather than a
-// fixed weight, the same one-degree-more-dynamic shape
-// MinimumTimeToVisitACellInAGridSolution documents. That relaxation is
-// GridArrivalDijkstra's, declared in LC 2577's folder because that problem states
-// what makes a grid search dynamic; this class supplies only the arrival rule,
-// WaitForMoveTimeArrivalRule, which is the one place the two problems differ. Unlike
-// LC 2577 there is no parity/bounce rule and every room is always reachable eventually
-// (waiting is always enough), so the rule has no wait-and-parity branch and there is no
-// "no first move exists" precondition to check either.
+// fixed weight: the time-dependent grid search
+// Algorithms.ShortestPaths.Grids.GridEarliestArrival runs, priced here by
+// WaitInPlaceArrival. Unlike LC 2577 there is no parity bounce and every room is
+// always reachable eventually (waiting is always enough), so there is no
+// "no first move exists" precondition to check.
 internal static class FindMinimumTimeToReachLastRoomISolution
 {
-    // Baseline: the same relaxation, fronted by the BCL's own
-    // PriorityQueue<TElement,TPriority> instead of this repo's Heap - "what you'd
-    // write without this repo" (ARCHITECTURE.md 17.5).
+    private static readonly (int DRow, int DCol)[] Directions = [(0, 1), (0, -1), (1, 0), (-1, 0)];
+
+    // Baseline: the textbook Dijkstra over the rooms - a BCL PriorityQueue frontier,
+    // a Dictionary of best arrivals and a HashSet of settled rooms, with the wait
+    // written inline - "what you'd write without this repo" (ARCHITECTURE.md 17.5).
     public static int MinimumTimeByBclPriorityQueue(int[][] moveTime)
     {
-        var (rows, cols) = (moveTime.Length, moveTime[0].Length);
+        var search = new RoomSearch(
+            moveTime, new() { [(0, 0)] = 0 }, [], new PriorityQueue<(int Row, int Col), int>());
+        var lastRoom = (moveTime.Length - 1, moveTime[0].Length - 1);
+        search.Frontier.Enqueue((0, 0), 0);
 
-        if (rows == 1 && cols == 1)
+        while (search.Frontier.TryDequeue(out var room, out var time))
         {
-            return 0;
+            if (room == lastRoom)
+            {
+                return time;
+            }
+
+            if (search.Settled.Add(room))
+            {
+                OfferNeighbours(search, room, time);
+            }
         }
 
-        return GridArrivalDijkstra.ByBclQueue(moveTime, new WaitForMoveTimeArrivalRule());
+        return LeetCodeAnswer.None;
     }
 
-    // Composed: identical algorithm, fronted by this repo's own
-    // Heap<Element,TOrder> ordered by ByPriorityOrder<TNode,TWeight> - the same
-    // frontier ShortestPath.Dijkstra/AStar and MinimumTimeToVisitACellInAGrid's own
-    // composed arm already use.
-    public static int MinimumTimeByHeap(int[][] moveTime)
+    // Every neighbouring room the move reaches sooner than any route found so far: wait
+    // where you stand until its moveTime, then take the one second the move costs.
+    private static void OfferNeighbours(RoomSearch search, (int Row, int Col) room, int time)
     {
-        var (rows, cols) = (moveTime.Length, moveTime[0].Length);
-
-        if (rows == 1 && cols == 1)
+        foreach (var (dRow, dCol) in Directions)
         {
-            return 0;
+            var next = (Row: room.Row + dRow, Col: room.Col + dCol);
+
+            if (!IsRoom(search.MoveTime, next))
+            {
+                continue;
+            }
+
+            var arrival = Math.Max(time, search.MoveTime[next.Row][next.Col]) + 1;
+
+            if (!search.Best.TryGetValue(next, out var known) || arrival < known)
+            {
+                search.Best[next] = arrival;
+                search.Frontier.Enqueue(next, arrival);
+            }
         }
-
-        return GridArrivalDijkstra.ByHeap(moveTime, new WaitForMoveTimeArrivalRule());
     }
 
-    // Earliest arrival at a room requiring `requiredTime`, moving on from `currentTime`: one
-    // second to step in, or - if that is still too early - wait where you stand until the
-    // room's own moveTime allows the step. The whole of what LC 3341 asks of the shared
-    // relaxation; the room is always reachable eventually, so nothing here reports failure.
-    private sealed class WaitForMoveTimeArrivalRule : IArrivalRule
-    {
-        public int Arrive(int currentTime, int requiredTime) =>
-            Math.Max(currentTime, requiredTime) + 1;
-    }
+    // Whether the coordinates name a room of the grid at all.
+    private static bool IsRoom(int[][] moveTime, (int Row, int Col) cell) =>
+        cell.Row >= 0 && cell.Row < moveTime.Length && cell.Col >= 0 && cell.Col < moveTime[0].Length;
+
+    // Composed: GridEarliestArrival, this repo's time-dependent grid search over its own
+    // Heap, priced by WaitInPlaceArrival.
+    public static int MinimumTimeByHeap(int[][] moveTime) =>
+        GridEarliestArrival.Time<WaitInPlaceArrival>(moveTime, (0, 0), (moveTime.Length - 1, moveTime[0].Length - 1));
+
+    // One search's state: the rooms' move times, each room's best arrival so far, the rooms
+    // already settled, and the queue of pending arrivals.
+    private sealed record RoomSearch(
+        int[][] MoveTime,
+        Dictionary<(int Row, int Col), int> Best,
+        HashSet<(int Row, int Col)> Settled,
+        PriorityQueue<(int Row, int Col), int> Frontier);
 }

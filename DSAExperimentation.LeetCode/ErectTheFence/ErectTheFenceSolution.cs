@@ -1,4 +1,4 @@
-using HullStack = DSAExperimentation.DataStructures.Stack.Stack<(int X, int Y)>;
+using DSAExperimentation.Algorithms.Geometry;
 
 namespace DSAExperimentation.LeetCode.ErectTheFence;
 
@@ -9,8 +9,8 @@ namespace DSAExperimentation.LeetCode.ErectTheFence;
 //
 // Both strategies return that same point set. They differ only in how they find
 // the hull's candidate edges: the baseline tests every ordered pair of points as
-// a candidate hull line, the composed strategy sorts the points and sweeps them
-// with Andrew's monotone chain to get just the O(h) strict-corner edges. Both
+// a candidate hull line, the composed strategy takes the O(h) strict-corner edges
+// from Algorithms.Geometry.ConvexHull - Andrew's monotone chain over MergeSort. Both
 // then run the identical collinearity/betweenness scan to fold in the boundary
 // points a strict hull would drop.
 //
@@ -106,10 +106,9 @@ internal static class ErectTheFenceSolution
         return true;
     }
 
-    // The (x, y) order CoordinateOrder states, then Andrew's monotone chain over
-    // this repo's own Stack<(int,int)> to build the O(h) strict hull corners, then
-    // the same collinearity/betweenness scan restricted to just those h edges
-    // instead of every O(n^2) pair.
+    // ConvexHull's strict corners, counter-clockwise, then the same
+    // collinearity/betweenness scan restricted to just those h edges instead of
+    // every O(n^2) pair.
     public static List<(int X, int Y)> OuterTreesByMonotoneChain((int X, int Y)[] points)
     {
         if (points.Length < MinPointsForTurn + 1)
@@ -117,64 +116,18 @@ internal static class ErectTheFenceSolution
             return points.ToList();
         }
 
-        var sorted = CoordinateOrder.SortedByCoordinates(points);
-        var corners = ComputeHullCorners(sorted);
+        var corners = ConvexHull.Corners(points);
         var fence = new HashSet<(int X, int Y)>();
 
-        for (var i = 0; i < corners.Count; i++)
+        for (var i = 0; i < corners.Length; i++)
         {
             var a = corners[i];
-            var b = corners[(i + 1) % corners.Count];
+            var b = corners[(i + 1) % corners.Length];
 
             AddSegmentPoints(fence, points, a, b);
         }
 
         return fence.ToList();
-    }
-
-    private static List<(int X, int Y)> ComputeHullCorners((int X, int Y)[] sorted)
-    {
-        var lower = StrictHalfHull(sorted);
-        var upper = StrictHalfHull(sorted.Reverse().ToArray());
-
-        return lower.Take(lower.Count - 1).Concat(upper.Take(upper.Count - 1)).ToList();
-    }
-
-    private static List<(int X, int Y)> StrictHalfHull((int X, int Y)[] points)
-    {
-        var stack = new HullStack();
-
-        foreach (var p in points)
-        {
-            while (stack.Count >= MinPointsForTurn && TryDiscardTrailingPoint(stack, p))
-            {
-            }
-
-            stack.Push(p);
-        }
-
-        var chain = new List<(int X, int Y)>();
-        while (stack.TryPop(out var item))
-        {
-            chain.Add(item);
-        }
-
-        chain.Reverse();
-        return chain;
-    }
-
-    private static bool TryDiscardTrailingPoint(HullStack stack, (int X, int Y) point)
-    {
-        stack.TryPop(out var top);
-        stack.TryPeek(out var second);
-
-        if (Cross(second, top, point) <= 0)
-        {
-            return true;
-        }
-
-        stack.Push(top);
-        return false;
     }
 
     private static void AddSegmentPoints(
