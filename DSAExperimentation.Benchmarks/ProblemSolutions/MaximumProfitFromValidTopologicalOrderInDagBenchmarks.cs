@@ -7,33 +7,49 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MaximumProfitFromValidTopologicalOrderInDagSolution's, the same methods
 // MaximumProfitFromValidTopologicalOrderInDagSolutionTests proves correct. The composed
 // arm is handed a prebuilt PrecedenceMasks so that one-time cost is charged to
-// [GlobalSetup], not to the search being measured. NodeCount is kept well under
-// LC's own n <= 22: the baseline's backtracking degrades toward O(n!) as edges thin
-// out, the same reason FindTheMinimumCostArrayPermutationBenchmarks caps its own
-// brute-force arm at N=8.
+// [GlobalSetup], not to the search being measured. Sizes are per arm: the baseline's
+// backtracking degrades toward O(n!) as edges thin out and stops at 8 nodes, the same
+// reason FindTheMinimumCostArrayPermutationBenchmarks caps its own brute-force arm at
+// N=8; the memo arm runs on to LC 3530's n <= 22. Its states are the sets of placed
+// nodes the DAG allows, so MaxProfitWorkloads keeps the DAG sparse enough for them to
+// multiply with n - the edgeless graph LeetCode also allows has all 2^n.
 public class MaximumProfitFromValidTopologicalOrderInDagBenchmarks
 {
     private const int Seed = 3530;
 
-    private int[][] _edges = [];
+    private Dictionary<int, (int[][] Edges, int[] Score, PrecedenceMasks Predecessors)> _workloadByNodeCount = [];
 
-    private int[] _score = [];
-    private PrecedenceMasks _predecessors = null!;
-    [Params(6, 8)]
-    public int NodeCount { get; set; }
+    public static IEnumerable<int> BacktrackingNodeCounts => [6, 8];
 
+    public static IEnumerable<int> MemoizationNodeCounts => [.. BacktrackingNodeCounts, 15, 22];
+
+    // Every node count any arm runs is built here, outside the timed region; an arm looks its own up.
     [GlobalSetup]
-    public void Setup()
-    {
-        (_edges, _score) = MaxProfitWorkloads.Build(NodeCount, Seed);
-        _predecessors = PrecedenceMasks.Build(NodeCount, _edges);
-    }
+    public void Setup() =>
+        _workloadByNodeCount = BacktrackingNodeCounts.Union(MemoizationNodeCounts).ToDictionary(
+            nodeCount => nodeCount,
+            nodeCount =>
+            {
+                var (edges, score) = MaxProfitWorkloads.Build(nodeCount, Seed);
+
+                return (edges, score, PrecedenceMasks.Build(nodeCount, edges));
+            });
 
     [Benchmark(Baseline = true)]
-    public long Backtracking() =>
-        MaximumProfitFromValidTopologicalOrderInDagSolution.MaxProfitByBacktracking(NodeCount, _edges, _score);
+    [ArgumentsSource(nameof(BacktrackingNodeCounts))]
+    public long Backtracking(int nodeCount)
+    {
+        var workload = _workloadByNodeCount[nodeCount];
+
+        return MaximumProfitFromValidTopologicalOrderInDagSolution.MaxProfitByBacktracking(nodeCount, workload.Edges, workload.Score);
+    }
 
     [Benchmark]
-    public long BitmaskMemoization() =>
-        MaximumProfitFromValidTopologicalOrderInDagSolution.MaxProfitByBitmaskMemoization(_predecessors, _score);
+    [ArgumentsSource(nameof(MemoizationNodeCounts))]
+    public long BitmaskMemoization(int nodeCount)
+    {
+        var workload = _workloadByNodeCount[nodeCount];
+
+        return MaximumProfitFromValidTopologicalOrderInDagSolution.MaxProfitByBitmaskMemoization(workload.Predecessors, workload.Score);
+    }
 }

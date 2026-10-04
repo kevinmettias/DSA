@@ -5,11 +5,11 @@ namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
 // Harness coverage for MaxProfitWorkloads (ARCHITECTURE 17.7). The reading depends on LC 3530's graph
 // staying acyclic by construction - every edge drawn from a lower index to a higher one, so no
-// separate cycle check is needed - at a density that constrains valid orderings without collapsing the
-// DAG to a single chain.
+// separate cycle check is needed - at a density that constrains valid orderings while leaving the memo
+// arm's placed-node sets room to multiply.
 public sealed partial class MaxProfitWorkloadsTests
 {
-    private const int NodeCount = 32;
+    private const int NodeCount = 22; // LC 3530's largest n
     private const int Seed = 3530; // LC problem number
     private const int EdgeFieldCount = 2; // FromNode, ToNode
     private const int MinScore = 1;
