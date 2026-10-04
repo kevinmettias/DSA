@@ -1317,6 +1317,34 @@ nothing else belongs there too, not in `Domain/`: `LeetCode/CountWaysToBuildRoom
 holds `RoomWaysAlgebra.cs` and `RoomWaysPrecomputedFactorialAlgebra.cs`, two `IFoldAlgebra`
 witnesses that compute LC 1916's multinomial and are meaningless anywhere else.
 
+**A problem folder reaches into another only along a named edge.** It may use anything in tiers 1–3
+and anything at the root of this tier (`LeetCodeAnswer`, `LeetCodeIntervals`, `LeetCodeAdjacency`,
+`Conventions/`). Another problem's folder is open to it in two cases only, each an entry in
+`ProblemImportTests`' allow-list that says which case it is and why:
+
+- **Delegation.** The two problems ask the same question under different constraints: Part I and
+  Part II at different bounds, or a general problem on a special input (Permutations is
+  Permutations II on distinct values). One of them owns every arm the two share. The other keeps its
+  public strategies, because its test and benchmark call them, and each body becomes one call to
+  the owner, narrowed by a cast where its answer type is smaller. Its test still asserts its own
+  examples and its benchmark still times its own bound.
+- **Subroutine.** One problem's answer runs another problem's algorithm as a step: Maximal Rectangle
+  runs Largest Rectangle in Histogram on each row's histogram.
+
+An owner imports no problem, so delegation never chains and never runs both ways. The owner is the
+problem whose arms already answer the other's question with at most a narrowing cast, usually the
+wider bound. Where two problems share only a baseline, the problem it was written for may own it.
+
+Anything else two folders would share is general, and it goes below the problems rather than into
+whichever folder needed it first: a structure or an algorithm to tiers 1–3 by §17.6's axes
+(Andrew's monotone chain is `Algorithms/Geometry/ConvexHull`, and the time-dependent grid search
+LC 2577 and LC 3341 share is `Algorithms/ShortestPaths/Grids/GridEarliestArrival`), and a LeetCode
+convention to this tier's root (`LeetCodeIntervals.SortedByEnd` is the end order LC 435 and LC 452
+both sweep). Two kinds of likeness stay where they are. When two problems share an algorithm that
+is neither one's own answer, their composed arms share it from tiers 1–3 and their baselines each
+restate it (§17.5). And an interface that coincides by LeetCode's design stays per problem: My
+Calendar I and II both declare `bool Book`, but as two problems' APIs.
+
 ### 17.4 The hoisted-overload rule
 
 A benchmark must charge input construction to `[GlobalSetup]`, not to the measured method; a test
@@ -1738,6 +1766,12 @@ would be blind in precisely the place duplication happens.
   an `AsyncLocal`, `ThreadLocal` or `[ThreadStatic]` slot; a hook or algebra that needs a runtime
   value carries it as a field. Comments and strings are blanked through the same
   `RepositoryFiles.CodeOf` the witness rule reads base lists with.
+- **§17.3's "a problem folder reaches into another only along a named edge"** —
+  `ProblemImportTests`. Inside `DSAExperimentation.LeetCode`, a folder may name another problem's
+  folder only along an allow-listed edge whose reason opens `Delegation:` or `Subroutine:`. An
+  imported folder imports none, and the tier's root and `Conventions/` import no problem. Every
+  entry fails once its edge disappears. The scan reads qualified names as well as using directives,
+  because a sibling's namespace resolves with no using at all.
 
 Every harness file is in scope of the witness rule; the whole catalogue has reached tier 4, so
 there is no unmigrated problem for a harness to be waiting on.

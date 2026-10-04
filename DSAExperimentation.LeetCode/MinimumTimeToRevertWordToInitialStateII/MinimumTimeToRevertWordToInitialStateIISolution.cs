@@ -11,10 +11,8 @@ namespace DSAExperimentation.LeetCode.MinimumTimeToRevertWordToInitialStateII;
 // appended earlier are gone by then, so only the surviving suffix constrains
 // the refill). Once t*k >= word.Length, nothing survives to constrain
 // anything, so the whole original word can just be appended back and t is
-// always an answer. See MinimumTimeToRevertWordToInitialStateISolution for
-// the full derivation - this file restates it because §17.3 keeps every
-// problem folder self-contained rather than reaching across into another
-// problem's solution class.
+// always an answer. This class owns both arms, and Part I's class calls
+// through to them (ARCHITECTURE 17.3).
 //
 // The only thing that changes here is scale: word.Length reaches 10^6, so the
 // O(n^2/k) brute-force scan (still included below, still what the composed

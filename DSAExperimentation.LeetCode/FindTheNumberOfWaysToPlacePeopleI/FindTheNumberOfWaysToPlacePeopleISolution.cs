@@ -1,4 +1,3 @@
-using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.LeetCode.FindTheNumberOfWaysToPlacePeopleII;
 
@@ -10,89 +9,25 @@ namespace DSAExperimentation.LeetCode.FindTheNumberOfWaysToPlacePeopleI;
 // lower-right corner of, and no third point lies inside or on that
 // rectangle's boundary.
 //
-// n <= 50 here, so the O(n^3) "check every third point" baseline below is
-// already fast enough - the O(n^2 log n) sorted-sweep strategy is the one LC
-// 3027 needs at its own bound, and it is exactly as correct at this smaller
-// one, so this class proves both arms the way MaximumStrongPairXORI carries a
-// bucket strategy its own bound doesn't strictly require. The sweep itself is
-// FindTheNumberOfWaysToPlacePeopleIISolution's, called through; only the
-// brute force is this class's own.
+// It is LC 3027 at n <= 50, so LC 3027's class owns both arms (ARCHITECTURE 17.3):
+// the O(n^3) "check every third point" baseline, already fast enough here, and the
+// O(n^2 log n) sorted sweep LC 3027 needs at its own bound, exactly as correct at
+// this smaller one. Each arm here calls through; both problems answer an int, so
+// nothing narrows, and this problem's own test and benchmark still run them at its
+// bound.
 internal static class FindTheNumberOfWaysToPlacePeopleISolution
 {
-    // The textbook O(n^3) scan: every ordered pair, checked against every
-    // third point for one that would block the rectangle. Correct at any
-    // scale, and the arm the sorted-sweep strategy below has to beat.
-    public static int CountPairsByBruteForce(int[][] points)
-    {
-        var count = 0;
+    // The textbook O(n^3) scan: every ordered pair, checked against every third point
+    // for one that would block the rectangle. The arm the sorted sweep has to beat.
+    public static int CountPairsByBruteForce(int[][] points) =>
+        FindTheNumberOfWaysToPlacePeopleIISolution.CountPairsByBruteForce(points);
 
-        for (var aliceIndex = 0; aliceIndex < points.Length; aliceIndex++)
-        {
-            for (var bobIndex = 0; bobIndex < points.Length; bobIndex++)
-            {
-                if (IsValidPlacement(points, aliceIndex, bobIndex))
-                {
-                    count++;
-                }
-            }
-        }
+    public static int CountPairsBySortedSweep(int[][] points) =>
+        FindTheNumberOfWaysToPlacePeopleIISolution.CountPairsBySortedSweep(points);
 
-        return count;
-    }
-
-    // An ordered pair counts when the two points are distinct, Alice's sits at the
-    // rectangle's upper-left corner, and no third point blocks it.
-    private static bool IsValidPlacement(int[][] points, int aliceIndex, int bobIndex)
-        => aliceIndex != bobIndex
-            && IsUpperLeftOf(points[aliceIndex], points[bobIndex])
-            && HasNoBlockingPoint(points, aliceIndex, bobIndex);
-
-    private static bool IsUpperLeftOf(int[] alice, int[] bob) => alice[0] <= bob[0] && alice[1] >= bob[1];
-
-    private static bool HasNoBlockingPoint(int[][] points, int aliceIndex, int bobIndex)
-    {
-        var (aliceX, aliceY) = (points[aliceIndex][0], points[aliceIndex][1]);
-        var (bobX, bobY) = (points[bobIndex][0], points[bobIndex][1]);
-
-        for (var k = 0; k < points.Length; k++)
-        {
-            if (k == aliceIndex || k == bobIndex)
-            {
-                continue;
-            }
-
-            var (x, y) = (points[k][0], points[k][1]);
-
-            if (IsWithinRectangle((x, y), (aliceX, aliceY), (bobX, bobY)))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    // Whether a third point falls inside the rectangle, or on its boundary.
-    private static bool IsWithinRectangle((int X, int Y) point, (int X, int Y) alice, (int X, int Y) bob)
-        => point.X >= alice.X && point.X <= bob.X && point.Y <= alice.Y && point.Y >= bob.Y;
-
-    public static int CountPairsBySortedSweep(int[][] points)
-    {
-        var sorted = new ArrayIndexedSequence<int[]>((int[][])points.Clone());
-        MergeSort.Sort<int[], ArrayIndexedSequence<int[]>>(sorted, PointOrder.ByXThenDescendingY);
-
-        return CountPairsBySortedSweep(sorted);
-    }
-
-    // Prepared-input overload: `sortedPoints` must already be sorted by x
-    // ascending, y descending on ties (PointOrder.ByXThenDescendingY - a type of
-    // its own so a benchmark's [GlobalSetup] can sort with the exact rule this
-    // strategy's precondition depends on, instead of duplicating it).
-    //
-    // LC 3027's own bound is what makes its class the one implementation of the
-    // maxY scan, so this arm calls it: the reasoning the sweep rests on is that
-    // class's doc comment, and the two problems' sorts are the same rule under
-    // different names. Nothing narrows - both problems answer an int.
+    // Prepared-input overload: `sortedPoints` must already be sorted by x ascending,
+    // y descending on ties - PointOrder.ByXThenDescendingY, which a benchmark's
+    // [GlobalSetup] sorts with so the sort is not charged to the sweep.
     public static int CountPairsBySortedSweep(ArrayIndexedSequence<int[]> sortedPoints) =>
         FindTheNumberOfWaysToPlacePeopleIISolution.CountPairsBySortedSweep(sortedPoints);
 }

@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.MaximumSumOfMNonOverlappingSubarraysI;
 using MonotonicDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
 
 namespace DSAExperimentation.LeetCode.MaximumSumOfMNonOverlappingSubarraysII;
@@ -31,80 +32,14 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
     // binary searches lambda over.
     private const long PenaltyBound = 50_000_000_000L;
 
-    // Part I's textbook DP, unoptimized - correct at any n but only practical
-    // well below LC's own n <= 1e5 ceiling. The arm LagrangianRelaxation has to
-    // beat; kept here rather than shared with Part I's solution class because
-    // every LeetCode problem folder answers its own LeetCode problem id
-    // independently (see OpenTheLock, CountNumberOfTrapezoidsI/II).
+    // Part I's textbook DP, unoptimized - correct at any n but only practical well
+    // below LC's own n <= 1e5 ceiling. The arm LagrangianRelaxation has to beat; Part
+    // I's class owns it (ARCHITECTURE 17.3), and this arm runs it at this problem's
+    // bound.
     public static long MaximumSumByDynamicProgramming(
-        int[] nums, int maxSubarrayCount, int minLength, int maxLength)
-    {
-        var elementCount = nums.Length;
-        var prefix = BuildPrefixSums(nums);
-        var dp = BuildInfeasibleGrid(elementCount, maxSubarrayCount);
-
-        for (var rowIndex = 1; rowIndex <= elementCount; rowIndex++)
-        {
-            FillRowForEachCount(dp, prefix, rowIndex, (maxSubarrayCount, minLength, maxLength));
-        }
-
-        return BestOverAtLeastOneSubarray(dp, elementCount, maxSubarrayCount);
-    }
-
-    private static long[][] BuildInfeasibleGrid(int elementCount, int maxSubarrayCount)
-    {
-        var dp = new long[elementCount + 1][];
-
-        for (var rowIndex = 0; rowIndex <= elementCount; rowIndex++)
-        {
-            dp[rowIndex] = new long[maxSubarrayCount + 1];
-            Array.Fill(dp[rowIndex], Infeasible);
-            dp[rowIndex][0] = 0;
-        }
-
-        return dp;
-    }
-
-    // Fills row rowIndex of Part I's table: dp[rowIndex][j] is the best sum using
-    // exactly j disjoint subarrays fully inside nums[0..rowIndex), each of length
-    // in [minLength, maxLength].
-    private static void FillRowForEachCount(
-        long[][] dp, long[] prefix, int rowIndex, (int MaxCount, int MinLength, int MaxLength) limits)
-    {
-        for (var j = 1; j <= limits.MaxCount; j++)
-        {
-            var best = dp[rowIndex - 1][j];
-
-            for (var length = limits.MinLength;
-                length <= limits.MaxLength && length <= rowIndex;
-                length++)
-            {
-                var start = rowIndex - length;
-
-                if (dp[start][j - 1] != Infeasible)
-                {
-                    best = Math.Max(best, dp[start][j - 1] + prefix[rowIndex] - prefix[start]);
-                }
-            }
-
-            dp[rowIndex][j] = best;
-        }
-    }
-
-    // The answer is the best "exactly j subarrays" entry across the whole
-    // j = 1..maxSubarrayCount range, since using fewer than maxSubarrayCount
-    // subarrays is always allowed.
-    private static long BestOverAtLeastOneSubarray(long[][] dp, int elementCount, int maxSubarrayCount)
-    {
-        var answer = Infeasible;
-
-        for (var j = 1; j <= maxSubarrayCount; j++)
-        {
-            answer = Math.Max(answer, dp[elementCount][j]);
-        }
-
-        return answer;
-    }
+        int[] nums, int maxSubarrayCount, int minLength, int maxLength) =>
+        MaximumSumOfMNonOverlappingSubarraysISolution.MaximumSumByDynamicProgramming(
+            nums, maxSubarrayCount, minLength, maxLength);
 
     // Binary searches the smallest non-negative penalty lambda whose penalized
     // optimum uses at most m subarrays, then reads f(m) off it: g(lambda) + lambda*m,

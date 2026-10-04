@@ -5,9 +5,9 @@ namespace DSAExperimentation.LeetCode.NumberOfSubarraysThatMatchAPatternII;
 // LeetCode 3036. Number of Subarrays That Match a Pattern II: identical
 // mechanics to LC 3034 (Part I) - count the (m+1)-length windows of nums
 // whose consecutive-element signs equal pattern. See
-// NumberOfSubarraysThatMatchAPatternISolution for the full derivation - this
-// file restates it because §17.3 keeps every problem folder self-contained
-// rather than reaching across into another problem's solution class.
+// NumberOfSubarraysThatMatchAPatternISolution for the full derivation. This
+// class owns the brute force and the sign encoding both parts reduce through,
+// and Part I's class calls in for them (ARCHITECTURE 17.3).
 //
 // The only thing that changes here is scale: n reaches 10^6, so the O(n*m)
 // brute-force scan (still included below, still what the composed strategy
@@ -18,7 +18,7 @@ namespace DSAExperimentation.LeetCode.NumberOfSubarraysThatMatchAPatternII;
 // equally sufficient for the same reduction.
 internal static class NumberOfSubarraysThatMatchAPatternIISolution
 {
-    // The textbook scan, unchanged from Part I: for every candidate start,
+    // The textbook scan, Part I's baseline too: for every candidate start,
     // walk pattern directly against nums, comparing Math.Sign of each
     // consecutive difference and bailing on the first mismatch. O(n*m) - the
     // arm the ZFunction strategy below has to beat, and why it is only
@@ -61,7 +61,8 @@ internal static class NumberOfSubarraysThatMatchAPatternIISolution
     public static int CountMatchesByZFunction(int[] nums, int[] pattern) =>
         ZFunction.FindAll(EncodeDiffs(nums), EncodePattern(pattern)).Count;
 
-    private static string EncodeDiffs(int[] nums)
+    // nums' consecutive signs as a text over the 3-symbol alphabet EncodeSign defines.
+    internal static string EncodeDiffs(int[] nums)
     {
         var text = new char[nums.Length - 1];
 
@@ -73,7 +74,8 @@ internal static class NumberOfSubarraysThatMatchAPatternIISolution
         return new string(text);
     }
 
-    private static string EncodePattern(int[] pattern)
+    // pattern's own entries as a text over the same alphabet.
+    internal static string EncodePattern(int[] pattern)
     {
         var text = new char[pattern.Length];
 

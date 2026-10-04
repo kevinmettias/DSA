@@ -18,31 +18,10 @@ internal static class CountSubarraysWithMajorityElementISolution
 {
     // Textbook O(n^2): fix the start, extend the end one element at a time, and
     // track how many of the extended window's elements equal target directly -
-    // the arm the Fenwick prefix-sum sweep below has to beat.
-    public static int CountByBruteForce(int[] nums, int target)
-    {
-        var count = 0;
-
-        for (var start = 0; start < nums.Length; start++)
-        {
-            var targetCount = 0;
-
-            for (var end = start; end < nums.Length; end++)
-            {
-                if (nums[end] == target)
-                {
-                    targetCount++;
-                }
-
-                if (targetCount * 2 > end - start + 1)
-                {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
+    // the arm the Fenwick prefix-sum sweep below has to beat. LC 3739 owns it
+    // (ARCHITECTURE 17.3); at this problem's bound its total fits an int.
+    public static int CountByBruteForce(int[] nums, int target) =>
+        (int)CountSubarraysWithMajorityElementIISolution.CountByBruteForce(nums, target);
 
     // Composed: build prefix[0..n] from the +1/-1 mapping, coordinate-compress it, then
     // sweep left to right through a FenwickTree<int, SumOperation<int>> (this repo's own

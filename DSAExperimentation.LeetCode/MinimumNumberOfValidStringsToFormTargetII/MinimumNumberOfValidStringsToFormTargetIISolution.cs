@@ -6,9 +6,8 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfValidStringsToFormTargetII;
 // mechanics to LC 3291 (Part I) - a string is "valid" if it is a prefix of some
 // word in `words`, and the task is the fewest valid strings whose concatenation
 // builds `target`. See MinimumNumberOfValidStringsToFormTargetISolution for the
-// full derivation - this file restates it because §17.3 keeps every problem
-// folder self-contained rather than reaching across into another problem's
-// solution class.
+// full derivation. This class owns both arms, and Part I's class calls through to
+// them (ARCHITECTURE 17.3).
 //
 // The only thing that changes here is scale: target.Length and words[i].Length
 // both reach 5*10^4 (10x Part I's bound), so the O(target.Length * sum(words[i].Length))

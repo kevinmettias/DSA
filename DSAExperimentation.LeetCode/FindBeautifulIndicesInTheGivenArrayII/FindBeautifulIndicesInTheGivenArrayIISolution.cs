@@ -13,7 +13,9 @@ namespace DSAExperimentation.LeetCode.FindBeautifulIndicesInTheGivenArrayII;
 // The brute force arm below still exists as a first-class, tested strategy -
 // it is the baseline the Z-function arm has to beat, and it is what a benchmark
 // measures the payoff against - but only the Z-function strategy is fit to run at
-// #3008's own published bound.
+// #3008's own published bound. This class owns the brute force and the pairing
+// step both parts finish with, and #3006's class calls in for them (ARCHITECTURE
+// 17.3); its own prefix-function search stays its own.
 internal static class FindBeautifulIndicesInTheGivenArrayIISolution
 {
     // The textbook double loop for both occurrence searches, then an O(|A| * |B|)
@@ -93,7 +95,7 @@ internal static class FindBeautifulIndicesInTheGivenArrayIISolution
     // aIndices and bIndices are both already ascending, so LowerBound(index - maxDistance)
     // locates the first nearby occurrence that could possibly be within maxDistance of
     // index in one O(log |B|) probe instead of a linear scan of bIndices per prefix index.
-    private static int[] CollectNearbyIndices(List<int> aIndices, List<int> bIndices, int maxDistance)
+    internal static int[] CollectNearbyIndices(List<int> aIndices, List<int> bIndices, int maxDistance)
     {
         var bSequence = new ArraySequence<int>([.. bIndices]);
         var result = new List<int>();

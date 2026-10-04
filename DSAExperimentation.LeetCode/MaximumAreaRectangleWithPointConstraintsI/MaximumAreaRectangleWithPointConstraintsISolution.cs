@@ -5,9 +5,10 @@ namespace DSAExperimentation.LeetCode.MaximumAreaRectangleWithPointConstraintsI;
 // LeetCode 3380. Maximum Area Rectangle With Point Constraints I: among the given
 // points, find the largest axis-aligned rectangle whose four corners are all
 // points in the input and which contains no other given point inside it or on
-// its border. Return -1 if no such rectangle exists. (Part I's n is small enough
-// that both strategies below stay polynomial in n; Part II, with n up to 1e5,
-// would need a genuinely different approach and is out of scope here.)
+// its border. Return -1 if no such rectangle exists. Part I's n is small enough
+// that both strategies below stay polynomial in n. Part II (LC 3382), with n up
+// to 2e5, needs a genuinely different composed arm, and runs this class's
+// quadruple scan as its baseline (ARCHITECTURE.md section 17.3).
 internal static class MaximumAreaRectangleWithPointConstraintsISolution
 {
     private const long None = -1;

@@ -21,26 +21,8 @@ internal static class DistributeCandiesAmongChildrenISolution
     // Stars-and-bars for a+b+c=n counts every nonnegative solution; inclusion-
     // exclusion then subtracts back the ones where one child alone already exceeds
     // limit, adds back the ones where two children do, and subtracts the ones
-    // where all three do - O(1), the same identity LC 2929 needs at its larger
-    // bound.
-    public static int CountWaysByInclusionExclusion(int candyCount, int limit)
-    {
-        var excess = limit + 1;
-
-        var total = SolutionsIgnoringLimit(candyCount)
-            - 3 * SolutionsIgnoringLimit(candyCount - excess)
-            + 3 * SolutionsIgnoringLimit(candyCount - 2 * excess)
-            - SolutionsIgnoringLimit(candyCount - 3 * excess);
-
-        return (int)total;
-    }
-
-    // Nonnegative integer solutions to a+b+c=total, ignoring any upper bound: the
-    // classic C(total+2, 2) stars-and-bars count.
-    private static long SolutionsIgnoringLimit(int total) =>
-        total < 0 ? 0 : StarsAndBarsCount(total);
-
-    // C(total + 2, 2): the stars-and-bars count for three nonnegative parts summing to
-    // total, which the caller's negative-total guard keeps out of the negative.
-    private static long StarsAndBarsCount(int total) => (long)(total + 2) * (total + 1) / 2;
+    // where all three do - O(1). LC 2929 owns the identity (ARCHITECTURE 17.3),
+    // kept in long for its larger bound; this arm narrows it.
+    public static int CountWaysByInclusionExclusion(int candyCount, int limit) =>
+        (int)DistributeCandiesAmongChildrenIISolution.CountWaysByInclusionExclusion(candyCount, limit);
 }

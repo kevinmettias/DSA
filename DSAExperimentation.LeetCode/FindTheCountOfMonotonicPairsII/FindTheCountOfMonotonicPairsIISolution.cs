@@ -1,29 +1,44 @@
 using DSAExperimentation.Domain.Modular;
-using DSAExperimentation.LeetCode.FindTheCountOfMonotonicPairsI;
 
 namespace DSAExperimentation.LeetCode.FindTheCountOfMonotonicPairsII;
 
 // LeetCode 3251. Find the Count of Monotonic Pairs II: the exact same question as
 // Part I (LeetCode 3250) - count pairs of non-negative integer arrays (arr1, arr2)
 // with arr1 non-decreasing, arr2 non-increasing, arr1[i] + arr2[i] == nums[i] for
-// every i, modulo 1e9+7 - just with nums[i] allowed up to 1000 instead of 50. The
-// recurrence is unchanged (see Part I's own doc comment): row i of the "arr1[i]
-// == j" DP is a prefix sum of row i-1, shifted by delta = max(0, nums[i] -
-// nums[i-1]).
+// every i, modulo 1e9+7 - just with nums[i] allowed up to 1000 instead of 50.
 //
-// The bigger maxValue is why this problem exists as a separate LeetCode entry: the
-// O(n * maxValue^2) brute-force row is still correct here, just no longer the
-// arm you'd ship - O(n * maxValue) prefix sums is.
+// arr2 is entirely determined by arr1 (arr2 = nums - arr1), so the only free
+// choice is arr1. Two constraints on arr1 fall out of the definition:
+// 0 <= arr1[i] <= nums[i] (arr2[i] >= 0), and, since arr2 must not increase,
+// arr1[i] >= arr1[i-1] + max(0, nums[i] - nums[i-1]) (nums[i]-arr1[i] <=
+// nums[i-1]-arr1[i-1]). Counting length-n sequences under that recurrence is a
+// row-by-row DP over "arr1[i] == j": row i is the prefix sum of row i-1, shifted
+// right by that row's own delta = max(0, nums[i]-nums[i-1]).
+//
+// This class owns both arms, and Part I's class calls through to them (ARCHITECTURE
+// 17.3): the wider bound is the one whose answer covers the narrower, and both parts
+// answer a long, so nothing narrows. The bigger maxValue is why this problem exists
+// as a separate LeetCode entry: the O(n * maxValue^2) brute-force row is still
+// correct here, just no longer the arm you'd ship - O(n * maxValue) prefix sums is.
 internal static class FindTheCountOfMonotonicPairsIISolution
 {
-    // Textbook baseline: re-sum each row's prefix from scratch per j. Correct at
-    // any maxValue, but O(n * maxValue^2) - the arm the prefix-sum DP below has
-    // to beat now that maxValue can reach 1000. LC 3250's own bound is the one
-    // that keeps this form tractable, which is why Part I's class holds its one
-    // implementation; this arm calls through. Nothing narrows - both parts answer
-    // a long.
-    public static long CountPairsByBruteForceDP(int[] nums) =>
-        FindTheCountOfMonotonicPairsISolution.CountPairsByBruteForceDP(nums);
+    // Textbook baseline: every row re-sums its prefix from scratch for each j instead
+    // of carrying a running total - O(n * maxValue^2), the DP the recurrence gives you
+    // before noticing each row is itself a running sum of the row before it. Part I's
+    // bound (nums[i] <= 50) keeps it tractable; this part's 1000 is why the prefix-sum
+    // arm below exists.
+    public static long CountPairsByBruteForceDP(int[] nums)
+    {
+        var maxValue = nums.Max();
+        var previousRow = FirstRow(nums, maxValue);
+
+        for (var i = 1; i < nums.Length; i++)
+        {
+            previousRow = SumRowByRescan(previousRow, nums, i, maxValue);
+        }
+
+        return Total(previousRow);
+    }
 
     // A running prefix sum turns each row into O(maxValue) instead of
     // O(maxValue^2) - O(n * maxValue) overall, which is what keeps this
@@ -32,12 +47,7 @@ internal static class FindTheCountOfMonotonicPairsIISolution
     public static long CountPairsByPrefixSumDP(int[] nums)
     {
         var maxValue = nums.Max();
-        var previousRow = new long[maxValue + 1];
-
-        for (var value = 0; value <= nums[0]; value++)
-        {
-            previousRow[value] = 1;
-        }
+        var previousRow = FirstRow(nums, maxValue);
 
         for (var i = 1; i < nums.Length; i++)
         {
@@ -47,8 +57,44 @@ internal static class FindTheCountOfMonotonicPairsIISolution
         return Total(previousRow);
     }
 
-    // The prefix-sum twin of BuildRowByBruteForce: the same row, but each entry is
-    // read out of one upfront running-prefix pass over previousRow instead of re-summed.
+    // Row 0: arr1[0] may be any value from 0 to nums[0], each in exactly one way.
+    private static long[] FirstRow(int[] nums, int maxValue)
+    {
+        var row = new long[maxValue + 1];
+
+        for (var value = 0; value <= nums[0]; value++)
+        {
+            row[value] = 1;
+        }
+
+        return row;
+    }
+
+    // One brute-force DP row: row i is the sum of row i-1 restricted to arr1[i] == j,
+    // which here means re-summing every previousValue that clears this row's delta.
+    private static long[] SumRowByRescan(long[] previousRow, int[] nums, int index, int maxValue)
+    {
+        var delta = Math.Max(0, nums[index] - nums[index - 1]);
+        var currentRow = new long[maxValue + 1];
+
+        for (var j = 0; j <= nums[index]; j++)
+        {
+            var limit = Math.Min(j - delta, nums[index - 1]);
+            var sum = 0L;
+
+            for (var previousValue = 0; previousValue <= limit; previousValue++)
+            {
+                sum += previousRow[previousValue];
+            }
+
+            currentRow[j] = sum % ModularArithmetic.Modulo;
+        }
+
+        return currentRow;
+    }
+
+    // The prefix-sum twin of SumRowByRescan: the same row, but each entry is read out
+    // of one upfront running-prefix pass over previousRow instead of re-summed.
     private static long[] BuildRowByPrefixSum(long[] previousRow, int[] nums, int rowIndex, int maxValue)
     {
         var delta = Math.Max(0, nums[rowIndex] - nums[rowIndex - 1]);

@@ -44,6 +44,14 @@ public sealed partial class FindBeautifulIndicesInTheGivenArrayIISolutionTests
         Assert.Equal(example.Expected, actual);
     }
 
+    // An anchor counts when some nearby occurrence lies within maxDistance on either side:
+    // 10 has 7 three back, 20 has nothing within 3, and 30 has 33 three ahead.
+    [Fact]
+    public void CollectNearbyIndices_AnchorsWithANearbyOccurrence_AreKeptInOrder() =>
+        Assert.Equal(
+            [10, 30],
+            FindBeautifulIndicesInTheGivenArrayIISolution.CollectNearbyIndices([10, 20, 30], [7, 26, 33], 3));
+
     // One published example: the text to search, the pattern whose occurrences are the
     // candidates, the pattern each candidate must sit near, how near, and the indices
     // LeetCode says qualify. The three strings are the same type and none of them is

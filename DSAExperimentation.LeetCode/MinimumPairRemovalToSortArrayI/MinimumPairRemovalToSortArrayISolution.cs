@@ -1,63 +1,24 @@
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.MinimumPairRemovalToSortArrayII;
 
 namespace DSAExperimentation.LeetCode.MinimumPairRemovalToSortArrayI;
 
 // LeetCode 3507. Minimum Pair Removal to Sort Array I: repeatedly merge the
 // adjacent pair with the smallest sum (leftmost pair on a tie) into their sum,
 // until the array is non-decreasing; return how many merges that took.
+//
+// The rescanning baseline is LC 3510's (ARCHITECTURE 17.3): the same question at a
+// bound where sums need a long, which answers this bound identically. The heap arm
+// stays this class's own - index links over the original positions, where LC 3510's
+// composed arm uses this repo's DoublyLinkedList - two different designs, both kept.
 internal static class MinimumPairRemovalToSortArrayISolution
 {
     // The textbook answer: rescan the whole array for the minimum-sum adjacent
     // pair, and separately rescan it for sortedness, once per round -
     // deliberately without this repo's Heap, the arm the lazy-deletion heap
     // strategy below has to justify itself against.
-    public static int MinOperationsByBruteForce(int[] nums)
-    {
-        var values = new List<int>(nums);
-        var operations = 0;
-
-        while (!IsSorted(values))
-        {
-            var mergeAt = IndexOfMinimumSumPair(values);
-            values[mergeAt] += values[mergeAt + 1];
-            values.RemoveAt(mergeAt + 1);
-            operations++;
-        }
-
-        return operations;
-    }
-
-    private static bool IsSorted(List<int> values)
-    {
-        for (var i = 1; i < values.Count; i++)
-        {
-            if (values[i - 1] > values[i])
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static int IndexOfMinimumSumPair(List<int> values)
-    {
-        var bestIndex = 0;
-        var bestSum = values[0] + values[1];
-
-        for (var i = 1; i < values.Count - 1; i++)
-        {
-            var sum = values[i] + values[i + 1];
-
-            if (sum < bestSum)
-            {
-                bestSum = sum;
-                bestIndex = i;
-            }
-        }
-
-        return bestIndex;
-    }
+    public static int MinOperationsByBruteForce(int[] nums) =>
+        MinimumPairRemovalToSortArrayIISolution.MinOperationsByBruteForceScan(nums);
 
     // This repo's own Heap<PairCandidate, MinHeapOrder<PairCandidate>> over
     // every currently-live adjacent pair's sum, plus a next/prev index over the

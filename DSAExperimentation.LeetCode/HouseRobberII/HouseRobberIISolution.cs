@@ -1,4 +1,4 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.HouseRobber;
 
 namespace DSAExperimentation.LeetCode.HouseRobberII;
 
@@ -9,9 +9,9 @@ namespace DSAExperimentation.LeetCode.HouseRobberII;
 // problem - houses [0, n-2] (excluding the last) and [1, n-1] (excluding the
 // first) - because any valid selection must skip at least one of the two
 // wrap-around neighbors, and the better of the two exclusions is always safe to
-// take. Each run is #198's own linear rule, just started at a different index and
-// capped at a different end: the memoized arm hands each run to this repo's
-// Memoizer, the rolling-totals arm walks it directly.
+// take. Each run is #198's answer over a stretch of the street, so each arm here
+// hands both runs to #198's matching arm (ARCHITECTURE 17.3): the rolling totals
+// walk them directly, the memoized recursion hands each to this repo's Memoizer.
 internal static class HouseRobberIISolution
 {
     // The textbook arm the memoized two-run split is measured against: each half of
@@ -25,24 +25,10 @@ internal static class HouseRobberIISolution
             return nums[0];
         }
 
-        var excludingLastHouse = RobLinearRange(nums, 0, nums.Length - 2);
-        var excludingFirstHouse = RobLinearRange(nums, 1, nums.Length - 1);
+        var excludingLastHouse = HouseRobberSolution.RobByIterativeRollingTotals(nums, ..^1);
+        var excludingFirstHouse = HouseRobberSolution.RobByIterativeRollingTotals(nums, 1..);
+
         return Math.Max(excludingLastHouse, excludingFirstHouse);
-    }
-
-    private static int RobLinearRange(int[] nums, int start, int end)
-    {
-        var bestBeforePrevious = 0;
-        var bestPrevious = 0;
-
-        for (var house = start; house <= end; house++)
-        {
-            var robThisHouse = bestBeforePrevious + nums[house];
-            bestBeforePrevious = bestPrevious;
-            bestPrevious = Math.Max(bestPrevious, robThisHouse);
-        }
-
-        return bestPrevious;
     }
 
     public static int RobByMemoizedRecursion(int[] nums)
@@ -52,31 +38,9 @@ internal static class HouseRobberIISolution
             return nums[0];
         }
 
-        var excludingLastHouse = RobRange(nums, 0, nums.Length - 2);
-        var excludingFirstHouse = RobRange(nums, 1, nums.Length - 1);
+        var excludingLastHouse = HouseRobberSolution.RobByMemoizedRecursion(nums, ..^1);
+        var excludingFirstHouse = HouseRobberSolution.RobByMemoizedRecursion(nums, 1..);
+
         return Math.Max(excludingLastHouse, excludingFirstHouse);
-    }
-
-    private static int RobRange(int[] nums, int start, int end) =>
-        Memoizer.Memoize<int, int>(start, new BestRobberyThroughRun(nums, end));
-
-    // The linear #198 rule, named: the best run through house `state` is the larger of
-    // skipping that house and robbing it on top of the best run ending two houses
-    // earlier. `end` caps the run, so the same rule serves both halves of the circle.
-    private sealed class BestRobberyThroughRun(int[] nums, int end) : IRecurrence<int, int>
-    {
-        /// <inheritdoc/>
-        public int Replay(int state, IRecurrence<int, int> rest)
-        {
-            if (state > end)
-            {
-                return 0;
-            }
-
-            var skip = rest.Replay(state + 1, rest);
-            var take = nums[state] + rest.Replay(state + 2, rest);
-
-            return Math.Max(skip, take);
-        }
     }
 }

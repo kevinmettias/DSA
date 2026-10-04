@@ -9,8 +9,8 @@ namespace DSAExperimentation.LeetCode.MaximumAreaRectangleWithPointConstraintsII
 // find the largest axis-aligned rectangle whose four corners are all points in
 // the input and which contains no other given point inside it or on its border,
 // or -1 if none exists - but with n up to 2e5, where Part I's polynomial
-// strategies are no longer tractable. That is the "genuinely different approach"
-// Part I's own doc comment flagged as out of scope for it: a left-to-right sweep
+// strategies are no longer tractable. That is the genuinely different composed
+// arm Part I's own doc comment points to: a left-to-right sweep
 // over x-columns, using this repo's own SegmentTree<Element, MaxOperation<Element>>
 // as a point-update/range-max index over compressed y so each column does
 // O(log n) work instead of an O(n) border scan.

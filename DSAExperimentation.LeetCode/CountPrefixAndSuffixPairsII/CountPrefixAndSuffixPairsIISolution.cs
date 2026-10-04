@@ -23,9 +23,10 @@ namespace DSAExperimentation.LeetCode.CountPrefixAndSuffixPairsII;
 // word j in O(len(j)) total, no re-walk from the root per position.
 internal static class CountPrefixAndSuffixPairsIISolution
 {
-    // The textbook O(n^2 * L) scan, unchanged from CountPrefixAndSuffixPairsI -
-    // correct at any size, just the arm the trie strategy below has to beat
-    // once n and L grow past what pairwise comparison can finish in time.
+    // The textbook O(n^2 * L) scan, LC 3042's baseline too, which calls this and
+    // narrows the count - correct at any size, just the arm the trie strategy
+    // below has to beat once n and L grow past what pairwise comparison can finish
+    // in time.
     public static long CountPairsByBruteForce(string[] words)
     {
         var count = 0L;

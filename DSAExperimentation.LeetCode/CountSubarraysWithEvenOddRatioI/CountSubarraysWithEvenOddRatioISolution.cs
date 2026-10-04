@@ -14,34 +14,16 @@ namespace DSAExperimentation.LeetCode.CountSubarraysWithEvenOddRatioI;
 // pairs (L, R) whose prefix sums satisfy prefix[L] <= prefix[R]. That is
 // exactly the coordinate-compression-plus-Fenwick-sweep shape
 // CountOfRangeSumSolutionTests already uses for LC 327. LC 4013 (same rule, n up to
-// 1e5) is where that sweep lives, since its bound is the one whose count needs
-// a 64-bit accumulator; this class reads its own total off that implementation.
+// 1e5) owns both arms (ARCHITECTURE 17.3), since its bound is the one whose count
+// needs a 64-bit accumulator; this class reads its own totals off them, narrowed to
+// the int its bound keeps them inside.
 internal static class CountSubarraysWithEvenOddRatioISolution
 {
     // Every subarray scanned directly, extending y one element at a time -
-    // O(n^2), BCL only. The arm the Fenwick sweep below has to beat.
-    public static int CountByBruteForce(int[] nums, int ratioNumerator, int ratioDenominator)
-    {
-        var count = 0L;
-
-        for (var left = 0; left < nums.Length; left++)
-        {
-            var odd = 0;
-
-            for (var right = left; right < nums.Length; right++)
-            {
-                odd += nums[right] % 2;
-                var even = right - left + 1 - odd;
-
-                if (odd > 0 && (long)even * ratioDenominator <= (long)odd * ratioNumerator)
-                {
-                    count++;
-                }
-            }
-        }
-
-        return (int)count;
-    }
+    // O(n^2), BCL only, and LC 4013's own baseline. The arm the Fenwick sweep
+    // below has to beat at this problem's bound.
+    public static int CountByBruteForce(int[] nums, int ratioNumerator, int ratioDenominator) =>
+        (int)CountSubarraysWithEvenOddRatioIISolution.CountByBruteForce(nums, ratioNumerator, ratioDenominator);
 
     // LC 4013's own sweep - build the +a/-b weighted prefix sums, coordinate-compress
     // them, then query this repo's FenwickTree<int, SumOperation<int>> for how many

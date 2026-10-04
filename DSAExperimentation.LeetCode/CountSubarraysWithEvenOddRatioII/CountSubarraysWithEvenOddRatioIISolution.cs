@@ -23,8 +23,9 @@ namespace DSAExperimentation.LeetCode.CountSubarraysWithEvenOddRatioII;
 internal static class CountSubarraysWithEvenOddRatioIISolution
 {
     // Every subarray scanned directly, extending y one element at a time -
-    // O(n^2), BCL only. Only fast enough for LC 4011-sized inputs; kept here
-    // purely as a correctness witness for the Fenwick sweep below.
+    // O(n^2), BCL only. Only fast enough for LC 4011-sized inputs, which is where
+    // that problem's baseline calls it; here it is a correctness witness for the
+    // Fenwick sweep below.
     public static long CountByBruteForce(int[] nums, int oddWeight, int evenWeight)
     {
         var count = 0L;

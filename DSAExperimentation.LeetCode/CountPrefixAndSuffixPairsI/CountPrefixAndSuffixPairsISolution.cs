@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.RollingHash;
+using DSAExperimentation.LeetCode.CountPrefixAndSuffixPairsII;
 
 namespace DSAExperimentation.LeetCode.CountPrefixAndSuffixPairsI;
 
@@ -7,40 +8,17 @@ namespace DSAExperimentation.LeetCode.CountPrefixAndSuffixPairsI;
 //
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
-// each other without either restating the algorithm.
+// each other without either restating the algorithm. The pairwise baseline is LC
+// 3045's, the same question at a bound whose count needs a long (ARCHITECTURE 17.3);
+// the rolling-hash arm is this class's own, as LC 3045's is a trie.
 internal static class CountPrefixAndSuffixPairsISolution
 {
     // The textbook O(n^2 * L) scan: every earlier word's characters compared
     // directly against the later word's prefix and suffix spans. The arm the
-    // rolling hash strategy below has to beat.
-    public static int CountPairsByBruteForce(string[] words)
-    {
-        var count = 0;
-
-        for (var i = 0; i < words.Length; i++)
-        {
-            for (var j = i + 1; j < words.Length; j++)
-            {
-                if (IsPrefixAndSuffix(new CandidateWord(words[i]), new ContainingWord(words[j])))
-                {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
-
-    private static bool IsPrefixAndSuffix(CandidateWord candidate, ContainingWord word)
-    {
-        if (candidate.Text.Length > word.Text.Length)
-        {
-            return false;
-        }
-
-        return word.Text.AsSpan(0, candidate.Text.Length).SequenceEqual(candidate.Text) &&
-               word.Text.AsSpan(word.Text.Length - candidate.Text.Length).SequenceEqual(candidate.Text);
-    }
+    // rolling hash strategy below has to beat; at this problem's bound its count
+    // fits an int.
+    public static int CountPairsByBruteForce(string[] words) =>
+        (int)CountPrefixAndSuffixPairsIISolution.CountPairsByBruteForce(words);
 
     // Each word gets its own this-repo RollingHash once; checking whether
     // words[i] is a prefix/suffix of words[j] then costs two O(1) hash
@@ -85,14 +63,4 @@ internal static class CountPrefixAndSuffixPairsISolution
     }
 
     public static RollingHash[] BuildHashes(string[] words) => Array.ConvertAll(words, word => new RollingHash(word));
-
-    // The two sides of LC 3042's prefix-and-suffix test, named for the roles they play
-    // here rather than left as two adjacent `string` positions a caller could hand over
-    // the wrong way round with the compiler none the wiser. The candidate is the word
-    // being tested; the containing word is the later word it must be both a prefix and
-    // a suffix of - which is one-directional, since a longer candidate is rejected
-    // outright rather than scanned the other way round.
-    private readonly record struct CandidateWord(string Text);
-
-    private readonly record struct ContainingWord(string Text);
 }

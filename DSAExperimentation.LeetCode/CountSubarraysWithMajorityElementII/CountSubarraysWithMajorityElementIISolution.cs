@@ -21,10 +21,10 @@ namespace DSAExperimentation.LeetCode.CountSubarraysWithMajorityElementII;
 // CountOfSmallerNumbersAfterSelfSolutionTests already uses for LC 315, in O(n log n).
 internal static class CountSubarraysWithMajorityElementIISolution
 {
-    // The textbook O(n^2) scan, unchanged in shape from
-    // CountSubarraysWithMajorityElementISolution's own baseline - correct at any
-    // size, just the arm the Fenwick prefix-sum sweep below has to beat once n
-    // grows past what a quadratic scan can finish in time.
+    // The textbook O(n^2) scan, and LC 3737's baseline too, which calls this and
+    // narrows the total - correct at any size, just the arm the Fenwick prefix-sum
+    // sweep below has to beat once n grows past what a quadratic scan can finish in
+    // time.
     public static long CountByBruteForce(int[] nums, int target)
     {
         var count = 0L;
