@@ -119,4 +119,59 @@ public sealed partial class DisjointSetTests
             Assert.False(acrossGroups);
         }
     }
+
+    // The case that separates MergeInto from Union: 0's set has the higher rank, so Union would keep
+    // 0's root; MergeInto keeps the target's root regardless.
+    [Fact]
+    public void MergeInto_IdRootOutranksTarget_TargetRootStillSurvives()
+    {
+        var set = new DisjointSetOperations(4);
+        set.Union(0, 1);
+        var targetRoot = set.Find(2);
+
+        set.MergeInto(0, 2);
+
+        Assert.Equal(targetRoot, set.Find(0));
+        Assert.Equal(targetRoot, set.Find(1));
+    }
+
+    [Fact]
+    public void MergeInto_SameSet_LeavesRepresentativeUnchanged()
+    {
+        var set = new DisjointSetOperations(3);
+        set.Union(0, 1);
+        var root = set.Find(0);
+
+        set.MergeInto(1, 0);
+
+        Assert.Equal(root, set.Find(0));
+        Assert.Equal(root, set.Find(1));
+    }
+
+    // The "next free slot" idiom: each id merged into its lower neighbour, so Find walks to the
+    // lowest id of the run.
+    [Fact]
+    public void MergeInto_ChainTowardLowerIds_FindReturnsChainEnd()
+    {
+        var set = new DisjointSetOperations(6);
+
+        for (var id = 5; id >= 2; id--)
+        {
+            set.MergeInto(id, id - 1);
+        }
+
+        Assert.Equal(1, set.Find(5));
+        Assert.Equal(0, set.Find(0));
+    }
+
+    [Fact]
+    public void MergeInto_ThenIsConnected_ReportsJoined()
+    {
+        var set = new DisjointSetOperations(3);
+
+        set.MergeInto(2, 0);
+
+        Assert.True(set.IsConnected(0, 2));
+        Assert.False(set.IsConnected(1, 2));
+    }
 }

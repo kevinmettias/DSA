@@ -8,8 +8,8 @@ namespace DSAExperimentation.LeetCode.Tests.BlockPlacementQueries;
 // REVERSE, so every "place an obstacle" becomes a deactivation, and composes three
 // DataStructures primitives to do it: a point-update SegmentTree<long,
 // MaxOperation<long>> holding each gap indexed by its right-hand obstacle, plus
-// NearestActiveObstacle, which drives two DisjointSetForest instances through its
-// own path-compressing Find.
+// NearestActiveObstacle, which merges each deactivated coordinate into its
+// neighbour in two DisjointSets and reads the nearest obstacle off Find.
 //
 // The reverse walk is what makes this a seam rather than a reimplementation: the
 // answer for query t is read at a point in time when the segment tree and both

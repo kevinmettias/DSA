@@ -455,7 +455,7 @@ one axis that looks variable turns out to be a Complexity law instead.
 | File | Axis | Why |
 | --- | --- | --- |
 | [`Collections/DisjointSet/DisjointSetForest.cs`](DSAExperimentation/DataStructures/DisjointSet/DisjointSetForest.cs) | Representation | Parallel `parent`/`rank` `int[]` fields, fixed-size at construction — concrete, not an interface, since exactly one physical layout exists today (§5 step 3) |
-| [`Collections/DisjointSet/DisjointSet.cs`](DSAExperimentation/DataStructures/DisjointSet/DisjointSet.cs) | Operations | `Find`/`Union`/`Connected` — path compression and union-by-rank, both hardcoded, not swappable |
+| [`Collections/DisjointSet/DisjointSet.cs`](DSAExperimentation/DataStructures/DisjointSet/DisjointSet.cs) | Operations | `Find`/`Union`/`IsConnected`/`MergeInto` — path compression and union-by-rank, both hardcoded, not swappable |
 
 ### 10.1 Why the linking policy is a Complexity law, not a Topology witness
 
@@ -473,8 +473,19 @@ rank-guided linking applied together. That is §5's Complexity-law row verbatim 
 O(1); a slower representation degrades big-O with no compiler error"), so the policy is hardcoded,
 unconditionally, inside `Union` rather than exposed as a generic witness. Path compression itself
 isn't even a law in this sense — no external caller could violate it, since nothing outside
-`Find`'s own walk ever touches `SetParent` — it's pure Operations-internal mechanics, the same
-status `Heap`'s `SiftUp`/`SiftDown` already have.
+`DisjointSet` ever touches `SetParent` — it's pure Operations-internal mechanics, the same status
+`Heap`'s `SiftUp`/`SiftDown` already have.
+
+`MergeInto(id, target)` came later, and it does not reopen this argument. Its contract names the
+representative — the root `Find(target)` returned before the call survives — where `Union`'s never
+does, so it is a second operation with its own output, not a fourth linking policy: the test above
+asks whether a choice *inside `Union`* changes what a caller can observe, and it still cannot. The
+direction is a runtime argument on each call, not a closed set chosen by type, so it needs no
+witness either. It exists for callers that read the representative as an answer — "the nearest
+obstacle still active at or before x" in LC 3161, which used to drive `DisjointSetForest` directly
+with its own copy of `Find` because `Union` could not link one way. It never consults rank, so the
+O(α(n)) bound holds only for a forest `Union` alone has joined; with the two mixed, path compression
+alone gives O(log n) amortized, and the doc comment says so.
 
 ### 10.2 Why the partition itself needs no Topology witness at all
 

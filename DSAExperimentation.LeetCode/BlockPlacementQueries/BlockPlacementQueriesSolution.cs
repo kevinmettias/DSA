@@ -66,8 +66,8 @@ internal static class BlockPlacementQueriesSolution
     // still-active obstacle" - both driven by walking the queries in reverse,
     // so every type-1 "placement" becomes a *deactivation*: the reverse-time
     // offline trick this problem needs because obstacles are only ever added
-    // going forward, and DisjointSetForest's near-O(1) amortized Find only
-    // pays off for a structure that only ever shrinks.
+    // going forward, and DisjointSet's path-compressed Find only pays off for
+    // a structure that only ever shrinks.
     //
     // Every type-2 query resolves to two pieces once its "nearest active
     // obstacle at or before x" (lastActive) is known: the trailing gap from

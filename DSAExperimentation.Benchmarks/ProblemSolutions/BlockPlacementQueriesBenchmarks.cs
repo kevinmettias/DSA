@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // rather than a mostly-empty one. Coordinates run to 3 * QueryCount, capped at
 // 50,000 - LC 3161 bounds every x and sz by min(5 * 10^4, 3 * queries.length).
 // Both Params sit past the crossover where SegmentTreeMerge's own
-// O(maxCoordinate) setup (three arrays plus two DisjointSetForests sized to the
+// O(maxCoordinate) setup (three arrays plus two DisjointSets sized to the
 // coordinate range) stops outweighing LinearScan's O(m)-per-query rescan -
 // confirmed locally at QueryCount=5_000 (~1.2x faster), the O(n log n) vs.
 // O(n*m) gap widening with scale as expected.
