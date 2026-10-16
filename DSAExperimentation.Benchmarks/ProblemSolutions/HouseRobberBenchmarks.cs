@@ -22,9 +22,9 @@ public class HouseRobberBenchmarks
     [GlobalSetup]
     public void Setup() => _nums = SeededDraws.Values(Length, 0, MaxValue + 1, new Random(RandomSeed));
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public int MemoizedRecursion() => HouseRobberSolution.RobByMemoizedRecursion(_nums);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int IterativeRollingTotals() => HouseRobberSolution.RobByIterativeRollingTotals(_nums);
 }

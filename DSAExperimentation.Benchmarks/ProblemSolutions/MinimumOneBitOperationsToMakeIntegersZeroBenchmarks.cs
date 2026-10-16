@@ -14,12 +14,12 @@ public class MinimumOneBitOperationsToMakeIntegersZeroBenchmarks
     [Params(2_000, 50_000)]
     public int Target { get; set; }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public int BreadthFirstSearch() =>
         MinimumOneBitOperationsToMakeIntegersZeroSolution
             .MinimumOneBitOperationsByBreadthFirstSearch(Target);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int InverseGrayCodeFormula() =>
         MinimumOneBitOperationsToMakeIntegersZeroSolution
             .MinimumOneBitOperationsByInverseGrayCode(Target);

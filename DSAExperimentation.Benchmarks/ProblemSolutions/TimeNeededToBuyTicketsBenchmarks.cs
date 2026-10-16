@@ -31,11 +31,11 @@ public class TimeNeededToBuyTicketsBenchmarks
         _targetPerson = Length / AlgorithmConstants.HalvingFactor;
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public int QueueSimulation() =>
         TimeNeededToBuyTicketsSolution.TimeRequiredToBuyByQueueSimulation(_tickets, _targetPerson);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int ClosedFormSum() =>
         TimeNeededToBuyTicketsSolution.TimeRequiredToBuyByClosedFormSum(_tickets, _targetPerson);
 }

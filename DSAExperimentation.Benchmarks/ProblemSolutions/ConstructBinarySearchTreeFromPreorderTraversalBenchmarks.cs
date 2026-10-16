@@ -26,12 +26,12 @@ public class ConstructBinarySearchTreeFromPreorderTraversalBenchmarks
         _ascendingPreorder = Enumerable.Range(1, Length).ToArray();
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public int RepeatedTreeInsert() =>
         ConstructBinarySearchTreeFromPreorderTraversalSolution
             .BstFromPreorderByRepeatedInsert(_ascendingPreorder)?.Value ?? 0;
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int BoundedRecursion() =>
         ConstructBinarySearchTreeFromPreorderTraversalSolution
             .BstFromPreorderByUpperBoundRecursion(_ascendingPreorder)?.Value ?? 0;

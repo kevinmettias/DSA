@@ -26,11 +26,11 @@ public class TwoSumIIInputArrayIsSortedBenchmarks
         _target = TwoSumIIInputArrayIsSortedWorkloads.Target;
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public int[] BinarySearch() =>
         TwoSumIIInputArrayIsSortedSolution.TryFindIndicesByBinarySearch(_nums, _target);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int[] TwoPointerSqueeze() =>
         TwoSumIIInputArrayIsSortedSolution.TryFindIndicesByTwoPointerSqueeze(_nums, _target);
 }

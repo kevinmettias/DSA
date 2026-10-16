@@ -24,9 +24,9 @@ public class SurroundedRegionsBenchmarks
     [IterationSetup]
     public void IterationSetup() => _board = SurroundedRegionsWorkloads.BuildBoard(Size, seed: 130);
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public void BorderDepthFirstSearch() => SurroundedRegionsSolution.SolveByBorderDepthFirstSearch(_board);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public void BorderBreadthFirstSearch() => SurroundedRegionsSolution.SolveByBorderBreadthFirstSearch(_board);
 }

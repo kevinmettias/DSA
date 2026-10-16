@@ -22,11 +22,11 @@ public class BinaryTreeRightSideViewBenchmarks
     [GlobalSetup]
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public List<int> LevelGroupedTraversal() =>
         BinaryTreeRightSideViewSolution.RightSideViewByLevelGroupedTraversal(_root);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public List<int> DepthFirstRightFirst() =>
         BinaryTreeRightSideViewSolution.RightSideViewByDepthFirstRightFirst(_root);
 }

@@ -59,10 +59,10 @@ public class MajorityElementIIBenchmarks
         return [.. values.OrderBy(_ => random.Next())];
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public List<int> HashMapCount() => MajorityElementIISolution.MajorityByHashMap(_nums);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public List<int> ExtendedBoyerMooreVoting() =>
         MajorityElementIISolution.MajorityByExtendedBoyerMooreVoting(_nums);
 }

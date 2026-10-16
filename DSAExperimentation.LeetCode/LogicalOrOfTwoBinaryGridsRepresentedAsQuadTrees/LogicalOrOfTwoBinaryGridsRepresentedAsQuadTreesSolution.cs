@@ -22,6 +22,8 @@ namespace DSAExperimentation.LeetCode.LogicalOrOfTwoBinaryGridsRepresentedAsQuad
 // the grid area.
 internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
 {
+    // The textbook answer, and the arm the two materializing ones are measured against
+    // (ARCHITECTURE 17.5): it walks LeetCode's own nodes and nothing else.
     public static QuadTreeNode OrByDirectRecursiveMerge(QuadTreeNode tree1, QuadTreeNode tree2)
     {
         if (tree1.IsLeaf)
@@ -60,9 +62,8 @@ internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
         topLeft.IsLeaf && topRight.IsLeaf && bottomLeft.IsLeaf && bottomRight.IsLeaf
         && topLeft.Val == topRight.Val && topRight.Val == bottomLeft.Val && bottomLeft.Val == bottomRight.Val;
 
-    // Baseline: materializes both trees to grids and rebuilds via ConstructQuadTree
-    // Solution's own raw-cell-scan baseline - BCL arrays only internally, the same
-    // "what you would write without this repo" character, reused rather than
+    // Materializes both trees to grids through this repo's QuadTreeGrid and rebuilds via
+    // ConstructQuadTreeSolution's own raw-cell-scan baseline, reused rather than
     // re-inlined here.
     public static QuadTreeNode OrByBruteForceGridMaterialize(QuadTreeNode tree1, QuadTreeNode tree2, int size)
     {

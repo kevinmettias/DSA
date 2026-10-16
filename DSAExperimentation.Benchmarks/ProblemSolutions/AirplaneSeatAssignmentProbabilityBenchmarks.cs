@@ -11,11 +11,11 @@ public class AirplaneSeatAssignmentProbabilityBenchmarks
     [Params(100, 1_000)]
     public int PlaneSize { get; set; }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public double MemoizedRecursion()
         => AirplaneSeatAssignmentProbabilitySolution.NthPersonGetsNthSeatByMemoizedRecursion(PlaneSize);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public double ClosedForm()
         => AirplaneSeatAssignmentProbabilitySolution.NthPersonGetsNthSeatByClosedForm(PlaneSize);
 }

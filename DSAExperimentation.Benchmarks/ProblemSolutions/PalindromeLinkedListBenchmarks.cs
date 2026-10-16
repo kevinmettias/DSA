@@ -48,9 +48,9 @@ public class PalindromeLinkedListBenchmarks
         return dummy.Next;
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public bool IsPalindromeByStackReversal() => PalindromeLinkedListSolution.IsPalindromeByStackReversal(_head);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public bool FastSlowReversal() => PalindromeLinkedListSolution.IsPalindromeByFastSlowReversal(_head);
 }

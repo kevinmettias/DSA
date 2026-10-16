@@ -54,7 +54,7 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
 
     private bool IsLeftHalf(int col) => col < Size / AlgorithmConstants.HalvingFactor;
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public QuadTreeNode BruteForceGridMaterialize() =>
         LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution.OrByBruteForceGridMaterialize(_tree1, _tree2, Size);
 
@@ -62,7 +62,7 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
     public QuadTreeNode FenwickGridMaterialize() =>
         LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution.OrByFenwickGridMaterialize(_tree1, _tree2, Size);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public QuadTreeNode DirectRecursiveMerge() =>
         LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution.OrByDirectRecursiveMerge(_tree1, _tree2);
 }

@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.SumGame;
 //
 // All three strategies are the same game, seen from three distances:
 //
-//   BruteForceRecursion - the textbook minimax, re-deriving every reachable
+//   BruteForceRecursion - the unmemoized minimax, re-deriving every reachable
 //                         position once per fill-in order that reaches it;
 //   MemoizedMinimax     - the same recursion routed through this repo's own
 //                         Memoizer, so each SumGameState is resolved once;
@@ -32,10 +32,11 @@ internal static class SumGameSolution
     // so Bob's guaranteed margin is 9 per PAIR of blanks he is owed.
     private const int OptimalMarginDivisor = 2;
 
-    // The textbook answer: plain recursion with no cache, so a position reached by
-    // k different fill-in orders is resolved k times. Only the recurrence's shape is
-    // shared with the memoized arm below - nothing here caches - because it is the arm
-    // the memoized and closed-form arms have to justify themselves against.
+    // Plain recursion with no cache, so a position reached by k different fill-in orders
+    // is resolved k times. Only the recurrence's shape is shared with the memoized arm
+    // below - nothing here caches - so the two differ in exactly the cache. The closed
+    // form, which composes nothing, is the arm both are measured against (ARCHITECTURE
+    // 17.5).
     public static bool CanAliceWinByBruteForceRecursion(string num) =>
         CanAliceWinByBruteForceRecursion(SumGameState.Of(num));
 

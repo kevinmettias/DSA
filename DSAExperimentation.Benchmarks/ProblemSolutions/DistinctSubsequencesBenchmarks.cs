@@ -27,11 +27,11 @@ public class DistinctSubsequencesBenchmarks
         _target = new TargetPattern(target);
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public int MemoizedRecursion() =>
         DistinctSubsequencesSolution.CountDistinctSubsequencesByMemoizedRecursion(_source, _target);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int IterativeTable() =>
         DistinctSubsequencesSolution.CountDistinctSubsequencesByIterativeTable(_source, _target);
 }

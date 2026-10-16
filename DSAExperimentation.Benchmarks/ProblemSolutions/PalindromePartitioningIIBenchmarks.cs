@@ -25,11 +25,11 @@ public class PalindromePartitioningIIBenchmarks
     public void Setup() =>
         _text = new string([.. SeededDraws.Values(Length, 0, Alphabet.Length, new Random(RandomSeed)).Select(index => Alphabet[index])]);
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public int MemoizedSuffixRecurrence() =>
         PalindromePartitioningIISolution.MinCutByMemoizedSuffixRecurrence(_text);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int IterativeDynamicProgramming() =>
         PalindromePartitioningIISolution.MinCutByIterativeDynamicProgramming(_text);
 }

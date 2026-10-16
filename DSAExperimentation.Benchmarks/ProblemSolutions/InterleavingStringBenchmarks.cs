@@ -30,11 +30,11 @@ public class InterleavingStringBenchmarks
         _target = new InterleavingStringSolution.TargetText(target);
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public bool IsInterleaveByMemoizedRecursion() =>
         InterleavingStringSolution.IsInterleaveByMemoizedRecursion(_first, _second, _target);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public bool IterativeTable() =>
         InterleavingStringSolution.IsInterleaveByIterativeTable(_first, _second, _target);
 }

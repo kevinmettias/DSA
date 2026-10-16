@@ -28,9 +28,10 @@ internal static class MinimumOneBitOperationsToMakeIntegersZeroSolution
     // The explicit answer: breadth-first search over the implicit move graph, with
     // this repo's own Queue<int> as the frontier and HashMap<int, int> as the
     // distance map, since the state space is generated on the fly rather than being
-    // a pre-built node graph. It is the arm the closed form has to justify itself
-    // against - and, being a plain shortest-path walk, it is also the one that
-    // demonstrates the answer rather than asserting it.
+    // a pre-built node graph. The closed form below, which composes nothing, is the
+    // arm it is measured against (ARCHITECTURE 17.5) - while this one, being a plain
+    // shortest-path walk, is the one that demonstrates the answer rather than
+    // asserting it.
     public static int MinimumOneBitOperationsByBreadthFirstSearch(int target)
     {
         if (target == ZeroState)

@@ -23,9 +23,9 @@ public class NumberOfIslandsBenchmarks
     [GlobalSetup]
     public void Setup() => _grid = NumberOfIslandsWorkloads.BuildGrid(GridSize, GridSize, Seed);
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public int DepthFirstSink() => NumberOfIslandsSolution.CountIslandsByDepthFirstSink(_grid);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int BreadthFirstSink() => NumberOfIslandsSolution.CountIslandsByBreadthFirstSink(_grid);
 }

@@ -24,11 +24,11 @@ public class WordBreakBenchmarks
         _source = string.Concat(repeatedWords);
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public bool CanBreakByTrieMemoized() =>
         WordBreakSolution.CanBreakByTrieMemoized(_source, Dictionary);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public bool IterativeReachability() =>
         WordBreakSolution.CanBreakByIterativeReachability(_source, Dictionary);
 }

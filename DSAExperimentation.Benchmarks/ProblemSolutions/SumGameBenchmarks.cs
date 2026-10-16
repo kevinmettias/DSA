@@ -19,9 +19,9 @@ public class SumGameBenchmarks
 {
     private Dictionary<int, SumGameState> _boardBySize = [];
 
-    public static IEnumerable<int> BaselineSizes => [2, 3];
+    public static IEnumerable<int> SharedSizes => [2, 3];
 
-    public static IEnumerable<int> MemoizedSizes => [.. BaselineSizes, 8, 32];
+    public static IEnumerable<int> MemoizedSizes => [.. SharedSizes, 8, 32];
 
     // Every size any arm runs is built here, outside the timed region; an arm looks its own up.
     [GlobalSetup]
@@ -30,8 +30,8 @@ public class SumGameBenchmarks
             blanksPerSide => blanksPerSide,
             blanksPerSide => new SumGameState(blanksPerSide, blanksPerSide, SumDifference: 0));
 
-    [Benchmark(Baseline = true)]
-    [ArgumentsSource(nameof(BaselineSizes))]
+    [Benchmark]
+    [ArgumentsSource(nameof(SharedSizes))]
     public bool CanAliceWinByBruteForceRecursion(int blanksPerSide) =>
         SumGameSolution.CanAliceWinByBruteForceRecursion(_boardBySize[blanksPerSide]);
 
@@ -40,8 +40,8 @@ public class SumGameBenchmarks
     public bool CanAliceWinByMemoizedRecursion(int blanksPerSide) =>
         SumGameSolution.CanAliceWinByMemoizedRecursion(_boardBySize[blanksPerSide]);
 
-    [Benchmark]
-    [ArgumentsSource(nameof(BaselineSizes))]
+    [Benchmark(Baseline = true)]
+    [ArgumentsSource(nameof(SharedSizes))]
     public bool CanAliceWinByClosedForm(int blanksPerSide) =>
         SumGameSolution.CanAliceWinByClosedForm(_boardBySize[blanksPerSide]);
 }

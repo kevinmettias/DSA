@@ -17,9 +17,9 @@ public class LongestConsecutiveSequenceBenchmarks
     [GlobalSetup]
     public void Setup() => _nums = LongestConsecutiveSequenceWorkloads.BuildArray(Length, seed: 128);
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public int SetRunExpansion() => LongestConsecutiveSequenceSolution.LongestConsecutiveBySetRunExpansion(_nums);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int SortedScan() => LongestConsecutiveSequenceSolution.LongestConsecutiveBySortedScan(_nums);
 }

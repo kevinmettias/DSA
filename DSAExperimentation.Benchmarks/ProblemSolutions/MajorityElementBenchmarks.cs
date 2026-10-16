@@ -39,9 +39,9 @@ public class MajorityElementBenchmarks
         _nums = [.. values.OrderBy(_ => random.Next())];
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public int HashMapCount() => MajorityElementSolution.MajorityByHashMap(_nums);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int BoyerMooreVoting() => MajorityElementSolution.MajorityByBoyerMooreVoting(_nums);
 }
