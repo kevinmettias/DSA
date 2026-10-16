@@ -1881,9 +1881,9 @@ factorials through modular inverses, which a composite modulus does not have. `P
 builds by addition, so any modulus works — 10 and 5 are the ones LeetCode asks for — and an exact
 mode holds coefficients through row 66, the last whose middle entry fits in `long`. The modulus is
 the caller's, so it is an `Algorithms/NumberTheory` type beside `ModularPower`, not a `Domain` one.
-Only three composed arms use it today, fewer than the eight that moved `FactorialTable`. It was built
-anyway, on the owner's call that an exact and composite-modulus binomial table belongs in the library
-before more solutions hand-roll one.
+Two composed arms use it today, fewer than the eight that moved `FactorialTable`, after a third went
+back to a rolling row (§19.8). It was built anyway, on the owner's call that an exact and
+composite-modulus binomial table belongs in the library before more solutions hand-roll one.
 
 ### 19.6 `LowercaseAlphabet` leaves the trie's folder
 
@@ -1903,3 +1903,54 @@ every comparison inside the pop loop. Both are now private struct witnesses, so 
 public forms is its own instantiation with the comparison inlined. The public surface is unchanged,
 and the sweep was then adopted by the composed arms whose hand-written stacks computed exactly a
 boundary array.
+
+The sweep keeps no stack either. Once it has placed a position p, a monotonic stack would hold
+exactly the chain p, boundary(p), boundary(boundary(p)), and so on down. The sweep walks that chain
+through the boundary array it is filling, so it makes the stack's comparisons in the stack's order
+and allocates only its result. The chain must end at something that is not a position, so a
+caller's `none` that is a position is swept with -1 and written in afterwards. The first
+static-dispatch version kept a `Stack<int>`; measurement removed it (§19.8).
+
+### 19.8 What adoption was measured to cost
+
+§12.4's rule held for every adoption here: measure a new axis before calling it free. Each
+adopter's benchmark class ran out of process on the commit before its adoption and on the commit
+after it, alternating the two sides class by class. The comparison is the composed arm's ratio to
+its own baseline arm. The baseline's code is the same on both sides, so it absorbs whatever load the
+machine carried while each side ran. When the baseline itself moved more than the change being
+judged, the pair was re-run rather than read.
+
+Three results changed the code instead of being recorded:
+
+- `NearestBoundary` kept its pending positions in a `Stack<int>`, and four adopters regressed at one
+  size or both, CountSubmatricesWithAllOnes by up to 51%. Now that it follows the boundary chain
+  (§19.7), eight of the twelve benchmark classes that run it are 13–57% faster than before the
+  adoption. CountSubmatricesWithAllOnes, NextGreaterNodeInLinkedList and OddEvenJump are no slower.
+  NextGreaterElementI is faster at n = 200. At n = 1000 it read 22–30% slower in two passes, but
+  on that same arm the chain then measured 16% faster than the stack. That reading is the
+  machine's load (below), not the sweep.
+- `PascalTriangle` reduced every entry with a 64-bit `%`, even in exact mode, where no entry ever
+  reaches the modulus. NumberOfIntegersWithPopcountDepthEqualToKI ran at up to 2.3 times its own
+  builder's time. A conditional subtraction replaced the division, and that arm is back inside
+  BenchmarkDotNet's error bars.
+- CheckIfDigitsAreEqualInStringAfterOperationsI read its one row off a triangle built for it: every
+  row up to n − 2, 43 KB where its rolling row allocates 848 bytes, and up to 59% slower even after
+  that fix. It has its rolling row back, the case `PascalTriangle`'s own complexity law names.
+
+`CompressedCoordinates` made both of its measured adopters faster, CountNumberOfTeams by 17–20% and
+ReversePairs by 5–16%, and cut their allocation by half or more. The deque, the predicate search,
+the BFS facade and `PrefixSums` showed no cost on SlidingWindowMaximum, JumpGameVI, KokoEatingBananas,
+OpenTheLock and MinimumSizeSubarraySum. The deque's other adopters read within this machine's noise
+except one, which stays on the record:
+LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit, which keeps two deques. It
+measured between −1% and +10% at n = 4000 over three passes, and +19% at n = 500 in the one pass
+where that size's baseline held steady. A cost of that size may be real.
+
+Two adopters allocate more for the same time. CountSubmatricesWithAllOnes takes a boundary array per
+row where its stack stayed shallow (109 KB to 188 KB at n = 150). ShortestSubarrayWithSumAtLeastK
+keeps a (position, key) pair per deque entry where it kept an index, about twice the bytes.
+
+On this machine, with other sessions building, identical code on both sides of one pass read 45%
+apart, and NextGreaterElementI's composed arm measured 16 µs in one pass and 28 µs in another. So
+no single pass is read alone. Every change that moved code was checked by a later pass. A result
+that only one pass showed is reported as noise, not as a finding.
