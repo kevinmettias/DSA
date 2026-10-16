@@ -38,17 +38,21 @@ internal static class DailyTemperaturesSolution
 
     public static int[] WaitDaysByMonotonicStackSweep(int[] temperatures)
     {
-        var nextWarmerDay = NearestBoundary.GreaterToTheRight(temperatures, NoWarmerDay);
-        var result = new int[temperatures.Length];
+        var waitDays = NearestBoundary.GreaterToTheRight(temperatures, NoWarmerDay);
 
-        for (var day = 0; day < temperatures.Length; day++)
+        // Each boundary becomes its gap in place, so the sweep's own array is the answer and no
+        // second array is allocated; a day with no warmer day ahead reads 0, as LeetCode expects.
+        for (var day = 0; day < waitDays.Length; day++)
         {
-            if (nextWarmerDay[day] != NoWarmerDay)
+            if (waitDays[day] == NoWarmerDay)
             {
-                result[day] = nextWarmerDay[day] - day;
+                waitDays[day] = 0;
+                continue;
             }
+
+            waitDays[day] -= day;
         }
 
-        return result;
+        return waitDays;
     }
 }
