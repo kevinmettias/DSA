@@ -1,5 +1,4 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
@@ -20,12 +19,12 @@ public sealed partial class SearchInABinarySearchTreeBenchmarksTests
     public void Setup_SameNodeCount_RebuildsTheSameWorkload()
     {
         Assert.Equal(AnswerGraphText.Of(BuildHarness().LinearScan()), AnswerGraphText.Of(BuildHarness().LinearScan()));
-        Assert.Equal(HighestValue, Assert.IsType<BinaryTreeNode<int>>(BuildHarness().LinearScan()).Value);
+        Assert.Equal(HighestValue, BuildHarness().LinearScan()?.Value);
     }
 
     [Fact]
     public void BinarySearchTreeDescent_SeededTree_FindsTheHighestValue() =>
-        Assert.Equal(HighestValue, Assert.IsType<BinaryTreeNode<int>>(BuildHarness().BinarySearchTreeDescent()).Value);
+        Assert.Equal(HighestValue, BuildHarness().BinarySearchTreeDescent()?.Value);
 
     private static SearchInABinarySearchTreeBenchmarks BuildHarness()
     {

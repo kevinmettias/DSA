@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.ReverseNodesInEvenLengthGroups;
 
@@ -13,9 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // from _values rather than reusing one a later iteration would find reversed. The
 // rebuild is timed on purpose, and the array arm, which only reads its list, pays it
 // too so both arms carry the same cost.
-//
-// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type (CS0050).
 public class ReverseNodesInEvenLengthGroupsBenchmarks
 {
     private int[] _values = [];
@@ -27,12 +25,12 @@ public class ReverseNodesInEvenLengthGroupsBenchmarks
     public void Setup() => _values = Enumerable.Range(1, Length).ToArray();
 
     [Benchmark(Baseline = true)]
-    public object? ArrayEvenLengthGroupReverse() =>
+    public SinglyLinkedListNode<int>? ArrayEvenLengthGroupReverse() =>
         ReverseNodesInEvenLengthGroupsSolution.ReverseEvenLengthGroupsByArrayReverse(
             LeetCodeWireFormat.ToLinkedList(_values));
 
     [Benchmark]
-    public object? LinkedListEvenLengthGroupReverse() =>
+    public SinglyLinkedListNode<int>? LinkedListEvenLengthGroupReverse() =>
         ReverseNodesInEvenLengthGroupsSolution.ReverseEvenLengthGroupsByPointerReversal(
             LeetCodeWireFormat.ToLinkedList(_values));
 }

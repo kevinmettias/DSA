@@ -99,7 +99,8 @@ witnesses in benchmarks. The stricter rules found two real offences, both fixed:
 
 The review's count, 112 classes, matches the first measurement (113: the union of a return-type
 scan and a proxy-pattern scan). 105 of those now return what their strategy produced - the mutated
-array, the whole list or tree (as `object?` where the type is internal), or for a design problem
+array, the whole list or tree (typed since the core node types became public in `149fa5db`, and
+`object?` only where a problem's own node type is internal), or for a design problem
 every output its script observed, written into a buffer sized in `[GlobalSetup]`
 (`f975454a`..`939a2020`, `62ab2943`). Six already returned their answer. A second scan, for loops
 that overwrite one local and return it, found seven the first missed because their answer type was
@@ -399,7 +400,8 @@ using) removed from 1,111 files.
   the registry is gone and `LeetCodeStrategyCoverageTests` covers every solution.
 - **P5, hygiene — DONE.** Neither `BenchmarkDotNet.Artifacts/` is tracked (both are ignored), and
   `LeetCodeCatalog` lives in `DSAExperimentation.LeetCode.Tests` (§17.6a). The `InternalsVisibleTo`
-  lists (5, 3 and 1 entries) stay hand-written, by decision.
+  lists (3, 3 and 1 entries) stay hand-written, by decision. The core's three are its test projects
+  alone, since `149fa5db` (§17.6a).
   - Each entry names a project that really consumes the declaring one's internals.
   - A project cannot discover at build time who references it.
   - A `DSAExperimentation.*` wildcard would also grant the solution tier's internals to

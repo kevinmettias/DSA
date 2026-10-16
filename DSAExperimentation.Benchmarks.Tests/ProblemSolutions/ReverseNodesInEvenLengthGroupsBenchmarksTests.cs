@@ -17,8 +17,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // not the size it was reaching for - that decides whether it reverses. The chain is still in
 // ascending order, so each reversed run is visible as a descending stretch of the same values.
 //
-// Both arms return the new head as object? (the node type is internal, CS0050) and rebuild the chain
-// inside the measured call, so one harness is safe to call twice in either order.
+// Both arms return the new head and rebuild the chain inside the measured call, so one harness is
+// safe to call twice in either order.
 public sealed partial class ReverseNodesInEvenLengthGroupsBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -56,11 +56,11 @@ public sealed partial class ReverseNodesInEvenLengthGroupsBenchmarksTests
             AnswerGraphText.Of(ValuesOf(reversed)));
     }
 
-    private static int[] ValuesOf(object? head)
+    private static int[] ValuesOf(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();
 
-        for (var node = (SinglyLinkedListNode<int>?)head; node is not null; node = node.Next)
+        for (var node = head; node is not null; node = node.Next)
         {
             values.Add(node.Value);
         }

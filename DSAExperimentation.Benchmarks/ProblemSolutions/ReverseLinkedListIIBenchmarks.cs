@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.ReverseLinkedListII;
 
@@ -10,9 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // handed - a cached list would only be valid for the first measured iteration. The
 // rebuild is timed on purpose, and ArrayRebuild, which only reads its list, pays it
 // too so both arms carry the same cost.
-//
-// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type (CS0050).
 public class ReverseLinkedListIIBenchmarks
 {
     private const int QuarterLengthDivisor = 4;
@@ -27,14 +25,14 @@ public class ReverseLinkedListIIBenchmarks
     public void Setup() => _values = Enumerable.Range(1, Length).ToArray();
 
     [Benchmark(Baseline = true)]
-    public object? ArrayRebuild() =>
+    public SinglyLinkedListNode<int>? ArrayRebuild() =>
         ReverseLinkedListIISolution.ReverseBetweenByArrayRebuild(
             LeetCodeWireFormat.ToLinkedList(_values),
             Length / QuarterLengthDivisor,
             Length * ThreeQuarterLengthNumerator / QuarterLengthDivisor);
 
     [Benchmark]
-    public object? HeadInsertion() =>
+    public SinglyLinkedListNode<int>? HeadInsertion() =>
         ReverseLinkedListIISolution.ReverseBetweenByHeadInsertion(
             LeetCodeWireFormat.ToLinkedList(_values),
             Length / QuarterLengthDivisor,

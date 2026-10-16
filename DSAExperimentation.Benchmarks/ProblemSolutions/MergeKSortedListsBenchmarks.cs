@@ -14,9 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [Benchmark] call rebuilds a fresh SinglyLinkedListNode<int>?[] from them. The
 // rebuild is timed on purpose, and FlattenSort, which only reads the lists, pays it
 // too so both arms carry the same cost.
-//
-// Returns object, not SinglyLinkedListNode<int>? - the node type is internal, so
-// a public [Benchmark] method cannot name it as a return type (CS0050).
 public class MergeKSortedListsBenchmarks
 {
     private const int ValuesPerList = 64;
@@ -33,11 +30,11 @@ public class MergeKSortedListsBenchmarks
             .ToArray();
 
     [Benchmark(Baseline = true)]
-    public object? FlattenSort() =>
+    public SinglyLinkedListNode<int>? FlattenSort() =>
         MergeKSortedListsSolution.MergeListsByFlattenSort(BuildLists());
 
     [Benchmark]
-    public object? MergeByHeap() =>
+    public SinglyLinkedListNode<int>? MergeByHeap() =>
         MergeKSortedListsSolution.MergeListsByHeap(BuildLists());
 
     private SinglyLinkedListNode<int>?[] BuildLists() => _values.Select(LeetCodeWireFormat.ToLinkedList).ToArray();

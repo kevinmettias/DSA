@@ -5,11 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ConstructQuadTreeSolution's, the same methods
 // ConstructQuadTreeSolutionTests proves correct - each builds the actual QuadTreeNode
-// tree, not just a leaf count. The [Benchmark] methods return object? rather than
-// QuadTreeNode itself - a public [Benchmark] method cannot expose an internal
-// return type even to a friend assembly (CS0050) - the same accommodation this
-// project's other node-returning benchmarks make (ReverseLinkedList, SortList,
-// and friends). Confirming a region is uniform is the hot path:
+// tree, not just a leaf count. Confirming a region is uniform is the hot path:
 // a brute-force cell scan (early-exits on the first mismatch, but must touch
 // every cell to CONFIRM a genuinely uniform one) vs. one
 // FenwickTree<int,SumOperation<int>> per row giving an O(rows*log(cols)) region-
@@ -46,15 +42,11 @@ public class ConstructQuadTreeBenchmarks
         }
     }
 
-    // Returns object? rather than the internal QuadTreeNode - the same accommodation
-    // this project's other node-returning benchmarks make (ReverseLinkedList,
-    // SortList, and friends) since a public [Benchmark] method cannot expose an
-    // internal return type even to a friend assembly (CS0050).
     [Benchmark(Baseline = true)]
-    public object? BruteForceCellScan() =>
+    public QuadTreeNode BruteForceCellScan() =>
         ConstructQuadTreeSolution.BuildByBruteForceCellScan(_grid);
 
     [Benchmark]
-    public object? RowFenwickTreeQuery() =>
+    public QuadTreeNode RowFenwickTreeQuery() =>
         ConstructQuadTreeSolution.BuildByRowFenwickTree(_grid);
 }

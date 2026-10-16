@@ -33,14 +33,13 @@ public class LowestCommonAncestorOfBstBenchmarks
         _second = FindNode(_root, values[^2]);
     }
 
-    // Each arm returns the ancestor node it found, as object because BinaryTreeNode<int> is
-    // internal and a public [Benchmark] method cannot name it.
+    // Each arm returns the ancestor node it found.
     [Benchmark(Baseline = true)]
-    public object? BstValueComparison() =>
+    public BinaryTreeNode<int>? BstValueComparison() =>
         LowestCommonAncestorOfBstSolution.FindLcaByBstValueComparison(_root, _first, _second);
 
     [Benchmark]
-    public object? AncestryWalk() =>
+    public BinaryTreeNode<int>? AncestryWalk() =>
         LowestCommonAncestorOfBstSolution.FindLcaByAncestryWalk(_root, _first, _second);
 
     private static BinaryTreeNode<int> BuildTree(int[] values)

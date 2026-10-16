@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RemoveDuplicatesFromSortedListII;
 
@@ -11,9 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // for the first measured iteration. The rebuild is timed on purpose, and
 // ArrayGroupFilter, which only reads its list, pays it too so both arms carry the
 // same cost.
-//
-// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type (CS0050).
 //
 // Length stops at LC 82's 300 nodes, and the values climb in pairs from -100, its lowest
 // value, so 300 nodes reach 49, inside its [-100, 100].
@@ -32,12 +30,12 @@ public class RemoveDuplicatesFromSortedListIIBenchmarks
         _values = Enumerable.Range(0, Length).Select(i => LowestNodeValue + (i / RunLengthDivisor)).ToArray();
 
     [Benchmark(Baseline = true)]
-    public object? ArrayGroupFilter() =>
+    public SinglyLinkedListNode<int>? ArrayGroupFilter() =>
         RemoveDuplicatesFromSortedListIISolution.DeleteDuplicatesByArrayGroupFilter(
             LeetCodeWireFormat.ToLinkedList(_values));
 
     [Benchmark]
-    public object? TwoPointerScan() =>
+    public SinglyLinkedListNode<int>? TwoPointerScan() =>
         RemoveDuplicatesFromSortedListIISolution.DeleteDuplicatesByTwoPointerScan(
             LeetCodeWireFormat.ToLinkedList(_values));
 }

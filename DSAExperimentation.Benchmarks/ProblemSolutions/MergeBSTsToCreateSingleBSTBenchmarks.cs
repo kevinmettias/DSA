@@ -16,8 +16,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The forest itself is built once in [GlobalSetup], but it cannot be handed to a
 // hoisted overload: splicing consumes it, so each invocation clones the template
 // first - identically for both arms, exactly as the pre-migration harness did.
-// Each arm returns LeetCode's real answer, the merged root, as object because
-// BinaryTreeNode<int> is internal and a public [Benchmark] method cannot name it.
+// Each arm returns LeetCode's real answer, the merged root.
 public class MergeBSTsToCreateSingleBSTBenchmarks
 {
     private List<BinaryTreeNode<int>> _template = new();
@@ -29,12 +28,12 @@ public class MergeBSTsToCreateSingleBSTBenchmarks
     public void Setup() => _template = MergeBinarySearchTreeWorkloads.BuildChain(TreeCount);
 
     [Benchmark(Baseline = true)]
-    public object? CanMergeByLinearScan() =>
+    public BinaryTreeNode<int>? CanMergeByLinearScan() =>
         MergeBSTsToCreateSingleBSTSolution.CanMergeByLinearScan(
             MergeBinarySearchTreeWorkloads.Clone(_template));
 
     [Benchmark]
-    public object? CanMergeByHashMapIndex() =>
+    public BinaryTreeNode<int>? CanMergeByHashMapIndex() =>
         MergeBSTsToCreateSingleBSTSolution.CanMergeByHashMapIndex(
             MergeBinarySearchTreeWorkloads.Clone(_template));
 }

@@ -7,9 +7,9 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // Harness coverage for AddTwoNumbersBenchmarks (ARCHITECTURE 17.9): its two arms are AddTwoNumbersSolution's,
 // the same methods AddTwoNumbersSolutionTests proves correct - a BigInteger conversion and back against a single
 // digit-wise walk with a running carry - so a harness whose arms disagree is timing two different problems.
-// Both arms are declared as returning object (the node type is internal, CS0050), so the tests read the digit
-// sequence off the returned list and compare that, which is the answer LC 2 actually asks for. Setup draws
-// both operands from one fixed seed, so the same Length must rebuild the same two lists.
+// Both arms return the sum list, so the tests read the digit sequence off the returned list and compare that,
+// which is the answer LC 2 actually asks for. Setup draws both operands from one fixed seed, so the same
+// Length must rebuild the same two lists.
 public sealed partial class AddTwoNumbersBenchmarksTests
 {
     private const int SmallestLength = 10;
@@ -49,13 +49,13 @@ public sealed partial class AddTwoNumbersBenchmarksTests
         Assert.Equal(AnswerGraphText.Of(sum), AnswerGraphText.Of(DigitsOf(harness.DigitwiseListWalk())));
     }
 
-    // Both arms hand back the internal node type through an object, so walking it into its digit sequence puts
-    // them into one comparable form without changing what either computed - the digits are the answer.
-    private static int[] DigitsOf(object? answer)
+    // Both arms hand back a linked list, so walking it into its digit sequence puts them into one comparable
+    // form without changing what either computed - the digits are the answer.
+    private static int[] DigitsOf(SinglyLinkedListNode<int>? answer)
     {
         var digits = new List<int>();
 
-        for (var node = answer as SinglyLinkedListNode<int>; node is not null; node = node.Next)
+        for (var node = answer; node is not null; node = node.Next)
         {
             digits.Add(node.Value);
         }

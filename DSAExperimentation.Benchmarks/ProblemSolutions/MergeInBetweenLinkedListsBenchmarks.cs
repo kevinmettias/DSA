@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MergeInBetweenLinkedLists;
 
@@ -10,9 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // nodes it is handed - a cached chain would only be valid for the first measured
 // iteration. The rebuild is timed on purpose, and the array arm, which only reads
 // its lists, pays it too so both arms carry the same cost.
-//
-// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type (CS0050).
 public class MergeInBetweenLinkedListsBenchmarks
 {
     private const int SecondListLength = 5;
@@ -37,7 +35,7 @@ public class MergeInBetweenLinkedListsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object ArraySpliceRebuild() =>
+    public SinglyLinkedListNode<int> ArraySpliceRebuild() =>
         MergeInBetweenLinkedListsSolution.MergeInBetweenByArrayRebuild(
             LeetCodeWireFormat.ToLinkedList(_list1Values)!,
             _fromIndex,
@@ -45,7 +43,7 @@ public class MergeInBetweenLinkedListsBenchmarks
             LeetCodeWireFormat.ToLinkedList(_list2Values)!);
 
     [Benchmark]
-    public object LinkedListSplice() =>
+    public SinglyLinkedListNode<int> LinkedListSplice() =>
         MergeInBetweenLinkedListsSolution.MergeInBetweenByPointerSplice(
             LeetCodeWireFormat.ToLinkedList(_list1Values)!,
             _fromIndex,

@@ -7,10 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: all three arms are
 // LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution's, the same methods
-// LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolutionTests proves correct. [Benchmark]
-// methods return object? rather than the internal QuadTreeNode - the same
-// accommodation ConstructQuadTreeBenchmarks and friends make (a public [Benchmark]
-// method cannot expose an internal return type even to a friend assembly, CS0050).
+// LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolutionTests proves correct.
 // grid1 splits top/bottom, grid2 splits left/right, so every top-level quadrant of
 // the OR result is genuinely mixed and neither input tree nor the merged grid
 // collapses trivially at the root - this is what lets DirectRecursiveMerge's
@@ -58,14 +55,14 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
     private bool IsLeftHalf(int col) => col < Size / AlgorithmConstants.HalvingFactor;
 
     [Benchmark(Baseline = true)]
-    public object? BruteForceGridMaterialize() =>
+    public QuadTreeNode BruteForceGridMaterialize() =>
         LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution.OrByBruteForceGridMaterialize(_tree1, _tree2, Size);
 
     [Benchmark]
-    public object? FenwickGridMaterialize() =>
+    public QuadTreeNode FenwickGridMaterialize() =>
         LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution.OrByFenwickGridMaterialize(_tree1, _tree2, Size);
 
     [Benchmark]
-    public object? DirectRecursiveMerge() =>
+    public QuadTreeNode DirectRecursiveMerge() =>
         LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution.OrByDirectRecursiveMerge(_tree1, _tree2);
 }

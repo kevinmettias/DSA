@@ -10,10 +10,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] and shared by both arms. The first digit is kept in [1, 10) so the
 // workload never carries a leading zero, LC 2816's own input guarantee.
 //
-// The arms return object, not SinglyLinkedListNode<int> - the node type is
-// internal, so a public [Benchmark] method cannot name it as a return type
-// (CS0050). Before this migration both arms instead walked their result to a digit
-// count and returned that; returning the answer itself is what makes them the
+// Before this migration both arms instead walked their result to a digit count
+// and returned that; returning the answer itself is what makes them the
 // methods the tests assert.
 public class DoubleANumberRepresentedAsALinkedListBenchmarks
 {
@@ -41,10 +39,10 @@ public class DoubleANumberRepresentedAsALinkedListBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? BigIntegerConvertDoubleAndBack() =>
+    public SinglyLinkedListNode<int>? BigIntegerConvertDoubleAndBack() =>
         DoubleANumberRepresentedAsALinkedListSolution.DoubleNumberByBigInteger(_head);
 
     [Benchmark]
-    public object? StackDigitwiseDouble() =>
+    public SinglyLinkedListNode<int>? StackDigitwiseDouble() =>
         DoubleANumberRepresentedAsALinkedListSolution.DoubleNumberByDigitStack(_head);
 }

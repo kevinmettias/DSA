@@ -8,8 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // built once in GlobalSetup - via a manual, non-repo insert over a shuffled
 // insertion order - so neither arm's timing is charged for tree construction, only
 // for the round trip through its own serialization grammar. Each arm returns the
-// rebuilt tree's root, as object because BinaryTreeNode<int> is internal and a
-// [Benchmark] method must be public.
+// rebuilt tree's root.
 public class SerializeAndDeserializeBSTBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
@@ -75,12 +74,12 @@ public class SerializeAndDeserializeBSTBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? NullMarkerQueueRoundTrip() =>
+    public BinaryTreeNode<int>? NullMarkerQueueRoundTrip() =>
         SerializeAndDeserializeBSTSolution.DeserializeByNullMarkerQueue(
             SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(_root));
 
     [Benchmark]
-    public object? PreOrderValueOnlyRoundTrip() =>
+    public BinaryTreeNode<int>? PreOrderValueOnlyRoundTrip() =>
         SerializeAndDeserializeBSTSolution.DeserializeByBstInsert(
             SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(_root));
 }

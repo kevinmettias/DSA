@@ -12,9 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // first measured iteration (mirrors RemoveLinkedListElementsBenchmarks' identical
 // rebuild-per-call precedent). The rebuild and the walk to the target are timed on
 // purpose because the strategy mutates its input, and they are most of what the arm
-// costs: the deletion itself is O(1). The arm returns the rebuilt list's head as object?,
-// since the node type is internal (CS0050), so what the deletion left is its answer
-// rather than something the arm builds and drops.
+// costs: the deletion itself is O(1). The arm returns the rebuilt list's head, so what
+// the deletion left is its answer rather than something the arm builds and drops.
 public class DeleteNodeInALinkedListBenchmarks
 {
     private int[] _values = [];
@@ -26,7 +25,7 @@ public class DeleteNodeInALinkedListBenchmarks
     public void Setup() => _values = Enumerable.Range(0, Length).ToArray();
 
     [Benchmark]
-    public object? NextValueCopy()
+    public SinglyLinkedListNode<int> NextValueCopy()
     {
         var head = LeetCodeWireFormat.ToLinkedList(_values)!;
         var target = NodeAt(head, Length / 2);

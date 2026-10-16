@@ -8,9 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // method LowestCommonAncestorOfABinaryTreeSolutionTests proves correct. Queries the
 // leftmost and rightmost leaf of a balanced tree - an LCA at the root, the worst
 // case for the search.
-//
-// Returns object, not BinaryTreeNode<int> - the node type is internal, so a public
-// [Benchmark] method cannot name it as a return type (CS0050).
 public class LowestCommonAncestorOfABinaryTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
@@ -56,6 +53,6 @@ public class LowestCommonAncestorOfABinaryTreeBenchmarks
     }
 
     [Benchmark]
-    public object? AncestryWalk() =>
+    public BinaryTreeNode<int>? AncestryWalk() =>
         LowestCommonAncestorOfABinaryTreeSolution.FindLcaByAncestryWalk(_root, _firstNode, _secondNode);
 }

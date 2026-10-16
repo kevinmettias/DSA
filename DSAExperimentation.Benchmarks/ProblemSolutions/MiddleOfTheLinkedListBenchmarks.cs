@@ -41,14 +41,12 @@ public class MiddleOfTheLinkedListBenchmarks
         return head;
     }
 
-    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
-    // so a public [Benchmark] method cannot name it as a return type (CS0050).
     // Returning the middle node itself keeps both arms on LeetCode's real answer
     // shape rather than the weaker "read a value off it" measurement the pre-§17
     // benchmark took.
     [Benchmark(Baseline = true)]
-    public object? CountThenWalk() => MiddleOfTheLinkedListSolution.MiddleNodeByCountThenWalk(_head);
+    public SinglyLinkedListNode<int>? CountThenWalk() => MiddleOfTheLinkedListSolution.MiddleNodeByCountThenWalk(_head);
 
     [Benchmark]
-    public object? SlowFastTwoPointer() => MiddleOfTheLinkedListSolution.MiddleNodeBySlowFastTwoPointer(_head);
+    public SinglyLinkedListNode<int>? SlowFastTwoPointer() => MiddleOfTheLinkedListSolution.MiddleNodeBySlowFastTwoPointer(_head);
 }

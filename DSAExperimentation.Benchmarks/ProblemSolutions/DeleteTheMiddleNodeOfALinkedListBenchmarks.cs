@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.DeleteTheMiddleNodeOfALinkedList;
 
@@ -32,15 +33,13 @@ public class DeleteTheMiddleNodeOfALinkedListBenchmarks
         _values = SeededDraws.Values(Length, 1, ValueRangeExclusive, random);
     }
 
-    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
-    // so a public [Benchmark] method cannot name it as a return type (CS0050).
     [Benchmark(Baseline = true)]
-    public object? CountThenRebuild() =>
+    public SinglyLinkedListNode<int>? CountThenRebuild() =>
         DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleByCountThenRebuild(
             LeetCodeWireFormat.ToLinkedList(_values));
 
     [Benchmark]
-    public object? SlowFastPointers() =>
+    public SinglyLinkedListNode<int>? SlowFastPointers() =>
         DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleBySlowFastPointers(
             LeetCodeWireFormat.ToLinkedList(_values));
 }

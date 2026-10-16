@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.SwappingNodesInALinkedList;
 
@@ -18,9 +19,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // input, and both arms pay the same construction, so what differs between them is
 // the search alone.
 //
-// Returns object, not SinglyLinkedListNode<int>? - the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type (CS0050). The node at
-// 1-based position p holds p mod 101, so the values cycle through LC 1721's [0, 100].
+// The node at 1-based position p holds p mod 101, so the values cycle through
+// LC 1721's [0, 100].
 public class SwappingNodesInALinkedListBenchmarks
 {
     private const int TargetIndexDivisor = 3;
@@ -45,12 +45,12 @@ public class SwappingNodesInALinkedListBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? ArrayMaterializeSwap() =>
+    public SinglyLinkedListNode<int>? ArrayMaterializeSwap() =>
         SwappingNodesInALinkedListSolution.SwapNodesByArrayMaterialize(
             LeetCodeWireFormat.ToLinkedList(_values), _kthPosition);
 
     [Benchmark]
-    public object? LinkedListTwoPointerSwap() =>
+    public SinglyLinkedListNode<int>? LinkedListTwoPointerSwap() =>
         SwappingNodesInALinkedListSolution.SwapNodesByTwoPointerWalk(
             LeetCodeWireFormat.ToLinkedList(_values), _kthPosition);
 }

@@ -8,10 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // clones the shared fixture first (OddEvenLinkedListBenchmarks precedent)
 // since [GlobalSetup] runs once per benchmark, not once per invocation, and
 // InPlaceRewire mutates the chain it walks. Both arms return the
-// SinglyLinkedListNode<int>?[] of parts itself, as object: that type is
-// internal, and a public [Benchmark] method on this public class cannot name
-// it (CS0050). Length stops at LC 725's 1,000 nodes, valued 0..999 inside its
-// [0, 1000].
+// SinglyLinkedListNode<int>?[] of parts itself. Length stops at LC 725's
+// 1,000 nodes, valued 0..999 inside its [0, 1000].
 public class SplitLinkedListInPartsBenchmarks
 {
     private const int Parts = 7;
@@ -39,11 +37,11 @@ public class SplitLinkedListInPartsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? ArrayRebuild() =>
+    public SinglyLinkedListNode<int>?[] ArrayRebuild() =>
         SplitLinkedListInPartsSolution.SplitListToPartsByArrayRebuild(Clone(_head), Parts);
 
     [Benchmark]
-    public object? InPlaceRewire() =>
+    public SinglyLinkedListNode<int>?[] InPlaceRewire() =>
         SplitLinkedListInPartsSolution.SplitListToPartsByInPlaceRewire(Clone(_head), Parts);
 
     private static SinglyLinkedListNode<int> Clone(SinglyLinkedListNode<int> head)

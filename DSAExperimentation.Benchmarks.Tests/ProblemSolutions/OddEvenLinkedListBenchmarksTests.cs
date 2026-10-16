@@ -41,11 +41,11 @@ public sealed partial class OddEvenLinkedListBenchmarksTests
         return [.. values.Where(value => value % PositionParity == 0), .. values.Where(value => value % PositionParity != 0)];
     }
 
-    private static List<int> ValuesOf(object? head)
+    private static List<int> ValuesOf(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();
 
-        for (var node = (SinglyLinkedListNode<int>?)head; node is not null; node = node.Next)
+        for (var node = head; node is not null; node = node.Next)
         {
             values.Add(node.Value);
         }

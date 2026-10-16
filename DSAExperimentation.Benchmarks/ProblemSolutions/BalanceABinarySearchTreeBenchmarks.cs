@@ -12,8 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // chain, built in [GlobalSetup] so its construction is not charged to the measured
 // balance. It holds 1..n rather than Fixtures.BinaryTrees.Skewed's 0..n-1 because
 // LC 1382's node values start at 1. Each arm returns LeetCode's real answer -
-// the rebuilt root - as object?, since a public [Benchmark] method cannot name the
-// internal BinaryTreeNode<int> (CS0050).
+// the rebuilt root.
 public class BalanceABinarySearchTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
@@ -39,10 +38,10 @@ public class BalanceABinarySearchTreeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? RepeatedKthSmallestScan() =>
+    public BinaryTreeNode<int>? RepeatedKthSmallestScan() =>
         BalanceABinarySearchTreeSolution.BalanceByRepeatedKthSmallest(_root);
 
     [Benchmark]
-    public object? InOrderTraversalCollectAndRebuild() =>
+    public BinaryTreeNode<int>? InOrderTraversalCollectAndRebuild() =>
         BalanceABinarySearchTreeSolution.BalanceByInOrderTraversal(_root);
 }

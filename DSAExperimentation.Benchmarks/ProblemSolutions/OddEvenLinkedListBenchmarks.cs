@@ -31,13 +31,12 @@ public class OddEvenLinkedListBenchmarks
         return dummy.Next!;
     }
 
-    // Each arm returns the regrouped list's head, as object because SinglyLinkedListNode<int>
-    // is internal and a public [Benchmark] method cannot name it.
+    // Each arm returns the regrouped list's head.
     [Benchmark(Baseline = true)]
-    public object? TwoListRebuild() => OddEvenLinkedListSolution.GroupOddEvenByTwoListRebuild(Clone(_head));
+    public SinglyLinkedListNode<int>? TwoListRebuild() => OddEvenLinkedListSolution.GroupOddEvenByTwoListRebuild(Clone(_head));
 
     [Benchmark]
-    public object? InPlaceRewire() => OddEvenLinkedListSolution.GroupOddEvenByInPlaceRewire(Clone(_head));
+    public SinglyLinkedListNode<int>? InPlaceRewire() => OddEvenLinkedListSolution.GroupOddEvenByInPlaceRewire(Clone(_head));
 
     private static SinglyLinkedListNode<int> Clone(SinglyLinkedListNode<int> head)
     {

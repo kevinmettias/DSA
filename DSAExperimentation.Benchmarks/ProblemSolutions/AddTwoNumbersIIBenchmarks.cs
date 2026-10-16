@@ -4,10 +4,9 @@ using DSAExperimentation.LeetCode.AddTwoNumbersII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AddTwoNumbersIISolution's, the same methods
-// AddTwoNumbersIISolutionTests proves correct. Each arm returns the sum list itself
-// as object?, since a public [Benchmark] method cannot name the internal
-// SinglyLinkedListNode<int> (CS0050). LC 445 stores a number most-significant digit
-// first and promises it has no leading zero, so each list's head is drawn from 1-9
+// AddTwoNumbersIISolutionTests proves correct. Each arm returns the sum
+// list itself. LC 445 stores a number most-significant digit first and
+// promises it has no leading zero, so each list's head is drawn from 1-9
 // and every later digit from 0-9.
 public class AddTwoNumbersIIBenchmarks
 {
@@ -44,8 +43,8 @@ public class AddTwoNumbersIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? BigIntegerConvertAndBack() => AddTwoNumbersIISolution.AddByBigInteger(_first, _second);
+    public SinglyLinkedListNode<int>? BigIntegerConvertAndBack() => AddTwoNumbersIISolution.AddByBigInteger(_first, _second);
 
     [Benchmark]
-    public object? TwoStacksDigitwiseAdd() => AddTwoNumbersIISolution.AddByTwoStacks(_first, _second);
+    public SinglyLinkedListNode<int>? TwoStacksDigitwiseAdd() => AddTwoNumbersIISolution.AddByTwoStacks(_first, _second);
 }

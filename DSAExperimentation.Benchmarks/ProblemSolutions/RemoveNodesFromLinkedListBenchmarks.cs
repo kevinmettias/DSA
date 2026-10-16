@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RemoveNodesFromLinkedList;
 
@@ -29,15 +30,13 @@ public class RemoveNodesFromLinkedListBenchmarks
         _values = Enumerable.Range(1, Length).OrderBy(_ => random.Next()).ToArray();
     }
 
-    // Returns object, not SinglyLinkedListNode<int> - the node type is internal, so
-    // a public [Benchmark] method cannot name it as a return type (CS0050).
     [Benchmark(Baseline = true)]
-    public object? BruteForceScan() =>
+    public SinglyLinkedListNode<int>? BruteForceScan() =>
         RemoveNodesFromLinkedListSolution.RemoveNodesByBruteForceScan(
             LeetCodeWireFormat.ToLinkedList(_values));
 
     [Benchmark]
-    public object? MonotonicStackSweep() =>
+    public SinglyLinkedListNode<int>? MonotonicStackSweep() =>
         RemoveNodesFromLinkedListSolution.RemoveNodesByMonotonicStack(
             LeetCodeWireFormat.ToLinkedList(_values));
 }

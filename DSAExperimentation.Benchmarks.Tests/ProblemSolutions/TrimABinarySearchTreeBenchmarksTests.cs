@@ -31,7 +31,7 @@ public sealed partial class TrimABinarySearchTreeBenchmarksTests
     [Fact]
     public void Setup_ShuffledInsertion_BuildsATreeFarShallowerThanAChain()
     {
-        var height = HeightOf((BinaryTreeNode<int>?)BuildHarness().InPlaceTrim());
+        var height = HeightOf(BuildHarness().InPlaceTrim());
 
         Assert.InRange(height, 1, SmallestNodeCount / 10);
     }

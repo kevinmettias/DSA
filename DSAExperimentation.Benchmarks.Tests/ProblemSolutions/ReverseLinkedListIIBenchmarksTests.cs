@@ -51,11 +51,11 @@ public sealed partial class ReverseLinkedListIIBenchmarksTests
         Assert.Equal(AnswerGraphText.Of(ValuesOf(harness.ArrayRebuild())), AnswerGraphText.Of(ValuesOf(reversed)));
     }
 
-    private static int[] ValuesOf(object? head)
+    private static int[] ValuesOf(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();
 
-        for (var node = (SinglyLinkedListNode<int>?)head; node is not null; node = node.Next)
+        for (var node = head; node is not null; node = node.Next)
         {
             values.Add(node.Value);
         }

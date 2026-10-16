@@ -6,11 +6,11 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for ConstructQuadTreeBenchmarks (ARCHITECTURE 17.9): its two arms are competing
 // strategies for the same question - a raw cell scan against one Fenwick tree per row - so a harness
-// whose arms disagree is timing two different problems. Both arms return the built QuadTreeNode tree
-// as object?, which is not comparable by value, so each is projected with QuadTreeGrid.Materialize -
-// the walk LC 427's own coverage test decodes its trees with - into the grid the tree denotes. That
-// projection preserves the claim: LC 427's answer is a compression of the input grid, so two trees
-// that materialize to the same grid are the same answer to the question being timed.
+// whose arms disagree is timing two different problems. Both arms return the built QuadTreeNode tree,
+// so each is projected with QuadTreeGrid.Materialize - the walk LC 427's own coverage test decodes
+// its trees with - into the grid the tree denotes. That projection preserves the claim: LC 427's
+// answer is a compression of the input grid, so two trees that materialize to the same grid are the
+// same answer to the question being timed.
 //
 // AnswerGraphText.Of renders the materialized jagged grid element-wise; Assert.Equal on int[][] itself
 // would fall back to reference equality for the inner arrays and pass every time.
@@ -66,10 +66,8 @@ public sealed partial class ConstructQuadTreeBenchmarksTests
         return grid;
     }
 
-    // The arm returns object? rather than the internal QuadTreeNode itself (CS0050), so the tree is
-    // read back out of the boxed result before the decode walks it.
-    private static int[][] Materialized(object? tree) =>
-        QuadTreeGrid.Materialize(Assert.IsType<QuadTreeNode>(tree), SmallestSize);
+    private static int[][] Materialized(QuadTreeNode tree) =>
+        QuadTreeGrid.Materialize(tree, SmallestSize);
 
     private static ConstructQuadTreeBenchmarks BuildHarness()
     {

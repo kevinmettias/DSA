@@ -44,14 +44,12 @@ public class InsertGreatestCommonDivisorsInLinkedListBenchmarks
         return dummy.Next!;
     }
 
-    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
-    // so a public [Benchmark] method cannot name it as a return type (CS0050).
     [Benchmark(Baseline = true)]
-    public object? ValueRebuild() =>
+    public SinglyLinkedListNode<int>? ValueRebuild() =>
         InsertGreatestCommonDivisorsInLinkedListSolution.InsertGreatestCommonDivisorsByValueRebuild(Clone(_head));
 
     [Benchmark]
-    public object? NodeSplice() =>
+    public SinglyLinkedListNode<int>? NodeSplice() =>
         InsertGreatestCommonDivisorsInLinkedListSolution.InsertGreatestCommonDivisorsByNodeSplice(Clone(_head));
 
     private static SinglyLinkedListNode<int> Clone(SinglyLinkedListNode<int> head)

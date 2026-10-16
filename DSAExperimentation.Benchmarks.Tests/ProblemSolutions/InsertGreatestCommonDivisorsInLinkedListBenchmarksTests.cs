@@ -7,16 +7,15 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // Harness coverage for InsertGreatestCommonDivisorsInLinkedListBenchmarks (ARCHITECTURE 17.9).
 // Both arms are competing strategies for the same question - a fresh sequence rebuilt through a
 // value buffer against one gcd node spliced between each original pair - so a harness whose arms
-// disagree is timing two different problems. Both arms return the resulting list's head as object
-// (the node type is internal, so a public [Benchmark] method cannot name it as a return type),
-// which is the real answer rather than a proxy. The expected answer is stated as plain values, so a linked node is
-// not an enumerable sequence, so each result is walked into its values first. The expected
-// sequence is derived from the fixture, not read back out of an arm: [GlobalSetup] builds the
-// values 1..Length in order (wrapping only past LC 2807's 1,000 value cap, beyond the smallest
-// length), and two consecutive integers always have a greatest common divisor
-// of one, so every inserted node holds one and the answer is fixed. Each arm clones the shared
-// list inside the measured call (the splice rewrites .Next in place), so one harness is safe to
-// call twice in either order.
+// disagree is timing two different problems. Both arms return the resulting list's head, which
+// is the real answer rather than a proxy. The expected answer is stated as plain values and a
+// linked node is not an enumerable sequence, so each result is walked into its values first.
+// The expected sequence is derived from the fixture, not read back out of an arm:
+// [GlobalSetup] builds the values 1..Length in order (wrapping only past LC 2807's 1,000 value
+// cap, beyond the smallest length), and two consecutive integers always have a greatest common
+// divisor of one, so every inserted node holds one and the answer is fixed. Each arm clones
+// the shared list inside the measured call (the splice rewrites .Next in place), so one
+// harness is safe to call twice in either order.
 public sealed partial class InsertGreatestCommonDivisorsInLinkedListBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -62,13 +61,13 @@ public sealed partial class InsertGreatestCommonDivisorsInLinkedListBenchmarksTe
         return harness;
     }
 
-    private static string RenderedValues(object? answer) => AnswerGraphText.Of(ValuesOf(answer));
+    private static string RenderedValues(SinglyLinkedListNode<int>? answer) => AnswerGraphText.Of(ValuesOf(answer));
 
-    private static int[] ValuesOf(object? answer)
+    private static int[] ValuesOf(SinglyLinkedListNode<int>? answer)
     {
         var values = new List<int>();
 
-        for (var node = (SinglyLinkedListNode<int>?)answer; node is not null; node = node.Next)
+        for (var node = answer; node is not null; node = node.Next)
         {
             values.Add(node.Value);
         }

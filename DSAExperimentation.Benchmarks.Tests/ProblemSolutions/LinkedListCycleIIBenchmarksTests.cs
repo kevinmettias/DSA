@@ -6,9 +6,9 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // Harness coverage for LinkedListCycleIIBenchmarks (ARCHITECTURE 17.9): its two arms are competing
 // strategies for the same question - the visited-set baseline against this repo's own Floyd detector -
 // so a harness whose arms disagree is timing two different problems. Both return the cycle's entry
-// node as object? (the node type is internal, CS0050). The arms are compared by reference identity,
-// which is what "the same node starts the cycle" means: a rendering compares the shape reachable
-// from a node, and two different nodes of one cycle reach the same shape.
+// node. The arms are compared by reference identity, which is what "the same node starts the cycle"
+// means: a rendering compares the shape reachable from a node, and two different nodes of one cycle
+// reach the same shape.
 //
 // Setup builds a Length-node chain whose tail rejoins its head, so the entry is the head node - the
 // one carrying HeadValue. Two independently built harnesses hold different node instances, so the
@@ -40,9 +40,12 @@ public sealed partial class LinkedListCycleIIBenchmarksTests
         Assert.Same(harness.VisitedSet(), harness.FloydCycleDetection());
     }
 
-    // The arm's result is the internal node type boxed back into object? (CS0050), which is why the
-    // entry is read back out of the box rather than named by the arm's own signature.
-    private static int EntryValue(object? entry) => Assert.IsType<SinglyLinkedListNode<int>>(entry).Value;
+    private static int EntryValue(SinglyLinkedListNode<int>? entry)
+    {
+        Assert.NotNull(entry);
+
+        return entry.Value;
+    }
 
     private static LinkedListCycleIIBenchmarks BuildHarness()
     {

@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.ReorderList;
 
@@ -12,9 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // cached list would only be valid for the first measured iteration (same
 // shape RotateListBenchmarks already uses). The rebuild is timed on purpose
 // because the strategy mutates its input.
-//
-// Returns object, not SinglyLinkedListNode<int> - the node type is internal,
-// so a public [Benchmark] method cannot name it as a return type (CS0050).
 //
 // The node at position i holds i + 1, wrapping back to 1 after LC 143's highest value
 // of 1,000 - so the smaller list holds 1..1000 once, and the larger, at LC 143's
@@ -33,7 +31,7 @@ public class ReorderListBenchmarks
         _values = Enumerable.Range(0, Length).Select(position => (position % MaxNodeValue) + 1).ToArray();
 
     [Benchmark(Baseline = true)]
-    public object? ReverseAndMergeInPlace()
+    public SinglyLinkedListNode<int>? ReverseAndMergeInPlace()
     {
         var head = LeetCodeWireFormat.ToLinkedList(_values);
         ReorderListSolution.ReorderByReverseAndMergeInPlace(head);

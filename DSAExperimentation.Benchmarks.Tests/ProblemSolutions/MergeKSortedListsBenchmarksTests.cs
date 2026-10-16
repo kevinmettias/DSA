@@ -7,9 +7,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // Harness coverage for MergeKSortedListsBenchmarks (ARCHITECTURE 17.9): its two arms are competing
 // strategies for the same question - flattening every list and sorting the values against the
 // K-way heap merge - so a harness whose arms disagree is timing two different problems. Both arms
-// report the merged chain as an object over the data structure's internal node type, so the test reads
-// the values off it rather than comparing nodes; the merge is order-defining, so the order-sensitive
-// rendering is the right comparison.
+// report the merged chain, so the test reads the values off it rather than comparing nodes; the merge
+// is order-defining, so the order-sensitive rendering is the right comparison.
 //
 // The workload is its own oracle: list `offset` holds offset, ListCount + offset, 2 * ListCount +
 // offset, ... so ListCount lists of ValuesPerList values tile 0 .. ListCount * ValuesPerList - 1
@@ -58,13 +57,12 @@ public sealed partial class MergeKSortedListsBenchmarksTests
             AnswerGraphText.Of(Values(harness.MergeByHeap())));
     }
 
-    // Both arms report the merged chain as that internal node type through an object, so the test reads
-    // the values off it rather than comparing nodes.
-    private static List<int> Values(object? head)
+    // Both arms report the merged chain, so the test reads the values off it rather than comparing nodes.
+    private static List<int> Values(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();
 
-        for (var node = head as SinglyLinkedListNode<int>; node is not null; node = node.Next)
+        for (var node = head; node is not null; node = node.Next)
         {
             values.Add(node.Value);
         }

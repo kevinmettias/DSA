@@ -6,8 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SerializeAndDeserializeBinaryTreeSolution's, the same
 // methods SerializeAndDeserializeBinaryTreeSolutionTests proves correct. Each arm builds the
-// serialized string, rebuilds the tree from it in full and returns the rebuilt root, as
-// object because BinaryTreeNode<int> is internal and a [Benchmark] method must be public.
+// serialized string, rebuilds the tree from it in full and returns the rebuilt root.
 //
 // The tree is complete - LeetCode's level-order array with no gaps - with values drawn from
 // a seeded Random across LC 297's whole [-1000, 1000], so the serialized form carries signs
@@ -31,12 +30,12 @@ public class SerializeAndDeserializeBinaryTreeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? StringConcatRoundTrip() =>
+    public BinaryTreeNode<int>? StringConcatRoundTrip() =>
         SerializeAndDeserializeBinaryTreeSolution.DeserializeByStringConcat(
             SerializeAndDeserializeBinaryTreeSolution.SerializeByStringConcat(_root));
 
     [Benchmark]
-    public object? QueueRoundTrip() =>
+    public BinaryTreeNode<int>? QueueRoundTrip() =>
         SerializeAndDeserializeBinaryTreeSolution.DeserializeByQueue(
             SerializeAndDeserializeBinaryTreeSolution.SerializeByQueue(_root));
 }

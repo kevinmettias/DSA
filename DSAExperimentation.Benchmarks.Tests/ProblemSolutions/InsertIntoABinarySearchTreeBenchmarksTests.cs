@@ -41,8 +41,9 @@ public sealed partial class InsertIntoABinarySearchTreeBenchmarksTests
     [Fact]
     public void CollectSortInsertRebuild_RebuiltBalancedTree_RootsAtTheSortedMiddle()
     {
-        var root = Assert.IsType<BinaryTreeNode<int>>(BuildHarness().CollectSortInsertRebuild());
+        var root = BuildHarness().CollectSortInsertRebuild();
 
+        Assert.NotNull(root);
         Assert.Equal(SortedMiddleValue(SmallestNodeCount), root.Value);
         Assert.Equal(ExpectedTreeValues(SmallestNodeCount), InOrderValues(root));
     }
@@ -50,8 +51,9 @@ public sealed partial class InsertIntoABinarySearchTreeBenchmarksTests
     [Fact]
     public void BinarySearchTreeInsert_PlainBstInsert_KeepsTheFirstInsertedKeyAsRoot()
     {
-        var root = Assert.IsType<BinaryTreeNode<int>>(BuildHarness().BinarySearchTreeInsert());
+        var root = BuildHarness().BinarySearchTreeInsert();
 
+        Assert.NotNull(root);
         Assert.Equal(InsertionOrder(SmallestNodeCount)[0], root.Value);
         Assert.Equal(ExpectedTreeValues(SmallestNodeCount), InOrderValues(root));
     }

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RemoveZeroSumConsecutiveNodesFromLinkedList;
 
@@ -11,9 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // benchmark method rather than cached, because both strategies splice nodes out of
 // the list they are handed - a cached list would only be valid for the first
 // measured iteration. The rebuild is timed on purpose, and both arms pay it alike.
-//
-// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type (CS0050).
 public class RemoveZeroSumConsecutiveNodesFromLinkedListBenchmarks
 {
     // Small values around zero, so zero-sum runs are dense enough to exercise the
@@ -38,12 +36,12 @@ public class RemoveZeroSumConsecutiveNodesFromLinkedListBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? NestedRescan() =>
+    public SinglyLinkedListNode<int>? NestedRescan() =>
         RemoveZeroSumConsecutiveNodesFromLinkedListSolution
             .RemoveZeroSumSublistsByNestedRescan(LeetCodeWireFormat.ToLinkedList(_values));
 
     [Benchmark]
-    public object? PrefixSumMap() =>
+    public SinglyLinkedListNode<int>? PrefixSumMap() =>
         RemoveZeroSumConsecutiveNodesFromLinkedListSolution
             .RemoveZeroSumSublistsByPrefixSumMap(LeetCodeWireFormat.ToLinkedList(_values));
 }

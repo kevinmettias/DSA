@@ -10,10 +10,10 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // independently of the arm: the answer is that same sequence rendered backwards, so the oracle below
 // is stated from the fixture's shape and not read back out of the arm.
 //
-// The arm returns the new head as object? (the node type is internal, CS0050); the oracle states the
-// answer as plain values, so each result is walked into its values first. Both the arm and the Setup call rebuild the chain from the hoisted values inside the
-// measured call (the rewire mutates the nodes it is handed), so one harness is safe to call twice in
-// either order.
+// The arm returns the new head; the oracle states the answer as plain values, so each result is
+// walked into its values first. Both the arm and the Setup call rebuild the chain from the hoisted
+// values inside the measured call (the rewire mutates the nodes it is handed), so one harness is
+// safe to call twice in either order.
 public sealed partial class ReverseLinkedListBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -28,11 +28,11 @@ public sealed partial class ReverseLinkedListBenchmarksTests
     public void IterativeRewire_AscendingValues_ProducesTheDescendingSequence() =>
         Assert.Equal(ExpectedDescending(SmallestLength), ValuesOf(BuildHarness().IterativeRewire()));
 
-    private static int[] ValuesOf(object? head)
+    private static int[] ValuesOf(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();
 
-        for (var node = (SinglyLinkedListNode<int>?)head; node is not null; node = node.Next)
+        for (var node = head; node is not null; node = node.Next)
         {
             values.Add(node.Value);
         }

@@ -12,9 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // relinking in place), so - unlike InsertionSortListBenchmarks -
 // [GlobalSetup] can build the list once and every iteration reuses it, mirroring
 // ConvertSortedListToBinarySearchTreeBenchmarks.
-//
-// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so
-// a public [Benchmark] method cannot name it as a return type (CS0050).
 public class SortListBenchmarks
 {
     private const int ShuffleSeed = 148;
@@ -40,5 +37,5 @@ public class SortListBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? MergeSortOverSequence() => SortListSolution.SortByMergeSortOverSequence(_head);
+    public SinglyLinkedListNode<int>? MergeSortOverSequence() => SortListSolution.SortByMergeSortOverSequence(_head);
 }

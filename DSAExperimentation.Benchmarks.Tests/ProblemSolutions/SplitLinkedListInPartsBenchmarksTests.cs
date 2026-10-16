@@ -34,10 +34,8 @@ public sealed partial class SplitLinkedListInPartsBenchmarksTests
     public void InPlaceRewire_TwoHundredNodes_CutsEqualConsecutiveParts() =>
         AssertExpectedParts(BuildHarness().InPlaceRewire());
 
-    private static void AssertExpectedParts(object? answer)
+    private static void AssertExpectedParts(SinglyLinkedListNode<int>?[] parts)
     {
-        var parts = Assert.IsType<SinglyLinkedListNode<int>?[]>(answer);
-
         Assert.Equal(ExpectedPartCount, parts.Count(part => part is not null));
         Assert.Equal(ExpectedParts(), parts.Select(ValuesOf));
     }

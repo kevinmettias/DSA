@@ -14,8 +14,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Insert, so re-inserting is the cheapest fresh copy it has. The order is shuffled so
 // height stays close to O(log n) instead of the degenerate O(n) ascending-insertion
 // case, the same convention KthSmallestElementInABSTBenchmarks already uses. Each arm
-// returns the tree with the key removed as object?, since a public [Benchmark] method
-// cannot name the internal BinarySearchTree<int> (CS0050).
+// returns the tree with the key removed.
 public class DeleteNodeInABSTBenchmarks
 {
 
@@ -33,11 +32,11 @@ public class DeleteNodeInABSTBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? CollectFilterRebuild() =>
+    public BinarySearchTree<int> CollectFilterRebuild() =>
         DeleteNodeInABSTSolution.DeleteByCollectFilterRebuild(BuildTree(_insertionOrder), _target);
 
     [Benchmark]
-    public object? BinarySearchTreeTryDelete() =>
+    public BinarySearchTree<int> BinarySearchTreeTryDelete() =>
         DeleteNodeInABSTSolution.DeleteByBinarySearchTreeDelete(BuildTree(_insertionOrder), _target);
 
     private static BinarySearchTree<int> BuildTree(int[] values)

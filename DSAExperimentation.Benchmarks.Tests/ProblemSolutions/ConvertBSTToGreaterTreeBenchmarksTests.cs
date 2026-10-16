@@ -7,8 +7,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // pin, since it calls every arm on a harness nothing else has touched: the class's documented shape that each arm
 // clones the shared tree before transforming it. A second call on the same harness must therefore transform the
 // same untransformed values again, rather than re-transforming an already-transformed tree. Each arm returns the
-// transformed root as object? (the node type is internal, CS0050), so the two trees are compared by
-// AnswerGraphText's field walk.
+// transformed root, so the two trees are compared by AnswerGraphText's field walk.
 public sealed partial class ConvertBSTToGreaterTreeBenchmarksTests
 {
     private const int SmallestNodeCount = 500;

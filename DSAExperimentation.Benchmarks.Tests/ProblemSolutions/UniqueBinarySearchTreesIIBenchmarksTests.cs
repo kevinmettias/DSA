@@ -31,10 +31,8 @@ public sealed partial class UniqueBinarySearchTreesIIBenchmarksTests
 
     // Each tree is rendered on its own, so a subtree the memoized arm shares between trees renders
     // in full in every tree that holds it.
-    private static void AssertEveryDistinctTree(object? answer)
+    private static void AssertEveryDistinctTree(List<BinaryTreeNode<int>?> trees)
     {
-        var trees = Assert.IsType<List<BinaryTreeNode<int>?>>(answer);
-
         Assert.Equal(ExpectedTreeCount, trees.Count);
         Assert.Equal(ExpectedTreeCount, trees.Select(AnswerGraphText.Of).Distinct().Count());
     }

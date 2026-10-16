@@ -6,9 +6,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for SwapNodesInPairsBenchmarks (ARCHITECTURE 17.9): both arms are
 // SwapNodesInPairsSolution's - the in-place pointer rewiring against the array round trip - so a
-// harness whose arms disagree is timing two different questions. Both arms return the internal node
-// type through object, which renders as its own type name and would compare equal whatever the lists
-// held, so each arm's answer is walked out into the value sequence first.
+// harness whose arms disagree is timing two different questions.
 //
 // The run is 1..Length, whose adjacent pairs are decisive rather than merely agreed: every pair
 // exchanges places and Length is even, so the swapped run is stated by the oracle below rather than
@@ -59,11 +57,11 @@ public sealed partial class SwapNodesInPairsBenchmarksTests
         return harness;
     }
 
-    private static List<int> ValuesOf(object? head)
+    private static List<int> ValuesOf(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();
 
-        for (var node = (SinglyLinkedListNode<int>?)head; node is not null; node = node.Next)
+        for (var node = head; node is not null; node = node.Next)
         {
             values.Add(node.Value);
         }

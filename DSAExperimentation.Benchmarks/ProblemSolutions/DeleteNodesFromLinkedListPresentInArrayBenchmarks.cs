@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.DeleteNodesFromLinkedListPresentInArray;
 
@@ -34,15 +35,13 @@ public class DeleteNodesFromLinkedListPresentInArrayBenchmarks
         _numsSet = new Set<int>(_nums);
     }
 
-    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
-    // so a public [Benchmark] method cannot name it as a return type (CS0050).
     [Benchmark(Baseline = true)]
-    public object? ArrayScan() =>
+    public SinglyLinkedListNode<int>? ArrayScan() =>
         DeleteNodesFromLinkedListPresentInArraySolution.ModifiedListByArrayScan(
             _nums, LeetCodeWireFormat.ToLinkedList(_headValues));
 
     [Benchmark]
-    public object? SetFilter() =>
+    public SinglyLinkedListNode<int>? SetFilter() =>
         DeleteNodesFromLinkedListPresentInArraySolution.ModifiedListBySetFilter(
             _numsSet, LeetCodeWireFormat.ToLinkedList(_headValues));
 }

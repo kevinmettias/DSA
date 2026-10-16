@@ -2,15 +2,12 @@ using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.FlattenBinaryTreeToLinkedList;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FlattenBinaryTreeToLinkedListBenchmarks (ARCHITECTURE 17.9). Both arms return
-// void - each flattens a clone it discards - so the harness itself exposes no value to compare, and
-// the arms are reconciled the way FlattenAMultilevelDoublyLinkedList and DeleteNodeInALinkedList are:
-// each [Fact] replays the arm's own exact expression on the fixture [GlobalSetup] documents, and the
-// replayed chain is pinned to a preorder oracle derived independently of the fixture.
+// Harness coverage for FlattenBinaryTreeToLinkedListBenchmarks (ARCHITECTURE 17.9). Each arm returns
+// the clone it flattened, and each [Fact] pins that clone's right-child chain to a preorder oracle
+// derived independently of the fixture.
 //
 // That oracle is what makes the agreement meaningful. [GlobalSetup] hands BinaryTrees.Complete a
 // level order, which it lays out in heap order - node i's children at 2i + 1 and 2i + 2 - and the
@@ -40,28 +37,12 @@ public sealed partial class FlattenBinaryTreeToLinkedListBenchmarksTests
     }
 
     [Fact]
-    public void RecursiveSplice_AgreesWithTopDownPreorderRelinkOnThePreorderChain()
-    {
-        BuildHarness().RecursiveSplice();
-
-        var root = Workload(SmallestNodeCount);
-
-        FlattenBinaryTreeToLinkedListSolution.FlattenByRecursiveSplice(root);
-
-        Assert.Equal(ExpectedPreorder(SmallestNodeCount), RightChain(root));
-    }
+    public void RecursiveSplice_AgreesWithTopDownPreorderRelinkOnThePreorderChain() =>
+        Assert.Equal(ExpectedPreorder(SmallestNodeCount), RightChain(BuildHarness().RecursiveSplice()));
 
     [Fact]
-    public void TopDownPreorderRelink_AgreesWithRecursiveSpliceOnThePreorderChain()
-    {
-        BuildHarness().TopDownPreorderRelink();
-
-        var root = Workload(SmallestNodeCount);
-
-        FlattenBinaryTreeToLinkedListSolution.FlattenByTopDownPreorderRelink(root);
-
-        Assert.Equal(ExpectedPreorder(SmallestNodeCount), RightChain(root));
-    }
+    public void TopDownPreorderRelink_AgreesWithRecursiveSpliceOnThePreorderChain() =>
+        Assert.Equal(ExpectedPreorder(SmallestNodeCount), RightChain(BuildHarness().TopDownPreorderRelink()));
 
     // The one expression [GlobalSetup] builds its tree from.
     private static BinaryTreeNode<int> Workload(int nodeCount)

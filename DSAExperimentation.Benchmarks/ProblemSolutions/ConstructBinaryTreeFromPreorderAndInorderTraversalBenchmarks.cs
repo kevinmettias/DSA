@@ -9,8 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same method ...Tests proves correct. A balanced tree is built once via
 // Fixtures.BinaryTrees and flattened into its own preorder/inorder arrays in
 // [GlobalSetup], so only the reconstruction itself is measured. The arm returns the
-// rebuilt root as object?, since a public [Benchmark] method cannot name the internal
-// BinaryTreeNode<int> (CS0050).
+// rebuilt root.
 public class ConstructBinaryTreeFromPreorderAndInorderTraversalBenchmarks
 {
     private int[] _preorder = [];
@@ -66,6 +65,6 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversalBenchmarks
     }
 
     [Benchmark]
-    public object? PreorderIndexMap() =>
+    public BinaryTreeNode<int>? PreorderIndexMap() =>
         ConstructBinaryTreeFromPreorderAndInorderTraversalSolution.BuildByPreorderIndexMap(_preorder, _inorder);
 }

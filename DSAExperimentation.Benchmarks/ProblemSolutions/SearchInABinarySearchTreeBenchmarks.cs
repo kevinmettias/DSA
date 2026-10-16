@@ -36,14 +36,12 @@ public class SearchInABinarySearchTreeBenchmarks
         _target = NodeCount;
     }
 
-    // Each arm returns the found node, the root of LeetCode's answer subtree, as
-    // object because BinaryTreeNode<int> is internal and a [Benchmark] method
-    // must be public.
+    // Each arm returns the found node, the root of LeetCode's answer subtree.
     [Benchmark(Baseline = true)]
-    public object? LinearScan() =>
+    public BinaryTreeNode<int>? LinearScan() =>
         SearchInABinarySearchTreeSolution.SearchBstByLinearScan(_root, _target);
 
     [Benchmark]
-    public object? BinarySearchTreeDescent() =>
+    public BinaryTreeNode<int>? BinarySearchTreeDescent() =>
         SearchInABinarySearchTreeSolution.SearchBstByBstDescent(_root, _target);
 }

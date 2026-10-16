@@ -35,10 +35,10 @@ public sealed partial class SerializeAndDeserializeBSTBenchmarksTests
         return harness;
     }
 
-    private static List<int> InOrderValues(object? root)
+    private static List<int> InOrderValues(BinaryTreeNode<int>? root)
     {
         var values = new List<int>();
-        AppendInOrder(values, (BinaryTreeNode<int>?)root);
+        AppendInOrder(values, root);
 
         return values;
     }

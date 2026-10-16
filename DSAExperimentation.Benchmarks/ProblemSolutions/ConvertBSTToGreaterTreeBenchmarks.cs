@@ -16,9 +16,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // already uses. Each [Benchmark] clones the shared tree first (the RotateImage
 // convention for a mutate-in-place problem) so repeated BenchmarkDotNet invocations
 // each start from the same untransformed values instead of re-transforming an
-// already-transformed tree, and returns the transformed clone's root as object?,
-// since a public [Benchmark] method cannot name the internal BinaryTreeNode<int>
-// (CS0050).
+// already-transformed tree, and returns the transformed clone's root.
 public class ConvertBSTToGreaterTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
@@ -32,8 +30,8 @@ public class ConvertBSTToGreaterTreeBenchmarks
     public void Setup() => _root = CompleteSearchTrees.InOrderRanked(NodeCount);
 
     [Benchmark(Baseline = true)]
-    public object? ManualReverseInOrder() => ConvertBSTToGreaterTreeSolution.ConvertByReverseInOrder(BinaryTrees.Clone(_root));
+    public BinaryTreeNode<int>? ManualReverseInOrder() => ConvertBSTToGreaterTreeSolution.ConvertByReverseInOrder(BinaryTrees.Clone(_root));
 
     [Benchmark]
-    public object? InOrderTraversalHooks() => ConvertBSTToGreaterTreeSolution.ConvertByInOrderHooks(BinaryTrees.Clone(_root));
+    public BinaryTreeNode<int>? InOrderTraversalHooks() => ConvertBSTToGreaterTreeSolution.ConvertByInOrderHooks(BinaryTrees.Clone(_root));
 }

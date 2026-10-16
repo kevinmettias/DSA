@@ -33,13 +33,12 @@ public class TrimABinarySearchTreeBenchmarks
         _root = tree.Root!;
     }
 
-    // Each arm returns the trimmed tree's root, as object because BinaryTreeNode<int>
-    // is internal and a public [Benchmark] method can't name it (CS0050).
+    // Each arm returns the trimmed tree's root.
     [Benchmark(Baseline = true)]
-    public object? InPlaceTrim() =>
+    public BinaryTreeNode<int>? InPlaceTrim() =>
         TrimABinarySearchTreeSolution.TrimByInPlaceMutation(_root, 1, NodeCount);
 
     [Benchmark]
-    public object? IterativeBoundaryWalk() =>
+    public BinaryTreeNode<int>? IterativeBoundaryWalk() =>
         TrimABinarySearchTreeSolution.TrimByIterativeBoundaryWalk(_root, 1, NodeCount);
 }

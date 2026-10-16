@@ -1,6 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
@@ -28,11 +27,11 @@ public sealed partial class SmallestSubtreeWithAllTheDeepestNodesBenchmarksTests
 
     [Fact]
     public void HandRolledRecursion_FiftyNodeCompleteTree_PicksTheDeepestLevelsAncestor() =>
-        Assert.Equal(ExpectedDeepestSubtreeValue(), Assert.IsType<BinaryTreeNode<int>>(BuildHarness().HandRolledRecursion()).Value);
+        Assert.Equal(ExpectedDeepestSubtreeValue(), BuildHarness().HandRolledRecursion()?.Value);
 
     [Fact]
     public void TreeFoldWithAlgebra_FiftyNodeCompleteTree_PicksTheDeepestLevelsAncestor() =>
-        Assert.Equal(ExpectedDeepestSubtreeValue(), Assert.IsType<BinaryTreeNode<int>>(BuildHarness().TreeFoldWithAlgebra()).Value);
+        Assert.Equal(ExpectedDeepestSubtreeValue(), BuildHarness().TreeFoldWithAlgebra()?.Value);
 
     // The smallest subtree holding every deepest node is the lowest common ancestor of the
     // deepest level's two endpoints, since a complete tree fills that level contiguously. Setup

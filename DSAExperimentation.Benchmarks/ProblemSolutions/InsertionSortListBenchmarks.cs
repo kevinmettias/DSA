@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.InsertionSortList;
 
@@ -13,9 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // list's own nodes in place - a cached list would only be valid for the first
 // measured iteration (same shape RotateListBenchmarks already uses). The rebuild
 // is timed on purpose because the strategy mutates its input.
-//
-// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so
-// a public [Benchmark] method cannot name it as a return type (CS0050).
 public class InsertionSortListBenchmarks
 {
     private const int ShuffleSeed = 147;
@@ -29,6 +27,6 @@ public class InsertionSortListBenchmarks
     public void Setup() => _values = SeededSequences.ShuffledOneTo(Length, ShuffleSeed);
 
     [Benchmark(Baseline = true)]
-    public object? DummyHeadInsertion() =>
+    public SinglyLinkedListNode<int>? DummyHeadInsertion() =>
         InsertionSortListSolution.SortByDummyHeadInsertion(LeetCodeWireFormat.ToLinkedList(_values));
 }

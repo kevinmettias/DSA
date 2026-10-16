@@ -11,8 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // depth stays O(log n) at both sizes, and NodeCount stops at LC 865's 500 nodes, whose
 // values 0..499 stay inside its unique [0, 500].
 //
-// Each arm returns the answer node itself, as object because a public [Benchmark]
-// method cannot expose the internal BinaryTreeNode<int>.
+// Each arm returns the answer node itself.
 public class SmallestSubtreeWithAllTheDeepestNodesBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
@@ -24,10 +23,10 @@ public class SmallestSubtreeWithAllTheDeepestNodesBenchmarks
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
 
     [Benchmark(Baseline = true)]
-    public object? HandRolledRecursion() =>
+    public BinaryTreeNode<int>? HandRolledRecursion() =>
         SmallestSubtreeWithAllTheDeepestNodesSolution.SubtreeWithAllDeepestByRecursion(_root);
 
     [Benchmark]
-    public object? TreeFoldWithAlgebra() =>
+    public BinaryTreeNode<int>? TreeFoldWithAlgebra() =>
         SmallestSubtreeWithAllTheDeepestNodesSolution.SubtreeWithAllDeepestByTreeFold(_root);
 }

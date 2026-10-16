@@ -14,8 +14,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 //
 // Because the chain is in ascending order, the rotation's cut point is visible on the answer itself:
 // rotating right by k moves the last k values to the front and leaves the rest in order. Both arms
-// return the new head as object? (the node type is internal, CS0050) and rebuild or rewire the chain
-// inside the measured call, so one harness is safe to call twice in either order.
+// return the new head and rebuild or rewire the chain inside the measured call, so one harness is
+// safe to call twice in either order.
 public sealed partial class RotateListBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -52,11 +52,11 @@ public sealed partial class RotateListBenchmarksTests
         Assert.Equal(AnswerGraphText.Of(ValuesOf(harness.ArrayRebuild())), AnswerGraphText.Of(ValuesOf(rotated)));
     }
 
-    private static int[] ValuesOf(object? head)
+    private static int[] ValuesOf(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();
 
-        for (var node = (SinglyLinkedListNode<int>?)head; node is not null; node = node.Next)
+        for (var node = head; node is not null; node = node.Next)
         {
             values.Add(node.Value);
         }

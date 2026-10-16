@@ -32,7 +32,7 @@ public sealed partial class ConstructBinaryTreeFromInorderAndPostorderTraversalB
         Assert.Equal(Enumerable.Range(0, SmallestNodeCount), LevelOrderValues(Rebuilt()));
 
     private static BinaryTreeNode<int>? Rebuilt() =>
-        (BinaryTreeNode<int>?)BuildHarness().PostorderIndexMap();
+        BuildHarness().PostorderIndexMap();
 
     private static ConstructBinaryTreeFromInorderAndPostorderTraversalBenchmarks BuildHarness()
     {

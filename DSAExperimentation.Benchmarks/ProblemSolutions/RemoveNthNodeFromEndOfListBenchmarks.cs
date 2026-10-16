@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RemoveNthNodeFromEndOfList;
 
@@ -10,9 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is handed - a cached list would only be valid for the first measured iteration.
 // The rebuild is timed on purpose, and ArrayRebuild, which only reads its list, pays
 // it too so both arms carry the same cost.
-//
-// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type (CS0050).
 public class RemoveNthNodeFromEndOfListBenchmarks
 {
     // Both benchmarks remove the node at roughly the middle position so they do
@@ -26,12 +24,12 @@ public class RemoveNthNodeFromEndOfListBenchmarks
     public void Setup() => _values = Enumerable.Range(1, Length).ToArray();
 
     [Benchmark(Baseline = true)]
-    public object? ArrayRebuild() =>
+    public SinglyLinkedListNode<int>? ArrayRebuild() =>
         RemoveNthNodeFromEndOfListSolution.RemoveByArrayRebuild(
             LeetCodeWireFormat.ToLinkedList(_values), Length / MiddlePositionDivisor);
 
     [Benchmark]
-    public object? TwoRunner() =>
+    public SinglyLinkedListNode<int>? TwoRunner() =>
         RemoveNthNodeFromEndOfListSolution.RemoveByTwoRunner(
             LeetCodeWireFormat.ToLinkedList(_values), Length / MiddlePositionDivisor);
 }

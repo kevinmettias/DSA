@@ -2,20 +2,17 @@ using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.InvertBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for InvertBinaryTreeBenchmarks (ARCHITECTURE 17.9): the class has a single arm
-// and that arm returns void - it inverts a clone it then discards - so the harness exposes no value
-// to compare, and the arm is reconciled the way FlattenBinaryTreeToLinkedList is: the [Fact]
-// replays the arm's own expression on the fixture [GlobalSetup] documents, and the replayed tree is
-// checked against an oracle derived independently of the fixture. BinaryTrees.Balanced builds a
-// complete tree in heap layout - node i's children at 2i + 1 and 2i + 2, node i's value i - so a
-// mirror image traversed pre-order with the children swapped yields a fixed sequence computed from
-// the layout arithmetic alone. The harness's own tree is private and Setup returns void, so the
-// Setup [Fact] states the workload against the one expression [GlobalSetup] builds it from and
-// calls the arm to prove the harness is constructible.
+// Harness coverage for InvertBinaryTreeBenchmarks (ARCHITECTURE 17.9): the class has a single
+// arm, which returns the clone it inverted, and the [Fact] checks that tree against an oracle
+// derived independently of the fixture. BinaryTrees.Balanced builds a complete tree in heap
+// layout - node i's children at 2i + 1 and 2i + 2, node i's value i - so a mirror image
+// traversed pre-order with the children swapped yields a fixed sequence computed from the layout
+// arithmetic alone. The harness's own tree is private and Setup returns void, so the Setup
+// [Fact] states the workload against the one expression [GlobalSetup] builds it from and calls
+// the arm to prove the harness is constructible.
 public sealed partial class InvertBinaryTreeBenchmarksTests
 {
     private const int SmallestNodeCount = 10;
@@ -35,14 +32,8 @@ public sealed partial class InvertBinaryTreeBenchmarksTests
     }
 
     [Fact]
-    public void RecursiveSwap_BalancedTree_MirrorsTheHeapLayout()
-    {
-        BuildHarness().RecursiveSwap();
-
-        var inverted = InvertBinaryTreeSolution.InvertByRecursiveSwap(BinaryTrees.Balanced(SmallestNodeCount));
-
-        Assert.Equal(ExpectedMirrorPreorder(SmallestNodeCount), PreorderOf(inverted));
-    }
+    public void RecursiveSwap_BalancedTree_MirrorsTheHeapLayout() =>
+        Assert.Equal(ExpectedMirrorPreorder(SmallestNodeCount), PreorderOf(BuildHarness().RecursiveSwap()));
 
     private static InvertBinaryTreeBenchmarks BuildHarness()
     {

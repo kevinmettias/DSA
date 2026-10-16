@@ -9,10 +9,10 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // 17.9): its three arms are competing strategies for the same question - two that materialize both
 // trees back into grids and rebuild the OR with LC 427's builders, against the canonical direct
 // recursive merge - so a harness whose arms disagree is timing two different problems. All three
-// return the merged QuadTreeNode as object? (CS0050), which is not comparable by value, so each is
-// projected with QuadTreeGrid.Materialize - the walk LC 558's own coverage test decodes its trees
-// with - into the grid the tree denotes, and AnswerGraphText.Of renders that jagged grid element-wise.
-// Assert.Equal on int[][] itself would fall back to reference equality for the inner arrays.
+// return the merged QuadTreeNode, so each is projected with QuadTreeGrid.Materialize - the walk LC
+// 558's own coverage test decodes its trees with - into the grid the tree denotes, and
+// AnswerGraphText.Of renders that jagged grid element-wise. Assert.Equal on int[][] itself would fall
+// back to reference equality for the inner arrays.
 //
 // Setup splits grid1 top/bottom and grid2 left/right, so the OR of the two documented grids is the
 // answer independently of all three arms, and the same Size must rebuild it.
@@ -84,10 +84,8 @@ public sealed partial class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBench
 
     private static bool IsLeftHalf(int col) => col < SmallestSize / AlgorithmConstants.HalvingFactor;
 
-    // The arm returns object? rather than the internal QuadTreeNode itself (CS0050), so the tree is
-    // read back out of the boxed result before the decode walks it.
-    private static int[][] Materialized(object? tree) =>
-        QuadTreeGrid.Materialize(Assert.IsType<QuadTreeNode>(tree), SmallestSize);
+    private static int[][] Materialized(QuadTreeNode tree) =>
+        QuadTreeGrid.Materialize(tree, SmallestSize);
 
     private static LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks BuildHarness()
     {

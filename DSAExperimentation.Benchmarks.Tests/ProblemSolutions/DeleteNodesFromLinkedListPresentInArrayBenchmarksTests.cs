@@ -50,13 +50,12 @@ public sealed partial class DeleteNodesFromLinkedListPresentInArrayBenchmarksTes
             AnswerGraphText.Of(Values(harness.SetFilter())));
     }
 
-    // Both arms report the surviving chain as that internal node type through an object, so the test
-    // reads the values off it rather than comparing nodes.
-    private static List<int> Values(object? head)
+    // Both arms report the surviving chain, so the test reads the values off it rather than comparing nodes.
+    private static List<int> Values(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();
 
-        for (var node = head as SinglyLinkedListNode<int>; node is not null; node = node.Next)
+        for (var node = head; node is not null; node = node.Next)
         {
             values.Add(node.Value);
         }

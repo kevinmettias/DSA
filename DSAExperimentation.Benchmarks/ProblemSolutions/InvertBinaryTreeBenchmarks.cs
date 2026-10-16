@@ -13,10 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The strategy mutates the tree it is handed, so each invocation clones the
 // shared tree first (the FlattenBinaryTreeToLinkedList convention for a
 // mutate-in-place problem) rather than re-inverting an already-inverted tree on
-// every later call. Returns the inverted clone as object? rather than the internal
-// BinaryTreeNode<int> - the accommodation ReverseLinkedList, SortList and friends
-// make, since a public [Benchmark] method cannot name an internal return type
-// (CS0050). It returned void before, which dropped the arm's only answer.
+// every later call. Returns the inverted clone. It returned void before, which
+// dropped the arm's only answer.
 //
 // NodeCount stops at LC 226's 100-node cap; the tree's values 0..NodeCount-1 stay
 // inside its [-100, 100].
@@ -31,5 +29,5 @@ public class InvertBinaryTreeBenchmarks
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
 
     [Benchmark]
-    public object? RecursiveSwap() => InvertBinaryTreeSolution.InvertByRecursiveSwap(BinaryTrees.Clone(_root));
+    public BinaryTreeNode<int>? RecursiveSwap() => InvertBinaryTreeSolution.InvertByRecursiveSwap(BinaryTrees.Clone(_root));
 }

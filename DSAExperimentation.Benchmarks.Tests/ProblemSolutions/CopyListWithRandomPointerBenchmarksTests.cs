@@ -45,7 +45,7 @@ public sealed partial class CopyListWithRandomPointerBenchmarksTests
     }
 
     private static RandomLinkedListNode<int>? Copied() =>
-        (RandomLinkedListNode<int>?)BuildHarness().HashMapMemo();
+        BuildHarness().HashMapMemo();
 
     private static CopyListWithRandomPointerBenchmarks BuildHarness()
     {

@@ -9,9 +9,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // has to come from the arm's own declared contract instead. That contract is decisive: reordering the
 // chain L0 -> ... -> Ln-1 as L0 -> Ln-1 -> L1 -> Ln-2 -> ... has exactly one answer for the sequential
 // values Setup builds, and the oracle below derives that answer from the position pattern alone, never
-// from anything the arm produced. The arm returns the head as object (the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type, CS0050); the oracle states the answer as
-// plain values, so the result is walked into its values first.
+// from anything the arm produced. The arm returns the head; the oracle states the answer as plain
+// values, so the result is walked into its values first.
 public sealed partial class ReorderListBenchmarksTests
 {
     private const int SmallestLength = 1_000;
@@ -40,11 +39,11 @@ public sealed partial class ReorderListBenchmarksTests
         return harness;
     }
 
-    private static int[] ValuesOf(object? answer)
+    private static int[] ValuesOf(SinglyLinkedListNode<int>? answer)
     {
         var values = new List<int>();
 
-        for (var node = (SinglyLinkedListNode<int>?)answer; node is not null; node = node.Next)
+        for (var node = answer; node is not null; node = node.Next)
         {
             values.Add(node.Value);
         }

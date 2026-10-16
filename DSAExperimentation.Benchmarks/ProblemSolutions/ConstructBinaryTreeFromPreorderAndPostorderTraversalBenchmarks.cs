@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.ConstructBinaryTreeFromPreorderAndPostorderTraversal;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,9 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution's, the same methods
 // ...Tests proves correct. The comparison is how each node's left-subtree root is
 // located in postorder - a linear rescan of the live range against this repo's own
-// HashMap<TValue,TIndex> built once up front. Each arm returns the rebuilt root as
-// object?, since a public [Benchmark] method cannot name the internal
-// BinaryTreeNode<int> (CS0050).
+// HashMap<TValue,TIndex> built once up front. Each arm returns the rebuilt root.
 public class ConstructBinaryTreeFromPreorderAndPostorderTraversalBenchmarks
 {
     private int[] _preorder = [];
@@ -38,10 +37,10 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversalBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? LinearRescan() =>
+    public BinaryTreeNode<int>? LinearRescan() =>
         ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution.BuildByPostorderScan(_preorder, _postorder);
 
     [Benchmark]
-    public object? HashMapIndexed() =>
+    public BinaryTreeNode<int>? HashMapIndexed() =>
         ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution.BuildByPostorderIndexMap(_preorder, _postorder);
 }

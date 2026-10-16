@@ -10,9 +10,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // instead. BinaryTrees.Balanced fills node i with the value i and puts node i's children at 2i+1 and
 // 2i+2 - a complete tree in heap layout - and the arm queries its leftmost leaf and its rightmost
 // leaf. Both leaves can be found by index arithmetic alone, and so can their lowest common ancestor,
-// so the oracle below never walks a tree. The node type is internal, hence the object return and the
-// cast here; the two harness builds share a NodeCount, so the same NodeCount must rebuild the same
-// tree and answer at the same node.
+// so the oracle below never walks a tree. The two harness builds share a NodeCount, so the same
+// NodeCount must rebuild the same tree and answer at the same node.
 public sealed partial class LowestCommonAncestorOfABinaryTreeBenchmarksTests
 {
     private const int SmallestNodeCount = 200;
@@ -27,7 +26,12 @@ public sealed partial class LowestCommonAncestorOfABinaryTreeBenchmarksTests
 
     // A node of the heap-layout fixture carries its own index as its value, so the index the layout
     // arithmetic below derives is the value the returned node must carry.
-    private static int ValueOf(object? node) => Assert.IsType<BinaryTreeNode<int>>(node).Value;
+    private static int ValueOf(BinaryTreeNode<int>? node)
+    {
+        Assert.NotNull(node);
+
+        return node.Value;
+    }
 
     private static int ExpectedLcaValue(int nodeCount) =>
         LayoutLca(LeftmostLeafIndex(nodeCount), RightmostLeafIndex(nodeCount));

@@ -9,8 +9,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // [GlobalSetup] shuffles 0..NodeCount-1 from one fixed seed and targets the value NodeCount/2, which the shuffled
 // run contains exactly once, so the answer holds every other key and only those. The arms legitimately answer with
 // differently shaped trees - one rebuilds, one deletes in place - so ArmAgreement leaves their shapes uncompared,
-// and this key set is what holds them to the same answer. Each arm returns its tree as object? (the tree type is
-// internal, CS0050).
+// and this key set is what holds them to the same answer. Each arm returns its tree.
 public sealed partial class DeleteNodeInABSTBenchmarksTests
 {
     private const int SmallestNodeCount = 500;
@@ -27,10 +26,8 @@ public sealed partial class DeleteNodeInABSTBenchmarksTests
     public void BinarySearchTreeTryDelete_FiveHundredShuffledKeys_HoldsEveryKeyButTheTarget() =>
         AssertHoldsEveryKeyButTheTarget(BuildHarness().BinarySearchTreeTryDelete());
 
-    private static void AssertHoldsEveryKeyButTheTarget(object? answer)
+    private static void AssertHoldsEveryKeyButTheTarget(BinarySearchTree<int> tree)
     {
-        var tree = Assert.IsType<BinarySearchTree<int>>(answer);
-
         Assert.Equal(ExpectedRemainingNodeCount, tree.Count);
         Assert.False(tree.Has(DeletedKey));
         Assert.All(Enumerable.Range(0, SmallestNodeCount).Where(key => key != DeletedKey), key => Assert.True(tree.Has(key)));

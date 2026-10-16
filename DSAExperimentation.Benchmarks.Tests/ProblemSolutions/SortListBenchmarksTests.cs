@@ -38,13 +38,11 @@ public sealed partial class SortListBenchmarksTests
         return harness;
     }
 
-    // The arm reports the list as object, because the node type is internal, so the values are
-    // read back through the chain rather than compared as a rendered answer.
-    private static List<int> ValuesOf(object? answer)
+    private static List<int> ValuesOf(SinglyLinkedListNode<int>? answer)
     {
         var values = new List<int>();
 
-        for (var node = (SinglyLinkedListNode<int>?)answer; node is not null; node = node.Next)
+        for (var node = answer; node is not null; node = node.Next)
         {
             values.Add(node.Value);
         }

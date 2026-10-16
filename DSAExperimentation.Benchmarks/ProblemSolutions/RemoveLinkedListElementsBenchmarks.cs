@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RemoveLinkedListElements;
 
@@ -10,9 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // out of the list it is handed - a cached list would only be valid for the first
 // measured iteration. The rebuild is timed on purpose, and ArrayRebuild, which only
 // reads its list, pays it too so both arms carry the same cost.
-//
-// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type (CS0050).
 public class RemoveLinkedListElementsBenchmarks
 {
     // Both inside LC 203's node values of 1 to 50.
@@ -36,12 +34,12 @@ public class RemoveLinkedListElementsBenchmarks
     private static bool IsTargetValue(int index) => index % MatchRunLength == 0;
 
     [Benchmark(Baseline = true)]
-    public object? ArrayRebuild() =>
+    public SinglyLinkedListNode<int>? ArrayRebuild() =>
         RemoveLinkedListElementsSolution.RemoveElementsByArrayRebuild(
             LeetCodeWireFormat.ToLinkedList(_values), TargetValue);
 
     [Benchmark]
-    public object? DummyHeadSplice() =>
+    public SinglyLinkedListNode<int>? DummyHeadSplice() =>
         RemoveLinkedListElementsSolution.RemoveElementsByDummyHeadSplice(
             LeetCodeWireFormat.ToLinkedList(_values), TargetValue);
 }

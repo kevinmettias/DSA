@@ -20,9 +20,8 @@ public class IntersectionOfTwoLinkedListsBenchmarks
     public void Setup() =>
         (_headA, _headB) = IntersectionOfTwoLinkedListsWorkloads.Build(PrefixLength);
 
-    // Returns the node the walk found, as object because SinglyLinkedListNode<T>
-    // is internal and a public [Benchmark] method cannot name it (CS0050).
+    // Returns the node the walk found.
     [Benchmark]
-    public object? TwoPointerWalk() =>
+    public SinglyLinkedListNode<int>? TwoPointerWalk() =>
         IntersectionOfTwoLinkedListsSolution.GetIntersectionNodeByTwoPointerWalk(_headA, _headB);
 }

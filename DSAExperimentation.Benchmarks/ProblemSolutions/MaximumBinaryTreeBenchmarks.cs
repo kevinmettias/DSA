@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.MaximumBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -20,8 +21,8 @@ public class MaximumBinaryTreeBenchmarks
     public void Setup() => _values = Enumerable.Range(0, Length).ToArray();
 
     [Benchmark(Baseline = true)]
-    public object? RescanForMax() => MaximumBinaryTreeSolution.ConstructByRescanForMax(_values);
+    public BinaryTreeNode<int>? RescanForMax() => MaximumBinaryTreeSolution.ConstructByRescanForMax(_values);
 
     [Benchmark]
-    public object? MonotonicStack() => MaximumBinaryTreeSolution.ConstructByMonotonicStack(_values);
+    public BinaryTreeNode<int>? MonotonicStack() => MaximumBinaryTreeSolution.ConstructByMonotonicStack(_values);
 }

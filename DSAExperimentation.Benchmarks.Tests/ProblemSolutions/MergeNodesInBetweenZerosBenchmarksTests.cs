@@ -7,8 +7,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // Harness coverage for MergeNodesInBetweenZerosBenchmarks (ARCHITECTURE 17.9): its two arms are
 // competing strategies for the same question - buffering every value into a list and bucketing it into
 // group sums against appending each group's sum on a single pass - so a harness whose arms disagree is
-// timing two different problems. Both arms report the merged chain as an object over the data
-// structure's internal node type, so the test reads the values off it rather than comparing nodes.
+// timing two different problems. Both arms report the merged chain, so the test reads the values off it
+// rather than comparing nodes.
 //
 // The generated list is a leading zero, GroupCount runs of one to four non-zero values each closed by
 // a zero, so the answer is documented to be exactly one sum node per run - GroupCount nodes, none of
@@ -49,13 +49,12 @@ public sealed partial class MergeNodesInBetweenZerosBenchmarksTests
             AnswerGraphText.Of(Values(harness.SinglePassSum())));
     }
 
-    // Both arms report the merged chain as that internal node type through an object, so the test reads
-    // the values off it rather than comparing nodes.
-    private static List<int> Values(object? head)
+    // Both arms report the merged chain, so the test reads the values off it rather than comparing nodes.
+    private static List<int> Values(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();
 
-        for (var node = head as SinglyLinkedListNode<int>; node is not null; node = node.Next)
+        for (var node = head; node is not null; node = node.Next)
         {
             values.Add(node.Value);
         }

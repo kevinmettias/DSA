@@ -47,18 +47,15 @@ public class AddTwoNumbersBenchmarks
         return head;
     }
 
-    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
-    // so a public [Benchmark] method cannot name it as a return type (CS0050).
-    // Returning the built list itself as object still forces both strategies
-    // through their full construction and keeps BenchmarkDotNet from treating the
-    // call as dead code, which is the point: measuring a length or count instead
-    // would be the same weaker-than-the-real-answer shortcut this migration
-    // removes everywhere else.
+    // Returning the built list itself forces both strategies through their full
+    // construction and keeps BenchmarkDotNet from treating the call as dead code,
+    // which is the point: measuring a length or count instead would be the same
+    // weaker-than-the-real-answer shortcut this migration removes everywhere else.
     [Benchmark(Baseline = true)]
-    public object? BigIntegerConvertAndBack() =>
+    public SinglyLinkedListNode<int>? BigIntegerConvertAndBack() =>
         AddTwoNumbersSolution.AddByBigIntegerConvertAndBack(_first, _second);
 
     [Benchmark]
-    public object? DigitwiseListWalk() =>
+    public SinglyLinkedListNode<int>? DigitwiseListWalk() =>
         AddTwoNumbersSolution.AddByDigitwiseListWalk(_first, _second);
 }

@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RemoveDuplicatesFromSortedList;
 
@@ -10,9 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // of the list it is handed - a cached list would only be valid for the first
 // measured iteration. The rebuild is timed on purpose, and DistinctFilter, which only
 // reads its list, pays it too so both arms carry the same cost.
-//
-// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type (CS0050).
 //
 // Length stops at LC 83's 300 nodes, whose values, climbing in threes from 0, reach 99,
 // inside its [-100, 100].
@@ -29,12 +27,12 @@ public class RemoveDuplicatesFromSortedListBenchmarks
     public void Setup() => _values = Enumerable.Range(0, Length).Select(i => i / DuplicateRunLength).ToArray();
 
     [Benchmark(Baseline = true)]
-    public object? DistinctFilter() =>
+    public SinglyLinkedListNode<int>? DistinctFilter() =>
         RemoveDuplicatesFromSortedListSolution.DeleteDuplicatesByDistinctFilter(
             LeetCodeWireFormat.ToLinkedList(_values));
 
     [Benchmark]
-    public object? InPlaceScan() =>
+    public SinglyLinkedListNode<int>? InPlaceScan() =>
         RemoveDuplicatesFromSortedListSolution.DeleteDuplicatesByInPlaceScan(
             LeetCodeWireFormat.ToLinkedList(_values));
 }

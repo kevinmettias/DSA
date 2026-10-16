@@ -8,9 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // whose tail rejoins the head, forcing both strategies to walk the full cycle
 // before they can answer; neither strategy mutates the list, so it is built once
 // and shared across iterations.
-//
-// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type (CS0050).
 public class LinkedListCycleIIBenchmarks
 {
     private SinglyLinkedListNode<int>? _head;
@@ -36,8 +33,8 @@ public class LinkedListCycleIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? VisitedSet() => LinkedListCycleIISolution.DetectCycleByVisitedSet(_head);
+    public SinglyLinkedListNode<int>? VisitedSet() => LinkedListCycleIISolution.DetectCycleByVisitedSet(_head);
 
     [Benchmark]
-    public object? FloydCycleDetection() => LinkedListCycleIISolution.DetectCycleByFloydCycleDetection(_head);
+    public SinglyLinkedListNode<int>? FloydCycleDetection() => LinkedListCycleIISolution.DetectCycleByFloydCycleDetection(_head);
 }

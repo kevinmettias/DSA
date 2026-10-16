@@ -13,11 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Both strategies mutate the tree they are handed, so each [Benchmark] clones the
 // shared tree first (the ConvertBSTToGreaterTree convention for a mutate-in-place
 // problem) rather than re-flattening an already-flattened tree on every later
-// invocation. Each arm returns the flattened clone as object? rather than the
-// internal BinaryTreeNode<int> - the accommodation ReverseLinkedList, SortList and
-// friends make, since a public [Benchmark] method cannot name an internal return
-// type (CS0050). It returned void before, which dropped the only thing the two arms
-// could be compared on.
+// invocation. Each arm returns the flattened clone. It returned void before, which
+// dropped the only thing the two arms could be compared on.
 //
 // LC 114 caps the tree at 2000 nodes valued -100..100, so the larger NodeCount is that
 // cap and the complete tree's level order cycles through those values.
@@ -43,7 +40,7 @@ public class FlattenBinaryTreeToLinkedListBenchmarks
     private static int ValueAt(int index) => LowestValue + (index % ValueCount);
 
     [Benchmark(Baseline = true)]
-    public object? RecursiveSplice()
+    public BinaryTreeNode<int> RecursiveSplice()
     {
         var root = BinaryTrees.Clone(_root);
         FlattenBinaryTreeToLinkedListSolution.FlattenByRecursiveSplice(root);
@@ -52,7 +49,7 @@ public class FlattenBinaryTreeToLinkedListBenchmarks
     }
 
     [Benchmark]
-    public object? TopDownPreorderRelink()
+    public BinaryTreeNode<int> TopDownPreorderRelink()
     {
         var root = BinaryTrees.Clone(_root);
         FlattenBinaryTreeToLinkedListSolution.FlattenByTopDownPreorderRelink(root);

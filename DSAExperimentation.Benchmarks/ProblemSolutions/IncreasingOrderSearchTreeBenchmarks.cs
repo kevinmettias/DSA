@@ -16,9 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // pointers in place and would otherwise corrupt a later iteration - the same
 // per-invocation restore ConvertBSTToGreaterTreeBenchmarks does with BinaryTrees.Clone. The
 // clone is timed on purpose, so every arm pays the same O(n) copy rather than the
-// O(n log n) of re-inserting every value. Each arm returns the relinked chain's root as
-// object?, since a public [Benchmark] method cannot name the internal
-// BinaryTreeNode<int> (CS0050). NodeCount stops at LC 897's 100-node cap.
+// O(n log n) of re-inserting every value. Each arm returns the relinked chain's root.
+// NodeCount stops at LC 897's 100-node cap.
 public class IncreasingOrderSearchTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
@@ -40,10 +39,10 @@ public class IncreasingOrderSearchTreeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? RecursiveRelink() =>
+    public BinaryTreeNode<int>? RecursiveRelink() =>
         IncreasingOrderSearchTreeSolution.IncreasingBstByRecursiveRelink(BinaryTrees.Clone(_root));
 
     [Benchmark]
-    public object? InOrderTraversalHooks() =>
+    public BinaryTreeNode<int>? InOrderTraversalHooks() =>
         IncreasingOrderSearchTreeSolution.IncreasingBstByInOrderHooks(BinaryTrees.Clone(_root));
 }

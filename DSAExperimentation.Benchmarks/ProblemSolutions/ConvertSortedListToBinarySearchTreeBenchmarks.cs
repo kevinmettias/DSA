@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.ConvertSortedListToBinarySearchTree;
 
@@ -10,9 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // placeholder (both returned the literal 1) rather than a second real
 // strategy, so there is only one arm here too, mirroring
 // ConvertSortedArrayToBinarySearchTreeBenchmarks for LC 108.
-//
-// Returns object, not BinaryTreeNode<int> - the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type (CS0050).
 public class ConvertSortedListToBinarySearchTreeBenchmarks
 {
     private const int ValueStep = 3;
@@ -45,6 +43,6 @@ public class ConvertSortedListToBinarySearchTreeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public object? MidpointRecursion() =>
+    public BinaryTreeNode<int>? MidpointRecursion() =>
         ConvertSortedListToBinarySearchTreeSolution.BuildByMidpointRecursion(_head);
 }

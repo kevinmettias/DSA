@@ -8,9 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // seeded to a uniformly random node in the list (itself included) or left null,
 // so the HashMap memo has to handle references pointing both forward and
 // backward through the list, not only ever recursing ahead of itself.
-//
-// Returns object, not RandomLinkedListNode<int>? - the node type is internal, so
-// a public [Benchmark] method cannot name it as a return type (CS0050).
 public class CopyListWithRandomPointerBenchmarks
 {
     private const int Seed = 138;
@@ -56,5 +53,5 @@ public class CopyListWithRandomPointerBenchmarks
         int count) => nodes[random.Next(count)];
 
     [Benchmark]
-    public object? HashMapMemo() => CopyListWithRandomPointerSolution.CopyByHashMapMemo(_head);
+    public RandomLinkedListNode<int>? HashMapMemo() => CopyListWithRandomPointerSolution.CopyByHashMapMemo(_head);
 }

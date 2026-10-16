@@ -49,13 +49,11 @@ public class MergeNodesInBetweenZerosBenchmarks
         return head;
     }
 
-    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
-    // so a public [Benchmark] method cannot name it as a return type (CS0050).
     [Benchmark(Baseline = true)]
-    public object? TwoPassValueBuffer() =>
+    public SinglyLinkedListNode<int>? TwoPassValueBuffer() =>
         MergeNodesInBetweenZerosSolution.MergeNodesByTwoPassValueBuffer(_head);
 
     [Benchmark]
-    public object? SinglePassSum() =>
+    public SinglyLinkedListNode<int>? SinglePassSum() =>
         MergeNodesInBetweenZerosSolution.MergeNodesBySinglePassSum(_head);
 }

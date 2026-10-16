@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.ReverseLinkedList;
 
@@ -10,9 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // cached list would only be valid for the first measured iteration (mirrors
 // ReverseLinkedListIIBenchmarks' identical constraint). The rebuild is timed on
 // purpose because the strategy mutates its input.
-//
-// Returns object, not SinglyLinkedListNode<int> - the node type is internal,
-// so a public [Benchmark] method cannot name it as a return type (CS0050).
 public class ReverseLinkedListBenchmarks
 {
     private int[] _values = [];
@@ -24,6 +22,6 @@ public class ReverseLinkedListBenchmarks
     public void Setup() => _values = Enumerable.Range(1, Length).ToArray();
 
     [Benchmark]
-    public object? IterativeRewire() =>
+    public SinglyLinkedListNode<int>? IterativeRewire() =>
         ReverseLinkedListSolution.ReverseListByIterativeRewire(LeetCodeWireFormat.ToLinkedList(_values));
 }

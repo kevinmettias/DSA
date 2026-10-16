@@ -34,7 +34,7 @@ public sealed partial class ConvertSortedArrayToBinarySearchTreeBenchmarksTests
     }
 
     private static BinaryTreeNode<int>? Built() =>
-        (BinaryTreeNode<int>?)BuildHarness().MidpointRecursion();
+        BuildHarness().MidpointRecursion();
 
     private static ConvertSortedArrayToBinarySearchTreeBenchmarks BuildHarness()
     {

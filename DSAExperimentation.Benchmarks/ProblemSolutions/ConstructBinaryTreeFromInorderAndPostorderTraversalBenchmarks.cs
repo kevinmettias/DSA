@@ -64,6 +64,6 @@ public class ConstructBinaryTreeFromInorderAndPostorderTraversalBenchmarks
     }
 
     [Benchmark]
-    public object? PostorderIndexMap() =>
+    public BinaryTreeNode<int>? PostorderIndexMap() =>
         ConstructBinaryTreeFromInorderAndPostorderTraversalSolution.BuildByPostorderIndexMap(_inorder, _postorder);
 }

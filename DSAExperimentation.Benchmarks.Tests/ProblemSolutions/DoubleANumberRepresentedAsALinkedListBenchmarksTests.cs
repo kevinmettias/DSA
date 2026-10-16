@@ -55,15 +55,13 @@ public sealed partial class DoubleANumberRepresentedAsALinkedListBenchmarksTests
         return harness;
     }
 
-    // Both arms are declared as returning object because the node type is internal to the solution's
-    // own assembly (CS0050); the runtime value they hand back is still that digit list. Walking it
-    // into its digit sequence puts both arms into one comparable form without changing what either
-    // computed - the digits are the answer, head to tail.
-    private static int[] DigitsOf(object? answer)
+    // Both arms hand back a digit list. Walking it into its digit sequence puts both arms into one
+    // comparable form without changing what either computed - the digits are the answer, head to tail.
+    private static int[] DigitsOf(SinglyLinkedListNode<int>? answer)
     {
         var digits = new List<int>();
 
-        for (var node = answer as SinglyLinkedListNode<int>; node is not null; node = node.Next)
+        for (var node = answer; node is not null; node = node.Next)
         {
             digits.Add(node.Value);
         }

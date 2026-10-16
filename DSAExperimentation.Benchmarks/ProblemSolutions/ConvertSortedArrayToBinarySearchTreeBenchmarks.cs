@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.ConvertSortedArrayToBinarySearchTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,9 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ConvertSortedArrayToBinarySearchTreeSolutionTests proves correct. The original
 // benchmark's two [Benchmark] arms called the identical private helper - one
 // real strategy, not two - so there is only one arm here too.
-//
-// Returns object, not BinaryTreeNode<int> - the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type (CS0050).
 public class ConvertSortedArrayToBinarySearchTreeBenchmarks
 {
     private int[] _values = [];
@@ -21,6 +19,6 @@ public class ConvertSortedArrayToBinarySearchTreeBenchmarks
     public void Setup() => _values = Enumerable.Range(0, Length).ToArray();
 
     [Benchmark(Baseline = true)]
-    public object? MidpointRecursion() =>
+    public BinaryTreeNode<int>? MidpointRecursion() =>
         ConvertSortedArrayToBinarySearchTreeSolution.BuildByMidpointRecursion(_values);
 }

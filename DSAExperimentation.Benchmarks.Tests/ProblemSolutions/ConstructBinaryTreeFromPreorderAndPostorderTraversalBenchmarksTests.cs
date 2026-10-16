@@ -9,8 +9,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // 17.9), for what BenchmarkArmsTests cannot pin: the rebuilt tree's shape, known from Setup's
 // construction rather than from either arm. Setup builds the degenerate chain the comment names:
 // descending preorder against ascending postorder, the same tree in opposite walks. A NodeCount-node
-// chain has height exactly NodeCount, so each arm's rebuilt root - returned as object?, the node type
-// being internal (CS0050) - must reach that height.
+// chain has height exactly NodeCount, so each arm's rebuilt root must reach that height.
 public sealed partial class ConstructBinaryTreeFromPreorderAndPostorderTraversalBenchmarksTests
 {
     private const int SmallestNodeCount = 10;
@@ -23,10 +22,9 @@ public sealed partial class ConstructBinaryTreeFromPreorderAndPostorderTraversal
     public void HashMapIndexed_LeftSkewedChain_RebuildsAChainOfEveryNode() =>
         Assert.Equal(SmallestNodeCount, HeightOf(BuildHarness().HashMapIndexed()));
 
-    private static int HeightOf(object? answer) =>
+    private static int HeightOf(BinaryTreeNode<int>? answer) =>
         TreeMetrics.Height<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(
-            Assert.IsType<BinaryTreeNode<int>>(answer));
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(answer);
 
     private static ConstructBinaryTreeFromPreorderAndPostorderTraversalBenchmarks BuildHarness()
     {

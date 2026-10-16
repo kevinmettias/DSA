@@ -6,9 +6,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for SwappingNodesInALinkedListBenchmarks (ARCHITECTURE 17.9): both arms are
 // SwappingNodesInALinkedListSolution's - the array materialization against the fast/slow two-pointer
-// walk - so a harness whose arms disagree is timing two different questions. Both arms return the
-// internal node type through object, which renders as its own type name and would compare equal
-// whatever the lists held, so each arm's answer is walked out into the value sequence first.
+// walk - so a harness whose arms disagree is timing two different questions.
 //
 // The node at 1-based position p holds p mod 101 and [GlobalSetup] fixes which position k picks, and
 // at the smallest Length the two swapped positions hold different values, so the swapped run is
@@ -65,11 +63,11 @@ public sealed partial class SwappingNodesInALinkedListBenchmarksTests
         return harness;
     }
 
-    private static List<int> ValuesOf(object? head)
+    private static List<int> ValuesOf(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();
 
-        for (var node = (SinglyLinkedListNode<int>?)head; node is not null; node = node.Next)
+        for (var node = head; node is not null; node = node.Next)
         {
             values.Add(node.Value);
         }

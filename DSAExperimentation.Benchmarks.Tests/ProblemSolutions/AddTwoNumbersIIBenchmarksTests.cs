@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for AddTwoNumbersIIBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot pin: a
 // bound on the answer that follows from the workload's construction rather than from either arm. Both arms return
-// the sum list itself as object? (the node type is internal, CS0050), so the tests read its digits back out.
+// the sum list itself, so the tests read its digits back out.
 public sealed partial class AddTwoNumbersIIBenchmarksTests
 {
     private const int SmallestLength = 10;
@@ -23,8 +23,8 @@ public sealed partial class AddTwoNumbersIIBenchmarksTests
     public void TwoStacksDigitwiseAdd_RandomDigits_GrowsByAtMostOneCarryDigit() =>
         Assert.InRange(DigitsOf(BuildHarness().TwoStacksDigitwiseAdd()).Length, FewestDigits, DigitsGrownByTheCarry);
 
-    private static int[] DigitsOf(object? answer) =>
-        LeetCodeWireFormat.FromLinkedList(Assert.IsType<SinglyLinkedListNode<int>>(answer));
+    private static int[] DigitsOf(SinglyLinkedListNode<int>? answer) =>
+        LeetCodeWireFormat.FromLinkedList(answer);
 
     private static AddTwoNumbersIIBenchmarks BuildHarness()
     {
