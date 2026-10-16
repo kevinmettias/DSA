@@ -98,10 +98,26 @@ public sealed class PascalTriangle
 
             for (var column = 1; column < row; column++)
             {
-                rows[row][column] = (rows[row - 1][column - 1] + rows[row - 1][column]) % modulus;
+                rows[row][column] = ReducedSum(rows[row - 1][column - 1], rows[row - 1][column], modulus);
             }
         }
 
         return rows;
+    }
+
+    // Both terms are already residues, so their sum is below twice the modulus - which MaxModulus keeps
+    // inside long - and one subtraction reduces it where a % would divide. That division, a 64-bit one
+    // per entry, made an exact triangle cost twice what plain addition does, and the exact triangle
+    // never needs it: no sum through row 66 reaches long.MaxValue.
+    private static long ReducedSum(long left, long right, long modulus)
+    {
+        var sum = left + right;
+
+        if (sum >= modulus)
+        {
+            sum -= modulus;
+        }
+
+        return sum;
     }
 }
