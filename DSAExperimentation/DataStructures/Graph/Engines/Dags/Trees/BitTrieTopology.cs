@@ -7,7 +7,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // sharing) is the correct tier - a bit-trie built from Insert's own Zero/One
 // assignments has no way to express a shared or cyclic node, the same argument
 // BinaryTreeTopology's own doc comment already makes for Left/Right.
-internal readonly struct BitTrieTopology : ITreeTopology<BitTrieNode, BitTrieChildren>
+public readonly struct BitTrieTopology : ITreeTopology<BitTrieNode, BitTrieChildren>
 {
     public static BitTrieChildren GetChildren(BitTrieNode node) => new(node);
 }

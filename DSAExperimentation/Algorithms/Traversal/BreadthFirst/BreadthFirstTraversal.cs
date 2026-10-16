@@ -11,7 +11,7 @@ namespace DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 // set; WalkGraph is the only path into a cyclic/shared topology, and it always tracks
 // one. Breadth-first reduce never calls Exit, so HooksStep maps Enter to the hook's
 // Visit alone.
-internal static class BreadthFirstTraversal
+public static class BreadthFirstTraversal
 {
     // From the hook's default value - a hook whose fields start empty, such as a counter.
     public static THooks Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks>(TNode? root)

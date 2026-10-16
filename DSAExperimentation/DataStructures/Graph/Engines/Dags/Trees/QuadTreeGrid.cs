@@ -16,7 +16,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // size is the caller's, not the tree's: a single leaf represents a grid of any size, so the tree
 // alone cannot say how large the grid it describes is (the same reason
 // OrByBruteForceGridMaterialize takes it as an extra required input).
-internal static class QuadTreeGrid
+public static class QuadTreeGrid
 {
     public static int[][] Materialize(QuadTreeNode root, int size)
     {

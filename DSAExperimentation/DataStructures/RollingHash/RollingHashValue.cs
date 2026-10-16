@@ -13,4 +13,4 @@ namespace DSAExperimentation.DataStructures.RollingHash;
 // A caller needing certainty re-slices and compares the original text directly
 // instead; RollingHashSearch.FindAll is the worked example of doing exactly
 // that before reporting a match.
-internal readonly record struct RollingHashValue(long First, long Second);
+public readonly record struct RollingHashValue(long First, long Second);

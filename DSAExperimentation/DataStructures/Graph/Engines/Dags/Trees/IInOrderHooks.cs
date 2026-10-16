@@ -9,7 +9,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // reached through a struct type parameter would box the hook, so there is none. A hook that
 // holds a reference can be read through it afterwards; one that holds its state by value must
 // be read from the value Walk returns.
-internal interface IInOrderHooks<TValue>
+public interface IInOrderHooks<TValue>
 {
     void Visit(BinaryTreeNode<TValue> node, int depth);
 }

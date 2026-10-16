@@ -10,7 +10,7 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // IPathHeuristic requires). It's also never an overestimate: walls only remove
 // cells, which can make the true shortest path longer than the unobstructed
 // straight line, never shorter.
-internal readonly struct ManhattanHeuristic : IPathHeuristic<WeightedGridNode, int>
+public readonly struct ManhattanHeuristic : IPathHeuristic<WeightedGridNode, int>
 {
     public static int Estimate(WeightedGridNode node, WeightedGridNode? target)
         => target is null ? 0 : ManhattanDistance(node, target);

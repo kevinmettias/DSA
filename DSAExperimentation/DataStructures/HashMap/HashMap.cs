@@ -5,7 +5,7 @@ namespace DSAExperimentation.DataStructures.HashMap;
 // can't always know in advance, so TryGetValue is the only public surface for
 // reading a value, forcing callers onto the return-value form instead of a
 // try/catch.
-internal sealed class HashMap<TKey, TValue>
+public sealed class HashMap<TKey, TValue>
 {
     private readonly IEqualityComparer<TKey> _comparer;
     private readonly HashMapStorage<TKey, TValue> _storage = new();

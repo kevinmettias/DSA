@@ -16,7 +16,7 @@ namespace DSAExperimentation.Algorithms.ShortestPaths.Grids;
 // always a number; a start or target off the grid throws. The search keeps flat arrays indexed
 // row * cols + col for each cell's best arrival and whether it has settled, and walks
 // GridDirections.Orthogonal with GridSize.HasCell, so nothing on the hot path hashes or allocates.
-internal static class GridEarliestArrival
+public static class GridEarliestArrival
 {
     private const string OffTheGrid = "Start and target must both be cells of the grid.";
     private const string NeverSettled = "Every cell is reachable, so the target is always settled.";

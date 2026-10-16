@@ -6,7 +6,7 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // explicit list. GetChildren stays a pure function of the node because the node
 // carries this reference; GridTopology itself stays a stateless witness like every
 // other topology in this library.
-internal sealed class Grid(bool[,] passable)
+public sealed class Grid(bool[,] passable)
 {
     public GridSize Size { get; } = new(passable.GetLength(0), passable.GetLength(1));
 

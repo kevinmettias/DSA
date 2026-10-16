@@ -29,7 +29,7 @@ namespace DSAExperimentation.DataStructures.LazySegmentTree;
 // would need to bypass any pending tag) with this lazy range-update scheme on one instance would
 // be a silent-wrong-answer trap - see SegmentTree, a separate structure for point-update/
 // range-query.
-internal sealed class LazySegmentTree<Element, TUpdate, TOperation>
+public sealed class LazySegmentTree<Element, TUpdate, TOperation>
     where TOperation : struct, IRangeUpdateOperation<Element, TUpdate>
 {
     private const string RangeOutOfBoundsMessage = "Range was outside the bounds of the lazy segment tree, or left exceeded right.";

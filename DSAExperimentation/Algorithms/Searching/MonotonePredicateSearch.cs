@@ -24,7 +24,7 @@ namespace DSAExperimentation.Algorithms.Searching;
 // The bounds are checked on entry, at O(1): an answer of high + 1 or low - 1 has to be representable,
 // and so does the width high - low + 1. A range that wraps would otherwise come back as a confident,
 // wrong boundary; a range ending at int.MaxValue belongs in long.
-internal static class MonotonePredicateSearch
+public static class MonotonePredicateSearch
 {
     private const string EmptyRangeMessage = "low may exceed high by at most one, which states the empty range.";
     private const string NoRoomAboveMessage = "high must be below the type's MaxValue, so that high + 1 can report that no candidate holds.";

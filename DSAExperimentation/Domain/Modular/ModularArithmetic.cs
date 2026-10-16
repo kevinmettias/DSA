@@ -8,7 +8,7 @@ namespace DSAExperimentation.Domain.Modular;
 // asks for a result "modulo 10^9 + 7" shares this constant and these two
 // operations. The exponentiation itself is the general algorithm in
 // Algorithms/NumberTheory/ModularPower; what this type adds is the modulus.
-internal static class ModularArithmetic
+public static class ModularArithmetic
 {
     public const long Modulo = 1_000_000_007;
 

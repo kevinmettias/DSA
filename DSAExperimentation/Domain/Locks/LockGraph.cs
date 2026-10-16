@@ -10,7 +10,7 @@ namespace DSAExperimentation.Domain.Locks;
 // This is the domain model, not an answer to any one puzzle about it - it knows
 // how a lock's wheels turn and which combinations are reachable, and nothing about
 // what a caller wants to find out. Callers supply their own start and target.
-internal sealed class LockGraph
+public sealed class LockGraph
 {
     private readonly HashMap<string, LockNode> _nodesByCombination;
 

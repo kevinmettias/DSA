@@ -47,7 +47,7 @@ namespace DSAExperimentation.Algorithms.Backtracking;
 // (Subsets, Permutations, N-Queens' solution count, Combination Sum, Generate
 // Parentheses) - its onSolution never signals "stop," so callers here can't
 // accidentally truncate their own search by returning the wrong bool.
-internal static class Backtrack
+public static class Backtrack
 {
     public static bool TrySearch<TState, TChoice>(TState state, BacktrackingSteps<TState, TChoice> steps)
         where TState : class

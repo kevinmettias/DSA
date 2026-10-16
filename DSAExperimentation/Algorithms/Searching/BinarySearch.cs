@@ -19,7 +19,7 @@ namespace DSAExperimentation.Algorithms.Searching;
 // witness, so the instantiation that runs is the one a caller spelling it out would get. No call can
 // reach the overload it did not mean: an Element[] fails TSequence's struct constraint, and no sequence
 // witness converts to an Element[].
-internal static class BinarySearch
+public static class BinarySearch
 {
     public static int? Find<Element>(Element[] items, Element target)
         where Element : IComparable<Element>

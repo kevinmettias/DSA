@@ -19,7 +19,7 @@ namespace DSAExperimentation.Algorithms.StringMatching;
 // reason BinarySearch/MergeSort keep their comparer a runtime object rather than a closed set this
 // library enumerates itself: case-insensitive and culture-aware matching are both ordinary,
 // open-ended variants a caller might want, not a small fixed set of named choices.
-internal static class PrefixFunctionSearch
+public static class PrefixFunctionSearch
 {
     // The prefix function (also called the failure function, or the "longest proper prefix that is
     // also a suffix" array): result[i] is the length of the longest proper prefix of pattern[0..i]

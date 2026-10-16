@@ -13,7 +13,7 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 //
 // Named for what it computes rather than "Gcd": dozens of solution files already declare a private
 // method called Gcd, and inside such a class a type named Gcd would resolve to the method.
-internal static class GreatestCommonDivisor
+public static class GreatestCommonDivisor
 {
     public static Integer Of<Integer>(Integer first, Integer second)
         where Integer : IBinaryInteger<Integer>

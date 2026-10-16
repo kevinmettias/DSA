@@ -6,7 +6,7 @@ namespace DSAExperimentation.DataStructures.ElementAlgebra;
 // FenwickTree (Invert is negation) and a scaled group for RangeFenwickTree (Scale is multiplication
 // by the count, which meets that contract's O(1) law). One witness therefore serves all three
 // summing structures, where each used to carry its own identical copy.
-internal readonly struct SumOperation<Element> : IScaledGroupOperation<Element>
+public readonly struct SumOperation<Element> : IScaledGroupOperation<Element>
     where Element : INumber<Element>
 {
     public static Element Identity => Element.Zero;

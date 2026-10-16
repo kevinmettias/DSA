@@ -5,7 +5,7 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // half, for searches whose notion of "open" is a property of the problem's own cells (land, water,
 // a height no lower than the last) rather than a map known up front. A value type, so passing or
 // capturing one costs nothing.
-internal readonly record struct GridSize(int Rows, int Cols)
+public readonly record struct GridSize(int Rows, int Cols)
 {
     // Rows from the outer array, columns from the first row: LeetCode's grids are rectangular, so
     // every row has the first row's length. An empty outer array has no first row to read.

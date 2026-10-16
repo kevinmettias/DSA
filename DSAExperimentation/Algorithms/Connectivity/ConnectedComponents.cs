@@ -11,7 +11,7 @@ namespace DSAExperimentation.Algorithms.Connectivity;
 // node in a component gets double-counted as a component of its own. The single-root
 // overloads can't express this, since each constructs its own guard fresh, internally,
 // per call.
-internal static class ConnectedComponents
+public static class ConnectedComponents
 {
     // TOrderStrategy generic rather than hardcoded to depth-first: which order
     // Reduce.Graph explores a component in never changes the count, so the choice

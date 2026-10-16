@@ -32,7 +32,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // unbalanced inputs - an unenforced Representation/Complexity law, the same
 // shape as HeapArray's O(1)-Get assumption (§8) or BinarySearch's sortedness
 // precondition (§9.1). Self-balancing is out of scope here.
-internal sealed class BinarySearchTree<TValue>
+public sealed class BinarySearchTree<TValue>
     where TValue : IComparable<TValue>
 {
     private readonly IComparer<TValue> _comparer;

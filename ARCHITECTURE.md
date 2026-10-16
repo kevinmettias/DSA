@@ -1449,12 +1449,23 @@ files under `DataStructures/` were reaching up into `Algorithms/`, unnoticed. Th
 `AlgorithmConstants`' two integers, so that type moved down to `DataStructures/`, the lowest tier
 that needs it, despite its name.
 
-Enforcement now comes from two places, chosen deliberately over a project-per-tier split:
+Enforcement now comes from the following, chosen deliberately over a project-per-tier split:
 
 - **`LeetCode` is its own project** (`DSAExperimentation.LeetCode`, referencing
   `DSAExperimentation`). Nothing below it can depend on a solution, because it cannot see one.
-  This seam is worth a project because it is strictly one-way, costs a few `InternalsVisibleTo`
-  lines, and keeps 1,105 problem classes out of the framework assembly.
+  This seam is worth a project because it is strictly one-way and keeps 1,105 problem classes out
+  of the framework assembly.
+- **Solutions see only the library's public types.** `DSAExperimentation` grants
+  `InternalsVisibleTo` to its three test projects and nothing else, so the compiler holds every
+  solution and benchmark to the library's API. What is public is what a caller composes:
+  structures, algorithms, contracts, witnesses, algebras and result values. What stays `internal`
+  is another type's own mechanics: each structure's storage (`HeapArray`, `HashMapStorage`,
+  `DisjointSetForest`, `FenwickArray`, …), shared bounds checks and tuning constants, and the walk
+  and fold engines with their visit guards. A solution that wants one of those gets a library
+  feature instead (`DisjointSet.MergeInto` replaced a reach into `DisjointSetForest`), or a type
+  made public on purpose with the reason in its doc comment (`HeapArrayIndex`).
+  `Tests/Architecture/InternalsVisibilityTests.cs` fails if the library grants its internals to
+  anything but a test assembly.
 - **The test projects split the same way.** `DSAExperimentation.Tests` tests tiers 1–3 and does
   not reference `DSAExperimentation.LeetCode`; every solution-facing test — the per-problem
   `<Problem>SolutionTests` at `DSAExperimentation.LeetCode.Tests/<Problem>/`, the seam tests beside
@@ -1465,12 +1476,13 @@ Enforcement now comes from two places, chosen deliberately over a project-per-ti
 - **`Tests/Architecture/LayeringTests.cs` polices the rest.** DataStructures, Algorithms and
   Domain stay in one assembly and one project.
 
-Splitting those three apart was considered and rejected for two reasons. First, every type in this
-repo is `internal`, and several designs depend on single-assembly encapsulation — `IVisitGuard`'s
-own doc comment argues that *"nothing outside this assembly can reach one… TrackedVisitGuard's
-constructor stays internal too, so outside code cannot construct a working one"*, which stops
-being true the moment its consumers are a different assembly. Splitting would force that surface
-public or thread a dozen `InternalsVisibleTo` attributes through the tree.
+Splitting those three apart was considered and rejected for two reasons. First, several designs
+depend on single-assembly encapsulation: the walk and fold engines, their visit guards and each
+structure's storage stay `internal` behind public entry points. `IVisitGuard`'s own doc comment
+argues that *"nothing outside this assembly (its test projects aside) can reach one…
+TrackedVisitGuard's constructor stays internal too, so outside code cannot construct a working
+one"*, which stops being true the moment its consumers are a different assembly. Splitting would
+force that surface public or thread a dozen `InternalsVisibleTo` attributes through the tree.
 
 Second, one upward edge is **intended**: `IntervalSet` (a Representation) composes
 `BinarySearch.LowerBound` through a private `IRandomAccessSequence` view rather than carrying a

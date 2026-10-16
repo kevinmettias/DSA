@@ -7,7 +7,7 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 //
 // The loop bound is divisor <= value / divisor rather than divisor * divisor <= value, so it cannot
 // overflow Integer for a value near Integer.MaxValue.
-internal static class Primality
+public static class Primality
 {
     public static bool IsPrime<Integer>(Integer value)
         where Integer : IBinaryInteger<Integer>

@@ -59,7 +59,7 @@ namespace DSAExperimentation.Algorithms.DynamicProgramming;
 // depth is bounded by the state graph's longest dependency chain, not by how many
 // distinct states exist - an inherent trade-off of embracing the real call stack
 // instead of hand-rolling a heap-allocated one, not a defect to work around here.
-internal static class Memoizer
+public static class Memoizer
 {
     public static TResult Memoize<TState, TResult>(
         TState start,

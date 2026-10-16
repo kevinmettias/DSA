@@ -12,7 +12,7 @@ namespace DSAExperimentation.Algorithms.Folding.Dags;
 // stack-overflows or hangs, the same way RecursiveFoldEvaluation would on a non-tree
 // ITreeTopology - CheckedFold is the checked fallback for when you can't vouch for
 // acyclicity yourself.
-internal static class DagFold
+public static class DagFold
 {
     public static TResult Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
         TNode? root)

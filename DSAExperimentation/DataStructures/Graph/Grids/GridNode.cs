@@ -6,4 +6,4 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // WeightedNode are, even though it's small enough to want value semantics. Record
 // equality still does the right thing for visited-tracking: two GridNodes at the
 // same coordinate in the same Grid compare equal.
-internal sealed record GridNode(int Row, int Col, Grid Grid);
+public sealed record GridNode(int Row, int Col, Grid Grid);

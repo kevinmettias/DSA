@@ -1,7 +1,7 @@
 
 namespace DSAExperimentation.DataStructures.Buffers;
 
-internal sealed class ContiguousGroupBuffer<TItem, TKey>(EqualityComparer<TKey> keyComparer)
+public sealed class ContiguousGroupBuffer<TItem, TKey>(EqualityComparer<TKey> keyComparer)
     where TKey : notnull
 {
     private const string MissingCurrentKeyMessage = "No current group key is available.";

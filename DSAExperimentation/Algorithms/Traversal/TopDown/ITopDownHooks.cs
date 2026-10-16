@@ -16,7 +16,7 @@ namespace DSAExperimentation.Algorithms.Traversal.TopDown;
 // TopDownTraversal.Walk/WalkGraph take it as an ordinary parameter instead. The hooks
 // themselves stay static-abstract, unlike IFoldAlgebra's instance members: every
 // runtime value they need arrives through Visit's and Descend's own parameters.
-internal interface ITopDownHooks<TNode, TState>
+public interface ITopDownHooks<TNode, TState>
     where TNode : class
 {
     static abstract void Visit(TNode node, TState state, int depth, NodePosition position);

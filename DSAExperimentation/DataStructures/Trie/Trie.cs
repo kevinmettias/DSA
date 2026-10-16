@@ -26,7 +26,7 @@ namespace DSAExperimentation.DataStructures.Trie;
 // Representation (identical answers, different node layout/constants), never a second
 // Topology, the same way Min-heap vs. Max-heap is a real Topology choice (differing
 // observable output) but union-by-rank vs. union-by-size is not.
-internal sealed class Trie<TValue>
+public sealed class Trie<TValue>
 {
     private readonly TrieNode<TValue> _root = new();
 

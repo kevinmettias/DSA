@@ -9,12 +9,14 @@ namespace DSAExperimentation.Algorithms.Walking;
 // JIT instantiation and ShouldVisit is a direct, inlinable call - instance members
 // on a struct type parameter are dispatched as statically as static ones.
 //
-// Internal, like everything else in this chain: IReduceOrderStrategy.Evaluate is
-// generic over TGuard, and that interface is internal too, so there's no
-// accessibility mismatch to resolve. This does not open up "pick any guard for any
-// topology" - DepthFirstWalk/BreadthFirstWalk, the only things that actually
-// execute a walk against a topology, stay internal, so nothing outside this
-// assembly can reach one no matter which guard it names; and TrackedVisitGuard's
+// Internal, like everything else in this chain. IReduceOrderStrategy is public, so a
+// solution can choose depth- or breadth-first, but its Evaluate - the one member
+// generic over TGuard - is internal and implemented explicitly by both order
+// structs, so there's no accessibility mismatch to resolve. This does not open up
+// "pick any guard for any topology" - DepthFirstWalk/BreadthFirstWalk, the only
+// things that actually execute a walk against a topology, stay internal, so nothing
+// outside this assembly (its test projects aside) can reach one no matter which
+// guard it names; and TrackedVisitGuard's
 // constructor stays internal too, so outside code cannot construct a working one
 // (its default value holds no set and throws on first use). Reduce.Tree/Reduce.Graph
 // remain the only way in, and they still choose the guard themselves.

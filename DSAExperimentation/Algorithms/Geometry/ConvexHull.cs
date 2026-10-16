@@ -15,7 +15,7 @@ namespace DSAExperimentation.Algorithms.Geometry;
 // The cross product runs in Int128, so it is exact for every int coordinate and the hull carries no
 // range precondition. The chain is built in one array rather than a stack: it is scratch state
 // inside one call (§16.4), indexed from both halves of the sweep.
-internal static class ConvexHull
+public static class ConvexHull
 {
     // A turn is judged from the two points already on the chain plus the incoming one.
     private const int TurnWindow = 2;

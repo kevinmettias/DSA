@@ -11,7 +11,7 @@ namespace DSAExperimentation.DataStructures.Graph.Hamming;
 // HammingDistances has something to be measured against. It lives here rather than
 // beside any one problem because LC 127 and LC 433 are the same search, differing
 // only in alphabet and in whether the answer counts nodes or edges.
-internal static class HammingSearch
+public static class HammingSearch
 {
     // Edges walked from start to target, or null when no mutation path exists
     // through `allowed` - a nullable result rather than a sentinel, so each caller

@@ -16,7 +16,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // property is more permissive than strictly needed, but BitTrie.Insert is the only
 // writer and always writes via ??=, so there is no actual mutation-safety gap to
 // close with a narrower API.
-internal sealed class BitTrieNode
+public sealed class BitTrieNode
 {
     public BitTrieNode? Zero { get; set; }
     public BitTrieNode? One { get; set; }

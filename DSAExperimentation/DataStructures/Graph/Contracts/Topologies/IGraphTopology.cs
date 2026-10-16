@@ -8,7 +8,7 @@ namespace DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 // constrained on ITreeTopology get to skip visited-tracking/memoization because of
 // that extra promise; algorithms constrained on this bare interface can't assume
 // it and must defend against cycles/sharing themselves.
-internal interface IGraphTopology<TNode, TChildren>
+public interface IGraphTopology<TNode, TChildren>
     where TNode : class
     where TChildren : struct, IChildren<TNode>
 {

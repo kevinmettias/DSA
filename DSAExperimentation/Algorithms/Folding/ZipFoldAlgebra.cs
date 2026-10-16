@@ -10,7 +10,7 @@ namespace DSAExperimentation.Algorithms.Folding;
 //
 // A plain struct, not a readonly one: calling an algebra's members through a readonly
 // field of a generic struct type makes a defensive copy on every Combine.
-internal struct ZipFoldAlgebra<TNode, TResultA, TResultB, TAlgebraA, TAlgebraB>(TAlgebraA first, TAlgebraB second)
+public struct ZipFoldAlgebra<TNode, TResultA, TResultB, TAlgebraA, TAlgebraB>(TAlgebraA first, TAlgebraB second)
     : IFoldAlgebra<TNode, (TResultA A, TResultB B)>
     where TAlgebraA : struct, IFoldAlgebra<TNode, TResultA>
     where TAlgebraB : struct, IFoldAlgebra<TNode, TResultB>

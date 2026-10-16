@@ -14,7 +14,7 @@ namespace DSAExperimentation.Domain.Modular;
 // the classification test'". That condition is now met: eight counting solutions
 // across the catalogue were each building this same factorial/inverse-factorial
 // pair inline.
-internal sealed class FactorialTable(long[] factorial, long[] inverseFactorial)
+public sealed class FactorialTable(long[] factorial, long[] inverseFactorial)
 {
     public static FactorialTable Build(int maxN)
     {

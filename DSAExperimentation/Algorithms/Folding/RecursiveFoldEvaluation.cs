@@ -13,7 +13,7 @@ namespace DSAExperimentation.Algorithms.Folding;
 // type in this library - FoldRecursion is shared generic code, where each call into a policy
 // generic over TNode goes through a runtime lookup instead. Four such calls per node cost the
 // tree tier 40% on FoldTierBenchmarks; the tier that remembers nothing does not carry the axis.
-internal readonly struct RecursiveFoldEvaluation<TNode> : IFoldEvaluationStrategy<TNode>
+public readonly struct RecursiveFoldEvaluation<TNode> : IFoldEvaluationStrategy<TNode>
     where TNode : class
 {
     public static TResult Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(

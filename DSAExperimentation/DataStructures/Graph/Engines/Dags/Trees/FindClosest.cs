@@ -16,7 +16,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // constraint, over a raw BinaryTreeNode<TValue>? root the same way
 // InOrderTraversal operates directly on nodes rather than through a
 // BinarySearchTree<TValue> instance.
-internal static class FindClosest
+public static class FindClosest
 {
     // Precondition: root, if non-null, roots a validly BST-ordered tree under
     // TValue's own comparison - unchecked, the same shape as BinarySearch's

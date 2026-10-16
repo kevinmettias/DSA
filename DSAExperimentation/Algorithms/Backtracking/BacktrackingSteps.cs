@@ -14,7 +14,7 @@ namespace DSAExperimentation.Algorithms.Backtracking;
 // Sudoku's dead-end detection, N-Queens' attack check - there is no separate
 // "branch is dead" signal, the same way DepthFirstSearch has no signal beyond an
 // empty successors set.
-internal readonly record struct BacktrackingSteps<TState, TChoice>(
+public readonly record struct BacktrackingSteps<TState, TChoice>(
     Func<TState, bool> IsSolution,
     Func<TState, IEnumerable<TChoice>> Candidates,
     Action<TState, TChoice> Choose,

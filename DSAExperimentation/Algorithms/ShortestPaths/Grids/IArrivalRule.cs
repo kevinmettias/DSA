@@ -10,7 +10,7 @@ namespace DSAExperimentation.Algorithms.ShortestPaths.Grids;
 // a rule is pure, and it is first-in-first-out over the departures a search actually produces at a
 // cell - leaving later never lands earlier. ParityBounceArrival keeps that last law only within one
 // parity, which is all a grid produces, since every move flips the parity of row + col.
-internal interface IArrivalRule
+public interface IArrivalRule
 {
     static abstract int Arrive(int departure, int cellTime);
 }

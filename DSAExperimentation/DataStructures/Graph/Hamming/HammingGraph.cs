@@ -10,7 +10,7 @@ namespace DSAExperimentation.DataStructures.Graph.Hamming;
 // family - Word Ladder (127), Word Ladder II (126), Minimum Genetic Mutation
 // (433) - each of which previously carried its own copy of this node type, this
 // pairwise wiring scan, and this distance predicate.
-internal sealed class HammingGraph
+public sealed class HammingGraph
 {
     private readonly HashMap<string, HammingNode> _nodesByValue;
 

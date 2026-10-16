@@ -5,7 +5,7 @@ namespace DSAExperimentation.DataStructures.Set;
 // Backed by HashMap<Element,bool> the same way java.util.HashSet is backed by
 // HashMap<E,Object> - membership is exactly "is this key present," so the value is
 // an unused placeholder.
-internal sealed class Set<Element>
+public sealed class Set<Element>
 {
     private readonly HashMap<Element, bool> _items;
 

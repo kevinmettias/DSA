@@ -7,7 +7,7 @@ namespace DSAExperimentation.DataStructures.SinglyLinkedList;
 // DoublyLinkedListNode's Previous is: the extra pointer is assigned after every
 // node in the list already exists, so it has to be settable in place rather than
 // fixed at construction.
-internal sealed class RandomLinkedListNode<TValue>(TValue value)
+public sealed class RandomLinkedListNode<TValue>(TValue value)
 {
     public TValue Value { get; set; } = value;
 

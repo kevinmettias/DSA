@@ -24,7 +24,7 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // improving round mean "negative cycle," not "graph incomplete." Unlike TrySort, an omitted
 // vertex here can only ever under-report: CollectEdges only ever walks `vertices`, so a missing
 // vertex just means its own outgoing edges are never considered, never a spurious cycle report.
-internal static class BellmanFord
+public static class BellmanFord
 {
     public static bool TryComputeDistances<TNode, TTopology, TEdges, TWeight>(
         IEnumerable<TNode> vertices, TNode source, out Dictionary<TNode, TWeight> distances)

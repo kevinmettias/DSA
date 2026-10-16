@@ -8,7 +8,7 @@ namespace DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 // wrapper per topology. This is the composition IEdgeTopology relies on instead of
 // inheriting from IGraphTopology directly - GetEdges and GetChildren have
 // different shapes, so this can't be a subtyping relationship, only a projection.
-internal readonly struct EdgeTopologyAsGraphTopology<TNode, TTopology, TEdges, TEdgeData>
+public readonly struct EdgeTopologyAsGraphTopology<TNode, TTopology, TEdges, TEdgeData>
     : IGraphTopology<TNode, EdgeTargets<TNode, TEdgeData, TEdges>>
     where TNode : class
     where TTopology : struct, IEdgeTopology<TNode, TEdges, TEdgeData>

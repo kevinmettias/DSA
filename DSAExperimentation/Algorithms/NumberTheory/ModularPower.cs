@@ -11,7 +11,7 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 //
 // A negative value keeps a negative remainder (C#'s %), and exponent 0 - or any exponent <= 0 -
 // gives 1 % modulus: exactly what ModularArithmetic.Power returned before it delegated here.
-internal static class ModularPower
+public static class ModularPower
 {
     public static long Of(long value, long exponent, long modulus)
     {

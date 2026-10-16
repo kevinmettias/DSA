@@ -33,7 +33,7 @@ namespace DSAExperimentation.Algorithms.Connectivity;
 // every component not reachable from another node already listed, or that component is
 // silently absent from the result - there is no reverse-adjacency contract anywhere in
 // Graph/Contracts that could notice a missing one.
-internal static class StronglyConnectedComponents
+public static class StronglyConnectedComponents
 {
     public static List<List<TNode>> Tarjan<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(
         IEnumerable<TNode> nodes)

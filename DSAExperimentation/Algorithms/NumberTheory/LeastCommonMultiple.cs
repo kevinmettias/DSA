@@ -8,7 +8,7 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 // Precondition law: the answer must fit in Integer. The multiply is unchecked, so an lcm past
 // Integer.MaxValue wraps silently rather than throwing - a caller whose inputs can produce one widens
 // them first (lcm of two ints as long), which is what the solutions that need large lcms already do.
-internal static class LeastCommonMultiple
+public static class LeastCommonMultiple
 {
     public static Integer Of<Integer>(Integer first, Integer second)
         where Integer : IBinaryInteger<Integer>

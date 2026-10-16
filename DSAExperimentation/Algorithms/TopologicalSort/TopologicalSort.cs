@@ -25,7 +25,7 @@ namespace DSAExperimentation.Algorithms.TopologicalSort;
 // so TrySort returns true with an ordering that silently omits it. A false result
 // therefore also doesn't distinguish a true cycle from a caller-omitted descendant - both
 // present identically as leftover in-degree.
-internal static class TopologicalSort
+public static class TopologicalSort
 {
     public static bool TrySort<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(
         IEnumerable<TNode> nodes, out List<TNode> ordering)

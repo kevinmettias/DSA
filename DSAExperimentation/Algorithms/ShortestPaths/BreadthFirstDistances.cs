@@ -17,7 +17,7 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // What naming it costs: TNode is a reference type, so this method is shared generic code and its call
 // into Reduce.Graph costs one generic-dictionary lookup per search, not per node; the walk itself runs as
 // the same instantiation a caller spelling out all six types gets.
-internal static class BreadthFirstDistances
+public static class BreadthFirstDistances
 {
     public static Dictionary<TNode, int> From<TNode, TTopology, TChildren>(TNode root)
         where TNode : class

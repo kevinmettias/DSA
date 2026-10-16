@@ -15,7 +15,7 @@ namespace DSAExperimentation.Algorithms.Ancestry;
 // GridShortestPath.Distance) isn't an option either, since the check is what cuts the
 // descent. So it does what Dijkstra does: write the recursion directly and close over
 // first/second as ordinary parameters, the way any hand-written function would.
-internal static class LowestCommonAncestor
+public static class LowestCommonAncestor
 {
     // first and second turning up in two different children means this node is where
     // their paths from the root diverge - the LCA. Generalizes past binary trees for

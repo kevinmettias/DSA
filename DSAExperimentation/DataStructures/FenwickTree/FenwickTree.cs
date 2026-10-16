@@ -16,7 +16,7 @@ namespace DSAExperimentation.DataStructures.FenwickTree;
 // scope). Point-update/range-query only - see RangeFenwickTree for the range-update/range-query
 // variant; mixing that scheme's usage pattern onto this type would silently redefine what
 // PrefixQuery even means, the same trap SegmentTree/LazySegmentTree stay split to avoid.
-internal sealed class FenwickTree<Element, TOperation>
+public sealed class FenwickTree<Element, TOperation>
     where TOperation : struct, IGroupOperation<Element>
 {
     private const string IndexOutOfBoundsMessage = "Index was outside the bounds of the Fenwick tree.";

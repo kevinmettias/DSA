@@ -12,7 +12,7 @@ namespace DSAExperimentation.Domain.SlidingPuzzle;
 // This is the domain model, not an answer to any one puzzle about it - it knows
 // which boards are one slide apart and nothing about what a caller wants to find
 // out. Callers supply their own start and target.
-internal sealed class PuzzleGraph
+public sealed class PuzzleGraph
 {
     private static readonly int[][] Adjacency =
     [

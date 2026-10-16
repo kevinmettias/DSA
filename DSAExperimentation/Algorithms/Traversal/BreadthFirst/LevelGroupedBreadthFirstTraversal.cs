@@ -11,7 +11,7 @@ namespace DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 // reimplementing the enqueue/dequeue mechanics - the two differ only in what happens
 // to a level once it's known: BreadthFirstWalk steps through it node by node, this
 // fires once for the whole buffered list.
-internal static class LevelGroupedBreadthFirstTraversal
+public static class LevelGroupedBreadthFirstTraversal
 {
     public static THooks Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks>(TNode? root, THooks hooks)
         where TNode : class

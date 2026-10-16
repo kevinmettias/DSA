@@ -11,7 +11,7 @@ namespace DSAExperimentation.DataStructures.Queue;
 // external caller can't always know in advance, so TryPeek/TryDequeue are the only
 // public surface for it, forcing callers onto the return-value form instead of a
 // try/catch.
-internal sealed class Queue<Element>
+public sealed class Queue<Element>
 {
     private readonly Deque<Element> _items = new();
 

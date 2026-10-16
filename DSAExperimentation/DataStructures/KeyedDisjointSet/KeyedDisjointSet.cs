@@ -58,7 +58,7 @@ namespace DSAExperimentation.DataStructures.KeyedDisjointSet;
 // same shape HashMap.cs's own doc comment names for why it has no throwing Get. The
 // construction-time key universe above and a query-time key here are two different sets:
 // a key can be legitimately unknown to a query even though the type itself never grows.
-internal sealed class KeyedDisjointSet<TKey>
+public sealed class KeyedDisjointSet<TKey>
 {
     private readonly HashMap<TKey, int> _index;
     private readonly DynamicArray<TKey> _keysById;

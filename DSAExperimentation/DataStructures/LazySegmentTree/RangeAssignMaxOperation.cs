@@ -9,7 +9,7 @@ namespace DSAExperimentation.DataStructures.LazySegmentTree;
 // was already pending (ComposeUpdate keeps outer, discards inner - assignment has no memory of
 // what it replaces), and assigning v to any number of elements makes their max v regardless of
 // rangeLength. The aggregate itself is plain max, so Identity and Combine are MaxOperation's.
-internal readonly struct RangeAssignMaxOperation<Element> : IRangeUpdateOperation<Element, Element?>
+public readonly struct RangeAssignMaxOperation<Element> : IRangeUpdateOperation<Element, Element?>
     where Element : struct, IComparable<Element>, IMinMaxValue<Element>
 {
     public static Element Identity => MaxOperation<Element>.Identity;

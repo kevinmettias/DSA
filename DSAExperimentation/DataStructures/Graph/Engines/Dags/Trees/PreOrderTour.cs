@@ -32,7 +32,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // workload, where a node's earlier children carry the larger subtrees, first-child-first left
 // more siblings waiting on the stack - one more doubling of it, 0.28 KB at 200 nodes and
 // 0.52 KB at 2,000.
-internal sealed class PreOrderTour
+public sealed class PreOrderTour
 {
     // The root's entry in ParentOf: negative, as in the parent arrays ParentArrayTree reads.
     private const int NoParent = -1;

@@ -13,7 +13,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // are a real, checked precondition violation, not silently accepted the way the
 // general Trie<TValue> accepts any char - the bounded alphabet is the whole reason
 // this type exists alongside Trie<TValue>, not an incidental restriction.
-internal sealed class LowercaseTrie<TValue>
+public sealed class LowercaseTrie<TValue>
 {
     private readonly LowercaseTrieNode<TValue> _root = new();
 

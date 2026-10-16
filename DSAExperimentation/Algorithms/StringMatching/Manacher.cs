@@ -27,7 +27,7 @@ namespace DSAExperimentation.Algorithms.StringMatching;
 // equality stays a plain IEqualityComparer<char> parameter rather than a witness
 // - case-insensitive/culture-aware matching are open-ended caller choices, not a
 // closed set this library enumerates.
-internal static class Manacher
+public static class Manacher
 {
     // A radius counts outward from the center on one side only; a palindrome's
     // full length always covers both sides of it.

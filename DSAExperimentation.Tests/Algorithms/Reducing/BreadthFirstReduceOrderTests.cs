@@ -50,7 +50,14 @@ public sealed partial class BreadthFirstReduceOrderTests
 
     private static string Evaluate<TGuard>(TestNode root, TGuard guard)
         where TGuard : struct, IVisitGuard<TestNode>
-        => BreadthFirstReduceOrder<TestNode>.Evaluate<
+        => EvaluateThroughContract<BreadthFirstReduceOrder<TestNode>, TGuard>(root, guard);
+
+    // Evaluate implements an internal member of IReduceOrderStrategy explicitly, so it is
+    // reachable only through that contract - the way Reduce itself calls it.
+    private static string EvaluateThroughContract<TOrderStrategy, TGuard>(TestNode root, TGuard guard)
+        where TOrderStrategy : IReduceOrderStrategy<TestNode>
+        where TGuard : struct, IVisitGuard<TestNode>
+        => TOrderStrategy.Evaluate<
             TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             TGuard, NestingReduceAlgebra, string>(root, NestingReduceAlgebra.Seed, guard);

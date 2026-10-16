@@ -6,7 +6,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 //
 // Distinct from DataStructures' BinaryTreeNode, which fixes arity at two, and from
 // the general graph contracts, which promise no ancestry at all.
-internal sealed class RootedTreeNode(int id)
+public sealed class RootedTreeNode(int id)
 {
     public int Id { get; } = id;
 

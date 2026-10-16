@@ -10,7 +10,7 @@ namespace DSAExperimentation.Algorithms.Folding;
 // purity caveat on IFoldAlgebra, it produces exactly the same result as
 // RecursiveFoldEvaluation for any pure algebra; it's a different way to compute the
 // same fold, not a different traversal order in any way a caller can observe.
-internal readonly struct IterativeFoldEvaluation<TNode> : IFoldEvaluationStrategy<TNode>
+public readonly struct IterativeFoldEvaluation<TNode> : IFoldEvaluationStrategy<TNode>
     where TNode : class
 {
     public static TResult Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(

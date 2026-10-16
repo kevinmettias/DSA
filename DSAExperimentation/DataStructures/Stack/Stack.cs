@@ -10,7 +10,7 @@ namespace DSAExperimentation.DataStructures.Stack;
 // No throwing Peek/Pop convenience: whether the stack is empty is state an external
 // caller can't always know in advance, so TryPeek/TryPop are the only public surface
 // for it, forcing callers onto the return-value form instead of a try/catch.
-internal sealed class Stack<Element>
+public sealed class Stack<Element>
 {
     private readonly DynamicArray<Element> _items = new();
 

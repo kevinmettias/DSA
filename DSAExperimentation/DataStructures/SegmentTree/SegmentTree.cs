@@ -14,7 +14,7 @@ namespace DSAExperimentation.DataStructures.SegmentTree;
 // Point-update only, deliberately: mixing a direct Update with a range-update mode on one
 // instance would be a silent-wrong-answer trap (see LazySegmentTree, a separate structure for
 // range-update/range-query rather than a second method here).
-internal sealed class SegmentTree<Element, TOperation>
+public sealed class SegmentTree<Element, TOperation>
     where TOperation : struct, ICombineOperation<Element>
 {
     private const string IndexOutOfBoundsMessage = "Index was outside the bounds of the segment tree.";

@@ -7,7 +7,7 @@ namespace DSAExperimentation.DataStructures.Graph.Adjacency;
 //
 // What an edge means - "enables", "is disliked by", "must be printed before" - is the caller's
 // reading of the list, not a property of the node, so a builder names it where it wires the edges.
-internal sealed class AdjacencyNode(int id)
+public sealed class AdjacencyNode(int id)
 {
     public int Id { get; } = id;
 

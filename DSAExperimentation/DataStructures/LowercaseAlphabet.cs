@@ -9,7 +9,7 @@ namespace DSAExperimentation.DataStructures;
 // Not Graph/Hamming's Alphabet, which is a runtime-chosen set of letters a mutation substitutes from
 // (DNA's ACGT among them); this is a fixed index scheme. IndexOf and LetterAt throw outside the
 // alphabet rather than return -1, because a wrong slot silently reads another letter's count.
-internal static class LowercaseAlphabet
+public static class LowercaseAlphabet
 {
     public const int Size = 26;
 

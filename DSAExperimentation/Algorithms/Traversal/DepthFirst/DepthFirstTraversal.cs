@@ -13,7 +13,7 @@ namespace DSAExperimentation.Algorithms.Traversal.DepthFirst;
 // cyclic/shared topology, and it always tracks one - and so is the engine. What stays
 // distinct is the concept: a traversal observes nodes through a hook, a reduce
 // accumulates an answer through an algebra.
-internal static class DepthFirstTraversal
+public static class DepthFirstTraversal
 {
     // From the hook's default value - a hook whose fields start empty, such as a counter.
     public static THooks Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks>(TNode? root)

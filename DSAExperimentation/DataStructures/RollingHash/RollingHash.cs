@@ -63,7 +63,7 @@ namespace DSAExperimentation.DataStructures.RollingHash;
 // character would map to different codes across two independently-constructed
 // instances - so the encoding stays a pure function of the character alone, and
 // double hashing (not a remap table) is what keeps that safe.
-internal sealed class RollingHash
+public sealed class RollingHash
 {
     private const string StartOutOfRangeMessage = "Start must be within [0, Length].";
     private const string LengthOutOfRangeMessage = "Length must be non-negative and must not extend past the end of the hashed text.";

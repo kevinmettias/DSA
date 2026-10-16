@@ -21,7 +21,7 @@ namespace DSAExperimentation.DataStructures.RangeFenwickTree;
 // job - mixing that usage pattern onto this type would silently redefine what PrefixQuery means,
 // the same trap SegmentTree/LazySegmentTree stay split to avoid. A point query is just
 // Query(i, i) - no separate method needed.
-internal sealed class RangeFenwickTree<Element, TOperation>
+public sealed class RangeFenwickTree<Element, TOperation>
     where TOperation : struct, IScaledGroupOperation<Element>
 {
     private const string IndexOutOfBoundsMessage = "Index was outside the bounds of the range Fenwick tree.";

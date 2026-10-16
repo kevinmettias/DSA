@@ -13,7 +13,7 @@ namespace DSAExperimentation.Algorithms.Paths;
 // The output list travels as part of TState itself (never copied, same reference at
 // every node) rather than through a static mutable field - the same "state carries a
 // reference to shared context" pattern GridNode uses for its Grid.
-internal static class AllRootToLeafPaths
+public static class AllRootToLeafPaths
 {
     public static List<TNode[]> Find<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(TNode? root)
         where TNode : class

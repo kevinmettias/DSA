@@ -11,7 +11,7 @@ namespace DSAExperimentation.Algorithms.Reducing;
 // matched open/close events - e.g. tracking concurrently-open nodes, which no
 // single-event-per-node shape could express. Breadth-first has no Exit moment (see
 // IBreadthFirstHooks), so a breadth-first strategy simply never calls it.
-internal interface IReduceAlgebra<TNode, TState>
+public interface IReduceAlgebra<TNode, TState>
 {
     static abstract TState Seed { get; }
 

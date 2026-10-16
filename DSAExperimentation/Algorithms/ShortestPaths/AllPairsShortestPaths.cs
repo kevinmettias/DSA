@@ -18,7 +18,7 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // edges, all of it built from the same IEdgeTopology/IEdges contracts - is a separate
 // responsibility with no state in common with the refinement, and lives in
 // DenseDistanceMatrix.cs.
-internal static class AllPairsShortestPaths
+public static class AllPairsShortestPaths
 {
     public static bool TryComputeDistances<TNode, TTopology, TEdges, TWeight>(
         IEnumerable<TNode> vertices, out Dictionary<(TNode From, TNode To), TWeight> distances)

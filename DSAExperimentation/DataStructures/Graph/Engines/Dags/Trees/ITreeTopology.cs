@@ -10,7 +10,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // IDagTopology/IGraphTopology-based algorithms need, and stay zero-cost. Any
 // ITreeTopology is automatically usable wherever an IDagTopology or IGraphTopology
 // is expected; never the reverse.
-internal interface ITreeTopology<TNode, TChildren> : IDagTopology<TNode, TChildren>
+public interface ITreeTopology<TNode, TChildren> : IDagTopology<TNode, TChildren>
     where TNode : class
     where TChildren : struct, IChildren<TNode>
 {

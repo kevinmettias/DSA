@@ -2,7 +2,7 @@ using DSAExperimentation.Algorithms.Folding;
 
 namespace DSAExperimentation.Algorithms.Metrics;
 
-internal readonly struct HeightAlgebra<TNode> : IFoldAlgebra<TNode, int>
+public readonly struct HeightAlgebra<TNode> : IFoldAlgebra<TNode, int>
 {
     public int Empty => 0;
 

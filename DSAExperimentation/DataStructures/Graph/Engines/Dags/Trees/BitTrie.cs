@@ -57,7 +57,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // Insert/TryMaxXor are O(32) = O(1), bounded by int's fixed width, the same
 // "operation cost is a real, stated contract" convention Trie.cs/Heap.cs open
 // with.
-internal sealed class BitTrie
+public sealed class BitTrie
 {
     private const int BitWidth = 32;
 

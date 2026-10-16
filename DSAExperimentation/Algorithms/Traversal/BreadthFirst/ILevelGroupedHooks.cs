@@ -6,7 +6,7 @@ namespace DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 //
 // OnLevel is an instance member on a struct type parameter, and required - see
 // IDepthFirstHooks for why, and for how a walk hands its hook value back.
-internal interface ILevelGroupedHooks<TNode>
+public interface ILevelGroupedHooks<TNode>
 {
     void OnLevel(IReadOnlyList<TNode> level, int depth);
 }

@@ -6,7 +6,7 @@ namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 // non-virtual calls all the way down to the backing storage. No interface
 // dispatch, no boxing, unlike IReadOnlyList<TNode> - Get is a named lookup
 // rather than an indexer precisely so this stays a non-collection contract.
-internal interface IChildren<TNode>
+public interface IChildren<TNode>
 {
     int Count { get; }
 

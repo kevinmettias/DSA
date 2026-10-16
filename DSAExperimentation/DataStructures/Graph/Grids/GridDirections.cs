@@ -13,7 +13,7 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // data, so the property would build a new array on every access, and a span cannot be enumerated
 // across a yield, which many grid searches do. ImmutableArray cannot be changed by a caller, indexes
 // straight into its array, and enumerates with a struct enumerator.
-internal static class GridDirections
+public static class GridDirections
 {
     public static readonly ImmutableArray<(int DeltaRow, int DeltaCol)> Orthogonal =
         [(-1, 0), (1, 0), (0, -1), (0, 1)];

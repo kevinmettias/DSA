@@ -7,7 +7,7 @@ namespace DSAExperimentation.DataStructures.ElementAlgebra;
 // Min and Max deliberately never implement it: neither has an inverse (min(a, b) = 3 with b = 5
 // does not recover a), so a Fenwick tree over either is a compile error, and the chain is where
 // that refusal is explained.
-internal interface IGroupOperation<Element> : ICombineOperation<Element>
+public interface IGroupOperation<Element> : ICombineOperation<Element>
 {
     static abstract Element Invert(Element value);
 }

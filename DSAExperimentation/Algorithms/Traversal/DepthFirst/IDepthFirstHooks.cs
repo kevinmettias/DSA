@@ -12,7 +12,7 @@ namespace DSAExperimentation.Algorithms.Traversal.DepthFirst;
 // an empty body is how a hook ignores an event. A hook that holds a reference (a list
 // it appends to) can be read through that reference afterwards; one that holds its
 // counters by value must be read from the value the walk returns.
-internal interface IDepthFirstHooks<TNode>
+public interface IDepthFirstHooks<TNode>
 {
     void Enter(TNode node, int depth);
 

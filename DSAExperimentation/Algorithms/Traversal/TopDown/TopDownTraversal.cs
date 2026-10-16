@@ -13,7 +13,7 @@ namespace DSAExperimentation.Algorithms.Traversal.TopDown;
 // motivating this primitive (root-to-leaf state) is naturally depth-first, and
 // building one speculatively without a real use case would be exactly the kind of
 // unjustified plurality this library has been deliberately avoiding.
-internal static class TopDownTraversal
+public static class TopDownTraversal
 {
     public static void Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks, TState>(
         TNode? root, TState initialState)

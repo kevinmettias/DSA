@@ -9,7 +9,7 @@ namespace DSAExperimentation.DataStructures.Cache;
 // sequence (the §10.1 discriminator for a real, caller-visible axis), the same way MinHeapOrder
 // and MaxHeapOrder do - unlike, say, DisjointSet's linking policy, which never changes what a
 // caller observes.
-internal interface ICache<TKey, TValue>
+public interface ICache<TKey, TValue>
 {
     int Count { get; }
 

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Algorithms.Folding.Dags.Trees;
 
 // Each shape comes in two forms: (root) folds with the algebra's default value, which is all a
 // stateless algebra needs; (root, algebra) hands over an algebra carrying runtime values.
-internal static class TreeFold
+public static class TreeFold
 {
     // Defaults to recursive evaluation. Safe to override TStrategy with
     // IterativeFoldEvaluation only when TAlgebra is pure - see IFoldAlgebra.

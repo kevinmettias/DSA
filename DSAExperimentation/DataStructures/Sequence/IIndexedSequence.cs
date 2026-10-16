@@ -15,7 +15,7 @@ namespace DSAExperimentation.DataStructures.Sequence;
 // backing store. A witness wrapping a value-type field directly would compile fine and silently
 // drop every Set made through a copy - a correctness law this repo's Get-only contracts never
 // had to state.
-internal interface IIndexedSequence<Element>
+public interface IIndexedSequence<Element>
 {
     int Length { get; }
 

@@ -8,7 +8,7 @@ namespace DSAExperimentation.DataStructures.Heap;
 // No throwing Peek/Pop convenience: whether the heap is empty is state an external
 // caller can't always know in advance, so TryPeek/TryPop are the only public surface
 // for it, forcing callers onto the return-value form instead of a try/catch.
-internal sealed class Heap<Element, TOrder>
+public sealed class Heap<Element, TOrder>
     where TOrder : struct, IHeapOrder<Element>
 {
     private readonly HeapArray<Element> _store = new();

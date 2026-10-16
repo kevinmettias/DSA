@@ -1,6 +1,6 @@
 namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
-internal enum ChildSide
+public enum ChildSide
 {
     Left,
     Right,

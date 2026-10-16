@@ -15,7 +15,7 @@ namespace DSAExperimentation.DataStructures.RollingHash;
 // every other algorithm in this repo (nothing here uses System.Random) and this
 // repo's own hand-verified-example test convention, which a randomized base
 // would break.
-internal readonly record struct RollingHashLane(long Base, long Modulus)
+public readonly record struct RollingHashLane(long Base, long Modulus)
 {
     public static RollingHashLane DefaultFirst => new(131, 1_000_000_007);
 

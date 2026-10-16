@@ -15,7 +15,7 @@ namespace DSAExperimentation.Algorithms.StringMatching;
 // (text.Length) - the same treatment PrefixFunctionSearch.ComputeFailureFunction gives failure[0].
 // The true value is degenerate (a string trivially shares its whole self as a prefix) and not
 // useful to any consumer; FindAll below never dereferences it (see its own doc comment).
-internal static class ZFunction
+public static class ZFunction
 {
     // O(text.Length): each character is visited a number of times bounded by the box-tracking
     // invariant below, never re-scanned from the start on a mismatch.

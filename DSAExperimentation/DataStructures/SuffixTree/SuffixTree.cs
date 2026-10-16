@@ -28,7 +28,7 @@ namespace DSAExperimentation.DataStructures.SuffixTree;
 // it), the same "nothing for a witness to parametrize" reasoning Trie.cs already gives for itself -
 // and stronger than Trie's own guarantee, since SuffixTree exposes no public mutation API at all
 // after construction.
-internal sealed class SuffixTree
+public sealed class SuffixTree
 {
     private readonly string _text;
     private readonly SuffixTreeNode _root;

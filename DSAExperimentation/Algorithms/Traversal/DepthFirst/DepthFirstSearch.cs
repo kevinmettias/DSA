@@ -29,7 +29,7 @@ namespace DSAExperimentation.Algorithms.Traversal.DepthFirst;
 // notnull, deliberately not `class`: Graph's TNode : class assumes reference identity flowing
 // through IChildren, a Graph-domain choice, not an inherent property of "successor-shaped"
 // algorithms - an implicit-graph node (a chess position, say) is naturally a value-typed record.
-internal static class DepthFirstSearch
+public static class DepthFirstSearch
 {
     public static List<TNode> Traverse<TNode>(TNode start, Func<TNode, IEnumerable<TNode>> successors)
         where TNode : notnull

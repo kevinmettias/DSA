@@ -20,7 +20,7 @@ namespace DSAExperimentation.Algorithms.Folding;
 // its default value by each entry point's (root) overload. Pass an algebra by value,
 // never through `in` or a readonly field: a defensive copy would drop what its fields
 // accumulate, so a counter an algebra must keep lives behind a reference it holds.
-internal interface IFoldAlgebra<TNode, TResult>
+public interface IFoldAlgebra<TNode, TResult>
 {
     TResult Empty { get; }
 

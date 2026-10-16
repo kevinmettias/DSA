@@ -22,7 +22,7 @@ namespace DSAExperimentation.Algorithms.Sorting;
 // IIndexedSequence's aliasing law because it is a reference type. No call can reach the overload it did
 // not mean: an Element[] fails TSequence's struct constraint, and no sequence witness converts to an
 // Element[].
-internal static class MergeSort
+public static class MergeSort
 {
     public static void Sort<Element>(Element[] items)
         where Element : IComparable<Element>

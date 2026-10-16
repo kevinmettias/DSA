@@ -4,7 +4,7 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // with any subset of cells walled off. Blocked cells are absent from the result
 // entirely rather than present-but-unreachable, so every edge in the built graph
 // crosses open cells only.
-internal static class WeightedGrid
+public static class WeightedGrid
 {
     private const int UnitWeight = 1;
 

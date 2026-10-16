@@ -16,7 +16,7 @@ namespace DSAExperimentation.DataStructures.DoublyLinkedList;
 // same split of responsibility Heap has with HeapArray. AddFront/Remove/PopBack are
 // O(1) by construction (pointer reassignment, no traversal) - LruCache's and LfuCache's
 // own O(1) get/set claims depend on this (§8).
-internal sealed class DoublyLinkedList<TValue>
+public sealed class DoublyLinkedList<TValue>
 {
     private readonly DoublyLinkedListNode<TValue> _head = new();
     private readonly DoublyLinkedListNode<TValue> _tail = new();

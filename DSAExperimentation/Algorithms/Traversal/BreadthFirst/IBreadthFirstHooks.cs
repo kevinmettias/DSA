@@ -8,7 +8,7 @@ namespace DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 //
 // Visit is an instance member on a struct type parameter, and required - see
 // IDepthFirstHooks for why, and for how a walk hands its hook value back.
-internal interface IBreadthFirstHooks<TNode>
+public interface IBreadthFirstHooks<TNode>
 {
     void Visit(TNode node, int depth);
 }

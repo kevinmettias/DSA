@@ -4,4 +4,4 @@ namespace DSAExperimentation.DataStructures.Graph.Hamming;
 // than a bare string so it can never be transposed with the value being mutated -
 // OneCharacterMutations(value, alphabet) takes two strings conceptually, and the
 // compiler would not object to swapping them.
-internal readonly record struct Alphabet(string Characters);
+public readonly record struct Alphabet(string Characters);

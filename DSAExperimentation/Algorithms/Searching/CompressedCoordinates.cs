@@ -19,7 +19,7 @@ namespace DSAExperimentation.Algorithms.Searching;
 // points, for thresholds that need not be members: the count of coordinates below, or at or below, a
 // value. Duplicates are told apart by CompareTo, not Equals, so the set agrees with the order the
 // searches use. O(n log n) to build and O(log n) per query, given the view's O(1) Get (§8).
-internal sealed class CompressedCoordinates<Element>
+public sealed class CompressedCoordinates<Element>
     where Element : IComparable<Element>
 {
     private const string NotACoordinateMessage = "The value is not one of the coordinates this set was built from.";

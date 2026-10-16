@@ -17,10 +17,10 @@ namespace DSAExperimentation.Algorithms.Reducing;
 // topology bound proves it's safe to skip tracking) lives entirely at that
 // entry-point layer, not duplicated into a second strategy interface per tier the
 // way IGraphReduceTraversalStrategy used to.
-internal interface IReduceOrderStrategy<TNode>
+public interface IReduceOrderStrategy<TNode>
     where TNode : class
 {
-    static abstract TState Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TAlgebra, TState>(
+    internal static abstract TState Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TAlgebra, TState>(
         TNode root, TState seed, TGuard guard)
         where TTopology : struct, IGraphTopology<TNode, TChildren>
         where TChildren : struct, IChildren<TNode>

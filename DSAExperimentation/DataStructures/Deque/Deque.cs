@@ -5,7 +5,7 @@ namespace DSAExperimentation.DataStructures.Deque;
 // empty is state an external caller can't always know in advance, so the TryX forms
 // are the only public surface for it, forcing callers onto the return-value form
 // instead of a try/catch.
-internal sealed class Deque<Element>
+public sealed class Deque<Element>
 {
     private readonly CircularBuffer<Element> _items = new();
 

@@ -15,7 +15,7 @@ namespace DSAExperimentation.DataStructures.SuffixAutomaton;
 // precondition like BinarySearch's sortedness, since no public method here mutates state after
 // construction at all, the same "no caller-supplied shape could ever violate it" guarantee Trie.cs
 // already claims for its own prefix-tree invariant.
-internal sealed class SuffixAutomaton
+public sealed class SuffixAutomaton
 {
     private const int RootIndex = 0;
     private const int NotFound = -1;

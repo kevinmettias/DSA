@@ -12,7 +12,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // hand-written against Zero/One directly), so this type exists purely to open BitTrie
 // to generic Tree-tier engines (TreeMetrics, LowestCommonAncestor, ...), which only
 // ever ask "how many children, and give me each one."
-internal readonly struct BitTrieChildren(BitTrieNode node) : IChildren<BitTrieNode>
+public readonly struct BitTrieChildren(BitTrieNode node) : IChildren<BitTrieNode>
 {
     public int Count
     {

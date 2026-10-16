@@ -20,7 +20,7 @@ namespace DSAExperimentation.Algorithms.StringMatching;
 // principle degrade toward O(n*m). RollingHash's double-hashing default makes
 // that practically unreachable, not merely unlikely - see RollingHash.cs's own
 // doc comment for the collision-probability argument.
-internal static class RollingHashSearch
+public static class RollingHashSearch
 {
     // Every starting index in text where pattern occurs, including overlapping
     // occurrences, in ascending order. An empty pattern matches at every

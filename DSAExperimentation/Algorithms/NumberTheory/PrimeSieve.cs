@@ -10,7 +10,7 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 // Multiples are stepped as long: a bound near int.MaxValue would otherwise overflow both the
 // starting square and the step, and the overflow would break the loop's exit test rather than
 // the sieve itself.
-internal static class PrimeSieve
+public static class PrimeSieve
 {
     private const int SmallestPrime = 2;
 

@@ -7,7 +7,7 @@ namespace DSAExperimentation.DataStructures.Sequence;
 // check. This required zero changes to DynamicArray.cs, built for Stack's growth
 // needs - proving the same algorithm runs over a structure built for an unrelated
 // purpose (see ARCHITECTURE.md §9.4 for why this cross-domain composition is sound).
-internal readonly struct DynamicArraySequence<Element>(DynamicArray<Element> items) : IRandomAccessSequence<Element>
+public readonly struct DynamicArraySequence<Element>(DynamicArray<Element> items) : IRandomAccessSequence<Element>
 {
     public int Length => items.Count;
 

@@ -20,7 +20,7 @@ namespace DSAExperimentation.Algorithms.Searching;
 // The pending positions live in a BCL Stack<int>: it is the sweep's own scratch state,
 // the bucket StronglyConnectedComponents' accumulation stack sits in, not a substitute
 // for a call stack, which is what DataStructures/Stack is kept for.
-internal static class NearestBoundary
+public static class NearestBoundary
 {
     // The nearest position to the left whose value is strictly smaller than the value
     // at the position asked about; `none` when the value is a prefix minimum.

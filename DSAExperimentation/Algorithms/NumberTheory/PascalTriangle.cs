@@ -17,7 +17,7 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 //
 // Complexity law: O(maxRow^2) time and memory to build. A caller that needs one large row, or C(n, k)
 // for n far past what a table can hold, wants a rolling row or Lucas's theorem instead.
-internal sealed class PascalTriangle
+public sealed class PascalTriangle
 {
     public const int MaxExactRow = 66;
 

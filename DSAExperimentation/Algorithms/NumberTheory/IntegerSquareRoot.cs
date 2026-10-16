@@ -10,7 +10,7 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 // The search is capped at ceil(sqrt(int.MaxValue)) = 46,341, so squaring a candidate can never leave
 // long and the answer for int.MaxValue itself (46,340) is still in range. When no candidate in range
 // exceeds - value 0 or 1 - FirstTrue answers one past the range, and the floor is the range's top.
-internal static class IntegerSquareRoot
+public static class IntegerSquareRoot
 {
     private const int SquareRootCeiling = 46_341;
 

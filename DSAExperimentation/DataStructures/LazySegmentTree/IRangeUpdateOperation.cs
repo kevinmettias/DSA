@@ -16,7 +16,7 @@ namespace DSAExperimentation.DataStructures.LazySegmentTree;
 //     range-sum needs rangeLength (adding d to k elements changes their sum by d*k);
 //     range-assign-then-range-max doesn't (assigning v to k elements makes their max v
 //     regardless of k), but the shape covers both.
-internal interface IRangeUpdateOperation<Element, TUpdate> : ICombineOperation<Element>
+public interface IRangeUpdateOperation<Element, TUpdate> : ICombineOperation<Element>
 {
     static abstract TUpdate NoUpdate { get; }
 

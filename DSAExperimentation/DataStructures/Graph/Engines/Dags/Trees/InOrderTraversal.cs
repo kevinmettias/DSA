@@ -13,7 +13,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // No graph-tier counterpart (no WalkGraph, no visited-tracking): in-order has no
 // defined meaning without unique ancestry, and ITreeTopology's promise - the only
 // thing that would have justified a guarded tier - is exactly what this bypasses.
-internal static class InOrderTraversal
+public static class InOrderTraversal
 {
     public static THooks Walk<TValue, THooks>(BinaryTreeNode<TValue>? root, THooks hooks)
         where THooks : struct, IInOrderHooks<TValue>

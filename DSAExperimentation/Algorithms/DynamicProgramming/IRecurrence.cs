@@ -12,7 +12,7 @@ namespace DSAExperimentation.Algorithms.DynamicProgramming;
 // which relocates the missing contract rather than stating it. `rest` is therefore the
 // whole of the recursion a recurrence is given - the memo run in production, and
 // whatever a caller or a test chooses to wrap around it.
-internal interface IRecurrence<TState, TResult>
+public interface IRecurrence<TState, TResult>
 {
     TResult Replay(TState state, IRecurrence<TState, TResult> rest);
 }

@@ -5,7 +5,7 @@ namespace DSAExperimentation.DataStructures.Heap;
 // type parameter - a heap's "children" are index arithmetic over its own backing array (see
 // HeapArrayIndex), not an independently-pluggable collection, so there's nothing for a second
 // type parameter to vary independently of.
-internal interface IHeapOrder<Element>
+public interface IHeapOrder<Element>
 {
     static abstract bool HasPriority(Element candidate, Element incumbent);
 }

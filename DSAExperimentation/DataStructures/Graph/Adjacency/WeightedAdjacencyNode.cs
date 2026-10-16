@@ -7,7 +7,7 @@ namespace DSAExperimentation.DataStructures.Graph.Adjacency;
 //
 // The tuple is (Weight, Target), the order ListEdges' (Data, Target) expects, so GetEdges wraps the
 // list as-is.
-internal sealed class WeightedAdjacencyNode<TWeight>(int id)
+public sealed class WeightedAdjacencyNode<TWeight>(int id)
 {
     public int Id { get; } = id;
 

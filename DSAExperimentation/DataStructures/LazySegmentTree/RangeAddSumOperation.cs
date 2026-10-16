@@ -4,7 +4,7 @@ namespace DSAExperimentation.DataStructures.LazySegmentTree;
 
 // Range-add, range-sum: a pending add of d across k elements changes their sum by d*k
 // (ApplyUpdate), and two pending adds on the same node simply accumulate (ComposeUpdate).
-internal readonly struct RangeAddSumOperation<Element> : IRangeUpdateOperation<Element, Element>
+public readonly struct RangeAddSumOperation<Element> : IRangeUpdateOperation<Element, Element>
     where Element : INumber<Element>
 {
     public static Element Identity => Element.Zero;

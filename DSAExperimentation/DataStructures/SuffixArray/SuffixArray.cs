@@ -31,7 +31,7 @@ namespace DSAExperimentation.DataStructures.SuffixArray;
 // by the Comparison<int> delegate Array.Sort needs, and unlike RollingHash's single synchronous
 // pass, this algorithm re-reads characters repeatedly across every doubling round and again during
 // Kasai's pass - a real necessity here, not an optional convenience.
-internal sealed class SuffixArray
+public sealed class SuffixArray
 {
     private const int NoRankSentinel = -1;
     private const int DoublingFactor = 2;

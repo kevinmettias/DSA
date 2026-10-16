@@ -5,7 +5,7 @@ using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 
 namespace DSAExperimentation.Algorithms.Metrics;
 
-internal static class TreeMetrics
+public static class TreeMetrics
 {
     public static int Size<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(TNode? root)
         where TNode : class

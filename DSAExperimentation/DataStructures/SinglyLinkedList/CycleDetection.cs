@@ -6,7 +6,7 @@ namespace DSAExperimentation.DataStructures.SinglyLinkedList;
 // is nothing here for a Representation contract to abstract over, and per
 // ARCHITECTURE.md §5 step 7 / §13.5 that means this co-locates under
 // DataStructures/ rather than Algorithms/.
-internal static class CycleDetection
+public static class CycleDetection
 {
     // Null/acyclic-safe: returns false with no hang if there is no cycle.
     public static bool HasCycle<TValue>(SinglyLinkedListNode<TValue>? head)

@@ -17,7 +17,7 @@ namespace DSAExperimentation.DataStructures.MonotonicDeque;
 // Composes Deque the way Queue and Stack compose the structure each restricts, in a folder of its own
 // beside it (§13.5). Complexity law (§8): each entry is pushed once and popped at most once, so Push is
 // amortized O(1) only because Deque's operations at both ends are O(1) through its CircularBuffer.
-internal sealed class MonotonicDeque<Key, TOrder>
+public sealed class MonotonicDeque<Key, TOrder>
     where TOrder : struct, IWindowOrder<Key>
 {
     private readonly Deque<(int Position, Key Key)> _entries = new();

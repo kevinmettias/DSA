@@ -6,7 +6,7 @@ namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 // kept separate from IChildren rather than unifying them (with IChildren as the
 // "TEdgeData = Unit" case) - every existing IChildren consumer would otherwise pay
 // to unpack data it never asked for.
-internal interface IEdges<TNode, TEdgeData>
+public interface IEdges<TNode, TEdgeData>
 {
     int Count { get; }
 

@@ -15,7 +15,7 @@ namespace DSAExperimentation.DataStructures.MonotonicDeque;
 // Neither IHeapOrder, which is Heap's own Topology contract (§5 step 5), nor ElementAlgebra's
 // MaxOperation/MinOperation: a monoid does not promise that Combine returns one of its arguments, so a
 // deque over SumOperation would compile and mean nothing.
-internal interface IWindowOrder<Key>
+public interface IWindowOrder<Key>
 {
     static abstract bool IsDominatedBy(Key resident, Key arriving);
 }

@@ -9,7 +9,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags;
 // doesn't promise, which is why CheckedFold has to accept any IGraphTopology and
 // defend itself at runtime. DagFold is the payoff: constrained on this tier, it can
 // skip that defense entirely.
-internal interface IDagTopology<TNode, TChildren> : IGraphTopology<TNode, TChildren>
+public interface IDagTopology<TNode, TChildren> : IGraphTopology<TNode, TChildren>
     where TNode : class
     where TChildren : struct, IChildren<TNode>
 {

@@ -10,7 +10,7 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // CanEnter is only ever asked about a cell GridSize.HasCell has already accepted, so a filter may
 // index its grid unguarded. The scan copies the filter by value, so a filter reads; one that
 // recorded what it was asked would record into its own copy.
-internal interface IGridCellFilter
+public interface IGridCellFilter
 {
     bool CanEnter(int row, int col);
 }

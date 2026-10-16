@@ -12,7 +12,7 @@ namespace DSAExperimentation.Algorithms.Reducing;
 //
 // Topology-agnostic, not grid-specific - works for any TNode reachable from any
 // IGraphTopology-compatible root.
-internal readonly struct DistanceMapReduceAlgebra<TNode> : IReduceAlgebra<TNode, Dictionary<TNode, int>>
+public readonly struct DistanceMapReduceAlgebra<TNode> : IReduceAlgebra<TNode, Dictionary<TNode, int>>
     where TNode : notnull
 {
     public static Dictionary<TNode, int> Seed => [];

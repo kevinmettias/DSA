@@ -7,8 +7,9 @@ namespace DSAExperimentation.Tests.Architecture;
 //
 // This is the guard a project-per-tier split would have bought from the compiler.
 // It is deliberately a test instead, for two reasons the split could not answer:
-// every type here is `internal` and several designs depend on single-assembly
-// encapsulation (see IVisitGuard's own doc comment), and one upward edge is
+// several designs depend on single-assembly encapsulation - the walk engines and
+// visit guards stay `internal` behind public entry points (see IVisitGuard's own
+// doc comment) - and one upward edge is
 // genuinely intended - IntervalSet composes BinarySearch rather than duplicating
 // its bisection loop. A ProjectReference cannot say "this one edge, for this
 // reason"; the allow-list below can.

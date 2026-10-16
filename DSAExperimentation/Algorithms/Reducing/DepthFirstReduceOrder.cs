@@ -4,17 +4,11 @@ using DSAExperimentation.Algorithms.Walking;
 
 namespace DSAExperimentation.Algorithms.Reducing;
 
-internal readonly struct DepthFirstReduceOrder<TNode> : IReduceOrderStrategy<TNode>
+public readonly struct DepthFirstReduceOrder<TNode> : IReduceOrderStrategy<TNode>
     where TNode : class
 {
-    public static TState Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TAlgebra, TState>(
+    static TState IReduceOrderStrategy<TNode>.Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TAlgebra, TState>(
         TNode root, TState seed, TGuard guard)
-        where TTopology : struct, IGraphTopology<TNode, TChildren>
-        where TChildren : struct, IChildren<TNode>
-        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
-        where TOrderedChildren : struct, IChildren<TNode>
-        where TGuard : struct, IVisitGuard<TNode>
-        where TAlgebra : struct, IReduceAlgebra<TNode, TState>
         => DepthFirstWalk.Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TAlgebra, TState>(
             root, 0, seed, guard);
 }

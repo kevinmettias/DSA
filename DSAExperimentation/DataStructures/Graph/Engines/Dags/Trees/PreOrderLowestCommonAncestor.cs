@@ -26,7 +26,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // MinOperation<int>>. When the earlier node is itself the ancestor, its child on the way to the
 // later node is in the range and nothing in it has a smaller parent position, so the same
 // minimum names it.
-internal sealed class PreOrderLowestCommonAncestor
+public sealed class PreOrderLowestCommonAncestor
 {
     private readonly PreOrderTour _tour;
     private readonly ParentPositionTree _parentPositions;

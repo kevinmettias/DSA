@@ -23,7 +23,7 @@ namespace DSAExperimentation.DataStructures.PrefixSums;
 // They are sorted only when every term moves the total one way - non-negative addends under
 // SumOperation, never in general under XorOperation - a precondition that is the caller's, as
 // BinarySearch's sortedness always is.
-internal sealed class PrefixSums<Element, TOperation>
+public sealed class PrefixSums<Element, TOperation>
     where TOperation : struct, IGroupOperation<Element>
 {
     private const string EndOutOfBoundsMessage = "end was outside [0, Count] for these prefix sums.";

@@ -1,7 +1,7 @@
 
 namespace DSAExperimentation.DataStructures.DynamicArray;
 
-internal sealed class DynamicArray<Element>
+public sealed class DynamicArray<Element>
 {
     private const string IndexOutOfRangeMessage = "Index was outside the bounds of the array.";
 

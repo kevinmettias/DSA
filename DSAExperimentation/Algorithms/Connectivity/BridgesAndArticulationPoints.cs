@@ -29,7 +29,7 @@ namespace DSAExperimentation.Algorithms.Connectivity;
 // articulationPoints) are bundled into one record rather than threaded as separate parameters,
 // the same shape StronglyConnectedComponents.cs's own TarjanState uses and for the same
 // reason - it keeps every recursive helper under this gate's check-parameter-count limit.
-internal static class BridgesAndArticulationPoints
+public static class BridgesAndArticulationPoints
 {
     private const int MinimumRootChildrenForArticulation = 2;
 

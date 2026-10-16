@@ -8,7 +8,7 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 //
 // The loop bound is factor <= remaining / factor, which cannot overflow Integer, rather than
 // factor * factor <= remaining.
-internal static class PrimeFactorization
+public static class PrimeFactorization
 {
     public static IEnumerable<Integer> Distinct<Integer>(Integer value)
         where Integer : IBinaryInteger<Integer>

@@ -21,7 +21,7 @@ namespace DSAExperimentation.DataStructures.DisjointSet;
 // call - an unchecked-by-this-type precondition the same shape as BinarySearch's
 // sortedness precondition (out-of-range ids throw via DisjointSetForest's own bounds
 // check, but nothing here verifies ids were assigned consistently by the caller).
-internal sealed class DisjointSet
+public sealed class DisjointSet
 {
     private readonly DisjointSetForest _forest;
 

@@ -6,7 +6,7 @@ namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 // Left/Middle/Right field, or a list); IChildOrder is an optional override for
 // walking that same structure differently (reverse, priority-sorted) without
 // touching the topology.
-internal interface IChildOrder<TNode, TChildren, TOrderedChildren>
+public interface IChildOrder<TNode, TChildren, TOrderedChildren>
     where TChildren : struct, IChildren<TNode>
     where TOrderedChildren : struct, IChildren<TNode>
 {

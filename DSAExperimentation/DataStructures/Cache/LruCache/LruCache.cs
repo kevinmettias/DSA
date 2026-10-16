@@ -17,7 +17,7 @@ namespace DSAExperimentation.DataStructures.Cache.LruCache;
 // O(1) TryGetValue/Set depends on HashMap.TryGetValue/Set/TryRemove being O(1) expected
 // and DoublyLinkedList.AddFront/Remove/PopBack being O(1) actual - guaranteed, pointer
 // splicing, not hash-dependent (§8).
-internal sealed class LruCache<TKey, TValue> : ICache<TKey, TValue>
+public sealed class LruCache<TKey, TValue> : ICache<TKey, TValue>
 {
     private readonly HashMap<TKey, DoublyLinkedListNode<(TKey Key, TValue Value)>> _nodesByKey = new();
     private readonly DoublyLinkedList<(TKey Key, TValue Value)> _order = new();

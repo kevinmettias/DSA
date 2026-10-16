@@ -40,7 +40,7 @@ namespace DSAExperimentation.Algorithms.MinimumSpanningTrees;
 // incomplete-vertices precondition violation on the caller's part) - it's simply
 // excluded rather than thrown on, the same "unchecked precondition" treatment
 // BinarySearch's sortedness gets.
-internal static class MinimumSpanningTree
+public static class MinimumSpanningTree
 {
     public static List<(TNode A, TNode B, TWeight Weight)> Kruskal<TNode, TTopology, TEdges, TWeight>(
         IEnumerable<TNode> vertices)

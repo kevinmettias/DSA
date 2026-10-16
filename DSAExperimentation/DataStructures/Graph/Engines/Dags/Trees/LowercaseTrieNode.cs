@@ -8,7 +8,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // why it stays witness-less) - this is the distinguishing feature that promotes a
 // trie from "tree-shaped, no witness" to a real ITreeTopology witness, see
 // LowercaseTrieTopology.cs.
-internal sealed class LowercaseTrieNode<TValue>
+public sealed class LowercaseTrieNode<TValue>
 {
     public LowercaseTrieNode<TValue>?[] Children { get; } = new LowercaseTrieNode<TValue>[LowercaseAlphabet.Size];
 

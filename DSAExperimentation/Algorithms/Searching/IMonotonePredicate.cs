@@ -14,7 +14,7 @@ namespace DSAExperimentation.Algorithms.Searching;
 // a candidate inside the range the caller passed, so it may index its own data unguarded. The
 // search copies the rule by value, so a rule reads; one that recorded what it was asked would record
 // into its own copy.
-internal interface IMonotonePredicate<Integer>
+public interface IMonotonePredicate<Integer>
 {
     bool IsSatisfiedBy(Integer candidate);
 }

@@ -27,7 +27,7 @@ namespace DSAExperimentation.DataStructures.IntervalSet;
 // The comparer stays a plain runtime IComparer<TKey> - same §9.2 reasoning
 // BinarySearch/MergeSort already establish: any TKey, any total order, is a
 // valid comparer, an open-ended space no witness could usefully close over.
-internal sealed class IntervalSet<TKey>
+public sealed class IntervalSet<TKey>
 {
     private readonly DynamicArray<(TKey Start, TKey End)> _intervals = new();
     private readonly IComparer<TKey> _comparer;

@@ -4,7 +4,7 @@ namespace DSAExperimentation.DataStructures.Sequence;
 // indexed view - Get(i) is matrix[i / columns][i % columns] - so anything that
 // treats a matrix as one sorted run (BinarySearch, say) never needs to know it
 // is two-dimensional. Parallels ArraySequence, one dimension up.
-internal readonly struct MatrixSequence<Element>(Element[][] matrix) : IRandomAccessSequence<Element>
+public readonly struct MatrixSequence<Element>(Element[][] matrix) : IRandomAccessSequence<Element>
 {
     public int Length => matrix.Length * matrix[0].Length;
 

@@ -3,7 +3,7 @@ using System.Numerics;
 namespace DSAExperimentation.DataStructures.ElementAlgebra;
 
 // XOR is self-inverse - a XOR b XOR b == a - so Invert is the identity function, not negation.
-internal readonly struct XorOperation<Element> : IGroupOperation<Element>
+public readonly struct XorOperation<Element> : IGroupOperation<Element>
     where Element : IBinaryInteger<Element>
 {
     public static Element Identity => Element.Zero;

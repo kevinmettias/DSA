@@ -2,7 +2,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 // Materializes LeetCode's parent-array encoding of a rooted tree: parent[i] is the
 // id of i's parent, with a negative entry marking the root.
-internal static class ParentArrayTree
+public static class ParentArrayTree
 {
     public static RootedTreeNode[] Build(int[] parent)
     {

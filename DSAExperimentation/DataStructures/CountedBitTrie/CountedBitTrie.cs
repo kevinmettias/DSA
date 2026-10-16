@@ -44,7 +44,7 @@ namespace DSAExperimentation.DataStructures.CountedBitTrie;
 //
 // Insert, TryRemove, TryMaxXor and CountXorBelow each walk the 32 levels once (TryRemove twice):
 // O(1), Insert's amortized over the doubling.
-internal sealed class CountedBitTrie
+public sealed class CountedBitTrie
 {
     private const int BitWidth = 32;
     private const int ChildSlotsPerNode = 2;

@@ -1,6 +1,6 @@
 namespace DSAExperimentation.Algorithms.Traversal.TopDown;
 
-internal enum NodePosition
+public enum NodePosition
 {
     Interior,
     Leaf,

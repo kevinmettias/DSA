@@ -5,7 +5,7 @@ namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 // which is fine for small, bounded slot counts (a 26-letter alphabet) and avoids
 // the extra storage a Dictionary-backed alternative would need just to support
 // indexed access at all.
-internal readonly struct SparseArrayChildren<TNode>(TNode?[] slots) : IChildren<TNode>
+public readonly struct SparseArrayChildren<TNode>(TNode?[] slots) : IChildren<TNode>
     where TNode : class
 {
     public int Count

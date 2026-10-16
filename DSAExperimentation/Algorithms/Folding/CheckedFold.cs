@@ -26,7 +26,7 @@ namespace DSAExperimentation.Algorithms.Folding;
 // BFS-discovery order - what IterativeFoldEvaluation relies on - is only a valid
 // combine order for trees; a DAG edge can skip levels and break it. That's a
 // genuine follow-up, not something to fold in here.
-internal static class CheckedFold
+public static class CheckedFold
 {
     public static bool TryFold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
         TNode? root, out TResult result)

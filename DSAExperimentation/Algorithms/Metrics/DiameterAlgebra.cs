@@ -5,7 +5,7 @@ namespace DSAExperimentation.Algorithms.Metrics;
 // The binary-tree diameter algorithm generalized to arbitrary arity: a path through
 // a node can only descend into at most two distinct children, so "diameter through
 // this node" sums the two tallest child heights rather than a fixed left/right pair.
-internal readonly struct DiameterAlgebra<TNode> : IFoldAlgebra<TNode, HeightDiameterState>
+public readonly struct DiameterAlgebra<TNode> : IFoldAlgebra<TNode, HeightDiameterState>
 {
     public HeightDiameterState Empty
         => new(Height: 0, Diameter: 0);

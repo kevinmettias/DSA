@@ -10,7 +10,7 @@ namespace DSAExperimentation.DataStructures.Sequence;
 // new relative to IChildren, whose own doc comment never states a cost obligation,
 // because nothing in Graph/** depends on Get's cost (see ARCHITECTURE.md §2). Here,
 // something does, so the obligation belongs on the contract itself.
-internal interface IRandomAccessSequence<Element>
+public interface IRandomAccessSequence<Element>
 {
     int Length { get; }
 

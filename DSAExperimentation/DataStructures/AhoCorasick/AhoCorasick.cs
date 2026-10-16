@@ -17,7 +17,7 @@ namespace DSAExperimentation.DataStructures.AhoCorasick;
 // No Topology witness: every AhoCorasickNode is created only internally during construction from
 // patterns, the same "no external caller-supplied shape could ever violate the invariant" reasoning
 // Trie.cs's own doc comment already gives for itself.
-internal sealed class AhoCorasick
+public sealed class AhoCorasick
 {
     private readonly AhoCorasickNode _root;
     private readonly List<int> _patternLengths = new();

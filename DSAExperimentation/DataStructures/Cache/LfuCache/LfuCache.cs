@@ -18,7 +18,7 @@ namespace DSAExperimentation.DataStructures.Cache.LfuCache;
 //
 // TryGetValue/Set naming matches LruCache and HashMap - see LruCache.cs's own comment
 // for why matching the verb across these two peer caches is the right call here.
-internal sealed class LfuCache<TKey, TValue> : ICache<TKey, TValue>
+public sealed class LfuCache<TKey, TValue> : ICache<TKey, TValue>
 {
     private readonly HashMap<TKey, DoublyLinkedListNode<(TKey Key, TValue Value, int Frequency)>> _nodesByKey = new();
     private readonly HashMap<int, DoublyLinkedList<(TKey Key, TValue Value, int Frequency)>> _bucketsByFrequency = new();

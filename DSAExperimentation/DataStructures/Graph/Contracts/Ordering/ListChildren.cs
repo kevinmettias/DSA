@@ -1,6 +1,6 @@
 namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
-internal readonly struct ListChildren<TNode>(List<TNode> items) : IChildren<TNode>
+public readonly struct ListChildren<TNode>(List<TNode> items) : IChildren<TNode>
 {
     public int Count => items.Count;
 

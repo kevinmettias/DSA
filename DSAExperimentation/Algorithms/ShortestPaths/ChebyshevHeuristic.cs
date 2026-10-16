@@ -10,7 +10,7 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // It's also never an overestimate: walls only remove cells, which can make the
 // true shortest path longer than the unobstructed king-move distance, never
 // shorter.
-internal readonly struct ChebyshevHeuristic : IPathHeuristic<WeightedGridNode, int>
+public readonly struct ChebyshevHeuristic : IPathHeuristic<WeightedGridNode, int>
 {
     public static int Estimate(WeightedGridNode node, WeightedGridNode? target)
         => target is null ? 0 : ChebyshevDistance(node, target);

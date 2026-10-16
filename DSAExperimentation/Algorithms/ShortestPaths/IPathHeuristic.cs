@@ -16,7 +16,7 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // non-optimal distance with nothing here to catch it - the fix for that would be
 // reopening settled nodes, which is not what this contract or this algorithm do. Every
 // heuristic in this codebase (ZeroHeuristic, ManhattanHeuristic) is consistent.
-internal interface IPathHeuristic<TNode, TWeight>
+public interface IPathHeuristic<TNode, TWeight>
     where TNode : class
     where TWeight : INumber<TWeight>
 {

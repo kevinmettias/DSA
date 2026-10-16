@@ -18,7 +18,7 @@ namespace DSAExperimentation.Algorithms.Reducing;
 // IReduceOrderStrategy) exactly the way TreeFold injects TStrategy - no default
 // here (unlike TreeFold.Fold's recursive default), since order can change a
 // reduce's result and callers must choose deliberately.
-internal static class Reduce
+public static class Reduce
 {
     public static TState Tree<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(
         TNode? root)

@@ -25,7 +25,7 @@ namespace DSAExperimentation.DataStructures.ElementAlgebra;
 // as open-ended as any comparer, but each is a stateless pure function whose every input arrives
 // through its member signatures, closed over at the instantiation site - the reason IHeapOrder and
 // IPathHeuristic are witnesses too.
-internal interface ICombineOperation<Element>
+public interface ICombineOperation<Element>
 {
     static abstract Element Identity { get; }
 

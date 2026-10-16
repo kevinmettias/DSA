@@ -23,7 +23,7 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // static-abstract-member dispatch used everywhere else in this library, just from
 // the BCL instead of a hand-rolled interface. The frontier is Collections.Heap's
 // Heap<T,TOrder>, ordered by ByPriorityOrder so only .Priority is ever compared.
-internal static class ShortestPath
+public static class ShortestPath
 {
     public static Dictionary<TNode, TWeight> Dijkstra<TNode, TTopology, TEdges, TWeight>(TNode source)
         where TNode : class

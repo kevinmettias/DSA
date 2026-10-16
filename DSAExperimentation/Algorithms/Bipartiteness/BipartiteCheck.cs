@@ -24,7 +24,7 @@ namespace DSAExperimentation.Algorithms.Bipartiteness;
 // include at least one representative per connected component, the same self-discovering
 // shape ConnectedComponents.Count relies on (undocumented there, stated explicitly here) - a
 // component with no representative in nodes is never visited or colored at all.
-internal static class BipartiteCheck
+public static class BipartiteCheck
 {
     public static bool IsBipartite<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(
         IEnumerable<TNode> nodes)

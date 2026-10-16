@@ -10,7 +10,7 @@ namespace DSAExperimentation.DataStructures.ElementAlgebra;
 // advertised O(log n) per operation silently degrades to O(log n log count). Every other Complexity
 // law in this repo sits on a Representation layer (HeapArray.Get, IRandomAccessSequence.Get); this
 // one sits on a witness because there is no Representation layer here to put it on.
-internal interface IScaledGroupOperation<Element> : IGroupOperation<Element>
+public interface IScaledGroupOperation<Element> : IGroupOperation<Element>
 {
     static abstract Element Scale(Element value, long count);
 }
