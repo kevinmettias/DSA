@@ -46,7 +46,7 @@ internal static class NumberOfWaysToReconstructATreeSolution
             return NoTree;
         }
 
-        return EvaluateEveryNonRootNode(adjacency, nodes);
+        return EvaluateEveryNonRootDictionaryNode(adjacency, nodes);
     }
 
     private static Dictionary<int, HashSet<int>> BuildDictionaryAdjacency(int[][] pairs)
@@ -76,13 +76,13 @@ internal static class NumberOfWaysToReconstructATreeSolution
     // nodes[^1] is arbitrarily designated the root and skipped; every other node
     // (including any further node that also happens to have degree n - 1) is
     // validated against its own candidate parent.
-    private static int EvaluateEveryNonRootNode(Dictionary<int, HashSet<int>> adjacency, int[] nodes)
+    private static int EvaluateEveryNonRootDictionaryNode(Dictionary<int, HashSet<int>> adjacency, int[] nodes)
     {
         var result = ExactlyOneTree;
 
         for (var i = 0; i < nodes.Length - 1; i++)
         {
-            var nodeResult = EvaluateNode(adjacency, nodes[i]);
+            var nodeResult = EvaluateDictionaryNode(adjacency, nodes[i]);
 
             if (nodeResult is null)
             {
@@ -100,17 +100,17 @@ internal static class NumberOfWaysToReconstructATreeSolution
 
     // Returns null when no tree can produce these pairs, MoreThanOneTree when this
     // node's parent choice was not forced, ExactlyOneTree when it was.
-    private static int? EvaluateNode(Dictionary<int, HashSet<int>> adjacency, int node)
+    private static int? EvaluateDictionaryNode(Dictionary<int, HashSet<int>> adjacency, int node)
     {
         var ownDegree = adjacency[node].Count;
-        var (parent, minQualifyingDegree, countAtMinDegree) = FindCandidateParent(adjacency, node, ownDegree);
+        var (parent, minQualifyingDegree, countAtMinDegree) = FindDictionaryCandidateParent(adjacency, node, ownDegree);
 
         if (parent == NoParent)
         {
             return null;
         }
 
-        if (!IsSupersetOfNeighbors(adjacency, node, parent))
+        if (!IsSupersetOfDictionaryNeighbors(adjacency, node, parent))
         {
             return null;
         }
@@ -118,7 +118,7 @@ internal static class NumberOfWaysToReconstructATreeSolution
         return minQualifyingDegree == ownDegree || countAtMinDegree > 1 ? MoreThanOneTree : ExactlyOneTree;
     }
 
-    private static (int Parent, int MinQualifyingDegree, int CountAtMinDegree) FindCandidateParent(
+    private static (int Parent, int MinQualifyingDegree, int CountAtMinDegree) FindDictionaryCandidateParent(
         Dictionary<int, HashSet<int>> adjacency, int node, int ownDegree)
     {
         var candidate = (Parent: NoParent, MinQualifyingDegree: int.MaxValue, CountAtMinDegree: 0);
@@ -131,7 +131,7 @@ internal static class NumberOfWaysToReconstructATreeSolution
         return candidate;
     }
 
-    private static bool IsSupersetOfNeighbors(Dictionary<int, HashSet<int>> adjacency, int node, int parent)
+    private static bool IsSupersetOfDictionaryNeighbors(Dictionary<int, HashSet<int>> adjacency, int node, int parent)
     {
         foreach (var other in adjacency[node])
         {

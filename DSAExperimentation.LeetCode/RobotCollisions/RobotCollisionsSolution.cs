@@ -8,11 +8,11 @@ namespace DSAExperimentation.LeetCode.RobotCollisions;
 // loses one health, and on a tie both are removed. Report the healths of the
 // survivors in the order the robots were given.
 //
-// Both strategies establish position order the same way - this repo's own
-// MergeSort.Sort over an array of (Position, Index) pairs, the same
-// custom-comparer shape
-// QueueReconstructionByHeightSolution uses - so the only difference between
-// them is how collisions are resolved afterward.
+// Both strategies first put the robots in position order - the baseline with
+// Array.Sort, the composed arm with this repo's own MergeSort.Sort over an array
+// of (Position, Index) pairs, the same custom-comparer shape
+// QueueReconstructionByHeightSolution uses - and then differ in how collisions
+// are resolved afterward.
 internal static class RobotCollisionsSolution
 {
     private const char RightMoving = 'R';
@@ -25,7 +25,7 @@ internal static class RobotCollisionsSolution
     // destroy/survive to health-bearing collisions.
     public static int[] SurvivorHealthsByRepeatedScan(int[] positions, int[] healths, string directions)
     {
-        var items = SortedIndicesByPosition(positions)
+        var items = SortedIndicesByPositionViaArraySort(positions)
             .Select(index => (Index: index, Health: healths[index], Direction: directions[index]))
             .ToList();
         var collisionFound = true;
@@ -46,6 +46,18 @@ internal static class RobotCollisionsSolution
         }
 
         return [.. items.OrderBy(item => item.Index).Select(item => item.Health)];
+    }
+
+    // The baseline's position order: Array.Sort over (Position, Index) pairs, BCL only
+    // (ARCHITECTURE 17.5). The tuple's own comparison breaks a position tie by original
+    // index, the same order MergeSort's stability gives the composed arm.
+    private static int[] SortedIndicesByPositionViaArraySort(int[] positions)
+    {
+        var byPosition = positions.Select((position, index) => (Position: position, Index: index)).ToArray();
+
+        Array.Sort(byPosition);
+
+        return [.. byPosition.Select(item => item.Index)];
     }
 
     private static void ResolvePair(List<(int Index, int Health, char Direction)> items, int pairIndex)

@@ -1,8 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.HashMap;
-using NodeStack = DSAExperimentation.DataStructures.Stack.Stack<DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.RootedTreeNode>;
-using XorStack = DSAExperimentation.DataStructures.Stack.Stack<(DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.RootedTreeNode Node, int Xor)>;
 
 namespace DSAExperimentation.LeetCode.KthSmallestPathXORSum;
 
@@ -13,11 +11,12 @@ namespace DSAExperimentation.LeetCode.KthSmallestPathXORSum;
 // DISTINCT path XOR sum among the nodes in u's subtree, or -1 if fewer than k
 // distinct sums exist there.
 //
-// Both strategies walk the same ParentArrayTree.Build tree iteratively (a
-// repo Stack<T> here, PreOrderTour's own stack in the composed arm, never
-// recursion - LC's own worst case is a straight-line chain of up to 5e4 nodes,
-// deep enough to risk overflowing the call stack) and differ only in how much
-// of that walk is shared across queries.
+// Both strategies walk the same ParentArrayTree.Build tree iteratively (a BCL
+// Stack<T> here, since a baseline reaches no library type (ARCHITECTURE 17.5), and
+// PreOrderTour's own stack in the composed arm - never recursion: LC's own worst
+// case is a straight-line chain of up to 5e4 nodes, deep enough to risk
+// overflowing the call stack) and differ only in how much of that walk is shared
+// across queries.
 internal static class KthSmallestPathXORSumSolution
 {
     // Textbook: no memoization at all. Every query redoes the full root-to-
@@ -55,7 +54,7 @@ internal static class KthSmallestPathXORSumSolution
     private static int[] ComputePathXor(RootedTreeNode[] nodes, int[] vals)
     {
         var pathXor = new int[nodes.Length];
-        var stack = new XorStack();
+        var stack = new Stack<(RootedTreeNode Node, int Xor)>();
         stack.Push((nodes[0], vals[0]));
 
         while (stack.TryPop(out var frame))
@@ -74,7 +73,7 @@ internal static class KthSmallestPathXORSumSolution
     private static List<int> CollectSubtreeXor(RootedTreeNode root, int[] pathXor)
     {
         var values = new List<int>();
-        var stack = new NodeStack();
+        var stack = new Stack<RootedTreeNode>();
         stack.Push(root);
 
         while (stack.TryPop(out var node))

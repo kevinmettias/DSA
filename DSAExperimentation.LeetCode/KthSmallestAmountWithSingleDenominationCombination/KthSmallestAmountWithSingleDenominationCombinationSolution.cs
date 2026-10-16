@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Heap;
 
 namespace DSAExperimentation.LeetCode.KthSmallestAmountWithSingleDenominationCombination;
 
@@ -16,9 +15,9 @@ namespace DSAExperimentation.LeetCode.KthSmallestAmountWithSingleDenominationCom
 // 2*10^9, since the achievable amount itself can then exceed Int32 range.
 internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
 {
-    // The textbook k-way merge: this repo's own Heap<Element,TOrder> as a
-    // priority queue over (amount, coinIndex), always popping the smallest
-    // pending multiple and pushing that coin's next one. Duplicate amounts
+    // The textbook k-way merge: a BCL PriorityQueue of coin indices keyed by
+    // each coin's pending multiple, always popping the smallest pending
+    // multiple and pushing that coin's next one. Duplicate amounts
     // (two coins landing on the same multiple) are collapsed by only
     // counting a popped amount once. O(rank log coins.Length) - correct for
     // every input, but the arm the search strategy below has to beat once
@@ -31,13 +30,13 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
     }
 
     // Every denomination's own first multiple: the frontier the k-way merge starts from.
-    private static Heap<(long Amount, int CoinIndex), MinHeapOrder<(long, int)>> SeedFrontier(int[] coins)
+    private static PriorityQueue<int, long> SeedFrontier(int[] coins)
     {
-        var frontier = new Heap<(long Amount, int CoinIndex), MinHeapOrder<(long, int)>>();
+        var frontier = new PriorityQueue<int, long>();
 
         for (var i = 0; i < coins.Length; i++)
         {
-            frontier.Push((coins[i], i));
+            frontier.Enqueue(i, coins[i]);
         }
 
         return frontier;
@@ -47,16 +46,13 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
     // amount only the first time it is popped (two coins landing on the same multiple
     // are one achievable amount), and push that coin's next multiple back. The rank-th
     // distinct amount popped is the answer.
-    private static long PopUntilKth(
-        Heap<(long Amount, int CoinIndex), MinHeapOrder<(long, int)>> frontier, int[] coins, long rank)
+    private static long PopUntilKth(PriorityQueue<int, long> frontier, int[] coins, long rank)
     {
         var lastAmount = 0L;
         var count = 0L;
 
-        while (frontier.TryPop(out var next))
+        while (frontier.TryDequeue(out var coinIndex, out var amount))
         {
-            var (amount, coinIndex) = next;
-
             if (amount != lastAmount)
             {
                 count++;
@@ -68,7 +64,7 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
                 }
             }
 
-            frontier.Push((amount + coins[coinIndex], coinIndex));
+            frontier.Enqueue(coinIndex, amount + coins[coinIndex]);
         }
 
         return LeetCodeAnswer.None;

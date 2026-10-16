@@ -23,6 +23,10 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToPaintN3Grid;
 // pairing, on a state that is just the row index.
 internal static class NumberOfWaysToPaintN3GridSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     private const int FirstRow = 1;
     private const int SecondRow = 2;
     private const long FirstRowPatternCount = 6;
@@ -40,14 +44,14 @@ internal static class NumberOfWaysToPaintN3GridSolution
         for (var row = SecondRow; row <= rowCount; row++)
         {
             var nextSame = ((SameFollowerWeight * same) + (DifferentFollowerWeight * different))
-                % ModularArithmetic.Modulo;
+                % Modulo;
             var nextDifferent = ((DifferentFollowerWeight * same) + (DifferentFollowerWeight * different))
-                % ModularArithmetic.Modulo;
+                % Modulo;
             same = nextSame;
             different = nextDifferent;
         }
 
-        return (same + different) % ModularArithmetic.Modulo;
+        return (same + different) % Modulo;
     }
 
     // This repo's own top-down engine: Memoizer.Memoize caches each row's

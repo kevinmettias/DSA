@@ -71,8 +71,8 @@ internal static class MaximumNumberOfPointsFromGridQueriesSolution
 
     private static void PushBelowQueryNeighbors((int Row, int Col) cell, FloodWalk walk)
     {
-        var rows = walk.Grid.Length;
-        var cols = walk.Grid[0].Length;
+        var rows = walk.Cells.Length;
+        var cols = walk.Cells[0].Length;
 
         foreach (var (dRow, dCol) in Directions)
         {
@@ -85,7 +85,7 @@ internal static class MaximumNumberOfPointsFromGridQueriesSolution
                 continue;
             }
 
-            if (!walk.Visited[nextRow, nextCol] && walk.Grid[nextRow][nextCol] < walk.Query)
+            if (!walk.Visited[nextRow, nextCol] && walk.Cells[nextRow][nextCol] < walk.Query)
             {
                 walk.Visited[nextRow, nextCol] = true;
                 walk.Stack.Push((nextRow, nextCol));
@@ -93,8 +93,10 @@ internal static class MaximumNumberOfPointsFromGridQueriesSolution
         }
     }
 
+    // The baseline's walk state. The board is called Cells, not Grid, because that name
+    // would read as this repo's Grid type, which a baseline never touches (ARCHITECTURE 17.5).
     private readonly record struct FloodWalk(
-        int[][] Grid,
+        int[][] Cells,
         bool[,] Visited,
         Stack<(int Row, int Col)> Stack,
         int Query);

@@ -31,7 +31,7 @@ internal static class MinimumDeletionsToMakeAlternatingSubstringSolution
         {
             if (query[0] == FlipQuery)
             {
-                chars[query[1]] = Flip(chars[query[1]]);
+                chars[query[1]] = FlipCharacter(chars[query[1]]);
             }
             else
             {
@@ -101,7 +101,7 @@ internal static class MinimumDeletionsToMakeAlternatingSubstringSolution
         var hasRightNeighbor = index < chars.Length - 1;
         var oldRightEdge = hasRightNeighbor ? EdgeValue(chars[index], chars[index + 1]) : 0;
 
-        chars[index] = Flip(chars[index]);
+        chars[index] = FlipCharacter(chars[index]);
 
         if (index > 0)
         {
@@ -116,5 +116,5 @@ internal static class MinimumDeletionsToMakeAlternatingSubstringSolution
 
     private static int EdgeValue(char left, char right) => left == right ? 1 : 0;
 
-    private static char Flip(char value) => value == 'A' ? 'B' : 'A';
+    private static char FlipCharacter(char value) => value == 'A' ? 'B' : 'A';
 }

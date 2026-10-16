@@ -1,4 +1,3 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.DataStructures.HashMap;
 
 namespace DSAExperimentation.LeetCode.StoneGameIX;
@@ -13,7 +12,8 @@ namespace DSAExperimentation.LeetCode.StoneGameIX;
 //
 //   - a full negamax over the remaining (count0, count1, count2, runningSumMod3)
 //     state - O(n^3) states, so it needs a cache to be feasible at all and gets one
-//     from this repo's own Memoizer<TState,TResult>; and
+//     from a hand-rolled Dictionary memo, since a baseline reaches no library type
+//     (ARCHITECTURE 17.5); and
 //   - the closed-form parity rule, read straight off the bucket counts in O(n).
 //
 // Both explore the identical rule set; the game-tree arm just re-derives by exhaustive
@@ -40,9 +40,9 @@ internal static class StoneGameIXSolution
     public static bool CanAliceWinByGameTreeMinimax(int[] stones)
     {
         var counts = CountByRemainder(stones);
-        var outcome = Memoizer.Memoize<(int C0, int C1, int C2, int TurnSum), int>(
-            (counts[0], counts[1], counts[RemainderTwoIndex], 0),
-            new GameTreeOutcome());
+        var start = (counts[0], counts[1], counts[RemainderTwoIndex], 0);
+        var memo = new Dictionary<(int C0, int C1, int C2, int TurnSum), int>();
+        var outcome = DictionaryMemoOutcome(start, memo);
 
         return outcome == MoverWins;
     }
@@ -57,82 +57,6 @@ internal static class StoneGameIXSolution
         }
 
         return counts;
-    }
-
-    // The recurrence, as a named type: the game-tree search over the counts still in
-    // play and the running sum mod 3, with the memoized continuation arriving as `rest`
-    // rather than as an anonymous delegate.
-    private sealed class GameTreeOutcome
-        : IRecurrence<(int C0, int C1, int C2, int TurnSum), int>
-    {
-        // Running out of stones without anyone busting is a loss for the mover, who is
-        // the player that would have had to move next - which is exactly LeetCode's "Bob
-        // wins if all the stones are removed" clause seen from the other side.
-        public int Replay(
-            (int C0, int C1, int C2, int TurnSum) state,
-            IRecurrence<(int C0, int C1, int C2, int TurnSum), int> rest)
-        {
-            var (c0, c1, c2, _) = state;
-
-            if (c0 + c1 + c2 == 0)
-            {
-                return NoStonesLeft;
-            }
-
-            return BestOverRemainders(state, rest);
-        }
-
-        private static int BestOverRemainders(
-            (int C0, int C1, int C2, int TurnSum) state,
-            IRecurrence<(int C0, int C1, int C2, int TurnSum), int> rest)
-        {
-            var (c0, c1, c2, _) = state;
-            var counts = new[] { c0, c1, c2 };
-            var best = int.MinValue;
-
-            for (var r = 0; r < RemainderBucketCount; r++)
-            {
-                if (counts[r] == 0)
-                {
-                    continue;
-                }
-
-                var nextState = NextState(state, r);
-                var branchValue = Branch(r, nextState, rest);
-                best = Math.Max(best, branchValue);
-            }
-
-            return best;
-        }
-
-        private static GameState NextState((int C0, int C1, int C2, int TurnSum) state, int remainder)
-        {
-            var (c0, c1, c2, turnSum) = state;
-
-            return remainder switch
-            {
-                0 => new GameState(c0 - 1, c1, c2, turnSum),
-                1 => new GameState(c0, c1 - 1, c2, turnSum),
-                _ => new GameState(c0, c1, c2 - 1, turnSum),
-            };
-        }
-
-        // Negamax step: a move of `remainder` updates the running sum; landing on a
-        // multiple of 3 loses immediately for the mover, otherwise the outcome is
-        // whatever the opponent's own best play yields, negated back to this mover's
-        // perspective.
-        private static int Branch(
-            int remainder, GameState state, IRecurrence<(int C0, int C1, int C2, int TurnSum), int> rest)
-        {
-            var newSum = (state.TurnSum + remainder) % RemainderBucketCount;
-
-            if (newSum == 0)
-            {
-                return MoverLoses;
-            }
-
-            return -rest.Replay((state.C0, state.C1, state.C2, newSum), rest);
-        }
     }
 
     // Bucket the stones by value mod 3 with this repo's own HashMap<int,int>, then read
@@ -168,6 +92,91 @@ internal static class StoneGameIXSolution
     // back is an alternating run long enough to exhaust one bucket first.
     private static bool HasWinningImbalance(int cnt1, int cnt2)
         => Math.Abs(cnt1 - cnt2) >= MinimumImbalanceThreshold;
+
+    // The hand-rolled memo lookup and store around one position of the game tree.
+    private static int DictionaryMemoOutcome(
+        (int C0, int C1, int C2, int TurnSum) state,
+        Dictionary<(int C0, int C1, int C2, int TurnSum), int> memo)
+    {
+        if (memo.TryGetValue(state, out var cached))
+        {
+            return cached;
+        }
+
+        var result = GameTreeStep(state, memo);
+        memo[state] = result;
+        return result;
+    }
+
+    // The game-tree search over the counts still in play and the running sum mod 3.
+    // Running out of stones without anyone busting is a loss for the mover, who is the
+    // player that would have had to move next - which is exactly LeetCode's "Bob wins
+    // if all the stones are removed" clause seen from the other side.
+    private static int GameTreeStep(
+        (int C0, int C1, int C2, int TurnSum) state,
+        Dictionary<(int C0, int C1, int C2, int TurnSum), int> memo)
+    {
+        var (c0, c1, c2, _) = state;
+
+        if (c0 + c1 + c2 == 0)
+        {
+            return NoStonesLeft;
+        }
+
+        return BestOverRemainders(state, memo);
+    }
+
+    private static int BestOverRemainders(
+        (int C0, int C1, int C2, int TurnSum) state,
+        Dictionary<(int C0, int C1, int C2, int TurnSum), int> memo)
+    {
+        var (c0, c1, c2, _) = state;
+        var counts = new[] { c0, c1, c2 };
+        var best = int.MinValue;
+
+        for (var r = 0; r < RemainderBucketCount; r++)
+        {
+            if (counts[r] == 0)
+            {
+                continue;
+            }
+
+            var nextState = NextState(state, r);
+            var branchValue = Branch(r, nextState, memo);
+            best = Math.Max(best, branchValue);
+        }
+
+        return best;
+    }
+
+    private static GameState NextState((int C0, int C1, int C2, int TurnSum) state, int remainder)
+    {
+        var (c0, c1, c2, turnSum) = state;
+
+        return remainder switch
+        {
+            0 => new GameState(c0 - 1, c1, c2, turnSum),
+            1 => new GameState(c0, c1 - 1, c2, turnSum),
+            _ => new GameState(c0, c1, c2 - 1, turnSum),
+        };
+    }
+
+    // Negamax step: a move of `remainder` updates the running sum; landing on a
+    // multiple of 3 loses immediately for the mover, otherwise the outcome is
+    // whatever the opponent's own best play yields, negated back to this mover's
+    // perspective.
+    private static int Branch(
+        int remainder, GameState state, Dictionary<(int C0, int C1, int C2, int TurnSum), int> memo)
+    {
+        var newSum = (state.TurnSum + remainder) % RemainderBucketCount;
+
+        if (newSum == 0)
+        {
+            return MoverLoses;
+        }
+
+        return -DictionaryMemoOutcome((state.C0, state.C1, state.C2, newSum), memo);
+    }
 
     private readonly record struct GameState(int C0, int C1, int C2, int TurnSum);
 }

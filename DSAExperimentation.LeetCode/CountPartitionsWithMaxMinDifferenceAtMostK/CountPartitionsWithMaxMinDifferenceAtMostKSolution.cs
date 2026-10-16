@@ -15,6 +15,10 @@ namespace DSAExperimentation.LeetCode.CountPartitionsWithMaxMinDifferenceAtMostK
 // single running maximum, doubled up under MinWindowOrder for a running minimum too.
 internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // dp[r] = sum of dp[l-1] over every l in [1, r] whose segment [l, r] has
     // max - min at most maxDifference, found by rescanning backward from r and
     // shrinking on the first violation - O(n) per r, O(n^2) overall.
@@ -51,7 +55,7 @@ internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
                 break;
             }
 
-            sum = (sum + dp[l - 1]) % ModularArithmetic.Modulo;
+            sum = (sum + dp[l - 1]) % Modulo;
         }
 
         return sum;

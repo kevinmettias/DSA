@@ -19,6 +19,10 @@ namespace DSAExperimentation.LeetCode.NumberOfPeopleAwareOfASecret;
 // pair instead.
 internal static class NumberOfPeopleAwareOfASecretSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Day 1 is dp index 0: LeetCode numbers days from 1, the arrays from 0.
     private const int FirstDay = 1;
 
@@ -45,7 +49,7 @@ internal static class NumberOfPeopleAwareOfASecretSolution
             total += dp[day - 1];
         }
 
-        return total % ModularArithmetic.Modulo;
+        return total % Modulo;
     }
 
     // The newcomers on one day: the dp values of every earlier day whose people are still
@@ -69,7 +73,7 @@ internal static class NumberOfPeopleAwareOfASecretSolution
             sum += dp[source - 1];
         }
 
-        return sum % ModularArithmetic.Modulo;
+        return sum % Modulo;
     }
 
     // The same recurrence against FenwickTree<long, SumOperation<long>>, which is

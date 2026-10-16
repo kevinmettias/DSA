@@ -19,9 +19,11 @@ namespace DSAExperimentation.LeetCode.MinimumCostToDivideArrayIntoSubarrays;
 // like the (nums[0..r]) term is additive per segment end, so state collapses back
 // to plain position: MinCost(index) = min over end >= index of
 // PrefixNumsSum[end] * SegmentCostSum(index, end) + indexMultiplier * SuffixCostSum[index] +
-// MinCost(end + 1). Both strategies share this one recurrence (PartitionStep) and
-// differ only in how repeated states get cached - the same "Dictionary memo vs.
-// this repo's Memoizer" contrast MinimumSumOfValuesByDividingArraySolution draws.
+// MinCost(end + 1). Both strategies run this one recurrence and differ only in how
+// repeated states get cached - the same "Dictionary memo vs. this repo's Memoizer"
+// contrast MinimumSumOfValuesByDividingArraySolution draws. The baseline writes the
+// recursion and its Dictionary memo out by hand rather than through Memoizer's
+// IRecurrence contract, because a baseline reaches no library type (ARCHITECTURE 17.5).
 internal static class MinimumCostToDivideArrayIntoSubarraysSolution
 {
     // The textbook form: recursion over a hand-rolled Dictionary memo table, its
@@ -29,9 +31,10 @@ internal static class MinimumCostToDivideArrayIntoSubarraysSolution
     // Memoizer-based strategy below has to beat.
     public static long MinimumCostByDictionaryMemo(int[] nums, int[] cost, int indexMultiplier)
     {
-        var run = new DictionaryMemoRun(BuildContext(nums, cost, indexMultiplier));
+        var context = BuildContext(nums, cost, indexMultiplier);
+        var memo = new Dictionary<int, long>();
 
-        return run.Replay(0, run);
+        return DictionaryMemoCost(0, context, memo);
     }
 
     // Same recurrence, routed through this repo's own Memoizer so each distinct
@@ -65,6 +68,44 @@ internal static class MinimumCostToDivideArrayIntoSubarraysSolution
         return best;
     }
 
+    // The hand-rolled memo lookup and store around one segment-start state.
+    private static long DictionaryMemoCost(int index, PartitionContext context, Dictionary<int, long> memo)
+    {
+        if (memo.TryGetValue(index, out var cached))
+        {
+            return cached;
+        }
+
+        var result = DictionaryMemoStep(index, context, memo);
+        memo[index] = result;
+        return result;
+    }
+
+    // The same step as PartitionStep, the cost of everything after each candidate
+    // segment asked of the Dictionary-memoized recursion directly.
+    private static long DictionaryMemoStep(int index, PartitionContext context, Dictionary<int, long> memo)
+    {
+        var n = context.Nums.Length;
+
+        if (index == n)
+        {
+            return 0L;
+        }
+
+        var segmentStartTerm = context.IndexMultiplier * context.CostSuffixSum[index];
+        var priorCostSum = index == 0 ? 0L : CostBefore(context, index);
+        var best = long.MaxValue;
+
+        for (var end = index; end < n; end++)
+        {
+            var candidate = SegmentCostTo(context, end, priorCostSum, segmentStartTerm)
+                + DictionaryMemoCost(end + 1, context, memo);
+            best = Math.Min(best, candidate);
+        }
+
+        return best;
+    }
+
     private static long CostBefore(PartitionContext context, int index) => context.CostPrefixSum[index - 1];
 
     // One candidate segment [index..end]: its own (nums, cost) cost, before the cost of
@@ -79,37 +120,6 @@ internal static class MinimumCostToDivideArrayIntoSubarraysSolution
 
     private static PartitionContext BuildContext(int[] nums, int[] cost, int indexMultiplier) =>
         new(nums, indexMultiplier, PrefixSum(nums), PrefixSum(cost), SuffixSum(cost));
-
-    private readonly record struct PartitionContext(
-        int[] Nums, int IndexMultiplier, long[] NumsPrefixSum, long[] CostPrefixSum, long[] CostSuffixSum);
-
-    // The next segment's start index is the whole state: everything the step needs about
-    // the rest of the array is already in the context the two strategies share.
-    private sealed class CostFromSegmentStart(PartitionContext context) : IRecurrence<int, long>
-    {
-        public long Replay(int index, IRecurrence<int, long> rest) => PartitionStep(index, context, rest);
-    }
-
-    // The hand-rolled memo run: it keeps the table and hands itself to the recurrence as
-    // the recursion, exactly as Memoizer's own run does - the lookup and the store are
-    // just written out here instead of being supplied by the library.
-    private sealed class DictionaryMemoRun(PartitionContext context) : IRecurrence<int, long>
-    {
-        private readonly CostFromSegmentStart _step = new(context);
-        private readonly Dictionary<int, long> _memo = [];
-
-        public long Replay(int index, IRecurrence<int, long> rest)
-        {
-            if (_memo.TryGetValue(index, out var cached))
-            {
-                return cached;
-            }
-
-            var result = _step.Replay(index, this);
-            _memo[index] = result;
-            return result;
-        }
-    }
 
     private static long[] PrefixSum(int[] values)
     {
@@ -138,4 +148,15 @@ internal static class MinimumCostToDivideArrayIntoSubarraysSolution
 
         return suffix;
     }
+
+    private readonly record struct PartitionContext(
+        int[] Nums, int IndexMultiplier, long[] NumsPrefixSum, long[] CostPrefixSum, long[] CostSuffixSum);
+
+    // The next segment's start index is the whole state: everything the step needs about
+    // the rest of the array is already in the context the two strategies share.
+    private sealed class CostFromSegmentStart(PartitionContext context) : IRecurrence<int, long>
+    {
+        public long Replay(int index, IRecurrence<int, long> rest) => PartitionStep(index, context, rest);
+    }
+
 }

@@ -1,4 +1,3 @@
-using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.Domain.Modular;
 
@@ -15,11 +14,11 @@ namespace DSAExperimentation.LeetCode.CountKSubsequencesOfAStringWithMaximumBeau
 // character c, summed over every maximizing set.
 //
 // CountByBruteForceCombinations enumerates every subset of text's distinct
-// characters of size subsequenceLength via Backtrack (the same "choose index >
-// last chosen" combination walk CombinationSum/Subsets already use) and tracks
-// the max summed frequency and the modular count of subsets achieving it
-// directly - correct but O(C(26, k)) in the worst case, the baseline the grouped
-// approach has to beat.
+// characters of size subsequenceLength by plain choose/recurse/unchoose recursion
+// (the same "choose index > last chosen" combination walk CombinationSum/Subsets
+// already use) and tracks the max summed frequency and the modular count of
+// subsets achieving it directly - correct but O(C(26, k)) in the worst case, the
+// baseline the grouped approach has to beat.
 //
 // CountByGroupedFrequencyProduct sorts each distinct character's own frequency
 // descending via MergeSort/ArrayIndexedSequence<int> (same composition
@@ -39,6 +38,10 @@ namespace DSAExperimentation.LeetCode.CountKSubsequencesOfAStringWithMaximumBeau
 // RoomWaysAlgebra's own doc comment already states.
 internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     private const int AlphabetSize = 26;
 
     public static long CountByBruteForceCombinations(string text, int subsequenceLength)
@@ -51,60 +54,10 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
             return 0;
         }
 
-        var best = (Beauty: -1L, Count: 0L);
-        var state = new ComboState();
-
-        Backtrack.Search<ComboState, int>(
-            state,
-            st => st.Chosen.Count == subsequenceLength,
-            st => CandidateIndices(st, chars.Count, subsequenceLength),
-            (st, index) => st.Chosen.Add(index),
-            (st, _) => st.Chosen.RemoveAt(st.Chosen.Count - 1),
-            st => best = FoldChosenSubset(best, st, frequency, chars));
+        var state = new ComboState(frequency, chars, subsequenceLength);
+        var best = FoldCombinations((Beauty: -1L, Count: 0L), state);
 
         return best.Count;
-    }
-
-    private static IEnumerable<int> CandidateIndices(ComboState state, int charCount, int subsequenceLength)
-    {
-        if (state.Chosen.Count == subsequenceLength)
-        {
-            return [];
-        }
-
-        // Chosen holds strictly increasing indices, so the next candidate starts one past
-        // the last one chosen - and at 0 when nothing is chosen yet, which is that same
-        // "one past" read against a missing last index of -1.
-        var start = state.Chosen.LastOrDefault(-1) + 1;
-        return Enumerable.Range(start, charCount - start);
-    }
-
-    // One complete size-k subset: its beauty is the summed frequencies of its characters
-    // and its ways the product of those frequencies. A strictly better beauty replaces the
-    // running best; an equal one adds its ways to that best's count.
-    private static (long Beauty, long Count) FoldChosenSubset(
-        (long Beauty, long Count) best, ComboState chosen, int[] frequency, List<int> chars)
-    {
-        var beauty = 0L;
-        var ways = 1L;
-
-        foreach (var index in chosen.Chosen)
-        {
-            beauty += frequency[chars[index]];
-            ways = ways * frequency[chars[index]] % ModularArithmetic.Modulo;
-        }
-
-        if (beauty > best.Beauty)
-        {
-            return (beauty, ways);
-        }
-
-        if (beauty == best.Beauty)
-        {
-            return (best.Beauty, (best.Count + ways) % ModularArithmetic.Modulo);
-        }
-
-        return best;
     }
 
     public static long CountByGroupedFrequencyProduct(string text, int subsequenceLength)
@@ -181,6 +134,59 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
         return numerator * ModularArithmetic.Inverse(denominator) % ModularArithmetic.Modulo;
     }
 
+    // One node of the combination tree: a complete size-k subset folds into the running
+    // best, a shorter one extends itself by each index past its last, recurses, and
+    // removes it again.
+    private static (long Beauty, long Count) FoldCombinations((long Beauty, long Count) best, ComboState state)
+    {
+        if (state.Chosen.Count == state.SubsequenceLength)
+        {
+            return FoldChosenSubset(best, state);
+        }
+
+        // Chosen holds strictly increasing indices, so the next candidate starts one past
+        // the last one chosen - and at 0 when nothing is chosen yet, which is that same
+        // "one past" read against a missing last index of -1.
+        var start = state.Chosen.LastOrDefault(-1) + 1;
+
+        for (var index = start; index < state.Chars.Count; index++)
+        {
+            state.Chosen.Add(index);
+            best = FoldCombinations(best, state);
+            state.Chosen.RemoveAt(state.Chosen.Count - 1);
+        }
+
+        return best;
+    }
+
+    // One complete size-k subset: its beauty is the summed frequencies of its characters
+    // and its ways the product of those frequencies. A strictly better beauty replaces the
+    // running best; an equal one adds its ways to that best's count.
+    private static (long Beauty, long Count) FoldChosenSubset((long Beauty, long Count) best, ComboState chosen)
+    {
+        var beauty = 0L;
+        var ways = 1L;
+
+        foreach (var index in chosen.Chosen)
+        {
+            var count = chosen.Frequency[chosen.Chars[index]];
+            beauty += count;
+            ways = ways * count % Modulo;
+        }
+
+        if (beauty > best.Beauty)
+        {
+            return (beauty, ways);
+        }
+
+        if (beauty == best.Beauty)
+        {
+            return (best.Beauty, (best.Count + ways) % Modulo);
+        }
+
+        return best;
+    }
+
     private static int[] BuildFrequency(string text)
     {
         var frequency = new int[AlphabetSize];
@@ -208,7 +214,9 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
         return chars;
     }
 
-    private sealed record ComboState
+    // The baseline's search: the facts every node reads, and the strictly increasing
+    // indices into Chars chosen so far.
+    private sealed record ComboState(int[] Frequency, List<int> Chars, int SubsequenceLength)
     {
         public List<int> Chosen { get; } = [];
     }

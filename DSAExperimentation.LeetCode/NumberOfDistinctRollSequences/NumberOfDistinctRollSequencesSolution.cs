@@ -16,6 +16,10 @@ namespace DSAExperimentation.LeetCode.NumberOfDistinctRollSequences;
 // and visits each of the O(n) reachable states once.
 internal static class NumberOfDistinctRollSequencesSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     private const int DieFaces = 6;
     private const int FirstDay = 1;
 
@@ -55,7 +59,7 @@ internal static class NumberOfDistinctRollSequencesSolution
             }
 
             total = (total + CountSequences(sequenceLength, day + 1, lastRoll, face))
-                % ModularArithmetic.Modulo;
+                % Modulo;
         }
 
         return total;

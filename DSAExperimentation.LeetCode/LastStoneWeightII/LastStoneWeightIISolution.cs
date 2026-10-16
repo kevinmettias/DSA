@@ -14,6 +14,10 @@ namespace DSAExperimentation.LeetCode.LastStoneWeightII;
 // the recursion top-down.
 internal static class LastStoneWeightIISolution
 {
+    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const int HalvingFactor = 2;
+
     private const int PartitionDifferenceMultiplier = 2;
 
     // Baseline: the textbook bottom-up tabulation over a single rolling int[]
@@ -21,7 +25,7 @@ internal static class LastStoneWeightIISolution
     public static int MinWeightByTabulation(int[] stones)
     {
         var total = stones.Sum();
-        var half = total / AlgorithmConstants.HalvingFactor;
+        var half = total / HalvingFactor;
         var bestSumForCapacity = new int[half + 1];
 
         foreach (var stone in stones)

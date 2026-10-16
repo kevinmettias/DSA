@@ -16,28 +16,126 @@ internal static class WordLadderSolution
 {
     private const int NoLadder = 0;
 
+    // The letters a ladder word is spelled in, restated rather than read from
+    // StandardAlphabets: a baseline reaches no library type, not even a constant
+    // (ARCHITECTURE 17.5).
+    private const string LadderLetters = "abcdefghijklmnopqrstuvwxyz";
+
     // The textbook answer: BCL Queue + HashSet, generating each of the 25 * L
     // candidate mutations on the fly and keeping the ones the dictionary contains,
     // so the graph is never materialized.
     public static int LadderLengthByMutationQueue(BeginWord beginWord, EndWord endWord, IEnumerable<string> wordList)
     {
-        var wordSet = new Set<string>(wordList);
+        var wordSet = new HashSet<string>(wordList);
 
-        return LadderLengthByMutationQueue(beginWord, endWord, wordSet);
+        return LadderLength(beginWord, endWord, new HashSetWords(wordSet));
     }
 
-    public static int LadderLengthByMutationQueue(BeginWord beginWord, EndWord endWord, Set<string> wordSet)
+    // The same search over a dictionary its caller prepared once, read only through Has.
+    public static int LadderLengthByMutationQueue(BeginWord beginWord, EndWord endWord, Set<string> wordSet) =>
+        LadderLength(beginWord, endWord, new PreparedWords(wordSet));
+
+    private static int LadderLength<TWords>(BeginWord beginWord, EndWord endWord, TWords words)
+        where TWords : struct, IWordSet
     {
-        if (!wordSet.Has(endWord.Text))
+        if (!words.Has(endWord.Text))
         {
             return NoLadder;
         }
 
-        var distance = HammingSearch.MutationDistance(
-            new MutationStart(beginWord.Text), new MutationTarget(endWord.Text), wordSet, StandardAlphabets.LowercaseLatin);
+        var distance = MutationDistance(beginWord.Text, endWord.Text, words);
 
-        return distance is null ? NoLadder : WordCount(distance.Value);
+        if (distance is null)
+        {
+            return NoLadder;
+        }
+
+        return WordCount(distance.Value);
     }
+
+    // Mutations walked from start to target, or null when no path stays inside the
+    // dictionary. start itself need not be in it, matching LeetCode's beginWord convention.
+    private static int? MutationDistance<TWords>(string start, string target, TWords words)
+        where TWords : struct, IWordSet
+    {
+        var walk = new LadderWalk<TWords>(words, [start], new Queue<(string Word, int Distance)>());
+        walk.Queue.Enqueue((start, 0));
+
+        while (walk.Queue.Count > 0)
+        {
+            var (word, distance) = walk.Queue.Dequeue();
+
+            if (word == target)
+            {
+                return distance;
+            }
+
+            EnqueueDictionaryMutations(word, distance, walk);
+        }
+
+        return null;
+    }
+
+    // Queues every dictionary word one letter away from word, the first time the walk
+    // meets it.
+    private static void EnqueueDictionaryMutations<TWords>(string word, int distance, LadderWalk<TWords> walk)
+        where TWords : struct, IWordSet
+    {
+        foreach (var candidate in OneLetterMutations(word))
+        {
+            if (walk.Words.Has(candidate) && walk.Visited.Add(candidate))
+            {
+                walk.Queue.Enqueue((candidate, distance + 1));
+            }
+        }
+    }
+
+    // Every word that differs from word in exactly one position, spelled over LadderLetters.
+    private static IEnumerable<string> OneLetterMutations(string word)
+    {
+        var buffer = word.ToCharArray();
+
+        for (var position = 0; position < buffer.Length; position++)
+        {
+            var original = buffer[position];
+
+            foreach (var replacement in LadderLetters)
+            {
+                if (replacement != original)
+                {
+                    buffer[position] = replacement;
+                    yield return new string(buffer);
+                }
+            }
+
+            buffer[position] = original;
+        }
+    }
+
+    // Membership in the dictionary, the one thing the search asks of it - answered by
+    // the LeetCode-shaped overload's own HashSet or by the Set its caller prepared.
+    private interface IWordSet
+    {
+        bool Has(string word);
+    }
+
+    private readonly struct HashSetWords(HashSet<string> words) : IWordSet
+    {
+        public bool Has(string word) => words.Contains(word);
+    }
+
+    private readonly struct PreparedWords(Set<string> words) : IWordSet
+    {
+        public bool Has(string word) => words.Has(word);
+    }
+
+    // The dictionary one breadth-first walk tests candidates against, and the visited
+    // set and queue it threads through every step.
+    private readonly record struct LadderWalk<TWords>(
+        TWords Words,
+        HashSet<string> Visited,
+        Queue<(string Word, int Distance)> Queue)
+        where TWords : struct, IWordSet;
 
     // This repo's own BFS over DataStructures.Graph.Hamming's materialized graph: Reduce.Graph in
     // BreadthFirstReduceOrder with DistanceMapReduceAlgebra is already "distance

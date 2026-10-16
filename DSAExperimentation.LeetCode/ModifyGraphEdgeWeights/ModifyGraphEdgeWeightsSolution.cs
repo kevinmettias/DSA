@@ -11,42 +11,105 @@ namespace DSAExperimentation.LeetCode.ModifyGraphEdgeWeights;
 //
 // Both strategies share the same frame - start every -1 edge at the floor weight
 // 1, reject at once if even that floor already overshoots target, accept at once
-// if it lands on it, then stretch the -1 edges one at a time, re-running
-// ShortestPath.Dijkstra after each change - and differ only in how the weight for
-// the edge in hand is picked. That difference is the whole comparison: a linear
-// scan pays one Dijkstra pass per candidate weight, while reading the edge's two
-// already-settled half-distances gives the exact weight in O(1) extra passes no
-// matter how far the stretch has to go.
+// if it lands on it, then stretch the -1 edges one at a time, re-running a
+// Dijkstra after each change - and differ only in how the weight for the edge in
+// hand is picked. That difference is the whole comparison: a linear scan pays one
+// Dijkstra pass per candidate weight, while reading the edge's two already-settled
+// half-distances gives the exact weight in O(1) extra passes no matter how far the
+// stretch has to go.
 //
-// Neither arm is the usual BCL rewrite (ARCHITECTURE.md 17.5): what the baseline
-// exists to show here is the cost of guessing weights against a shortest-path
-// oracle, which only means anything if both arms ask the same oracle. LC 1334's
-// FindCityByDijkstraPerSource makes the same call for the same reason.
+// The baseline asks its own oracle, because a baseline reaches no library type
+// (ARCHITECTURE 17.5): a hand-written PriorityQueue Dijkstra over plain adjacency and
+// weight arrays, where the composed arm asks ShortestPath.Dijkstra over
+// AssignableEdgeGraph. Shortest distances are the same whichever oracle computes
+// them, so the choice of oracle changes no weight the scan settles on.
 internal static class ModifyGraphEdgeWeightsSolution
 {
+    // LeetCode states each edge as [from, to, weight].
+    private const int WeightSlot = 2;
+
+    // No path from the source has reached this node yet.
+    private const int Unreached = int.MaxValue;
+
     // Guess the weight of each -1 edge as 1, 2, 3, ..., re-running the search
     // after every guess until the distance lands on target - O(target) Dijkstra
     // passes per edge, which is what the formula arm below has to beat.
     public static int[][] ModifyEdgeWeightsByLinearWeightScan(
         int nodeCount, int[][] edges, (int Source, int Destination, int Target) query)
     {
-        var graph = AssignableEdgeGraph.Build(nodeCount, edges);
-        var search = new WeightSearch(graph, query.Source, query.Destination, query.Target);
+        var search = ArraySearchOver(nodeCount, edges, query);
 
-        if (TrySettleAtFloor(search, out var settled))
+        if (TrySettleArraysAtFloor(search, out var settled))
         {
             return settled;
         }
 
-        for (var index = 0; index < graph.EdgeCount; index++)
+        for (var index = 0; index < edges.Length; index++)
         {
-            if (graph.IsAssignable(index) && TryScanWeightUpwards(search, index))
+            if (IsUnassigned(edges[index]) && TryScanWeightUpwards(search, index))
             {
-                return graph.Weights();
+                return CurrentEdgeList(search);
             }
         }
 
         return [];
+    }
+
+    // The input as plain arrays: each node's (neighbour, edge index) pairs in both
+    // directions, and one weight per edge, so reassigning an edge's weight moves both
+    // directions at once. Every -1 edge starts at the floor weight.
+    private static ArrayWeightSearch ArraySearchOver(
+        int nodeCount, int[][] edges, (int Source, int Destination, int Target) query)
+    {
+        var adjacency = new List<(int To, int EdgeIndex)>[nodeCount];
+
+        for (var id = 0; id < nodeCount; id++)
+        {
+            adjacency[id] = [];
+        }
+
+        var weights = new int[edges.Length];
+
+        for (var index = 0; index < edges.Length; index++)
+        {
+            var (from, to) = (edges[index][0], edges[index][1]);
+            adjacency[from].Add((to, index));
+            adjacency[to].Add((from, index));
+            weights[index] = StartingWeight(edges[index]);
+        }
+
+        return new ArrayWeightSearch(adjacency, weights, edges, query);
+    }
+
+    private static int StartingWeight(int[] edge)
+    {
+        if (IsUnassigned(edge))
+        {
+            return AssignableEdgeWeights.FloorWeight;
+        }
+
+        return edge[WeightSlot];
+    }
+
+    // With every -1 edge still at its floor the distance is as short as any legal
+    // assignment can make it, so a floor above target is unsatisfiable and a floor
+    // exactly on target is already the answer.
+    private static bool TrySettleArraysAtFloor(ArrayWeightSearch search, out int[][] settled)
+    {
+        if (!TryArrayDistanceToDestination(search, out var floor) || floor > search.Query.Target)
+        {
+            settled = [];
+            return true;
+        }
+
+        if (floor != search.Query.Target)
+        {
+            settled = [];
+            return false;
+        }
+
+        settled = CurrentEdgeList(search);
+        return true;
     }
 
     // Stretching an edge can only push the distance up, so the scan stops the
@@ -55,28 +118,28 @@ internal static class ModifyGraphEdgeWeightsSolution
     // No useful weight exceeds target either - a path totalling exactly target
     // cannot spend more than target on one of its own positive-weight edges -
     // which is what bounds the loop.
-    private static bool TryScanWeightUpwards(WeightSearch search, int edgeIndex)
+    private static bool TryScanWeightUpwards(ArrayWeightSearch search, int edgeIndex)
     {
         var stretched = AssignableEdgeWeights.FloorWeight;
 
-        for (var weight = AssignableEdgeWeights.FloorWeight; weight <= search.Target; weight++)
+        for (var weight = AssignableEdgeWeights.FloorWeight; weight <= search.Query.Target; weight++)
         {
-            search.Graph.SetWeight(edgeIndex, weight);
+            search.EdgeWeights[edgeIndex] = weight;
 
-            if (!TryDistanceToDestination(search, out var distance) || distance > search.Target)
+            if (!TryArrayDistanceToDestination(search, out var distance) || distance > search.Query.Target)
             {
                 break;
             }
 
             stretched = weight;
 
-            if (distance == search.Target)
+            if (distance == search.Query.Target)
             {
                 return true;
             }
         }
 
-        search.Graph.SetWeight(edgeIndex, stretched);
+        search.EdgeWeights[edgeIndex] = stretched;
         return false;
     }
 
@@ -95,6 +158,28 @@ internal static class ModifyGraphEdgeWeightsSolution
         }
 
         return StretchAssignableEdges(graph, search);
+    }
+
+    // With every -1 edge still at its floor the distance is as short as any legal
+    // assignment can make it, so a floor above target is unsatisfiable and a floor
+    // exactly on target is already the answer - the one case in which a -1 edge
+    // keeps the weight 1 it was built with.
+    private static bool TrySettleAtFloor(WeightSearch search, out int[][] settled)
+    {
+        if (!TryDistanceToDestination(search, out var floor) || floor > search.Target)
+        {
+            settled = [];
+            return true;
+        }
+
+        if (floor != search.Target)
+        {
+            settled = [];
+            return false;
+        }
+
+        settled = search.Graph.Weights();
+        return true;
     }
 
     // The frame both arms share: stretch the -1 edges one at a time until one lands the
@@ -178,26 +263,66 @@ internal static class ModifyGraphEdgeWeightsSolution
         return candidate >= AssignableEdgeWeights.FloorWeight ? candidate : AssignableEdgeWeights.FloorWeight;
     }
 
-    // With every -1 edge still at its floor the distance is as short as any legal
-    // assignment can make it, so a floor above target is unsatisfiable and a floor
-    // exactly on target is already the answer - the one case in which a -1 edge
-    // keeps the weight 1 it was built with.
-    private static bool TrySettleAtFloor(WeightSearch search, out int[][] settled)
+    private static bool IsUnassigned(int[] edge) => edge[WeightSlot] == AssignableEdgeWeights.Unassigned;
+
+    private static bool TryArrayDistanceToDestination(ArrayWeightSearch search, out int distance)
     {
-        if (!TryDistanceToDestination(search, out var floor) || floor > search.Target)
+        var distances = ArrayDistancesFrom(search);
+        distance = distances[search.Query.Destination];
+
+        return distance != Unreached;
+    }
+
+    // Every node's shortest distance from the source under the current weights: a node
+    // is final the first time it is popped, and any later, staler entry for it is skipped.
+    private static int[] ArrayDistancesFrom(ArrayWeightSearch search)
+    {
+        var distances = new int[search.Adjacency.Length];
+        Array.Fill(distances, Unreached);
+        distances[search.Query.Source] = 0;
+
+        var frontier = new PriorityQueue<int, int>();
+        frontier.Enqueue(search.Query.Source, 0);
+
+        while (frontier.TryDequeue(out var current, out var distance))
         {
-            settled = [];
-            return true;
+            if (distance == distances[current])
+            {
+                RelaxArrayEdges(search, current, distances, frontier);
+            }
         }
 
-        if (floor != search.Target)
+        return distances;
+    }
+
+    private static void RelaxArrayEdges(
+        ArrayWeightSearch search, int current, int[] distances, PriorityQueue<int, int> frontier)
+    {
+        foreach (var (to, edgeIndex) in search.Adjacency[current])
         {
-            settled = [];
-            return false;
+            var candidate = distances[current] + search.EdgeWeights[edgeIndex];
+
+            if (candidate < distances[to])
+            {
+                distances[to] = candidate;
+                frontier.Enqueue(to, candidate);
+            }
+        }
+    }
+
+    // The answer LC 2699 asks for: the original edge list with every weight - assigned
+    // or not - read back out of the weight array in its current state.
+    private static int[][] CurrentEdgeList(ArrayWeightSearch search)
+    {
+        var answer = new int[search.Edges.Length][];
+
+        for (var index = 0; index < search.Edges.Length; index++)
+        {
+            var edge = search.Edges[index];
+            answer[index] = [edge[0], edge[1], search.EdgeWeights[index]];
         }
 
-        settled = search.Graph.Weights();
-        return true;
+        return answer;
     }
 
     private static bool TryDistanceToDestination(WeightSearch search, out int distance)
@@ -216,7 +341,16 @@ internal static class ModifyGraphEdgeWeightsSolution
             .Dijkstra<AssignableEdgeNode, AssignableEdgeTopology, ListEdges<AssignableEdgeNode, int>, int>(start);
     }
 
-    // The one graph and the three numbers every step of either strategy needs,
+    // The baseline's whole search as plain arrays: every node's (neighbour, edge index)
+    // pairs, each edge's current weight under LeetCode's own edge numbering, the edge
+    // list the answer is read back against, and the query being answered.
+    private readonly record struct ArrayWeightSearch(
+        List<(int To, int EdgeIndex)>[] Adjacency,
+        int[] EdgeWeights,
+        int[][] Edges,
+        (int Source, int Destination, int Target) Query);
+
+    // The one graph and the three numbers every step of the formula arm needs,
     // carried together so no helper has to restate LeetCode's parameter list.
     private readonly record struct WeightSearch(
         AssignableEdgeGraph Graph,

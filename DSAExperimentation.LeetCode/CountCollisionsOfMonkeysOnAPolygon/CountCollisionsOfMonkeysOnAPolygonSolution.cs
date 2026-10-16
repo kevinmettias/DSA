@@ -17,6 +17,10 @@ namespace DSAExperimentation.LeetCode.CountCollisionsOfMonkeysOnAPolygon;
 // LeetCode's reporting convention rather than this problem's own value.
 internal static class CountCollisionsOfMonkeysOnAPolygonSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Every monkey picks one of its two neighbouring vertices.
     private const long DirectionChoices = 2;
 
@@ -42,7 +46,7 @@ internal static class CountCollisionsOfMonkeysOnAPolygonSolution
 
         for (var i = 0L; i < exponent; i++)
         {
-            result = result * value % ModularArithmetic.Modulo;
+            result = result * value % Modulo;
         }
 
         return result;
@@ -63,6 +67,6 @@ internal static class CountCollisionsOfMonkeysOnAPolygonSolution
     // for some monkey counts - so the modulus is added back before the final
     // reduction.
     private static int WithoutCollisionFreeConfigurations(long configurations) =>
-        (int)((configurations - CollisionFreeConfigurations + ModularArithmetic.Modulo) %
-            ModularArithmetic.Modulo);
+        (int)((configurations - CollisionFreeConfigurations + Modulo) %
+            Modulo);
 }

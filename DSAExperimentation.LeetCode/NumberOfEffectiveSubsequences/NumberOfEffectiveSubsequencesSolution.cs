@@ -22,6 +22,10 @@ namespace DSAExperimentation.LeetCode.NumberOfEffectiveSubsequences;
 // whose OR is EXACTLY t" - read off at t = S's own compacted mask.
 internal static class NumberOfEffectiveSubsequencesSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // The textbook answer: walk every one of the 2^n subsets directly and
     // recompute the surviving OR from scratch. Deliberately written without
     // this repo's primitives - only tractable for small n, but it is the arm
@@ -40,7 +44,7 @@ internal static class NumberOfEffectiveSubsequencesSolution
             }
         }
 
-        return (int)(effective % ModularArithmetic.Modulo);
+        return (int)(effective % Modulo);
     }
 
     // Whether removing exactly the index set `removed` lowers the array's OR:

@@ -18,6 +18,10 @@ namespace DSAExperimentation.LeetCode.FindTheSumOfSubsequencePowers;
 // gap and weight by how wide a run of v it covers.
 internal static class FindTheSumOfSubsequencePowersSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // The textbook answer: enumerate every subsequenceLength-element subsequence
     // directly (2^n branch/skip choices), tracking the running minimum gap as it is
     // built. Deliberately plain recursion, no memoization and no repo primitives -
@@ -30,7 +34,7 @@ internal static class FindTheSumOfSubsequencePowersSolution
         var total = SumPowers(
             sorted, subsequenceLength, index: 0, chain: (Picked: 0, LastValue: 0, MinGap: long.MaxValue));
 
-        return (int)(total % ModularArithmetic.Modulo);
+        return (int)(total % Modulo);
     }
 
     // Reuses this repo's own Sort (MergeSort over an ArrayIndexedSequence) for both

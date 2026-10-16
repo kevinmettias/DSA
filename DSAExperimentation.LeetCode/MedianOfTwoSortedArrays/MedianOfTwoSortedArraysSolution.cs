@@ -14,6 +14,10 @@ namespace DSAExperimentation.LeetCode.MedianOfTwoSortedArrays;
 // index, exactly the shape LastTrue assumes.
 internal static class MedianOfTwoSortedArraysSolution
 {
+    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const int HalvingFactor = 2;
+
     private const int ParityModulus = 2;
     private const double AverageDivisor = 2.0;
 
@@ -24,7 +28,7 @@ internal static class MedianOfTwoSortedArraysSolution
     public static double FindMedianByMergeAndSort(int[] nums1, int[] nums2)
     {
         var merged = nums1.Concat(nums2).OrderBy(value => value).ToArray();
-        var mid = merged.Length / AlgorithmConstants.HalvingFactor;
+        var mid = merged.Length / HalvingFactor;
         var hasOddLength = merged.Length % ParityModulus == 1;
 
         return hasOddLength

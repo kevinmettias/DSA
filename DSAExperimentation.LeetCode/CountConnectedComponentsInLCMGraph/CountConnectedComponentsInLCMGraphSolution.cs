@@ -10,12 +10,14 @@ internal static class CountConnectedComponentsInLCMGraphSolution
     // Baseline: the graph exactly as LeetCode defines it. Every pair gets a real
     // lcm check (via a private Euclid's-algorithm gcd - no repo primitive for that
     // exists, the same as this catalogue's other unmigrated gcd-based baselines),
-    // and only a verified edge is ever unioned. DisjointSet(n) is index-space here
-    // because that's all a true edge-by-edge scan needs. O(n^2 log(maxValue)).
+    // and only a verified edge is ever unioned. The union-find is a hand-written pair
+    // of parent and rank arrays over index space, because that's all a true
+    // edge-by-edge scan needs. O(n^2 log(maxValue)).
     public static int CountComponentsByPairwiseLcmScan(int[] nums, int threshold)
     {
         var n = nums.Length;
-        var forest = new DisjointSet(n);
+        var parent = SingletonParents(n);
+        var rank = new int[n];
 
         for (var i = 0; i < n; i++)
         {
@@ -23,7 +25,7 @@ internal static class CountConnectedComponentsInLCMGraphSolution
             {
                 if (Lcm(nums[i], nums[j]) <= threshold)
                 {
-                    forest.Union(i, j);
+                    UnionByRank(parent, rank, i, j);
                 }
             }
         }
@@ -32,14 +34,53 @@ internal static class CountConnectedComponentsInLCMGraphSolution
 
         for (var i = 0; i < n; i++)
         {
-            roots.Add(forest.Find(i));
+            var root = FindRoot(parent, i);
+            roots.Add(root);
         }
 
         return roots.Count;
     }
 
+    // Every index starts as the root of its own one-element set.
+    private static int[] SingletonParents(int count)
+    {
+        var parent = new int[count];
+
+        for (var i = 0; i < count; i++)
+        {
+            parent[i] = i;
+        }
+
+        return parent;
+    }
+
     private static long Lcm(long firstValue, long secondValue) =>
         firstValue / Gcd(firstValue, secondValue) * secondValue;
+
+    // Hangs the lower-ranked root under the higher one, so no tree grows taller than
+    // log n; a tie keeps the first root on top and raises its rank.
+    private static void UnionByRank(int[] parent, int[] rank, int first, int second)
+    {
+        var firstRoot = FindRoot(parent, first);
+        var secondRoot = FindRoot(parent, second);
+
+        if (firstRoot == secondRoot)
+        {
+            return;
+        }
+
+        if (rank[firstRoot] < rank[secondRoot])
+        {
+            (firstRoot, secondRoot) = (secondRoot, firstRoot);
+        }
+
+        parent[secondRoot] = firstRoot;
+
+        if (rank[firstRoot] == rank[secondRoot])
+        {
+            rank[firstRoot]++;
+        }
+    }
 
     // Composed: DisjointSet(threshold + 1) over the VALUE space rather than index
     // space. For a present value x, lcm(x, k*x) is k*x by construction, so
@@ -94,6 +135,19 @@ internal static class CountConnectedComponentsInLCMGraphSolution
         }
     }
 
+    // Walks up to the root, halving the path on the way so later finds take fewer steps.
+    private static int FindRoot(int[] parent, int id)
+    {
+        while (parent[id] != id)
+        {
+            parent[id] = parent[parent[id]];
+            id = parent[id];
+        }
+
+        return id;
+    }
+
     private static long Gcd(long firstValue, long secondValue) =>
         secondValue == 0 ? firstValue : Gcd(secondValue, firstValue % secondValue);
+
 }

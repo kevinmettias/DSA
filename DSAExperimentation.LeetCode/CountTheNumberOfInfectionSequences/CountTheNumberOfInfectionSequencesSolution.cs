@@ -19,6 +19,10 @@ namespace DSAExperimentation.LeetCode.CountTheNumberOfInfectionSequences;
 // tree, computed here directly over the runs of a line instead.
 internal static class CountTheNumberOfInfectionSequencesSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Textbook baseline: explicitly enumerate every legal infection order by
     // backtracking one child at a time - at each step, infect one child adjacent
     // to the current infected set, recurse, then undo - and count the completed
@@ -97,7 +101,7 @@ internal static class CountTheNumberOfInfectionSequencesSolution
         foreach (var candidate in frontier)
         {
             infected[candidate] = true;
-            total = (total + CountCompletions(infected)) % ModularArithmetic.Modulo;
+            total = (total + CountCompletions(infected)) % Modulo;
             infected[candidate] = false;
         }
 

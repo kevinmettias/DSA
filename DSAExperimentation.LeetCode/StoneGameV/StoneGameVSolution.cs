@@ -38,6 +38,59 @@ internal static class StoneGameVSolution
             new BestSplitsOverPrefix(prefix));
     }
 
+    // The recurrence as plain recursion: the best score reachable from one
+    // (left, right) range, each kept half re-solved by calling straight back in.
+    private static int Best(int[] prefix, int left, int right)
+    {
+        if (left >= right)
+        {
+            return 0;
+        }
+
+        var result = 0;
+
+        for (var mid = left; mid < right; mid++)
+        {
+            result = UnmemoizedBestForSplit(prefix, (left, mid, right), result);
+        }
+
+        return result;
+    }
+
+    // Whichever side of the split at `mid` sums to no more than the other is the one
+    // scored (and recursed into) this round, per Stone Game V's rule that a tie lets
+    // either side be kept.
+    private static int UnmemoizedBestForSplit(int[] prefix, (int Left, int Mid, int Right) split, int result)
+    {
+        var (left, mid, right) = split;
+        var leftSum = prefix[mid + 1] - prefix[left];
+        var rightSum = prefix[right + 1] - prefix[mid + 1];
+
+        if (leftSum <= rightSum)
+        {
+            result = Math.Max(result, leftSum + Best(prefix, left, mid));
+        }
+
+        if (rightSum <= leftSum)
+        {
+            result = Math.Max(result, rightSum + Best(prefix, mid + 1, right));
+        }
+
+        return result;
+    }
+
+    private static int[] BuildPrefixSums(int[] stoneValue)
+    {
+        var prefix = new int[stoneValue.Length + 1];
+
+        for (var i = 0; i < stoneValue.Length; i++)
+        {
+            prefix[i + 1] = prefix[i] + stoneValue[i];
+        }
+
+        return prefix;
+    }
+
     // The recurrence, as a named type: the best score reachable from one (Left, Right)
     // range. The prefix-sum table it reads arrives through the primary constructor and
     // the memoized continuation through `rest`, so neither travels as a delegate.
@@ -87,56 +140,5 @@ internal static class StoneGameVSolution
 
             return result;
         }
-    }
-
-    private static int Best(int[] prefix, int left, int right)
-    {
-        if (left >= right)
-        {
-            return 0;
-        }
-
-        var result = 0;
-
-        for (var mid = left; mid < right; mid++)
-        {
-            result = BestForSplit(prefix, (left, mid, right), result);
-        }
-
-        return result;
-    }
-
-    // Whichever side of the split at `mid` sums to no more than the other is the one
-    // scored (and recursed into) this round, per Stone Game V's rule that a tie lets
-    // either side be kept.
-    private static int BestForSplit(int[] prefix, (int Left, int Mid, int Right) split, int result)
-    {
-        var (left, mid, right) = split;
-        var leftSum = prefix[mid + 1] - prefix[left];
-        var rightSum = prefix[right + 1] - prefix[mid + 1];
-
-        if (leftSum <= rightSum)
-        {
-            result = Math.Max(result, leftSum + Best(prefix, left, mid));
-        }
-
-        if (rightSum <= leftSum)
-        {
-            result = Math.Max(result, rightSum + Best(prefix, mid + 1, right));
-        }
-
-        return result;
-    }
-
-    private static int[] BuildPrefixSums(int[] stoneValue)
-    {
-        var prefix = new int[stoneValue.Length + 1];
-
-        for (var i = 0; i < stoneValue.Length; i++)
-        {
-            prefix[i + 1] = prefix[i] + stoneValue[i];
-        }
-
-        return prefix;
     }
 }

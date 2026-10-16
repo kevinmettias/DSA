@@ -37,56 +37,9 @@ internal static class StampingTheSequenceSolution
         return turnedCount == target.Text.Length ? order.ToArray() : NoMoves();
     }
 
-    // The same simulation, recording into Stack<int>: pushing in discovery order and
-    // popping into the result array reverses it for free.
-    public static int[] MovesToStampByStackReverse(StampPattern stamp, TargetText target)
-    {
-        var windowCount = target.Text.Length - stamp.Text.Length + 1;
-
-        if (windowCount <= 0)
-        {
-            return [];
-        }
-
-        var canvas = new StampCanvas(target.Text.ToCharArray(), stamp.Text, new bool[windowCount]);
-        var order = new RepoStampStack();
-        var turnedCount = ReverseStamp(canvas, order);
-
-        return turnedCount == target.Text.Length ? UnwindToForwardOrder(order) : NoMoves();
-    }
-
-    // The stack pops in reverse discovery order, which is exactly forward
-    // chronological stamping order.
-    private static int[] UnwindToForwardOrder(RepoStampStack order)
-    {
-        var moves = new int[order.Count];
-
-        for (var k = 0; k < moves.Length; k++)
-        {
-            order.TryPop(out moves[k]);
-        }
-
-        return moves;
-    }
-
     // Runs rounds until every character of target has been turned to '?' (success) or
     // a round stamps nothing (stuck); the count of turned characters reports which.
     private static int ReverseStamp(StampCanvas canvas, List<int> order)
-    {
-        var turnedCount = 0;
-
-        for (var round = 0; round < canvas.Done.Length && turnedCount < canvas.Chars.Length; round++)
-        {
-            if (!TryStampAvailableWindows(canvas, order, ref turnedCount))
-            {
-                break;
-            }
-        }
-
-        return turnedCount;
-    }
-
-    private static int ReverseStamp(StampCanvas canvas, RepoStampStack order)
     {
         var turnedCount = 0;
 
@@ -122,7 +75,42 @@ internal static class StampingTheSequenceSolution
         return stampedThisRound;
     }
 
-    private static bool TryStampAvailableWindows(StampCanvas canvas, RepoStampStack order, ref int turnedCount)
+    // The same simulation, recording into Stack<int>: pushing in discovery order and
+    // popping into the result array reverses it for free.
+    public static int[] MovesToStampByStackReverse(StampPattern stamp, TargetText target)
+    {
+        var windowCount = target.Text.Length - stamp.Text.Length + 1;
+
+        if (windowCount <= 0)
+        {
+            return [];
+        }
+
+        var canvas = new StampCanvas(target.Text.ToCharArray(), stamp.Text, new bool[windowCount]);
+        var order = new RepoStampStack();
+        var turnedCount = ReverseStampOntoStack(canvas, order);
+
+        return turnedCount == target.Text.Length ? UnwindToForwardOrder(order) : NoMoves();
+    }
+
+    // The stack arm's own copy of the rounds, under its own name so the list arm never
+    // names a method that touches the repo stack (ARCHITECTURE 17.5).
+    private static int ReverseStampOntoStack(StampCanvas canvas, RepoStampStack order)
+    {
+        var turnedCount = 0;
+
+        for (var round = 0; round < canvas.Done.Length && turnedCount < canvas.Chars.Length; round++)
+        {
+            if (!TryStampAvailableWindowsOntoStack(canvas, order, ref turnedCount))
+            {
+                break;
+            }
+        }
+
+        return turnedCount;
+    }
+
+    private static bool TryStampAvailableWindowsOntoStack(StampCanvas canvas, RepoStampStack order, ref int turnedCount)
     {
         var stampedThisRound = false;
 
@@ -139,6 +127,20 @@ internal static class StampingTheSequenceSolution
         }
 
         return stampedThisRound;
+    }
+
+    // The stack pops in reverse discovery order, which is exactly forward
+    // chronological stamping order.
+    private static int[] UnwindToForwardOrder(RepoStampStack order)
+    {
+        var moves = new int[order.Count];
+
+        for (var k = 0; k < moves.Length; k++)
+        {
+            order.TryPop(out moves[k]);
+        }
+
+        return moves;
     }
 
     // A window is stampable only if every character still visible (not yet '?')

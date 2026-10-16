@@ -1,5 +1,4 @@
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.PrimeArrangements;
 
@@ -14,6 +13,10 @@ namespace DSAExperimentation.LeetCode.PrimeArrangements;
 // where n is upperBound.
 internal static class PrimeArrangementsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // 2 is the smallest prime; every prime-related loop or threshold starts here.
     private const int SmallestPrime = 2;
 
@@ -119,7 +122,7 @@ internal static class PrimeArrangementsSolution
     {
         var compositeCount = upperBound - primeCount;
 
-        return (int)(Factorial(primeCount) * Factorial(compositeCount) % ModularArithmetic.Modulo);
+        return (int)(Factorial(primeCount) * Factorial(compositeCount) % Modulo);
     }
 
     private static long Factorial(int upperBound)
@@ -128,7 +131,7 @@ internal static class PrimeArrangementsSolution
 
         for (var i = FactorialLoopStart; i <= upperBound; i++)
         {
-            result = result * i % ModularArithmetic.Modulo;
+            result = result * i % Modulo;
         }
 
         return result;

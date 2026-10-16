@@ -25,6 +25,10 @@ namespace DSAExperimentation.LeetCode.SumOfBeautifulSubsequences;
 // with the core GcdOperation, here applied to Fenwick instead of SegmentTree.
 internal static class SumOfBeautifulSubsequencesSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // The textbook baseline: walk every subset via bitmask, keep only the strictly
     // increasing ones, fold each into its GCD with a hand-rolled Euclid (what
     // you'd write without this repo - ARCHITECTURE.md 17.5), and bucket by exact
@@ -48,7 +52,7 @@ internal static class SumOfBeautifulSubsequencesSolution
 
         foreach (var (gcd, count) in countByGcd)
         {
-            answer = (answer + (gcd % ModularArithmetic.Modulo) * (count % ModularArithmetic.Modulo)) % ModularArithmetic.Modulo;
+            answer = (answer + (gcd % Modulo) * (count % Modulo)) % Modulo;
         }
 
         return (int)answer;

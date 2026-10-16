@@ -19,6 +19,10 @@ namespace DSAExperimentation.LeetCode.NumberOfIncreasingPathsInAGrid;
 // recurrence and its benchmark workload with.
 internal static class NumberOfIncreasingPathsInAGridSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
     // The grid together with the bounds every neighbor test needs, so the recurrences
@@ -40,7 +44,7 @@ internal static class NumberOfIncreasingPathsInAGridSolution
         {
             for (var col = 0; col < pathsGrid.Cols; col++)
             {
-                total = (total + PathsFromNaive(pathsGrid, (row, col))) % ModularArithmetic.Modulo;
+                total = (total + PathsFromNaive(pathsGrid, (row, col))) % Modulo;
             }
         }
 
@@ -83,7 +87,7 @@ internal static class NumberOfIncreasingPathsInAGridSolution
             }
         }
 
-        return count % ModularArithmetic.Modulo;
+        return count % Modulo;
     }
 
     private static bool IsIncreasingStep(PathsGrid grid, (int Row, int Col) from, (int Row, int Col) to) =>

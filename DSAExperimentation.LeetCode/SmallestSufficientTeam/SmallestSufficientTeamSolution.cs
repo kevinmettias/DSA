@@ -16,8 +16,10 @@ internal static class SmallestSufficientTeamSolution
 {
     // The textbook baseline: the same recursion with no memoization at all, so the
     // identical "still missing" subtree is re-explored once per person who could
-    // have reached it. Deliberately plain recursion over BCL arrays - the arm the
-    // memoized strategy below has to justify itself against.
+    // have reached it. Deliberately plain recursion over BCL arrays, written out
+    // directly rather than through Memoizer's IRecurrence contract, because a
+    // baseline reaches no library type (ARCHITECTURE 17.5) - the arm the memoized
+    // strategy below has to justify itself against.
     public static int[] SmallestTeamByBruteForceRecursion(string[] reqSkills, string[][] people)
     {
         var masks = SkillMasks.Build(reqSkills, people);
@@ -28,10 +30,45 @@ internal static class SmallestSufficientTeamSolution
     public static int[] SmallestTeamByBruteForceRecursion(SkillMasks masks)
     {
         var personSkillMask = masks.PersonSkillMask;
-        var pick = new SkillCoveringPick(personSkillMask);
-        var teamMask = pick.Replay(masks.FullMask, pick);
+        var teamMask = BruteForceTeam(personSkillMask, masks.FullMask);
 
         return ExtractTeam(teamMask, personSkillMask.Length);
+    }
+
+    // The recursion as plain recursion: nothing missing means the empty team,
+    // otherwise cover the lowest missing bit.
+    private static long BruteForceTeam(int[] personSkillMask, int missing)
+    {
+        if (missing == 0)
+        {
+            return 0L;
+        }
+
+        return BruteForceTeamCoveringBit(personSkillMask, missing, missing & -missing);
+    }
+
+    // Every sufficient team must include some person holding the target skill, so the
+    // choice is which of them, and the team is that person plus whatever they leave
+    // uncovered - re-solved from scratch by calling straight back in.
+    private static long BruteForceTeamCoveringBit(int[] personSkillMask, int missing, int targetBit)
+    {
+        var best = -1L;
+
+        for (var p = 0; p < personSkillMask.Length; p++)
+        {
+            if ((personSkillMask[p] & targetBit) == 0)
+            {
+                continue;
+            }
+
+            var candidate = BruteForceTeam(personSkillMask, missing & ~personSkillMask[p]) | (1L << p);
+            if (best == -1 || PopCount(candidate) < PopCount(best))
+            {
+                best = candidate;
+            }
+        }
+
+        return best;
     }
 
     // This repo's own Memoizer, keyed on the missing-skills bitmask - the CanIWin
@@ -55,11 +92,10 @@ internal static class SmallestSufficientTeamSolution
         return ExtractTeam(teamMask, personSkillMask.Length);
     }
 
-    // The recursion body both strategies share, named: nothing missing means the empty
-    // team, otherwise cover the lowest missing bit. The memoized arm hands it the
-    // cache-backed recursion, and the brute-force arm replays it straight back into
-    // itself - the same rule either way, differing only in what `rest` is. Each person's
-    // skill mask is the whole of what the rule needs from its caller, so it is the
+    // The recursion body for the memoized strategy, named: nothing missing means the
+    // empty team, otherwise cover the lowest missing bit - the same rule BruteForceTeam
+    // states, here handed the cache-backed recursion as `rest`. Each person's skill
+    // mask is the whole of what the rule needs from its caller, so it is the
     // constructor's only input.
     private sealed class SkillCoveringPick(int[] personSkillMask) : IRecurrence<int, long>
     {

@@ -1,6 +1,5 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeStringSorted;
 
@@ -23,6 +22,10 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeStringSorte
 // that same array.
 internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     private const int AlphabetSize = 26;
 
     // The textbook answer without this repo: scan the frequency array for the
@@ -88,7 +91,7 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
 
         return new RankState(
             rank,
-            state.InverseFactorialProduct * remainingOfLetter % ModularArithmetic.Modulo,
+            state.InverseFactorialProduct * remainingOfLetter % Modulo,
             state.Remaining - 1);
     }
 
@@ -96,8 +99,8 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
     // remaining suffix, each contributing (remaining-1)! over the current
     // inverse-factorial product.
     private static long RankAfterSmallerLeadingLetters(RankState state, int smaller, long[] factorial)
-        => (state.Rank + ((long)smaller * factorial[state.Remaining - 1] % ModularArithmetic.Modulo
-            * state.InverseFactorialProduct)) % ModularArithmetic.Modulo;
+        => (state.Rank + ((long)smaller * factorial[state.Remaining - 1] % Modulo
+            * state.InverseFactorialProduct)) % Modulo;
 
     private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTables(int length)
     {
@@ -107,14 +110,14 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
 
         for (var i = 1; i <= length; i++)
         {
-            factorial[i] = factorial[i - 1] * i % ModularArithmetic.Modulo;
+            factorial[i] = factorial[i - 1] * i % Modulo;
         }
 
-        inverseFactorial[length] = ModularArithmetic.Inverse(factorial[length]);
+        inverseFactorial[length] = ModInverse(factorial[length]);
 
         for (var i = length; i > 0; i--)
         {
-            inverseFactorial[i - 1] = inverseFactorial[i] * i % ModularArithmetic.Modulo;
+            inverseFactorial[i - 1] = inverseFactorial[i] * i % Modulo;
         }
 
         return (factorial, inverseFactorial);
@@ -138,11 +141,35 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
 
         foreach (var count in frequency)
         {
-            product = product * inverseFactorial[count] % ModularArithmetic.Modulo;
+            product = product * inverseFactorial[count] % Modulo;
         }
 
         return product;
     }
 
     private readonly record struct RankState(long Rank, long InverseFactorialProduct, int Remaining);
+
+    // value^exponent mod Modulo by repeated squaring, restated rather than called on
+    // ModularArithmetic for the same reason as Modulo itself.
+    private static long ModPower(long value, long exponent)
+    {
+        var result = 1L;
+        value %= Modulo;
+
+        while (exponent > 0)
+        {
+            if ((exponent & 1) == 1)
+            {
+                result = result * value % Modulo;
+            }
+
+            value = value * value % Modulo;
+            exponent >>= 1;
+        }
+
+        return result;
+    }
+
+    // Fermat's little theorem: for the prime Modulo, value^(Modulo - 2) is value's inverse.
+    private static long ModInverse(long value) => ModPower(value, Modulo - 2);
 }

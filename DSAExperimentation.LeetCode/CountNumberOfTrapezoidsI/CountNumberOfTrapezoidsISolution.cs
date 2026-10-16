@@ -9,6 +9,10 @@ namespace DSAExperimentation.LeetCode.CountNumberOfTrapezoidsI;
 // with the same signature (TwoSumSolution precedent).
 internal static class CountNumberOfTrapezoidsISolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // The textbook C(n, 4) scan of every 4-point combination, checking all
     // three ways to split them into two same-y pairs. Correct, and the arm the
     // grouped-by-y strategy below has to beat - only usable at small n, since
@@ -26,7 +30,7 @@ internal static class CountNumberOfTrapezoidsISolution
             }
         }
 
-        return (int)(count % ModularArithmetic.Modulo);
+        return (int)(count % Modulo);
     }
 
     // The completions of one fixed first pair: every 4-subset whose two lowest

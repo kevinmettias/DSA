@@ -126,7 +126,7 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
     // Both scans claim a cell as a new island's start only when it is land that is
     // neither already claimed nor the cell the scan is pretending is water.
     private static bool IsNewIslandStart(IslandScan scan, bool[,] visited, int row, int col)
-        => scan.Grid[row][col] == Land && !visited[row, col] && (row, col) != scan.Skip;
+        => scan.Cells[row][col] == Land && !visited[row, col] && (row, col) != scan.Skip;
 
     private static void FloodFill(IslandScan scan, bool[,] visited, (int Row, int Col) cell)
     {
@@ -180,11 +180,12 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
     // Land the query has not pretended away - the one cell rule both walks share, whichever
     // bounds check guards it.
     private static bool IsUnskippedLand(IslandScan scan, int row, int col)
-        => scan.Grid[row][col] == Land && (row, col) != scan.Skip;
+        => scan.Cells[row][col] == Land && (row, col) != scan.Skip;
 
-    // One connectivity query: the grid, its bounds, and the single cell this query
-    // pretends has already been removed.
-    private readonly record struct IslandScan(int[][] Grid, int Rows, int Cols, (int Row, int Col) Skip);
+    // One connectivity query: the grid's cells, its bounds, and the single cell this query
+    // pretends has already been removed. The cells are called Cells, not Grid, because the
+    // baseline reads this record too and that name would read as this repo's Grid type.
+    private readonly record struct IslandScan(int[][] Cells, int Rows, int Cols, (int Row, int Col) Skip);
 
     // The cells the traversal may step into: land other than the cell this query treats as water.
     private readonly struct LandExceptSkipped(IslandScan scan) : IGridCellFilter

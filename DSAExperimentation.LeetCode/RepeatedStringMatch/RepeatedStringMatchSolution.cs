@@ -10,45 +10,23 @@ namespace DSAExperimentation.LeetCode.RepeatedStringMatch;
 //
 // The two strategies differ only in the substring search each candidate is checked
 // with - the BCL's own string.Contains, or this repo's KMP-based
-// PrefixFunctionSearch.
+// PrefixFunctionSearch. Each writes the two-candidate loop out itself, so the
+// baseline never runs through code that could call the library's search
+// (ARCHITECTURE 17.5). Both searches are ordinal, so neither answer depends on the
+// machine's culture, and an empty pattern occurs in every candidate.
 internal static class RepeatedStringMatchSolution
 {
-    // Both searches are stateless, so one instance each serves every call and the
-    // benchmark arms that measure these two methods allocate nothing to pick one.
-    private static readonly ISubstringSearch OrdinalContains = new OrdinalContainsSearch();
-    private static readonly ISubstringSearch PrefixFunctionContains = new PrefixFunctionContainsSearch();
-
     // The textbook answer: BCL string.Contains, deliberately left as the arm
     // MinRepeatsByPrefixFunctionSearch is measured against.
-    public static int MinRepeatsByStringContains(RepeatedUnit repeatedUnit, TargetPattern targetPattern) =>
-        MinRepeats(repeatedUnit, targetPattern, OrdinalContains);
-
-    public static int MinRepeatsByPrefixFunctionSearch(RepeatedUnit repeatedUnit, TargetPattern targetPattern) =>
-        MinRepeats(repeatedUnit, targetPattern, PrefixFunctionContains);
-
-    // The one question the two arms answer differently: whether the pattern occurs
-    // anywhere in one candidate repetition. Both of its inputs are named here, and this
-    // is where the contract the bare form had nowhere to write goes - the search is
-    // ordinal, so its answer does not depend on the machine's culture, and an empty
-    // pattern occurs in every candidate.
-    private interface ISubstringSearch
+    public static int MinRepeatsByStringContains(RepeatedUnit repeatedUnit, TargetPattern targetPattern)
     {
-        bool Occurs(string candidate, TargetPattern pattern);
-    }
-
-    // The repeat-count search itself, shared by both strategies so the only thing
-    // they differ in is the substring check.
-    private static int MinRepeats(
-        RepeatedUnit repeatedUnit, TargetPattern targetPattern, ISubstringSearch search)
-    {
-        var minRepeats = (int)Math.Ceiling((double)targetPattern.Text.Length / repeatedUnit.Text.Length);
+        var minRepeats = FewestRepeatsToCover(repeatedUnit, targetPattern);
 
         for (var repeats = minRepeats; repeats <= minRepeats + 1; repeats++)
         {
-            var repeatedSegments = Enumerable.Repeat(repeatedUnit.Text, repeats);
-            var candidate = string.Concat(repeatedSegments);
+            var candidate = Repeated(repeatedUnit, repeats);
 
-            if (search.Occurs(candidate, targetPattern))
+            if (candidate.Contains(targetPattern.Text, StringComparison.Ordinal))
             {
                 return repeats;
             }
@@ -57,19 +35,35 @@ internal static class RepeatedStringMatchSolution
         return LeetCodeAnswer.None;
     }
 
-    // The textbook arm: the BCL's own ordinal substring search.
-    private sealed class OrdinalContainsSearch : ISubstringSearch
+    // The same two candidates, each checked with this repo's KMP-based search, asked only
+    // whether any occurrence exists rather than where they all are.
+    public static int MinRepeatsByPrefixFunctionSearch(RepeatedUnit repeatedUnit, TargetPattern targetPattern)
     {
-        public bool Occurs(string candidate, TargetPattern pattern) =>
-            candidate.Contains(pattern.Text, StringComparison.Ordinal);
+        var minRepeats = FewestRepeatsToCover(repeatedUnit, targetPattern);
+
+        for (var repeats = minRepeats; repeats <= minRepeats + 1; repeats++)
+        {
+            var candidate = Repeated(repeatedUnit, repeats);
+
+            if (PrefixFunctionSearch.FindAll(candidate, targetPattern.Text).Count > 0)
+            {
+                return repeats;
+            }
+        }
+
+        return LeetCodeAnswer.None;
     }
 
-    // This repo's own KMP-based PrefixFunctionSearch, asked only whether any
-    // occurrence exists rather than where they all are.
-    private sealed class PrefixFunctionContainsSearch : ISubstringSearch
+    // The fewest repeats long enough to hold the pattern at all; one more covers a match
+    // straddling a repetition boundary.
+    private static int FewestRepeatsToCover(RepeatedUnit repeatedUnit, TargetPattern targetPattern) =>
+        (int)Math.Ceiling((double)targetPattern.Text.Length / repeatedUnit.Text.Length);
+
+    private static string Repeated(RepeatedUnit repeatedUnit, int repeats)
     {
-        public bool Occurs(string candidate, TargetPattern pattern) =>
-            PrefixFunctionSearch.FindAll(candidate, pattern.Text).Count > 0;
+        var repeatedSegments = Enumerable.Repeat(repeatedUnit.Text, repeats);
+
+        return string.Concat(repeatedSegments);
     }
 
     // LC 686's two operands, named for the roles they play here rather than left as two

@@ -5,9 +5,8 @@ namespace DSAExperimentation.LeetCode.MaximizeCountOfDistinctPrimesAfterSplit;
 // The sieve of Eratosthenes over a value bound: slot i is true when i is composite, so "is slot i
 // clear" is the primality test, for every value up to the bound at once.
 //
-// Kept local rather than taken from the core's PrimeSieve because this problem's baseline arm
-// reaches it as well as its composed arm (ARCHITECTURE section 17.5): the two arms share one
-// sieve, so neither can move to a library primitive without the other.
+// Only the composed arm reaches it: the baseline arm restates the same sieve over a BCL bool[] in
+// the solution file, since a baseline reaches no library type (ARCHITECTURE section 17.5).
 internal static class PrimeSieve
 {
     // The whole tracker for [0, bound], one flag per value - what CountPrimes names a

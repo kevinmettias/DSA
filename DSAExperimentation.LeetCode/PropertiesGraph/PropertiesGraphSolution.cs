@@ -31,9 +31,9 @@ internal static class PropertiesGraphSolution
 
         var rows = BuildHashSets(properties);
 
-        UnionIntersectingRows(rows, minimumIntersectionCount, parent);
+        UnionIntersectingHashSetRows(rows, minimumIntersectionCount, parent);
 
-        return CountRoots(parent);
+        return CountParentArrayRoots(parent);
     }
 
     // One BCL HashSet per row, seeded from that row's own values.
@@ -51,13 +51,14 @@ internal static class PropertiesGraphSolution
 
     // Unions every pair of rows whose distinct-value intersection reaches
     // `minimumIntersectionCount`.
-    private static void UnionIntersectingRows(HashSet<int>[] rows, int minimumIntersectionCount, int[] parent)
+    private static void UnionIntersectingHashSetRows(
+        HashSet<int>[] rows, int minimumIntersectionCount, int[] parent)
     {
         for (var i = 0; i < rows.Length; i++)
         {
             for (var j = i + 1; j < rows.Length; j++)
             {
-                if (IntersectCount(rows[i], rows[j]) >= minimumIntersectionCount)
+                if (HashSetIntersectCount(rows[i], rows[j]) >= minimumIntersectionCount)
                 {
                     Union(parent, i, j);
                 }
@@ -65,22 +66,7 @@ internal static class PropertiesGraphSolution
         }
     }
 
-    // The answer: how many distinct components the forest holds, i.e. how many
-    // distinct roots it has.
-    private static int CountRoots(int[] parent)
-    {
-        var roots = new HashSet<int>();
-
-        for (var i = 0; i < parent.Length; i++)
-        {
-            var root = Find(parent, i);
-            roots.Add(root);
-        }
-
-        return roots.Count;
-    }
-
-    private static int IntersectCount(HashSet<int> firstValues, HashSet<int> secondValues)
+    private static int HashSetIntersectCount(HashSet<int> firstValues, HashSet<int> secondValues)
     {
         var count = 0;
 
@@ -95,26 +81,19 @@ internal static class PropertiesGraphSolution
         return count;
     }
 
-    private static int Find(int[] parent, int element)
+    // The answer: how many distinct components the forest holds, i.e. how many
+    // distinct roots it has.
+    private static int CountParentArrayRoots(int[] parent)
     {
-        while (parent[element] != element)
+        var roots = new HashSet<int>();
+
+        for (var i = 0; i < parent.Length; i++)
         {
-            parent[element] = parent[parent[element]];
-            element = parent[element];
+            var root = Find(parent, i);
+            roots.Add(root);
         }
 
-        return element;
-    }
-
-    private static void Union(int[] parent, int firstElement, int secondElement)
-    {
-        var firstRoot = Find(parent, firstElement);
-        var secondRoot = Find(parent, secondElement);
-
-        if (firstRoot != secondRoot)
-        {
-            parent[firstRoot] = secondRoot;
-        }
+        return roots.Count;
     }
 
     // Composed: this repo's own Set<int> for both jobs it already has - TryAdd
@@ -150,6 +129,22 @@ internal static class PropertiesGraphSolution
         }
     }
 
+    private static int[] Distinct(int[] row)
+    {
+        var seen = new Set<int>();
+        var distinct = new List<int>(row.Length);
+
+        foreach (var value in row)
+        {
+            if (seen.TryAdd(value))
+            {
+                distinct.Add(value);
+            }
+        }
+
+        return [.. distinct];
+    }
+
     private static void UnionIntersectingRows(
         int[][] distinctRows, Set<int>[] rowSets, int minimumIntersectionCount, DisjointSet forest)
     {
@@ -163,19 +158,6 @@ internal static class PropertiesGraphSolution
                 }
             }
         }
-    }
-
-    private static int CountRoots(DisjointSet forest)
-    {
-        var roots = new HashSet<int>();
-
-        for (var i = 0; i < forest.Count; i++)
-        {
-            var root = forest.Find(i);
-            roots.Add(root);
-        }
-
-        return roots.Count;
     }
 
     private static int IntersectCount(int[] distinctValues, Set<int> other)
@@ -193,19 +175,39 @@ internal static class PropertiesGraphSolution
         return count;
     }
 
-    private static int[] Distinct(int[] row)
+    private static int CountRoots(DisjointSet forest)
     {
-        var seen = new Set<int>();
-        var distinct = new List<int>(row.Length);
+        var roots = new HashSet<int>();
 
-        foreach (var value in row)
+        for (var i = 0; i < forest.Count; i++)
         {
-            if (seen.TryAdd(value))
-            {
-                distinct.Add(value);
-            }
+            var root = forest.Find(i);
+            roots.Add(root);
         }
 
-        return [.. distinct];
+        return roots.Count;
     }
+
+    private static int Find(int[] parent, int element)
+    {
+        while (parent[element] != element)
+        {
+            parent[element] = parent[parent[element]];
+            element = parent[element];
+        }
+
+        return element;
+    }
+
+    private static void Union(int[] parent, int firstElement, int secondElement)
+    {
+        var firstRoot = Find(parent, firstElement);
+        var secondRoot = Find(parent, secondElement);
+
+        if (firstRoot != secondRoot)
+        {
+            parent[firstRoot] = secondRoot;
+        }
+    }
+
 }

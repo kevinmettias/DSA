@@ -31,9 +31,8 @@ internal static class FinalElementAfterSubarrayDeletionsSolution
     {
         var fullMask = (1 << nums.Length) - 1;
         var memo = new Dictionary<(int Mask, bool AliceTurn), int>();
-        var run = new DictionaryMinimaxRun(nums, memo);
 
-        return run.Replay((fullMask, true), run);
+        return DictionaryMinimax((fullMask, true), nums, memo);
     }
 
     public static int FinalElementByMemoizedMinimax(int[] nums)
@@ -65,6 +64,49 @@ internal static class FinalElementAfterSubarrayDeletionsSolution
         {
             var value = solveRest.Replay(next, solveRest);
             best = aliceTurn ? Math.Max(best, value) : Math.Min(best, value);
+        }
+
+        return best;
+    }
+
+    // The hand-rolled arm: plain recursion over the caller's own Dictionary, the cache the
+    // memoized arm hands to Memoizer instead - written out rather than through IRecurrence,
+    // since a baseline reaches no library type (ARCHITECTURE 17.5).
+    private static int DictionaryMinimax(
+        (int Mask, bool AliceTurn) state, int[] nums, Dictionary<(int Mask, bool AliceTurn), int> memo)
+    {
+        if (memo.TryGetValue(state, out var cached))
+        {
+            return cached;
+        }
+
+        var survivors = SurvivorPositions(state.Mask);
+        var result = nums[survivors[0]];
+
+        if (survivors.Count > 1)
+        {
+            result = BestDictionaryMove(state, survivors, nums, memo);
+        }
+
+        memo[state] = result;
+
+        return result;
+    }
+
+    // The best value whoever is to play can force from here, each reply answered by
+    // DictionaryMinimax's own recursion.
+    private static int BestDictionaryMove(
+        (int Mask, bool AliceTurn) state,
+        List<int> survivors,
+        int[] nums,
+        Dictionary<(int Mask, bool AliceTurn), int> memo)
+    {
+        var best = state.AliceTurn ? int.MinValue : int.MaxValue;
+
+        foreach (var next in NextStates(state, survivors))
+        {
+            var value = DictionaryMinimax(next, nums, memo);
+            best = state.AliceTurn ? Math.Max(best, value) : Math.Min(best, value);
         }
 
         return best;
@@ -107,29 +149,9 @@ internal static class FinalElementAfterSubarrayDeletionsSolution
         }
     }
 
-    // The hand-rolled arm, as a named run: it holds the caller's own cache and passes
-    // itself as the recursion, the same hand-written Dictionary the memoized arm
-    // replaces with Memoizer's.
-    private sealed class DictionaryMinimaxRun(
-        int[] nums,
-        Dictionary<(int Mask, bool AliceTurn), int> memo) : IRecurrence<(int Mask, bool AliceTurn), int>
-    {
-        public int Replay((int Mask, bool AliceTurn) state, IRecurrence<(int Mask, bool AliceTurn), int> rest)
-        {
-            if (memo.TryGetValue(state, out var cached))
-            {
-                return cached;
-            }
-
-            var result = PlayStep(state, nums, this);
-            memo[state] = result;
-
-            return result;
-        }
-    }
-
     // The recurrence, as a named type: a position's value is PlayStep's best over the
-    // positions one move reaches - the rule both arms above play the game out through.
+    // positions one move reaches - the rule the memoized arm plays the game out through,
+    // and the one DictionaryMinimax restates.
     private sealed class MinimaxFromState(int[] nums) : IRecurrence<(int Mask, bool AliceTurn), int>
     {
         public int Replay((int Mask, bool AliceTurn) state, IRecurrence<(int Mask, bool AliceTurn), int> rest) =>

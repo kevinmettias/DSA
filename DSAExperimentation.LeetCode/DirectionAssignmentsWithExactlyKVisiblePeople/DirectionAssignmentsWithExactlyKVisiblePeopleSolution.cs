@@ -11,6 +11,10 @@ namespace DSAExperimentation.LeetCode.DirectionAssignmentsWithExactlyKVisiblePeo
 // segments: sum over a of C(pos, a) * C(personCount - 1 - pos, visibleCount - a).
 internal static class DirectionAssignmentsWithExactlyKVisiblePeopleSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Textbook baseline: build each segment's binomial-coefficient row with
     // Pascal's triangle addition alone (no modular inverse), then convolve the
     // two rows directly - the sum-over-a form before it is recognized as an
@@ -28,10 +32,10 @@ internal static class DirectionAssignmentsWithExactlyKVisiblePeopleSolution
 
         for (var a = lowA; a <= highA; a++)
         {
-            total = (total + leftRow[a] * rightRow[visibleCount - a]) % ModularArithmetic.Modulo;
+            total = (total + leftRow[a] * rightRow[visibleCount - a]) % Modulo;
         }
 
-        return (int)(total * 2 % ModularArithmetic.Modulo);
+        return (int)(total * 2 % Modulo);
     }
 
     private static long[] BuildBinomialRow(int size)
@@ -43,7 +47,7 @@ internal static class DirectionAssignmentsWithExactlyKVisiblePeopleSolution
         {
             for (var a = person; a >= 1; a--)
             {
-                row[a] = (row[a] + row[a - 1]) % ModularArithmetic.Modulo;
+                row[a] = (row[a] + row[a - 1]) % Modulo;
             }
         }
 

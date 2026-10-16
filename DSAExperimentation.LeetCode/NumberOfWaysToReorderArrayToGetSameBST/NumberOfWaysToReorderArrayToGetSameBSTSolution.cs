@@ -15,11 +15,17 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToReorderArrayToGetSameBST;
 // its two children's already-counted insertion sequences, times each child's own
 // count - and differ only in how the tree is obtained: re-filtering a fresh pair of
 // lists at every recursive call, or building the tree once and folding it. Both
-// share the identical Memoizer-backed Pascal's-triangle Choose, so the comparison
-// isolates list-splitting-and-filtering against build-once-then-fold. The answer
-// excludes the original array itself, hence the subtracted 1.
+// take each binomial from the same memoized Pascal's triangle - the baseline through
+// a hand-rolled Dictionary memo, since a baseline reaches no library type
+// (ARCHITECTURE 17.5), the composed arm through this repo's Memoizer - so the
+// comparison isolates list-splitting-and-filtering against build-once-then-fold. The
+// answer excludes the original array itself, hence the subtracted 1.
 internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     private const int BinaryChildCount = 2;
 
     // The textbook answer: at each call the first element is the root, the rest are
@@ -86,14 +92,53 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
             (belongsLeft ? left : right).Add(arr[i]);
         }
 
-        return Choose(left.Count + right.Count, left.Count) * SplitWays([.. left]) % ModularArithmetic.Modulo
-            * SplitWays([.. right]) % ModularArithmetic.Modulo;
+        return DictionaryChoose(left.Count + right.Count, left.Count) * SplitWays([.. left]) % Modulo
+            * SplitWays([.. right]) % Modulo;
+    }
+
+    // The baseline's binomial: Pascal's rule over a fresh Dictionary memo per call - the
+    // same triangle PascalRow states and the same per-call table Memoizer keeps, with
+    // the lookup and store written out by hand.
+    private static long DictionaryChoose(int itemCount, int pickCount)
+    {
+        var memo = new Dictionary<(int N, int K), long>();
+
+        return DictionaryPascalEntry((itemCount, pickCount), memo);
+    }
+
+    private static long DictionaryPascalEntry((int N, int K) state, Dictionary<(int N, int K), long> memo)
+    {
+        if (memo.TryGetValue(state, out var cached))
+        {
+            return cached;
+        }
+
+        var result = DictionaryPascalStep(state, memo);
+        memo[state] = result;
+        return result;
+    }
+
+    // A binomial coefficient is the sum of the two terms above it in the triangle, and
+    // the edges of the triangle are 1.
+    private static long DictionaryPascalStep((int N, int K) state, Dictionary<(int N, int K), long> memo)
+    {
+        var (n, k) = state;
+
+        if (k == 0 || k == n)
+        {
+            return 1;
+        }
+
+        var aboveLeft = DictionaryPascalEntry((n - 1, k - 1), memo);
+        var aboveRight = DictionaryPascalEntry((n - 1, k), memo);
+
+        return (aboveLeft + aboveRight) % Modulo;
     }
 
     // Every count above includes the original array's own insertion order, which LC
     // does not count as a reordering.
     private static int ExcludeOriginal(long ways) =>
-        (int)((ways - 1 + ModularArithmetic.Modulo) % ModularArithmetic.Modulo);
+        (int)((ways - 1 + Modulo) % Modulo);
 
     private static long Choose(int itemCount, int pickCount) =>
         Memoizer.Memoize<(int N, int K), long>((itemCount, pickCount), new PascalRow());

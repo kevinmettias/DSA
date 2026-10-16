@@ -22,6 +22,10 @@ namespace DSAExperimentation.LeetCode.TheNumberOfGoodSubsets;
 // prime factors, so each occurrence independently doubles whatever the recursion counted.
 internal static class TheNumberOfGoodSubsetsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Each 1 in nums may be in or out of any good subset independently.
     private const int OnesDoublingBase = 2;
 
@@ -55,9 +59,9 @@ internal static class TheNumberOfGoodSubsetsSolution
             return skip;
         }
 
-        var take = weight * WaysFrom(candidates, index + 1, usedMask | mask) % ModularArithmetic.Modulo;
+        var take = weight * WaysFrom(candidates, index + 1, usedMask | mask) % Modulo;
 
-        return (skip + take) % ModularArithmetic.Modulo;
+        return (skip + take) % Modulo;
     }
 
     // The same recursion, with Memoizer owning the (index, usedMask) cache: at most one
@@ -109,6 +113,27 @@ internal static class TheNumberOfGoodSubsetsSolution
     // - shared by both arms, since the choice being measured is the recursion, not this.
     private static int WithOnesDoubling(long waysWithNonEmptyMask, int onesCount) =>
         (int)(waysWithNonEmptyMask
-            * ModularArithmetic.Power(OnesDoublingBase, onesCount)
-            % ModularArithmetic.Modulo);
+            * ModPower(OnesDoublingBase, onesCount)
+            % Modulo);
+
+    // value^exponent mod Modulo by repeated squaring, restated rather than called on
+    // ModularArithmetic for the same reason as Modulo itself.
+    private static long ModPower(long value, long exponent)
+    {
+        var result = 1L;
+        value %= Modulo;
+
+        while (exponent > 0)
+        {
+            if ((exponent & 1) == 1)
+            {
+                result = result * value % Modulo;
+            }
+
+            value = value * value % Modulo;
+            exponent >>= 1;
+        }
+
+        return result;
+    }
 }

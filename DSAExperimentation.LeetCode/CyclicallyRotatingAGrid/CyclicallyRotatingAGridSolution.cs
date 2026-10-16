@@ -38,7 +38,7 @@ internal static class CyclicallyRotatingAGridSolution
         {
             var ring = LoadQueue(rotated, cells);
             StepFrontToBack(ring, rotationSteps);
-            WriteBack(rotated, cells, ring);
+            WriteBackFromQueue(rotated, cells, ring);
         }
 
         return rotated;
@@ -65,7 +65,7 @@ internal static class CyclicallyRotatingAGridSolution
         }
     }
 
-    private static void WriteBack(int[][] grid, List<(int Row, int Col)> cells, Queue<int> ring)
+    private static void WriteBackFromQueue(int[][] grid, List<(int Row, int Col)> cells, Queue<int> ring)
     {
         foreach (var (row, col) in cells)
         {

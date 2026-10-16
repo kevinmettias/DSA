@@ -11,6 +11,10 @@ namespace DSAExperimentation.LeetCode.InsertIntoABinarySearchTree;
 // the other strategy's.
 internal static class InsertIntoABinarySearchTreeSolution
 {
+    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const int HalvingFactor = 2;
+
 
     // The naive approach many first solutions reach for: collect the existing
     // tree's values via an in-order walk (built fresh from the same values
@@ -123,7 +127,7 @@ internal static class InsertIntoABinarySearchTreeSolution
             return null;
         }
 
-        var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
+        var mid = low + ((high - low) / HalvingFactor);
 
         return new BinaryTreeNode<int>(values[mid])
         {

@@ -14,6 +14,10 @@ namespace DSAExperimentation.LeetCode.CountTheNumberOfGoodPartitions;
 // non-final forced close is either cut or merged into the next span.
 internal static class CountTheNumberOfGoodPartitionsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Textbook baseline: enumerate all 2^(n-1) ways to place a cut between each
     // pair of adjacent elements, and check each one directly against the
     // definition - no value's occurrences land in two different groups. Correct
@@ -32,7 +36,7 @@ internal static class CountTheNumberOfGoodPartitionsSolution
             }
         }
 
-        return validPartitions % ModularArithmetic.Modulo;
+        return validPartitions % Modulo;
     }
 
     private static bool IsGoodPartition(int[] nums, int cutMask)

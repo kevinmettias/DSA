@@ -38,7 +38,7 @@ internal static class QueueReconstructionByHeightSolution
             queue.Insert(person.K, person);
         }
 
-        return ToResultArray(queue);
+        return ListToResultArray(queue);
     }
 
     public static int[][] ReconstructQueueByMergeSortDynamicArrayInsert(int[][] people) =>
@@ -67,7 +67,7 @@ internal static class QueueReconstructionByHeightSolution
     private static (int Height, int K)[] BuildItems(int[][] people) =>
         people.Select(p => (Height: p[0], K: p[1])).ToArray();
 
-    private static int[][] ToResultArray(List<(int Height, int K)> queue)
+    private static int[][] ListToResultArray(List<(int Height, int K)> queue)
     {
         var result = new int[queue.Count][];
 

@@ -16,7 +16,9 @@ namespace DSAExperimentation.LeetCode.MaximumAndMinimumSumsOfAtMostSizeKSubseque
 // how each C(i,j) is produced.
 internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
 {
-    private const long Modulo = ModularArithmetic.Modulo;
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
 
     // The textbook answer: Pascal's triangle, one row at a time, keeping only the
     // k columns the length cap ever needs. No modular inverse, no repo

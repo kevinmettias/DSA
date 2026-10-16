@@ -23,6 +23,9 @@ namespace DSAExperimentation.LeetCode.PathWithMinimumEffort;
 // search the answer, re-scanning the whole grid with a fresh BFS per candidate.
 internal static class PathWithMinimumEffortSolution
 {
+    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const int HalvingFactor = 2;
 
     private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
@@ -38,7 +41,7 @@ internal static class PathWithMinimumEffortSolution
 
         while (lo < hi)
         {
-            var mid = lo + ((hi - lo) / AlgorithmConstants.HalvingFactor);
+            var mid = lo + ((hi - lo) / HalvingFactor);
 
             if (CanReachWithEffort(grid, mid))
             {

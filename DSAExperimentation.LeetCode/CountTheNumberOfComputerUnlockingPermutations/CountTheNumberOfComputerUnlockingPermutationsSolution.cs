@@ -1,4 +1,3 @@
-using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountTheNumberOfComputerUnlockingPermutations;
@@ -9,38 +8,22 @@ namespace DSAExperimentation.LeetCode.CountTheNumberOfComputerUnlockingPermutati
 // [0, n-1] that are legal unlock orders, modulo 1e9+7.
 internal static class CountTheNumberOfComputerUnlockingPermutationsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Enumerate every legal unlock order by DFS: at each step, only a computer with
     // some earlier, already-unlocked index of strictly lower complexity is a legal
-    // next choice. This is exactly Backtrack.Search's "count the leaves reached"
-    // shape (N-Queens, Combination Sum) - the arm the closed form below has to
-    // justify itself against, with none of that formula's insight built in.
+    // next choice. This is the textbook "count the leaves reached" backtracking
+    // shape (N-Queens, Combination Sum), written as plain recursion - the arm the
+    // closed form below has to justify itself against, with none of that formula's
+    // insight built in.
     public static long CountUnlockingPermutationsByBacktracking(int[] complexity)
     {
         var state = new UnlockState(complexity);
-        var count = 0L;
+        var count = CountUnlockOrders(state);
 
-        Backtrack.Search<UnlockState, int>(
-            state,
-            IsFullyUnlocked,
-            Candidates,
-            static (s, choice) => s.Unlock(choice),
-            static (s, choice) => s.Relock(choice),
-            _ => count++);
-
-        return count % ModularArithmetic.Modulo;
-    }
-
-    private static bool IsFullyUnlocked(UnlockState state) => state.UnlockedCount == state.Complexity.Length;
-
-    private static IEnumerable<int> Candidates(UnlockState state)
-    {
-        for (var i = 0; i < state.Complexity.Length; i++)
-        {
-            if (!state.IsUnlocked(i) && state.HasUnlockerFor(i))
-            {
-                yield return i;
-            }
-        }
+        return count % Modulo;
     }
 
     // The insight that collapses the search: index 0 is always < every other index
@@ -70,8 +53,37 @@ internal static class CountTheNumberOfComputerUnlockingPermutationsSolution
         return result;
     }
 
-    // Mutable DFS state for Backtrack.Search: which computers are unlocked so far,
-    // aliased (not copied) across Choose/Unchoose the way Backtrack.TState requires.
+    // The legal unlock orders that complete the partial one in state: one when every
+    // computer is already unlocked, otherwise the sum over each legal next choice of
+    // the orders that complete it after unlocking that computer.
+    private static long CountUnlockOrders(UnlockState state)
+    {
+        if (IsFullyUnlocked(state))
+        {
+            return 1;
+        }
+
+        var count = 0L;
+
+        for (var i = 0; i < state.Complexity.Length; i++)
+        {
+            if (state.IsUnlocked(i) || !state.HasUnlockerFor(i))
+            {
+                continue;
+            }
+
+            state.Unlock(i);
+            count += CountUnlockOrders(state);
+            state.Relock(i);
+        }
+
+        return count;
+    }
+
+    private static bool IsFullyUnlocked(UnlockState state) => state.UnlockedCount == state.Complexity.Length;
+
+    // Mutable DFS state the recursion unlocks and relocks in place: which computers
+    // are unlocked so far, one shared instance across the whole search.
     private sealed class UnlockState
     {
         private readonly bool[] _unlocked;

@@ -24,18 +24,51 @@ internal static class SellingPiecesOfWoodSolution
 {
     // The textbook answer: plain recursion with no cache at all, which is exponential
     // here because the same (height, width) sub-piece recurs across many different
-    // earlier cut sequences that land on it. It is the arm the memoized strategy
-    // below has to justify itself against.
+    // earlier cut sequences that land on it. The recursion is written out directly
+    // rather than through Memoizer's IRecurrence contract, because a baseline reaches
+    // no library type (ARCHITECTURE 17.5); the price index it reads is the prepared
+    // input its own signature is handed. It is the arm the memoized strategy below
+    // has to justify itself against.
     public static long SellingWoodByUnmemoizedRecursion(
         int boardHeight, int boardWidth, (int Height, int Width, int Price)[] prices) =>
         SellingWoodByUnmemoizedRecursion(boardHeight, boardWidth, PriceIndex(prices));
 
     public static long SellingWoodByUnmemoizedRecursion(
-        int boardHeight, int boardWidth, HashMap<(int Height, int Width), int> priceByDimensions)
-    {
-        var plan = new CuttingPlan(priceByDimensions);
+        int boardHeight, int boardWidth, HashMap<(int Height, int Width), int> priceByDimensions) =>
+        UnmemoizedPieceValue(priceByDimensions, (boardHeight, boardWidth));
 
-        return plan.Replay((boardHeight, boardWidth), plan);
+    // The rule as plain recursion: a sub-piece is worth whichever is larger - its own
+    // listed price sold whole (0 when unlisted), or the best single cut across either
+    // axis, each half re-solved by calling straight back in.
+    private static long UnmemoizedPieceValue(
+        HashMap<(int Height, int Width), int> priceByDimensions, (int Height, int Width) piece)
+    {
+        long whole = priceByDimensions.TryGetValue(piece, out var listedPrice) ? listedPrice : 0;
+
+        var bestHorizontalCut = UnmemoizedBestCutAlongAxis(priceByDimensions, CutAxis.Horizontal, piece);
+        var bestVerticalCut = UnmemoizedBestCutAlongAxis(priceByDimensions, CutAxis.Vertical, piece);
+        var bestCut = Math.Max(bestHorizontalCut, bestVerticalCut);
+
+        return Math.Max(whole, bestCut);
+    }
+
+    // The same walk over one axis's cut positions as BestCutAlongAxis, both halves
+    // valued by the plain recursion.
+    private static long UnmemoizedBestCutAlongAxis(
+        HashMap<(int Height, int Width), int> priceByDimensions, CutAxis axis, (int Height, int Width) piece)
+    {
+        var span = axis == CutAxis.Horizontal ? piece.Height : piece.Width;
+        var best = 0L;
+
+        for (var cut = 1; cut < span; cut++)
+        {
+            var (firstHalf, secondHalf) = HalvesOfCut(axis, piece, cut);
+            var firstValue = UnmemoizedPieceValue(priceByDimensions, firstHalf);
+            var secondValue = UnmemoizedPieceValue(priceByDimensions, secondHalf);
+            best = Math.Max(best, firstValue + secondValue);
+        }
+
+        return best;
     }
 
     // The same recurrence through Memoizer, which caches on the (height, width) pair
@@ -70,11 +103,10 @@ internal static class SellingPiecesOfWoodSolution
 
     // The rule, named: a sub-piece is worth whichever is larger - its own listed price
     // sold whole (0 when unlisted, which is what TryGetValue's out parameter already
-    // leaves behind on a miss), or the best single cut across either axis. The same named
-    // rule answers both strategies: the memoized arm hands it the cache-backed recursion,
-    // and the un-memoized arm replays it straight back into itself with no cache in
-    // between. The prices are the whole of what the rule needs from its caller, so they
-    // are the constructor's only input.
+    // leaves behind on a miss), or the best single cut across either axis. The memoized
+    // arm hands it the cache-backed recursion; UnmemoizedPieceValue states the same rule
+    // as plain recursion for the baseline. The prices are the whole of what the rule
+    // needs from its caller, so they are the constructor's only input.
     private sealed class CuttingPlan(HashMap<(int Height, int Width), int> priceByDimensions)
         : IRecurrence<(int Height, int Width), long>
     {

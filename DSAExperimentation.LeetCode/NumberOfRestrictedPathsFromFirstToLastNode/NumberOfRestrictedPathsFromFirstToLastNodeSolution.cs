@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Folding.Dags;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfRestrictedPathsFromFirstToLastNode;
 
@@ -17,6 +16,10 @@ namespace DSAExperimentation.LeetCode.NumberOfRestrictedPathsFromFirstToLastNode
 // CheckedFold's runtime cycle defense.
 internal static class NumberOfRestrictedPathsFromFirstToLastNodeSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // The textbook answer: recurse into every strictly-closer neighbor and add up
     // what comes back, with no memory between branches, so a node reachable by k
     // distinct prefixes is recounted k times - genuinely exponential on a graph
@@ -46,7 +49,7 @@ internal static class NumberOfRestrictedPathsFromFirstToLastNodeSolution
         {
             if (target.Dist < node.Dist)
             {
-                total = (total + CountPathsFrom(target)) % ModularArithmetic.Modulo;
+                total = (total + CountPathsFrom(target)) % Modulo;
             }
         }
 

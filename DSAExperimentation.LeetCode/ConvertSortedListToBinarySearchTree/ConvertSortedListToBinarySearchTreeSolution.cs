@@ -16,6 +16,10 @@ namespace DSAExperimentation.LeetCode.ConvertSortedListToBinarySearchTree;
 // for LC 108 once the list has been flattened.
 internal static class ConvertSortedListToBinarySearchTreeSolution
 {
+    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const int HalvingFactor = 2;
+
 
     public static BinaryTreeNode<int>? BuildByMidpointRecursion(SinglyLinkedListNode<int>? head)
     {
@@ -36,7 +40,7 @@ internal static class ConvertSortedListToBinarySearchTreeSolution
             return null;
         }
 
-        var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
+        var mid = low + ((high - low) / HalvingFactor);
 
         return new BinaryTreeNode<int>(values[mid])
         {

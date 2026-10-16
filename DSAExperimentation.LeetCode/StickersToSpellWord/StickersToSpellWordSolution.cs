@@ -15,8 +15,10 @@ internal static class StickersToSpellWordSolution
 {
     // The textbook answer: plain recursion with no cache, recomputing every choice
     // path from scratch even when two paths land on the identical remaining-letters
-    // state. Deliberately hand-rolled without this repo's Memoizer - it is the arm
-    // MinStickersByMemoizedRecursion is measured against.
+    // state. Deliberately hand-rolled without this repo's Memoizer or its
+    // IRecurrence contract, because a baseline reaches no library type
+    // (ARCHITECTURE 17.5) - it is the arm MinStickersByMemoizedRecursion is
+    // measured against.
     public static int MinStickersByNaiveRecursion(string[] stickers, string target)
     {
         var prepared = PreparedStickers.Build(stickers, target);
@@ -25,10 +27,47 @@ internal static class StickersToSpellWordSolution
 
     public static int MinStickersByNaiveRecursion(PreparedStickers input)
     {
-        var order = new StickerCoverOrder(input.StickerCounts);
-        var result = order.Replay(input.SortedTarget, order);
+        var result = NaiveMinStickers(input.StickerCounts, input.SortedTarget);
 
         return result == int.MaxValue ? LeetCodeAnswer.None : result;
+    }
+
+    // The rule as plain recursion: an empty state needs no stickers, otherwise the
+    // best first sticker decides it.
+    private static int NaiveMinStickers(int[][] stickerCounts, string state)
+    {
+        if (state.Length == 0)
+        {
+            return 0;
+        }
+
+        return NaiveBestOverStickers(stickerCounts, state);
+    }
+
+    // The same choice as StickerCoverOrder's: any sticker covering the state's first
+    // remaining letter is a candidate, costing itself plus whatever the letters it
+    // leaves behind cost - recomputed by calling straight back in.
+    private static int NaiveBestOverStickers(int[][] stickerCounts, string state)
+    {
+        var best = int.MaxValue;
+
+        foreach (var counts in stickerCounts)
+        {
+            if (counts[state[0] - 'a'] == 0)
+            {
+                continue;
+            }
+
+            var nextState = ApplySticker(state, counts);
+            var sub = NaiveMinStickers(stickerCounts, nextState);
+
+            if (sub != int.MaxValue)
+            {
+                best = Math.Min(best, sub + 1);
+            }
+        }
+
+        return best;
     }
 
     // Memoizer.Memoize<string,int> caches on the canonical state string, the same
@@ -54,10 +93,10 @@ internal static class StickersToSpellWordSolution
     // The rule, named: a state is solved by whichever sticker to apply first leaves the
     // fewest stickers for the rest - one for the sticker itself plus whatever the state
     // it leaves behind costs - or stays unsolvable when no sticker covers the state's
-    // first remaining letter. The same named rule answers both strategies: the memoized
-    // arm hands it the cache-backed recursion, and the naive arm replays it straight back
-    // into itself with no cache in between. The sticker letter counts are the whole of
-    // what the rule needs from its caller, so they are the constructor's only input.
+    // first remaining letter. The memoized arm hands it the cache-backed recursion;
+    // NaiveMinStickers states the same rule as plain recursion for the baseline. The
+    // sticker letter counts are the whole of what the rule needs from its caller, so
+    // they are the constructor's only input.
     private sealed class StickerCoverOrder(int[][] stickerCounts) : IRecurrence<string, int>
     {
         public int Replay(string state, IRecurrence<string, int> rest)
@@ -99,7 +138,7 @@ internal static class StickersToSpellWordSolution
 
     // Consumes as many of `state`'s letters as `counts` provides for each letter,
     // returning whatever is left over (still sorted, since it's a subsequence of
-    // the sorted input) - the state transition Solve's recursion branches on.
+    // the sorted input) - the state transition both strategies' recursions branch on.
     private static string ApplySticker(string state, int[] counts)
     {
         var remainingCounts = (int[])counts.Clone();

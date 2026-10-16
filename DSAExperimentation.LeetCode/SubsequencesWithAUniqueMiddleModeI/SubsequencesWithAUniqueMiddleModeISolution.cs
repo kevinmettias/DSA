@@ -23,6 +23,10 @@ namespace DSAExperimentation.LeetCode.SubsequencesWithAUniqueMiddleModeI;
 // counting problem here reports against.
 internal static class SubsequencesWithAUniqueMiddleModeISolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Textbook baseline: every combination of 5 indices, mode computed directly
     // from a per-combination frequency count. O(n^5) - the arm the O(n^2)
     // combinatorial strategy has to beat.
@@ -42,7 +46,7 @@ internal static class SubsequencesWithAUniqueMiddleModeISolution
             }
         }
 
-        return count % ModularArithmetic.Modulo;
+        return count % Modulo;
     }
 
     // The five chosen indices are one length-5 subsequence, so the first three fixes

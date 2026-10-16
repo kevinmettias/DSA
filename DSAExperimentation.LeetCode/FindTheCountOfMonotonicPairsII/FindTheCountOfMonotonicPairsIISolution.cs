@@ -22,6 +22,10 @@ namespace DSAExperimentation.LeetCode.FindTheCountOfMonotonicPairsII;
 // correct here, just no longer the arm you'd ship - O(n * maxValue) prefix sums is.
 internal static class FindTheCountOfMonotonicPairsIISolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Textbook baseline: every row re-sums its prefix from scratch for each j instead
     // of carrying a running total - O(n * maxValue^2), the DP the recurrence gives you
     // before noticing each row is itself a running sum of the row before it. Part I's
@@ -87,7 +91,7 @@ internal static class FindTheCountOfMonotonicPairsIISolution
                 sum += previousRow[previousValue];
             }
 
-            currentRow[j] = sum % ModularArithmetic.Modulo;
+            currentRow[j] = sum % Modulo;
         }
 
         return currentRow;
@@ -134,7 +138,7 @@ internal static class FindTheCountOfMonotonicPairsIISolution
 
         foreach (var count in lastRow)
         {
-            total = (total + count) % ModularArithmetic.Modulo;
+            total = (total + count) % Modulo;
         }
 
         return total;

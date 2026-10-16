@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.DataStructures;
 
 namespace DSAExperimentation.LeetCode.TheEarliestAndLatestRoundsWherePlayersCompete;
 
@@ -37,6 +36,9 @@ namespace DSAExperimentation.LeetCode.TheEarliestAndLatestRoundsWherePlayersComp
 // coverage tests state.
 internal static class TheEarliestAndLatestRoundsWherePlayersCompeteSolution
 {
+    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const int HalvingFactor = 2;
 
     // Next round's low is 1 + x; its high starts from low itself plus the
     // 1-indexed rank offset, before any of the searched-over survivors are added.
@@ -50,15 +52,9 @@ internal static class TheEarliestAndLatestRoundsWherePlayersCompeteSolution
         int playerCount, int firstPlayer, int secondPlayer)
     {
         var (low, high) = Ordered(firstPlayer, secondPlayer);
+        var start = new BracketState(playerCount, low, high);
 
-        return SolveUncached(playerCount, low, high);
-    }
-
-    private static (int Earliest, int Latest) SolveUncached(int roundSize, int low, int high)
-    {
-        var recurrence = new MeetingRoundsInBracket();
-
-        return recurrence.Replay((roundSize, low, high), recurrence);
+        return UncachedRoundBounds(start);
     }
 
     // The same recurrence routed through Memoizer, whose cache collapses the many
@@ -74,23 +70,7 @@ internal static class TheEarliestAndLatestRoundsWherePlayersCompeteSolution
             new MeetingRoundsInBracket());
     }
 
-    // The recurrence, as a named type: one bracket round's normalization, stopping
-    // condition and fan-out over the other players' elimination choices, with the
-    // memoized continuation arriving as `rest` rather than as an anonymous delegate.
-    private sealed class MeetingRoundsInBracket
-        : IRecurrence<(int RoundSize, int Low, int High), (int Earliest, int Latest)>
-    {
-        public (int Earliest, int Latest) Replay(
-            (int RoundSize, int Low, int High) state,
-            IRecurrence<(int RoundSize, int Low, int High), (int Earliest, int Latest)> rest)
-        {
-            var (roundSize, low, high) = state;
-
-            return RoundBounds(new BracketState(roundSize, low, high), rest);
-        }
-    }
-
-    // Shared shape between the plain self-recursion and the memoized recurrence:
+    // The memoized recurrence's round, the same shape as UncachedRoundBounds:
     // normalize by mirror symmetry, stop once the two tracked players must already
     // have met, otherwise fan out over every elimination choice for the other
     // survivors.
@@ -112,56 +92,9 @@ internal static class TheEarliestAndLatestRoundsWherePlayersCompeteSolution
             return (1, 1);
         }
 
-        var zones = Transition(state) with { NextRoundSize = (roundSize + 1) / AlgorithmConstants.HalvingFactor };
+        var zones = Transition(state) with { NextRoundSize = (roundSize + 1) / HalvingFactor };
 
         return ExploreRound(zones, rest);
-    }
-
-    // Zone counting (see the class remarks for the derivation): how many "other"
-    // survivors can freely land below low (LeftFree) and below high (MidFree, plus
-    // the MidFixed forced ones from Mid-Mid pairs and the odd-n bye) after one
-    // round. NextRoundSize is filled in by the caller, which owns the halving.
-    private static NextRoundZones Transition(BracketState state)
-    {
-        var (midFree, midFixed) = MidZone(state);
-
-        return new NextRoundZones(state.Low - 1, midFree, midFixed, 0);
-    }
-
-    // The Mid zone (positions strictly between low and high) splits by where high
-    // itself falls in its own mirror pairing.
-    private static (int MidFree, int MidFixed) MidZone(BracketState state)
-    {
-        var (roundSize, low, high) = state;
-
-        if (state.HasByeMiddle && high == (roundSize + 1) / AlgorithmConstants.HalvingFactor)
-        {
-            // high is the automatic-bye middle player: every other position up to
-            // half is "other" and pairs outward into the Right zone.
-            return ((roundSize / AlgorithmConstants.HalvingFactor) - low, 0);
-        }
-
-        var partner = Math.Min(high, roundSize + 1 - high);
-
-        if (partner == high)
-        {
-            // high is a pairing "low" member, so all of Mid pairs outward too.
-            return (high - low - 1, 0);
-        }
-
-        return SplitMidZone(state, partner);
-    }
-
-    // high is a "high" member; its partner sits inside Mid, splitting the rest of
-    // Mid into a free region (pairs outward) and a self-paired region (forced
-    // survivors, one per pair, plus the odd-n bye if it lands there).
-    private static (int MidFree, int MidFixed) SplitMidZone(BracketState state, int partner)
-    {
-        var bye = state.HasByeMiddle ? 1 : 0;
-        var pairableInnerRegion = state.High - 1 - partner - bye;
-        var midFixed = (pairableInnerRegion / AlgorithmConstants.HalvingFactor) + bye;
-
-        return (partner - state.Low - 1, midFixed);
     }
 
     private static (int Earliest, int Latest) ExploreRound(
@@ -186,13 +119,122 @@ internal static class TheEarliestAndLatestRoundsWherePlayersCompeteSolution
         return (earliest, latest);
     }
 
+    // The recurrence as plain recursion: normalize by mirror symmetry, stop once the
+    // two tracked players must already have met, otherwise fan out over every
+    // elimination choice for the other survivors, each next round re-solved by
+    // calling straight back in.
+    private static (int Earliest, int Latest) UncachedRoundBounds(BracketState state)
+    {
+        var (roundSize, low, high) = state;
+
+        if (low + high > roundSize + 1)
+        {
+            // Reflection symmetry: relabeling every position p as roundSize+1-p is
+            // an automorphism of the bracket, so this is the same game.
+            var mirrored = new BracketState(roundSize, roundSize + 1 - high, roundSize + 1 - low);
+            return UncachedRoundBounds(mirrored);
+        }
+
+        if (low + high == roundSize + 1)
+        {
+            return (1, 1);
+        }
+
+        var zones = Transition(state) with { NextRoundSize = (roundSize + 1) / HalvingFactor };
+
+        return UncachedExploreRound(zones);
+    }
+
+    private static (int Earliest, int Latest) UncachedExploreRound(NextRoundZones zones)
+    {
+        var earliest = int.MaxValue;
+        var latest = int.MinValue;
+
+        for (var x = 0; x <= zones.LeftFree; x++)
+        {
+            for (var y = 0; y <= zones.MidFree; y++)
+            {
+                var nextHigh = HighSeedBaseOffset + x + y + zones.MidFixed;
+                var next = new BracketState(zones.NextRoundSize, 1 + x, nextHigh);
+                var (roundEarliest, roundLatest) = UncachedRoundBounds(next);
+                earliest = Math.Min(earliest, roundEarliest + 1);
+                latest = Math.Max(latest, roundLatest + 1);
+            }
+        }
+
+        return (earliest, latest);
+    }
+
+    // Zone counting (see the class remarks for the derivation): how many "other"
+    // survivors can freely land below low (LeftFree) and below high (MidFree, plus
+    // the MidFixed forced ones from Mid-Mid pairs and the odd-n bye) after one
+    // round. NextRoundSize is filled in by the caller, which owns the halving.
+    private static NextRoundZones Transition(BracketState state)
+    {
+        var (midFree, midFixed) = MidZone(state);
+
+        return new NextRoundZones(state.Low - 1, midFree, midFixed, 0);
+    }
+
+    // The Mid zone (positions strictly between low and high) splits by where high
+    // itself falls in its own mirror pairing.
+    private static (int MidFree, int MidFixed) MidZone(BracketState state)
+    {
+        var (roundSize, low, high) = state;
+
+        if (state.HasByeMiddle && high == (roundSize + 1) / HalvingFactor)
+        {
+            // high is the automatic-bye middle player: every other position up to
+            // half is "other" and pairs outward into the Right zone.
+            return ((roundSize / HalvingFactor) - low, 0);
+        }
+
+        var partner = Math.Min(high, roundSize + 1 - high);
+
+        if (partner == high)
+        {
+            // high is a pairing "low" member, so all of Mid pairs outward too.
+            return (high - low - 1, 0);
+        }
+
+        return SplitMidZone(state, partner);
+    }
+
+    // high is a "high" member; its partner sits inside Mid, splitting the rest of
+    // Mid into a free region (pairs outward) and a self-paired region (forced
+    // survivors, one per pair, plus the odd-n bye if it lands there).
+    private static (int MidFree, int MidFixed) SplitMidZone(BracketState state, int partner)
+    {
+        var bye = state.HasByeMiddle ? 1 : 0;
+        var pairableInnerRegion = state.High - 1 - partner - bye;
+        var midFixed = (pairableInnerRegion / HalvingFactor) + bye;
+
+        return (partner - state.Low - 1, midFixed);
+    }
+
     private static (int Low, int High) Ordered(int firstPlayer, int secondPlayer)
         => (Math.Min(firstPlayer, secondPlayer), Math.Max(firstPlayer, secondPlayer));
+
+    // The recurrence, as a named type: one bracket round's normalization, stopping
+    // condition and fan-out over the other players' elimination choices, with the
+    // memoized continuation arriving as `rest` rather than as an anonymous delegate.
+    private sealed class MeetingRoundsInBracket
+        : IRecurrence<(int RoundSize, int Low, int High), (int Earliest, int Latest)>
+    {
+        public (int Earliest, int Latest) Replay(
+            (int RoundSize, int Low, int High) state,
+            IRecurrence<(int RoundSize, int Low, int High), (int Earliest, int Latest)> rest)
+        {
+            var (roundSize, low, high) = state;
+
+            return RoundBounds(new BracketState(roundSize, low, high), rest);
+        }
+    }
 
     private readonly record struct BracketState(int RoundSize, int Low, int High)
     {
         // An odd round leaves one player unpaired, who advances automatically.
-        public bool HasByeMiddle => RoundSize % AlgorithmConstants.HalvingFactor == 1;
+        public bool HasByeMiddle => RoundSize % HalvingFactor == 1;
     }
 
     private readonly record struct NextRoundZones(int LeftFree, int MidFree, int MidFixed, int NextRoundSize);

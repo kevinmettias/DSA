@@ -1,15 +1,12 @@
-using DSAExperimentation.Algorithms.Backtracking;
-
 namespace DSAExperimentation.LeetCode.PalindromePartitioning;
 
 // LeetCode 131. Palindrome Partitioning: every way to cut `text` into a sequence
 // of substrings that are all palindromes.
 //
-// Two strategies. The backtracking walk below asks Candidates for every palindromic
-// prefix as it goes, re-testing each candidate substring from scratch. The table arm
-// above builds an isPalindrome[i][j] table once, then runs the same
-// choose/explore/unchoose walk against it, so each candidate question is O(1) instead
-// of O(n). The old benchmark's two [Benchmark] arms were both compile-smoke
+// Two strategies. The backtracking walk below tries every palindromic prefix as it goes,
+// re-testing each candidate substring from scratch. The table arm above builds an
+// isPalindrome[i][j] table once, then runs the same choose/explore/unchoose walk
+// against it, so each candidate question is O(1) instead of O(n). The old benchmark's two [Benchmark] arms were both compile-smoke
 // placeholders (`=> 1`), not a second real approach to reconcile against.
 internal static class PalindromePartitioningSolution
 {
@@ -76,42 +73,38 @@ internal static class PalindromePartitioningSolution
         return isPalindrome;
     }
 
+    // The textbook choose/explore/unchoose walk, written as plain recursion rather than run
+    // on this repo's Backtrack engine: a baseline reaches no library type (ARCHITECTURE 17.5).
     public static List<List<string>> PartitionByBacktracking(string text)
     {
         var results = new List<List<string>>();
-        var state = new PartitionState();
 
-        Backtrack.Search<PartitionState, string>(
-            state,
-            x => x.Index == text.Length,
-            x => x.Index == text.Length ? NoCandidates() : Candidates(text, x.Index),
-            (x, part) =>
-            {
-                x.Starts.Push(x.Index);
-                x.Index += part.Length;
-                x.Parts.Add(part);
-            },
-            (x, _) =>
-            {
-                x.Index = x.Starts.Pop();
-                x.Parts.RemoveAt(x.Parts.Count - 1);
-            },
-            x => results.Add([.. x.Parts]));
+        PartitionByRetesting(0, text, [], results);
 
         return results;
     }
 
-    // No palindromic prefix is left once the cursor reaches the end of `text`.
-    private static IEnumerable<string> NoCandidates() => [];
-
-    private static IEnumerable<string> Candidates(string text, int start)
+    // At each cursor, every prefix that re-tests as a palindrome, in increasing length, and
+    // the partition copied out once the cursor reaches the end.
+    private static void PartitionByRetesting(int start, string text, List<string> parts, List<List<string>> results)
     {
+        if (start == text.Length)
+        {
+            results.Add([.. parts]);
+
+            return;
+        }
+
         for (var end = start; end < text.Length; end++)
         {
-            if (IsPalindrome(text, start, end))
+            if (!IsPalindrome(text, start, end))
             {
-                yield return text[start..(end + 1)];
+                continue;
             }
+
+            parts.Add(text[start..(end + 1)]);
+            PartitionByRetesting(end + 1, text, parts, results);
+            parts.RemoveAt(parts.Count - 1);
         }
     }
 
@@ -126,14 +119,5 @@ internal static class PalindromePartitioningSolution
         }
 
         return true;
-    }
-
-    private sealed class PartitionState
-    {
-        public int Index { get; set; }
-
-        public Stack<int> Starts { get; } = new();
-
-        public List<string> Parts { get; } = [];
     }
 }

@@ -1,4 +1,3 @@
-using DSAExperimentation.Algorithms.Backtracking;
 using PalindromeStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.SmallestPalindromicRearrangementII;
@@ -15,82 +14,48 @@ internal static class SmallestPalindromicRearrangementIISolution
 {
     private const int AlphabetSize = 26;
 
-    // The textbook approach: Backtracking.Backtrack's own doc comment names
-    // "Permutations" as exactly this shape (Search's exhaustive-enumeration case) -
-    // here TrySearch's early-stop variant instead, since Candidates already yields
-    // letters ascending, so depth-first visits complete arrangements in
-    // lexicographic order and the rank-th TryCaptureKthArrangement call IS the
-    // answer. Deliberately the slow arm: it walks every arrangement before the
-    // rank-th one node by node, exactly what the counting strategy below exists to
-    // avoid.
+    // The textbook approach: plain depth-first backtracking over the half's letters
+    // that stops early at the rank-th complete arrangement. Candidates yields letters
+    // ascending, so depth-first visits complete arrangements in lexicographic order
+    // and the rank-th TryCaptureKthArrangement call IS the answer. Deliberately the
+    // slow arm: it walks every arrangement before the rank-th one node by node,
+    // exactly what the counting strategy below exists to avoid. Written as plain
+    // recursion rather than through Backtracking.Backtrack, since a baseline reaches
+    // no library type (ARCHITECTURE 17.5).
     public static string RearrangeByBacktrackingRank(string palindrome, int rank)
     {
         var (halfCounts, middle) = SplitCounts(palindrome);
         var halfLength = halfCounts.Sum();
 
         var state = new RankState(halfCounts, new List<char>(halfLength), rank);
-        var steps = new BacktrackingSteps<RankState, int>(
-            IsSolution: st => st.Path.Count == halfLength,
-            Candidates: Candidates,
-            Choose: Choose,
-            Unchoose: Unchoose,
-            OnSolution: TryCaptureKthArrangement);
 
-        return Backtrack.TrySearch(state, steps)
-            ? BuildPalindrome(state.Result!, middle)
-            : string.Empty;
-    }
-
-    private static IEnumerable<int> Candidates(RankState state)
-    {
-        for (var c = 0; c < AlphabetSize; c++)
+        if (!TrySearchRankedArrangement(state, halfLength))
         {
-            if (state.Counts[c] > 0)
-            {
-                yield return c;
-            }
-        }
-    }
-
-    private static void Choose(RankState state, int letter)
-    {
-        state.Counts[letter]--;
-        state.Path.Add((char)('a' + letter));
-    }
-
-    private static void Unchoose(RankState state, int letter)
-    {
-        state.Path.RemoveAt(state.Path.Count - 1);
-        state.Counts[letter]++;
-    }
-
-    // Snapshots Path into Result the instant this is the rank-th arrangement, rather
-    // than letting the caller read state.Path once TrySearch returns: Backtrack's
-    // own TryEachCandidate calls Unchoose unconditionally on the way back out, stop
-    // signal or not, so by the time TrySearch's caller sees `true` the path that
-    // earned it has already been unwound one Unchoose at a time.
-    private static bool TryCaptureKthArrangement(RankState state)
-    {
-        state.Remaining--;
-
-        if (state.Remaining != 0)
-        {
-            return false;
+            return string.Empty;
         }
 
-        state.Result = new string(state.Path.ToArray());
-        return true;
+        return BuildPalindromeWithBclStack(state.Result!, middle);
     }
 
-    private sealed class RankState(int[] counts, List<char> path, long remaining)
+    // The baseline's mirror: the same push-then-pop reversal as BuildPalindrome below,
+    // over a BCL Stack<char>.
+    private static string BuildPalindromeWithBclStack(string left, char? middle)
     {
-        public int[] Counts { get; } = counts;
+        var stack = new Stack<char>();
 
-        public List<char> Path { get; } = path;
+        foreach (var c in left)
+        {
+            stack.Push(c);
+        }
 
-        public long Remaining { get; set; } = remaining;
+        var right = new char[left.Length];
 
-        public string? Result { get; set; }
+        for (var i = 0; stack.TryPop(out var c); i++)
+        {
+            right[i] = c;
+        }
+
+        return left + (middle?.ToString() ?? string.Empty) + new string(right);
     }
 
     // The composed approach: never materializes an arrangement it isn't going to
@@ -149,6 +114,95 @@ internal static class SmallestPalindromicRearrangementIISolution
         return remainingRank;
     }
 
+    // Mirrors SmallestPalindromicRearrangementISolution.RearrangeByCharStack: LIFO
+    // order undoes the left half's own order, so pushing it and popping it back out
+    // produces its reverse without a second pass that re-derives it.
+    private static string BuildPalindrome(string left, char? middle)
+    {
+        var stack = new PalindromeStack();
+
+        foreach (var c in left)
+        {
+            stack.Push(c);
+        }
+
+        var right = new char[left.Length];
+
+        for (var i = 0; stack.TryPop(out var c); i++)
+        {
+            right[i] = c;
+        }
+
+        return left + (middle?.ToString() ?? string.Empty) + new string(right);
+    }
+
+    // One node of the search: a complete arrangement counts toward the rank, and
+    // otherwise each letter still available is chosen in ascending order, searched
+    // below, and unchosen on the way back out - stopping the moment a search below
+    // reports the rank-th arrangement found.
+    private static bool TrySearchRankedArrangement(RankState state, int halfLength)
+    {
+        if (state.Path.Count == halfLength && TryCaptureKthArrangement(state))
+        {
+            return true;
+        }
+
+        foreach (var letter in Candidates(state))
+        {
+            Choose(state, letter);
+            var stopped = TrySearchRankedArrangement(state, halfLength);
+            Unchoose(state, letter);
+
+            if (stopped)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static IEnumerable<int> Candidates(RankState state)
+    {
+        for (var c = 0; c < AlphabetSize; c++)
+        {
+            if (state.Counts[c] > 0)
+            {
+                yield return c;
+            }
+        }
+    }
+
+    private static void Choose(RankState state, int letter)
+    {
+        state.Counts[letter]--;
+        state.Path.Add((char)('a' + letter));
+    }
+
+    private static void Unchoose(RankState state, int letter)
+    {
+        state.Path.RemoveAt(state.Path.Count - 1);
+        state.Counts[letter]++;
+    }
+
+    // Snapshots Path into Result the instant this is the rank-th arrangement, rather
+    // than letting the caller read state.Path once the search returns: the recursion
+    // calls Unchoose unconditionally on the way back out, stop signal or not, so by
+    // the time its caller sees `true` the path that earned it has already been
+    // unwound one Unchoose at a time.
+    private static bool TryCaptureKthArrangement(RankState state)
+    {
+        state.Remaining--;
+
+        if (state.Remaining != 0)
+        {
+            return false;
+        }
+
+        state.Result = new string(state.Path.ToArray());
+        return true;
+    }
+
     // Number of distinct arrangements of counts, saturating at cap+1 the moment the
     // running total exceeds it - the exact value stops mattering once it does, and
     // this is what keeps the whole strategy inside long arithmetic despite the true
@@ -205,25 +259,15 @@ internal static class SmallestPalindromicRearrangementIISolution
         return (halfCounts, middle);
     }
 
-    // Mirrors SmallestPalindromicRearrangementISolution.RearrangeByCharStack: LIFO
-    // order undoes the left half's own order, so pushing it and popping it back out
-    // produces its reverse without a second pass that re-derives it.
-    private static string BuildPalindrome(string left, char? middle)
+    private sealed class RankState(int[] counts, List<char> path, long remaining)
     {
-        var stack = new PalindromeStack();
+        public int[] Counts { get; } = counts;
 
-        foreach (var c in left)
-        {
-            stack.Push(c);
-        }
+        public List<char> Path { get; } = path;
 
-        var right = new char[left.Length];
+        public long Remaining { get; set; } = remaining;
 
-        for (var i = 0; stack.TryPop(out var c); i++)
-        {
-            right[i] = c;
-        }
-
-        return left + (middle?.ToString() ?? string.Empty) + new string(right);
+        public string? Result { get; set; }
     }
+
 }

@@ -1,6 +1,5 @@
 using System.Numerics;
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.MaximizeNumberOfNiceDivisors;
 
@@ -20,6 +19,10 @@ namespace DSAExperimentation.LeetCode.MaximizeNumberOfNiceDivisors;
 // convention belongs.
 internal static class MaximizeNumberOfNiceDivisorsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     private const int FactorOfTwo = 2;
     private const int FactorOfThree = 3;
 
@@ -30,14 +33,21 @@ internal static class MaximizeNumberOfNiceDivisorsSolution
     public static int MaxNiceDivisorsByNaiveRecursion(int primeFactors)
         => ReportedAnswer(MaxProductNaive(primeFactors));
 
-    private static BigInteger MaxProductNaive(int remaining) => BestSplit(remaining, new BestSplitRecurrence());
+    // This repo's own Memoizer (Algorithms/DynamicProgramming/Memoizer.cs) keyed on
+    // the int `remaining` state: many different peel-2/peel-3 orders land on the
+    // same budget, which is exactly the overlapping-subproblem shape memoization
+    // exists for, collapsing the naive arm's exponential tree to O(n) states - the
+    // same idiom CountAllPossibleRoutes uses over a wider state shape.
+    public static int MaxNiceDivisorsByMemoizedRecurrence(int primeFactors)
+    {
+        var maxProduct = Memoizer.Memoize<int, BigInteger>(primeFactors, new BestSplitRecurrence());
+        return ReportedAnswer(maxProduct);
+    }
 
-    // Shared shape between the naive self-recursion and the memoized recurrence:
-    // peel off either a factor of 2 or a factor of 3 and keep whichever split
-    // yields the larger product, against leaving the budget whole. `maxProduct` is
-    // the handle on this same rule for the budget a peel leaves behind - the memo
-    // run's own when the caller came through Memoize, and the bare rule itself when
-    // it did not, which is exactly the difference between the two arms.
+    // The split rule for the memoized arm: the same peels as MaxProductNaive, against
+    // leaving the budget whole. `maxProduct` is the memo run's handle on this same rule
+    // for the budget a peel leaves behind, so a budget reached by two peel orders is
+    // answered from the cache.
     private static BigInteger BestSplit(int remaining, IRecurrence<int, BigInteger> maxProduct)
     {
         if (remaining == 0)
@@ -62,18 +72,36 @@ internal static class MaximizeNumberOfNiceDivisorsSolution
         return best;
     }
 
-    // This repo's own Memoizer (Algorithms/DynamicProgramming/Memoizer.cs) keyed on
-    // the int `remaining` state: many different peel-2/peel-3 orders land on the
-    // same budget, which is exactly the overlapping-subproblem shape memoization
-    // exists for, collapsing the naive arm's exponential tree to O(n) states - the
-    // same idiom CountAllPossibleRoutes uses over a wider state shape.
-    public static int MaxNiceDivisorsByMemoizedRecurrence(int primeFactors)
+    // The split rule as plain self-recursion: peel off either a factor of 2 or a
+    // factor of 3 and keep whichever split yields the larger product, against leaving
+    // the budget whole, each peeled budget answered by calling straight back in. It is
+    // written out here rather than through Memoizer's IRecurrence contract, because a
+    // baseline reaches no library type (ARCHITECTURE 17.5).
+    private static BigInteger MaxProductNaive(int remaining)
     {
-        var maxProduct = Memoizer.Memoize<int, BigInteger>(primeFactors, new BestSplitRecurrence());
-        return ReportedAnswer(maxProduct);
+        if (remaining == 0)
+        {
+            return BigInteger.One;
+        }
+
+        var best = (BigInteger)remaining;
+
+        if (remaining >= FactorOfTwo)
+        {
+            var peeledTwo = MaxProductNaive(remaining - FactorOfTwo);
+            best = BigInteger.Max(best, FactorOfTwo * peeledTwo);
+        }
+
+        if (remaining >= FactorOfThree)
+        {
+            var peeledThree = MaxProductNaive(remaining - FactorOfThree);
+            best = BigInteger.Max(best, FactorOfThree * peeledThree);
+        }
+
+        return best;
     }
 
-    private static int ReportedAnswer(BigInteger maxProduct) => (int)(maxProduct % ModularArithmetic.Modulo);
+    private static int ReportedAnswer(BigInteger maxProduct) => (int)(maxProduct % Modulo);
 
     // The split rule, named: a budget either stands whole or peels off one factor of
     // two or three, and the larger resulting product wins. `rest` is the memo run's own

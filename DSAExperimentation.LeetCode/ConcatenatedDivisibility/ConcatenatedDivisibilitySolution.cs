@@ -1,5 +1,4 @@
 using System.Numerics;
-using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Algorithms.DynamicProgramming;
 
 namespace DSAExperimentation.LeetCode.ConcatenatedDivisibility;
@@ -14,10 +13,10 @@ namespace DSAExperimentation.LeetCode.ConcatenatedDivisibility;
 // completion - the standard "build the lexicographically smallest feasible
 // sequence" recipe. They differ only in how "still admits a completion" gets
 // decided: SmallestPermutationByBacktracking finds out by actually trying every
-// remaining order (Backtrack.TrySearch's own use-case, per BacktrackingSteps' own
-// doc comment: "find one and quit"); SmallestPermutationByBitmaskMemo instead
-// answers it as a bitmask-over-remainder DP (n <= 13 is exactly a "fits in an int
-// mask" bound), memoized once via Algorithms.DynamicProgramming.Memoizer so every
+// remaining order (plain choose/explore/unchoose recursion that stops at the first
+// full order that divides: "find one and quit"); SmallestPermutationByBitmaskMemo
+// instead answers it as a bitmask-over-remainder DP (n <= 13 is exactly a "fits in an
+// int mask" bound), memoized once via Algorithms.DynamicProgramming.Memoizer so every
 // (usedMask, remainder) state is solved at most once for the whole search tree.
 internal static class ConcatenatedDivisibilitySolution
 {
@@ -31,47 +30,16 @@ internal static class ConcatenatedDivisibilitySolution
         var order = SortIndicesByValue(nums);
         var state = new BacktrackState(nums, divisor, order);
 
-        // Unchoose runs on every candidate's way back out of TrySearch - including
+        // Unchoose runs on every candidate's way back out of the recursion - including
         // the winning one, since backtracking has no other way to know the search
         // is done until TryAcceptSolution has already returned - so by the time
-        // TrySearch itself returns, state.Path has been unwound back to empty
-        // regardless of outcome. The winning order has to be snapshotted from inside
-        // TryAcceptSolution, the only moment it is both complete and still on the
-        // board.
-        Backtrack.TrySearch(state, new BacktrackingSteps<BacktrackState, int>(
-            IsSolution: s => s.Path.Count == s.Nums.Length,
-            Candidates: s => s.Order.Where(i => !s.Used[i]),
-            Choose: Choose,
-            Unchoose: Unchoose,
-            OnSolution: TryAcceptSolution));
+        // TrySearchPermutations itself returns, state.Path has been unwound back to
+        // empty regardless of outcome. The winning order has to be snapshotted from
+        // inside TryAcceptSolution, the only moment it is both complete and still on
+        // the board.
+        TrySearchPermutations(state);
 
         return NumbersOf(state.Result, state.Nums);
-    }
-
-    private static bool TryAcceptSolution(BacktrackState state)
-    {
-        if (BigInteger.Parse(state.Concatenation) % state.Divisor != 0)
-        {
-            return false;
-        }
-
-        state.Result = [.. state.Path];
-        return true;
-    }
-
-    private static void Choose(BacktrackState state, int index)
-    {
-        state.Used[index] = true;
-        state.Path.Add(index);
-        state.Concatenation += state.Nums[index];
-    }
-
-    private static void Unchoose(BacktrackState state, int index)
-    {
-        state.Used[index] = false;
-        state.Path.RemoveAt(state.Path.Count - 1);
-        var digits = state.Nums[index].ToString().Length;
-        state.Concatenation = state.Concatenation[..^digits];
     }
 
     // reach(mask, remainder) = "is there an order of the numbers left in mask that
@@ -113,6 +81,93 @@ internal static class ConcatenatedDivisibilitySolution
         }
 
         return pow10ModDivisor;
+    }
+
+    // One node of the permutation tree: a full path is tested for divisibility, any
+    // shorter one extends itself by each unused index in turn. True once a full
+    // divisible order has been found, which stops the whole search.
+    private static bool TrySearchPermutations(BacktrackState state)
+    {
+        if (state.Path.Count == state.Nums.Length)
+        {
+            return TryAcceptSolution(state);
+        }
+
+        return TryEachUnusedIndex(state);
+    }
+
+    private static bool TryAcceptSolution(BacktrackState state)
+    {
+        if (BigInteger.Parse(state.Concatenation) % state.Divisor != 0)
+        {
+            return false;
+        }
+
+        state.Result = [.. state.Path];
+        return true;
+    }
+
+    // Each unused index, smallest value first: choose it, search below it, unchoose
+    // it, and stop as soon as one branch has found the answer.
+    private static bool TryEachUnusedIndex(BacktrackState state)
+    {
+        foreach (var index in state.Order)
+        {
+            if (state.Used[index])
+            {
+                continue;
+            }
+
+            Choose(state, index);
+            var stopped = TrySearchPermutations(state);
+            Unchoose(state, index);
+
+            if (stopped)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static void Choose(BacktrackState state, int index)
+    {
+        state.Used[index] = true;
+        state.Path.Add(index);
+        state.Concatenation += state.Nums[index];
+    }
+
+    private static void Unchoose(BacktrackState state, int index)
+    {
+        state.Used[index] = false;
+        state.Path.RemoveAt(state.Path.Count - 1);
+        var digits = state.Nums[index].ToString().Length;
+        state.Concatenation = state.Concatenation[..^digits];
+    }
+
+    // The last step from a search result to the answer, shared because both
+    // strategies reach it identically: the winning order is an index permutation
+    // internally, and the problem wants the numbers themselves - or the empty
+    // list, its answer for "no order works", when the search found none.
+    private static IList<int> NumbersOf(List<int>? order, int[] nums)
+    {
+        if (order is null)
+        {
+            return [];
+        }
+
+        return [.. order.Select(i => nums[i])];
+    }
+
+    // Ascending by value once, up front: both strategies only ever need to offer
+    // candidates in this order to guarantee lexicographically-smallest-by-value
+    // output, so the sort is shared rather than repeated per strategy.
+    private static int[] SortIndicesByValue(int[] nums)
+    {
+        var order = Enumerable.Range(0, nums.Length).ToArray();
+        Array.Sort(order, (x, y) => nums[x].CompareTo(nums[y]));
+        return order;
     }
 
     // The reconstruction rule, named: the winning suffix for a state is the first
@@ -173,31 +228,7 @@ internal static class ConcatenatedDivisibilitySolution
         }
     }
 
-    // The last step from a search result to the answer, shared because both
-    // strategies reach it identically: the winning order is an index permutation
-    // internally, and the problem wants the numbers themselves - or the empty
-    // list, its answer for "no order works", when the search found none.
-    private static IList<int> NumbersOf(List<int>? order, int[] nums)
-    {
-        if (order is null)
-        {
-            return [];
-        }
-
-        return [.. order.Select(i => nums[i])];
-    }
-
-    // Ascending by value once, up front: both strategies only ever need to offer
-    // candidates in this order to guarantee lexicographically-smallest-by-value
-    // output, so the sort is shared rather than repeated per strategy.
-    private static int[] SortIndicesByValue(int[] nums)
-    {
-        var order = Enumerable.Range(0, nums.Length).ToArray();
-        Array.Sort(order, (x, y) => nums[x].CompareTo(nums[y]));
-        return order;
-    }
-
-    // The mutable board Backtrack.TrySearch threads Choose/Unchoose through -
+    // The mutable board the backtracking recursion threads Choose/Unchoose through -
     // Order is fixed for the whole search, Used/Path/Concatenation are what those
     // two steps mutate and restore.
     private sealed class BacktrackState(int[] nums, int divisor, int[] order)

@@ -24,16 +24,19 @@ namespace DSAExperimentation.LeetCode.MinimumPossibleMaximumWaitingTime;
 internal static class MinimumPossibleMaximumWaitingTimeSolution
 {
     // Plain recursive search over every dispenser choice for every car,
-    // recomputed from scratch on each call - no memoization, BCL only. The
-    // arm the Memoizer-backed strategy below has to beat; only safe on the
-    // modest input sizes the benchmark actually exercises, since revisiting
-    // the same (index, consumed0, gap0, gap1) state repeatedly is exactly
-    // what memoization exists to avoid.
+    // recomputed from scratch on each call - no memoization, BCL only: the
+    // recursion is written out directly rather than through Memoizer's
+    // IRecurrence contract, because a baseline reaches no library type
+    // (ARCHITECTURE 17.5). The arm the Memoizer-backed strategy below has to
+    // beat; only safe on the modest input sizes the benchmark actually
+    // exercises, since revisiting the same (index, consumed0, gap0, gap1)
+    // state repeatedly is exactly what memoization exists to avoid.
     public static int MinWaitByRecursiveSearch(int[] demand, int[] fuel)
     {
         var prefix = PrefixDemand(demand);
-        var search = new CarAssignmentSearch(demand, fuel, prefix);
-        var outcome = search.Replay(new CarAssignmentState(0, 0, 0, 0), search);
+        var inputs = new RecursiveSearchInputs(demand, fuel, prefix);
+        var start = new CarAssignmentState(0, 0, 0, 0);
+        var outcome = RecursiveSearchFrom(inputs, start);
 
         return outcome.Served == 0 ? LeetCodeAnswer.None : outcome.MaxWait;
     }
@@ -41,9 +44,10 @@ internal static class MinimumPossibleMaximumWaitingTimeSolution
     // This repo's own Memoizer: the state is exactly the tuple the comment
     // above bounds (CarAssignmentState, a value type so the default
     // TState : notnull comparer's structural equality is already correct),
-    // and the recurrence is the same named search below, this time with a
-    // cache in front of it - every dispenser still able to take this car is
-    // tried, and each state that results is remembered.
+    // and the recurrence is the same search the baseline runs, written as the
+    // named CarAssignmentSearch with a cache in front of it - every dispenser
+    // still able to take this car is tried, and each state that results is
+    // remembered.
     public static int MinWaitByMemoizedSearch(int[] demand, int[] fuel)
     {
         var prefix = PrefixDemand(demand);
@@ -55,11 +59,11 @@ internal static class MinimumPossibleMaximumWaitingTimeSolution
         return outcome.Served == 0 ? LeetCodeAnswer.None : outcome.MaxWait;
     }
 
-    // The recurrence itself, shared by both arms above: `cars` is the car timeline -
+    // The recurrence itself, for the memoized arm: `cars` is the car timeline -
     // the per-car demand plus the prefix sums over it, which every step reads together -
     // the state carries the car index and both dispensers' standing, `bestFrom` is the
-    // recursion to continue through (the Memoizer's cached run, or the search's own
-    // uncached self-recursion), and the two early returns are the only exits.
+    // recursion to continue through (the Memoizer's cached run), and the two early
+    // returns are the only exits.
     private static Outcome Evaluate(
         (int[] Demand, int[] Prefix) cars, int[] fuel, CarAssignmentState state,
         IRecurrence<CarAssignmentState, Outcome> bestFrom)
@@ -120,6 +124,94 @@ internal static class MinimumPossibleMaximumWaitingTimeSolution
         return child with { MaxWait = maxWait };
     }
 
+    // The same assignment to dispenser 1: its own gap resets to the car's demand
+    // and dispenser 0's shrinks by max(0, gap1) instead.
+    private static Outcome ServeByDispenser1(
+        CarAssignmentState state, int need, IRecurrence<CarAssignmentState, Outcome> bestFrom)
+    {
+        var wait = Math.Max(0, state.Gap1);
+        var next = new CarAssignmentState(
+            state.Index + 1, state.Consumed0, Math.Max(0, state.Gap0 - Math.Max(0, state.Gap1)), need);
+        var child = bestFrom.Replay(next, bestFrom);
+        var maxWait = Math.Max(wait, child.MaxWait);
+
+        return child with { MaxWait = maxWait };
+    }
+
+    // The same step as Evaluate, as plain recursion: the two early returns are the
+    // only exits, and every assignment's remainder is searched by calling straight
+    // back in.
+    private static Outcome RecursiveSearchFrom(RecursiveSearchInputs inputs, CarAssignmentState state)
+    {
+        if (state.Index == inputs.Demand.Length)
+        {
+            return new Outcome(inputs.Demand.Length, 0);
+        }
+
+        var consumed1 = inputs.Prefix[state.Index] - state.Consumed0;
+        var remaining0 = inputs.Fuel[0] - state.Consumed0;
+        var remaining1 = inputs.Fuel[1] - consumed1;
+        var need = inputs.Demand[state.Index];
+
+        if (remaining0 < need && remaining1 < need)
+        {
+            return new Outcome(state.Index, 0);
+        }
+
+        return RecursiveBestAssignment(inputs, state, need, (remaining0, remaining1));
+    }
+
+    // Both dispensers are tried, dispenser 0 first, and each arm is skipped when
+    // its remaining fuel falls short of what this car needs.
+    private static Outcome RecursiveBestAssignment(
+        RecursiveSearchInputs inputs, CarAssignmentState state, int need, (int Remaining0, int Remaining1) room)
+    {
+        Outcome? best = null;
+
+        if (room.Remaining0 >= need)
+        {
+            var child = RecursiveServeByDispenser0(inputs, state, need);
+            best = Better(best, child);
+        }
+
+        if (room.Remaining1 >= need)
+        {
+            var child = RecursiveServeByDispenser1(inputs, state, need);
+            best = Better(best, child);
+        }
+
+        return best!.Value;
+    }
+
+    // The same assignment to dispenser 0 as ServeByDispenser0: its own gap resets to
+    // the car's demand, and dispenser 1's shrinks by max(0, gap0) - the wait this car
+    // incurs - before clamping.
+    private static Outcome RecursiveServeByDispenser0(
+        RecursiveSearchInputs inputs, CarAssignmentState state, int need)
+    {
+        var wait = Math.Max(0, state.Gap0);
+        var gap1 = Math.Max(0, state.Gap1 - wait);
+        var next = new CarAssignmentState(state.Index + 1, state.Consumed0 + need, need, gap1);
+        var child = RecursiveSearchFrom(inputs, next);
+        var maxWait = Math.Max(wait, child.MaxWait);
+
+        return child with { MaxWait = maxWait };
+    }
+
+    // The same assignment to dispenser 1 as ServeByDispenser1: its own gap resets to
+    // the car's demand, and dispenser 0's shrinks by max(0, gap1) instead.
+    private static Outcome RecursiveServeByDispenser1(
+        RecursiveSearchInputs inputs, CarAssignmentState state, int need)
+    {
+        var wait = Math.Max(0, state.Gap1);
+        var gap0 = Math.Max(0, state.Gap0 - wait);
+        var next = new CarAssignmentState(state.Index + 1, state.Consumed0, gap0, need);
+        var child = RecursiveSearchFrom(inputs, next);
+        var maxWait = Math.Max(wait, child.MaxWait);
+
+        return child with { MaxWait = maxWait };
+    }
+
     // Lexicographic pick: more served cars wins outright; a tie goes to the
     // smaller maximum wait. Served count can only rise by continuing to
     // serve cars no other branch reaches, so this alone reproduces "maximize
@@ -144,20 +236,6 @@ internal static class MinimumPossibleMaximumWaitingTimeSolution
         => candidate.Served > champion.Served ||
             (candidate.Served == champion.Served && candidate.MaxWait < champion.MaxWait);
 
-    // The same assignment to dispenser 1: its own gap resets to the car's demand
-    // and dispenser 0's shrinks by max(0, gap1) instead.
-    private static Outcome ServeByDispenser1(
-        CarAssignmentState state, int need, IRecurrence<CarAssignmentState, Outcome> bestFrom)
-    {
-        var wait = Math.Max(0, state.Gap1);
-        var next = new CarAssignmentState(
-            state.Index + 1, state.Consumed0, Math.Max(0, state.Gap0 - Math.Max(0, state.Gap1)), need);
-        var child = bestFrom.Replay(next, bestFrom);
-        var maxWait = Math.Max(wait, child.MaxWait);
-
-        return child with { MaxWait = maxWait };
-    }
-
     // Prefix[i] is the total demand of cars 0..i-1 - since every served
     // car's demand is charged to exactly one dispenser, dispenser 1's own
     // consumption is always prefix[i] - consumed0, so it never needs its
@@ -174,9 +252,12 @@ internal static class MinimumPossibleMaximumWaitingTimeSolution
         return prefix;
     }
 
+    // What the plain recursive search reads at every step and never changes: the
+    // per-car demand, both dispensers' fuel, and the prefix sums over the demand.
+    private readonly record struct RecursiveSearchInputs(int[] Demand, int[] Fuel, int[] Prefix);
+
     // The recurrence, as a named type: what one car-and-dispenser state costs, with no
-    // cache of its own. Both entry points run this same type - the memoized one behind
-    // Memoizer's run, the plain one straight through this type's own self-recursion.
+    // cache of its own. The memoized entry point runs it behind Memoizer's run.
     private sealed class CarAssignmentSearch(int[] demand, int[] fuel, int[] prefix)
         : IRecurrence<CarAssignmentState, Outcome>
     {

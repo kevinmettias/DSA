@@ -8,8 +8,10 @@ namespace DSAExperimentation.LeetCode.MostStonesRemovedWithSameRowOrColumn;
 // survivor. The answer is therefore stones.Length minus the component count, and the
 // only thing a strategy decides is how it discovers that the components are.
 //
-// Both strategies partition with this repo's own DisjointSet - the contrast between
-// them is edge discovery, not the partition structure:
+// Both strategies partition with a union-find that compresses paths and links by
+// rank - a hand-written pair of parent and rank arrays in the baseline, this repo's own
+// DisjointSet in the composed arm - so the contrast between them is edge discovery,
+// not the partition structure:
 //
 //   PairwiseScan checks every O(n^2) stone pair for a shared row or column before
 //   unioning by stone index - the textbook way to find the graph's edges.
@@ -25,11 +27,12 @@ internal static class MostStonesRemovedWithSameRowOrColumnSolution
 {
     // The naive arm: discover the edges by brute force, union by stone index, then
     // count surviving roots. Internals are deliberately the textbook ones - a nested
-    // pair scan and a BCL HashSet of roots.
+    // pair scan, parent and rank arrays for the union-find, and a BCL HashSet of roots.
     public static int RemoveStonesByPairwiseScan(int[][] stones)
     {
         var count = stones.Length;
-        var components = new DisjointSet(count);
+        var parent = SingletonParents(count);
+        var rank = new int[count];
 
         for (var i = 0; i < count; i++)
         {
@@ -37,7 +40,7 @@ internal static class MostStonesRemovedWithSameRowOrColumnSolution
             {
                 if (HasSharedRowOrColumn(stones[i], stones[j]))
                 {
-                    components.Union(i, j);
+                    UnionByRank(parent, rank, i, j);
                 }
             }
         }
@@ -46,14 +49,53 @@ internal static class MostStonesRemovedWithSameRowOrColumnSolution
 
         for (var i = 0; i < count; i++)
         {
-            roots.Add(components.Find(i));
+            var root = FindRoot(parent, i);
+            roots.Add(root);
         }
 
         return count - roots.Count;
     }
 
+    // Every stone starts as the root of its own one-stone set.
+    private static int[] SingletonParents(int count)
+    {
+        var parent = new int[count];
+
+        for (var i = 0; i < count; i++)
+        {
+            parent[i] = i;
+        }
+
+        return parent;
+    }
+
     private static bool HasSharedRowOrColumn(int[] first, int[] second) =>
         first[0] == second[0] || first[1] == second[1];
+
+    // Hangs the lower-ranked root under the higher one, so no tree grows taller than
+    // log n; a tie keeps the first root on top and raises its rank.
+    private static void UnionByRank(int[] parent, int[] rank, int first, int second)
+    {
+        var firstRoot = FindRoot(parent, first);
+        var secondRoot = FindRoot(parent, second);
+
+        if (firstRoot == secondRoot)
+        {
+            return;
+        }
+
+        if (rank[firstRoot] < rank[secondRoot])
+        {
+            (firstRoot, secondRoot) = (secondRoot, firstRoot);
+        }
+
+        parent[secondRoot] = firstRoot;
+
+        if (rank[firstRoot] == rank[secondRoot])
+        {
+            rank[firstRoot]++;
+        }
+    }
 
     // Union each stone into its row id and its column id instead of into other stones,
     // so connectivity falls out of the shared axis ids with no pair comparison at all.
@@ -77,4 +119,17 @@ internal static class MostStonesRemovedWithSameRowOrColumnSolution
 
         return stones.Length - roots.Count;
     }
+
+    // Walks up to the root, halving the path on the way so later finds take fewer steps.
+    private static int FindRoot(int[] parent, int id)
+    {
+        while (parent[id] != id)
+        {
+            parent[id] = parent[parent[id]];
+            id = parent[id];
+        }
+
+        return id;
+    }
+
 }

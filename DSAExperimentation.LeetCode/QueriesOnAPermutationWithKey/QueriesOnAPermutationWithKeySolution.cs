@@ -61,7 +61,7 @@ internal static class QueriesOnAPermutationWithKeySolution
 
         foreach (var query in queries)
         {
-            var index = IndexOf(permutation, query);
+            var index = PositionOf(permutation, query);
             result.Add(index);
             permutation.RemoveAt(index);
             permutation.Insert(FrontIndex, query);
@@ -70,7 +70,7 @@ internal static class QueriesOnAPermutationWithKeySolution
         return result;
     }
 
-    private static int IndexOf(DynamicArray<int> permutation, int value)
+    private static int PositionOf(DynamicArray<int> permutation, int value)
     {
         for (var i = 0; i < permutation.Count; i++)
         {

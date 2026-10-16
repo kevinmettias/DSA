@@ -10,6 +10,10 @@ namespace DSAExperimentation.LeetCode.MaximumSumOfSubsequenceWithNonAdjacentElem
 // answer - and therefore the running total - is never negative.
 internal static class MaximumSumOfSubsequenceWithNonAdjacentElementsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Baseline: LC 198's own House Robber recurrence recomputed over the whole
     // array from scratch after every point update - deliberately no repo
     // primitive, O(n) per query, O(n*q) overall.
@@ -24,7 +28,7 @@ internal static class MaximumSumOfSubsequenceWithNonAdjacentElementsSolution
             total += MaxNonAdjacentSum(array);
         }
 
-        return (int)(total % ModularArithmetic.Modulo);
+        return (int)(total % Modulo);
     }
 
     private static long MaxNonAdjacentSum(int[] array)

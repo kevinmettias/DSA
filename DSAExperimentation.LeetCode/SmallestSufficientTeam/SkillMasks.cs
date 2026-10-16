@@ -1,5 +1,3 @@
-using DSAExperimentation.DataStructures.HashMap;
-
 namespace DSAExperimentation.LeetCode.SmallestSufficientTeam;
 
 // LC 1125's input reduced to the two bitmasks both strategies actually search over:
@@ -25,14 +23,16 @@ internal sealed class SkillMasks(int[] personSkillMask, int fullMask)
         return new SkillMasks(BuildPersonSkillMasks(people, skillBit), (1 << reqSkills.Length) - 1);
     }
 
-    // reqSkills.Length <= 16, so each required skill gets its own bit position.
-    private static HashMap<string, int> BuildSkillBitIndex(string[] reqSkills)
+    // reqSkills.Length <= 16, so each required skill gets its own bit position. A BCL
+    // Dictionary rather than this repo's HashMap: the baseline builds its masks here
+    // too, and a baseline reaches no library type (ARCHITECTURE 17.5).
+    private static Dictionary<string, int> BuildSkillBitIndex(string[] reqSkills)
     {
-        var skillBit = new HashMap<string, int>();
+        var skillBit = new Dictionary<string, int>();
 
         for (var i = 0; i < reqSkills.Length; i++)
         {
-            skillBit.Set(reqSkills[i], i);
+            skillBit[reqSkills[i]] = i;
         }
 
         return skillBit;
@@ -40,7 +40,7 @@ internal sealed class SkillMasks(int[] personSkillMask, int fullMask)
 
     // Skills a person has that nobody requires simply never appear in the index, so
     // they contribute no bits.
-    private static int[] BuildPersonSkillMasks(string[][] people, HashMap<string, int> skillBit)
+    private static int[] BuildPersonSkillMasks(string[][] people, Dictionary<string, int> skillBit)
     {
         var personSkillMask = new int[people.Length];
 

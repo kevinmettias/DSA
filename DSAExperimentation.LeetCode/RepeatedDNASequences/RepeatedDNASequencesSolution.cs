@@ -93,19 +93,20 @@ internal static class RepeatedDNASequencesSolution
     // The fixed-window arm: a fixed 10-character window slid across the string in
     // two passes (the first collects which windows repeat, the second walks the
     // string again reporting each repeated window the first time it is met) backed
-    // by this repo's own Set<string>.
+    // by BCL HashSet<string>s. It is the benchmark's baseline, so it reaches no
+    // library type (ARCHITECTURE 17.5).
     public static List<string> FindByFixedWindowSet(string sequence)
     {
-        var seen = new Set<string>();
-        var repeated = new Set<string>();
+        var seen = new HashSet<string>();
+        var repeated = new HashSet<string>();
 
         for (var i = 0; i + SequenceLength <= sequence.Length; i++)
         {
             var window = sequence.Substring(i, SequenceLength);
 
-            if (!seen.TryAdd(window))
+            if (!seen.Add(window))
             {
-                repeated.TryAdd(window);
+                repeated.Add(window);
             }
         }
 
@@ -114,21 +115,21 @@ internal static class RepeatedDNASequencesSolution
             return [];
         }
 
-        return CollectFirstOccurrences(sequence, repeated);
+        return CollectFirstWindowOccurrences(sequence, repeated);
     }
 
     // The second pass: walk the string again, reporting each repeated window the first
     // time it is met, so the result keeps first-occurrence order and holds no duplicates.
-    private static List<string> CollectFirstOccurrences(string sequence, Set<string> repeated)
+    private static List<string> CollectFirstWindowOccurrences(string sequence, HashSet<string> repeated)
     {
-        var added = new Set<string>();
+        var added = new HashSet<string>();
         var result = new List<string>();
 
         for (var i = 0; i + SequenceLength <= sequence.Length; i++)
         {
             var window = sequence.Substring(i, SequenceLength);
 
-            if (repeated.Has(window) && added.TryAdd(window))
+            if (repeated.Contains(window) && added.Add(window))
             {
                 result.Add(window);
             }

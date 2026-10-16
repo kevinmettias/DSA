@@ -16,7 +16,9 @@ namespace DSAExperimentation.LeetCode.ManhattanDistancesOfAllArrangementsOfPiece
 // form over 0..rowCount-1 / 0..columnCount-1.
 internal static class ManhattanDistancesOfAllArrangementsOfPiecesSolution
 {
-    private const long Modulo = ModularArithmetic.Modulo;
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
 
     // The textbook answer: actually generate every pieceCount-cell arrangement
     // and, for each one, every pair inside it, and add up their Manhattan

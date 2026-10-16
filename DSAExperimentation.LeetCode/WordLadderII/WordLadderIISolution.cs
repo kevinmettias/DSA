@@ -15,6 +15,10 @@ namespace DSAExperimentation.LeetCode.WordLadderII;
 // graph itself being cyclic.
 internal static class WordLadderIISolution
 {
+    // The letters a word may mutate to: LC 126 words are lowercase English.
+    private const char FirstLetter = 'a';
+    private const char LastLetter = 'z';
+
     // The textbook answer: layered BFS building a parents-by-word map, keeping
     // every layer's parents until the whole layer finishes, so a word discovered
     // from two same-level parents keeps both.
@@ -122,7 +126,7 @@ internal static class WordLadderIISolution
         Dictionary<string, int> knownDistance,
         Dictionary<string, List<string>> nextLevel)
     {
-        foreach (var candidate in HammingGraph.OneCharacterMutations(word, StandardAlphabets.LowercaseLatin))
+        foreach (var candidate in OneLetterMutations(word))
         {
             if (!wordSet.Has(candidate) || knownDistance.ContainsKey(candidate))
             {
@@ -135,6 +139,30 @@ internal static class WordLadderIISolution
             }
 
             candidateParents.Add(word);
+        }
+    }
+
+    // Every word one letter away, position by position and then letter by letter - the
+    // layered arm's own copy of the walk HammingGraph.OneCharacterMutations performs, since
+    // a baseline reaches no library type (ARCHITECTURE 17.5).
+    private static IEnumerable<string> OneLetterMutations(string word)
+    {
+        var buffer = word.ToCharArray();
+
+        for (var position = 0; position < buffer.Length; position++)
+        {
+            var original = buffer[position];
+
+            for (var replacement = FirstLetter; replacement <= LastLetter; replacement++)
+            {
+                if (replacement != original)
+                {
+                    buffer[position] = replacement;
+                    yield return new string(buffer);
+                }
+            }
+
+            buffer[position] = original;
         }
     }
 

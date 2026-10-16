@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfWaysToWearDifferentHatsToEachOther;
 
@@ -20,18 +19,63 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToWearDifferentHatsToEachOther
 // arm re-explores each one from scratch.
 internal static class NumberOfWaysToWearDifferentHatsToEachOtherSolution
 {
-    // The textbook answer: the same plain recursion with no cache behind it - the
-    // recurrence below invoked with itself as its own recursion, rather than handed
-    // to this repo's Memoizer. It is the arm the memoized strategy beneath has to
-    // justify itself against, and putting it here is what finally gets it asserted.
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
+    // The textbook answer: the same recurrence as plain recursion with no cache
+    // behind it - written out as a method that calls itself, rather than handed to
+    // this repo's Memoizer through its IRecurrence contract, because a baseline
+    // reaches no library type (ARCHITECTURE 17.5). It is the arm the memoized
+    // strategy beneath has to justify itself against, and putting it here is what
+    // finally gets it asserted.
     public static int NumberWaysByBruteForceRecursion(int[][] hats) =>
         NumberWaysByBruteForceRecursion(HatPreferences.Build(hats));
 
     public static int NumberWaysByBruteForceRecursion(HatPreferences preferences)
     {
-        var ways = new WaysByHatAndMask(preferences);
+        var start = (preferences.HatCount, preferences.EveryoneMask);
 
-        return (int)ways.Replay((preferences.HatCount, preferences.EveryoneMask), ways);
+        return (int)BruteForceWays(preferences, start);
+    }
+
+    // The recurrence as plain recursion: hat `hat` is either left unworn, or given to
+    // one person who likes it and still needs one, each remainder recounted from
+    // scratch. mask == 0 short-circuits first, as in WaysByHatAndMask.
+    private static long BruteForceWays(HatPreferences preferences, (int Hat, int Mask) state)
+    {
+        var (hat, mask) = state;
+
+        if (mask == 0)
+        {
+            return 1L;
+        }
+
+        if (hat == 0)
+        {
+            return 0L;
+        }
+
+        var leaveHatUnworn = BruteForceWays(preferences, (hat - 1, mask));
+
+        return BruteForceAssignments(preferences, state, leaveHatUnworn);
+    }
+
+    private static long BruteForceAssignments(HatPreferences preferences, (int Hat, int Mask) state, long total)
+    {
+        var (hat, mask) = state;
+
+        foreach (var person in preferences.PeopleWhoLike(hat))
+        {
+            var personBit = 1 << person;
+
+            if ((mask & personBit) != 0)
+            {
+                total = (total + BruteForceWays(preferences, (hat - 1, mask & ~personBit))) % Modulo;
+            }
+        }
+
+        return total;
     }
 
     // The same recurrence routed through this repo's own Memoizer, keyed on the
@@ -91,7 +135,7 @@ internal static class NumberOfWaysToWearDifferentHatsToEachOtherSolution
 
             if ((mask & personBit) != 0)
             {
-                total = (total + rest.Replay((hat - 1, mask & ~personBit), rest)) % ModularArithmetic.Modulo;
+                total = (total + rest.Replay((hat - 1, mask & ~personBit), rest)) % Modulo;
             }
         }
 

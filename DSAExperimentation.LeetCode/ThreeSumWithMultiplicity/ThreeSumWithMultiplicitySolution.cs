@@ -13,6 +13,10 @@ namespace DSAExperimentation.LeetCode.ThreeSumWithMultiplicity;
 // span's combinations in closed form.
 internal static class ThreeSumWithMultiplicitySolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Need at least 2 more elements after the anchor for a triple.
     private const int RemainingPairSize = 2;
 
@@ -34,7 +38,7 @@ internal static class ThreeSumWithMultiplicitySolution
             }
         }
 
-        return (int)(count % ModularArithmetic.Modulo);
+        return (int)(count % Modulo);
     }
 
     private static long CountThirdIndexMatches(int[] arr, int firstIndex, int secondIndex, int target)

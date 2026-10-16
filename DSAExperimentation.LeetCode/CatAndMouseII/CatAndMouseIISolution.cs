@@ -9,11 +9,11 @@ namespace DSAExperimentation.LeetCode.CatAndMouseII;
 // Cat moves and Mouse only wins the state if EVERY reachable Cat move still leads
 // to a mouse-win state.
 //
-// Both strategies evaluate exactly that recurrence and differ only in whether a
-// state's result is remembered: the baseline re-explores every repeated board
-// position from scratch, the composed arm routes the identical body through this
-// repo's own Memoizer - the CanIWin/PredictTheWinner shape, just with a 2D position
-// pair instead of a bitmask or an interval.
+// Both strategies evaluate exactly that recurrence and differ in whether a state's
+// result is remembered: the baseline re-explores every repeated board position from
+// scratch over a plain bool[,] board, the composed arm routes the identical body
+// through this repo's own Memoizer over a Grid - the CanIWin/PredictTheWinner shape,
+// just with a 2D position pair instead of a bitmask or an interval.
 internal static class CatAndMouseIISolution
 {
     private const char WallMark = '#';
@@ -37,10 +37,11 @@ internal static class CatAndMouseIISolution
     // The textbook answer: the same minimax recursion with no cache at all, so every
     // repeated board position is re-derived. Deliberately written without this
     // repo's Memoizer - it is the arm the composed strategy below has to justify
-    // itself against.
+    // itself against - and over a plain passability array rather than this repo's
+    // Grid: a baseline reaches no library type (ARCHITECTURE 17.5).
     public static bool CanMouseWinByExhaustiveRecursion(string[] grid, int catJump, int mouseJump)
     {
-        var (context, start) = ParseGrid(grid, catJump, mouseJump);
+        var (context, start) = ParsePlainGrid(grid, catJump, mouseJump);
 
         return CanMouseWinWithoutMemo(start, context);
     }
@@ -54,9 +55,42 @@ internal static class CatAndMouseIISolution
         return Memoizer.Memoize<GameState, bool>(start, new CanMouseWinUnderPlay(context));
     }
 
-    private static bool CanMouseWinWithoutMemo(GameState state, GameContext context)
+    // The baseline's ParseGrid: the same fixed shape, with the walkable cells kept as
+    // a plain array instead of a Grid.
+    private static (PlainGameContext Context, GameState Start) ParsePlainGrid(
+        string[] grid, int catJump, int mouseJump)
     {
-        if (Decided(state, context) is { } decided)
+        var passable = BuildPassableCells(grid);
+
+        // A two-dimensional array's Length counts every cell, rows times columns.
+        var turnCap = passable.Length * TurnCapCellMultiplier;
+        var food = Locate(grid, FoodMark);
+        var context = new PlainGameContext(passable, food, turnCap, mouseJump, catJump);
+        var mouse = Locate(grid, MouseMark);
+        var cat = Locate(grid, CatMark);
+
+        return (context, new GameState(mouse, cat, Turn: 0));
+    }
+
+    // Every cell but a wall is walkable.
+    private static bool[,] BuildPassableCells(string[] grid)
+    {
+        var passable = new bool[grid.Length, grid[0].Length];
+
+        for (var row = 0; row < grid.Length; row++)
+        {
+            for (var col = 0; col < grid[row].Length; col++)
+            {
+                passable[row, col] = grid[row][col] != WallMark;
+            }
+        }
+
+        return passable;
+    }
+
+    private static bool CanMouseWinWithoutMemo(GameState state, PlainGameContext context)
+    {
+        if (DecidedOnPlainBoard(state, context) is { } decided)
         {
             return decided;
         }
@@ -66,11 +100,33 @@ internal static class CatAndMouseIISolution
         return mouseToMove ? CanMouseWinWithSomeMove(state, context) : CanMouseWinAfterEveryCatMove(state, context);
     }
 
-    private static bool CanMouseWinWithSomeMove(GameState state, GameContext context)
+    // The baseline's copy of Decided, reading the same food cell and turn budget from
+    // its own context.
+    private static bool? DecidedOnPlainBoard(GameState state, PlainGameContext context)
+    {
+        if (state.Mouse == state.Cat)
+        {
+            return false;
+        }
+
+        if (state.Mouse == context.Food)
+        {
+            return true;
+        }
+
+        if (state.Cat == context.Food)
+        {
+            return false;
+        }
+
+        return state.Turn >= context.TurnCap ? false : null;
+    }
+
+    private static bool CanMouseWinWithSomeMove(GameState state, PlainGameContext context)
     {
         var limit = new StepLimit(context.MouseJump, Blocker: null);
 
-        foreach (var next in ReachableCells(state.Mouse, limit, context.Board))
+        foreach (var next in PlainReachableCells(state.Mouse, limit, context.Passable))
         {
             if (CanMouseWinWithoutMemo(state with { Mouse = next, Turn = state.Turn + 1 }, context))
             {
@@ -81,11 +137,11 @@ internal static class CatAndMouseIISolution
         return false;
     }
 
-    private static bool CanMouseWinAfterEveryCatMove(GameState state, GameContext context)
+    private static bool CanMouseWinAfterEveryCatMove(GameState state, PlainGameContext context)
     {
         var limit = new StepLimit(context.CatJump, state.Mouse);
 
-        foreach (var next in ReachableCells(state.Cat, limit, context.Board))
+        foreach (var next in PlainReachableCells(state.Cat, limit, context.Passable))
         {
             if (!CanMouseWinWithoutMemo(state with { Cat = next, Turn = state.Turn + 1 }, context))
             {
@@ -96,9 +152,52 @@ internal static class CatAndMouseIISolution
         return true;
     }
 
-    // The four terminal verdicts both strategies share, or null while the game is
-    // still open. Capture is checked first, then Mouse reaching food, then Cat
-    // reaching food, then the turn budget running out.
+    // The baseline's ReachableCells, over the plain passability array.
+    private static IEnumerable<(int Row, int Col)> PlainReachableCells(
+        (int Row, int Col) origin, StepLimit limit, bool[,] passable)
+    {
+        yield return origin;
+
+        foreach (var direction in Directions)
+        {
+            foreach (var cell in PlainStepsInDirection(origin, direction, limit, passable))
+            {
+                yield return cell;
+            }
+        }
+    }
+
+    // One direction's worth of PlainReachableCells.
+    private static IEnumerable<(int Row, int Col)> PlainStepsInDirection(
+        (int Row, int Col) origin, (int Row, int Col) direction, StepLimit limit, bool[,] passable)
+    {
+        for (var step = 1; step <= limit.MaxSteps; step++)
+        {
+            var cell = (Row: origin.Row + (direction.Row * step), Col: origin.Col + (direction.Col * step));
+
+            if (!IsPassableCell(passable, cell.Row, cell.Col))
+            {
+                break;
+            }
+
+            yield return cell;
+
+            if (limit.Blocker is { } blocker && blocker == cell)
+            {
+                break;
+            }
+        }
+    }
+
+    private static bool IsPassableCell(bool[,] passable, int row, int col)
+        => IsOnBoard(passable, row, col) && passable[row, col];
+
+    private static bool IsOnBoard(bool[,] passable, int row, int col)
+        => row >= 0 && row < passable.GetLength(0) && col >= 0 && col < passable.GetLength(1);
+
+    // The four terminal verdicts, or null while the game is still open. Capture is
+    // checked first, then Mouse reaching food, then Cat reaching food, then the turn
+    // budget running out. The baseline keeps its own copy, DecidedOnPlainBoard.
     private static bool? Decided(GameState state, GameContext context)
     {
         if (state.Mouse == state.Cat)
@@ -119,8 +218,8 @@ internal static class CatAndMouseIISolution
         return state.Turn >= context.TurnCap ? false : null;
     }
 
-    // Reads the grid into the fixed shape both recurrences need: the passable board,
-    // the food cell, the turn budget, both jump distances, and the two players'
+    // Reads the grid into the fixed shape the memoized recurrence needs: the passable
+    // board, the food cell, the turn budget, both jump distances, and the two players'
     // starting cells.
     private static (GameContext Context, GameState Start) ParseGrid(string[] grid, int catJump, int mouseJump)
     {
@@ -208,6 +307,11 @@ internal static class CatAndMouseIISolution
     // bundled so the recurrence bodies stay within the parameter budget.
     private readonly record struct GameContext(
         Grid Board, (int Row, int Col) Food, int TurnCap, int MouseJump, int CatJump);
+
+    // The baseline's GameContext: the same fixed facts, with the walkable cells as a
+    // plain array.
+    private readonly record struct PlainGameContext(
+        bool[,] Passable, (int Row, int Col) Food, int TurnCap, int MouseJump, int CatJump);
 
     // The part of the position that varies: where each player stands and whose move
     // it is. This is the memo key.

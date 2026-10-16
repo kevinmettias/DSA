@@ -28,13 +28,13 @@ internal static class MinimumNumberOfMovesToMakePalindromeSolution
 
         while (leftIndex < rightIndex)
         {
-            (leftIndex, rightIndex, moves) = ResolveOuterPair(chars, leftIndex, rightIndex, moves);
+            (leftIndex, rightIndex, moves) = ResolveOuterListPair(chars, leftIndex, rightIndex, moves);
         }
 
         return moves;
     }
 
-    private static (int I, int J, int Moves) ResolveOuterPair(
+    private static (int I, int J, int Moves) ResolveOuterListPair(
         List<char> chars, int leftIndex, int rightIndex, int moves)
     {
         if (chars[leftIndex] == chars[rightIndex])
@@ -50,14 +50,14 @@ internal static class MinimumNumberOfMovesToMakePalindromeSolution
         }
 
         return matchIndex == leftIndex
-            ? NudgeMiddleCharacter(chars, leftIndex, rightIndex, moves)
-            : WalkMatchInward(chars, matchIndex, (leftIndex, rightIndex), moves);
+            ? NudgeMiddleListCharacter(chars, leftIndex, rightIndex, moves)
+            : MoveListMatchInward(chars, matchIndex, (leftIndex, rightIndex), moves);
     }
 
     // No match for chars[leftIndex] anywhere in (leftIndex, rightIndex]: it is the lone
     // middle character of an odd-length palindrome, so it moves one step inward and the
     // same leftIndex is retried against the new occupant.
-    private static (int I, int J, int Moves) NudgeMiddleCharacter(
+    private static (int I, int J, int Moves) NudgeMiddleListCharacter(
         List<char> chars, int leftIndex, int rightIndex, int moves)
     {
         var middle = chars[leftIndex];
@@ -67,7 +67,7 @@ internal static class MinimumNumberOfMovesToMakePalindromeSolution
         return (leftIndex, rightIndex, moves + 1);
     }
 
-    private static (int I, int J, int Moves) WalkMatchInward(
+    private static (int I, int J, int Moves) MoveListMatchInward(
         List<char> chars, int matchIndex, (int I, int J) outer, int moves)
     {
         var match = chars[matchIndex];

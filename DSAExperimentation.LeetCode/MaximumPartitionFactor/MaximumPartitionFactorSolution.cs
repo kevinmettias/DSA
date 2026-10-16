@@ -38,7 +38,7 @@ internal static class MaximumPartitionFactorSolution
 
         foreach (var candidate in DistinctPairwiseDistances(points, DistanceOrder.Descending))
         {
-            if (IsBipartiteAtThreshold(points, candidate))
+            if (IsBipartiteByBfsAtThreshold(points, candidate))
             {
                 return candidate;
             }
@@ -113,7 +113,9 @@ internal static class MaximumPartitionFactorSolution
         }
     }
 
-    private static bool IsBipartiteAtThreshold(int[][] points, int threshold)
+    // The baseline's own conflict graph at this threshold: a plain adjacency list over
+    // point indices, 2-colored by the BFS below.
+    private static bool IsBipartiteByBfsAtThreshold(int[][] points, int threshold)
     {
         var adjacency = new List<int>[points.Length];
 

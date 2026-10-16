@@ -11,6 +11,10 @@ namespace DSAExperimentation.LeetCode.CountWaysToChooseCoprimeIntegersFromRows;
 // each other without either restating the algorithm.
 internal static class CountWaysToChooseCoprimeIntegersFromRowsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Textbook DFS: pick one value per row, thread the running GCD of every pick
     // made so far, and count the leaves where that running GCD is 1. Correct at
     // any matrix size, just exponential in the row count (n^m) - exactly the arm
@@ -72,7 +76,7 @@ internal static class CountWaysToChooseCoprimeIntegersFromRowsSolution
             ways += CountFromRow(mat, rowIndex + 1, gcdSoFar);
         }
 
-        return ways % ModularArithmetic.Modulo;
+        return ways % Modulo;
     }
 
     private static int Gcd(int firstValue, int secondValue) =>

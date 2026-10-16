@@ -8,10 +8,11 @@ namespace DSAExperimentation.LeetCode.MaximizeCountOfDistinctPrimesAfterSplit;
 // (1 <= k < n) maximizing (distinct primes in nums[0..k-1]) plus (distinct
 // primes in nums[k..n-1]).
 //
-// Both strategies share the same Sieve of Eratosthenes over every value
-// nums/queries can ever hold - this folder's own PrimeSieve - and differ only in
-// how they answer "best split" per query:
-// the brute-force arm re-scans both sides from scratch with a fresh Set<int>
+// Both strategies run the same Sieve of Eratosthenes over every value
+// nums/queries can ever hold - this folder's own PrimeSieve for the composed arm,
+// a BCL bool[] restatement of it for the baseline, which reaches no library type
+// (ARCHITECTURE 17.5) - and differ only in how they answer "best split" per query:
+// the brute-force arm re-scans both sides from scratch with a fresh HashSet<int>
 // for every candidate k, while the composed arm precomputes one prefix pass and
 // folds a single suffix pass into it, each side counted through this repo's own
 // Set<int>.
@@ -20,12 +21,16 @@ internal static class MaximizeCountOfDistinctPrimesAfterSplitSolution
     // nums[i] and queries[i][1] are both bounded by this LeetCode constraint.
     private const int MaxValue = 100_000;
 
+    // The smallest prime: every value below it counts as composite in the baseline's
+    // sieve, so "is the slot clear" is the whole primality test, 0 and 1 included.
+    private const int SmallestPrime = 2;
+
     // O(n) work per candidate split, O(n) candidate splits, O(q) queries - the
     // literal reading of the problem, and the arm the prefix/suffix scan below
     // has to beat.
     public static int[] MaxDistinctPrimeCountsByBruteForce(int[] nums, int[][] queries)
     {
-        var isComposite = PrimeSieve.BuildCompositeTracker(MaxValue);
+        var isComposite = BuildBclCompositeTracker(MaxValue);
         var answers = new int[queries.Length];
 
         for (var q = 0; q < queries.Length; q++)
@@ -37,7 +42,35 @@ internal static class MaximizeCountOfDistinctPrimesAfterSplitSolution
         return answers;
     }
 
-    private static int BestSplitByRescanningEachSide(int[] nums, DynamicArray<bool> isComposite)
+    // The same sieve as PrimeSieve.BuildCompositeTracker, restated over a BCL bool[] for
+    // the baseline arm: slot i is true when i is composite. The multiple's own index is
+    // taken as a long before it is squared, so the loop's exit test cannot overflow.
+    private static bool[] BuildBclCompositeTracker(int bound)
+    {
+        var isComposite = new bool[bound + 1];
+
+        for (var i = 0; i <= bound; i++)
+        {
+            isComposite[i] = i < SmallestPrime;
+        }
+
+        for (var i = SmallestPrime; (long)i * i <= bound; i++)
+        {
+            if (isComposite[i])
+            {
+                continue;
+            }
+
+            for (var multiple = i * i; multiple <= bound; multiple += i)
+            {
+                isComposite[multiple] = true;
+            }
+        }
+
+        return isComposite;
+    }
+
+    private static int BestSplitByRescanningEachSide(int[] nums, bool[] isComposite)
     {
         var best = 0;
 
@@ -53,17 +86,16 @@ internal static class MaximizeCountOfDistinctPrimesAfterSplitSolution
     }
 
     // The distinct primes among nums[start..end), counted from scratch through a fresh
-    // Set<int> - the O(n) rescan this arm repeats for each side of each candidate split.
-    private static int CountDistinctPrimes(
-        int[] nums, DynamicArray<bool> isComposite, int start, int end)
+    // HashSet<int> - the O(n) rescan this arm repeats for each side of each candidate split.
+    private static int CountDistinctPrimes(int[] nums, bool[] isComposite, int start, int end)
     {
-        var primes = new Set<int>();
+        var primes = new HashSet<int>();
 
         for (var i = start; i < end; i++)
         {
-            if (!isComposite.Get(nums[i]))
+            if (!isComposite[nums[i]])
             {
-                primes.TryAdd(nums[i]);
+                primes.Add(nums[i]);
             }
         }
 

@@ -19,6 +19,10 @@ namespace DSAExperimentation.LeetCode.CountValidSequences;
 // AnAntColony uses, here without a tree to fold over).
 internal static class CountValidSequencesSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // The textbook arm: no precomputed table, each nCr(n, r) multiplies out its
     // own numerator and denominator from scratch and divides by one modular
     // inverse - correct on its own, but O(k) of work per call with no reuse
@@ -49,7 +53,7 @@ internal static class CountValidSequencesSolution
     }
 
     private static int Difference(long total, long odd) =>
-        (int)((total - odd + ModularArithmetic.Modulo) % ModularArithmetic.Modulo);
+        (int)((total - odd + Modulo) % Modulo);
 
     // An all-odd sequence exists only when n + k is even: the substitution
     // x_i = 2y_i - 1 makes the k odd entries sum to (n + k) / 2, which has to be a
@@ -74,10 +78,34 @@ internal static class CountValidSequencesSolution
 
         for (var i = 0; i < chooseCount; i++)
         {
-            numerator = numerator * (itemCount - i) % ModularArithmetic.Modulo;
-            denominator = denominator * (i + 1) % ModularArithmetic.Modulo;
+            numerator = numerator * (itemCount - i) % Modulo;
+            denominator = denominator * (i + 1) % Modulo;
         }
 
-        return numerator * ModularArithmetic.Inverse(denominator) % ModularArithmetic.Modulo;
+        return numerator * ModInverse(denominator) % Modulo;
     }
+
+    // value^exponent mod Modulo by repeated squaring, restated rather than called on
+    // ModularArithmetic for the same reason as Modulo itself.
+    private static long ModPower(long value, long exponent)
+    {
+        var result = 1L;
+        value %= Modulo;
+
+        while (exponent > 0)
+        {
+            if ((exponent & 1) == 1)
+            {
+                result = result * value % Modulo;
+            }
+
+            value = value * value % Modulo;
+            exponent >>= 1;
+        }
+
+        return result;
+    }
+
+    // Fermat's little theorem: for the prime Modulo, value^(Modulo - 2) is value's inverse.
+    private static long ModInverse(long value) => ModPower(value, Modulo - 2);
 }

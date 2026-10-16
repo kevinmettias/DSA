@@ -1,4 +1,3 @@
-using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.Domain.Modular;
 
@@ -21,55 +20,16 @@ internal static class SpecialPermutationsSolution
     // first element is unconstrained and every element may go first.
     private const int NoPreviousElement = -1;
 
-    // Enumerate every one of the n! full permutations with this repo's own
-    // Backtrack.Search - the same choose/candidates/unchoose shape
-    // PermutationsSolution uses - and check the adjacency rule only after a
-    // complete ordering has been built. O(n! * n), the arm the bitmask DP has
+    // Enumerate every one of the n! full permutations by plain choose/recurse/unchoose
+    // recursion - the textbook permutations walk - and check the adjacency rule only
+    // after a complete ordering has been built. O(n! * n), the arm the bitmask DP has
     // to beat. The count is reported unreduced: this arm is only viable at
     // lengths where n! cannot come close to the modulus.
     public static int CountByBruteForceBacktracking(int[] nums)
     {
-        var count = 0;
         var state = new PermutationState(nums.Length);
 
-        Backtrack.Search<PermutationState, int>(
-            state,
-            s => s.Values.Count == nums.Length,
-            s => s.Values.Count == nums.Length
-                ? NoCandidates()
-                : UnplacedCandidates(s, nums),
-            (s, i) => { s.Used[i] = true; s.Values.Add(nums[i]); },
-            (s, i) => { s.Used[i] = false; s.Values.RemoveAt(s.Values.Count - 1); },
-            s =>
-            {
-                if (IsSpecial(s.Values))
-                {
-                    count++;
-                }
-            });
-
-        return count;
-    }
-
-    // No candidate remains: every element has already been placed.
-    private static IEnumerable<int> NoCandidates() => [];
-
-    // Every element still unplaced, in index order - the candidates the walk may
-    // choose next.
-    private static IEnumerable<int> UnplacedCandidates(PermutationState state, int[] nums) =>
-        Enumerable.Range(0, nums.Length).Where(i => !state.Used[i]);
-
-    private static bool IsSpecial(List<int> permutation)
-    {
-        for (var i = 0; i < permutation.Count - 1; i++)
-        {
-            if (!CanFollow(permutation[i], permutation[i + 1]))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return CountSpecialOrderings(state, nums);
     }
 
     // A single Memoizer call over state (Remaining, Last): Remaining is the set
@@ -89,6 +49,70 @@ internal static class SpecialPermutationsSolution
             (fullMask, NoPreviousElement),
             new PermutationCompletion(nums));
     }
+
+    // A candidate is skipped when it is no longer unplaced, or when it cannot follow
+    // the last placed element under the pair rule.
+    private static bool ShouldSkipCandidate((int Remaining, int Last) state, int next, int[] nums) =>
+        (state.Remaining & (1 << next)) == 0 || IsPairRuleBroken(state.Last, next, nums);
+
+    // A candidate cannot follow the last placed element unless one of the two
+    // divides the other; with nothing placed yet there is no pair to break.
+    private static bool IsPairRuleBroken(int last, int next, int[] nums)
+        => last != NoPreviousElement && !CanFollow(nums[last], nums[next]);
+
+    // One node of the permutation tree: a complete ordering counts once when it is
+    // special, a shorter one sums the counts below each element it can place next.
+    private static int CountSpecialOrderings(PermutationState state, int[] nums)
+    {
+        if (state.Values.Count != nums.Length)
+        {
+            return CountByPlacingEachUnplaced(state, nums);
+        }
+
+        var isSpecial = IsSpecial(state.Values);
+
+        return isSpecial ? 1 : 0;
+    }
+
+    // Every element still unplaced, in index order: place it, count below it, take it
+    // back.
+    private static int CountByPlacingEachUnplaced(PermutationState state, int[] nums)
+    {
+        var count = 0;
+
+        for (var i = 0; i < nums.Length; i++)
+        {
+            if (state.Used[i])
+            {
+                continue;
+            }
+
+            state.Used[i] = true;
+            state.Values.Add(nums[i]);
+            count += CountSpecialOrderings(state, nums);
+            state.Used[i] = false;
+            state.Values.RemoveAt(state.Values.Count - 1);
+        }
+
+        return count;
+    }
+
+    private static bool IsSpecial(List<int> permutation)
+    {
+        for (var i = 0; i < permutation.Count - 1; i++)
+        {
+            if (!CanFollow(permutation[i], permutation[i + 1]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // The adjacency rule itself, stated once for both arms: two elements may sit
+    // next to each other exactly when one divides the other.
+    private static bool CanFollow(int placed, int next) => placed % next == 0 || next % placed == 0;
 
     // How many legal completions follow a state, named: every still-unplaced element
     // that the pair rule allows may go next, and each one's own completions are added
@@ -119,20 +143,6 @@ internal static class SpecialPermutationsSolution
             return total;
         }
     }
-
-    // A candidate is skipped when it is no longer unplaced, or when it cannot follow
-    // the last placed element under the pair rule.
-    private static bool ShouldSkipCandidate((int Remaining, int Last) state, int next, int[] nums) =>
-        (state.Remaining & (1 << next)) == 0 || IsPairRuleBroken(state.Last, next, nums);
-
-    // A candidate cannot follow the last placed element unless one of the two
-    // divides the other; with nothing placed yet there is no pair to break.
-    private static bool IsPairRuleBroken(int last, int next, int[] nums)
-        => last != NoPreviousElement && !CanFollow(nums[last], nums[next]);
-
-    // The adjacency rule itself, stated once for both arms: two elements may sit
-    // next to each other exactly when one divides the other.
-    private static bool CanFollow(int placed, int next) => placed % next == 0 || next % placed == 0;
 
     private sealed record PermutationState
     {

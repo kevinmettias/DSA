@@ -61,7 +61,8 @@ internal static class DivideNodesIntoTheMaximumNumberOfGroupsSolution
 
         for (var node = FirstNode; node < neighbors.Length; node++)
         {
-            RecordBest(bestByComponent, componentRoots[node], EccentricityFrom(neighbors, node) + 1);
+            var eccentricity = EccentricityByDistanceArray(neighbors, node);
+            RecordBest(bestByComponent, componentRoots[node], eccentricity + 1);
         }
 
         return bestByComponent.Values.Sum();
@@ -128,7 +129,8 @@ internal static class DivideNodesIntoTheMaximumNumberOfGroupsSolution
         return true;
     }
 
-    private static int EccentricityFrom(int[][] neighbors, int start)
+    // The greatest BFS distance from start, kept in a plain distance array.
+    private static int EccentricityByDistanceArray(int[][] neighbors, int start)
     {
         var distance = new int[neighbors.Length];
         Array.Fill(distance, Unreached);

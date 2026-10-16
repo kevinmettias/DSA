@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.StringMatching;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.StringTransformation;
 
@@ -32,10 +31,14 @@ namespace DSAExperimentation.LeetCode.StringTransformation;
 // needs no concatenation or sentinel, O(n).
 internal static class StringTransformationSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // (-1)^k reduced mod 1e9+7 so the closed form stays in nonnegative residues:
     // +1 when k is even, and Modulo - 1 - which IS -1 modulo the prime - when odd.
     private const long EvenExponentSign = 1;
-    private const long OddExponentSign = ModularArithmetic.Modulo - EvenExponentSign;
+    private const long OddExponentSign = Modulo - EvenExponentSign;
 
     // The textbook baseline: rebuild every rotation position in place and compare
     // it against the target one character at a time. Deliberately written without
@@ -112,7 +115,7 @@ internal static class StringTransformationSolution
     // t != s can never be reached by a walk that ends where it started, so each of
     // the matchCount positions spelling t contributes g(k).
     private static int WaysOntoADifferentRotation(int length, int matchCount, long operations)
-        => (int)((long)matchCount * WalksToADifferentNode(length, operations) % ModularArithmetic.Modulo);
+        => (int)((long)matchCount * WalksToADifferentNode(length, operations) % Modulo);
 
     // t == s can also be reached by returning to the start node, so the start's own
     // f(k) applies once and the other periodCount - 1 positions spelling s each
@@ -120,20 +123,20 @@ internal static class StringTransformationSolution
     private static int WaysBackToAnEqualRotation(int length, int periodCount, long operations)
     {
         var walksElsewhere = WalksToADifferentNode(length, operations);
-        var walksBack = (walksElsewhere + ParitySign(operations)) % ModularArithmetic.Modulo;
-        var walksToAnEqualPeer = (long)(periodCount - 1) * walksElsewhere % ModularArithmetic.Modulo;
+        var walksBack = (walksElsewhere + ParitySign(operations)) % Modulo;
+        var walksToAnEqualPeer = (long)(periodCount - 1) * walksElsewhere % Modulo;
 
-        return (int)((walksBack + walksToAnEqualPeer) % ModularArithmetic.Modulo);
+        return (int)((walksBack + walksToAnEqualPeer) % Modulo);
     }
 
     // g(k) = ((n-1)^k - (-1)^k) / n: length-k walks on K_n between two distinct
     // nodes. Dividing by n is multiplying by its Fermat inverse mod 1e9+7.
     private static long WalksToADifferentNode(int length, long operations)
     {
-        var power = ModularArithmetic.Power(length - 1, operations);
-        var difference = (power - ParitySign(operations) + ModularArithmetic.Modulo) % ModularArithmetic.Modulo;
+        var power = ModPower(length - 1, operations);
+        var difference = (power - ParitySign(operations) + Modulo) % Modulo;
 
-        return difference * ModularArithmetic.Inverse(length) % ModularArithmetic.Modulo;
+        return difference * ModInverse(length) % Modulo;
     }
 
     // (-1)^k, the alternating term in both closed forms.
@@ -146,4 +149,28 @@ internal static class StringTransformationSolution
 
         return OddExponentSign;
     }
+
+    // value^exponent mod Modulo by repeated squaring, restated rather than called on
+    // ModularArithmetic for the same reason as Modulo itself.
+    private static long ModPower(long value, long exponent)
+    {
+        var result = 1L;
+        value %= Modulo;
+
+        while (exponent > 0)
+        {
+            if ((exponent & 1) == 1)
+            {
+                result = result * value % Modulo;
+            }
+
+            value = value * value % Modulo;
+            exponent >>= 1;
+        }
+
+        return result;
+    }
+
+    // Fermat's little theorem: for the prime Modulo, value^(Modulo - 2) is value's inverse.
+    private static long ModInverse(long value) => ModPower(value, Modulo - 2);
 }

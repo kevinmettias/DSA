@@ -84,14 +84,16 @@ internal static class FindEdgesInShortestPathsSolution
             var edge = edges[i];
             var (a, b, w) = (edge[0], edge[1], (long)edge[2]);
 
-            answer[i] = IsOnShortestPath(distFromStart, distFromEnd, (a, b, w), shortest)
-                || IsOnShortestPath(distFromStart, distFromEnd, (b, a, w), shortest);
+            answer[i] = IsOnShortestPathByDistanceArrays(distFromStart, distFromEnd, (a, b, w), shortest)
+                || IsOnShortestPathByDistanceArrays(distFromStart, distFromEnd, (b, a, w), shortest);
         }
 
         return answer;
     }
 
-    private static bool IsOnShortestPath(
+    // The baseline's own per-orientation test, named apart from the composed arm's
+    // dictionary-keyed IsOnShortestPath below: an unreached end reads as long.MaxValue.
+    private static bool IsOnShortestPathByDistanceArrays(
         long[] distFromStart, long[] distFromEnd, (int U, int V, long W) edge, long shortest)
         => distFromStart[edge.U] != long.MaxValue && distFromEnd[edge.V] != long.MaxValue
             && distFromStart[edge.U] + edge.W + distFromEnd[edge.V] == shortest;

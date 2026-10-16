@@ -8,6 +8,10 @@ namespace DSAExperimentation.LeetCode.FindAllGoodStrings;
 // [s1, s2] lexicographically and do not contain evil as a substring, modulo 1e9+7.
 internal static class FindAllGoodStringsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // The textbook answer: walk every candidate from s1 to s2 in lexicographic
     // order and ask the BCL whether it contains evil. Deliberately written without
     // this repo's primitives - it is the arm the composed solution below has to
@@ -26,7 +30,7 @@ internal static class FindAllGoodStringsSolution
 
             if (candidate.IndexOf(evil.Text, StringComparison.Ordinal) < 0)
             {
-                count = (count + 1) % ModularArithmetic.Modulo;
+                count = (count + 1) % Modulo;
             }
 
             if (string.CompareOrdinal(candidate, s2.Text) >= 0)

@@ -15,6 +15,10 @@ namespace DSAExperimentation.LeetCode.DecodeWaysII;
 // ordinary recursion.
 internal static class DecodeWaysIISolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // The textbook answer: a BCL long[] filled from the end, dp[i] = ways to
     // decode digits[i..]. Deliberately written without this repo's primitives - it is
     // the arm the memoized strategy below has to justify itself against.
@@ -30,11 +34,11 @@ internal static class DecodeWaysIISolution
                 continue;
             }
 
-            dp[i] = SingleWays(digits[i]) * dp[i + 1] % ModularArithmetic.Modulo;
+            dp[i] = SingleWays(digits[i]) * dp[i + 1] % Modulo;
 
             if (i + 1 < digits.Length)
             {
-                dp[i] = (dp[i] + (PairWays(digits[i], digits[i + 1]) * dp[i + DecodeWaysIIRecurrence.PairLength])) % ModularArithmetic.Modulo;
+                dp[i] = (dp[i] + (PairWays(digits[i], digits[i + 1]) * dp[i + DecodeWaysIIRecurrence.PairLength])) % Modulo;
             }
         }
 

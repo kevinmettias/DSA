@@ -9,6 +9,10 @@ namespace DSAExperimentation.LeetCode.CountNumberOfBalancedPermutations;
 // one contract.
 internal static class CountNumberOfBalancedPermutationsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     private const int DigitCount = 10;
 
     // Textbook baseline: every distinct permutation of num's characters, deduped
@@ -31,7 +35,7 @@ internal static class CountNumberOfBalancedPermutationsSolution
             }
         }
 
-        return balanced % ModularArithmetic.Modulo;
+        return balanced % Modulo;
     }
 
     private static bool IsBalanced(string permutation)

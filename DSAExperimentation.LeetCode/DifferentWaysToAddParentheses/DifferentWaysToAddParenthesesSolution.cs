@@ -15,16 +15,22 @@ internal static class DifferentWaysToAddParenthesesSolution
 {
     // Textbook baseline: plain split/recurse/combine, re-deriving any substring
     // reached from more than one parent call. Deliberately written without this
-    // repo's primitives - it is the arm the memoized strategy below has to
-    // justify itself against.
+    // repo's primitives - the recursion is written out directly rather than through
+    // Memoizer's IRecurrence contract, because a baseline reaches no library type
+    // (ARCHITECTURE 17.5). It is the arm the memoized strategy below has to justify
+    // itself against.
     public static List<int> DiffWaysToComputeByPlainRecursion(string expression) =>
-        ComputeResults(expression, new RecomputedSubstrings());
+        PlainComputeResults(expression);
 
-    // The recurrence both arms share. A substring that parses as a number is its
-    // own single answer; otherwise every operator split point contributes its
-    // left/right combinations. Which recurrence is handed in is the only thing
-    // that tells the arms apart - the plain recursion re-derives each half, the
-    // memoized arm shares it.
+    // Identical recurrence, driven top-down through Memoizer keyed by substring,
+    // so a substring reached from multiple parents is evaluated once and its
+    // result list shared across every caller.
+    public static List<int> DiffWaysToComputeByMemoizedSubstring(string expression) =>
+        Memoizer.Memoize<string, List<int>>(expression, new SharedSubstrings());
+
+    // The recurrence for the memoized arm: the same splits as PlainComputeResults, each
+    // half asked of the `compute` recurrence so a repeated substring is answered from
+    // the cache.
     private static List<int> ComputeResults(string expression, IRecurrence<string, List<int>> compute)
     {
         if (int.TryParse(expression, out var value))
@@ -66,27 +72,55 @@ internal static class DifferentWaysToAddParenthesesSolution
         }
     }
 
+    // The recurrence as plain recursion. A substring that parses as a number is its
+    // own single answer; otherwise every operator split point contributes its
+    // left/right combinations, each half re-derived by calling straight back in.
+    private static List<int> PlainComputeResults(string expression)
+    {
+        if (int.TryParse(expression, out var value))
+        {
+            return [value];
+        }
+
+        var results = new List<int>();
+
+        for (var i = 0; i < expression.Length; i++)
+        {
+            var op = expression[i];
+
+            if (op is not ('+' or '-' or '*'))
+            {
+                continue;
+            }
+
+            PlainAddCombinations(results, expression, i);
+        }
+
+        return results;
+    }
+
+    // Every left/right pair the split point at `index` contributes, combined
+    // through the operator sitting at it, with both halves recomputed.
+    private static void PlainAddCombinations(List<int> results, string expression, int index)
+    {
+        var op = expression[index];
+
+        foreach (var left in PlainComputeResults(expression[..index]))
+        {
+            foreach (var right in PlainComputeResults(expression[(index + 1)..]))
+            {
+                var combined = Combine(op, left, right);
+                results.Add(combined);
+            }
+        }
+    }
+
     private static int Combine(char op, int left, int right) => op switch
     {
         '+' => left + right,
         '-' => left - right,
         _ => left * right,
     };
-
-    // Identical recurrence, driven top-down through Memoizer keyed by substring,
-    // so a substring reached from multiple parents is evaluated once and its
-    // result list shared across every caller.
-    public static List<int> DiffWaysToComputeByMemoizedSubstring(string expression) =>
-        Memoizer.Memoize<string, List<int>>(expression, new SharedSubstrings());
-
-    // The recurrence re-derived from scratch at every call: no cache in front of it,
-    // so a substring reached from more than one parent is worked out again each time.
-    // This is the arm the memoized SharedSubstrings is measured against.
-    private sealed class RecomputedSubstrings : IRecurrence<string, List<int>>
-    {
-        public List<int> Replay(string expression, IRecurrence<string, List<int>> rest) =>
-            ComputeResults(expression, this);
-    }
 
     // The recurrence answered once per substring: the memo run in front of it is what
     // makes a substring reached from several split points share a single result list.
@@ -95,4 +129,5 @@ internal static class DifferentWaysToAddParenthesesSolution
         public List<int> Replay(string expression, IRecurrence<string, List<int>> rest) =>
             ComputeResults(expression, rest);
     }
+
 }

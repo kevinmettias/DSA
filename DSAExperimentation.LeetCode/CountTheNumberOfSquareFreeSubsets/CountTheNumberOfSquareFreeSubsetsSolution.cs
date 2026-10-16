@@ -17,6 +17,10 @@ namespace DSAExperimentation.LeetCode.CountTheNumberOfSquareFreeSubsets;
 // agreement and the benchmark harness can time them against each other.
 internal static class CountTheNumberOfSquareFreeSubsetsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     private const int MaxValue = 30;
     private static readonly int[] Primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];
     private static readonly int[] PrimeMask = BuildPrimeMasks();
@@ -37,7 +41,7 @@ internal static class CountTheNumberOfSquareFreeSubsetsSolution
             }
         }
 
-        return count % ModularArithmetic.Modulo;
+        return count % Modulo;
     }
 
     private static bool IsSquareFreeSubset(int[] nums, int subset)

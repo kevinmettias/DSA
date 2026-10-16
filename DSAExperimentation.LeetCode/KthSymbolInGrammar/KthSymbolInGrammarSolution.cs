@@ -18,6 +18,10 @@ namespace DSAExperimentation.LeetCode.KthSymbolInGrammar;
 // Pow(x, n)'s exponentiation by squaring already is.
 internal static class KthSymbolInGrammarSolution
 {
+    // How many children a node has, restated rather than read from AlgorithmConstants: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const int BranchingFactor = 2;
+
     // Baseline: build every row in full, then index the requested position. O(2^n)
     // time and space - what you would write without thinking about the recurrence.
     // Deliberately BCL-only internals (§17.5).
@@ -35,7 +39,7 @@ internal static class KthSymbolInGrammarSolution
 
     private static List<char> ExpandRow(List<char> row)
     {
-        var next = new List<char>(row.Count * AlgorithmConstants.BranchingFactor);
+        var next = new List<char>(row.Count * BranchingFactor);
 
         foreach (var symbol in row)
         {

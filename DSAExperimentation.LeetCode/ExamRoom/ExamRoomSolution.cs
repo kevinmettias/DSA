@@ -32,6 +32,10 @@ namespace DSAExperimentation.LeetCode.ExamRoom;
 //     O(n) shift every array-backed removal pays either way.
 internal static class ExamRoomSolution
 {
+    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const int HalvingFactor = 2;
+
     // Splits a left/right occupied-seat pair to find the midpoint candidate seat.
 
     // The shared surface both strategies implement, so the test and benchmark
@@ -149,7 +153,7 @@ internal static class ExamRoomSolution
     // the left one, together with the distance that ranks it against the best so far.
     private static SeatCandidate MidpointCandidate(int index, int left, int right)
     {
-        var seat = left + ((right - left) / AlgorithmConstants.HalvingFactor);
+        var seat = left + ((right - left) / HalvingFactor);
 
         return new SeatCandidate(index, seat, seat - left);
     }

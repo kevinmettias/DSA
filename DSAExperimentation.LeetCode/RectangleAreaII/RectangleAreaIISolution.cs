@@ -11,6 +11,10 @@ namespace DSAExperimentation.LeetCode.RectangleAreaII;
 // differ in what they do with a slab once they have one.
 internal static class RectangleAreaIISolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     private const int X1 = 0;
     private const int Y1 = 1;
     private const int X2 = 2;
@@ -30,7 +34,7 @@ internal static class RectangleAreaIISolution
 
         for (var i = 0; i < xs.Length - 1; i++)
         {
-            area = (area + CoveredRowArea(rectangles, ys, xs[i], xs[i + 1])) % ModularArithmetic.Modulo;
+            area = (area + CoveredRowArea(rectangles, ys, xs[i], xs[i + 1])) % Modulo;
         }
 
         return (int)area;
@@ -48,7 +52,7 @@ internal static class RectangleAreaIISolution
             }
         }
 
-        return (x2 - x1) * (height % ModularArithmetic.Modulo);
+        return (x2 - x1) * (height % Modulo);
     }
 
     // The cell asked about is its x-range and its y-range, so it arrives as the two

@@ -18,6 +18,10 @@ namespace DSAExperimentation.LeetCode.CountGoodNumbers;
 // LeetCode's reporting convention rather than this problem's own value.
 internal static class CountGoodNumbersSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // LC 1922: even-index digits must be one of {0,2,4,6,8}, odd-index digits must
     // be one of the prime digits {2,3,5,7}.
     private const long EvenIndexDigitChoices = 5;
@@ -36,7 +40,7 @@ internal static class CountGoodNumbersSolution
         var evenChoices = NaivePower(EvenIndexDigitChoices, evenPositions);
         var oddChoices = NaivePower(OddIndexDigitChoices, oddPositions);
 
-        return (int)(evenChoices * oddChoices % ModularArithmetic.Modulo);
+        return (int)(evenChoices * oddChoices % Modulo);
     }
 
     private static long NaivePower(long value, long exponent)
@@ -45,7 +49,7 @@ internal static class CountGoodNumbersSolution
 
         for (var i = 0L; i < exponent; i++)
         {
-            result = result * value % ModularArithmetic.Modulo;
+            result = result * value % Modulo;
         }
 
         return result;

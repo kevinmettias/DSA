@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfWaysOfCuttingAPizza;
 
@@ -13,13 +12,19 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysOfCuttingAPizza;
 // slice take an apple with it" in O(1). Both strategies walk exactly that
 // recurrence over exactly that table; they differ only in whether repeated states
 // are cached, the same un-memoized-vs-Memoizer split CherryPickupSolution and
-// BurstBalloonsSolution already use.
+// BurstBalloonsSolution already use. The baseline writes the recursion out plainly
+// rather than through Memoizer's IRecurrence contract, because a baseline reaches
+// no library type (ARCHITECTURE 17.5).
 //
 // The induced state graph is well-founded for Memoizer's own precondition:
 // RemainingCuts strictly decreases on every recursive call, so no state can recur
 // on its own path.
 internal static class NumberOfWaysOfCuttingAPizzaSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // A pizza with no apple left in it cannot be cut into apple-bearing pieces.
     private const int NoWays = 0;
 
@@ -34,11 +39,64 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
     public static int CountWaysByUnmemoizedRecursion(string[] pizza, int pieceCount) =>
         CountWaysByUnmemoizedRecursion(new AppleGrid(pizza), pieceCount);
 
-    public static int CountWaysByUnmemoizedRecursion(AppleGrid apples, int pieceCount)
-    {
-        var ways = new PizzaCutWays(apples);
+    public static int CountWaysByUnmemoizedRecursion(AppleGrid apples, int pieceCount) =>
+        UnmemoizedWaysFrom(apples, (0, 0, pieceCount - 1));
 
-        return ways.Replay((0, 0, pieceCount - 1), ways);
+    // The recurrence as plain recursion: every legal cut below the current row and right of the
+    // current column, each remainder answered by calling straight back in.
+    private static int UnmemoizedWaysFrom(AppleGrid apples, (int Row, int Col, int RemainingCuts) state)
+    {
+        var (row, col, remainingCuts) = state;
+        var applesRemaining = apples.ApplesFrom(row, col);
+
+        if (applesRemaining == 0)
+        {
+            return NoWays;
+        }
+
+        if (remainingCuts == 0)
+        {
+            return WholeRemainderIsOnePiece;
+        }
+
+        var horizontalWays = UnmemoizedHorizontalCuts(apples, state, applesRemaining);
+        var verticalWays = UnmemoizedVerticalCuts(apples, state, applesRemaining);
+
+        return (int)((horizontalWays + verticalWays) % Modulo);
+    }
+
+    // Cuts below the current row: legal when the strip above the cut holds an apple.
+    private static long UnmemoizedHorizontalCuts(
+        AppleGrid apples, (int Row, int Col, int RemainingCuts) state, int applesRemaining)
+    {
+        var total = 0L;
+
+        for (var next = state.Row + 1; next < apples.Rows; next++)
+        {
+            if (applesRemaining - apples.ApplesFrom(next, state.Col) > 0)
+            {
+                total = (total + UnmemoizedWaysFrom(apples, (next, state.Col, state.RemainingCuts - 1))) % Modulo;
+            }
+        }
+
+        return total;
+    }
+
+    // Cuts right of the current column: legal when the strip left of the cut holds an apple.
+    private static long UnmemoizedVerticalCuts(
+        AppleGrid apples, (int Row, int Col, int RemainingCuts) state, int applesRemaining)
+    {
+        var total = 0L;
+
+        for (var next = state.Col + 1; next < apples.Cols; next++)
+        {
+            if (applesRemaining - apples.ApplesFrom(state.Row, next) > 0)
+            {
+                total = (total + UnmemoizedWaysFrom(apples, (state.Row, next, state.RemainingCuts - 1))) % Modulo;
+            }
+        }
+
+        return total;
     }
 
     // This repo's own Memoizer<TState,TResult> supplies the cache, keyed by the
@@ -52,10 +110,8 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
             (0, 0, pieceCount - 1),
             new PizzaCutWays(apples));
 
-    // The recurrence, as a named type. It forwards whatever recursion it is handed
-    // straight into the shared body below, so the whole difference between the two
-    // strategies is what plays that part: the memo run, which holds the cache, or this
-    // same type naming itself, which holds nothing.
+    // The recurrence, as a named type: it hands Memoizer's recursion straight into the
+    // body below.
     private sealed class PizzaCutWays(AppleGrid apples)
         : IRecurrence<(int Row, int Col, int RemainingCuts), int>
     {
@@ -65,8 +121,8 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
             WaysFrom(apples, state, rest);
     }
 
-    // The recurrence itself, shared by both strategies so that the only thing they
-    // differ in is how the recursive call reaches back in.
+    // The recurrence itself, for the memoized arm: the same cuts as UnmemoizedWaysFrom, each
+    // remainder asked of Memoizer's recursion so a repeated state is answered from the cache.
     private static int WaysFrom(
         AppleGrid apples,
         (int Row, int Col, int RemainingCuts) state,
@@ -86,7 +142,7 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
 
         var (horizontalWays, verticalWays) = SumCutsAlongBothAxes(apples, state, rest);
 
-        return (int)((horizontalWays + verticalWays) % ModularArithmetic.Modulo);
+        return (int)((horizontalWays + verticalWays) % Modulo);
     }
 
     // Both axes of the recurrence: a cut may run below the current row or right of
@@ -129,7 +185,7 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
             if (applesRemaining - axis.ApplesFrom(next) > 0)
             {
                 total = (total + rest.Replay(axis.NextState(next), rest))
-                    % ModularArithmetic.Modulo;
+                    % Modulo;
             }
         }
 

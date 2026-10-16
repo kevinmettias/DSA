@@ -10,6 +10,10 @@ namespace DSAExperimentation.LeetCode.NumberOfStringsWhichCanBeRearrangedToConta
 // as "leet" followed by the rest in any order.
 internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     private const int AlphabetSize = 26;
     private const int RequiredLCount = 1;
     private const int RequiredECount = 2;
@@ -80,7 +84,7 @@ internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolut
     {
         var (cappedLCount, cappedECount, cappedTCount) = state;
         dp[cappedLCount, cappedECount, cappedTCount] =
-            (dp[cappedLCount, cappedECount, cappedTCount] + amount) % ModularArithmetic.Modulo;
+            (dp[cappedLCount, cappedECount, cappedTCount] + amount) % Modulo;
     }
 
     // Inclusion-exclusion over the 3 ways to fail: A = no 'l' at all, B = fewer

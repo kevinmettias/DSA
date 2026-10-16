@@ -1,5 +1,3 @@
-using DSAExperimentation.Algorithms.NumberTheory;
-
 namespace DSAExperimentation.LeetCode.GoodSubsequenceQueries;
 
 // LeetCode 3901. Good Subsequence Queries: after each update, does nums have a
@@ -23,9 +21,10 @@ namespace DSAExperimentation.LeetCode.GoodSubsequenceQueries;
 // one case a range query alone cannot decide (see HasGoodSubsequenceByRangeQuery).
 internal static class GoodSubsequenceQueriesSolution
 {
-    // The gcd of no values - GcdOperation's identity, since gcd(0, x) = x - where a running gcd
-    // starts folding from.
-    private static int EmptyGcd => GcdOperation<int>.Identity;
+    // The gcd of no values - 0, since gcd(0, x) = x - where a running gcd starts folding from.
+    // Restated rather than read as GcdOperation's identity: the baseline folds from it too, and a
+    // baseline reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const int EmptyGcd = 0;
 
     // The textbook answer: no persistent structure, every query rescans nums'
     // modulus-divided values from scratch in O(n) - "what you'd write without this

@@ -8,14 +8,17 @@ namespace DSAExperimentation.LeetCode.MinimumSumOfValuesByDividingArray;
 // if no split works).
 //
 // State (Index, GroupIndex) = "partition nums[Index..] into the remaining
-// andValues[GroupIndex..]". Both strategies share the identical recurrence,
-// PartitionStep - a group's running AND only ever clears bits as it grows, so
-// it can never climb back to a target it has already dropped below, letting
-// PartitionStep stop extending a group early - and differ only in how
-// repeated states get cached: a Dictionary hand-threaded through the
-// recursion, or this repo's own Memoizer, the same "tuple state through
+// andValues[GroupIndex..]". Both strategies run the identical recurrence -
+// a group's running AND only ever clears bits as it grows, so it can never
+// climb back to a target it has already dropped below, letting the step stop
+// extending a group early - and differ only in how repeated states get
+// cached: a Dictionary hand-threaded through a plain recursion, or this
+// repo's own Memoizer, the same "tuple state through
 // Memoizer.Memoize<TState, TResult>" contrast
-// MaximumNumberOfOperationsWithTheSameScoreIISolution already draws.
+// MaximumNumberOfOperationsWithTheSameScoreIISolution already draws. The
+// baseline writes its recursion out directly rather than through Memoizer's
+// IRecurrence contract, because a baseline reaches no library type
+// (ARCHITECTURE 17.5).
 internal static class MinimumSumOfValuesByDividingArraySolution
 {
     // The textbook form: recursion over a hand-rolled Dictionary memo table,
@@ -23,9 +26,9 @@ internal static class MinimumSumOfValuesByDividingArraySolution
     // own Memoizer-based strategy below has to beat.
     public static long MinimumValueSumByDictionaryMemo(int[] nums, int[] andValues)
     {
-        var run = new DictionaryMemoRun(nums, andValues);
+        var run = new DictionaryMemoRun(nums, andValues, []);
 
-        return run.Replay((0, 0), run) ?? LeetCodeAnswer.None;
+        return DictionaryMemoSum((0, 0), run) ?? LeetCodeAnswer.None;
     }
 
     // Same recurrence, routed through this repo's own Memoizer so each
@@ -38,41 +41,10 @@ internal static class MinimumSumOfValuesByDividingArraySolution
         return result ?? LeetCodeAnswer.None;
     }
 
-    // The next group's start index and which andValue it must match are the whole state;
-    // the array and the targets stay fixed for the call and live here.
-    private sealed class MinimumSumFromGroupStart(int[] nums, int[] andValues)
-        : IRecurrence<(int Index, int GroupIndex), long?>
-    {
-        public long? Replay((int Index, int GroupIndex) state, IRecurrence<(int Index, int GroupIndex), long?> rest)
-            => PartitionStep(state, nums, andValues, rest);
-    }
-
-    // The hand-rolled memo run: it keeps the table and hands itself to the recurrence as
-    // the recursion, exactly as Memoizer's own run does - the lookup and the store are
-    // just written out here instead of being supplied by the library.
-    private sealed class DictionaryMemoRun(int[] nums, int[] andValues)
-        : IRecurrence<(int Index, int GroupIndex), long?>
-    {
-        private readonly MinimumSumFromGroupStart _step = new(nums, andValues);
-        private readonly Dictionary<(int Index, int GroupIndex), long?> _memo = [];
-
-        public long? Replay((int Index, int GroupIndex) state, IRecurrence<(int Index, int GroupIndex), long?> rest)
-        {
-            if (_memo.TryGetValue(state, out var cached))
-            {
-                return cached;
-            }
-
-            var result = _step.Replay(state, this);
-            _memo[state] = result;
-            return result;
-        }
-    }
-
     // null means "no valid partition from here" - the same nullable-over-
     // sentinel choice ARCHITECTURE.md records for HammingSearch, so this
-    // shared step never has to agree on a magic "impossible" value with
-    // either caller.
+    // step never has to agree on a magic "impossible" value with its
+    // callers.
     private static long? PartitionStep(
         (int Index, int GroupIndex) state,
         int[] nums,
@@ -125,6 +97,78 @@ internal static class MinimumSumOfValuesByDividingArraySolution
         return best;
     }
 
+    // The hand-rolled memo lookup and store around one (Index, GroupIndex) state.
+    private static long? DictionaryMemoSum((int Index, int GroupIndex) state, DictionaryMemoRun run)
+    {
+        if (run.Memo.TryGetValue(state, out var cached))
+        {
+            return cached;
+        }
+
+        var result = DictionaryMemoStep(state, run);
+        run.Memo[state] = result;
+        return result;
+    }
+
+    // The same step as PartitionStep: null means "no valid partition from here".
+    private static long? DictionaryMemoStep((int Index, int GroupIndex) state, DictionaryMemoRun run)
+    {
+        var (index, groupIndex) = state;
+        var remainingGroups = run.AndValues.Length - groupIndex;
+
+        if (remainingGroups == 0)
+        {
+            return index == run.Nums.Length ? 0L : null;
+        }
+
+        if (run.Nums.Length - index < remainingGroups)
+        {
+            return null;
+        }
+
+        return DictionaryMemoGroupExtension(state, run);
+    }
+
+    // The same cheapest completion of the current group as BestGroupExtension, each
+    // remainder answered by the Dictionary-memoized recursion.
+    private static long? DictionaryMemoGroupExtension((int Index, int GroupIndex) state, DictionaryMemoRun run)
+    {
+        var (index, groupIndex) = state;
+        var nums = run.Nums;
+        var target = run.AndValues[groupIndex];
+        long runningAnd = nums[index];
+        long? best = null;
+
+        // The AND only ever clears bits, so once it has dropped below the target it can
+        // never climb back - the group stops extending there, in the loop bound itself.
+        for (var end = index; end < nums.Length && runningAnd >= target; end++)
+        {
+            runningAnd = FoldNext(nums, runningAnd, end, index);
+
+            if (runningAnd != target)
+            {
+                continue;
+            }
+
+            var tail = DictionaryMemoSum((end + 1, groupIndex + 1), run);
+            best = CheaperCompletion(best, nums[end], tail);
+        }
+
+        return best;
+    }
+
+    // Closing the group at a value whose remainder has no valid split leaves the best so
+    // far alone; otherwise the closing value plus that remainder's cost competes with it.
+    private static long? CheaperCompletion(long? best, long closingValue, long? tail)
+    {
+        if (tail is null)
+        {
+            return best;
+        }
+
+        return Cheaper(best, closingValue + tail.Value);
+    }
+
     // The first element seeds the group, every later one is folded into the AND.
     private static long FoldNext(int[] nums, long runningAnd, int end, int index)
     {
@@ -146,4 +190,19 @@ internal static class MinimumSumOfValuesByDividingArraySolution
 
         return best;
     }
+
+    // What the hand-rolled memo run carries through every call: the fixed inputs and
+    // the table its lookup and store read and write.
+    private readonly record struct DictionaryMemoRun(
+        int[] Nums, int[] AndValues, Dictionary<(int Index, int GroupIndex), long?> Memo);
+
+    // The next group's start index and which andValue it must match are the whole state;
+    // the array and the targets stay fixed for the call and live here.
+    private sealed class MinimumSumFromGroupStart(int[] nums, int[] andValues)
+        : IRecurrence<(int Index, int GroupIndex), long?>
+    {
+        public long? Replay((int Index, int GroupIndex) state, IRecurrence<(int Index, int GroupIndex), long?> rest)
+            => PartitionStep(state, nums, andValues, rest);
+    }
+
 }

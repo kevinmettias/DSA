@@ -33,7 +33,7 @@ internal static class RevealCardsInIncreasingOrderSolution
 
         foreach (var value in sorted)
         {
-            RevealAndRotate(indices, result, value);
+            RevealAndRotateList(indices, result, value);
         }
 
         return result;
@@ -86,7 +86,7 @@ internal static class RevealCardsInIncreasingOrderSolution
         return indices;
     }
 
-    private static void RevealAndRotate(List<int> indices, int[] result, int value)
+    private static void RevealAndRotateList(List<int> indices, int[] result, int value)
     {
         var revealIndex = indices[0];
         indices.RemoveAt(0);

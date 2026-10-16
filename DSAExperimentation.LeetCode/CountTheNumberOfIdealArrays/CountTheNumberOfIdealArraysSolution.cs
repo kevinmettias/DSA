@@ -27,6 +27,10 @@ namespace DSAExperimentation.LeetCode.CountTheNumberOfIdealArrays;
 // O(log value).
 internal static class CountTheNumberOfIdealArraysSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Smallest prime, and the starting point for both trial division and the sieve.
     private const int SmallestPrime = 2;
 
@@ -45,7 +49,7 @@ internal static class CountTheNumberOfIdealArraysSolution
 
         for (var value = 1; value <= maxValue; value++)
         {
-            total = (total + CountEndingAtByTrialDivision(value, arrayLength)) % ModularArithmetic.Modulo;
+            total = (total + CountEndingAtByTrialDivision(value, arrayLength)) % Modulo;
         }
 
         return (int)total;
@@ -63,7 +67,7 @@ internal static class CountTheNumberOfIdealArraysSolution
 
         if (remaining > 1)
         {
-            product = product * BinomialMod(arrayLength, LeftoverPrimeExponent) % ModularArithmetic.Modulo;
+            product = product * BinomialMod(arrayLength, LeftoverPrimeExponent) % Modulo;
         }
 
         return product;
@@ -83,7 +87,7 @@ internal static class CountTheNumberOfIdealArraysSolution
             exponent++;
         }
 
-        return product * BinomialMod(exponent + arrayLength - 1, exponent) % ModularArithmetic.Modulo;
+        return product * BinomialMod(exponent + arrayLength - 1, exponent) % Modulo;
     }
 
     // Build one smallest-prime-factor table over maxValue with this repo's own
@@ -139,6 +143,6 @@ internal static class CountTheNumberOfIdealArraysSolution
             denominator *= i;
         }
 
-        return (long)(numerator / denominator % ModularArithmetic.Modulo);
+        return (long)(numerator / denominator % Modulo);
     }
 }

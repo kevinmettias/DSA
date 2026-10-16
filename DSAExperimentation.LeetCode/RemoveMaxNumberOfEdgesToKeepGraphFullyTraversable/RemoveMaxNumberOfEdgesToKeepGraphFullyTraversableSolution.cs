@@ -43,9 +43,12 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
         var usedEdges = ConnectSharedEdges(alice, bob, edges);
         usedEdges += ConnectOwnEdgesForBoth(alice, bob, edges);
 
-        return IsFullyConnected(alice) && IsFullyConnected(bob)
-            ? RemovableEdgeCount(edges, usedEdges)
-            : LeetCodeAnswer.None;
+        if (!IsFullyConnectedByFloodFill(alice) || !IsFullyConnectedByFloodFill(bob))
+        {
+            return LeetCodeAnswer.None;
+        }
+
+        return RemovableEdgeCount(edges, usedEdges);
     }
 
     private static List<int>[] BuildEmptyAdjacency(int nodeCount)
@@ -140,7 +143,7 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
         return false;
     }
 
-    private static bool IsFullyConnected(List<int>[] adjacency)
+    private static bool IsFullyConnectedByFloodFill(List<int>[] adjacency)
     {
         var visited = new bool[adjacency.Length];
         var queue = new Queue<int>();

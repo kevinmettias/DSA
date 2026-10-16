@@ -17,6 +17,10 @@ namespace DSAExperimentation.LeetCode.MinimumNonZeroProductOfTheArrayElements;
 // "lighter repo-primitive fit" already accepted for Pow(x, n) and Super Pow.
 internal static class MinimumNonZeroProductOfTheArrayElementsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // The textbook baseline: multiply the pair value by itself once per pair.
     // Deliberately written without this repo's exponentiation - it is the arm the
     // squaring strategy has to justify itself against, and it only survives at
@@ -25,14 +29,14 @@ internal static class MinimumNonZeroProductOfTheArrayElementsSolution
     {
         var pairing = BitSwapPairing.Of(power);
         var product = 1L;
-        var pairProduct = pairing.PairValue % ModularArithmetic.Modulo;
+        var pairProduct = pairing.PairValue % Modulo;
 
         for (var pair = 0L; pair < pairing.PairCount; pair++)
         {
-            product = product * pairProduct % ModularArithmetic.Modulo;
+            product = product * pairProduct % Modulo;
         }
 
-        return product * (pairing.LargestValue % ModularArithmetic.Modulo) % ModularArithmetic.Modulo;
+        return product * (pairing.LargestValue % Modulo) % Modulo;
     }
 
     // Halve the exponent each step instead of decrementing it, squaring the base to

@@ -7,10 +7,11 @@ namespace DSAExperimentation.LeetCode.DeleteDuplicateFoldersInSystem;
 // has a structurally identical twin anywhere in the tree, delete all of them at once
 // (both copies, not "keep one"), and report the paths that survive.
 //
-// Both strategies build the same FolderNode tree and answer the same question - which
-// non-leaf subtrees repeat - and differ only in how they find the repeats. The
-// baseline compares every pair of non-leaf subtrees directly, O(n^2) structural
-// walks. The composed strategy makes one post-order pass that canonically serializes
+// Both strategies build the same name-keyed folder tree - the baseline its own over BCL
+// Dictionaries, the composed strategy FolderNode over this repo's HashMap - and answer
+// the same question - which non-leaf subtrees repeat - and differ in how they find the
+// repeats. The baseline compares every pair of non-leaf subtrees directly, O(n^2)
+// structural walks. The composed strategy makes one post-order pass that canonically serializes
 // each non-leaf subtree, sorting each node's "name(childSignature)" pieces with this
 // repo's own MergeSort so insertion order can never affect the signature, and counts
 // repeats in a HashMap<string,int>.
@@ -32,20 +33,19 @@ internal static class DeleteDuplicateFoldersInSystemSolution
 
     // The definition-literal brute force: collect every non-leaf folder and ask, for
     // each pair, whether the two subtrees are identical. Deliberately BCL throughout -
-    // a List and two nested loops - so it stands for "what you would write without
-    // this repo" (ARCHITECTURE §17.5); only the folder tree it walks is a repo shape,
-    // because that is the input both arms are handed.
+    // a Dictionary-keyed folder tree of its own, a List and two nested loops - so it
+    // stands for "what you would write without this repo" (ARCHITECTURE §17.5).
     public static List<string[]> DeleteDuplicateFoldersByPairwiseComparison(string[][] paths)
     {
-        var root = BuildTree(paths);
-        var nonLeafFolders = new List<FolderNode>();
-        CollectNonLeafFolders(root, nonLeafFolders);
+        var root = BuildPlainTree(paths);
+        var nonLeafFolders = new List<PlainFolder>();
+        CollectPlainNonLeafFolders(root, nonLeafFolders);
 
         for (var i = 0; i < nonLeafFolders.Count; i++)
         {
             for (var j = i + 1; j < nonLeafFolders.Count; j++)
             {
-                if (IsIdenticalSubtree(nonLeafFolders[i], nonLeafFolders[j]))
+                if (IsIdenticalPlainSubtree(nonLeafFolders[i], nonLeafFolders[j]))
                 {
                     nonLeafFolders[i].Deleted = true;
                     nonLeafFolders[j].Deleted = true;
@@ -53,7 +53,33 @@ internal static class DeleteDuplicateFoldersInSystemSolution
             }
         }
 
-        return CollectSurvivingPaths(root);
+        var surviving = new List<string[]>();
+        CollectSurvivingPlainPaths(root, [], surviving);
+
+        return surviving;
+    }
+
+    private static PlainFolder BuildPlainTree(string[][] paths)
+    {
+        var root = new PlainFolder();
+
+        foreach (var path in paths)
+        {
+            var current = root;
+
+            foreach (var name in path)
+            {
+                if (!current.Children.TryGetValue(name, out var next))
+                {
+                    next = new PlainFolder();
+                    current.Children[name] = next;
+                }
+
+                current = next;
+            }
+        }
+
+        return root;
     }
 
     // One post-order serialization pass plus one counting map: every subtree that
@@ -92,7 +118,15 @@ internal static class DeleteDuplicateFoldersInSystemSolution
         return root;
     }
 
-    private static void CollectNonLeafFolders(FolderNode node, List<FolderNode> accumulator)
+    private static List<string[]> CollectSurvivingPaths(FolderNode root)
+    {
+        var surviving = new List<string[]>();
+        Collect(root, new List<string>(), surviving);
+
+        return surviving;
+    }
+
+    private static void CollectPlainNonLeafFolders(PlainFolder node, List<PlainFolder> accumulator)
     {
         foreach (var child in node.Children.Values)
         {
@@ -101,33 +135,44 @@ internal static class DeleteDuplicateFoldersInSystemSolution
                 accumulator.Add(child);
             }
 
-            CollectNonLeafFolders(child, accumulator);
+            CollectPlainNonLeafFolders(child, accumulator);
         }
     }
 
-    private static bool IsIdenticalSubtree(FolderNode left, FolderNode right)
+    private static bool IsIdenticalPlainSubtree(PlainFolder left, PlainFolder right)
     {
         if (left.Children.Count != right.Children.Count)
         {
             return false;
         }
 
-        foreach (var name in left.Children.Keys)
+        foreach (var (name, leftChild) in left.Children)
         {
-            if (!right.Children.TryGetValue(name, out var rightChild))
-            {
-                return false;
-            }
-
-            left.Children.TryGetValue(name, out var leftChild);
-
-            if (!IsIdenticalSubtree(leftChild, rightChild))
+            if (!right.Children.TryGetValue(name, out var rightChild) || !IsIdenticalPlainSubtree(leftChild, rightChild))
             {
                 return false;
             }
         }
 
         return true;
+    }
+
+    // The same pre-order walk as Collect below, over the baseline's own tree: a deleted
+    // folder is skipped with everything under it.
+    private static void CollectSurvivingPlainPaths(PlainFolder node, List<string> pathSoFar, List<string[]> surviving)
+    {
+        foreach (var (name, child) in node.Children)
+        {
+            if (child.Deleted)
+            {
+                continue;
+            }
+
+            pathSoFar.Add(name);
+            surviving.Add(pathSoFar.ToArray());
+            CollectSurvivingPlainPaths(child, pathSoFar, surviving);
+            pathSoFar.RemoveAt(pathSoFar.Count - 1);
+        }
     }
 
     // Leaves return without ever touching signatureCounts, so a leaf's empty Signature
@@ -181,14 +226,6 @@ internal static class DeleteDuplicateFoldersInSystemSolution
             && signatureCounts.TryGetValue(child.Signature, out var count)
             && count > 1;
 
-    private static List<string[]> CollectSurvivingPaths(FolderNode root)
-    {
-        var surviving = new List<string[]>();
-        Collect(root, new List<string>(), surviving);
-
-        return surviving;
-    }
-
     private static void Collect(FolderNode node, List<string> pathSoFar, List<string[]> surviving)
     {
         foreach (var name in node.Children.Keys)
@@ -205,5 +242,14 @@ internal static class DeleteDuplicateFoldersInSystemSolution
             Collect(child, pathSoFar, surviving);
             pathSoFar.RemoveAt(pathSoFar.Count - 1);
         }
+    }
+
+    // The baseline's own folder node: FolderNode's shape over a BCL Dictionary, with only
+    // the deletion mark - the pairwise comparison never needs a signature.
+    private sealed class PlainFolder
+    {
+        public Dictionary<string, PlainFolder> Children { get; } = [];
+
+        public bool Deleted { get; set; }
     }
 }

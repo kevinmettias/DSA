@@ -23,6 +23,10 @@ namespace DSAExperimentation.LeetCode.MinimizeTheMaximumOfTwoArrays;
 // eligible2 covers uniqueCnt2, and eligibleEither covers both counts at once.
 internal static class MinimizeTheMaximumOfTwoArraysSolution
 {
+    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const int HalvingFactor = 2;
+
     // Both arrays hold positive integers, so no maximum below 1 is worth asking about.
     private const int SmallestMaximum = 1;
 
@@ -38,7 +42,7 @@ internal static class MinimizeTheMaximumOfTwoArraysSolution
 
         while (low < high)
         {
-            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
+            var mid = low + ((high - low) / HalvingFactor);
 
             if (IsFeasible((divisor1, uniqueCnt1), (divisor2, uniqueCnt2), mid))
             {

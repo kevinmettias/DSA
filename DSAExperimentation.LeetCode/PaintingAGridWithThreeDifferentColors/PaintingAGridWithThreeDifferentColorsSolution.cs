@@ -15,6 +15,10 @@ namespace DSAExperimentation.LeetCode.PaintingAGridWithThreeDifferentColors;
 // column pattern once and then the columns.
 internal static class PaintingAGridWithThreeDifferentColorsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     private const int NumberOfColors = 3;
 
     // Stands in for "no column has been placed yet", so the first column accepts
@@ -31,7 +35,7 @@ internal static class PaintingAGridWithThreeDifferentColorsSolution
     {
         var total = CountFromCell(new int[rows * columns], 0, columns);
 
-        return (int)(total % ModularArithmetic.Modulo);
+        return (int)(total % Modulo);
     }
 
     // This repo's own primitives, in two stages. rows <= 5 keeps a single column's

@@ -25,6 +25,10 @@ namespace DSAExperimentation.LeetCode.SumOfKDigitNumbersInARange;
 // Deliberately only tractable for small k.
 internal static class SumOfKDigitNumbersInARangeSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     public static long SumOfKDigitNumbersByBruteForceEnumeration(int low, int high, int digitCount) =>
         BruteForceEnumeration((Low: low, High: high), digitCount, position: 0, valueSoFar: 0);
 
@@ -53,9 +57,9 @@ internal static class SumOfKDigitNumbersInARangeSolution
         var total = 0L;
         for (var digit = digitRange.Low; digit <= digitRange.High; digit++)
         {
-            var next = (valueSoFar * 10 + digit) % ModularArithmetic.Modulo;
+            var next = (valueSoFar * 10 + digit) % Modulo;
             total = (total + BruteForceEnumeration(digitRange, digitCount, position + 1, next))
-                % ModularArithmetic.Modulo;
+                % Modulo;
         }
 
         return total;

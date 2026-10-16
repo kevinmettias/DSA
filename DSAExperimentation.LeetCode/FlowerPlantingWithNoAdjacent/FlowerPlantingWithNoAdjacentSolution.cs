@@ -34,7 +34,7 @@ internal static class FlowerPlantingWithNoAdjacentSolution
         for (var garden = GardenNumbering.FirstGarden; garden <= gardenCount; garden++)
         {
             var usedMask = ComputeUsedFlowerMask(garden, paths, flowers);
-            flowers[garden - GardenNumbering.FirstGarden] = FirstAvailableFlower(usedMask);
+            flowers[garden - GardenNumbering.FirstGarden] = FirstFlowerOutsideMask(usedMask);
         }
 
         return flowers;
@@ -74,7 +74,7 @@ internal static class FlowerPlantingWithNoAdjacentSolution
         return false;
     }
 
-    private static int FirstAvailableFlower(int usedMask)
+    private static int FirstFlowerOutsideMask(int usedMask)
     {
         for (var candidate = FirstFlowerType; candidate <= FlowerTypeCount; candidate++)
         {

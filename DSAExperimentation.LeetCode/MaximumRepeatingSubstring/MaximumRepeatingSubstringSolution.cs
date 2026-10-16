@@ -13,70 +13,47 @@ namespace DSAExperimentation.LeetCode.MaximumRepeatingSubstring;
 //
 // The two strategies differ only in the substring search each candidate is checked
 // with - the BCL's own string.Contains, or this repo's KMP-based
-// PrefixFunctionSearch.
+// PrefixFunctionSearch. Each writes the short walk out itself, so the baseline never
+// runs through code that could call the library's search (ARCHITECTURE 17.5).
 internal static class MaximumRepeatingSubstringSolution
 {
-    private const string EmptyCandidate = "";
 
-    // Both searches are stateless, so one instance each serves every call and neither
-    // benchmark arm allocates anything to pick one.
-    private static readonly ISubstringSearch OrdinalSearch = new OrdinalContainsSearch();
-    private static readonly ISubstringSearch PrefixSearch = new PrefixFunctionPresenceSearch();
-
-    // The textbook answer: BCL string.Contains, deliberately left as the arm
-    // MaxRepeatingByPrefixFunctionSearch is measured against.
-    public static int MaxRepeatingByStringContains(Haystack sequence, RepeatedWord word) =>
-        MaxRepeating(sequence, word, OrdinalSearch);
-
-    public static int MaxRepeatingByPrefixFunctionSearch(Haystack sequence, RepeatedWord word) =>
-        MaxRepeating(sequence, word, PrefixSearch);
-
-    // The one question the two strategies answer differently - does this candidate occur
-    // in this sequence at all - with both sides named, so a call cannot hand the sequence
-    // and the candidate over the wrong way round. The count of occurrences is not part of
-    // the question; a search that finds one is enough.
-    private interface ISubstringSearch
-    {
-        bool Occurs(Haystack sequence, RepeatedWord candidate);
-    }
-
-    // The repeat-count walk itself, shared by both strategies so the only thing
-    // they differ in is the substring check. The length guard is what makes the
-    // loop terminate: a candidate longer than sequence can never occur in it.
-    private static int MaxRepeating(Haystack sequence, RepeatedWord word, ISubstringSearch contains)
+    // The textbook answer: the BCL's own ordinal string.Contains, deliberately left as the
+    // arm MaxRepeatingByPrefixFunctionSearch is measured against. The length guard is what
+    // makes the loop terminate: a candidate longer than sequence can never occur in it.
+    public static int MaxRepeatingByStringContains(Haystack sequence, RepeatedWord word)
     {
         var repeats = 0;
-        var candidate = EmptyCandidate;
+        var candidate = word.Text;
 
-        // Stops at the first repeat count whose candidate is longer than sequence or no longer occurs in it.
-        while (true)
+        while (candidate.Length <= sequence.Text.Length && sequence.Text.Contains(candidate, StringComparison.Ordinal))
         {
-            var next = candidate + word.Text;
-
-            if (next.Length > sequence.Text.Length || !contains.Occurs(sequence, new RepeatedWord(next)))
-            {
-                return repeats;
-            }
-
-            candidate = next;
             repeats++;
+            candidate += word.Text;
         }
+
+        return repeats;
     }
 
-    // The BCL's own ordinal substring test.
-    private sealed class OrdinalContainsSearch : ISubstringSearch
+    // The same walk, each candidate checked with this repo's KMP-based search.
+    public static int MaxRepeatingByPrefixFunctionSearch(Haystack sequence, RepeatedWord word)
     {
-        public bool Occurs(Haystack sequence, RepeatedWord candidate) =>
-            sequence.Text.Contains(candidate.Text, StringComparison.Ordinal);
+        var repeats = 0;
+        var candidate = word.Text;
+
+        while (candidate.Length <= sequence.Text.Length && HasPrefixFunctionMatch(sequence, candidate))
+        {
+            repeats++;
+            candidate += word.Text;
+        }
+
+        return repeats;
     }
 
-    // The repo's KMP-based search, where all this arm needs is whether it matched
-    // anything: the occurrence count is discarded, so the comparison stays a yes/no.
-    private sealed class PrefixFunctionPresenceSearch : ISubstringSearch
-    {
-        public bool Occurs(Haystack sequence, RepeatedWord candidate) =>
-            PrefixFunctionSearch.FindAll(sequence.Text, candidate.Text).Count > 0;
-    }
+    // All this arm needs is whether the search matched anything: the occurrence count is
+    // discarded, so the comparison stays a yes/no.
+    private static bool HasPrefixFunctionMatch(Haystack sequence, string candidate) =>
+        PrefixFunctionSearch.FindAll(sequence.Text, candidate).Count > 0;
 
     // The two sides of the repeat-count walk, named for the roles they play here rather
     // than left as two adjacent `string` positions a caller could hand over the wrong

@@ -98,10 +98,12 @@ internal static class MinimumObstacleRemovalToReachCornerSolution
     }
 
     // One 4-directionally adjacent cell of `current`: a step that leaves the grid is
-    // dropped, an in-grid one relaxes that neighbour's removal count.
+    // dropped, an in-grid one relaxes that neighbour's removal count. The board is
+    // called Cells, not Grid, because that name would read as this repo's Grid type,
+    // which a baseline never touches (ARCHITECTURE 17.5).
     private static void RelaxNeighbour(
         int current,
-        (int[][] Grid, int[] Removals) state,
+        (int[][] Cells, int[] Removals) state,
         (int Rows, int Cols) shape,
         (int DeltaRow, int DeltaCol) step)
     {
@@ -114,7 +116,7 @@ internal static class MinimumObstacleRemovalToReachCornerSolution
         }
 
         var next = (row * shape.Cols) + col;
-        var candidate = state.Removals[current] + state.Grid[row][col];
+        var candidate = state.Removals[current] + state.Cells[row][col];
 
         if (candidate < state.Removals[next])
         {

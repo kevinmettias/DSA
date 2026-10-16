@@ -18,6 +18,10 @@ namespace DSAExperimentation.LeetCode.CountAllValidPickupAndDeliveryOptions;
 // single-int-state DP.
 internal static class CountAllValidPickupAndDeliveryOptionsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Coefficient in f(i) = f(i-1) * i * (2i - 1): order i's delivery can be inserted
     // into any of the (2i - 1) valid slots left by the existing i-1 orders.
     private const int NewOrderSlotCoefficient = 2;
@@ -31,7 +35,7 @@ internal static class CountAllValidPickupAndDeliveryOptionsSolution
 
         for (var i = 1; i <= orderCount; i++)
         {
-            ways = ways * i % ModularArithmetic.Modulo * (NewOrderSlotCoefficient * i - 1) % ModularArithmetic.Modulo;
+            ways = ways * i % Modulo * (NewOrderSlotCoefficient * i - 1) % Modulo;
         }
 
         return ways;

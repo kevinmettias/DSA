@@ -188,7 +188,7 @@ internal static class MakingALargeIslandSolution
     private static bool IsFloodableLand(FloodFillGrid state, int row, int col)
         => IsInside(row, col, state.Rows, state.Cols)
             && !state.Visited[row, col]
-            && state.Grid[row][col] == 1;
+            && state.Cells[row][col] == 1;
 
     private static int FloodCount(FloodFillGrid state, int row, int col)
     {
@@ -218,7 +218,9 @@ internal static class MakingALargeIslandSolution
         return clone;
     }
 
-    private readonly record struct FloodFillGrid(int[][] Grid, bool[,] Visited, int Rows, int Cols);
+    // The baseline's flood state. The board is called Cells, not Grid, because that name
+    // would read as this repo's Grid type, which a baseline never touches (ARCHITECTURE 17.5).
+    private readonly record struct FloodFillGrid(int[][] Cells, bool[,] Visited, int Rows, int Cols);
 
     private readonly record struct IslandGrid(int[][] Grid, HashMap<int, int> AreaById, GridSize Size);
 

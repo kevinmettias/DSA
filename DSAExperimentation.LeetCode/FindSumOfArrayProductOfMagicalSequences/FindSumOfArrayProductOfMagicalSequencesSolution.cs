@@ -1,5 +1,4 @@
 using System.Numerics;
-using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.Domain.Modular;
 
@@ -18,68 +17,21 @@ namespace DSAExperimentation.LeetCode.FindSumOfArrayProductOfMagicalSequences;
 // multinomial weight per count-assignment instead of visiting every ordering.
 internal static class FindSumOfArrayProductOfMagicalSequencesSolution
 {
-    // Every one of the nums.Length^sequenceLength sequences enumerated directly via
-    // this repo's own Backtrack.Search - one choice per sequence slot, exactly the
-    // "Combination Sum"/"Generate Parentheses"-shaped exhaustive enumeration its own
-    // doc comment names as the intended use. Correct at LeetCode's own tiny examples;
-    // the arm the digit DP below has to justify itself against.
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
+    // Every one of the nums.Length^sequenceLength sequences enumerated directly by
+    // plain choose/recurse/unchoose recursion - one choice per sequence slot, the
+    // textbook "Combination Sum"/"Generate Parentheses"-shaped exhaustive enumeration.
+    // Correct at LeetCode's own tiny examples; the arm the digit DP below has to
+    // justify itself against.
     public static int SumOfProductsByBacktrackEnumeration(int sequenceLength, int requiredSetBits, int[] nums)
     {
-        var total = 0L;
         var state = new SequenceState();
-
-        Backtrack.Search<SequenceState, int>(
-            state,
-            isSolution: s => s.Chosen.Count == sequenceLength,
-            candidates: s => s.Chosen.Count == sequenceLength ? Array.Empty<int>() : Enumerable.Range(0, nums.Length),
-            choose: AddChoice,
-            unchoose: RemoveChoice,
-            onSolution: s => total = (total + MatchingProduct(s, requiredSetBits, nums)) % ModularArithmetic.Modulo);
+        var total = SumOverSequences(state, sequenceLength, requiredSetBits, nums);
 
         return (int)total;
-    }
-
-    // What one completed sequence contributes: the product of the values it chose,
-    // or zero when its binary value does not have exactly requiredSetBits set bits. A
-    // non-matching sequence contributes zero, which leaves the running total unchanged -
-    // the same outcome as the guard that used to skip it.
-    private static long MatchingProduct(SequenceState state, int requiredSetBits, int[] nums)
-    {
-        if (BitOperations.PopCount((ulong)state.Sum) != requiredSetBits)
-        {
-            return 0;
-        }
-
-        var product = 1L;
-
-        foreach (var index in state.Chosen)
-        {
-            product = product * nums[index] % ModularArithmetic.Modulo;
-        }
-
-        return product;
-    }
-
-    // The search's own choose/unchoose pair: adding the index at the end of the
-    // sequence contributes 2^index to the running binary value, so undoing it
-    // subtracts exactly what it added.
-    private static void AddChoice(SequenceState state, int index)
-    {
-        state.Chosen.Add(index);
-        state.Sum += 1L << index;
-    }
-
-    private static void RemoveChoice(SequenceState state, int index)
-    {
-        state.Chosen.RemoveAt(state.Chosen.Count - 1);
-        state.Sum -= 1L << index;
-    }
-
-    private sealed class SequenceState
-    {
-        public List<int> Chosen { get; } = [];
-
-        public long Sum { get; set; }
     }
 
     // A carry-propagating digit DP: sweep bit positions low to high, choosing how
@@ -126,6 +78,72 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
     // every set bit asked for was produced, and nothing was left to carry.
     private static bool IsExactSolution(int remaining, int need, int carry)
         => remaining == 0 && carry == 0 && need == 0;
+
+    // One node of the sequence tree, as the sum modulo 1e9+7 of what every completion of
+    // it contributes: a complete sequence contributes its own matching product, a
+    // shorter one appends each index in turn, recurses, and removes it again.
+    private static long SumOverSequences(SequenceState state, int sequenceLength, int requiredSetBits, int[] nums)
+    {
+        if (state.Chosen.Count == sequenceLength)
+        {
+            return MatchingProduct(state, requiredSetBits, nums);
+        }
+
+        var total = 0L;
+
+        for (var index = 0; index < nums.Length; index++)
+        {
+            AddChoice(state, index);
+            var completions = SumOverSequences(state, sequenceLength, requiredSetBits, nums);
+            total = (total + completions) % Modulo;
+            RemoveChoice(state, index);
+        }
+
+        return total;
+    }
+
+    // What one completed sequence contributes: the product of the values it chose,
+    // or zero when its binary value does not have exactly requiredSetBits set bits. A
+    // non-matching sequence contributes zero, which leaves the running total unchanged -
+    // the same outcome as the guard that used to skip it.
+    private static long MatchingProduct(SequenceState state, int requiredSetBits, int[] nums)
+    {
+        if (BitOperations.PopCount((ulong)state.Sum) != requiredSetBits)
+        {
+            return 0;
+        }
+
+        var product = 1L;
+
+        foreach (var index in state.Chosen)
+        {
+            product = product * nums[index] % Modulo;
+        }
+
+        return product;
+    }
+
+    // The search's own choose/unchoose pair: adding the index at the end of the
+    // sequence contributes 2^index to the running binary value, so undoing it
+    // subtracts exactly what it added.
+    private static void AddChoice(SequenceState state, int index)
+    {
+        state.Chosen.Add(index);
+        state.Sum += 1L << index;
+    }
+
+    private static void RemoveChoice(SequenceState state, int index)
+    {
+        state.Chosen.RemoveAt(state.Chosen.Count - 1);
+        state.Sum -= 1L << index;
+    }
+
+    private sealed class SequenceState
+    {
+        public List<int> Chosen { get; } = [];
+
+        public long Sum { get; set; }
+    }
 
     /// <summary>
     /// The recurrence, named: one DP step at bit position <c>Bit</c>, handing
@@ -185,5 +203,4 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
             return weight * sub % ModularArithmetic.Modulo;
         }
     }
-
 }

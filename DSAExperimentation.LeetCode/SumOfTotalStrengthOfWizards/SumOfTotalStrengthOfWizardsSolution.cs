@@ -26,6 +26,10 @@ namespace DSAExperimentation.LeetCode.SumOfTotalStrengthOfWizards;
 // stays O(n).
 internal static class SumOfTotalStrengthOfWizardsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     private const int NoSmallerElementToTheLeft = -1;
 
     // The textbook answer: every subarray's minimum and total, computed directly.
@@ -44,7 +48,7 @@ internal static class SumOfTotalStrengthOfWizardsSolution
             {
                 min = Math.Min(min, strength[end]);
                 sum += strength[end];
-                total = (total + (min * (sum % ModularArithmetic.Modulo) % ModularArithmetic.Modulo)) % ModularArithmetic.Modulo;
+                total = (total + (min * (sum % Modulo) % Modulo)) % Modulo;
             }
         }
 

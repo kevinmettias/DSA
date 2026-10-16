@@ -16,11 +16,13 @@ namespace DSAExperimentation.LeetCode.LeastOperatorsToExpressNumber;
 // +1 into the next exponent). The cross-exponent joins are one fewer than the total
 // monomial count, so the recursion's raw total is corrected by -1 at the end.
 //
-// Both arms run one named recurrence, DigitExpressionCost. The unmemoized baseline
-// calls it bare, so every (remaining, level) pair reachable by two different digit
-// paths is re-explored from scratch and the recursion tree stays fully binary.
-// LeastOpsExpressTargetByMemoizedRecursion caches on exactly that pair via this
-// repo's own Memoizer<TState,TResult> - the same 2-tuple state shape
+// Both arms run the same digit recurrence. The unmemoized baseline writes it out as
+// plain recursion - rather than through Memoizer's IRecurrence contract, because a
+// baseline reaches no library type (ARCHITECTURE 17.5) - so every (remaining, level)
+// pair reachable by two different digit paths is re-explored from scratch and the
+// recursion tree stays fully binary. LeastOpsExpressTargetByMemoizedRecursion runs
+// it as the named recurrence DigitExpressionCost and caches on exactly that pair via
+// this repo's own Memoizer<TState,TResult> - the same 2-tuple state shape
 // BurstBalloonsSolution already uses - collapsing the tree to the handful of
 // distinct states digit DP actually needs.
 internal static class LeastOperatorsToExpressNumberSolution
@@ -34,12 +36,8 @@ internal static class LeastOperatorsToExpressNumberSolution
     // are monomials, so the accumulated weight overcounts by exactly one.
     private const int JoinCorrection = 1;
 
-    public static int LeastOpsExpressTargetByUnmemoizedRecursion(int baseValue, int target)
-    {
-        var recurrence = new DigitExpressionCost(baseValue);
-
-        return recurrence.Replay((target, 0), recurrence) - JoinCorrection;
-    }
+    public static int LeastOpsExpressTargetByUnmemoizedRecursion(int baseValue, int target) =>
+        UnmemoizedCost(baseValue, (target, 0)) - JoinCorrection;
 
     public static int LeastOpsExpressTargetByMemoizedRecursion(int baseValue, int target)
     {
@@ -48,19 +46,6 @@ internal static class LeastOperatorsToExpressNumberSolution
         var totalWeight = Memoizer.Memoize<(int Remaining, int Level), int>((target, 0), recurrence);
 
         return totalWeight - JoinCorrection;
-    }
-
-    // remaining < baseValue is the base case, not just remaining == 0: once the
-    // current digit already covers remaining outright, "round up" only ever needs
-    // exactly one more level (quotient+1 == 1 there, itself already below baseValue).
-    // The closed form here, instead of recursing, avoids descending into that next
-    // level's OWN round-up option, which would map (1, level+1) back onto
-    // (1, level+2) and loop forever without ever being the cheaper choice.
-    private static int BaseCaseCost(int baseValue, int remaining, int level, int weight)
-    {
-        var roundDown = remaining * weight;
-        var roundUp = (level + 1) + ((baseValue - remaining) * weight);
-        return Math.Min(roundDown, roundUp);
     }
 
     private static int RecursiveCost(
@@ -86,6 +71,58 @@ internal static class LeastOperatorsToExpressNumberSolution
 
     private static int UpCost(DigitStep step, IRecurrence<(int Remaining, int Level), int> cost)
         => ((step.BaseValue - step.Digit) * step.Weight) + cost.Replay((step.Quotient + 1, step.Level + 1), cost);
+
+    // The digit rule as plain recursion: the same round-down/round-up choice as
+    // DigitExpressionCost, each next digit answered by calling straight back in.
+    private static int UnmemoizedCost(int baseValue, (int Remaining, int Level) state)
+    {
+        var (remaining, level) = state;
+        var weight = level == 0 ? UnitsDigitWeight : level;
+
+        if (remaining < baseValue)
+        {
+            return BaseCaseCost(baseValue, remaining, level, weight);
+        }
+
+        var step = new DigitStep(baseValue, level, weight, remaining % baseValue, remaining / baseValue);
+
+        return UnmemoizedRecursiveCost(step, remaining);
+    }
+
+    // The same self-loop guard as RecursiveCost: at baseValue == 2, remaining == 2,
+    // "round up" would map the state onto itself, so only "down" is taken.
+    private static int UnmemoizedRecursiveCost(DigitStep step, int remaining)
+    {
+        var down = UnmemoizedDownCost(step);
+
+        if (step.Quotient + 1 >= remaining)
+        {
+            return down;
+        }
+
+        var up = UnmemoizedUpCost(step);
+        return Math.Min(down, up);
+    }
+
+    private static int UnmemoizedDownCost(DigitStep step)
+        => (step.Digit * step.Weight) + UnmemoizedCost(step.BaseValue, (step.Quotient, step.Level + 1));
+
+    private static int UnmemoizedUpCost(DigitStep step)
+        => ((step.BaseValue - step.Digit) * step.Weight)
+            + UnmemoizedCost(step.BaseValue, (step.Quotient + 1, step.Level + 1));
+
+    // remaining < baseValue is the base case, not just remaining == 0: once the
+    // current digit already covers remaining outright, "round up" only ever needs
+    // exactly one more level (quotient+1 == 1 there, itself already below baseValue).
+    // The closed form here, instead of recursing, avoids descending into that next
+    // level's OWN round-up option, which would map (1, level+1) back onto
+    // (1, level+2) and loop forever without ever being the cheaper choice.
+    private static int BaseCaseCost(int baseValue, int remaining, int level, int weight)
+    {
+        var roundDown = remaining * weight;
+        var roundUp = (level + 1) + ((baseValue - remaining) * weight);
+        return Math.Min(roundDown, roundUp);
+    }
 
     // Bundles the pieces DownCost/UpCost need for one non-base-case digit step,
     // keeping each helper's parameter list to (step, cost) instead of five loose values.

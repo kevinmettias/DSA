@@ -30,7 +30,7 @@ internal static class BasicCalculatorIVSolution
         var ops = BuildDictOps(known);
         var pos = 0;
         var polynomial = ParseExpressionCore(Normalize(expression), ref pos, ops);
-        var terms = CollectNonZeroTerms(polynomial);
+        var terms = CollectNonZeroDictTerms(polynomial);
 
         terms.Sort((a, b) => CompareByDegreeThenKey(a.Key, b.Key));
 
@@ -268,7 +268,7 @@ internal static class BasicCalculatorIVSolution
         return result;
     }
 
-    private static List<Term> CollectNonZeroTerms(Dictionary<string, long> polynomial)
+    private static List<Term> CollectNonZeroDictTerms(Dictionary<string, long> polynomial)
     {
         var terms = new List<Term>();
 

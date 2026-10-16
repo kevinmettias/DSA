@@ -17,6 +17,10 @@ namespace DSAExperimentation.LeetCode.CountTheNumberOfArraysWithKMatchingAdjacen
 // already build for other counting problems.
 internal static class CountTheNumberOfArraysWithKMatchingAdjacentElementsSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Textbook baseline: build every one of the m^n arrays directly and count
     // adjacent matches on each, materializing nothing beyond the array under
     // construction. Only tractable for the tiny sizes LeetCode's own examples use -
@@ -68,7 +72,7 @@ internal static class CountTheNumberOfArraysWithKMatchingAdjacentElementsSolutio
             total += CountFrom(arr, (Index: index + 1, Matches: nextMatches), maxValue, matchCount);
         }
 
-        return total % ModularArithmetic.Modulo;
+        return total % Modulo;
     }
 
     // How many equal adjacent gaps the filled prefix has once `value` sits at `index`:

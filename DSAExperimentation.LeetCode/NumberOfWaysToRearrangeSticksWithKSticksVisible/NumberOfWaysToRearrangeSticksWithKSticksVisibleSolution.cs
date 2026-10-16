@@ -20,6 +20,10 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToRearrangeSticksWithKSticksVi
 // counting recurrence.
 internal static class NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // The textbook answer: enumerate every permutation of [1..stickCount] by
     // swapping in place and count the ones whose left-to-right maxima number exactly
     // visibleCount. Deliberately BCL-only - it is the O(n!) arm the recurrence below
@@ -36,7 +40,7 @@ internal static class NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
         var arrangements = 0L;
         CountArrangements(sticks, 0, visibleCount, ref arrangements);
 
-        return (int)(arrangements % ModularArithmetic.Modulo);
+        return (int)(arrangements % Modulo);
     }
 
     // This repo's own Memoizer over the (remaining sticks, remaining visible) state,

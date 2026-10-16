@@ -1,5 +1,4 @@
 using System.Text;
-using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.DataStructures.DynamicArray;
 
 namespace DSAExperimentation.LeetCode.PermutationSequence;
@@ -8,7 +7,7 @@ namespace DSAExperimentation.LeetCode.PermutationSequence;
 // rank in the lexicographic order of the digits 1..digitCount.
 //
 // GetPermutationByBacktrackEnumeration is the textbook brute force: enumerate every
-// permutation in lexicographic order via this repo's own generic Backtrack.TrySearch,
+// permutation in lexicographic order by plain choose/recurse/unchoose recursion,
 // stopping the instant the requested permutation is found - O(n!) worst case, every
 // permutation before the target gets materialized. GetPermutationByFactoradicSelection
 // is the clever O(n^2) approach: the factorial number system picks each digit directly
@@ -21,37 +20,10 @@ internal static class PermutationSequenceSolution
     {
         var progress = new SequenceSearchProgress(rank);
         var state = new PermutationState(digitCount);
-        var steps = BuildSteps(digitCount, progress);
 
-        Backtrack.TrySearch<PermutationState, int>(state, steps);
+        TrySearchPermutations(state, digitCount, progress);
 
         return progress.Found;
-    }
-
-    private static BacktrackingSteps<PermutationState, int> BuildSteps(int digitCount, SequenceSearchProgress progress) => new(
-        IsSolution: s => s.Values.Count == digitCount,
-        Candidates: s => s.Values.Count == digitCount ? Array.Empty<int>() : UnusedDigits(digitCount, s),
-        Choose: (s, d) => { s.Used[d - 1] = true; s.Values.Add(d); },
-        Unchoose: (s, d) => { s.Used[d - 1] = false; s.Values.RemoveAt(s.Values.Count - 1); },
-        OnSolution: s => ShouldStopSearch(s, progress));
-
-    // Every digit not yet placed - a lazy pipeline the engine re-reads per MoveNext,
-    // which is what lets it observe Unchoose restoring a digit to the pool.
-    private static IEnumerable<int> UnusedDigits(int digitCount, PermutationState state)
-        => Enumerable.Range(1, digitCount).Where(d => !state.Used[d - 1]);
-
-    // Records the permutation the moment the walk reaches the requested rank, and
-    // answers whether the whole search should stop there.
-    private static bool ShouldStopSearch(PermutationState state, SequenceSearchProgress progress)
-    {
-        progress.Count++;
-        if (progress.Count != progress.Target)
-        {
-            return false;
-        }
-
-        progress.Found = string.Concat(state.Values);
-        return true;
     }
 
     public static string GetPermutationByFactoradicSelection(int digitCount, int rank)
@@ -101,6 +73,60 @@ internal static class PermutationSequenceSolution
         var digit = digits.Get(index);
         digits.RemoveAt(index);
         return digit;
+    }
+
+    // One node of the permutation tree: a full permutation counts toward the rank, a
+    // shorter one extends itself by each unused digit. True once the requested rank is
+    // reached, which stops the whole search.
+    private static bool TrySearchPermutations(PermutationState state, int digitCount, SequenceSearchProgress progress)
+    {
+        if (state.Values.Count == digitCount)
+        {
+            return ShouldStopSearch(state, progress);
+        }
+
+        return TryEachUnusedDigit(state, digitCount, progress);
+    }
+
+    // Records the permutation the moment the walk reaches the requested rank, and
+    // answers whether the whole search should stop there.
+    private static bool ShouldStopSearch(PermutationState state, SequenceSearchProgress progress)
+    {
+        progress.Count++;
+        if (progress.Count != progress.Target)
+        {
+            return false;
+        }
+
+        progress.Found = string.Concat(state.Values);
+        return true;
+    }
+
+    // Each digit not yet placed, ascending so the permutations arrive in lexicographic
+    // order: place it, search below it, take it back, and stop as soon as one branch has
+    // reached the requested rank.
+    private static bool TryEachUnusedDigit(PermutationState state, int digitCount, SequenceSearchProgress progress)
+    {
+        for (var digit = 1; digit <= digitCount; digit++)
+        {
+            if (state.Used[digit - 1])
+            {
+                continue;
+            }
+
+            state.Used[digit - 1] = true;
+            state.Values.Add(digit);
+            var stopped = TrySearchPermutations(state, digitCount, progress);
+            state.Used[digit - 1] = false;
+            state.Values.RemoveAt(state.Values.Count - 1);
+
+            if (stopped)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private sealed record PermutationState

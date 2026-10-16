@@ -18,6 +18,10 @@ namespace DSAExperimentation.LeetCode.FindTheNumberOfPossibleWaysForAnEvent;
 // order.
 internal static class FindTheNumberOfPossibleWaysForAnEventSolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
     // Every one of the stageCount^n stage assignments, tallied by how many distinct
     // stages it used and scored with a plain repeated-multiplication power - the
     // definition read literally, and the arm the memoized DP has to beat.
@@ -26,7 +30,7 @@ internal static class FindTheNumberOfPossibleWaysForAnEventSolution
         var stages = new int[performerCount];
         var total = CountFromPerformer(0, stages, stageCount, maxScore);
 
-        return (int)(total % ModularArithmetic.Modulo);
+        return (int)(total % Modulo);
     }
 
     // Memoizer.Memoize's TResult is the whole row f(performers, 0..stageCount) at
@@ -96,7 +100,7 @@ internal static class FindTheNumberOfPossibleWaysForAnEventSolution
         for (var stage = 0; stage < stageCount; stage++)
         {
             stages[performer] = stage;
-            total = (total + CountFromPerformer(performer + 1, stages, stageCount, maxScore)) % ModularArithmetic.Modulo;
+            total = (total + CountFromPerformer(performer + 1, stages, stageCount, maxScore)) % Modulo;
         }
 
         return total;
@@ -122,7 +126,7 @@ internal static class FindTheNumberOfPossibleWaysForAnEventSolution
 
         for (var i = 0; i < distinctStages; i++)
         {
-            ways = ways * maxScore % ModularArithmetic.Modulo;
+            ways = ways * maxScore % Modulo;
         }
 
         return ways;
