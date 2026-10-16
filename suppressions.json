@@ -4305,6 +4305,22 @@
       "reason": "`NoPosition = -1` is declared in 2 independent units (RankTransformOfAMatrix/RankTransformOfAMatrixSolution.cs, SmallestKLengthSubsequenceWithOccurrencesOfALetter/SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution.cs), each answering one problem on its own: one marks a row or column no cell of the current value has reached yet, the other a scan that has not found its best character yet. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.LeetCode/**",
+      "anchor": "`Modulo = 1_000_000_007`",
+      "reason": "Each copy is a baseline stating LeetCode's answer modulus itself. ARCHITECTURE.md §17.5 bars a baseline from reading even a compile-time constant from a library type, ModularArithmetic.Modulo included, so every problem whose baseline reduces modulo 1e9+7 declares its own - a copy the rule requires, not a vocabulary drifting apart. BaselineIsolationTests is what fails if a baseline reads the library's instead.",
+      "owner": "@kmettias",
+      "expires": "2027-04-16"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.LeetCode/**",
+      "anchor": "`HalvingFactor = 2`",
+      "reason": "Each copy is a baseline stating its own halving factor. ARCHITECTURE.md §17.5 bars a baseline from reading even a compile-time constant from a library type, AlgorithmConstants.HalvingFactor included, so every problem whose baseline halves a range declares its own - a copy the rule requires, not a vocabulary drifting apart. BaselineIsolationTests is what fails if a baseline reads the library's instead.",
+      "owner": "@kmettias",
+      "expires": "2027-04-16"
     }
   ]
 }

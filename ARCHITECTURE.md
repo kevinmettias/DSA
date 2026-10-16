@@ -1392,6 +1392,30 @@ container, a traversal engine, `GridSize` or `GridNeighbors` as a slot or a call
 compile-time constant read from one, such as `ModularArithmetic.Modulo` or
 `AlgorithmConstants.HalvingFactor`. A baseline states its own constants.
 
+`BaselineIsolationTests` holds every `Baseline = true` arm of a `ProblemSolutions` benchmark to this.
+It starts at the solution method the arm calls — only the overloads its arguments fit, so a
+LeetCode-shaped overload that builds the prepared input is not charged to a baseline handed that
+input — or at the solution type the arm constructs, and follows every name the reached code spells:
+a member of the nearest enclosing type first, then a type the problem folder declares, then a static
+helper. A strategy class's members are therefore reached only through the class itself, never by a
+name a sibling strategy shares, and a type named only as `Type.Member` gives up only that member.
+Calls into another problem's solution class are followed into its folder (§17.3). What a baseline
+may meet without offence is its input: every type its entry's parameters name, and the types that
+stand for LeetCode's own I/O shapes — `BinaryTreeNode`, `SinglyLinkedListNode`, `QuadTreeNode`,
+and the `ICache` the LRU and LFU design problems are driven through. A link the text-level trace
+cannot rule out goes in its `AllowedReaches` with the reason the baseline never runs the library
+code; an entry the trace no longer needs fails the suite.
+
+Where every strategy of a problem composes the library, the problem gains a textbook arm to be its
+baseline rather than losing a composition: `BinarySearchTreeIterator`, `ImplementQueueUsingStacks`,
+`EvaluateReversePolishNotation` and `ImplementTrie` keep their repo structure beside a BCL one, `SortList` and `SubsetsII` beside a
+BCL sort and a plain recursion, `EscapeALargeMaze` beside a BCL breadth-first walk. A benchmark that
+compares library algorithms with one another keeps every one and adds the textbook arm beside them:
+`ShortestPathAlgorithmBenchmarks` (LC 743's own priority-queue Dijkstra), LC 1334 (Floyd-Warshall
+over a plain matrix) and LC 1916 (the post-order recursion its tree fold stands for), so the
+library-against-library comparison each was written for still stands. Each local copy of LeetCode's
+modulus or of the halving factor this rule produces is one of a waived group in `suppressions.json`.
+
 ### 17.6 Tier 3: what earns a `Domain/` folder — and the criterion that first got this wrong
 
 **The rule: §2's three axes decide the tier, not how many problems share the type.**
@@ -1784,6 +1808,11 @@ would be blind in precisely the place duplication happens.
   imported folder imports none, and the tier's root and `Conventions/` import no problem. Every
   entry fails once its edge disappears. The scan reads qualified names as well as using directives,
   because a sibling's namespace resolves with no using at all.
+- **§17.5's "what you would write without this repo"** — `BaselineIsolationTests`. Every
+  `Baseline = true` arm of every `ProblemSolutions` benchmark is traced from the solution member it
+  calls or constructs, as §17.5 describes, and fails on any library type or §17.6 content model the
+  trace reaches outside the arm's own input. Parser tests pin each resolution rule the trace relies
+  on.
 
 Every harness file is in scope of the witness rule; the whole catalogue has reached tier 4, so
 there is no unmigrated problem for a harness to be waiting on.
