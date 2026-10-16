@@ -3,12 +3,11 @@ using DSAExperimentation.LeetCode.ImplementTrie;
 
 namespace DSAExperimentation.LeetCode.Tests.ImplementTrie;
 
-// Harness only. The trie itself is DataStructures.Trie.Trie<bool> and the one
-// strategy is ImplementTrieSolution's - this file replays LeetCode's own
-// insert/search/startsWith call sequence against it, the same operation-script
+// Harness only. Both tries are ImplementTrieSolution's - this file replays LeetCode's
+// own insert/search/startsWith call sequence against each, the same operation-script
 // shape LRUCacheTests already uses for its own instance-API problem.
-// ImplementTrieOp.Apply is pure dispatch onto Set/HasKey/HasPrefix - no trie logic
-// of its own.
+// ImplementTrieOp.Apply is pure dispatch onto each trie's own verbs - no trie logic of
+// its own.
 public sealed partial class ImplementTrieSolutionTests
 {
     public static TheoryData<ImplementTrieOp[], bool?[]> Examples =>
@@ -26,6 +25,16 @@ public sealed partial class ImplementTrieSolutionTests
                 [null, true, false, true, null, true]
             },
         };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByArrayNodes_LeetCodeExample_MatchesExpectedBehavior(
+        ImplementTrieOp[] operations, bool?[] expected)
+    {
+        var trie = ImplementTrieSolution.CreateByArrayNodes();
+
+        Assert.Equal(expected, operations.Select(operation => operation.Apply(trie)));
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -52,6 +61,22 @@ public sealed partial class ImplementTrieSolutionTests
         // search/startsWith - so a script runner can assert against one expected
         // value per operation uniformly. Internal, not public: only this same
         // assembly's test method ever calls Apply.
+        internal bool? Apply(ImplementTrieSolution.ArrayNodeTrie trie)
+        {
+            if (kind == OpKind.Insert)
+            {
+                trie.Insert(word);
+                return null;
+            }
+
+            if (kind == OpKind.Search)
+            {
+                return trie.HasWord(word);
+            }
+
+            return trie.HasPrefix(word);
+        }
+
         internal bool? Apply(Trie<bool> trie)
         {
             if (kind == OpKind.Insert)

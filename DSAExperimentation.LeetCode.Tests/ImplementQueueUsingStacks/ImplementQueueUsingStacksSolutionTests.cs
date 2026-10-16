@@ -6,10 +6,8 @@ namespace DSAExperimentation.LeetCode.Tests.ImplementQueueUsingStacks;
 // LeetCode's own shape here is a stateful object across a sequence of
 // push/pop/peek/empty calls, so Examples encodes a call script instead of a
 // single argument tuple - the same shape MinStackTests/LRUCacheTests use for
-// their own instance-API problems. Only one strategy exists (the original
-// benchmark's two [Benchmark] arms were both `return 1` placeholders, not a
-// second algorithm to reconcile - see ImplementQueueUsingStacksSolution's own
-// doc comment), so there is only one [Theory] method.
+// their own instance-API problems. Both strategies replay the same scripts, one
+// [Theory] each.
 public sealed partial class ImplementQueueUsingStacksSolutionTests
 {
     public static TheoryData<QueueOp[], object?[]> Examples =>
@@ -43,6 +41,18 @@ public sealed partial class ImplementQueueUsingStacksSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
+    public void CreateByTwoBclStacks_LeetCodeExamples_BehavesFifo(QueueOp[] operations, object?[] expected)
+    {
+        var queue = ImplementQueueUsingStacksSolution.CreateByTwoBclStacks();
+
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(queue));
+        }
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
     public void CreateByTwoStacks_LeetCodeExamples_BehavesFifo(QueueOp[] operations, object?[] expected)
     {
         var queue = ImplementQueueUsingStacksSolution.CreateByTwoStacks();
@@ -72,7 +82,7 @@ public sealed partial class ImplementQueueUsingStacksSolutionTests
         // type - int or bool - so the harness can assert without forcing every
         // operation onto one numeric shape). Internal, not public: only this
         // same assembly's test method ever calls Apply.
-        internal object? Apply(ImplementQueueUsingStacksSolution.TwoStackQueue queue)
+        internal object? Apply(ImplementQueueUsingStacksSolution.IStackQueue queue)
         {
             switch (kind)
             {

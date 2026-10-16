@@ -24,6 +24,25 @@ public sealed partial class PowerGridMaintenanceSolutionTests
             },
         };
 
+    // Two grids, {1, 2} and {3, 4}: a pair shares a grid exactly when a chain of
+    // connections joins it.
+    public static TheoryData<int, int, bool> TwoGridStationPairs =>
+        new()
+        {
+            { 1, 2, true },
+            { 3, 4, true },
+            { 2, 3, false },
+        };
+
+    [Theory]
+    [MemberData(nameof(TwoGridStationPairs))]
+    public void GroupByGrid_TwoSeparateGrids_ConnectsOnlyStationsInTheSameGrid(int first, int second, bool expected)
+    {
+        var grids = PowerGridMaintenanceSolution.GroupByGrid(4, [[1, 2], [3, 4]]);
+
+        Assert.Equal(expected, grids.IsConnected(first, second));
+    }
+
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaintenanceResultsByUnionFindSortedSet_LeetCodeExamples_ReturnsSmallestOnlineStationPerCheck(

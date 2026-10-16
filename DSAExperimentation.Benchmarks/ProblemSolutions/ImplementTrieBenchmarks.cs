@@ -2,14 +2,13 @@ using DSAExperimentation.LeetCode.ImplementTrie;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: the single arm is ImplementTrieSolution's, composing this repo's own
-// DataStructures.Trie.Trie<bool> - the same primitive TrieReturnedBySolutionSeamTests pins the
-// solution to returning. There is no second arm because there is no second strategy: the repo
-// deliberately composes its own trie rather than inventing a representation, so a rival node-chain
-// trie written here would time a structure the architecture does not have. BinarySearchTreeIterator
-// is the same case. [Benchmark] inserts the whole word set, then replays search and startsWith over
-// a shuffled copy of it, so insert cost is charged to both halves rather than just the first, and
-// returns every verdict, each query's search then its startsWith.
+// Harness only: both arms are ImplementTrieSolution's - LC 208's textbook node chain over
+// plain arrays, and this repo's own DataStructures.Trie.Trie<bool>, the same primitive
+// TrieReturnedBySolutionSeamTests pins the composed factory to returning. The textbook arm is
+// the baseline (ARCHITECTURE 17.5): what a LeetCode answer writes without this repo, not a rival
+// representation of the repo's own. Each arm inserts the whole word set, then replays search and
+// startsWith over a shuffled copy of it, so insert cost is charged to both halves rather than
+// just the first, and returns every verdict, each query's search then its startsWith.
 public class ImplementTrieBenchmarks
 {
     private const int RandomSeed = 208; // LC problem number
@@ -41,6 +40,26 @@ public class ImplementTrieBenchmarks
     }
 
     [Benchmark(Baseline = true)]
+    public bool[] InsertThenSearchAndStartsWithOverArrayNodes()
+    {
+        var trie = ImplementTrieSolution.CreateByArrayNodes();
+        var next = 0;
+
+        foreach (var word in _words)
+        {
+            trie.Insert(word);
+        }
+
+        foreach (var word in _queries)
+        {
+            _verdicts[next++] = trie.HasWord(word);
+            _verdicts[next++] = trie.HasPrefix(word[.._prefixLength]);
+        }
+
+        return _verdicts;
+    }
+
+    [Benchmark]
     public bool[] InsertThenSearchAndStartsWith()
     {
         var trie = ImplementTrieSolution.CreateByTriePrimitive();

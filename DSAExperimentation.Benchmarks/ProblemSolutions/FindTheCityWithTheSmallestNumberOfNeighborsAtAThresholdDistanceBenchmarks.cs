@@ -3,14 +3,17 @@ using DSAExperimentation.LeetCode.FindTheCityWithTheSmallestNumberOfNeighborsAtA
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are
+// Harness only: all three arms are
 // FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolution's, the
-// same methods its test proves correct. Each is handed the prepared CityGraph its
-// hoisted overload takes, so building the road network is charged to
-// [GlobalSetup] rather than to the search being measured - leaving the comparison
-// where it belongs: this repo's single-source Dijkstra run once per city against
-// one Floyd-Warshall call, the mirror image of ShortestPathAlgorithmBenchmarks'
-// own point about picking the wrong tool for an all-pairs question.
+// same methods its test proves correct. The baseline is the textbook Floyd-Warshall
+// over a plain matrix, handed LeetCode's own (cityCount, roads) input - filling the
+// matrix is part of that algorithm. The two composed arms are each handed the
+// prepared CityGraph their hoisted overload takes, so building the road network is
+// charged to [GlobalSetup] rather than to the search being measured - leaving their
+// comparison where it belongs: this repo's single-source Dijkstra run once per city
+// against one Floyd-Warshall call, the mirror image of
+// ShortestPathAlgorithmBenchmarks' own point about picking the wrong tool for an
+// all-pairs question.
 //
 // LC 1334 caps the cities at 100 and lists each road once, lower city first. The
 // shared road workload writes some roads higher city first and can draw the same
@@ -24,6 +27,8 @@ public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenc
 
     private CityGraph _graph = null!;
 
+    private int[][] _roads = [];
+
     [Params(30, 100)]
     public int CityCount { get; set; }
 
@@ -33,6 +38,7 @@ public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenc
         var drawnRoads = CityRoadWorkloads.BuildRoads(CityCount, ExtraRoadsPerCity, seed: RandomSeed);
         var roads = drawnRoads.Select(LowerCityFirst).DistinctBy(road => (From: road[0], To: road[1])).ToArray();
 
+        _roads = roads;
         _graph = CityGraph.Build(CityCount, roads);
     }
 
@@ -44,6 +50,11 @@ public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenc
     }
 
     [Benchmark(Baseline = true)]
+    public int DistanceMatrix() =>
+        FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolution
+            .FindCityByDistanceMatrix(CityCount, _roads, DistanceThreshold);
+
+    [Benchmark]
     public int DijkstraPerSource() =>
         FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolution
             .FindCityByDijkstraPerSource(_graph, DistanceThreshold);

@@ -8,11 +8,30 @@ namespace DSAExperimentation.LeetCode.Tests.BinarySearchTreeIterator;
 // so each example is its own [Fact] replaying the LeetCode call script directly -
 // BinaryTreeNode<int> is internal, so it cannot appear in a public
 // TheoryData<...> member (CS0053), the same reason BalancedBinaryTreeTests uses
-// one [Fact] per tree rather than [Theory]. Only one strategy exists (the
-// original benchmark's two [Benchmark] arms were both `return 1` placeholders,
-// not a second algorithm to reconcile), so there is only one method family.
+// one [Fact] per tree rather than [Theory]. The two strategies keep the same
+// walk on different stacks, so each method family replays the same scripts.
 public sealed partial class BinarySearchTreeIteratorSolutionTests
 {
+    [Fact]
+    public void CreateByBclStack_LeetCodeExample_ReturnsInOrderSequence()
+    {
+        var iterator = BinarySearchTreeIteratorSolution.CreateByBclStack(ExampleTree());
+
+        AssertInOrderSequence(iterator, 3, 7, 9, 15, 20);
+    }
+
+    [Fact]
+    public void CreateByBclStack_SingleNode_ReturnsThatValueThenExhausts()
+    {
+        var iterator = BinarySearchTreeIteratorSolution.CreateByBclStack(new BinaryTreeNode<int>(1));
+
+        AssertInOrderSequence(iterator, 1);
+    }
+
+    [Fact]
+    public void CreateByBclStack_EmptyTree_HasNoNext() =>
+        Assert.False(BinarySearchTreeIteratorSolution.CreateByBclStack(null).HasNext());
+
     [Fact]
     public void CreateByLeftSpineStack_LeetCodeExample_ReturnsInOrderSequence()
     {
@@ -48,7 +67,7 @@ public sealed partial class BinarySearchTreeIteratorSolutionTests
     // Drains the iterator, checking that each value arrives in turn and that the
     // spine is spent once the last one has.
     private static void AssertInOrderSequence(
-        BinarySearchTreeIteratorSolution.BstIterator iterator, params int[] expected)
+        BinarySearchTreeIteratorSolution.IBstIterator iterator, params int[] expected)
     {
         foreach (var value in expected)
         {

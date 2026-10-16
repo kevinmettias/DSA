@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.EscapeALargeMaze;
 
 namespace DSAExperimentation.LeetCode.Tests.EscapeALargeMaze;
 
-// Harness only. The strategy is EscapeALargeMazeSolution's, run on LC 1036's own
+// Harness only. Both strategies are EscapeALargeMazeSolution's, run on LC 1036's own
 // 10^6 x 10^6 board: LeetCode's two published examples, then three scenarios that
 // each decide the answer a different way.
 public sealed partial class EscapeALargeMazeSolutionTests
@@ -42,6 +42,17 @@ public sealed partial class EscapeALargeMazeSolutionTests
             // One blocked cell can never wall anything off.
             { new EscapeExample(Blocked: [[0, 1]], Source: [0, 0], Target: [5, 5], CanEscape: true) },
         };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CanEscapeByCappedBreadthFirstSearch_LeetCodeExamples_ReturnsWhetherSourceReachesTarget(
+        EscapeExample example)
+    {
+        var canEscape = EscapeALargeMazeSolution.CanEscapeByCappedBreadthFirstSearch(
+            example.Blocked, example.Source, example.Target);
+
+        Assert.Equal(example.CanEscape, canEscape);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]

@@ -3,12 +3,11 @@ using BclQueue = System.Collections.Generic.Queue<int>;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ImplementQueueUsingStacksBenchmarks (ARCHITECTURE 17.9): the class has a
-// single arm - this repo's two-stack queue - so there is no second strategy to reconcile it
-// against and the assertion has to come from the arm's own declared contract instead. Its
-// [GlobalSetup] builds one fixed, valid script of interleaved push/pop/peek entries (a pop or
-// peek only ever follows a push that has not yet been popped) and the arm replays that script
-// through the two-stack queue, returning every value pop and peek answered. A FIFO queue's
+// Harness coverage for ImplementQueueUsingStacksBenchmarks (ARCHITECTURE 17.9): each arm's
+// answers are checked against the queue contract itself. Its [GlobalSetup] draws one fixed,
+// valid script of interleaved push/pop/peek entries (a pop or peek only ever follows a push that
+// has not yet been popped) and each arm replays that script through its own two-stack queue,
+// returning every value pop and peek answered. A FIFO queue's
 // contract fixes those answers: the reference replay below drives the identical script - same
 // seed, same roll and value draws, same order - through a BCL Queue<int>, so the two sequences
 // agree only if the measured queue is genuinely FIFO.
@@ -26,6 +25,14 @@ public sealed partial class ImplementQueueUsingStacksBenchmarksTests
     // The band [GlobalSetup] draws pushed values from: LC 232's [1, 9].
     private const int MinPushedValue = 1;
     private const int MaxPushedValueExclusive = 10;
+
+    [Fact]
+    public void TwoBclStackTransfer_InterleavedScript_MatchesBclQueueReference()
+    {
+        var harness = BuildHarness();
+
+        Assert.Equal(ReferenceFifoAnswers(SmallestOperationCount), harness.TwoBclStackTransfer());
+    }
 
     [Fact]
     public void TwoStackTransfer_InterleavedScript_MatchesBclQueueReference()

@@ -2,9 +2,10 @@ using DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 
 namespace DSAExperimentation.LeetCode.Tests.CountWaysToBuildRoomsInAnAntColony;
 
-// Harness only. Pinning both algebras to the same examples is what proves the
-// precomputed-factorial table agrees with the straightforward per-node one - a
-// check the benchmark alone could never make.
+// Harness only. Pinning the plain recursion and both algebras to the same examples is
+// what proves the precomputed-factorial table agrees with the straightforward per-node
+// one, and the fold with the recursion it stands for - a check the benchmark alone could
+// never make.
 public sealed partial class CountWaysToBuildRoomsInAnAntColonySolutionTests
 {
     public static TheoryData<int[], int> Examples =>
@@ -15,6 +16,14 @@ public sealed partial class CountWaysToBuildRoomsInAnAntColonySolutionTests
             { [-1, 0, 0, 0], 6 },
             { [-1], 1 },
         };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void WaysToBuildOrderByPostOrderRecursion_LeetCodeExamples_ReturnsDistinctBuildOrderCount(
+        int[] prevRoom, int expected) =>
+        Assert.Equal(
+            expected,
+            CountWaysToBuildRoomsInAnAntColonySolution.WaysToBuildOrderByPostOrderRecursion(prevRoom));
 
     [Theory]
     [MemberData(nameof(Examples))]

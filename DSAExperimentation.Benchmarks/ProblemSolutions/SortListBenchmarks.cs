@@ -4,11 +4,11 @@ using DSAExperimentation.LeetCode.SortList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: the single arm is SortListSolution's, the same method
-// SortListSolutionTests proves correct. Pre-migration this class was an untested
-// compile-smoke placeholder (`Baseline() => 1`, `PrimitiveComposed() => 1`)
-// rather than a second strategy to reconcile. The strategy only reads the list
-// it is handed (it rebuilds a fresh one from the sorted array rather than
+// Harness only: both arms are SortListSolution's, the same methods
+// SortListSolutionTests proves correct - the BCL's Array.Sort, and this repo's
+// MergeSort, between the same flatten and rebuild. Pre-migration this class was an
+// untested compile-smoke placeholder (`Baseline() => 1`, `PrimitiveComposed() => 1`).
+// Each strategy only reads the list it is handed (it rebuilds a fresh one from the sorted array rather than
 // relinking in place), so - unlike InsertionSortListBenchmarks -
 // [GlobalSetup] can build the list once and every iteration reuses it, mirroring
 // ConvertSortedListToBinarySearchTreeBenchmarks.
@@ -37,5 +37,8 @@ public class SortListBenchmarks
     }
 
     [Benchmark(Baseline = true)]
+    public SinglyLinkedListNode<int>? ArraySort() => SortListSolution.SortByArraySort(_head);
+
+    [Benchmark]
     public SinglyLinkedListNode<int>? MergeSortOverSequence() => SortListSolution.SortByMergeSortOverSequence(_head);
 }

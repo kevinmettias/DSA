@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NetworkDelayTime;
 namespace DSAExperimentation.LeetCode.Tests.NetworkDelayTime;
 
 // Harness only. The graph representation is NetworkDelayTimeSolution's own
-// NetworkNode/NetworkTopology and all three shortest-path strategies are its
+// NetworkNode/NetworkTopology and every shortest-path strategy is one of its
 // methods - this file just pins them to LeetCode's published examples, including
 // the two shapes of "some node is unreachable" (no edges at all, and an edge that
 // only leads away from the source).
@@ -17,6 +17,16 @@ public sealed partial class NetworkDelayTimeSolutionTests
             { [[1, 2, 1]], 2, 1, 1 },
             { [[1, 2, 1]], 2, 2, -1 },
         };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinutesToReachAllByPriorityQueue_LeetCodeExamples_ReturnsMaxDistanceFromSource(
+        int[][] times, int nodeCount, int sourceNodeId, int expected)
+    {
+        var minutes = NetworkDelayTimeSolution.MinutesToReachAllByPriorityQueue(times, nodeCount, sourceNodeId);
+
+        Assert.Equal(expected, minutes);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]

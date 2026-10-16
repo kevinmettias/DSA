@@ -5,11 +5,14 @@ using DSAExperimentation.LeetCode.NetworkDelayTime;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // The "which shortest-path algorithm" choice a problem like Network Delay Time
-// (LC 743) or Cheapest Flights Within K Stops (LC 787) actually forces: all three
-// arms are NetworkDelayTimeSolution's own strategies, the same methods
-// NetworkDelayTimeSolutionTests proves correct, called through their generic prepared-input
-// overload so graph construction is charged to [GlobalSetup] rather than to the
-// search being measured. All three answer the same single-source-distances question
+// (LC 743) or Cheapest Flights Within K Stops (LC 787) actually forces: every arm is
+// one of NetworkDelayTimeSolution's own strategies, the same methods
+// NetworkDelayTimeSolutionTests proves correct. The baseline is the textbook Dijkstra
+// over a BCL PriorityQueue, handed the graph as LC 743's own [from, to, minutes] list
+// over nodes 1..NodeCount; this repo's three algorithms are called through their
+// generic prepared-input overload. Either way the graph is built in [GlobalSetup]
+// rather than charged to the search being measured. All of them answer the same
+// single-source-distances question
 // on the same non-negative-weight graph, so this is a genuine algorithm swap, not an
 // apples-to-oranges comparison. FloydWarshall computes every pair at once (a
 // strictly harder question than the other two answer) - it is expected to lose here,
@@ -28,6 +31,11 @@ public class ShortestPathAlgorithmBenchmarks
     private List<WeightedAdjacencyNode<int>> _vertices = new();
 
     private WeightedAdjacencyNode<int> _source = null!;
+
+    private int[][] _times = [];
+
+    private int _sourceId;
+
     [Params(50, 100)]
     public int NodeCount { get; set; }
 
@@ -37,9 +45,19 @@ public class ShortestPathAlgorithmBenchmarks
         var (vertices, source) = RandomWeightedGraphs.Build(NodeCount, extraEdgesPerNode: ExtraEdgesPerNode, seed: RandomSeed);
         _vertices = vertices;
         _source = source;
+
+        // The fixture numbers nodes from 0; LC 743 numbers them from 1.
+        _times = [.. RandomWeightedGraphs.BuildEdges(NodeCount, ExtraEdgesPerNode, RandomSeed).Select(OneBased)];
+        _sourceId = source.Id + 1;
     }
 
+    private static int[] OneBased(int[] edge) => [edge[0] + 1, edge[1] + 1, edge[2]];
+
     [Benchmark(Baseline = true)]
+    public int PriorityQueueDijkstra()
+        => NetworkDelayTimeSolution.MinutesToReachAllByPriorityQueue(_times, NodeCount, _sourceId);
+
+    [Benchmark]
     public int Dijkstra()
         => NetworkDelayTimeSolution.MinutesToReachAllByDijkstra<
             WeightedAdjacencyNode<int>, WeightedAdjacencyTopology<int>>(_vertices, _source);

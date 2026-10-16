@@ -17,11 +17,10 @@ namespace DSAExperimentation.LeetCode.PowerGridMaintenance;
 // can never come back online, but an operational one is only ever peeked.
 internal static class PowerGridMaintenanceSolution
 {
-    // The textbook answer: DisjointSet grouping plus a plain BCL SortedSet<int> per
-    // grid, removed from directly as stations go offline. Deliberately written
-    // without this repo's Heap - the arm the composed solution below has to justify
-    // itself against.
-    public static int[] MaintenanceResultsByUnionFindSortedSet(int stationCount, int[][] connections, int[][] queries)
+    // The grids connections[] form, as the DisjointSet both strategies are handed: the
+    // grouping step they share, which a benchmark prepares once rather than timing
+    // (ARCHITECTURE 17.4).
+    public static DisjointSet GroupByGrid(int stationCount, int[][] connections)
     {
         var disjointSet = new DisjointSet(stationCount + 1);
 
@@ -30,8 +29,20 @@ internal static class PowerGridMaintenanceSolution
             disjointSet.Union(connection[0], connection[1]);
         }
 
+        return disjointSet;
+    }
+
+    public static int[] MaintenanceResultsByUnionFindSortedSet(int stationCount, int[][] connections, int[][] queries)
+    {
+        var disjointSet = GroupByGrid(stationCount, connections);
+
         return MaintenanceResultsByUnionFindSortedSet(stationCount, disjointSet, queries);
     }
+
+    // The textbook answer over the grids it is handed: a plain BCL SortedSet<int> per
+    // grid, removed from directly as stations go offline. Deliberately written without
+    // this repo's Heap - the arm the composed solution below has to justify itself
+    // against.
 
     public static int[] MaintenanceResultsByUnionFindSortedSet(int stationCount, DisjointSet disjointSet, int[][] queries)
     {
@@ -101,12 +112,7 @@ internal static class PowerGridMaintenanceSolution
     // return, but a still-operational one is left in place for the next query.
     public static int[] MaintenanceResultsByUnionFindHeap(int stationCount, int[][] connections, int[][] queries)
     {
-        var disjointSet = new DisjointSet(stationCount + 1);
-
-        foreach (var connection in connections)
-        {
-            disjointSet.Union(connection[0], connection[1]);
-        }
+        var disjointSet = GroupByGrid(stationCount, connections);
 
         return MaintenanceResultsByUnionFindHeap(stationCount, disjointSet, queries);
     }

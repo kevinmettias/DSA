@@ -4,15 +4,13 @@ using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SortListBenchmarks (ARCHITECTURE 17.9): the class has a single arm - the
-// original benchmark's two [Benchmark] methods were an unimplemented placeholder returning the
-// literal 1 - so there is no second strategy to reconcile it against and the assertion has to
-// come from what LeetCode 148's own contract makes decisive instead: the returned list carries
-// the input's values in ascending order.
+// Harness coverage for SortListBenchmarks (ARCHITECTURE 17.9): each arm is checked against what
+// LeetCode 148's own contract makes decisive rather than only against the other: the returned list
+// carries the input's values in ascending order.
 //
 // Setup is the oracle. It builds the chain 1 .. Length in ascending order and then shuffles it
 // with a fixed seed, so the sorted answer is the ascending range itself and nothing about the
-// shuffle has to be reconstructed. The arm only reads the chain it is handed and rebuilds a
+// shuffle has to be reconstructed. Each arm only reads the chain it is handed and rebuilds a
 // fresh one, so one harness is safe to call twice in either order.
 public sealed partial class SortListBenchmarksTests
 {
@@ -23,6 +21,12 @@ public sealed partial class SortListBenchmarksTests
         Assert.Equal(
             AnswerGraphText.Of(ValuesOf(BuildHarness().MergeSortOverSequence())),
             AnswerGraphText.Of(ValuesOf(BuildHarness().MergeSortOverSequence())));
+
+    [Fact]
+    public void ArraySort_ShuffledAscendingRange_RebuildsTheRangeInOrder() =>
+        Assert.Equal(
+            AnswerGraphText.Of(Enumerable.Range(1, SmallestLength)),
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ArraySort())));
 
     [Fact]
     public void MergeSortOverSequence_ShuffledAscendingRange_RebuildsTheRangeInOrder() =>

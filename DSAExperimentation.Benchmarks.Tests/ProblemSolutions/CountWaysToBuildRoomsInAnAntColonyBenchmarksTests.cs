@@ -2,10 +2,10 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountWaysToBuildRoomsInAnAntColonyBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question - recomputing Factorial(subtree size) at every node
-// against a table prepared once - so a harness whose arms disagree is timing two different problems,
-// not two ways of answering one. Setup builds the tree from RoomCount alone, so the same RoomCount
+// Harness coverage for CountWaysToBuildRoomsInAnAntColonyBenchmarks (ARCHITECTURE 17.9): its three
+// arms are competing strategies for the same question - a plain recursion and a fold recomputing
+// Factorial(subtree size) at every node, against a fold over a table prepared once - so a harness
+// whose arms disagree is timing different problems, not ways of answering one. Setup builds the tree from RoomCount alone, so the same RoomCount
 // must rebuild the same tree; otherwise two published numbers were never comparable in the first
 // place.
 //
@@ -23,6 +23,14 @@ public sealed partial class CountWaysToBuildRoomsInAnAntColonyBenchmarksTests
     {
         Assert.Equal(ExpectedBuildOrders, BuildHarness().PerNodeFactorials());
         Assert.Equal(BuildHarness().PerNodeFactorials(), BuildHarness().PerNodeFactorials());
+    }
+
+    [Fact]
+    public void PostOrderRecursion_StraightChain_AgreesWithPerNodeFactorials()
+    {
+        var harness = BuildHarness();
+
+        Assert.Equal(harness.PerNodeFactorials(), harness.PostOrderRecursion());
     }
 
     [Fact]

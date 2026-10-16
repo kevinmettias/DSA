@@ -10,13 +10,111 @@ namespace DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 // room i), and the answer is that tree's count of distinct topological orderings,
 // modulo 1e9+7.
 //
-// Both strategies are the same TreeFold over DataStructures' parent-array tree
-// - exactly TreeMetrics.Size's composition with a counting algebra instead of
+// The two composed strategies are the same TreeFold over DataStructures' parent-array
+// tree - exactly TreeMetrics.Size's composition with a counting algebra instead of
 // SizeAlgebra's plain sum - and differ only in which algebra they close over, so
-// what the benchmark measures is the cost of recomputing factorials per node
-// against precomputing them once.
+// comparing them measures the cost of recomputing factorials per node against
+// precomputing them once. The baseline is the plain post-order recursion that fold
+// stands for, with the per-node algebra written inline, so comparing it with the
+// per-node fold measures what the fold itself costs.
 internal static class CountWaysToBuildRoomsInAnAntColonySolution
 {
+    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
+    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
+    private const long Modulo = 1_000_000_007;
+
+    public static int WaysToBuildOrderByPostOrderRecursion(int[] prevRoom)
+    {
+        var rooms = ParentArrayTree.Build(prevRoom);
+
+        return WaysToBuildOrderByPostOrderRecursion(rooms[0]);
+    }
+
+    // The textbook answer: a post-order recursion that, at every room, multiplies its
+    // children's own counts by the multinomial (size - 1)! / (s1! * s2! * ...), recomputing
+    // each factorial from scratch and inverting it by Fermat's little theorem - O(subtree
+    // size) per room, the same work RoomWaysAlgebra does inside TreeFold. It recurses once
+    // per level, which LC's 1e5-room chain would overflow; the benchmark's chains stay far
+    // below that.
+    public static int WaysToBuildOrderByPostOrderRecursion(RootedTreeNode root)
+    {
+        var (_, ways) = RoomWays(root);
+
+        return (int)ways;
+    }
+
+    private static (long Size, long Ways) RoomWays(RootedTreeNode room)
+    {
+        var subtree = (Size: 1L, Ways: 1L);
+
+        foreach (var child in room.Children)
+        {
+            var (childSize, childWays) = RoomWays(child);
+            subtree = AbsorbChild(subtree, childSize, childWays);
+        }
+
+        return CloseRoom(subtree);
+    }
+
+    // Folds one finished child into its room's running count: the child's rooms join the
+    // subtree, its own orderings multiply in, and childSize! divides out of the multinomial
+    // that interleaves the children.
+    private static (long Size, long Ways) AbsorbChild(
+        (long Size, long Ways) subtree, long childSize, long childWays)
+    {
+        var childFactorial = FactorialFromScratch(childSize);
+        var ways = subtree.Ways * childWays % Modulo * ModInverse(childFactorial) % Modulo;
+
+        return (subtree.Size + childSize, ways);
+    }
+
+    // Recomputed from scratch at every room that needs it - the per-node cost the
+    // precomputed table exists to remove.
+    private static long FactorialFromScratch(long value)
+    {
+        var result = 1L;
+
+        for (var i = 2; i <= value; i++)
+        {
+            result = result * i % Modulo;
+        }
+
+        return result;
+    }
+
+    // Fermat's little theorem: for the prime Modulo, value^(Modulo - 2) is value's inverse.
+    private static long ModInverse(long value) => ModPower(value, Modulo - 2);
+
+    // value^exponent mod Modulo by repeated squaring, restated rather than called on
+    // ModularArithmetic for the same reason as Modulo itself.
+    private static long ModPower(long value, long exponent)
+    {
+        var result = 1L;
+        value %= Modulo;
+
+        while (exponent > 0)
+        {
+            if ((exponent & 1) == 1)
+            {
+                result = result * value % Modulo;
+            }
+
+            value = value * value % Modulo;
+            exponent >>= 1;
+        }
+
+        return result;
+    }
+
+    // The multinomial's numerator, once every child is in: the room itself is built first,
+    // and the other size - 1 rooms of its subtree interleave in (size - 1)! orders.
+    private static (long Size, long Ways) CloseRoom((long Size, long Ways) subtree)
+    {
+        var interleavings = FactorialFromScratch(subtree.Size - 1);
+
+        return (subtree.Size, subtree.Ways * interleavings % Modulo);
+    }
+
     public static int WaysToBuildOrderByPerNodeFactorial(int[] prevRoom)
     {
         var rooms = ParentArrayTree.Build(prevRoom);

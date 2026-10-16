@@ -2,8 +2,9 @@ using DSAExperimentation.LeetCode.SubsetsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: the arm is SubsetsIISolution's, the same method SubsetsIISolutionTests
-// proves correct. The [Benchmark(Baseline = true)] "IterativeDedup" arm this
+// Harness only: both arms are SubsetsIISolution's, the same methods SubsetsIISolutionTests
+// proves correct - the sort-then-skip walk as plain recursion, and on this repo's
+// backtracking combinator. The [Benchmark(Baseline = true)] "IterativeDedup" arm this
 // migrated out of never implemented an independent algorithm - its body built an
 // unused HashSet<string>, looped over a discarded HashSet<int> doing nothing, and
 // then returned Backtracking()'s own value directly. It was not a second strategy,
@@ -22,6 +23,10 @@ public class SubsetsIIBenchmarks
     public void Setup() => _values = Enumerable.Range(0, Length).Select(i => i / DuplicateGroupSize).ToArray();
 
     [Benchmark(Baseline = true)]
+    public List<List<int>> SkipDuplicatesRecursion() =>
+        SubsetsIISolution.FindAllSubsetsBySkipDuplicatesRecursion(_values);
+
+    [Benchmark]
     public List<List<int>> BacktrackSkipDuplicates() =>
         SubsetsIISolution.FindAllSubsetsByBacktrackSkipDuplicates(_values);
 }

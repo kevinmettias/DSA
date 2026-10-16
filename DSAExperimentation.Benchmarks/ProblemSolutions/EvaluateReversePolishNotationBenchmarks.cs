@@ -3,10 +3,10 @@ using DSAExperimentation.LeetCode.EvaluateReversePolishNotation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: the single arm is EvaluateReversePolishNotationSolution's, the
-// same method EvaluateReversePolishNotationSolutionTests proves correct. Pre-migration
-// this class was an untested compile-smoke placeholder (`Baseline() => 1`,
-// `PrimitiveComposed() => 1`) rather than a second strategy to reconcile.
+// Harness only: both arms are EvaluateReversePolishNotationSolution's, the same
+// methods EvaluateReversePolishNotationSolutionTests proves correct - one operand-stack
+// evaluation, on the BCL's Stack<int> and on this repo's. Pre-migration this class was
+// an untested compile-smoke placeholder (`Baseline() => 1`, `PrimitiveComposed() => 1`).
 //
 // The expression comes from EvaluateReversePolishNotationWorkloads: a seeded postfix
 // expression over every operator that keeps LC 150's promises of no division by zero
@@ -26,5 +26,8 @@ public class EvaluateReversePolishNotationBenchmarks
         _tokens = EvaluateReversePolishNotationWorkloads.Build(OperandCount, new Random(RandomSeed)).Tokens;
 
     [Benchmark(Baseline = true)]
+    public int BclOperandStack() => EvaluateReversePolishNotationSolution.EvaluateByBclOperandStack(_tokens);
+
+    [Benchmark]
     public int OperandStack() => EvaluateReversePolishNotationSolution.EvaluateByOperandStack(_tokens);
 }

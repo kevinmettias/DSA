@@ -3,12 +3,12 @@ using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SubsetsIIBenchmarks (ARCHITECTURE 17.9): the class carries a single arm - this
-// repo's backtracking combinator with the duplicate-skipping candidate rule - so there is no second
-// strategy to reconcile it against and the assertion has to come from the workload instead. The arm
-// returns the multiset power set as an outer list whose order LeetCode 90 never fixes, which is the
-// one family OfUnordered exists for; within each subset both the arm and the oracle below emit the
-// values ascending, so that inner order stays checked.
+// Harness coverage for SubsetsIIBenchmarks (ARCHITECTURE 17.9): each arm - the duplicate-skipping walk
+// as plain recursion, and on this repo's backtracking combinator - is checked against the workload
+// itself rather than only against the other. Each arm returns the multiset power set as an outer
+// list whose order LeetCode 90 never fixes, which is the one family OfUnordered exists for;
+// within each subset every arm and the oracle below emit the values ascending, so that inner
+// order stays checked.
 //
 // The oracle is derived from what [GlobalSetup] lays down rather than read back out of the arm: Setup
 // writes DuplicateGroupSize copies of each of 0, 1, 2, ... in order (the benchmark keeps that
@@ -26,6 +26,12 @@ public sealed partial class SubsetsIIBenchmarksTests
         Assert.Equal(
             AnswerGraphText.OfUnordered(BuildHarness().BacktrackSkipDuplicates()),
             AnswerGraphText.OfUnordered(BuildHarness().BacktrackSkipDuplicates()));
+
+    [Fact]
+    public void SkipDuplicatesRecursion_DuplicatePairs_ReturnsThePowerSetOfTheMultiset() =>
+        Assert.Equal(
+            AnswerGraphText.OfUnordered(ExpectedMultisetPowerSet()),
+            AnswerGraphText.OfUnordered(BuildHarness().SkipDuplicatesRecursion()));
 
     [Fact]
     public void BacktrackSkipDuplicates_DuplicatePairs_ReturnsThePowerSetOfTheMultiset() =>

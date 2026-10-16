@@ -13,11 +13,12 @@ namespace DSAExperimentation.LeetCode.NetworkDelayTime;
 // node to reach every one of the nodeCount nodes, or -1 if some node is
 // unreachable. That is a direct read of a single-source shortest-path
 // algorithm's own distance map - the longest distance, once every node has one,
-// or "unreachable" the moment one doesn't. All three strategies below answer
-// that same question on the same directed, non-negative-weight graph;
-// ShortestPathAlgorithmBenchmarks (see its own doc comment) exists specifically
-// to compare them, with FloydWarshall expected to lose because it answers the
-// strictly harder all-pairs question.
+// or "unreachable" the moment one doesn't. Every strategy below answers that same
+// question on the same directed, non-negative-weight graph: the textbook Dijkstra
+// over a BCL PriorityQueue, and this repo's own Dijkstra, Bellman-Ford and
+// Floyd-Warshall. ShortestPathAlgorithmBenchmarks (see its own doc comment) exists
+// specifically to compare them, with FloydWarshall expected to lose because it
+// answers the strictly harder all-pairs question.
 //
 // Each strategy's prepared-input overload stays generic over TNode/TTopology rather
 // than fixing NetworkNode/NetworkTopology: the reduction ("every node reached? take
@@ -26,8 +27,100 @@ namespace DSAExperimentation.LeetCode.NetworkDelayTime;
 // topology, not this problem's node type.
 internal static class NetworkDelayTimeSolution
 {
-    // The textbook single-source choice for non-negative weights, and the one the
-    // other two strategies are compared against.
+    // LeetCode numbers the nodes 1..nodeCount, so slot 0 of a node-indexed array is an
+    // unused placeholder every walk starts past.
+    private const int FirstNode = 1;
+
+    // No signal has reached this node yet.
+    private const int Unreached = int.MaxValue;
+
+    // The textbook answer: Dijkstra as a BCL PriorityQueue relaxation loop over plain
+    // out-edge lists, the arm this repo's three algorithms are measured against
+    // (ARCHITECTURE 17.5).
+    public static int MinutesToReachAllByPriorityQueue(int[][] times, int nodeCount, int sourceNodeId)
+    {
+        var outEdges = OutEdgeListsOf(times, nodeCount);
+        var minutes = MinutesFrom(outEdges, sourceNodeId);
+
+        return LatestArrivalOrNone(minutes);
+    }
+
+    // times[] as one out-edge list per node, each time [from, to, minutes] read in order.
+    private static List<(int Target, int Minutes)>[] OutEdgeListsOf(int[][] times, int nodeCount)
+    {
+        var outEdges = new List<(int Target, int Minutes)>[nodeCount + FirstNode];
+
+        for (var node = 0; node < outEdges.Length; node++)
+        {
+            outEdges[node] = [];
+        }
+
+        foreach (var time in times)
+        {
+            outEdges[time[0]].Add((time[1], time[2]));
+        }
+
+        return outEdges;
+    }
+
+    // Each node's shortest signal time from source: a node is final the first time it is
+    // popped, and any later, staler entry for it is skipped.
+    private static int[] MinutesFrom(List<(int Target, int Minutes)>[] outEdges, int source)
+    {
+        var minutes = new int[outEdges.Length];
+        Array.Fill(minutes, Unreached);
+        minutes[source] = 0;
+
+        var frontier = new PriorityQueue<int, int>();
+        frontier.Enqueue(source, 0);
+
+        while (frontier.TryDequeue(out var node, out var arrival))
+        {
+            if (arrival == minutes[node])
+            {
+                RelaxOutEdges(outEdges[node], arrival, minutes, frontier);
+            }
+        }
+
+        return minutes;
+    }
+
+    private static void RelaxOutEdges(
+        List<(int Target, int Minutes)> edges, int arrival, int[] minutes, PriorityQueue<int, int> frontier)
+    {
+        foreach (var (target, travel) in edges)
+        {
+            var candidate = arrival + travel;
+
+            if (candidate < minutes[target])
+            {
+                minutes[target] = candidate;
+                frontier.Enqueue(target, candidate);
+            }
+        }
+    }
+
+    // The latest arrival once every node has a time, or "unreachable" the moment one
+    // doesn't.
+    private static int LatestArrivalOrNone(int[] minutes)
+    {
+        var latest = 0;
+
+        for (var node = FirstNode; node < minutes.Length; node++)
+        {
+            if (minutes[node] == Unreached)
+            {
+                return LeetCodeAnswer.None;
+            }
+
+            latest = Math.Max(latest, minutes[node]);
+        }
+
+        return latest;
+    }
+
+    // This repo's own single-source choice for non-negative weights, and the one
+    // Bellman-Ford and Floyd-Warshall are compared against.
     public static int MinutesToReachAllByDijkstra(int[][] times, int nodeCount, int sourceNodeId)
     {
         var (vertices, source) = BuildGraph(times, nodeCount, sourceNodeId);

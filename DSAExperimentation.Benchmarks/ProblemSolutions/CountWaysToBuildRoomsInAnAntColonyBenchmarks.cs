@@ -3,8 +3,11 @@ using DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are CountWaysToBuildRoomsInAnAntColonySolution's, the
-// same methods CountWaysToBuildRoomsInAnAntColonySolutionTests proves agree.
+// Harness only: all three arms are CountWaysToBuildRoomsInAnAntColonySolution's, the
+// same methods CountWaysToBuildRoomsInAnAntColonySolutionTests proves agree. The plain
+// post-order recursion is the baseline; the per-node fold against it measures what
+// TreeFold costs, and the two folds against each other measure what precomputing the
+// factorials saves.
 //
 // The workload is a straight chain, where the per-node algebra is at its worst:
 // every node's subtree size is close to n, so recomputing Factorial(size) from
@@ -22,6 +25,10 @@ public class CountWaysToBuildRoomsInAnAntColonyBenchmarks
     public void Setup() => _root = ParentArrayTree.Chain(RoomCount);
 
     [Benchmark(Baseline = true)]
+    public int PostOrderRecursion() =>
+        CountWaysToBuildRoomsInAnAntColonySolution.WaysToBuildOrderByPostOrderRecursion(_root);
+
+    [Benchmark]
     public int PerNodeFactorials() =>
         CountWaysToBuildRoomsInAnAntColonySolution.WaysToBuildOrderByPerNodeFactorial(_root);
 

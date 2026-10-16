@@ -20,15 +20,84 @@ namespace DSAExperimentation.LeetCode.EscapeALargeMaze;
 // target, and checking whether either reaches the other, is the accepted
 // algorithm.
 //
-// The textbook alternative - flood-filling a materialized board - allocates the
-// board itself, and LeetCode's board has 10^12 cells, so it cannot answer the
-// problem as posed and is not kept as a strategy. The hoisted overload takes the
-// board's side length only as the coordinate clamp; the LeetCode-shaped one passes
+// Flood-filling a materialized board allocates the board itself, and LeetCode's board
+// has 10^12 cells, so it cannot answer the problem as posed and is not kept as a
+// strategy. The textbook answer is the same capped search written out as a BCL
+// breadth-first walk over a HashSet of seen cells. Each hoisted overload takes the
+// board's side length only as the coordinate clamp; the LeetCode-shaped ones pass
 // the real 10^6.
 internal static class EscapeALargeMazeSolution
 {
     private const int PairCountDivisor = 2; // n choose 2: n * (n - 1) / PairCountDivisor
     private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
+
+    // The textbook answer: the capped search from each end as a BCL breadth-first walk,
+    // the arm the composed traversal below is measured against (ARCHITECTURE 17.5).
+    public static bool CanEscapeByCappedBreadthFirstSearch(int[][] blockedCells, int[] source, int[] target) =>
+        CanEscapeByCappedBreadthFirstSearch(
+            BlockedHashSetOf(blockedCells), ToCell(source), ToCell(target), EscapeALargeMazeBoard.Size);
+
+    public static bool CanEscapeByCappedBreadthFirstSearch(
+        HashSet<(int Row, int Col)> blocked, (int Row, int Col) source, (int Row, int Col) target, int boardSize)
+    {
+        var board = (Blocked: blocked, Size: boardSize);
+
+        return CanEscapeOrReachByBreadthFirst(source, target, board) && CanEscapeOrReachByBreadthFirst(target, source, board);
+    }
+
+    private static HashSet<(int Row, int Col)> BlockedHashSetOf(int[][] blockedCells)
+    {
+        var blocked = new HashSet<(int Row, int Col)>();
+
+        foreach (var cell in blockedCells)
+        {
+            blocked.Add(ToCell(cell));
+        }
+
+        return blocked;
+    }
+
+    // Whether a walk from `start` reaches `other`, or sees more cells than the blocked
+    // cells could ever wall off - which means it escaped into open board.
+    private static bool CanEscapeOrReachByBreadthFirst(
+        (int Row, int Col) start, (int Row, int Col) other, (HashSet<(int Row, int Col)> Blocked, int Size) board)
+    {
+        var threshold = board.Blocked.Count * (board.Blocked.Count - 1) / PairCountDivisor;
+        var seen = new HashSet<(int Row, int Col)> { start };
+        var frontier = new Queue<(int Row, int Col)>([start]);
+
+        while (frontier.TryDequeue(out var cell))
+        {
+            if (cell == other || seen.Count > threshold)
+            {
+                return true;
+            }
+
+            EnqueueOpenNeighbors(cell, board, seen, frontier);
+        }
+
+        return false;
+    }
+
+    private static void EnqueueOpenNeighbors(
+        (int Row, int Col) cell,
+        (HashSet<(int Row, int Col)> Blocked, int Size) board,
+        HashSet<(int Row, int Col)> seen,
+        Queue<(int Row, int Col)> frontier)
+    {
+        foreach (var direction in Directions)
+        {
+            var next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
+
+            if (IsOpenCell(next, board) && seen.Add(next))
+            {
+                frontier.Enqueue(next);
+            }
+        }
+    }
+
+    private static bool IsOpenCell((int Row, int Col) cell, (HashSet<(int Row, int Col)> Blocked, int Size) board) =>
+        IsInBounds(cell.Row, cell.Col, board.Size) && !board.Blocked.Contains(cell);
 
     // This repo's own implicit-graph search, capped at the pocket bound so its cost
     // depends on the blocked-cell count alone and not on the board size at all.

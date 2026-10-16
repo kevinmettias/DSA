@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SortList;
 
 namespace DSAExperimentation.LeetCode.Tests.SortList;
 
-// Harness only. The one strategy is SortListSolution's - this file builds
+// Harness only. Both strategies are SortListSolution's - this file builds
 // LeetCode's published examples as linked lists and checks the resulting list's
 // values.
 public sealed partial class SortListSolutionTests
@@ -17,6 +17,15 @@ public sealed partial class SortListSolutionTests
             { [1], [1] },
             { [2, 2, 1, 1], [1, 1, 2, 2] },
         };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SortByArraySort_LeetCodeExamples_SortsListAscending(
+        int[] values, int[] expected) =>
+        Assert.Equal(
+            expected,
+            LeetCodeWireFormat.FromLinkedList(
+                SortListSolution.SortByArraySort(LeetCodeWireFormat.ToLinkedList(values))));
 
     [Theory]
     [MemberData(nameof(Examples))]
