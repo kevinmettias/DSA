@@ -4321,6 +4321,14 @@
       "reason": "Each copy is a baseline stating its own halving factor. ARCHITECTURE.md §17.5 bars a baseline from reading even a compile-time constant from a library type, AlgorithmConstants.HalvingFactor included, so every problem whose baseline halves a range declares its own - a copy the rule requires, not a vocabulary drifting apart. BaselineIsolationTests is what fails if a baseline reads the library's instead.",
       "owner": "@kmettias",
       "expires": "2027-04-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.LeetCode/**",
+      "anchor": "`BranchingFactor = 2`",
+      "reason": "Each copy is a baseline stating its own branching factor. ARCHITECTURE.md §17.5 bars a baseline from reading even a compile-time constant from a library type, AlgorithmConstants.BranchingFactor included, so a problem whose baseline doubles per level declares its own - a copy the rule requires, not a vocabulary drifting apart. BaselineIsolationTests is what fails if a baseline reads the library's instead.",
+      "owner": "@kmettias",
+      "expires": "2027-04-01"
     }
   ]
 }
