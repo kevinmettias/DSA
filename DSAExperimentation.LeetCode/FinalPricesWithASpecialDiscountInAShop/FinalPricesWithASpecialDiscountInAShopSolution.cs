@@ -34,20 +34,23 @@ internal static class FinalPricesWithASpecialDiscountInAShopSolution
     // One NearestBoundary.SmallerOrEqualToTheRight sweep: the discount for each item
     // is the nearest later price that undercuts or matches it - exactly the boundary
     // that monotonic stack leaves standing - and an item with no such price keeps
-    // its full price.
+    // its full price. Each boundary is overwritten by its final price, so the sweep's
+    // own array is the answer and no copy of prices is made.
     public static int[] FinalPricesByMonotonicStack(int[] prices)
     {
-        var discountingItem = NearestBoundary.SmallerOrEqualToTheRight(prices, NoDiscountingItem);
-        var result = (int[])prices.Clone();
+        var finalPrices = NearestBoundary.SmallerOrEqualToTheRight(prices, NoDiscountingItem);
 
         for (var i = 0; i < prices.Length; i++)
         {
-            if (discountingItem[i] != NoDiscountingItem)
+            if (finalPrices[i] == NoDiscountingItem)
             {
-                result[i] -= prices[discountingItem[i]];
+                finalPrices[i] = prices[i];
+                continue;
             }
+
+            finalPrices[i] = prices[i] - prices[finalPrices[i]];
         }
 
-        return result;
+        return finalPrices;
     }
 }

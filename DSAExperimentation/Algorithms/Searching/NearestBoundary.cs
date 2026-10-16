@@ -12,16 +12,21 @@ namespace DSAExperimentation.Algorithms.Searching;
 // is worth writing once; a caller reaching for a fifth is describing a different
 // algorithm.
 //
-// O(n) either direction: each position is pushed once and popped at most once, so the
-// sweep costs one pass where the outward scan it replaces costs O(n^2) whenever values
-// run long ties. Values are read through the span and never held, so the caller keeps
+// O(n) either direction: each position is placed once and passed over at most once, so
+// the sweep costs one pass where the outward scan it replaces costs O(n^2) whenever
+// values run long ties. Values are read through the span and never held, so the caller keeps
 // ownership of its array, and the returned array is the caller's to keep or discard.
 //
-// The pending positions live in a BCL Stack<int>: it is the sweep's own scratch state,
-// the bucket StronglyConnectedComponents' accumulation stack sits in, not a substitute
-// for a call stack, which is what DataStructures/Stack is kept for.
+// No stack is allocated. The stack a monotonic sweep keeps is, after it has placed any
+// position p, exactly the chain p, boundary(p), boundary(boundary(p)), ... - the top
+// below p is the boundary p was given, and so on down - so the sweep follows those links
+// in the boundary array it is filling instead. The comparisons are the stack's, in the
+// same order, and the result array is the only allocation.
 public static class NearestBoundary
 {
+    // What the sweep's chain ends at when the caller's `none` is itself a position.
+    private const int NotAPosition = -1;
+
     // The nearest position to the left whose value is strictly smaller than the value
     // at the position asked about; `none` when the value is a prefix minimum.
     public static int[] SmallerToTheLeft(ReadOnlySpan<int> values, int none) =>
@@ -78,26 +83,57 @@ public static class NearestBoundary
         where TDirection : struct, ISweepDirection
     {
         var boundaries = new int[values.Length];
-        var pending = new Stack<int>();
+
+        // The chain ends at the "no boundary" mark, so the mark must not be a position. The
+        // callers' -1 and values.Length never are, and the sweep writes them directly; a
+        // `none` that names a real position is swept with -1 and swapped in afterwards.
+        var endOfChain = IsPosition(none, values.Length) ? NotAPosition : none;
 
         for (var step = 0; step < values.Length; step++)
         {
             var position = TDirection.PositionAt(step, values.Length);
+            var previous = step == 0 ? endOfChain : TDirection.PositionAt(step - 1, values.Length);
 
-            // Everything the relation rejects is popped: a rejected position can never be
-            // a boundary for any later position either, which is what makes this O(n)
-            // rather than a rescan.
-            while (pending.TryPeek(out var top) && !TRelation.IsBoundaryFor(values[top], values[position]))
-            {
-                pending.TryPop(out _);
-            }
+            boundaries[position] = NearestOnChain<TRelation>(values, boundaries, previous, position);
+        }
 
-            boundaries[position] = pending.TryPeek(out var boundary) ? boundary : none;
-            pending.Push(position);
+        if (endOfChain != none)
+        {
+            ReplaceEndOfChain(boundaries, none);
         }
 
         return boundaries;
     }
+
+    private static void ReplaceEndOfChain(int[] boundaries, int none)
+    {
+        for (var position = 0; position < boundaries.Length; position++)
+        {
+            if (boundaries[position] == NotAPosition)
+            {
+                boundaries[position] = none;
+            }
+        }
+    }
+
+    // Walks the chain from `candidate` - the position placed just before, then its boundary, then
+    // that one's - and answers the first the relation accepts for `position`, or the chain's end,
+    // which is never a position. Skipping a rejected candidate by jumping to its own boundary is the
+    // stack pop in the chain's terms: a rejected position can never be a boundary for any later
+    // position either, so no link is followed twice and the whole sweep stays O(n) amortized.
+    private static int NearestOnChain<TRelation>(
+        ReadOnlySpan<int> values, int[] boundaries, int candidate, int position)
+        where TRelation : struct, IBoundaryRelation
+    {
+        while (IsPosition(candidate, values.Length) && !TRelation.IsBoundaryFor(values[candidate], values[position]))
+        {
+            candidate = boundaries[candidate];
+        }
+
+        return candidate;
+    }
+
+    private static bool IsPosition(int candidate, int length) => (uint)candidate < (uint)length;
 
     // Whether the candidate value still stands in the named relation to the value being
     // asked about - so it is a boundary for that position rather than something the sweep

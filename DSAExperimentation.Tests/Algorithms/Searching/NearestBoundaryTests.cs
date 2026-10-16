@@ -96,6 +96,45 @@ public sealed partial class NearestBoundaryTests
             [SomeOtherSentinel, SomeOtherSentinel, 1, SomeOtherSentinel, 3], boundaries);
     }
 
+    // A sentinel that is itself a position cannot end the sweep's boundary chain, so the sweep
+    // runs with a mark of its own and writes the caller's value in afterwards: every slot that
+    // reads -1 above reads 2 here, and the real boundaries are untouched.
+    [Fact]
+    public void SmallerToTheLeft_SentinelThatIsAPosition_StillMarksOnlyTheMissingBoundaries()
+    {
+        var boundaries = NearestBoundary.SmallerToTheLeft(Repeating, 2);
+
+        Assert.Equal([2, 2, 1, 2, 3], boundaries);
+    }
+
+    // Every form against the definition, over arrays with long ties, rising and falling runs and
+    // repeated extremes - the shapes where following the boundary chain and walking outward could
+    // disagree if a link were wrong.
+    [Fact]
+    public void Sweep_EveryRelationAndDirection_AgreesWithWalkingOutward()
+    {
+        int[][] cases = [[4, 2, 4, 2, 4], [5, 5, 5, 5], [1, 2, 3, 4, 5], [5, 4, 3, 2, 1], [3, 1, 3, 1, 2, 1, 3], [2, 7, 7, 1, 7, 2, 9, 2]];
+        var forms = new (Func<int[], int, int[]> Sweep, Func<int, int, bool> IsBoundary, int Step)[]
+        {
+            ((values, none) => NearestBoundary.SmallerToTheLeft(values, none), (candidate, current) => candidate < current, -1),
+            ((values, none) => NearestBoundary.SmallerOrEqualToTheLeft(values, none), (candidate, current) => candidate <= current, -1),
+            ((values, none) => NearestBoundary.GreaterToTheLeft(values, none), (candidate, current) => candidate > current, -1),
+            ((values, none) => NearestBoundary.GreaterOrEqualToTheLeft(values, none), (candidate, current) => candidate >= current, -1),
+            ((values, none) => NearestBoundary.SmallerToTheRight(values, none), (candidate, current) => candidate < current, 1),
+            ((values, none) => NearestBoundary.SmallerOrEqualToTheRight(values, none), (candidate, current) => candidate <= current, 1),
+            ((values, none) => NearestBoundary.GreaterToTheRight(values, none), (candidate, current) => candidate > current, 1),
+            ((values, none) => NearestBoundary.GreaterOrEqualToTheRight(values, none), (candidate, current) => candidate >= current, 1),
+        };
+
+        foreach (var values in cases)
+        {
+            foreach (var (sweep, isBoundary, step) in forms)
+            {
+                Assert.Equal(WalkOutward(values, isBoundary, step), sweep(values, SomeOtherSentinel));
+            }
+        }
+    }
+
     [Fact]
     public void Sweep_FewerThanTwoPositions_HasNothingToCompareAgainst()
     {
@@ -135,6 +174,27 @@ public sealed partial class NearestBoundaryTests
             for (var candidate = position - 1; candidate >= 0; candidate--)
             {
                 if (values[candidate] < values[position])
+                {
+                    walked[position] = candidate;
+                    break;
+                }
+            }
+        }
+
+        return walked;
+    }
+
+    // The same naive walk for any relation and either direction: step -1 looks left, +1 right.
+    private static int[] WalkOutward(int[] values, Func<int, int, bool> isBoundary, int step)
+    {
+        var walked = new int[values.Length];
+
+        for (var position = 0; position < values.Length; position++)
+        {
+            walked[position] = SomeOtherSentinel;
+            for (var candidate = position + step; candidate >= 0 && candidate < values.Length; candidate += step)
+            {
+                if (isBoundary(values[candidate], values[position]))
                 {
                     walked[position] = candidate;
                     break;
