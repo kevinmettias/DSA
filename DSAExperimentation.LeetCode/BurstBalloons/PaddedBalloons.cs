@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.BurstBalloons;
 // in its own type - rather than handing back a bare int[] - is what keeps the
 // LeetCode-shaped overload (raw nums) and the hoisted, already-padded overload from
 // colliding on the same int[] signature. This padding scheme answers LC 312 alone,
-// which is why it lives beside the solution rather than in Domain.
+// which is why it lives beside the solution rather than at the tier's root.
 internal readonly record struct PaddedBalloons(int[] Values)
 {
     public static PaddedBalloons FromNums(int[] nums)

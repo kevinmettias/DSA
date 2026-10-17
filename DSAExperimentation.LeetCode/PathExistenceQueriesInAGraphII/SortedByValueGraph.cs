@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.PathExistenceQueriesInAGraphII;
 // contiguous-range condition per node, which is the one fact
 // MinDistancesByBinaryLifting's doubling walk depends on - so this witness exists
 // purely to fix that ordering once, answering this problem alone (ARCHITECTURE.md
-// §17.3), not a general enough shape for Domain/.
+// §17.3), not a general enough shape for the tier's root.
 //
 // PositionOf is the inverse permutation: PositionOf[originalIndex] is where that
 // node landed in SortedValues, which is what a query's u/v indices are converted

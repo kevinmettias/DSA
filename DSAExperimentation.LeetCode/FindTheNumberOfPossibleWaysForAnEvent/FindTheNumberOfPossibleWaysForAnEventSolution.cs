@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.LeetCode.FindTheNumberOfPossibleWaysForAnEvent;
 
@@ -39,7 +39,7 @@ internal static class FindTheNumberOfPossibleWaysForAnEventSolution
     // f(i, j) = f(i-1, j) * j (add to one of j existing bands)
     //         + f(i-1, j-1) * (stageCount - j + 1) (open a new band) - without
     // hand-rolling the table's iteration order. ModularArithmetic.Power then folds
-    // maxScore^j into the final sum the same way Domain.Modular's own doc comment
+    // maxScore^j into the final sum the same way LeetCode.Modular's own doc comment
     // expects any "modulo 1e9+7" counting problem to.
     public static int NumberOfWaysByStagePartitionMemo(int performerCount, int stageCount, int maxScore)
     {

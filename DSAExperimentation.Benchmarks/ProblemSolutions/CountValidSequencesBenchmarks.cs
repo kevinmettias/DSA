@@ -1,5 +1,5 @@
-using DSAExperimentation.Domain.Modular;
 using DSAExperimentation.LeetCode.CountValidSequences;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

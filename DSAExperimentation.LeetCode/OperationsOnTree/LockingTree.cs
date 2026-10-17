@@ -3,7 +3,7 @@ namespace DSAExperimentation.LeetCode.OperationsOnTree;
 // LC 1993's own object: a rooted tree over dense ids where every node additionally
 // carries the id of the user currently holding its lock (0 = unlocked, since
 // LeetCode's user ids start at 1). A witness meaningful only to this problem, so it
-// lives beside the solution rather than in Domain/ (§17.3).
+// lives beside the solution rather than at the tier's root (§17.3).
 //
 // Lock, Unlock and the ancestor check are the same for every strategy - they only
 // ever read the parent array - so they live here once instead of being written out

@@ -16,7 +16,7 @@ namespace DSAExperimentation.LeetCode.MaximumGoodSubtreeScore;
 // for the sum over every node, not just the root.
 //
 // This algebra answers one LeetCode problem and nothing else, which is why it lives
-// beside the solution rather than in Domain (ARCHITECTURE.md 17.3), the same shape
+// beside the solution rather than at the tier's root (ARCHITECTURE.md 17.3), the same shape
 // CountWaysToBuildRoomsInAnAntColony's RoomWaysAlgebra already takes.
 internal readonly struct GoodSubtreeScoreAlgebra(int[] vals) : IFoldAlgebra<RootedTreeNode, (long[] Dp, long ScoreSum)>
 {

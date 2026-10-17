@@ -139,7 +139,7 @@ internal static class ShortestMatchingSubstringSolution
 
     // The wildcard pattern split on its two '*' characters into the three literal parts
     // either side must match - a witness meaningful only to this problem, so it lives in
-    // this folder rather than Domain/ (ARCHITECTURE.md §17.3). Nested because it is this
+    // this folder rather than the tier's root (ARCHITECTURE.md §17.3). Nested because it is this
     // solution's own intermediate: nothing outside the problem needs to import it.
     internal readonly record struct MatchPattern(string Prefix, string Middle, string Suffix)
     {

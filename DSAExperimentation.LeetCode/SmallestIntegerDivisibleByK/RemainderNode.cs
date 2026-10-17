@@ -7,7 +7,7 @@ namespace DSAExperimentation.LeetCode.SmallestIntegerDivisibleByK;
 //
 // "Edge = append one decimal '1'" is LC 1015's own content rather than a reusable
 // shape, so this node lives beside the solution instead of in DataStructures or
-// Domain (ARCHITECTURE.md §17.3).
+// at the tier's root (ARCHITECTURE.md §17.3).
 internal sealed class RemainderNode(int remainder)
 {
     public int Remainder { get; } = remainder;

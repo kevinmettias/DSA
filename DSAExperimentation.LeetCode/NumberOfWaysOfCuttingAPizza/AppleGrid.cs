@@ -7,7 +7,7 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysOfCuttingAPizza;
 // technique RangeSumQuery2DImmutable uses, oriented bottom-right-first because
 // every cut this problem makes keeps the bottom-right remainder.
 //
-// This lives beside the solution rather than in Domain/ or DataStructures/ because
+// This lives beside the solution rather than at the tier's root or in DataStructures/ because
 // it fixes one problem's semantics - apples, and only the bottom-right suffix, the
 // single orientation LC 1444 ever asks about (§17.3's problem-local witness rule).
 // It is also the prepared-input type the benchmark's hoisted overload takes, so

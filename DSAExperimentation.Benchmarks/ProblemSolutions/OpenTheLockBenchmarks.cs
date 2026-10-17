@@ -1,6 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.Domain.Locks;
 using DSAExperimentation.LeetCode.OpenTheLock;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

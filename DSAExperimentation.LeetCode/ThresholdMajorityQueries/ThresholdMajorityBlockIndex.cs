@@ -9,7 +9,7 @@ namespace DSAExperimentation.LeetCode.ThresholdMajorityQueries;
 // reduces to "what's the most frequent element of nums[leftIndex..rightIndex], and does it clear
 // threshold" (see ThresholdMajorityQueriesSolution's own comment for why the
 // threshold never changes which element wins). This answers that reduced query,
-// which is why it lives beside the solution rather than in Domain/ - the block-
+// which is why it lives beside the solution rather than at the tier's root - the block-
 // mode table and the tie-break rule are this one problem's shape, not a reusable
 // data structure.
 //

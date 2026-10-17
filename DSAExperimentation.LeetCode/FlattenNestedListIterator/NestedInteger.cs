@@ -4,7 +4,7 @@ namespace DSAExperimentation.LeetCode.FlattenNestedListIterator;
 // integer or a list of further NestedIntegers, never both. Answers LC 341 alone -
 // no fixed content of its own (no modulus, no vertex set), just the shape LC's
 // own interface hands every strategy here, so it lives beside the solution rather
-// than in Domain/ (ARCHITECTURE.md #17.6), the same call CourseNode makes for
+// than at the tier's root (ARCHITECTURE.md #17.6), the same call CourseNode makes for
 // CourseSchedule/CourseScheduleII.
 internal sealed class NestedInteger(int value, List<NestedInteger>? list)
 {

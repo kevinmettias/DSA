@@ -1,20 +1,20 @@
-namespace DSAExperimentation.Domain.Modular;
+namespace DSAExperimentation.LeetCode.Modular;
 
 // A prepared nCr(n, r) mod 1e9+7 lookup: Build(maxN) fills factorial and inverse-
 // factorial tables once, O(maxN) with a single ModularArithmetic.Inverse call, so
-// every Choose afterward is O(1). It sits in Domain/Modular for the same reason
-// ModularArithmetic does: what fixes its content is the modulus, a LeetCode
-// reporting convention rather than a property of any algorithm, so it is domain
-// code rather than an Algorithms primitive (17.6).
+// every Choose afterward is O(1). It sits beside ModularArithmetic, at this tier's
+// root, for the same reason ModularArithmetic does: what fixes its content is the
+// modulus, a LeetCode reporting convention rather than a property of any
+// algorithm, so it is LeetCode code rather than an Algorithms primitive (17.6).
 //
 // This type was first written beside CountValidSequencesSolution, whose doc comment
-// said it should move here once other problems needed the same table - a witness
-// generic enough to be a real "nCr table" primitive "would still need callers
-// elsewhere in the catalogue before that move is honest, per 17.6's 'sharing is not
-// the classification test'". That condition is now met: eight counting solutions
-// across the catalogue were each building this same factorial/inverse-factorial
-// pair inline.
-public sealed class FactorialTable(long[] factorial, long[] inverseFactorial)
+// said it should move to a shared home once other problems needed the same table -
+// a witness generic enough to be a real "nCr table" primitive "would still need
+// callers elsewhere in the catalogue before that move is honest, per 17.6's 'sharing
+// is not the classification test'". That condition is now met: eight counting
+// solutions across the catalogue were each building this same factorial/inverse-
+// factorial pair inline.
+internal sealed class FactorialTable(long[] factorial, long[] inverseFactorial)
 {
     public static FactorialTable Build(int maxN)
     {

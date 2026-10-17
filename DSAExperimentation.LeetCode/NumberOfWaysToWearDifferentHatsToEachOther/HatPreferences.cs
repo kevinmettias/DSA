@@ -10,7 +10,7 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToWearDifferentHatsToEachOther
 //
 // This is a witness for one problem and nothing else - the same reason
 // LeetCode/CountWaysToBuildRoomsInAnAntColony keeps its two IFoldAlgebra
-// implementations beside its solution instead of in Domain.
+// implementations beside its solution instead of at the tier's root.
 internal sealed class HatPreferences(List<int>[] peopleByHat, int peopleCount, int hatCount)
 {
     public int PeopleCount { get; } = peopleCount;

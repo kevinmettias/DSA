@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.OpenTheLock;
 
 namespace DSAExperimentation.LeetCode.Tests.OpenTheLock;
 
-// Harness only. The lock graph itself is Domain.Locks.LockGraph and both search
+// Harness only. The lock graph itself is OpenTheLock.LockGraph and both search
 // strategies are OpenTheLockSolution's - this file just pins them to LeetCode's
 // published examples, including the two unopenable cases the graph strategy has to
 // answer without a target node existing at all.

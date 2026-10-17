@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.ShortestPathVisitingAllNodes;
 // "materialize every state, then wire neighbors" shape FlightStateGraph and
 // DigitStepGraph use for their own problems' state spaces.
 //
-// This lives beside the solution rather than in Domain/ because the state it
+// This lives beside the solution rather than at the tier's root because the state it
 // models - "where I am, plus which nodes I have already touched" - is LC 847's
 // own question and answers nothing else (ARCHITECTURE.md 17.3).
 internal sealed record VisitStateNode(int Node, int Mask)

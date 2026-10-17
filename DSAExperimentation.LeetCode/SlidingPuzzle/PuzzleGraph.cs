@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.HashMap;
 
-namespace DSAExperimentation.Domain.SlidingPuzzle;
+namespace DSAExperimentation.LeetCode.SlidingPuzzle;
 
 // The full state graph of a 2x3 sliding puzzle: all 720 permutations of "012345"
 // ('0' standing in for the blank), each adjacent to the 2-3 boards reachable by
@@ -12,7 +12,7 @@ namespace DSAExperimentation.Domain.SlidingPuzzle;
 // This is the domain model, not an answer to any one puzzle about it - it knows
 // which boards are one slide apart and nothing about what a caller wants to find
 // out. Callers supply their own start and target.
-public sealed class PuzzleGraph
+internal sealed class PuzzleGraph
 {
     private static readonly int[][] Adjacency =
     [

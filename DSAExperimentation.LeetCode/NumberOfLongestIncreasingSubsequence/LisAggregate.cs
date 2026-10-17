@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.NumberOfLongestIncreasingSubsequence;
 // plain max already is, since the result only ever depends on the overall max
 // length among everything combined and the summed count of whichever elements
 // attain it, never on grouping order. This answers LC 673 alone, which is why it
-// lives beside the solution rather than in Domain.
+// lives beside the solution rather than at the tier's root.
 internal readonly struct LisAggregate : ICombineOperation<(int Length, int Count)>
 {
     public static (int Length, int Count) Identity => (0, 0);

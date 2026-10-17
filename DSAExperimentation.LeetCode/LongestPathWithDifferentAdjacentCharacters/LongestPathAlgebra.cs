@@ -14,7 +14,7 @@ namespace DSAExperimentation.LeetCode.LongestPathWithDifferentAdjacentCharacters
 // nodes by the same index. Each fold is handed its own algebra, so a second fold
 // running elsewhere indexes its own labels, never this one's. This algebra answers one
 // LeetCode problem and nothing else, which is why it lives beside the solution
-// rather than in Domain.
+// rather than at the tier's root.
 internal readonly struct LongestPathAlgebra(string labels) : IFoldAlgebra<RootedTreeNode, PathState>
 {
     // No node carries this label, so an Empty state never matches a real one.

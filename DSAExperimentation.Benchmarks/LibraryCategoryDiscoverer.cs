@@ -28,7 +28,7 @@ internal sealed class LibraryCategoryDiscoverer : ICategoryDiscoverer
 
     // The library tiers a category may name. The solution tier and the harnesses are where the
     // reach starts, not what it is looking for.
-    private static readonly string[] LibraryTiers = ["DataStructures", "Algorithms", "Domain"];
+    private static readonly string[] LibraryTiers = ["DataStructures", "Algorithms"];
 
     private readonly ConcurrentDictionary<Type, SortedSet<string>> _classCategories = new();
 

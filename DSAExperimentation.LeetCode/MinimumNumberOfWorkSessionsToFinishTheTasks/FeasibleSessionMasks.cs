@@ -9,7 +9,7 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfWorkSessionsToFinishTheTask
 // 2^n sums cost one addition each.
 //
 // It fixes THIS problem's content (a session budget over a specific task list) and
-// answers nothing else, so it lives beside the solution rather than in Domain/
+// answers nothing else, so it lives beside the solution rather than at the tier's root
 // (§17.3). It is also what both strategies' hoisted overload takes (§17.4): the
 // benchmark builds it once in [GlobalSetup] so the table is not charged to the
 // recurrence being measured, and it is deliberately not a collection type, so it

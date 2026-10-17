@@ -4,7 +4,7 @@ namespace DSAExperimentation.LeetCode.TheNumberOfWeakCharactersInTheGame;
 // two columns once is the whole of this problem's input preparation - every strategy
 // reads attack and defense, none reads a row.
 //
-// It lives beside the solution rather than in Domain/ because a game character's
+// It lives beside the solution rather than at the tier's root because a game character's
 // attack/defense pair fixes THIS problem's content and nothing else's (ARCHITECTURE
 // section 17.3), and it is deliberately not an IEnumerable: it is the parameter type of
 // the prepared-input overloads (section 17.4), so it must never be bindable by the

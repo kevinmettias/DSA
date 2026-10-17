@@ -4,8 +4,8 @@ namespace DSAExperimentation.LeetCode.LoudAndRich;
 // the direction TopologicalSort.TrySort walks to process richest-to-poorest -
 // and Richer holds the reverse edges the per-person baseline walk follows out of
 // each person. Answers LC 851 alone: a plain adjacency-list DAG node with no
-// fixed vertex set or modulus, so it lives beside the solution rather than in
-// Domain/ (ARCHITECTURE.md #17.6), the same placement LeetCode/CourseScheduleII's
+// fixed vertex set or modulus, so it lives beside the solution rather than at
+// the tier's root (ARCHITECTURE.md #17.6), the same placement LeetCode/CourseScheduleII's
 // CourseNode already has.
 internal sealed class PersonNode(int id)
 {

@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Domain.Locks;
+using DSAExperimentation.LeetCode.OpenTheLock;
 
-namespace DSAExperimentation.Tests.Domain.Locks;
+namespace DSAExperimentation.LeetCode.Tests.OpenTheLock;
 
 public sealed partial class LockTopologyTests
 {

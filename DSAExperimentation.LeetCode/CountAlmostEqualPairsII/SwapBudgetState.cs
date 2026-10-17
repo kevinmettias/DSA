@@ -4,7 +4,7 @@ namespace DSAExperimentation.LeetCode.CountAlmostEqualPairsII;
 // many of the swap budget's operations remain, so Candidates alone decides what is
 // legal next - stop offering swaps once the budget is spent. Answers one problem and
 // nothing else, so it lives beside the solution rather than in Algorithms/ or
-// Domain/ (ARCHITECTURE.md 17.3) - the same shape GenerateParentheses' own
+// at the tier's root (ARCHITECTURE.md 17.3) - the same shape GenerateParentheses' own
 // ParenthesesState uses.
 internal sealed class SwapBudgetState(char[] digits, char[] target, int budget)
 {

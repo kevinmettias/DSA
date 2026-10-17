@@ -3,7 +3,7 @@ namespace DSAExperimentation.LeetCode.MaximumStudentsTakingExam;
 // LC 1349's seat chart reduced to the bitmasks both strategies actually search over:
 // one int per row holding that row's broken seats, and the mask with every column of
 // a row occupied. Meaningless outside this problem, so it lives beside the solution
-// (ARCHITECTURE.md §17.3) rather than in Domain/.
+// (ARCHITECTURE.md §17.3) rather than at the tier's root.
 //
 // It is also the prepared-input shape §17.4 calls for: a benchmark builds the masks
 // once in [GlobalSetup] and hands this to the measured method, and since it is not

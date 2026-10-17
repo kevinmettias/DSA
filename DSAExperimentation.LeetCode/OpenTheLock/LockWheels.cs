@@ -1,10 +1,10 @@
-namespace DSAExperimentation.Domain.Locks;
+namespace DSAExperimentation.LeetCode.OpenTheLock;
 
 // The geometry of a 4-wheel rotary lock: how many wheels it has, how far each one
 // turns, and therefore how many combinations exist. Separate from LockGraph
 // because these are the lock's dimensions, not the graph's - a caller sizing a
 // workload over the combination space needs them without needing a built graph.
-public static class LockWheels
+internal static class LockWheels
 {
     // One wheel per digit position in a combination.
     public const int Count = 4;

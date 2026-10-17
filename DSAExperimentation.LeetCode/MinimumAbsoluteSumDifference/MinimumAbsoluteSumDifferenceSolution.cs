@@ -1,7 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.LeetCode.MinimumAbsoluteSumDifference;
 

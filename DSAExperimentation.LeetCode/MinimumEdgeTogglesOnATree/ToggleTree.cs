@@ -9,7 +9,7 @@ namespace DSAExperimentation.LeetCode.MinimumEdgeTogglesOnATree;
 // does not carry - ParentEdgeIndex[node.Id]: the original index into edges[] of
 // the edge connecting that node to its parent, which is what the answer has to
 // report. A witness meaningful only to this problem, so it lives here rather than
-// in Domain/ (§17.3).
+// at the tier's root (§17.3).
 internal sealed record ToggleTree(RootedTreeNode Root, int[] ParentEdgeIndex)
 {
     private const int NoParentAssignedYet = -2;

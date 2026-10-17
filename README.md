@@ -134,8 +134,8 @@ reading an old file rather than something checked.
 
 | Project | Contents |
 |---|---|
-| `DSAExperimentation` | The library: `DataStructures/`, `Algorithms/` and `Domain/` |
-| `DSAExperimentation.LeetCode` | One folder per problem, plus `Conventions/`: LeetCode's array notation for trees and lists, and its answer-equality rules |
+| `DSAExperimentation` | The library: `DataStructures/` and `Algorithms/`, with no LeetCode knowledge |
+| `DSAExperimentation.LeetCode` | One folder per problem, plus `Conventions/` (LeetCode's array notation for trees and lists, and its answer-equality rules) and `Modular/` (arithmetic modulo LeetCode's 1e9+7) |
 | `DSAExperimentation.Tests` | Library and architecture tests; no reference to the solution tier |
 | `DSAExperimentation.LeetCode.Tests` | Per-problem `<Problem>SolutionTests`, the seams between problems and the library, and the LeetCode catalog |
 | `DSAExperimentation.Benchmarks` | BenchmarkDotNet suites, one per problem, plus strategy-swap comparisons |

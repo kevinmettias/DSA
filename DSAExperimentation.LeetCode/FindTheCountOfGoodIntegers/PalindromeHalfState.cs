@@ -3,7 +3,7 @@ namespace DSAExperimentation.LeetCode.FindTheCountOfGoodIntegers;
 // Backtrack.Search's mutable TState for LC 3272: the half of an n-digit palindrome
 // being built one digit at a time, 0-9 except a leading zero at position 0. Answers
 // one problem and nothing else, so it lives beside the solution rather than in
-// Algorithms/ or Domain/ (ARCHITECTURE.md 17.3) - the same shape GenerateParentheses'
+// Algorithms/ or at the tier's root (ARCHITECTURE.md 17.3) - the same shape GenerateParentheses'
 // own ParenthesesState uses.
 internal sealed class PalindromeHalfState(int halfLength)
 {

@@ -16,7 +16,7 @@ namespace DSAExperimentation.Tests.Architecture;
 public sealed partial class LayeringTests
 {
     // Lowest tier first. A file in tier i may reference tiers 0..i only.
-    private static readonly string[] Tiers = ["DataStructures", "Algorithms", "Domain", "LeetCode"];
+    private static readonly string[] Tiers = ["DataStructures", "Algorithms", "LeetCode"];
 
     // Upward edges that are deliberate, each with the reason it is allowed. An entry names the
     // file and the one higher-tier namespace it may reach, so it sanctions that edge and no
@@ -83,6 +83,21 @@ public sealed partial class LayeringTests
         Assert.Equal(Tiers[..^1], Tiers.Where(tiersFound.Contains));
     }
 
+    // The framework project holds tiers 1 and 2 and nothing else, so it carries no LeetCode
+    // knowledge. A file outside their folders - a Domain/ brought back, a loose file at the
+    // project root - would be judged by no rule above, so it fails here instead.
+    [Fact]
+    public void EveryFrameworkFile_SitsInATierFolder()
+    {
+        var root = RepositoryFiles.Root();
+        var untiered = RepositoryFiles.SourceFilesIn(Path.Combine(root, FrameworkProject))
+            .Select(file => RepositoryFiles.PathFromRoot(root, file))
+            .Where(relative => !Tiers[..^1].Contains(TierOf(relative)))
+            .ToList();
+
+        Assert.True(untiered.Count == 0, string.Join(Environment.NewLine, untiered));
+    }
+
     // The scanner's reach, stated as cases: a sweep that reports nothing proves only that
     // nothing it can see is wrong.
     public static TheoryData<string> SpellingsOfAnAlgorithmsReference =>
@@ -102,8 +117,8 @@ public sealed partial class LayeringTests
         {
             "// composes DSAExperimentation.Algorithms.Searching.BinarySearch",
             "var note = \"see Algorithms.Searching.BinarySearch\";",
-            "var name = request.Domain.Name;",
-            "return Domain;",
+            "var name = request.Algorithms.Name;",
+            "return Algorithms;",
         };
 
     public static TheoryData<string, string> GlobalUsingsByFile =>
@@ -277,8 +292,8 @@ public sealed partial class LayeringTests
     }
 
     // Every tier namespace the code names, each written out in full. An unqualified match counts
-    // only once something is reached through it: a bare `Domain` is far likelier a property than
-    // a namespace.
+    // only once something is reached through it: a bare `Algorithms` is far likelier a property or
+    // a local than a namespace.
     private static IEnumerable<TierReference> ReferencesIn(string code)
         => Reference.Matches(code)
             .Where(match => match.Groups["qualifier"].Success || match.Groups["rest"].Length > 0)

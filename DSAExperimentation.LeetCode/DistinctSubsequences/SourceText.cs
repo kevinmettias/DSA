@@ -8,5 +8,5 @@ namespace DSAExperimentation.LeetCode.DistinctSubsequences;
 // it plays, and a transposition stops compiling.
 //
 // "The source" is this problem's own vocabulary and answers nothing else, so per
-// ARCHITECTURE.md 17.3 it lives beside the solution rather than in Domain/.
+// ARCHITECTURE.md 17.3 it lives beside the solution rather than at the tier's root.
 internal readonly record struct SourceText(string Text);

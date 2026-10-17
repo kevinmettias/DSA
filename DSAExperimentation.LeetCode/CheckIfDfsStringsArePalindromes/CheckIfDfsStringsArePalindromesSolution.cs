@@ -9,7 +9,7 @@ namespace DSAExperimentation.LeetCode.CheckIfDfsStringsArePalindromes;
 // children in increasing order before appending nodeCharacters[x] - exactly the post-order walk
 // ParentArrayTree.Build already sets up, since it appends child i to its parent's
 // list in increasing index order as it scans the array once (CountWaysToBuild
-// RoomsInAnAntColony precedent for reusing this Domain type as-is).
+// RoomsInAnAntColony precedent for reusing this DataStructures type as-is).
 //
 // The key structural fact both strategies share: dfs(0)'s string contains dfs(i)'s
 // string as one CONTIGUOUS run for every node i, because a subtree's own walk

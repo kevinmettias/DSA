@@ -1,14 +1,13 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.Domain.Locks;
 
 namespace DSAExperimentation.LeetCode.OpenTheLock;
 
 // LeetCode 752. Open the Lock: fewest wheel turns from "0000" to a target
 // combination without ever passing through a deadend.
 //
-// The puzzle is a shortest-path query on Domain.Locks' wheel-turn graph, so the
+// The puzzle is a shortest-path query on LockGraph's wheel-turn graph, so the
 // only thing this class contributes is the start combination and the choice of
 // how to search.
 internal static class OpenTheLockSolution

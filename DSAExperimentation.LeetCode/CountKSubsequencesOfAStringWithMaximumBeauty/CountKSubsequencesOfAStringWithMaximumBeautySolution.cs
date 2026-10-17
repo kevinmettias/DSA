@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.LeetCode.CountKSubsequencesOfAStringWithMaximumBeauty;
 
@@ -33,7 +33,7 @@ namespace DSAExperimentation.LeetCode.CountKSubsequencesOfAStringWithMaximumBeau
 // modular Fermat inverse, the same factorial+inverse combination
 // RoomWaysAlgebra.Factorial/ModularArithmetic.Inverse already prove out for a
 // different counting problem - recomputed per call rather than a shared
-// Domain-level nCr helper since n <= 26 here (one distinct-letter alphabet),
+// FactorialTable since n <= 26 here (one distinct-letter alphabet),
 // the same "answers one LeetCode problem, lives beside the solution" scope
 // RoomWaysAlgebra's own doc comment already states.
 internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution

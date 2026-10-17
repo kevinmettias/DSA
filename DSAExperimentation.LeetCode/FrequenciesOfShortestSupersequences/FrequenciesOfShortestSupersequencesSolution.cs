@@ -160,7 +160,7 @@ internal static class FrequenciesOfShortestSupersequencesSolution
     // Shared search driver: grows the doubled-subset size from 0 until at least one
     // subset of that size is valid, then returns every valid subset of that
     // (minimum) size as one frequency vector each - pure bookkeeping shared by both
-    // strategies, the same role Domain.Locks.LockGraph.WheelTurnNeighbors plays for
+    // strategies, the same role LockGraph.WheelTurnNeighbors plays for
     // OpenTheLock's two arms.
     private static int[][] SmallestDoubledSubsets(LetterGraph graph, IDoubledSubsetValidity isValidDoubledSubset)
     {

@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.LeetCode.SumOfSubarrayMinimums;
 

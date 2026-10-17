@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.LeetCode.CountCollisionsOfMonkeysOnAPolygon;
 
@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.CountCollisionsOfMonkeysOnAPolygon;
 // once per monkey, or by squaring. No repo container or algorithm primitive
 // applies to arithmetic over two running scalars - the same "lighter repo-
 // primitive fit" CountGoodNumbersSolution records for its own 5^a * 4^b product.
-// The modulus and the squaring loop are Domain.Modular's, because 1e9+7 is
+// The modulus and the squaring loop are LeetCode.Modular's, because 1e9+7 is
 // LeetCode's reporting convention rather than this problem's own value.
 internal static class CountCollisionsOfMonkeysOnAPolygonSolution
 {
@@ -53,7 +53,7 @@ internal static class CountCollisionsOfMonkeysOnAPolygonSolution
     }
 
     // Halve the exponent each step instead of decrementing it, squaring the base to
-    // compensate - Domain.Modular's own exponentiation-by-squaring loop, which
+    // compensate - LeetCode.Modular's own exponentiation-by-squaring loop, which
     // folds under the modulus at every multiplication so intermediate values never
     // grow past Modulo^2. O(log n) instead of O(n).
     public static int NumberOfWaysByExponentiationBySquaring(int monkeyCount)

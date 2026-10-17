@@ -1,6 +1,6 @@
-using DSAExperimentation.Domain.SlidingPuzzle;
+using DSAExperimentation.LeetCode.SlidingPuzzle;
 
-namespace DSAExperimentation.Tests.Domain.SlidingPuzzle;
+namespace DSAExperimentation.LeetCode.Tests.SlidingPuzzle;
 
 public sealed partial class PuzzleGraphTests
 {

@@ -17,7 +17,7 @@ internal static class CheckIfThereIsAValidPathInAGridSolution
 {
     // The problem's whole content: which two of the four directions each street
     // piece opens toward. Meaningless outside LC 1391, so it lives beside the
-    // strategies rather than in Domain/ (ARCHITECTURE.md section 17.3).
+    // strategies rather than at the tier's root (ARCHITECTURE.md section 17.3).
     private static readonly Dictionary<int, (int DRow, int DCol)[]> Openings = new()
     {
         [1] = [(0, -1), (0, 1)],

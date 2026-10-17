@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.Set;
 
-namespace DSAExperimentation.Domain.Locks;
+namespace DSAExperimentation.LeetCode.OpenTheLock;
 
 // The Cayley graph of a 4-wheel rotary combination lock over Z10^4: 10,000
 // combinations, each adjacent to the 8 reachable by turning one wheel one click in
@@ -10,7 +10,7 @@ namespace DSAExperimentation.Domain.Locks;
 // This is the domain model, not an answer to any one puzzle about it - it knows
 // how a lock's wheels turn and which combinations are reachable, and nothing about
 // what a caller wants to find out. Callers supply their own start and target.
-public sealed class LockGraph
+internal sealed class LockGraph
 {
     private readonly HashMap<string, LockNode> _nodesByCombination;
 

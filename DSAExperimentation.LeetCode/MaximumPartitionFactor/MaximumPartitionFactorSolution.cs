@@ -50,7 +50,7 @@ internal static class MaximumPartitionFactorSolution
     // Binary search over the sorted distinct pairwise distances for the largest
     // feasible one, composing this repo's own Algorithms.Bipartiteness.BipartiteCheck
     // over a PartitionNode/PartitionTopology graph rebuilt for each candidate -
-    // the same "Domain graph + repo traversal algorithm" composition
+    // the same "problem graph + repo traversal algorithm" composition
     // OpenTheLockSolution.MinTurnsByReduceGraph uses for LC 752.
     public static int MaxPartitionFactorByBinarySearchBipartiteCheck(int[][] points)
     {

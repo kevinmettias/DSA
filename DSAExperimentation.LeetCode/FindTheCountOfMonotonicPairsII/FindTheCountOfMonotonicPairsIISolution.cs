@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.LeetCode.FindTheCountOfMonotonicPairsII;
 
@@ -46,7 +46,7 @@ internal static class FindTheCountOfMonotonicPairsIISolution
 
     // A running prefix sum turns each row into O(maxValue) instead of
     // O(maxValue^2) - O(n * maxValue) overall, which is what keeps this
-    // tractable once nums[i] reaches 1000. Domain.Modular.ModularArithmetic
+    // tractable once nums[i] reaches 1000. LeetCode.Modular.ModularArithmetic
     // supplies the 1e9+7 both Monotonic Pairs problems report under.
     public static long CountPairsByPrefixSumDP(int[] nums)
     {

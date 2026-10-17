@@ -7,8 +7,8 @@ namespace DSAExperimentation.LeetCode.QueensThatCanAttackTheKing;
 // itself in [GlobalSetup], on a board far larger than LeetCode's own 8x8 so the
 // per-step lookup cost is visible - can hand them to either strategy instead of
 // restating "king plus two loose ints" at every call. The same role RookSquare
-// plays for LC 999, and per §17.3 it lives beside the solution rather than in
-// Domain/: LC 1222 is the only problem with a king whose square is the query
+// plays for LC 999, and per §17.3 it lives beside the solution rather than at
+// the tier's root: LC 1222 is the only problem with a king whose square is the query
 // origin.
 internal readonly record struct KingBoard(int KingRow, int KingCol, int BoardSize)
 {

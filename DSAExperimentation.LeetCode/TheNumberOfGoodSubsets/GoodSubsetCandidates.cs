@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.TheNumberOfGoodSubsets;
 // alongside rather than folded in: 1 has no prime factors, so it never enters the
 // recursion and instead doubles the final answer once per occurrence.
 //
-// It lives beside the solution rather than in Domain/ because "squarefree, over the
+// It lives beside the solution rather than at the tier's root because "squarefree, over the
 // primes below 30" fixes THIS problem's content and nothing else's (ARCHITECTURE
 // section 17.3), and it is deliberately not an IEnumerable: it is the parameter type
 // of the prepared-input overloads (section 17.4), so it must never be bindable by the

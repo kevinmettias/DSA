@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.LeetCode.CountWaysToChooseCoprimeIntegersFromRows;
 

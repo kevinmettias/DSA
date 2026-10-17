@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Domain.SlidingPuzzle;
 
 namespace DSAExperimentation.LeetCode.SlidingPuzzle;
 
@@ -8,7 +7,7 @@ namespace DSAExperimentation.LeetCode.SlidingPuzzle;
 // to "123450" ("board solved"), or -1 if the board's permutation parity makes it
 // unreachable.
 //
-// Board permutations are nodes of Domain.SlidingPuzzle's implicit state graph, so
+// Board permutations are nodes of PuzzleGraph's implicit state graph, so
 // the puzzle reduces to a shortest-path query on it - the same BreadthFirstDistances
 // composition OpenTheLockSolution uses for LC 752's wheel-turn graph, just over a
 // 720-node board-permutation graph instead of a 10,000-combination lock.

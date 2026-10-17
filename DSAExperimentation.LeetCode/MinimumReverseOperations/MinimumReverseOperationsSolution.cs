@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.MinimumReverseOperations;
 // IGraphTopology: ReversalTopology, whose ReversalChildren computes each position's
 // reachable mirrors directly from the window arithmetic instead of scanning every
 // candidate. Banned positions are simply excluded as children, the same way
-// Domain.Locks.LockGraph excludes deadends.
+// OpenTheLock.LockGraph excludes deadends.
 internal static class MinimumReverseOperationsSolution
 {
     // Baseline: no on-demand window arithmetic - for every dequeued position, every

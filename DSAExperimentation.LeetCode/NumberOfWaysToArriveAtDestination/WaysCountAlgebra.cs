@@ -1,15 +1,15 @@
 using DSAExperimentation.Algorithms.Folding;
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfWaysToArriveAtDestination;
 
 // Sums the children's already-counted shortest paths under LeetCode's own modulus
-// (Domain.Modular's, shared with every other counting problem in the catalogue).
+// (LeetCode.Modular's, shared with every other counting problem in the catalogue).
 // Dist == 0 uniquely identifies the destination (it's the Dijkstra source, and
 // every road takes positive time so no other intersection can share its distance),
 // so that's the fold's base case instead of threading a separate "is this the
 // target" flag through Combine. Answers LC 1976 alone, which is why it lives beside
-// the solution rather than in Domain (RoomWaysAlgebra's own precedent).
+// the solution rather than at the tier's root (RoomWaysAlgebra's own precedent).
 internal readonly struct WaysCountAlgebra : IFoldAlgebra<WaysNode, long>
 {
     public long Empty => 0;

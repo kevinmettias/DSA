@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Folding;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 
@@ -14,7 +14,7 @@ namespace DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 // own "no repo container fits a running scalar" precedent), which is O(subtree size)
 // per node - see RoomWaysPrecomputedFactorialAlgebra for the O(1)-per-node variant
 // this trades against. This algebra answers one LeetCode problem and nothing else,
-// which is why it lives beside the solution rather than in Domain.
+// which is why it lives beside the solution rather than at the tier's root.
 internal readonly struct RoomWaysAlgebra : IFoldAlgebra<RootedTreeNode, (long Size, long Ways)>
 {
     public (long Size, long Ways) Empty => (0, 1);

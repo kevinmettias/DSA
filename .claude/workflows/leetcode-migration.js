@@ -142,10 +142,11 @@ function buildProcedureFixturePlacement() {
     `-> DSAExperimentation/DataStructures/**, beside its existing siblings;\n` +
     `   - an Operations/strategy witness (heuristics, search orders) -> DSAExperimentation/Algorithms/**;\n` +
     `   - something that fixes CONTENT (a specific modulus, a specific vertex set, one problem family's ` +
-    `semantics) -> DSAExperimentation/Domain/**;\n` +
+    `semantics) -> LeetCode code: the problem folder if it answers one problem, the root of ` +
+    `DSAExperimentation.LeetCode if several share it (there is no DSAExperimentation/Domain/ any more);\n` +
     `   - a witness used by THIS PROBLEM ALONE (a bespoke IFoldAlgebra, say) -> the LeetCode problem folder.\n` +
     `   BROWSE FOR AN EXISTING TYPE FIRST - DataStructures/Graph/Hamming, /Grids, /Engines/Dags/Trees, ` +
-    `Algorithms/ShortestPaths, Domain/Locks, Domain/Modular already cover a lot, and duplicating one of ` +
+    `Algorithms/ShortestPaths, LeetCode/Modular already cover a lot, and duplicating one of ` +
     `them is the exact defect this migration exists to remove.\n`
   )
 }
@@ -184,8 +185,8 @@ function buildReferencesAndLimits() {
     `DO NOT invent new DataStructures/ or Algorithms/ primitives to make a migration work. If a problem ` +
     `genuinely cannot be migrated without one, leave ALL its files untouched, report status "blocked" with ` +
     `the reason, and move on.\n\n` +
-    `TIER ORDER IS ENFORCED: DataStructures may not reference Algorithms/Domain/LeetCode, Algorithms may not ` +
-    `reference Domain/LeetCode, and so on. Tests/Architecture/LayeringTests.cs fails the build if you break ` +
+    `TIER ORDER IS ENFORCED: DataStructures may not reference Algorithms/LeetCode, Algorithms may not ` +
+    `reference LeetCode, and no library file may sit outside those two folders. Tests/Architecture/LayeringTests.cs fails the build if you break ` +
     `it. There is exactly one allow-listed exception and you should not be adding another.\n\n`
   )
 }

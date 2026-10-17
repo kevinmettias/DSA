@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.LeetCode.FindTheSumOfSubsequencePowers;
 
@@ -40,7 +40,7 @@ internal static class FindTheSumOfSubsequencePowersSolution
     // Reuses this repo's own Sort (MergeSort over an ArrayIndexedSequence) for both
     // sorts it needs, and Algorithms.DynamicProgramming.Memoizer for the per-threshold
     // "how many subsequenceLength-element subsequences survive this minimum gap"
-    // count, and Domain.Modular.ModularArithmetic for LeetCode's own 1e9+7 reporting
+    // count, and LeetCode.Modular.ModularArithmetic for LeetCode's own 1e9+7 reporting
     // convention.
     public static int SumOfPowersByThresholdCounting(int[] nums, int subsequenceLength)
     {

@@ -237,6 +237,15 @@ misclassifications followed, all caught on review:
 
 That left three folders in `Domain/`: `Locks`, `Modular` and `SlidingPuzzle`.
 
+On 2026-10-16 the tier itself was retired. All three folders were LeetCode's: its 1e9+7 modulus,
+LC 752's lock and LC 773's board, used by 66 LeetCode files, four benchmark files and one
+benchmark test, and by nothing else in the library. §17.9 already put LeetCode's `-1` at the
+LeetCode tier's root by the argument that had put the modulus in `Domain/Modular`, so one argument
+kept its two values in two assemblies. The lock and the board moved into their problems' folders,
+the modulus to `LeetCode/Modular/` beside `LeetCodeAnswer`, and their tests to
+`DSAExperimentation.LeetCode.Tests`. The number 3 was left free rather than reused, so "tier 4" and
+"tier 5" kept their meaning. Until then §17.6 was headed "Tier 3: what earns a `Domain/` folder".
+
 ### §17.6a How the tier order came to be enforced
 
 The tiers were a convention the file tree implied and nothing checked, and four files under

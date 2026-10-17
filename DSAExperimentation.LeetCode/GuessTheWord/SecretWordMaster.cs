@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.GuessTheWord;
 // AND that the guess budget was respected.
 //
 // A witness for this problem alone, so it lives beside the solution (ARCHITECTURE.md
-// section 17.3) rather than in Domain/.
+// section 17.3) rather than at the tier's root.
 internal sealed class SecretWordMaster(string secret)
 {
     // How many times Guess has been called - LeetCode's 10-call budget is the whole

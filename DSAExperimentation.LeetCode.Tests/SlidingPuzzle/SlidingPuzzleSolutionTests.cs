@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.SlidingPuzzle;
 
 namespace DSAExperimentation.LeetCode.Tests.SlidingPuzzle;
 
-// Harness only. The board-permutation graph itself is Domain.SlidingPuzzle's and
+// Harness only. The board-permutation graph itself is SlidingPuzzle.PuzzleGraph and
 // both search strategies are SlidingPuzzleSolution's - this file just pins them
 // to LeetCode's published examples.
 public sealed partial class SlidingPuzzleSolutionTests

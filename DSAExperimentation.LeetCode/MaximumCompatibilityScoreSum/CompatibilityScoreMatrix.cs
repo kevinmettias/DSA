@@ -4,9 +4,9 @@ namespace DSAExperimentation.LeetCode.MaximumCompatibilityScoreSum;
 // two answered identically. LC 1947's assignment search only ever reads that
 // groupSize-by-groupSize table, never the raw answer sheets, so computing it once up
 // front is the whole of this problem's input preparation - the same "Build, then
-// search" split Domain.Locks' LockGraph.Build makes for LC 752.
+// search" split OpenTheLock's LockGraph.Build makes for LC 752.
 //
-// It lives beside the solution rather than in Domain/ because a student/mentor answer
+// It lives beside the solution rather than at the tier's root because a student/mentor answer
 // sheet fixes THIS problem's content and nothing else's (ARCHITECTURE §17.3), and it
 // is deliberately not an IEnumerable: it is the parameter type of the prepared-input
 // overloads (§17.4), so it must never be bindable by the int[][]-shaped overloads the

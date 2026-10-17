@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.LeetCode.SumOfKDigitNumbersInARange;
 
@@ -15,7 +15,7 @@ namespace DSAExperimentation.LeetCode.SumOfKDigitNumbersInARange;
 // value 10^(k-1-p) collapses to repunit(k) = 111...1 (k ones) = (10^k - 1) / 9.
 // Both the modular exponentiation for 10^k and c^(k-1), and the modular
 // inverse of 9 that division needs, are this repo's own
-// Domain.Modular.ModularArithmetic - the "report modulo 1e9+7" LeetCode
+// LeetCode.Modular.ModularArithmetic - the "report modulo 1e9+7" LeetCode
 // convention it exists for, reused exactly as
 // FindTheNthValueAfterKSecondsSolution's binomial arm does.
 //

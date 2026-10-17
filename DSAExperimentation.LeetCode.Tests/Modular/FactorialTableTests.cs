@@ -1,6 +1,6 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
-namespace DSAExperimentation.Tests.Domain.Modular;
+namespace DSAExperimentation.LeetCode.Tests.Modular;
 
 public sealed partial class FactorialTableTests
 {

@@ -1,14 +1,15 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 
-namespace DSAExperimentation.Domain.Modular;
+namespace DSAExperimentation.LeetCode.Modular;
 
 // Arithmetic modulo 1e9+7 - LeetCode's own convention for "report the answer mod a
-// large prime", not a property of any algorithm, which is why this is domain code
-// rather than an Algorithms primitive. Every counting problem in the catalogue that
-// asks for a result "modulo 10^9 + 7" shares this constant and these two
-// operations. The exponentiation itself is the general algorithm in
+// large prime", not a property of any algorithm, which is why it sits at the
+// LeetCode tier's root beside LeetCodeAnswer rather than among the Algorithms
+// primitives. Every counting problem in the catalogue that asks for a result
+// "modulo 10^9 + 7" shares this constant and these two operations. The
+// exponentiation itself is the general algorithm in
 // Algorithms/NumberTheory/ModularPower; what this type adds is the modulus.
-public static class ModularArithmetic
+internal static class ModularArithmetic
 {
     public const long Modulo = 1_000_000_007;
 

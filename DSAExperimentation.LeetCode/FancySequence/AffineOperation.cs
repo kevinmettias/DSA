@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.LazySegmentTree;
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.LeetCode.FancySequence;
 

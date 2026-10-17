@@ -106,7 +106,7 @@ function buildConventionSolutionPlacement() {
     `TryFindIndicesByBruteForce, MinTurnsByReduceGraph). The naive/brute-force baseline is a first-class ` +
     `method here too, NOT a private helper hidden in the benchmark - that is what gets it under test. If a ` +
     `benchmark needs to hoist input construction into [GlobalSetup], give the strategy a second overload ` +
-    `taking the prepared input; that overload must take a Domain type or one of this repo's own containers ` +
+    `taking the prepared input; that overload must take a named type of the problem's own or one of this repo's own containers ` +
     `(e.g. Set<string>, which is not IEnumerable, so the overloads can never be ambiguous), never a BCL ` +
     `collection the LeetCode-shaped overload could also bind. A witness type (IFoldAlgebra, ITopology, ...) ` +
     `used by this problem ALONE also lives in this folder.\n`
@@ -121,15 +121,17 @@ function buildConventionSharedTiers() {
     `classification test, and getting that wrong is exactly the mistake section 17.6 documents. A ` +
     `Representation or Topology witness (node types, ITopology/IChildren witnesses, graph builders) goes in ` +
     `DSAExperimentation/DataStructures/; an Operations or strategy witness (heuristics, algebras, search ` +
-    `orders) goes in DSAExperimentation/Algorithms/; DSAExperimentation/Domain/ is ONLY for things that fix ` +
-    `CONTENT - a specific modulus, a specific vertex set, one problem family's semantics.\n` +
+    `orders) goes in DSAExperimentation/Algorithms/; what fixes CONTENT - a specific modulus, a specific ` +
+    `vertex set, one problem's semantics - is LeetCode code: in the problem's folder when it answers one ` +
+    `problem, at the root of DSAExperimentation.LeetCode when several share it (LeetCodeAnswer, Modular/). ` +
+    `There is no DSAExperimentation/Domain/ any more; LayeringTests fails on a file there.\n` +
     `   BROWSE THESE FIRST, they very often already cover the problem you are given: ` +
     `DataStructures/Graph/Hamming (one-character-mutation graphs over any Alphabet, plus HammingSearch), ` +
     `DataStructures/Graph/Grids (Grid and WeightedGrid), ` +
     `DataStructures/Graph/Engines/Dags/Trees (BinaryTree, tries, RootedTreeNode + ParentArrayTree), ` +
     `Algorithms/ShortestPaths (Dijkstra/AStar plus the Zero/Manhattan/Chebyshev heuristics, and ` +
     `Grids//Hamming/ distance helpers), Algorithms/Reducing, Algorithms/Folding, ` +
-    `Domain/Locks (the 4-wheel lock instance), Domain/Modular (mod 1e9+7).\n`
+    `and at the LeetCode root, Modular/ (ModularArithmetic and FactorialTable, mod 1e9+7).\n`
   )
 }
 
@@ -146,8 +148,8 @@ function buildConventionHarnesses() {
     `strategies agree - each one is already asserted against the expected value. Build trees and lists with ` +
     `LeetCodeWireFormat (DSAExperimentation.LeetCode.Conventions) and compare order-free answers with ` +
     `LeetCodeAnswers - do not write a private BuildList/BuildTree/order-insensitive comparer. No Fixtures/ ` +
-    `subfolder - if you were about to create one, that type belongs in Domain/ or the LeetCode/ problem ` +
-    `folder instead.\n` +
+    `subfolder - if you were about to create one, that type belongs in the LeetCode/ problem ` +
+    `folder or at the LeetCode root instead.\n` +
     `4. DSAExperimentation.Benchmarks/ProblemSolutions/<Name>Benchmarks.cs - HARNESS ONLY. [Benchmark] ` +
     `methods that are one-line calls into <Name>Solution, one per strategy, each RETURNING THE STRATEGY'S ` +
     `FULL ANSWER (never a proxy such as .Length, .Count, [0] or a checksum - BenchmarkArmsTests compares ` +
@@ -156,7 +158,7 @@ function buildConventionHarnesses() {
     `BenchmarkDotNet.Attributes - BenchmarkConfig and the project's global using supply all three. Only ` +
     `workload SIZING/seeding may live in ` +
     `DSAExperimentation.Benchmarks/Fixtures/ (see LockWorkloads, HammingWorkloads, WeightedGridWorkloads); ` +
-    `what it builds FROM is Domain code.\n\n`
+    `what it builds FROM is LeetCode code.\n\n`
   )
 }
 
@@ -209,7 +211,7 @@ function buildOutputContract() {
     `After writing all files for this cluster, return one result object per problem id: status "done" (with the ` +
     `real solutionPath/testPath/benchmarkPath - as REPO-ROOT-RELATIVE paths using forward slashes, e.g. ` +
     `"DSAExperimentation.LeetCode/TwoSum/TwoSumSolution.cs", matching the existing manifest entries' ` +
-    `style, NOT an absolute Windows path - and a short primitivesUsed note naming any Domain/ types you reused ` +
+    `style, NOT an absolute Windows path - and a short primitivesUsed note naming any shared types you reused ` +
     `or added) or "blocked" (with a note on exactly what's missing and why it's a genuine primitive gap, not ` +
     `just effort).`
   )

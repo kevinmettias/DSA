@@ -3,7 +3,7 @@ namespace DSAExperimentation.LeetCode.SmallestSufficientTeam;
 // LC 1125's input reduced to the two bitmasks both strategies actually search over:
 // one int per person holding the required skills that person supplies, and the mask
 // with every required skill still missing. Meaningless outside this problem, so it
-// lives beside the solution (ARCHITECTURE.md §17.3) rather than in Domain/.
+// lives beside the solution (ARCHITECTURE.md §17.3) rather than at the tier's root.
 //
 // It is also the prepared-input shape §17.4 calls for: a benchmark builds the masks
 // once in [GlobalSetup] and hands this to the measured method, and since it is not

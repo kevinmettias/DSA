@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.ShortestDistanceToTargetStringInACircularA
 // never in the search.
 //
 // Answers this problem alone - an index-and-payload node fixing no vertex set and
-// no modulus - so it lives beside the solution rather than in Domain/ or
+// no modulus - so it lives beside the solution rather than at the tier's root or in
 // DataStructures/ (ARCHITECTURE.md #17.3/#17.6), the same placement
 // FunctionalGraphNode has for LC 2360. It previously existed as a Tests fixture
 // and again in Benchmarks/Fixtures; this is the declaration this problem now uses

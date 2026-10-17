@@ -1,7 +1,7 @@
 namespace DSAExperimentation.Algorithms.NumberTheory;
 
 // value^exponent mod modulus by repeated squaring, O(log exponent) - the algorithm. Which modulus a
-// problem reports in is not part of it: Domain/Modular/ModularArithmetic fixes LeetCode's
+// problem reports in is not part of it: LeetCode/Modular/ModularArithmetic fixes LeetCode's
 // 1_000_000_007 and calls this, the split 17.6 draws between a classic algorithm and the convention
 // that pins its content.
 //

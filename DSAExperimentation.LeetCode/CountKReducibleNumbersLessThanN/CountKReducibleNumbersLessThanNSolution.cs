@@ -1,6 +1,6 @@
 using System.Numerics;
 
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.Modular;
 
 namespace DSAExperimentation.LeetCode.CountKReducibleNumbersLessThanN;
 
@@ -57,7 +57,7 @@ internal static class CountKReducibleNumbersLessThanNSolution
     // `CountNumbersByPopcount` is the classic binary digit-DP count - for each
     // '1' bit binaryDigits sets, fix it to 0 and freely choose every lower bit,
     // weighting each choice of how many of those free bits are set by the
-    // binomial coefficient C(remaining bits, ones needed) (Domain.Modular's
+    // binomial coefficient C(remaining bits, ones needed) (LeetCode.Modular's
     // shared FactorialTable, the same table CountBalancedPermutationsSolution and
     // RoomWaysPrecomputedFactorialAlgebra read their coefficients from).
     // maxSteps >= 1 always (LC's own constraint), so x = 1 itself

@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.LargestColorValueInADirectedGraph;
 // algorithm needs for in-degree bookkeeping (CourseNode's own precedent).
 //
 // Answers LC 1857 alone - a plain adjacency-list graph node with no fixed vertex
-// set or modulus - so it lives beside the solution rather than in Domain/ or
+// set or modulus - so it lives beside the solution rather than at the tier's root or in
 // DataStructures/ (ARCHITECTURE.md #17.3/#17.6). It previously existed twice: once
 // as a Tests fixture and once again as a private copy inside
 // LargestColorValueInADirectedGraphBenchmarks; this is the single surviving

@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.MaximumPartitionFactor;
 // group" - rebuilt fresh for each binary-search candidate by
 // MaximumPartitionFactorSolution.MaxPartitionFactorByBinarySearchBipartiteCheck,
 // the same "mutable Neighbors filled in as the graph is (re)built" shape
-// Domain.Locks.LockNode already uses.
+// OpenTheLock.LockNode already uses.
 internal sealed record PartitionNode(int X, int Y)
 {
     public List<PartitionNode> Neighbors { get; } = [];

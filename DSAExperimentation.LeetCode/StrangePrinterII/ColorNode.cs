@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.StrangePrinterII;
 // "prerequisite -> dependent" shape LeetCode/CourseSchedule's CourseNode uses.
 //
 // Answers LC 1591 alone - a plain adjacency-list graph node with no fixed vertex
-// set or modulus - so it lives beside the solution rather than in Domain/ or
+// set or modulus - so it lives beside the solution rather than at the tier's root or in
 // DataStructures/ (ARCHITECTURE.md §17.3/§17.6). It previously existed twice: once
 // as a Tests fixture and once again as a private copy inside
 // StrangePrinterIIBenchmarks; this is the single surviving declaration.

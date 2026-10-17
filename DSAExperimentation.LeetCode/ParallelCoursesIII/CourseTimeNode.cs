@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.ParallelCoursesIII;
 // bookkeeping.
 //
 // Answers LC 2050 alone - a plain adjacency-list DAG node with no fixed vertex set
-// or modulus - so it lives beside the solution rather than in Domain/ or
+// or modulus - so it lives beside the solution rather than at the tier's root or in
 // DataStructures/ (ARCHITECTURE.md #17.3/#17.6). It previously existed twice: once
 // as a Tests fixture and once again as a private copy inside
 // ParallelCoursesIIIBenchmarks; this is the single surviving declaration.

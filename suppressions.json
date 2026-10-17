@@ -521,7 +521,7 @@
     },
     {
       "check": "check-constant-placement",
-      "path": "DSAExperimentation/Domain/Modular/ModularArithmetic.cs",
+      "path": "DSAExperimentation.LeetCode/Modular/ModularArithmetic.cs",
       "reason": "The check asks that a visible constant be moved to 'a type of its own whose subject IS these values'. ModularArithmetic is already that type: the modulus is not incidental state inside a class about something else, it is the single value the whole type is parameterised by, and both public operations (Inverse, Power) are defined only with respect to it. Extracting Modulo to a separate type would leave ModularArithmetic unable to state what it is arithmetic modulo of, in the one file a reader would look in.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
@@ -535,7 +535,7 @@
     },
     {
       "check": "check-constant-placement",
-      "path": "DSAExperimentation/Domain/Locks/LockWheels.cs",
+      "path": "DSAExperimentation.LeetCode/OpenTheLock/LockWheels.cs",
       "reason": "LockWheels IS the remedy this check prescribes - it was extracted from LockGraph in this same pass precisely because the check asked for 'a type of its own, in its own file whose subject IS these values'. Count/Modulus/CombinationSpace are the lock's dimensions and the entire subject of the type and file; there is no further type to move them to. Same shape as the ModularArithmetic.Modulo waiver.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
@@ -634,7 +634,7 @@
     {
       "check": "check-test-coverage",
       "path": "DSAExperimentation.LeetCode/*/**",
-      "reason": "Scoped to the problem folders, and to what the tier's own tests cannot name by construction. Each solution is now tested by <Problem>SolutionTests at the mirrored path in DSAExperimentation.LeetCode.Tests, so the check attributes every strategy directly, and LeetCodeStrategyCoverageTests fails if any <Operation>By<Strategy> member lacks a test method named for it - the strategies themselves are no longer behind this entry. (Its earlier reason, that solution and harness file names did not correspond, stopped being true with that rename; before it this entry absorbed about 4,590 findings.) Measured 2026-10-03 with the entry removed: 2,197 findings in 580 files, all on helpers that 17.3 and 17.7 test through the strategy that composes them. 1,775 are members of types nested inside a <Problem>Solution - the IRecurrence, topology, algebra and hook witnesses an engine calls back (Replay 286 times, GetChildren, GetEdges, Combine, Visit), and the per-strategy classes of design problems whose methods are LeetCode's own operation names (Push, Pop, Get, Book). 393 are the same kinds of witness in a problem folder's own file (RoomWaysAlgebra.cs). 29 are a solution class's public input-preparation helpers - the 17.4 hoisted-overload builders a benchmark's [GlobalSetup] calls (BuildHopGraph, BuildDistanceMatrix) - which LeetCodeStrategyCoverageTests does not yet require a named test for. 1,524 of the 2,197 are 'exercised by a test, and NO TEST NAMES IT'; the rest are contract or helper members reached only through the strategy. Files at the tier's root (LeetCodeAdjacency, LeetCodeIntervals) are outside this entry and carry tests of their own; Conventions/ is under its path and reports no finding.",
+      "reason": "Scoped to the problem folders, and to what the tier's own tests cannot name by construction. Each solution is now tested by <Problem>SolutionTests at the mirrored path in DSAExperimentation.LeetCode.Tests, so the check attributes every strategy directly, and LeetCodeStrategyCoverageTests fails if any <Operation>By<Strategy> member lacks a test method named for it - the strategies themselves are no longer behind this entry. (Its earlier reason, that solution and harness file names did not correspond, stopped being true with that rename; before it this entry absorbed about 4,590 findings.) Measured 2026-10-03 with the entry removed: 2,197 findings in 580 files, all on helpers that 17.3 and 17.7 test through the strategy that composes them. 1,775 are members of types nested inside a <Problem>Solution - the IRecurrence, topology, algebra and hook witnesses an engine calls back (Replay 286 times, GetChildren, GetEdges, Combine, Visit), and the per-strategy classes of design problems whose methods are LeetCode's own operation names (Push, Pop, Get, Book). 393 are the same kinds of witness in a problem folder's own file (RoomWaysAlgebra.cs). 29 are a solution class's public input-preparation helpers - the 17.4 hoisted-overload builders a benchmark's [GlobalSetup] calls (BuildHopGraph, BuildDistanceMatrix) - which LeetCodeStrategyCoverageTests does not yet require a named test for. 1,524 of the 2,197 are 'exercised by a test, and NO TEST NAMES IT'; the rest are contract or helper members reached only through the strategy. Files at the tier's root (LeetCodeAdjacency, LeetCodeIntervals) are outside this entry and carry tests of their own; Conventions/ and Modular/ are under its path and report no finding, and neither do the lock and board models in OpenTheLock/ and SlidingPuzzle/, which keep companion tests of their own (measured 2026-10-16 with no ledger: 0 findings over those 9 files and their 7 test files).",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },

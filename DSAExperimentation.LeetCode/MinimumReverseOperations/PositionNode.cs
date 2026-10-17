@@ -9,8 +9,8 @@ namespace DSAExperimentation.LeetCode.MinimumReverseOperations;
 // for visited-tracking: two PositionNodes at the same array position on the same
 // board compare equal.
 //
-// Answers this problem alone, so it lives beside the solution rather than in Domain/
-// or DataStructures/ (ARCHITECTURE.md #17.3/#17.6). It previously existed as a Tests
+// Answers this problem alone, so it lives beside the solution rather than at the tier's root
+// or in DataStructures/ (ARCHITECTURE.md #17.3/#17.6). It previously existed as a Tests
 // fixture and again in Benchmarks/Fixtures; this is the declaration both harnesses
 // now share.
 internal sealed record PositionNode(int Position, ReversalBoard Board);
