@@ -9,7 +9,7 @@ namespace DSAExperimentation.Algorithms.Traversal.DepthFirst;
 // close over - a chess-move generator, an infinite lattice, a cyclic closure are arbitrary caller
 // logic, the same open-ended bucket IComparer<T> occupies. There's also nothing to close a
 // witness over even if one were wanted: the only existing tiered hierarchy for "successor
-// relation kinds" in this codebase is Graph's own, which is exactly what §5.5 forbids reusing.
+// relation kinds" in this codebase is Graph's own, exactly what §5 step 5 forbids reusing.
 //
 // No Representation axis at all: a Func<TNode, IEnumerable<TNode>> has no alternate physical
 // layout to abstract over the way a sequence does - it's already the atomic, opaque capability.

@@ -2,10 +2,25 @@
 
 ## 1. Purpose
 
-This document formalizes a classification that already governs `DSAExperimentation/Graph/**`,
-even though nothing in the repo says so explicitly until now. It exists so that future work —
-starting with `DSAExperimentation/Collections/**` — follows the same discipline deliberately
-instead of by accident.
+This document states the rules that decide what a type in this repository is, where its file goes,
+and what it may depend on. Each section states the rule in force and names files at their current
+paths. How a rule came to be — the reorgs that moved the tree into its present shape, and the
+drafts that got a rule wrong before it was right — is in
+[ARCHITECTURE-HISTORY.md](ARCHITECTURE-HISTORY.md), filed under the number of the section it
+explains.
+
+Section numbers are stable. Source comments cite them ("ARCHITECTURE 17.9", "§17.3"), so a section
+is rewritten in place and never renumbered, and a new one takes the next free number or a letter
+suffix (§17.6a). `DSAExperimentation.Tests/Architecture/SectionCitationTests.cs` fails when a
+citation anywhere in the code, the documents or the waiver ledger names a number no heading here
+carries (§18.5). A numbered step inside a section is not a section: cite it as "§5 step 5", never
+with a dotted number of its own.
+
+§2 defines the three axes everything else applies. §5 is the checklist for adding anything, §8 the
+rule for binding an algorithm to what it needs, §13 the physical layout, §17 the tiers above the
+library and §18 the testing policy. §3, §4, §9–§12, §14–§16 and §19 are worked examples: each
+records a classification call and the reason for it, so that the next similar call can be made the
+same way.
 
 ## 2. The three axes
 
@@ -16,9 +31,9 @@ Every data structure in this repo is designed along three independent axes:
   and, just as importantly, *what reaching them costs*. That cost is a real contract even though
   C#'s type system can't state it: `IChildren<TNode>.Get(int)` is one syntactic contract, but
   `ListChildren.Get` is O(1) (a `List<T>` indexer) while `SparseArrayChildren.Get`/`GridChildren.Get`
-  are O(k) bounded scans (trie slots / the 4 grid directions). Harmless today, since nothing in
-  `Graph/**` assumes O(1) `Get` — every consumer iterates the whole `Count` regardless — but it's a
-  real, currently-unstated assumption. §8 names it explicitly.
+  are O(k) bounded scans (trie slots / the 4 grid directions). No graph engine depends on an O(1)
+  `Get` — each sweeps `0..Count-1` in order (§13.8) — but the obligation is real, and §8 says why a
+  cost belongs in the contract.
 - **Topology** — the admissible relation/shape. General graph, DAG (acyclic), tree (acyclic +
   unique ancestry), heap-order, BST-order. A stronger topology promise lets algorithms skip
   runtime defense (cycle checks, visited-tracking, rebalancing) at compile time instead of
@@ -26,13 +41,10 @@ Every data structure in this repo is designed along three independent axes:
 - **Operations** — the algorithm/API surface built on top of a Representation constrained by a
   Topology.
 
-As of the reorg documented in §13, this classification is also the repo's primary *physical* axis:
-every file lives under a top-level `DataStructures/` or `Algorithms/` folder according to which of
-these three it is (Representation and Topology under `DataStructures/`, Operations under
-`Algorithms/`), not under a domain-first folder with the axes mixed together inside it. §3–§12
-below describe each domain's *reasoning* — why a given capability is Representation vs. Topology
-vs. Operations — using the paths and folder names as they stood when each section was written,
-before that physical reorg happened; §13 is where to look for where things live today.
+The axes are also the physical layout. Representation and Topology files live under
+`DSAExperimentation/DataStructures/`, together with any Operations type hardwired to one of this
+repo's Representations (§5 step 7); every other Operations type lives under
+`DSAExperimentation/Algorithms/`. §13 says where within each.
 
 A fourth axis, "Invariants," was considered and folded into Topology: a topology's
 admissible-relation-set already *is* its invariants (acyclicity, unique ancestry, heap order,
@@ -43,16 +55,18 @@ just be re-describing Topology from a different angle.
 children, no cycles, one root) but is conventionally given array *representation* instead of
 pointers — `parent(i) = ⌊(i-1)/2⌋`, `left(i) = 2i+1`, `right(i) = 2i+2`. Same logical shape,
 completely different physical layout and cost profile. This is exactly why Representation and
-Topology have to be tracked as separate axes rather than conflated — and it stops being
-hypothetical in §4 below, where it becomes `Collections/Heap`.
+Topology have to be tracked as separate axes rather than conflated, and §4 is that heap:
+`DataStructures/Heap`.
 
-## 3. Worked example: `Graph/**`
+## 3. Worked example: the graph framework
 
-> Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
+The graph framework's Representation and Topology contracts live in
+`DSAExperimentation/DataStructures/Graph/**`, and the engines and facades built on them in
+`DSAExperimentation/Algorithms/**`.
 
 ### 3.1 Representation
 
-- [`Graph/Contracts/Ordering/IChildren.cs`](DSAExperimentation/DataStructures/Graph/Contracts/Ordering/IChildren.cs) —
+- [`DataStructures/Graph/Contracts/Ordering/IChildren.cs`](DSAExperimentation/DataStructures/Graph/Contracts/Ordering/IChildren.cs) —
   an indexable view over a node's children. Deliberately *not* `IReadOnlyList<TNode>`: `Get` is a
   named method, not an indexer, specifically so implementations stay thin structs that JIT-specialize
   to direct, non-virtual calls with no boxing.
@@ -60,10 +74,10 @@ hypothetical in §4 below, where it becomes `Collections/Heap`.
 - [`SparseArrayChildren.cs`](DSAExperimentation/DataStructures/Graph/Contracts/Ordering/SparseArrayChildren.cs) —
   fixed slot-array backed (e.g. a trie's 26-letter alphabet), scans past nulls instead of storing a
   materialized list.
-- [`Graph/Algorithms/Grids/GridChildren.cs`](DSAExperimentation/DataStructures/Graph/Grids/GridChildren.cs) —
+- [`DataStructures/Graph/Grids/GridChildren.cs`](DSAExperimentation/DataStructures/Graph/Grids/GridChildren.cs) —
   a third representation: children aren't stored at all, they're computed on demand from geometry
-  (row/col offsets filtered by what the grid says is in bounds and passable). This is the direct
-  precedent reused by `Collections/Heap`'s index arithmetic in §4.
+  (row/col offsets filtered by what the grid says is in bounds and passable). `DataStructures/Heap`'s
+  index arithmetic (§4) is the same move.
 - `IEdges.cs`/`IChildOrder.cs` round out the representation contracts: edge-aware children
   (`ListEdges`, `EdgeTargets`) and order-independent-of-topology traversal (`NaturalChildOrder`,
   `ReverseChildOrder`, `ReversedChildren` — allocation-free reversal via index arithmetic over an
@@ -100,28 +114,27 @@ ITreeTopology<TNode,TChildren>    + unique ancestry (no sharing at all)
 
 The payoff is concrete, not just documentation: [`UnguardedVisit.cs`](DSAExperimentation/Algorithms/Walking/UnguardedVisit.cs)
 (stateless, tree tier) vs. `TrackedVisitGuard.cs` (`HashSet`-backed, graph tier); `TreeFold.cs` vs.
-`DagFold.cs` vs. `CheckedFold.cs` — three tiers of the same catamorphism, each paying only the
-defense its topology tier doesn't already rule out. `IEdgeTopology.cs`/`EdgeTopologyAsGraphTopology.cs`
-show topology-to-topology *composition* (projection, not inheritance); `GridTopology.cs` shows a
-topology witness sitting over an arithmetically-computed representation.
+`DagFold.cs` vs. `CheckedFold.cs` in `Algorithms/Folding/` — three tiers of the same catamorphism,
+each paying only the defense its topology tier doesn't already rule out.
+`IEdgeTopology.cs`/`EdgeTopologyAsGraphTopology.cs` show topology-to-topology *composition*
+(projection, not inheritance); `Grids/GridTopology.cs` shows a topology witness sitting over an
+arithmetically-computed representation.
 
 ### 3.3 Operations
 
-Two layers: generic **engines** (`Graph/Engines/Reducing/Reduce.cs`'s `Tree`/`Graph` entry points,
-`Graph/Engines/Traversal/{BreadthFirst,DepthFirst,TopDown}/**`, `Graph/Engines/Walking/**`) and
-user-facing **facades** built by closing those generics over concrete node/topology types
-(`Graph/Algorithms/{Ancestry,Connectivity,Grids,Metrics,Paths,ShortestPaths}/**`).
+Two layers: generic **engines** (`Algorithms/Reducing/Reduce.cs`'s `Tree`/`Graph` entry points,
+`Algorithms/Traversal/{BreadthFirst,DepthFirst,TopDown}/**`, `Algorithms/Walking/**`,
+`Algorithms/Folding/**`) and user-facing **facades** built by closing those generics over concrete
+node/topology types (`Algorithms/{Ancestry,Connectivity,Metrics,Paths,ShortestPaths}/**`).
 
 [`IPathHeuristic.cs`](DSAExperimentation/Algorithms/ShortestPaths/IPathHeuristic.cs)/`ZeroHeuristic.cs`
 is the template for "one algorithm, one injected axis, not two parallel implementations" —
-`ShortestPath.Dijkstra` is `ShortestPath.AStar` closed over `ZeroHeuristic`. `Collections/Heap`'s
-`IHeapOrder` reuses this exact idiom in §4.
+`ShortestPath.Dijkstra` is `ShortestPath.AStar` closed over `ZeroHeuristic`. `DataStructures/Heap`'s
+`IHeapOrder` uses the same idiom (§4).
 
-## 4. Worked example: `Collections/Heap`
+## 4. Worked example: `DataStructures/Heap`
 
-> Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
-
-`Collections/Heap` is the first non-Graph instance of this framework, and it doesn't transplant
+`Heap` is where the framework meets a structure that is not a graph, and it doesn't transplant
 1:1 — the mismatch is worth stating plainly. In Graph, Topology is generic over an
 *independently-pluggable* children representation (`IGraphTopology<TNode,TChildren>`), because a
 graph node's children exist as a separate thing from any one way of storing them. A heap has no
@@ -134,45 +147,45 @@ the element type alone — no representation parameter at all, a strictly simple
 
 | File | Axis | Why |
 | --- | --- | --- |
-| `Collections/Heap/IHeapOrder.cs` | Topology | The ordering invariant (min vs. max), generic over `T` only |
-| `Collections/Heap/MinHeapOrder.cs`, `MaxHeapOrder.cs` | Topology | Closed-set witnesses of `IHeapOrder<T>` |
-| `Collections/Heap/HeapArrayIndex.cs` | Representation | Pure `parent`/`left`/`right` index arithmetic — the array *is* a complete binary tree; parallels `GridChildren`'s coordinate arithmetic |
-| `Collections/Heap/HeapArray.cs` | Representation | The growable backing store |
-| `Collections/Heap/Heap.cs` | Operations | `Push`/`Pop`/`Peek` — the sift walk that combines the arithmetic and the comparison; owns neither on its own |
+| `DataStructures/Heap/IHeapOrder.cs` | Topology | The ordering invariant (min vs. max), generic over `T` only |
+| `DataStructures/Heap/MinHeapOrder.cs`, `MaxHeapOrder.cs` | Topology | Closed-set witnesses of `IHeapOrder<T>` |
+| `DataStructures/Heap/HeapArrayIndex.cs` | Representation | Pure `parent`/`left`/`right` index arithmetic — the array *is* a complete binary tree; parallels `GridChildren`'s coordinate arithmetic |
+| `DataStructures/Heap/HeapArray.cs` | Representation | The growable backing store |
+| `DataStructures/Heap/Heap.cs` | Operations | `Push`/`TryPop`/`TryPeek` — the sift walk that combines the arithmetic and the comparison; owns neither on its own |
 
 Representation contracts here are **domain-local**, not shared with `Graph.Contracts.Ordering`.
 `IChildren`'s own doc comment already explains why: it exists as an interface only because Graph
 needed two genuinely different shapes (`ListChildren`, `SparseArrayChildren`) from day one.
-`Collections/Heap` has exactly one representation today, so it gets a concrete class
-(`HeapArray<T>`), not an interface — see the recipe below for when that should change.
+`Heap` has exactly one representation, so it gets a concrete class (`HeapArray<T>`), not an
+interface — see §5 step 3 for when that should change.
 
-`Graph/Algorithms/ShortestPaths/ShortestPath.cs` is `Heap`'s first real consumer: Dijkstra/A*'s
+`Algorithms/ShortestPaths/ShortestPath.cs` is `Heap`'s consumer: Dijkstra/A*'s
 frontier is `Heap<(TNode Node, TWeight Priority), ByPriorityOrder<TNode,TWeight>>`, where
 [`ByPriorityOrder.cs`](DSAExperimentation/DataStructures/Graph/ShortestPaths/ByPriorityOrder.cs) projects
 `IHeapOrder<T>` down to "compare `.Priority`, ignore `.Node`" — the same projection move
 `EdgeTopologyAsGraphTopology` makes for `IGraphTopology`, just for a different domain's Topology
 witness. Note this doesn't violate "domain-scoped contracts": `ByPriorityOrder` *implements*
-`Collections.Heap`'s public `IHeapOrder<T>` as a client, the same way any consumer of a library
+`DataStructures.Heap`'s public `IHeapOrder<T>` as a client, the same way any consumer of a library
 type would — it isn't Graph reaching in to redefine or reuse Heap's own Representation.
 
-### 4.1 The other five structures
+### 4.1 The other containers
 
-Each follows §5's recipe below rather than repeating Heap's exact shape — none of them has an
+Each follows §5's recipe rather than repeating Heap's exact shape — none of them has an
 independently-pluggable Topology witness, because none needed one:
 
 | Structure | Representation | Operations | Notes |
 | --- | --- | --- | --- |
-| `Collections/DynamicArray/DynamicArray.cs` | itself (a manually-doubled `T[]`) | `Add`/`Insert`/`RemoveAt`/`Get`/`Set` | No Topology axis at all — the only invariant is "how it's stored," which §5 step 2 classifies as Representation, not Topology |
-| `Collections/Stack/Stack.cs` | `DynamicArray<T>` (composed, not duplicated) | `Push`/`Pop`/`Peek` | A stack is a sequence plus a LIFO *access constraint* — an Operations-level restriction over an existing Representation, not a new physical layout |
-| `Collections/Deque/CircularBuffer.cs` + `Deque.cs` | a wraparound array (`_head`/`Count` modulo length) | `Push`/`Pop`/`Peek` at both ends | A second, distinct Representation (wraparound, not flat) — earned by needing O(1) at *both* ends, which `DynamicArray`'s flat layout can't give the front |
-| `Collections/Queue/Queue.cs` | `Deque<T>` (composed) | `Enqueue`/`Dequeue`/`Peek` | FIFO is Deque restricted to one end each — the same "sequence + constraint" relationship Stack has with `DynamicArray`, just against the wraparound Representation |
-| `Collections/HashMap/HashMap.cs` (+ `HashMapEntry.cs`) | bucket array + separate-chaining entries array with a free list | `Get`/`Set`/`Remove`/`ContainsKey` | The associative primitive from §2 in code: no Topology witness, because "at most one value per key" is what a map *is*, not a variable choice the way min-vs-max-heap is |
-| `Collections/Set/Set.cs` | `HashMap<T,bool>` (composed) | `Add`/`Contains`/`Remove` | Backed by `HashMap` the way `java.util.HashSet` is backed by `HashMap<E,Object>` — membership is "is this key present," so the value is an unused placeholder |
+| `DataStructures/DynamicArray/` | itself (a manually-doubled `T[]`, held by `DynamicArrayStorage`, §14.3) | `Add`/`Insert`/`RemoveAt`/`Get`/`Set`, each with a `Try` form | No Topology axis at all — the only invariant is "how it's stored," which §5 step 2 classifies as Representation, not Topology |
+| `DataStructures/Stack/` | `DynamicArray<T>` (composed, not duplicated) | `Push`/`TryPop`/`TryPeek` | A stack is a sequence plus a LIFO *access constraint* — an Operations-level restriction over an existing Representation, not a new physical layout |
+| `DataStructures/Deque/` (`CircularBuffer` + `Deque`) | a wraparound array (`_head`/`Count` modulo length) | `PushFront`/`PushBack`, `TryPopFront`/`TryPopBack`, `TryPeekFront`/`TryPeekBack` | A second, distinct Representation (wraparound, not flat) — earned by needing O(1) at *both* ends, which `DynamicArray`'s flat layout can't give the front |
+| `DataStructures/Queue/` | `Deque<T>` (composed) | `Enqueue`/`TryDequeue`/`TryPeek` | FIFO is Deque restricted to one end each — the same "sequence + constraint" relationship Stack has with `DynamicArray`, just against the wraparound Representation |
+| `DataStructures/HashMap/` (`HashMap` + `HashMapEntry` + `HashMapStorage`) | bucket array + separate-chaining entries array with a free list | `Set`/`TryGetValue`/`TryRemove`/`HasKey` | The associative primitive from §2 in code: no Topology witness, because "at most one value per key" is what a map *is*, not a variable choice the way min-vs-max-heap is |
+| `DataStructures/Set/` | `HashMap<T,bool>` (composed) | `TryAdd`/`Has`/`TryRemove` | Backed by `HashMap` the way `java.util.HashSet` is backed by `HashMap<E,Object>` — membership is "is this key present," so the value is an unused placeholder |
 
-`Stack`/`Queue` composing `DynamicArray`/`Deque` rather than each managing their own array is itself
-the philosophical point from earlier in this conversation made concrete: *"a stack isn't a unique
-physical structure — it's a sequence plus a LIFO access constraint."* Representation is shared
-because the constraint, not the storage, is what varies.
+`Stack`/`Queue` composing `DynamicArray`/`Deque` rather than each managing their own array is the
+point of this table made concrete: *a stack isn't a unique physical structure — it's a sequence
+plus a LIFO access constraint.* Representation is shared because the constraint, not the storage,
+is what varies.
 
 ## 5. How to add anything here — a capability-first checklist
 
@@ -210,7 +223,7 @@ algorithm, a new structure, or both, run this in order:
    the *pattern*, not the *type* — a fold's node-list and a heap's backing array are different
    enough shapes that forcing a shared interface between them tends to produce a leaky common
    surface instead of a useful one. Composing another domain's already-public concrete
-   *representation* (as `DynamicArraySequence` does with `Collections.DynamicArray`, §9.4) is a
+   *representation* (as `DynamicArraySequence` does with `DataStructures/DynamicArray`, §9.4) is a
    different thing and is fine — what's prohibited is forcing that domain's type to implement
    *your* interface.
 6. **Place the file by axis first, then by the right second-class label for that axis** (§13). On
@@ -221,8 +234,6 @@ algorithm, a new structure, or both, run this in order:
    it happens to need — that's real, but subordinate, information, expressed only as a nested
    subfolder, and only once a second tier of the same utility actually exists to justify one (§13.1
    restates this "don't build structure before it's earned" rule for topology tiers specifically).
-   This is the one place this reorg changes future behavior: it decides where a *new* file gets
-   created, not just where old ones were moved.
 7. **Not everything that composes a Representation and adds checks belongs in `Algorithms/`.**
    When an Operations type is hardwired to exactly one concrete Representation — no interface, no
    second implementation possible — it isn't decoupled from a data structure the way
@@ -230,60 +241,61 @@ algorithm, a new structure, or both, run this in order:
    multiple implementations); it *is* the data structure, with its bounds-checking layer split out
    for the reasons in step 4. That pairing co-locates under `DataStructures/<Structure>/`
    (`Heap.cs` beside `HeapArray.cs`, `Stack.cs` beside the `DynamicArray.cs` it hardcodes) — never
-   under `Algorithms/`. Reserve `Algorithms/<Utility>/` for the type that's actually generic over a
-   capability interface with real substitutability (§13.5).
-
-This is what already happened, in order, for `Searching/BinarySearch` (§9); `Collections/Heap` (§4)
-and `Graph/**` (§3) arrived at the same shape but retrofitted, with the Topology witness pulled out
-after the fact rather than named first. Both routes land in the same place here because the
-domains are small enough to fix in hindsight — but running the checklist forward is what keeps
-that true as things grow.
+   under `Algorithms/`. `Algorithms/<Utility>/` is for Operations that are not hardwired that way:
+   a type generic over a capability interface with real substitutability, or an algorithm over
+   plain inputs that has no Representation of this repo's own to belong to (§13.5).
 
 ## 6. Gate-compliance notes
 
-This repo's Nomos code-standards gate (`standards.json`, `suppressions.json`, engine at
-`kevinmettias/code-standards`) already shapes every file in `Graph/**` toward: one public type per
-file, small single-cluster classes, closed-set modeling over loose bool/enum flags, and composition
-over inheritance. `Collections/**` follows the same shape, and where the gate still flagged
-something, the fix was almost always real (a shared `ArrayGrowth` constant instead of three
-independent copies of the same tuning numbers, `HashMap`'s `Set`/`Remove`/`Grow` split into named
-helpers, a `HeapArrayIndex.RightChild` expressed as `LeftChild + 1` instead of a bare literal).
-The remaining `suppressions.json` entries for `Collections/**` are judgment calls already
-precedented elsewhere in this repo: `check-class-size`'s "two disjoint call-graph clusters" fires on
-every small ADT wrapper here (`Heap`, `DynamicArray`, `CircularBuffer`, `Stack`) because their
-grow-path and remove/access-path methods never call each other, not because either hides a second
-responsibility; `check-literals`/`check-function-cohesion`/`check-responsibility-extraction` on test
-files follow the exact reasoning already recorded for `ContiguousGroupBufferTests.cs`/
-`TraversalTests.cs`; and `check-test-coverage`'s attribution-by-best-name-match gap (already waived
-throughout `Graph/**`) recurs for a handful of generically-named members (`Count`, `Get`) exercised
-only transitively. `Collections/DisjointSet/DisjointSetForest.cs` (§10) joins the same
-`check-class-size` precedent for the same reason (its parent-path and rank-path methods never call
-each other); `Sorting/MergeSort.cs` (§11) hit two genuinely real findings instead — a five-parameter
-`SortRange` and a six-parameter `Merge`, both fixed by grouping the range into `SortBounds` (§11.3)
-rather than waived, and a five-section `Merge` shortened to a single counted loop (§11's
-`MergeRunsIntoBuffer`) instead of three separate merge/drain loops.
+This repo's Nomos code-standards gate (`standards.json` and `suppressions.json` at the repository
+root, engine at `kevinmettias/code-standards`) shapes every file toward one public type per file,
+small single-cluster classes, closed-set modeling over loose bool/enum flags, and composition over
+inheritance. When the gate flags something, the fix comes first, because it is almost always real:
+`ArrayGrowth` is one shared constant rather than three independent copies of the same tuning
+numbers, `HashMap`'s `Set`/`TryRemove`/`Grow` are split into named helpers,
+`HeapArrayIndex.RightChild` is `LeftChild + 1` rather than a bare literal, and `MergeSort`'s range
+helpers take a `SortBounds` rather than five and six parameters (§11.3).
 
-## 7. Resolved asymmetries
+A finding that a fix would make worse is waived in `suppressions.json` with its reason (§13.4).
+The library tiers' standing precedents:
 
-- **Fixed**: `DSAExperimentation.Tests/Engines/**`, `Algorithms/**`, and `Contracts/Ordering/**`
-  used to drop the `Graph/` prefix segment the main project uses under `DSAExperimentation/Graph/**`,
-  a leftover of the `48e4c0b` restructuring that predated a full test-tree migration. They now live
-  under `DSAExperimentation.Tests/Graph/**`, mirroring the main project exactly.
-  `Collections/Heap`'s tests instead mirror `Buffers/ContiguousGroupBufferTests.cs`'s convention
-  (prefix retained), since `Buffers` — not `Graph` — is the correct sibling-domain precedent for a
-  small standalone `Collections` structure.
-- **Fixed**: `Graph/Algorithms/ShortestPaths/ShortestPath.cs`'s Dijkstra/A* now use
-  `Collections/Heap`'s `Heap<T,TOrder>` instead of the BCL `PriorityQueue<TNode,TWeight>`, via a
-  `(TNode Node, TWeight Priority)` element ordered by a priority-only `IHeapOrder` witness — no
-  change to `Heap`/`HeapArray` themselves was needed.
-- **Fixed**: `IPathHeuristic.cs`'s contract used to require only that a heuristic be *admissible*
-  (never overestimates). That's weaker than what `ShortestPath.Traverse`'s settle-once design
-  actually needs — *consistent* (`h(u) <= cost(u,v) + h(v)` on every edge), which is what guarantees
-  a node's first pop already carries its true shortest distance. An admissible-but-inconsistent
-  heuristic can still bias the search, but on some graph shapes can make `Traverse` settle a node at
-  a non-optimal distance with nothing here to catch it. The contract now says "consistent" and
-  explains why; `ShortestPath.cs` also now documents its non-negative-edge-weight precondition,
-  which neither `Dijkstra` nor `AStar` checks or ever did.
+- **`check-class-size`'s "two disjoint call-graph clusters" on a small container** whose methods
+  share only the backing store. The metric discounts that store as plumbing and then splits the
+  methods by which private helper they call — `Heap`'s insert path from its remove path,
+  `CircularBuffer`'s front end from its back end — which is not a responsibility boundary. Add a
+  real call edge first where one exists (a throwing member delegating to its `Try` sibling); waive
+  only the clusters that remain.
+- **`check-responsibility-extraction`'s shared-prefix finding** on a `Try` family — the BCL's
+  attempt-returns-success convention, which the check's own table of conventional prefixes happens
+  to omit (`Deque`, `DynamicArray`, `DisjointSetForest`) — and on an overload family that crosses
+  one subject with axes the file keeps together on purpose (`BinarySearch`'s three searches, each
+  over a witness or an array, with or without a comparer; `Manacher`'s `Compute*Radii`).
+- **`check-function-cohesion` on a container's test** that performs one mutation and asserts
+  several independent facets of it, or asserts between mutations because the count is the
+  subject. The check's own doc calls the rule advisory.
+- **`check-mutable-struct` on a hook or algebra that accumulates by value** (§12.4), and on the
+  test fixtures that prove a walk hands that value back.
+
+§17.9 records the notes the solution and harness tiers add.
+
+## 7. Mirrors, self-hosting and stated preconditions
+
+Three rules that every addition keeps:
+
+- **The test tree mirrors the source tree exactly.** `DSAExperimentation.Tests/` repeats
+  `DataStructures/` and `Algorithms/` path for path, so a type's test is found where its source is
+  (§18.1). A test folder that drops or adds a path segment is a defect, not a style choice.
+- **Library code uses this repository's own structure once one exists.** `ShortestPath`'s
+  Dijkstra/A* frontier is `Heap<T,TOrder>`, ordered by `ByPriorityOrder`, not the BCL
+  `PriorityQueue`; `KeyedDisjointSet` composes `HashMap`, not `Dictionary`. Two kinds of code are
+  exempt: scratch state local to one call (§16.5), and baselines, which are BCL by definition
+  (§17.5).
+- **A contract states the strongest law its consumer relies on.** `IPathHeuristic` requires a
+  *consistent* heuristic (`h(u) <= cost(u,v) + h(v)` on every edge), not merely an admissible one,
+  because `ShortestPath.Traverse` settles a node on its first pop, and only consistency guarantees
+  that pop already carries the true shortest distance. An admissible but inconsistent heuristic can
+  settle a node at a non-optimal distance with nothing to catch it. `ShortestPath.cs` likewise
+  states its non-negative-edge-weight precondition, which neither `Dijkstra` nor `AStar` checks.
 
 ## 8. Capability contracts: binding algorithms to what they need, not what they're given
 
@@ -295,19 +307,18 @@ weakest sufficient requirement, not to a concrete type.
 
 There are three kinds of independence here, in decreasing order of how safely they can be assumed:
 
-- **Semantic independence** — already how this repo works, and the safest kind.
+- **Semantic independence** — how this repo works, and the safest kind.
   `IGraphTopology<TNode,TChildren>.GetChildren` doesn't care whether children come from
   `ListChildren`, `SparseArrayChildren`, or `GridChildren`; `IPathHeuristic.cs`'s own doc comment
-  (requiring a *consistent* heuristic, not merely an admissible one — see §7's entry on why) is this
-  repo's existing example of a stated semantic *law* — `L` already has precedent here, even though
-  its complexity half doesn't yet.
+  (requiring a *consistent* heuristic, not merely an admissible one — §7) is a stated semantic
+  *law*.
 - **Implementation independence** — often true, not universally guaranteed. The same `Reduce`/
-  `Fold`/`Walk` code already runs unchanged over every `IChildren` implementation in this repo. It's
+  `Fold`/`Walk` code runs unchanged over every `IChildren` implementation in this repo. It's
   not a law, though — a future structure could need a genuinely different optimal algorithm per
   representation (dense vs. sparse matrix multiplication is the classic case elsewhere), so this
   independence is a frequent convenience, not something to assume by default.
-- **Performance independence** — the dangerous one, and the one this repo has a live example of.
-  `Collections/Heap`'s `Heap<T,TOrder>` push/pop is O(log n) *only because*
+- **Performance independence** — the dangerous one. `DataStructures/Heap`'s `Heap<T,TOrder>`
+  push/pop is O(log n) *only because*
   [`HeapArray<T>`](DSAExperimentation/DataStructures/Heap/HeapArray.cs)'s `Get`/`Set`/`Swap` are O(1).
   A syntactic contract like `Get(index)` says nothing about that cost. Swap `HeapArray<T>`'s backing
   store for something with O(n) indexed access and `Heap`'s complexity claim silently degrades to
@@ -322,23 +333,20 @@ representation swap from silently regressing performance instead of failing loud
 [`HeapArray.cs`](DSAExperimentation/DataStructures/Heap/HeapArray.cs) carry exactly this cross-reference
 as the worked example.
 
-## 9. Worked example: `Searching/BinarySearch`
+## 9. Worked example: `Algorithms/Searching/BinarySearch`
 
-> Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
-
-`Searching/BinarySearch` is this repo's first non-Graph, non-Collections domain, and its first
-algorithm bound to a Representation contract it defines for itself rather than one it's handed.
-Where `Collections/Heap` needed one new Topology witness (`IHeapOrder`) over an already-obvious
-Representation (a flat array), binary search needs the opposite: no Topology witness at all
-(sortedness isn't a variant to choose between — see §9.1), but a brand-new Representation contract,
-because "the sequence being searched" is the one part of this problem genuinely open to more than
-one physical layout.
+`BinarySearch` is bound to a Representation contract that the searching algorithms define for
+themselves rather than one they are handed. Where `Heap` needed a Topology witness (`IHeapOrder`)
+over an already-obvious Representation (a flat array), binary search needs the opposite: no
+Topology witness at all (sortedness isn't a variant to choose between — see §9.1), but its own
+Representation contract, because "the sequence being searched" is the one part of this problem
+genuinely open to more than one physical layout.
 
 | File | Axis | Why |
 | --- | --- | --- |
-| [`Searching/IRandomAccessSequence.cs`](DSAExperimentation/DataStructures/Sequence/IRandomAccessSequence.cs) | Representation | An indexable view over an already-sorted sequence, generic over the element type alone — `Find`'s only physical-layout requirement |
-| [`ArraySequence.cs`](DSAExperimentation/DataStructures/Sequence/ArraySequence.cs), [`DynamicArraySequence.cs`](DSAExperimentation/DataStructures/Sequence/DynamicArraySequence.cs) | Representation | Two witnesses satisfying the O(1)-`Get` obligation above, for two different physical reasons |
-| [`BinarySearch.cs`](DSAExperimentation/Algorithms/Searching/BinarySearch.cs) | Operations | `Find` — the bisection loop; owns neither Representation witness |
+| [`DataStructures/Sequence/IRandomAccessSequence.cs`](DSAExperimentation/DataStructures/Sequence/IRandomAccessSequence.cs) | Representation | An indexable view over an already-sorted sequence, generic over the element type alone — the search's only physical-layout requirement |
+| [`ArraySequence.cs`](DSAExperimentation/DataStructures/Sequence/ArraySequence.cs), [`DynamicArraySequence.cs`](DSAExperimentation/DataStructures/Sequence/DynamicArraySequence.cs) | Representation | Two witnesses satisfying the O(1)-`Get` obligation above, for two different physical reasons; `OffsetSequence` (a window into an array) and `MatrixSequence` (a row-major matrix read as one run) are two more |
+| [`Algorithms/Searching/BinarySearch.cs`](DSAExperimentation/Algorithms/Searching/BinarySearch.cs) | Operations | `Find`/`LowerBound`/`UpperBound` — the bisection loop; owns no Representation witness |
 
 ### 9.1 Why sortedness is a law, not a Topology witness
 
@@ -376,86 +384,82 @@ already uses for `EqualityComparer<TKey>.Default`.
 
 `HeapArray.cs`/`Heap.cs` (§8) state the O(1) assumption twice, because there's one concrete
 Representation class making the claim true and one Operations class whose complexity depends on it.
-`IRandomAccessSequence<T>` splits Representation into two implementations from day one (see §9.4),
+`IRandomAccessSequence<T>` splits Representation into several implementations (see §9.4),
 so the assumption is stated three times instead, each from a different angle so none of them repeat:
 `IRandomAccessSequence<T>`'s own doc comment states the *obligation* every implementation is expected
 to satisfy — new relative to `IChildren<TNode>`, whose doc comment never had to say this, since
-nothing in `Graph/**` depends on `Get`'s cost (§2). `ArraySequence<T>`/`DynamicArraySequence<T>`'s
-doc comments each state *why their own backing store actually satisfies it*, for two different
-physical reasons. `BinarySearch.cs`'s doc comment states the *consequence* for its own complexity
-claim if some future implementation doesn't.
+no graph engine depends on `Get`'s cost (§2). Each witness's doc comment (`ArraySequence<T>`,
+`DynamicArraySequence<T>`, `OffsetSequence<T>`, `MatrixSequence<T>`) states *why its own backing
+store actually satisfies it*. `BinarySearch.cs`'s doc comment states the *consequence* for its own
+complexity claim if some future implementation doesn't.
 
 ### 9.4 A second Representation, earned on day one
 
 Unlike `HeapArray<T>` (§4 — one implementation, so no interface, per §5's recipe),
-`IRandomAccessSequence<T>` launches with two implementations already, `ArraySequence<T>` and
-`DynamicArraySequence<T>` — the interface's existence is earned from day one rather than deferred
+`IRandomAccessSequence<T>` launched with two implementations, `ArraySequence<T>` and
+`DynamicArraySequence<T>` — the interface's existence was earned from the start rather than deferred
 the way `IChildren` waited for `SparseArrayChildren` to justify it.
 
-`DynamicArraySequence<T>` composes `Collections.DynamicArray.DynamicArray<T>` directly, unmodified.
-This is a new variant of cross-domain reuse, not a repeat of an existing one. It isn't
-`ByPriorityOrder` implementing `Collections.Heap`'s public `IHeapOrder<T>` as a client (§4's
-precedent — one domain implementing another's interface without ever touching its Representation).
-It isn't `Stack`/`Queue` composing `DynamicArray<T>`/`Deque<T>` either (§4.1's precedent —
-composition *within* `Collections/**`, the same domain both sides belong to). It's `Searching`, a
-domain outside `Collections/**` altogether, adapting `Collections/DynamicArray`'s own Representation
-*type* — not an interface belonging to it — into a Representation contract `Searching` defines for
-itself. That's still consistent with §5's "never reuse another domain's Representation… contracts"
-line: what's prohibited is reusing another domain's *contract* (forcing `DynamicArray<T>` itself to
-implement `IRandomAccessSequence<T>`, coupling it to a domain it doesn't belong to), not consuming
-its already-public concrete type as one of several witnesses for a contract the consuming domain
-wrote itself. `DynamicArray.cs` stays completely unaware `IRandomAccessSequence<T>` exists;
-`DynamicArraySequence<T>` absorbs all of the coupling on `Searching`'s side, one-directionally, with
-zero changes to `DynamicArray.cs` — exactly the demonstration §8's "implementation independence"
-argument calls for, using a structure this repo already had for an unrelated reason instead of a
-contrived second example.
+`DynamicArraySequence<T>` composes `DataStructures.DynamicArray.DynamicArray<T>` directly,
+unmodified, and that is a distinct kind of cross-domain reuse. It isn't `ByPriorityOrder`
+implementing `DataStructures.Heap`'s public `IHeapOrder<T>` as a client (§4 — one domain implementing
+another's interface without ever touching its Representation). It isn't `Stack`/`Queue` composing
+`DynamicArray<T>`/`Deque<T>` either (§4.1 — one container restricting another container's access).
+It is a contract owned by the search algorithms adapting another structure's own Representation
+*type* — not an interface belonging to it — into a witness for a contract the search side defines
+for itself. That's consistent with §5 step 5: what's prohibited is reusing another domain's
+*contract* (forcing `DynamicArray<T>` itself to implement `IRandomAccessSequence<T>`, coupling it to a
+domain it doesn't belong to), not consuming its already-public concrete type as one of several
+witnesses for a contract the consuming domain wrote itself. `DynamicArray.cs` stays completely
+unaware `IRandomAccessSequence<T>` exists; `DynamicArraySequence<T>` absorbs all of the coupling,
+one-directionally, with zero changes to `DynamicArray.cs` — exactly the demonstration §8's
+"implementation independence" argument calls for, using a structure this repo already had for an
+unrelated reason instead of a contrived second example.
 
 ### 9.5 Array overloads: the witness picked for the caller
 
 Every search, and `MergeSort.Sort` (§11), also takes a plain `T[]` and wraps it in
-`ArraySequence`/`ArrayIndexedSequence` itself. Eighty-eight solution call sites spelled out
+`ArraySequence`/`ArrayIndexedSequence` itself. Without them a caller spells out
 `MergeSort.Sort<T, ArrayIndexedSequence<T>>(new ArrayIndexedSequence<T>(items))`, because a sequence
-type argument gives inference nothing to read `T` from, and more than forty solutions built an
-`ArraySequence` only to search it. This is the move `Reduce`'s "in the topology's own child order" overloads
-already make with `NaturalChildOrder`: one axis defaults to the witness the caller would have written
-anyway. The loops still bind to `IRandomAccessSequence`/`IIndexedSequence` alone and never see the
-array, so the instantiation that runs is the one the long spelling produced. What keeps a call from
-reaching the overload it did not mean is §17.4's argument, not arity: a `T[]` fails `TSequence`'s
-`struct` constraint, and no sequence witness converts to a `T[]`.
+type argument gives inference nothing to read `T` from; eighty-eight solution call sites once did,
+and more than forty solutions built an `ArraySequence` only to search it. This is the move `Reduce`'s
+"in the topology's own child order" overloads already make with `NaturalChildOrder`: one axis
+defaults to the witness the caller would have written anyway. The loops still bind to
+`IRandomAccessSequence`/`IIndexedSequence` alone and never see the array, so the instantiation that
+runs is the one the long spelling produced. What keeps a call from reaching the overload it did not
+mean is §17.4's argument, not arity: a `T[]` fails `TSequence`'s `struct` constraint, and no sequence
+witness converts to a `T[]`.
 
 ### 9.6 Binary search on the answer is a rule over an interval, not a sequence
 
-Twenty-odd solutions searched for the smallest (or largest) value a feasibility rule accepts — a
-ship capacity, an eating speed, a day — and most spelled it as an `IRandomAccessSequence<bool>`
-whose `Get(i)` asked the rule about `floor + i`, handed to `LowerBound(sequence, true)`. That
-borrowed `BinarySearch`'s laws (a sorted sequence, a comparer) for a problem that has neither, and
-it borrowed an `int` index too: three solutions truncated or threw on ranges LeetCode's own limits
-allow. `MonotonePredicateSearch.FirstTrue`/`LastTrue` search an integer interval stated by two
-numbers, generic over `IBinaryInteger`, so a range past `int` is searched in `long`.
+Searching for the smallest (or largest) value a feasibility rule accepts — a ship capacity, an
+eating speed, a day — is `MonotonePredicateSearch.FirstTrue`/`LastTrue` over an integer interval
+stated by two numbers, generic over `IBinaryInteger`, so a range past `int` is searched in `long`.
+Spelling it as an `IRandomAccessSequence<bool>` whose `Get(i)` asks the rule about `floor + i`,
+handed to `LowerBound(sequence, true)`, borrows `BinarySearch`'s laws (a sorted sequence, a
+comparer) for a problem that has neither, and borrows an `int` index too: it truncates or throws on
+ranges LeetCode's own limits allow.
 
 The rule is `IMonotonePredicate<Integer>`. Its space is open — §12.1's successor relation, not a
 set this library enumerates — so §5's second row applies; §12.4's question then makes
-`IsSatisfiedBy` an instance member on a struct type parameter, because the arrays and budgets a rule reads never
-arrive through its signature. `IGridCellFilter` is the precedent. Monotonicity is a precondition
-law, like sortedness (§9.1). It stays a separate class rather than a `BinarySearch` method, and
-`LowerBound` is not re-expressed through it: for a reference-type element the rule would be shared
-generic code, and every probe would pay the runtime lookup §12.4 measured.
+`IsSatisfiedBy` an instance member on a struct type parameter, because the arrays and budgets a rule
+reads never arrive through its signature. `IGridCellFilter` is the precedent. Monotonicity is a
+precondition law, like sortedness (§9.1). It stays a separate class rather than a `BinarySearch`
+method, and `LowerBound` is not re-expressed through it: for a reference-type element the rule would
+be shared generic code, and every probe would pay the runtime lookup §12.4 measured.
 
-## 10. Worked example: `Collections/DisjointSet`
+## 10. Worked example: `DataStructures/DisjointSet`
 
-> Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
-
-`Collections/DisjointSet` is this repo's first equivalence-class structure, and its first
-demonstration that a choice which *looks* exactly like Heap's Min-vs-Max axis can still fail to
-earn a Topology witness. Where `Collections/Heap` needed a Topology witness over an obvious
-Representation, and `Searching/BinarySearch` needed a new Representation over an already-settled
-Topology, Union-Find needs neither: the representation is a concrete two-array forest, and the
-one axis that looks variable turns out to be a Complexity law instead.
+`DisjointSet` is the equivalence-class structure, and it shows that a choice which *looks* exactly
+like Heap's Min-vs-Max axis can still fail to earn a Topology witness. Where `Heap` needed a
+Topology witness over an obvious Representation, and `BinarySearch` needed a new Representation
+over an already-settled Topology, Union-Find needs neither: the representation is a concrete
+two-array forest, and the one axis that looks variable turns out to be a Complexity law instead.
 
 | File | Axis | Why |
 | --- | --- | --- |
-| [`Collections/DisjointSet/DisjointSetForest.cs`](DSAExperimentation/DataStructures/DisjointSet/DisjointSetForest.cs) | Representation | Parallel `parent`/`rank` `int[]` fields, fixed-size at construction — concrete, not an interface, since exactly one physical layout exists today (§5 step 3) |
-| [`Collections/DisjointSet/DisjointSet.cs`](DSAExperimentation/DataStructures/DisjointSet/DisjointSet.cs) | Operations | `Find`/`Union`/`IsConnected`/`MergeInto` — path compression and union-by-rank, both hardcoded, not swappable |
+| [`DataStructures/DisjointSet/DisjointSetForest.cs`](DSAExperimentation/DataStructures/DisjointSet/DisjointSetForest.cs) | Representation | Parallel `parent`/`rank` `int[]` fields, fixed-size at construction — concrete, not an interface, since exactly one physical layout exists (§5 step 3) |
+| [`DataStructures/DisjointSet/DisjointSet.cs`](DSAExperimentation/DataStructures/DisjointSet/DisjointSet.cs) | Operations | `Find`/`Union`/`IsConnected`/`MergeInto` — path compression and union-by-rank, both hardcoded, not swappable |
 
 ### 10.1 Why the linking policy is a Complexity law, not a Topology witness
 
@@ -464,8 +468,8 @@ Heap's Min-vs-Max choice: a decision re-made on every call (`Union`, here; `HasP
 comparison, there) that branches control flow. §9.1 already warns that call-frequency isn't the
 discriminator — but the sharper test this example adds is: **does the choice change the
 observable output, or only the cost of producing it?** `MinHeapOrder` vs. `MaxHeapOrder` changes
-*which value `Pop()` returns* — a real, caller-visible semantic difference. No linking policy ever
-changes *which partition `Find`/`Connected` report* for a given sequence of calls — every policy,
+*which value `TryPop` returns* — a real, caller-visible semantic difference. No linking policy ever
+changes *which partition `Find`/`IsConnected` report* for a given sequence of calls — every policy,
 including a deliberately bad one, computes the identical equivalence classes. Only tree height,
 and therefore amortized cost, differs: O(n) worst case with neither optimization, O(log n)
 amortized with only one, O(α(n)) — effectively constant — with both path compression and
@@ -476,16 +480,15 @@ isn't even a law in this sense — no external caller could violate it, since no
 `DisjointSet` ever touches `SetParent` — it's pure Operations-internal mechanics, the same status
 `Heap`'s `SiftUp`/`SiftDown` already have.
 
-`MergeInto(id, target)` came later, and it does not reopen this argument. Its contract names the
-representative — the root `Find(target)` returned before the call survives — where `Union`'s never
-does, so it is a second operation with its own output, not a fourth linking policy: the test above
-asks whether a choice *inside `Union`* changes what a caller can observe, and it still cannot. The
-direction is a runtime argument on each call, not a closed set chosen by type, so it needs no
-witness either. It exists for callers that read the representative as an answer — "the nearest
-obstacle still active at or before x" in LC 3161, which used to drive `DisjointSetForest` directly
-with its own copy of `Find` because `Union` could not link one way. It never consults rank, so the
-O(α(n)) bound holds only for a forest `Union` alone has joined; with the two mixed, path compression
-alone gives O(log n) amortized, and the doc comment says so.
+`MergeInto(id, target)` does not reopen this argument. Its contract names the representative — the
+root `Find(target)` returned before the call survives — where `Union`'s never does, so it is a
+second operation with its own output, not a fourth linking policy: the test above asks whether a
+choice *inside `Union`* changes what a caller can observe, and it still cannot. The direction is a
+runtime argument on each call, not a closed set chosen by type, so it needs no witness either. It
+exists for callers that read the representative as an answer — "the nearest obstacle still active
+at or before x" in LC 3161. It never consults rank, so the O(α(n)) bound holds only for a forest
+`Union` alone has joined; with the two mixed, path compression alone gives O(log n) amortized, and
+the doc comment says so.
 
 ### 10.2 Why the partition itself needs no Topology witness at all
 
@@ -499,62 +502,58 @@ try — a stronger guarantee than `BinarySearch`'s sortedness precondition (§9.
 a Representation layer, but no Topology axis of its own at all — the same shape `HashMap`/`Set`
 already have in §4.1's table.
 
-### 10.3 A first non-generic multi-file structure, and the C# wrinkle that comes with it
+### 10.3 A non-generic type named like its folder, and the C# wrinkle that comes with it
 
-Every other multi-file `Collections/**` structure (`Heap<T,TOrder>`, `Stack<T>`, `Deque<T>`,
+Every other multi-file container (`Heap<T,TOrder>`, `Stack<T>`, `Deque<T>`,
 `HashMap<TKey,TValue>`) is generic, so a bare reference to its own name is never ambiguous: a
 type-argument list (`Heap<int, MinHeapOrder<int>>`) is something no namespace can have, so the
 compiler always resolves it as the type. `DisjointSet` is dense-int-indexed by design (§10.4), not
 generic over an element type, so a bare `new DisjointSet(3)` reference from
-`DSAExperimentation.Tests.Collections.DisjointSet` has no such disambiguator — namespace-member
+`DSAExperimentation.Tests.DataStructures.DisjointSet` has no such disambiguator — namespace-member
 lookup finds the test file's own enclosing namespace (a nested member of
-`DSAExperimentation.Tests.Collections`) before any `using` directive is ever consulted, and fails
+`DSAExperimentation.Tests.DataStructures`) before any `using` directive is ever consulted, and fails
 with "`DisjointSet` is a namespace but is used like a type." A same-named `using` alias doesn't
 help, since that lookup order is unaffected by which names a `using` brings in; only a
-*differently*-named alias (`DisjointSetOperations` in `DisjointSetTests.cs`) resolves it. This is
-a real, repo-first consequence of keeping the Representation dense-int-indexed rather than generic
-— not a naming mistake to fix, just the first time this shape has come up.
+*differently*-named alias (`DisjointSetOperations` in `DisjointSetTests.cs` and in
+`KeyedDisjointSet.cs`) resolves it. This is a consequence of keeping the Representation
+dense-int-indexed rather than generic, not a naming mistake to fix. §15.3 meets it again, and the
+LeetCode tier avoids it by construction with a `Solution` suffix (§17.3).
 
-### 10.4 Dense-int-indexed today, not generic over `T`
+### 10.4 Dense-int-indexed, with a keyed wrapper beside it
 
 `DisjointSetForest` is fixed-size at construction with no growth path — a real departure from
-every other `Collections/**` Representation (`HeapArray`/`DynamicArray`/`HashMap` all start empty
+every other container Representation (`HeapArray`/`DynamicArray`/`HashMap` all start empty
 and grow), because a disjoint-set forest's universe of ids is conventionally known upfront, the
 same way CLRS's own "disjoint-set forest" is presented. It is not generic over an element type `T`
 either: ids are plain `int`s in `[0, Count)`, assigned by the caller before any `Find`/`Union`
-call — an unchecked precondition the same shape as `BinarySearch`'s sortedness (§9.1). This is a
-deliberate minimal-generality choice, not an oversight: nothing in this repo yet needs a
-`Dictionary<T,int>` id-assignment layer, and every other first-cut Representation here
-(`HeapArray<T>`, `ArraySequence<T>`) started at the minimal generality its one known consumer
-needed rather than the most general shape imaginable. If a generic-`T` consumer appears later (a
-Kruskal's-MST algorithm under `Graph/Algorithms` would be the natural first one, mirroring
-`ShortestPath` becoming `Heap`'s first real consumer per §4), the right shape is a `DisjointSet<T>`
-*wrapper* composing this concrete type plus a `Dictionary<T,int>` — composition over redesign, the
-same relationship `Stack`/`Queue` already have with `DynamicArray`/`Deque` (§4.1).
+call — an unchecked precondition the same shape as `BinarySearch`'s sortedness (§9.1).
 
-## 11. Worked example: `Sorting/MergeSort`
+A caller whose elements are not dense ints uses `DataStructures/KeyedDisjointSet/KeyedDisjointSet<TKey>`,
+which *composes* `DisjointSet` with a `HashMap<TKey,int>` id map rather than generalizing the
+forest — composition over redesign, the same relationship `Stack`/`Queue` have with
+`DynamicArray`/`Deque` (§4.1), and the same reason it has a folder of its own beside the type it
+composes. `Algorithms/MinimumSpanningTrees/MinimumSpanningTree.Kruskal` is its consumer.
 
-> Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
+## 11. Worked example: `Algorithms/Sorting/MergeSort`
 
-`Sorting/MergeSort` is this repo's second checklist-first algorithm after `Searching/BinarySearch`,
-and the first built specifically to show that "the same capability shape" is not grounds to reuse
-another domain's Representation contract. Both algorithms need indexed access to a sequence; only
-one of them needs to write it back.
+`MergeSort` shows that "the same capability shape" is not grounds to reuse another domain's
+Representation contract. Both it and `BinarySearch` need indexed access to a sequence; only one of
+them needs to write it back.
 
 | File | Axis | Why |
 | --- | --- | --- |
-| [`Sorting/IIndexedSequence.cs`](DSAExperimentation/DataStructures/Sequence/IIndexedSequence.cs) | Representation | Indexed get/set view, generic over the element type alone — earns the interface on day one via two witnesses, same §5-step-3 exception `IRandomAccessSequence<T>` used |
-| [`Sorting/ArrayIndexedSequence.cs`](DSAExperimentation/DataStructures/Sequence/ArrayIndexedSequence.cs), [`Sorting/DynamicArrayIndexedSequence.cs`](DSAExperimentation/DataStructures/Sequence/DynamicArrayIndexedSequence.cs) | Representation | Two witnesses satisfying the doubled O(1) obligation, for the same two physical reasons `ArraySequence`/`DynamicArraySequence` already do |
-| [`Sorting/SortBounds.cs`](DSAExperimentation/Algorithms/Sorting/SortBounds.cs) | Representation | Groups the `[Low, High]` range being sorted — an immutable value bundle, not a mutable shared cursor |
-| [`Sorting/MergeSort.cs`](DSAExperimentation/Algorithms/Sorting/MergeSort.cs) | Operations | `Sort` — top-down recursive split/merge; owns neither witness |
+| [`DataStructures/Sequence/IIndexedSequence.cs`](DSAExperimentation/DataStructures/Sequence/IIndexedSequence.cs) | Representation | Indexed get/set view, generic over the element type alone — earns the interface on day one via two witnesses, same §5-step-3 exception `IRandomAccessSequence<T>` used |
+| [`DataStructures/Sequence/ArrayIndexedSequence.cs`](DSAExperimentation/DataStructures/Sequence/ArrayIndexedSequence.cs), [`DynamicArrayIndexedSequence.cs`](DSAExperimentation/DataStructures/Sequence/DynamicArrayIndexedSequence.cs) | Representation | Two witnesses satisfying the doubled O(1) obligation, for the same two physical reasons `ArraySequence`/`DynamicArraySequence` already do |
+| [`Algorithms/Sorting/SortBounds.cs`](DSAExperimentation/Algorithms/Sorting/SortBounds.cs) | Operations-internal state | Groups the `[Low, High]` range being sorted — an immutable value bundle, not a mutable shared cursor, and not a Representation of the sequence (§13.6) |
+| [`Algorithms/Sorting/MergeSort.cs`](DSAExperimentation/Algorithms/Sorting/MergeSort.cs) | Operations | `Sort` — top-down recursive split/merge; owns neither witness |
 
 ### 11.1 Domain separation is the reason for a new contract, not read/write alone
 
-`IIndexedSequence<T>` exists because `Sorting` is a distinct domain from `Searching`, per §5's
+`IIndexedSequence<T>` exists because sorting is a distinct domain from searching, per §5's
 domain-reuse rule (never reuse another domain's Representation or Topology contracts as your own) —
 that is the primary reason, and it holds regardless of operation-set overlap. Stating "it needs
 `Set` and `IRandomAccessSequence<T>` doesn't have one" as the *sole* justification would wrongly
-imply that a future `Sorting` algorithm needing only `Get` could then reuse `Searching`'s
+imply that a future sorting algorithm needing only `Get` could then reuse the search side's
 interface; §5's domain-reuse rule fires on domain ownership, not on whether the method lists happen to
 differ. The read/write mismatch here is real and reinforcing — `IRandomAccessSequence<T>` could
 not satisfy `Set` even if reuse were otherwise permitted — but it is secondary to the domain
@@ -591,57 +590,46 @@ reason; an array meets §11.2's aliasing law because it is a reference type.
 ### 11.4 Element algebras: one chain across four structures, and why §11.1 does not split it
 
 `SegmentTree`, `FenwickTree`, `RangeFenwickTree` and `LazySegmentTree` each need an algebra over
-their elements, and each once declared its own: `ICombineOperation` in `SegmentTree/`,
-`IGroupOperation` in `FenwickTree/`, `IScaledGroupOperation` in `RangeFenwickTree/` (the one that
-did refine its neighbour), and an `IRangeUpdateOperation` that redeclared `Identity`/`Combine`
-rather than inherit them — each citing §11.1's domain separation. The cost was concrete: two
-byte-identical `SumOperation`s, a third (`ScaledSumOperation`) with the same body plus `Scale`, and a
-private `BuildCombine` adapter inside `LazySegmentTree` whose only job was to re-present
-`TOperation`'s `Identity`/`Combine` under the other contract's name so both trees could share one
-build recursion.
-
-They now form one chain in `DataStructures/ElementAlgebra/` — `ICombineOperation` (monoid) ←
-`IGroupOperation` (+ `Invert`) ← `IScaledGroupOperation` (+ `Scale`) — with one `SumOperation` at the
-deepest position addition reaches, plus `MinOperation`, `MaxOperation` and `XorOperation`.
-`IRangeUpdateOperation` refines `ICombineOperation` but stays in `LazySegmentTree/`.
+their elements, and they share one chain in `DataStructures/ElementAlgebra/` — `ICombineOperation`
+(monoid) ← `IGroupOperation` (+ `Invert`) ← `IScaledGroupOperation` (+ `Scale`) — with one
+`SumOperation` at the deepest position addition reaches, plus `MinOperation`, `MaxOperation` and
+`XorOperation`. `IRangeUpdateOperation` refines `ICombineOperation` but stays in
+`LazySegmentTree/`.
 
 **Why §5 step 5 does not fire.** Step 5 forbids reusing another domain's *Representation or
 Topology* contract, because a fold's node list and a heap's array are different enough shapes that a
 shared interface leaks. These contracts are neither: they are laws on the element type — identity,
 associativity, inverse, scaling — the way `INumber<T>` is, which every `SumOperation` already
-depended on. No structure now reuses another structure's contract; all four consume a neutral one,
+depended on. No structure reuses another structure's contract; all four consume a neutral one,
 the same arrangement as `ByPriorityOrder` implementing `Heap`'s `IHeapOrder` for `ShortestPath`.
+One contract per structure would cost what it once did: byte-identical `SumOperation`s per
+structure, and an adapter re-presenting one contract's `Identity`/`Combine` under another's name so
+two trees could share a build recursion.
 
-**Why this is not §13.6's case.** `Sequence/` also gathered two contracts into one folder and still
-kept `IRandomAccessSequence` and `IIndexedSequence` apart, citing §11.1. The difference is what the
+**Why this is not §13.6's case.** `Sequence/` also gathers two contracts into one folder and still
+keeps `IRandomAccessSequence` and `IIndexedSequence` apart, citing §11.1. The difference is what the
 contracts describe. Those two are capability levels of a *Representation*, each owned by the
 algorithm family that consumes it, and the write-capable one carries a law (§11.2's aliasing) the
-read-only one never states. Here the overlapping members were identical in name, signature and law
-— `BuildCombine` said so in as many words — so keeping them apart bought nothing but the adapter.
+read-only one never states. Here the overlapping members are identical in name, signature and law,
+so keeping them apart would buy nothing but an adapter.
 
 **The rule that keeps the chain honest.** A member only one structure needs never joins it; it goes in
 a structure-local refinement. `IRangeUpdateOperation`'s update tags are the example: lazy
 propagation is `LazySegmentTree`'s business, so `SegmentTree` and `FenwickTree` never see them.
+The structures' own constraints say which link each needs — a Fenwick tree over `MinOperation` is a
+compile error, because it needs `Invert` — and the reason is stated once, on `IGroupOperation`.
+Dispatch is unaffected: every operation is a static-abstract witness on a struct type parameter.
 
-**What changed, stated plainly.** One witness per algebra instead of one per structure; `SumOperation`
-serving all three summing structures; `BuildCombine` deleted. The structures' own constraints read
-exactly as before, and a Fenwick tree over `MinOperation` was a compile error before this too — what
-the chain adds is the reason, stated once on `IGroupOperation`, instead of a sentence repeated in four
-unrelated interfaces. Dispatch is unchanged: every operation is still a static-abstract witness on a
-struct type parameter.
+## 12. Worked example: `Algorithms/Traversal/DepthFirst/DepthFirstSearch`
 
-## 12. Worked example: `Traversal/DepthFirstSearch`
-
-> Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
-
-`Traversal/DepthFirstSearch` is this repo's first algorithm with no Representation axis at all,
-and its first demonstration that a capability which looks exactly like a Graph `Topology` contract
-can still resolve to a plain runtime object once it leaves Graph's domain. It is built entirely
-outside `Graph/**`, generic over nothing but a bare successor function.
+`DepthFirstSearch` is an algorithm with no Representation axis at all, and it shows that a
+capability which looks exactly like a Graph `Topology` contract can still resolve to a plain runtime
+object once it leaves Graph's domain. It uses none of the graph framework's contracts: it is generic
+over nothing but a bare successor function.
 
 | File | Axis | Why |
 | --- | --- | --- |
-| [`Traversal/DepthFirstSearch.cs`](DSAExperimentation/Algorithms/Traversal/DepthFirst/DepthFirstSearch.cs) | Operations | `Traverse` — the only file this domain needs; there is no Representation to write |
+| [`Algorithms/Traversal/DepthFirst/DepthFirstSearch.cs`](DSAExperimentation/Algorithms/Traversal/DepthFirst/DepthFirstSearch.cs) | Operations | `Traverse` — the only file this algorithm needs; there is no Representation to write |
 
 ### 12.1 Why the successor relation is a runtime object, not a witness
 
@@ -676,14 +664,13 @@ faster tier possible.
 
 `Traverse<TNode>` constrains `TNode : notnull` and nothing more. Graph's own node-generic code
 constrains `TNode : class`, but that is a Graph-domain assumption about reference identity flowing
-through `IChildren` — not an inherent property of "successor-shaped" algorithms. The essay's own
-implicit-graph illustration (a chess position, generated on demand) is naturally value-typed, and
-this repo's test suite proves it directly with a `readonly record struct Position`. `Traverse` also
-carries a precondition law this repo hasn't needed before: `successors` must produce a *finite*
-reachable set from `start`. An infinite one — with no cycle for the visited set to catch — makes
-`Traverse` run forever, with no compiler or runtime error to catch it, the same unchecked-but-real
-shape as `BinarySearch`'s sortedness (§9.1) or `ShortestPath`'s non-negative-edge-weight assumption
-(§7).
+through `IChildren` — not an inherent property of "successor-shaped" algorithms. An implicit graph
+generated on demand — a chess position — is naturally value-typed, and `DepthFirstSearchTests`
+proves it directly with a `readonly record struct Position`. `Traverse` also carries a precondition
+law: `successors` must produce a *finite* reachable set from `start`. An infinite one — with no
+cycle for the visited set to catch — makes `Traverse` run forever, with no compiler or runtime error
+to catch it, the same unchecked-but-real shape as `BinarySearch`'s sortedness (§9.1) or
+`ShortestPath`'s non-negative-edge-weight assumption (§7).
 
 ### 12.4 A third answer: instance members on a struct type parameter
 
@@ -692,19 +679,18 @@ a runtime object (an open space, passed as a value). Hooks and fold algebras nee
 Their *kind* is closed and chosen at the call site by type — a `RankHooks` is one type, a
 `CoinPointsAlgebra` another — but an instance of the kind needs values only the call knows: the
 rank to count down from, the coins each node holds, the list a walk collects into. A
-static-abstract member has no channel to such a value, which is why five fold algebras once read
-theirs from a static `Prepare`, the in-order and level-grouped hooks kept theirs in `AsyncLocal`
-slots, and every test fixture that recorded a walk needed a marker type per test to keep its static
-log apart.
+static-abstract member has no channel to such a value, so every workaround — a static `Prepare`
+step, an `AsyncLocal` slot, a marker type per test to keep a static log apart — smuggles the value
+past the contract.
 
 The rule is one question: **does every runtime value the contract needs arrive through its member
 signatures?** If it does, the contract stays a static-abstract witness — `IReduceAlgebra`,
 `ITopDownHooks`, `IPathHeuristic`, `IChildOrder`, `IHeapOrder`, the element algebras of §11.4. If it
 does not, its members are instance members on a `struct` type parameter — `IFoldAlgebra`,
 `IDepthFirstHooks`, `IBreadthFirstHooks`, `ILevelGroupedHooks`, `IInOrderHooks`, `IGridCellFilter`,
-and `IVisitGuard` before them. The engine takes the struct as a value; each kind is still its own
-instantiation, and its members are constrained calls, so nothing boxes and nothing dispatches
-through an interface. Three consequences follow:
+`IMonotonePredicate` and `IVisitGuard`. The engine takes the struct as a value; each kind is still
+its own instantiation, and its members are constrained calls, so nothing boxes and nothing
+dispatches through an interface. Three consequences follow:
 
 - **Every member is required.** A default interface member reached through a struct type parameter
   boxes the struct, so an empty body is how a hook ignores an event.
@@ -722,32 +708,28 @@ in the library or the solutions.
 the engines run as shared generic code, and a call into a struct type argument that is itself
 generic over the node type (`SizeAlgebra<TNode>`, a fold's memo policy) goes through a runtime
 lookup the JIT does not inline. A type argument that is exact — `RoomWaysAlgebra`,
-`BinaryTreeTopology<int>`, every in-order hook at `TValue = int` — gets a direct call. The unified
-fold recursion paid four such lookups per node until the tree tier got a recursion of its own back,
-40% on `FoldTierBenchmarks.TreeTier`; measure a new axis before calling it free.
+`BinaryTreeTopology<int>`, every in-order hook at `TValue = int` — gets a direct call. This is why
+the tree tier keeps a fold recursion of its own (`RecursiveFoldEvaluation`) rather than sharing the
+DAG and graph tiers' `FoldRecursion`: sharing it cost four such lookups per node, 40% on
+`FoldTierBenchmarks.TreeTier`. Measure a new axis before calling it free.
 
-## 13. Physical layout: the reorg
+## 13. Physical layout
 
-Every worked example above (§3–§12) was written against a domain-first tree — `Graph/**`,
-`Collections/Heap/**`, `Searching/**`, `Sorting/**`, `Traversal/**` — where a domain's
-Representation, Topology, and Operations files all lived in one folder together, and the
-three-axis classification was a *convention* the file tree didn't enforce. This section documents
-four successive reorgs that made that classification physical.
+The three axes (§2) are the physical split. Every file in `DSAExperimentation/` lives under
+`DataStructures/` or `Algorithms/`, and `DSAExperimentation.Tests/` mirrors both (§7). The tiers
+above the library — the solutions and the harnesses — live in projects of their own (§17).
 
-**First reorg — split by axis.** Every file in both `DSAExperimentation/` and
-`DSAExperimentation.Tests/` moved under exactly one of two top-level folders, `DataStructures/` or
-`Algorithms/` — Representation and Topology under `DataStructures/`, Operations under
-`Algorithms/`. Both sides initially kept the same domain-name subfolder underneath
-(`DataStructures/Graph/Engines/Reducing/`, `Algorithms/Graph/Engines/Reducing/`, and so on).
+- **`DataStructures/` is organized by structure.** A data structure's identity is its
+  Representation and Topology, so its folder is its own name (§5 step 6, §13.6). It also holds the
+  structure's Operations type when that type is hardwired to the one Representation (§5 step 7,
+  §13.5).
+- **`Algorithms/` is organized by utility** — what the algorithm does (`ShortestPaths/`,
+  `Folding/`), never the structure or the topology tier it needs (§5 step 6). It holds the
+  Operations that are not hardwired to one of this repo's Representations (§13.5), nested by tier
+  only once a second tier exists (§13.1).
 
-**Second reorg — organize `Algorithms/` by utility, not by domain.** Keeping a domain-name
-subfolder under `Algorithms/` was itself still domain-first, just one level down — it filed
-`ShortestPath`/`ConnectedComponents`/`Reduce`/the `Fold` family under a top-level `Graph/` folder,
-as if they belonged to "Graph" the data structure, when what actually distinguishes them is what
-each one *does*. `DataStructures/` needed no equivalent second pass: a data structure's identity
-*is* its representation/topology, so organizing it by domain name (`DataStructures/Graph/**`,
-`DataStructures/Heap/**`) was already correct (§5 step 6). §13.3 below describes the tree as it
-stands after both reorgs.
+The seven reorgs that produced this layout are recorded in
+[ARCHITECTURE-HISTORY.md](ARCHITECTURE-HISTORY.md) under §13.
 
 ### 13.1 Namespace mapping rule and the tiering rule
 
@@ -757,9 +739,9 @@ immediately after `DSAExperimentation.`, then follow the rest of the path exactl
 Within `Algorithms/`, a second rule governs how deep a topology/strategy tier gets to nest:
 **when two or more tiered implementations of the same utility exist, nest them under folders that
 mirror the actual refinement relationship** (`Folding/Dags/Trees/TreeFold.cs` nests under `Dags/`
-because `ITreeTopology` refines `IDagTopology`, per §3.2's chain; `ShortestPaths/Grids/
-GridShortestPath.cs` nests as a second, Grid-specific tier beside the general edge-weighted one).
-**When only one implementation exists today, the file stays flat** — the same "don't build
+because `ITreeTopology` refines `IDagTopology`, per §3.2's chain; `ShortestPaths/Grids/` and
+`ShortestPaths/Hamming/` nest as structure-specific tiers beside the general edge-weighted one).
+**When only one implementation exists, the file stays flat** — the same "don't build
 structure before a second case earns it" spirit §5 step 3 already applies to Representation. This
 is why `Metrics/TreeMetrics.cs`, `Ancestry/LowestCommonAncestor.cs`,
 `Connectivity/ConnectedComponents.cs`, and `Paths/AllRootToLeafPaths.cs` stay flat even though each
@@ -772,7 +754,7 @@ comment/generic bound, not a folder, until a second tier actually shows up.
   `MinHeapOrder`/`MaxHeapOrder` implement, classified as Topology. For consistency with its own
   contract's classification, it lives at `DataStructures/Graph/ShortestPaths/`, not alongside
   `ShortestPath.cs` in `Algorithms/` — even though `ShortestPath.cs` is its only consumer. Locality
-  is real but secondary to axis-purity here, since axis-purity is the entire point of this reorg.
+  is real but secondary to axis-purity here, since axis-purity is what the layout exists to show.
 - **`IVisitGuard`/`UnguardedVisit`/`TrackedVisitGuard`** superficially resemble a closed-set
   Topology witness — the same two-variant, struct-witness shape as `IHeapOrder`, though its member is
   an instance method because the graph guard carries its visited set — but the actual
@@ -781,204 +763,225 @@ comment/generic bound, not a folder, until a second tier actually shows up.
   (whether to track revisits) — the same execution-strategy axis as `IFoldEvaluationStrategy`/
   `IReduceOrderStrategy`, uncontroversially Operations. This tier lives at `Algorithms/Walking/`,
   alongside `BreadthFirstWalk`/`DepthFirstWalk`/`TopDownWalk` — a utility folder, not a topology or
-  domain one, exactly where the second reorg's own rule says it belongs.
+  domain one, exactly where §13's utility rule puts it.
 
 ### 13.3 Where everything lives now
 
-**`DataStructures/`** stays organized by domain, since a data structure's identity is its
-representation/topology. This includes every Operations type with no capability interface to be
-generic over (§5 step 7, §13.5) — `Buffers`, `Heap`, `HashMap`, `DynamicArray`, `DisjointSet`,
-`Deque`, `Stack`, `Queue`, `Set` all co-locate Representation and Operations in the same folder:
+The tables name every folder, and the types a reader comes looking for; a folder's remaining files
+are its own helpers.
 
-| Domain | Files |
+**`DataStructures/`** is organized by structure. Every Operations type hardwired to one of these
+Representations (§5 step 7, §13.5) co-locates with it:
+
+| Folder | Holds |
 | --- | --- |
-| Buffers | `Buffers/{ContiguousGroupBufferStorage,ContiguousGroupBuffer}.cs` |
-| DisjointSet | `DisjointSet/{DisjointSetForest,DisjointSet}.cs` |
-| CountedBitTrie | `CountedBitTrie/CountedBitTrie.cs` — a bit trie over a multiset, whose values can be removed: every node carries a count, and a walk reads the counts to tell a live branch from a dead one. It stands beside `BitTrie` rather than inside it, so `BitTrie`'s insert-only users pay for no counts, and it has no `ITreeTopology` witness for both of §13.9's reasons: its nodes are slots in shared arrays, and after a removal it still holds paths whose values are gone |
-| Deque | `Deque/{CircularBuffer,Deque}.cs` |
-| DynamicArray | `DynamicArray/{DynamicArrayStorage,DynamicArray}.cs` |
-| HashMap | `HashMap/{HashMapStorage,HashMapEntry,HashMap}.cs`, `ArrayGrowth.cs` |
-| Heap | `Heap/{IHeapOrder,MinHeapOrder,MaxHeapOrder,HeapArrayIndex,HeapArray,Heap}.cs` |
-| Stack | `Stack/Stack.cs` (composes `DynamicArray`) |
-| Queue | `Queue/Queue.cs` (composes `Deque`) |
-| MonotonicDeque | `MonotonicDeque/{IWindowOrder,MaxWindowOrder,MinWindowOrder,MonotonicDeque}.cs` (composes `Deque`, §19.1) |
-| PrefixSums | `PrefixSums/PrefixSums.cs` (consumes `ElementAlgebra`'s `IGroupOperation`, §19.2) |
-| LowercaseAlphabet | `LowercaseAlphabet.cs` at the `DataStructures/` root, beside `AlgorithmConstants` (§19.6) |
-| Set | `Set/Set.cs` (composes `HashMap<T,bool>`) |
-| Sequence | `Sequence/{IRandomAccessSequence,ArraySequence,DynamicArraySequence,IIndexedSequence,ArrayIndexedSequence,DynamicArrayIndexedSequence}.cs` (§13.6) |
-| ElementAlgebra | `ElementAlgebra/{ICombineOperation,IGroupOperation,IScaledGroupOperation,SumOperation,MinOperation,MaxOperation,XorOperation}.cs` — the element algebras `SegmentTree`, `FenwickTree`, `RangeFenwickTree` and `LazySegmentTree` draw from, as one refinement chain (§11.4) |
-| Graph — Contracts/Ordering | `Graph/Contracts/Ordering/**` |
-| Graph — Topology chain | `Graph/Contracts/Topologies/**`, `Graph/Engines/Dags/IDagTopology.cs`, `Graph/Engines/Dags/Trees/ITreeTopology.cs` |
-| Graph — Trees | `Graph/Engines/Dags/Trees/{BinaryTreeNode,BinaryTreeChildren,BinaryTreeTopology,ChildSide,FindClosest,IInOrderHooks,InOrderTraversal,BinarySearchTree,LowercaseTrieNode,LowercaseTrieTopology,LowercaseTrie,BitTrieNode,BitTrieChildren,BitTrieTopology,BitTrie,RootedTreeNode,RootedTreeTopology,ParentArrayTree,PreOrderTour,PreOrderLowestCommonAncestor}.cs` (§13.7, §13.8, §13.9, §17.6). `PreOrderTour` lays a `RootedTreeNode` tree out in pre-order, so every subtree is one contiguous range of positions; `PreOrderLowestCommonAncestor` reads ancestors off that layout with one range minimum, O(log n) per query after O(n) preparation. It is hardwired to the tour, so it lives here rather than beside `Algorithms/Ancestry/LowestCommonAncestor`, which is generic over `ITreeTopology` (§13.5) |
-| Graph — Grids | `Graph/Grids/{Grid,GridNode,GridChildren,GridDirections,GridSize,GridNeighbors,IGridCellFilter,GridTopology,WeightedGridNode,WeightedGridTopology,WeightedGrid}.cs` (§17.6). `GridSize` is a board's extent and its one bounds rule; `GridNeighbors` is a cell's on-board neighbours in a direction table's order, filtered by an `IGridCellFilter`, for a `DepthFirstSearch.Traverse` successor whose "open" is decided by the problem's cells rather than a fixed map like `Grid`'s |
-| Graph — Adjacency | `Graph/Adjacency/{AdjacencyNode,AdjacencyTopology,WeightedAdjacencyNode,WeightedAdjacencyTopology}.cs` — the general-graph sibling of `RootedTreeNode`/`RootedTreeTopology`, graph tier only: an adjacency list promises no acyclicity, so a DAG or tree witness over it is written by the caller who can vouch for one. The LeetCode problems whose node was exactly this shape use it through a per-file `using` alias that keeps the problem's own name (`using CourseNode = …AdjacencyNode;`), and the file that wires the edges says what an edge means there, since that is the caller's reading of the list, not a property of the node |
-| Graph — Hamming | `Graph/Hamming/{HammingNode,HammingTopology,HammingGraph,HammingSearch,Alphabet,StandardAlphabets}.cs` (§17.6) |
-| Graph — ShortestPaths | `Graph/ShortestPaths/ByPriorityOrder.cs` |
-| Cache | `Cache/{ICache,CacheConstants}.cs`, `Cache/LruCache/LruCache.cs`, `Cache/LfuCache/LfuCache.cs` (§13.7) |
+| (root) | `AlgorithmConstants`, `ArrayGrowth`, `LowercaseAlphabet` (§19.6), `RangeBounds` — constants and checks read by more than one structure, at the lowest tier that reads them (§17.6a) |
+| `AhoCorasick/` | `AhoCorasick`, `AhoCorasickNode`, `AhoCorasickMatch` — witness-less, for §13.8's reasons |
+| `Buffers/` | `ContiguousGroupBuffer`, `ContiguousGroupBufferStorage` (§14.1) |
+| `Cache/` | `ICache`, `CacheConstants`, `LruCache/LruCache`, `LfuCache/LfuCache` (§13.7) |
+| `CountedBitTrie/` | `CountedBitTrie` — a bit trie over a multiset, whose values can be removed: every node carries a count, and a walk reads the counts to tell a live branch from a dead one. It stands beside `BitTrie` rather than inside it, so `BitTrie`'s insert-only users pay for no counts, and it has no `ITreeTopology` witness for both of §13.9's reasons: its nodes are slots in shared arrays, and after a removal it still holds paths whose values are gone |
+| `Deque/` | `CircularBuffer`, `Deque` (§4.1) |
+| `DisjointSet/` | `DisjointSetForest`, `DisjointSet` (§10) |
+| `DoublyLinkedList/` | `DoublyLinkedList`, `DoublyLinkedListNode` (§13.7) |
+| `DynamicArray/` | `DynamicArrayStorage`, `DynamicArray` (§14.3) |
+| `ElementAlgebra/` | `ICombineOperation`, `IGroupOperation`, `IScaledGroupOperation`, `SumOperation`, `MinOperation`, `MaxOperation`, `XorOperation` — the one refinement chain the range structures draw from (§11.4) |
+| `FenwickTree/` | `FenwickArray`, `FenwickTree` |
+| `Graph/Adjacency/` | `AdjacencyNode`, `AdjacencyTopology`, `WeightedAdjacencyNode`, `WeightedAdjacencyTopology` — the general-graph sibling of `RootedTreeNode`/`RootedTreeTopology`, graph tier only: an adjacency list promises no acyclicity, so a DAG or tree witness over it is written by the caller who can vouch for one. A LeetCode problem whose node is exactly this shape uses it through a per-file `using` alias that keeps the problem's own name (`using CourseNode = …AdjacencyNode;`), and the file that wires the edges says what an edge means there, since that is the caller's reading of the list, not a property of the node |
+| `Graph/Contracts/Ordering/` | `IChildren`, `IEdges`, `IChildOrder` and their witnesses (§3.1) |
+| `Graph/Contracts/Topologies/` | `IGraphTopology`, `IEdgeTopology`, `EdgeTopologyAsGraphTopology` (§3.2) |
+| `Graph/Engines/Dags/` | `IDagTopology` (§3.2) |
+| `Graph/Engines/Dags/Trees/` | `ITreeTopology`; the binary tree (`BinaryTreeNode`, `BinaryTreeChildren`, `BinaryTreeTopology`, `ChildSide`, `BinarySearchTree`, `InOrderTraversal`, `IInOrderHooks`, `FindClosest`); the tries with real witnesses (`LowercaseTrie*`, `BitTrie*`, §13.8, §13.9); the rooted tree (`RootedTreeNode`, `RootedTreeTopology`, `ParentArrayTree`, `PreOrderTour`, `PreOrderLowestCommonAncestor`); the quad tree (`QuadTreeNode`, `QuadTreeGrid`). `PreOrderTour` lays a `RootedTreeNode` tree out in pre-order, so every subtree is one contiguous range of positions; `PreOrderLowestCommonAncestor` reads ancestors off that layout with one range minimum, O(log n) per query after O(n) preparation. It is hardwired to the tour, so it lives here rather than beside `Algorithms/Ancestry/LowestCommonAncestor`, which is generic over `ITreeTopology` (§13.5) |
+| `Graph/Grids/` | `Grid`, `GridNode`, `GridChildren`, `GridDirections`, `GridSize`, `GridNeighbors`, `IGridCellFilter`, `GridTopology`, and the weighted `WeightedGrid*` (§17.6). `GridSize` is a board's extent and its one bounds rule; `GridNeighbors` is a cell's on-board neighbours in a direction table's order, filtered by an `IGridCellFilter`, for a `DepthFirstSearch.Traverse` successor whose "open" is decided by the problem's cells rather than a fixed map like `Grid`'s |
+| `Graph/Hamming/` | `HammingNode`, `HammingTopology`, `HammingGraph`, `HammingSearch`, `Alphabet`, `StandardAlphabets`, `MutationStart`, `MutationTarget` (§17.6) |
+| `Graph/ShortestPaths/` | `ByPriorityOrder` (§13.2) |
+| `HashMap/` | `HashMapStorage`, `HashMapEntry`, `HashMap` (§14.2) |
+| `Heap/` | `IHeapOrder`, `MinHeapOrder`, `MaxHeapOrder`, `HeapArrayIndex`, `HeapArray`, `Heap` (§4) |
+| `IntervalSet/` | `IntervalSet` — the one sanctioned upward reference, to `Algorithms/Searching` (§17.6a) |
+| `KeyedDisjointSet/` | `KeyedDisjointSet` — composes `DisjointSet` and `HashMap` (§10.4) |
+| `LazySegmentTree/` | `LazySegmentTree`, `IRangeUpdateOperation` and its witnesses (§11.4) |
+| `MonotonicDeque/` | `IWindowOrder`, `MaxWindowOrder`, `MinWindowOrder`, `MonotonicDeque` — composes `Deque` (§19.1) |
+| `PrefixSums/` | `PrefixSums` — consumes `ElementAlgebra`'s `IGroupOperation` (§19.2) |
+| `Queue/` | `Queue` — composes `Deque` (§4.1) |
+| `RangeFenwickTree/` | `RangeFenwickTree` |
+| `RollingHash/` | `RollingHash`, `RollingHashLane`, `RollingHashValue` |
+| `SegmentTree/` | `SegmentTree` and its array, build, index and range helpers |
+| `Sequence/` | `IRandomAccessSequence`, `ArraySequence`, `DynamicArraySequence`, `OffsetSequence`, `MatrixSequence`, `IIndexedSequence`, `ArrayIndexedSequence`, `DynamicArrayIndexedSequence` (§9, §11, §13.6) |
+| `Set/` | `Set` — composes `HashMap<T,bool>` (§4.1) |
+| `SinglyLinkedList/` | `SinglyLinkedListNode`, `RandomLinkedListNode`, `CycleDetection` (§13.7) |
+| `Stack/` | `Stack` — composes `DynamicArray` (§4.1) |
+| `SuffixArray/`, `SuffixAutomaton/`, `SuffixTree/` | `SuffixArray`; `SuffixAutomaton`, `SuffixAutomatonState`; `SuffixTree`, `SuffixTreeNode` — witness-less, for §13.8's reasons |
+| `Trie/` | `Trie`, `TrieNode` — the general, arbitrary-`char` trie, witness-less (§13.8) |
 
-**`Algorithms/`** is organized by utility instead — the second reorg's whole point, and after
-§13.5's third reorg it holds *only* things generic over a capability interface with real
-substitutability. `Searching` and `Sorting` have no topology axis (§4.1/§10.2) but still stay under
-`Algorithms/`, since `IRandomAccessSequence`/`IIndexedSequence` each have two real implementations —
-the distinguishing question is interface substitutability, not the topology axis specifically:
+**`Algorithms/`** is organized by utility, and holds the Operations not hardwired to one of this
+repo's Representations (§13.5). `Searching` and `Sorting` have no topology axis (§4.1/§10.2) but
+still stay under `Algorithms/`, since `IRandomAccessSequence`/`IIndexedSequence` each have more than
+one real implementation — the distinguishing question is substitutability, not the topology axis
+specifically:
 
 | Utility | Files | Topology/strategy tier |
 | --- | --- | --- |
-| `Ancestry/` | `LowestCommonAncestor.cs` | flat — only one tier exists today |
-| `Connectivity/` | `ConnectedComponents.cs` | flat — only one tier exists today |
-| `Paths/` | `AllRootToLeafPaths.cs` | flat — only one tier exists today |
-| `Metrics/` | `{DiameterAlgebra,HeightAlgebra,HeightDiameterState,SizeAlgebra,TreeMetrics}.cs` | flat — Tree is the only tier that exists today |
-| `Folding/` | `{CheckedFold,CycleCheckedFold,FoldRecursion,IFoldAlgebra,IFoldEvaluationStrategy,IFoldMemo,IterativeFoldEvaluation,MemoizedFold,RecursiveFoldEvaluation,ZipFoldAlgebra}.cs` (general tier; `FoldRecursion` is the one recursion the DAG and graph tiers share, with the memo policy as the axis they differ by, while the tree tier's `RecursiveFoldEvaluation` keeps a recursion with nothing to remember) + `Dags/DagFold.cs` (DAG tier) + `Dags/Trees/TreeFold.cs` (tree tier) | three nested tiers, mirroring §3.2's refinement chain |
-| `Reducing/` | `{BreadthFirstReduceOrder,DepthFirstReduceOrder,DistanceMapReduceAlgebra,IReduceAlgebra,IReduceOrderStrategy,Reduce,ZipReduceAlgebra}.cs` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
-| `Traversal/` | `BreadthFirst/**`, `DepthFirst/{DepthFirstSearch,DepthFirstTraversal,IDepthFirstHooks}.cs`, `TopDown/**` | `DepthFirstSearch` is the weakest tier (no topology witness at all, a bare `Func`), nested beside `DepthFirstTraversal` |
-| `Walking/` | `{BreadthFirstWalk,DepthFirstWalk,TopDownWalk,IVisitGuard,TrackedVisitGuard,UnguardedVisit,Unit}.cs` | flat — the guard tier (tree vs. graph) is a constructor parameter, not a file split |
-| `ShortestPaths/` | `{IPathHeuristic,ShortestPath,ZeroHeuristic,BellmanFord,AllPairsShortestPaths}.cs` (general edge-weighted tier) + `BreadthFirstDistances.cs` (unweighted, §19.4) + `Grids/{GridShortestPath,GridEarliestArrival,IArrivalRule,WaitInPlaceArrival,ParityBounceArrival}.cs` (Grid tier; `GridEarliestArrival` is the time-dependent search, where a move's cost depends on the second it leaves at and a static-abstract `IArrivalRule` prices it) | two tiers, `Grids/` nested as the second (§16) |
-| `Searching/` | `BinarySearch.cs`, `SearchRange.cs`, `NearestBoundary.cs`, `{MonotonePredicateSearch,IMonotonePredicate}.cs`, `CompressedCoordinates.cs` (§19.3) | flat — no topology axis at all; `BinarySearch` is generic over `Sequence.IRandomAccessSequence<T>` (§13.6), `MonotonePredicateSearch` over a rule on an integer interval (§9.6) |
-| `Sorting/` | `MergeSort.cs`, `SortBounds.cs` | flat — no topology axis at all, generic over `Sequence.IIndexedSequence<T>` instead (§13.6) |
-| `Geometry/` | `ConvexHull.cs` | flat — points in the plane have no topology to be generic over; tier 2 because it composes `Sorting/MergeSort`, the reasoning that put `HammingDistances` here |
-| `TopologicalSort/` | `TopologicalSort.cs` | flat — only one tier exists today (§15) |
-| `NumberTheory/` | `{GreatestCommonDivisor,LeastCommonMultiple,Primality,PrimeFactorization,PrimeSieve,ModularPower,IntegerSquareRoot,SquareExceeds,PascalTriangle}.cs` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `Domain/Modular` keeps only LeetCode's modulus and delegates its exponentiation here (§17.6) |
+| `Ancestry/` | `LowestCommonAncestor` | flat — only one tier exists |
+| `Backtracking/` | `Backtrack`, `BacktrackingSteps` | flat — generic over a search state and its steps, no topology axis |
+| `Bipartiteness/` | `BipartiteCheck` | flat — graph tier only |
+| `Connectivity/` | `ConnectedComponents`, `StronglyConnectedComponents`, `BridgesAndArticulationPoints` | flat — three algorithms, all on the graph tier |
+| `DynamicProgramming/` | `IRecurrence`, `Memoizer` | flat — generic over a state and its recurrence, no topology axis |
+| `Folding/` | `CheckedFold`, `CycleCheckedFold`, `FoldRecursion`, `IFoldAlgebra`, `IFoldEvaluationStrategy`, `IFoldMemo`, `IterativeFoldEvaluation`, `MemoizedFold`, `RecursiveFoldEvaluation`, `ZipFoldAlgebra` (general tier; `FoldRecursion` is the one recursion the DAG and graph tiers share, with the memo policy as the axis they differ by, while the tree tier's `RecursiveFoldEvaluation` keeps a recursion with nothing to remember, §12.4) + `Dags/DagFold` (DAG tier) + `Dags/Trees/TreeFold` (tree tier) | three nested tiers, mirroring §3.2's refinement chain |
+| `Geometry/` | `ConvexHull` | flat — points in the plane have no topology to be generic over; tier 2 because it composes `Sorting/MergeSort`, the reasoning that put `HammingDistances` in `Algorithms/` (§17.6) |
+| `Metrics/` | `DiameterAlgebra`, `HeightAlgebra`, `HeightDiameterState`, `SizeAlgebra`, `TreeMetrics` | flat — Tree is the only tier |
+| `MinimumSpanningTrees/` | `MinimumSpanningTree` | flat — `Kruskal` over `IEdgeTopology`, composing `KeyedDisjointSet` (§10.4) |
+| `NumberTheory/` | `GreatestCommonDivisor`, `GcdOperation`, `LeastCommonMultiple`, `Primality`, `PrimeFactorization`, `PrimeSieve`, `ModularPower`, `IntegerSquareRoot`, `SquareExceeds`, `PascalTriangle` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `Domain/Modular` keeps only LeetCode's modulus and delegates its exponentiation here (§17.6) |
+| `Paths/` | `AllRootToLeafPaths` | flat — only one tier exists |
+| `Reducing/` | `BreadthFirstReduceOrder`, `DepthFirstReduceOrder`, `DistanceMapReduceAlgebra`, `IReduceAlgebra`, `IReduceOrderStrategy`, `Reduce`, `ZipReduceAlgebra` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
+| `Searching/` | `BinarySearch`, `SearchRange`, `NearestBoundary` (§19.7), `MonotonePredicateSearch`, `IMonotonePredicate` (§9.6), `CompressedCoordinates` (§19.3) | flat — no topology axis at all; `BinarySearch` is generic over `Sequence.IRandomAccessSequence<T>` (§13.6), `MonotonePredicateSearch` over a rule on an integer interval (§9.6) |
+| `ShortestPaths/` | `IPathHeuristic`, `ZeroHeuristic`, `ManhattanHeuristic`, `ChebyshevHeuristic`, `ShortestPath`, `BellmanFord`, `AllPairsShortestPaths`, `DenseDistanceMatrix` (general edge-weighted tier, §16) + `BreadthFirstDistances` (unweighted, §19.4) + `Grids/{GridShortestPath,GridEarliestArrival,IArrivalRule,WaitInPlaceArrival,ParityBounceArrival}` (grid tier; `GridEarliestArrival` is the time-dependent search, where a move's cost depends on the second it leaves at and a static-abstract `IArrivalRule` prices it) + `Hamming/HammingDistances` (Hamming tier, §17.6) | structure-specific tiers nested beside the general one (§13.1) |
+| `Sorting/` | `MergeSort`, `SortBounds` | flat — no topology axis at all, generic over `Sequence.IIndexedSequence<T>` instead (§13.6) |
+| `StringMatching/` | `PrefixFunctionSearch`, `ZFunction`, `RollingHashSearch`, `Manacher` | flat — over a `ReadOnlySpan<char>` with an optional `IEqualityComparer<char>`, no topology axis and no Representation of this repo's own |
+| `TopologicalSort/` | `TopologicalSort` | flat — only one tier exists (§15) |
+| `Traversal/` | `BreadthFirst/{BreadthFirstTraversal,LevelGroupedBreadthFirstTraversal,IBreadthFirstHooks,ILevelGroupedHooks}`, `DepthFirst/{DepthFirstSearch,DepthFirstTraversal,IDepthFirstHooks}`, `TopDown/{TopDownTraversal,ITopDownHooks,NodePosition}` | by traversal order; `DepthFirstSearch` is the weakest tier (no topology witness at all, a bare `Func`, §12), beside `DepthFirstTraversal` |
+| `Walking/` | `BreadthFirstWalk`, `DepthFirstWalk`, `TopDownWalk`, `IVisitGuard`, `TrackedVisitGuard`, `UnguardedVisit`, `Unit` | flat — the guard tier (tree vs. graph) is a constructor parameter, not a file split (§13.2) |
 
-`DSAExperimentation.Tests/` mirrors both trees one level deeper. Fixture files distribute to the
-utility folder matching the interface they implement, not a shared grab-bag — e.g. the
-`Recording*Hooks` and `Counting*Hooks` fixtures split across
-`Tests/Algorithms/Traversal/{BreadthFirst,DepthFirst}/Fixtures/` by which hook interface each implements. One Graph test-fixture group from the first reorg still
-needs a placement call rather than a mechanical rule (a second, test-only trie fixture group,
-superseded by the production `LowercaseTrie`, has been deleted): `TestNode`/`TestTopology`/`TestTrees` anchor at
-`Tests/DataStructures/Graph/Fixtures/` (`TestTopology` is itself a Topology fixture) and are
-referenced cross-tree by `Algorithms/`-side test classes — harmless for test-only code. A handful
-of cross-cutting tests that exercise more than one utility together (`ZipTests.cs` — Fold+Reduce
-in one file; `SharedDescendantFoldTests.cs` — comparing fold tiers) sit unfoldered at
-`Tests/Algorithms/` root or their utility's own root, rather than being forced into one utility's
-subfolder. `GraphTests.cs` used to be a third; each of its tests drove exactly one graph-safe entry
-point, so §18 dissolved it into those entry points' own test classes, and its cyclic sample now
-lives beside `TestTrees` as `TestGraphs`.
+`DSAExperimentation.Tests/` mirrors both trees one level deeper (§7, §18.1). Fixture files go to the
+utility folder matching the interface they implement, not a shared grab-bag: the `Recording*Hooks`
+and `Counting*Hooks` fixtures sit under
+`DSAExperimentation.Tests/Algorithms/Traversal/{BreadthFirst,DepthFirst,TopDown}/Fixtures/` by which
+hook interface each implements. The graph fixtures `TestNode`, `TestTopology`, `TestTrees` and
+`TestGraphs` sit at `DSAExperimentation.Tests/DataStructures/Graph/Fixtures/` (`TestTopology` is
+itself a Topology fixture) and are referenced from `Algorithms/`-side test classes too — harmless for
+test-only code. A test that exercises more than one utility together sits at the root they share
+rather than being forced into one utility's folder: `Tests/Algorithms/ZipTests.cs` (Fold and Reduce
+in one file), `Tests/Algorithms/Folding/SharedDescendantFoldTests.cs` (the fold tiers compared).
 
 ### 13.4 `suppressions.json`
 
-Deliberately deleted before this reorg began and left deleted throughout it — no suppression
-ledger was maintained or restored per migration step. Every judgment call `suppressions.json` used
-to waive (the `check-class-size` "two clusters" pattern, several test-file literal findings, a
-`check-test-coverage` attribution gap) resurfaces as a raw Nomos gate finding rather than a
-suppressed one until that ledger is rebuilt — expected, not a regression from this reorg.
+`suppressions.json` at the repository root is the Nomos gate's waiver ledger, beside
+`standards.json`, which anchors it. It is live: the gate reads it on every run, and a waived finding
+leaves the gate's output entirely. Inline suppression markers are not a substitute: the gate's
+marker policy, which `standards.json` leaves at its default, honours only safety markers in code, so
+a waiver goes in the ledger. Each entry names the check, a
+path (one file or a glob), the reason, an owner and an expiry date; an entry narrowed to one finding
+also names its message or anchor.
 
-### 13.5 Third reorg — Operations rejoins Representation when there's no capability interface
+- **Fix first (§6).** A waiver records a finding a fix would make worse, or a check that reads one of
+  this document's conventions as a defect (§17.9's tier-wide entries). It never stands in for a
+  missing test (§18.2).
+- **A reason must be true of everything it absorbs.** The tool checks only that a path matches, so
+  a glob is where a reason rots unnoticed; when the code under a glob changes, re-read the reason
+  against the findings it now absorbs.
+- **A waiver moves with its file.** Renaming or moving a file orphans its path-scoped entries.
+  Rewrite each under the new path in the same change and re-run the checks they covered, including
+  checks from phases the change was not about.
 
-The second reorg's utility-first rule still left nine Operations types under `Algorithms/`, each
-named after the single data structure it belongs to: `Buffers`, `Heap`, `HashMap`, `DynamicArray`,
-`DisjointSet`, `Deque`, and — one level removed, each hardcoding one of the previous six rather than
-a dedicated Storage class — `Stack`, `Queue`, `Set`. §2's literal definition of Operations
-("the algorithm/API surface built on top of a Representation constrained by a Topology") covers
-them, but that's not the discriminator that actually matters: `ShortestPath`/`MergeSort`/
-`BinarySearch`/`Reduce`/`Fold` are generic over an *interface* with genuine multiple implementations
-(`IEdgeTopology`, `IRandomAccessSequence`, `IIndexedSequence`,
+### 13.5 Operations rejoins Representation when it is hardwired to one
+
+§2's literal definition of Operations ("the algorithm/API surface built on top of a Representation
+constrained by a Topology") covers `Heap`, `HashMap`, `DynamicArray`, `DisjointSet`, `Deque`,
+`ContiguousGroupBuffer` — and, one level removed, `Stack`, `Queue`, `Set`, `MonotonicDeque`, each hardcoding
+another structure rather than a Storage class of its own. That isn't the discriminator that
+matters. `ShortestPath`/`MergeSort`/`BinarySearch`/`Reduce`/`Fold` are generic over an *interface*
+with genuine multiple implementations (`IEdgeTopology`, `IRandomAccessSequence`, `IIndexedSequence`,
 `ITreeTopology`/`IDagTopology`/`IGraphTopology`) — decoupled from any one representation, and free
-to run over a different one tomorrow. These nine are hardwired 1:1 to exactly one concrete type,
-with no interface and no second implementation possible — `Heap.cs` only ever composes `HeapArray`,
-`Stack.cs` only ever composes `DynamicArray`. They aren't algorithms decoupled from a data
-structure; they *are* the data structure, with the bounds-checking layer split out (§5 step 7).
+to run over a different one tomorrow. The containers are hardwired 1:1 to exactly one concrete
+type, with no interface and no second implementation possible — `Heap.cs` only ever composes
+`HeapArray`, `Stack.cs` only ever composes `DynamicArray`. They aren't algorithms decoupled from a
+data structure; they *are* the data structure, with the bounds-checking layer split out (§5 step 7).
 
-So they moved back into `DataStructures/`, alongside their existing Storage (or, for
-`Stack`/`Queue`/`Set`, into a new sibling folder next to the type each one composes) —
-`DataStructures/Heap/Heap.cs` beside `HeapArray.cs`, `DataStructures/Stack/Stack.cs` beside the
-`DynamicArray.cs` it hardcodes. `DisjointSet` also dropped its `Collections/` wrapper in the same
-step, for the same consistency reason the second reorg dropped it from the `Algorithms/` side.
-`Algorithms/` now holds exactly the set of things generic over a capability interface with real
-substitutability — nothing more, nothing less. `Searching`/`Sorting` are the one case that looks
-similar but isn't: they have no *topology* axis either, but `IRandomAccessSequence`/
-`IIndexedSequence` each have two real implementations, so `BinarySearch`/`MergeSort` stay in
-`Algorithms/`, decoupled from either one.
+So they live in `DataStructures/`, beside their Storage (`DataStructures/Heap/Heap.cs` beside
+`HeapArray.cs`), or, for a type composing another structure, in a folder named for itself beside the
+type it composes (`DataStructures/Stack/` beside `DynamicArray/`). The same holds for a structure's
+own walks: `InOrderTraversal` and `FindClosest` sit beside the binary tree they walk, and
+`HammingSearch` beside the Hamming graph, because each depends on nothing above tier 1.
 
-### 13.6 Fourth reorg — `Searching`/`Sorting` rename to `Sequence`, and a misclassification fix
+Everything else that is Operations lives in `Algorithms/`: the types generic over a capability
+interface with real substitutability, and the algorithms that run over plain inputs with no
+Representation of this repo's own to be hardwired to — `StringMatching` over a `ReadOnlySpan<char>`,
+`NumberTheory` over `IBinaryInteger<T>`, `Backtracking` and `DynamicProgramming` over a
+caller's state. `BinarySearch`/`MergeSort` are the case that looks like a container but isn't: they
+have no *topology* axis either, but `IRandomAccessSequence`/`IIndexedSequence` each have more than
+one real implementation, so they stay in `Algorithms/`, decoupled from any one.
 
-`DataStructures/Searching/` and `DataStructures/Sorting/` were named after the algorithms that
-consume them, not what they are — the same mistake the second reorg fixed on the `Algorithms/`
-side, made in the opposite direction: a `DataStructures/` folder is supposed to be named for
-identity (§5 step 6), and `IRandomAccessSequence`/`ArraySequence`/`DynamicArraySequence` and
-`IIndexedSequence`/`ArrayIndexedSequence`/`DynamicArrayIndexedSequence` are identically "sequence
-access contracts," just at two different read/write capability levels — not "a searching thing" or
-"a sorting thing." Both sets now co-locate under one identity folder, `DataStructures/Sequence/`,
-the same way `MinHeapOrder`/`MaxHeapOrder` already sit as sibling witnesses under `Heap/` — still
-two separate, non-reused domains per §5's domain-reuse rule (`Sorting` never reuses `Searching`'s contract, per §11.1),
-just grouped by theme rather than split across two algorithm-named folders.
+The one thing that overrides the hardwired rule is the tier order (§17.2): a type that would belong
+in `DataStructures/` by this section but composes an `Algorithms/` engine moves up to `Algorithms/`,
+because tier 1 may not depend on tier 2. `HammingDistances` (§17.6) and `CompressedCoordinates`
+(§19.3) are filed this way.
 
-Checking this surfaced an unrelated, pre-existing misclassification: `SearchRange.cs` and
-`SortBounds.cs` had been sitting in these same folders, but neither is a Representation of the
-sequence being searched/sorted — both are the algorithm's own internal cursor/range-grouping state
-(their own doc comments say so directly), the same bucket §12.2 already puts `TrackedVisitGuard` in.
-They moved to `Algorithms/Searching/` and `Algorithms/Sorting/`, alongside `BinarySearch.cs`/
-`MergeSort.cs`, correcting a classification gap that predates every reorg in this section.
+### 13.6 `DataStructures/` folders are named for identity: `Sequence/`
 
-### 13.7 Fifth reorg — BinaryTree rejoins Graph, ICache extracted
+A `DataStructures/` folder is named for what its types *are*, not for the algorithm that consumes
+them (§5 step 6). `IRandomAccessSequence` with its witnesses and `IIndexedSequence` with its
+witnesses are both "sequence access contracts," at two different read/write capability levels — not
+"a searching thing" and "a sorting thing" — so both sets co-locate under `DataStructures/Sequence/`,
+the way `MinHeapOrder`/`MaxHeapOrder` sit as sibling witnesses under `Heap/`. They remain two
+separate, non-reused domains per §5's domain-reuse rule (sorting never reuses searching's contract,
+§11.1), grouped by theme rather than split across two algorithm-named folders.
 
-`BinaryTree` used to sit as a sibling of `Graph/` even though `BinaryTreeTopology.cs` implements
-`ITreeTopology<BinaryTreeNode<TValue>,BinaryTreeChildren<TValue>>` — its own doc comment already
-said "mirrors GridTopology exactly," and `GridTopology` lives inside `Graph/`. It now co-locates
-with the interface it witnesses, at `Graph/Engines/Dags/Trees/`, the same relationship `Grids/`
-already has with `IGraphTopology`.
+A type that is an algorithm's own cursor or range-grouping state is not a Representation of the
+sequence being searched or sorted, wherever it was first written. `SearchRange` and `SortBounds`
+are Operations-internal (their own doc comments say so), the same bucket §12.2 puts
+`TrackedVisitGuard` in, and they sit beside their algorithms in `Algorithms/Searching/` and
+`Algorithms/Sorting/`.
 
-This does not extend to every other "tree"-named structure. `SegmentTree`, `FenwickTree`,
+### 13.7 What joins `Graph/`, and `ICache`
+
+A structure that implements one of the graph topology contracts lives in `DataStructures/Graph/`,
+beside the contract it witnesses. `BinaryTreeTopology` implements
+`ITreeTopology<BinaryTreeNode<TValue>,BinaryTreeChildren<TValue>>`, so the binary tree sits at
+`Graph/Engines/Dags/Trees/` — the same relationship `Grids/` has with `IGraphTopology`.
+
+A tree-*named* structure is not thereby a tree witness. `SegmentTree`, `FenwickTree`,
 `LazySegmentTree`, `RangeFenwickTree`, and `Heap` (§4) are all array + index-arithmetic
 representations with no separate node identity for a `TChildren` parameter to vary over — the same
-reason §4 already gives for keeping `Heap` out of `IGraphTopology`. Promoting any of these to real
-`ITreeTopology`/`IDagTopology` witnesses — and re-deriving their hand-written recursion as instances
-of Graph's generic `Fold`/`Walk` engines — is a real per-structure algorithm redesign, not a file
-move, and stays a deliberate future exercise rather than something this reorg does wholesale.
-`SinglyLinkedList`/`DoublyLinkedList` stay out for the same reason: no `IChildren`, no
-`ITreeTopology`, and their O(1) pointer-splice operations (`AddFront`/`Remove`/`PopBack`, Floyd's
-cycle detection) don't route through Graph's generic traversal engines. `Trie`/`BitTrie`/`SuffixTree`
-are a more subtle case than this section originally said — see §13.8, §13.9.
+reason §4 gives for keeping `Heap` out of `IGraphTopology`. Promoting any of these to a real
+`ITreeTopology`/`IDagTopology` witness — and re-deriving their hand-written recursion as instances
+of Graph's generic `Fold`/`Walk` engines — is a per-structure algorithm redesign, not a file
+move, and is a deliberate future exercise. `SinglyLinkedList`/`DoublyLinkedList` stay out for the
+same reason: no `IChildren`, no `ITreeTopology`, and their O(1) pointer-splice operations
+(`AddFront`/`Remove`/`PopBack`, Floyd's cycle detection) don't route through Graph's generic
+traversal engines. Tries are decided case by case (§13.8, §13.9).
 
-`LruCache`/`LfuCache` also moved, from top-level siblings into `Cache/LruCache/` and `Cache/LfuCache/`
-beside a new `Cache/ICache.cs`, which both now implement. The two were already documented as "peer
-implementations of an almost-identical public contract"; `ICache<TKey,TValue>` makes that contract
-real. An interface, not a shared base class, per §6's composition-over-inheritance precedent
-(`IHeapOrder`, `ICombineOperation`, `IGroupOperation` are all interfaces) — the two caches share no
-method bodies to inherit, only this public shape, and LRU-vs-LFU is a real, caller-visible axis (it
-changes which key an identical call sequence evicts) rather than a mechanics-only choice, the same
-§10.1 discriminator that already separates `MinHeapOrder`/`MaxHeapOrder` from `DisjointSet`'s linking
-policy.
+`LruCache`/`LfuCache` sit in `Cache/LruCache/` and `Cache/LfuCache/` beside `Cache/ICache.cs`, which
+both implement. They are peer implementations of one public contract, and `ICache<TKey,TValue>`
+makes that contract real. It is an interface, not a shared base class, per §6's
+composition-over-inheritance precedent (`IHeapOrder`, `ICombineOperation`, `IGroupOperation` are
+all interfaces) — the two caches share no method bodies to inherit, only this public shape, and
+LRU-vs-LFU is a real, caller-visible axis (it changes which key an identical call sequence evicts)
+rather than a mechanics-only choice, the same §10.1 discriminator that separates
+`MinHeapOrder`/`MaxHeapOrder` from `DisjointSet`'s linking policy.
 
-### 13.8 Sixth reorg — `LowercaseTrie`, and correcting why a Trie does or doesn't get a witness
+### 13.8 Whether a trie gets a witness is a Representation question
 
-`Trie.cs`/`BitTrie.cs`/`SuffixTree.cs` all previously justified staying witness-less with some form
-of "no Topology witness here — nothing for a witness to parametrize." That reasoning answers the
-wrong question. `GridTopology`/`BinaryTreeTopology` also have nothing to parametrize (no
-Min-vs-Max-style variant choice) and still implement the base interface fine — determinism was never
-the actual test for *whether a type implements `ITreeTopology` at all*; it's only ever been the test
-for whether a type needs a *second*, injected witness axis on top of that (§5's own table, §9.1,
-§13.2). Conflating the two made `Trie`'s exclusion look more settled than its actual reason.
+"Nothing for a witness to parametrize" answers the wrong question about a trie.
+`GridTopology`/`BinaryTreeTopology` also have nothing to parametrize (no Min-vs-Max-style variant
+choice) and still implement the base interface fine — determinism was never the test for *whether a
+type implements `ITreeTopology` at all*; it's only ever been the test for whether a type needs a
+*second*, injected witness axis on top of that (§5's own table, §9.1, §13.2).
 
-The real reason is Representation, checked directly rather than assumed: every call site of
+The real question is Representation, checked directly rather than assumed: every call site of
 `IChildren<TNode>.Get(int)` in this repo (`DepthFirstWalk.cs`, `BreadthFirstWalk.cs`,
 `TopDownWalk.cs`) drives it in a plain sequential `for i in 0..Count-1` sweep, never random access —
 but the interface's own doc comment still states an O(1)-*per-call* obligation, and
 `TrieNode<TValue>.Children`/`SuffixTreeNode.Children` are `HashMap<char,·>`, which cannot honestly
-promise indexed O(1) `Get` the way a fixed slot array can. This is a genuine §8 Representation/
-Complexity-law mismatch, not a "nothing to parametrize" one — and it is fixable, by bounding the
-alphabet: `Graph/Engines/Dags/Trees/{LowercaseTrieNode,LowercaseTrieTopology,LowercaseTrie}.cs` is
-the general `Trie<TValue>`'s bounded-alphabet sibling (26 lowercase English letters, `Set`/`HasKey`/
-`TryGetValue`/`HasPrefix`-compatible), backed by `SparseArrayChildren` — already in this repo,
-already doc-commented "e.g. a trie node's per-character children" (§3.1), and already rehearsed
-non-generically as a test-only fixture before this reorg made it a real, `TValue`-generic,
-production Operations type. That fixture has since been deleted: everything it checked is now
-checked against the real type (`LowercaseTrieTests`, `SparseArrayChildrenTests`). `LowercaseTrieTests.cs` proves the witness is real, not just a
-satisfied interface, with two facades reusing generic Tree-tier engines unmodified: `TreeMetrics.Size`
-counts every node across a shared-prefix chain, and `LowestCommonAncestor.Find` over a trie topology
-*is* longest-common-prefix — the node where two keys diverge is exactly the node reached by walking
-their shared prefix, with no trie-specific LCA code at all.
+promise indexed O(1) `Get` the way a fixed slot array can. That is a §8 Representation/
+Complexity-law mismatch — and it is fixable, by bounding the alphabet:
+`Graph/Engines/Dags/Trees/{LowercaseTrieNode,LowercaseTrieTopology,LowercaseTrie}.cs` is the general
+`Trie<TValue>`'s bounded-alphabet sibling (26 lowercase English letters, `Set`/`HasKey`/
+`TryGetValue`/`HasPrefix`-compatible), backed by `SparseArrayChildren` — doc-commented "e.g. a trie
+node's per-character children" (§3.1). `LowercaseTrieTests.cs` proves the witness is real, not just
+a satisfied interface, with two facades reusing generic Tree-tier engines unmodified:
+`TreeMetrics.Size` counts every node across a shared-prefix chain, and `LowestCommonAncestor.Find`
+over a trie topology *is* longest-common-prefix — the node where two keys diverge is exactly the node
+reached by walking their shared prefix, with no trie-specific LCA code at all.
 
-The general, arbitrary-`char`-keyed `Trie<TValue>` still correctly stays witness-less — its whole
-value is *not* being bounded to a small alphabet, so narrowing it to gain a witness would defeat the
-type's own purpose rather than just cost something. `BitTrie` was promoted under this framing —
-see §13.9. `SuffixTree`/`SuffixAutomaton`/`AhoCorasick` remain unreviewed as of this reorg —
-`SuffixTree`'s edge-compression (substring-range labels, not one-char-per-edge) is a second,
-independent representation question on top of the alphabet one; `AhoCorasick`'s trie portion has
-the same bounded-alphabet shape `BitTrie`/`LowercaseTrie` do, but its runtime matching walks
-`Fail`/`OutputLink` edges that aren't tree edges at all, so at most its construction-time trie
+The general, arbitrary-`char`-keyed `Trie<TValue>` correctly stays witness-less — its whole value is
+*not* being bounded to a small alphabet, so narrowing it to gain a witness would defeat the type's
+own purpose rather than just cost something. `BitTrie` earns one (§13.9). `SuffixTree`,
+`SuffixAutomaton` and `AhoCorasick` are not yet reviewed under this test, and each raises a question
+of its own: `SuffixTree`'s edge-compression (substring-range labels, not one-char-per-edge) is a
+second, independent representation question on top of the alphabet one; `AhoCorasick`'s trie
+portion has the same bounded-alphabet shape `BitTrie`/`LowercaseTrie` do, but its runtime matching
+walks `Fail`/`OutputLink` edges that aren't tree edges at all, so at most its construction-time trie
 would earn a witness, not the automaton itself; `SuffixAutomaton`'s transition graph is a DAG, not
 a tree, though its suffix-link parent pointers form a separate, real tree that's a plausible
-witness candidate in its own right. None of the three is done.
+witness candidate in its own right.
 
 `Trie<TValue>` and `LowercaseTrie<TValue>` each carry their own copy of the key walk behind `Set`/
 `HasKey`/`TryGetValue`/`HasPrefix`, and that duplication is deliberate. Every way to share it costs
@@ -991,78 +994,69 @@ whenever `TValue` is a reference type, which turns today's inline slot index int
 lookup per character. The two loops are a dozen lines each; what differs between them (a `HashMap`
 step vs a validated slot index) is exactly the Representation difference this section is about.
 
-### 13.9 Seventh reorg — `BitTrie` promoted to a real `ITreeTopology` witness
+### 13.9 The two-part witness test, and `BitTrie`
 
-`BitTrie.cs`'s own doc comment previously argued "no Topology witness here" on `BitTrieNode`
-being only ever created internally, so "no external shape could violate the invariant" — the same
-"nothing to parametrize" reasoning §13.8 already named as answering the wrong question, just not
-yet corrected for this specific file. Applying §13.8's two-part test: `BitTrieNode` has real
-identity (a `class`, not an index into shared storage, unlike `Heap`/`DisjointSet`), and its two
-named `Zero`/`One` slots already give `IChildren`'s O(1)-indexed-`Get` obligation honestly, with no
-alphabet-bounding work needed the way `LowercaseTrie` required — both true, so a witness is earned.
+When a structure has a Topology-witness question, don't ask "is there a variant to inject" (§9.1's
+row-1/row-2 test still answers that, but answers a *different* question). Ask instead: (1) does the
+structure have a node identity distinct from its storage (§4's Heap test), and (2) does its actual
+Representation satisfy every law the base interface's consumers actually rely on (§8) — checked
+against real call sites, not assumed from the interface's stated contract alone. Both true → a real
+witness is earned, and the type's own distinguishing feature (bounded alphabet, edge compression, a
+balance invariant, ...) is what to name and isolate, the same "inject the one new axis" idiom
+`IPathHeuristic`/`IHeapOrder`/`TOperation` already use elsewhere in this repo. Either false → the
+structure stays domain-local, correctly, for a stated reason — not a default.
+
+`BitTrie` passes both. `BitTrieNode` has real identity (a `class`, not an index into shared storage,
+unlike `Heap`/`DisjointSet`), and its two named `Zero`/`One` slots already give `IChildren`'s
+O(1)-indexed-`Get` obligation honestly, with no alphabet-bounding work needed the way `LowercaseTrie`
+required.
 
 Unlike `LowercaseTrieTopology`, which reuses `SparseArrayChildren` (an actual fixed-size array),
 `BitTrieChildren` follows `BinaryTreeChildren`'s shape instead — computed on demand from two named
-fields, no backing array at all. `BitTrieNode` already had exactly `BinaryTreeNode`'s "two named
-slots" shape (deliberately, per its own doc comment, to avoid a `HashMap`'s cost for a fixed 2-key
+fields, no backing array at all. `BitTrieNode` has exactly `BinaryTreeNode`'s "two named slots"
+shape (deliberately, per its own doc comment, to avoid a `HashMap`'s cost for a fixed 2-key
 alphabet); switching it to an actual 2-element array to reuse `SparseArrayChildren` verbatim would
-have been a real, unforced representation regression (an allocation per node) purely to match
+be a real, unforced representation regression (an allocation per node) purely to match
 `LowercaseTrie`'s file shape rather than its reasoning. `BinaryTreeChildren`'s own "compaction loses
 positional identity" carve-out (why `InOrderTraversal` bypasses it) doesn't apply here either:
 `Insert`/`TryMaxXor` never go through `IChildren` at all, so nothing downstream needs "this was
 specifically the 0-branch vs. the 1-branch" preserved — only generic Tree-tier engines consume the
 witness, and they only ever ask "how many children, and give me each one."
 
-`Insert`/`TryMaxXor` themselves stay hand-written against `Zero`/`One` directly, unchanged — the
-witness doesn't replace them, it just opens the trie to generic Tree-tier engines for free.
+`Insert`/`TryMaxXor` themselves stay hand-written against `Zero`/`One` directly — the witness
+doesn't replace them, it opens the trie to generic Tree-tier engines for free.
 `BitTrieTests.Size_ViaTreeMetrics_CountsEveryNodeAcrossASharedBitPrefixChain` proves the witness is
-real the same way `LowercaseTrieTests` did: `TreeMetrics.Size` (`Algorithms/Metrics`, generic over
+real the same way `LowercaseTrieTests` does: `TreeMetrics.Size` (`Algorithms/Metrics`, generic over
 any `ITreeTopology`) counts every node of a two-value trie with no `BitTrie`-specific code at all.
-
-**This is the general methodology, not a one-off:** when a structure has a Topology-witness
-question, don't ask "is there a variant to inject" (§9.1's row-1/row-2 test still answers that, but
-answers a *different* question). Ask instead: (1) does the structure have a node identity distinct
-from its storage (§4's Heap test), and (2) does its actual Representation satisfy every law the base
-interface's consumers actually rely on (§8) — checked against real call sites, not assumed from the
-interface's stated contract alone. Both true → a real witness is earned, and the type's own
-distinguishing feature (bounded alphabet, edge compression, a balance invariant, ...) is what to name
-and isolate, the same "inject the one new axis" idiom `IPathHeuristic`/`IHeapOrder`/`TOperation`
-already use elsewhere in this repo. Either false → the structure stays domain-local, correctly, for
-a stated reason — not a default.
+`CountedBitTrie` fails both halves of the test, and §13.3 records why.
 
 ## 14. Worked example: the three Storage/Operations decompositions
 
-Three bundled classes — `ContiguousGroupBuffer`, `HashMap`, `DynamicArray` — used to fuse storage
-fields and public operations into one type, unlike `Heap`/`HeapArray` (§4), which was already
-split. This is the part of §13's reorg that is genuine decoupling rather than file-shuffling, and
-the one part with real behavior-preservation risk: a mechanical move can't change behavior, but a
-decomposition can. All three follow the same shape: **Storage owns raw, unchecked, non-throwing
-access; Operations owns bounds/precondition checks, throwing, and the one composed Storage field.**
-Each was attempted only after the pattern had been rehearsed on a cheaper case first — `Buffers`
-(zero consumers anywhere) first, `HashMap` second, `DynamicArray` (the highest fan-out) last — and
-each was checked against the full test suite, not just its own domain's tests, before being
-trusted. (Both halves of all three now live under `DataStructures/` per §13.5 — none of these three
-had a capability interface to be generic over, so their Operations half rejoined Storage there.)
+Three containers — `ContiguousGroupBuffer`, `HashMap`, `DynamicArray` — split their storage from
+their public operations, as `Heap`/`HeapArray` (§4) does. All three follow the same shape:
+**Storage owns raw, unchecked, non-throwing access; Operations owns bounds/precondition checks,
+throwing, and the one composed Storage field.** Both halves live under `DataStructures/<Structure>/`
+(§13.5), since none of the three has a capability interface to be generic over. A decomposition,
+unlike a file move, can change behaviour, so each is held by the full test suite, not only its own
+folder's tests.
 
 ### 14.1 `ContiguousGroupBuffer`
 
 | File | Axis | Why |
 | --- | --- | --- |
-| `DataStructures/Buffers/ContiguousGroupBufferStorage.cs` | Representation | `_currentGroup`/`_currentKey`/`_hasCurrentKey` fields; unchecked `HasCurrentKey`/`CurrentKey`/`CurrentGroupCount`/`AppendToCurrentGroup`/`SnapshotCurrentGroup`/`SetCurrentKey`/`MarkCurrentKeyConsumed`/`ResetAll` |
+| `DataStructures/Buffers/ContiguousGroupBufferStorage.cs` | Representation | the current group and its key; unchecked `HasCurrentKey`/`CurrentKey`/`CurrentGroupCount`/`AppendToCurrentGroup`/`SnapshotCurrentGroup`/`ClearCurrentGroup`/`SetCurrentKey`/`MarkCurrentKeyConsumed`/`ResetAll` |
 | `DataStructures/Buffers/ContiguousGroupBuffer.cs` | Operations | `keyComparer`, `GetCurrentKey`/`ThrowMissingCurrentKey`, composes Storage |
 
-The cheapest possible rehearsal of the pattern — zero existing consumers anywhere in the repo at
-the time. `MarkCurrentKeyConsumed` deliberately clears only `_hasCurrentKey`, leaving the stale
-`_currentKey` value in place (only `Reset` fully clears it) — preserving `Flush`'s exact
-pre-decomposition behavior, which nothing tested before this reorg added a test for it specifically.
+`MarkCurrentKeyConsumed` deliberately clears only `HasCurrentKey`, leaving the stale `CurrentKey`
+value in place (only `Reset` clears both) — `Flush`'s behaviour, which has a test of its own.
 
 ### 14.2 `HashMap`
 
 | File | Axis | Why |
 | --- | --- | --- |
 | `DataStructures/HashMap/HashMapStorage.cs` | Representation | bucket array + separate-chaining entries array + free list; owns `Grow`/`RehashEntryInto`/`CreateEmptyBuckets`/`AllocateEntrySlot` (none touch the comparer) and `Insert(hashCode,key,value)` |
-| `DataStructures/HashMap/HashMapEntry.cs` | Representation | unchanged, moved alongside Storage |
-| `DataStructures/HashMap/HashMap.cs` | Operations | `_comparer`; `TryUpdateExisting`/`FindEntryIndex`/`Remove`'s chain-walk loops, reading each step via raw Storage accessors (`BucketHead`/`EntryNext`/`EntryHashCode`/`EntryKey`/`EntryValue`) |
+| `DataStructures/HashMap/HashMapEntry.cs` | Representation | one chained entry, beside Storage |
+| `DataStructures/HashMap/HashMap.cs` | Operations | `_comparer`; `TryUpdateExisting`/`FindEntryIndex`/`TryRemove`'s chain-walk loops, reading each step via raw Storage accessors (`BucketHead`/`Entry`) |
 
 The split point here isn't read/write the way `DynamicArray`'s is (§14.3) — it's "needs the
 comparer" vs. "doesn't." `Storage.Insert` absorbs the whole grow-if-needed → recompute-bucket →
@@ -1079,51 +1073,46 @@ catch a regression here.
 | File | Axis | Why |
 | --- | --- | --- |
 | `DataStructures/DynamicArray/DynamicArrayStorage.cs` | Representation | `_items: T[]`; own `Count`; unchecked `Get`/`Set`/`Add`/`InsertAt`/`RemoveAt` (assume the caller already validated the index); private `EnsureCapacity` |
-| `DataStructures/DynamicArray/DynamicArray.cs` | Operations | `ValidateIndex`, the `IndexOutOfRangeMessage` constant; bounds-checked `Get`/`Set`/`RemoveAt`/`Insert` delegate to Storage after validation — identical exception type and message text to before the split |
+| `DataStructures/DynamicArray/DynamicArray.cs` | Operations | `IsValidIndex`/`ThrowIndexOutOfRange` and the `IndexOutOfRangeMessage` constant; bounds-checked `Get`/`Set`/`RemoveAt`/`Insert` and their `Try` forms delegate to Storage after validation |
 
 The highest fan-out of the three: `Stack`, `Sequence.DynamicArraySequence`, and
-`Sequence.DynamicArrayIndexedSequence` all compose it, but none call anything beyond
-`Add`/`Get`/`Set`/`RemoveAt`/`Count` — all of which keep identical signatures — so none needed a
-logic change, only a `using`-line repoint. Decomposed last of the three, once the Storage/Operations
-pattern had already been proven twice.
+`Sequence.DynamicArrayIndexedSequence` all compose it, and none calls anything beyond
+`Add`/`Get`/`Set`/`RemoveAt`/`Count`, so the split is invisible to them.
 
 ## 15. Worked example: `Algorithms/TopologicalSort`
 
 `Algorithms/TopologicalSort` fills a gap `Folding/CheckedFold.cs` names explicitly in its own
-doc comment: "an iterative, stack-safe DAG fold needs a real topological sort... that's a genuine
-follow-up, not something to fold in here." It sits at the same untrusted tier `CheckedFold`
-already occupies — generic over `IGraphTopology<TNode,TChildren>`, not `IDagTopology`, because
-Kahn's algorithm's own leftover-in-degree check *is* the cycle check, the same law `CheckedFold`
-already resolved this way. But that tier choice alone doesn't earn this section a place beside
-§9–§12/§14 — `Connectivity/ConnectedComponents.cs` already sits at the same bare `IGraphTopology`
-tier with nothing more than a §13.3 table row. What actually earns it is new material: a
-precondition shape this repo hasn't needed before, and a second occurrence of §10.3's namespace
-collision.
+doc comment: "an iterative, stack-safe DAG fold needs a real topological sort." It sits at the
+untrusted tier `CheckedFold` occupies — generic over `IGraphTopology<TNode,TChildren>`, not
+`IDagTopology`, because Kahn's algorithm's own leftover-in-degree check *is* the cycle check, the
+same law `CheckedFold` resolves this way. That tier choice alone would not need a section —
+`Connectivity/ConnectedComponents.cs` sits at the same bare `IGraphTopology` tier with only a §13.3
+row — but it brings a precondition shape nothing else here has, and a second occurrence of §10.3's
+namespace collision.
 
 | File | Axis | Why |
 | --- | --- | --- |
-| [`TopologicalSort/TopologicalSort.cs`](DSAExperimentation/Algorithms/TopologicalSort/TopologicalSort.cs) | Operations | `TrySort` — Kahn's algorithm; composes `IGraphTopology`/`IChildren`/`IChildOrder` from `Graph/Contracts/**`, owns none of them, needs no new Representation or Topology contract |
+| [`Algorithms/TopologicalSort/TopologicalSort.cs`](DSAExperimentation/Algorithms/TopologicalSort/TopologicalSort.cs) | Operations | `TrySort` — Kahn's algorithm; composes `IGraphTopology`/`IChildren`/`IChildOrder` from `DataStructures/Graph/Contracts/**`, owns none of them, needs no new Representation or Topology contract |
 
-### 15.1 A precondition shape this repo hasn't needed before, and its asymmetric failure
+### 15.1 A precondition on the input's completeness, and its asymmetric failure
 
-Every prior unenforced precondition in this repo constrains a *property* of the input —
+The other unenforced preconditions here constrain a *property* of the input —
 `BinarySearch`'s sortedness (§9.1), `ShortestPath`'s non-negative edge weights (§7). `TrySort`'s
 precondition is different in kind: `nodes` must enumerate the *complete vertex set* of the graph,
 not merely its sources. A root-seeded walk (`Reduce.Graph`, `ConnectedComponents.Count`) only
 needs one representative per component, because it discovers descendants transitively through
 `GetChildren`. Kahn's algorithm can't work that way — it needs every vertex's true in-degree
 before the first node is ever dequeued, and there is no reverse-adjacency contract anywhere in
-`Graph/Contracts/**` (no way to ask a node for its parents), so nothing here could discover a
-missing vertex even if it wanted to.
+`DataStructures/Graph/Contracts/**` (no way to ask a node for its parents), so nothing here could
+discover a missing vertex even if it wanted to.
 
-The two ways to violate this precondition fail differently, which is the genuinely new part.
-Omitting a *descendant* self-detects: it's still discovered via its parent's edge during the
-walk, which inflates the produced ordering past `vertices.Count`, so `TrySort` correctly returns
-`false`. Omitting an *ancestor* does not: nothing forward-reachable from the supplied set points
-back to it, so `TrySort` returns `true` with an ordering that silently omits it — a caller cannot
-tell this happened from the return value alone. A consequence worth stating plainly: a `false`
-result therefore doesn't distinguish a true cycle from a caller-omitted descendant either — both
-present identically as leftover in-degree.
+The two ways to violate this precondition fail differently. Omitting a *descendant* self-detects:
+it's still discovered via its parent's edge during the walk, which inflates the produced ordering
+past `vertices.Count`, so `TrySort` correctly returns `false`. Omitting an *ancestor* does not:
+nothing forward-reachable from the supplied set points back to it, so `TrySort` returns `true` with
+an ordering that silently omits it — a caller cannot tell this happened from the return value
+alone. A consequence worth stating plainly: a `false` result therefore doesn't distinguish a true
+cycle from a caller-omitted descendant either — both present identically as leftover in-degree.
 
 ### 15.2 Free cycle detection, unlike `CheckedFold`'s recursion-path set
 
@@ -1135,43 +1124,40 @@ reason (deciding what to dequeue next). This is a case where the untrusted tier'
 free of charge rather than as an added cost over the trusted tier — there is no `DagFold`-style
 faster sibling for this utility to skip down to, because there's nothing left to skip.
 
-### 15.3 A second `Algorithms/`-side folder/class name collision
+### 15.3 When an `Algorithms/` folder and its class share a name
 
 `Algorithms/TopologicalSort/TopologicalSort.cs` names its folder and its class identically — the
-same shape §10.3 already documents for `DataStructures/DisjointSet/DisjointSet.cs`, and the same
-C# wrinkle results: `TopologicalSortTests.cs` living at namespace
-`DSAExperimentation.Tests.Algorithms.TopologicalSort` can't reference a bare `TopologicalSort`
-without it resolving to the enclosing namespace segment instead of the type, since namespace-
-member lookup wins over `using` directives. Fixed the same way §10.3 fixed it — a differently-
-named alias, `using TopologicalSortOperations = DSAExperimentation.Algorithms.TopologicalSort.TopologicalSort;`
+same shape §10.3 documents for `DataStructures/DisjointSet/DisjointSet.cs`, and the same C# wrinkle
+results: `TopologicalSortTests.cs` at namespace `DSAExperimentation.Tests.Algorithms.TopologicalSort`
+can't reference a bare `TopologicalSort` without it resolving to the enclosing namespace segment
+instead of the type, since namespace-member lookup wins over `using` directives. The fix is §10.3's,
+a differently-named alias:
+`using TopologicalSortOperations = DSAExperimentation.Algorithms.TopologicalSort.TopologicalSort;`
 
-This is worth calling out as a new occurrence, not a mechanical reuse: every `Algorithms/` utility
-folder before this one deliberately used a *different* word than its primary class
+The rule behind keeping the name: an `Algorithms/` folder is named for *what the algorithm does*
+(§5 step 6), which usually reads as a broader category than any one class
 (`Connectivity`/`ConnectedComponents`, `Ancestry`/`LowestCommonAncestor`, `Paths`/
-`AllRootToLeafPaths`, `Searching`/`BinarySearch`, `Sorting`/`MergeSort`), because §5 step 6 names
-`Algorithms/` folders for *what the algorithm does*, which up to now always read as a broader
-category than any one technique's own name. `TopologicalSort` is the first case on the
-`Algorithms/` side where the category and the sole technique's name coincide exactly — renaming
-the class to something eponymous (`KahnsAlgorithm`) would dodge the collision but breaks this
-repo's preference for descriptive over eponymous names for a sole/primary technique (`MergeSort`,
-`BinarySearch`); `ShortestPath.Dijkstra`/`.AStar` are the one eponymous precedent here, but as
-*methods* distinguishing multiple techniques inside one shared category class, which doesn't
-apply when only one technique exists. §10.3's alias fix generalizes cleanly to this case instead.
+`AllRootToLeafPaths`, `Searching`/`BinarySearch`, `Sorting`/`MergeSort`). When the category and the
+sole technique's name coincide exactly, keep the descriptive name and alias around the collision.
+Renaming the class to something eponymous (`KahnsAlgorithm`) would dodge the collision but breaks
+this repo's preference for descriptive over eponymous names for a sole/primary technique
+(`MergeSort`, `BinarySearch`); `ShortestPath.Dijkstra`/`.AStar` are eponymous, but as *methods*
+distinguishing several techniques inside one shared category class, which doesn't apply when only
+one technique exists.
 
 ## 16. Worked example: `BellmanFord` and `AllPairsShortestPaths`
 
-`ShortestPaths/` gains two more files — relaxing `ShortestPath.cs`'s own non-negative-edge-weight
-law (§7) rather than assuming it, and reporting a negative cycle rather than silently mis-answering
-when relaxed too far. Both reuse `ShortestPath.cs`'s existing `IEdgeTopology`/`IEdges` contracts
-unchanged, so neither earns a place here for its Representation/Topology choice — what's new is a
-second run at §15.3's naming question, this time landing on the opposite answer for each file, and
-a genuinely new failure-reporting distinction that neither `ShortestPath.cs` nor `TopologicalSort`
-needed on its own.
+`Algorithms/ShortestPaths/` holds two siblings of `ShortestPath.cs` that relax its
+non-negative-edge-weight law (§7) rather than assume it, and report a negative cycle rather than
+silently mis-answer. Both reuse `ShortestPath.cs`'s `IEdgeTopology`/`IEdges` contracts unchanged,
+so neither is here for its Representation/Topology choice — what they settle is §15.3's naming
+question, landing on a different answer for each file, and a failure-reporting distinction that
+neither `ShortestPath.cs` nor `TopologicalSort` needs on its own.
 
 | File | Axis | Why |
 | --- | --- | --- |
 | [`BellmanFord.cs`](DSAExperimentation/Algorithms/ShortestPaths/BellmanFord.cs) | Operations | Single-source, negative-weight-tolerant relaxation with cycle detection; composes `IEdgeTopology`/`IEdges`, owns neither |
-| [`AllPairsShortestPaths.cs`](DSAExperimentation/Algorithms/ShortestPaths/AllPairsShortestPaths.cs) | Operations | All-pairs refinement over a dense matrix seeded from the same contracts; owns neither |
+| [`AllPairsShortestPaths.cs`](DSAExperimentation/Algorithms/ShortestPaths/AllPairsShortestPaths.cs), [`DenseDistanceMatrix.cs`](DSAExperimentation/Algorithms/ShortestPaths/DenseDistanceMatrix.cs) | Operations | All-pairs refinement over a dense matrix; `DenseDistanceMatrix` builds the index map and the seeded starting matrix from the same contracts, and `AllPairsShortestPaths` refines it in place |
 
 ### 16.1 Same contracts, no shared engine — why `BellmanFord` isn't a third `ShortestPath` method
 
@@ -1188,10 +1174,10 @@ a witness, so there is no refinement chain here to mirror).
 ### 16.2 `BellmanFord`: eponymous where §15.3's principle runs out of a better answer
 
 §15.3 states a preference for descriptive category names over eponyms, with `TopologicalSort`
-already the one case where "the category and the sole technique's name coincide" because no better
-descriptive name was available. `BellmanFord.cs` is a second such case, for the same underlying
-reason: the category this file's output belongs to — "single-source shortest paths" — is the name
-`ShortestPath.cs` already has. There is no second, equally-natural descriptive name to give a
+the case where "the category and the sole technique's name coincide" and no better descriptive name
+was available. `BellmanFord.cs` is a second such case, for the same underlying reason: the category
+this file's output belongs to — "single-source shortest paths" — is the name `ShortestPath.cs`
+already has. There is no second, equally-natural descriptive name to give a
 negative-weight-tolerant sibling that doesn't either collide or read as contrived
 (`NegativeWeightShortestPath` names the precondition it relaxes, not what it computes). Unlike
 `TopologicalSort`, this isn't the *only* naming option this section discusses — see §16.3 — it's
@@ -1199,88 +1185,85 @@ specifically the *class* name that has no descriptive alternative here.
 
 ### 16.3 `AllPairsShortestPaths.FloydWarshall`... except the method isn't eponymous either
 
-The original design for the all-pairs file leaned on `ShortestPath.Dijkstra`/`.AStar` and
-`MinimumSpanningTree.Kruskal` as precedent for an eponymous *method* name (`FloydWarshall`) on a
-descriptively-named class (`AllPairsShortestPaths` — a real, natural category name, unlike
-`BellmanFord`'s situation in §16.2). Looking at what actually licenses those three eponymous
-methods sharpens the picture: `Dijkstra`/`AStar`/`Kruskal` all have **uncheckable** preconditions —
+An eponymous *method* on a descriptively-named class is licensed by an **uncheckable**
+precondition. `ShortestPath.Dijkstra`/`.AStar` and `MinimumSpanningTree.Kruskal` all have one —
 non-negative weights, a validly-disconnected input — so none of them can ever fail at runtime, and
-none of them are `TryX`-shaped. `TopologicalSort.TrySort` is the opposite case: Kahn's algorithm
+none of them is `TryX`-shaped. `TopologicalSort.TrySort` is the opposite case: Kahn's algorithm
 *can* fail (checkably, via leftover in-degree), and its method is a plain descriptive verb, not
 `TryKahn`. `BellmanFord`/`AllPairsShortestPaths` both belong to the checkable-failure bucket (a
 reachable negative cycle), so both take `TrySort`'s naming shape — `TryComputeDistances` — not
-`Dijkstra`'s. Each technique's proper name still appears prominently in its file's own leading doc
-comment, the same way "Kahn's algorithm" appears only in `TopologicalSort.cs`'s prose, never in an
-identifier.
+`Dijkstra`'s, even though `AllPairsShortestPaths` is a natural category name that would otherwise
+invite a `FloydWarshall` method. Each technique's proper name appears prominently in its file's own
+leading doc comment, the same way "Kahn's algorithm" appears only in `TopologicalSort.cs`'s prose,
+never in an identifier.
 
 ### 16.4 The dense matrix is Operations-internal scratch state, not a second Representation
 
-`AllPairsShortestPaths` builds a `TWeight[,]` matrix internally, seeded once from the same
-`IEdgeTopology`/`IEdges` contracts `ShortestPath.cs` and `MinimumSpanningTree.cs` already reuse (§5
+`AllPairsShortestPaths` refines a `TWeight[,]` matrix that `DenseDistanceMatrix` seeds once from the
+same `IEdgeTopology`/`IEdges` contracts `ShortestPath.cs` and `MinimumSpanningTree.cs` reuse (§5
 step 5's same-domain-reuse allowance, unaffected by what happens to the data afterward). The matrix
-itself never leaves the method and never competes for a place beside `IEdgeTopology`/`IEdges` as a
-second Representation — the same bucket `ShortestPath`'s own `Heap` frontier and `TopologicalSort`'s
-`inDegree` dictionary are already in (§12.2): Operations-internal working state, not a
-caller-visible contract.
+never leaves the call and never competes for a place beside `IEdgeTopology`/`IEdges` as a second
+Representation — the same bucket `ShortestPath`'s own `Heap` frontier and `TopologicalSort`'s
+`inDegree` dictionary are in (§12.2): Operations-internal working state, not a caller-visible
+contract. `DenseDistanceMatrix` is an internal helper of the walk, split out because building the
+starting matrix shares no state with refining it.
 
 ### 16.5 The index map stays a plain `Dictionary`, not `KeyedDisjointSet`'s `HashMap`
 
 `KeyedDisjointSet<TKey>` (§10.4) looks like the obvious precedent for translating between `TNode`
 and a dense int index — it composes this repo's own `HashMap<TKey,int>` rather than the BCL
-`Dictionary`, per §7's asymmetry (prefer an already-existing self-hosted structure once one exists).
-But that precedent is for a `DataStructures/`-tier *reusable wrapper type*, meant to be constructed,
-held, and queried repeatedly by a caller. `AllPairsShortestPaths`'s index map is `Algorithms/`-tier
-*local scratch state*, built and discarded inside one method call — the same bucket
-`ShortestPath.Distances` and `TopologicalSort.inDegree` already occupy, both of which use a plain
-BCL `Dictionary`. The distinction is lifetime and ownership, not "is this a `TKey`-to-`int` map" —
-two structurally identical maps land in different buckets because one is a public reusable type and
-the other is scratch state no caller ever sees.
+`Dictionary`, per §7's self-hosting rule. But that precedent is for a `DataStructures/`-tier
+*reusable wrapper type*, meant to be constructed, held, and queried repeatedly by a caller.
+`DenseDistanceMatrix.BuildIndex`'s map is `Algorithms/`-tier *local scratch state*, built and
+discarded inside one call — the same bucket `ShortestPath.Distances` and `TopologicalSort.inDegree`
+occupy, both of which use a plain BCL `Dictionary`. The distinction is lifetime and ownership, not
+"is this a `TKey`-to-`int` map" — two structurally identical maps land in different buckets because
+one is a public reusable type and the other is scratch state no caller ever sees.
 
-### 16.6 The `MaxValue`-overflow guard is mechanics, not a caller-facing law
+### 16.6 The `MaxValue` sentinel: an overflow guard inside, a reserved weight outside
 
 Every cell of the dense matrix must hold *some* `TWeight` value, so "not yet known" needs an actual
 sentinel (`TWeight.MaxValue`) the way `ShortestPath.Distances`'s lazy, absence-means-unreached
 dictionary never does (`BellmanFord` inherits that same absence convention for exactly this reason —
-see its own doc comment). Adding two `TWeight.MaxValue` sentinels together would silently overflow
-under generic math, wrapping to a small value that reads as a real, very-wrong distance instead of
-"still unreached." This is not a law in §5 step 2's sense — no caller action can violate or satisfy
-it, unlike `ShortestPath.cs`'s non-negative-edge-weight precondition — so it is documented as an
-inline comment beside the refinement loop rather than a class-level doc comment: it is forced
-entirely by the dense-matrix representation `AllPairsShortestPaths` chose for itself, not something
-a caller is trusted to uphold.
+see its own doc comment). The sentinel has two consequences, and they are stated in two different
+places:
+
+- **Inside the walk, it is mechanics.** Adding two `TWeight.MaxValue` sentinels together would
+  silently overflow under generic math, wrapping to a small value that reads as a real, very-wrong
+  distance instead of "still unreached." No caller action can cause or prevent that, so the guard is
+  an inline comment beside the relaxation in `AllPairsShortestPaths`, not a class-level doc comment.
+- **At the boundary, it is a checked precondition.** A caller *can* pass an edge whose weight is
+  `TWeight.MaxValue`, which the matrix could not tell from "unreached." `DenseDistanceMatrix` rejects
+  it with an `ArgumentOutOfRangeException` while seeding, so the reservation is a law a caller can
+  violate and the code checks, unlike `ShortestPath.cs`'s non-negative-edge-weight precondition.
 
 ## 17. The fourth and fifth tiers: `Domain/` and `LeetCode/`
 
-§1–§16 describe two tiers, both inside `DSAExperimentation/`: `DataStructures/` (Representation +
-Topology) and `Algorithms/` (Operations). That was the whole production library. Everything built
-*on top* of it lived in the two consuming projects — `DSAExperimentation.Tests` and
-`DSAExperimentation.Benchmarks` — and that is where the classification broke down.
+§1–§16 describe the library inside `DSAExperimentation/`: `DataStructures/` (Representation +
+Topology) and `Algorithms/` (Operations). This section adds the tiers built on top of it — the
+LeetCode solutions and the harnesses that test and measure them — and the rules that keep each tier
+to its own job.
 
-### 17.1 The problem this section fixes
+### 17.1 Why a solution is written once, in a tier of its own
 
-A LeetCode coverage entry was a test *and* a benchmark, written independently. Concretely, before
-this reorg:
+A LeetCode coverage entry is a solution, a test that proves it and a benchmark that measures it.
+Each has one home, and the solution's is tier 4, so that:
 
-- **The solution was written twice, and drifted.** `AddBinaryTests` carried a
-  `private static string Add(...)`; `AddBinaryBenchmarks` re-implemented the same carry walk as
-  `StackBits`. `TwoSumTests` solved for the pair of *indices*; `TwoSumBenchmarks`'s `HashMapOnePass`
-  returned a *bool*. The benchmark was not measuring the function the test proved correct — nothing
-  in the repo required it to.
-- **Every naive baseline was untested.** A benchmark's `[Benchmark(Baseline = true)]` arm — the
-  textbook brute force the composed solution is supposed to beat — was never asserted against
-  anything. A wrong baseline would have made the comparison meaningless, silently.
-- **Domain types were copy-pasted across projects.** `Fixtures/LockNode.cs` in the benchmarks
-  project opened with the comment *"Mirrors DSAExperimentation.Tests' OpenTheLock LockNode
-  fixture"*. `WordNode`/`WordTopology` existed in two test folders, again as
-  `WordLadderNode`/`WordLadderTopology` in the benchmarks project, and a fourth and fifth time as
-  `GeneNode`/`GeneMutationNode` for LC 433 — five copies of one Hamming-distance graph, with
-  `IsOneLetterApart`/`IsOneCharApart` written out four times.
-- **Test-project code reached across its own layers.** `MinimumTimeVisitingAllPointsTests`, a
-  LeetCode coverage test, imported `DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures` to
-  borrow `WeightedGridNode` and `ChebyshevHeuristic`.
+- **The test and the benchmark run the same code.** Both call the solution class, and neither
+  carries its own copy of the algorithm: two copies drift, and the benchmark then measures a
+  function the test never proved correct.
+- **Every baseline is tested.** A benchmark's `[Benchmark(Baseline = true)]` arm — the textbook
+  brute force the composed solution is supposed to beat — is a strategy of the solution class like
+  any other (§17.3), so it is asserted against the problem's examples. An unasserted baseline makes
+  the comparison meaningless, silently.
+- **Domain code lives below the harnesses.** A type a solution needs is written once, in the tier
+  §17.6 assigns it, and no harness declares a type that implements a structural contract (§17.7,
+  §18.5).
+- **A harness borrows nothing from another harness.** A test never imports another test folder's
+  fixtures; what two harnesses share is library or solution code.
 
-None of this is a naming problem. It is domain code living in harnesses, where the axis
-classification §2 defines does not reach.
+The axis classification §2 defines does not reach code that lives in a harness, which is why these
+are tier rules rather than naming conventions.
 
 ### 17.2 The five tiers
 
@@ -1305,8 +1288,7 @@ the strategies, named `<Operation>By<Strategy>` — `AddByBitStack`, `TryFindInd
 in a benchmark, because:
 
 - it is the thing the composed solution's whole justification is measured against, and
-- putting it in tier 4 is what gets it under test. The pilot migration alone took `TwoSum`,
-  `AddBinary` and `OpenTheLock` from 4 assertions to 28.
+- putting it in tier 4 is what gets it under test.
 
 The class name takes a `Solution` suffix rather than being bare `TwoSum`, which would collide with
 its own enclosing namespace segment — the §10.3/§15.3 wrinkle, avoided by construction here instead
@@ -1361,8 +1343,8 @@ public static int MinTurnsByReduceGraph(LockGraph graph, string target)         
 The prepared-input overload's parameter must be a type the LeetCode-shaped overload's arguments can
 never bind to, so every call says which of the two it means. A domain object or one of this repo's
 own containers meets that by construction: `Set<string>` is ideal precisely because it does not
-implement `IEnumerable<T>`, which is why `Set<T>` gained a bulk-seeding `Set(IEnumerable<Element>)`
-constructor in this reorg. A BCL type meets it too when it cannot collide. `List<int>[] adjacency`
+implement `IEnumerable<T>`, which is why `Set<T>` has a bulk-seeding `Set(IEnumerable<Element>)`
+constructor. A BCL type meets it too when it cannot collide. `List<int>[] adjacency`
 beside `(int[][] edges, int[] coins)`, or a `HashSet<int>` beside an `int[]`, is as unambiguous as a
 named type, and more than forty problems' hoisted overloads take one. What is never acceptable is a
 prepared type the LeetCode-shaped parameter could also accept: `IEnumerable<string>` beside
@@ -1416,7 +1398,7 @@ over a plain matrix) and LC 1916 (the post-order recursion its tree fold stands 
 library-against-library comparison each was written for still stands. Each local copy of LeetCode's
 modulus or of the halving factor this rule produces is one of a waived group in `suppressions.json`.
 
-### 17.6 Tier 3: what earns a `Domain/` folder — and the criterion that first got this wrong
+### 17.6 Tier 3: what earns a `Domain/` folder
 
 **The rule: §2's three axes decide the tier, not how many problems share the type.**
 
@@ -1426,30 +1408,20 @@ modulus or of the halving factor this rule produces is one of a waived group in 
 - `Domain/` is only for what **fixes content**: a specific modulus, a specific vertex set, a
   specific problem's semantics. Not "a shape that happens to have been introduced for one problem".
 
-The first draft of this section said instead that a type earns `Domain/` when it is "(a) too
-specific to be a data structure or algorithm, and (b) used by more than one problem." That is
-wrong, and worth recording why, because the failure is seductive: **(b) is a sharing test, not a
-classification test.** It tells you a type should not be duplicated; it says nothing about which
-tier it belongs to. The duplication was the visible, countable evidence — five copies of one
-Hamming graph — so it did all the work, (a) was never given teeth, and every shared-but-not-
-obviously-generic type got swept into `Domain/`.
+How many problems share a type is a *sharing* test, not a classification test: it says the type
+must not be duplicated, and nothing about which tier it belongs to. "Edge = differs in exactly one
+position" is a shape rule exactly like `GridTopology`'s "edge = 4 orthogonal neighbours", so the
+Hamming graph is tier 1 however many problems use it; a weighted grid is the sibling of `Grid` and
+sits beside it; a heuristic implements `IPathHeuristic`, an `Algorithms/` contract, and sits beside
+`ZeroHeuristic`.
 
-Three misclassifications followed, all caught on review:
-
-| Was | Is now | Why the original was wrong |
-| --- | --- | --- |
-| `Domain/Grids/WeightedGridNode`, `WeightedGridTopology`, `WeightedGrid` | `DataStructures/Graph/Grids/` | `DataStructures/Graph/Grids/` **already held** `Grid`/`GridNode`/`GridTopology`/`GridChildren` — the unweighted (`IGraphTopology`) sibling of the same thing. Splitting siblings across two tiers is indefensible. |
-| `Domain/Grids/ManhattanHeuristic`, `ChebyshevHeuristic` | `Algorithms/ShortestPaths/` | They implement `IPathHeuristic`, an `Algorithms/` contract, and belong beside `ZeroHeuristic`. `IPathHeuristic`'s own doc comment already read *"Every heuristic in this codebase (ZeroHeuristic, ManhattanHeuristic) is consistent"* — the source treated them as peers before this reorg moved one away. |
-| `Domain/RootedTrees/*`, `Domain/Hamming/*` | `DataStructures/Graph/Engines/Dags/Trees/`, `DataStructures/Graph/Hamming/` (+ `Algorithms/ShortestPaths/Hamming/HammingDistances.cs`) | Pure Representation + Topology. `RootedTreeNode` is the n-ary sibling of `BinaryTreeNode`, already in that folder. "Edge = differs in exactly one position" is a shape rule exactly like `GridTopology`'s "edge = 4 orthogonal neighbours", which was already tier 1. |
-
-`HammingDistances` is the one piece of that family that could not stay in `DataStructures/`: it
+`HammingDistances` is the one piece of the Hamming family that cannot sit in `DataStructures/`: it
 composes `Algorithms/Reducing`'s engine, so it would invert the tiers. It nests as a
 structure-specific tier under `Algorithms/ShortestPaths/Hamming/`, mirroring
-`Algorithms/ShortestPaths/Grids/GridShortestPath.cs` exactly (§13.1's nesting rule, now with its
-second case). `HammingSearch` stays in `DataStructures/Graph/Hamming/` because it depends on
-nothing above tier 1 — the same "Operations rejoins Representation when there is no capability
-interface" precedent (§13.5) that keeps `InOrderTraversal` and `FindClosest` beside the trees they
-walk.
+`Algorithms/ShortestPaths/Grids/GridShortestPath.cs` (§13.1's nesting rule). `HammingSearch` stays in
+`DataStructures/Graph/Hamming/` because it depends on nothing above tier 1 — the same "Operations
+rejoins Representation when it is hardwired to one" precedent (§13.5) that keeps
+`InOrderTraversal` and `FindClosest` beside the trees they walk.
 
 **What is left in `Domain/` after applying the rule honestly:**
 
@@ -1468,12 +1440,10 @@ identity is what it models.
 
 ### 17.6a How the tier order is enforced
 
-The tiers were a convention the file tree implied and nothing checked — and that showed: four
-files under `DataStructures/` were reaching up into `Algorithms/`, unnoticed. Three only wanted
-`AlgorithmConstants`' two integers, so that type moved down to `DataStructures/`, the lowest tier
-that needs it, despite its name.
+A constant or check that more than one tier reads lives at the lowest tier that reads it, whatever
+its name: `AlgorithmConstants` sits in `DataStructures/` because data structures read it.
 
-Enforcement now comes from the following, chosen deliberately over a project-per-tier split:
+Enforcement comes from the following, chosen deliberately over a project-per-tier split:
 
 - **`LeetCode` is its own project** (`DSAExperimentation.LeetCode`, referencing
   `DSAExperimentation`). Nothing below it can depend on a solution, because it cannot see one.
@@ -1494,9 +1464,7 @@ Enforcement now comes from the following, chosen deliberately over a project-per
   not reference `DSAExperimentation.LeetCode`; every solution-facing test — the per-problem
   `<Problem>SolutionTests` at `DSAExperimentation.LeetCode.Tests/<Problem>/`, the seam tests beside
   them, the LeetCode catalog — lives in `DSAExperimentation.LeetCode.Tests`. A core test that
-  reached for a solution would not compile. The split used to be historical: 1,159
-  solution-facing files sat in the core test project, and none of its 188 core files referenced
-  them.
+  reached for a solution would not compile.
 - **`Tests/Architecture/LayeringTests.cs` polices the rest.** DataStructures, Algorithms and
   Domain stay in one assembly and one project.
 
@@ -1543,9 +1511,8 @@ Two things, and only two:
 The line is: deterministic construction of the problem's own structure is tier 3; choosing a random
 seed and an input size is tier 5.
 
-`Benchmarks/Fixtures/` therefore keeps its name but changes meaning — it is no longer where domain
-types hide, only where workload generators live. Migrated test folders lose their `Fixtures/`
-subfolder entirely.
+`Benchmarks/Fixtures/` therefore holds workload generators only, never a domain type, and a
+problem's test folder has no `Fixtures/` subfolder at all.
 
 Most of those generators serve one benchmark — 131 of 152 when this was measured — and that is the
 intended shape, not a failed attempt at sharing: a `<Problem>Workloads` generator is where one
@@ -1555,7 +1522,7 @@ What *is* shared is what they are built from. A plain array of seeded values is
 neither a benchmark nor a generator restates that pipeline inline.
 
 Sizing is per arm where the arms' costs differ in kind. `[Params]` applies to every arm of a class,
-so an exponential baseline used to cap a polynomial arm at a size where its growth could not show;
+so an exponential baseline would cap a polynomial arm at a size where its growth could not show;
 a class like `BurstBalloonsBenchmarks` instead gives each arm its own sizes through
 `[ArgumentsSource]`, shares the smallest ones so the arms are still compared, and builds every
 size's workload in `[GlobalSetup]`.
@@ -1568,25 +1535,21 @@ counts, drawn value ranges, and guarantees such as "the answer fits in a 32-bit 
 that one, both arms overflow to the same wrong number and still agree. A fast arm that cannot
 show its growth inside the bound stops there anyway; its class comment says so.
 
-### 17.8 One measurement changed on purpose
+### 17.8 Every arm returns the whole answer
 
-`WordLadderIIBenchmarks` previously had both arms *count* shortest sequences rather than build
-them, to avoid materializing a potentially exponential result set. Since both arms are now the same
-methods `WordLadderIISolutionTests` proves correct, they build LeetCode's actual answer — and the
-harness now returns it whole rather than its `.Count`, so the generic arm check compares the
-sequences themselves. On the chain-shaped workload the shortest-path DAG is narrow, so the
-comparison is still about search cost — but this is a deliberate change in what is measured, not an
-oversight.
+An arm returns LeetCode's whole answer, never a proxy for it. A proxy — `nums[0]` after an in-place
+rearrangement, the sum of reported name lengths over a design replay, `.Length`, a checksum, a count
+of sequences instead of the sequences — lets two arms "agree" while answering differently, and puts
+the proxy's own walk inside the timed region. This holds even where the answer is large:
+`WordLadderIIBenchmarks`' arms build and return every shortest sequence, so the generic arm check
+compares the sequences themselves, and on its chain-shaped workload the shortest-path DAG stays
+narrow enough that the comparison is still about search cost.
 
-Returning the whole answer is the rule for every arm, not just this one: an arm that returns a
-proxy — `nums[0]` after an in-place rearrangement, the sum of reported name lengths over a design
-replay, `.Length`, a checksum — lets two arms "agree" while answering differently, and puts the
-proxy's own walk inside the timed region. A design problem's arm returns the sequence of outputs its
-operation script observed, written into a buffer sized in `[GlobalSetup]`; a script of operations
-that return nothing ends with the reads LeetCode would use to observe it. A problem whose answer is
-a mutation the repo's types cannot hold - LC 116/117's next pointers, which `BinaryTreeNode` has no
-field for - answers with what LeetCode's judge reads back from it: there, each level along its next
-pointers with `#` between levels.
+A design problem's arm returns the sequence of outputs its operation script observed, written into a
+buffer sized in `[GlobalSetup]`; a script of operations that return nothing ends with the reads
+LeetCode would use to observe it. A problem whose answer is a mutation the repo's types cannot hold -
+LC 116/117's next pointers, which `BinaryTreeNode` has no field for - answers with what LeetCode's
+judge reads back from it: there, each level along its next pointers with `#` between levels.
 
 ### 17.9 Gate-compliance notes for the new tiers
 
@@ -1599,36 +1562,26 @@ pointers with `#` between levels.
   LeetCode-shaped and a hoisted overload, is four declarations sharing `Min` — so the check fires on
   196 of the 1,105 solution files (measured 2026-10-03), on the convention working as designed. The
   boundary it infers is already the file: the shared prefix is the one operation the problem asks
-  for, and splitting the strategies apart is exactly the drift §17.1 exists to undo. This is a waiver on the *convention*, not on any one
-  file's shortcomings.
+  for, and splitting the strategies apart is exactly the drift §17.1 exists to undo. This is a
+  waiver on the *convention*, not on any one file's shortcomings.
 - **`check-constant-placement` is waived on the two types whose subject IS their constants** —
-  `Domain/Modular/ModularArithmetic.cs`, `Domain/Locks/LockWheels.cs` (both still in `Domain/`
-  after §17.6's reclassification). The check's own prescribed
-  remedy is "move them to a type of its own, in its own file whose subject IS these values";
-  `LockWheels` was created in this pass by doing precisely that, and still fires. Where the
-  criticism was fair it was acted on instead: `LockGraph`'s wheel geometry really did belong in its
-  own type.
-- **`HammingSearch` returns `int?`, not a shared `Unreachable = -1` constant.** The first draft
-  exported a sentinel; `check-constant-placement` was right that a public constant on a search type
-  is a smell. A nullable result is better anyway — each caller maps "no path" onto its own
-  problem's convention (LC 127 reports `0`, LC 433 reports `-1`) instead of agreeing on a magic
-  value in between.
-- **`LeetCode/LeetCodeAnswer.cs` exists because `check-duplicate-constant` was right.**
-  `Unreachable = -1` had been copied into two unrelated solution classes. `-1` is LeetCode's
-  reporting convention for "no valid answer", not either problem's own value, so it is declared
-  once at the root of the tier — the same argument that puts `1_000_000_007` in `Domain/Modular`.
-- **`check-test-coverage` was NOT the naming problem the first draft claimed.** That draft asserted
-  the check demands `Test_<Member>_Should_...` names in a file beside the source, that no test in
-  this repo uses either, and therefore that writing tests could not clear the finding — and waived
-  it on that basis. All three claims were wrong. `DataStructures/Heap/Heap.cs` passes today with
-  ordinary `Push_Pop_MinHeap_ReturnsElementsInAscendingOrder` / `TryPeek_EmptyHeap_ReturnsFalse`
-  names, and `Graph/Grids/Grid.cs` passes with its test file in an entirely different folder. What
-  the check actually wants is a test file whose **name corresponds to the source file** and whose
-  **method names mention the members**. The waivers were withdrawn and replaced with real tests:
-  15 new files covering all 23 flagged members across `DataStructures/Graph/{Hamming,Grids}`,
-  `DataStructures/Graph/Engines/Dags/Trees`, `Algorithms/ShortestPaths` and both `Domain/` folders,
-  clearing every finding with nothing waived. Two of those tests failed on first run — both were
-  bugs in the tests, not the code, which is the point of writing them.
+  `Domain/Modular/ModularArithmetic.cs`, `Domain/Locks/LockWheels.cs`. The check's own prescribed
+  remedy is "move them to a type of its own, in its own file whose subject IS these values", and
+  `LockWheels` already is that type, split out of `LockGraph` for this check; it still fires. Where
+  the criticism is fair it is acted on instead: `LockGraph`'s wheel geometry has a type of its own.
+- **A search reports "no path" as `null`, not as a shared sentinel.** `HammingSearch` returns
+  `int?`: a public `Unreachable = -1` on a search type is the smell `check-constant-placement`
+  names, and with a nullable result each caller maps "no path" onto its own problem's convention
+  (LC 127 reports `0`, LC 433 reports `-1`) instead of agreeing on a magic value in between.
+- **LeetCode's reporting conventions are declared once, at the root of the tier.** `-1` for "no
+  valid answer" is LeetCode's convention, not any one problem's value, so it is
+  `LeetCode/LeetCodeAnswer.cs`'s, and `check-duplicate-constant` flags a solution that declares its
+  own — the same argument that puts `1_000_000_007` in `Domain/Modular`.
+- **`check-test-coverage` asks for a corresponding file and member-named methods, nothing more.**
+  It wants a test file whose **name corresponds to the source file** and whose **method names
+  mention the members**: `HeapTests`' ordinary `Push_Pop_MinHeap_ReturnsElementsInAscendingOrder` /
+  `TryPeek_EmptyHeap_ReturnsFalse` satisfy it. Its findings are cleared by writing those tests,
+  never by a waiver (§18.2).
 - **A benchmark class's harness coverage is one generic check, plus a companion only where it pins
   something.** A benchmark's arms are entry points the runner invokes; whether each arm answers
   *correctly* is owed by the solution's own tests (§17.7), and what the harness owes is narrower:
@@ -1642,59 +1595,41 @@ pointers with `#` between levels.
   `ArmAgreement`, each entry with its reason: answers LeetCode leaves unordered, random draws, and
   arms whose valid answers differ by design. An entry is for a difference the *problem* allows, not
   for a harness defect — an arm that drops what it builds, a solution that seeds itself, a workload
-  outside the problem's contract are fixed instead, and each of those was. A `<Benchmark>Tests`
-  companion exists only to assert what that check cannot — an
-  expected value derived independently of the arms, a property of the workload's shape, a size
-  other than the smallest. A companion that compares arms only with each other restates the generic
-  check under a different name; 620 such files were deleted on that basis, and none should be
-  re-added.
+  outside the problem's contract are fixed instead. A `<Benchmark>Tests` companion exists only to
+  assert what that check cannot — an expected value derived independently of the arms, a property
+  of the workload's shape, a size other than the smallest. A companion that compares arms only with
+  each other restates the generic check under a different name, and is not written.
 - **Tier 1 and tier 2 owe direct unit tests, and the LeetCode tier is a layer on top, not a
   substitute.** A data structure or algorithm is not covered because some LeetCode solution happens
   to compose it: a coverage tree shaped that way can only tell you a problem's answer changed, not
   which primitive broke. `DSAExperimentation.Tests/` mirrors the source tree for exactly this
-  reason, and `Tests/Domain/**` was created in this pass to extend that mirror to tier 3.
+  reason, and `Tests/Domain/**` extends that mirror to tier 3.
 - **A type's rationale goes in prose here, never in `<remarks>`, and `check-doc-schema` is why.**
   `<remarks>` is C#'s catch-all bucket: the check projects it as free prose rather than a section,
   because a type's doc is otherwise only its summary plus the sections its signature implies
-  (`<param>`/`<returns>`/`<exception>`/`<example>`), and an essay is none of those. The case that
-  established this was the registry harness's `IBoundWorkload`, whose design essay was moved here
-  rather than waived; the registry has since been retired (see §17.11), and the rule outlived it.
+  (`<param>`/`<returns>`/`<exception>`/`<example>`), and an essay is none of those.
 - **Two advisories are accepted rather than fixed.** `check-transposable-parameters` on signatures
   like `LadderLengthByMutationQueue(string beginWord, string endWord, ...)` is reporting LeetCode's
   own problem signature, which the solution tier deliberately mirrors; and `check-type-nature` on
   `AddBinarySolution.DigitWalk`. Both are advisory and neither fails the gate.
 
-Two pre-existing `check-nested-call` findings families remain outside these tiers, in unmigrated
-benchmark files (`CountUnreachablePairsOfNodesInAnUndirectedGraph`, `DeleteGreatestValueInEachRow`,
-`LongestIncreasingSubsequenceII`, `SellingPiecesOfWood`). They are untouched by this reorg and will
-clear as those problems migrate.
-
 ### 17.10 Migration status
 
-Complete. Every covered problem — 1,105 of them — has its `<Problem>Solution` in
+Complete: every covered problem has its `<Problem>Solution` in
 `DSAExperimentation.LeetCode/<Problem>/`, and its test and benchmark are harnesses over it. Count
 this by solution-file existence, not by the coverage manifest's tier tag, which under-reports.
 
-### 17.11 The registry harness, retired
+### 17.11 What every harness shares: `Conventions/`
 
-For a time a second harness shape existed beside the hand-written one: a problem could add a
-`<Problem>Registration` describing its strategies, cases and benchmark workloads, and one generic
-test and one generic benchmark class ran every registered arm. It was built to carry the migration,
-and the migration landed on the hand-written shape instead: ten problems were ever registered, each
-kept its hand-written test and benchmark as well, and nothing else used it.
-
-It was retired rather than finished, for two reasons. Finishing meant generating the 1,100
-hand-written benchmark classes from registrations — and a registration sized its workloads inside
-tier 4, which is the measurement decision §17.7 assigns to tier 5. And its one unique enforcement,
-that a solution's every strategy is asserted, now holds for every problem through
-`LeetCodeStrategyCoverageTests` rather than for the ten that were registered. The cases a
-registration carried beyond its problem's own test were ported into that test before deletion.
-
-What survived is the part every harness was already using: `DSAExperimentation.LeetCode/Conventions/`
-holds `LeetCodeWireFormat` (LeetCode's array notation for trees and lists, both directions) and
-`LeetCodeAnswers` (its answer-equality rules — exact, sequence, any-order, rows-in-any-order,
-within tolerance). A test or benchmark that needs either should call these rather than write its
-own `BuildList` or order-insensitive comparison.
+There is one harness shape: a hand-written test and a hand-written benchmark per problem, over its
+solution class. What they share is LeetCode's own conventions, in
+`DSAExperimentation.LeetCode/Conventions/`: `LeetCodeWireFormat` (LeetCode's array notation for
+trees and lists, both directions) and `LeetCodeAnswers` (its answer-equality rules — exact,
+sequence, any-order, rows-in-any-order, within tolerance). A test or benchmark that needs either
+calls these rather than writing its own `BuildList` or order-insensitive comparison. Sizing a
+workload stays in tier 5 (§17.7), and that every strategy is asserted is
+`LeetCodeStrategyCoverageTests`' to enforce (§18.5); a harness generated from a per-problem
+registration would move the first into tier 4 and duplicate the second.
 
 ## 18. Testing policy: every tier tests itself
 
@@ -1709,15 +1644,15 @@ problems says nothing about what it does with an empty frontier.
 ### 18.1 What "direct unit test" means here
 
 - **One test file per source file**, at the mirrored path: `DataStructures/Heap/Heap.cs` is tested
-  by `DSAExperimentation.Tests/DataStructures/Heap/HeapTests.cs`. `Tests/Domain/**` was added in
-  this pass so tier 3 mirrors the same way.
+  by `DSAExperimentation.Tests/DataStructures/Heap/HeapTests.cs`. Tier 3 mirrors the same way, under
+  `Tests/Domain/**`.
 - **Test method names begin with the member under test**, in this repo's existing
   `Member_Scenario_Expectation` form: `TryPeek_EmptyHeap_ReturnsFalse`,
   `Count_ReflectsPushesAndPops`, `OneCharacterMutations_RestoresItsBufferBetweenPositions`.
 - **Witness types get tested too.** `NaturalChildOrder`, `ListChildren`, `BinaryTreeTopology`,
   `SizeAlgebra`, `ByPriorityOrder` and friends are one-method structs, but they are the pieces every
   algorithm is generic over, and their behaviour is exactly what a caller relies on. They are cheap
-  to test and were the largest single block of untested surface before this pass.
+  to test.
 
 ### 18.2 Why the naming rule is load-bearing, not cosmetic
 
@@ -1725,38 +1660,23 @@ The Nomos `check-test-coverage` gate reads both halves — file correspondence a
 and reports anything else as uncovered. That is a real property, not a formality: a member with no
 test naming it is a member whose failure will surface under a test name that does not mention it.
 
-This repo previously had **59 `check-test-coverage` waivers** across `DataStructures/` and
-`Algorithms/`, most of them arguing that the members were exercised transitively and that the check
-was mis-attributing. A companion claim in §17.9's first draft went further and asserted the check
-demanded `Test_<Member>_Should_...` names that no test here uses, so writing tests could not clear
-it. **That was wrong**, and it is worth recording how the error compounded: one bad reading of the
-tool produced a waiver, and the waiver then stood in for the missing tests. `HeapTests.cs` had been
-passing the check all along with ordinary names. Writing real tests clears these findings.
+So a `check-test-coverage` finding in tiers 1–2 is answered with a test, never a waiver. A waiver
+arguing that a member is exercised transitively, or that the check mis-attributes, records exactly
+the gap this section exists to close, and then stands in for the missing test. The check's only
+waivers are over the solution tier's problem folders, which `LeetCodeStrategyCoverageTests` covers
+by construction (§18.5), and over benchmark size lists.
 
-### 18.3 Where this stands
+### 18.3 What is covered, and how a nested type is named
 
-Direct unit tests were written for **~50 source files** in this pass — the whole
-`Graph/Contracts/Ordering` witness family, the `Graph/Hamming` and weighted-`Grids` structures, the
-rooted-tree primitives, `Walking/**` (which had no tests at all), `TopDownTraversal`/`TopDownWalk`
-(likewise), the tree/trie/grid topology witnesses, the metric algebras, the three storage internals,
-and both `Domain/` folders — taking the suite from ~2,900 to ~3,550 tests and retiring 35 waivers
-outright.
+Every source file under `DataStructures/` and `Algorithms/` that declares behaviour of its own has
+its test file at the mirrored path, and no `check-test-coverage` waiver covers either tier. The
+files without one are contracts, node and record types, and constant holders, whose behaviour is
+their implementers' and users' to test. A test file is named after the one type it tests, never
+after a family of them (`TreeFoldTests`, not `FoldTests`).
 
-**That backlog is closed.** It was listed file by file in
-`suppressions.json`, each waiver naming its members and stating that it recorded debt rather than
-an exemption. It closed three ways: family-named test files were renamed after the type they test
-(`FoldTests.cs` became `TreeFoldTests.cs`, `MetricsTests.cs` became `TreeMetricsTests.cs`);
-`TraversalTests.cs` and `GraphTests.cs` were split into one class per entry point; and the tests
-that were genuinely missing were written. A nested type is its own unit, so its members are named
-from a test class nested the same way — `BreadthFirstTraversal.HooksStep.Enter` is named by
-`BreadthFirstTraversalTests.HooksStepTests`, which drives it through the traversal's own entry
-points.
-
-The last member open was `HooksStep.Seed`, then nested in `BreadthFirstWalk` and `DepthFirstWalk`
-and dead: each engine's void `Walk` overload started from `default(Unit)` and never read it. It
-closed when traversal hooks became instance values that each traversal threads through `Reduce` as
-the state. `HooksStep` moved into the traversals, and their `(root)` overloads start from it, so
-`Seed` is now the starting hook of every walk handed no hook of its own, and a test names it.
+A nested type is its own unit, so its members are named from a test class nested the same way —
+`BreadthFirstTraversal.HooksStep.Enter` is named by `BreadthFirstTraversalTests.HooksStepTests`,
+which drives it through the traversal's own entry points.
 
 ### 18.4 The rule for new work
 
@@ -1767,9 +1687,8 @@ obligation for any primitive it composes — and if a problem needs a primitive 
 
 ### 18.5 The layering rules are tests, not prose
 
-Three of this document's rules were only ever stated here, which meant they held exactly as long as
-whoever was editing remembered them. They are now asserted by
-`DSAExperimentation.Tests/Architecture/`, which reads the repository as *text* rather than as types
+The rules below are asserted by `DSAExperimentation.Tests/Architecture/`, so they hold whether or
+not whoever is editing remembers them. The tests read the repository as *text* rather than as types
 — the benchmark project is not on the test project's reference list, and a reflection-only rule
 would be blind in precisely the place duplication happens.
 
@@ -1793,12 +1712,10 @@ would be blind in precisely the place duplication happens.
   `<Problem>Solution` needs a test method in the problem's test namespace whose first
   underscore-separated word is the member's name, and so does every other non-private static
   method - the input-preparation helpers §17.4 makes public so a benchmark can hoist them, each
-  asserted on what it builds. This is the check the
-  `check-test-coverage` waiver over `DSAExperimentation.LeetCode/**` rests on; before it existed the
-  waiver's "complete by construction" was a claim, and `KthSmallestElementInABSTSolution` had no
-  caller at all.
-- **§12.4's "per-call state belongs to the call"** — `AmbientStateTests`, written with the rule
-  rather than after it. No file in `DSAExperimentation` or `DSAExperimentation.LeetCode` may declare
+  asserted on what it builds. This is the check the `check-test-coverage` waiver over
+  `DSAExperimentation.LeetCode/**` rests on.
+- **§12.4's "per-call state belongs to the call"** — `AmbientStateTests`. No file in
+  `DSAExperimentation` or `DSAExperimentation.LeetCode` may declare
   an `AsyncLocal`, `ThreadLocal` or `[ThreadStatic]` slot; a hook or algebra that needs a runtime
   value carries it as a field. Comments and strings are blanked through the same
   `RepositoryFiles.CodeOf` the witness rule reads base lists with.
@@ -1813,9 +1730,15 @@ would be blind in precisely the place duplication happens.
   calls or constructs, as §17.5 describes, and fails on any library type or §17.6 content model the
   trace reaches outside the arm's own input. Parser tests pin each resolution rule the trace relies
   on.
+- **§17.6a's "solutions see only the library's public types"** — `InternalsVisibilityTests`:
+  `DSAExperimentation` grants its internals to its test assemblies and to nothing else.
+- **§1's "section numbers are stable"** — `SectionCitationTests`. Every section citation in the six
+  projects' code, the root's documents, `suppressions.json` and the agent runbooks and workflows
+  under `.claude/` must name a number a heading of this document carries. It reads "§17.3",
+  "ARCHITECTURE 17.9", "ARCHITECTURE.md #17.3/#17.6" and "section 17.2", including a number that a
+  comment wraps onto its next line. A step inside a section is cited as "§5 step 5".
 
-Every harness file is in scope of the witness rule; the whole catalogue has reached tier 4, so
-there is no unmigrated problem for a harness to be waiting on.
+Every harness file is in scope of the witness rule.
 
 ## 19. The pieces the solutions kept writing
 
