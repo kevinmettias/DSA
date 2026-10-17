@@ -1,3 +1,5 @@
+using DSAExperimentation.Algorithms.NumberTheory;
+
 namespace DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOne;
 
 // LeetCode 2654. Minimum Number of Operations to Make All Array Elements Equal
@@ -19,9 +21,10 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeAllArrayEle
 // modulo-based Euclidean algorithm (O(log min) per pair). That is the same
 // contrast CheckIfItIsAGoodArraySolution and FindGreatestCommonDivisorOfArray-
 // Solution draw for their own gcd folds, here paid once per window rather than
-// once for the whole array - which is what makes it visible. As those two record,
-// a reduction over a running integer has no repo container or algorithm
-// primitive to compose over, so the gcd helpers stay in this file too.
+// once for the whole array - which is what makes it visible. The modulo step is
+// the library's own Euclid, GreatestCommonDivisor.Of, as in those two; the
+// subtraction step stays in this file because the baseline arm runs on it
+// (ARCHITECTURE 17.5).
 internal static class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneSolution
 {
     // Both gcd steps are stateless, so one instance each serves every call and the
@@ -151,11 +154,11 @@ internal static class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneS
         }
     }
 
-    // The modulo form of the same step: each round replaces the pair with
-    // (right, left % right), so the values shrink geometrically instead of by one
-    // multiple of the smaller at a time.
+    // The modulo form of the same step, GreatestCommonDivisor.Of: each round
+    // replaces the pair with (right, left % right), so the values shrink
+    // geometrically instead of by one multiple of the smaller at a time.
     private sealed class EuclideanGcd : IPairwiseGcd
     {
-        public int Of(int left, int right) => right == 0 ? left : Of(right, left % right);
+        public int Of(int left, int right) => GreatestCommonDivisor.Of(left, right);
     }
 }
