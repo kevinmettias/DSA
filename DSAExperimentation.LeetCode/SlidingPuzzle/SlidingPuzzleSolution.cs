@@ -19,10 +19,24 @@ internal static class SlidingPuzzleSolution
     // LeetCode's own definition of "solved".
     private const string Target = "123450";
 
+    // The empty cell, the only tile that moves.
+    private const char Blank = '0';
+
+    // The cells a blank at each position of the row-major 2x3 board can slide into.
+    private static readonly int[][] SlideTargets =
+    [
+        [1, 3],
+        [0, 2, 4],
+        [1, 5],
+        [0, 4],
+        [1, 3, 5],
+        [2, 4],
+    ];
+
     // Deliberately written without this repo's primitives - BCL Queue + HashSet,
-    // generating each candidate slide on the fly via PuzzleGraph's pure board
-    // arithmetic (never the materialized graph) is what you would write without
-    // this repo.
+    // generating each candidate slide on the fly with its own board arithmetic rather
+    // than PuzzleGraph's, whose model a baseline may not read (ARCHITECTURE 17.5), is
+    // what you would write without this repo.
     public static int MinMovesByMutationQueue(int[][] board) => MinMovesByMutationQueue(Flatten(board));
 
     public static int MinMovesByMutationQueue(string start)
@@ -53,12 +67,26 @@ internal static class SlidingPuzzleSolution
         HashSet<string> visited,
         Queue<(string State, int Moves)> queue)
     {
-        foreach (var neighbor in PuzzleGraph.BlankSlideNeighbors(state))
+        foreach (var neighbor in OneSlideAway(state))
         {
             if (visited.Add(neighbor))
             {
                 queue.Enqueue((neighbor, moves + 1));
             }
+        }
+    }
+
+    // Every board one slide of the blank away, in the order PuzzleGraph wires its edges.
+    private static IEnumerable<string> OneSlideAway(string state)
+    {
+        var blank = state.IndexOf(Blank);
+
+        foreach (var target in SlideTargets[blank])
+        {
+            var cells = state.ToCharArray();
+            (cells[blank], cells[target]) = (cells[target], cells[blank]);
+
+            yield return new string(cells);
         }
     }
 

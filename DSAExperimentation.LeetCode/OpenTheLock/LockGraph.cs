@@ -63,8 +63,8 @@ internal sealed class LockGraph
     public bool TryGetNode(string combination, out LockNode node) =>
         _nodesByCombination.TryGetValue(combination, out node);
 
-    // The 8 combinations one wheel-turn away, dead or alive - pure wheel
-    // arithmetic, so callers that never materialize the graph can use it too.
+    // The 8 combinations one wheel-turn away, dead or alive - the pure wheel
+    // arithmetic WireEdges joins nodes by.
     public static IEnumerable<string> WheelTurnNeighbors(string combination)
     {
         for (var wheel = 0; wheel < LockWheels.Count; wheel++)

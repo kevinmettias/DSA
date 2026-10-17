@@ -75,8 +75,8 @@ internal sealed class PuzzleGraph
 
     public bool TryGetNode(string state, out PuzzleNode node) => _nodesByState.TryGetValue(state, out node);
 
-    // The 2-3 boards one blank-tile slide away - pure board arithmetic, so
-    // callers that never materialize the graph can use it too.
+    // The 2-3 boards one blank-tile slide away - the pure board arithmetic Build
+    // wires its edges with.
     public static IEnumerable<string> BlankSlideNeighbors(string state)
     {
         var blank = state.IndexOf('0');

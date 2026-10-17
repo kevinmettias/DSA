@@ -1746,8 +1746,11 @@ would be blind in precisely the place duplication happens.
 - **§17.5's "what you would write without this repo"** — `BaselineIsolationTests`. Every
   `Baseline = true` arm of every `ProblemSolutions` benchmark is traced from the solution member it
   calls or constructs, as §17.5 describes, and fails on any library type or §17.6 content model the
-  trace reaches outside the arm's own input. Parser tests pin each resolution rule the trace relies
-  on.
+  trace reaches outside the arm's own input. The trace resolves a simple name through its file's
+  own usings, so the test also fails on any import of a library name past one file's scope - a
+  global using in the solution project, a `<Using>` item in its project file or in a
+  `Directory.Build` or `Directory.Packages` file, or a static using of a library type. Parser tests
+  pin each resolution rule the trace relies on.
 - **§17.6a's "solutions see only the library's public types"** — `InternalsVisibilityTests`:
   `DSAExperimentation` grants its internals to its test assemblies and to nothing else.
 - **§1's "section numbers are stable"** — `SectionCitationTests`. Every section citation in the six

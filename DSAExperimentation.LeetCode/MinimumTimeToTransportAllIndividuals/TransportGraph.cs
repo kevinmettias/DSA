@@ -65,7 +65,7 @@ internal sealed class TransportGraph(
     // across, then - unless that group finished everyone - send one already-
     // arrived individual back. Pure river-crossing arithmetic, so a caller
     // that never materializes the graph (the brute-force baseline) can use it
-    // too - the same split LockGraph.WheelTurnNeighbors makes for OpenTheLock.
+    // too.
     public static IEnumerable<(double Time, int Mask, int Stage)> Rounds(
         (int Mask, int Stage) state, int[] time, int capacity, double[] mul)
     {

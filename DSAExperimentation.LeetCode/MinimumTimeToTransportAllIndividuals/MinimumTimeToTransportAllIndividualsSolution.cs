@@ -19,11 +19,9 @@ namespace DSAExperimentation.LeetCode.MinimumTimeToTransportAllIndividuals;
 internal static class MinimumTimeToTransportAllIndividualsSolution
 {
     // Textbook baseline: BCL PriorityQueue<(mask,stage), double> Dijkstra,
-    // reusing TransportGraph.Rounds for the pure river-crossing rule (the
-    // same "reuse the domain's own neighbor rule, keep only the search engine
-    // textbook" split OpenTheLockSolution's MinTurnsByMutationQueue makes
-    // with LockGraph.WheelTurnNeighbors) but never materializing the graph
-    // itself. The arm the composed strategy below has to justify itself
+    // reusing TransportGraph.Rounds - this problem's own river-crossing rule,
+    // not a library type - and keeping only the search engine textbook, never
+    // materializing the graph itself. The arm the composed strategy below has to justify itself
     // against.
     public static double MinTimeByBruteForceDijkstra(int[] time, int capacity, double[] mul)
     {

@@ -32,7 +32,6 @@ public sealed partial class BaselineIsolationTests
     [
         "DSAExperimentation.DataStructures",
         "DSAExperimentation.Algorithms",
-        "DSAExperimentation.Domain",
         "DSAExperimentation.LeetCode.Modular",
     ];
 
@@ -60,14 +59,6 @@ public sealed partial class BaselineIsolationTests
     // not a baseline written with the library.
     private static readonly Dictionary<string, string> AllowedReaches = new(StringComparer.Ordinal)
     {
-        ["OpenTheLockBenchmarks"] =
-            "Not yet BCL: the baseline still turns wheels through LockGraph.WheelTurnNeighbors. It "
-            + "states its own wheel arithmetic once the lock model's move into this tier lands, and "
-            + "this entry goes with it.",
-        ["SlidingPuzzleBenchmarks"] =
-            "Not yet BCL: the baseline still slides the blank through PuzzleGraph.BlankSlideNeighbors. "
-            + "It states its own board arithmetic once the puzzle model's move into this tier lands, "
-            + "and this entry goes with it.",
     };
 
     private static readonly Lazy<LibraryIndex> Library = new(LibraryIndex.Read);
@@ -86,7 +77,15 @@ public sealed partial class BaselineIsolationTests
         RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace);
     private static readonly Regex CapitalizedName = new(@"(?<![\w.])(?<name>[A-Z]\w*)");
     private static readonly Regex QualifiedLibraryName = new(
-        @"(?<![\w.])(?:DSAExperimentation\.)?(?:DataStructures|Algorithms|Domain|LeetCode\.Modular)\.[\w.]*\w");
+        @"(?<![\w.])(?:DSAExperimentation\.)?(?:DataStructures|Algorithms|LeetCode\.Modular)\.[\w.]*\w");
+
+    // An import that reaches past one file's own scope: a global using - aliased, static or plain -
+    // or a static using in a single file, which brings a type's members in with no type name at all.
+    private static readonly Regex HiddenImport = new(
+        @"^[ \t]*(?:global\s+using(?:\s+static)?|using\s+static)\s+(?:\w+\s*=\s*)?(?<name>[\w.]+)",
+        RegexOptions.Multiline);
+    private static readonly Regex UsingItem = new(@"<Using\b[^>]*\bInclude\s*=\s*""(?<name>[^""]*)""");
+    private static readonly Regex XmlComment = new("<!--.*?-->", RegexOptions.Singleline);
 
     public static TheoryData<string, string[]> StrategyEntries =>
         new()
@@ -100,6 +99,25 @@ public sealed partial class BaselineIsolationTests
         {
             { ["int[]"], ["RepoStack"] },
             { ["RepoStack"], [] },
+        };
+
+    public static TheoryData<string, string, string[]> HiddenImportsByFile =>
+        new()
+        {
+            { "Solution.cs", "global using DSAExperimentation.DataStructures.Set;", ["DSAExperimentation.DataStructures.Set"] },
+            {
+                "Solution.cs",
+                "using static DSAExperimentation.LeetCode.Modular.ModularArithmetic;",
+                ["DSAExperimentation.LeetCode.Modular.ModularArithmetic"]
+            },
+            {
+                "Directory.Packages.props",
+                "<ItemGroup><Using Include=\"DSAExperimentation.Algorithms.Searching\" /></ItemGroup>",
+                ["DSAExperimentation.Algorithms.Searching"]
+            },
+            { "Solution.cs", "using DSAExperimentation.DataStructures.Set;", [] },
+            { "Solution.cs", "global using System.Linq;", [] },
+            { "Directory.Build.props", "<!-- <Using Include=\"DSAExperimentation.Algorithms\" /> -->", [] },
         };
 
     [Fact]
@@ -126,6 +144,19 @@ public sealed partial class BaselineIsolationTests
     [Fact]
     public void BaselineSweep_FindsTheBenchmarkBaselines() =>
         Assert.True(BaselineEntries().Count >= ExpectedBaselinesAtLeast);
+
+    // ScopeOf reads one file's usings and aliases, so a library namespace imported for the whole
+    // solution project - by a global using in any of its files, or a <Using> item in a build file
+    // MSBuild imports into it - would put a bare library name in every baseline's scope unseen, and
+    // a static using of a library type would bring its members in with no type name at all.
+    [Fact]
+    public void SolutionProject_ImportsNoLibraryNamePastAFilesOwnScope() =>
+        Assert.Empty(HiddenLibraryImports());
+
+    [Theory]
+    [MemberData(nameof(HiddenImportsByFile))]
+    public void HiddenLibraryImportsIn_ImportPastAFilesOwnScope_AreFound(string fileName, string text, string[] expected) =>
+        Assert.Equal(expected, HiddenLibraryImportsIn(fileName, text));
 
     [Fact]
     public void LibraryNamesReached_AliasForALibraryType_AreFound() =>
@@ -168,7 +199,7 @@ public sealed partial class BaselineIsolationTests
     public void LibraryNamesReached_NameInACommentOrString_AreIgnored() =>
         Assert.Empty(LibraryNamesReached(
             """
-            using DSAExperimentation.Domain.Modular;
+            using DSAExperimentation.LeetCode.Modular;
 
             namespace Probe;
 
@@ -389,6 +420,66 @@ public sealed partial class BaselineIsolationTests
 
         return ProblemFolderSource.Of([("ProbeSolution.cs", code)]);
     }
+
+    // Every import of a library name past one file's own scope that the solution project sees.
+    private static List<string> HiddenLibraryImports()
+    {
+        var root = RepositoryFiles.Root();
+        var sources = RepositoryFiles.SourceFilesIn(Path.Combine(root, SolutionProject)).Select(file => file.Path);
+        var imports = new List<string>();
+
+        foreach (var file in sources.Concat(SolutionBuildFiles(root)))
+        {
+            var relative = Path.GetRelativePath(root, file);
+            var text = File.ReadAllText(file);
+            imports.AddRange(HiddenLibraryImportsIn(file, text).Select(name => $"{relative}: {name}"));
+        }
+
+        return imports;
+    }
+
+    // The solution project's own project file, and the Directory.Build and Directory.Packages files
+    // MSBuild imports into it from its folder or the repository root - Directory.Packages.props
+    // included, which NuGet.props imports whether or not central package management is on.
+    private static IEnumerable<string> SolutionBuildFiles(string root)
+    {
+        var project = Path.Combine(root, SolutionProject);
+        string[] names = ["Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props"];
+
+        return names
+            .SelectMany(name => new[] { Path.Combine(project, name), Path.Combine(root, name) })
+            .Where(File.Exists)
+            .Prepend(Path.Combine(project, $"{SolutionProject}.csproj"));
+    }
+
+    // The library names one file imports past its own scope: a global or static using in source, a
+    // <Using> item in a build file.
+    private static List<string> HiddenLibraryImportsIn(string fileName, string text)
+    {
+        var imported = ImportedNamesIn(fileName, text);
+
+        return [.. imported.Where(IsLibraryTarget)];
+    }
+
+    private static IEnumerable<string> ImportedNamesIn(string fileName, string text)
+    {
+        if (fileName.EndsWith(".cs", StringComparison.Ordinal))
+        {
+            var code = RepositoryFiles.CodeOf(text);
+
+            return HiddenImport.Matches(code).Select(match => match.Groups["name"].Value);
+        }
+
+        var uncommented = XmlComment.Replace(text, string.Empty);
+
+        return UsingItem.Matches(uncommented).Select(match => match.Groups["name"].Value);
+    }
+
+    private static bool IsLibraryTarget(string name) =>
+        IsLibraryNamespace(name) || Array.Exists(LibraryTypeNames, barred => barred == name);
+
+    private static bool IsLibraryNamespace(string name) =>
+        Array.Exists(LibraryNamespaces, library => name == library || name.StartsWith($"{library}.", StringComparison.Ordinal));
 
     private static List<Offence> Offences()
     {
@@ -729,9 +820,6 @@ public sealed partial class BaselineIsolationTests
 
             return scope;
         }
-
-        private static bool IsLibraryNamespace(string name) =>
-            Array.Exists(LibraryNamespaces, library => name == library || name.StartsWith($"{library}.", StringComparison.Ordinal));
 
         private void AddLibraryTypesIn(string code)
         {
