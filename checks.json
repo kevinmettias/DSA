@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "checks": {
+    "check-duplicate-constant": {
+      "options": {
+        "independent_units": [
+          {
+            "units": [
+              "DSAExperimentation.LeetCode/<unit>",
+              "DSAExperimentation.Benchmarks/ProblemSolutions/<unit>Benchmarks.cs"
+            ],
+            "shared": ["DSAExperimentation.LeetCode/Conventions"],
+            "reason": "A problem is one unit: its folder in DSAExperimentation.LeetCode (ARCHITECTURE §17.3) together with its <Problem>Benchmarks.cs harness (§17.7). Problems are solved independently, so a value two problems both declare, such as a board size, a digit base, a sentinel or a workload bound, is each problem's own choice and must stay free to differ. A value a problem's harness and its solution both declare is a fact about that problem, so it is still reported. Copies of the shared helpers are still reported too: Conventions/, the files beside the problem folders and the helpers beside the harnesses. Benchmarks/Fixtures is left out on purpose: a fixture can serve several problems, so its copies are still compared and argued in suppressions.json."
+          }
+        ]
+      }
+    }
+  }
+}
