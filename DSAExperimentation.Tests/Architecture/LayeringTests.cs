@@ -213,14 +213,16 @@ public sealed partial class LayeringTests
                 + $"{reference.Target} puts {reference.Tier} in scope for every tier below it."));
     }
 
-    // The framework project's own project file, which must exist, and whichever Directory.Build
-    // files sit in its folder or at the repository root, where MSBuild looks for them.
+    // The framework project's own project file, which must exist, and whichever of the files
+    // MSBuild imports into every project beneath them sit in its folder or at the repository
+    // root: the Directory.Build pair, and Directory.Packages.props, which NuGet's props import
+    // whether or not central package management is on.
     private static IEnumerable<string> BuildFilesOf(string root)
     {
         var project = Path.Combine(root, FrameworkProject);
-        string[] directoryBuildFiles = ["Directory.Build.props", "Directory.Build.targets"];
+        string[] importedIntoEveryProject = ["Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props"];
 
-        return directoryBuildFiles
+        return importedIntoEveryProject
             .SelectMany(name => new[] { Path.Combine(project, name), Path.Combine(root, name) })
             .Where(File.Exists)
             .Prepend(Path.Combine(project, $"{FrameworkProject}.csproj"));

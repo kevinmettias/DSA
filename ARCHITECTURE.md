@@ -1501,9 +1501,11 @@ lines. A fully qualified `DSAExperimentation.Algorithms.X`, a `using static` or 
 partially qualified `Algorithms.X` all count as references. The partial form needs no `using`
 because it resolves the same way inside any `DSAExperimentation` namespace. Global usings are
 judged more strictly, because they put a namespace in scope for every tier at once. That covers a
-`global using` directive in any of the project's files and a `<Using>` item in its project file or
-a `Directory.Build` file. A global using may name `DataStructures` and nothing above it, and no
-allow-list entry can sanction one.
+`global using` directive in any of the project's files and a `<Using>` item in any build file
+MSBuild reads for the project: its project file, a `Directory.Build` file, or
+`Directory.Packages.props`, which NuGet imports into every project whether or not central package
+management is on. A global using may name `DataStructures` and nothing above it, and no allow-list
+entry can sanction one.
 
 ### 17.7 Tier 5: what stays in a harness
 
