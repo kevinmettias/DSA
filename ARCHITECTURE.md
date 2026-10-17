@@ -1505,7 +1505,10 @@ judged more strictly, because they put a namespace in scope for every tier at on
 MSBuild reads for the project: its project file, a `Directory.Build` file, or
 `Directory.Packages.props`, which NuGet imports into every project whether or not central package
 management is on. A global using may name `DataStructures` and nothing above it, and no allow-list
-entry can sanction one.
+entry can sanction one. All of this reads a tier off the namespace a name is written in, so every
+file must also declare its namespace inside its own tier: a type an `Algorithms/` file declared in
+a `DataStructures` namespace, in the root namespace or in none would reach `DataStructures` files
+by its simple name, with no tier written anywhere for the test to read.
 
 ### 17.7 Tier 5: what stays in a harness
 
@@ -1712,8 +1715,9 @@ would be blind in precisely the place duplication happens.
   tier or a lower one, whether in a `using` directive or inline in its code. The one deliberate
   inversion is allow-listed by file and target namespace, and a global using may name only the
   lowest tier (§17.6a). Every file of the project must sit in `DataStructures/` or `Algorithms/`,
-  so a folder no rule judges — a tier 3 brought back, say — fails instead of passing unread. The
-  LeetCode tier
+  so a folder no rule judges — a tier 3 brought back, say — fails instead of passing unread. Each
+  file must also declare its namespace inside its own tier, since every reference is read by the
+  tier its namespace names. The LeetCode tier
   has no row: it is the top tier in a project of its own, so nothing it references can sit above
   it, and a row for it could never fail.
 - **§17.7's "a harness holds assertions and workload sizing"** — `Tier5WitnessTests`. A type that

@@ -98,6 +98,19 @@ public sealed partial class LayeringTests
         Assert.True(untiered.Count == 0, string.Join(Environment.NewLine, untiered));
     }
 
+    // The scans above read a tier off the namespace a name is written in, so they hold only while
+    // every file declares its types inside its own tier. A type an Algorithms file declared in a
+    // DataStructures namespace, or in the root one, would reach DataStructures files under a name
+    // no scan reads as Algorithms.
+    [Fact]
+    public void DeclaredNamespaces_StayInsideTheTierOfTheirFile()
+    {
+        var offences = TieredFiles().SelectMany(NamespaceEscapesIn).ToList();
+        var report = string.Join(Environment.NewLine, offences);
+
+        Assert.True(offences.Count == 0, report);
+    }
+
     // The scanner's reach, stated as cases: a sweep that reports nothing proves only that
     // nothing it can see is wrong.
     public static TheoryData<string> SpellingsOfAnAlgorithmsReference =>
@@ -177,10 +190,13 @@ public sealed partial class LayeringTests
         Assert.Equal(covered, edge.Covers(new TierReference("Algorithms", target)));
     }
 
-    private static List<string> Inversions()
+    private static List<string> Inversions() => TieredFiles().SelectMany(InversionsIn).ToList();
+
+    // Every framework file under a tier folder, with the tier its location puts it in. A file
+    // outside them is EveryFrameworkFile_SitsInATierFolder's to report.
+    private static IEnumerable<TieredFile> TieredFiles()
     {
         var root = RepositoryFiles.Root();
-        var offences = new List<string>();
 
         foreach (var file in RepositoryFiles.SourceFilesIn(Path.Combine(root, FrameworkProject)))
         {
@@ -189,11 +205,9 @@ public sealed partial class LayeringTests
 
             if (tier is not null)
             {
-                offences.AddRange(InversionsIn(new TieredFile(file, relative, tier)));
+                yield return new TieredFile(file, relative, tier);
             }
         }
-
-        return offences;
     }
 
     // Every global using the framework project sees that names a tier above the lowest: a
@@ -328,6 +342,16 @@ public sealed partial class LayeringTests
         }
 
         return relative[(slash + 1)..];
+    }
+
+    // The namespaces one file declares outside its tier, each stated as a finding.
+    private static IEnumerable<string> NamespaceEscapesIn(TieredFile file)
+    {
+        var code = RepositoryFiles.CodeOf(File.ReadAllText(file.FullPath));
+        var tierNamespace = $"{RootNamespace}.{file.Tier}";
+
+        return NamespaceDeclarations.OutsideOf(tierNamespace, code)
+            .Select(name => $"{file.RelativePath}: declares {name}, outside {tierNamespace}.");
     }
 
     // One source file under a tier project, named three ways: the absolute path to read, the
