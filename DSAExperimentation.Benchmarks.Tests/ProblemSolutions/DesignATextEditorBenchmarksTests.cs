@@ -20,8 +20,8 @@ public sealed partial class DesignATextEditorBenchmarksTests
         Assert.Equal(ExpectedReports(), BuildHarness().ListBacked());
 
     [Fact]
-    public void StackBacked_ChunksWalkedBackToTheirFirstLetter_ReportsTheLastTenFirstLetters() =>
-        Assert.Equal(ExpectedReports(), BuildHarness().StackBacked());
+    public void CursorSequenceBacked_ChunksWalkedBackToTheirFirstLetter_ReportsTheLastTenFirstLetters() =>
+        Assert.Equal(ExpectedReports(), BuildHarness().CursorSequenceBacked());
 
     private static string[] ExpectedReports()
     {
