@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for DesignAuthenticationManagerBenchmarks (ARCHITECTURE 17.9): its two arms are
 // competing strategies for the same question - a flat List<T> renew probe walks against this
-// repo's own HashMap - so a harness whose arms disagree is timing two different problems. Setup
+// repo's ExpiringSet - so a harness whose arms disagree is timing two different problems. Setup
 // derives every token id and renew probe from Length, so the same Length must rebuild the same
 // script, and that script's clock has to stay inside the time-to-live until it counts.
 public sealed partial class DesignAuthenticationManagerBenchmarksTests
@@ -26,19 +26,19 @@ public sealed partial class DesignAuthenticationManagerBenchmarksTests
     }
 
     [Fact]
-    public void LinearScanList_HalfHitHalfMissRenewProbes_AgreesWithRepoHashMap()
+    public void LinearScanList_HalfHitHalfMissRenewProbes_AgreesWithRepoExpiringSet()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.RepoHashMap(), harness.LinearScanList());
+        Assert.Equal(harness.RepoExpiringSet(), harness.LinearScanList());
     }
 
     [Fact]
-    public void RepoHashMap_HalfHitHalfMissRenewProbes_AgreesWithLinearScanList()
+    public void RepoExpiringSet_HalfHitHalfMissRenewProbes_AgreesWithLinearScanList()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.LinearScanList(), harness.RepoHashMap());
+        Assert.Equal(harness.LinearScanList(), harness.RepoExpiringSet());
     }
 
     private static DesignAuthenticationManagerBenchmarks BuildHarness()

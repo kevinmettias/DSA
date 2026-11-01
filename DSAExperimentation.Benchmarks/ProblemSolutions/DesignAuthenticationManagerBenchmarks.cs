@@ -7,7 +7,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // classes DesignAuthenticationManagerSolutionTests proves correct - the naive
 // List<(string, int)> linear-scan manager (the "no hashing at all" baseline a
 // first-pass implementation reaches for, DesignHashMapBenchmarks precedent)
-// against this repo's HashMap<TKey,TValue>. Both are populated with the same
+// against this repo's ExpiringSet<TKey>, a time-to-live mechanism over its own
+// HashMap and Queue. Both are populated with the same
 // Length tokens, then renewed with Length probes split evenly between existing and
 // unknown token ids, so a linear scan's O(n) cost per lookup is fully exercised on
 // every probe. [GlobalSetup] materializes the token ids so building them is charged
@@ -59,7 +60,7 @@ public class DesignAuthenticationManagerBenchmarks
     public int LinearScanList() => Replay(new DesignAuthenticationManagerSolution.AuthenticationManagerByLinearScanList(TimeToLive));
 
     [Benchmark]
-    public int RepoHashMap() => Replay(new DesignAuthenticationManagerSolution.AuthenticationManagerByHashMap(TimeToLive));
+    public int RepoExpiringSet() => Replay(new DesignAuthenticationManagerSolution.AuthenticationManagerByExpiringSet(TimeToLive));
 
     // LC 1797's currentTime starts at 1 and strictly increases, so every call here
     // comes one tick after the last. Nothing expires before the count, so a hit

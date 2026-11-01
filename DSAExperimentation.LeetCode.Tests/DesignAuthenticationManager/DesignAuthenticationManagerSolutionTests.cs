@@ -68,10 +68,10 @@ public sealed partial class DesignAuthenticationManagerSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AuthenticationManagerByHashMap_LeetCodeExamples_MatchesExpectedSequence(
+    public void AuthenticationManagerByExpiringSet_LeetCodeExamples_MatchesExpectedSequence(
         int timeToLive, AuthenticationManagerOp[] operations, int?[] expected) =>
         Assert.Equal(expected, RunScript(
-            new DesignAuthenticationManagerSolution.AuthenticationManagerByHashMap(timeToLive), operations));
+            new DesignAuthenticationManagerSolution.AuthenticationManagerByExpiringSet(timeToLive), operations));
 
     private static int?[] RunScript(
         DesignAuthenticationManagerSolution.IAuthenticationManager manager,

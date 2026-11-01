@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.Mechanisms.ExpiringSet;
 
 namespace DSAExperimentation.LeetCode.DesignAuthenticationManager;
 
@@ -12,8 +12,9 @@ namespace DSAExperimentation.LeetCode.DesignAuthenticationManager;
 // implementing the shared IAuthenticationManager surface below, the same shape
 // DesignBrowserHistorySolution uses for its own instance-API problem (LC 1472).
 //
-// Every operation is keyed lookup, so the whole problem is a bet on how tokens are
-// stored: a flat list the renew probe has to scan, or a hashed map.
+// The problem is a time-to-live mechanism: a flat list the renew probe and the count
+// both scan, or this repo's own ExpiringSet, which lets lapsed tokens go in expiry
+// order (ARCHITECTURE.md §17.6b).
 internal static class DesignAuthenticationManagerSolution
 {
     // The shared surface both strategies implement, so the test and benchmark
@@ -31,7 +32,7 @@ internal static class DesignAuthenticationManagerSolution
     // The textbook baseline this composition has to justify itself against: a BCL
     // List of (token, expiry) pairs with no hashing at all, so every renew probe
     // walks the entries until it finds its token - or, on an unknown id, all of
-    // them. Deliberately written without this repo's HashMap<TKey,TValue>.
+    // them. Deliberately written without this repo's ExpiringSet<TKey>.
     //
     // Generate appends rather than replacing, which is safe because LeetCode
     // guarantees each generated tokenId is unique.
@@ -76,40 +77,18 @@ internal static class DesignAuthenticationManagerSolution
         }
     }
 
-    // The composed answer: a thin string-key/int-expiry wrapper directly over this
-    // repo's own HashMap<TKey,TValue>. Generate and Renew map onto Set and
-    // TryGetValue, and CountUnexpiredTokens reads HashMap's existing Values
-    // snapshot rather than needing a second, purpose-built enumeration surface.
-    internal sealed class AuthenticationManagerByHashMap(int timeToLive) : IAuthenticationManager
+    // The composed answer: this repo's own ExpiringSet<string>, the time-to-live
+    // mechanism itself. Generate starts a token's life, Renew restarts a living one
+    // - an unknown or lapsed token stays out, which LeetCode says is ignored - and
+    // the count lets every lapsed token go before it answers.
+    internal sealed class AuthenticationManagerByExpiringSet(int timeToLive) : IAuthenticationManager
     {
-        private readonly HashMap<string, int> _expiryByToken = new();
+        private readonly ExpiringSet<string> _tokens = new(timeToLive);
 
-        public void Generate(string tokenId, int currentTime) =>
-            _expiryByToken.Set(tokenId, currentTime + timeToLive);
+        public void Generate(string tokenId, int currentTime) => _tokens.Set(tokenId, currentTime);
 
-        // An unknown token has nothing to renew, and an already-expired one is not
-        // revived - LeetCode says both are ignored.
-        public void Renew(string tokenId, int currentTime)
-        {
-            if (_expiryByToken.TryGetValue(tokenId, out var expiry) && expiry > currentTime)
-            {
-                _expiryByToken.Set(tokenId, currentTime + timeToLive);
-            }
-        }
+        public void Renew(string tokenId, int currentTime) => _ = _tokens.TryRenew(tokenId, currentTime);
 
-        public int CountUnexpiredTokens(int currentTime)
-        {
-            var unexpired = 0;
-
-            foreach (var expiry in _expiryByToken.Values)
-            {
-                if (expiry > currentTime)
-                {
-                    unexpired++;
-                }
-            }
-
-            return unexpired;
-        }
+        public int CountUnexpiredTokens(int currentTime) => _tokens.CountAlive(currentTime);
     }
 }
