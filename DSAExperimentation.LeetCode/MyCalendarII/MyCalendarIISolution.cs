@@ -5,9 +5,8 @@ namespace DSAExperimentation.LeetCode.MyCalendarII;
 // LeetCode 731. My Calendar II: Book(start, end) allows a double booking (two
 // events overlapping) but rejects any booking that would create a TRIPLE
 // booking - half-open [start, end) semantics, so touching endpoints never
-// count as overlapping. Both strategies use MyCalendarISolution's (LC 729)
-// half-open-to-closed (end - 1) encoding wherever they touch IntervalSet<int>,
-// whose own overlap rule is closed-interval.
+// count as overlapping. The IntervalSet<int> strategy stores the raw half-open
+// pairs, as MyCalendarISolution (LC 729) does, and asks HasOverlapHalfOpen.
 //
 // This is a "design" problem: the published interface is a stateful class
 // replayed across a sequence of Book calls, so the strategies here are factory
@@ -44,9 +43,7 @@ internal static class MyCalendarIISolution
 
         public bool Book(int start, int end)
         {
-            var closedEnd = end - 1;
-
-            if (_doubled.HasOverlap(start, closedEnd))
+            if (_doubled.HasOverlapHalfOpen(start, end))
             {
                 return false;
             }
@@ -55,15 +52,15 @@ internal static class MyCalendarIISolution
             {
                 var (existingStart, existingEnd) = _covered.Get(i);
                 var overlapStart = Math.Max(start, existingStart);
-                var overlapEnd = Math.Min(closedEnd, existingEnd);
+                var overlapEnd = Math.Min(end, existingEnd);
 
-                if (overlapStart <= overlapEnd)
+                if (overlapStart < overlapEnd)
                 {
                     _doubled.Add(overlapStart, overlapEnd);
                 }
             }
 
-            _covered.Add(start, closedEnd);
+            _covered.Add(start, end);
             return true;
         }
     }

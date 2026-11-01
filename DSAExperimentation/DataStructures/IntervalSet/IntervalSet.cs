@@ -4,25 +4,27 @@ using DSAExperimentation.Algorithms.Searching;
 
 namespace DSAExperimentation.DataStructures.IntervalSet;
 
-// A sorted, merged set of disjoint, CLOSED intervals [Start, End] over TKey. Two
-// intervals merge whenever they overlap under the standard closed-interval
-// condition (a <= d && c <= b), which already treats endpoint-touching intervals
-// like [1,2] and [2,3] as overlapping - no TKey increment operation is needed to
-// express "adjacent." This is the Merge Intervals / Insert Interval family's
-// semantics, NOT half-open [Start, End) calendar-booking semantics (My Calendar
-// I/II/III), where a shared endpoint deliberately does NOT conflict - this type
-// does not model that distinction and callers needing it must adjust accordingly.
+// A sorted, merged set of disjoint intervals over TKey, each stored as a pair
+// (Start, End). Add merges any two that overlap or touch (a <= d && c <= b), so
+// endpoint-touching pairs like [1,2] and [2,3] merge - no TKey increment
+// operation is needed to express "adjacent." That one merge rule serves both
+// readings of a pair: for closed intervals [Start, End] (the Merge Intervals /
+// Insert Interval family) it is the closed union, and for half-open intervals
+// [Start, End) (My Calendar, Range Module) it is exactly the half-open union,
+// since [1,2) and [2,3) together cover [1,3). Only the overlap question differs:
+// HasOverlap asks it closed, where a shared endpoint conflicts, and
+// HasOverlapHalfOpen asks it half-open, where it does not.
 //
 // Backed by DynamicArray<(TKey,TKey)> kept sorted by Start - composing this
 // repo's own already-public Representation type the way DynamicArraySequence
 // does (ARCHITECTURE.md §9.4), not a BCL List. Because non-overlap is maintained
 // as an invariant (every Add merges through anything it touches), End values
-// stay sorted in the same relative order as Start - which is what lets Add/
-// HasOverlap locate candidates via IntervalEndsView, a private struct implementing
-// Searching's own IRandomAccessSequence<TKey> "as a client" (the same sanctioned
-// reuse ByPriorityOrder makes of Heap's IHeapOrder<T>, per ARCHITECTURE.md §4),
-// so both operations reuse BinarySearch.LowerBound directly instead of a second,
-// duplicate bisection loop.
+// stay sorted in the same relative order as Start - which is what lets Add and
+// both overlap queries locate candidates via IntervalEndsView, a private struct
+// implementing Searching's own IRandomAccessSequence<TKey> "as a client" (the same
+// sanctioned reuse ByPriorityOrder makes of Heap's IHeapOrder<T>, per
+// ARCHITECTURE.md §4), so each reuses BinarySearch's LowerBound or UpperBound
+// directly instead of a second, duplicate bisection loop.
 //
 // The comparer stays a plain runtime IComparer<TKey> - same §9.2 reasoning
 // BinarySearch/MergeSort already establish: any TKey, any total order, is a
@@ -85,8 +87,25 @@ public sealed class IntervalSet<TKey>
         return candidate < _intervals.Count && _comparer.Compare(_intervals.Get(candidate).Start, end) <= 0;
     }
 
+    /// <summary>
+    /// Whether any stored interval shares a point with the half-open query, reading every
+    /// interval half-open, so one that only touches an endpoint does not overlap.
+    /// </summary>
+    /// <param name="start">The query's inclusive start.</param>
+    /// <param name="end">The query's exclusive end.</param>
+    /// <returns><see langword="true"/> when some stored interval overlaps the query.</returns>
+    public bool HasOverlapHalfOpen(TKey start, TKey end)
+    {
+        var candidate = UpperBoundByEnd(start);
+
+        return candidate < _intervals.Count && _comparer.Compare(_intervals.Get(candidate).Start, end) < 0;
+    }
+
     private int LowerBoundByEnd(TKey start)
         => BinarySearch.LowerBound<TKey, IntervalEndsView>(new IntervalEndsView(_intervals), start, _comparer);
+
+    private int UpperBoundByEnd(TKey start)
+        => BinarySearch.UpperBound<TKey, IntervalEndsView>(new IntervalEndsView(_intervals), start, _comparer);
 
     private readonly struct IntervalEndsView(DynamicArray<(TKey Start, TKey End)> intervals) : IRandomAccessSequence<TKey>
     {
