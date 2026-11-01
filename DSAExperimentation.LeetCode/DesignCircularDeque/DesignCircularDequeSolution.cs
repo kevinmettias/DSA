@@ -1,4 +1,4 @@
-using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
+using DSAExperimentation.DataStructures.Deque;
 
 namespace DSAExperimentation.LeetCode.DesignCircularDeque;
 
@@ -36,7 +36,7 @@ internal static class DesignCircularDequeSolution
 
     // The textbook baseline this composition has to justify itself against: a
     // fixed BCL int[] with head/count tracking the wraparound by hand at both
-    // ends - deliberately without this repo's Deque<int>, the arm the composed
+    // ends - deliberately without this repo's BoundedDeque<int>, the arm the composed
     // strategy below has to justify itself against.
     internal sealed class CircularDequeByArrayBacked : ICircularDeque
     {
@@ -111,65 +111,25 @@ internal static class DesignCircularDequeSolution
         private int RearItem() => _items[(_head + _count - 1 + _items.Length) % _items.Length];
     }
 
-    // The composed answer: this repo's own Deque<int> (already a wraparound-array
-    // Representation, ARCHITECTURE.md §4.1) with an external capacity bound
-    // layered on top for IsFull - the same "compose, don't invent a new
-    // representation" move DesignCircularQueueSolution makes over the same
-    // Deque<int>, exercising both ends instead of one.
-    internal sealed class CircularDequeByDequeBacked : ICircularDeque
+    // The composed answer: this repo's own BoundedDeque<int>, which is this problem
+    // exactly - both ends of the wraparound buffer, with the capacity an injected
+    // invariant that refuses a push when full (ARCHITECTURE.md §20). Every operation
+    // forwards, and only LeetCode's -1 for an empty peek is the problem's.
+    internal sealed class CircularDequeByBoundedDeque(int capacity) : ICircularDeque
     {
-        private readonly RepoDeque _items = new();
-        private readonly int _capacity;
-
-        public CircularDequeByDequeBacked(int capacity) => _capacity = capacity;
+        private readonly BoundedDeque<int> _items = new(capacity);
 
         public bool IsEmpty() => _items.Count == 0;
 
-        public bool IsFull() => _items.Count == _capacity;
+        public bool IsFull() => _items.IsFull;
 
-        public bool InsertFront(int value)
-        {
-            if (IsFull())
-            {
-                return false;
-            }
+        public bool InsertFront(int value) => _items.TryPushFront(value);
 
-            _items.PushFront(value);
-            return true;
-        }
+        public bool InsertLast(int value) => _items.TryPushBack(value);
 
-        public bool InsertLast(int value)
-        {
-            if (IsFull())
-            {
-                return false;
-            }
+        public bool DeleteFront() => _items.TryPopFront(out _);
 
-            _items.PushBack(value);
-            return true;
-        }
-
-        public bool DeleteFront()
-        {
-            if (IsEmpty())
-            {
-                return false;
-            }
-
-            _items.TryPopFront(out _);
-            return true;
-        }
-
-        public bool DeleteLast()
-        {
-            if (IsEmpty())
-            {
-                return false;
-            }
-
-            _items.TryPopBack(out _);
-            return true;
-        }
+        public bool DeleteLast() => _items.TryPopBack(out _);
 
         public int GetFront() => _items.TryPeekFront(out var value) ? value : LeetCodeAnswer.None;
 

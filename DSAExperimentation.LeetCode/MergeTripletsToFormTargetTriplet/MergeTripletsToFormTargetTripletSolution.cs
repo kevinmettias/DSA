@@ -16,8 +16,6 @@ namespace DSAExperimentation.LeetCode.MergeTripletsToFormTargetTriplet;
 // ContainsDuplicate gives it.
 internal static class MergeTripletsToFormTargetTripletSolution
 {
-    private const int TripletDimension = 3;
-
     // The textbook answer without this repo: try all 2^n - 1 non-empty subsets,
     // take each one's component-wise max, and compare it to target. Pure BCL, and
     // exponential - it is the arm the linear scan below has to justify itself
@@ -37,7 +35,7 @@ internal static class MergeTripletsToFormTargetTripletSolution
 
     private static bool CanSubsetMergeToTarget(int[][] triplets, int[] target, int mask)
     {
-        Span<int> merged = stackalloc int[TripletDimension];
+        Span<int> merged = stackalloc int[MergeTripletsToFormTargetTripletConstants.TripletDimension];
 
         for (var i = 0; i < triplets.Length; i++)
         {
@@ -52,7 +50,7 @@ internal static class MergeTripletsToFormTargetTripletSolution
 
     private static void MergeInto(Span<int> merged, int[] triplet)
     {
-        for (var i = 0; i < TripletDimension; i++)
+        for (var i = 0; i < MergeTripletsToFormTargetTripletConstants.TripletDimension; i++)
         {
             merged[i] = Math.Max(merged[i], triplet[i]);
         }
@@ -60,7 +58,7 @@ internal static class MergeTripletsToFormTargetTripletSolution
 
     private static bool IsMatch(ReadOnlySpan<int> merged, int[] target)
     {
-        for (var i = 0; i < TripletDimension; i++)
+        for (var i = 0; i < MergeTripletsToFormTargetTripletConstants.TripletDimension; i++)
         {
             if (merged[i] != target[i])
             {
@@ -85,7 +83,7 @@ internal static class MergeTripletsToFormTargetTripletSolution
                 continue;
             }
 
-            for (var i = 0; i < TripletDimension; i++)
+            for (var i = 0; i < MergeTripletsToFormTargetTripletConstants.TripletDimension; i++)
             {
                 if (triplet[i] == target[i])
                 {
@@ -94,12 +92,12 @@ internal static class MergeTripletsToFormTargetTripletSolution
             }
         }
 
-        return matched.Count == TripletDimension;
+        return matched.Count == MergeTripletsToFormTargetTripletConstants.TripletDimension;
     }
 
     private static bool IsIncompatible(int[] triplet, int[] target)
     {
-        for (var i = 0; i < TripletDimension; i++)
+        for (var i = 0; i < MergeTripletsToFormTargetTripletConstants.TripletDimension; i++)
         {
             if (triplet[i] > target[i])
             {

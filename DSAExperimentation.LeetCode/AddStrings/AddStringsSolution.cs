@@ -11,8 +11,6 @@ namespace DSAExperimentation.LeetCode.AddStrings;
 // unwinds the digits already in the right order.
 internal static class AddStringsSolution
 {
-    private const int DecimalBase = 10;
-
     // Accumulate digits least-significant first, then reverse the buffer in place.
     public static string AddByCharArrayReverse(string firstOperand, string secondOperand)
     {
@@ -76,8 +74,8 @@ internal static class AddStringsSolution
                 sum += _secondOperand[_secondIndex--] - '0';
             }
 
-            _carry = sum / DecimalBase;
-            return (char)('0' + sum % DecimalBase);
+            _carry = sum / AddStringsConstants.DecimalBase;
+            return (char)('0' + sum % AddStringsConstants.DecimalBase);
         }
     }
 }

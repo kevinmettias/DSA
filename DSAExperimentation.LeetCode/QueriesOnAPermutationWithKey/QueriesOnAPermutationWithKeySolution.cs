@@ -17,7 +17,6 @@ namespace DSAExperimentation.LeetCode.QueriesOnAPermutationWithKey;
 // identical job, not a different complexity class.
 internal static class QueriesOnAPermutationWithKeySolution
 {
-    private const int FirstPermutationValue = 1;
     private const int FrontIndex = 0;
 
     // The textbook answer: a BCL List<int> with its own IndexOf/RemoveAt/Insert.
@@ -27,7 +26,7 @@ internal static class QueriesOnAPermutationWithKeySolution
     {
         var permutation = new List<int>(permutationSize);
 
-        for (var value = FirstPermutationValue; value <= permutationSize; value++)
+        for (var value = QueriesOnAPermutationWithKeyConstants.FirstPermutationValue; value <= permutationSize; value++)
         {
             permutation.Add(value);
         }
@@ -52,7 +51,7 @@ internal static class QueriesOnAPermutationWithKeySolution
     {
         var permutation = new DynamicArray<int>();
 
-        for (var value = FirstPermutationValue; value <= permutationSize; value++)
+        for (var value = QueriesOnAPermutationWithKeyConstants.FirstPermutationValue; value <= permutationSize; value++)
         {
             permutation.Add(value);
         }

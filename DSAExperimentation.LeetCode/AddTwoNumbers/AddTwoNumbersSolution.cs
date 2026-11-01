@@ -12,8 +12,6 @@ namespace DSAExperimentation.LeetCode.AddTwoNumbers;
 // and convert back.
 internal static class AddTwoNumbersSolution
 {
-    private const int DecimalBase = 10;
-
     // The composed solution: walk both lists exactly once with a running carry,
     // splicing new nodes onto a dummy head as it goes - O(n) with a single pass.
     public static SinglyLinkedListNode<int>? AddByDigitwiseListWalk(
@@ -26,9 +24,9 @@ internal static class AddTwoNumbersSolution
         while (HasMoreDigitsToAdd(first, second, carry))
         {
             var digitSum = carry + (first?.Value ?? 0) + (second?.Value ?? 0);
-            carry = digitSum / DecimalBase;
+            carry = digitSum / AddTwoNumbersConstants.DecimalBase;
 
-            tail.Next = new SinglyLinkedListNode<int>(digitSum % DecimalBase);
+            tail.Next = new SinglyLinkedListNode<int>(digitSum % AddTwoNumbersConstants.DecimalBase);
             tail = tail.Next;
 
             first = first?.Next;
@@ -58,9 +56,9 @@ internal static class AddTwoNumbersSolution
 
         do
         {
-            tail.Next = new SinglyLinkedListNode<int>((int)(sum % DecimalBase));
+            tail.Next = new SinglyLinkedListNode<int>((int)(sum % AddTwoNumbersConstants.DecimalBase));
             tail = tail.Next;
-            sum /= DecimalBase;
+            sum /= AddTwoNumbersConstants.DecimalBase;
         }
         while (sum > 0);
 
@@ -75,7 +73,7 @@ internal static class AddTwoNumbersSolution
         for (var node = head; node is not null; node = node.Next)
         {
             value += node.Value * placeValue;
-            placeValue *= DecimalBase;
+            placeValue *= AddTwoNumbersConstants.DecimalBase;
         }
 
         return value;

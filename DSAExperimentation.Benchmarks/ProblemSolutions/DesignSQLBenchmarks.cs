@@ -82,7 +82,7 @@ public class DesignSQLBenchmarks
     {
         _names = [TableName];
         _columns = [ColumnCount];
-        _rows = [.. Enumerable.Range(DesignSQLSolution.FirstId, RowCount + InsertsAfterRemovals).Select(RowOf)];
+        _rows = [.. Enumerable.Range(DesignSQLConstants.FirstId, RowCount + InsertsAfterRemovals).Select(RowOf)];
         _misfitRow = [.. _rows[0].Take(ColumnCount - 1)];
         _cellProbes = [.. Enumerable.Range(0, CellProbeCount).Select(ProbeOf)];
         _inserted = new bool[RefusedInsertCount + RowCount + InsertsAfterRemovals];
@@ -91,10 +91,10 @@ public class DesignSQLBenchmarks
     }
 
     private static string[] RowOf(int rowId) =>
-        [.. Enumerable.Range(DesignSQLSolution.FirstId, ColumnCount).Select(columnId => CellText(rowId, columnId))];
+        [.. Enumerable.Range(DesignSQLConstants.FirstId, ColumnCount).Select(columnId => CellText(rowId, columnId))];
 
     private static string CellText(int rowId, int columnId) =>
-        RowPrefix + LowercaseNames.Of(rowId - DesignSQLSolution.FirstId) + ColumnPrefix + LowercaseNames.Of(columnId - DesignSQLSolution.FirstId);
+        RowPrefix + LowercaseNames.Of(rowId - DesignSQLConstants.FirstId) + ColumnPrefix + LowercaseNames.Of(columnId - DesignSQLConstants.FirstId);
 
     // Probe p reads row id p mod (RowCount + 2) - 0 through RowCount + 1 - at the column its
     // sweep is on.
@@ -131,16 +131,16 @@ public class DesignSQLBenchmarks
     {
         _inserted[0] = sql.TryInsert(MissingTableName, _rows[0]);
         _inserted[1] = sql.TryInsert(TableName, _misfitRow);
-        sql.Remove(MissingTableName, DesignSQLSolution.FirstId);
-        _selected[0] = sql.Select(MissingTableName, DesignSQLSolution.FirstId, DesignSQLSolution.FirstId);
+        sql.Remove(MissingTableName, DesignSQLConstants.FirstId);
+        _selected[0] = sql.Select(MissingTableName, DesignSQLConstants.FirstId, DesignSQLConstants.FirstId);
         _exported[0] = sql.Export(MissingTableName);
     }
 
     private void FillAndExport(DesignSQLSolution.ISqlStrategy sql)
     {
-        for (var rowId = DesignSQLSolution.FirstId; rowId <= RowCount; rowId++)
+        for (var rowId = DesignSQLConstants.FirstId; rowId <= RowCount; rowId++)
         {
-            _inserted[RefusedInsertCount + rowId - DesignSQLSolution.FirstId] = sql.TryInsert(TableName, _rows[rowId - DesignSQLSolution.FirstId]);
+            _inserted[RefusedInsertCount + rowId - DesignSQLConstants.FirstId] = sql.TryInsert(TableName, _rows[rowId - DesignSQLConstants.FirstId]);
 
             if (rowId % ExportStride == 0)
             {

@@ -17,8 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // both run.
 public class CheckIfThereIsAValidParenthesesStringPathBenchmarks
 {
-    private const char Open = '(';
-
     private Dictionary<int, char[,]> _gridBySize = [];
 
     public static IEnumerable<int> UnmemoizedSizes => [8, 12];
@@ -48,7 +46,7 @@ public class CheckIfThereIsAValidParenthesesStringPathBenchmarks
         {
             for (var col = 0; col < size; col++)
             {
-                grid[row, col] = Open;
+                grid[row, col] = CheckIfThereIsAValidParenthesesStringPathConstants.Open;
             }
         }
 

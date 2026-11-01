@@ -13,11 +13,6 @@ public class MinimumMovesToCaptureTheQueenBenchmarks
 {
     private const int Seed = 3001;
 
-    // The chessboard the queries are drawn from: 1..8 in both coordinates, so the
-    // random range is expressed as the board the problem fixes rather than as the
-    // exclusive bound 8 happens to imply.
-    private const int BoardSize = 8;
-
     // The queen, the rook and the bishop: every query fixes one square per piece.
     private const int PieceCount = 3;
 
@@ -48,7 +43,7 @@ public class MinimumMovesToCaptureTheQueenBenchmarks
 
         while (squares.Count < PieceCount)
         {
-            squares.Add((random.Next(1, BoardSize + 1), random.Next(1, BoardSize + 1)));
+            squares.Add((random.Next(1, MinimumMovesToCaptureTheQueenConstants.BoardSize + 1), random.Next(1, MinimumMovesToCaptureTheQueenConstants.BoardSize + 1)));
         }
 
         var picked = squares.ToArray();

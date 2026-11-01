@@ -11,8 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // fixed batch of add-then-search-then-erase calls a real Skiplist caller would make.
 public class DesignSkiplistBenchmarks
 {
-    private const int MaxValue = 20_000;
-
     // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
     private const int RandomSeed = 1206;
 
@@ -25,7 +23,7 @@ public class DesignSkiplistBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = SeededDraws.Values(OperationCount, 0, MaxValue + 1, random);
+        _values = SeededDraws.Values(OperationCount, 0, DesignSkiplistConstants.MaxValue + 1, random);
     }
 
     [Benchmark(Baseline = true)]

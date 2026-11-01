@@ -17,8 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // first cell tried.
 public class MinimumNumberOfDaysToDisconnectIslandBenchmarks
 {
-    private const int Land = 1;
-
     private int[][] _grid = [];
 
     [Params(10, 20)]
@@ -31,7 +29,7 @@ public class MinimumNumberOfDaysToDisconnectIslandBenchmarks
 
         for (var row = 0; row < Side; row++)
         {
-            _grid[row] = Enumerable.Repeat(Land, Side).ToArray();
+            _grid[row] = Enumerable.Repeat(MinimumNumberOfDaysToDisconnectIslandConstants.Land, Side).ToArray();
         }
     }
 

@@ -20,8 +20,6 @@ namespace DSAExperimentation.LeetCode.DoubleANumberRepresentedAsALinkedList;
 // is produced - O(n), with the input list never reversed or mutated.
 internal static class DoubleANumberRepresentedAsALinkedListSolution
 {
-    private const int DecimalBase = 10;
-
     // The digit-doubling factor LC 2816 asks for, spelled out so the carry walk
     // below reads as "double this digit" rather than as an anonymous 2.
     private const int Factor = 2;
@@ -36,8 +34,8 @@ internal static class DoubleANumberRepresentedAsALinkedListSolution
         // one digit to report.
         do
         {
-            result = new SinglyLinkedListNode<int>((int)(doubled % DecimalBase)) { Next = result };
-            doubled /= DecimalBase;
+            result = new SinglyLinkedListNode<int>((int)(doubled % DoubleANumberRepresentedAsALinkedListConstants.DecimalBase)) { Next = result };
+            doubled /= DoubleANumberRepresentedAsALinkedListConstants.DecimalBase;
         }
         while (doubled > 0);
 
@@ -50,7 +48,7 @@ internal static class DoubleANumberRepresentedAsALinkedListSolution
 
         for (var node = head; node is not null; node = node.Next)
         {
-            value = (value * DecimalBase) + node.Value;
+            value = (value * DoubleANumberRepresentedAsALinkedListConstants.DecimalBase) + node.Value;
         }
 
         return value;
@@ -72,9 +70,9 @@ internal static class DoubleANumberRepresentedAsALinkedListSolution
         {
             var digit = digits.TryPop(out var value) ? value : 0;
             var doubled = (digit * Factor) + carry;
-            carry = doubled / DecimalBase;
+            carry = doubled / DoubleANumberRepresentedAsALinkedListConstants.DecimalBase;
 
-            result = new SinglyLinkedListNode<int>(doubled % DecimalBase) { Next = result };
+            result = new SinglyLinkedListNode<int>(doubled % DoubleANumberRepresentedAsALinkedListConstants.DecimalBase) { Next = result };
         }
 
         return result;

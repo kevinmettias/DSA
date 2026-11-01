@@ -15,9 +15,6 @@ namespace DSAExperimentation.LeetCode.WordsWithinTwoEditsOfDictionary;
 // have already been merged.
 internal static class WordsWithinTwoEditsOfDictionarySolution
 {
-    // LeetCode's budget: a query matches a word it differs from in at most two positions.
-    private const int MaxEdits = 2;
-
     // The textbook answer: for every query, scan the dictionary word by word and
     // count mismatched characters, stopping at the first word inside the budget.
     // O(queries * dictionarySize * wordLength). Deliberately written with nothing
@@ -42,7 +39,7 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
     {
         var differences = 0;
 
-        for (var i = 0; i < word.Length && differences <= MaxEdits; i++)
+        for (var i = 0; i < word.Length && differences <= WordsWithinTwoEditsOfDictionaryConstants.MaxEdits; i++)
         {
             if (word[i] != query[i])
             {
@@ -50,7 +47,7 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
             }
         }
 
-        return differences <= MaxEdits;
+        return differences <= WordsWithinTwoEditsOfDictionaryConstants.MaxEdits;
     }
 
     // This repo's own LowercaseTrie<bool>, the bounded-alphabet trie that stores the
@@ -74,7 +71,7 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
 
         foreach (var query in queries)
         {
-            if (HasMatch(trie.Root, new SearchState(query, 0, MaxEdits)))
+            if (HasMatch(trie.Root, new SearchState(query, 0, WordsWithinTwoEditsOfDictionaryConstants.MaxEdits)))
             {
                 matches.Add(query);
             }

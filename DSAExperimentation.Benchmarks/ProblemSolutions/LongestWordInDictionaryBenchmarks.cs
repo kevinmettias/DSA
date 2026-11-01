@@ -15,7 +15,6 @@ public class LongestWordInDictionaryBenchmarks
     private const int RandomSeed = 720;
     private const int AlphabetSize = 26;
     private const int FreshChainChance = 4;
-    private const string EmptyPrefix = "";
 
     private string[] _words = [];
 
@@ -27,7 +26,7 @@ public class LongestWordInDictionaryBenchmarks
     {
         var random = new Random(RandomSeed);
         var words = new List<string>(WordCount);
-        var current = EmptyPrefix;
+        var current = LongestWordInDictionaryConstants.EmptyPrefix;
 
         while (words.Count < WordCount)
         {

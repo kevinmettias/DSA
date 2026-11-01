@@ -22,7 +22,6 @@ public class MergeTripletsToFormTargetTripletBenchmarks
     // target's 1,000 so no triplet can ever reach it.
     private const int MinValue = 1;
     private const int ValueBoundExclusive = 999;
-    private const int TripletDimension = 3;
 
     private static readonly int[] Target = [1_000, 1_000, 1_000];
 
@@ -42,7 +41,7 @@ public class MergeTripletsToFormTargetTripletBenchmarks
         var random = new Random(RandomSeed);
 
         return Enumerable.Range(0, tripletCount)
-            .Select(_ => SeededDraws.Values(TripletDimension, MinValue, ValueBoundExclusive, random))
+            .Select(_ => SeededDraws.Values(MergeTripletsToFormTargetTripletConstants.TripletDimension, MinValue, ValueBoundExclusive, random))
             .ToArray();
     }
 

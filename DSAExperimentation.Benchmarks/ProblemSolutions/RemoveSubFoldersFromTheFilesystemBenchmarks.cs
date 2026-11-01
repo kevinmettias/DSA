@@ -17,7 +17,6 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
     private const int MaxDepthExclusive = 5;
     private const int AlphabetSize = 26;
     private const string FolderNamePrefix = "f";
-    private const string PathSeparator = "/";
 
     private string[] _folders = [];
 
@@ -45,7 +44,7 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
                 segments[d] = FolderNamePrefix + LetterName(segmentIndex);
             }
 
-            var folder = PathSeparator + string.Join('/', segments);
+            var folder = RemoveSubFoldersFromTheFilesystemConstants.PathSeparator + string.Join('/', segments);
 
             if (drawn.Add(folder))
             {

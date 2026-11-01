@@ -16,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class DoubleANumberRepresentedAsALinkedListBenchmarks
 {
     private const int RandomSeed = 2816; // LC problem number
-    private const int DecimalBase = 10;
 
     private SinglyLinkedListNode<int>? _head;
 
@@ -28,11 +27,11 @@ public class DoubleANumberRepresentedAsALinkedListBenchmarks
     {
         var random = new Random(RandomSeed);
         var digits = new int[Length];
-        digits[0] = random.Next(1, DecimalBase);
+        digits[0] = random.Next(1, DoubleANumberRepresentedAsALinkedListConstants.DecimalBase);
 
         for (var index = 1; index < Length; index++)
         {
-            digits[index] = random.Next(0, DecimalBase);
+            digits[index] = random.Next(0, DoubleANumberRepresentedAsALinkedListConstants.DecimalBase);
         }
 
         _head = LeetCodeWireFormat.ToLinkedList(digits);

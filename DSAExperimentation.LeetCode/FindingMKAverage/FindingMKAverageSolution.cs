@@ -27,10 +27,6 @@ internal static class FindingMKAverageSolution
     // windowSize - (TrimmedEnds * trimCount) elements.
     private const int TrimmedEnds = 2;
 
-    // LC 1825 constrains every streamed value to 1 <= num <= 10^5, which is what
-    // makes a value-indexed tree possible at all.
-    private const int MaxElementValue = 100_000;
-
     // LeetCode reports -1 until the window has filled.
     private const int WindowNotFull = -1;
 
@@ -102,8 +98,8 @@ internal static class FindingMKAverageSolution
     private sealed class FenwickOrderStatisticsMKAverage(int windowSize, int trimCount) : IMKAverage
     {
         private readonly RepoQueue _window = new();
-        private readonly FenwickTree<int, SumOperation<int>> _counts = new(MaxElementValue);
-        private readonly FenwickTree<long, SumOperation<long>> _sums = new(MaxElementValue);
+        private readonly FenwickTree<int, SumOperation<int>> _counts = new(FindingMKAverageConstants.MaxElementValue);
+        private readonly FenwickTree<long, SumOperation<long>> _sums = new(FindingMKAverageConstants.MaxElementValue);
 
         public void AddElement(int num)
         {

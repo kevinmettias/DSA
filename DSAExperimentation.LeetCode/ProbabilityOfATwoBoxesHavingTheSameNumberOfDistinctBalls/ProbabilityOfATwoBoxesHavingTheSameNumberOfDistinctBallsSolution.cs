@@ -16,9 +16,6 @@ namespace DSAExperimentation.LeetCode.ProbabilityOfATwoBoxesHavingTheSameNumberO
 // probability asked for.
 internal static class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsSolution
 {
-    // The balls are dealt into exactly two boxes.
-    private const int BoxCount = 2;
-
     // The textbook answer, and the arm the Backtrack composition has to justify
     // itself against: the same choose-a-split-per-colour recursion written by
     // hand with no engine underneath, passing its running totals down as
@@ -26,7 +23,7 @@ internal static class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsSo
     public static double GetProbabilityByHandRolledRecursion(int[] balls)
     {
         var total = balls.Sum();
-        var half = total / BoxCount;
+        var half = total / ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsConstants.BoxCount;
         var deal = (Balls: balls, Half: half);
 
         return Recurse(deal, 0, default, 1.0) / BinomialCoefficient(total, half);
@@ -56,7 +53,7 @@ internal static class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsSo
     public static double GetProbabilityByBacktracking(int[] balls)
     {
         var total = balls.Sum();
-        var half = total / BoxCount;
+        var half = total / ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsConstants.BoxCount;
         var matchingWays = 0.0;
         var state = new SplitState();
 

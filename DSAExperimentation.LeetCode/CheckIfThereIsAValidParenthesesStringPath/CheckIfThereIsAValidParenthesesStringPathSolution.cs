@@ -57,13 +57,11 @@ internal static class CheckIfThereIsAValidParenthesesStringPathSolution
     // the caller knows how, which is the whole difference between the two strategies.
     private readonly record struct Board(char[,] Grid, int Rows, int Cols)
     {
-        private const char Open = '(';
-
         public static Board Over(char[,] grid) => new(grid, grid.GetLength(0), grid.GetLength(1));
 
         public (bool IsTerminal, bool TerminalValue, int NewBalance) Enter(int row, int col, int balance)
         {
-            var isOpen = Grid[row, col] == Open;
+            var isOpen = Grid[row, col] == CheckIfThereIsAValidParenthesesStringPathConstants.Open;
             var newBalance = balance + (isOpen ? 1 : -1);
 
             if (newBalance < 0)

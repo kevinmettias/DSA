@@ -29,10 +29,6 @@ internal static class DesignSQLSolution
     // What separates the id and the cells of one exported row.
     private const string CellSeparator = ",";
 
-    // The id of a table's first row; each later one is one greater than the last
-    // inserted, removed or not. Column ids count from 1 the same way.
-    internal const int FirstId = 1;
-
     // The shared surface both strategies implement, so a harness can replay one
     // call script against either without restating it. Each method is one of
     // LeetCode's four calls, named for the operation the statement says it performs:
@@ -53,12 +49,12 @@ internal static class DesignSQLSolution
     // width is the bound.
     private static string CellOf(string[] row, int columnId)
     {
-        if (columnId < FirstId || columnId > row.Length)
+        if (columnId < DesignSQLConstants.FirstId || columnId > row.Length)
         {
             return NoCell;
         }
 
-        return row[columnId - FirstId];
+        return row[columnId - DesignSQLConstants.FirstId];
     }
 
     // One exported row: the row's id, then each of its cells, joined by commas.
@@ -266,7 +262,7 @@ internal static class DesignSQLSolution
                 var lines = new string[_rows.Count];
                 var next = 0;
 
-                for (var rowId = FirstId; rowId <= _lastRowId; rowId++)
+                for (var rowId = DesignSQLConstants.FirstId; rowId <= _lastRowId; rowId++)
                 {
                     if (_rows.TryGetValue(rowId, out var row))
                     {

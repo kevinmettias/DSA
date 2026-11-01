@@ -34,8 +34,8 @@ public class DesignCircularDequeBenchmarks
         RunChurnCycle(new DesignCircularDequeSolution.CircularDequeByArrayBacked(Capacity));
 
     [Benchmark]
-    public ChurnStep[] DequeBacked() =>
-        RunChurnCycle(new DesignCircularDequeSolution.CircularDequeByDequeBacked(Capacity));
+    public ChurnStep[] BoundedDequeBacked() =>
+        RunChurnCycle(new DesignCircularDequeSolution.CircularDequeByBoundedDeque(Capacity));
 
     // Returns every answer the churn observed rather than discarding it, so the JIT
     // can't eliminate the churn as dead code and the arms are compared on all of it.

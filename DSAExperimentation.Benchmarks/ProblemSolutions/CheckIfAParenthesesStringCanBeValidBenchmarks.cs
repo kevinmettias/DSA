@@ -9,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // never even inspects its free-index stack's contents.
 public class CheckIfAParenthesesStringCanBeValidBenchmarks
 {
-    private const char OpenParenthesis = '(';
     private const int BoundaryParenthesisCount = 2; // one leading locked '(' + one trailing locked ')'
     private const string LockedMarker = "1"; private string _brackets = "";
 
@@ -22,7 +21,7 @@ public class CheckIfAParenthesesStringCanBeValidBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _brackets = OpenParenthesis + new string('(', Length - BoundaryParenthesisCount) + ')';
+        _brackets = CheckIfAParenthesesStringCanBeValidConstants.OpenParenthesis + new string('(', Length - BoundaryParenthesisCount) + ')';
         _locked = LockedMarker + new string('0', Length - BoundaryParenthesisCount) + LockedMarker;
     }
 

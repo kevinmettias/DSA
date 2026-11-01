@@ -13,7 +13,6 @@ namespace DSAExperimentation.LeetCode.LongestWordInDictionary;
 // per step of one root-to-leaf walk over this repo's own LowercaseTrie<bool>.
 internal static class LongestWordInDictionarySolution
 {
-    private const string EmptyPrefix = "";
     private const string NoQualifyingWord = "";
 
     // The textbook answer: for every word, verify each of its prefixes exists
@@ -73,7 +72,7 @@ internal static class LongestWordInDictionarySolution
     {
         var trie = BuildTrie(words);
 
-        return FindLongestWord(trie.Root, new CandidateWord(EmptyPrefix), new BestWord(NoQualifyingWord)).Text;
+        return FindLongestWord(trie.Root, new CandidateWord(LongestWordInDictionaryConstants.EmptyPrefix), new BestWord(NoQualifyingWord)).Text;
     }
 
     private static LowercaseTrie<bool> BuildTrie(string[] words)

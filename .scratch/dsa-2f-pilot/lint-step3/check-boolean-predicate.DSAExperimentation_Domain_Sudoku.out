@@ -1,0 +1,5 @@
+check-boolean-predicate: 1 file(s) judged.
+F:\repos\DSA\DSAExperimentation\Domain\Sudoku\SudokuRules.cs:58: `LineHolds` answers a yes/no question but its name does not say so. A caller reading `LineHolds(…)` at a call site cannot tell whether it returns an answer or a thing without opening the signature -- which is the work the name exists to spare them. Name it `is_`, `has_`, `can_`, `should_` (or `try_` for the attempt-returns-success pattern).
+F:\repos\DSA\DSAExperimentation\Domain\Sudoku\SudokuRules.cs:72: `BoxHolds` answers a yes/no question but its name does not say so. A caller reading `BoxHolds(…)` at a call site cannot tell whether it returns an answer or a thing without opening the signature -- which is the work the name exists to spare them. Name it `is_`, `has_`, `can_`, `should_` (or `try_` for the attempt-returns-success pattern).
+check-boolean-predicate: 2 finding(s).
+check-boolean-predicate: ADVISORY — 2 finding(s) reported and NOT failed on (--advisory). Drop --advisory to fail.

@@ -17,8 +17,6 @@ public class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsBenchmarks
 
     private const int RandomSeed = 1505; // LeetCode problem number
 
-    private const int DigitCount = 10;
-
     private string _digits = "";
 
     [Params(200, 2_000)]
@@ -28,7 +26,7 @@ public class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _digits = new string(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(DigitCount))).ToArray());
+        _digits = new string(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsConstants.DigitCount))).ToArray());
     }
 
     [Benchmark(Baseline = true)]

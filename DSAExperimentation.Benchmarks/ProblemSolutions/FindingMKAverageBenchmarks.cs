@@ -15,7 +15,6 @@ public class FindingMKAverageBenchmarks
 
     // LC problem number, reused as the deterministic stream seed.
     private const int RandomSeed = 1825;
-    private const int MaxElementValue = 100_000;
 
     private int[] _stream = [];
 
@@ -29,7 +28,7 @@ public class FindingMKAverageBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _stream = SeededDraws.Values(Length, 1, MaxElementValue, random);
+        _stream = SeededDraws.Values(Length, 1, FindingMKAverageConstants.MaxElementValue, random);
         _averages = new int[_stream.Length];
     }
 

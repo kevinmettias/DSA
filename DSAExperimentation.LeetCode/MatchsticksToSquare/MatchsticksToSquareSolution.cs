@@ -12,8 +12,6 @@ namespace DSAExperimentation.LeetCode.MatchsticksToSquare;
 // land on exactly the side length once all matchsticks are placed.
 internal static class MatchsticksToSquareSolution
 {
-    private const int SquareSideCount = 4;
-
     // The textbook recursion: a hand-written DFS over four running bucket sums,
     // undoing a placement on backtrack. Deliberately written without this repo's
     // Backtrack primitive - it is the arm the composed solution below has to
@@ -26,7 +24,7 @@ internal static class MatchsticksToSquareSolution
         }
 
         var sorted = SortedDescending(matchsticks);
-        var buckets = new int[SquareSideCount];
+        var buckets = new int[MatchsticksToSquareConstants.SquareSideCount];
 
         return CanPlaceAllMatchsticks(sorted, buckets, side, 0);
     }
@@ -56,7 +54,7 @@ internal static class MatchsticksToSquareSolution
     // side length. Read lazily, so each Unchoose is seen restoring room before the
     // next candidate is asked for.
     private static IEnumerable<int> AvailableBuckets(BucketState state) =>
-        Enumerable.Range(0, SquareSideCount).Where(state.CanPlace);
+        Enumerable.Range(0, MatchsticksToSquareConstants.SquareSideCount).Where(state.CanPlace);
 
     private static bool CanPlaceAllMatchsticks(int[] sorted, int[] buckets, int side, int index)
     {
@@ -65,7 +63,7 @@ internal static class MatchsticksToSquareSolution
             return true;
         }
 
-        for (var bucket = 0; bucket < SquareSideCount; bucket++)
+        for (var bucket = 0; bucket < MatchsticksToSquareConstants.SquareSideCount; bucket++)
         {
             if (TryPlaceInBucket(sorted, buckets, side, (bucket, index)))
             {
@@ -102,19 +100,19 @@ internal static class MatchsticksToSquareSolution
     {
         side = 0;
 
-        if (matchsticks.Length < SquareSideCount)
+        if (matchsticks.Length < MatchsticksToSquareConstants.SquareSideCount)
         {
             return false;
         }
 
         var total = matchsticks.Sum();
 
-        if (total % SquareSideCount != 0)
+        if (total % MatchsticksToSquareConstants.SquareSideCount != 0)
         {
             return false;
         }
 
-        side = total / SquareSideCount;
+        side = total / MatchsticksToSquareConstants.SquareSideCount;
         return matchsticks.Max() <= side;
     }
 
@@ -128,7 +126,7 @@ internal static class MatchsticksToSquareSolution
 
     private sealed class BucketState(int[] matchsticks, int side)
     {
-        private readonly int[] _buckets = new int[SquareSideCount];
+        private readonly int[] _buckets = new int[MatchsticksToSquareConstants.SquareSideCount];
 
         public int Index { get; private set; }
 

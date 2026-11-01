@@ -10,8 +10,6 @@ namespace DSAExperimentation.LeetCode.NumberOfIntegersWithPopcountDepthEqualToKI
 // same signature (TwoSumSolution precedent).
 internal static class NumberOfIntegersWithPopcountDepthEqualToKIISolution
 {
-    private const int UpdateQuery = 2;
-
     // Textbook baseline: mutate a plain copy of nums directly and rescan
     // [l, r], simulating each value's popcount chain on every range query -
     // correct, but O(range length) per query, unusable at the real problem's
@@ -24,7 +22,7 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKIISolution
 
         foreach (var query in queries)
         {
-            if (query[0] == UpdateQuery)
+            if (query[0] == NumberOfIntegersWithPopcountDepthEqualToKIIConstants.UpdateQuery)
             {
                 current[(int)query[1]] = query[2];
             }
@@ -90,7 +88,7 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKIISolution
 
         foreach (var query in queries)
         {
-            if (query[0] == UpdateQuery)
+            if (query[0] == NumberOfIntegersWithPopcountDepthEqualToKIIConstants.UpdateQuery)
             {
                 index.Update((int)query[1], query[2]);
             }

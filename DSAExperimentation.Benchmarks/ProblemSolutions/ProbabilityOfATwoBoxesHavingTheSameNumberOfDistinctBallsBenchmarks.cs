@@ -18,9 +18,6 @@ public class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsBenchmarks
     // Random.Next(1, BallCountUpperBound) yields each colour's ball count in [1, BallCountUpperBound - 1].
     private const int BallCountUpperBound = 7;
 
-    // The balls are dealt into exactly two boxes, so the total has to be even.
-    private const int BoxCount = 2;
-
     private int[] _balls = [];
 
     [Params(4, 6)]
@@ -32,7 +29,7 @@ public class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsBenchmarks
         var random = new Random(RandomSeed);
         _balls = [.. Enumerable.Range(0, TypeCount).Select(_ => random.Next(1, BallCountUpperBound))];
 
-        if (_balls.Sum() % BoxCount != 0)
+        if (_balls.Sum() % ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsConstants.BoxCount != 0)
         {
             _balls[^1]++;
         }

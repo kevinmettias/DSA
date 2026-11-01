@@ -11,7 +11,6 @@ namespace DSAExperimentation.LeetCode.CheckIfAParenthesesStringCanBeValid;
 // bracket, it can never vanish. An odd-length string is therefore never valid.
 internal static class CheckIfAParenthesesStringCanBeValidSolution
 {
-    private const char OpenParenthesis = '(';
     private const char FreePosition = '0'; // locked[i] == '0' -> position i may become either bracket
 
     // The textbook answer: carry the whole set of open-paren counts still reachable
@@ -47,7 +46,7 @@ internal static class CheckIfAParenthesesStringCanBeValidSolution
             {
                 AddFreeTransition(next, openCount);
             }
-            else if (currentChar == OpenParenthesis)
+            else if (currentChar == CheckIfAParenthesesStringCanBeValidConstants.OpenParenthesis)
             {
                 next.Add(openCount + 1);
             }
@@ -104,7 +103,7 @@ internal static class CheckIfAParenthesesStringCanBeValidSolution
             {
                 freeIndices.Push(i);
             }
-            else if (bracketString.Text[i] == OpenParenthesis)
+            else if (bracketString.Text[i] == CheckIfAParenthesesStringCanBeValidConstants.OpenParenthesis)
             {
                 openIndices.Push(i);
             }

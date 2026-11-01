@@ -1377,17 +1377,9 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/AddStringsBenchmarks.cs",
-      "anchor": "`DecimalBase = ",
-      "reason": "`DecimalBase = 10` is the base five problems (LC 2, 43, 415, 445, 2816) write their numbers in, and each declares it twice: its solution carries and splits digits with it, and its benchmark draws digits with it. Each pair is one problem's fact restated, not a coincidence between units, and every copy is private, so no benchmark can read its solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose each solution's constant and have its benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/BaseballGameBenchmarks.cs",
       "anchor": "`DoubleOp = ",
-      "reason": "`DoubleOp = \"D\"` is LC 682's operation that doubles the previous score. The solution matches it, and its benchmark emits it. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
+      "reason": "`DoubleOp = \"D\"` is LC 682's operation that doubles the previous score. The solution matches it, and its benchmark emits it. They are one problem's fact restated, not a coincidence between units, and both copies are private. The fix 20 other problems took, one <Problem>Constants type that the solution and the benchmark both read, trips check-closed-set here instead: the solution switches on the value, and a switch over another type's constants reads as a closed set that should be an enum. LC 682 hands its operations over as string tokens among the numbers, which no enum parses.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1395,151 +1387,7 @@
       "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/BaseballGameBenchmarks.cs",
       "anchor": "`SumOp = ",
-      "reason": "`SumOp = \"+\"` is LC 682's operation that sums the previous two scores. The solution matches it, and its benchmark emits it. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/CheckIfAParenthesesStringCanBeValidBenchmarks.cs",
-      "anchor": "`OpenParenthesis = ",
-      "reason": "`OpenParenthesis = '('` is the open bracket LC 2116's string is written in. The solution matches characters against it, and its benchmark builds the bracket string with it. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/CheckIfThereIsAValidParenthesesStringPathBenchmarks.cs",
-      "anchor": "`Open = ",
-      "reason": "`Open = '('` is the open bracket LC 2267's grid is written in. The solution tests cells against it, and its benchmark fills cells with it. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/CouplesHoldingHandsBenchmarks.cs",
-      "anchor": "`SeatsPerCouple = ",
-      "reason": "`SeatsPerCouple = 2` is the two seats each LC 765 couple takes. The solution walks the row a couple at a time, and its benchmark sizes the row by it. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/DecodeWaysIIBenchmarks.cs",
-      "anchor": "`PairLength = ",
-      "reason": "`PairLength = 2` is the two characters a DecodeWaysII (LC 639) pair spans. DecodeWaysIIRecurrence declares it and the solution reads it from there, and the benchmark restates it to split its wildcard input into pairs. This is one problem's fact restated, not a coincidence between units. Unlike the other harness copies, this one can be dropped today: DecodeWaysIIRecurrence.PairLength is public in an internal class that InternalsVisibleTo already opens to DSAExperimentation.Benchmarks, so the fix is one line in DecodeWaysIIBenchmarks.cs.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/DesignSkiplistBenchmarks.cs",
-      "anchor": "`MaxValue = ",
-      "reason": "`MaxValue = 20_000` is LC 1206's bound on a value. The solution sizes its frequency Fenwick tree by it, and its benchmark draws values up to it, so the two must agree: a value past the solution's bound would index past its tree. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/FindingMKAverageBenchmarks.cs",
-      "anchor": "`MaxElementValue = ",
-      "reason": "`MaxElementValue = 100_000` is LC 1825's bound on a streamed value. The solution sizes its two value-indexed Fenwick trees by it, and its benchmark draws the stream below it, so the two must agree: a value past the solution's bound would index past its trees. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/LongestWordInDictionaryBenchmarks.cs",
-      "anchor": "`EmptyPrefix = ",
-      "reason": "`EmptyPrefix = \"\"` is the empty word every LC 720 answer is built up from, one letter at a time. The solution starts its trie walk from it, and its benchmark starts each word chain from it. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MatchsticksToSquareBenchmarks.cs",
-      "anchor": "`SquareSideCount = ",
-      "reason": "`SquareSideCount = 4` is the four sides of LC 473's square. The solution keeps one bucket per side, and its benchmark builds a solvable instance side by side. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MergeTripletsToFormTargetTripletBenchmarks.cs",
-      "anchor": "`TripletDimension = ",
-      "reason": "`TripletDimension = 3` is the three entries of an LC 1899 triplet. The solution merges them entry by entry, and its benchmark draws triplets of that size. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumMovesToCaptureTheQueenBenchmarks.cs",
-      "anchor": "`BoardSize = ",
-      "reason": "`BoardSize = 8` is the 8x8 board LC 3001 fixes. MinimumMovesToCaptureTheQueen's solution bounds a piece's walk with it, and its benchmark draws the query squares on it. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumNumberOfDaysToDisconnectIslandBenchmarks.cs",
-      "anchor": "`Land = ",
-      "reason": "`Land = 1` is LC 1568's code for a land cell. The solution tests cells against it, and its benchmark fills its grid with it. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsBenchmarks.cs",
-      "anchor": "`DigitCount = ",
-      "reason": "`DigitCount = 10` is the ten decimal digits LC 1505's number is written in. The solution keeps one queue of positions per digit, and its benchmark draws the digits. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks.cs",
-      "anchor": "`UpdateQuery = ",
-      "reason": "`UpdateQuery = 2` is LC 3624's code for an update query. The solution dispatches on it, and its benchmark builds update queries with it. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/PartitionEqualSubsetSumBenchmarks.cs",
-      "anchor": "`SubsetSumDivisor = ",
-      "reason": "`SubsetSumDivisor = 2` is the two equal halves LC 416 asks for. The solution halves the total by it, and its benchmark precomputes that half. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsBenchmarks.cs",
-      "anchor": "`BoxCount = ",
-      "reason": "`BoxCount = 2` is the two boxes LC 1467 deals the balls into. The solution halves the ball total by it, and its benchmark keeps the total divisible by it. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/QueriesOnAPermutationWithKeyBenchmarks.cs",
-      "anchor": "`FirstPermutationValue = ",
-      "reason": "`FirstPermutationValue = 1` is where LC 1409's permutation P = [1..m] starts. The solution builds P from it, and its benchmark draws the queries from 1..m. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks.cs",
-      "anchor": "`BothOwnersEdgeType = ",
-      "reason": "`BothOwnersEdgeType = 3` is LC 1579's code for an edge both Alice and Bob may use. The solution picks those edges out by it, and its benchmark generates edges of that type. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/RemoveSubFoldersFromTheFilesystemBenchmarks.cs",
-      "anchor": "`PathSeparator = ",
-      "reason": "`PathSeparator = \"/\"` is the separator LC 1233 writes folder paths with. The solution tests sub-folder prefixes with it, and its benchmark builds the folder paths with it. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
+      "reason": "`SumOp = \"+\"` is LC 682's operation that sums the previous two scores. The solution matches it, and its benchmark emits it. They are one problem's fact restated, not a coincidence between units, and both copies are private. The fix 20 other problems took, one <Problem>Constants type that the solution and the benchmark both read, trips check-closed-set here instead: the solution switches on the value, and a switch over another type's constants reads as a closed set that should be an enum. LC 682 hands its operations over as string tokens among the numbers, which no enum parses.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1547,7 +1395,7 @@
       "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/WalkingRobotSimulationBenchmarks.cs",
       "anchor": "`TurnLeftCommand = ",
-      "reason": "`TurnLeftCommand = -2` is LC 874's code for turning left. The solution decodes commands by it, and its benchmark emits it. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
+      "reason": "`TurnLeftCommand = -2` is LC 874's code for turning left. The solution decodes commands by it, and its benchmark emits it. They are one problem's fact restated, not a coincidence between units, and both copies are private. The fix 20 other problems took, one <Problem>Constants type that the solution and the benchmark both read, trips check-closed-set here instead: the solution switches on the value, and a switch over another type's constants reads as a closed set that should be an enum. LC 874's commands are an open domain, a positive command being a number of steps, so no enum covers them.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1555,15 +1403,7 @@
       "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/WalkingRobotSimulationBenchmarks.cs",
       "anchor": "`TurnRightCommand = ",
-      "reason": "`TurnRightCommand = -1` is LC 874's code for turning right. The solution decodes commands by it, and its benchmark emits it. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/WordsWithinTwoEditsOfDictionaryBenchmarks.cs",
-      "anchor": "`MaxEdits = ",
-      "reason": "`MaxEdits = 2` is the two-edit budget LC 2452 fixes. The solution compares a query's differences against it, and its benchmark draws 0 to 2 edits per query. They are one problem's fact restated, not a coincidence between units, and both copies are private, so the benchmark cannot read the solution's. The open fix is the one 60ad74f3 made for DesignSQL's FirstId: expose the solution's constant and have the benchmark read it.",
+      "reason": "`TurnRightCommand = -1` is LC 874's code for turning right. The solution decodes commands by it, and its benchmark emits it. They are one problem's fact restated, not a coincidence between units, and both copies are private. The fix 20 other problems took, one <Problem>Constants type that the solution and the benchmark both read, trips check-closed-set here instead: the solution switches on the value, and a switch over another type's constants reads as a closed set that should be an enum. LC 874's commands are an open domain, a positive command being a number of steps, so no enum covers them.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },

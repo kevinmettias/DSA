@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace DSAExperimentation.Tests.Architecture;
@@ -18,6 +19,15 @@ public sealed partial class ProblemImportTests
     private const string RootImporter = "(root)";
     private const string EdgeArrow = " -> ";
     private const string SolutionSuffix = "Solution.cs";
+
+    // Where checks.json declares check-duplicate-constant's problem units, and the folders they share.
+    private const string ChecksFile = "checks.json";
+    private const string ChecksProperty = "checks";
+    private const string DuplicateConstantCheck = "check-duplicate-constant";
+    private const string OptionsProperty = "options";
+    private const string IndependentUnitsOption = "independent_units";
+    private const string SharedField = "shared";
+    private const string ProjectFolderPrefix = $"{SolutionProject}/";
 
     // Folders at the tier's root that hold what LeetCode fixes for every problem, not a problem: its
     // notation and answer rules. Arithmetic modulo the 1e9+7 it reports answers in is Domain/Modular.
@@ -138,6 +148,13 @@ public sealed partial class ProblemImportTests
         Assert.DoesNotContain(ProblemFolders(), folder => !File.Exists(Path.Combine(project, folder, folder + SolutionSuffix)));
     }
 
+    // checks.json makes every folder under the project a problem unit for check-duplicate-constant unless it
+    // lists the folder as shared. A root folder missing there would be read as one more problem, and the
+    // copies the problems take of its constants would be set aside as coincidences between units.
+    [Fact]
+    public void TierRootFolders_AreSharedByTheDuplicateConstantUnits() =>
+        Assert.Equal(TierRootFolders.Order(StringComparer.Ordinal), DuplicateConstantSharedFolders().Order(StringComparer.Ordinal));
+
     [Fact]
     public void ProblemReferencesIn_SelfAliasConventionsAndTheTierItself_FindsNone() =>
         Assert.Empty(ProblemReferencesIn(
@@ -205,6 +222,26 @@ public sealed partial class ProblemImportTests
             .Select(Path.GetFileName)
             .OfType<string>()
             .Where(folder => folder is not ("bin" or "obj") && !TierRootFolders.Contains(folder));
+
+    // The folders of this project that checks.json lists as shared among check-duplicate-constant's units.
+    private static List<string> DuplicateConstantSharedFolders()
+    {
+        var path = Path.Combine(RepositoryFiles.Root(), ChecksFile);
+        using var document = JsonDocument.Parse(File.ReadAllText(path));
+        var rows = document.RootElement
+            .GetProperty(ChecksProperty)
+            .GetProperty(DuplicateConstantCheck)
+            .GetProperty(OptionsProperty)
+            .GetProperty(IndependentUnitsOption)
+            .EnumerateArray();
+
+        return [.. rows
+            .Where(row => row.TryGetProperty(SharedField, out _))
+            .SelectMany(row => row.GetProperty(SharedField).EnumerateArray())
+            .Select(glob => glob.GetString() ?? string.Empty)
+            .Where(glob => glob.StartsWith(ProjectFolderPrefix, StringComparison.Ordinal))
+            .Select(glob => glob[ProjectFolderPrefix.Length..])];
+    }
 
     // A file directly under the project belongs to the tier's root; anything else to its folder.
     private static string ImporterOf(string relativePath)

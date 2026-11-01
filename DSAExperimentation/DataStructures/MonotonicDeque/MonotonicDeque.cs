@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.Deque;
+using DSAExperimentation.DataStructures.CircularBuffer;
 
 namespace DSAExperimentation.DataStructures.MonotonicDeque;
 
@@ -14,16 +14,17 @@ namespace DSAExperimentation.DataStructures.MonotonicDeque;
 // A position is whatever the window is measured in - an index for a fixed window of k, an x-coordinate
 // for a window of width d.
 //
-// Composes Deque the way Queue and Stack compose the structure each restricts, in a folder of its own
-// beside it (§13.5). Complexity law (§8): each entry is pushed once and popped at most once, so Push is
-// amortized O(1) only because Deque's operations at both ends are O(1) through its CircularBuffer.
+// Composes the unbounded CircularBuffer the way Queue and Stack compose the structure each restricts,
+// in a folder of its own beside it (§13.5, §20). Complexity law (§8): each entry is pushed once and
+// popped at most once, so Push is amortized O(1) only because the buffer's operations at both ends
+// are O(1).
 /// <summary>
 /// A deque of (position, key) entries whose front is a sliding window's extremum, in amortized O(1) per step.
 /// </summary>
 public sealed class MonotonicDeque<Key, TOrder>
     where TOrder : struct, IWindowOrder<Key>
 {
-    private readonly Deque<(int Position, Key Key)> _entries = new();
+    private readonly CircularBuffer<(int Position, Key Key), UnboundedCapacity> _entries = new(default);
 
     /// <summary>Appends an entry at the back after evicting every entry whose key it dominates.</summary>
     /// <param name="position">The entry's position, which must not be below any position already pushed.</param>
@@ -35,7 +36,7 @@ public sealed class MonotonicDeque<Key, TOrder>
             _entries.TryPopBack(out _);
         }
 
-        _entries.PushBack((position, key));
+        _ = _entries.TryPushBack((position, key));
     }
 
     // Drops every front entry whose position is below firstPosition - the ones the window has slid past.

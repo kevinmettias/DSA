@@ -12,8 +12,6 @@ namespace DSAExperimentation.LeetCode.PartitionEqualSubsetSum;
 // computation (a benchmark's [GlobalSetup], say) is not charged for it again.
 internal static class PartitionEqualSubsetSumSolution
 {
-    private const int SubsetSumDivisor = 2;
-
     // The textbook answer: bottom-up bool[] tabulation, walking each candidate sum
     // downward so an element is never reused within the same pass.
     public static bool CanPartitionByTabulation(int[] nums) => TryGetHalf(nums, out var half) && CanPartitionByTabulation(nums, half);
@@ -69,13 +67,13 @@ internal static class PartitionEqualSubsetSumSolution
     private static bool TryGetHalf(int[] nums, out int half)
     {
         var total = nums.Sum();
-        if (total % SubsetSumDivisor != 0)
+        if (total % PartitionEqualSubsetSumConstants.SubsetSumDivisor != 0)
         {
             half = 0;
             return false;
         }
 
-        half = total / SubsetSumDivisor;
+        half = total / PartitionEqualSubsetSumConstants.SubsetSumDivisor;
         return true;
     }
 }

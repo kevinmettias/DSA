@@ -11,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class QueriesOnAPermutationWithKeyBenchmarks
 {
     private const int Seed = 1;
-    private const int FirstPermutationValue = 1;
 
     private int[] _queries = [];
 
@@ -22,7 +21,7 @@ public class QueriesOnAPermutationWithKeyBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _queries = SeededDraws.Values(PermutationSize, FirstPermutationValue, PermutationSize + 1, random);
+        _queries = SeededDraws.Values(PermutationSize, QueriesOnAPermutationWithKeyConstants.FirstPermutationValue, PermutationSize + 1, random);
     }
 
     [Benchmark(Baseline = true)]

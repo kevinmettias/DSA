@@ -8,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class CouplesHoldingHandsBenchmarks
 {
     private const int RandomSeed = 765; // LC problem number
-    private const int SeatsPerCouple = 2;
 
     private int[] _row = [];
 
@@ -19,7 +18,7 @@ public class CouplesHoldingHandsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var seatCount = CoupleCount * SeatsPerCouple;
+        var seatCount = CoupleCount * CouplesHoldingHandsConstants.SeatsPerCouple;
         var row = new int[seatCount];
 
         for (var i = 0; i < seatCount; i++)

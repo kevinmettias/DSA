@@ -9,8 +9,6 @@ public class AddStringsBenchmarks
     // The LeetCode problem number, reused as the deterministic random seed.
     private const int RandomSeed = 415;
 
-    private const int DecimalBase = 10;
-
     private string _firstOperand = "";
 
     private string _secondOperand = "";
@@ -30,10 +28,10 @@ public class AddStringsBenchmarks
     private static string DrawOperand(Random random, int length)
     {
         var digits = new char[length];
-        digits[0] = (char)('1' + random.Next(DecimalBase - 1));
+        digits[0] = (char)('1' + random.Next(AddStringsConstants.DecimalBase - 1));
         for (var i = 1; i < length; i++)
         {
-            digits[i] = (char)('0' + random.Next(DecimalBase));
+            digits[i] = (char)('0' + random.Next(AddStringsConstants.DecimalBase));
         }
 
         return new string(digits);

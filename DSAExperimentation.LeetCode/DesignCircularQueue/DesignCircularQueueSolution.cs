@@ -1,4 +1,4 @@
-using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
+using DSAExperimentation.DataStructures.Queue;
 
 namespace DSAExperimentation.LeetCode.DesignCircularQueue;
 
@@ -33,8 +33,8 @@ internal static class DesignCircularQueueSolution
 
     // The textbook baseline this composition has to justify itself against: a
     // fixed BCL int[] with head/count tracking the wraparound by hand -
-    // deliberately without this repo's Deque<int>, the arm the composed strategy
-    // below has to justify itself against.
+    // deliberately without this repo's BoundedQueue<int>, the arm the composed
+    // strategy below has to justify itself against.
     internal sealed class CircularQueueByArrayBacked : ICircularQueue
     {
         private readonly int[] _items;
@@ -80,46 +80,24 @@ internal static class DesignCircularQueueSolution
         private int RearItem() => _items[(_head + _count - 1) % _items.Length];
     }
 
-    // The composed answer: this repo's own Deque<int> (already a wraparound-array
-    // Representation, ARCHITECTURE.md §4.1's "earned by needing O(1) at both
-    // ends") with an external capacity bound layered on top for IsFull - the same
-    // "compose, don't invent a new representation" move MinStackSolution makes
-    // over Stack<int>.
-    internal sealed class CircularQueueByDequeBacked : ICircularQueue
+    // The composed answer: this repo's own BoundedQueue<int>, which is this problem
+    // exactly - FIFO over the wraparound buffer, with the capacity an injected
+    // invariant that refuses an enqueue when full (ARCHITECTURE.md §20). Every
+    // operation forwards, and only LeetCode's -1 for an empty peek is the problem's.
+    internal sealed class CircularQueueByBoundedQueue(int capacity) : ICircularQueue
     {
-        private readonly RepoDeque _items = new();
-        private readonly int _capacity;
-
-        public CircularQueueByDequeBacked(int capacity) => _capacity = capacity;
+        private readonly BoundedQueue<int> _items = new(capacity);
 
         public bool IsEmpty() => _items.Count == 0;
 
-        public bool IsFull() => _items.Count == _capacity;
+        public bool IsFull() => _items.IsFull;
 
-        public bool EnQueue(int value)
-        {
-            if (IsFull())
-            {
-                return false;
-            }
+        public bool EnQueue(int value) => _items.TryEnqueue(value);
 
-            _items.PushBack(value);
-            return true;
-        }
+        public bool DeQueue() => _items.TryDequeue(out _);
 
-        public bool DeQueue()
-        {
-            if (IsEmpty())
-            {
-                return false;
-            }
+        public int Front() => _items.TryPeek(out var value) ? value : LeetCodeAnswer.None;
 
-            _items.TryPopFront(out _);
-            return true;
-        }
-
-        public int Front() => _items.TryPeekFront(out var value) ? value : LeetCodeAnswer.None;
-
-        public int Rear() => _items.TryPeekBack(out var value) ? value : LeetCodeAnswer.None;
+        public int Rear() => _items.TryPeekRear(out var value) ? value : LeetCodeAnswer.None;
     }
 }

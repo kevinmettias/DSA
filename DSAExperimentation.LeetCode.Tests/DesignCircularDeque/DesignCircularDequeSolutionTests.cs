@@ -50,9 +50,9 @@ public sealed partial class DesignCircularDequeSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CircularDequeByDequeBacked_LeetCodeExamples_MatchesExpectedSequence(
+    public void CircularDequeByBoundedDeque_LeetCodeExamples_MatchesExpectedSequence(
         int capacity, CircularDequeOp[] operations, int[] expected) =>
-        Assert.Equal(expected, RunScript(new DesignCircularDequeSolution.CircularDequeByDequeBacked(capacity), operations));
+        Assert.Equal(expected, RunScript(new DesignCircularDequeSolution.CircularDequeByBoundedDeque(capacity), operations));
 
     private static int[] RunScript(
         DesignCircularDequeSolution.ICircularDeque deque,

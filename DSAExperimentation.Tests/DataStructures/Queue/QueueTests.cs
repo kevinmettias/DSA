@@ -39,6 +39,21 @@ public sealed partial class QueueTests
     }
 
     [Fact]
+    public void TryPeekRear_NonEmptyQueue_ReturnsTheNewestWithoutRemovingIt()
+    {
+        var queue = new DsaQueue();
+        queue.Enqueue(1);
+        queue.Enqueue(2);
+
+        Assert.True(queue.TryPeekRear(out var rear));
+        Assert.Equal(2, rear);
+        Assert.Equal(2, queue.Count);
+    }
+
+    [Fact]
+    public void TryPeekRear_EmptyQueue_ReturnsFalse() => Assert.False(new DsaQueue().TryPeekRear(out _));
+
+    [Fact]
     public void TryPeek_EmptyQueue_ReturnsFalse()
     {
         var queue = new DsaQueue();

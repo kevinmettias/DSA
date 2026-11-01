@@ -1,0 +1,4 @@
+check-vertical-organization: 1 file(s) judged.
+F:\repos\DSA\DSAExperimentation\Domain\Sudoku\SudokuRules.cs:44: method `IsComplete` is out of call order; expected `LineHolds` here — define each private helper immediately after `CanPlace` in DFS call order (5 methods: BoxOf, CanPlace, LineHolds, BoxHolds, IsComplete)
+check-vertical-organization: 1 finding(s).
+check-vertical-organization: ADVISORY — 1 finding(s) reported and NOT failed on (--advisory). Drop --advisory to fail.

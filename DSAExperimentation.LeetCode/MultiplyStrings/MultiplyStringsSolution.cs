@@ -17,7 +17,6 @@ namespace DSAExperimentation.LeetCode.MultiplyStrings;
 // instead of base 2).
 internal static class MultiplyStringsSolution
 {
-    private const int DecimalBase = 10;
     private const string ZeroDigitString = "0";
 
     // The textbook baseline: num1[i] * num2[j] belongs to column i + j + 1 of
@@ -54,8 +53,8 @@ internal static class MultiplyStringsSolution
         for (var column = columns.Length - 1; column >= 0; column--)
         {
             var total = columns[column] + carry;
-            columns[column] = total % DecimalBase;
-            carry = total / DecimalBase;
+            columns[column] = total % MultiplyStringsConstants.DecimalBase;
+            carry = total / MultiplyStringsConstants.DecimalBase;
         }
     }
 
@@ -104,14 +103,14 @@ internal static class MultiplyStringsSolution
         for (var i = num.Length - 1; i >= 0; i--)
         {
             var product = (num[i] - '0') * digit + carry;
-            stack.Push((char)('0' + product % DecimalBase));
-            carry = product / DecimalBase;
+            stack.Push((char)('0' + product % MultiplyStringsConstants.DecimalBase));
+            carry = product / MultiplyStringsConstants.DecimalBase;
         }
 
         while (carry > 0)
         {
-            stack.Push((char)('0' + carry % DecimalBase));
-            carry /= DecimalBase;
+            stack.Push((char)('0' + carry % MultiplyStringsConstants.DecimalBase));
+            carry /= MultiplyStringsConstants.DecimalBase;
         }
 
         return PopAllIntoString(stack);
@@ -152,8 +151,8 @@ internal static class MultiplyStringsSolution
     private static int AccumulateDigit(DecimalStack stack, int digitA, int digitB, int carry)
     {
         var sum = carry + digitA + digitB;
-        stack.Push((char)('0' + sum % DecimalBase));
-        return sum / DecimalBase;
+        stack.Push((char)('0' + sum % MultiplyStringsConstants.DecimalBase));
+        return sum / MultiplyStringsConstants.DecimalBase;
     }
 
     private static string TrimLeadingZeros(string digits)

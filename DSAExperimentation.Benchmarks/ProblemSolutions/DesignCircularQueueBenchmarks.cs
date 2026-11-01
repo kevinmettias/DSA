@@ -51,7 +51,7 @@ public class DesignCircularQueueBenchmarks
     public long ArrayBacked() => Replay(new DesignCircularQueueSolution.CircularQueueByArrayBacked(Capacity));
 
     [Benchmark]
-    public long DequeBacked() => Replay(new DesignCircularQueueSolution.CircularQueueByDequeBacked(Capacity));
+    public long BoundedQueueBacked() => Replay(new DesignCircularQueueSolution.CircularQueueByBoundedQueue(Capacity));
 
     // Sums every returned value rather than discarding it, so the JIT can't
     // eliminate the replay as dead code - the same "return the real answer, not a

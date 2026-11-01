@@ -14,8 +14,6 @@ namespace DSAExperimentation.LeetCode.MinimumPossibleIntegerAfterAtMostKAdjacent
 // or an O(log length) Fenwick prefix query over a 0/1 "still unplaced" array.
 internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSolution
 {
-    private const int DigitCount = 10;
-
     // The textbook answer: physically simulate the swaps. Keep the live digits in a BCL
     // List<char>, scan the affordable prefix for the smallest one, emit it and RemoveAt it -
     // O(length) per output slot, O(length^2) overall. Deliberately written without this
@@ -79,9 +77,9 @@ internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSol
 
     private static RepoIntQueue[] BuildPositionsByDigit(string num)
     {
-        var positionsByDigit = new RepoIntQueue[DigitCount];
+        var positionsByDigit = new RepoIntQueue[MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsConstants.DigitCount];
 
-        for (var digit = 0; digit < DigitCount; digit++)
+        for (var digit = 0; digit < MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsConstants.DigitCount; digit++)
         {
             positionsByDigit[digit] = new RepoIntQueue();
         }
@@ -96,7 +94,7 @@ internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSol
 
     private static int PlaceNextDigit(PlacementContext context, int slot, int remainingSwaps)
     {
-        for (var digit = 0; digit < DigitCount; digit++)
+        for (var digit = 0; digit < MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsConstants.DigitCount; digit++)
         {
             var updatedSwaps = TryPlaceDigit(context, digit, slot, remainingSwaps);
 

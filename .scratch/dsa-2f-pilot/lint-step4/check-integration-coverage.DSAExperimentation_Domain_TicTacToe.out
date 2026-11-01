@@ -1,0 +1,3 @@
+check-integration-coverage: 0 unit(s), 0 integration surface(s), 0 with a suite, 0 tested only from inside the consumer.
+check-integration-coverage: 0 unit(s) judged.
+check-integration-coverage: no findings.

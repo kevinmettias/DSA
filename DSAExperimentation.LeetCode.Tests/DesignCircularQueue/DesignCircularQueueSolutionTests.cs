@@ -49,9 +49,9 @@ public sealed partial class DesignCircularQueueSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CircularQueueByDequeBacked_LeetCodeExamples_MatchesExpectedSequence(
+    public void CircularQueueByBoundedQueue_LeetCodeExamples_MatchesExpectedSequence(
         int capacity, CircularQueueOp[] operations, int[] expected) =>
-        Assert.Equal(expected, RunScript(new DesignCircularQueueSolution.CircularQueueByDequeBacked(capacity), operations));
+        Assert.Equal(expected, RunScript(new DesignCircularQueueSolution.CircularQueueByBoundedQueue(capacity), operations));
 
     private static int[] RunScript(
         DesignCircularQueueSolution.ICircularQueue queue,

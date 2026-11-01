@@ -14,9 +14,6 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfDaysToDisconnectIsland;
 // treated as water?", and the two below differ only in how that count is taken.
 internal static class MinimumNumberOfDaysToDisconnectIslandSolution
 {
-    // LC 1568 encodes a land cell as 1 ...
-    private const int Land = 1;
-
     // ... and calls the grid connected when it holds exactly one island. The two are
     // separate subjects that happen to share a value: one is a cell's contents, the
     // other an island count.
@@ -126,7 +123,7 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
     // Both scans claim a cell as a new island's start only when it is land that is
     // neither already claimed nor the cell the scan is pretending is water.
     private static bool IsNewIslandStart(IslandScan scan, bool[,] visited, int row, int col)
-        => scan.Cells[row][col] == Land && !visited[row, col] && (row, col) != scan.Skip;
+        => scan.Cells[row][col] == MinimumNumberOfDaysToDisconnectIslandConstants.Land && !visited[row, col] && (row, col) != scan.Skip;
 
     private static void FloodFill(IslandScan scan, bool[,] visited, (int Row, int Col) cell)
     {
@@ -161,7 +158,7 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
         {
             for (var col = 0; col < cols; col++)
             {
-                if (grid[row][col] == Land &&
+                if (grid[row][col] == MinimumNumberOfDaysToDisconnectIslandConstants.Land &&
                     countIslands.Count(new IslandScan(grid, rows, cols, (row, col))) != Connected)
                 {
                     return 1;
@@ -180,7 +177,7 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
     // Land the query has not pretended away - the one cell rule both walks share, whichever
     // bounds check guards it.
     private static bool IsUnskippedLand(IslandScan scan, int row, int col)
-        => scan.Cells[row][col] == Land && (row, col) != scan.Skip;
+        => scan.Cells[row][col] == MinimumNumberOfDaysToDisconnectIslandConstants.Land && (row, col) != scan.Skip;
 
     // One connectivity query: the grid's cells, its bounds, and the single cell this query
     // pretends has already been removed. The cells are called Cells, not Grid, because the

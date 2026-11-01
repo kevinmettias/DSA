@@ -11,7 +11,6 @@ public class PartitionEqualSubsetSumBenchmarks
 {
     private const int RandomSeed = 416; // LC problem number
     private const int MaxElementValue = 100;
-    private const int SubsetSumDivisor = 2;
 
     private int[] _nums = [];
 
@@ -24,7 +23,7 @@ public class PartitionEqualSubsetSumBenchmarks
     {
         var random = new Random(RandomSeed);
         _nums = SeededDraws.Values(Length, 1, MaxElementValue, random);
-        _half = _nums.Sum() / SubsetSumDivisor;
+        _half = _nums.Sum() / PartitionEqualSubsetSumConstants.SubsetSumDivisor;
     }
 
     [Benchmark(Baseline = true)]

@@ -28,7 +28,6 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
 
     private const int AliceOnlyEdgeType = 1;
     private const int BobOnlyEdgeType = 2;
-    private const int BothOwnersEdgeType = 3;
 
     // LeetCode labels its nodes from 1 upward; both strategies below index from 0.
     private const int FirstNodeLabel = 1;
@@ -69,7 +68,7 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
 
         foreach (var edge in edges)
         {
-            if (edge[EdgeTypeIndex] != BothOwnersEdgeType)
+            if (edge[EdgeTypeIndex] != RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableConstants.BothOwnersEdgeType)
             {
                 continue;
             }
@@ -203,7 +202,7 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
 
         foreach (var edge in edges)
         {
-            if (edge[EdgeTypeIndex] != BothOwnersEdgeType)
+            if (edge[EdgeTypeIndex] != RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableConstants.BothOwnersEdgeType)
             {
                 continue;
             }

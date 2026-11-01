@@ -65,11 +65,7 @@ internal static class DesignSkiplistSolution
     // turns that into a -1 delta. Every call is O(log 2*10^4).
     internal sealed class SkiplistByFenwickFrequencies : ISkiplist
     {
-        // LeetCode 1206 constrains num to [0, 20000], which is what makes a flat
-        // frequency array over the whole value domain affordable here.
-        private const int MaxValue = 20_000;
-
-        private readonly FenwickTree<int, SumOperation<int>> _frequencies = new(MaxValue + 1);
+        private readonly FenwickTree<int, SumOperation<int>> _frequencies = new(DesignSkiplistConstants.MaxValue + 1);
 
         public void Add(int num) => _frequencies.Add(num, 1);
 

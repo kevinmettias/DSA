@@ -1,0 +1,3 @@
+check-visibility-scope: this scan does not cover the repository, and an export's callers may live anywhere in it — so nothing was judged rather than everything accused. Run it over the repository root to judge visibility.
+check-visibility-scope: 0 repository(s) judged.
+check-visibility-scope: no findings.

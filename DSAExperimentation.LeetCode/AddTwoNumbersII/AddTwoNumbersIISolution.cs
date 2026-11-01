@@ -21,8 +21,6 @@ namespace DSAExperimentation.LeetCode.AddTwoNumbersII;
 // mutated.
 internal static class AddTwoNumbersIISolution
 {
-    private const int DecimalBase = 10;
-
     public static SinglyLinkedListNode<int>? AddByBigInteger(
         SinglyLinkedListNode<int>? first, SinglyLinkedListNode<int>? second)
     {
@@ -32,8 +30,8 @@ internal static class AddTwoNumbersIISolution
 
         do
         {
-            head = new SinglyLinkedListNode<int>((int)(sum % DecimalBase)) { Next = head };
-            sum /= DecimalBase;
+            head = new SinglyLinkedListNode<int>((int)(sum % AddTwoNumbersIIConstants.DecimalBase)) { Next = head };
+            sum /= AddTwoNumbersIIConstants.DecimalBase;
         }
         while (sum > 0);
 
@@ -46,7 +44,7 @@ internal static class AddTwoNumbersIISolution
 
         for (; node is not null; node = node.Next)
         {
-            value = (value * DecimalBase) + node.Value;
+            value = (value * AddTwoNumbersIIConstants.DecimalBase) + node.Value;
         }
 
         return value;
@@ -69,9 +67,9 @@ internal static class AddTwoNumbersIISolution
             var a = firstDigits.TryPop(out var firstDigit) ? firstDigit : 0;
             var b = secondDigits.TryPop(out var secondDigit) ? secondDigit : 0;
             var digitSum = carry + a + b;
-            carry = digitSum / DecimalBase;
+            carry = digitSum / AddTwoNumbersIIConstants.DecimalBase;
 
-            head = new SinglyLinkedListNode<int>(digitSum % DecimalBase) { Next = head };
+            head = new SinglyLinkedListNode<int>(digitSum % AddTwoNumbersIIConstants.DecimalBase) { Next = head };
         }
 
         return head;

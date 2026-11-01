@@ -13,8 +13,6 @@ namespace DSAExperimentation.LeetCode.RemoveSubFoldersFromTheFilesystem;
 // against "<folder>/" rather than "<folder>".
 internal static class RemoveSubFoldersFromTheFilesystemSolution
 {
-    private const string PathSeparator = "/";
-
     // The textbook answer: for every folder, scan every other folder and ask whether
     // it is an ancestor - O(n^2) prefix comparisons, no ordering assumed and nothing
     // from this repo involved. This is the arm the sort-then-scan below has to
@@ -39,7 +37,7 @@ internal static class RemoveSubFoldersFromTheFilesystemSolution
         for (var other = 0; other < folders.Length; other++)
         {
             if (other != index &&
-                folders[index].StartsWith(folders[other] + PathSeparator, StringComparison.Ordinal))
+                folders[index].StartsWith(folders[other] + RemoveSubFoldersFromTheFilesystemConstants.PathSeparator, StringComparison.Ordinal))
             {
                 return true;
             }
@@ -68,7 +66,7 @@ internal static class RemoveSubFoldersFromTheFilesystemSolution
         foreach (var folder in sorted)
         {
             if (lastKept is null ||
-                !folder.StartsWith(lastKept + PathSeparator, StringComparison.Ordinal))
+                !folder.StartsWith(lastKept + RemoveSubFoldersFromTheFilesystemConstants.PathSeparator, StringComparison.Ordinal))
             {
                 kept.Add(folder);
                 lastKept = folder;

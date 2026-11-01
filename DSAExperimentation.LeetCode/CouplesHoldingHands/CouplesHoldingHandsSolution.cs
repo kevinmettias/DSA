@@ -17,8 +17,6 @@ namespace DSAExperimentation.LeetCode.CouplesHoldingHands;
 // with this repo's own Set<int>.
 internal static class CouplesHoldingHandsSolution
 {
-    private const int SeatsPerCouple = 2;
-
     // The greedy swap simulation every LeetCode editorial leads with. Deliberately
     // written without this repo's primitives - it is the arm the composed solution
     // below has to justify itself against.
@@ -35,7 +33,7 @@ internal static class CouplesHoldingHandsSolution
 
         var swaps = 0;
 
-        for (var seat = 0; seat < n; seat += SeatsPerCouple)
+        for (var seat = 0; seat < n; seat += CouplesHoldingHandsConstants.SeatsPerCouple)
         {
             if (TrySwapPartnerIntoPlace(seats, position, seat))
             {
@@ -51,7 +49,7 @@ internal static class CouplesHoldingHandsSolution
     private static bool TrySwapPartnerIntoPlace(int[] row, int[] position, int seat)
     {
         var first = row[seat];
-        var isFirstOfCouple = first % SeatsPerCouple == 0;
+        var isFirstOfCouple = first % CouplesHoldingHandsConstants.SeatsPerCouple == 0;
         var partner = isFirstOfCouple ? NextSeatNumber(first) : PreviousSeatNumber(first);
 
         if (row[seat + 1] == partner)
@@ -81,12 +79,12 @@ internal static class CouplesHoldingHandsSolution
     // repo's own DisjointSet + Set<int> (NumberOfProvincesBenchmarks' exact shape).
     public static int MinSwapsByDisjointSet(int[] row)
     {
-        var coupleCount = row.Length / SeatsPerCouple;
+        var coupleCount = row.Length / CouplesHoldingHandsConstants.SeatsPerCouple;
         var couples = new DisjointSet(coupleCount);
 
-        for (var seat = 0; seat < row.Length; seat += SeatsPerCouple)
+        for (var seat = 0; seat < row.Length; seat += CouplesHoldingHandsConstants.SeatsPerCouple)
         {
-            couples.Union(row[seat] / SeatsPerCouple, row[seat + 1] / SeatsPerCouple);
+            couples.Union(row[seat] / CouplesHoldingHandsConstants.SeatsPerCouple, row[seat + 1] / CouplesHoldingHandsConstants.SeatsPerCouple);
         }
 
         var roots = new Set<int>();

@@ -11,8 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // integer holds.
 public class MultiplyStringsBenchmarks
 {
-    private const int DecimalBase = 10;
-
     // The leading digit is drawn from 1..9, as random.Next(9) + 1, since LeetCode's
     // operands carry no leading zero.
     private const int LeadingDigitRange = 9;
@@ -39,7 +37,7 @@ public class MultiplyStringsBenchmarks
 
         for (var i = 1; i < digits; i++)
         {
-            chars[i] = (char)('0' + random.Next(DecimalBase));
+            chars[i] = (char)('0' + random.Next(MultiplyStringsConstants.DecimalBase));
         }
 
         return new string(chars);

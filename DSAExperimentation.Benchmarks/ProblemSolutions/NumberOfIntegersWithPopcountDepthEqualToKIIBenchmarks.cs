@@ -20,7 +20,6 @@ public class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks
     private const int Seed = 3624; // LC problem number
     private const int QueryCount = 2_000;
     private const long MaxValue = 1_000_000_000_000_000; // 10^15, LC's own bound
-    private const int UpdateQuery = 2;
 
     private long[] _nums = [];
 
@@ -82,7 +81,7 @@ public class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks
 
     // One type-2 query: the point being updated and the value written to it.
     private long[] BuildUpdateQuery(Random random) =>
-        [UpdateQuery, random.Next(ElementCount), random.NextInt64(1, MaxValue)];
+        [NumberOfIntegersWithPopcountDepthEqualToKIIConstants.UpdateQuery, random.Next(ElementCount), random.NextInt64(1, MaxValue)];
 
     [IterationSetup]
     public void IterationSetup() => _index = PopcountDepthFenwickIndex.Build(_nums);

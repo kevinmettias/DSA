@@ -11,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class AddTwoNumbersIIBenchmarks
 {
     private const int RandomSeed = 445; // LC problem number
-    private const int DecimalBase = 10;
 
     private SinglyLinkedListNode<int> _first = null!;
 
@@ -30,12 +29,12 @@ public class AddTwoNumbersIIBenchmarks
 
     private static SinglyLinkedListNode<int> BuildRandomDigitList(Random random, int length)
     {
-        var head = new SinglyLinkedListNode<int>(random.Next(1, DecimalBase));
+        var head = new SinglyLinkedListNode<int>(random.Next(1, AddTwoNumbersIIConstants.DecimalBase));
         var tail = head;
 
         for (var i = 1; i < length; i++)
         {
-            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, DecimalBase));
+            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, AddTwoNumbersIIConstants.DecimalBase));
             tail = tail.Next;
         }
 

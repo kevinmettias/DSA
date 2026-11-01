@@ -9,8 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // copies make 12 sticks, the most this construction fits inside LC 473's 15-stick cap.
 public class MatchsticksToSquareBenchmarks
 {
-    private const int SquareSideCount = 4;
-
     private int[] _matchsticks = [];
 
     [Params(2, 3)]
@@ -22,7 +20,7 @@ public class MatchsticksToSquareBenchmarks
         var perSide = Enumerable.Range(1, SticksPerSide).ToArray();
         var all = new List<int>();
 
-        for (var side = 0; side < SquareSideCount; side++)
+        for (var side = 0; side < MatchsticksToSquareConstants.SquareSideCount; side++)
         {
             all.AddRange(perSide);
         }

@@ -14,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class AddTwoNumbersBenchmarks
 {
     private const int RandomSeed = 11;
-    private const int DecimalBase = 10;
 
     private SinglyLinkedListNode<int> _first = null!;
 
@@ -36,8 +35,8 @@ public class AddTwoNumbersBenchmarks
     // significant - from 1-9.
     private static SinglyLinkedListNode<int> BuildRandomDigitList(Random random, int length)
     {
-        var lowerDigits = SeededDraws.Values(length - 1, 0, DecimalBase, random);
-        var head = new SinglyLinkedListNode<int>(random.Next(1, DecimalBase));
+        var lowerDigits = SeededDraws.Values(length - 1, 0, AddTwoNumbersConstants.DecimalBase, random);
+        var head = new SinglyLinkedListNode<int>(random.Next(1, AddTwoNumbersConstants.DecimalBase));
 
         for (var i = lowerDigits.Length - 1; i >= 0; i--)
         {

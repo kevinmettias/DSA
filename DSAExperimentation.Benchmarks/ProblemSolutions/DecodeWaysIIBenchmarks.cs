@@ -7,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class DecodeWaysIIBenchmarks
 {
     private const string WildcardPair = "2*";
-    private const int PairLength = 2;
 
     private string _value = "";
 
@@ -17,7 +16,7 @@ public class DecodeWaysIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var pairs = Enumerable.Repeat(WildcardPair, Length / PairLength);
+        var pairs = Enumerable.Repeat(WildcardPair, Length / DecodeWaysIIRecurrence.PairLength);
         _value = string.Concat(pairs);
     }
 

@@ -17,7 +17,6 @@ public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
     private const int FirstNonRootNode = 2;
     private const int ExtraEdgeMultiplier = 2;
     private const int EdgeTypeUpperBoundExclusive = 4;
-    private const int BothOwnersEdgeType = 3;
 
     private int[][] _edges = [];
 
@@ -32,7 +31,7 @@ public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
 
         for (var i = FirstNonRootNode; i <= NodeCount; i++)
         {
-            edges.Add([BothOwnersEdgeType, random.Next(1, i), i]);
+            edges.Add([RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableConstants.BothOwnersEdgeType, random.Next(1, i), i]);
         }
 
         for (var e = 0; e < NodeCount * ExtraEdgeMultiplier; e++)

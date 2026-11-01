@@ -28,8 +28,6 @@ public class WordsWithinTwoEditsOfDictionaryBenchmarks
 
     private const int AlphabetSize = 26;
 
-    private const int MaxEdits = 2;
-
     private string[] _dictionary = [];
 
     private string[] _queries = [];
@@ -50,7 +48,7 @@ public class WordsWithinTwoEditsOfDictionaryBenchmarks
     private static string WithinEditBudget(string word, Random random)
     {
         var characters = word.ToCharArray();
-        var editCount = random.Next(MaxEdits + 1); // 0, 1, or 2 edits
+        var editCount = random.Next(WordsWithinTwoEditsOfDictionaryConstants.MaxEdits + 1); // 0, 1, or 2 edits
 
         for (var i = 0; i < editCount; i++)
         {
