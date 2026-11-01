@@ -1725,11 +1725,31 @@ Complete: every covered problem has its `<Problem>Solution` in
 `DSAExperimentation.LeetCode/<Problem>/`, and its test and benchmark are harnesses over it. Count
 this by solution-file existence, not by the coverage manifest's tier tag, which under-reports.
 
-Not started: moving the domain knowledge problem folders still hold into `Domain/` (§17.6). Only the
-lock, the board and the modulus are there so far. The plan is a pilot of about ten problems of
-different kinds (`AccountsMerge`, `FindWinnerOnATicTacToeGame`, the three My Calendar problems,
-`DesignBrowserHistory`, …) to settle the line between a problem's *what* and its strategies' *how*,
-then the rest subject by subject.
+In progress: moving the domain knowledge problem folders still hold into `Domain/` (§17.6). A pilot
+of seven subjects, chosen to be unlike each other, has settled where the line falls:
+
+- **Sudoku and tic-tac-toe moved.** `SudokuRules` (LC 36, LC 37) and `TicTacToeRules` (LC 1275)
+  hold the board, its notation and its rule. Each problem folder keeps LeetCode's encoding of
+  them, such as LC 1275's answer strings and its move replay, and each baseline keeps its own
+  copy (§17.5).
+- **Calendars was a shape.** That a booking is half-open, `[start, end)`, is said by five
+  problems, so it is a shape, and shapes are tier 1 (§17.6). `IntervalSet` gained the half-open
+  overlap question, and My Calendar I and II ask it instead of storing `end - 1`.
+- **Accounts had no code to move.** With LC 721's strategy and LeetCode's row encoding taken
+  away, what remained was a sentence.
+- **Three were not domain at all.** Token expiry and the smallest free number apply a rule of
+  their own that the caller sees, so they are mechanisms (§17.6b): `ExpiringSet` (LC 1797) and
+  `SmallestFreeAllocator` (LC 1845, LC 2336). The history cursor drops only what an operation
+  names by its position, so it is a data structure, `CursorSequence`. LC 2296 adopted it, and
+  LC 1472 declined it on measurement (§13.3).
+- **A bounded deque is a data structure.** Its bound refuses a push and drops nothing, so it is
+  one configuration of `CircularBuffer`, with the deque, the queue and the bounded queue (§20).
+
+The pilot's test for the rest: take away every strategy and LeetCode's encoding, and see what
+stays. A rule of the problem's world, in that world's terms, is `Domain/`. A shape other problems
+share is tier 1. A rule the structure applies on its own is a mechanism. If nothing stays, there
+is nothing to move. The rest is not started. It goes subject by subject, with composed arms using
+`Domain/` and baselines keeping their copies.
 
 ### 17.11 What every harness shares: `Conventions/`
 
