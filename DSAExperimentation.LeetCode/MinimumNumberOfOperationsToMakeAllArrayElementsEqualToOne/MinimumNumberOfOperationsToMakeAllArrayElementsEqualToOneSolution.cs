@@ -27,18 +27,13 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeAllArrayEle
 // (ARCHITECTURE 17.5).
 internal static class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneSolution
 {
-    // Both gcd steps are stateless, so one instance each serves every call and the
-    // benchmark arms that measure these two methods allocate nothing to pick one.
-    private static readonly IPairwiseGcd SubtractionEuclid = new SubtractionGcd();
-    private static readonly IPairwiseGcd ModuloEuclid = new EuclideanGcd();
-
     // The textbook answer: the subtraction form of Euclid's algorithm driving the
     // window scan. Deliberately written without this repo's primitives - it is
     // the arm the Euclidean scan below has to justify itself against.
     public static int MinOperationsBySubtractionGcd(int[] nums)
     {
         var ones = CountOnes(nums);
-        var shortestWindow = ShortestGcdWindow(nums, SubtractionEuclid);
+        var shortestWindow = ShortestGcdWindow<SubtractionGcd>(nums);
 
         return ones > 0
             ? WalkOneAlongCost(nums.Length, ones)
@@ -51,7 +46,7 @@ internal static class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneS
     public static int MinOperationsByEuclideanGcd(int[] nums)
     {
         var ones = CountOnes(nums);
-        var shortestWindow = ShortestGcdWindow(nums, ModuloEuclid);
+        var shortestWindow = ShortestGcdWindow<EuclideanGcd>(nums);
 
         return ones > 0
             ? WalkOneAlongCost(nums.Length, ones)
@@ -64,7 +59,7 @@ internal static class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneS
     // had nowhere to write down.
     private interface IPairwiseGcd
     {
-        int Of(int left, int right);
+        static abstract int Of(int left, int right);
     }
 
     // The window scan both arms share: grow a window from each start until its running
@@ -72,8 +67,11 @@ internal static class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneS
     // deliberately not considered: an element that is already 1 is handled by the ones
     // count, and no other single element has gcd 1 with itself. Which pairwise gcd the
     // running value folds through is the one thing the two arms differ in, so it
-    // arrives as gcd.
-    private static int? ShortestGcdWindow(int[] nums, IPairwiseGcd gcd)
+    // arrives as TGcd - a struct type argument, so each arm gets its own copy of the
+    // scan with its step inlined, where a gcd held as an interface made a dispatched
+    // call for every element of every window.
+    private static int? ShortestGcdWindow<TGcd>(int[] nums)
+        where TGcd : struct, IPairwiseGcd
     {
         int? best = null;
 
@@ -83,7 +81,7 @@ internal static class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneS
 
             for (var end = start + 1; end < nums.Length; end++)
             {
-                running = gcd.Of(running, nums[end]);
+                running = TGcd.Of(running, nums[end]);
 
                 if (running == 1)
                 {
@@ -95,6 +93,9 @@ internal static class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneS
 
         return best;
     }
+
+    private static int Shorter(int? best, int length)
+        => best is null ? length : Math.Min(best.Value, length);
 
     // Building one 1 costs (window - 1) operations; spreading it over the array
     // costs (n - 1) more. No window at all means no 1 is reachable, which is
@@ -128,15 +129,12 @@ internal static class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneS
         return ones;
     }
 
-    private static int Shorter(int? best, int length)
-        => best is null ? length : Math.Min(best.Value, length);
-
     // Repeatedly subtract the smaller value from the larger until they are equal.
     // Correct, but O(max/min) per pair - a value that is a small multiple of the
     // running gcd forces one subtraction per multiple instead of one division.
-    private sealed class SubtractionGcd : IPairwiseGcd
+    private readonly struct SubtractionGcd : IPairwiseGcd
     {
-        public int Of(int left, int right)
+        public static int Of(int left, int right)
         {
             while (left != right)
             {
@@ -157,8 +155,8 @@ internal static class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneS
     // The modulo form of the same step, GreatestCommonDivisor.Of: each round
     // replaces the pair with (right, left % right), so the values shrink
     // geometrically instead of by one multiple of the smaller at a time.
-    private sealed class EuclideanGcd : IPairwiseGcd
+    private readonly struct EuclideanGcd : IPairwiseGcd
     {
-        public int Of(int left, int right) => GreatestCommonDivisor.Of(left, right);
+        public static int Of(int left, int right) => GreatestCommonDivisor.Of(left, right);
     }
 }
