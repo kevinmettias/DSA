@@ -1,10 +1,11 @@
+using DSAExperimentation.Domain.Locks;
 using DSAExperimentation.LeetCode.OpenTheLock;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
-// Benchmark workload sizing for LC 752 - everything about the lock graph itself
-// now lives beside OpenTheLockSolution; what stays here is only the choice of how much of it
-// to prune, which is a measurement decision rather than a domain one.
+// Benchmark workload sizing for LC 752 - the lock itself is Domain/Locks and its start
+// combination sits beside OpenTheLockSolution; what stays here is only the choice of how much
+// of it to prune, which is a measurement decision rather than a domain one.
 internal static class LockWorkloads
 {
     // A random scattering of deadends that almost never disconnects the graph -

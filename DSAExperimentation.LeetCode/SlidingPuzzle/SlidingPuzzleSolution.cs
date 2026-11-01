@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.Domain.SlidingPuzzle;
 
 namespace DSAExperimentation.LeetCode.SlidingPuzzle;
 

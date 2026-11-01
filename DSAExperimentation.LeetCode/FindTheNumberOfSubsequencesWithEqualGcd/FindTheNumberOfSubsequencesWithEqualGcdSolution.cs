@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.FindTheNumberOfSubsequencesWithEqualGcd;
 
@@ -18,7 +18,7 @@ namespace DSAExperimentation.LeetCode.FindTheNumberOfSubsequencesWithEqualGcd;
 // composed arm is the identical recurrence run through this repo's
 // Algorithms.DynamicProgramming.Memoizer, collapsing the shared
 // (index, gcd1, gcd2) states to at most n * maxValue^2 distinct calls, reporting
-// through LeetCode.Modular.ModularArithmetic's shared 1e9+7 convention
+// through Domain.Modular.ModularArithmetic's shared 1e9+7 convention
 // (CountTheNumberOfSquareFreeSubsets's own CountByBitmaskMemo precedent for this
 // exact Memoizer-plus-ModularArithmetic composition).
 internal static class FindTheNumberOfSubsequencesWithEqualGcdSolution

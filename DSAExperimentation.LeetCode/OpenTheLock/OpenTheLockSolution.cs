@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Locks;
 
 namespace DSAExperimentation.LeetCode.OpenTheLock;
 

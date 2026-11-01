@@ -32,11 +32,6 @@ internal static class RandomPickWithWeightSolution
         private readonly int[] _prefixSums;
         private readonly Random _random;
 
-        public RandomPickWithWeightByLinearScan(int[] weights)
-            : this(weights, new Random())
-        {
-        }
-
         public RandomPickWithWeightByLinearScan(int[] weights, Random random)
         {
             _random = random;
@@ -63,11 +58,6 @@ internal static class RandomPickWithWeightSolution
     {
         private readonly int[] _prefixSums;
         private readonly Random _random;
-
-        public RandomPickWithWeightByBinarySearchUpperBound(int[] weights)
-            : this(weights, new Random())
-        {
-        }
 
         public RandomPickWithWeightByBinarySearchUpperBound(int[] weights, Random random)
         {

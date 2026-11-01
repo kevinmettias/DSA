@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeStringSorte
 // led the remaining suffix, and each such choice contributes (remaining-1)! divided by
 // the factorial of every letter's remaining count - folded here as a running
 // inverse-factorial product that costs one multiplication per step instead of a
-// recomputation. LeetCode.Modular supplies the modulus and the Fermat's-little-theorem
+// recomputation. Domain.Modular supplies the modulus and the Fermat's-little-theorem
 // inverse the factorial table needs.
 //
 // The only thing the two strategies differ in is how they answer "how many

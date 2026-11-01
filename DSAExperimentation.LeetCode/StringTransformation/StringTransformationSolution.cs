@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.StringTransformation;
 // Counting length-k walks between two nodes of K_n has a closed form:
 // g(k) = ((n-1)^k - (-1)^k) / n and f(k) = g(k) + (-1)^k (mod 1e9+7), from
 // f(k) - g(k) = (-1)^k and f(k) + (n-1)*g(k) = (n-1)^k. That is elementary modular
-// arithmetic - LeetCode.Modular's fast power and Fermat inverse - not a repo
+// arithmetic - Domain.Modular's fast power and Fermat inverse - not a repo
 // primitive; k reaches 1e15, so it has to be O(log k), which rules out an
 // iterative DP over k for BOTH arms. The closed form is therefore shared, and the
 // one thing the two strategies actually differ in is the single count it needs:
@@ -46,7 +46,7 @@ internal static class StringTransformationSolution
     // strategy below has to justify itself against. (The closed-form tail it shares
     // with that strategy is not part of the contrast: modular exponentiation by
     // squaring is what you would write inline either way, and 1e9+7 is LeetCode's
-    // reporting convention, which is exactly why LeetCode.Modular owns both.)
+    // reporting convention, which is exactly why Domain.Modular owns both.)
     public static int NumberOfWaysByBruteForceRotationCompare(string source, string target, long operations)
     {
         var targetIsSource = source == target;

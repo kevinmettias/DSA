@@ -6,8 +6,8 @@ namespace DSAExperimentation.Tests.Architecture;
 // into another only along a named edge, a Delegation (two problems ask the same question under
 // different constraints, and one owns the arms both run) or a Subroutine (one problem's answer runs
 // another's algorithm as a step). Each edge is an entry below saying which it is and why. An owner
-// imports no problem, so delegation never chains and never runs both ways, and the tier's root,
-// Conventions/ and Modular/ import no problem at all.
+// imports no problem, so delegation never chains and never runs both ways, and the tier's root and
+// Conventions/ import no problem at all.
 //
 // The scan reads qualified names as well as using directives: every problem's namespace sits inside
 // DSAExperimentation.LeetCode, so a sibling's class resolves as `PermutationsII.PermutationsIISolution`
@@ -19,9 +19,9 @@ public sealed partial class ProblemImportTests
     private const string EdgeArrow = " -> ";
     private const string SolutionSuffix = "Solution.cs";
 
-    // Folders at the tier's root that hold what LeetCode fixes for every problem, not a problem:
-    // its notation and answer rules, and arithmetic modulo the 1e9+7 it reports answers in.
-    private static readonly string[] TierRootFolders = ["Conventions", "Modular"];
+    // Folders at the tier's root that hold what LeetCode fixes for every problem, not a problem: its
+    // notation and answer rules. Arithmetic modulo the 1e9+7 it reports answers in is Domain/Modular.
+    private static readonly string[] TierRootFolders = ["Conventions"];
 
     private static readonly string[] EdgeKinds = ["Delegation: ", "Subroutine: "];
 

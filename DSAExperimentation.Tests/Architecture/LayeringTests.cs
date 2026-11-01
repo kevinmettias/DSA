@@ -15,8 +15,10 @@ namespace DSAExperimentation.Tests.Architecture;
 // reason"; the allow-list below can.
 public sealed partial class LayeringTests
 {
-    // Lowest tier first. A file in tier i may reference tiers 0..i only.
-    private static readonly string[] Tiers = ["DataStructures", "Algorithms", "LeetCode"];
+    // Lowest tier first. A file in tier i may reference tiers 0..i only. Mechanisms sits between
+    // Operations and Domain without a number of its own (section 17.6b), so the tier numbers code
+    // cites keep their meaning.
+    private static readonly string[] Tiers = ["DataStructures", "Algorithms", "Mechanisms", "Domain", "LeetCode"];
 
     // Upward edges that are deliberate, each with the reason it is allowed. An entry names the
     // file and the one higher-tier namespace it may reach, so it sanctions that edge and no
@@ -83,9 +85,9 @@ public sealed partial class LayeringTests
         Assert.Equal(Tiers[..^1], Tiers.Where(tiersFound.Contains));
     }
 
-    // The framework project holds tiers 1 and 2 and nothing else, so it carries no LeetCode
-    // knowledge. A file outside their folders - a Domain/ brought back, a loose file at the
-    // project root - would be judged by no rule above, so it fails here instead.
+    // The framework project holds the tiers below LeetCode and nothing else. A file outside their
+    // folders - a loose file at the project root, a folder no tier names - would be judged by no
+    // rule above, so it fails here instead.
     [Fact]
     public void EveryFrameworkFile_SitsInATierFolder()
     {

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountTheNumberOfGoodPartitions;
 
@@ -77,7 +77,7 @@ internal static class CountTheNumberOfGoodPartitionsSolution
 
     // One O(n) scan finds every forced-close index by tracking the furthest
     // last-occurrence seen so far (the same "merge overlapping spans" shape as
-    // interval-merging), then LeetCode.Modular.ModularArithmetic.Power reports
+    // interval-merging), then Domain.Modular.ModularArithmetic.Power reports
     // 2^(forced closes - 1) mod 1e9+7 - no partition is ever materialized.
     public static long CountGoodPartitionsByLastOccurrenceMerge(int[] nums)
     {

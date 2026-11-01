@@ -778,7 +778,6 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | (root) | `AlgorithmConstants`, `ArrayGrowth`, `LowercaseAlphabet` (§19.6), `RangeBounds` — constants and checks read by more than one structure, at the lowest tier that reads them (§17.6a) |
 | `AhoCorasick/` | `AhoCorasick`, `AhoCorasickNode`, `AhoCorasickMatch` — witness-less, for §13.8's reasons |
 | `Buffers/` | `ContiguousGroupBuffer`, `ContiguousGroupBufferStorage` (§14.1) |
-| `Cache/` | `ICache`, `CacheConstants`, `LruCache/LruCache`, `LfuCache/LfuCache` (§13.7) |
 | `CountedBitTrie/` | `CountedBitTrie` — a bit trie over a multiset, whose values can be removed: every node carries a count, and a walk reads the counts to tell a live branch from a dead one. It stands beside `BitTrie` rather than inside it, so `BitTrie`'s insert-only users pay for no counts, and it has no `ITreeTopology` witness for both of §13.9's reasons: its nodes are slots in shared arrays, and after a removal it still holds paths whose values are gone |
 | `Deque/` | `CircularBuffer`, `Deque` (§4.1) |
 | `DisjointSet/` | `DisjointSetForest`, `DisjointSet` (§10) |
@@ -829,7 +828,7 @@ specifically:
 | `Geometry/` | `ConvexHull` | flat — points in the plane have no topology to be generic over; tier 2 because it composes `Sorting/MergeSort`, the reasoning that put `HammingDistances` in `Algorithms/` (§17.6) |
 | `Metrics/` | `DiameterAlgebra`, `HeightAlgebra`, `HeightDiameterState`, `SizeAlgebra`, `TreeMetrics` | flat — Tree is the only tier |
 | `MinimumSpanningTrees/` | `MinimumSpanningTree` | flat — `Kruskal` over `IEdgeTopology`, composing `KeyedDisjointSet` (§10.4) |
-| `NumberTheory/` | `GreatestCommonDivisor`, `GcdOperation`, `LeastCommonMultiple`, `Primality`, `PrimeFactorization`, `PrimeSieve`, `ModularPower`, `IntegerSquareRoot`, `SquareExceeds`, `PascalTriangle` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `LeetCode/Modular` keeps only LeetCode's modulus and delegates its exponentiation here (§17.6) |
+| `NumberTheory/` | `GreatestCommonDivisor`, `GcdOperation`, `LeastCommonMultiple`, `Primality`, `PrimeFactorization`, `PrimeSieve`, `ModularPower`, `IntegerSquareRoot`, `SquareExceeds`, `PascalTriangle` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `Domain/Modular` keeps only LeetCode's modulus and delegates its exponentiation here (§17.6) |
 | `Paths/` | `AllRootToLeafPaths` | flat — only one tier exists |
 | `Reducing/` | `BreadthFirstReduceOrder`, `DepthFirstReduceOrder`, `DistanceMapReduceAlgebra`, `IReduceAlgebra`, `IReduceOrderStrategy`, `Reduce`, `ZipReduceAlgebra` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
 | `Searching/` | `BinarySearch`, `SearchRange`, `NearestBoundary` (§19.7), `MonotonePredicateSearch`, `IMonotonePredicate` (§9.6), `CompressedCoordinates` (§19.3) | flat — no topology axis at all; `BinarySearch` is generic over `Sequence.IRandomAccessSequence<T>` (§13.6), `MonotonePredicateSearch` over a rule on an integer interval (§9.6) |
@@ -840,7 +839,21 @@ specifically:
 | `Traversal/` | `BreadthFirst/{BreadthFirstTraversal,LevelGroupedBreadthFirstTraversal,IBreadthFirstHooks,ILevelGroupedHooks}`, `DepthFirst/{DepthFirstSearch,DepthFirstTraversal,IDepthFirstHooks}`, `TopDown/{TopDownTraversal,ITopDownHooks,NodePosition}` | by traversal order; `DepthFirstSearch` is the weakest tier (no topology witness at all, a bare `Func`, §12), beside `DepthFirstTraversal` |
 | `Walking/` | `BreadthFirstWalk`, `DepthFirstWalk`, `TopDownWalk`, `IVisitGuard`, `TrackedVisitGuard`, `UnguardedVisit`, `Unit` | flat — the guard tier (tree vs. graph) is a constructor parameter, not a file split (§13.2) |
 
-`DSAExperimentation.Tests/` mirrors both trees one level deeper (§7, §18.1). Fixture files go to the
+**`Mechanisms/`** holds state its caller owns, kept to a policy the caller can observe (§17.6b):
+
+| Folder | Holds |
+| --- | --- |
+| `Cache/` | `ICache`, `CacheConstants`, `LruCache/LruCache`, `LfuCache/LfuCache` (§13.7) |
+
+**`Domain/`** is organized by subject, and holds what problems say about their world (§17.6):
+
+| Folder | Holds |
+| --- | --- |
+| `Locks/` | `LockNode`, `LockTopology`, `LockGraph`, `LockWheels` — LC 752's four-wheel lock |
+| `Modular/` | `ModularArithmetic`, `FactorialTable` — arithmetic modulo 1e9+7 |
+| `SlidingPuzzle/` | `PuzzleNode`, `PuzzleTopology`, `PuzzleGraph` — LC 773's 2x3 board |
+
+`DSAExperimentation.Tests/` mirrors every tree one level deeper (§7, §18.1). Fixture files go to the
 utility folder matching the interface they implement, not a shared grab-bag: the `Recording*Hooks`
 and `Counting*Hooks` fixtures sit under
 `DSAExperimentation.Tests/Algorithms/Traversal/{BreadthFirst,DepthFirst,TopDown}/Fixtures/` by which
@@ -938,8 +951,9 @@ same reason: no `IChildren`, no `ITreeTopology`, and their O(1) pointer-splice o
 (`AddFront`/`Remove`/`PopBack`, Floyd's cycle detection) don't route through Graph's generic
 traversal engines. Tries are decided case by case (§13.8, §13.9).
 
-`LruCache`/`LfuCache` sit in `Cache/LruCache/` and `Cache/LfuCache/` beside `Cache/ICache.cs`, which
-both implement. They are peer implementations of one public contract, and `ICache<TKey,TValue>`
+`LruCache`/`LfuCache` sit in `Mechanisms/Cache/LruCache/` and `Mechanisms/Cache/LfuCache/` beside
+`Mechanisms/Cache/ICache.cs`, which both implement; §17.6b says why they are mechanisms rather than
+data structures. They are peer implementations of one public contract, and `ICache<TKey,TValue>`
 makes that contract real. It is an interface, not a shared base class, per §6's
 composition-over-inheritance precedent (`IHeapOrder`, `ICombineOperation`, `IGroupOperation` are
 all interfaces) — the two caches share no method bodies to inherit, only this public shape, and
@@ -1237,12 +1251,12 @@ places:
   it with an `ArgumentOutOfRangeException` while seeding, so the reservation is a law a caller can
   violate and the code checks, unlike `ShortestPath.cs`'s non-negative-edge-weight precondition.
 
-## 17. The fourth and fifth tiers: `LeetCode/` and its harnesses
+## 17. The tiers above Operations: mechanisms, domain, solutions and harnesses
 
-§1–§16 describe the library inside `DSAExperimentation/`: `DataStructures/` (Representation +
-Topology) and `Algorithms/` (Operations). This section adds the tiers built on top of it — the
-LeetCode solutions and the harnesses that test and measure them — and the rules that keep each tier
-to its own job.
+§1–§16 describe the library's first two tiers inside `DSAExperimentation/`: `DataStructures/`
+(Representation + Topology) and `Algorithms/` (Operations). This section adds what is built on them
+— the `Mechanisms/` and `Domain/` tiers in the same library, the LeetCode solutions, and the
+harnesses that test and measure them — and the rules that keep each tier to its own job.
 
 ### 17.1 Why a solution is written once, in a tier of its own
 
@@ -1273,13 +1287,15 @@ Bottom to top, each tier depending only on those below it:
 | --- | --- | --- |
 | 1. Representation + Topology | `DSAExperimentation/DataStructures/**` | §2's first two axes |
 | 2. Operations | `DSAExperimentation/Algorithms/**` | §2's third axis |
-| 4. LeetCode solutions | `DSAExperimentation.LeetCode/**` (own project) | One folder per problem, every strategy for it; at the root, what LeetCode fixes for every problem (§17.6) |
-| 5. Harnesses | `DSAExperimentation.Tests/**` (tiers 1–2), `DSAExperimentation.LeetCode.Tests/**` (tier 4), `DSAExperimentation.Benchmarks/**` | Assertions and measurement, nothing else |
+| Mechanisms | `DSAExperimentation/Mechanisms/**` | State its caller owns, held to a policy the caller can observe: the LRU and LFU caches (§17.6b) |
+| 3. Domain | `DSAExperimentation/Domain/**` | What a problem says about its world, pulled out of the problems that say it: models, rules, constants (§17.6) |
+| 4. LeetCode solutions | `DSAExperimentation.LeetCode/**` (own project) | One folder per problem, every strategy for it; at the root, LeetCode's own notation and answer rules |
+| 5. Harnesses | `DSAExperimentation.Tests/**` (the library's tiers), `DSAExperimentation.LeetCode.Tests/**` (tier 4), `DSAExperimentation.Benchmarks/**` | Assertions and measurement, nothing else |
 
-There is no tier 3. A model that fixes *content* — LeetCode's modulus, LC 752's lock, LC 773's
-board — is LeetCode code (§17.6), so the library holds no LeetCode knowledge at all. The number is
-left free, like a retired section number, so "tier 4" and "tier 5" keep their meaning;
-ARCHITECTURE-HISTORY.md §17.6 records what tier 3 was.
+Mechanisms has a name and no number. It arrived after code across the repo had begun citing tiers
+by number, so it sits between tiers 2 and 3 without renumbering either, and "tier 3", "tier 4" and
+"tier 5" keep their meaning. ARCHITECTURE-HISTORY.md §17.6 records why tier 3 was retired once and
+then restored with a wider remit.
 
 Namespaces continue to mirror the physical path exactly (§13.1): insert `LeetCode.` immediately
 after `DSAExperimentation.` for the LeetCode project, then follow the rest of the path.
@@ -1298,16 +1314,18 @@ The class name takes a `Solution` suffix rather than being bare `TwoSum`, which 
 its own enclosing namespace segment — the §10.3/§15.3 wrinkle, avoided by construction here instead
 of aliased around once per problem.
 
-A problem folder may hold more than the solution file. A witness or model that answers *one*
-problem and nothing else belongs there too, not at the tier's root:
+A problem folder may hold more than the solution file. A witness that serves *one* problem's
+strategies and nothing else belongs there too, not at the tier's root:
 `LeetCode/CountWaysToBuildRoomsInAnAntColony/` holds `RoomWaysAlgebra.cs` and
 `RoomWaysPrecomputedFactorialAlgebra.cs`, two `IFoldAlgebra` witnesses that compute LC 1916's
-multinomial and are meaningless anywhere else, and `LeetCode/OpenTheLock/` holds LC 752's whole
-lock model, `LockGraph` through `LockWheels` (§17.6).
+multinomial and are meaningless anywhere else. What a problem says about its *world* is Domain code
+instead (§17.6): LC 752's lock model, `LockGraph` through `LockWheels`, is `Domain/Locks/`, and only
+`LockStart`, the combination its strategies and its baseline both begin from, stays beside
+`OpenTheLockSolution`.
 
-**A problem folder reaches into another only along a named edge.** It may use anything in tiers 1–2
-and anything at the root of this tier (`LeetCodeAnswer`, `LeetCodeIntervals`, `LeetCodeAdjacency`,
-`Conventions/`, `Modular/`). Another problem's folder is open to it in two cases only, each an entry in
+**A problem folder reaches into another only along a named edge.** It may use anything in the
+library — tiers 1–3 and Mechanisms — and anything at the root of this tier (`LeetCodeAnswer`,
+`LeetCodeIntervals`, `LeetCodeAdjacency`, `Conventions/`). Another problem's folder is open to it in two cases only, each an entry in
 `ProblemImportTests`' allow-list that says which case it is and why:
 
 - **Delegation.** The two problems ask the same question under different constraints: Part I and
@@ -1326,9 +1344,9 @@ wider bound. Where two problems share only a baseline, the problem it was writte
 Anything else two folders would share is general, and it goes below the problems rather than into
 whichever folder needed it first: a structure or an algorithm to tiers 1–2 by §17.6's axes
 (Andrew's monotone chain is `Algorithms/Geometry/ConvexHull`, and the time-dependent grid search
-LC 2577 and LC 3341 share is `Algorithms/ShortestPaths/Grids/GridEarliestArrival`), and a LeetCode
-convention to this tier's root (`LeetCodeIntervals.SortedByEnd` is the end order LC 435 and LC 452
-both sweep). Two kinds of likeness stay where they are. When two problems share an algorithm that
+LC 2577 and LC 3341 share is `Algorithms/ShortestPaths/Grids/GridEarliestArrival`), a fact about
+the world both problems describe to Domain (§17.6), and a LeetCode convention to this tier's root
+(`LeetCodeIntervals.SortedByEnd` is the end order LC 435 and LC 452 both sweep). Two kinds of likeness stay where they are. When two problems share an algorithm that
 is neither one's own answer, their composed arms share it from tiers 1–2 and their baselines each
 restate it (§17.5). And an interface that coincides by LeetCode's design stays per problem: My
 Calendar I and II both declare `bool Book`, but as two problems' APIs.
@@ -1375,11 +1393,10 @@ pays no delegate call per edge. The helper decides only where each edge is writt
 what the hand-written loop would in the same order, and leaves the walk to the baseline;
 PossibleBipartition, DivideNodesIntoTheMaximumNumberOfGroups and MinimumEdgeTogglesOnATree built
 their baselines' neighbour lists this way before the rule was written down. Apart from the input
-container the harness hands it, no tier-1 or tier-2 type enters a baseline, and nor does a
-content-fixing model from §17.6's table (`Modular/`'s arithmetic, LC 752's lock, LC 773's board),
-although those live in this tier: not a repo
-container, a traversal engine, `GridSize` or `GridNeighbors` as a slot or a call, and not even a
-compile-time constant read from one, such as `ModularArithmetic.Modulo` or
+container the harness hands it, no library type enters a baseline, from any of the library's tiers:
+not a repo container, a traversal engine, a mechanism, `GridSize` or `GridNeighbors` as a slot or a
+call, not a Domain model (`Domain/Modular`'s arithmetic, LC 752's lock, LC 773's board), and not
+even a compile-time constant read from one, such as `ModularArithmetic.Modulo` or
 `AlgorithmConstants.HalvingFactor`. A baseline states its own constants.
 
 `BaselineIsolationTests` holds every `Baseline = true` arm of a `ProblemSolutions` benchmark to this.
@@ -1406,17 +1423,18 @@ over a plain matrix) and LC 1916 (the post-order recursion its tree fold stands 
 library-against-library comparison each was written for still stands. Each local copy of LeetCode's
 modulus or of the halving factor this rule produces is one of a waived group in `suppressions.json`.
 
-### 17.6 Where a content-fixing model goes
+### 17.6 Tier 3: what a problem says about its world
 
 **The rule: §2's three axes decide the tier, not how many problems share the type.**
 
 - If a type's identity is a **Representation** or a **Topology** witness — generic over its
   contents, usable by anything with that shape — it is `DataStructures/`.
 - If it is an **Operations**/strategy witness, it is `Algorithms/`.
-- What **fixes content** — a specific modulus, a specific vertex set, a specific problem's
-  semantics — is LeetCode code, in tier 4: in its problem's folder when one problem uses it
-  (§17.3), at the tier's root when several do. Not "a shape that happens to have been introduced
-  for one problem"; a shape is tier 1 or 2 by the first two rules.
+- What a problem statement **fixes about its world** — a model (a lock, a board), a rule, a
+  constant (the modulus an answer is reported in), an output format — is `Domain/`, filed by
+  subject (`Domain/Locks`, `Domain/Modular`) and tested once at the mirrored path under
+  `DSAExperimentation.Tests/Domain/`. Not "a shape that happens to have been introduced for one
+  problem"; a shape is tier 1 or 2 by the first two rules.
 
 How many problems share a type is a *sharing* test, not a classification test: it says the type
 must not be duplicated, and nothing about which tier it belongs to. "Edge = differs in exactly one
@@ -1433,21 +1451,26 @@ structure-specific tier under `Algorithms/ShortestPaths/Hamming/`, mirroring
 rejoins Representation when it is hardwired to one" precedent (§13.5) that keeps
 `InOrderTraversal` and `FindClosest` beside the trees they walk.
 
-**Where the content-fixing models are:**
+**What Domain is for.** It isolates a domain's concepts and logic from any one LeetCode problem:
+what a problem says about its world is named, tested once and shared by every problem about the
+same thing, the treatment algorithms already get. It is not an orthogonality rule, so a Domain type
+may compose data structures, algorithms and mechanisms freely. Inside a problem, Domain holds the
+*what* and the solution's strategies the *how*: a witness that serves one problem's strategies stays
+in its folder (§17.3). LeetCode's own notation and answer conventions — its array encodings of
+trees and lists, `LeetCodeAnswer`'s `-1` — stay at the LeetCode tier's root, because they are facts
+about LeetCode rather than about any problem's world.
 
-| Folder | Holds | Why it fixes content |
+**Where the domain models are today:**
+
+| Folder | Holds | What it fixes |
 | --- | --- | --- |
-| `LeetCode/OpenTheLock/` | `LockNode`, `LockTopology`, `LockGraph`, `LockWheels`, beside `OpenTheLockSolution` | `LockWheels` pins `Count = 4`, `Modulus = 10`, `CombinationSpace = 10_000`. This is a concrete *instance*, not a shape — the general form would be "Cayley graph over Z_m^k with ±1 generators", and *that* would be a data structure. Still the thinnest of the judgment calls here. |
-| `LeetCode/Modular/` | `ModularArithmetic`, `FactorialTable` | Modular exponentiation *is* a classic algorithm, and it stays one — `Algorithms/NumberTheory/ModularPower` — but `1_000_000_007` is a **LeetCode reporting convention**, not a property of any algorithm. The problem set fixes the modulus; `FactorialTable`'s nCr lookup is fixed by the same modulus. |
-| `LeetCode/SlidingPuzzle/` | `PuzzleNode`, `PuzzleTopology`, `PuzzleGraph`, beside `SlidingPuzzleSolution` | Pins LC 773's 2x3 board: its blank-slide adjacency table and the 720 permutations of `"012345"`. A concrete instance in the same sense as the lock — a sliding puzzle over an arbitrary m×n board would be a data structure; this one board is content. |
+| `Domain/Locks/` | `LockNode`, `LockTopology`, `LockGraph`, `LockWheels` | `LockWheels` pins `Count = 4`, `Modulus = 10`, `CombinationSpace = 10_000`. This is a concrete *instance*, not a shape — the general form would be "Cayley graph over Z_m^k with ±1 generators", and *that* would be a data structure. Still the thinnest of the judgment calls here. |
+| `Domain/Modular/` | `ModularArithmetic`, `FactorialTable` | Modular exponentiation *is* a classic algorithm, and it stays one — `Algorithms/NumberTheory/ModularPower` — but `1_000_000_007` is the modulus counting problems report their answers in, not a property of any algorithm. `FactorialTable`'s nCr lookup is fixed by the same modulus. |
+| `Domain/SlidingPuzzle/` | `PuzzleNode`, `PuzzleTopology`, `PuzzleGraph` | Pins LC 773's 2x3 board: its blank-slide adjacency table and the 720 permutations of `"012345"`. A concrete instance in the same sense as the lock — a sliding puzzle over an arbitrary m×n board would be a data structure; this one board is content. |
 
-A problem is what fixes content, so content lives in the tier that holds problems, and the library
-holds no LeetCode knowledge at all. The lock and the board each answer one problem, so §17.3 puts
-each in its problem's folder. The modulus is shared by every counting problem that reports
-"modulo 10^9 + 7", so `Modular/` sits at the tier's root — declared beside `Conventions/` in
-`ProblemImportTests` as a folder that is not a problem — next to `LeetCodeAnswer`'s `-1`, which
-the same convention argument puts there (§17.9). Their tests mirror them in
-`DSAExperimentation.LeetCode.Tests/{OpenTheLock,SlidingPuzzle,Modular}/`.
+Their tests mirror them in `DSAExperimentation.Tests/Domain/{Locks,Modular,SlidingPuzzle}/`. The
+domain knowledge still written inside individual problem folders moves here problem by problem
+(§17.10).
 
 ### 17.6a How the tier order is enforced
 
@@ -1471,16 +1494,17 @@ Enforcement comes from the following, chosen deliberately over a project-per-tie
   made public on purpose with the reason in its doc comment (`HeapArrayIndex`).
   `Tests/Architecture/InternalsVisibilityTests.cs` fails if the library grants its internals to
   anything but a test assembly.
-- **The test projects split the same way.** `DSAExperimentation.Tests` tests tiers 1–2 and does
-  not reference `DSAExperimentation.LeetCode`; every solution-facing test — the per-problem
+- **The test projects split the same way.** `DSAExperimentation.Tests` tests the library's tiers
+  and does not reference `DSAExperimentation.LeetCode`; every solution-facing test — the per-problem
   `<Problem>SolutionTests` at `DSAExperimentation.LeetCode.Tests/<Problem>/`, the seam tests beside
   them, the LeetCode catalog — lives in `DSAExperimentation.LeetCode.Tests`. A core test that
   reached for a solution would not compile.
-- **`Tests/Architecture/LayeringTests.cs` polices the rest.** DataStructures and Algorithms stay
-  in one assembly and one project, and the test fails on any file of that project outside their
-  two folders, so LeetCode knowledge cannot regrow inside the library as a folder nothing judges.
+- **`Tests/Architecture/LayeringTests.cs` polices the rest.** DataStructures, Algorithms,
+  Mechanisms and Domain stay in one assembly and one project, and the test fails on any file of that
+  project outside their four folders, so nothing can grow inside the library as a folder no rule
+  judges.
 
-Splitting those two apart was considered and rejected for two reasons. First, several designs
+Splitting those four apart was considered and rejected for two reasons. First, several designs
 depend on single-assembly encapsulation: the walk and fold engines, their visit guards and each
 structure's storage stay `internal` behind public entry points. `IVisitGuard`'s own doc comment
 argues that *"nothing outside this assembly (its test projects aside) can reach one…
@@ -1509,6 +1533,41 @@ entry can sanction one. All of this reads a tier off the namespace a name is wri
 file must also declare its namespace inside its own tier: a type an `Algorithms/` file declared in
 a `DataStructures` namespace, in the root namespace or in none would reach `DataStructures` files
 by its simple name, with no tier written anywhere for the test to read.
+
+### 17.6b Mechanisms: state held to a policy its caller can observe
+
+A mechanism holds state its caller owns and enforces a discipline the plain structure lacks: at a
+limit it decides what happens, and the caller can see the decision. `LruCache` and `LfuCache` evict
+past their capacity, so a key the caller put can be gone. That is why they are `Mechanisms/Cache`
+rather than data structures, with `ICache`, the contract LeetCode's two cache problems are driven
+through, beside them.
+
+The test is what the caller observes, not whether a policy exists. Growth is a policy too, but a
+`DynamicArray`, `HashMap` or `Deque` that grows changes only what an operation costs, never what
+the caller sees, so they stay data structures. Nor is `Memoizer` a mechanism — its cache is
+discarded when the call returns — or `MonotonicDeque`, whose caller decides the window through
+`EvictBefore`. `Heap`, `DisjointSet` and `IntervalSet` are collections.
+
+Mechanisms sits above Operations, so a mechanism may compose any structure or algorithm, and below
+Domain, so a domain model may hold one. Design problems that bury machinery of this kind under their
+rules — a bounded queue that refuses when full, a seat or memory allocator, expiry after a
+time-to-live — contribute it here when the problem is split (§17.6, §17.10). There is no tier for
+code that holds part of the machine itself; §17.6c keeps the tiers below the harness free of it.
+
+### 17.6c Nothing below the harness touches the machine
+
+No library tier and no solution touches the machine: no file, socket, clock read, thread, console,
+ambient randomness or process-wide setting. Every answer is then a function of its inputs, and every
+test of one repeats. Randomness enters as a seeded `Random` the caller passes in: each of the seven
+problems that draw at random, from `ShuffleAnArray` to `RandomPickWithWeight`, takes one from its
+caller, as a constructor or method argument, and its tests and benchmarks seed it.
+
+The two places that do touch the machine are harness tools, and each keeps its I/O apart from its
+logic: the benchmark baseline tool (`BaselineCommand`'s files, clock and exit code around a pure
+comparison) and the LeetCode catalog (`LeetCodeApiClient`'s network and `LeetCodeQuestionCache`'s
+disk around pure records, mapping and validation). `Tests/Architecture/MachineAccessTests.cs` scans
+`DSAExperimentation` and `DSAExperimentation.LeetCode`, with comments and strings blanked, and fails
+on any of those accesses.
 
 ### 17.7 Tier 5: what stays in a harness
 
@@ -1582,7 +1641,7 @@ judge reads back from it: there, each level along its next pointers with `#` bet
   for, and splitting the strategies apart is exactly the drift §17.1 exists to undo. This is a
   waiver on the *convention*, not on any one file's shortcomings.
 - **`check-constant-placement` is waived on the two types whose subject IS their constants** —
-  `LeetCode/Modular/ModularArithmetic.cs`, `LeetCode/OpenTheLock/LockWheels.cs`. The check's own prescribed
+  `Domain/Modular/ModularArithmetic.cs`, `Domain/Locks/LockWheels.cs`. The check's own prescribed
   remedy is "move them to a type of its own, in its own file whose subject IS these values", and
   `LockWheels` already is that type, split out of `LockGraph` for this check; it still fires. Where
   the criticism is fair it is acted on instead: `LockGraph`'s wheel geometry has a type of its own.
@@ -1593,7 +1652,9 @@ judge reads back from it: there, each level along its next pointers with `#` bet
 - **LeetCode's reporting conventions are declared once, at the root of the tier.** `-1` for "no
   valid answer" is LeetCode's convention, not any one problem's value, so it is
   `LeetCode/LeetCodeAnswer.cs`'s, and `check-duplicate-constant` flags a solution that declares its
-  own — the same argument that puts `1_000_000_007` beside it, in `Modular/`.
+  own. `1_000_000_007` is shared as widely but lands elsewhere: a counting problem states its whole
+  arithmetic modulo it, which makes it part of what the problem says about its world and so
+  `Domain/Modular`'s (§17.6), while `-1` says only how LeetCode encodes "no answer".
 - **`check-test-coverage` asks for a corresponding file and member-named methods, nothing more.**
   It wants a test file whose **name corresponds to the source file** and whose **method names
   mention the members**: `HeapTests`' ordinary `Push_Pop_MinHeap_ReturnsElementsInAscendingOrder` /
@@ -1637,6 +1698,12 @@ Complete: every covered problem has its `<Problem>Solution` in
 `DSAExperimentation.LeetCode/<Problem>/`, and its test and benchmark are harnesses over it. Count
 this by solution-file existence, not by the coverage manifest's tier tag, which under-reports.
 
+Not started: moving the domain knowledge problem folders still hold into `Domain/` (§17.6). Only the
+lock, the board and the modulus are there so far. The plan is a pilot of about ten problems of
+different kinds (`AccountsMerge`, `FindWinnerOnATicTacToeGame`, the three My Calendar problems,
+`DesignBrowserHistory`, …) to settle the line between a problem's *what* and its strategies' *how*,
+then the rest subject by subject.
+
 ### 17.11 What every harness shares: `Conventions/`
 
 There is one harness shape: a hand-written test and a hand-written benchmark per problem, over its
@@ -1662,9 +1729,8 @@ problems says nothing about what it does with an empty frontier.
 ### 18.1 What "direct unit test" means here
 
 - **One test file per source file**, at the mirrored path: `DataStructures/Heap/Heap.cs` is tested
-  by `DSAExperimentation.Tests/DataStructures/Heap/HeapTests.cs`, and a LeetCode-tier model the
-  same way in `DSAExperimentation.LeetCode.Tests`: `Modular/FactorialTable.cs` by
-  `Modular/FactorialTableTests.cs`.
+  by `DSAExperimentation.Tests/DataStructures/Heap/HeapTests.cs`, and a Domain model the same way:
+  `Domain/Modular/FactorialTable.cs` by `DSAExperimentation.Tests/Domain/Modular/FactorialTableTests.cs`.
 - **Test method names begin with the member under test**, in this repo's existing
   `Member_Scenario_Expectation` form: `TryPeek_EmptyHeap_ReturnsFalse`,
   `Count_ReflectsPushesAndPops`, `OneCharacterMutations_RestoresItsBufferBetweenPositions`.
@@ -1679,7 +1745,7 @@ The Nomos `check-test-coverage` gate reads both halves — file correspondence a
 and reports anything else as uncovered. That is a real property, not a formality: a member with no
 test naming it is a member whose failure will surface under a test name that does not mention it.
 
-So a `check-test-coverage` finding in tiers 1–2 is answered with a test, never a waiver. A waiver
+So a `check-test-coverage` finding in the library's tiers is answered with a test, never a waiver. A waiver
 arguing that a member is exercised transitively, or that the check mis-attributes, records exactly
 the gap this section exists to close, and then stands in for the missing test. The check's only
 waivers are over the solution tier's problem folders, which `LeetCodeStrategyCoverageTests` covers
@@ -1714,8 +1780,8 @@ would be blind in precisely the place duplication happens.
 - **§17.2's tier order** — `LayeringTests`: a file in `DSAExperimentation` may reference its own
   tier or a lower one, whether in a `using` directive or inline in its code. The one deliberate
   inversion is allow-listed by file and target namespace, and a global using may name only the
-  lowest tier (§17.6a). Every file of the project must sit in `DataStructures/` or `Algorithms/`,
-  so a folder no rule judges — a tier 3 brought back, say — fails instead of passing unread. Each
+  lowest tier (§17.6a). Every file of the project must sit in `DataStructures/`, `Algorithms/`,
+  `Mechanisms/` or `Domain/`, so a folder no rule judges fails instead of passing unread. Each
   file must also declare its namespace inside its own tier, since every reference is read by the
   tier its namespace names. The LeetCode tier
   has no row: it is the top tier in a project of its own, so nothing it references can sit above
@@ -1741,6 +1807,11 @@ would be blind in precisely the place duplication happens.
   an `AsyncLocal`, `ThreadLocal` or `[ThreadStatic]` slot; a hook or algebra that needs a runtime
   value carries it as a field. Comments and strings are blanked through the same
   `RepositoryFiles.CodeOf` the witness rule reads base lists with.
+- **§17.6c's "nothing below the harness touches the machine"** — `MachineAccessTests`. No file in
+  `DSAExperimentation` or `DSAExperimentation.LeetCode` may reach the file system, the network, the
+  clock, a thread, the console, ambient randomness or the process; a seeded `Random` a caller passes
+  in is the only randomness. Each kind of access has its own pattern and finding, and theory cases
+  pin both what each pattern catches and the look-alikes it leaves alone.
 - **§17.3's "a problem folder reaches into another only along a named edge"** —
   `ProblemImportTests`. Inside `DSAExperimentation.LeetCode`, a folder may name another problem's
   folder only along an allow-listed edge whose reason opens `Delegation:` or `Subroutine:`. An
@@ -1749,8 +1820,8 @@ would be blind in precisely the place duplication happens.
   because a sibling's namespace resolves with no using at all.
 - **§17.5's "what you would write without this repo"** — `BaselineIsolationTests`. Every
   `Baseline = true` arm of every `ProblemSolutions` benchmark is traced from the solution member it
-  calls or constructs, as §17.5 describes, and fails on any library type or §17.6 content model the
-  trace reaches outside the arm's own input. The trace resolves a simple name through its file's
+  calls or constructs, as §17.5 describes, and fails on any library type — a Domain model or a
+  mechanism as much as a container — the trace reaches outside the arm's own input. The trace resolves a simple name through its file's
   own usings, so the test also fails on any import of a library name past one file's scope - a
   global using in the solution project, a `<Using>` item in its project file or in a
   `Directory.Build` or `Directory.Packages` file, or a static using of a library type. Parser tests
@@ -1824,7 +1895,7 @@ a `ShortestPath` method for §16.1's reason: same output shape, no shared mechan
 
 ### 19.5 `PascalTriangle`: the general form of `FactorialTable`
 
-`FactorialTable` sits in the LeetCode tier's `Modular/` because 1e9+7 fixes its content (§17.6), and it divides by
+`FactorialTable` sits in `Domain/Modular/` because 1e9+7 fixes its content (§17.6), and it divides by
 factorials through modular inverses, which a composite modulus does not have. `PascalTriangle`
 builds by addition, so any modulus works — 10 and 5 are the ones LeetCode asks for — and an exact
 mode holds coefficients through row 66, the last whose middle entry fits in `long`. The modulus is

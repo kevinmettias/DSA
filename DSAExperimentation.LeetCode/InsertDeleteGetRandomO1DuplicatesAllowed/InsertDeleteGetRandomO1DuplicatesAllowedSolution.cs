@@ -38,10 +38,9 @@ internal static class InsertDeleteGetRandomO1DuplicatesAllowedSolution
     // find SOME occurrence of the target value, then an indexed removal that shifts
     // every later element - deliberately without this repo's primitives, the arm the
     // linked-occurrences strategy below has to justify itself against.
-    internal sealed class RandomizedCollectionByListScan : IRandomizedCollection
+    internal sealed class RandomizedCollectionByListScan(Random random) : IRandomizedCollection
     {
         private readonly List<int> _values = [];
-        private readonly Random _random = new();
 
         public int Count => _values.Count;
 
@@ -64,7 +63,7 @@ internal static class InsertDeleteGetRandomO1DuplicatesAllowedSolution
             return true;
         }
 
-        public int GetRandom() => _values[_random.Next(_values.Count)];
+        public int GetRandom() => _values[random.Next(_values.Count)];
     }
 
     // This repo's own HashMap<int, DoublyLinkedList<int>> (value -> its occurrence
@@ -77,12 +76,11 @@ internal static class InsertDeleteGetRandomO1DuplicatesAllowedSolution
     // retarget the moved element's occurrence record by mutating one node's Value in
     // place - O(1), no list scan, the same role a swapped element's own index update
     // plays in LC380.
-    internal sealed class RandomizedCollectionByLinkedOccurrences : IRandomizedCollection
+    internal sealed class RandomizedCollectionByLinkedOccurrences(Random random) : IRandomizedCollection
     {
         private readonly DynamicArray<int> _values = new();
         private readonly HashMap<int, DoublyLinkedList<int>> _occurrencesByValue = new();
         private readonly HashMap<int, DoublyLinkedListNode<int>> _nodeByPosition = new();
-        private readonly Random _random = new();
 
         public int Count => _values.Count;
 
@@ -153,6 +151,6 @@ internal static class InsertDeleteGetRandomO1DuplicatesAllowedSolution
             _nodeByPosition.Set(toPosition, movedNode);
         }
 
-        public int GetRandom() => _values.Get(_random.Next(_values.Count));
+        public int GetRandom() => _values.Get(random.Next(_values.Count));
     }
 }

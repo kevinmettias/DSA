@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.SubsequencesWithAUniqueMiddleModeI;
 
@@ -19,7 +19,7 @@ namespace DSAExperimentation.LeetCode.SubsequencesWithAUniqueMiddleModeI;
 //   - k == 0: x's count is only 1, and the other 4 picks are always present -
 //     one of them always ties x's count of 1, so x can never be the sole mode.
 //     This case contributes nothing, however the other 4 are distributed.
-// This repo's own LeetCode.Modular.ModularArithmetic supplies the modulus every
+// This repo's own Domain.Modular.ModularArithmetic supplies the modulus every
 // counting problem here reports against.
 internal static class SubsequencesWithAUniqueMiddleModeISolution
 {

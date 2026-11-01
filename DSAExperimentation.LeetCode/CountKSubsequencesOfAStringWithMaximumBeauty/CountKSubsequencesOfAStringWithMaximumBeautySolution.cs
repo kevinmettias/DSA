@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountKSubsequencesOfAStringWithMaximumBeauty;
 

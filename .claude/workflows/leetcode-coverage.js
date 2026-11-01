@@ -106,7 +106,7 @@ function buildConventionSolutionPlacement() {
     `TryFindIndicesByBruteForce, MinTurnsByReduceGraph). The naive/brute-force baseline is a first-class ` +
     `method here too, NOT a private helper hidden in the benchmark - that is what gets it under test. If a ` +
     `benchmark needs to hoist input construction into [GlobalSetup], give the strategy a second overload ` +
-    `taking the prepared input; that overload must take a named type of the problem's own or one of this repo's own containers ` +
+    `taking the prepared input; that overload must take a Domain type, a named type of the problem's own or one of this repo's own containers ` +
     `(e.g. Set<string>, which is not IEnumerable, so the overloads can never be ambiguous), never a BCL ` +
     `collection the LeetCode-shaped overload could also bind. A witness type (IFoldAlgebra, ITopology, ...) ` +
     `used by this problem ALONE also lives in this folder.\n`
@@ -121,17 +121,20 @@ function buildConventionSharedTiers() {
     `classification test, and getting that wrong is exactly the mistake section 17.6 documents. A ` +
     `Representation or Topology witness (node types, ITopology/IChildren witnesses, graph builders) goes in ` +
     `DSAExperimentation/DataStructures/; an Operations or strategy witness (heuristics, algebras, search ` +
-    `orders) goes in DSAExperimentation/Algorithms/; what fixes CONTENT - a specific modulus, a specific ` +
-    `vertex set, one problem's semantics - is LeetCode code: in the problem's folder when it answers one ` +
-    `problem, at the root of DSAExperimentation.LeetCode when several share it (LeetCodeAnswer, Modular/). ` +
-    `There is no DSAExperimentation/Domain/ any more; LayeringTests fails on a file there.\n` +
+    `orders) goes in DSAExperimentation/Algorithms/; state held to a policy the caller can observe at a ` +
+    `limit (an evicting cache) goes in DSAExperimentation/Mechanisms/; what a problem says about its WORLD - ` +
+    `a model, a rule, a constant such as the 1e9+7 modulus, an output format - goes in ` +
+    `DSAExperimentation/Domain/, filed by subject (section 17.6). A witness that serves only this problem's ` +
+    `strategies stays in the problem's folder, and LeetCode's own notation and answer conventions sit at the ` +
+    `root of DSAExperimentation.LeetCode (Conventions/, LeetCodeAnswer).\n` +
     `   BROWSE THESE FIRST, they very often already cover the problem you are given: ` +
     `DataStructures/Graph/Hamming (one-character-mutation graphs over any Alphabet, plus HammingSearch), ` +
     `DataStructures/Graph/Grids (Grid and WeightedGrid), ` +
     `DataStructures/Graph/Engines/Dags/Trees (BinaryTree, tries, RootedTreeNode + ParentArrayTree), ` +
     `Algorithms/ShortestPaths (Dijkstra/AStar plus the Zero/Manhattan/Chebyshev heuristics, and ` +
     `Grids//Hamming/ distance helpers), Algorithms/Reducing, Algorithms/Folding, ` +
-    `and at the LeetCode root, Modular/ (ModularArithmetic and FactorialTable, mod 1e9+7).\n`
+    `Mechanisms/Cache (LruCache, LfuCache), and Domain/Modular (ModularArithmetic and FactorialTable, ` +
+    `mod 1e9+7), Domain/Locks and Domain/SlidingPuzzle.\n`
   )
 }
 
@@ -148,7 +151,7 @@ function buildConventionHarnesses() {
     `strategies agree - each one is already asserted against the expected value. Build trees and lists with ` +
     `LeetCodeWireFormat (DSAExperimentation.LeetCode.Conventions) and compare order-free answers with ` +
     `LeetCodeAnswers - do not write a private BuildList/BuildTree/order-insensitive comparer. No Fixtures/ ` +
-    `subfolder - if you were about to create one, that type belongs in the LeetCode/ problem ` +
+    `subfolder - if you were about to create one, that type belongs in Domain/, the LeetCode/ problem ` +
     `folder or at the LeetCode root instead.\n` +
     `4. DSAExperimentation.Benchmarks/ProblemSolutions/<Name>Benchmarks.cs - HARNESS ONLY. [Benchmark] ` +
     `methods that are one-line calls into <Name>Solution, one per strategy, each RETURNING THE STRATEGY'S ` +

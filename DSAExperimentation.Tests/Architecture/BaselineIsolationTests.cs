@@ -26,26 +26,14 @@ public sealed partial class BaselineIsolationTests
 
     private static readonly string BenchmarkFolder = Path.Combine("DSAExperimentation.Benchmarks", "ProblemSolutions");
 
-    // The library a baseline may not name, by namespace: the framework's tiers, and the LeetCode
-    // tier's Modular folder, whose modulus the owner ruled out of baselines by name.
+    // The library a baseline may not name, by namespace: every tier of the framework project. Domain
+    // is among them, so the modulus the owner ruled out of baselines by name stays out with it.
     private static readonly string[] LibraryNamespaces =
     [
         "DSAExperimentation.DataStructures",
         "DSAExperimentation.Algorithms",
-        "DSAExperimentation.LeetCode.Modular",
-    ];
-
-    // ...and by full name: the content-fixing models section 17.6 keeps beside the one problem each
-    // serves, barred from a baseline exactly as a library type is, even inside their own folder.
-    private static readonly string[] LibraryTypeNames =
-    [
-        "DSAExperimentation.LeetCode.OpenTheLock.LockGraph",
-        "DSAExperimentation.LeetCode.OpenTheLock.LockNode",
-        "DSAExperimentation.LeetCode.OpenTheLock.LockTopology",
-        "DSAExperimentation.LeetCode.OpenTheLock.LockWheels",
-        "DSAExperimentation.LeetCode.SlidingPuzzle.PuzzleGraph",
-        "DSAExperimentation.LeetCode.SlidingPuzzle.PuzzleNode",
-        "DSAExperimentation.LeetCode.SlidingPuzzle.PuzzleTopology",
+        "DSAExperimentation.Mechanisms",
+        "DSAExperimentation.Domain",
     ];
 
     // The library types that stand for LeetCode's own I/O shapes - its TreeNode, ListNode and quad
@@ -77,7 +65,7 @@ public sealed partial class BaselineIsolationTests
         RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace);
     private static readonly Regex CapitalizedName = new(@"(?<![\w.])(?<name>[A-Z]\w*)");
     private static readonly Regex QualifiedLibraryName = new(
-        @"(?<![\w.])(?:DSAExperimentation\.)?(?:DataStructures|Algorithms|LeetCode\.Modular)\.[\w.]*\w");
+        @"(?<![\w.])(?:DSAExperimentation\.)?(?:DataStructures|Algorithms|Mechanisms|Domain)\.[\w.]*\w");
 
     // An import that reaches past one file's own scope: a global using - aliased, static or plain -
     // or a static using in a single file, which brings a type's members in with no type name at all.
@@ -107,8 +95,8 @@ public sealed partial class BaselineIsolationTests
             { "Solution.cs", "global using DSAExperimentation.DataStructures.Set;", ["DSAExperimentation.DataStructures.Set"] },
             {
                 "Solution.cs",
-                "using static DSAExperimentation.LeetCode.Modular.ModularArithmetic;",
-                ["DSAExperimentation.LeetCode.Modular.ModularArithmetic"]
+                "using static DSAExperimentation.Domain.Modular.ModularArithmetic;",
+                ["DSAExperimentation.Domain.Modular.ModularArithmetic"]
             },
             {
                 "Directory.Packages.props",
@@ -199,7 +187,7 @@ public sealed partial class BaselineIsolationTests
     public void LibraryNamesReached_NameInACommentOrString_AreIgnored() =>
         Assert.Empty(LibraryNamesReached(
             """
-            using DSAExperimentation.LeetCode.Modular;
+            using DSAExperimentation.Domain.Modular;
 
             namespace Probe;
 
@@ -458,7 +446,7 @@ public sealed partial class BaselineIsolationTests
     {
         var imported = ImportedNamesIn(fileName, text);
 
-        return [.. imported.Where(IsLibraryTarget)];
+        return [.. imported.Where(IsLibraryNamespace)];
     }
 
     private static IEnumerable<string> ImportedNamesIn(string fileName, string text)
@@ -474,9 +462,6 @@ public sealed partial class BaselineIsolationTests
 
         return UsingItem.Matches(uncommented).Select(match => match.Groups["name"].Value);
     }
-
-    private static bool IsLibraryTarget(string name) =>
-        IsLibraryNamespace(name) || Array.Exists(LibraryTypeNames, barred => barred == name);
 
     private static bool IsLibraryNamespace(string name) =>
         Array.Exists(LibraryNamespaces, library => name == library || name.StartsWith($"{library}.", StringComparison.Ordinal));
@@ -626,17 +611,9 @@ public sealed partial class BaselineIsolationTests
         return qualified.Concat(simple);
     }
 
-    // A type the folder declares shadows any library type its usings import, as C# resolves it -
-    // unless that folder type is itself barred by full name.
+    // A type the folder declares shadows any library type its usings import, as C# resolves it.
     private static bool IsLibraryName(string name, ProblemFolderSource folder, IReadOnlySet<string> scope)
-    {
-        if (folder.HasTypeNamed(name))
-        {
-            return Library.Value.IsBarredType($"{folder.Namespace}.{name}");
-        }
-
-        return scope.Contains(name);
-    }
+        => !folder.HasTypeNamed(name) && scope.Contains(name);
 
     // Every Baseline = true arm of every ProblemSolutions benchmark, with the solution member it reaches.
     private static List<BaselineEntry> BaselineEntries()
@@ -784,7 +761,6 @@ public sealed partial class BaselineIsolationTests
         private static readonly Regex UsingNamespace = new(@"^\s*using\s+(?!static\b)(?<name>[\w.]+)\s*;", RegexOptions.Multiline);
 
         private readonly Dictionary<string, HashSet<string>> _typesByNamespace = new(StringComparer.Ordinal);
-        private readonly HashSet<string> _barredTypes = new(LibraryTypeNames, StringComparer.Ordinal);
         private readonly Dictionary<string, HashSet<string>> _scopeByCode = new(StringComparer.Ordinal);
 
         public static LibraryIndex Read()
@@ -800,12 +776,8 @@ public sealed partial class BaselineIsolationTests
                 index.AddLibraryTypesIn(code);
             }
 
-            index.AddBarredTypes();
-
             return index;
         }
-
-        public bool IsBarredType(string fullName) => _barredTypes.Contains(fullName);
 
         // The simple names one file's usings and aliases resolve to a library type. Keyed by the
         // file's code rather than its name: the probe folders the parser tests build all name
@@ -834,15 +806,6 @@ public sealed partial class BaselineIsolationTests
             TypesIn(declared.Groups["name"].Value).UnionWith(names);
         }
 
-        private void AddBarredTypes()
-        {
-            foreach (var fullName in LibraryTypeNames)
-            {
-                var lastDot = fullName.LastIndexOf('.');
-                TypesIn(fullName[..lastDot]).Add(fullName[(lastDot + 1)..]);
-            }
-        }
-
         private HashSet<string> TypesIn(string namespaceName)
         {
             if (!_typesByNamespace.TryGetValue(namespaceName, out var names))
@@ -860,7 +823,7 @@ public sealed partial class BaselineIsolationTests
 
             foreach (Match alias in UsingAlias.Matches(code))
             {
-                if (IsLibraryAliasTarget(alias.Groups["target"].Value))
+                if (IsLibraryNamespace(alias.Groups["target"].Value))
                 {
                     scope.Add(alias.Groups["alias"].Value);
                 }
@@ -873,7 +836,5 @@ public sealed partial class BaselineIsolationTests
 
             return scope;
         }
-
-        private bool IsLibraryAliasTarget(string target) => IsLibraryNamespace(target) || _barredTypes.Contains(target);
     }
 }

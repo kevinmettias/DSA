@@ -52,7 +52,7 @@ public sealed partial class InsertDeleteGetRandomO1SolutionTests
     public void RandomizedSetByListScan_LeetCodeExamples_TracksMembershipCorrectly(
         RandomizedSetOp[] operations, object?[] expected)
     {
-        var replies = RunScript(new InsertDeleteGetRandomO1Solution.RandomizedSetByListScan(), operations);
+        var replies = RunScript(new InsertDeleteGetRandomO1Solution.RandomizedSetByListScan(new Random(1)), operations);
 
         for (var i = 0; i < replies.Length; i++)
         {
@@ -75,7 +75,7 @@ public sealed partial class InsertDeleteGetRandomO1SolutionTests
     public void RandomizedSetByHashMapSwapRemove_LeetCodeExamples_TracksMembershipCorrectly(
         RandomizedSetOp[] operations, object?[] expected)
     {
-        var replies = RunScript(new InsertDeleteGetRandomO1Solution.RandomizedSetByHashMapSwapRemove(), operations);
+        var replies = RunScript(new InsertDeleteGetRandomO1Solution.RandomizedSetByHashMapSwapRemove(new Random(1)), operations);
 
         for (var i = 0; i < replies.Length; i++)
         {

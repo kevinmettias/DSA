@@ -1,7 +1,7 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using System.Numerics;
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountWaysToMakeArrayWithProduct;
 

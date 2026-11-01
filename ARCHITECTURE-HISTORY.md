@@ -246,6 +246,20 @@ the modulus to `LeetCode/Modular/` beside `LeetCodeAnswer`, and their tests to
 `DSAExperimentation.LeetCode.Tests`. The number 3 was left free rather than reused, so "tier 4" and
 "tier 5" kept their meaning. Until then §17.6 was headed "Tier 3: what earns a `Domain/` folder".
 
+The retirement read §17.6's narrow rule — Domain only "fixes content" — and concluded the tier was
+three LeetCode leftovers. The owner reversed it the next day with a wider remit: Domain isolates
+what problems say about their world (models, rules, constants, output formats) from any one
+problem, so that knowledge is named, tested once and shared, the way algorithms already are, and a
+problem folder keeps only its strategies. It may use data structures and algorithms; the point is
+isolating domain concepts and logic from specific problems, not keeping them orthogonal to the
+library. The three folders moved back as a folder in the library, with their types made public
+because the library had meanwhile stopped granting its internals to the solution tier. The same
+change added `Mechanisms/`, unnumbered between tiers 2 and 3 because code already cited tiers by
+number, taking the LRU and LFU caches out of `DataStructures/`, and added the rule that nothing
+below the harness touches the machine (§17.6b, §17.6c), whose first run found LC 380 and LC 381
+drawing from an unseeded `Random` as well as LC 528. Domain is still to absorb the knowledge the
+problem folders carry; §17.10 records the plan.
+
 ### §17.6a How the tier order came to be enforced
 
 The tiers were a convention the file tree implied and nothing checked, and four files under

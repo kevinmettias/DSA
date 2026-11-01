@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.SlidingPuzzle;
 using DSAExperimentation.LeetCode.SlidingPuzzle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

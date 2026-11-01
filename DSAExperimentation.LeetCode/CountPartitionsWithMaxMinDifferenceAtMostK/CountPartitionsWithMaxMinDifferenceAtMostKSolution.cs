@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.MonotonicDeque;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountPartitionsWithMaxMinDifferenceAtMostK;
 

@@ -60,7 +60,7 @@ public sealed partial class InsertDeleteGetRandomO1DuplicatesAllowedSolutionTest
         RandomizedCollectionOp[] operations, object?[] expected)
     {
         var replies = RunScript(
-            new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByListScan(),
+            new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByListScan(new Random(1)),
             operations);
 
         for (var i = 0; i < replies.Length; i++)
@@ -85,7 +85,7 @@ public sealed partial class InsertDeleteGetRandomO1DuplicatesAllowedSolutionTest
         RandomizedCollectionOp[] operations, object?[] expected)
     {
         var replies = RunScript(
-            new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByLinkedOccurrences(),
+            new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByLinkedOccurrences(new Random(1)),
             operations);
 
         for (var i = 0; i < replies.Length; i++)

@@ -32,10 +32,10 @@ public class InsertDeleteGetRandomO1Benchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool[] ListScan() => Replay(new InsertDeleteGetRandomO1Solution.RandomizedSetByListScan());
+    public bool[] ListScan() => Replay(new InsertDeleteGetRandomO1Solution.RandomizedSetByListScan(new Random(1)));
 
     [Benchmark]
-    public bool[] HashMapSwapRemove() => Replay(new InsertDeleteGetRandomO1Solution.RandomizedSetByHashMapSwapRemove());
+    public bool[] HashMapSwapRemove() => Replay(new InsertDeleteGetRandomO1Solution.RandomizedSetByHashMapSwapRemove(new Random(1)));
 
     private bool[] Replay(InsertDeleteGetRandomO1Solution.IRandomizedSet set)
     {

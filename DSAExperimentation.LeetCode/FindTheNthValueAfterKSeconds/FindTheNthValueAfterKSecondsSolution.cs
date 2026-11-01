@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.FindTheNthValueAfterKSeconds;
 
@@ -38,7 +38,7 @@ internal static class FindTheNthValueAfterKSecondsSolution
     // Composed: secondCount rounds of prefix-summing an all-ones array is exactly
     // Pascal's triangle by another name, so a[n-1] after secondCount seconds is the
     // closed-form binomial coefficient C(n - 1 + k, k). Computed as a factorial ratio
-    // using LeetCode.Modular's Inverse (Fermat's-little-theorem modular inverse) for the
+    // using Domain.Modular's Inverse (Fermat's-little-theorem modular inverse) for the
     // denominator, the same "reporting modulo 1e9+7 is a LeetCode convention,
     // not an algorithm property" reuse every counting problem in this catalogue
     // shares. O(n + k).

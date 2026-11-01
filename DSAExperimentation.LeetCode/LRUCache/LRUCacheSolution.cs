@@ -1,5 +1,5 @@
-using DSAExperimentation.DataStructures.Cache;
-using DSAExperimentation.DataStructures.Cache.LruCache;
+using DSAExperimentation.Mechanisms.Cache;
+using DSAExperimentation.Mechanisms.Cache.LruCache;
 
 namespace DSAExperimentation.LeetCode.LRUCache;
 
@@ -16,7 +16,7 @@ namespace DSAExperimentation.LeetCode.LRUCache;
 internal static class LRUCacheSolution
 {
     // The composed answer: this repo's own HashMap + DoublyLinkedList cache,
-    // already under direct test at DataStructures/Cache/LruCache.
+    // already under direct test at Mechanisms/Cache/LruCache.
     public static ICache<int, int> CreateByLruCachePrimitive(int capacity) =>
         new LruCache<int, int>(capacity);
 

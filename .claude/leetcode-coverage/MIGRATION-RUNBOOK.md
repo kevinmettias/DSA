@@ -22,9 +22,10 @@ DSAExperimentation.Benchmarks/.../<Name>Benchmarks.cs  harness: 1 one-line [Benc
 ```
 
 Fixtures the pair carried get re-tiered by §2's axes (Representation/Topology →
-`DataStructures/`, Operations → `Algorithms/`, content-fixing → LeetCode code:
-the problem folder when one problem uses it, the LeetCode root when several do), and anything new landing in
-`DataStructures/` or `Algorithms/` owes its own direct unit tests (§18).
+`DataStructures/`, Operations → `Algorithms/`, what a problem says about its world →
+`Domain/`, filed by subject (§17.6), a witness that serves only one problem's strategies → that
+problem's folder), and anything new landing in `DataStructures/`, `Algorithms/`, `Mechanisms/` or
+`Domain/` owes its own direct unit tests (§18).
 
 ## Run one batch (any new chat)
 

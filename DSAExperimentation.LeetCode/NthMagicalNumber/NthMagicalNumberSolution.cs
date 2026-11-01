@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NthMagicalNumber;
 

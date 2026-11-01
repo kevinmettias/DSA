@@ -53,10 +53,10 @@ public class InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool[] ListScan() => Replay(new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByListScan());
+    public bool[] ListScan() => Replay(new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByListScan(new Random(1)));
 
     [Benchmark]
-    public bool[] LinkedOccurrences() => Replay(new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByLinkedOccurrences());
+    public bool[] LinkedOccurrences() => Replay(new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByLinkedOccurrences(new Random(1)));
 
     private bool[] Replay(InsertDeleteGetRandomO1DuplicatesAllowedSolution.IRandomizedCollection collection)
     {

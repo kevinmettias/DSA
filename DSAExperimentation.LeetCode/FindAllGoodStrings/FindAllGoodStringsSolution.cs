@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.Algorithms.StringMatching;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.FindAllGoodStrings;
 

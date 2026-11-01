@@ -1,5 +1,5 @@
-using DSAExperimentation.DataStructures.Cache;
-using DSAExperimentation.DataStructures.Cache.LfuCache;
+using DSAExperimentation.Mechanisms.Cache;
+using DSAExperimentation.Mechanisms.Cache.LfuCache;
 
 namespace DSAExperimentation.LeetCode.LFUCache;
 
@@ -18,7 +18,7 @@ namespace DSAExperimentation.LeetCode.LFUCache;
 internal static class LFUCacheSolution
 {
     // The composed answer: this repo's own HashMap + DoublyLinkedList frequency
-    // buckets, already under direct test at DataStructures/Cache/LfuCache.
+    // buckets, already under direct test at Mechanisms/Cache/LfuCache.
     public static ICache<int, int> CreateByLfuCachePrimitive(int capacity) =>
         new LfuCache<int, int>(capacity);
 

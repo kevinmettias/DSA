@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.MinimumNonZeroProductOfTheArrayElements;
 
@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.MinimumNonZeroProductOfTheArrayElements;
 //
 // Both strategies share the pairing insight and differ only there: repeated modular
 // multiplication (O(exponent)) against exponentiation by squaring (O(log exponent)),
-// which is LeetCode.Modular.ModularArithmetic.Power - the same 1e9+7 LeetCode reporting
+// which is Domain.Modular.ModularArithmetic.Power - the same 1e9+7 LeetCode reporting
 // convention this repo already declares once. No repo container applies to either
 // arm: there is nothing to compose over a handful of running scalars, the same
 // "lighter repo-primitive fit" already accepted for Pow(x, n) and Super Pow.

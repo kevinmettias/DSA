@@ -1,7 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.PrefixSums;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.SumOfTotalStrengthOfWizards;
 

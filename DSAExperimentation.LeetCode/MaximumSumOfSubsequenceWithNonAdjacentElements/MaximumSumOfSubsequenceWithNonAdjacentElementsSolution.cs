@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.SegmentTree;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.MaximumSumOfSubsequenceWithNonAdjacentElements;
 

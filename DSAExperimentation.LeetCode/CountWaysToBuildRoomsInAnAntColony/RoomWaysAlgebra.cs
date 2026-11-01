@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Folding;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 

@@ -1,6 +1,6 @@
 using System.Numerics;
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.FindSumOfArrayProductOfMagicalSequences;
 

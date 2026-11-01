@@ -35,10 +35,9 @@ internal static class InsertDeleteGetRandomO1Solution
     // every Insert, an O(n) shifting Remove - deliberately without this
     // repo's primitives, the arm the hashmap+swap-remove strategy below has
     // to justify itself against.
-    internal sealed class RandomizedSetByListScan : IRandomizedSet
+    internal sealed class RandomizedSetByListScan(Random random) : IRandomizedSet
     {
         private readonly List<int> _values = [];
-        private readonly Random _random = new();
 
         public int Count => _values.Count;
 
@@ -55,7 +54,7 @@ internal static class InsertDeleteGetRandomO1Solution
 
         public bool Remove(int value) => _values.Remove(value);
 
-        public int GetRandom() => _values[_random.Next(_values.Count)];
+        public int GetRandom() => _values[random.Next(_values.Count)];
     }
 
     // This repo's own HashMap<int,int> (value -> its position in the backing
@@ -66,11 +65,10 @@ internal static class InsertDeleteGetRandomO1Solution
     // DynamicArray.RemoveAt always runs on the LAST index - its O(1) path (no
     // shifting), never the O(n) one - which is what makes O(1) removal from
     // the middle of an otherwise-unordered array possible at all.
-    internal sealed class RandomizedSetByHashMapSwapRemove : IRandomizedSet
+    internal sealed class RandomizedSetByHashMapSwapRemove(Random random) : IRandomizedSet
     {
         private readonly HashMap<int, int> _indexByValue = new();
         private readonly DynamicArray<int> _values = new();
-        private readonly Random _random = new();
 
         public int Count => _values.Count;
 
@@ -112,6 +110,6 @@ internal static class InsertDeleteGetRandomO1Solution
             _values.RemoveAt(lastIndex);
         }
 
-        public int GetRandom() => _values.Get(_random.Next(_values.Count));
+        public int GetRandom() => _values.Get(random.Next(_values.Count));
     }
 }

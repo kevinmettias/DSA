@@ -136,14 +136,14 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/Cache/LruCache/LruCache.cs",
+      "path": "DSAExperimentation/Mechanisms/Cache/LruCache/LruCache.cs",
       "reason": "TryGetValue's default! is the standard out-parameter contract, the same as HashMap.TryGetValue's; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/Cache/LfuCache/LfuCache.cs",
+      "path": "DSAExperimentation/Mechanisms/Cache/LfuCache/LfuCache.cs",
       "reason": "TryGetValue's default! is the standard out-parameter contract, the same as HashMap.TryGetValue's; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
@@ -276,14 +276,14 @@
     },
     {
       "check": "check-function-cohesion",
-      "path": "DSAExperimentation.Tests/DataStructures/Cache/LruCache/LruCacheTests.cs",
+      "path": "DSAExperimentation.Tests/Mechanisms/Cache/LruCache/LruCacheTests.cs",
       "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each of the 4 tests this entry waives performs one mutation (an add, a removal, a union, a write) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-function-cohesion",
-      "path": "DSAExperimentation.Tests/DataStructures/Cache/LfuCache/LfuCacheTests.cs",
+      "path": "DSAExperimentation.Tests/Mechanisms/Cache/LfuCache/LfuCacheTests.cs",
       "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each of the 4 tests this entry waives performs one mutation (an add, a removal, a union, a write) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
@@ -521,7 +521,7 @@
     },
     {
       "check": "check-constant-placement",
-      "path": "DSAExperimentation.LeetCode/Modular/ModularArithmetic.cs",
+      "path": "DSAExperimentation/Domain/Modular/ModularArithmetic.cs",
       "reason": "The check asks that a visible constant be moved to 'a type of its own whose subject IS these values'. ModularArithmetic is already that type: the modulus is not incidental state inside a class about something else, it is the single value the whole type is parameterised by, and both public operations (Inverse, Power) are defined only with respect to it. Extracting Modulo to a separate type would leave ModularArithmetic unable to state what it is arithmetic modulo of, in the one file a reader would look in.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
@@ -535,7 +535,7 @@
     },
     {
       "check": "check-constant-placement",
-      "path": "DSAExperimentation.LeetCode/OpenTheLock/LockWheels.cs",
+      "path": "DSAExperimentation/Domain/Locks/LockWheels.cs",
       "reason": "LockWheels IS the remedy this check prescribes - it was extracted from LockGraph in this same pass precisely because the check asked for 'a type of its own, in its own file whose subject IS these values'. Count/Modulus/CombinationSpace are the lock's dimensions and the entire subject of the type and file; there is no further type to move them to. Same shape as the ModularArithmetic.Modulo waiver.",
       "owner": "@kmettias",
       "expires": "2026-11-22"

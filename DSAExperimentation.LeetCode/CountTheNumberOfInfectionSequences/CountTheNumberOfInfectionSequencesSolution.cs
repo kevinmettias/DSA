@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountTheNumberOfInfectionSequences;
 
@@ -41,7 +41,7 @@ internal static class CountTheNumberOfInfectionSequencesSolution
     }
 
     // One O(n) scan measures every run between (and around) the sick children,
-    // then a single LeetCode.Modular FactorialTable.Build - the same table
+    // then a single Domain.Modular FactorialTable.Build - the same table
     // RoomWaysPrecomputedFactorialAlgebra/CountAnagramsByModularFactorial read
     // their coefficients from - turns the whole answer into O(n) more work with
     // no recursion or enumeration.

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountNumberOfBalancedPermutations;
 
@@ -67,7 +67,7 @@ internal static class CountNumberOfBalancedPermutationsSolution
     // ten digit values one at a time, weighting each split of a digit's own
     // copies between the two groups by 1/(k! * (count-k)!) - the same
     // inverse-factorial-weighted fold RoomWaysPrecomputedFactorialAlgebra and
-    // CountAnagrams' modular-factorial arm both use (LeetCode.Modular's Fermat's-
+    // CountAnagrams' modular-factorial arm both use (Domain.Modular's Fermat's-
     // little-theorem inverse) - so the running total only needs multiplying by
     // evenCount! * oddCount! once at the end instead of renormalizing after
     // every digit.

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.Cache;
+using DSAExperimentation.Mechanisms.Cache;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 

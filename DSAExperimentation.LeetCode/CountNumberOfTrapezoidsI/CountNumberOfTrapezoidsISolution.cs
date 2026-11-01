@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountNumberOfTrapezoidsI;
 
@@ -69,7 +69,7 @@ internal static class CountNumberOfTrapezoidsISolution
     // turns "count 4-point splits into two distinct-y pairs" into "count
     // unordered pairs of horizontal-segment counts across distinct y groups" -
     // (sum^2 - sum-of-squares) / 2, computed via ModularArithmetic's
-    // multiplicative inverse of 2 (LeetCode.Modular's own nCr-by-modular-inverse
+    // multiplicative inverse of 2 (Domain.Modular's own nCr-by-modular-inverse
     // shape, applied here to a division instead of a binomial coefficient)
     // rather than exact integer division, since the running sums are already
     // reduced mod 1e9+7.

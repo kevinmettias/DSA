@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.Cache;
+using DSAExperimentation.Mechanisms.Cache;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
 

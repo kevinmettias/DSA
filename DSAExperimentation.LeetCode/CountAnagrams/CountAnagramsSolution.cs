@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountAnagrams;
 
@@ -40,7 +40,7 @@ internal static class CountAnagramsSolution
         return distinct.Count;
     }
 
-    // One O(maxWordLength) FactorialTable.Build (LeetCode.Modular's shared table, the
+    // One O(maxWordLength) FactorialTable.Build (Domain.Modular's shared table, the
     // one RoomWaysPrecomputedFactorialAlgebra and every other modulo-1e9+7 counting
     // problem in the catalogue builds), then O(word.Length) per word: the word's
     // factorial times the inverse factorial of each letter's repeat count, mod

@@ -1,10 +1,10 @@
 using DSAExperimentation.Algorithms.Folding;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfWaysToArriveAtDestination;
 
 // Sums the children's already-counted shortest paths under LeetCode's own modulus
-// (LeetCode.Modular's, shared with every other counting problem in the catalogue).
+// (Domain.Modular's, shared with every other counting problem in the catalogue).
 // Dist == 0 uniquely identifies the destination (it's the Dijkstra source, and
 // every road takes positive time so no other intersection can share its distance),
 // so that's the fold's base case instead of threading a separate "is this the

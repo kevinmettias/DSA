@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.Cache;
+using DSAExperimentation.Mechanisms.Cache;
 using DSAExperimentation.LeetCode.LFUCache;
 
 namespace DSAExperimentation.LeetCode.Tests.LFUCache;

@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.LeetCode.Modular;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.PaintingAGridWithThreeDifferentColors;
 
