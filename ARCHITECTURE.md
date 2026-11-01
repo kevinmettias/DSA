@@ -779,6 +779,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `AhoCorasick/` | `AhoCorasick`, `AhoCorasickNode`, `AhoCorasickMatch` — witness-less, for §13.8's reasons |
 | `Buffers/` | `ContiguousGroupBuffer`, `ContiguousGroupBufferStorage` (§14.1) |
 | `CountedBitTrie/` | `CountedBitTrie` — a bit trie over a multiset, whose values can be removed: every node carries a count, and a walk reads the counts to tell a live branch from a dead one. It stands beside `BitTrie` rather than inside it, so `BitTrie`'s insert-only users pay for no counts, and it has no `ITreeTopology` witness for both of §13.9's reasons: its nodes are slots in shared arrays, and after a removal it still holds paths whose values are gone |
+| `CursorSequence/` | `CursorSequence` — a sequence edited and read at a cursor between two `DynamicArray`s, the composition `Stack` makes with a cursor in place of LIFO (§4.1). LC 2296's text editor uses it; LC 1472's browser history declined it, measured, because its jumps of k pages cost O(k) transfers here against an index's O(1) |
 | `Deque/` | `CircularBuffer`, `Deque` (§4.1) |
 | `DisjointSet/` | `DisjointSetForest`, `DisjointSet` (§10) |
 | `DoublyLinkedList/` | `DoublyLinkedList`, `DoublyLinkedListNode` (§13.7) |

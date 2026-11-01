@@ -1,4 +1,4 @@
-using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
+using DSAExperimentation.DataStructures.CursorSequence;
 
 namespace DSAExperimentation.LeetCode.DesignATextEditor;
 
@@ -35,7 +35,7 @@ internal static class DesignATextEditorSolution
     // List<char> plus a cursor index, editing at the cursor with InsertRange and
     // RemoveRange - which shift every character past the cursor on every edit -
     // and slicing the report window with GetRange. Deliberately written without
-    // this repo's Stack<char>.
+    // this repo's CursorSequence<char>.
     internal sealed class TextEditorByListBacked : ITextEditor
     {
         private readonly List<char> _buffer = [];
@@ -78,84 +78,51 @@ internal static class DesignATextEditorSolution
         }
     }
 
-    // The composed answer: the classic two-stack cursor design over this repo's own
-    // Stack<char>. The left stack holds everything before the cursor, top = the
-    // character immediately left of it; the right stack holds everything after,
-    // top = the character immediately right. AddText pushes onto left, DeleteText
-    // pops from left, and a cursor move transfers characters one at a time between
-    // the two stacks - so no character other than the ones actually crossed is ever
-    // touched, unlike the positional insert the List baseline is forced into.
-    internal sealed class TextEditorByStackBacked : ITextEditor
+    // The composed answer: this repo's own CursorSequence<char>, the classic
+    // two-sided cursor design. Every edit happens at the cursor, and a cursor move
+    // crosses characters one at a time - so no character other than the ones
+    // actually crossed is ever touched, unlike the positional insert the List
+    // baseline is forced into - and the report window is read by position just
+    // left of the cursor.
+    internal sealed class TextEditorByCursorSequence : ITextEditor
     {
-        private readonly RepoStack _left = new();
-        private readonly RepoStack _right = new();
+        private readonly CursorSequence<char> _text = new();
 
         public void AddText(string text)
         {
             foreach (var c in text)
             {
-                _left.Push(c);
+                _text.InsertBeforeCursor(c);
             }
         }
 
-        public int DeleteText(int maxDeletions)
-        {
-            var deleted = 0;
-
-            while (deleted < maxDeletions && _left.TryPop(out _))
-            {
-                deleted++;
-            }
-
-            return deleted;
-        }
+        public int DeleteText(int maxDeletions) => _text.RemoveBeforeCursor(maxDeletions);
 
         public string CursorLeft(int maxSteps)
         {
-            var moved = 0;
-
-            while (moved < maxSteps && _left.TryPop(out var c))
-            {
-                _right.Push(c);
-                moved++;
-            }
-
+            _text.MoveLeft(maxSteps);
             return LastCharactersBeforeCursor();
         }
 
         public string CursorRight(int maxSteps)
         {
-            var moved = 0;
-
-            while (moved < maxSteps && _right.TryPop(out var c))
-            {
-                _left.Push(c);
-                moved++;
-            }
-
+            _text.MoveRight(maxSteps);
             return LastCharactersBeforeCursor();
         }
 
-        // Stack<char> exposes only the top, so the window is read by popping it off
-        // and pushing it straight back - at most CursorWindow characters, whatever
-        // the buffer has grown to.
+        // At most CursorWindow characters, read by position just left of the cursor,
+        // whatever the buffer has grown to.
         private string LastCharactersBeforeCursor()
         {
-            var popped = new List<char>(CursorWindow);
+            var start = Math.Max(0, _text.CountBeforeCursor - CursorWindow);
+            var window = new char[_text.CountBeforeCursor - start];
 
-            while (popped.Count < CursorWindow && _left.TryPop(out var c))
+            for (var i = 0; i < window.Length; i++)
             {
-                popped.Add(c);
+                window[i] = _text.GetBeforeCursor(start + i);
             }
 
-            for (var i = popped.Count - 1; i >= 0; i--)
-            {
-                _left.Push(popped[i]);
-            }
-
-            popped.Reverse();
-
-            return new string(popped.ToArray());
+            return new string(window);
         }
     }
 }

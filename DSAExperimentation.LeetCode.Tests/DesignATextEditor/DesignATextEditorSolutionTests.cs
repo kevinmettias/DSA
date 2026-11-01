@@ -70,9 +70,9 @@ public sealed partial class DesignATextEditorSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void TextEditorByStackBacked_LeetCodeExamples_MatchesExpectedSequence(
+    public void TextEditorByCursorSequence_LeetCodeExamples_MatchesExpectedSequence(
         TextEditorOp[] operations, object?[] expected) =>
-        Assert.Equal(expected, RunScript(new DesignATextEditorSolution.TextEditorByStackBacked(), operations));
+        Assert.Equal(expected, RunScript(new DesignATextEditorSolution.TextEditorByCursorSequence(), operations));
 
     private static object?[] RunScript(
         DesignATextEditorSolution.ITextEditor editor,

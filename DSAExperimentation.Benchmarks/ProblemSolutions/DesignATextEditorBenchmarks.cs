@@ -6,12 +6,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are DesignATextEditorSolution's, the same classes
 // DesignATextEditorSolutionTests proves correct - a textbook List<char> + cursor
 // implementation (InsertRange/RemoveRange to edit at the cursor, shifting every
-// character past it) against the classic two-stack cursor design built on this
-// repo's own Stack<T>. Every iteration adds a five-letter chunk at the cursor and
+// character past it) against the classic two-sided cursor design, this repo's own
+// CursorSequence<char>. Every iteration adds a five-letter chunk at the cursor and
 // walks the cursor back over all of it but its first letter, so one letter per
 // chunk piles up left of the cursor and four per chunk to its right: the
 // List-backed version shifts that ever-growing right side on every AddText -
-// O(n) per operation, O(n^2) total - while the two-stack version only touches the
+// O(n) per operation, O(n^2) total - while the cursor sequence only touches the
 // chunk itself. Each chunk starts with the next letter of the alphabet, so every
 // CursorLeft report - the last ten letters left of the cursor - is different.
 // Two calls per iteration keeps the larger OperationCount inside LC 2296's 2 * 10^4
@@ -42,7 +42,7 @@ public class DesignATextEditorBenchmarks
     public string[] ListBacked() => Replay(new DesignATextEditorSolution.TextEditorByListBacked());
 
     [Benchmark]
-    public string[] StackBacked() => Replay(new DesignATextEditorSolution.TextEditorByStackBacked());
+    public string[] CursorSequenceBacked() => Replay(new DesignATextEditorSolution.TextEditorByCursorSequence());
 
     private string[] Replay(DesignATextEditorSolution.ITextEditor editor)
     {
