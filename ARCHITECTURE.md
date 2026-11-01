@@ -853,6 +853,7 @@ specifically:
 | `Modular/` | `ModularArithmetic`, `FactorialTable` — arithmetic modulo 1e9+7 |
 | `SlidingPuzzle/` | `PuzzleNode`, `PuzzleTopology`, `PuzzleGraph` — LC 773's 2x3 board |
 | `Sudoku/` | `SudokuRules` — the 9x9 board's notation and placement rule, shared by LC 36 and LC 37 |
+| `TicTacToe/` | `TicTacToeRules`, `TicTacToePlayer`, `TicTacToeOutcome` — LC 1275's board, turn order, diagonals and outcome rule |
 
 `DSAExperimentation.Tests/` mirrors every tree one level deeper (§7, §18.1). Fixture files go to the
 utility folder matching the interface they implement, not a shared grab-bag: the `Recording*Hooks`
@@ -1459,7 +1460,8 @@ may compose data structures, algorithms and mechanisms freely. Inside a problem,
 *what* and the solution's strategies the *how*: a witness that serves one problem's strategies stays
 in its folder (§17.3). LeetCode's own notation and answer conventions — its array encodings of
 trees and lists, `LeetCodeAnswer`'s `-1` — stay at the LeetCode tier's root, because they are facts
-about LeetCode rather than about any problem's world.
+about LeetCode rather than about any problem's world, and one problem's own spelling of its answer
+(LC 1275's `"Draw"`) stays in that problem's folder.
 
 **Where the domain models are today:**
 
@@ -1469,8 +1471,9 @@ about LeetCode rather than about any problem's world.
 | `Domain/Modular/` | `ModularArithmetic`, `FactorialTable` | Modular exponentiation *is* a classic algorithm, and it stays one — `Algorithms/NumberTheory/ModularPower` — but `1_000_000_007` is the modulus counting problems report their answers in, not a property of any algorithm. `FactorialTable`'s nCr lookup is fixed by the same modulus. |
 | `Domain/SlidingPuzzle/` | `PuzzleNode`, `PuzzleTopology`, `PuzzleGraph` | Pins LC 773's 2x3 board: its blank-slide adjacency table and the 720 permutations of `"012345"`. A concrete instance in the same sense as the lock — a sliding puzzle over an arbitrary m×n board would be a data structure; this one board is content. |
 | `Domain/Sudoku/` | `SudokuRules` | The 9x9 board of 3x3 boxes, its `'1'`–`'9'` and `'.'` notation, and the rule that no digit repeats in a row, column or box — what LC 36 and LC 37 both say about the board. Which cell a solver fills next and how a validator tracks what it has seen stay with each strategy. |
+| `Domain/TicTacToe/` | `TicTacToeRules`, `TicTacToePlayer`, `TicTacToeOutcome` | The 3x3 board, A moving first, the two diagonals and how a game stands: a completed line wins even on the last square, otherwise a full board is a draw and a short one pending. LC 1275's spelling of that answer (`"A"`, `"Draw"`, …) and the strategies' ±1 marks stay in its folder. |
 
-Their tests mirror them in `DSAExperimentation.Tests/Domain/{Locks,Modular,SlidingPuzzle,Sudoku}/`. The
+Their tests mirror them in `DSAExperimentation.Tests/Domain/{Locks,Modular,SlidingPuzzle,Sudoku,TicTacToe}/`. The
 domain knowledge still written inside individual problem folders moves here problem by problem
 (§17.10).
 

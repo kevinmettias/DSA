@@ -5,7 +5,8 @@ namespace DSAExperimentation.LeetCode.Tests.FindWinnerOnATicTacToeGame;
 // Harness only. Both the full-board rescan and the running-count bookkeeping are
 // FindWinnerOnATicTacToeGameSolution's; this file pins them to LeetCode's
 // published examples plus the column and anti-diagonal wins the examples never
-// exercise, so a regression names the strategy that broke.
+// exercise, and a win on the ninth move, which must beat the full board, so a
+// regression names the strategy that broke.
 public sealed partial class FindWinnerOnATicTacToeGameSolutionTests
 {
     public static TheoryData<int[][], string> Examples =>
@@ -18,6 +19,7 @@ public sealed partial class FindWinnerOnATicTacToeGameSolutionTests
             { [[0, 0], [0, 1], [1, 0], [1, 1], [2, 0]], "A" },
             { [[0, 2], [0, 0], [1, 1], [0, 1], [2, 0]], "A" },
             { [], "Pending" },
+            { [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 1], [2, 0], [2, 2]], "A" },
         };
 
     [Theory]

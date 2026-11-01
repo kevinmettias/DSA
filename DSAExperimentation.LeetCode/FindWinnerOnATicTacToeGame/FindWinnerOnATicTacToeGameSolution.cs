@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.TicTacToe;
 using Vocabulary = DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame.TicTacToeVocabulary;
 
 namespace DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame;
@@ -10,25 +11,23 @@ namespace DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame;
 // adjacency for graph walks, not line occupancy - so the two arms differ only in
 // how much of the board each move re-examines: rebuild and rescan every row,
 // column and diagonal, or keep running +/-1 tallies and touch only the lines the
-// new move actually falls on. Both are generalized over board size so a benchmark
-// can scale them; LC 1275 itself fixes the board at TicTacToeVocabulary.BoardSize.
+// new move actually falls on. Both play LC 1275's fixed 3 x 3 board. The game's
+// rules are Domain/TicTacToe's, which the running-counts arm reads; the
+// board-rescan baseline keeps its own copy of them (ARCHITECTURE §17.5).
 internal static class FindWinnerOnATicTacToeGameSolution
 {
     // The textbook baseline: keep the board itself and, after each move, rescan
     // every row, every column and both diagonals from scratch. Plain BCL arrays
     // and loops - this is what you would write without any bookkeeping insight.
-    public static string FindWinnerByBoardRescan(int[][] moves) =>
-        FindWinnerByBoardRescan(moves, Vocabulary.BoardSize);
-
-    public static string FindWinnerByBoardRescan(int[][] moves, int boardSize)
+    public static string FindWinnerByBoardRescan(int[][] moves)
     {
-        var board = new int[boardSize, boardSize];
+        var board = new int[Vocabulary.BoardSize, Vocabulary.BoardSize];
 
         for (var i = 0; i < moves.Length; i++)
         {
             board[moves[i][0], moves[i][1]] = MarkFor(i);
 
-            var winner = ScanAllLines(board, boardSize);
+            var winner = ScanAllLines(board, Vocabulary.BoardSize);
 
             if (winner != Vocabulary.Empty)
             {
@@ -36,7 +35,7 @@ internal static class FindWinnerOnATicTacToeGameSolution
             }
         }
 
-        return Outcome(moves.Length, boardSize);
+        return Outcome(moves.Length, Vocabulary.BoardSize);
     }
 
     private static int ScanAllLines(int[,] board, int boardSize)
@@ -113,49 +112,51 @@ internal static class FindWinnerOnATicTacToeGameSolution
     private readonly record struct LineScan(int StartRow, int StartColumn, int RowStep, int ColumnStep);
 
     // Running per-row, per-column and per-diagonal tallies moved by +1 for A and
-    // -1 for B: a line is won the instant its tally reaches +/-boardSize, so each
-    // move costs O(1) instead of a full board rescan.
-    public static string FindWinnerByRunningCounts(int[][] moves) =>
-        FindWinnerByRunningCounts(moves, Vocabulary.BoardSize);
-
-    public static string FindWinnerByRunningCounts(int[][] moves, int boardSize)
+    // -1 for B: a line is won the instant its tally reaches +/-BoardSize, so each
+    // move costs O(1) instead of a full board rescan. Who moves, which diagonals a
+    // square lies on and how the game stands come from Domain/TicTacToe; the signed
+    // tally is this strategy's own.
+    public static string FindWinnerByRunningCounts(int[][] moves)
     {
-        var tallies = new LineTallies(boardSize);
+        var tallies = new LineTallies();
 
         for (var i = 0; i < moves.Length; i++)
         {
-            var mark = MarkFor(i);
+            var player = TicTacToeRules.PlayerMaking(i);
 
-            if (tallies.HasCompletedLine(moves[i][0], moves[i][1], mark))
+            if (tallies.HasCompletedLine(moves[i][0], moves[i][1], player))
             {
-                return PlayerFor(mark);
+                var won = TicTacToeRules.OutcomeOf(player, i + 1);
+
+                return Vocabulary.AnswerFor(won);
             }
         }
 
-        return Outcome(moves.Length, boardSize);
+        var unwon = TicTacToeRules.OutcomeOf(null, moves.Length);
+
+        return Vocabulary.AnswerFor(unwon);
     }
 
-    private sealed class LineTallies(int boardSize)
+    private sealed class LineTallies
     {
-        private readonly int[] _rowCount = new int[boardSize];
-        private readonly int[] _columnCount = new int[boardSize];
+        private readonly int[] _rowCount = new int[TicTacToeRules.BoardSize];
+        private readonly int[] _columnCount = new int[TicTacToeRules.BoardSize];
         private int _diagonal;
         private int _antiDiagonal;
 
-        public bool HasCompletedLine(int row, int column, int mark)
+        public bool HasCompletedLine(int row, int column, TicTacToePlayer player)
         {
+            var mark = player == TicTacToePlayer.A ? Vocabulary.MarkA : Vocabulary.MarkB;
+
             _rowCount[row] += mark;
             _columnCount[column] += mark;
+            _diagonal += TicTacToeRules.IsOnDiagonal(row, column) ? mark : 0;
+            _antiDiagonal += TicTacToeRules.IsOnAntiDiagonal(row, column) ? mark : 0;
 
-            var isOnAntiDiagonal = row + column == boardSize - 1;
-
-            _diagonal += row == column ? mark : 0;
-            _antiDiagonal += isOnAntiDiagonal ? mark : 0;
-
-            return Math.Abs(_rowCount[row]) == boardSize
-                || Math.Abs(_columnCount[column]) == boardSize
-                || Math.Abs(_diagonal) == boardSize
-                || Math.Abs(_antiDiagonal) == boardSize;
+            return Math.Abs(_rowCount[row]) == TicTacToeRules.BoardSize
+                || Math.Abs(_columnCount[column]) == TicTacToeRules.BoardSize
+                || Math.Abs(_diagonal) == TicTacToeRules.BoardSize
+                || Math.Abs(_antiDiagonal) == TicTacToeRules.BoardSize;
         }
     }
 
