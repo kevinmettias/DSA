@@ -12,8 +12,12 @@ namespace DSAExperimentation.Algorithms.Folding.Dags;
 // stack-overflows or hangs, the same way RecursiveFoldEvaluation would on a non-tree
 // ITreeTopology - CheckedFold is the checked fallback for when you can't vouch for
 // acyclicity yourself.
+/// <summary>Folds a graph its topology promises is acyclic, combining a shared descendant only once.</summary>
 public static class DagFold
 {
+    /// <summary>Folds a DAG with a default algebra and <c>TOrder</c>'s child order.</summary>
+    /// <param name="root">The node to fold from, which may be null.</param>
+    /// <returns>The folded result, or the algebra's Empty when <paramref name="root"/> is null.</returns>
     public static TResult Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
         TNode? root)
         where TNode : class
@@ -25,6 +29,9 @@ public static class DagFold
         => Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(root, default);
 
     // In the topology's own child order.
+    /// <summary>Folds a DAG with a default algebra and the topology's own child order.</summary>
+    /// <param name="root">The node to fold from, which may be null.</param>
+    /// <returns>The folded result, or the algebra's Empty when <paramref name="root"/> is null.</returns>
     public static TResult Fold<TNode, TTopology, TChildren, TAlgebra, TResult>(
         TNode? root)
         where TNode : class
@@ -33,6 +40,10 @@ public static class DagFold
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
         => Fold<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren, TAlgebra, TResult>(root);
 
+    /// <summary>Folds a DAG with the given algebra and <c>TOrder</c>'s child order.</summary>
+    /// <param name="root">The node to fold from, which may be null.</param>
+    /// <param name="algebra">The algebra that combines each node with its children's results.</param>
+    /// <returns>The folded result, or the algebra's Empty when <paramref name="root"/> is null.</returns>
     public static TResult Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
         TNode? root, TAlgebra algebra)
         where TNode : class
@@ -48,6 +59,10 @@ public static class DagFold
                 root, new MemoizedFold<TNode, TResult>([]), algebra);
 
     // In the topology's own child order.
+    /// <summary>Folds a DAG with the given algebra and the topology's own child order.</summary>
+    /// <param name="root">The node to fold from, which may be null.</param>
+    /// <param name="algebra">The algebra that combines each node with its children's results.</param>
+    /// <returns>The folded result, or the algebra's Empty when <paramref name="root"/> is null.</returns>
     public static TResult Fold<TNode, TTopology, TChildren, TAlgebra, TResult>(
         TNode? root, TAlgebra algebra)
         where TNode : class

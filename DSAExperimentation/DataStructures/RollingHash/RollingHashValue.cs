@@ -13,4 +13,9 @@ namespace DSAExperimentation.DataStructures.RollingHash;
 // A caller needing certainty re-slices and compares the original text directly
 // instead; RollingHashSearch.FindAll is the worked example of doing exactly
 // that before reporting a match.
+/// <summary>
+/// A substring's hash from both lanes: different values prove a mismatch, and equal values a probable match.
+/// </summary>
+/// <param name="First">The first lane's hash.</param>
+/// <param name="Second">The second lane's hash.</param>
 public readonly record struct RollingHashValue(long First, long Second);

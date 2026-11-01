@@ -8,13 +8,17 @@ namespace DSAExperimentation.DataStructures.Heap;
 // No throwing Peek/Pop convenience: whether the heap is empty is state an external
 // caller can't always know in advance, so TryPeek/TryPop are the only public surface
 // for it, forcing callers onto the return-value form instead of a try/catch.
+/// <summary>A binary heap that yields its highest-priority element first, ranked by <c>TOrder</c>.</summary>
 public sealed class Heap<Element, TOrder>
     where TOrder : struct, IHeapOrder<Element>
 {
     private readonly HeapArray<Element> _store = new();
 
+    /// <summary>The number of elements in the heap.</summary>
     public int Count => _store.Count;
 
+    /// <summary>Adds an element to the heap in O(log n).</summary>
+    /// <param name="item">The element to add.</param>
     public void Push(Element item)
     {
         _store.Add(item);
@@ -37,6 +41,9 @@ public sealed class Heap<Element, TOrder>
         }
     }
 
+    /// <summary>Reads the highest-priority element without removing it.</summary>
+    /// <param name="item">The highest-priority element, or <c>default</c> when the heap is empty.</param>
+    /// <returns>true when the heap holds an element; false when it is empty.</returns>
     public bool TryPeek(out Element item)
     {
         if (Count == 0)
@@ -51,6 +58,9 @@ public sealed class Heap<Element, TOrder>
         return true;
     }
 
+    /// <summary>Removes the highest-priority element in O(log n).</summary>
+    /// <param name="item">The removed element, or <c>default</c> when the heap is empty.</param>
+    /// <returns>true when an element was removed; false when the heap is empty.</returns>
     public bool TryPop(out Element item)
     {
         if (!TryPeek(out item))

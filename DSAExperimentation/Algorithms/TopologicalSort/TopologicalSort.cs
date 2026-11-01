@@ -25,8 +25,20 @@ namespace DSAExperimentation.Algorithms.TopologicalSort;
 // so TrySort returns true with an ordering that silently omits it. A false result
 // therefore also doesn't distinguish a true cycle from a caller-omitted descendant - both
 // present identically as leftover in-degree.
+/// <summary>Orders a graph's nodes so each precedes its children, or reports that a cycle prevents it.</summary>
 public static class TopologicalSort
 {
+    /// <summary>
+    /// Orders the nodes so each precedes all of its children, releasing each node's children in <c>TOrder</c>'s order.
+    /// </summary>
+    /// <param name="nodes">
+    /// Every node of the graph, not only its sources; a repeat counts once, and a node left out can go
+    /// missing from <paramref name="ordering"/> unreported.
+    /// </param>
+    /// <param name="ordering">
+    /// The nodes with each before all of its children; when the sort fails, only those no cycle blocked.
+    /// </param>
+    /// <returns><c>true</c> when every node was ordered; <c>false</c> when a cycle left some unordered.</returns>
     public static bool TrySort<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(
         IEnumerable<TNode> nodes, out List<TNode> ordering)
         where TNode : class
@@ -59,6 +71,18 @@ public static class TopologicalSort
     }
 
     // In the topology's own child order.
+    /// <summary>
+    /// Orders the nodes so each precedes all of its children, releasing each node's children in the
+    /// topology's own order.
+    /// </summary>
+    /// <param name="nodes">
+    /// Every node of the graph, not only its sources; a repeat counts once, and a node left out can go
+    /// missing from <paramref name="ordering"/> unreported.
+    /// </param>
+    /// <param name="ordering">
+    /// The nodes with each before all of its children; when the sort fails, only those no cycle blocked.
+    /// </param>
+    /// <returns><c>true</c> when every node was ordered; <c>false</c> when a cycle left some unordered.</returns>
     public static bool TrySort<TNode, TTopology, TChildren>(
         IEnumerable<TNode> nodes, out List<TNode> ordering)
         where TNode : class

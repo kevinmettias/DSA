@@ -16,8 +16,17 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // allocates nothing today should keep its loop and use GridSize.HasCell. A struct enumerable was the
 // other alternative, but Traverse takes IEnumerable<T> and reverses it, which would box both the
 // struct and its enumerator.
+/// <summary>
+/// Lists the neighbours of a board cell that a search may step into, in the form a successor function returns.
+/// </summary>
 public static class GridNeighbors
 {
+    /// <summary>Lists the on-board neighbours of a cell that a filter lets a search enter.</summary>
+    /// <param name="cell">The cell to step from.</param>
+    /// <param name="size">The board's extent, which every neighbour must lie within.</param>
+    /// <param name="directions">The offsets to try, such as <see cref="GridDirections.Orthogonal"/>.</param>
+    /// <param name="filter">Decides which on-board cells a search may enter; the scan works on its own copy.</param>
+    /// <returns>The neighbours in <paramref name="directions"/> order, found afresh on every enumeration.</returns>
     public static IEnumerable<(int Row, int Col)> Of<TFilter>(
         (int Row, int Col) cell,
         GridSize size,

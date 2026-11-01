@@ -6,6 +6,10 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // instead of storing a materialized list - up to 4 orthogonal neighbors, filtered to
 // the ones the node's Grid says are in bounds and passable, in GridDirections.Orthogonal's
 // order.
+/// <summary>
+/// A cell's open orthogonal neighbours, computed from its board on each access in up, down, left, right order.
+/// </summary>
+/// <param name="node">The cell whose neighbours to list.</param>
 public readonly struct GridChildren(GridNode node) : IChildren<GridNode>
 {
     public int Count

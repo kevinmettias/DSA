@@ -15,6 +15,7 @@ namespace DSAExperimentation.Algorithms.Geometry;
 // The cross product runs in Int128, so it is exact for every int coordinate and the hull carries no
 // range precondition. The chain is built in one array rather than a stack: it is scratch state
 // inside one call (§16.4), indexed from both halves of the sweep.
+/// <summary>The convex hull of a point set, by Andrew's monotone chain.</summary>
 public static class ConvexHull
 {
     // A turn is judged from the two points already on the chain plus the incoming one.
@@ -23,6 +24,13 @@ public static class ConvexHull
     // The sweep runs out and back, and each half pushes every point at most once.
     private const int SweepHalves = 2;
 
+    /// <summary>
+    /// Finds the strict corners of the points' convex hull, counter-clockwise from the smallest (X, Y).
+    /// </summary>
+    /// <param name="points">The points, in any order and with repeats allowed, over the full int range.</param>
+    /// <returns>
+    /// Each corner once: no points give none, coincident ones the one point, and collinear ones the two ends.
+    /// </returns>
     public static (int X, int Y)[] Corners(ReadOnlySpan<(int X, int Y)> points)
     {
         var buffer = points.ToArray();

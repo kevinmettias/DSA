@@ -15,9 +15,14 @@ namespace DSAExperimentation.DataStructures.RollingHash;
 // every other algorithm in this repo (nothing here uses System.Random) and this
 // repo's own hand-verified-example test convention, which a randomized base
 // would break.
+/// <summary>One base and modulus pair that tunes a single hash lane of a <see cref="RollingHash"/>.</summary>
+/// <param name="Base">The polynomial's base, multiplying the running hash before each character is added.</param>
+/// <param name="Modulus">The modulus every hash in the lane is reduced by.</param>
 public readonly record struct RollingHashLane(long Base, long Modulus)
 {
+    /// <summary>The default first lane, base 131 and modulus 1,000,000,007.</summary>
     public static RollingHashLane DefaultFirst => new(131, 1_000_000_007);
 
+    /// <summary>The default second lane, base 137 and modulus 998,244,353.</summary>
     public static RollingHashLane DefaultSecond => new(137, 998_244_353);
 }

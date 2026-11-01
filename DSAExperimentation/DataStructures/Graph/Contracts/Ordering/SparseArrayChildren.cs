@@ -5,6 +5,10 @@ namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 // which is fine for small, bounded slot counts (a 26-letter alphabet) and avoids
 // the extra storage a Dictionary-backed alternative would need just to support
 // indexed access at all.
+/// <summary>
+/// A children view over a fixed slot array that skips null slots, scanning the array on every Count or Get.
+/// </summary>
+/// <param name="slots">The slot array, read in place, with null in each slot that holds no child.</param>
 public readonly struct SparseArrayChildren<TNode>(TNode?[] slots) : IChildren<TNode>
     where TNode : class
 {

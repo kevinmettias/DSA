@@ -8,8 +8,14 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 //
 // The loop bound is factor <= remaining / factor, which cannot overflow Integer, rather than
 // factor * factor <= remaining.
+/// <summary>The distinct prime factors of one value, found by trial division.</summary>
 public static class PrimeFactorization
 {
+    /// <summary>Lists the primes that divide a value, in ascending order and each once.</summary>
+    /// <param name="value">The value to factor, of any binary integer type.</param>
+    /// <returns>
+    /// The prime factors, computed lazily as they are read, so 12 yields 2 then 3; empty for a value below 2.
+    /// </returns>
     public static IEnumerable<Integer> Distinct<Integer>(Integer value)
         where Integer : IBinaryInteger<Integer>
     {

@@ -4,6 +4,7 @@ using DSAExperimentation.Algorithms.Walking;
 
 namespace DSAExperimentation.Algorithms.Reducing;
 
+/// <summary>Depth-first reduce order, entering each node before its subtree and exiting it after.</summary>
 public readonly struct DepthFirstReduceOrder<TNode> : IReduceOrderStrategy<TNode>
     where TNode : class
 {

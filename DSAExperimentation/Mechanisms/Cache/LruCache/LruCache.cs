@@ -21,6 +21,9 @@ namespace DSAExperimentation.Mechanisms.Cache.LruCache;
 // O(1) TryGetValue/Set depends on HashMap.TryGetValue/Set/TryRemove being O(1) expected
 // and DoublyLinkedList.AddFront/Remove/PopBack being O(1) actual - guaranteed, pointer
 // splicing, not hash-dependent (§8).
+/// <summary>
+/// A cache of positive fixed capacity that evicts the least recently used entry to admit a new key.
+/// </summary>
 public sealed class LruCache<TKey, TValue> : ICache<TKey, TValue>
 {
     private readonly HashMap<TKey, DoublyLinkedListNode<(TKey Key, TValue Value)>> _nodesByKey = new();

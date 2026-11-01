@@ -9,6 +9,9 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags;
 // doesn't promise, which is why CheckedFold has to accept any IGraphTopology and
 // defend itself at runtime. DagFold is the payoff: constrained on this tier, it can
 // skip that defense entirely.
+/// <summary>
+/// A graph topology that also promises no cycles, though a node may still be reached along several paths.
+/// </summary>
 public interface IDagTopology<TNode, TChildren> : IGraphTopology<TNode, TChildren>
     where TNode : class
     where TChildren : struct, IChildren<TNode>

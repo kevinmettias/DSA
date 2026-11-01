@@ -10,10 +10,15 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 // The search is capped at ceil(sqrt(int.MaxValue)) = 46,341, so squaring a candidate can never leave
 // long and the answer for int.MaxValue itself (46,340) is still in range. When no candidate in range
 // exceeds - value 0 or 1 - FirstTrue answers one past the range, and the floor is the range's top.
+/// <summary>The floor of a non-negative int's square root, by binary search on the answer.</summary>
 public static class IntegerSquareRoot
 {
     private const int SquareRootCeiling = 46_341;
 
+    /// <summary>Finds the floor of a non-negative int's square root.</summary>
+    /// <param name="value">The int to take the root of, 0 or greater.</param>
+    /// <returns>The largest r whose square is at most <paramref name="value"/>.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="value"/> is negative.</exception>
     public static int Floor(int value)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(value);

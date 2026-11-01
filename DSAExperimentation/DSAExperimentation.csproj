@@ -1,5 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- The compiler reads every /// doc in this library: a <param> naming no parameter, a parameter
+       left out beside documented ones, a cref that resolves to nothing and malformed XML all fail
+       the build, so a rename cannot leave its doc behind. Which members MUST carry a doc is nomos's
+       check-public-api-docs, not CS1591: the compiler would also demand one on every interface
+       implementation and override, where check-doc-placement forbids restating the contract. -->
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <InternalsVisibleTo Include="DSAExperimentation.Tests" />
     <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Tests" />

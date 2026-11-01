@@ -19,6 +19,7 @@ namespace DSAExperimentation.Algorithms.Searching;
 // points, for thresholds that need not be members: the count of coordinates below, or at or below, a
 // value. Duplicates are told apart by CompareTo, not Equals, so the set agrees with the order the
 // searches use. O(n log n) to build and O(log n) per query, given the view's O(1) Get (§8).
+/// <summary>The sorted distinct values of an input, each known by its 0-based rank among them.</summary>
 public sealed class CompressedCoordinates<Element>
     where Element : IComparable<Element>
 {
@@ -30,6 +31,7 @@ public sealed class CompressedCoordinates<Element>
 
     private OffsetSequence<Element> Distinct => new(_sorted, 0, Count);
 
+    /// <summary>The number of distinct values, one more than the largest rank.</summary>
     public int Count { get; }
 
     public CompressedCoordinates(ReadOnlySpan<Element> values)
@@ -39,6 +41,12 @@ public sealed class CompressedCoordinates<Element>
         Count = KeepDistinct(_sorted);
     }
 
+    /// <summary>Finds the rank of a value this set was built from.</summary>
+    /// <param name="value">One of the values the set was built from.</param>
+    /// <returns>The value's 0-based position among the distinct values in ascending order.</returns>
+    /// <exception cref="ArgumentException">
+    /// <paramref name="value"/> compares equal to none of the values the set was built from.
+    /// </exception>
     public int RankOf(Element value)
     {
         var rank = LowerBound(value);
@@ -52,8 +60,17 @@ public sealed class CompressedCoordinates<Element>
         return rank;
     }
 
+    /// <summary>Counts the distinct values below a threshold, which need not be one of them.</summary>
+    /// <param name="value">The threshold.</param>
+    /// <returns>
+    /// The number of distinct values less than <paramref name="value"/>, which is its rank when it is one of
+    /// them.
+    /// </returns>
     public int LowerBound(Element value) => BinarySearch.LowerBound<Element, OffsetSequence<Element>>(Distinct, value);
 
+    /// <summary>Counts the distinct values at or below a threshold, which need not be one of them.</summary>
+    /// <param name="value">The threshold.</param>
+    /// <returns>The number of distinct values less than or equal to <paramref name="value"/>.</returns>
     public int UpperBound(Element value) => BinarySearch.UpperBound<Element, OffsetSequence<Element>>(Distinct, value);
 
     // Moves each value that differs from the last one kept down to the next free slot, and answers how

@@ -57,6 +57,9 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // Insert/TryMaxXor are O(32) = O(1), bounded by int's fixed width, the same
 // "operation cost is a real, stated contract" convention Trie.cs/Heap.cs open
 // with.
+/// <summary>
+/// A binary trie over the 32 bits of int values that answers maximum-XOR queries against the values inserted.
+/// </summary>
 public sealed class BitTrie
 {
     private const int BitWidth = 32;
@@ -68,10 +71,14 @@ public sealed class BitTrie
     // no per-leaf marker exists to detect "this exact value was already present"
     // without one). The only consumer is TryMaxXor's emptiness guard below, which
     // needs nothing sharper than "has Insert ever been called."
+    /// <summary>The number of Insert calls so far, counting a repeated value each time.</summary>
     public int Count { get; private set; }
 
+    /// <summary>The root node, which exists even before any value is inserted.</summary>
     public BitTrieNode Root => _root;
 
+    /// <summary>Adds a value's 32 bits as a path from the root, most significant bit first.</summary>
+    /// <param name="value">The value to add, which may already be present.</param>
     public void Insert(int value)
     {
         var current = _root;
@@ -90,6 +97,14 @@ public sealed class BitTrie
 
     private static BitTrieNode GetOrCreateOne(BitTrieNode node) => node.One ??= new BitTrieNode();
 
+    /// <summary>
+    /// Finds the largest XOR of a value with any inserted value, comparing results as unsigned bit patterns.
+    /// </summary>
+    /// <param name="value">The value to XOR against the inserted ones.</param>
+    /// <param name="result">
+    /// The largest XOR as an int, so negative when bit 31 is set, or 0 when the trie is empty.
+    /// </param>
+    /// <returns><c>true</c> when the trie holds a value; <c>false</c> when it is empty.</returns>
     public bool TryMaxXor(int value, out int result)
     {
         if (Count == 0)

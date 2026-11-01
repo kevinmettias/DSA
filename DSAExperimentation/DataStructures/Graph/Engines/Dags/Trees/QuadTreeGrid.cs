@@ -16,8 +16,15 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // size is the caller's, not the tree's: a single leaf represents a grid of any size, so the tree
 // alone cannot say how large the grid it describes is (the same reason
 // OrByBruteForceGridMaterialize takes it as an extra required input).
+/// <summary>Turns a <see cref="QuadTreeNode"/> tree back into the grid of 0s and 1s it describes.</summary>
 public static class QuadTreeGrid
 {
+    /// <summary>
+    /// Draws the grid a quadtree describes: each leaf fills its region with 1 if its value is true, else 0.
+    /// </summary>
+    /// <param name="root">The tree's root; every internal node must carry all four quadrants.</param>
+    /// <param name="size">The grid's side length, not recorded in the tree; each split must halve it evenly.</param>
+    /// <returns>A new <paramref name="size"/> by <paramref name="size"/> grid, indexed [row][col].</returns>
     public static int[][] Materialize(QuadTreeNode root, int size)
     {
         var grid = Allocate(size);
@@ -26,6 +33,9 @@ public static class QuadTreeGrid
         return grid;
     }
 
+    /// <summary>Creates a square grid of zeros.</summary>
+    /// <param name="size">The grid's side length.</param>
+    /// <returns>A new <paramref name="size"/> by <paramref name="size"/> grid of zeros, indexed [row][col].</returns>
     public static int[][] Allocate(int size)
     {
         var grid = new int[size][];

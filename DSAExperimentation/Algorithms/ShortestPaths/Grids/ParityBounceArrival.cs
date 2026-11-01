@@ -8,6 +8,10 @@ namespace DSAExperimentation.Algorithms.ShortestPaths.Grids;
 // The bounce needs somewhere to bounce to. Every move but the first leaves a cell the walker just
 // came from; the very first move has nothing behind it, so a caller whose start may have no
 // enterable neighbour at second 1 checks that before searching.
+/// <summary>
+/// An arrival rule where an early walker cannot wait and bounces until it may enter, so the start needs a
+/// neighbour open at second 1.
+/// </summary>
 public readonly struct ParityBounceArrival : IArrivalRule
 {
     // There and back: the bounce that covers an early arrival.

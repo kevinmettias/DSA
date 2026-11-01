@@ -16,6 +16,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // constraint, over a raw BinaryTreeNode<TValue>? root the same way
 // InOrderTraversal operates directly on nodes rather than through a
 // BinarySearchTree<TValue> instance.
+/// <summary>Nearest-value search in a binary search tree, by absolute difference from a target.</summary>
 public static class FindClosest
 {
     // Precondition: root, if non-null, roots a validly BST-ordered tree under
@@ -23,6 +24,17 @@ public static class FindClosest
     // sortedness law (§9.1). Tie-break: the first strictly-closer value found
     // wins, so an exact tie in distance keeps whichever value the descent reached
     // first (the shallower one) rather than the later, equally-close one.
+    /// <summary>
+    /// Finds the value in a binary search tree with the smallest absolute difference from a target.
+    /// </summary>
+    /// <param name="root">
+    /// The root of a binary search tree, whose ordering is assumed rather than checked, or null when empty.
+    /// </param>
+    /// <param name="target">The value whose distance from each candidate is measured.</param>
+    /// <param name="closest">
+    /// The closest value, the shallower one on a tie, or default when <paramref name="root"/> is null.
+    /// </param>
+    /// <returns><c>true</c> unless <paramref name="root"/> is null.</returns>
     public static bool TryFind<TValue>(BinaryTreeNode<TValue>? root, TValue target, out TValue closest)
         where TValue : INumber<TValue>
     {

@@ -12,6 +12,7 @@ namespace DSAExperimentation.Domain.SlidingPuzzle;
 // This is the domain model, not an answer to any one puzzle about it - it knows
 // which boards are one slide apart and nothing about what a caller wants to find
 // out. Callers supply their own start and target.
+/// <summary>Every board of the 2x3 sliding puzzle, each joined to the boards one blank-tile slide away.</summary>
 public sealed class PuzzleGraph
 {
     private static readonly int[][] Adjacency =
@@ -29,6 +30,8 @@ public sealed class PuzzleGraph
     private PuzzleGraph(HashMap<string, PuzzleNode> nodesByState) => _nodesByState = nodesByState;
 
     // Every permutation of "012345" becomes a node, wired to its blank-slide neighbors.
+    /// <summary>Builds the graph of all 720 boards.</summary>
+    /// <returns>The graph, with each board joined to its blank-slide neighbors.</returns>
     public static PuzzleGraph Build()
     {
         var nodesByState = BuildNodes();
@@ -73,10 +76,19 @@ public sealed class PuzzleGraph
         }
     }
 
+    /// <summary>Looks up the node for a board.</summary>
+    /// <param name="state">
+    /// The board read row by row, <c>'0'</c> standing for the blank, such as <c>"123450"</c>.
+    /// </param>
+    /// <param name="node">The board's node when it is one of the puzzle's boards; otherwise unspecified.</param>
+    /// <returns>True when the board is a permutation of <c>"012345"</c>; otherwise false.</returns>
     public bool TryGetNode(string state, out PuzzleNode node) => _nodesByState.TryGetValue(state, out node);
 
     // The 2-3 boards one blank-tile slide away - the pure board arithmetic Build
     // wires its edges with.
+    /// <summary>Lists the boards one blank-tile slide away.</summary>
+    /// <param name="state">A board read row by row, <c>'0'</c> standing for the blank.</param>
+    /// <returns>The two or three boards reached by sliding a tile next to the blank into it.</returns>
     public static IEnumerable<string> BlankSlideNeighbors(string state)
     {
         var blank = state.IndexOf('0');

@@ -47,8 +47,17 @@ namespace DSAExperimentation.Algorithms.Backtracking;
 // (Subsets, Permutations, N-Queens' solution count, Combination Sum, Generate
 // Parentheses) - its onSolution never signals "stop," so callers here can't
 // accidentally truncate their own search by returning the wrong bool.
+/// <summary>Backtracking search that mutates one shared state by choose, explore and unchoose.</summary>
 public static class Backtrack
 {
+    /// <summary>Backtracks from a state, handing each solution to OnSolution until it returns true.</summary>
+    /// <param name="state">The state the steps mutate; Unchoose has restored it by the time this returns.</param>
+    /// <param name="steps">
+    /// The steps to run; a solution's candidates are still tried unless OnSolution returns true.
+    /// </param>
+    /// <returns>
+    /// True when OnSolution returned true and stopped the search; false when every path was explored.
+    /// </returns>
     public static bool TrySearch<TState, TChoice>(TState state, BacktrackingSteps<TState, TChoice> steps)
         where TState : class
     {
@@ -78,6 +87,15 @@ public static class Backtrack
         return false;
     }
 
+    /// <summary>Backtracks from a state along every path, handing each solution to onSolution.</summary>
+    /// <param name="state">The state the steps mutate; unchoose has restored it by the time this returns.</param>
+    /// <param name="isSolution">Whether a state is a solution to report.</param>
+    /// <param name="candidates">
+    /// The legal choices from a state, solutions included; they must run out along every path.
+    /// </param>
+    /// <param name="choose">Applies a choice to the state.</param>
+    /// <param name="unchoose">Undoes a choice exactly, restoring everything isSolution and candidates read.</param>
+    /// <param name="onSolution">Receives each solution state as the search reaches it.</param>
     public static void Search<TState, TChoice>(
         TState state,
         Func<TState, bool> isSolution,

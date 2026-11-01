@@ -5,6 +5,7 @@ namespace DSAExperimentation.Algorithms.Reducing;
 // the same way - TState was never assumed to be a scalar, so a tuple of two states
 // is just another TState. Unlike ZipFoldAlgebra it holds no fields: IReduceAlgebra's
 // members are static, so the two algebras are fixed by type alone.
+/// <summary>Runs two reduce algebras in one walk, threading the pair of their states through both.</summary>
 public readonly struct ZipReduceAlgebra<TNode, TStateA, TStateB, TAlgebraA, TAlgebraB>
     : IReduceAlgebra<TNode, (TStateA A, TStateB B)>
     where TAlgebraA : struct, IReduceAlgebra<TNode, TStateA>

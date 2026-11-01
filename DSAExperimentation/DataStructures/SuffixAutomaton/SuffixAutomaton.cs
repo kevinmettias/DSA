@@ -15,6 +15,9 @@ namespace DSAExperimentation.DataStructures.SuffixAutomaton;
 // precondition like BinarySearch's sortedness, since no public method here mutates state after
 // construction at all, the same "no caller-supplied shape could ever violate it" guarantee Trie.cs
 // already claims for its own prefix-tree invariant.
+/// <summary>
+/// The minimal automaton that accepts exactly the substrings of a fixed text, built once at construction.
+/// </summary>
 public sealed class SuffixAutomaton
 {
     private const int RootIndex = 0;
@@ -30,8 +33,10 @@ public sealed class SuffixAutomaton
     private readonly List<SuffixAutomatonState> _states = new();
     private readonly int[] _endposSize;
 
+    /// <summary>The length of the text the automaton was built from.</summary>
     public int Length { get; }
 
+    /// <summary>The number of distinct non-empty substrings of the text, zero for an empty text.</summary>
     public long DistinctSubstringCount { get; }
 
     public SuffixAutomaton(ReadOnlySpan<char> text)
@@ -51,6 +56,9 @@ public sealed class SuffixAutomaton
 
     // O(pattern.Length): true iff pattern occurs anywhere in text. The empty pattern trivially
     // occurs (TryWalk of zero characters always resolves to the root state), regardless of Length.
+    /// <summary>Tests whether a pattern occurs in the text, in time linear in the pattern's length.</summary>
+    /// <param name="pattern">The characters to look for, compared exactly.</param>
+    /// <returns>True when the pattern occurs in the text; always true for an empty pattern.</returns>
     public bool HasSubstring(ReadOnlySpan<char> pattern) => TryWalk(pattern) != NotFound;
 
     // O(pattern.Length): occurrence count, overlaps included; 0 if pattern never occurs. The empty
@@ -58,6 +66,11 @@ public sealed class SuffixAutomaton
     // root's accumulated value equals text.Length (the sum of every real state's direct
     // contribution), not the Length + 1 "every insertion point" convention this repo's other
     // FindAll-family members already use for an empty pattern.
+    /// <summary>
+    /// Counts a pattern's occurrences in the text, overlaps included, in time linear in the pattern's length.
+    /// </summary>
+    /// <param name="pattern">The characters to count, compared exactly.</param>
+    /// <returns>The count, which is 0 for an absent pattern and <c>Length + 1</c> for an empty one.</returns>
     public int CountOccurrences(ReadOnlySpan<char> pattern)
     {
         if (pattern.IsEmpty)

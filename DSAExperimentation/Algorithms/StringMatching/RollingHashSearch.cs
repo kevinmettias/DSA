@@ -20,6 +20,7 @@ namespace DSAExperimentation.Algorithms.StringMatching;
 // principle degrade toward O(n*m). RollingHash's double-hashing default makes
 // that practically unreachable, not merely unlikely - see RollingHash.cs's own
 // doc comment for the collision-probability argument.
+/// <summary>Rabin-Karp search, which screens windows of a text by rolling hash and confirms every match.</summary>
 public static class RollingHashSearch
 {
     // Every starting index in text where pattern occurs, including overlapping
@@ -29,9 +30,28 @@ public static class RollingHashSearch
     // occur, so that returns an empty list rather than throwing: unlike
     // RollingHash.Hash's own out-of-range-query throw, "how many occurrences"
     // is always an answerable question, just sometimes answered zero.
+    /// <summary>Finds every position where the pattern occurs in the text, matching characters exactly.</summary>
+    /// <param name="text">The text to search.</param>
+    /// <param name="pattern">The pattern to find.</param>
+    /// <returns>
+    /// The start of every occurrence in ascending order, overlapping ones included and none when the pattern
+    /// is longer than the text; for an empty pattern, every index from 0 through the text's length.
+    /// </returns>
     public static List<int> FindAll(ReadOnlySpan<char> text, ReadOnlySpan<char> pattern)
         => FindAll(text, pattern, EqualityComparer<char>.Default);
 
+    /// <summary>
+    /// Finds every position where the pattern occurs in the text, matching characters with <paramref name="comparer"/>.
+    /// </summary>
+    /// <param name="text">The text to search.</param>
+    /// <param name="pattern">The pattern to find.</param>
+    /// <param name="comparer">
+    /// Decides when two characters match, and must give characters it calls equal the same hash code.
+    /// </param>
+    /// <returns>
+    /// The start of every occurrence in ascending order, overlapping ones included and none when the pattern
+    /// is longer than the text; for an empty pattern, every index from 0 through the text's length.
+    /// </returns>
     public static List<int> FindAll(ReadOnlySpan<char> text, ReadOnlySpan<char> pattern, IEqualityComparer<char> comparer)
     {
         if (pattern.IsEmpty)

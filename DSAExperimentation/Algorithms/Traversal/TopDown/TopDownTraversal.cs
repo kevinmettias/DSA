@@ -13,8 +13,19 @@ namespace DSAExperimentation.Algorithms.Traversal.TopDown;
 // motivating this primitive (root-to-leaf state) is naturally depth-first, and
 // building one speculatively without a real use case would be exactly the kind of
 // unjustified plurality this library has been deliberately avoiding.
+/// <summary>
+/// Depth-first walks whose <see cref="ITopDownHooks{TNode, TState}"/> hand each child a state derived from
+/// its parent's.
+/// </summary>
 public static class TopDownTraversal
 {
+    /// <summary>
+    /// Walks a tree depth-first, visiting each node before its children and entering those in <c>TOrder</c>'s order.
+    /// </summary>
+    /// <param name="root">The node to start from; null walks nothing.</param>
+    /// <param name="initialState">
+    /// The root's state, from which <c>THooks.Descend</c> derives every other node's.
+    /// </param>
     public static void Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks, TState>(
         TNode? root, TState initialState)
         where TNode : class
@@ -34,6 +45,13 @@ public static class TopDownTraversal
     }
 
     // In the topology's own child order.
+    /// <summary>
+    /// Walks a tree depth-first, visiting each node before its children and entering those in the topology's own order.
+    /// </summary>
+    /// <param name="root">The node to start from; null walks nothing.</param>
+    /// <param name="initialState">
+    /// The root's state, from which <c>THooks.Descend</c> derives every other node's.
+    /// </param>
     public static void Walk<TNode, TTopology, TChildren, THooks, TState>(
         TNode? root, TState initialState)
         where TNode : class
@@ -45,6 +63,14 @@ public static class TopDownTraversal
             THooks, TState>(
             root, initialState);
 
+    /// <summary>
+    /// Walks a graph depth-first, visiting each node it reaches once and entering unvisited children in
+    /// <c>TOrder</c>'s order.
+    /// </summary>
+    /// <param name="root">The node to start from; null walks nothing.</param>
+    /// <param name="initialState">
+    /// The root's state; any other node gets its state along the first path that reaches it.
+    /// </param>
     public static void WalkGraph<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks, TState>(
         TNode? root, TState initialState)
         where TNode : class
@@ -65,6 +91,14 @@ public static class TopDownTraversal
     }
 
     // In the topology's own child order.
+    /// <summary>
+    /// Walks a graph depth-first, visiting each node it reaches once and entering unvisited children in the
+    /// topology's order.
+    /// </summary>
+    /// <param name="root">The node to start from; null walks nothing.</param>
+    /// <param name="initialState">
+    /// The root's state; any other node gets its state along the first path that reaches it.
+    /// </param>
     public static void WalkGraph<TNode, TTopology, TChildren, THooks, TState>(
         TNode? root, TState initialState)
         where TNode : class

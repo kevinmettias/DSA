@@ -21,6 +21,10 @@ namespace DSAExperimentation.Mechanisms.Cache.LfuCache;
 //
 // TryGetValue/Set naming matches LruCache and HashMap - see LruCache.cs's own comment
 // for why matching the verb across these two peer caches is the right call here.
+/// <summary>
+/// A cache of positive fixed capacity that evicts the least frequently used entry, the least recent on a tie,
+/// to admit a new key.
+/// </summary>
 public sealed class LfuCache<TKey, TValue> : ICache<TKey, TValue>
 {
     private readonly HashMap<TKey, DoublyLinkedListNode<(TKey Key, TValue Value, int Frequency)>> _nodesByKey = new();

@@ -16,9 +16,22 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // non-optimal distance with nothing here to catch it - the fix for that would be
 // reopening settled nodes, which is not what this contract or this algorithm do. Every
 // heuristic in this codebase (ZeroHeuristic, ManhattanHeuristic) is consistent.
+/// <summary>
+/// An estimate of the distance left to a search's target, which <see cref="ShortestPath"/> adds to a node's
+/// real distance to rank it.
+/// </summary>
 public interface IPathHeuristic<TNode, TWeight>
     where TNode : class
     where TWeight : INumber<TWeight>
 {
+    /// <summary>Estimates the remaining distance from a node to the search's target.</summary>
+    /// <param name="node">The node whose remaining distance is estimated.</param>
+    /// <param name="target">
+    /// The node the search stops at, or <c>null</c> when it has none and explores everything reachable.
+    /// </param>
+    /// <returns>
+    /// An estimate that is zero at <paramref name="target"/> and never exceeds any outgoing edge's weight
+    /// plus the estimate at that edge's far end.
+    /// </returns>
     static abstract TWeight Estimate(TNode node, TNode? target);
 }

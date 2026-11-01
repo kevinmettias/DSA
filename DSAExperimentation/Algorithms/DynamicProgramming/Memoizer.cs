@@ -59,14 +59,24 @@ namespace DSAExperimentation.Algorithms.DynamicProgramming;
 // depth is bounded by the state graph's longest dependency chain, not by how many
 // distinct states exist - an inherent trade-off of embracing the real call stack
 // instead of hand-rolling a heap-allocated one, not a defect to work around here.
+/// <summary>Memoizes a recurrence, computing each distinct state's result once per call.</summary>
 public static class Memoizer
 {
+    /// <summary>Runs a recurrence from a start state, caching results under default equality.</summary>
+    /// <param name="start">The state whose result is wanted.</param>
+    /// <param name="recurrence">The recurrence to run; a cycle among its states overflows the stack.</param>
+    /// <returns>The result <paramref name="recurrence"/> gives for <paramref name="start"/>.</returns>
     public static TResult Memoize<TState, TResult>(
         TState start,
         IRecurrence<TState, TResult> recurrence)
         where TState : notnull
         => Memoize(start, recurrence, EqualityComparer<TState>.Default);
 
+    /// <summary>Runs a recurrence from a start state, caching results under a given equality.</summary>
+    /// <param name="start">The state whose result is wanted.</param>
+    /// <param name="recurrence">The recurrence to run; a cycle among its states overflows the stack.</param>
+    /// <param name="comparer">The equality under which two states share one cached result.</param>
+    /// <returns>The result <paramref name="recurrence"/> gives for <paramref name="start"/>.</returns>
     public static TResult Memoize<TState, TResult>(
         TState start,
         IRecurrence<TState, TResult> recurrence,

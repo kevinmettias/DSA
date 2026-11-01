@@ -18,6 +18,10 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // right-only node. In-order is fundamentally about slot identity ("before" vs.
 // "after"), which this compacted view cannot preserve, so it stays hardwired to
 // Left/Right directly instead.
+/// <summary>
+/// A binary tree node's present children, left before right, so a lone right child sits at position 0.
+/// </summary>
+/// <param name="node">The node whose Left and Right to present.</param>
 public readonly struct BinaryTreeChildren<TValue>(BinaryTreeNode<TValue> node) : IChildren<BinaryTreeNode<TValue>>
 {
     public int Count

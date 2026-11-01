@@ -11,8 +11,17 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 //
 // A negative value keeps a negative remainder (C#'s %), and exponent 0 - or any exponent <= 0 -
 // gives 1 % modulus: exactly what ModularArithmetic.Power returned before it delegated here.
+/// <summary>Modular exponentiation of longs by repeated squaring.</summary>
 public static class ModularPower
 {
+    /// <summary>Raises a value to a power modulo a modulus, in O(log exponent) steps.</summary>
+    /// <param name="value">The base, which may be negative.</param>
+    /// <param name="exponent">The power to raise the base to; 0 or less gives 1 % modulus.</param>
+    /// <param name="modulus">The modulus, small enough that (modulus - 1)^2 fits in a long.</param>
+    /// <returns>
+    /// The power modulo the modulus, with C#'s % sign rule: a negative base can give a negative result.
+    /// </returns>
+    /// <exception cref="DivideByZeroException">Thrown when <paramref name="modulus"/> is 0.</exception>
     public static long Of(long value, long exponent, long modulus)
     {
         var result = 1 % modulus;

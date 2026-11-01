@@ -4,6 +4,9 @@ namespace DSAExperimentation.Domain.Locks;
 // turns, and therefore how many combinations exist. Separate from LockGraph
 // because these are the lock's dimensions, not the graph's - a caller sizing a
 // workload over the combination space needs them without needing a built graph.
+/// <summary>
+/// The dimensions of a four-wheel rotary lock: its wheels, their digits, and how many combinations exist.
+/// </summary>
 public static class LockWheels
 {
     // One wheel per digit position in a combination.
@@ -18,5 +21,8 @@ public static class LockWheels
     // Combination-to-string format: 4 digits, zero-padded.
     private const string CombinationFormat = "D4";
 
+    /// <summary>Spells a combination's index as its four zero-padded digits.</summary>
+    /// <param name="index">The combination's index, in [0, <see cref="CombinationSpace"/>).</param>
+    /// <returns>The combination, such as <c>"0042"</c> for 42.</returns>
     public static string Combination(int index) => index.ToString(CombinationFormat);
 }

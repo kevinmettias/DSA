@@ -13,14 +13,26 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // are a real, checked precondition violation, not silently accepted the way the
 // general Trie<TValue> accepts any char - the bounded alphabet is the whole reason
 // this type exists alongside Trie<TValue>, not an incidental restriction.
+/// <summary>
+/// A trie mapping lowercase-letter keys ('a' to 'z' only) to values, with one child slot per letter.
+/// </summary>
 public sealed class LowercaseTrie<TValue>
 {
     private readonly LowercaseTrieNode<TValue> _root = new();
 
+    /// <summary>The number of distinct keys stored.</summary>
     public int Count { get; private set; }
 
+    /// <summary>The root node, which stands for the empty key and exists even in an empty trie.</summary>
     public LowercaseTrieNode<TValue> Root => _root;
 
+    /// <summary>Stores a value under a key, replacing any value the key already had.</summary>
+    /// <param name="key">The key, made only of the letters 'a' to 'z'; it may be empty.</param>
+    /// <param name="value">The value to store.</param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="key"/> holds a character outside 'a' to 'z'; the path built for the
+    /// characters before it stays, so <see cref="HasPrefix"/> may then match a prefix no stored key has.
+    /// </exception>
     public void Set(string key, TValue value)
     {
         var current = _root;
@@ -39,8 +51,23 @@ public sealed class LowercaseTrie<TValue>
         current.Value = value;
     }
 
+    /// <summary>Checks whether a key itself was stored, not merely a longer key beginning with it.</summary>
+    /// <param name="key">The key to look up.</param>
+    /// <returns><c>true</c> when the key was set; <c>false</c> otherwise.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="key"/> holds a character outside 'a' to 'z' and the characters before it
+    /// spell a path in the trie.
+    /// </exception>
     public bool HasKey(string key) => FindNode(key)?.HasValue ?? false;
 
+    /// <summary>Looks up the value stored under a key.</summary>
+    /// <param name="key">The key to look up.</param>
+    /// <param name="value">The stored value when the key is found, or default when it is not.</param>
+    /// <returns><c>true</c> when the key was set; <c>false</c> otherwise.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="key"/> holds a character outside 'a' to 'z' and the characters before it
+    /// spell a path in the trie.
+    /// </exception>
     public bool TryGetValue(string key, out TValue value)
     {
         var node = FindNode(key);
@@ -62,6 +89,13 @@ public sealed class LowercaseTrie<TValue>
     // construction (unlike every other node, which is only ever created while Set
     // walks an actual key), so "found a node" alone would wrongly report a match on a
     // trie with zero keys - identical reasoning to Trie<TValue>.HasPrefix.
+    /// <summary>Checks whether any stored key starts with a prefix, including a key equal to it.</summary>
+    /// <param name="prefix">The prefix to look for; an empty prefix matches whenever a key is stored.</param>
+    /// <returns><c>true</c> when a stored key starts with the prefix; otherwise <c>false</c>.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="prefix"/> holds a character outside 'a' to 'z' and the characters before it
+    /// spell a path in the trie.
+    /// </exception>
     public bool HasPrefix(string prefix) => prefix.Length == 0 ? Count > 0 : FindNode(prefix) is not null;
 
     private LowercaseTrieNode<TValue>? FindNode(string key)

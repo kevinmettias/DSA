@@ -23,8 +23,20 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // static-abstract-member dispatch used everywhere else in this library, just from
 // the BCL instead of a hand-rolled interface. The frontier is Collections.Heap's
 // Heap<T,TOrder>, ordered by ByPriorityOrder so only .Priority is ever compared.
+/// <summary>
+/// Single-source shortest paths over non-negative edge weights, by Dijkstra's algorithm or by A* toward one target.
+/// </summary>
 public static class ShortestPath
 {
+    /// <summary>
+    /// Finds the shortest distance from the source to every node it reaches, correct only when no edge weight
+    /// is negative.
+    /// </summary>
+    /// <param name="source">The node every distance is measured from.</param>
+    /// <returns>
+    /// Each node reachable from <paramref name="source"/>, the source itself at zero, mapped to its shortest
+    /// distance.
+    /// </returns>
     public static Dictionary<TNode, TWeight> Dijkstra<TNode, TTopology, TEdges, TWeight>(TNode source)
         where TNode : class
         where TTopology : struct, IEdgeTopology<TNode, TEdges, TWeight>
@@ -36,6 +48,16 @@ public static class ShortestPath
     // what guarantees a node's first pop already carries its true shortest distance,
     // which is what lets Explore stop as soon as target is settled, instead of
     // exhausting the whole graph the way Dijkstra does.
+    /// <summary>
+    /// Finds the shortest distance from the source to the target with A*, which needs a consistent
+    /// <c>THeuristic</c> and no negative edge weight.
+    /// </summary>
+    /// <param name="source">The node the path starts at.</param>
+    /// <param name="target">The node the path ends at; the search stops once its distance is settled.</param>
+    /// <returns>
+    /// The shortest distance, zero when the two nodes are the same, or <c>null</c> when <paramref
+    /// name="target"/> cannot be reached.
+    /// </returns>
     public static TWeight? AStar<TNode, TTopology, TEdges, TWeight, THeuristic>(TNode source, TNode target)
         where TNode : class
         where TTopology : struct, IEdgeTopology<TNode, TEdges, TWeight>

@@ -14,7 +14,16 @@ namespace DSAExperimentation.Algorithms.Searching;
 // a candidate inside the range the caller passed, so it may index its own data unguarded. The
 // search copies the rule by value, so a rule reads; one that recorded what it was asked would record
 // into its own copy.
+/// <summary>A monotone rule over integer candidates, whose boundary MonotonePredicateSearch finds.</summary>
 public interface IMonotonePredicate<Integer>
 {
+    /// <summary>Decides whether the rule holds for a candidate inside the searched range.</summary>
+    /// <param name="candidate">
+    /// A value inside the range the search was given, so the rule may index its own data unguarded.
+    /// </param>
+    /// <returns>
+    /// Whether the rule holds, which across the range must run false then true for FirstTrue and true then
+    /// false for LastTrue.
+    /// </returns>
     bool IsSatisfiedBy(Integer candidate);
 }

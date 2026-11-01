@@ -4,6 +4,10 @@ namespace DSAExperimentation.DataStructures.Sequence;
 // indexed view - Get(i) is matrix[i / columns][i % columns] - so anything that
 // treats a matrix as one sorted run (BinarySearch, say) never needs to know it
 // is two-dimensional. Parallels ArraySequence, one dimension up.
+/// <summary>
+/// Presents a rectangular matrix, row by row, as one read-only random-access sequence, without copying it.
+/// </summary>
+/// <param name="matrix">The matrix to read, with at least one row and every row as long as the first.</param>
 public readonly struct MatrixSequence<Element>(Element[][] matrix) : IRandomAccessSequence<Element>
 {
     public int Length => matrix.Length * matrix[0].Length;

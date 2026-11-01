@@ -14,8 +14,14 @@ namespace DSAExperimentation.Domain.Modular;
 // is not the classification test'". That condition is now met: eight counting
 // solutions across the catalogue were each building this same factorial/inverse-
 // factorial pair inline.
+/// <summary>Factorials, their inverses and binomial coefficients modulo 1e9+7, prepared up to a fixed n.</summary>
+/// <param name="factorial">The factorials 0! through n!, each modulo 1e9+7.</param>
+/// <param name="inverseFactorial">The modular inverses of those factorials, in the same order.</param>
 public sealed class FactorialTable(long[] factorial, long[] inverseFactorial)
 {
+    /// <summary>Prepares the tables for every argument from 0 through <paramref name="maxN"/>.</summary>
+    /// <param name="maxN">The largest argument the table answers for; at least 0.</param>
+    /// <returns>The prepared table.</returns>
     public static FactorialTable Build(int maxN)
     {
         var factorial = new long[maxN + 1];
@@ -41,10 +47,23 @@ public sealed class FactorialTable(long[] factorial, long[] inverseFactorial)
     // callers want a product, not one coefficient: a multinomial coefficient is
     // factorial[n] times one inverse factorial per bucket, and the infection and
     // balanced-permutation counts read an inverse factorial on its own.
+    /// <summary>Reads one factorial from the table.</summary>
+    /// <param name="argument">The number to take the factorial of, from 0 through the table's maxN.</param>
+    /// <returns>The argument's factorial modulo 1e9+7.</returns>
     public long Factorial(int argument) => factorial[argument];
 
+    /// <summary>Reads the modular inverse of one factorial from the table.</summary>
+    /// <param name="argument">The number whose factorial is inverted, from 0 through the table's maxN.</param>
+    /// <returns>The inverse of the argument's factorial modulo 1e9+7.</returns>
     public long InverseFactorial(int argument) => inverseFactorial[argument];
 
+    /// <summary>Counts the ways to choose some items from a set, modulo 1e9+7.</summary>
+    /// <param name="totalCount">How many items there are, at most the table's maxN.</param>
+    /// <param name="chosenCount">How many of them are chosen.</param>
+    /// <returns>
+    /// The binomial coefficient modulo 1e9+7, or 0 when either count is negative or more are chosen than
+    /// exist.
+    /// </returns>
     public long Choose(int totalCount, int chosenCount) =>
         IsImpossibleChoice(totalCount, chosenCount)
             ? 0

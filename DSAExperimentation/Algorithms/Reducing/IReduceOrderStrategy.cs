@@ -17,9 +17,15 @@ namespace DSAExperimentation.Algorithms.Reducing;
 // topology bound proves it's safe to skip tracking) lives entirely at that
 // entry-point layer, not duplicated into a second strategy interface per tier the
 // way IGraphReduceTraversalStrategy used to.
+/// <summary>The order a reduce visits nodes in, a choice that can change its result.</summary>
 public interface IReduceOrderStrategy<TNode>
     where TNode : class
 {
+    /// <summary>Reduces from a root in this order, visiting each child the guard admits.</summary>
+    /// <param name="root">The node the walk starts at, which it always visits.</param>
+    /// <param name="seed">The state before the root is entered.</param>
+    /// <param name="guard">Decides, for each child the walk reaches, whether to visit it or skip it.</param>
+    /// <returns>The state after the walk's last step.</returns>
     internal static abstract TState Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TAlgebra, TState>(
         TNode root, TState seed, TGuard guard)
         where TTopology : struct, IGraphTopology<TNode, TChildren>

@@ -4,4 +4,6 @@ namespace DSAExperimentation.DataStructures.Graph.Hamming;
 // position, and the one every intermediate step has to stay inside `allowed` to
 // get to. Distinct from MutationStart so a caller cannot hand the two endpoints
 // over the wrong way round, which the walk answers differently (often with null).
+/// <summary>The string a mutation search tries to reach.</summary>
+/// <param name="Text">The string to reach, through allowed strings only.</param>
 public readonly record struct MutationTarget(string Text);

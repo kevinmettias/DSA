@@ -26,12 +26,19 @@ namespace DSAExperimentation.DataStructures.Trie;
 // Representation (identical answers, different node layout/constants), never a second
 // Topology, the same way Min-heap vs. Max-heap is a real Topology choice (differing
 // observable output) but union-by-rank vs. union-by-size is not.
+/// <summary>
+/// A string-keyed map that also answers prefix queries, in time linear in the length of the key or prefix.
+/// </summary>
 public sealed class Trie<TValue>
 {
     private readonly TrieNode<TValue> _root = new();
 
+    /// <summary>The number of distinct keys stored.</summary>
     public int Count { get; private set; }
 
+    /// <summary>Stores a value under a key, replacing any value already stored there.</summary>
+    /// <param name="key">The key to store under, which may be empty.</param>
+    /// <param name="value">The value to store.</param>
     public void Set(string key, TValue value)
     {
         var current = _root;
@@ -56,8 +63,15 @@ public sealed class Trie<TValue>
         current.Value = value;
     }
 
+    /// <summary>Tests whether a value is stored under a key.</summary>
+    /// <param name="key">The key to look up.</param>
+    /// <returns>True when a value is stored under exactly this key; false otherwise.</returns>
     public bool HasKey(string key) => FindNode(key)?.HasValue ?? false;
 
+    /// <summary>Looks up the value stored under a key.</summary>
+    /// <param name="key">The key to look up.</param>
+    /// <param name="value">The stored value when there is one; otherwise <c>default</c>.</param>
+    /// <returns>True when a value is stored under exactly this key; false otherwise.</returns>
     public bool TryGetValue(string key, out TValue value)
     {
         var node = FindNode(key);
@@ -78,6 +92,9 @@ public sealed class Trie<TValue>
     // construction (unlike every other node, which is only ever created while Set
     // walks an actual key), so "found a node" alone would wrongly report a match on
     // a trie with zero keys.
+    /// <summary>Tests whether any stored key starts with a prefix.</summary>
+    /// <param name="prefix">The prefix to look for, which may be empty.</param>
+    /// <returns>True when at least one stored key starts with <paramref name="prefix"/>.</returns>
     public bool HasPrefix(string prefix) => prefix.Length == 0 ? Count > 0 : FindNode(prefix) is not null;
 
     private TrieNode<TValue>? FindNode(string key)

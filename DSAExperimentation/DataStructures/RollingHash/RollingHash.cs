@@ -63,6 +63,9 @@ namespace DSAExperimentation.DataStructures.RollingHash;
 // character would map to different codes across two independently-constructed
 // instances - so the encoding stays a pure function of the character alone, and
 // double hashing (not a remap table) is what keeps that safe.
+/// <summary>
+/// Hashes any substring of a fixed text in O(1), as a screen for equality rather than a proof of it.
+/// </summary>
 public sealed class RollingHash
 {
     private const string StartOutOfRangeMessage = "Start must be within [0, Length].";
@@ -71,6 +74,7 @@ public sealed class RollingHash
     private readonly LaneState _first;
     private readonly LaneState _second;
 
+    /// <summary>The length of the hashed text.</summary>
     public int Length { get; }
 
     public RollingHash(ReadOnlySpan<char> text)
@@ -117,6 +121,11 @@ public sealed class RollingHash
     // overloads always agree (both use RollingHashLane.DefaultFirst/
     // DefaultSecond), so this holds automatically unless a caller deliberately
     // passes different custom lanes to each instance.
+    /// <summary>Hashes the substring text[start..start + length) in O(1).</summary>
+    /// <param name="start">The 0-based index where the substring begins, 0 through Length.</param>
+    /// <param name="length">The substring's length, 0 through <c>Length - start</c>.</param>
+    /// <returns>The substring's hash, comparable across instances only when both share a comparer and lanes.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Either argument is outside the range given for it.</exception>
     public RollingHashValue Hash(int start, int length)
     {
         EnsureValidQuery(start, length);

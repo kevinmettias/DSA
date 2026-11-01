@@ -17,11 +17,17 @@ namespace DSAExperimentation.DataStructures.MonotonicDeque;
 // Composes Deque the way Queue and Stack compose the structure each restricts, in a folder of its own
 // beside it (§13.5). Complexity law (§8): each entry is pushed once and popped at most once, so Push is
 // amortized O(1) only because Deque's operations at both ends are O(1) through its CircularBuffer.
+/// <summary>
+/// A deque of (position, key) entries whose front is a sliding window's extremum, in amortized O(1) per step.
+/// </summary>
 public sealed class MonotonicDeque<Key, TOrder>
     where TOrder : struct, IWindowOrder<Key>
 {
     private readonly Deque<(int Position, Key Key)> _entries = new();
 
+    /// <summary>Appends an entry at the back after evicting every entry whose key it dominates.</summary>
+    /// <param name="position">The entry's position, which must not be below any position already pushed.</param>
+    /// <param name="key">The entry's key.</param>
     public void Push(int position, Key key)
     {
         while (_entries.TryPeekBack(out var back) && TOrder.IsDominatedBy(back.Key, key))
@@ -33,6 +39,8 @@ public sealed class MonotonicDeque<Key, TOrder>
     }
 
     // Drops every front entry whose position is below firstPosition - the ones the window has slid past.
+    /// <summary>Drops every entry whose position is below <paramref name="firstPosition"/>.</summary>
+    /// <param name="firstPosition">The first position still inside the window.</param>
     public void EvictBefore(int firstPosition)
     {
         while (_entries.TryPeekFront(out var front) && front.Position < firstPosition)
@@ -41,7 +49,13 @@ public sealed class MonotonicDeque<Key, TOrder>
         }
     }
 
+    /// <summary>Reads the front entry, the extremum of the keys still held, without removing it.</summary>
+    /// <param name="front">The front entry, newest on a tie, or <c>default</c> when the deque is empty.</param>
+    /// <returns>true when the deque holds an entry; false when it is empty.</returns>
     public bool TryPeekFront(out (int Position, Key Key) front) => _entries.TryPeekFront(out front);
 
+    /// <summary>Removes the front entry, the extremum of the keys still held.</summary>
+    /// <param name="front">The removed entry, newest on a tie, or <c>default</c> when the deque is empty.</param>
+    /// <returns>true when an entry was removed; false when the deque is empty.</returns>
     public bool TryPopFront(out (int Position, Key Key) front) => _entries.TryPopFront(out front);
 }

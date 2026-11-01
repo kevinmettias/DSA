@@ -18,8 +18,12 @@ namespace DSAExperimentation.Algorithms.Reducing;
 // IReduceOrderStrategy) exactly the way TreeFold injects TStrategy - no default
 // here (unlike TreeFold.Fold's recursive default), since order can change a
 // reduce's result and callers must choose deliberately.
+/// <summary>Threads one state through every node of a tree or graph walk, in a caller-chosen order.</summary>
 public static class Reduce
 {
+    /// <summary>Reduces a tree in the given child order, from the algebra's seed.</summary>
+    /// <param name="root">The tree's root, or null for an empty tree.</param>
+    /// <returns>The state after every node has been visited; <c>TAlgebra.Seed</c> when root is null.</returns>
     public static TState Tree<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(
         TNode? root)
         where TNode : class
@@ -32,6 +36,9 @@ public static class Reduce
         => Tree<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(root, TAlgebra.Seed);
 
     // In the topology's own child order.
+    /// <summary>Reduces a tree in the topology's own child order, from the algebra's seed.</summary>
+    /// <param name="root">The tree's root, or null for an empty tree.</param>
+    /// <returns>The state after every node has been visited; <c>TAlgebra.Seed</c> when root is null.</returns>
     public static TState Tree<TNode, TTopology, TChildren, TOrderStrategy, TAlgebra, TState>(
         TNode? root)
         where TNode : class
@@ -48,6 +55,10 @@ public static class Reduce
     // algebra alone - a traversal threading its own hook value through the walk is one. An empty
     // walk answers with that seed, not TAlgebra.Seed: the caller's starting state is what nothing
     // was folded into.
+    /// <summary>Reduces a tree in the given child order, from a caller-supplied state.</summary>
+    /// <param name="root">The tree's root, or null for an empty tree.</param>
+    /// <param name="seed">The state the walk starts from.</param>
+    /// <returns>The state after every node has been visited; <paramref name="seed"/> when root is null.</returns>
     public static TState Tree<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(
         TNode? root, TState seed)
         where TNode : class
@@ -64,6 +75,10 @@ public static class Reduce
                 root, seed, default);
 
     // In the topology's own child order.
+    /// <summary>Reduces a tree in the topology's own child order, from a caller-supplied state.</summary>
+    /// <param name="root">The tree's root, or null for an empty tree.</param>
+    /// <param name="seed">The state the walk starts from.</param>
+    /// <returns>The state after every node has been visited; <paramref name="seed"/> when root is null.</returns>
     public static TState Tree<TNode, TTopology, TChildren, TOrderStrategy, TAlgebra, TState>(
         TNode? root, TState seed)
         where TNode : class
@@ -76,6 +91,12 @@ public static class Reduce
             TOrderStrategy, TAlgebra, TState>(
             root, seed);
 
+    /// <summary>Reduces each node a root reaches, in the given child order, from the algebra's seed.</summary>
+    /// <param name="root">The node to start from, or null for an empty walk.</param>
+    /// <returns>
+    /// The state after each node the root reaches has been visited once; <c>TAlgebra.Seed</c> when root is
+    /// null.
+    /// </returns>
     public static TState Graph<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(
         TNode? root)
         where TNode : class
@@ -89,6 +110,14 @@ public static class Reduce
             root, TAlgebra.Seed, []);
 
     // In the topology's own child order.
+    /// <summary>
+    /// Reduces each node a root reaches, in the topology's own child order, from the algebra's seed.
+    /// </summary>
+    /// <param name="root">The node to start from, or null for an empty walk.</param>
+    /// <returns>
+    /// The state after each node the root reaches has been visited once; <c>TAlgebra.Seed</c> when root is
+    /// null.
+    /// </returns>
     public static TState Graph<TNode, TTopology, TChildren, TOrderStrategy, TAlgebra, TState>(
         TNode? root)
         where TNode : class
@@ -114,6 +143,18 @@ public static class Reduce
     // visited always comes last and never without a seed. A (root, visited) overload
     // beside a (root, seed) one would let C#'s tie-break bind a HashSet<TNode> seed as
     // the visited set - silently, not as an ambiguity error - so neither shape exists.
+    /// <summary>
+    /// Reduces each node a root reaches, in the given child order, sharing a visited set across calls.
+    /// </summary>
+    /// <param name="root">The node to start from, or null for an empty walk.</param>
+    /// <param name="seed">The state the walk starts from.</param>
+    /// <param name="visited">
+    /// Nodes walked by earlier calls, which this walk will not enter again; it adds each node it visits.
+    /// </param>
+    /// <returns>
+    /// The state after each newly reached node has been visited once; <paramref name="seed"/> when root is
+    /// null or already in <paramref name="visited"/>.
+    /// </returns>
     public static TState Graph<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(
         TNode? root, TState seed, HashSet<TNode> visited)
         where TNode : class
@@ -130,6 +171,18 @@ public static class Reduce
                 root, seed, new TrackedVisitGuard<TNode>(visited));
 
     // In the topology's own child order.
+    /// <summary>
+    /// Reduces each node a root reaches, in the topology's own child order, sharing a visited set across calls.
+    /// </summary>
+    /// <param name="root">The node to start from, or null for an empty walk.</param>
+    /// <param name="seed">The state the walk starts from.</param>
+    /// <param name="visited">
+    /// Nodes walked by earlier calls, which this walk will not enter again; it adds each node it visits.
+    /// </param>
+    /// <returns>
+    /// The state after each newly reached node has been visited once; <paramref name="seed"/> when root is
+    /// null or already in <paramref name="visited"/>.
+    /// </returns>
     public static TState Graph<TNode, TTopology, TChildren, TOrderStrategy, TAlgebra, TState>(
         TNode? root, TState seed, HashSet<TNode> visited)
         where TNode : class

@@ -29,6 +29,7 @@ namespace DSAExperimentation.DataStructures.LazySegmentTree;
 // would need to bypass any pending tag) with this lazy range-update scheme on one instance would
 // be a silent-wrong-answer trap - see SegmentTree, a separate structure for point-update/
 // range-query.
+/// <summary>A fixed-length sequence with range updates and range queries, each O(log n) amortized.</summary>
 public sealed class LazySegmentTree<Element, TUpdate, TOperation>
     where TOperation : struct, IRangeUpdateOperation<Element, TUpdate>
 {
@@ -39,6 +40,7 @@ public sealed class LazySegmentTree<Element, TUpdate, TOperation>
     private readonly SegmentTreeArray<TUpdate> _pending;
     private readonly int _leafCount;
 
+    /// <summary>The number of elements, fixed at construction.</summary>
     public int Count => _leafCount;
 
     public LazySegmentTree(IReadOnlyList<Element> initial)
@@ -53,6 +55,12 @@ public sealed class LazySegmentTree<Element, TUpdate, TOperation>
         }
     }
 
+    /// <summary>Applies an update to every element of the inclusive range [left, right].</summary>
+    /// <param name="left">The 0-based index of the range's first element.</param>
+    /// <param name="right">The 0-based index of the range's last element.</param>
+    /// <param name="update">The update to apply, which must not be <c>TOperation.NoUpdate</c>.</param>
+    /// <exception cref="ArgumentOutOfRangeException">The range is reversed or reaches outside [0, Count).</exception>
+    /// <exception cref="ArgumentException"><paramref name="update"/> equals <c>TOperation.NoUpdate</c>.</exception>
     public void UpdateRange(int left, int right, TUpdate update)
     {
         ValidateRange(left, right);
@@ -60,6 +68,11 @@ public sealed class LazySegmentTree<Element, TUpdate, TOperation>
         UpdateRange(new SegmentRange(0, 0, _leafCount - 1), left, right, update);
     }
 
+    /// <summary>Combines the elements of the inclusive range [left, right].</summary>
+    /// <param name="left">The 0-based index of the range's first element.</param>
+    /// <param name="right">The 0-based index of the range's last element.</param>
+    /// <returns>The elements' combined value in index order, reflecting every update applied so far.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The range is reversed or reaches outside [0, Count).</exception>
     public Element Query(int left, int right)
     {
         ValidateRange(left, right);

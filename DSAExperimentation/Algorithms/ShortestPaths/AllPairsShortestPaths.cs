@@ -18,8 +18,22 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // edges, all of it built from the same IEdgeTopology/IEdges contracts - is a separate
 // responsibility with no state in common with the refinement, and lives in
 // DenseDistanceMatrix.cs.
+/// <summary>Every pair's shortest distance at once, by Floyd-Warshall over a dense distance matrix.</summary>
 public static class AllPairsShortestPaths
 {
+    /// <summary>Computes the shortest distance between every ordered pair of vertices.</summary>
+    /// <param name="vertices">Every vertex of the graph; an edge to a vertex outside it is ignored.</param>
+    /// <param name="distances">
+    /// Receives each reachable pair's distance keyed by (From, To), with every (v, v) present and unreachable
+    /// pairs left out.
+    /// </param>
+    /// <returns>
+    /// True when no cycle has negative total weight; false when one does, and the distances are then not
+    /// reliable.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// An edge weighs <c>TWeight.MaxValue</c>, which the matrix reserves to mean unreached.
+    /// </exception>
     public static bool TryComputeDistances<TNode, TTopology, TEdges, TWeight>(
         IEnumerable<TNode> vertices, out Dictionary<(TNode From, TNode To), TWeight> distances)
         where TNode : class

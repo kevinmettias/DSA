@@ -16,10 +16,26 @@ namespace DSAExperimentation.Algorithms.Traversal.TopDown;
 // TopDownTraversal.Walk/WalkGraph take it as an ordinary parameter instead. The hooks
 // themselves stay static-abstract, unlike IFoldAlgebra's instance members: every
 // runtime value they need arrives through Visit's and Descend's own parameters.
+/// <summary>
+/// Static callbacks for a top-down walk, which derives each child's state from its parent's alone, never from
+/// a sibling's.
+/// </summary>
 public interface ITopDownHooks<TNode, TState>
     where TNode : class
 {
+    /// <summary>Called once per node the walk reaches, before the walk enters any of its children.</summary>
+    /// <param name="node">The node being visited.</param>
+    /// <param name="state">
+    /// The initial state at the root, else what <see cref="Descend"/> returned for this node.
+    /// </param>
+    /// <param name="depth">How many edges lie between the root and the node on the walk's path, 0 at the root.</param>
+    /// <param name="position"><c>Leaf</c> when the node has no children, otherwise <c>Interior</c>.</param>
     static abstract void Visit(TNode node, TState state, int depth, NodePosition position);
 
+    /// <summary>Computes the state for a child the walk is entering, from its parent's state.</summary>
+    /// <param name="parent">The node whose child the walk is entering, already visited.</param>
+    /// <param name="parentState">The state <paramref name="parent"/> was visited with.</param>
+    /// <param name="child">The child the walk is entering.</param>
+    /// <returns>The state <paramref name="child"/> is visited with and hands on to its own children.</returns>
     static abstract TState Descend(TNode parent, TState parentState, TNode child);
 }

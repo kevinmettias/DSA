@@ -29,12 +29,39 @@ namespace DSAExperimentation.Algorithms.Traversal.DepthFirst;
 // notnull, deliberately not `class`: Graph's TNode : class assumes reference identity flowing
 // through IChildren, a Graph-domain choice, not an inherent property of "successor-shaped"
 // algorithms - an implicit-graph node (a chess position, say) is naturally a value-typed record.
+/// <summary>Depth-first search over any successor function, visiting each reachable node once.</summary>
 public static class DepthFirstSearch
 {
+    /// <summary>
+    /// Lists the nodes reachable from the start in depth-first order, telling nodes apart by their own equality.
+    /// </summary>
+    /// <param name="start">The node the search begins at, listed first.</param>
+    /// <param name="successors">
+    /// The nodes one step from a given node, explored in the order listed; the set reachable from <paramref
+    /// name="start"/> must be finite or the search never ends.
+    /// </param>
+    /// <returns>
+    /// Each reachable node once, in the order a recursive depth-first search first visits it, starting with
+    /// <paramref name="start"/>.
+    /// </returns>
     public static List<TNode> Traverse<TNode>(TNode start, Func<TNode, IEnumerable<TNode>> successors)
         where TNode : notnull
         => Traverse(start, successors, EqualityComparer<TNode>.Default);
 
+    /// <summary>
+    /// Lists the nodes reachable from the start in depth-first order, telling nodes apart with <paramref
+    /// name="comparer"/>.
+    /// </summary>
+    /// <param name="start">The node the search begins at, listed first.</param>
+    /// <param name="successors">
+    /// The nodes one step from a given node, explored in the order listed; the set reachable from <paramref
+    /// name="start"/> must be finite or the search never ends.
+    /// </param>
+    /// <param name="comparer">Decides when two nodes are the same node, so each is listed once.</param>
+    /// <returns>
+    /// Each reachable node once, in the order a recursive depth-first search first visits it, starting with
+    /// <paramref name="start"/>.
+    /// </returns>
     public static List<TNode> Traverse<TNode>(
         TNode start, Func<TNode, IEnumerable<TNode>> successors, IEqualityComparer<TNode> comparer)
         where TNode : notnull

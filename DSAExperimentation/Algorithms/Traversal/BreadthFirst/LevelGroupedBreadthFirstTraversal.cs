@@ -11,8 +11,18 @@ namespace DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 // reimplementing the enqueue/dequeue mechanics - the two differ only in what happens
 // to a level once it's known: BreadthFirstWalk steps through it node by node, this
 // fires once for the whole buffered list.
+/// <summary>A breadth-first walk over a tree that hands a hook each whole level at once.</summary>
 public static class LevelGroupedBreadthFirstTraversal
 {
+    /// <summary>
+    /// Walks a tree one level at a time in <c>TOrder</c>'s child order, starting from the given hook value.
+    /// </summary>
+    /// <param name="root">The node to start from, or <c>null</c> for an empty tree.</param>
+    /// <param name="hooks">The hook value the walk starts from.</param>
+    /// <returns>
+    /// The hook value the walk finished with, or <paramref name="hooks"/> unchanged when <paramref
+    /// name="root"/> is <c>null</c>.
+    /// </returns>
     public static THooks Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks>(TNode? root, THooks hooks)
         where TNode : class
         where TTopology : struct, ITreeTopology<TNode, TChildren>
@@ -43,6 +53,15 @@ public static class LevelGroupedBreadthFirstTraversal
     }
 
     // In the topology's own child order.
+    /// <summary>
+    /// Walks a tree one level at a time in the topology's own child order, starting from the given hook value.
+    /// </summary>
+    /// <param name="root">The node to start from, or <c>null</c> for an empty tree.</param>
+    /// <param name="hooks">The hook value the walk starts from.</param>
+    /// <returns>
+    /// The hook value the walk finished with, or <paramref name="hooks"/> unchanged when <paramref
+    /// name="root"/> is <c>null</c>.
+    /// </returns>
     public static THooks Walk<TNode, TTopology, TChildren, THooks>(TNode? root, THooks hooks)
         where TNode : class
         where TTopology : struct, ITreeTopology<TNode, TChildren>

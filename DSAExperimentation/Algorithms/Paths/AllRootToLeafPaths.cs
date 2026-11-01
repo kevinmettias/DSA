@@ -13,8 +13,15 @@ namespace DSAExperimentation.Algorithms.Paths;
 // The output list travels as part of TState itself (never copied, same reference at
 // every node) rather than through a static mutable field - the same "state carries a
 // reference to shared context" pattern GridNode uses for its Grid.
+/// <summary>Every root-to-leaf path of a tree, each an array of the nodes from the root down.</summary>
 public static class AllRootToLeafPaths
 {
+    /// <summary>Lists every root-to-leaf path, walking children in the order TOrder gives them.</summary>
+    /// <param name="root">The tree's root, or null for an empty tree.</param>
+    /// <returns>
+    /// One array of its own per leaf, root first, in the order a depth-first walk reaches the leaves; empty
+    /// when root is null.
+    /// </returns>
     public static List<TNode[]> Find<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(TNode? root)
         where TNode : class
         where TTopology : struct, ITreeTopology<TNode, TChildren>
@@ -33,6 +40,12 @@ public static class AllRootToLeafPaths
     }
 
     // In the topology's own child order.
+    /// <summary>Lists every root-to-leaf path, walking children in the topology's own order.</summary>
+    /// <param name="root">The tree's root, or null for an empty tree.</param>
+    /// <returns>
+    /// One array of its own per leaf, root first, in the order a depth-first walk reaches the leaves; empty
+    /// when root is null.
+    /// </returns>
     public static List<TNode[]> Find<TNode, TTopology, TChildren>(TNode? root)
         where TNode : class
         where TTopology : struct, ITreeTopology<TNode, TChildren>

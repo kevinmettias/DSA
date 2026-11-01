@@ -24,8 +24,12 @@ namespace DSAExperimentation.Algorithms.Bipartiteness;
 // include at least one representative per connected component, the same self-discovering
 // shape ConnectedComponents.Count relies on (undocumented there, stated explicitly here) - a
 // component with no representative in nodes is never visited or colored at all.
+/// <summary>Checks whether an undirected graph, stored as symmetric adjacency, is bipartite.</summary>
 public static class BipartiteCheck
 {
+    /// <summary>Decides whether the nodes' graph is bipartite, in <c>TOrder</c>'s child order.</summary>
+    /// <param name="nodes">At least one node from every component to check.</param>
+    /// <returns>True when the graph is bipartite, including when there are no nodes; false otherwise.</returns>
     public static bool IsBipartite<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(
         IEnumerable<TNode> nodes)
         where TNode : class
@@ -53,6 +57,9 @@ public static class BipartiteCheck
     }
 
     // In the topology's own child order.
+    /// <summary>Decides whether the nodes' graph is bipartite, in the topology's own child order.</summary>
+    /// <param name="nodes">At least one node from every component to check.</param>
+    /// <returns>True when the graph is bipartite, including when there are no nodes; false otherwise.</returns>
     public static bool IsBipartite<TNode, TTopology, TChildren>(
         IEnumerable<TNode> nodes)
         where TNode : class

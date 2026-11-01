@@ -6,9 +6,14 @@ namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 // non-virtual calls all the way down to the backing storage. No interface
 // dispatch, no boxing, unlike IReadOnlyList<TNode> - Get is a named lookup
 // rather than an indexer precisely so this stays a non-collection contract.
+/// <summary>An indexed view over one node's children.</summary>
 public interface IChildren<TNode>
 {
+    /// <summary>The number of children the node has.</summary>
     int Count { get; }
 
+    /// <summary>Returns the child at a 0-based position below <see cref="Count"/>.</summary>
+    /// <param name="index">The position, from 0 to <see cref="Count"/> - 1.</param>
+    /// <returns>The child at that position.</returns>
     TNode Get(int index);
 }

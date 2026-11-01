@@ -1,5 +1,6 @@
 namespace DSAExperimentation.DataStructures.Heap;
 
+/// <summary>The min-heap order: a smaller element outranks a larger one.</summary>
 public readonly struct MinHeapOrder<Element> : IHeapOrder<Element>
     where Element : IComparable<Element>
 {

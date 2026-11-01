@@ -13,8 +13,14 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 //
 // Named for what it computes rather than "Gcd": dozens of solution files already declare a private
 // method called Gcd, and inside such a class a type named Gcd would resolve to the method.
+/// <summary>Euclid's greatest common divisor over any binary integer type.</summary>
 public static class GreatestCommonDivisor
 {
+    /// <summary>Finds two integers' greatest common divisor by Euclid's algorithm.</summary>
+    /// <param name="first">One integer, of either sign.</param>
+    /// <param name="second">The other integer, of either sign.</param>
+    /// <returns>The divisor, never negative: the other's magnitude when one is 0, and 0 when both are.</returns>
+    /// <exception cref="OverflowException">Thrown when an argument is a signed type's MinValue.</exception>
     public static Integer Of<Integer>(Integer first, Integer second)
         where Integer : IBinaryInteger<Integer>
     {

@@ -14,6 +14,16 @@ namespace DSAExperimentation.Algorithms.Backtracking;
 // Sudoku's dead-end detection, N-Queens' attack check - there is no separate
 // "branch is dead" signal, the same way DepthFirstSearch has no signal beyond an
 // empty successors set.
+/// <summary>The five steps a backtracking search runs over one shared, mutable state.</summary>
+/// <param name="IsSolution">Whether a state is a solution to report.</param>
+/// <param name="Candidates">
+/// The legal choices from a state, where all pruning happens; they must run out along every path.
+/// </param>
+/// <param name="Choose">Applies a choice to the state.</param>
+/// <param name="Unchoose">Undoes a choice exactly, restoring everything IsSolution and Candidates read.</param>
+/// <param name="OnSolution">
+/// Receives each solution state and returns true to stop the whole search, false to go on.
+/// </param>
 public readonly record struct BacktrackingSteps<TState, TChoice>(
     Func<TState, bool> IsSolution,
     Func<TState, IEnumerable<TChoice>> Candidates,

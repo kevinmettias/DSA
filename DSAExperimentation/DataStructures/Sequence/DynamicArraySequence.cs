@@ -7,6 +7,8 @@ namespace DSAExperimentation.DataStructures.Sequence;
 // check. This required zero changes to DynamicArray.cs, built for Stack's growth
 // needs - proving the same algorithm runs over a structure built for an unrelated
 // purpose (see ARCHITECTURE.md §9.4 for why this cross-domain composition is sound).
+/// <summary>Presents a dynamic array as a read-only random-access sequence, without copying it.</summary>
+/// <param name="items">The dynamic array whose current elements, in order, make up the sequence.</param>
 public readonly struct DynamicArraySequence<Element>(DynamicArray<Element> items) : IRandomAccessSequence<Element>
 {
     public int Length => items.Count;

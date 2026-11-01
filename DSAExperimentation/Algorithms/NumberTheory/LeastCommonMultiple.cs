@@ -8,8 +8,18 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 // Precondition law: the answer must fit in Integer. The multiply is unchecked, so an lcm past
 // Integer.MaxValue wraps silently rather than throwing - a caller whose inputs can produce one widens
 // them first (lcm of two ints as long), which is what the solutions that need large lcms already do.
+/// <summary>The least common multiple over any binary integer type.</summary>
 public static class LeastCommonMultiple
 {
+    /// <summary>
+    /// Finds two integers' least common multiple, which wraps silently if it does not fit in their type.
+    /// </summary>
+    /// <param name="first">One integer, of either sign.</param>
+    /// <param name="second">The other integer, of either sign.</param>
+    /// <returns>The multiple, never negative when it fits, and 0 when either integer is 0.</returns>
+    /// <exception cref="OverflowException">
+    /// Thrown when neither argument is 0 and one is a signed type's MinValue.
+    /// </exception>
     public static Integer Of<Integer>(Integer first, Integer second)
         where Integer : IBinaryInteger<Integer>
     {

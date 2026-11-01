@@ -7,7 +7,13 @@ namespace DSAExperimentation.DataStructures.ElementAlgebra;
 // Min and Max deliberately never implement it: neither has an inverse (min(a, b) = 3 with b = 5
 // does not recover a), so a Fenwick tree over either is a compile error, and the chain is where
 // that refusal is explained.
+/// <summary>
+/// A commutative combine operation with an inverse for every element, so a range can be answered from two prefixes.
+/// </summary>
 public interface IGroupOperation<Element> : ICombineOperation<Element>
 {
+    /// <summary>Finds the element that undoes another under Combine.</summary>
+    /// <param name="value">The element to invert.</param>
+    /// <returns>The element that, combined with <paramref name="value"/> on either side, gives the identity.</returns>
     static abstract Element Invert(Element value);
 }

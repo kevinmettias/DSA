@@ -16,11 +16,15 @@ namespace DSAExperimentation.DataStructures.DoublyLinkedList;
 // same split of responsibility Heap has with HeapArray. AddFront/Remove/PopBack are
 // O(1) by construction (pointer reassignment, no traversal) - LruCache's and LfuCache's
 // own O(1) get/set claims depend on this (§8).
+/// <summary>
+/// A doubly linked list of caller-owned nodes, linked and unlinked in O(1) with no precondition checks.
+/// </summary>
 public sealed class DoublyLinkedList<TValue>
 {
     private readonly DoublyLinkedListNode<TValue> _head = new();
     private readonly DoublyLinkedListNode<TValue> _tail = new();
 
+    /// <summary>The number of nodes linked into the list.</summary>
     public int Count { get; private set; }
 
     public DoublyLinkedList()
@@ -29,6 +33,8 @@ public sealed class DoublyLinkedList<TValue>
         _tail.Previous = _head;
     }
 
+    /// <summary>Links a node in at the front of the list.</summary>
+    /// <param name="node">A node not currently linked into any list.</param>
     public void AddFront(DoublyLinkedListNode<TValue> node)
     {
         var previousFront = _head.Next!;
@@ -41,6 +47,8 @@ public sealed class DoublyLinkedList<TValue>
         Count++;
     }
 
+    /// <summary>Unlinks a node from the list without clearing the node's own links.</summary>
+    /// <param name="node">A node currently linked into this list.</param>
     public void Remove(DoublyLinkedListNode<TValue> node)
     {
         node.Previous!.Next = node.Next;
@@ -49,6 +57,8 @@ public sealed class DoublyLinkedList<TValue>
         Count--;
     }
 
+    /// <summary>Unlinks and returns the node at the back of the list, which must not be empty.</summary>
+    /// <returns>The back node: of the nodes still linked, the one added longest ago.</returns>
     public DoublyLinkedListNode<TValue> PopBack()
     {
         var node = _tail.Previous!;

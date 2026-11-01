@@ -23,6 +23,7 @@ namespace DSAExperimentation.DataStructures.PrefixSums;
 // They are sorted only when every term moves the total one way - non-negative addends under
 // SumOperation, never in general under XorOperation - a precondition that is the caller's, as
 // BinarySearch's sortedness always is.
+/// <summary>Running totals of a fixed sequence under a group operation, for O(1) range queries.</summary>
 public sealed class PrefixSums<Element, TOperation>
     where TOperation : struct, IGroupOperation<Element>
 {
@@ -32,8 +33,10 @@ public sealed class PrefixSums<Element, TOperation>
     // _totals[end] is the combined value of the first `end` values; one longer than the input.
     private readonly Element[] _totals;
 
+    /// <summary>The number of values the totals were built from.</summary>
     public int Count => _totals.Length - 1;
 
+    /// <summary>The Count + 1 running totals, where the one at end is <c>TotalBefore(end)</c>.</summary>
     public ArraySequence<Element> Totals => new(_totals);
 
     public PrefixSums(ReadOnlySpan<Element> values)
@@ -47,6 +50,10 @@ public sealed class PrefixSums<Element, TOperation>
         }
     }
 
+    /// <summary>Combines every value before an exclusive end.</summary>
+    /// <param name="end">The exclusive end, 0 through Count.</param>
+    /// <returns>The first <paramref name="end"/> values combined, <c>TOperation.Identity</c> when it is 0.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is outside [0, Count].</exception>
     public Element TotalBefore(int end)
     {
         RangeBounds.ValidateIndex(end, _totals.Length, EndOutOfBoundsMessage);
@@ -54,6 +61,11 @@ public sealed class PrefixSums<Element, TOperation>
         return _totals[end];
     }
 
+    /// <summary>Combines the values of the inclusive range [left, right] in O(1).</summary>
+    /// <param name="left">The 0-based index of the range's first value.</param>
+    /// <param name="right">The 0-based index of the range's last value.</param>
+    /// <returns>The combined value of the range.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The range is reversed or reaches outside [0, Count).</exception>
     public Element Query(int left, int right)
     {
         RangeBounds.ValidateRange(left, right, Count, RangeOutOfBoundsMessage);

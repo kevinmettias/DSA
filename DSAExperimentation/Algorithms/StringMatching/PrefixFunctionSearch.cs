@@ -19,6 +19,7 @@ namespace DSAExperimentation.Algorithms.StringMatching;
 // reason BinarySearch/MergeSort keep their comparer a runtime object rather than a closed set this
 // library enumerates itself: case-insensitive and culture-aware matching are both ordinary,
 // open-ended variants a caller might want, not a small fixed set of named choices.
+/// <summary>Knuth-Morris-Pratt search for every occurrence of a pattern in a text, in linear time.</summary>
 public static class PrefixFunctionSearch
 {
     // The prefix function (also called the failure function, or the "longest proper prefix that is
@@ -27,9 +28,24 @@ public static class PrefixFunctionSearch
     // below - e.g. the longest prefix of the whole pattern that is also a suffix is result[^1]
     // characters - so this is exposed publicly rather than kept as a FindAll-only implementation
     // detail.
+    /// <summary>Computes the prefix function of the pattern, matching characters exactly.</summary>
+    /// <param name="pattern">The pattern to analyse.</param>
+    /// <returns>
+    /// An array whose element i is the length of the longest proper prefix of the first i + 1 characters that
+    /// is also their suffix.
+    /// </returns>
     public static int[] ComputeFailureFunction(ReadOnlySpan<char> pattern)
         => ComputeFailureFunction(pattern, EqualityComparer<char>.Default);
 
+    /// <summary>
+    /// Computes the prefix function of the pattern, matching characters with <paramref name="comparer"/>.
+    /// </summary>
+    /// <param name="pattern">The pattern to analyse.</param>
+    /// <param name="comparer">Decides when two characters match.</param>
+    /// <returns>
+    /// An array whose element i is the length of the longest proper prefix of the first i + 1 characters that
+    /// is also their suffix.
+    /// </returns>
     public static int[] ComputeFailureFunction(ReadOnlySpan<char> pattern, IEqualityComparer<char> comparer)
     {
         var failure = new int[pattern.Length];
@@ -54,9 +70,26 @@ public static class PrefixFunctionSearch
     // convention string.IndexOf("") uses - handled as an explicit guard rather than falling through
     // naturally: the unguarded search loop below dereferences pattern[0] before it would ever notice
     // pattern is empty, which is a real out-of-range read, not just a different answer.
+    /// <summary>Finds every position where the pattern occurs in the text, matching characters exactly.</summary>
+    /// <param name="text">The text to search.</param>
+    /// <param name="pattern">The pattern to find.</param>
+    /// <returns>
+    /// The start of every occurrence in ascending order, overlapping ones included; for an empty pattern,
+    /// every index from 0 through the text's length.
+    /// </returns>
     public static List<int> FindAll(ReadOnlySpan<char> text, ReadOnlySpan<char> pattern)
         => FindAll(text, pattern, EqualityComparer<char>.Default);
 
+    /// <summary>
+    /// Finds every position where the pattern occurs in the text, matching characters with <paramref name="comparer"/>.
+    /// </summary>
+    /// <param name="text">The text to search.</param>
+    /// <param name="pattern">The pattern to find.</param>
+    /// <param name="comparer">Decides when two characters match.</param>
+    /// <returns>
+    /// The start of every occurrence in ascending order, overlapping ones included; for an empty pattern,
+    /// every index from 0 through the text's length.
+    /// </returns>
     public static List<int> FindAll(ReadOnlySpan<char> text, ReadOnlySpan<char> pattern, IEqualityComparer<char> comparer)
     {
         if (pattern.IsEmpty)

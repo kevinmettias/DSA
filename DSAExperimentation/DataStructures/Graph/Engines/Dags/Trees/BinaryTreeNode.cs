@@ -8,11 +8,16 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // Trim a Binary Search Tree) - the same "genuinely mutable reference type...
 // auto-properties, not bare fields" precedent DoublyLinkedListNode/
 // SinglyLinkedListNode already establish.
+/// <summary>A mutable binary tree node holding a value and an optional left and right child.</summary>
+/// <param name="value">The node's initial value.</param>
 public sealed class BinaryTreeNode<TValue>(TValue value)
 {
+    /// <summary>The value this node holds.</summary>
     public TValue Value { get; set; } = value;
 
+    /// <summary>The left child, or null when there is none.</summary>
     public BinaryTreeNode<TValue>? Left { get; set; }
 
+    /// <summary>The right child, or null when there is none.</summary>
     public BinaryTreeNode<TValue>? Right { get; set; }
 }

@@ -14,6 +14,7 @@ namespace DSAExperimentation.DataStructures.SegmentTree;
 // Point-update only, deliberately: mixing a direct Update with a range-update mode on one
 // instance would be a silent-wrong-answer trap (see LazySegmentTree, a separate structure for
 // range-update/range-query rather than a second method here).
+/// <summary>A fixed-length sequence with point updates and range queries, each in O(log n).</summary>
 public sealed class SegmentTree<Element, TOperation>
     where TOperation : struct, ICombineOperation<Element>
 {
@@ -23,6 +24,7 @@ public sealed class SegmentTree<Element, TOperation>
     private readonly SegmentTreeArray<Element> _nodes;
     private readonly int _leafCount;
 
+    /// <summary>The number of elements, fixed at construction.</summary>
     public int Count => _leafCount;
 
     public SegmentTree(IReadOnlyList<Element> initial)
@@ -36,12 +38,21 @@ public sealed class SegmentTree<Element, TOperation>
         }
     }
 
+    /// <summary>Replaces the element at an index.</summary>
+    /// <param name="index">The 0-based index of the element to replace.</param>
+    /// <param name="value">The element's new value.</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is outside [0, Count).</exception>
     public void Update(int index, Element value)
     {
         ValidateIndex(index);
         Update(new SegmentRange(0, 0, _leafCount - 1), index, value);
     }
 
+    /// <summary>Combines the elements of the inclusive range [left, right].</summary>
+    /// <param name="left">The 0-based index of the range's first element.</param>
+    /// <param name="right">The 0-based index of the range's last element.</param>
+    /// <returns>The elements' combined value, in index order.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The range is reversed or reaches outside [0, Count).</exception>
     public Element Query(int left, int right)
     {
         ValidateRange(left, right);

@@ -1,6 +1,7 @@
 namespace DSAExperimentation.DataStructures.MonotonicDeque;
 
 // The window's maximum: a resident is dominated by an arriving key at least as large.
+/// <summary>The window-maximum order: an arriving key dominates every resident no larger than it.</summary>
 public readonly struct MaxWindowOrder<Key> : IWindowOrder<Key>
     where Key : IComparable<Key>
 {

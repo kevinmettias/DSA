@@ -12,7 +12,14 @@ namespace DSAExperimentation.Algorithms.DynamicProgramming;
 // which relocates the missing contract rather than stating it. `rest` is therefore the
 // whole of the recursion a recurrence is given - the memo run in production, and
 // whatever a caller or a test chooses to wrap around it.
+/// <summary>
+/// A recurrence <see cref="Memoizer"/> can memoize, recursing only through the recursion it is handed.
+/// </summary>
 public interface IRecurrence<TState, TResult>
 {
+    /// <summary>Computes a state's result, recursing only through <paramref name="rest"/>.</summary>
+    /// <param name="state">The state to compute the result for.</param>
+    /// <param name="rest">The recursion to send each sub-state through, as <c>rest.Replay(next, rest)</c>.</param>
+    /// <returns>The result for <paramref name="state"/>.</returns>
     TResult Replay(TState state, IRecurrence<TState, TResult> rest);
 }

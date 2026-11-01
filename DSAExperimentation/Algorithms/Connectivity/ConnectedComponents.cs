@@ -11,12 +11,18 @@ namespace DSAExperimentation.Algorithms.Connectivity;
 // node in a component gets double-counted as a component of its own. The single-root
 // overloads can't express this, since each constructs its own guard fresh, internally,
 // per call.
+/// <summary>Counts the connected components of an undirected graph stored as symmetric adjacency.</summary>
 public static class ConnectedComponents
 {
     // TOrderStrategy generic rather than hardcoded to depth-first: which order
     // Reduce.Graph explores a component in never changes the count, so the choice
     // costs nothing either way - proof that the multi-root overload underneath is
     // already just as BFS-compatible as any other Reduce.Graph call.
+    /// <summary>Counts the components holding the nodes, in <c>TOrder</c>'s child order.</summary>
+    /// <param name="nodes">
+    /// The nodes whose components are counted, each component once however many of them it holds.
+    /// </param>
+    /// <returns>The number of distinct components, 0 when there are no nodes.</returns>
     public static int Count<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy>(
         IEnumerable<TNode> nodes)
         where TNode : class
@@ -47,6 +53,11 @@ public static class ConnectedComponents
     }
 
     // In the topology's own child order.
+    /// <summary>Counts the components holding the nodes, in the topology's own child order.</summary>
+    /// <param name="nodes">
+    /// The nodes whose components are counted, each component once however many of them it holds.
+    /// </param>
+    /// <returns>The number of distinct components, 0 when there are no nodes.</returns>
     public static int Count<TNode, TTopology, TChildren, TOrderStrategy>(
         IEnumerable<TNode> nodes)
         where TNode : class

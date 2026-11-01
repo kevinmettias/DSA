@@ -15,13 +15,29 @@ namespace DSAExperimentation.Algorithms.StringMatching;
 // (text.Length) - the same treatment PrefixFunctionSearch.ComputeFailureFunction gives failure[0].
 // The true value is degenerate (a string trivially shares its whole self as a prefix) and not
 // useful to any consumer; FindAll below never dereferences it (see its own doc comment).
+/// <summary>Computes Z-functions and uses them to find every occurrence of a pattern in linear time.</summary>
 public static class ZFunction
 {
     // O(text.Length): each character is visited a number of times bounded by the box-tracking
     // invariant below, never re-scanned from the start on a mismatch.
+    /// <summary>Computes the Z-function of the text, matching characters exactly.</summary>
+    /// <param name="text">The text to analyse.</param>
+    /// <returns>
+    /// An array whose element i is the length of the longest common prefix of the text and its suffix
+    /// starting at i, with element 0 left at 0.
+    /// </returns>
     public static int[] Compute(ReadOnlySpan<char> text)
         => Compute(text, EqualityComparer<char>.Default);
 
+    /// <summary>
+    /// Computes the Z-function of the text, matching characters with <paramref name="comparer"/>.
+    /// </summary>
+    /// <param name="text">The text to analyse.</param>
+    /// <param name="comparer">Decides when two characters match.</param>
+    /// <returns>
+    /// An array whose element i is the length of the longest common prefix of the text and its suffix
+    /// starting at i, with element 0 left at 0.
+    /// </returns>
     public static int[] Compute(ReadOnlySpan<char> text, IEqualityComparer<char> comparer)
     {
         var z = new int[text.Length];
@@ -65,9 +81,26 @@ public static class ZFunction
     // convention PrefixFunctionSearch.FindAll uses - handled as an explicit guard rather than
     // falling through naturally, since the unguarded scan below dereferences pattern[0] before it
     // would ever notice pattern is empty.
+    /// <summary>Finds every position where the pattern occurs in the text, matching characters exactly.</summary>
+    /// <param name="text">The text to search.</param>
+    /// <param name="pattern">The pattern to find.</param>
+    /// <returns>
+    /// The start of every occurrence in ascending order, overlapping ones included; for an empty pattern,
+    /// every index from 0 through the text's length.
+    /// </returns>
     public static List<int> FindAll(ReadOnlySpan<char> text, ReadOnlySpan<char> pattern)
         => FindAll(text, pattern, EqualityComparer<char>.Default);
 
+    /// <summary>
+    /// Finds every position where the pattern occurs in the text, matching characters with <paramref name="comparer"/>.
+    /// </summary>
+    /// <param name="text">The text to search.</param>
+    /// <param name="pattern">The pattern to find.</param>
+    /// <param name="comparer">Decides when two characters match.</param>
+    /// <returns>
+    /// The start of every occurrence in ascending order, overlapping ones included; for an empty pattern,
+    /// every index from 0 through the text's length.
+    /// </returns>
     public static List<int> FindAll(ReadOnlySpan<char> text, ReadOnlySpan<char> pattern, IEqualityComparer<char> comparer)
     {
         if (pattern.IsEmpty)

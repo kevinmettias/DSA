@@ -6,6 +6,9 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // abstraction: GetChildren stays a pure, static function of the node, exactly like
 // every other IGraphTopology, because the node (GridNode) carries the reference to
 // its shared Grid - the same way a linked TestNode carries its own Children list.
+/// <summary>
+/// The graph topology witness for <see cref="GridNode"/>, whose children are its open orthogonal neighbours.
+/// </summary>
 public readonly struct GridTopology : IGraphTopology<GridNode, GridChildren>
 {
     public static GridChildren GetChildren(GridNode node) => new(node);

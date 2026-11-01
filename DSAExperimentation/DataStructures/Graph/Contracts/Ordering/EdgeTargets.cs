@@ -3,6 +3,8 @@ namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 // Forgets the edge data, keeping only the destinations - lets anything with edges
 // be handed to every existing IChildren-based algorithm (GraphReduce, TreeFold,
 // ...) for free, with no second representation to keep in sync.
+/// <summary>A children view over a node's edges that keeps each edge's target and drops its data.</summary>
+/// <param name="edges">The edges whose targets to present, in their own order.</param>
 public readonly struct EdgeTargets<TNode, TEdgeData, TEdges>(TEdges edges) : IChildren<TNode>
     where TEdges : struct, IEdges<TNode, TEdgeData>
 {

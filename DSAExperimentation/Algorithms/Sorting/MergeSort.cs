@@ -22,20 +22,41 @@ namespace DSAExperimentation.Algorithms.Sorting;
 // IIndexedSequence's aliasing law because it is a reference type. No call can reach the overload it did
 // not mean: an Element[] fails TSequence's struct constraint, and no sequence witness converts to an
 // Element[].
+/// <summary>A stable O(n log n) merge sort that sorts an array or an indexed sequence in place.</summary>
 public static class MergeSort
 {
+    /// <summary>
+    /// Sorts the array in place into ascending order, keeping equal elements in their original order.
+    /// </summary>
+    /// <param name="items">The array to sort.</param>
     public static void Sort<Element>(Element[] items)
         where Element : IComparable<Element>
         => Sort<Element, ArrayIndexedSequence<Element>>(new ArrayIndexedSequence<Element>(items));
 
+    /// <summary>
+    /// Sorts the array in place into the order <paramref name="comparer"/> gives, keeping equal elements in
+    /// their original order.
+    /// </summary>
+    /// <param name="items">The array to sort.</param>
+    /// <param name="comparer">The total order to sort by.</param>
     public static void Sort<Element>(Element[] items, IComparer<Element> comparer)
         => Sort<Element, ArrayIndexedSequence<Element>>(new ArrayIndexedSequence<Element>(items), comparer);
 
+    /// <summary>
+    /// Sorts the sequence in place into ascending order, keeping equal elements in their original order.
+    /// </summary>
+    /// <param name="sequence">The sequence to sort.</param>
     public static void Sort<Element, TSequence>(TSequence sequence)
         where TSequence : struct, IIndexedSequence<Element>
         where Element : IComparable<Element>
         => Sort<Element, TSequence>(sequence, Comparer<Element>.Default);
 
+    /// <summary>
+    /// Sorts the sequence in place into the order <paramref name="comparer"/> gives, keeping equal elements
+    /// in their original order.
+    /// </summary>
+    /// <param name="sequence">The sequence to sort.</param>
+    /// <param name="comparer">The total order to sort by.</param>
     public static void Sort<Element, TSequence>(TSequence sequence, IComparer<Element> comparer)
         where TSequence : struct, IIndexedSequence<Element>
     {

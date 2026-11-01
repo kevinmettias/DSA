@@ -31,15 +31,27 @@ namespace DSAExperimentation.DataStructures.SuffixArray;
 // by the Comparison<int> delegate Array.Sort needs, and unlike RollingHash's single synchronous
 // pass, this algorithm re-reads characters repeatedly across every doubling round and again during
 // Kasai's pass - a real necessity here, not an optional convenience.
+/// <summary>
+/// The sorted suffixes of a fixed text, with their ranks and the longest common prefix of each adjacent pair.
+/// </summary>
 public sealed class SuffixArray
 {
     private const int NoRankSentinel = -1;
     private const int DoublingFactor = 2;
 
+    /// <summary>
+    /// Every suffix's start index, in ascending order of the suffixes under the character comparer.
+    /// </summary>
     public int[] Suffixes { get; }
 
+    /// <summary>
+    /// The inverse of <see cref="Suffixes"/>: for each start index, the position its suffix holds there.
+    /// </summary>
     public int[] Rank { get; }
 
+    /// <summary>
+    /// Entry i is how long a prefix the suffixes at <c>Suffixes[i]</c> and <c>Suffixes[i + 1]</c> share.
+    /// </summary>
     public int[] LongestCommonPrefixArray { get; }
 
     public SuffixArray(ReadOnlySpan<char> text)

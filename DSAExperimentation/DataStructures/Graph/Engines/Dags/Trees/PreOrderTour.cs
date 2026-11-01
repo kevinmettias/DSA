@@ -32,6 +32,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // workload, where a node's earlier children carry the larger subtrees, first-child-first left
 // more siblings waiting on the stack - one more doubling of it, 0.28 KB at 200 nodes and
 // 0.52 KB at 2,000.
+/// <summary>A rooted tree laid out in pre-order, so each subtree is a contiguous run of positions.</summary>
 public sealed class PreOrderTour
 {
     // The root's entry in ParentOf: negative, as in the parent arrays ParentArrayTree reads.
@@ -44,6 +45,7 @@ public sealed class PreOrderTour
     private readonly int[] _parentOf;
     private readonly int[] _subtreeEndAt;
 
+    /// <summary>How many nodes the tour lays out, which is also how many positions it has.</summary>
     public int NodeCount => _nodeAt.Length;
 
     private PreOrderTour(int[] nodeAt, int[] positionOf, int[] parentOf, int[] subtreeEndAt)
@@ -56,6 +58,13 @@ public sealed class PreOrderTour
 
     // nodeCount is how many nodes hang from root, their ids 0..nodeCount-1 - RootedTreeNode's
     // dense ids, all in one tree. O(n), and iterative at any depth.
+    /// <summary>Lays a tree out in pre-order in O(n), without recursing, so any depth is safe.</summary>
+    /// <param name="root">The tree's root, which takes position 0.</param>
+    /// <param name="nodeCount">How many nodes hang from the root, itself included, with ids 0 to nodeCount - 1.</param>
+    /// <returns>The tour, with siblings laid out last child first.</returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown when fewer than <paramref name="nodeCount"/> nodes hang from the root.
+    /// </exception>
     public static PreOrderTour Build(RootedTreeNode root, int nodeCount)
     {
         var (nodeAt, parentOf) = WalkPreOrder(root, nodeCount);
@@ -138,14 +147,26 @@ public sealed class PreOrderTour
         return subtreeEndAt;
     }
 
+    /// <summary>Finds where a node sits in the tour.</summary>
+    /// <param name="node">The node's id.</param>
+    /// <returns>The node's 0-based position, 0 for the root and always later than its parent's.</returns>
     public int PositionOf(int node) => _positionOf[node];
 
+    /// <summary>Finds which node sits at a position, undoing <see cref="PositionOf"/>.</summary>
+    /// <param name="position">A 0-based position below <see cref="NodeCount"/>.</param>
+    /// <returns>The id of the node at that position.</returns>
     public int NodeAt(int position) => _nodeAt[position];
 
     // The id of node's parent; negative for the root, which has none.
+    /// <summary>Finds a node's parent.</summary>
+    /// <param name="node">The node's id.</param>
+    /// <returns>The id of the node's parent, or a negative value for the root, which has none.</returns>
     public int ParentOf(int node) => _parentOf[node];
 
     // The positions of node and of everything below it, both ends inclusive.
+    /// <summary>Finds the run of positions that a node's subtree occupies.</summary>
+    /// <param name="node">The id of the subtree's root.</param>
+    /// <returns>The node's own position and the last its subtree reaches, both inclusive; equal for a leaf.</returns>
     public (int First, int Last) SubtreeOf(int node)
     {
         var first = _positionOf[node];

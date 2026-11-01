@@ -40,8 +40,12 @@ namespace DSAExperimentation.Algorithms.MinimumSpanningTrees;
 // incomplete-vertices precondition violation on the caller's part) - it's simply
 // excluded rather than thrown on, the same "unchecked precondition" treatment
 // BinarySearch's sortedness gets.
+/// <summary>Kruskal's minimum spanning tree, a forest when the graph is disconnected.</summary>
 public static class MinimumSpanningTree
 {
+    /// <summary>Finds a minimum spanning forest of the vertices, one tree per connected component.</summary>
+    /// <param name="vertices">Every vertex of the graph; an edge reaching a vertex outside them is left out.</param>
+    /// <returns>The forest's edges, each as its two ends and its weight.</returns>
     public static List<(TNode A, TNode B, TWeight Weight)> Kruskal<TNode, TTopology, TEdges, TWeight>(
         IEnumerable<TNode> vertices)
         where TNode : class

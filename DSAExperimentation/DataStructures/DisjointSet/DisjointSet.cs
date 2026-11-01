@@ -21,14 +21,22 @@ namespace DSAExperimentation.DataStructures.DisjointSet;
 // call - an unchecked-by-this-type precondition the same shape as BinarySearch's
 // sortedness precondition (out-of-range ids throw via DisjointSetForest's own bounds
 // check, but nothing here verifies ids were assigned consistently by the caller).
+/// <summary>
+/// A partition of the ids 0 to Count - 1 into disjoint sets, each id starting alone, that can be merged and queried.
+/// </summary>
 public sealed class DisjointSet
 {
     private readonly DisjointSetForest _forest;
 
+    /// <summary>The number of ids, fixed at construction; not the number of sets.</summary>
     public int Count => _forest.Count;
 
     public DisjointSet(int count) => _forest = new DisjointSetForest(count);
 
+    /// <summary>Finds the representative of an id's set, flattening the path to it on the way.</summary>
+    /// <param name="id">An id from 0 to <see cref="Count"/> - 1.</param>
+    /// <returns>The representative's id, shared by every id in the set until a later merge changes the set.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The id is negative or not below <see cref="Count"/>.</exception>
     public int Find(int id)
     {
         var root = id;
@@ -52,6 +60,12 @@ public sealed class DisjointSet
         }
     }
 
+    /// <summary>Merges two ids' sets, leaving unspecified which of the two representatives survives.</summary>
+    /// <param name="first">An id in one of the sets to merge.</param>
+    /// <param name="second">An id in the other set; nothing merges when both ids already share a set.</param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Either id is negative or not below <see cref="Count"/>.
+    /// </exception>
     public void Union(int first, int second)
     {
         var firstRoot = Find(first);
@@ -91,6 +105,12 @@ public sealed class DisjointSet
     // with this and reads Find. It links without consulting rank, so the O(a(n)) claim above holds
     // only for a forest Union alone has joined; once the two mix, path compression alone bounds
     // Find at O(log n) amortized.
+    /// <summary>Merges an id's set into a target id's set, whose representative the merged set keeps.</summary>
+    /// <param name="id">An id in the set to merge away.</param>
+    /// <param name="target">An id in the set to merge into; nothing merges when both ids already share a set.</param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Either id is negative or not below <see cref="Count"/>.
+    /// </exception>
     public void MergeInto(int id, int target)
     {
         var idRoot = Find(id);
@@ -102,5 +122,12 @@ public sealed class DisjointSet
         }
     }
 
+    /// <summary>Reports whether two ids are in the same set.</summary>
+    /// <param name="first">One id to compare.</param>
+    /// <param name="second">The other id to compare.</param>
+    /// <returns>True when both ids share a representative, as any id does with itself; false otherwise.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Either id is negative or not below <see cref="Count"/>.
+    /// </exception>
     public bool IsConnected(int first, int second) => Find(first) == Find(second);
 }

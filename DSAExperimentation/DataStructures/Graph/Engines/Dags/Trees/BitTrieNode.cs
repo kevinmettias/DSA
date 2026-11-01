@@ -16,8 +16,11 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // property is more permissive than strictly needed, but BitTrie.Insert is the only
 // writer and always writes via ??=, so there is no actual mutation-safety gap to
 // close with a narrower API.
+/// <summary>A <see cref="BitTrie"/> node, with an optional child for each value of the next bit.</summary>
 public sealed class BitTrieNode
 {
+    /// <summary>The child taken when the next bit is 0, or null if no inserted value takes it.</summary>
     public BitTrieNode? Zero { get; set; }
+    /// <summary>The child taken when the next bit is 1, or null if no inserted value takes it.</summary>
     public BitTrieNode? One { get; set; }
 }

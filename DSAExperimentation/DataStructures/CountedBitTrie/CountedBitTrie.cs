@@ -44,6 +44,10 @@ namespace DSAExperimentation.DataStructures.CountedBitTrie;
 //
 // Insert, TryRemove, TryMaxXor and CountXorBelow each walk the 32 levels once (TryRemove twice):
 // O(1), Insert's amortized over the doubling.
+/// <summary>
+/// A multiset of ints in a binary trie over their 32 bits, answering maximum-XOR and XOR-below-a-limit
+/// queries, with removal.
+/// </summary>
 public sealed class CountedBitTrie
 {
     private const int BitWidth = 32;
@@ -62,8 +66,11 @@ public sealed class CountedBitTrie
     private int _nodeCount = Root + 1;
 
     // How many values are live, duplicates included - every live value's path starts at the root.
+    /// <summary>The number of values held, duplicates included.</summary>
     public int Count => _counts[Root];
 
+    /// <summary>Adds one copy of a value.</summary>
+    /// <param name="value">The value to add, any int.</param>
     public void Insert(int value)
     {
         var bits = unchecked((uint)value);
@@ -120,6 +127,9 @@ public sealed class CountedBitTrie
     // its leaf's count is positive, and a positive leaf means every node above it is positive too
     // (each count is the sum of its children's), so one read-only walk decides it before the
     // decrementing one.
+    /// <summary>Removes one copy of a value if the trie holds one.</summary>
+    /// <param name="value">The value to remove a copy of.</param>
+    /// <returns>True when a copy was removed; false, changing nothing, when none is held.</returns>
     public bool TryRemove(int value)
     {
         if (_counts[LeafOf(value)] == 0)
@@ -159,6 +169,14 @@ public sealed class CountedBitTrie
 
     // The largest value ^ y over every live y, as an unsigned pattern cast back to int; false
     // when nothing is live.
+    /// <summary>
+    /// Finds the largest XOR of a value with any held value, comparing XORs as unsigned 32-bit patterns.
+    /// </summary>
+    /// <param name="value">The value to XOR with each held value.</param>
+    /// <param name="result">
+    /// The largest XOR as an int, negative when its top bit is set; 0 when the trie is empty.
+    /// </param>
+    /// <returns>True when the trie holds a value; false when it is empty.</returns>
     public bool TryMaxXor(int value, out int result)
     {
         if (Count == 0)
@@ -200,6 +218,14 @@ public sealed class CountedBitTrie
     // reaches the end of the walk and is never added. The walk runs all 32 levels even after it
     // leaves the laid-down nodes, through the sentinel: stopping there instead measured slower on
     // LeetCode 1803's workload, which seldom leaves them early.
+    /// <summary>
+    /// Counts the held values whose XOR with a value is below a limit, both read as unsigned 32-bit patterns.
+    /// </summary>
+    /// <param name="value">The value to XOR with each held value.</param>
+    /// <param name="limit">
+    /// The exclusive bound, read unsigned, so an overflowed <c>int.MaxValue + 1</c> means 2^31.
+    /// </param>
+    /// <returns>The number of held values, duplicates included, whose XOR with the value is below the limit.</returns>
     public int CountXorBelow(int value, int limit)
     {
         var valueBits = unchecked((uint)value);

@@ -22,6 +22,7 @@ namespace DSAExperimentation.Algorithms.Searching;
 // below p is the boundary p was given, and so on down - so the sweep follows those links
 // in the boundary array it is filling instead. The comparisons are the stack's, in the
 // same order, and the result array is the only allocation.
+/// <summary>Nearest smaller or greater values to each position's left or right, in one O(n) sweep.</summary>
 public static class NearestBoundary
 {
     // What the sweep's chain ends at when the caller's `none` is itself a position.
@@ -29,43 +30,115 @@ public static class NearestBoundary
 
     // The nearest position to the left whose value is strictly smaller than the value
     // at the position asked about; `none` when the value is a prefix minimum.
+    /// <summary>Finds each position's nearest strictly smaller value to its left.</summary>
+    /// <param name="values">The values to sweep.</param>
+    /// <param name="none">
+    /// The answer for a position with no such value, usually -1 or the length of <paramref name="values"/>.
+    /// </param>
+    /// <returns>
+    /// An array parallel to <paramref name="values"/> holding, at each position, the nearest position to its
+    /// left with a strictly smaller value, or <paramref name="none"/> where there is none.
+    /// </returns>
     public static int[] SmallerToTheLeft(ReadOnlySpan<int> values, int none) =>
         Sweep<StrictlySmaller, ToTheLeft>(values, none);
 
     // The nearest position to the left whose value is smaller than or equal to the value
     // at the position asked about - so an equal neighbour is a boundary rather than
     // something the sweep pops on its way further left.
+    /// <summary>Finds each position's nearest smaller-or-equal value to its left.</summary>
+    /// <param name="values">The values to sweep.</param>
+    /// <param name="none">
+    /// The answer for a position with no such value, usually -1 or the length of <paramref name="values"/>.
+    /// </param>
+    /// <returns>
+    /// An array parallel to <paramref name="values"/> holding, at each position, the nearest position to its
+    /// left with a smaller or equal value, or <paramref name="none"/> where there is none.
+    /// </returns>
     public static int[] SmallerOrEqualToTheLeft(ReadOnlySpan<int> values, int none) =>
         Sweep<SmallerOrEqual, ToTheLeft>(values, none);
 
     // The nearest position to the left whose value is strictly greater than the value at
     // the position asked about; `none` when the value is a prefix maximum.
+    /// <summary>Finds each position's nearest strictly greater value to its left.</summary>
+    /// <param name="values">The values to sweep.</param>
+    /// <param name="none">
+    /// The answer for a position with no such value, usually -1 or the length of <paramref name="values"/>.
+    /// </param>
+    /// <returns>
+    /// An array parallel to <paramref name="values"/> holding, at each position, the nearest position to its
+    /// left with a strictly greater value, or <paramref name="none"/> where there is none.
+    /// </returns>
     public static int[] GreaterToTheLeft(ReadOnlySpan<int> values, int none) =>
         Sweep<StrictlyGreater, ToTheLeft>(values, none);
 
     // The nearest position to the left whose value is greater than or equal to the value
     // at the position asked about.
+    /// <summary>Finds each position's nearest greater-or-equal value to its left.</summary>
+    /// <param name="values">The values to sweep.</param>
+    /// <param name="none">
+    /// The answer for a position with no such value, usually -1 or the length of <paramref name="values"/>.
+    /// </param>
+    /// <returns>
+    /// An array parallel to <paramref name="values"/> holding, at each position, the nearest position to its
+    /// left with a greater or equal value, or <paramref name="none"/> where there is none.
+    /// </returns>
     public static int[] GreaterOrEqualToTheLeft(ReadOnlySpan<int> values, int none) =>
         Sweep<GreaterOrEqual, ToTheLeft>(values, none);
 
     // The nearest position to the right whose value is strictly smaller than the value at
     // the position asked about; `none` when the value is a suffix minimum.
+    /// <summary>Finds each position's nearest strictly smaller value to its right.</summary>
+    /// <param name="values">The values to sweep.</param>
+    /// <param name="none">
+    /// The answer for a position with no such value, usually -1 or the length of <paramref name="values"/>.
+    /// </param>
+    /// <returns>
+    /// An array parallel to <paramref name="values"/> holding, at each position, the nearest position to its
+    /// right with a strictly smaller value, or <paramref name="none"/> where there is none.
+    /// </returns>
     public static int[] SmallerToTheRight(ReadOnlySpan<int> values, int none) =>
         Sweep<StrictlySmaller, ToTheRight>(values, none);
 
     // The nearest position to the right whose value is smaller than or equal to the value
     // at the position asked about - the mirror of SmallerOrEqualToTheLeft, and the side a
     // caller pairs with a strict SmallerToTheLeft to keep one of two equal minima.
+    /// <summary>Finds each position's nearest smaller-or-equal value to its right.</summary>
+    /// <param name="values">The values to sweep.</param>
+    /// <param name="none">
+    /// The answer for a position with no such value, usually -1 or the length of <paramref name="values"/>.
+    /// </param>
+    /// <returns>
+    /// An array parallel to <paramref name="values"/> holding, at each position, the nearest position to its
+    /// right with a smaller or equal value, or <paramref name="none"/> where there is none.
+    /// </returns>
     public static int[] SmallerOrEqualToTheRight(ReadOnlySpan<int> values, int none) =>
         Sweep<SmallerOrEqual, ToTheRight>(values, none);
 
     // The nearest position to the right whose value is strictly greater than the value at
     // the position asked about; `none` when the value is a suffix maximum.
+    /// <summary>Finds each position's nearest strictly greater value to its right.</summary>
+    /// <param name="values">The values to sweep.</param>
+    /// <param name="none">
+    /// The answer for a position with no such value, usually -1 or the length of <paramref name="values"/>.
+    /// </param>
+    /// <returns>
+    /// An array parallel to <paramref name="values"/> holding, at each position, the nearest position to its
+    /// right with a strictly greater value, or <paramref name="none"/> where there is none.
+    /// </returns>
     public static int[] GreaterToTheRight(ReadOnlySpan<int> values, int none) =>
         Sweep<StrictlyGreater, ToTheRight>(values, none);
 
     // The nearest position to the right whose value is greater than or equal to the value
     // at the position asked about.
+    /// <summary>Finds each position's nearest greater-or-equal value to its right.</summary>
+    /// <param name="values">The values to sweep.</param>
+    /// <param name="none">
+    /// The answer for a position with no such value, usually -1 or the length of <paramref name="values"/>.
+    /// </param>
+    /// <returns>
+    /// An array parallel to <paramref name="values"/> holding, at each position, the nearest position to its
+    /// right with a greater or equal value, or <paramref name="none"/> where there is none.
+    /// </returns>
     public static int[] GreaterOrEqualToTheRight(ReadOnlySpan<int> values, int none) =>
         Sweep<GreaterOrEqual, ToTheRight>(values, none);
 

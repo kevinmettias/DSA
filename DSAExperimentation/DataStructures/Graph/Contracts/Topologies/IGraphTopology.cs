@@ -8,9 +8,15 @@ namespace DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 // constrained on ITreeTopology get to skip visited-tracking/memoization because of
 // that extra promise; algorithms constrained on this bare interface can't assume
 // it and must defend against cycles/sharing themselves.
+/// <summary>
+/// Says, for any node, which nodes it has edges to, promising nothing about cycles or shared descendants.
+/// </summary>
 public interface IGraphTopology<TNode, TChildren>
     where TNode : class
     where TChildren : struct, IChildren<TNode>
 {
+    /// <summary>Returns the nodes a node has edges to, in the topology's own order.</summary>
+    /// <param name="node">The node whose children to return.</param>
+    /// <returns>A view of the node's children.</returns>
     static abstract TChildren GetChildren(TNode node);
 }

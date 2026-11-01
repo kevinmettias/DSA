@@ -4,6 +4,9 @@ namespace DSAExperimentation.DataStructures.ElementAlgebra;
 
 // Identity is Element.MinValue - the mirror image of MinOperation<Element>'s reasoning: Combine(MinValue, x)
 // must always resolve to x for a "no overlap" query branch to be invisible to the result.
+/// <summary>
+/// Combines elements by keeping the larger, or the left one on a tie, with <c>Element.MinValue</c> as the identity.
+/// </summary>
 public readonly struct MaxOperation<Element> : ICombineOperation<Element>
     where Element : IComparable<Element>, IMinMaxValue<Element>
 {

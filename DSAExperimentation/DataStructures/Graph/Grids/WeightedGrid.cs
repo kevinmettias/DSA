@@ -4,15 +4,29 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // with any subset of cells walled off. Blocked cells are absent from the result
 // entirely rather than present-but-unreachable, so every edge in the built graph
 // crosses open cells only.
+/// <summary>
+/// Builds unit-weight, four-way connected grid graphs of <see cref="WeightedGridNode"/>, leaving walled cells out.
+/// </summary>
 public static class WeightedGrid
 {
     private const int UnitWeight = 1;
 
     private static readonly HashSet<(int Row, int Col)> NoWalls = [];
 
+    /// <summary>Builds a grid graph with every cell open.</summary>
+    /// <param name="rows">How many rows the grid has.</param>
+    /// <param name="cols">How many columns the grid has.</param>
+    /// <returns>Each cell's node keyed by (Row, Col), with a weight-1 edge to each orthogonal neighbour.</returns>
     public static Dictionary<(int Row, int Col), WeightedGridNode> Build(int rows, int cols) =>
         Build(rows, cols, NoWalls);
 
+    /// <summary>Builds a grid graph with some cells walled off and left out entirely.</summary>
+    /// <param name="rows">How many rows the grid has.</param>
+    /// <param name="cols">How many columns the grid has.</param>
+    /// <param name="walls">The cells to leave out of the graph; a wall off the grid changes nothing.</param>
+    /// <returns>
+    /// Each open cell's node keyed by (Row, Col), with a weight-1 edge to each open orthogonal neighbour.
+    /// </returns>
     public static Dictionary<(int Row, int Col), WeightedGridNode> Build(
         int rows, int cols, IReadOnlySet<(int Row, int Col)> walls)
     {

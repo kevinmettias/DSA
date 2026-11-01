@@ -7,8 +7,12 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 //
 // The loop bound is divisor <= value / divisor rather than divisor * divisor <= value, so it cannot
 // overflow Integer for a value near Integer.MaxValue.
+/// <summary>Primality of one value by trial division, in O(sqrt(value)) time.</summary>
 public static class Primality
 {
+    /// <summary>Decides whether a value is prime by trial division.</summary>
+    /// <param name="value">The value to test, of any binary integer type.</param>
+    /// <returns>True when the value is prime; false for every value below 2.</returns>
     public static bool IsPrime<Integer>(Integer value)
         where Integer : IBinaryInteger<Integer>
     {

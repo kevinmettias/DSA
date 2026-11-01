@@ -13,6 +13,7 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // data, so the property would build a new array on every access, and a span cannot be enumerated
 // across a yield, which many grid searches do. ImmutableArray cannot be changed by a caller, indexes
 // straight into its array, and enumerates with a struct enumerator.
+/// <summary>The (DeltaRow, DeltaCol) offset tables of the grid move sets, each in a fixed order.</summary>
 public static class GridDirections
 {
     public static readonly ImmutableArray<(int DeltaRow, int DeltaCol)> Orthogonal =

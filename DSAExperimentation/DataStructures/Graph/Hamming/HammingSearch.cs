@@ -11,6 +11,9 @@ namespace DSAExperimentation.DataStructures.Graph.Hamming;
 // HammingDistances has something to be measured against. It lives here rather than
 // beside any one problem because LC 127 and LC 433 are the same search, differing
 // only in alphabet and in whether the answer counts nodes or edges.
+/// <summary>
+/// Breadth-first search over one-character mutations that never builds a <see cref="HammingGraph"/>.
+/// </summary>
 public static class HammingSearch
 {
     // Edges walked from start to target, or null when no mutation path exists
@@ -19,6 +22,14 @@ public static class HammingSearch
     // for LC 433) without a shared magic value in between. `start` itself need not
     // be a member of `allowed`, matching LeetCode's beginWord/startGene convention,
     // which is also why the two endpoints are distinct types and not two strings.
+    /// <summary>
+    /// Finds the fewest one-character mutations that turn start into target through allowed strings.
+    /// </summary>
+    /// <param name="start">The string to start from, which need not be in <paramref name="allowed"/>.</param>
+    /// <param name="target">The string to reach.</param>
+    /// <param name="allowed">The strings every mutation along the way must produce.</param>
+    /// <param name="alphabet">The characters a mutation may write.</param>
+    /// <returns>The mutation count of a shortest path, 0 when start is the target, or null when none exists.</returns>
     public static int? MutationDistance(
         MutationStart start, MutationTarget target, Set<string> allowed, Alphabet alphabet)
     {

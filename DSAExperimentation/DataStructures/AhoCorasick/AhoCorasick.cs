@@ -17,6 +17,9 @@ namespace DSAExperimentation.DataStructures.AhoCorasick;
 // No Topology witness: every AhoCorasickNode is created only internally during construction from
 // patterns, the same "no external caller-supplied shape could ever violate the invariant" reasoning
 // Trie.cs's own doc comment already gives for itself.
+/// <summary>
+/// A matcher built once from a set of patterns that finds every occurrence of any of them in a text in one pass.
+/// </summary>
 public sealed class AhoCorasick
 {
     private readonly AhoCorasickNode _root;
@@ -103,6 +106,12 @@ public sealed class AhoCorasick
     // predictable, test-friendly contract - Start does not increase monotonically with the scan
     // position on its own once patterns of different lengths are involved, unlike every
     // single-pattern FindAll elsewhere in this repo.
+    /// <summary>
+    /// Finds all occurrences of the patterns in a text, overlaps included, with an empty pattern at every
+    /// insertion point.
+    /// </summary>
+    /// <param name="text">The text to scan, compared with the automaton's character comparer.</param>
+    /// <returns>The matches in ascending order of start, then of pattern index; empty when no pattern occurs.</returns>
     public List<AhoCorasickMatch> FindAll(ReadOnlySpan<char> text)
     {
         var matches = new List<AhoCorasickMatch>();

@@ -15,7 +15,14 @@ namespace DSAExperimentation.DataStructures.MonotonicDeque;
 // Neither IHeapOrder, which is Heap's own Topology contract (§5 step 5), nor ElementAlgebra's
 // MaxOperation/MinOperation: a monoid does not promise that Combine returns one of its arguments, so a
 // deque over SumOperation would compile and mean nothing.
+/// <summary>
+/// Which extremum a <see cref="MonotonicDeque{Key, TOrder}"/> tracks: whether an arriving key dominates a resident one.
+/// </summary>
 public interface IWindowOrder<Key>
 {
+    /// <summary>Reports whether an arriving key rules a resident one out as the extremum for good.</summary>
+    /// <param name="resident">A key already in the deque, pushed before the arriving one.</param>
+    /// <param name="arriving">The key being pushed.</param>
+    /// <returns>true when the arriving key is at least as extreme, a tie included; otherwise false.</returns>
     static abstract bool IsDominatedBy(Key resident, Key arriving);
 }

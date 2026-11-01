@@ -19,34 +19,89 @@ namespace DSAExperimentation.Algorithms.Searching;
 // witness, so the instantiation that runs is the one a caller spelling it out would get. No call can
 // reach the overload it did not mean: an Element[] fails TSequence's struct constraint, and no sequence
 // witness converts to an Element[].
+/// <summary>Binary search over a sorted array or random-access sequence, in O(log n) comparisons.</summary>
 public static class BinarySearch
 {
+    /// <summary>Finds an index of a target in a sorted array.</summary>
+    /// <param name="items">The array to search, sorted ascending by the elements' own <c>CompareTo</c>.</param>
+    /// <param name="target">The value to look for.</param>
+    /// <returns>
+    /// An index whose element compares equal to the target, not necessarily the first of a run of equals;
+    /// null when none does.
+    /// </returns>
     public static int? Find<Element>(Element[] items, Element target)
         where Element : IComparable<Element>
         => Find<Element, ArraySequence<Element>>(new ArraySequence<Element>(items), target);
 
+    /// <summary>Finds an index of a target in an array sorted by a comparer.</summary>
+    /// <param name="items">The array to search, sorted ascending by <paramref name="comparer"/>.</param>
+    /// <param name="target">The value to look for.</param>
+    /// <param name="comparer">The order the array is sorted by.</param>
+    /// <returns>
+    /// An index whose element compares equal to the target, not necessarily the first of a run of equals;
+    /// null when none does.
+    /// </returns>
     public static int? Find<Element>(Element[] items, Element target, IComparer<Element> comparer)
         => Find<Element, ArraySequence<Element>>(new ArraySequence<Element>(items), target, comparer);
 
+    /// <summary>Finds the leftmost insertion point for a target in a sorted array.</summary>
+    /// <param name="items">The array to search, sorted ascending by the elements' own <c>CompareTo</c>.</param>
+    /// <param name="target">The value to place.</param>
+    /// <returns>
+    /// The first index whose element is not less than the target; the array's length when every element is
+    /// less.
+    /// </returns>
     public static int LowerBound<Element>(Element[] items, Element target)
         where Element : IComparable<Element>
         => LowerBound<Element, ArraySequence<Element>>(new ArraySequence<Element>(items), target);
 
+    /// <summary>Finds the leftmost insertion point for a target in an array sorted by a comparer.</summary>
+    /// <param name="items">The array to search, sorted ascending by <paramref name="comparer"/>.</param>
+    /// <param name="target">The value to place.</param>
+    /// <param name="comparer">The order the array is sorted by.</param>
+    /// <returns>
+    /// The first index whose element is not less than the target; the array's length when every element is
+    /// less.
+    /// </returns>
     public static int LowerBound<Element>(Element[] items, Element target, IComparer<Element> comparer)
         => LowerBound<Element, ArraySequence<Element>>(new ArraySequence<Element>(items), target, comparer);
 
+    /// <summary>Finds the rightmost insertion point for a target in a sorted array.</summary>
+    /// <param name="items">The array to search, sorted ascending by the elements' own <c>CompareTo</c>.</param>
+    /// <param name="target">The value to place.</param>
+    /// <returns>The first index whose element is greater than the target; the array's length when none is.</returns>
     public static int UpperBound<Element>(Element[] items, Element target)
         where Element : IComparable<Element>
         => UpperBound<Element, ArraySequence<Element>>(new ArraySequence<Element>(items), target);
 
+    /// <summary>Finds the rightmost insertion point for a target in an array sorted by a comparer.</summary>
+    /// <param name="items">The array to search, sorted ascending by <paramref name="comparer"/>.</param>
+    /// <param name="target">The value to place.</param>
+    /// <param name="comparer">The order the array is sorted by.</param>
+    /// <returns>The first index whose element is greater than the target; the array's length when none is.</returns>
     public static int UpperBound<Element>(Element[] items, Element target, IComparer<Element> comparer)
         => UpperBound<Element, ArraySequence<Element>>(new ArraySequence<Element>(items), target, comparer);
 
+    /// <summary>Finds an index of a target in a sorted random-access sequence.</summary>
+    /// <param name="sequence">The sequence to search, sorted ascending by the elements' own <c>CompareTo</c>.</param>
+    /// <param name="target">The value to look for.</param>
+    /// <returns>
+    /// An index whose element compares equal to the target, not necessarily the first of a run of equals;
+    /// null when none does.
+    /// </returns>
     public static int? Find<Element, TSequence>(TSequence sequence, Element target)
         where TSequence : struct, IRandomAccessSequence<Element>
         where Element : IComparable<Element>
         => Find<Element, TSequence>(sequence, target, Comparer<Element>.Default);
 
+    /// <summary>Finds an index of a target in a random-access sequence sorted by a comparer.</summary>
+    /// <param name="sequence">The sequence to search, sorted ascending by <paramref name="comparer"/>.</param>
+    /// <param name="target">The value to look for.</param>
+    /// <param name="comparer">The order the sequence is sorted by.</param>
+    /// <returns>
+    /// An index whose element compares equal to the target, not necessarily the first of a run of equals;
+    /// null when none does.
+    /// </returns>
     public static int? Find<Element, TSequence>(TSequence sequence, Element target, IComparer<Element> comparer)
         where TSequence : struct, IRandomAccessSequence<Element>
     {
@@ -71,11 +126,28 @@ public static class BinarySearch
     // order - the first index whose element is not less than target. Unlike Find, this
     // never returns null: an all-smaller sequence yields sequence.Length (append at the
     // end), and a run of duplicates always resolves to its first occurrence.
+    /// <summary>Finds the leftmost insertion point for a target in a sorted random-access sequence.</summary>
+    /// <param name="sequence">The sequence to search, sorted ascending by the elements' own <c>CompareTo</c>.</param>
+    /// <param name="target">The value to place.</param>
+    /// <returns>
+    /// The first index whose element is not less than the target; the sequence's length when every element is
+    /// less.
+    /// </returns>
     public static int LowerBound<Element, TSequence>(TSequence sequence, Element target)
         where TSequence : struct, IRandomAccessSequence<Element>
         where Element : IComparable<Element>
         => LowerBound<Element, TSequence>(sequence, target, Comparer<Element>.Default);
 
+    /// <summary>
+    /// Finds the leftmost insertion point for a target in a random-access sequence sorted by a comparer.
+    /// </summary>
+    /// <param name="sequence">The sequence to search, sorted ascending by <paramref name="comparer"/>.</param>
+    /// <param name="target">The value to place.</param>
+    /// <param name="comparer">The order the sequence is sorted by.</param>
+    /// <returns>
+    /// The first index whose element is not less than the target; the sequence's length when every element is
+    /// less.
+    /// </returns>
     public static int LowerBound<Element, TSequence>(TSequence sequence, Element target, IComparer<Element> comparer)
         where TSequence : struct, IRandomAccessSequence<Element>
         => BoundSearch<Element, TSequence>(sequence, target, comparer, BoundKind.Lower);
@@ -84,11 +156,22 @@ public static class BinarySearch
     // point that lands after every existing occurrence of target. [LowerBound,
     // UpperBound) is exactly the run of indices equal to target, empty when target is
     // absent.
+    /// <summary>Finds the rightmost insertion point for a target in a sorted random-access sequence.</summary>
+    /// <param name="sequence">The sequence to search, sorted ascending by the elements' own <c>CompareTo</c>.</param>
+    /// <param name="target">The value to place.</param>
+    /// <returns>The first index whose element is greater than the target; the sequence's length when none is.</returns>
     public static int UpperBound<Element, TSequence>(TSequence sequence, Element target)
         where TSequence : struct, IRandomAccessSequence<Element>
         where Element : IComparable<Element>
         => UpperBound<Element, TSequence>(sequence, target, Comparer<Element>.Default);
 
+    /// <summary>
+    /// Finds the rightmost insertion point for a target in a random-access sequence sorted by a comparer.
+    /// </summary>
+    /// <param name="sequence">The sequence to search, sorted ascending by <paramref name="comparer"/>.</param>
+    /// <param name="target">The value to place.</param>
+    /// <param name="comparer">The order the sequence is sorted by.</param>
+    /// <returns>The first index whose element is greater than the target; the sequence's length when none is.</returns>
     public static int UpperBound<Element, TSequence>(TSequence sequence, Element target, IComparer<Element> comparer)
         where TSequence : struct, IRandomAccessSequence<Element>
         => BoundSearch<Element, TSequence>(sequence, target, comparer, BoundKind.Upper);

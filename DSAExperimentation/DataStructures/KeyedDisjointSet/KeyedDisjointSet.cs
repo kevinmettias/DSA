@@ -58,12 +58,16 @@ namespace DSAExperimentation.DataStructures.KeyedDisjointSet;
 // same shape HashMap.cs's own doc comment names for why it has no throwing Get. The
 // construction-time key universe above and a query-time key here are two different sets:
 // a key can be legitimately unknown to a query even though the type itself never grows.
+/// <summary>
+/// Disjoint sets over keys fixed at construction, whose operations report an unknown key rather than throw.
+/// </summary>
 public sealed class KeyedDisjointSet<TKey>
 {
     private readonly HashMap<TKey, int> _index;
     private readonly DynamicArray<TKey> _keysById;
     private readonly DisjointSetOperations _disjointSet;
 
+    /// <summary>The number of distinct keys given at construction, with duplicates counted once.</summary>
     public int Count => _keysById.Count;
 
     public KeyedDisjointSet(IEnumerable<TKey> keys)
@@ -90,12 +94,19 @@ public sealed class KeyedDisjointSet<TKey>
         _disjointSet = new DisjointSetOperations(_keysById.Count);
     }
 
+    /// <summary>Reports whether a key was among those given at construction.</summary>
+    /// <param name="key">The key to look up, under the structure's equality comparer.</param>
+    /// <returns>true when the key was given at construction; otherwise false.</returns>
     public bool HasKey(TKey key) => _index.HasKey(key);
 
     // [MaybeNullWhen(false)] is what lets the absent branch assign `default` rather than
     // `default!`: it tells the compiler the out-parameter is only meaningfully read when
     // this returns true, so the contract is declared in the signature instead of being
     // asserted at the assignment.
+    /// <summary>Finds the representative key of a key's set, which every key in that set shares.</summary>
+    /// <param name="key">The key whose set to look up.</param>
+    /// <param name="representative">The set's representative, or <c>default</c> when the key is unknown.</param>
+    /// <returns>true when the key was given at construction; false when it is unknown.</returns>
     public bool TryFind(TKey key, [MaybeNullWhen(false)] out TKey representative)
     {
         if (!_index.TryGetValue(key, out var id))
@@ -108,6 +119,10 @@ public sealed class KeyedDisjointSet<TKey>
         return true;
     }
 
+    /// <summary>Merges the sets holding two keys, doing nothing when they already share one.</summary>
+    /// <param name="first">A key in the first set to merge.</param>
+    /// <param name="second">A key in the second set to merge.</param>
+    /// <returns>true when both keys are known; false, merging nothing, when either is unknown.</returns>
     public bool TryUnion(TKey first, TKey second)
     {
         if (!_index.TryGetValue(first, out var firstId) || !_index.TryGetValue(second, out var secondId))
@@ -119,6 +134,10 @@ public sealed class KeyedDisjointSet<TKey>
         return true;
     }
 
+    /// <summary>Reports whether two keys are in the same set.</summary>
+    /// <param name="first">One key to compare.</param>
+    /// <param name="second">The other key to compare.</param>
+    /// <returns>true when both keys are known and share a set; false when they do not, or either is unknown.</returns>
     public bool IsConnected(TKey first, TKey second)
     {
         if (!_index.TryGetValue(first, out var firstId) || !_index.TryGetValue(second, out var secondId))

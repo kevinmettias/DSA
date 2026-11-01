@@ -16,6 +16,9 @@ namespace DSAExperimentation.DataStructures.FenwickTree;
 // scope). Point-update/range-query only - see RangeFenwickTree for the range-update/range-query
 // variant; mixing that scheme's usage pattern onto this type would silently redefine what
 // PrefixQuery even means, the same trap SegmentTree/LazySegmentTree stay split to avoid.
+/// <summary>
+/// A Fenwick tree over an abelian group operation that adds to one element or combines a range in O(log n).
+/// </summary>
 public sealed class FenwickTree<Element, TOperation>
     where TOperation : struct, IGroupOperation<Element>
 {
@@ -25,6 +28,7 @@ public sealed class FenwickTree<Element, TOperation>
     private readonly FenwickArray<Element> _nodes;
     private readonly int _size;
 
+    /// <summary>The number of elements, fixed when the tree is built.</summary>
     public int Count => _size;
 
     public FenwickTree(int size)
@@ -47,6 +51,12 @@ public sealed class FenwickTree<Element, TOperation>
         }
     }
 
+    /// <summary>Combines a delta into the element at an index.</summary>
+    /// <param name="index">The 0-based index of the element to update.</param>
+    /// <param name="delta">The value to combine into that element with the operation's Combine.</param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="index"/> is negative or not less than <see cref="Count"/>.
+    /// </exception>
     public void Add(int index, Element delta)
     {
         ValidateIndex(index);
@@ -58,6 +68,12 @@ public sealed class FenwickTree<Element, TOperation>
         }
     }
 
+    /// <summary>Combines every element from index 0 through a given index.</summary>
+    /// <param name="index">The 0-based index of the last element to include.</param>
+    /// <returns>The combined value of the elements from 0 through <paramref name="index"/>.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="index"/> is negative or not less than <see cref="Count"/>.
+    /// </exception>
     public Element PrefixQuery(int index)
     {
         ValidateIndex(index);
@@ -72,6 +88,16 @@ public sealed class FenwickTree<Element, TOperation>
         return result;
     }
 
+    /// <summary>Combines every element from one index through another.</summary>
+    /// <param name="left">The 0-based index of the first element to include.</param>
+    /// <param name="right">The 0-based index of the last element to include.</param>
+    /// <returns>
+    /// The combined value of the elements from <paramref name="left"/> through <paramref name="right"/>.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <paramref name="left"/> is negative, <paramref name="right"/> is not less than
+    /// <see cref="Count"/>, or <paramref name="left"/> exceeds <paramref name="right"/>.
+    /// </exception>
     public Element Query(int left, int right)
     {
         ValidateRange(left, right);

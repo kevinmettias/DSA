@@ -24,8 +24,22 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // improving round mean "negative cycle," not "graph incomplete." Unlike TrySort, an omitted
 // vertex here can only ever under-report: CollectEdges only ever walks `vertices`, so a missing
 // vertex just means its own outgoing edges are never considered, never a spurious cycle report.
+/// <summary>Single-source shortest distances with negative edge weights allowed, by Bellman-Ford.</summary>
 public static class BellmanFord
 {
+    /// <summary>Computes the shortest distance from a source to every vertex it reaches.</summary>
+    /// <param name="vertices">
+    /// Every vertex of the graph, not only those the source reaches; one left out has its outgoing edges
+    /// ignored.
+    /// </param>
+    /// <param name="source">The vertex distances are measured from.</param>
+    /// <param name="distances">
+    /// Receives each reached vertex's distance, with the source at zero and unreached vertices left out.
+    /// </param>
+    /// <returns>
+    /// True when no negative cycle is reachable from the source; false when one is, and the distances are
+    /// then not reliable.
+    /// </returns>
     public static bool TryComputeDistances<TNode, TTopology, TEdges, TWeight>(
         IEnumerable<TNode> vertices, TNode source, out Dictionary<TNode, TWeight> distances)
         where TNode : class
@@ -45,9 +59,9 @@ public static class BellmanFord
 
         // A distance can still improve on this extra round only if some cycle on the path
         // to it keeps paying off forever - the definition of a negative cycle reachable from
-        // source. distances is left exactly as computed through the |V| - 1 guaranteed-valid
-        // rounds - a wrong/incomplete answer, not an exception, the same shape TrySort's own
-        // false case already establishes.
+        // source. When one is, this check has relaxed distances one round past the |V| - 1
+        // guaranteed-valid ones - a wrong/incomplete answer, not an exception, the same shape
+        // TrySort's own false case already establishes.
         return !TryRelaxAll(edges, distances);
     }
 

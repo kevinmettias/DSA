@@ -9,6 +9,7 @@ namespace DSAExperimentation.DataStructures;
 // Not Graph/Hamming's Alphabet, which is a runtime-chosen set of letters a mutation substitutes from
 // (DNA's ACGT among them); this is a fixed index scheme. IndexOf and LetterAt throw outside the
 // alphabet rather than return -1, because a wrong slot silently reads another letter's count.
+/// <summary>The 26 lowercase English letters as dense slots, 'a' in slot 0 through 'z' in slot 25.</summary>
 public static class LowercaseAlphabet
 {
     public const int Size = 26;
@@ -17,6 +18,10 @@ public static class LowercaseAlphabet
     private const string NotALowercaseLetterMessage = "Expected a lowercase English letter ('a'-'z').";
     private const string NotALetterSlotMessage = "Expected a letter slot in [0, 26).";
 
+    /// <summary>Finds the slot a lowercase letter takes.</summary>
+    /// <param name="letter">A lowercase English letter, 'a' through 'z'.</param>
+    /// <returns>The letter's slot, 0 for 'a' through 25 for 'z'.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="letter"/> is outside 'a' through 'z'.</exception>
     public static int IndexOf(char letter)
     {
         var index = letter - FirstLetter;
@@ -32,6 +37,10 @@ public static class LowercaseAlphabet
     private static void ThrowNotALetter(char letter) =>
         throw new ArgumentOutOfRangeException(nameof(letter), letter, NotALowercaseLetterMessage);
 
+    /// <summary>Finds the letter a slot holds.</summary>
+    /// <param name="index">A slot, 0 through 25.</param>
+    /// <returns>The slot's lowercase letter, 'a' for 0 through 'z' for 25.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is outside [0, 26).</exception>
     public static char LetterAt(int index)
     {
         if (!IsSlot(index))

@@ -12,6 +12,9 @@ namespace DSAExperimentation.Algorithms.Reducing;
 //
 // Topology-agnostic, not grid-specific - works for any TNode reachable from any
 // IGraphTopology-compatible root.
+/// <summary>
+/// A reduce algebra mapping each node it enters to its depth, its shortest edge count in breadth-first order.
+/// </summary>
 public readonly struct DistanceMapReduceAlgebra<TNode> : IReduceAlgebra<TNode, Dictionary<TNode, int>>
     where TNode : notnull
 {

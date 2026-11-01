@@ -24,6 +24,7 @@ namespace DSAExperimentation.Algorithms.Searching;
 // The bounds are checked on entry, at O(1): an answer of high + 1 or low - 1 has to be representable,
 // and so does the width high - low + 1. A range that wraps would otherwise come back as a confident,
 // wrong boundary; a range ending at int.MaxValue belongs in long.
+/// <summary>Binary search on the answer: the boundary of a monotone rule over an integer interval.</summary>
 public static class MonotonePredicateSearch
 {
     private const string EmptyRangeMessage = "low may exceed high by at most one, which states the empty range.";
@@ -31,6 +32,15 @@ public static class MonotonePredicateSearch
     private const string NoRoomBelowMessage = "low must be above the type's MinValue, so that low - 1 can report that no candidate holds.";
     private const string RangeTooWideMessage = "high - low + 1 must fit in the integer type the range is stated in.";
 
+    /// <summary>Finds the smallest candidate in an interval that a monotone rule holds for.</summary>
+    /// <param name="low">The interval's first candidate.</param>
+    /// <param name="high">The interval's last candidate, or low - 1 for an empty interval.</param>
+    /// <param name="predicate">The rule, false then true across the interval.</param>
+    /// <returns>The smallest candidate in [low, high] the rule holds for; high + 1 when it holds for none.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <paramref name="high"/> is the type's MaxValue, <paramref name="low"/> exceeds high + 1, or the width
+    /// high - low + 1 does not fit in the type.
+    /// </exception>
     public static Integer FirstTrue<Integer, TPredicate>(Integer low, Integer high, TPredicate predicate)
         where Integer : IBinaryInteger<Integer>, IMinMaxValue<Integer>
         where TPredicate : struct, IMonotonePredicate<Integer>
@@ -41,6 +51,15 @@ public static class MonotonePredicateSearch
 
     // The last candidate the rule holds for is one before the first it fails for, so this is the same
     // walk looking for the other answer.
+    /// <summary>Finds the largest candidate in an interval that a monotone rule holds for.</summary>
+    /// <param name="low">The interval's first candidate.</param>
+    /// <param name="high">The interval's last candidate, or low - 1 for an empty interval.</param>
+    /// <param name="predicate">The rule, true then false across the interval.</param>
+    /// <returns>The largest candidate in [low, high] the rule holds for; low - 1 when it holds for none.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <paramref name="high"/> is the type's MaxValue, <paramref name="low"/> is its MinValue or exceeds high
+    /// + 1, or the width high - low + 1 does not fit in the type.
+    /// </exception>
     public static Integer LastTrue<Integer, TPredicate>(Integer low, Integer high, TPredicate predicate)
         where Integer : IBinaryInteger<Integer>, IMinMaxValue<Integer>
         where TPredicate : struct, IMonotonePredicate<Integer>

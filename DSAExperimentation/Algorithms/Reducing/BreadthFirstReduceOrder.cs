@@ -4,6 +4,7 @@ using DSAExperimentation.Algorithms.Walking;
 
 namespace DSAExperimentation.Algorithms.Reducing;
 
+/// <summary>Breadth-first reduce order, entering nodes level by level and never calling Exit.</summary>
 public readonly struct BreadthFirstReduceOrder<TNode> : IReduceOrderStrategy<TNode>
     where TNode : class
 {

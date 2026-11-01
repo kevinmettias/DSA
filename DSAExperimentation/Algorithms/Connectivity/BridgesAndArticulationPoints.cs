@@ -29,10 +29,14 @@ namespace DSAExperimentation.Algorithms.Connectivity;
 // articulationPoints) are bundled into one record rather than threaded as separate parameters,
 // the same shape StronglyConnectedComponents.cs's own TarjanState uses and for the same
 // reason - it keeps every recursive helper under this gate's check-parameter-count limit.
+/// <summary>Bridges and articulation points of an undirected graph stored as symmetric adjacency.</summary>
 public static class BridgesAndArticulationPoints
 {
     private const int MinimumRootChildrenForArticulation = 2;
 
+    /// <summary>Finds every bridge and articulation point, in <c>TOrder</c>'s child order.</summary>
+    /// <param name="nodes">At least one node from every component to search.</param>
+    /// <returns>Each bridge once, as its two ends, and each articulation point once, in no promised order.</returns>
     public static (List<(TNode A, TNode B)> Bridges, List<TNode> ArticulationPoints) Find<
         TNode, TTopology, TChildren, TOrder, TOrderedChildren>(
         IEnumerable<TNode> nodes)
@@ -56,6 +60,9 @@ public static class BridgesAndArticulationPoints
     }
 
     // In the topology's own child order.
+    /// <summary>Finds every bridge and articulation point, in the topology's own child order.</summary>
+    /// <param name="nodes">At least one node from every component to search.</param>
+    /// <returns>Each bridge once, as its two ends, and each articulation point once, in no promised order.</returns>
     public static (List<(TNode A, TNode B)> Bridges, List<TNode> ArticulationPoints) Find<TNode, TTopology, TChildren>(
         IEnumerable<TNode> nodes)
         where TNode : class

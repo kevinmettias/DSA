@@ -16,11 +16,29 @@ namespace DSAExperimentation.Algorithms.ShortestPaths.Grids;
 // always a number; a start or target off the grid throws. The search keeps flat arrays indexed
 // row * cols + col for each cell's best arrival and whether it has settled, and walks
 // GridDirections.Orthogonal with GridSize.HasCell, so nothing on the hot path hashes or allocates.
+/// <summary>Earliest-arrival search on a grid whose moves are priced by the second they leave at.</summary>
 public static class GridEarliestArrival
 {
     private const string OffTheGrid = "Start and target must both be cells of the grid.";
     private const string NeverSettled = "Every cell is reachable, so the target is always settled.";
 
+    /// <summary>Finds the earliest second a walker leaving the start at second 0 reaches the target.</summary>
+    /// <param name="cellTimes">
+    /// Each cell's time, which TRule reads to price a move into that cell, as rows of equal length.
+    /// </param>
+    /// <param name="start">The cell the walker leaves at second 0.</param>
+    /// <param name="target">The cell to reach.</param>
+    /// <returns>
+    /// The earliest second the walker stands on the target, moving one orthogonal step at a time; 0 when
+    /// start is the target.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <paramref name="start"/> or <paramref name="target"/> is not a cell of the grid.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    /// The search runs out of cells without settling the target, which cannot happen since every cell is
+    /// reachable.
+    /// </exception>
     public static int Time<TRule>(int[][] cellTimes, (int Row, int Col) start, (int Row, int Col) target)
         where TRule : struct, IArrivalRule
     {

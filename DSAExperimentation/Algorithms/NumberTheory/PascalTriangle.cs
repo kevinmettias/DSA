@@ -17,6 +17,9 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 //
 // Complexity law: O(maxRow^2) time and memory to build. A caller that needs one large row, or C(n, k)
 // for n far past what a table can hold, wants a rolling row or Lucas's theorem instead.
+/// <summary>
+/// Binomial coefficients C(n, k) for every row up to a chosen one, exact or reduced by a caller's modulus.
+/// </summary>
 public sealed class PascalTriangle
 {
     public const int MaxExactRow = 66;
@@ -28,10 +31,17 @@ public sealed class PascalTriangle
 
     private readonly long[][] _rows;
 
+    /// <summary>The last row this triangle holds, which bounds the rows Choose and Row can read.</summary>
     public int MaxRow => _rows.Length - 1;
 
     private PascalTriangle(long[][] rows) => _rows = rows;
 
+    /// <summary>Builds a triangle of exact coefficients, which fit in a long through row 66.</summary>
+    /// <param name="maxRow">The last row to build, from 0 through <see cref="MaxExactRow"/>.</param>
+    /// <returns>A triangle whose entries are the coefficients themselves.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <paramref name="maxRow"/> is negative or greater than <see cref="MaxExactRow"/>.
+    /// </exception>
     public static PascalTriangle Exact(int maxRow)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(maxRow);
@@ -40,6 +50,13 @@ public sealed class PascalTriangle
         return new PascalTriangle(Build(maxRow, long.MaxValue));
     }
 
+    /// <summary>Builds a triangle of coefficients reduced by a modulus, composite moduli included.</summary>
+    /// <param name="maxRow">The last row to build, from 0 up.</param>
+    /// <param name="modulus">The modulus every entry is reduced by, from 1 through 2^62.</param>
+    /// <returns>A triangle whose entries are the coefficients modulo <paramref name="modulus"/>.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <paramref name="maxRow"/> is negative, or <paramref name="modulus"/> is below 1 or above 2^62.
+    /// </exception>
     public static PascalTriangle Modulo(int maxRow, long modulus)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(maxRow);
@@ -51,6 +68,17 @@ public sealed class PascalTriangle
 
     // C(n, k), or 0 when k is outside [0, n] - a subset that cannot exist, as FactorialTable.Choose
     // answers it. A row the triangle was not built to is the caller's sizing mistake and throws.
+    /// <summary>Reads C(n, k), the number of ways to choose k items from n.</summary>
+    /// <param name="totalCount">The row n, the number of items chosen from.</param>
+    /// <param name="chosenCount">The column k, the number of items chosen.</param>
+    /// <returns>
+    /// C(n, k), reduced by the modulus for a triangle built by <see cref="Modulo"/>; 0 when <paramref
+    /// name="chosenCount"/> is outside [0, <paramref name="totalCount"/>].
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <paramref name="totalCount"/> is past <see cref="MaxRow"/> and <paramref name="chosenCount"/> is
+    /// within [0, <paramref name="totalCount"/>].
+    /// </exception>
     public long Choose(int totalCount, int chosenCount)
     {
         if (IsImpossibleChoice(totalCount, chosenCount))
@@ -66,6 +94,14 @@ public sealed class PascalTriangle
     private static bool IsImpossibleChoice(int totalCount, int chosenCount) =>
         totalCount < 0 || chosenCount < 0 || chosenCount > totalCount;
 
+    /// <summary>Reads a whole row of the triangle, C(n, 0) through C(n, n).</summary>
+    /// <param name="totalCount">The row n to read.</param>
+    /// <returns>
+    /// The row's n + 1 coefficients in order of k, as a read-only view of the triangle's own storage.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <paramref name="totalCount"/> is negative or past <see cref="MaxRow"/>.
+    /// </exception>
     public ReadOnlySpan<long> Row(int totalCount)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(totalCount);

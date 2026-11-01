@@ -17,8 +17,14 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // What naming it costs: TNode is a reference type, so this method is shared generic code and its call
 // into Reduce.Graph costs one generic-dictionary lookup per search, not per node; the walk itself runs as
 // the same instantiation a caller spelling out all six types gets.
+/// <summary>Every reachable node's edge count from a root, by a breadth-first reduce.</summary>
 public static class BreadthFirstDistances
 {
+    /// <summary>Counts the fewest edges from a root to every node it reaches.</summary>
+    /// <param name="root">The node the counts start from.</param>
+    /// <returns>
+    /// Each reachable node mapped to its shortest edge count from <paramref name="root"/>, which maps to 0.
+    /// </returns>
     public static Dictionary<TNode, int> From<TNode, TTopology, TChildren>(TNode root)
         where TNode : class
         where TTopology : struct, IGraphTopology<TNode, TChildren>

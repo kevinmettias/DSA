@@ -27,6 +27,7 @@ namespace DSAExperimentation.Algorithms.StringMatching;
 // equality stays a plain IEqualityComparer<char> parameter rather than a witness
 // - case-insensitive/culture-aware matching are open-ended caller choices, not a
 // closed set this library enumerates.
+/// <summary>Finds the longest palindromes centred at every position of a text, in linear time.</summary>
 public static class Manacher
 {
     // A radius counts outward from the center on one side only; a palindrome's
@@ -36,9 +37,24 @@ public static class Manacher
     // ComputeOddRadii(text)[i] = k means text[i-k+1 .. i+k-1] (length 2k-1) is the
     // longest odd-length palindrome centered at i; k is always >= 1 (a single
     // character is its own odd-length palindrome).
+    /// <summary>Computes the odd-length palindrome radii of the text, matching characters exactly.</summary>
+    /// <param name="text">The text to scan.</param>
+    /// <returns>
+    /// One radius per position: element i is the largest k for which the 2k - 1 characters centred on i form
+    /// a palindrome, so at least 1.
+    /// </returns>
     public static int[] ComputeOddRadii(ReadOnlySpan<char> text)
         => ComputeOddRadii(text, EqualityComparer<char>.Default);
 
+    /// <summary>
+    /// Computes the odd-length palindrome radii of the text, matching characters with <paramref name="comparer"/>.
+    /// </summary>
+    /// <param name="text">The text to scan.</param>
+    /// <param name="comparer">Decides when two characters match.</param>
+    /// <returns>
+    /// One radius per position: element i is the largest k for which the 2k - 1 characters centred on i form
+    /// a palindrome, so at least 1.
+    /// </returns>
     public static int[] ComputeOddRadii(ReadOnlySpan<char> text, IEqualityComparer<char> comparer)
     {
         var radii = new int[text.Length];
@@ -68,9 +84,24 @@ public static class Manacher
     // ComputeEvenRadii(text)[i] = k means text[i-k .. i+k-1] (length 2k) is the
     // longest even-length palindrome whose center falls between i-1 and i; k may
     // be 0 (no even-length palindrome is centered there).
+    /// <summary>Computes the even-length palindrome radii of the text, matching characters exactly.</summary>
+    /// <param name="text">The text to scan.</param>
+    /// <returns>
+    /// One radius per position: element i is the largest k for which the k characters before i mirror the k
+    /// starting at i, possibly 0.
+    /// </returns>
     public static int[] ComputeEvenRadii(ReadOnlySpan<char> text)
         => ComputeEvenRadii(text, EqualityComparer<char>.Default);
 
+    /// <summary>
+    /// Computes the even-length palindrome radii of the text, matching characters with <paramref name="comparer"/>.
+    /// </summary>
+    /// <param name="text">The text to scan.</param>
+    /// <param name="comparer">Decides when two characters match.</param>
+    /// <returns>
+    /// One radius per position: element i is the largest k for which the k characters before i mirror the k
+    /// starting at i, possibly 0.
+    /// </returns>
     public static int[] ComputeEvenRadii(ReadOnlySpan<char> text, IEqualityComparer<char> comparer)
     {
         var radii = new int[text.Length];
@@ -100,9 +131,18 @@ public static class Manacher
     // The [Start, Start+Length) bounds of a longest palindromic substring. Ties
     // (multiple palindromes of the same maximal length) resolve to whichever
     // center this scan reaches first. Empty text returns (0, 0).
+    /// <summary>Finds the leftmost longest palindromic substring, matching characters exactly.</summary>
+    /// <param name="text">The text to search.</param>
+    /// <returns>The substring's start and length, or (0, 0) when <paramref name="text"/> is empty.</returns>
     public static (int Start, int Length) FindLongestPalindromicSubstring(ReadOnlySpan<char> text)
         => FindLongestPalindromicSubstring(text, EqualityComparer<char>.Default);
 
+    /// <summary>
+    /// Finds the leftmost longest palindromic substring, matching characters with <paramref name="comparer"/>.
+    /// </summary>
+    /// <param name="text">The text to search.</param>
+    /// <param name="comparer">Decides when two characters match.</param>
+    /// <returns>The substring's start and length, or (0, 0) when <paramref name="text"/> is empty.</returns>
     public static (int Start, int Length) FindLongestPalindromicSubstring(
         ReadOnlySpan<char> text, IEqualityComparer<char> comparer)
     {

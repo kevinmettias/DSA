@@ -15,11 +15,23 @@ namespace DSAExperimentation.DataStructures.Sequence;
 // backing store. A witness wrapping a value-type field directly would compile fine and silently
 // drop every Set made through a copy - a correctness law this repo's Get-only contracts never
 // had to state.
+/// <summary>
+/// A sequence an algorithm can read and overwrite in place by position, each access in constant time.
+/// </summary>
 public interface IIndexedSequence<Element>
 {
+    /// <summary>The number of elements, so valid positions run from 0 through <c>Length - 1</c>.</summary>
     int Length { get; }
 
+    /// <summary>Reads the element at a position, in constant time.</summary>
+    /// <param name="index">The position to read, from 0 through <c>Length - 1</c>.</param>
+    /// <returns>The element at that position.</returns>
     Element Get(int index);
 
+    /// <summary>
+    /// Overwrites the element at a position in constant time, visibly to every copy of this sequence.
+    /// </summary>
+    /// <param name="index">The position to overwrite, from 0 through <c>Length - 1</c>.</param>
+    /// <param name="value">The element to store there.</param>
     void Set(int index, Element value);
 }

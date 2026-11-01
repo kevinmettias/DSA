@@ -10,6 +10,7 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // It's also never an overestimate: walls only remove cells, which can make the
 // true shortest path longer than the unobstructed king-move distance, never
 // shorter.
+/// <summary>King-move distance, a consistent A* heuristic for unit-weight 8-directional grids.</summary>
 public readonly struct ChebyshevHeuristic : IPathHeuristic<WeightedGridNode, int>
 {
     public static int Estimate(WeightedGridNode node, WeightedGridNode? target)

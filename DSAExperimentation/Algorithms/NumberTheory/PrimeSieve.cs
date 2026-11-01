@@ -10,12 +10,19 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 // Multiples are stepped as long: a bound near int.MaxValue would otherwise overflow both the
 // starting square and the step, and the overflow would break the loop's exit test rather than
 // the sieve itself.
+/// <summary>The sieve of Eratosthenes, deciding every value in [0, bound] at once.</summary>
 public static class PrimeSieve
 {
     private const int SmallestPrime = 2;
 
     // Slot i is true when i is composite. 0 and 1 count as composite, so "is the slot clear" is the
     // whole primality test, 0 and 1 included.
+    /// <summary>Marks which values from 0 through a bound are not prime.</summary>
+    /// <param name="bound">The largest value to decide; a negative bound is an empty range.</param>
+    /// <returns>
+    /// An array of bound + 1 slots, true where the index is composite or is 0 or 1, so a clear slot means
+    /// prime; empty for a negative bound.
+    /// </returns>
     public static bool[] BuildCompositeTracker(int bound)
     {
         var isComposite = new bool[SlotCount(bound)];
@@ -41,6 +48,12 @@ public static class PrimeSieve
 
     // Slot i holds i's smallest prime factor; a prime is its own, and 0 and 1 hold themselves.
     // Repeatedly dividing a value by its slot factors it completely in O(log value) steps.
+    /// <summary>Finds the smallest prime factor of every value from 0 through a bound.</summary>
+    /// <param name="bound">The largest value to factor; a negative bound is an empty range.</param>
+    /// <returns>
+    /// An array of bound + 1 slots, slot i holding i's smallest prime factor, with a prime, 0 and 1 each
+    /// holding itself; empty for a negative bound.
+    /// </returns>
     public static int[] BuildSmallestPrimeFactors(int bound)
     {
         var smallestFactor = new int[SlotCount(bound)];

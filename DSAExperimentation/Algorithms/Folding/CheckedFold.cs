@@ -26,8 +26,15 @@ namespace DSAExperimentation.Algorithms.Folding;
 // BFS-discovery order - what IterativeFoldEvaluation relies on - is only a valid
 // combine order for trees; a DAG edge can skip levels and break it. That's a
 // genuine follow-up, not something to fold in here.
+/// <summary>Folds a possibly cyclic graph, combining shared nodes once and failing on a cycle.</summary>
 public static class CheckedFold
 {
+    /// <summary>Tries to fold a graph with a default algebra and <c>TOrder</c>'s child order.</summary>
+    /// <param name="root">The node to fold from, which may be null.</param>
+    /// <param name="result">
+    /// The folded result, the algebra's Empty for a null root; valid only when this returns true.
+    /// </param>
+    /// <returns>False when a cycle is reachable from <paramref name="root"/>; true otherwise.</returns>
     public static bool TryFold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
         TNode? root, out TResult result)
         where TNode : class
@@ -39,6 +46,12 @@ public static class CheckedFold
         => TryFold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(root, default, out result);
 
     // In the topology's own child order.
+    /// <summary>Tries to fold a graph with a default algebra and the topology's own child order.</summary>
+    /// <param name="root">The node to fold from, which may be null.</param>
+    /// <param name="result">
+    /// The folded result, the algebra's Empty for a null root; valid only when this returns true.
+    /// </param>
+    /// <returns>False when a cycle is reachable from <paramref name="root"/>; true otherwise.</returns>
     public static bool TryFold<TNode, TTopology, TChildren, TAlgebra, TResult>(
         TNode? root, out TResult result)
         where TNode : class
@@ -50,6 +63,13 @@ public static class CheckedFold
             TAlgebra, TResult>(
             root, out result);
 
+    /// <summary>Tries to fold a graph with the given algebra and <c>TOrder</c>'s child order.</summary>
+    /// <param name="root">The node to fold from, which may be null.</param>
+    /// <param name="algebra">The algebra that combines each node with its children's results.</param>
+    /// <param name="result">
+    /// The folded result, the algebra's Empty for a null root; valid only when this returns true.
+    /// </param>
+    /// <returns>False when a cycle is reachable from <paramref name="root"/>; true otherwise.</returns>
     public static bool TryFold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
         TNode? root, TAlgebra algebra, out TResult result)
         where TNode : class
@@ -75,6 +95,13 @@ public static class CheckedFold
     }
 
     // In the topology's own child order.
+    /// <summary>Tries to fold a graph with the given algebra and the topology's own child order.</summary>
+    /// <param name="root">The node to fold from, which may be null.</param>
+    /// <param name="algebra">The algebra that combines each node with its children's results.</param>
+    /// <param name="result">
+    /// The folded result, the algebra's Empty for a null root; valid only when this returns true.
+    /// </param>
+    /// <returns>False when a cycle is reachable from <paramref name="root"/>; true otherwise.</returns>
     public static bool TryFold<TNode, TTopology, TChildren, TAlgebra, TResult>(
         TNode? root, TAlgebra algebra, out TResult result)
         where TNode : class

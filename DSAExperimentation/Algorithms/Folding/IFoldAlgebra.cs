@@ -20,9 +20,17 @@ namespace DSAExperimentation.Algorithms.Folding;
 // its default value by each entry point's (root) overload. Pass an algebra by value,
 // never through `in` or a readonly field: a defensive copy would drop what its fields
 // accumulate, so a counter an algebra must keep lives behind a reference it holds.
+/// <summary>
+/// What a fold computes: an empty result, and how each node combines with its children's results.
+/// </summary>
 public interface IFoldAlgebra<TNode, TResult>
 {
+    /// <summary>The result of folding nothing, which a fold returns for a null root.</summary>
     TResult Empty { get; }
 
+    /// <summary>Combines a node with its children's folded results, as a pure function of those.</summary>
+    /// <param name="node">The node being folded.</param>
+    /// <param name="children">The folded results of the node's children, in child order; empty for a leaf.</param>
+    /// <returns>The node's folded result.</returns>
     TResult Combine(TNode node, IReadOnlyList<TResult> children);
 }

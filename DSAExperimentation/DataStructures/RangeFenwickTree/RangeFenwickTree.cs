@@ -21,6 +21,7 @@ namespace DSAExperimentation.DataStructures.RangeFenwickTree;
 // job - mixing that usage pattern onto this type would silently redefine what PrefixQuery means,
 // the same trap SegmentTree/LazySegmentTree stay split to avoid. A point query is just
 // Query(i, i) - no separate method needed.
+/// <summary>A fixed-length sequence with range-add updates and range queries, each in O(log n).</summary>
 public sealed class RangeFenwickTree<Element, TOperation>
     where TOperation : struct, IScaledGroupOperation<Element>
 {
@@ -31,6 +32,7 @@ public sealed class RangeFenwickTree<Element, TOperation>
     private readonly FenwickTree<Element, TOperation> _b2;
     private readonly int _size;
 
+    /// <summary>The number of elements, fixed at construction.</summary>
     public int Count => _size;
 
     public RangeFenwickTree(int size)
@@ -49,6 +51,11 @@ public sealed class RangeFenwickTree<Element, TOperation>
         }
     }
 
+    /// <summary>Combines a delta into every element of the inclusive range [left, right].</summary>
+    /// <param name="left">The 0-based index of the range's first element.</param>
+    /// <param name="right">The 0-based index of the range's last element.</param>
+    /// <param name="delta">The value to combine into each element of the range.</param>
+    /// <exception cref="ArgumentOutOfRangeException">The range is reversed or reaches outside [0, Count).</exception>
     public void RangeAdd(int left, int right, Element delta)
     {
         ValidateRange(left, right);
@@ -69,6 +76,10 @@ public sealed class RangeFenwickTree<Element, TOperation>
         _b2.Add(position, scaledDelta);
     }
 
+    /// <summary>Combines every element from index 0 through <paramref name="index"/>.</summary>
+    /// <param name="index">The 0-based index of the last element to include.</param>
+    /// <returns>The combined value of elements 0 through <paramref name="index"/>.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is outside [0, Count).</exception>
     public Element PrefixQuery(int index)
     {
         ValidateIndex(index);
@@ -78,6 +89,11 @@ public sealed class RangeFenwickTree<Element, TOperation>
         return TOperation.Combine(scaledB1, TOperation.Invert(_b2.PrefixQuery(index)));
     }
 
+    /// <summary>Combines the elements of the inclusive range [left, right].</summary>
+    /// <param name="left">The 0-based index of the range's first element.</param>
+    /// <param name="right">The 0-based index of the range's last element.</param>
+    /// <returns>The combined value of the range, so <c>Query(i, i)</c> reads element i alone.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The range is reversed or reaches outside [0, Count).</exception>
     public Element Query(int left, int right)
     {
         ValidateRange(left, right);

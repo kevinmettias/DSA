@@ -5,11 +5,15 @@ namespace DSAExperimentation.DataStructures.HashMap;
 // can't always know in advance, so TryGetValue is the only public surface for
 // reading a value, forcing callers onto the return-value form instead of a
 // try/catch.
+/// <summary>
+/// A hash map whose value for a key is read only through <see cref="TryGetValue"/>, so a missing key never throws.
+/// </summary>
 public sealed class HashMap<TKey, TValue>
 {
     private readonly IEqualityComparer<TKey> _comparer;
     private readonly HashMapStorage<TKey, TValue> _storage = new();
 
+    /// <summary>How many entries the map holds.</summary>
     public int Count => _storage.Count;
 
     // Eager snapshots (via HashMapStorage.SnapshotEntries), not a live view - mutating
@@ -17,6 +21,7 @@ public sealed class HashMap<TKey, TValue>
     // -copied result. Only Keys/Values are exposed, not a KeyValuePair/GetEnumerator
     // pairing - that's the named gap this addition closes; a Pairs-shaped property
     // would be a one-line projection over the same snapshot if a caller ever needs it.
+    /// <summary>A copy of the map's keys taken when read, unaffected by later changes to the map.</summary>
     public IEnumerable<TKey> Keys
     {
         get
@@ -32,6 +37,7 @@ public sealed class HashMap<TKey, TValue>
         }
     }
 
+    /// <summary>A copy of the map's values taken when read, unaffected by later changes to the map.</summary>
     public IEnumerable<TValue> Values
     {
         get
@@ -54,8 +60,17 @@ public sealed class HashMap<TKey, TValue>
 
     public HashMap(IEqualityComparer<TKey> comparer) => _comparer = comparer;
 
+    /// <summary>Reports whether the map holds a key.</summary>
+    /// <param name="key">The key to look for.</param>
+    /// <returns>True when the map holds <paramref name="key"/>; otherwise false.</returns>
     public bool HasKey(TKey key) => FindEntryIndex(key) >= 0;
 
+    /// <summary>Looks up the value stored under a key.</summary>
+    /// <param name="key">The key to look up.</param>
+    /// <param name="value">
+    /// The value stored under <paramref name="key"/> when this returns true; meaningful only then.
+    /// </param>
+    /// <returns>True when the map holds <paramref name="key"/>; otherwise false.</returns>
     public bool TryGetValue(TKey key, out TValue value)
     {
         var index = FindEntryIndex(key);
@@ -72,6 +87,9 @@ public sealed class HashMap<TKey, TValue>
         return true;
     }
 
+    /// <summary>Stores a value under a key, replacing any value the key already had.</summary>
+    /// <param name="key">The key to store under.</param>
+    /// <param name="value">The value to store.</param>
     public void Set(TKey key, TValue value)
     {
         var hashCode = ComputeHashCode(key);
@@ -105,6 +123,9 @@ public sealed class HashMap<TKey, TValue>
         return false;
     }
 
+    /// <summary>Removes a key and its value, if the map holds the key.</summary>
+    /// <param name="key">The key to remove.</param>
+    /// <returns>True when the key was present and is now removed; false when the map did not hold it.</returns>
     public bool TryRemove(TKey key)
     {
         var hashCode = ComputeHashCode(key);

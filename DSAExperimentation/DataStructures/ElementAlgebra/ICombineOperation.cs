@@ -25,9 +25,19 @@ namespace DSAExperimentation.DataStructures.ElementAlgebra;
 // as open-ended as any comparer, but each is a stateless pure function whose every input arrives
 // through its member signatures, closed over at the instantiation site - the reason IHeapOrder and
 // IPathHeuristic are witnesses too.
+/// <summary>
+/// An associative way to combine two elements, with an identity, that range structures take as a static witness.
+/// </summary>
 public interface ICombineOperation<Element>
 {
+    /// <summary>The element that, combined with any element on either side, gives back that element.</summary>
     static abstract Element Identity { get; }
 
+    /// <summary>
+    /// Combines two elements in order, associatively, so any grouping of a run of elements gives the same result.
+    /// </summary>
+    /// <param name="left">The first operand, such as the value of the earlier of two adjacent ranges.</param>
+    /// <param name="right">The second operand, such as the value of the later range.</param>
+    /// <returns>The two elements combined, <paramref name="left"/> first.</returns>
     static abstract Element Combine(Element left, Element right);
 }

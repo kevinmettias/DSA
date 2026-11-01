@@ -7,10 +7,14 @@ namespace DSAExperimentation.DataStructures.Graph.Adjacency;
 //
 // The tuple is (Weight, Target), the order ListEdges' (Data, Target) expects, so GetEdges wraps the
 // list as-is.
+/// <summary>A directed-graph node with an integer id and the list of its weighted out-edges.</summary>
+/// <param name="id">The node's identifier.</param>
 public sealed class WeightedAdjacencyNode<TWeight>(int id)
 {
+    /// <summary>The node's identifier, as given at construction.</summary>
     public int Id { get; } = id;
 
+    /// <summary>This node's out-edges as (weight, target) pairs, in a list callers edit directly.</summary>
     public List<(TWeight Weight, WeightedAdjacencyNode<TWeight> Target)> Edges { get; } = [];
 
     public override string ToString() => Id.ToString();

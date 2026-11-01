@@ -32,6 +32,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // unbalanced inputs - an unenforced Representation/Complexity law, the same
 // shape as HeapArray's O(1)-Get assumption (§8) or BinarySearch's sortedness
 // precondition (§9.1). Self-balancing is out of scope here.
+/// <summary>A binary search tree of distinct values ordered by a comparer, with no self-balancing.</summary>
 public sealed class BinarySearchTree<TValue>
     where TValue : IComparable<TValue>
 {
@@ -39,8 +40,12 @@ public sealed class BinarySearchTree<TValue>
     private BinaryTreeNode<TValue>? _root;
     private int _count;
 
+    /// <summary>The number of values in the tree.</summary>
     public int Count => _count;
 
+    /// <summary>
+    /// The root node, or null when the tree is empty; Insert and TryDelete change its nodes in place.
+    /// </summary>
     public BinaryTreeNode<TValue>? Root => _root;
 
     public BinarySearchTree()
@@ -53,6 +58,8 @@ public sealed class BinarySearchTree<TValue>
     // Iterative, not recursive like TryDelete: BinaryTreeNode is a reference type, so
     // node.Left.Left = ... mutation is already visible through the held reference -
     // recursion here would add stack frames for zero benefit.
+    /// <summary>Adds a value, unless the tree already holds one its comparer finds equal.</summary>
+    /// <param name="value">The value to add.</param>
     public void Insert(TValue value)
     {
         if (_root is null)
@@ -121,6 +128,9 @@ public sealed class BinarySearchTree<TValue>
         _count++;
     }
 
+    /// <summary>Checks whether the tree holds a value its comparer finds equal to a given one.</summary>
+    /// <param name="value">The value to look for.</param>
+    /// <returns><c>true</c> when an equal value is in the tree; otherwise <c>false</c>.</returns>
     public bool Has(TValue value)
     {
         var node = _root;
@@ -143,6 +153,11 @@ public sealed class BinarySearchTree<TValue>
     // Check-then-act rather than threading a found/not-found result out of the
     // recursion - the same "redundant lookup for clarity" shape Set.TryAdd already
     // uses (HasKey then Set).
+    /// <summary>Removes the value its comparer finds equal to a given one, if the tree holds one.</summary>
+    /// <param name="value">The value to remove.</param>
+    /// <returns>
+    /// <c>true</c> when a value was removed; <c>false</c> when none was equal, leaving the tree unchanged.
+    /// </returns>
     public bool TryDelete(TValue value)
     {
         if (!Has(value))

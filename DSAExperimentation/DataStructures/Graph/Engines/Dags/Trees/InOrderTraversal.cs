@@ -13,8 +13,17 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // No graph-tier counterpart (no WalkGraph, no visited-tracking): in-order has no
 // defined meaning without unique ancestry, and ITreeTopology's promise - the only
 // thing that would have justified a guarded tier - is exactly what this bypasses.
+/// <summary>In-order traversal of a binary tree: left subtree, then node, then right subtree.</summary>
 public static class InOrderTraversal
 {
+    /// <summary>
+    /// Calls a hook on every node of a binary tree, each after its left subtree and before its right.
+    /// </summary>
+    /// <param name="root">The tree's root, or null for an empty tree.</param>
+    /// <param name="hooks">
+    /// The hook to call, passed by value, so state it holds by value must be read from the returned copy.
+    /// </param>
+    /// <returns>The hook every visit acted on, unchanged when <paramref name="root"/> is null.</returns>
     public static THooks Walk<TValue, THooks>(BinaryTreeNode<TValue>? root, THooks hooks)
         where THooks : struct, IInOrderHooks<TValue>
     {

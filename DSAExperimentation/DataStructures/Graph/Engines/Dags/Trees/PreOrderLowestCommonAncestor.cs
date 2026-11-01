@@ -26,6 +26,9 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // MinOperation<int>>. When the earlier node is itself the ancestor, its child on the way to the
 // later node is in the range and nothing in it has a smaller parent position, so the same
 // minimum names it.
+/// <summary>
+/// Answers lowest-common-ancestor queries over a <see cref="PreOrderTour"/> in O(log n) each, after O(n) preparation.
+/// </summary>
 public sealed class PreOrderLowestCommonAncestor
 {
     private readonly PreOrderTour _tour;
@@ -38,6 +41,10 @@ public sealed class PreOrderLowestCommonAncestor
     }
 
     // Node ids in, a node id out, in either argument order.
+    /// <summary>Finds the deepest node whose subtree, itself included, holds both of two nodes.</summary>
+    /// <param name="first">The id of one node.</param>
+    /// <param name="second">The id of the other node, which may be <paramref name="first"/> itself.</param>
+    /// <returns>The id of their lowest common ancestor, the same whichever order the two ids come in.</returns>
     public int Find(int first, int second)
     {
         if (first == second)

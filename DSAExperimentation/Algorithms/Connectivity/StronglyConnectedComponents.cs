@@ -33,8 +33,14 @@ namespace DSAExperimentation.Algorithms.Connectivity;
 // every component not reachable from another node already listed, or that component is
 // silently absent from the result - there is no reverse-adjacency contract anywhere in
 // Graph/Contracts that could notice a missing one.
+/// <summary>Strongly connected components of a directed graph, by Tarjan's algorithm.</summary>
 public static class StronglyConnectedComponents
 {
+    /// <summary>Finds the nodes' strongly connected components, in <c>TOrder</c>'s child order.</summary>
+    /// <param name="nodes">The nodes to search from; every component they reach is found.</param>
+    /// <returns>
+    /// One member list per component, covering each reachable node exactly once, in no promised order.
+    /// </returns>
     public static List<List<TNode>> Tarjan<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(
         IEnumerable<TNode> nodes)
         where TNode : class
@@ -57,6 +63,11 @@ public static class StronglyConnectedComponents
     }
 
     // In the topology's own child order.
+    /// <summary>Finds the nodes' strongly connected components, in the topology's own child order.</summary>
+    /// <param name="nodes">The nodes to search from; every component they reach is found.</param>
+    /// <returns>
+    /// One member list per component, covering each reachable node exactly once, in no promised order.
+    /// </returns>
     public static List<List<TNode>> Tarjan<TNode, TTopology, TChildren>(
         IEnumerable<TNode> nodes)
         where TNode : class

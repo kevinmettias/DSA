@@ -1,5 +1,6 @@
 namespace DSAExperimentation.DataStructures.Heap;
 
+/// <summary>The max-heap order: a larger element outranks a smaller one.</summary>
 public readonly struct MaxHeapOrder<Element> : IHeapOrder<Element>
     where Element : IComparable<Element>
 {

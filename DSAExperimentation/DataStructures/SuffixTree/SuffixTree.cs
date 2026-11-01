@@ -28,6 +28,9 @@ namespace DSAExperimentation.DataStructures.SuffixTree;
 // it), the same "nothing for a witness to parametrize" reasoning Trie.cs already gives for itself -
 // and stronger than Trie's own guarantee, since SuffixTree exposes no public mutation API at all
 // after construction.
+/// <summary>
+/// The compressed trie of every suffix of a fixed text, built from its suffix array at construction.
+/// </summary>
 public sealed class SuffixTree
 {
     private readonly string _text;
@@ -49,6 +52,9 @@ public sealed class SuffixTree
     // O(pattern.Length) average, independent of text length, contingent on SuffixTreeNode.Children
     // giving O(1)-average per-character dispatch - a slower Children representation would silently
     // degrade this with no compiler error. The empty pattern trivially occurs.
+    /// <summary>Tests whether a pattern occurs in the text, in time linear in the pattern's length.</summary>
+    /// <param name="pattern">The characters to look for, compared exactly.</param>
+    /// <returns>True when the pattern occurs in the text; always true for an empty pattern.</returns>
     public bool HasSubstring(ReadOnlySpan<char> pattern) => pattern.IsEmpty || Walk(pattern) is not null;
 
     // O(pattern.Length + occurrences) average: one walk to the match point, then a subtree
@@ -61,6 +67,11 @@ public sealed class SuffixTree
     // suffixes, one leaf per starting index; there is no leaf for the degenerate empty suffix at
     // text.Length, the same convention SuffixArray.Suffixes itself already uses (a permutation of
     // 0..n-1, never including n).
+    /// <summary>
+    /// Lists each position where a pattern starts in the text, overlaps included, in no particular order.
+    /// </summary>
+    /// <param name="pattern">The characters to look for, compared exactly.</param>
+    /// <returns>The start positions; none for an absent pattern, every text position for an empty one.</returns>
     public IEnumerable<int> FindOccurrences(ReadOnlySpan<char> pattern)
     {
         if (pattern.IsEmpty)
