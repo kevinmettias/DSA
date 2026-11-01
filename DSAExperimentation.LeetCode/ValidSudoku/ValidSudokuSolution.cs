@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Sudoku;
 
 namespace DSAExperimentation.LeetCode.ValidSudoku;
 
@@ -9,7 +10,9 @@ namespace DSAExperimentation.LeetCode.ValidSudoku;
 // Both strategies visit every filled cell once and record which (row, col,
 // box) unit a digit already occupies; they differ only in what tracks
 // "already seen" - three dense bool grids sized to the fixed 9-cell axes, or
-// this repo's own Set<string> keyed by a composed row/col/box tag.
+// this repo's own Set<string> keyed by a composed row/col/box tag. The board's
+// dimensions and notation are Domain/Sudoku's; the baseline keeps its own copy of
+// them, since it may use no library type (ARCHITECTURE §17.5).
 internal static class ValidSudokuSolution
 {
     private const int BoardSize = 9;
@@ -86,12 +89,12 @@ internal static class ValidSudokuSolution
     {
         var seen = new Set<string>();
 
-        for (var row = 0; row < BoardSize; row++)
+        for (var row = 0; row < SudokuRules.Size; row++)
         {
-            for (var col = 0; col < BoardSize; col++)
+            for (var col = 0; col < SudokuRules.Size; col++)
             {
                 var digit = board[row][col];
-                if (digit == '.')
+                if (digit == SudokuRules.EmptyCell)
                 {
                     continue;
                 }
@@ -112,5 +115,5 @@ internal static class ValidSudokuSolution
     private static bool TryRecordDigit(Set<string> seen, int row, int col, char digit) =>
         seen.TryAdd($"r{row}:{digit}") &&
         seen.TryAdd($"c{col}:{digit}") &&
-        seen.TryAdd($"b{row / BoxSize},{col / BoxSize}:{digit}");
+        seen.TryAdd($"b{SudokuRules.BoxOf(row, col)}:{digit}");
 }

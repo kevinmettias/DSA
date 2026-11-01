@@ -852,6 +852,7 @@ specifically:
 | `Locks/` | `LockNode`, `LockTopology`, `LockGraph`, `LockWheels` — LC 752's four-wheel lock |
 | `Modular/` | `ModularArithmetic`, `FactorialTable` — arithmetic modulo 1e9+7 |
 | `SlidingPuzzle/` | `PuzzleNode`, `PuzzleTopology`, `PuzzleGraph` — LC 773's 2x3 board |
+| `Sudoku/` | `SudokuRules` — the 9x9 board's notation and placement rule, shared by LC 36 and LC 37 |
 
 `DSAExperimentation.Tests/` mirrors every tree one level deeper (§7, §18.1). Fixture files go to the
 utility folder matching the interface they implement, not a shared grab-bag: the `Recording*Hooks`
@@ -1467,8 +1468,9 @@ about LeetCode rather than about any problem's world.
 | `Domain/Locks/` | `LockNode`, `LockTopology`, `LockGraph`, `LockWheels` | `LockWheels` pins `Count = 4`, `Modulus = 10`, `CombinationSpace = 10_000`. This is a concrete *instance*, not a shape — the general form would be "Cayley graph over Z_m^k with ±1 generators", and *that* would be a data structure. Still the thinnest of the judgment calls here. |
 | `Domain/Modular/` | `ModularArithmetic`, `FactorialTable` | Modular exponentiation *is* a classic algorithm, and it stays one — `Algorithms/NumberTheory/ModularPower` — but `1_000_000_007` is the modulus counting problems report their answers in, not a property of any algorithm. `FactorialTable`'s nCr lookup is fixed by the same modulus. |
 | `Domain/SlidingPuzzle/` | `PuzzleNode`, `PuzzleTopology`, `PuzzleGraph` | Pins LC 773's 2x3 board: its blank-slide adjacency table and the 720 permutations of `"012345"`. A concrete instance in the same sense as the lock — a sliding puzzle over an arbitrary m×n board would be a data structure; this one board is content. |
+| `Domain/Sudoku/` | `SudokuRules` | The 9x9 board of 3x3 boxes, its `'1'`–`'9'` and `'.'` notation, and the rule that no digit repeats in a row, column or box — what LC 36 and LC 37 both say about the board. Which cell a solver fills next and how a validator tracks what it has seen stay with each strategy. |
 
-Their tests mirror them in `DSAExperimentation.Tests/Domain/{Locks,Modular,SlidingPuzzle}/`. The
+Their tests mirror them in `DSAExperimentation.Tests/Domain/{Locks,Modular,SlidingPuzzle,Sudoku}/`. The
 domain knowledge still written inside individual problem folders moves here problem by problem
 (§17.10).
 

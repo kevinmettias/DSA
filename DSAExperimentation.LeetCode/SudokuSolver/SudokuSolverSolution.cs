@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.Domain.Sudoku;
 
 namespace DSAExperimentation.LeetCode.SudokuSolver;
 
@@ -21,6 +22,12 @@ namespace DSAExperimentation.LeetCode.SudokuSolver;
 // PermutationSequenceBenchmarks.cs's `found = ...` already uses - and the
 // snapshot is copied back into the caller's own array once the search
 // returns, so the mutation LeetCode actually checks still happens.
+//
+// The engine arm reads the board's rules from Domain/Sudoku: which digits a cell
+// may take, when a placement is legal and when the board is solved. Which cell
+// to branch on next (FindEmptyCell) is the search's own choice and stays here,
+// and the specialized recursion keeps its own copy of the rules, since a
+// baseline may use no library type (ARCHITECTURE §17.5).
 internal static class SudokuSolverSolution
 {
     private const int BoardSize = 9;
@@ -42,10 +49,10 @@ internal static class SudokuSolverSolution
         char[][]? solution = null;
 
         var found = Backtrack.TrySearch<State, Placement>(state, new BacktrackingSteps<State, Placement>(
-            IsSolution: s => FindEmptyCell(s.Board) is null,
+            IsSolution: s => SudokuRules.IsComplete(s.Board),
             Candidates: s => CandidatePlacements(s.Board),
             Choose: (s, placement) => s.Board[placement.Row][placement.Col] = placement.Digit,
-            Unchoose: (s, placement) => s.Board[placement.Row][placement.Col] = '.',
+            Unchoose: (s, placement) => s.Board[placement.Row][placement.Col] = SudokuRules.EmptyCell,
             OnSolution: s =>
             {
                 solution = CloneBoard(s.Board);
@@ -70,9 +77,9 @@ internal static class SudokuSolverSolution
 
         var (row, col) = cell.Value;
 
-        return Enumerable.Range(1, BoardSize)
-            .Select(digit => (char)('0' + digit))
-            .Where(digit => IsValidPlacement(board, row, col, digit))
+        return Enumerable.Range(SudokuRules.LowestDigit, SudokuRules.Size)
+            .Select(digit => (char)digit)
+            .Where(digit => SudokuRules.CanPlace(board, row, col, digit))
             .Select(digit => new Placement(row, col, digit));
     }
 
@@ -80,9 +87,9 @@ internal static class SudokuSolverSolution
 
     private static void CopyInto(char[][] target, char[][] source)
     {
-        for (var row = 0; row < BoardSize; row++)
+        for (var row = 0; row < SudokuRules.Size; row++)
         {
-            Array.Copy(source[row], target[row], BoardSize);
+            Array.Copy(source[row], target[row], SudokuRules.Size);
         }
     }
 
