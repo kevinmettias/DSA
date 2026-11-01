@@ -1,5 +1,5 @@
+using DSAExperimentation.DataStructures.Deque;
 using DSAExperimentation.LeetCode.MaximumSumOfMNonOverlappingSubarraysI;
-using MonotonicDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
 
 namespace DSAExperimentation.LeetCode.MaximumSumOfMNonOverlappingSubarraysII;
 
@@ -97,7 +97,7 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
         Array.Fill(bestNonEmpty, (Infeasible, long.MaxValue));
         best[0] = (0, 0);
 
-        var deque = new MonotonicDeque();
+        var deque = new Deque<int>();
         var tables = (Best: best, NonEmpty: bestNonEmpty);
 
         for (var index = 1; index <= elementCount; index++)
@@ -114,7 +114,7 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
     private static void RefreshPenaltyWindow(
         long[] prefix,
         (long Value, long Count)[] best,
-        MonotonicDeque deque,
+        Deque<int> deque,
         (int Index, int MinLength, int MaxLength) window)
     {
         var enter = window.Index - window.MinLength;
@@ -134,7 +134,13 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
     // prefix[start], with ties broken so the front always holds the fewest-
     // subarray candidate among equal keys - the same tie-break PreferFewerOnTie
     // applies at the transition itself.
-    private static void PushCandidate(MonotonicDeque deque, (long Value, long Count)[] best, long[] prefix, int start)
+    //
+    // It stays a deque of bare starts rather than a MonotonicDeque. Every key here
+    // can be read back from best[] and prefix[] by its start, while a MonotonicDeque
+    // stores each key beside its position (ARCHITECTURE 19.1). For this two-part key
+    // that meant 24-byte entries and a tuple comparison the JIT does not fold, and
+    // it measured about 10% slower (ARCHITECTURE 19.8).
+    private static void PushCandidate(Deque<int> deque, (long Value, long Count)[] best, long[] prefix, int start)
     {
         var key = best[start].Value - prefix[start];
         var count = best[start].Count;
@@ -166,7 +172,7 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
     private static void AdvancePenalizedTables(
         long[] prefix,
         ((long Value, long Count)[] Best, (long Value, long Count)[] NonEmpty) tables,
-        MonotonicDeque deque,
+        Deque<int> deque,
         (int Index, long Lambda) at)
     {
         var (best, bestNonEmpty) = tables;

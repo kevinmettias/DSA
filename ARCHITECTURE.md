@@ -1888,11 +1888,18 @@ Three results changed the code instead of being recorded:
 `CompressedCoordinates` made both of its measured adopters faster, CountNumberOfTeams by 17–20% and
 ReversePairs by 5–16%, and cut their allocation by half or more. The deque, the predicate search,
 the BFS facade and `PrefixSums` showed no cost on SlidingWindowMaximum, JumpGameVI, KokoEatingBananas,
-OpenTheLock and MinimumSizeSubarraySum. The deque's other adopters read within this machine's noise
-except one, which stays on the record:
-LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit, which keeps two deques. It
-measured between −1% and +10% at n = 4000 over three passes, and +19% at n = 500 in the one pass
-where that size's baseline held steady. A cost of that size may be real.
+OpenTheLock and MinimumSizeSubarraySum. The deque's other adopters read within this machine's noise.
+LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit, which keeps two deques, measured
+anywhere from −1% to +19% across passes. The JIT's own output settled it instead. With everything
+inlined, the hot path compiles to 306 instructions against the hand-written version's 298, with no
+calls in either and the same twelve divisions, so the spread was the machine. The divisions are
+`CircularBuffer`'s `%` on every index, shared by every deque and queue alike.
+
+One solution declines the deque, on measurement. MaximumSumOfMNonOverlappingSubarraysII ranks
+starts by a two-part key, transition then fewer subarrays, and every key can be read back from its
+arrays by position. Stored beside the position, the key made 24-byte entries and a tuple comparison
+the JIT does not fold, about 10% slower in two passes. So that solution keeps a deque of bare starts.
+Part I, whose key is one `long`, moved onto `MonotonicDeque` at no cost.
 
 Two adopters allocate more for the same time. CountSubmatricesWithAllOnes takes a boundary array per
 row where its stack stayed shallow (109 KB to 188 KB at n = 150). ShortestSubarrayWithSumAtLeastK

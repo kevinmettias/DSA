@@ -1,4 +1,4 @@
-using MonotonicDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
+using DSAExperimentation.DataStructures.MonotonicDeque;
 
 namespace DSAExperimentation.LeetCode.MaximumSumOfMNonOverlappingSubarraysI;
 
@@ -74,13 +74,12 @@ internal static class MaximumSumOfMNonOverlappingSubarraysISolution
     }
 
     // Same recurrence, but the inner max over length in [minLength, maxLength] is
-    // answered from a monotonic deque of candidate starts i - length instead of a
+    // answered from a MonotonicDeque of candidate starts i - length instead of a
     // fresh scan: as i advances by one, the window of valid starts [i-r, i-l] slides
     // by one, so tracking the best (dp[start][j-1] - prefix[start]) per j-layer is
     // O(n) per layer and O(n*m) overall - the same sliding-window-maximum shape
-    // CountPartitionsWithMaxMinDifferenceAtMostKSolution already uses over
-    // Deque<int>, here maximizing a DP transition instead of bounding a
-    // max-min gap.
+    // CountPartitionsWithMaxMinDifferenceAtMostKSolution keeps in a MonotonicDeque,
+    // here maximizing a DP transition instead of bounding a max-min gap.
     public static long MaximumSumBySlidingWindowMaximum(int[] nums, int maxSubarrays, int minLength, int maxLength)
     {
         var elementCount = nums.Length;
@@ -102,55 +101,40 @@ internal static class MaximumSumOfMNonOverlappingSubarraysISolution
     {
         var (dp, prefix, j) = layer;
         var n = prefix.Length - 1;
-        var deque = new MonotonicDeque();
+        var window = new MonotonicDeque<long, MaxWindowOrder<long>>();
 
         for (var i = 1; i <= n; i++)
         {
-            dp[i][j] = BestAtPosition(layer, lengthBounds, deque, i);
+            dp[i][j] = BestAtPosition(layer, lengthBounds, window, i);
         }
     }
 
     // One position of a layer: admit the start that has just entered the sliding window
-    // [i - MaxLength, i - MinLength], drop the candidate starts that have left it, and
+    // [i - MaxLength, i - MinLength], keyed by the transition it offers
+    // (dp[start][j-1] - prefix[start]), drop the candidate starts that have left it, and
     // take the best transition still inside it.
     private static long BestAtPosition(
         (long[][] Dp, long[] Prefix, int J) layer, (int MinLength, int MaxLength) lengthBounds,
-        MonotonicDeque deque, int position)
+        MonotonicDeque<long, MaxWindowOrder<long>> window, int position)
     {
         var (dp, prefix, j) = layer;
         var enter = position - lengthBounds.MinLength;
 
         if (enter >= 0 && dp[enter][j - 1] != Infeasible)
         {
-            PushCandidate(deque, layer, enter);
+            window.Push(enter, dp[enter][j - 1] - prefix[enter]);
         }
 
-        while (deque.TryPeekFront(out var front) && front < position - lengthBounds.MaxLength)
-        {
-            deque.TryPopFront(out _);
-        }
+        window.EvictBefore(position - lengthBounds.MaxLength);
 
         var best = dp[position - 1][j];
 
-        if (deque.TryPeekFront(out var start))
+        if (window.TryPeekFront(out var front))
         {
-            best = Math.Max(best, dp[start][j - 1] + prefix[position] - prefix[start]);
+            best = Math.Max(best, front.Key + prefix[position]);
         }
 
         return best;
-    }
-
-    private static void PushCandidate(MonotonicDeque deque, (long[][] Dp, long[] Prefix, int J) layer, int start)
-    {
-        var (dp, prefix, j) = layer;
-        var key = dp[start][j - 1] - prefix[start];
-
-        while (deque.TryPeekBack(out var backStart) && dp[backStart][j - 1] - prefix[backStart] <= key)
-        {
-            deque.TryPopBack(out _);
-        }
-
-        deque.PushBack(start);
     }
 
     private static long BestOverAtLeastOneSubarray(long[][] dp, int elementCount, int maxSubarrays)
