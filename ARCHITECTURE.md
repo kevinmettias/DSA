@@ -1287,7 +1287,7 @@ Bottom to top, each tier depending only on those below it:
 | --- | --- | --- |
 | 1. Representation + Topology | `DSAExperimentation/DataStructures/**` | §2's first two axes |
 | 2. Operations | `DSAExperimentation/Algorithms/**` | §2's third axis |
-| Mechanisms | `DSAExperimentation/Mechanisms/**` | State its caller owns, held to a policy the caller can observe: the LRU and LFU caches (§17.6b) |
+| Mechanisms | `DSAExperimentation/Mechanisms/**` | State run by a rule of its own that the caller observes — dropping what no caller named, or handing out what the caller never stored: the LRU and LFU caches (§17.6b) |
 | 3. Domain | `DSAExperimentation/Domain/**` | What a problem says about its world, pulled out of the problems that say it: models, rules, constants (§17.6) |
 | 4. LeetCode solutions | `DSAExperimentation.LeetCode/**` (own project) | One folder per problem, every strategy for it; at the root, LeetCode's own notation and answer rules |
 | 5. Harnesses | `DSAExperimentation.Tests/**` (the library's tiers), `DSAExperimentation.LeetCode.Tests/**` (tier 4), `DSAExperimentation.Benchmarks/**` | Assertions and measurement, nothing else |
@@ -1431,7 +1431,7 @@ modulus or of the halving factor this rule produces is one of a waived group in 
   contents, usable by anything with that shape — it is `DataStructures/`.
 - If it is an **Operations**/strategy witness, it is `Algorithms/`.
 - What a problem statement **fixes about its world** — a model (a lock, a board), a rule, a
-  constant (the modulus an answer is reported in), an output format — is `Domain/`, filed by
+  constant (the modulus an answer is reported in), a notation the world itself uses — is `Domain/`, filed by
   subject (`Domain/Locks`, `Domain/Modular`) and tested once at the mirrored path under
   `DSAExperimentation.Tests/Domain/`. Not "a shape that happens to have been introduced for one
   problem"; a shape is tier 1 or 2 by the first two rules.
@@ -1534,25 +1534,33 @@ file must also declare its namespace inside its own tier: a type an `Algorithms/
 a `DataStructures` namespace, in the root namespace or in none would reach `DataStructures` files
 by its simple name, with no tier written anywhere for the test to read.
 
-### 17.6b Mechanisms: state held to a policy its caller can observe
+### 17.6b Mechanisms: a rule of their own that the caller observes
 
-A mechanism holds state its caller owns and enforces a discipline the plain structure lacks: at a
-limit it decides what happens, and the caller can see the decision. `LruCache` and `LfuCache` evict
-past their capacity, so a key the caller put can be gone. That is why they are `Mechanisms/Cache`
-rather than data structures, with `ICache`, the contract LeetCode's two cache problems are driven
-through, beside them.
+**The line.** A *data structure* holds exactly what its caller put in and has not taken out. Every
+element enters through a store the caller makes, and leaves only through a caller operation that
+names it, by key or by position: a pop, a removal, a truncation after a cursor. Constraints and
+invariants injected into a general structure make specialized ones, the way Graph narrows to DAG and
+then to Tree (§3). They may refuse or clamp an operation, or fix which held element an access
+reaches, but they never add an element or drop one. A *mechanism* applies a rule of its own whose
+effect the caller observes: it drops something no caller operation named — evicted at a capacity,
+lapsed past a time-to-live — or it hands out a value the caller never put in.
 
-The test is what the caller observes, not whether a policy exists. Growth is a policy too, but a
-`DynamicArray`, `HashMap` or `Deque` that grows changes only what an operation costs, never what
-the caller sees, so they stay data structures. Nor is `Memoizer` a mechanism — its cache is
-discarded when the call returns — or `MonotonicDeque`, whose caller decides the window through
-`EvictBefore`. `Heap`, `DisjointSet` and `IntervalSet` are collections.
+`LruCache` and `LfuCache` are mechanisms: `Set(k3)` names k3 and drops k1. With `ICache`, the
+contract LeetCode's two cache problems are driven through, they make up `Mechanisms/Cache`.
+
+Deciding is not enough. A heap's order decides which value a pop returns, and `Heap` is a data
+structure. Nor is growth: a `DynamicArray`, `HashMap` or `Deque` that grows changes only what an
+operation costs. A deque that refuses a push once it is full is a data structure whose capacity is
+an injected invariant; one that overwrote its oldest element instead would be evicting, and so a
+mechanism. `Memoizer` is not one either — its cache is discarded when the call returns — and nor is
+`MonotonicDeque`, whose dominance drop is its window order deciding what the front can reach, with
+the caller naming the window through `EvictBefore`.
 
 Mechanisms sits above Operations, so a mechanism may compose any structure or algorithm, and below
-Domain, so a domain model may hold one. Design problems that bury machinery of this kind under their
-rules — a bounded queue that refuses when full, a seat or memory allocator, expiry after a
-time-to-live — contribute it here when the problem is split (§17.6, §17.10). There is no tier for
-code that holds part of the machine itself; §17.6c keeps the tiers below the harness free of it.
+Domain, so a domain model may hold one. Design problems that bury a mechanism under their rules — an
+allocator, expiry after a time-to-live — contribute it here when the problem is split (§17.6,
+§17.10). There is no tier for code that holds part of the machine itself; §17.6c keeps the tiers
+below the harness free of it.
 
 ### 17.6c Nothing below the harness touches the machine
 
