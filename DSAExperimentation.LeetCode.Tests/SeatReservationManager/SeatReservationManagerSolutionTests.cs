@@ -1,6 +1,6 @@
 using ISeatManager = DSAExperimentation.LeetCode.SeatReservationManager.SeatReservationManagerSolution.ISeatManager;
 using SeatManagerByLinearScanArray = DSAExperimentation.LeetCode.SeatReservationManager.SeatReservationManagerSolution.SeatManagerByLinearScanArray;
-using SeatManagerByReleasedSeatHeap = DSAExperimentation.LeetCode.SeatReservationManager.SeatReservationManagerSolution.SeatManagerByReleasedSeatHeap;
+using SeatManagerBySmallestFreeAllocator = DSAExperimentation.LeetCode.SeatReservationManager.SeatReservationManagerSolution.SeatManagerBySmallestFreeAllocator;
 
 namespace DSAExperimentation.LeetCode.Tests.SeatReservationManager;
 
@@ -97,9 +97,9 @@ public sealed partial class SeatReservationManagerSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SeatManagerByReleasedSeatHeap_LeetCodeExamples_MatchesExpectedSequence(
+    public void SeatManagerBySmallestFreeAllocator_LeetCodeExamples_MatchesExpectedSequence(
         SeatManagerScript script, int?[] expected) =>
-        Assert.Equal(expected, RunScript(new SeatManagerByReleasedSeatHeap(), script.Operations));
+        Assert.Equal(expected, RunScript(new SeatManagerBySmallestFreeAllocator(), script.Operations));
 
     private static int?[] RunScript(ISeatManager manager, SeatManagerOp[] operations) =>
         [.. operations.Select(operation => operation.Apply(manager))];

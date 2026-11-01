@@ -4,8 +4,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SeatReservationManagerSolution's, the same classes
 // SeatReservationManagerSolutionTests proves correct - the naive bool[]-scan-for-the-
-// smallest-free-seat manager against this repo's Heap<int,MinHeapOrder<int>>
-// holding only released seats behind a monotonic "next fresh seat" counter. Both
+// smallest-free-seat manager against this repo's SmallestFreeAllocator, a min-heap
+// holding only released seats in front of a "next fresh seat" counter. Both
 // replay the identical script - OperationCount reserves, then unreserving every
 // third issued seat, then OperationCount more reserves - so the linear scanner is
 // forced to walk past a growing prefix of already-reserved seats on every call
@@ -42,7 +42,7 @@ public class SeatReservationManagerBenchmarks
         Replay(new SeatReservationManagerSolution.SeatManagerByLinearScanArray(OperationCount * ReservePassCount + 1));
 
     [Benchmark]
-    public int[] ReleasedSeatHeap() => Replay(new SeatReservationManagerSolution.SeatManagerByReleasedSeatHeap());
+    public int[] SmallestFreeAllocator() => Replay(new SeatReservationManagerSolution.SeatManagerBySmallestFreeAllocator());
 
     private int[] Replay(SeatReservationManagerSolution.ISeatManager manager)
     {

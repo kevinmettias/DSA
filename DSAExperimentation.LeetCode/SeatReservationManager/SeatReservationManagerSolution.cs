@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.Mechanisms.SmallestFreeAllocator;
 
 namespace DSAExperimentation.LeetCode.SeatReservationManager;
 
@@ -14,8 +14,8 @@ namespace DSAExperimentation.LeetCode.SeatReservationManager;
 // (LC 1797).
 //
 // The whole problem is "where does the smallest free seat come from": an occupancy
-// array every reserve has to scan from seat 1, or a min-heap holding only the seats
-// that were actually given back.
+// array every reserve has to scan from seat 1, or this repo's SmallestFreeAllocator,
+// which holds only the seats that were actually given back (ARCHITECTURE.md §17.6b).
 internal static class SeatReservationManagerSolution
 {
     // The shared surface both strategies implement, so the test and benchmark
@@ -31,7 +31,7 @@ internal static class SeatReservationManagerSolution
     // The textbook baseline this composition has to justify itself against: one
     // bool per seat and a scan from seat 1 on every reserve, so the walk past the
     // already-reserved prefix grows with each call. Deliberately written without
-    // this repo's Heap<Element,TOrder>.
+    // this repo's SmallestFreeAllocator.
     internal sealed class SeatManagerByLinearScanArray(int seatCount) : ISeatManager
     {
         private const string NoSeatsLeftMessage = "No seats left.";
@@ -55,24 +55,23 @@ internal static class SeatReservationManagerSolution
         public void Unreserve(int seatNumber) => _reserved[seatNumber] = false;
     }
 
-    // The composed answer: this repo's own Heap<int,MinHeapOrder<int>> holds only
-    // the released seats, behind a counter that mints the next never-issued seat
-    // when the heap is empty. The smallest free seat is therefore either the
-    // smallest released one - which is exactly what a min-heap's root is - or the
-    // frontier, so nothing is stored per seat until a seat is handed back.
+    // The composed answer: this repo's own SmallestFreeAllocator, the whole problem
+    // as a mechanism. It holds only the released seats, in a min-heap in front of a
+    // counter for the seats never issued, so the smallest free seat is either the
+    // heap's root or the counter's next, and nothing is stored per seat until a seat
+    // is handed back. Seats are numbered from 1.
     //
     // LeetCode's constructor takes the seat count; this strategy is the one that
     // does not need it, which is the point of the lazy-release shape.
-    internal sealed class SeatManagerByReleasedSeatHeap : ISeatManager
+    internal sealed class SeatManagerBySmallestFreeAllocator : ISeatManager
     {
-        private readonly Heap<int, MinHeapOrder<int>> _released = new();
-        private int _nextFreshSeat = 1;
+        private const int FirstSeat = 1;
 
-        public int Reserve() => _released.TryPop(out var seat) ? seat : MintNextSeat();
+        private readonly SmallestFreeAllocator _seats = new(FirstSeat);
 
-        // The frontier answers with the next never-issued seat number and steps on.
-        private int MintNextSeat() => _nextFreshSeat++;
+        public int Reserve() => _seats.Allocate();
 
-        public void Unreserve(int seatNumber) => _released.Push(seatNumber);
+        // LeetCode only unreserves a reserved seat, so the allocator never turns one away.
+        public void Unreserve(int seatNumber) => _ = _seats.TryRelease(seatNumber);
     }
 }

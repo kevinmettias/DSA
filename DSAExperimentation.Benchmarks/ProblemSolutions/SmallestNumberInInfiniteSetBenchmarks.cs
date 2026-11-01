@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // non-trivially populated instead of draining to empty every time - so script
 // construction is charged to setup and only the replay is measured. The contrast is a
 // List<int>'s O(n) minimum scan plus O(n) Contains per operation against
-// Heap<Element, MinHeapOrder<Element>> + Set<Element>'s O(log n) pop and O(1) duplicate
+// this repo's SmallestFreeAllocator, a Heap and a Set: O(log n) pop and O(1) duplicate
 // rejection. The script is CallCount calls long, up to LC 2336's 1,000 calls in total,
 // which also keeps every added-back number inside its [1, 1000].
 public class SmallestNumberInInfiniteSetBenchmarks
@@ -57,7 +57,7 @@ public class SmallestNumberInInfiniteSetBenchmarks
     public int[] ListScanPerOperation() => Replay(SmallestNumberInInfiniteSetSolution.CreateByListScan());
 
     [Benchmark]
-    public int[] HeapAndSetPerOperation() => Replay(SmallestNumberInInfiniteSetSolution.CreateByHeapAndSet());
+    public int[] SmallestFreeAllocatorPerOperation() => Replay(SmallestNumberInInfiniteSetSolution.CreateBySmallestFreeAllocator());
 
     private int[] Replay(SmallestNumberInInfiniteSetSolution.ISmallestInfiniteSet set)
     {

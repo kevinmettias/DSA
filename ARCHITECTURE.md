@@ -846,6 +846,7 @@ specifically:
 | --- | --- |
 | `Cache/` | `ICache`, `CacheConstants`, `LruCache/LruCache`, `LfuCache/LfuCache` (§13.7) |
 | `ExpiringSet/` | `ExpiringSet` — keys that lapse a fixed time after their life last started, counted at a moment the caller names; LC 1797's authentication manager |
+| `SmallestFreeAllocator/` | `SmallestFreeAllocator` — hands out the smallest whole number not currently held, from a first one upward, and takes back the ones it holds; LC 1845's seats, LC 2336's infinite set |
 
 **`Domain/`** is organized by subject, and holds what problems say about their world (§17.6):
 
@@ -1291,7 +1292,7 @@ Bottom to top, each tier depending only on those below it:
 | --- | --- | --- |
 | 1. Representation + Topology | `DSAExperimentation/DataStructures/**` | §2's first two axes |
 | 2. Operations | `DSAExperimentation/Algorithms/**` | §2's third axis |
-| Mechanisms | `DSAExperimentation/Mechanisms/**` | State run by a rule of its own that the caller observes — dropping what no caller named, or handing out what the caller never stored: the LRU and LFU caches, and keys that expire (§17.6b) |
+| Mechanisms | `DSAExperimentation/Mechanisms/**` | State run by a rule of its own that the caller observes — dropping what no caller named, or handing out what the caller never stored: the LRU and LFU caches, keys that expire, and an allocator of the smallest free number (§17.6b) |
 | 3. Domain | `DSAExperimentation/Domain/**` | What a problem says about its world, pulled out of the problems that say it: models, rules, constants (§17.6) |
 | 4. LeetCode solutions | `DSAExperimentation.LeetCode/**` (own project) | One folder per problem, every strategy for it; at the root, LeetCode's own notation and answer rules |
 | 5. Harnesses | `DSAExperimentation.Tests/**` (the library's tiers), `DSAExperimentation.LeetCode.Tests/**` (tier 4), `DSAExperimentation.Benchmarks/**` | Assertions and measurement, nothing else |
@@ -1557,7 +1558,11 @@ contract LeetCode's two cache problems are driven through, they make up `Mechani
 `ExpiringSet` is one too: a key lapses when its time-to-live runs out, and no caller operation
 names that. Time is passed in rather than read (§17.6c), and with a fixed time-to-live the order
 lives start in is the order they end in, so a queue in that order lets lapsed keys go in amortized
-O(1).
+O(1). `SmallestFreeAllocator` is the line's other side: `Allocate` hands out the smallest number not
+currently held, a value the caller never stored, and `TryRelease` takes back only a number it holds.
+A counter stands for every number never issued, so only released numbers take space: a min-heap
+below the counter, and a flag per number up to the largest released, which turns away a number not
+held. LC 1845's seats and LC 2336's popped numbers are both this allocator from 1.
 
 Deciding is not enough. A heap's order decides which value a pop returns, and `Heap` is a data
 structure. Nor is growth: a `DynamicArray`, `HashMap` or `Deque` that grows changes only what an
@@ -1568,10 +1573,10 @@ mechanism. `Memoizer` is not one either — its cache is discarded when the call
 the caller naming the window through `EvictBefore`.
 
 Mechanisms sits above Operations, so a mechanism may compose any structure or algorithm, and below
-Domain, so a domain model may hold one. Design problems that bury a mechanism under their rules — an
-allocator, expiry after a time-to-live — contribute it here when the problem is split (§17.6,
-§17.10). There is no tier for code that holds part of the machine itself; §17.6c keeps the tiers
-below the harness free of it.
+Domain, so a domain model may hold one. Design problems that bury a mechanism under their rules
+contribute it here when the problem is split (§17.6, §17.10), as LC 1797 gave up its expiry and LC
+1845 and LC 2336 their allocator. There is no tier for code that holds part of the machine itself;
+§17.6c keeps the tiers below the harness free of it.
 
 ### 17.6c Nothing below the harness touches the machine
 

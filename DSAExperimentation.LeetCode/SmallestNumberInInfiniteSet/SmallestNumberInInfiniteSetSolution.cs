@@ -1,5 +1,4 @@
-using DSAExperimentation.DataStructures.Heap;
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Mechanisms.SmallestFreeAllocator;
 
 namespace DSAExperimentation.LeetCode.SmallestNumberInInfiniteSet;
 
@@ -22,7 +21,8 @@ namespace DSAExperimentation.LeetCode.SmallestNumberInInfiniteSet;
 //
 // What separates the arms is how that added-back collection answers "what is the
 // smallest, and do you already hold this?": an O(n) linear scan plus an O(n) Contains
-// per operation, or O(log n) pop plus O(1) duplicate rejection.
+// per operation, or this repo's SmallestFreeAllocator, an O(log n) pop plus O(1)
+// duplicate rejection behind exactly that counter (ARCHITECTURE.md §17.6b).
 internal static class SmallestNumberInInfiniteSetSolution
 {
     // The infinite set is [1, 2, 3, ...], so the first number ever produced is 1.
@@ -34,11 +34,11 @@ internal static class SmallestNumberInInfiniteSetSolution
     // to justify itself against.
     public static ISmallestInfiniteSet CreateByListScan() => new ListScanSmallestInfiniteSet();
 
-    // This repo's own Heap<Element, MinHeapOrder<Element>> is already exactly
-    // "peek/pop the smallest of a dynamic collection in O(log n)", paired with
-    // Set<Element> purely to reject a duplicate AddBack in O(1) instead of letting the
-    // same value sit in the heap twice.
-    public static ISmallestInfiniteSet CreateByHeapAndSet() => new HeapAndSetSmallestInfiniteSet();
+    // This repo's own SmallestFreeAllocator is this set turned inside out: the numbers it
+    // holds are the ones popped, so popping the smallest is handing out the smallest
+    // number not held, and adding a popped number back is releasing it. A number never
+    // popped, or added back already, is still in the set, and the allocator turns it away.
+    public static ISmallestInfiniteSet CreateBySmallestFreeAllocator() => new AllocatorSmallestInfiniteSet();
 
     // LeetCode's SmallestInfiniteSet class surface, as an interface so a harness can
     // replay one call script against either strategy.
@@ -86,31 +86,12 @@ internal static class SmallestNumberInInfiniteSetSolution
         }
     }
 
-    private sealed class HeapAndSetSmallestInfiniteSet : ISmallestInfiniteSet
+    private sealed class AllocatorSmallestInfiniteSet : ISmallestInfiniteSet
     {
-        private readonly Heap<int, MinHeapOrder<int>> _addedBack = new();
-        private readonly Set<int> _pending = new();
-        private int _nextUnused = FirstNumber;
+        private readonly SmallestFreeAllocator _popped = new(FirstNumber);
 
-        public int PopSmallest()
-        {
-            if (_addedBack.TryPop(out var restored))
-            {
-                _pending.TryRemove(restored);
-                return restored;
-            }
+        public int PopSmallest() => _popped.Allocate();
 
-            return _nextUnused++;
-        }
-
-        public void AddBack(int num)
-        {
-            if (num >= _nextUnused || !_pending.TryAdd(num))
-            {
-                return;
-            }
-
-            _addedBack.Push(num);
-        }
+        public void AddBack(int num) => _ = _popped.TryRelease(num);
     }
 }

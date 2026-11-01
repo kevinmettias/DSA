@@ -46,6 +46,15 @@ public sealed partial class SmallestNumberInInfiniteSetSolutionTests
                 [null, 1, 2, 3, 4, 5]
             },
             {
+                // So is AddBack of the very number the counter would produce next.
+                [
+                    InfiniteSetOp.Pop(), InfiniteSetOp.Pop(),
+                    InfiniteSetOp.AddBack(3),
+                    InfiniteSetOp.Pop(), InfiniteSetOp.Pop(),
+                ],
+                [1, 2, null, 3, 4]
+            },
+            {
                 // Several numbers added back out of order all come out smallest-first,
                 // and only then does the counter resume.
                 [
@@ -65,9 +74,9 @@ public sealed partial class SmallestNumberInInfiniteSetSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CreateByHeapAndSet_LeetCodeExamples_MatchesTheInfiniteSetTrace(
+    public void CreateBySmallestFreeAllocator_LeetCodeExamples_MatchesTheInfiniteSetTrace(
         InfiniteSetOp[] operations, int?[] expected) =>
-        Assert.Equal(expected, RunScript(SmallestNumberInInfiniteSetSolution.CreateByHeapAndSet(), operations));
+        Assert.Equal(expected, RunScript(SmallestNumberInInfiniteSetSolution.CreateBySmallestFreeAllocator(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
