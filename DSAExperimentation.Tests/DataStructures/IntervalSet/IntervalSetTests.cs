@@ -144,33 +144,27 @@ public sealed partial class IntervalSetTests
         Assert.True(hasOverlap);
     }
 
-    // Queries against a stored [10, 20): each lands on a different side of one of its ends.
-    public static TheoryData<int, int, bool> HalfOpenQueriesAgainstTenToTwenty =>
-        new()
-        {
-            { 20, 30, false },
-            { 5, 10, false },
-            { 0, 5, false },
-            { 25, 30, false },
-            { 15, 25, true },
-            { 5, 15, true },
-            { 12, 18, true },
-            { 5, 25, true },
-        };
+    // Queries against a stored [10, 20) that only touch one of its ends, or miss it: none shares a point.
+    public static TheoryData<int, int> HalfOpenQueriesMissingTenToTwenty =>
+        new() { { 20, 30 }, { 5, 10 }, { 0, 5 }, { 25, 30 } };
+
+    // Queries that share at least one point with a stored [10, 20), from either side, inside or around it.
+    public static TheoryData<int, int> HalfOpenQueriesMeetingTenToTwenty =>
+        new() { { 15, 25 }, { 5, 15 }, { 12, 18 }, { 5, 25 } };
 
     [Fact]
     public void HasOverlapHalfOpen_NoExistingIntervals_ReturnsFalse() =>
         Assert.False(new IntervalSet<int>().HasOverlapHalfOpen(1, 2));
 
     [Theory]
-    [MemberData(nameof(HalfOpenQueriesAgainstTenToTwenty))]
-    public void HasOverlapHalfOpen_AgainstOneStoredInterval_TouchingEndsDoNotConflict(int start, int end, bool expected)
-    {
-        var set = new IntervalSet<int>();
-        set.Add(10, 20);
+    [MemberData(nameof(HalfOpenQueriesMissingTenToTwenty))]
+    public void HasOverlapHalfOpen_QueryTouchingOrMissingTheInterval_ReturnsFalse(int start, int end) =>
+        Assert.False(IntervalSetHolding(10, 20).HasOverlapHalfOpen(start, end));
 
-        Assert.Equal(expected, set.HasOverlapHalfOpen(start, end));
-    }
+    [Theory]
+    [MemberData(nameof(HalfOpenQueriesMeetingTenToTwenty))]
+    public void HasOverlapHalfOpen_QuerySharingAPoint_ReturnsTrue(int start, int end) =>
+        Assert.True(IntervalSetHolding(10, 20).HasOverlapHalfOpen(start, end));
 
     // Add merges touching pairs, which for half-open intervals is their union, so a query
     // straddling the old seam overlaps and one starting at the union's end does not.
@@ -184,6 +178,13 @@ public sealed partial class IntervalSetTests
         Assert.Equal(1, set.Count);
         Assert.True(set.HasOverlapHalfOpen(19, 21));
         Assert.False(set.HasOverlapHalfOpen(30, 40));
+    }
+
+    private static IntervalSet<int> IntervalSetHolding(int start, int end)
+    {
+        var set = new IntervalSet<int>();
+        set.Add(start, end);
+        return set;
     }
 
     [Fact]
