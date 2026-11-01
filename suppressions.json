@@ -25,6 +25,13 @@
       "expires": "2026-11-22"
     },
     {
+      "check": "check-class-size",
+      "path": "DSAExperimentation/DataStructures/IntervalSet/IntervalSet.cs",
+      "reason": "the metric's majority-connector filter drops _intervals and _comparer as plumbing, since every member reads both, and then splits the survivors by which bound they search with. Add and HasOverlap find the first interval ending at or after start, through LowerBoundByEnd; HasOverlapHalfOpen finds the first ending after it, through UpperBoundByEnd, because a half-open interval that ends exactly at start does not overlap. That is one overlap question asked under the set's two readings of a pair (this file's header names both), not two responsibilities: both bounds search the same IntervalEndsView over the same intervals, and both rest on the one invariant Add maintains, that the intervals' ends are sorted in the same order as their starts. Moving the half-open query out would carry a reading of the set away from the invariant it depends on.",
+      "owner": "@kmettias",
+      "expires": "2027-04-01"
+    },
+    {
       "check": "check-scope-discipline",
       "path": "DSAExperimentation.Tests/Algorithms/Reducing/Fixtures/ClosedBeforeOpenReduceAlgebra.cs",
       "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",

@@ -116,11 +116,11 @@ public sealed class IntervalSet<TKey>
         return candidate < _intervals.Count && _comparer.Compare(_intervals.Get(candidate).Start, end) < 0;
     }
 
-    private int LowerBoundByEnd(TKey start)
-        => BinarySearch.LowerBound<TKey, IntervalEndsView>(new IntervalEndsView(_intervals), start, _comparer);
-
     private int UpperBoundByEnd(TKey start)
         => BinarySearch.UpperBound<TKey, IntervalEndsView>(new IntervalEndsView(_intervals), start, _comparer);
+
+    private int LowerBoundByEnd(TKey start)
+        => BinarySearch.LowerBound<TKey, IntervalEndsView>(new IntervalEndsView(_intervals), start, _comparer);
 
     private readonly struct IntervalEndsView(DynamicArray<(TKey Start, TKey End)> intervals) : IRandomAccessSequence<TKey>
     {
