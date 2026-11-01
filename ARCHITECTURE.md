@@ -177,7 +177,7 @@ independently-pluggable Topology witness, because none needed one:
 | --- | --- | --- | --- |
 | `DataStructures/DynamicArray/` | itself (a manually-doubled `T[]`, held by `DynamicArrayStorage`, §14.3) | `Add`/`Insert`/`RemoveAt`/`Get`/`Set`, each with a `Try` form | No Topology axis at all — the only invariant is "how it's stored," which §5 step 2 classifies as Representation, not Topology |
 | `DataStructures/Stack/` | `DynamicArray<T>` (composed, not duplicated) | `Push`/`TryPop`/`TryPeek` | A stack is a sequence plus a LIFO *access constraint* — an Operations-level restriction over an existing Representation, not a new physical layout |
-| `DataStructures/CircularBuffer/` (`CircularBuffer` + `CircularBufferStorage` + capacity witnesses) | a wraparound array (`_head`/`Count` masked by a power-of-two length, §14.4) | `TryPushFront`/`TryPushBack`, `TryPopFront`/`TryPopBack`, `TryPeekFront`/`TryPeekBack`, `IsFull` | A second, distinct Representation (wraparound, not flat) — earned by needing O(1) at *both* ends, which `DynamicArray`'s flat layout can't give the front. Its capacity is an injected invariant, unbounded or bounded at k (§20) |
+| `DataStructures/CircularBuffer/` (`CircularBuffer` + capacity witnesses) | a wraparound array (`_head`/`Count` masked by a power-of-two length, §20) | `TryPushFront`/`TryPushBack`, `TryPopFront`/`TryPopBack`, `TryPeekFront`/`TryPeekBack`, `IsFull` | A second, distinct Representation (wraparound, not flat) — earned by needing O(1) at *both* ends, which `DynamicArray`'s flat layout can't give the front. Its capacity is an injected invariant, unbounded or bounded at k (§20) |
 | `DataStructures/Deque/` (`Deque` + `BoundedDeque`) | `CircularBuffer<T, …>` (derived, its capacity fixed) | `PushFront`/`PushBack` (`TryPush*` when bounded), `TryPopFront`/`TryPopBack`, `TryPeekFront`/`TryPeekBack` | Both ends of the buffer, unbounded or bounded: the configurations of §20 that keep every operation, so each is the buffer itself |
 | `DataStructures/Queue/` (`Queue` + `BoundedQueue`) | `CircularBuffer<T, …>` (composed) | `Enqueue` (`TryEnqueue` when bounded), `TryDequeue`, `TryPeek`/`TryPeekRear` | FIFO is the buffer restricted to one end each — the same "sequence + constraint" relationship Stack has with `DynamicArray`, just against the wraparound Representation |
 | `DataStructures/HashMap/` (`HashMap` + `HashMapEntry` + `HashMapStorage`) | bucket array + separate-chaining entries array with a free list | `Set`/`TryGetValue`/`TryRemove`/`HasKey` | The associative primitive from §2 in code: no Topology witness, because "at most one value per key" is what a map *is*, not a variable choice the way min-vs-max-heap is |
@@ -779,7 +779,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | (root) | `AlgorithmConstants`, `ArrayGrowth`, `LowercaseAlphabet` (§19.6), `RangeBounds` — constants and checks read by more than one structure, at the lowest tier that reads them (§17.6a) |
 | `AhoCorasick/` | `AhoCorasick`, `AhoCorasickNode`, `AhoCorasickMatch` — witness-less, for §13.8's reasons |
 | `Buffers/` | `ContiguousGroupBuffer`, `ContiguousGroupBufferStorage` (§14.1) |
-| `CircularBuffer/` | `CircularBufferStorage`, `CircularBuffer`, `IBufferCapacity`, `UnboundedCapacity`, `BoundedCapacity` — the wraparound structure the queue family configures, with its capacity a witness (§14.4, §20) |
+| `CircularBuffer/` | `CircularBuffer`, `IBufferCapacity`, `UnboundedCapacity`, `BoundedCapacity` — the wraparound structure the queue family configures, with its capacity a witness (§20) |
 | `CountedBitTrie/` | `CountedBitTrie` — a bit trie over a multiset, whose values can be removed: every node carries a count, and a walk reads the counts to tell a live branch from a dead one. It stands beside `BitTrie` rather than inside it, so `BitTrie`'s insert-only users pay for no counts, and it has no `ITreeTopology` witness for both of §13.9's reasons: its nodes are slots in shared arrays, and after a removal it still holds paths whose values are gone |
 | `CursorSequence/` | `CursorSequence` — a sequence edited and read at a cursor between two `DynamicArray`s, the composition `Stack` makes with a cursor in place of LIFO (§4.1). LC 2296's text editor uses it; LC 1472's browser history declined it, measured, because its jumps of k pages cost O(k) transfers here against an index's O(1) |
 | `Deque/` | `Deque`, `BoundedDeque` — `CircularBuffer` unbounded and bounded (§20) |
@@ -1052,15 +1052,16 @@ real the same way `LowercaseTrieTests` does: `TreeMetrics.Size` (`Algorithms/Met
 any `ITreeTopology`) counts every node of a two-value trie with no `BitTrie`-specific code at all.
 `CountedBitTrie` fails both halves of the test, and §13.3 records why.
 
-## 14. Worked example: the four Storage/Operations decompositions
+## 14. Worked example: the three Storage/Operations decompositions
 
-Four containers — `ContiguousGroupBuffer`, `HashMap`, `DynamicArray`, `CircularBuffer` — split
-their storage from their public operations, as `Heap`/`HeapArray` (§4) does. All four follow the
-same shape: **Storage owns raw, unchecked, non-throwing access; Operations owns bounds/precondition
-checks, throwing, and the one composed Storage field.** Both halves live under
-`DataStructures/<Structure>/` (§13.5), since none of the four has a capability interface to be
-generic over. A decomposition, unlike a file move, can change behaviour, so each is held by the
-full test suite, not only its own folder's tests.
+Three containers — `ContiguousGroupBuffer`, `HashMap`, `DynamicArray` — split their storage from
+their public operations, as `Heap`/`HeapArray` (§4) does. All three follow the same shape:
+**Storage owns raw, unchecked, non-throwing access; Operations owns bounds/precondition checks,
+throwing, and the one composed Storage field.** Both halves live under `DataStructures/<Structure>/`
+(§13.5), since none of the three has a capability interface to be generic over. A decomposition,
+unlike a file move, can change behaviour, so each is held by the full test suite, not only its own
+folder's tests.
+`CircularBuffer` has no Storage half, though it once had one; §20 says why.
 
 ### 14.1 `ContiguousGroupBuffer`
 
@@ -1097,24 +1098,9 @@ catch a regression here.
 | `DataStructures/DynamicArray/DynamicArrayStorage.cs` | Representation | `_items: T[]`; own `Count`; unchecked `Get`/`Set`/`Add`/`InsertAt`/`RemoveAt` (assume the caller already validated the index); private `EnsureCapacity` |
 | `DataStructures/DynamicArray/DynamicArray.cs` | Operations | `IsValidIndex`/`ThrowIndexOutOfRange` and the `IndexOutOfRangeMessage` constant; bounds-checked `Get`/`Set`/`RemoveAt`/`Insert` and their `Try` forms delegate to Storage after validation |
 
-The highest fan-out of the first three: `Stack`, `Sequence.DynamicArraySequence`, and
+The highest fan-out of the three: `Stack`, `Sequence.DynamicArraySequence`, and
 `Sequence.DynamicArrayIndexedSequence` all compose it, and none calls anything beyond
 `Add`/`Get`/`Set`/`RemoveAt`/`Count`, so the split is invisible to them.
-
-### 14.4 `CircularBuffer`
-
-| File | Axis | Why |
-| --- | --- | --- |
-| `DataStructures/CircularBuffer/CircularBufferStorage.cs` | Representation | `_items: T[]` of power-of-two length, `_head`, own `Count`; unchecked `GetFront`/`GetBack`/`AddFront`/`AddBack`/`RemoveFront`/`RemoveBack`; private `Grow`, never inlined, reached only when every slot is taken |
-| `DataStructures/CircularBuffer/CircularBuffer.cs` | Operations | the capacity witness and the emptiness checks; `TryPush*`/`TryPeek*`/`TryPop*` and `IsFull` delegate to Storage once a check passes |
-
-A class, like the other Storage halves. It was first a struct in a field of `CircularBuffer`, to
-save an object, and measured slower. Its methods reach a struct field through `ref this`, and the JIT
-reads fields reached that way as memory any array store might overwrite. A loop dequeuing an `int`
-re-read `Count`, `_head` and the array on every element, and decremented `Count` in memory, where an
-object's fields stay in registers. LC 933's queue window ran 57% and 106% slower in two passes.
-`Deque` and `BoundedDeque` derive from `CircularBuffer`, and `Queue`, `BoundedQueue` and
-`MonotonicDeque` compose it. §20 says why there are five of them over one buffer.
 
 ## 15. Worked example: `Algorithms/TopologicalSort`
 
@@ -2065,32 +2051,65 @@ constant `false`, so a deque or queue carries no capacity check at all.
 holds. A ring buffer that overwrote its oldest element to admit a new one would be evicting, which
 §17.6b makes a mechanism. LC 3508's router keeps such a buffer, and it stays out of this family.
 
-**The storage stays a power of two.** The bound is checked against `Count`, separately from the
-storage's length: a capacity of 3 holds three elements in a four-slot array, and every index is
-still masked rather than divided (§19.8). `Stack` stays out of the family. Its representation is
-the flat `DynamicArray`, and a configuration varies a constraint over one representation, not the
+**The array stays a power of two.** The bound is checked against `Count`, separately from the
+array's length: a capacity of 3 holds three elements in a four-slot array, and every index is still
+masked rather than divided (§19.8). `Stack` stays out of the family. Its representation is the flat
+`DynamicArray`, and a configuration varies a constraint over one representation, not the
 representation itself.
 
-**What the JIT made of it.** The composition was read in the JIT's output before it was measured,
-on loops that push, peek and pop a `Deque<int>`, a `Queue<int>` and a `Queue<string>`, and slide a
-`MonotonicDeque` window. No loop divides, before or after. The first draft regressed one path.
-Inside `MonotonicDeque.Push`, the JIT inlined the dominance pops and, out of budget, left `IsFull`
-and then the whole push as a call on every element, where the old `Push` had inlined the push and
-called out to pop. Two changes fixed it. The pushes ask the witness directly and are always
-inlined, a forward of a compare and a store. The storage's growth moved into a `Grow` that is never
-inlined, so that a push is a compare and a store, with a call only when every slot is taken. Since
-then, the loops' only calls are `Grow` and the bounds-check failure. Before, the deque and queue
-loops called the old storage's `EnsureCapacity` on each push and its `RemoveFront` on each pop, and
-the window called out on each pop at either end.
+**What the JIT made of it.** The composition was read in the JIT's output with tiered compilation
+off before it was measured, on loops that push, peek and pop a `Deque<int>`, a `Queue<int>` and a
+`Queue<string>`, and slide a `MonotonicDeque` window. No loop divides, before or after. One path
+regressed. Inside `MonotonicDeque.Push`, the JIT inlined the dominance pops and, out of budget, left
+`IsFull` and then the whole push as a call on every element, where the old `Push` had inlined the
+push and called out to pop. The pushes now ask the witness directly and are always inlined.
 
-**What measuring it found.** That output was read with tiered compilation off, and it put the new
-code ahead on every loop. BenchmarkDotNet runs tiered code, and its first two passes found two
-regressions the output could not show, both in how the buffer's memory is reached rather than in
-the work done. The first draft held the storage as a struct in a field of the buffer, to save an
-object, and LC 933's queue window ran 57% and 106% slower. §14.4 says why, and the storage became
-a class. The deques were facades over the buffer, which put one more object between a deque and
-its array than `Deque` had before. With the storage a class, LC 641's deque at capacity 8 still
-took 1.29 µs where it had taken 1.06 µs. The JIT
-keeps no field load across the cold `Grow` call inside such a loop, so every operation paid the
-extra hop. The deques now derive from the buffer, and a queue reaches its array through as many
-objects as it did when it wrapped `Deque`.
+**What measuring it found.** BenchmarkDotNet runs tiered code with dynamic PGO, and that output was
+no guide to it: it had put the new code ahead on every loop. Measured, four drafts regressed, none
+in the work done: three in how the buffer's memory is reached and one in what the inliner was
+charged for. Each was fixed by taking something away:
+
+- **A struct storage.** The buffer first kept its array in a Storage struct held in a field, split
+  from its operations as §14's containers are, to save an object. The struct's methods reach its
+  fields through `ref this`, and the JIT reads fields reached that way as memory any array store
+  might overwrite. A loop dequeuing an `int` re-read `Count`, `_head` and the array on every
+  element, and decremented `Count` in memory. LC 933's queue window ran 57% and 106% slower in two
+  passes.
+- **A storage object.** As a class, the storage put one more object between every configuration
+  and its array. The deques, then facades over the buffer, were two objects from it where `Deque`
+  had been one, and LC 641's deque at capacity 8 took 1.29 µs where it had taken 1.06 µs. LC 622's
+  bounded queue, whose every operation arrives through an interface call, ran 10–18% slower at
+  capacity 8 in three passes.
+- **A cold `Grow`.** Growth had moved into a `Grow` that was never inlined, so that a push would be
+  a compare and a store. Tiered code had inlined the old growth whole, so a breadth-first search
+  over a `Queue<int>` made no call in its loop and loaded the queue's objects once, outside it. With
+  `Grow` a call inside the loop, the JIT kept no field across it. LC 310's leaf peeling re-read the
+  queue, the buffer and the storage on every enqueue and dequeue, and ran 11–24% slower in two
+  passes, and LC 542 5–10%.
+- **A rounded constant.** The buffer rounded its first length, `ArrayGrowth.InitialCapacity`, up to
+  a power of two, and each grown length inside `Grow`, though both already were one. The rounding
+  cost nothing at run time, since the JIT folds it, but the inliner charges each method for the IL
+  it inlines, against a fixed budget. LC 1797's benchmark compiles into one method that builds an
+  `ExpiringSet` and replays the whole script through it. The configurations' constructors pass
+  their capacity witness along, a few bytes more IL than the constructors they replaced, and that
+  method ran out of budget sooner. The JIT's own inlining events gave the reason as "inline exceeds
+  budget": the `(key, expiry)` tuple's constructor and `Queue.Enqueue` became calls on every
+  `Generate`, the tuple through a copy on the stack, and the arm ran 8–19% slower in both passes.
+  With no rounding, both are inlined again.
+
+So the deques derive from the buffer, the buffer owns its array with no Storage half, `Grow` is
+always inlined, as the old growth was, and no length is rounded. A `Deque` reaches its array
+through one object where it went through two, and a `Queue` through two where it went through
+three.
+
+**What the finished family measured.** Two passes over the 24 benchmark classes whose composed arm
+builds a deque, a queue or a monotonic deque compared each arm's ratio to its baseline before and
+after the family, and two more went over the two classes those left in doubt. No arm ran slower in
+both passes. LC 1797's arm, slower in every pass while the buffer rounded, read −9% and +15% at 200
+and +30% and −5% at 999, then −8% to +12% in the two passes after; the +30% came from a run whose
+own spread was 11%. LC 542 at 10 read +7% twice, inside the error, and +0% and −1% when run again.
+Many arms ran faster in both passes: LC 641's bounded deque at capacity 512 by 23% each time, LC
+622's bounded queue at 512 by 9% and 22%, LC 1499's window by 14–21% at both sizes, LC 1425's by
+21–23% at 2,000, and LC 239's by 12–18% at 2,000. LC 2073's report reads the other way only because
+its queue simulation is the baseline arm: that arm got 8–15% faster, so the closed form's ratio to
+it rose.

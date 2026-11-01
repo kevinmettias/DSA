@@ -1,4 +1,3 @@
-using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace DSAExperimentation.DataStructures.CircularBuffer;
@@ -36,7 +35,11 @@ public class CircularBuffer<Element, TCapacity>(TCapacity capacity)
     where TCapacity : struct, IBufferCapacity
 {
     private readonly TCapacity _capacity = capacity;
-    private Element[] _items = new Element[BitOperations.RoundUpToPowerOf2((uint)ArrayGrowth.InitialCapacity)];
+
+    // ArrayGrowth starts at a power of two and grows by one, so the length stays a power of two with
+    // no rounding (CircularBufferTests pins both). Rounding a constant cost nothing at run time, but
+    // the inliner charged for it, at construction and inside every push (ARCHITECTURE 20).
+    private Element[] _items = new Element[ArrayGrowth.InitialCapacity];
     private int _head;
 
     /// <summary>The number of elements in the buffer.</summary>
@@ -171,8 +174,7 @@ public class CircularBuffer<Element, TCapacity>(TCapacity capacity)
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void Grow()
     {
-        var grown = _items.Length * ArrayGrowth.GrowthFactor;
-        var resized = new Element[BitOperations.RoundUpToPowerOf2((uint)grown)];
+        var resized = new Element[_items.Length * ArrayGrowth.GrowthFactor];
 
         for (var i = 0; i < Count; i++)
         {

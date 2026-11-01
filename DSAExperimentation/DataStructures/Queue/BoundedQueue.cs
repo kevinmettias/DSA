@@ -11,16 +11,16 @@ public sealed class BoundedQueue<Element>
 {
     private readonly CircularBuffer<Element, BoundedCapacity> _items;
 
-    /// <summary>Creates an empty queue that holds at most <paramref name="capacity"/> elements.</summary>
-    /// <param name="capacity">The most elements the queue may hold, at least 1.</param>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is below 1.</exception>
-    public BoundedQueue(int capacity) => _items = new(new BoundedCapacity(capacity));
-
     /// <summary>The number of elements in the queue.</summary>
     public int Count => _items.Count;
 
     /// <summary>Whether the queue holds as many elements as its capacity allows, so that enqueueing is refused.</summary>
     public bool IsFull => _items.IsFull;
+
+    /// <summary>Creates an empty queue that holds at most <paramref name="capacity"/> elements.</summary>
+    /// <param name="capacity">The most elements the queue may hold, at least 1.</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is below 1.</exception>
+    public BoundedQueue(int capacity) => _items = new(new BoundedCapacity(capacity));
 
     /// <summary>Adds an element at the back of the queue, unless it is full.</summary>
     /// <param name="item">The element to add.</param>

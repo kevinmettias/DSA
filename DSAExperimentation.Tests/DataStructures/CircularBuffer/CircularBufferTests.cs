@@ -1,3 +1,5 @@
+using System.Numerics;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.CircularBuffer;
 
 namespace DSAExperimentation.Tests.DataStructures.CircularBuffer;
@@ -31,8 +33,7 @@ public sealed partial class CircularBufferTests
 
         Assert.False(buffer.TryPushBack(9));
         Assert.Equal(Capacity, buffer.Count);
-        Assert.True(buffer.TryPeekBack(out var back));
-        Assert.Equal(Capacity - 1, back);
+        Assert.Equal((0, Capacity - 1), EndsOf(buffer));
     }
 
     [Fact]
@@ -42,8 +43,7 @@ public sealed partial class CircularBufferTests
 
         Assert.False(buffer.TryPushFront(9));
         Assert.Equal(Capacity, buffer.Count);
-        Assert.True(buffer.TryPeekFront(out var front));
-        Assert.Equal(0, front);
+        Assert.Equal((0, Capacity - 1), EndsOf(buffer));
     }
 
     [Fact]
@@ -180,6 +180,16 @@ public sealed partial class CircularBufferTests
         }
     }
 
+    // Every index is masked by the array's length, which the buffer never rounds: it starts at
+    // ArrayGrowth's initial capacity and multiplies by its growth factor, so both have to be powers
+    // of two for the mask to be a modulo.
+    [Fact]
+    public void ArrayGrowth_InitialCapacityAndGrowthFactor_ArePowersOfTwo()
+    {
+        Assert.True(BitOperations.IsPow2(ArrayGrowth.InitialCapacity));
+        Assert.True(BitOperations.IsPow2(ArrayGrowth.GrowthFactor));
+    }
+
     // Holds 0, 1, 2 from front to back.
     private static CircularBuffer<int, BoundedCapacity> FullBuffer()
     {
@@ -249,7 +259,8 @@ public sealed partial class CircularBufferTests
         return (model[0], model[^1]);
     }
 
-    private static (int Front, int Back)? EndsOf(CircularBuffer<int, UnboundedCapacity> buffer)
+    private static (int Front, int Back)? EndsOf<TCapacity>(CircularBuffer<int, TCapacity> buffer)
+        where TCapacity : struct, IBufferCapacity
     {
         if (!buffer.TryPeekFront(out var front) || !buffer.TryPeekBack(out var back))
         {

@@ -25,13 +25,6 @@
       "expires": "2026-11-22"
     },
     {
-      "check": "check-class-size",
-      "path": "DSAExperimentation/DataStructures/Deque/CircularBuffer.cs",
-      "reason": "the metric's majority-connector filter excludes _items/_head/Count as plumbing (every method touches at least one), then clusters the survivors by which private helper they happen to call (BackIndex vs EnsureCapacity) - producing a 'front vs back' split that is not a real responsibility boundary for a single wraparound buffer. GetFront/RemoveFront read/write the same _head-relative slots AddFront/RemoveBack do; splitting front-end and back-end operations into separate types would duplicate the wraparound arithmetic, not separate concerns.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
       "check": "check-scope-discipline",
       "path": "DSAExperimentation.Tests/Algorithms/Reducing/Fixtures/ClosedBeforeOpenReduceAlgebra.cs",
       "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
@@ -68,17 +61,24 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/Deque/CircularBuffer.cs",
-      "reason": "each default! clears a slot that RemoveFront/RemoveBack has already made unreachable; the invariant is named inline as a `presumption: allow` comment, but this check's own default policy only honours that marker for safety-critical checks, so the exception is recorded here too.",
+      "path": "DSAExperimentation/DataStructures/CircularBuffer/CircularBuffer.cs",
+      "reason": "each default! is one of two invariants, both named inline as a `presumption: allow` comment: in TryPeekFront/TryPeekBack it is the standard TryGetValue/TryParse out-parameter contract (only meaningful when the method returns true), and in TryPopFront/TryPopBack it clears a slot the pop has already made unreachable, dropping a stale reference for the GC rather than meeting a correctness need. This check's own default policy only honours that marker for safety-critical checks, so the exception is recorded here too.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
-      "check": "check-presumption",
+      "check": "check-composition-over-inheritance",
       "path": "DSAExperimentation/DataStructures/Deque/Deque.cs",
-      "reason": "each default! is the standard TryGetValue/TryParse out-parameter contract (only meaningful when the method returns true); named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "reason": "Deque<Element> derives from CircularBuffer<Element, UnboundedCapacity> by design, recorded in ARCHITECTURE.md section 20 ('A configuration that keeps every operation is the buffer') and in CircularBuffer.cs's own header, which gives it as the reason the buffer is not sealed: a configuration that fixes the capacity witness and removes no operation is the buffer itself, not an object wrapping it. Holding the buffer as a named field and delegating is the shape this replaced, and it was measured: every object between a configuration and its array is a load on every operation, one the JIT cannot hoist out of a loop that makes a call, and with the deques facades one object further from their array, LC 641's deque at capacity 8 took 1.29 us where it had taken 1.06 us. The check's other remedy, declaring the base an extension point, means `abstract` in C# (the only modifier the check reads for it), and the buffer cannot be abstract: Queue, BoundedQueue and MonotonicDeque instantiate it directly, as facades that remove operations.",
       "owner": "@kmettias",
-      "expires": "2026-11-22"
+      "expires": "2027-04-01"
+    },
+    {
+      "check": "check-composition-over-inheritance",
+      "path": "DSAExperimentation/DataStructures/Deque/BoundedDeque.cs",
+      "reason": "the same design as Deque.cs's own check-composition-over-inheritance waiver, with the capacity witness fixed bounded rather than unbounded: BoundedDeque<Element> is CircularBuffer<Element, BoundedCapacity> itself (ARCHITECTURE.md section 20), so it reaches its array through one object rather than through a facade's field, and the buffer stays concrete because the queues instantiate it.",
+      "owner": "@kmettias",
+      "expires": "2027-04-01"
     },
     {
       "check": "check-presumption",
@@ -215,29 +215,36 @@
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation/DataStructures/Deque/Deque.cs",
-      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls a prefix cluster a review rather than an automatic defect - 'a prefix cluster is a strong signal, not proof' - and asks the reader to judge whether the shared prefix names a real responsibility before extracting. `Try` names no responsibility here: it is the attempt-returns-success shape of the BCL itself (TryParse, TryGetValue), and this check's own conventional-prefix table already rules the sibling shapes `Is`, `Has`, `Get`, `Set`, `Must` and `With` to be conventions rather than modules for exactly that reason - `Try` is simply absent from that table, which is why this fires. The four counted declarations (TryPeekFront, TryPeekBack, TryPopFront, TryPopBack) are the deque's entire peek/pop surface: this file's own header records that a throwing PeekFront/PopFront is deliberately absent, because emptiness is state an external caller cannot always know in advance, so the TryX forms are the only public way to read the ends - and the type's whole public surface is 7 declarations (Count, PushFront, PushBack and those four), all of one subject. Extracting them would carry the only access path to that subject away from the private buffer that implements it.",
+      "path": "DSAExperimentation/DataStructures/CircularBuffer/CircularBuffer.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls a prefix cluster a review rather than an automatic defect - 'a prefix cluster is a strong signal, not proof' - and asks the reader to judge whether the shared prefix names a real responsibility before extracting. `Try` names no responsibility here: it is the attempt-returns-success shape of the BCL itself (TryParse, TryGetValue), and this check's own conventional-prefix table already rules the sibling shapes `Is`, `Has`, `Get`, `Set`, `Must` and `With` to be conventions rather than modules for exactly that reason - `Try` is simply absent from that table, which is why this fires. The six counted declarations (TryPushFront, TryPushBack, TryPeekFront, TryPeekBack, TryPopFront, TryPopBack) are the buffer's entire push/peek/pop surface: this file's own header records that a throwing PeekFront/PopFront is deliberately absent, because whether the buffer is empty, or full, is state an external caller cannot always know in advance, so the TryX forms are the only public way to reach the ends - and the type's whole public surface is 8 declarations (Count, IsFull and those six), all of one subject. Extracting them would carry the only access path to that subject away from the array that implements it.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/DataStructures/Queue/Queue.cs",
+      "reason": "same precedent as CircularBuffer.cs's own check-responsibility-extraction waiver: 'Try' is the attempt-returns-success convention of the BCL (TryParse, TryGetValue), not a hidden module. The three counted declarations (TryPeek, TryPeekRear, TryDequeue) are the queue's whole read and removal surface, each a one-line forward to the CircularBuffer it composes, and this file's own header records that a throwing Peek/Dequeue is deliberately absent, because emptiness is state an external caller cannot always know in advance. Extracting them would leave Queue holding only Count and Enqueue, with the forwards still reaching the same buffer.",
+      "owner": "@kmettias",
+      "expires": "2027-04-01"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/DataStructures/Queue/BoundedQueue.cs",
+      "reason": "same precedent as CircularBuffer.cs's own check-responsibility-extraction waiver: 'Try' is the attempt-returns-success convention of the BCL (TryParse, TryGetValue), not a hidden module. The four counted declarations (TryEnqueue, TryPeek, TryPeekRear, TryDequeue) are the bounded queue's whole surface besides Count and IsFull, each a one-line forward to the CircularBuffer it composes: a full queue refuses an enqueue and an empty one refuses a read, state an external caller cannot always know in advance (ARCHITECTURE.md section 20). Extracting them would leave nothing behind but the two properties.",
+      "owner": "@kmettias",
+      "expires": "2027-04-01"
+    },
+    {
+      "check": "check-responsibility-extraction",
       "path": "DSAExperimentation/DataStructures/DynamicArray/DynamicArray.cs",
-      "reason": "same precedent as Deque.cs's own check-responsibility-extraction waiver: 'Try' is the attempt-returns-success convention of the BCL (TryParse, TryGetValue), not a hidden module. The nesting runs inward - Get, Set, Insert and RemoveAt each call their own TryX and throw only when it answers false - so each pair is one validity check under two calling conventions, and splitting the TryX into another file would carry the only copy of that check away from the four members that throw on it. This file's own header records why both forms exist here at all: an out-of-range index is an internal-trusted caller's bug rather than state an external caller cannot know in advance, so throwing loudly beats silently discarding a TryGet result at every internal call site. The paired \u003e8-public-members finding is the same fact: minimal indexed-access API is inherently throwing-form/Try-form x get/set/insert/remove, landing at 9 members without accidental sprawl.",
+      "reason": "same precedent as CircularBuffer.cs's own check-responsibility-extraction waiver: 'Try' is the attempt-returns-success convention of the BCL (TryParse, TryGetValue), not a hidden module. The nesting runs inward - Get, Set, Insert and RemoveAt each call their own TryX and throw only when it answers false - so each pair is one validity check under two calling conventions, and splitting the TryX into another file would carry the only copy of that check away from the four members that throw on it. This file's own header records why both forms exist here at all: an out-of-range index is an internal-trusted caller's bug rather than state an external caller cannot know in advance, so throwing loudly beats silently discarding a TryGet result at every internal call site. The paired \u003e8-public-members finding is the same fact: minimal indexed-access API is inherently throwing-form/Try-form x get/set/insert/remove, landing at 9 members without accidental sprawl.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
       "path": "DSAExperimentation/DataStructures/DisjointSet/DisjointSetForest.cs",
-      "reason": "same precedent as Deque.cs's own check-responsibility-extraction waiver: 'Try' is the attempt-returns-success convention of the BCL (TryParse, TryGetValue), not a hidden module. The nesting runs inward - GetParent, SetParent, GetRank and IncrementRank each call their own TryX and throw only when it answers false - so each pair is one validity check under two calling conventions, and splitting the TryX into another file would carry the only copy of that check away from the four members that throw on it. This file's own comment records why both forms exist here: unlike Heap/Stack/Deque/Queue/HashMap, whose throwing Peek/Pop/Get forms were removed, an out-of-range id is an internal-trusted caller's bug rather than state an external caller cannot know in advance, so throwing loudly beats silently discarding a TryGetParent/TryGetRank result at every internal call site. The paired \u003e8-public-members finding is the same fact: minimal id-indexed access API is inherently throwing-form/Try-form x parent/rank, landing at 9 members without accidental sprawl.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-function-cohesion",
-      "path": "DSAExperimentation.Tests/DataStructures/Deque/CircularBufferTests.cs",
-      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each of the 2 tests this entry waives performs one mutation (an add, a removal, a union, a write) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "reason": "same precedent as CircularBuffer.cs's own check-responsibility-extraction waiver: 'Try' is the attempt-returns-success convention of the BCL (TryParse, TryGetValue), not a hidden module. The nesting runs inward - GetParent, SetParent, GetRank and IncrementRank each call their own TryX and throw only when it answers false - so each pair is one validity check under two calling conventions, and splitting the TryX into another file would carry the only copy of that check away from the four members that throw on it. This file's own comment records why both forms exist here: unlike Heap/Stack/Deque/Queue/HashMap, whose throwing Peek/Pop/Get forms were removed, an out-of-range id is an internal-trusted caller's bug rather than state an external caller cannot know in advance, so throwing loudly beats silently discarding a TryGetParent/TryGetRank result at every internal call site. The paired \u003e8-public-members finding is the same fact: minimal id-indexed access API is inherently throwing-form/Try-form x parent/rank, landing at 9 members without accidental sprawl.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -384,14 +391,14 @@
     {
       "check": "check-parameter-count",
       "path": "DSAExperimentation/Algorithms/Backtracking/Backtrack.cs",
-      "reason": "the 6-parameter Search overload (state plus 5 delegates) is a deliberate ergonomic surface, not an accidental one - its own doc comment explains why: it exists specifically so exhaustive-enumeration callers (Subsets, Permutations, N-Queens counting) get a void onSolution and can't accidentally truncate their own search by returning the wrong bool, the exact footgun the canonical BacktrackingSteps\u003cTState,TChoice\u003e-based overload's bool-returning OnSolution invites. Collapsing this overload's parameters into a record struct, as the mechanical fix suggests, would just move that same footgun back onto every caller of this overload - the same 'this broad surface is the type's actual minimum complete API' shape Deque.cs's own check-responsibility-extraction waiver already establishes for a structurally-necessary parameter/member count.",
+      "reason": "the 6-parameter Search overload (state plus 5 delegates) is a deliberate ergonomic surface, not an accidental one - its own doc comment explains why: it exists specifically so exhaustive-enumeration callers (Subsets, Permutations, N-Queens counting) get a void onSolution and can't accidentally truncate their own search by returning the wrong bool, the exact footgun the canonical BacktrackingSteps\u003cTState,TChoice\u003e-based overload's bool-returning OnSolution invites. Collapsing this overload's parameters into a record struct, as the mechanical fix suggests, would just move that same footgun back onto every caller of this overload - the same 'this broad surface is the type's actual minimum complete API' shape CircularBuffer.cs's own check-responsibility-extraction waiver already establishes for a structurally-necessary parameter/member count.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
       "path": "DSAExperimentation/Algorithms/StringMatching/Manacher.cs",
-      "reason": "the shared 'Compute' prefix across ComputeOddRadii/ComputeEvenRadii's 4 overload declarations is not a hidden module - it names the one algorithm's two inseparable halves. Manacher's algorithm computes odd- and even-centered palindrome radii by the same technique, and FindLongestPalindromicSubstring genuinely needs both results together to answer 'what is the single longest palindrome' (an odd-only or even-only palindrome could each independently be the answer). Splitting them into separate files would fragment one cohesive technique into two files that always get called together, the same 'this broad surface is the type's actual minimum complete API' shape Deque.cs's own check-responsibility-extraction waiver already establishes.",
+      "reason": "the shared 'Compute' prefix across ComputeOddRadii/ComputeEvenRadii's 4 overload declarations is not a hidden module - it names the one algorithm's two inseparable halves. Manacher's algorithm computes odd- and even-centered palindrome radii by the same technique, and FindLongestPalindromicSubstring genuinely needs both results together to answer 'what is the single longest palindrome' (an odd-only or even-only palindrome could each independently be the answer). Splitting them into separate files would fragment one cohesive technique into two files that always get called together, the same 'this broad surface is the type's actual minimum complete API' shape CircularBuffer.cs's own check-responsibility-extraction waiver already establishes.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },

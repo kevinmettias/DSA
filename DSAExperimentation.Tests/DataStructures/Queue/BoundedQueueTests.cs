@@ -15,23 +15,46 @@ public sealed partial class BoundedQueueTests
     {
         var queue = FullQueue();
 
-        Assert.True(queue.IsFull);
         Assert.False(queue.TryEnqueue(9));
         Assert.True(queue.TryPeekRear(out var rear));
         Assert.Equal(2, rear);
     }
 
     [Fact]
-    public void TryDequeue_Full_ReturnsTheOldestAndMakesRoom()
+    public void IsFull_Full_ReturnsTrue() => Assert.True(FullQueue().IsFull);
+
+    [Fact]
+    public void IsFull_AfterADequeueFromFull_ReturnsFalse()
+    {
+        var queue = FullQueue();
+        queue.TryDequeue(out _);
+
+        Assert.False(queue.IsFull);
+    }
+
+    [Fact]
+    public void TryEnqueue_AfterADequeueFromFull_Accepts()
+    {
+        var queue = FullQueue();
+        queue.TryDequeue(out _);
+
+        Assert.True(queue.TryEnqueue(3));
+    }
+
+    [Fact]
+    public void TryDequeue_Full_ReturnsTheOldest()
     {
         var queue = FullQueue();
 
         Assert.True(queue.TryDequeue(out var front));
         Assert.Equal(1, front);
-        Assert.False(queue.IsFull);
-        Assert.True(queue.TryEnqueue(3));
-        Assert.True(queue.TryPeek(out var oldest));
-        Assert.Equal(2, oldest);
+    }
+
+    [Fact]
+    public void TryPeek_Full_ReturnsTheOldest()
+    {
+        Assert.True(FullQueue().TryPeek(out var front));
+        Assert.Equal(1, front);
     }
 
     [Fact]
