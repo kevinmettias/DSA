@@ -1677,12 +1677,11 @@ judge reads back from it: there, each level along its next pointers with `#` bet
   assert what that check cannot — an expected value derived independently of the arms, a property
   of the workload's shape, a size other than the smallest. A companion that compares arms only with
   each other restates the generic check under a different name, and is not written.
-- **Tier 1 and tier 2 owe direct unit tests, and the LeetCode tier is a layer on top, not a
-  substitute.** A data structure or algorithm is not covered because some LeetCode solution happens
-  to compose it: a coverage tree shaped that way can only tell you a problem's answer changed, not
-  which primitive broke. `DSAExperimentation.Tests/` mirrors the source tree for exactly this
-  reason, and `DSAExperimentation.LeetCode.Tests/` mirrors the LeetCode tier's own models the same
-  way: `OpenTheLock/LockGraphTests.cs` tests `LeetCode/OpenTheLock/LockGraph.cs`.
+- **Every library tier owes direct unit tests, and the LeetCode tier is a layer on top, not a
+  substitute.** A data structure, algorithm, mechanism or domain model is not covered because some
+  LeetCode solution happens to compose it: a coverage tree shaped that way can only tell you a
+  problem's answer changed, not which piece broke. `DSAExperimentation.Tests/` mirrors the source
+  tree for exactly this reason: `Domain/Locks/LockGraphTests.cs` tests `Domain/Locks/LockGraph.cs`.
 - **A type's rationale goes in prose here, never in `<remarks>`, and `check-doc-schema` is why.**
   `<remarks>` is C#'s catch-all bucket: the check projects it as free prose rather than a section,
   because a type's doc is otherwise only its summary plus the sections its signature implies
