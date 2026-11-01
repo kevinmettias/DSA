@@ -1963,8 +1963,10 @@ OpenTheLock and MinimumSizeSubarraySum. The deque's other adopters read within t
 LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit, which keeps two deques, measured
 anywhere from −1% to +19% across passes. The JIT's own output settled it instead. With everything
 inlined, the hot path compiles to 306 instructions against the hand-written version's 298, with no
-calls in either and the same twelve divisions, so the spread was the machine. The divisions are
-`CircularBuffer`'s `%` on every index, shared by every deque and queue alike.
+calls in either and the same twelve divisions, so the spread was the machine. Those divisions were
+`CircularBuffer`'s `%` on every index, shared by every deque and queue alike. Its length is now
+always a power of two, so an index is masked instead. Across the measured hot paths, the JIT output
+went from 68 divisions to none, and the five `MonotonicDeque` adopters measured ran 7–40% faster.
 
 One solution declines the deque, on measurement. MaximumSumOfMNonOverlappingSubarraysII ranks
 starts by a two-part key, transition then fewer subarrays, and every key can be read back from its
