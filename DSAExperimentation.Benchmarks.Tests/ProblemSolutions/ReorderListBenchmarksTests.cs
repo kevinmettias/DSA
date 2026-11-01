@@ -16,12 +16,6 @@ public sealed partial class ReorderListBenchmarksTests
     private const int SmallestLength = 1_000;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(BuildHarness().ReverseAndMergeInPlace())),
-            AnswerGraphText.Of(ValuesOf(BuildHarness().ReverseAndMergeInPlace())));
-
-    [Fact]
     public void ReverseAndMergeInPlace_SequentialValues_WeavesTheChainEndsInward()
     {
         var harness = BuildHarness();

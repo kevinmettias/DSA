@@ -1,20 +1,11 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for MergeSimilarItemsBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - rescanning the output list for a matching value on every insert
-// against accumulating into this repo's own HashMap<int, int> and sorting with MergeSort - so a harness
-// whose arms disagree is timing two different problems. Both arms return the merged items in ascending
-// value order, which is the order LeetCode 2363 pins, so the order-sensitive rendering is the right
-// comparison.
-//
-// The fixture's items1 holds the even values and items2 the odd ones, each once, so the answer is
-// documented to be both value sets merged into one entry per value, and that count is what the arm
-// tests pin before comparing the two readings. Both arms only read the two item arrays, so one harness
-// is safe to read twice in either order, and Setup derives the items from Length alone, so the same
-// Length must rebuild the same disjoint value sets.
+// Harness coverage for MergeSimilarItemsBenchmarks (ARCHITECTURE 17.9): the fixture's items1 holds the
+// even values and items2 the odd ones, each once, so the answer is documented to be both value sets
+// merged into one entry per value - an entry count derived from the workload's construction rather
+// than from either arm, which the generic agreement check cannot supply.
 public sealed partial class MergeSimilarItemsBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -25,32 +16,8 @@ public sealed partial class MergeSimilarItemsBenchmarksTests
     private const int ExpectedMergedItemCount = SmallestLength * DisjointValueSetCount;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().LinearScan()),
-            AnswerGraphText.Of(BuildHarness().LinearScan()));
-
-    [Fact]
-    public void LinearScan_DisjointSeededItems_AgreesWithHashMapAndMergeSort()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedMergedItemCount, harness.LinearScan().Count);
-        Assert.Equal(
-            AnswerGraphText.Of(harness.HashMapAndMergeSort()),
-            AnswerGraphText.Of(harness.LinearScan()));
-    }
-
-    [Fact]
-    public void HashMapAndMergeSort_DisjointSeededItems_AgreesWithLinearScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedMergedItemCount, harness.HashMapAndMergeSort().Count);
-        Assert.Equal(
-            AnswerGraphText.Of(harness.LinearScan()),
-            AnswerGraphText.Of(harness.HashMapAndMergeSort()));
-    }
+    public void LinearScan_DisjointSeededItems_KeepsOneEntryPerValue() =>
+        Assert.Equal(ExpectedMergedItemCount, BuildHarness().LinearScan().Count);
 
     private static MergeSimilarItemsBenchmarks BuildHarness()
     {

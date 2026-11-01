@@ -2,17 +2,11 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for NumberOfSubarraysThatMatchAPatternIBenchmarks (ARCHITECTURE 17.9): both arms
-// count the windows of nums whose consecutive signs equal pattern - the O(n*m) scan against the
-// prefix-function search over the reduced sign texts - so a harness whose arms disagree is timing two
-// different questions. The count is the problem's whole answer rather than a proxy.
-//
-// The fixture saturates that answer, so agreement alone would be weak: nums is strictly increasing and
-// pattern is all 1s, so every window matches and both arms report the largest count the work can have.
-// The oracle below is derived from the workload's own layout (a matching window starts at every
-// i with i + patternLength < numsLength) rather than from either arm, so the test still fails if an
-// arm drops windows - the failure bare agreement could not separate from "both found the same
-// saturated count".
+// Harness coverage for NumberOfSubarraysThatMatchAPatternIBenchmarks (ARCHITECTURE 17.9): the
+// baseline's count against one derived from the workload's own layout rather than from either arm,
+// which the generic check cannot supply - it holds the prefix-function arm to the baseline, and arms
+// that drop the same windows agree just as well. nums is strictly increasing and pattern is all 1s,
+// so every window matches: a matching window starts at every i with i + patternLength < numsLength.
 public sealed partial class NumberOfSubarraysThatMatchAPatternIBenchmarksTests
 {
     private const int SmallestNumsLength = 20;
@@ -22,27 +16,11 @@ public sealed partial class NumberOfSubarraysThatMatchAPatternIBenchmarksTests
     private const int PatternShareDivisor = 2;
 
     [Fact]
-    public void Setup_SameParameters_RebuildsTheSameWorkload() =>
-        Assert.Equal(BuildHarness().BruteForce(), BuildHarness().BruteForce());
-
-    [Fact]
-    public void BruteForce_EveryWindowMatches_AgreesWithPrefixFunctionSearch()
+    public void BruteForce_EveryWindowMatches_CountsEveryWindow()
     {
         var harness = BuildHarness();
-        var bruteForce = harness.BruteForce();
 
-        Assert.Equal(ExpectedAllMatchingWindowCount(harness), bruteForce);
-        Assert.Equal(bruteForce, harness.PrefixFunctionSearch());
-    }
-
-    [Fact]
-    public void PrefixFunctionSearch_EveryWindowMatches_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-        var prefixFunction = harness.PrefixFunctionSearch();
-
-        Assert.Equal(ExpectedAllMatchingWindowCount(harness), prefixFunction);
-        Assert.Equal(prefixFunction, harness.BruteForce());
+        Assert.Equal(ExpectedAllMatchingWindowCount(harness), harness.BruteForce());
     }
 
     private static NumberOfSubarraysThatMatchAPatternIBenchmarks BuildHarness()

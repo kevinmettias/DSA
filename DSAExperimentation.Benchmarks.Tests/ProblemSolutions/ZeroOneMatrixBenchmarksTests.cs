@@ -1,13 +1,11 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ZeroOneMatrixBenchmarks (ARCHITECTURE 17.9): both arms are competing
-// strategies for one question - every cell's distance to its nearest zero - so a harness whose arms
-// disagree is timing two different problems. Neither arm writes into the input matrix, so one
-// harness instance is safe to call twice in either order. Setup pins one cell to zero, which is the
-// decisive value: a plotted distance at a zero cell is zero.
+// Harness coverage for ZeroOneMatrixBenchmarks (ARCHITECTURE 17.9): the generic check holds the arms
+// to agreeing with each other, which a shared wrong distance map would pass. Setup pins one cell to
+// zero, which is the decisive value pinned on the baseline: a plotted distance at a zero cell is
+// zero.
 public sealed partial class ZeroOneMatrixBenchmarksTests
 {
     private const int SmallestSize = 10;
@@ -16,28 +14,8 @@ public sealed partial class ZeroOneMatrixBenchmarksTests
     private const int ZeroCellDistance = 0;
 
     [Fact]
-    public void Setup_SameSize_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().PerCellBfs()),
-            AnswerGraphText.Of(BuildHarness().PerCellBfs()));
-
-    [Fact]
-    public void PerCellBfs_AgreesWithMultiSourceBfs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.PerCellBfs()),
-            AnswerGraphText.Of(harness.MultiSourceBfs()));
-    }
-
-    [Fact]
     public void PerCellBfs_PinnedZeroCell_ReportsZeroDistance() =>
         Assert.Equal(ZeroCellDistance, BuildHarness().PerCellBfs()[PinnedZeroRow][PinnedZeroColumn]);
-
-    [Fact]
-    public void MultiSourceBfs_PinnedZeroCell_ReportsZeroDistance() =>
-        Assert.Equal(ZeroCellDistance, BuildHarness().MultiSourceBfs()[PinnedZeroRow][PinnedZeroColumn]);
 
     private static ZeroOneMatrixBenchmarks BuildHarness()
     {

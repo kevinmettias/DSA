@@ -1,40 +1,19 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ZigzagGridTraversalWithSkipBenchmarks (ARCHITECTURE 17.9): both arms are
-// competing traversals for one grid, so a harness whose arms disagree is timing two different
-// problems. The flattened snake order is read sequentially, so the answer's order is pinned and the
-// comparison is order-sensitive. The grid is square and the skip keeps every other value of that
-// order starting with the first, so the answer's length is a decisive value independent of both
-// arms.
+// Harness coverage for ZigzagGridTraversalWithSkipBenchmarks (ARCHITECTURE 17.9): the generic check
+// holds the arms to agreeing with each other, which a shared wrong traversal would pass. The grid is
+// square and the skip keeps every other value of the snake order starting with the first, so the
+// answer's length is a decisive value independent of both arms, pinned on the baseline.
 public sealed partial class ZigzagGridTraversalWithSkipBenchmarksTests
 {
     private const int SmallestGridSize = 10;
     private const int ExpectedTraversalLength = (SmallestGridSize * SmallestGridSize + 1) / 2;
 
     [Fact]
-    public void Setup_SameGridSize_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().IndexFormula()),
-            AnswerGraphText.Of(BuildHarness().IndexFormula()));
-
-    [Fact]
-    public void IndexFormula_AgreesWithRowStack()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.Of(harness.IndexFormula()), AnswerGraphText.Of(harness.RowStack()));
-    }
-
-    [Fact]
     public void IndexFormula_EveryOtherCellOfTheSnakeOrder_KeepsHalfTheCells() =>
         Assert.Equal(ExpectedTraversalLength, BuildHarness().IndexFormula().Length);
-
-    [Fact]
-    public void RowStack_EveryOtherCellOfTheSnakeOrder_KeepsHalfTheCells() =>
-        Assert.Equal(ExpectedTraversalLength, BuildHarness().RowStack().Length);
 
     private static ZigzagGridTraversalWithSkipBenchmarks BuildHarness()
     {

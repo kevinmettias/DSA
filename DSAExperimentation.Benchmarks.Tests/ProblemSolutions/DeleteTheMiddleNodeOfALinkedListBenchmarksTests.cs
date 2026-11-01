@@ -1,16 +1,12 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for DeleteTheMiddleNodeOfALinkedListBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - counting the list and copying every node but the middle
-// against splicing the middle out in one slow/fast traversal - so a harness whose arms disagree is timing
-// two different problems. Setup draws the values from one fixed seed, and deleting is destructive, so each
-// arm is handed a list rebuilt from those same values. LeetCode 2095 always removes exactly one node, so
-// the reading's documented shape is a chain one node shorter than the one it was given; the same Length
-// must rebuild the same values and with them the same survivors.
+// Harness coverage for DeleteTheMiddleNodeOfALinkedListBenchmarks (ARCHITECTURE 17.9): the generic arm
+// check compares the arms only with each other, so what stays here is a length derived without either
+// arm. LeetCode 2095 always removes exactly one node, so the reading's documented shape is a chain one
+// node shorter than the one it was given.
 public sealed partial class DeleteTheMiddleNodeOfALinkedListBenchmarksTests
 {
     private const int SmallestLength = 500;
@@ -18,37 +14,10 @@ public sealed partial class DeleteTheMiddleNodeOfALinkedListBenchmarksTests
     private const int ExpectedRemainingNodeCount = SmallestLength - 1;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload()
-    {
+    public void CountThenRebuild_FiveHundredSeededValues_LeavesOneNodeFewer() =>
         Assert.Equal(ExpectedRemainingNodeCount, Values(BuildHarness().CountThenRebuild()).Count);
-        Assert.Equal(
-            AnswerGraphText.Of(Values(BuildHarness().CountThenRebuild())),
-            AnswerGraphText.Of(Values(BuildHarness().CountThenRebuild())));
-    }
 
-    [Fact]
-    public void CountThenRebuild_FiveHundredSeededValues_AgreesWithSlowFastPointers()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedRemainingNodeCount, Values(harness.CountThenRebuild()).Count);
-        Assert.Equal(
-            AnswerGraphText.Of(Values(harness.SlowFastPointers())),
-            AnswerGraphText.Of(Values(harness.CountThenRebuild())));
-    }
-
-    [Fact]
-    public void SlowFastPointers_FiveHundredSeededValues_AgreesWithCountThenRebuild()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedRemainingNodeCount, Values(harness.SlowFastPointers()).Count);
-        Assert.Equal(
-            AnswerGraphText.Of(Values(harness.CountThenRebuild())),
-            AnswerGraphText.Of(Values(harness.SlowFastPointers())));
-    }
-
-    // Both arms report the surviving chain, so the test reads the values off it rather than comparing nodes.
+    // The arm reports the surviving chain, so the test reads the values off it rather than counting nodes.
     private static List<int> Values(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();

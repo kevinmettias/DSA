@@ -3,14 +3,14 @@ using BclQueue = System.Collections.Generic.Queue<int>;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ImplementQueueUsingStacksBenchmarks (ARCHITECTURE 17.9): each arm's
-// answers are checked against the queue contract itself. Its [GlobalSetup] draws one fixed,
-// valid script of interleaved push/pop/peek entries (a pop or peek only ever follows a push that
-// has not yet been popped) and each arm replays that script through its own two-stack queue,
-// returning every value pop and peek answered. A FIFO queue's
-// contract fixes those answers: the reference replay below drives the identical script - same
-// seed, same roll and value draws, same order - through a BCL Queue<int>, so the two sequences
-// agree only if the measured queue is genuinely FIFO.
+// Harness coverage for ImplementQueueUsingStacksBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests
+// already holds the arms to agreeing on the smallest workload, so the baseline's answers are
+// checked here against the queue contract itself. Its [GlobalSetup] draws one fixed, valid script
+// of interleaved push/pop/peek entries (a pop or peek only ever follows a push that has not yet
+// been popped) and each arm replays that script through its own two-stack queue, returning every
+// value pop and peek answered. A FIFO queue's contract fixes those answers: the reference replay
+// below drives the identical script - same seed, same roll and value draws, same order - through a
+// BCL Queue<int>, so the two sequences agree only if the measured queue is genuinely FIFO.
 public sealed partial class ImplementQueueUsingStacksBenchmarksTests
 {
     private const int SmallestOperationCount = 10;
@@ -32,14 +32,6 @@ public sealed partial class ImplementQueueUsingStacksBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(ReferenceFifoAnswers(SmallestOperationCount), harness.TwoBclStackTransfer());
-    }
-
-    [Fact]
-    public void TwoStackTransfer_InterleavedScript_MatchesBclQueueReference()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ReferenceFifoAnswers(SmallestOperationCount), harness.TwoStackTransfer());
     }
 
     private static ImplementQueueUsingStacksBenchmarks BuildHarness()

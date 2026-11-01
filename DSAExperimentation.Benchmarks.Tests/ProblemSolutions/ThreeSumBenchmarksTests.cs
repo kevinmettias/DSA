@@ -3,20 +3,15 @@ using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ThreeSumBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - cubic duplicate-filtered brute force against MergeSort plus
-// the sorted two-pointer sweep - so a harness whose arms disagree is timing two different problems.
-//
-// The genuinely unfixed order here is the OUTER one: LC 15 asks for the set of unique triplets and
-// never fixes the sequence they are listed in. The two arms really do use different ones - the
-// brute force returns a HashSet's enumeration order, while the sweep emits triplets in ascending
-// first-element order - which the repo's own LeetCodeCoverage/ThreeSum tests document as outside
-// either strategy's contract. Each triplet's own three values keep a fixed order (both arms sort
-// into ascending first < second < third), so the set comparison still checks every triplet
-// order-sensitively and cannot hide a disagreement about which triplets were found.
+// Harness coverage for ThreeSumBenchmarks (ARCHITECTURE 17.9): LC 15 asks for the set of unique
+// triplets and never fixes the sequence they are listed in, and the two arms really do use different
+// ones - the brute force returns a HashSet's enumeration order, while the sweep emits triplets in
+// ascending first-element order - so the generic arm check compares their answers, and each arm's
+// answer across rebuilds, only as unordered sets.
 //
 // Setup draws the values from a fixed seed, so the same Length must rebuild the same workload; the
-// same arm called on two harnesses must then reproduce the identical answer, order included.
+// same arm called on two harnesses must then reproduce the identical answer, order included - the
+// one rebuild property the unordered comparison cannot see.
 public sealed partial class ThreeSumBenchmarksTests
 {
     private const int SmallestLength = 80;
@@ -26,26 +21,6 @@ public sealed partial class ThreeSumBenchmarksTests
         Assert.Equal(
             AnswerGraphText.Of(BuildHarness().MergeSortTwoPointers()),
             AnswerGraphText.Of(BuildHarness().MergeSortTwoPointers()));
-
-    [Fact]
-    public void BruteForce_SmallestLength_AgreesWithMergeSortTwoPointers()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.OfUnordered(harness.MergeSortTwoPointers()),
-            AnswerGraphText.OfUnordered(harness.BruteForce()));
-    }
-
-    [Fact]
-    public void MergeSortTwoPointers_SmallestLength_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.OfUnordered(harness.BruteForce()),
-            AnswerGraphText.OfUnordered(harness.MergeSortTwoPointers()));
-    }
 
     private static ThreeSumBenchmarks BuildHarness()
     {

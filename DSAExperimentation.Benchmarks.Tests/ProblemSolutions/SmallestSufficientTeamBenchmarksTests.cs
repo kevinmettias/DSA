@@ -2,15 +2,13 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SmallestSufficientTeamBenchmarks (ARCHITECTURE 17.9): both arms are
-// SmallestSufficientTeamSolution's searches over the same SkillMasks, so a harness whose arms
-// disagree is timing two different problems. Setup derives each size's masks from the skill
-// count alone, so the same skill count must rebuild the same workload.
+// Harness coverage for SmallestSufficientTeamBenchmarks (ARCHITECTURE 17.9). Arm agreement is
+// BenchmarkArmsTests' job; this pins the baseline's team to a property of the workload's shape.
 //
-// Both arms return the team itself. Setup gives each skill exactly PeoplePerSkill dedicated
+// The arms return the team itself. Setup gives each skill exactly PeoplePerSkill dedicated
 // people, listed skill by skill, so nobody covers more than one skill, no team smaller than
 // the skill count can cover them all, and a smallest team is one person per skill: person p
-// covers skill p / PeoplePerSkill. Each arm's team is asserted against that size and that
+// covers skill p / PeoplePerSkill. The baseline's team is asserted against that size and that
 // coverage, which keeps the comparison from being two arms sharing one wrong team.
 public sealed partial class SmallestSufficientTeamBenchmarksTests
 {
@@ -23,18 +21,8 @@ public sealed partial class SmallestSufficientTeamBenchmarksTests
     private const int ExpectedTeamSize = SmallestSkillCount;
 
     [Fact]
-    public void Setup_SameSkillCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            BuildHarness().BruteForceRecursion(SmallestSkillCount),
-            BuildHarness().BruteForceRecursion(SmallestSkillCount));
-
-    [Fact]
     public void BruteForceRecursion_OnePersonPerSkill_PicksOnePersonForEverySkill() =>
         AssertOnePersonPerSkill(BuildHarness().BruteForceRecursion(SmallestSkillCount));
-
-    [Fact]
-    public void MemoizedRecursion_OnePersonPerSkill_PicksOnePersonForEverySkill() =>
-        AssertOnePersonPerSkill(BuildHarness().MemoizedRecursion(SmallestSkillCount));
 
     private static void AssertOnePersonPerSkill(int[] team)
     {

@@ -4,18 +4,13 @@ using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for MergeKSortedListsBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - flattening every list and sorting the values against the
-// K-way heap merge - so a harness whose arms disagree is timing two different problems. Both arms
-// report the merged chain, so the test reads the values off it rather than comparing nodes; the merge
-// is order-defining, so the order-sensitive rendering is the right comparison.
-//
-// The workload is its own oracle: list `offset` holds offset, ListCount + offset, 2 * ListCount +
-// offset, ... so ListCount lists of ValuesPerList values tile 0 .. ListCount * ValuesPerList - 1
-// exactly once each, and the answer is documented to be that whole range in ascending order. Both arms
-// splice the input nodes' own Next pointers, so each rebuilds its lists inside the measured call and
-// one harness is safe to read twice in either order. Setup derives the values from the two counts
-// alone, so the same ListCount must rebuild the same lists.
+// Harness coverage for MergeKSortedListsBenchmarks (ARCHITECTURE 17.9): the workload is its own
+// oracle: list `offset` holds offset, ListCount + offset, 2 * ListCount + offset, ... so ListCount
+// lists of ValuesPerList values tile 0 .. ListCount * ValuesPerList - 1 exactly once each, and the
+// answer is documented to be that whole range in ascending order - an expected value the generic
+// agreement check, which only compares arms with each other, cannot supply. The baseline reports the
+// merged chain, so the test reads the values off it rather than comparing nodes; the merge is
+// order-defining, so the order-sensitive rendering is the right comparison.
 public sealed partial class MergeKSortedListsBenchmarksTests
 {
     private const int SmallestListCount = 8;
@@ -26,38 +21,12 @@ public sealed partial class MergeKSortedListsBenchmarksTests
     private const int ExpectedMergedValueCount = SmallestListCount * ValuesPerList;
 
     [Fact]
-    public void Setup_SameListCount_RebuildsTheSameWorkload() =>
+    public void FlattenSort_TiledValueLists_MergesIntoTheWholeAscendingRange() =>
         Assert.Equal(
-            AnswerGraphText.Of(Values(BuildHarness().FlattenSort())),
+            AnswerGraphText.Of(Enumerable.Range(0, ExpectedMergedValueCount)),
             AnswerGraphText.Of(Values(BuildHarness().FlattenSort())));
 
-    [Fact]
-    public void FlattenSort_TiledValueLists_AgreesWithMergeByHeap()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(Enumerable.Range(0, ExpectedMergedValueCount)),
-            AnswerGraphText.Of(Values(harness.FlattenSort())));
-        Assert.Equal(
-            AnswerGraphText.Of(Values(harness.MergeByHeap())),
-            AnswerGraphText.Of(Values(harness.FlattenSort())));
-    }
-
-    [Fact]
-    public void MergeByHeap_TiledValueLists_AgreesWithFlattenSort()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(Enumerable.Range(0, ExpectedMergedValueCount)),
-            AnswerGraphText.Of(Values(harness.MergeByHeap())));
-        Assert.Equal(
-            AnswerGraphText.Of(Values(harness.FlattenSort())),
-            AnswerGraphText.Of(Values(harness.MergeByHeap())));
-    }
-
-    // Both arms report the merged chain, so the test reads the values off it rather than comparing nodes.
+    // The arm reports the merged chain, so the test reads the values off it rather than comparing nodes.
     private static List<int> Values(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();

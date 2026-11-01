@@ -1,21 +1,16 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for InsertGreatestCommonDivisorsInLinkedListBenchmarks (ARCHITECTURE 17.9).
-// Both arms are competing strategies for the same question - a fresh sequence rebuilt through a
-// value buffer against one gcd node spliced between each original pair - so a harness whose arms
-// disagree is timing two different problems. Both arms return the resulting list's head, which
-// is the real answer rather than a proxy. The expected answer is stated as plain values and a
-// linked node is not an enumerable sequence, so each result is walked into its values first.
-// The expected sequence is derived from the fixture, not read back out of an arm:
+// Harness coverage for InsertGreatestCommonDivisorsInLinkedListBenchmarks (ARCHITECTURE 17.9):
+// BenchmarkArmsTests already holds the arms to agreeing on the smallest workload, so this asserts
+// only the sequence derived from the fixture rather than read back out of an arm. The baseline
+// returns the resulting list's head; the expected answer is stated as plain values and a linked
+// node is not an enumerable sequence, so the result is walked into its values first.
 // [GlobalSetup] builds the values 1..Length in order (wrapping only past LC 2807's 1,000 value
 // cap, beyond the smallest length), and two consecutive integers always have a greatest common
-// divisor of one, so every inserted node holds one and the answer is fixed. Each arm clones
-// the shared list inside the measured call (the splice rewrites .Next in place), so one
-// harness is safe to call twice in either order.
+// divisor of one, so every inserted node holds one and the answer is fixed.
 public sealed partial class InsertGreatestCommonDivisorsInLinkedListBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -29,29 +24,8 @@ public sealed partial class InsertGreatestCommonDivisorsInLinkedListBenchmarksTe
     private const int SecondWorkloadValue = 2;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload()
-    {
-        Assert.Equal(RenderedValues(BuildHarness().ValueRebuild()), RenderedValues(BuildHarness().ValueRebuild()));
-        Assert.Equal(RenderedValues(BuildHarness().NodeSplice()), RenderedValues(BuildHarness().NodeSplice()));
-    }
-
-    [Fact]
-    public void ValueRebuild_InterleavedGcds_AgreesWithNodeSplice()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(RenderedValues(harness.NodeSplice()), RenderedValues(harness.ValueRebuild()));
-        Assert.Equal(ExpectedGcdInterleaved(SmallestLength), ValuesOf(harness.ValueRebuild()));
-    }
-
-    [Fact]
-    public void NodeSplice_InterleavedGcds_AgreesWithValueRebuild()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(RenderedValues(harness.ValueRebuild()), RenderedValues(harness.NodeSplice()));
-        Assert.Equal(ExpectedGcdInterleaved(SmallestLength), ValuesOf(harness.NodeSplice()));
-    }
+    public void ValueRebuild_ConsecutiveValues_InterleavesAGcdOfOneBetweenEveryPair() =>
+        Assert.Equal(ExpectedGcdInterleaved(SmallestLength), ValuesOf(BuildHarness().ValueRebuild()));
 
     private static InsertGreatestCommonDivisorsInLinkedListBenchmarks BuildHarness()
     {
@@ -60,8 +34,6 @@ public sealed partial class InsertGreatestCommonDivisorsInLinkedListBenchmarksTe
 
         return harness;
     }
-
-    private static string RenderedValues(SinglyLinkedListNode<int>? answer) => AnswerGraphText.Of(ValuesOf(answer));
 
     private static int[] ValuesOf(SinglyLinkedListNode<int>? answer)
     {

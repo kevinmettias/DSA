@@ -2,15 +2,11 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SumOfTwoIntegersBenchmarks (ARCHITECTURE 17.9): both arms are
-// SumOfTwoIntegersSolution's compliant adders - a bit-at-a-time ripple-carry adder against the
-// XOR/AND-shift carry loop - so a harness whose arms disagree is timing two different questions. Both
-// answer with a bare int, and the pair is the class's own fixed second addend against the smaller of
-// its two FirstAddend values, so the sum is a constant rather than merely agreed: two arms that were
-// both wrong in the same way would otherwise agree.
-//
-// The class carries no [GlobalSetup] and no [Params]-driven state, so there is no workload to rebuild
-// and nothing for a Setup test to pin.
+// Harness coverage for SumOfTwoIntegersBenchmarks (ARCHITECTURE 17.9): both arms answer with a bare
+// int, and the pair is the class's own fixed second addend against the smaller of its two
+// FirstAddend values, so the sum is a constant rather than merely agreed. The baseline is pinned to
+// it, since two arms that were both wrong in the same way would still pass the generic arm check's
+// agreement.
 public sealed partial class SumOfTwoIntegersBenchmarksTests
 {
     // Mirrors SumOfTwoIntegersBenchmarks' own private SecondAddend.
@@ -19,22 +15,8 @@ public sealed partial class SumOfTwoIntegersBenchmarksTests
     private const int ExpectedSum = SmallestFirstAddend + SecondAddend;
 
     [Fact]
-    public void RippleCarryAdder_SmallestAddendPair_AgreesWithTheOtherArm()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BitwiseCarryLoop(), harness.RippleCarryAdder());
-        Assert.Equal(ExpectedSum, harness.RippleCarryAdder());
-    }
-
-    [Fact]
-    public void BitwiseCarryLoop_SmallestAddendPair_AgreesWithTheOtherArm()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.RippleCarryAdder(), harness.BitwiseCarryLoop());
-        Assert.Equal(ExpectedSum, harness.BitwiseCarryLoop());
-    }
+    public void RippleCarryAdder_SmallestAddendPair_ReturnsTheirSum() =>
+        Assert.Equal(ExpectedSum, BuildHarness().RippleCarryAdder());
 
     private static SumOfTwoIntegersBenchmarks BuildHarness() =>
         new() { FirstAddend = SmallestFirstAddend };

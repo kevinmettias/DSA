@@ -4,8 +4,9 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks (ARCHITECTURE 17.9), for what
 // BenchmarkArmsTests cannot pin: that the script empties the collection, which follows from Setup's construction
-// rather than from either arm. Each arm replays the same fixed script against an instance it builds inside the call
-// and returns every Insert verdict, then every Remove verdict. The removal order is a shuffled copy of the insertion
+// rather than from either arm, checked on the baseline because that check already holds the other arm to it. Each
+// arm replays the same fixed script against an instance it builds inside the call and returns every Insert verdict,
+// then every Remove verdict. The removal order is a shuffled copy of the insertion
 // order, so it carries exactly the same multiplicities and every removal finds an occurrence left to consume - with
 // the fixture's narrow value range that means every duplicate occurrence was found and consumed. LC 381's Insert
 // answers true only for a value not already present, so at most one insert per distinct value answers true.
@@ -19,10 +20,6 @@ public sealed partial class InsertDeleteGetRandomO1DuplicatesAllowedBenchmarksTe
     [Fact]
     public void ListScan_InsertThenRemoveEveryOccurrence_EmptiesTheCollection() =>
         AssertEmptiesTheCollection(BuildHarness().ListScan());
-
-    [Fact]
-    public void LinkedOccurrences_InsertThenRemoveEveryOccurrence_EmptiesTheCollection() =>
-        AssertEmptiesTheCollection(BuildHarness().LinkedOccurrences());
 
     private static void AssertEmptiesTheCollection(bool[] verdicts)
     {

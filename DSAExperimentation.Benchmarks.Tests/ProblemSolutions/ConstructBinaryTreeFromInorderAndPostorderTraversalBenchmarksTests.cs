@@ -10,22 +10,9 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // rebuild into that same tree. BinaryTrees.Balanced puts value i at heap index i, so that tree's
 // level order is exactly 0..NodeCount-1; a reconstruction that loses or reorders a subtree shows up
 // here as a different level order.
-//
-// Setup is where the flattening happens, so the same NodeCount must rebuild the same pair of
-// traversals - asserted through the one observable the arm exposes, its rebuilt tree.
 public sealed partial class ConstructBinaryTreeFromInorderAndPostorderTraversalBenchmarksTests
 {
     private const int SmallestNodeCount = 2_000;
-
-    [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameInorderAndPostorder()
-    {
-        Assert.Equal(Enumerable.Range(0, SmallestNodeCount), LevelOrderValues(Rebuilt()));
-
-        Assert.Equal(
-            LevelOrderValues(Rebuilt()),
-            LevelOrderValues(Rebuilt()));
-    }
 
     [Fact]
     public void PostorderIndexMap_BalancedTreeFlattenedAndRebuilt_RebuildsThatTree() =>

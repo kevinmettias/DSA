@@ -15,10 +15,6 @@ public sealed partial class BinarySearchTreeIteratorBenchmarksTests
     public void DrainInOrderOverBclStack_CompleteSearchTreeWithTwoHundredNodes_ReportsEveryValueInAscendingOrder() =>
         Assert.Equal(Enumerable.Range(0, SmallestNodeCount), BuildHarness().DrainInOrderOverBclStack());
 
-    [Fact]
-    public void DrainInOrder_CompleteSearchTreeWithTwoHundredNodes_ReportsEveryValueInAscendingOrder() =>
-        Assert.Equal(Enumerable.Range(0, SmallestNodeCount), BuildHarness().DrainInOrder());
-
     private static BinarySearchTreeIteratorBenchmarks BuildHarness()
     {
         var harness = new BinarySearchTreeIteratorBenchmarks { NodeCount = SmallestNodeCount };

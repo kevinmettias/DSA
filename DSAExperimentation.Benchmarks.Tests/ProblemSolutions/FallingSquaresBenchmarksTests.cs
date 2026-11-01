@@ -1,48 +1,17 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FallingSquaresBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - an O(n^2) overlap scan against coordinate compression plus
-// this repo's LazySegmentTree - so a harness whose arms disagree is dropping two different squares.
-// Both arms return one height per square, in the order the squares fell, and that order is the
-// answer: LeetCode asks for the running stack height after each drop, so the two lists are compared
-// as ordered sequences. The footprints come from a fixed seed, so the same SquareCount must rebuild
-// the same squares.
+// Harness coverage for FallingSquaresBenchmarks (ARCHITECTURE 17.9): a property of the workload's
+// shape. LeetCode asks for the running stack height after each drop, so the answer holds one height
+// per square Setup built.
 public sealed partial class FallingSquaresBenchmarksTests
 {
     private const int SmallestSquareCount = 100;
 
     [Fact]
-    public void Setup_SameSquareCount_RebuildsTheSameFootprints()
-    {
+    public void BruteForceOverlapScan_OverlappingSquares_ReportsOneHeightPerSquare() =>
         Assert.Equal(SmallestSquareCount, BuildHarness().BruteForceOverlapScan().Count);
-
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().BruteForceOverlapScan()),
-            AnswerGraphText.Of(BuildHarness().BruteForceOverlapScan()));
-    }
-
-    [Fact]
-    public void BruteForceOverlapScan_OverlappingSquares_AgreesWithLazySegmentTreeRangeMax()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.LazySegmentTreeRangeMax()),
-            AnswerGraphText.Of(harness.BruteForceOverlapScan()));
-    }
-
-    [Fact]
-    public void LazySegmentTreeRangeMax_OverlappingSquares_AgreesWithBruteForceOverlapScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.BruteForceOverlapScan()),
-            AnswerGraphText.Of(harness.LazySegmentTreeRangeMax()));
-    }
 
     private static FallingSquaresBenchmarks BuildHarness()
     {

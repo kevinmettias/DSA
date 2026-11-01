@@ -3,7 +3,7 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for SubarrayProductLessThanKBenchmarks (ARCHITECTURE 17.9). Arm agreement is
-// BenchmarkArmsTests' job; this pins the count the workload is built to have. The fixture's values
+// BenchmarkArmsTests' job; this pins the baseline to the count the workload is built to have. The fixture's values
 // are all 1 and K is 2, so every subarray qualifies: the count lands on a value the fixture's own
 // structure fixes, not on whatever the arms happen to say.
 public sealed partial class SubarrayProductLessThanKBenchmarksTests
@@ -17,10 +17,6 @@ public sealed partial class SubarrayProductLessThanKBenchmarksTests
     [Fact]
     public void BruteForce_AllOnesUnderTwo_CountsEverySubarray() =>
         Assert.Equal(ExpectedSubarrayCount, BuildHarness().BruteForce());
-
-    [Fact]
-    public void SlidingWindow_AllOnesUnderTwo_CountsEverySubarray() =>
-        Assert.Equal(ExpectedSubarrayCount, BuildHarness().SlidingWindow());
 
     private static SubarrayProductLessThanKBenchmarks BuildHarness()
     {

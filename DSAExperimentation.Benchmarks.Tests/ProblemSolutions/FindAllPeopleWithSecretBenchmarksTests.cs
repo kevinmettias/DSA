@@ -1,16 +1,12 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FindAllPeopleWithSecretBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - repeated relaxation passes over each timestamp group
-// against a keyed disjoint set built fresh per group - so a harness whose arms disagree is
-// propagating two different secrets. Both arms return the informed people through the same
-// ascending-id collector, so the returned order is the same positional answer on both sides and the
-// arrays are compared as ordered sequences. Setup builds one long chain hanging off the informed
-// pair and one long chain from a person nothing else reaches, so both arms must walk every hop of
-// the first and none of the second; the same ChainLength must rebuild the same schedule.
+// Harness coverage for FindAllPeopleWithSecretBenchmarks (ARCHITECTURE 17.9): the generic arms check
+// only compares the arms with each other, so this holds the baseline's answer to what Setup's
+// construction fixes independently of any arm. Setup builds one long chain hanging off the informed
+// pair and one long chain from a person nothing else reaches, so the secret reaches the first and
+// none of the second.
 public sealed partial class FindAllPeopleWithSecretBenchmarksTests
 {
     private const int SmallestChainLength = 50;
@@ -23,37 +19,13 @@ public sealed partial class FindAllPeopleWithSecretBenchmarksTests
     private const int UnreachableChainTail = (2 * SmallestChainLength) + 1;
 
     [Fact]
-    public void Setup_SameChainLength_RebuildsTheSameSchedule()
+    public void RepeatedRelaxation_TwoSameTimestampChains_InformsOnlyTheReachableChain()
     {
         var knowers = BuildHarness().RepeatedRelaxation();
 
         Assert.Contains(SecretOrigin, knowers);
         Assert.Contains(FirstPerson, knowers);
         Assert.DoesNotContain(UnreachableChainTail, knowers);
-
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().RepeatedRelaxation()),
-            AnswerGraphText.Of(BuildHarness().RepeatedRelaxation()));
-    }
-
-    [Fact]
-    public void RepeatedRelaxation_TwoSameTimestampChains_AgreesWithKeyedDisjointSet()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.RootMergedWithKeyedDisjointSet()),
-            AnswerGraphText.Of(harness.RepeatedRelaxation()));
-    }
-
-    [Fact]
-    public void RootMergedWithKeyedDisjointSet_TwoSameTimestampChains_AgreesWithRepeatedRelaxation()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.RepeatedRelaxation()),
-            AnswerGraphText.Of(harness.RootMergedWithKeyedDisjointSet()));
     }
 
     private static FindAllPeopleWithSecretBenchmarks BuildHarness()

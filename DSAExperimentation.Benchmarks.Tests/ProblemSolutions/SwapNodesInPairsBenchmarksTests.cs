@@ -4,50 +4,21 @@ using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SwapNodesInPairsBenchmarks (ARCHITECTURE 17.9): both arms are
-// SwapNodesInPairsSolution's - the in-place pointer rewiring against the array round trip - so a
-// harness whose arms disagree is timing two different questions.
-//
-// The run is 1..Length, whose adjacent pairs are decisive rather than merely agreed: every pair
-// exchanges places and Length is even, so the swapped run is stated by the oracle below rather than
-// read back out of an arm. Both arms build their own list from the hoisted values, so one harness is
-// safe to call twice in either order.
+// Harness coverage for SwapNodesInPairsBenchmarks (ARCHITECTURE 17.9): the run is 1..Length, whose
+// adjacent pairs are decisive rather than merely agreed: every pair exchanges places and Length is
+// even, so the swapped run is stated by the oracle below rather than read back out of an arm. The
+// baseline is held to it; the generic arm check holds the pointer-rewiring arm to the baseline's
+// answer.
 public sealed partial class SwapNodesInPairsBenchmarksTests
 {
     private const int SmallestLength = 10;
     private const int PairStride = 2;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
+    public void ArrayRoundTrip_PairedRun_FollowsThePairSwapRule() =>
         Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayRoundTrip())),
+            AnswerGraphText.Of(ExpectedSwappedValues()),
             AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayRoundTrip())));
-
-    [Fact]
-    public void ArrayRoundTrip_PairedRun_AgreesWithTheOtherArmAndThePairSwapRule()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(harness.PointerRewiring())),
-            AnswerGraphText.Of(ValuesOf(harness.ArrayRoundTrip())));
-        Assert.Equal(
-            AnswerGraphText.Of(ExpectedSwappedValues()),
-            AnswerGraphText.Of(ValuesOf(harness.ArrayRoundTrip())));
-    }
-
-    [Fact]
-    public void PointerRewiring_PairedRun_AgreesWithTheOtherArmAndThePairSwapRule()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(harness.ArrayRoundTrip())),
-            AnswerGraphText.Of(ValuesOf(harness.PointerRewiring())));
-        Assert.Equal(
-            AnswerGraphText.Of(ExpectedSwappedValues()),
-            AnswerGraphText.Of(ValuesOf(harness.PointerRewiring())));
-    }
 
     private static SwapNodesInPairsBenchmarks BuildHarness()
     {

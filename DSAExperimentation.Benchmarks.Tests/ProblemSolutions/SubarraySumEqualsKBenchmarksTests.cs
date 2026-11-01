@@ -1,17 +1,12 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SubarraySumEqualsKBenchmarks (ARCHITECTURE 17.9): both arms answer the
-// same question - how many LC 560 subarrays sum to the target - one by the plain double loop,
-// one by prefix-sum frequencies, so a harness whose arms disagree is timing two different
-// problems. Setup's values are seeded, so the same length must rebuild the same workload.
-//
-// The target is deliberately unreachable, which makes every generated workload answer 0: that
-// is what forces both arms through their full worst-case scan, and it also means agreement
-// alone would be satisfied by two arms that both failed to count anything. The derived
-// expectation below is what carries the weight.
+// Harness coverage for SubarraySumEqualsKBenchmarks (ARCHITECTURE 17.9): the target is
+// deliberately unreachable, which makes every generated workload answer 0: that is what forces
+// both arms through their full worst-case scan, and it also means the generic arm check's
+// agreement alone would be satisfied by two arms that both failed to count anything. The derived
+// expectation below, asserted of the baseline, is what carries the weight.
 public sealed partial class SubarraySumEqualsKBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -22,20 +17,8 @@ public sealed partial class SubarraySumEqualsKBenchmarksTests
     private const int ExpectedSubarrayCount = 0;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().BruteForce()),
-            AnswerGraphText.Of(BuildHarness().BruteForce()));
-
-    [Fact]
-    public void BruteForce_AgreesWithPrefixSumHashMap()
-    {
-        var harness = BuildHarness();
-        var bruteForce = harness.BruteForce();
-
-        Assert.Equal(bruteForce, harness.PrefixSumHashMap());
-        Assert.Equal(ExpectedSubarrayCount, bruteForce);
-    }
+    public void BruteForce_UnreachableTarget_CountsNoSubarray() =>
+        Assert.Equal(ExpectedSubarrayCount, BuildHarness().BruteForce());
 
     private static SubarraySumEqualsKBenchmarks BuildHarness()
     {

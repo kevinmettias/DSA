@@ -2,12 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountTheNumberOfInfectionSequencesBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question - branching over every live candidate against the
-// closed gap-combinatorics form - so a harness whose arms disagree is timing two different problems,
-// not two ways of answering one. Setup derives the initially-sick set from QueueLength alone, so the
-// same QueueLength must rebuild the same workload; otherwise two published numbers were never
-// comparable in the first place.
+// Harness coverage for CountTheNumberOfInfectionSequencesBenchmarks (ARCHITECTURE 17.9):
+// BenchmarkArmsTests already holds the arms to agreeing on a rebuilt workload, so this asserts only
+// a range that comes from the workload's shape rather than from either arm.
 //
 // The sick array is private, but its one documented property decides the answer's own range: exactly
 // the two endpoints start sick, so only the remaining QueueLength - 2 people are ever infected and
@@ -23,32 +20,11 @@ public sealed partial class CountTheNumberOfInfectionSequencesBenchmarksTests
     private const int InitiallySickEndpoints = 2;
 
     [Fact]
-    public void Setup_SameQueueLength_RebuildsTheSameSickSet()
-    {
+    public void GapCombinatorics_SickEndpointsOnly_StaysWithinTheOrderingsOfTheUninfected() =>
         Assert.InRange(
             BuildHarness().GapCombinatorics(SmallestQueueLength),
             FewestInfectionSequences,
             OrderingsOfUninfected(SmallestQueueLength));
-        Assert.Equal(
-            BuildHarness().GapCombinatorics(SmallestQueueLength),
-            BuildHarness().GapCombinatorics(SmallestQueueLength));
-    }
-
-    [Fact]
-    public void BruteForceSimulation_SickEndpointsOnly_AgreesWithGapCombinatorics()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.GapCombinatorics(SmallestQueueLength), harness.BruteForceSimulation(SmallestQueueLength));
-    }
-
-    [Fact]
-    public void GapCombinatorics_SickEndpointsOnly_AgreesWithBruteForceSimulation()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceSimulation(SmallestQueueLength), harness.GapCombinatorics(SmallestQueueLength));
-    }
 
     private static CountTheNumberOfInfectionSequencesBenchmarks BuildHarness()
     {

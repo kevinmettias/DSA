@@ -2,10 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountPrimeGapBalancedSubarraysBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - re-tracking the window's running prime extremes
-// against the compact-prime sliding window over this repo's MonotonicDeque - so a harness whose arms disagree
-// is timing two different problems. Setup seeds nums, so the same Length must rebuild the array.
+// Harness coverage for CountPrimeGapBalancedSubarraysBenchmarks (ARCHITECTURE 17.9):
+// BenchmarkArmsTests already holds the arms to agreeing on a fresh harness, so this asserts what it
+// cannot: a range for the answer that comes from the workload's shape rather than from either arm,
+// and that a harness which has already answered once answers as a rebuild does, since
+// BenchmarkDotNet calls an arm many times on one harness while the generic check builds a fresh
+// harness for every call. Setup seeds nums, so the same Length must rebuild the array.
 public sealed partial class CountPrimeGapBalancedSubarraysBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -23,22 +25,6 @@ public sealed partial class CountPrimeGapBalancedSubarraysBenchmarksTests
         // them land within the 500-wide gap bound - and no subarray can be counted twice.
         Assert.InRange(first.BruteForce(), 1L, MostSubarrays);
         Assert.Equal(first.BruteForce(), second.BruteForce());
-    }
-
-    [Fact]
-    public void BruteForce_PrimeDenseValues_AgreesWithPrimeWindowDeque()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.PrimeWindowDeque(), harness.BruteForce());
-    }
-
-    [Fact]
-    public void PrimeWindowDeque_PrimeDenseValues_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.PrimeWindowDeque());
     }
 
     private static CountPrimeGapBalancedSubarraysBenchmarks BuildHarness()

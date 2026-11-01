@@ -10,15 +10,10 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // instead. BinaryTrees.Balanced fills node i with the value i and puts node i's children at 2i+1 and
 // 2i+2 - a complete tree in heap layout - and the arm queries its leftmost leaf and its rightmost
 // leaf. Both leaves can be found by index arithmetic alone, and so can their lowest common ancestor,
-// so the oracle below never walks a tree. The two harness builds share a NodeCount, so the same
-// NodeCount must rebuild the same tree and answer at the same node.
+// so the oracle below never walks a tree.
 public sealed partial class LowestCommonAncestorOfABinaryTreeBenchmarksTests
 {
     private const int SmallestNodeCount = 200;
-
-    [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(ValueOf(BuildHarness().AncestryWalk()), ValueOf(BuildHarness().AncestryWalk()));
 
     [Fact]
     public void AncestryWalk_LeftmostAndRightmostLeaves_ReturnsTheirLowestCommonAncestor() =>

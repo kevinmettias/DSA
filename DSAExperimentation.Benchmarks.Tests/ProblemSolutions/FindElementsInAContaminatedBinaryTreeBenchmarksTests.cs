@@ -4,7 +4,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for FindElementsInAContaminatedBinaryTreeBenchmarks (ARCHITECTURE 17.9), for what
 // BenchmarkArmsTests cannot pin: that the target sample both hits and misses, which follows from Setup's
-// construction rather than from either arm. Each arm returns every Find verdict, in target order.
+// construction rather than from either arm, so the baseline is held to it. It returns every Find verdict, in
+// target order.
 //
 // The tree is a complete tree in heap layout with every value -1, LC 1261's contamination, so node i
 // recovers exactly the value i and the found set is [0, NodeCount). Setup draws its targets from
@@ -17,10 +18,6 @@ public sealed partial class FindElementsInAContaminatedBinaryTreeBenchmarksTests
     [Fact]
     public void ListRecoverThenLinearScan_HalfMissingTargetSample_FindsSomeTargetsButNotAll() =>
         Assert.InRange(BuildHarness().ListRecoverThenLinearScan().Count(found => found), 1, SmallestNodeCount - 1);
-
-    [Fact]
-    public void TopDownRecoverThenSetLookup_HalfMissingTargetSample_FindsSomeTargetsButNotAll() =>
-        Assert.InRange(BuildHarness().TopDownRecoverThenSetLookup().Count(found => found), 1, SmallestNodeCount - 1);
 
     private static FindElementsInAContaminatedBinaryTreeBenchmarks BuildHarness()
     {

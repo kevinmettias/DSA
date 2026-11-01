@@ -18,10 +18,6 @@ public sealed partial class AllPathsFromSourceToTargetBenchmarksTests
     public void SpecializedRecursive_TenNodeLayeredGraph_FindsEverySubsetPath() =>
         Assert.Equal(ExpectedPathCount, BuildHarness().SpecializedRecursive().Count);
 
-    [Fact]
-    public void Backtracking_TenNodeLayeredGraph_FindsEverySubsetPath() =>
-        Assert.Equal(ExpectedPathCount, BuildHarness().Backtracking().Count);
-
     private static AllPathsFromSourceToTargetBenchmarks BuildHarness()
     {
         var harness = new AllPathsFromSourceToTargetBenchmarks { NodeCount = SmallestNodeCount };

@@ -2,14 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FindMinimumInRotatedSortedArrayBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question - a linear scan of every element against this
-// repo's own MonotonePredicateSearch.FirstTrue over the low-side-of-rotation rule - so a harness
-// whose arms disagree has found two different minima. Both answers are one int, so they are compared directly.
+// Harness coverage for FindMinimumInRotatedSortedArrayBenchmarks (ARCHITECTURE 17.9): the generic
+// arms check only compares the arms with each other, so this pins the baseline's minimum to the
+// value Setup's construction fixes independently of any arm.
 //
 // Setup rotates the run 0..Length-1 at a fixed non-zero pivot, so the array always holds exactly one
-// 0 and never starts with it: the minimum is 0 on every run, which makes the assertion decisive
-// rather than a restatement of what the arms returned.
+// 0 and never starts with it: the minimum is 0 on every run.
 public sealed partial class FindMinimumInRotatedSortedArrayBenchmarksTests
 {
     // The smaller of Setup's [Params(200, 5_000)] lengths.
@@ -19,26 +17,8 @@ public sealed partial class FindMinimumInRotatedSortedArrayBenchmarksTests
     private const int ExpectedMinimum = 0;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameRotatedArray() =>
-        Assert.Equal(BuildHarness().LinearScan(), BuildHarness().LinearScan());
-
-    [Fact]
-    public void LinearScan_DistinctValuesRotatedAtNonZeroPivot_AgreesWithPredicateSearch()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedMinimum, harness.LinearScan());
-        Assert.Equal(harness.PredicateSearch(), harness.LinearScan());
-    }
-
-    [Fact]
-    public void PredicateSearch_DistinctValuesRotatedAtNonZeroPivot_AgreesWithLinearScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedMinimum, harness.PredicateSearch());
-        Assert.Equal(harness.LinearScan(), harness.PredicateSearch());
-    }
+    public void LinearScan_DistinctValuesRotatedAtNonZeroPivot_ReturnsZero() =>
+        Assert.Equal(ExpectedMinimum, BuildHarness().LinearScan());
 
     private static FindMinimumInRotatedSortedArrayBenchmarks BuildHarness()
     {

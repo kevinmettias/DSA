@@ -17,10 +17,6 @@ public sealed partial class ExpressionAddOperatorsBenchmarksTests
     public void RecursiveBacktrack_UnreachableTarget_BuildsNoExpression() =>
         Assert.Empty(BuildHarness().RecursiveBacktrack());
 
-    [Fact]
-    public void TraverseComposed_UnreachableTarget_BuildsNoExpression() =>
-        Assert.Empty(BuildHarness().TraverseComposed());
-
     private static ExpressionAddOperatorsBenchmarks BuildHarness() =>
         new() { Number = SmallestNumber };
 }

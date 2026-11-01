@@ -2,10 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountValidSequencesBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - recomputing each binomial from scratch against reading it out of
-// a table built once - so a harness whose arms disagree is timing two different problems, not two
-// ways of answering one.
+// Harness coverage for CountValidSequencesBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests already
+// holds the arms to agreeing on a rebuilt workload, so this asserts only an expected value derived
+// from the problem's closed form rather than from either arm.
 //
 // There is no seed here: the whole workload is the TargetSum parameter together with the two things
 // Setup derives from it - length = TargetSum / 2 and a factorial table that reaches TargetSum. The
@@ -21,27 +20,8 @@ public sealed partial class CountValidSequencesBenchmarksTests
     private const int ExpectedEvenProductSequenceCount = 498_280_751;
 
     [Fact]
-    public void Setup_SameTargetSum_RebuildsTheSameWorkload()
-    {
+    public void DirectBinomial_HalfLengthSequences_MatchesTheDocumentedResidue() =>
         Assert.Equal(ExpectedEvenProductSequenceCount, BuildHarness().DirectBinomial());
-        Assert.Equal(BuildHarness().DirectBinomial(), BuildHarness().DirectBinomial());
-    }
-
-    [Fact]
-    public void DirectBinomial_HalfLengthSequences_AgreesWithPrecomputedFactorials()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.PrecomputedFactorials(), harness.DirectBinomial());
-    }
-
-    [Fact]
-    public void PrecomputedFactorials_HalfLengthSequences_AgreesWithDirectBinomial()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DirectBinomial(), harness.PrecomputedFactorials());
-    }
 
     private static CountValidSequencesBenchmarks BuildHarness()
     {

@@ -25,10 +25,6 @@ public sealed partial class DesignBrowserHistoryBenchmarksTests
     public void ListBacked_VisitBackBranchCycle_LandsOnThePreviousBranchEachTime() =>
         Assert.Equal(ExpectedBackPages(), BuildHarness().ListBacked());
 
-    [Fact]
-    public void DynamicArrayBacked_VisitBackBranchCycle_LandsOnThePreviousBranchEachTime() =>
-        Assert.Equal(ExpectedBackPages(), BuildHarness().DynamicArrayBacked());
-
     private static string[] ExpectedBackPages() =>
         [HomePageUrl, .. Enumerable.Range(0, SmallestOperationCount - 1).Select(i => BranchPrefix + LowercaseNames.Of(i) + UrlSuffix)];
 

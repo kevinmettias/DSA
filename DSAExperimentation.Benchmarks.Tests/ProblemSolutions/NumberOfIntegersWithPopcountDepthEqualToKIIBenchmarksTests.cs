@@ -3,26 +3,15 @@ using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks (ARCHITECTURE 17.9): its
-// two arms are competing strategies for the same question - mutating a plain copy of nums and
-// rescanning each queried range against this repo's own Fenwick-bucket index - so a harness whose arms
-// disagree is replaying two different query streams. Setup draws the seeded nums and query stream, so
-// the same ElementCount must rebuild the same values and the same queries.
-//
-// This is one of the stateful classes where the re-preparation has to be checked rather than assumed:
-// the composed arm MUTATES the index it is handed, so a second call without an intervening
-// [IterationSetup] would replay the queries against an index carried forward from the first run - the
-// IterationSetup test below pins exactly that down. The baseline arm neither reads nor writes that
-// index, so one harness can still serve both arms once each, in either order.
+// Harness coverage for NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks (ARCHITECTURE 17.9): one
+// harness reused across runs, as BenchmarkDotNet reuses it and the generic check, which builds a fresh
+// harness per run, never does. This is one of the stateful classes where the re-preparation has to be
+// checked rather than assumed: the composed arm MUTATES the index it is handed, so a second call
+// without an intervening [IterationSetup] would replay the queries against an index carried forward
+// from the first run - the IterationSetup test below pins exactly that down.
 public sealed partial class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarksTests
 {
     private const int SmallestElementCount = 200;
-
-    [Fact]
-    public void Setup_SameElementCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().BruteForce()),
-            AnswerGraphText.Of(BuildHarness().BruteForce()));
 
     [Fact]
     public void IterationSetup_AfterAGradedRun_RePresentsThePristineWorkload()
@@ -38,14 +27,6 @@ public sealed partial class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmark
 
         Assert.Equal(expectedScan, AnswerGraphText.Of(graded.BruteForce()));
         Assert.Equal(expectedBuckets, AnswerGraphText.Of(graded.FenwickBuckets()));
-    }
-
-    [Fact]
-    public void BruteForce_AgreesWithFenwickBuckets()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.Of(harness.FenwickBuckets()), AnswerGraphText.Of(harness.BruteForce()));
     }
 
     private static NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks BuildHarness()

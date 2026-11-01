@@ -1,13 +1,10 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for AddStringsBenchmarks (ARCHITECTURE 17.9): its two arms differ only in how they undo the
-// least-significant-first digit walk - a List<char> reversed at the end, or this repo's own Stack<char> - so a
-// harness whose arms disagree is timing two different problems. Setup draws both operands from one fixed seed,
-// so the same Length must rebuild the same two operands and with them the same sum; neither arm mutates its
-// operands, so one harness instance is safe to read twice in either order.
+// Harness coverage for AddStringsBenchmarks (ARCHITECTURE 17.9): the generic check holds the arms to each other
+// on the seeded operands, and this bounds the baseline's answer by what addition itself allows - a property
+// no comparison between arms can establish.
 public sealed partial class AddStringsBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -15,17 +12,6 @@ public sealed partial class AddStringsBenchmarksTests
     private const int DigitsGrownByTheCarry = SmallestLength + 1;
     private const char FirstDigit = '0';
     private const char LastDigit = '9';
-
-    [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload()
-    {
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().CharArrayReverse()),
-            AnswerGraphText.Of(BuildHarness().CharArrayReverse()));
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().StackDigits()),
-            AnswerGraphText.Of(BuildHarness().StackDigits()));
-    }
 
     // Adding two Length-digit operands cannot outgrow a single carry digit, so the sum is either as long as
     // its operands or one digit longer - the bound the arms' digit buffers have to satisfy.
@@ -36,22 +22,6 @@ public sealed partial class AddStringsBenchmarksTests
 
         Assert.InRange(sum.Length, FewestDigits, DigitsGrownByTheCarry);
         Assert.All(sum, digit => Assert.InRange(digit, FirstDigit, LastDigit));
-    }
-
-    [Fact]
-    public void CharArrayReverse_RandomDigits_AgreesWithStackDigits()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.Of(harness.StackDigits()), AnswerGraphText.Of(harness.CharArrayReverse()));
-    }
-
-    [Fact]
-    public void StackDigits_RandomDigits_AgreesWithCharArrayReverse()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.Of(harness.CharArrayReverse()), AnswerGraphText.Of(harness.StackDigits()));
     }
 
     private static AddStringsBenchmarks BuildHarness()

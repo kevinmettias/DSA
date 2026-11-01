@@ -2,10 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountServersThatCommunicateBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - rescanning each server's row and column against the
-// two-pass HashMap tally - so a harness whose arms disagree is timing two different problems. Setup
-// seeds the grid, so the same Size must rebuild the same grid.
+// Harness coverage for CountServersThatCommunicateBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests
+// already holds the arms to agreeing on a fresh harness, so this asserts what it cannot: a range for
+// the answer that comes from the workload's shape rather than from either arm, and that a harness
+// which has already answered once answers as a rebuild does, since BenchmarkDotNet calls an arm many
+// times on one harness while the generic check builds a fresh harness for every call. Setup seeds
+// the grid, so the same Size must rebuild the same grid.
 public sealed partial class CountServersThatCommunicateBenchmarksTests
 {
     private const int SmallestSize = 100;
@@ -23,22 +25,6 @@ public sealed partial class CountServersThatCommunicateBenchmarksTests
         // holds servers and many of them share a row or column with another.
         Assert.InRange(first.BruteForceRowAndColumnRescan(), 1, MostGridCells);
         Assert.Equal(first.BruteForceRowAndColumnRescan(), second.BruteForceRowAndColumnRescan());
-    }
-
-    [Fact]
-    public void BruteForceRowAndColumnRescan_QuarterDensityGrid_AgreesWithHashMapRowAndColumnCounts()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.HashMapRowAndColumnCounts(), harness.BruteForceRowAndColumnRescan());
-    }
-
-    [Fact]
-    public void HashMapRowAndColumnCounts_QuarterDensityGrid_AgreesWithBruteForceRowAndColumnRescan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceRowAndColumnRescan(), harness.HashMapRowAndColumnCounts());
     }
 
     private static CountServersThatCommunicateBenchmarks BuildHarness()

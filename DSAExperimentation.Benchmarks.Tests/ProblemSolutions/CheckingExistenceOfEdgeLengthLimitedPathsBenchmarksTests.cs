@@ -1,50 +1,21 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks (ARCHITECTURE 17.9): its
-// two arms are competing strategies for the same question - one graph walk per query against a single
-// offline sweep of both sorted lists - so a harness whose arms disagree is timing two different
-// problems. Both arms answer with one bool per query in query order, which is part of this answer:
-// answer i belongs to query i, so AnswerGraphText.Of and not OfUnordered is the rendering that keeps
-// each verdict scored against its own query.
+// Harness coverage for CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks (ARCHITECTURE 17.9):
+// BenchmarkArmsTests already holds the arms to agreeing on a rebuilt workload, so this asserts only
+// what the workload's shape promises of the answer: one verdict per drawn query.
 public sealed partial class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarksTests
 {
     private const int SmallestNodeCount = 100;
 
-    // Setup draws two queries per node, so a rebuilt workload must answer with exactly this many
-    // verdicts - one per query, none dropped and none invented.
+    // Setup draws two queries per node, so the answer must hold exactly this many verdicts - one per
+    // query, none dropped and none invented.
     private const int QueryCountPerNodeMultiplier = 2;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameEdgesAndQueries()
-    {
-        var first = BuildHarness();
-        var second = BuildHarness();
-
-        // The edge list and the query list are private, so the rebuild is pinned through what they
-        // produce: one verdict per drawn query is the shape the answer promises, and the same
-        // NodeCount must draw the same seeded edges and queries and answer them identically.
-        Assert.Equal(SmallestNodeCount * QueryCountPerNodeMultiplier, first.DfsPerQuery().Length);
-        Assert.Equal(AnswerGraphText.Of(first.DfsPerQuery()), AnswerGraphText.Of(second.OfflineDisjointSetSweep()));
-    }
-
-    [Fact]
-    public void DfsPerQuery_SeededMultigraphAndQueries_AgreesWithOfflineDisjointSetSweep()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.Of(harness.OfflineDisjointSetSweep()), AnswerGraphText.Of(harness.DfsPerQuery()));
-    }
-
-    [Fact]
-    public void OfflineDisjointSetSweep_SeededMultigraphAndQueries_AgreesWithDfsPerQuery()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.Of(harness.DfsPerQuery()), AnswerGraphText.Of(harness.OfflineDisjointSetSweep()));
-    }
+    public void DfsPerQuery_SeededMultigraphAndQueries_AnswersEveryQuery() =>
+        Assert.Equal(SmallestNodeCount * QueryCountPerNodeMultiplier, BuildHarness().DfsPerQuery().Length);
 
     private static CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks BuildHarness()
     {

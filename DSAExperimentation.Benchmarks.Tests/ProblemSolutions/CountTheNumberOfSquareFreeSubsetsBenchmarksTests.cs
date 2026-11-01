@@ -2,12 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountTheNumberOfSquareFreeSubsetsBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question - enumerating all 2^n subsets against the bitmask
-// memo over the 18 square-free values of [1, 30] - so a harness whose arms disagree is timing two
-// different problems, not two ways of answering one. Setup draws the array from one fixed seed, so
-// the same Length must rebuild the same array; otherwise two published numbers were never comparable
-// in the first place.
+// Harness coverage for CountTheNumberOfSquareFreeSubsetsBenchmarks (ARCHITECTURE 17.9):
+// BenchmarkArmsTests already holds the arms to agreeing on a rebuilt workload, so this asserts only
+// a range that comes from the workload's shape rather than from either arm.
 //
 // The generated array is private and the subset count is the only thing either arm reports, so the
 // documented shape is asserted through that: an array of Length values has 2^Length subsets, and the
@@ -23,27 +20,8 @@ public sealed partial class CountTheNumberOfSquareFreeSubsetsBenchmarksTests
     private const long FewestSquareFreeSubsets = 1;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameArray()
-    {
+    public void BruteForce_SmallestLength_StaysWithinTheNonEmptySubsetCount() =>
         Assert.InRange(BuildHarness().BruteForce(), FewestSquareFreeSubsets, NonEmptySubsetCount);
-        Assert.Equal(BuildHarness().BruteForce(), BuildHarness().BruteForce());
-    }
-
-    [Fact]
-    public void BruteForce_ValuesInOneToThirty_AgreesWithBitmaskMemo()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BitmaskMemo(), harness.BruteForce());
-    }
-
-    [Fact]
-    public void BitmaskMemo_ValuesInOneToThirty_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.BitmaskMemo());
-    }
 
     private static CountTheNumberOfSquareFreeSubsetsBenchmarks BuildHarness()
     {

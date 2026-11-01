@@ -3,9 +3,11 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for CountKSubsequencesOfAStringWithMaximumBeautyBenchmarks (ARCHITECTURE 17.9):
-// its two arms are competing strategies for the same question - enumerating every subset of the
-// text's distinct characters against grouping them by frequency - so a harness whose arms disagree
-// is timing two different problems. Setup seeds the text, so the same Length must rebuild it.
+// BenchmarkArmsTests already holds the arms to agreeing on a fresh harness, so this asserts what it
+// cannot: a lower bound on the answer that comes from the workload's shape rather than from either
+// arm, and that a harness which has already answered once answers as a rebuild does, since
+// BenchmarkDotNet calls an arm many times on one harness while the generic check builds a fresh
+// harness for every call. Setup seeds the text, so the same Length must rebuild it.
 public sealed partial class CountKSubsequencesOfAStringWithMaximumBeautyBenchmarksTests
 {
     private const int SmallestLength = 5_000;
@@ -21,22 +23,6 @@ public sealed partial class CountKSubsequencesOfAStringWithMaximumBeautyBenchmar
         // one and the count can never be the degenerate 0 an undersized alphabet would give.
         Assert.InRange(first.BruteForceCombinations(), 1L, long.MaxValue);
         Assert.Equal(first.BruteForceCombinations(), second.BruteForceCombinations());
-    }
-
-    [Fact]
-    public void BruteForceCombinations_FiveLetterPool_AgreesWithGroupedFrequencyProduct()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.GroupedFrequencyProduct(), harness.BruteForceCombinations());
-    }
-
-    [Fact]
-    public void GroupedFrequencyProduct_FiveLetterPool_AgreesWithBruteForceCombinations()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceCombinations(), harness.GroupedFrequencyProduct());
     }
 
     private static CountKSubsequencesOfAStringWithMaximumBeautyBenchmarks BuildHarness()

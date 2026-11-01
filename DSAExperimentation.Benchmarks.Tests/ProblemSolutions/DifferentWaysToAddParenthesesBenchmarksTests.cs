@@ -16,10 +16,6 @@ public sealed partial class DifferentWaysToAddParenthesesBenchmarksTests
     public void PlainRecursion_SixRepeatedOnes_EvaluatesEveryCatalanParenthesization() =>
         Assert.Equal(EveryParenthesizationOfSixOnes(), BuildHarness().PlainRecursion());
 
-    [Fact]
-    public void MemoizedSubstring_SixRepeatedOnes_EvaluatesEveryCatalanParenthesization() =>
-        Assert.Equal(EveryParenthesizationOfSixOnes(), BuildHarness().MemoizedSubstring());
-
     // Adding up six ones gives six however the sum is parenthesized.
     private static IEnumerable<int> EveryParenthesizationOfSixOnes() =>
         Enumerable.Repeat(SmallestOperandCount, ExpectedParenthesizationsOfSixOnes);

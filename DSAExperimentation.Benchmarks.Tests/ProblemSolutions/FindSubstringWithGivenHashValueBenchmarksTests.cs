@@ -2,15 +2,13 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FindSubstringWithGivenHashValueBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - recomputing each window's hash from its characters
-// against reading it off this repo's precomputed RollingHash table - so a harness whose arms disagree
-// has searched for two different hash values. Both answers are one bool, so they are compared
-// directly.
+// Harness coverage for FindSubstringWithGivenHashValueBenchmarks (ARCHITECTURE 17.9): the generic arms
+// check only compares the arms with each other, at the smallest Length, so this pins the baseline's
+// verdict and checks the workload's own shape at every Length.
 //
 // LC 2156 guarantees an answer exists, so Setup plants the target as the hash of the text's last
-// window, and both arms find it. A bool alone cannot show that they swept every window to get there,
-// so that claim - no earlier window shares the planted hash - is checked here on its own, by
+// window, and the baseline finds it. A bool alone cannot show that the arms swept every window to get
+// there, so that claim - no earlier window shares the planted hash - is checked here on its own, by
 // recomputing every window's hash over the same seeded text.
 public sealed partial class FindSubstringWithGivenHashValueBenchmarksTests
 {
@@ -29,12 +27,6 @@ public sealed partial class FindSubstringWithGivenHashValueBenchmarksTests
     // LC 2156 guarantees a window carries the requested hash.
     private const bool ExpectedMatch = true;
 
-    [Fact]
-    public void Setup_SameLength_RebuildsThePlantedSearch() =>
-        Assert.Equal(
-            BuildHarness().TryFindSubstringByWindowRehash(),
-            BuildHarness().TryFindSubstringByWindowRehash());
-
     [Theory]
     [InlineData(SmallestLength)]
     [InlineData(LargestLength)]
@@ -47,26 +39,8 @@ public sealed partial class FindSubstringWithGivenHashValueBenchmarksTests
     }
 
     [Fact]
-    public void TryFindSubstringByWindowRehash_PlantedHashValue_AgreesWithTryFindSubstringByRollingHash()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedMatch, harness.TryFindSubstringByWindowRehash());
-        Assert.Equal(
-            harness.TryFindSubstringByRollingHash(),
-            harness.TryFindSubstringByWindowRehash());
-    }
-
-    [Fact]
-    public void TryFindSubstringByRollingHash_PlantedHashValue_AgreesWithTryFindSubstringByWindowRehash()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedMatch, harness.TryFindSubstringByRollingHash());
-        Assert.Equal(
-            harness.TryFindSubstringByWindowRehash(),
-            harness.TryFindSubstringByRollingHash());
-    }
+    public void TryFindSubstringByWindowRehash_PlantedHashValue_FindsAMatchingWindow() =>
+        Assert.Equal(ExpectedMatch, BuildHarness().TryFindSubstringByWindowRehash());
 
     private static FindSubstringWithGivenHashValueBenchmarks BuildHarness()
     {

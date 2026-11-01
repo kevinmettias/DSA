@@ -1,42 +1,18 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for AlternatingGroupsIIIBenchmarks (ARCHITECTURE 17.9): its two arms are
-// AlternatingGroupsIIISolution's competing strategies for the same question - the O(n) circle scan per size query
-// against AlternatingRunLedger's O(log n) prefix lookups - so a harness whose arms disagree is answering a
-// different query script. Both arms answer the size queries in the order Setup built them, so the outer order is
-// the queries' own and the harness compares positionally. Setup draws the circle and then the intermixed repaint
-// and size queries under one seed, so the same Length must rebuild the same script.
+// Harness coverage for AlternatingGroupsIIIBenchmarks (ARCHITECTURE 17.9): the generic check holds the arms to
+// each other on Setup's seeded script of intermixed repaints and size queries, and this asserts the script asks
+// at least one size query - an empty answer would make that agreement vacuous.
 public sealed partial class AlternatingGroupsIIIBenchmarksTests
 {
     // The smaller of Setup's [Params(1_000, 5_000)] circle lengths.
     private const int SmallestLength = 1_000;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().BruteForce()),
-            AnswerGraphText.Of(BuildHarness().BruteForce()));
-
-    [Fact]
-    public void BruteForce_ThousandTileCircle_AgreesWithRunLengthFenwick()
-    {
-        var harness = BuildHarness();
-
-        Assert.NotEmpty(harness.BruteForce());
-        Assert.Equal(AnswerGraphText.Of(harness.RunLengthFenwick()), AnswerGraphText.Of(harness.BruteForce()));
-    }
-
-    [Fact]
-    public void RunLengthFenwick_ThousandTileCircle_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.NotEmpty(harness.RunLengthFenwick());
-        Assert.Equal(AnswerGraphText.Of(harness.BruteForce()), AnswerGraphText.Of(harness.RunLengthFenwick()));
-    }
+    public void BruteForce_ThousandTileCircle_AnswersAtLeastOneSizeQuery() =>
+        Assert.NotEmpty(BuildHarness().BruteForce());
 
     private static AlternatingGroupsIIIBenchmarks BuildHarness()
     {

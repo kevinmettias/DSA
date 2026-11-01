@@ -1,47 +1,18 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SmallestStringWithSwapsBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - an adjacency-list BFS over the swap pairs
-// against this repo's own DisjointSet - so a harness whose arms disagree is swapping two
-// different positions. Setup draws the source string and the pair array from one fixed seed,
-// so the same Length must rebuild the same workload; otherwise two published numbers were
-// never comparable.
-//
-// The answer is a rearrangement of the same characters into the same positions, so it is
-// always exactly as long as the source: that length is checked alongside the agreement so an
-// arm that dropped or duplicated a position cannot agree with a sibling that did the same.
+// Harness coverage for SmallestStringWithSwapsBenchmarks (ARCHITECTURE 17.9). Arm agreement is
+// BenchmarkArmsTests' job. The answer is a rearrangement of the same characters into the same
+// positions, so it is always exactly as long as the source: that length is checked on the baseline
+// so an arm that dropped or duplicated a position cannot agree with a sibling that did the same.
 public sealed partial class SmallestStringWithSwapsBenchmarksTests
 {
     private const int SmallestLength = 200;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameSourceAndPairs() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().AdjacencyListBfs()),
-            AnswerGraphText.Of(BuildHarness().AdjacencyListBfs()));
-
-    [Fact]
-    public void AdjacencyListBfs_TwoHundredIndexSource_AgreesWithDisjointSetUnionFind()
-    {
-        var harness = BuildHarness();
-        var answer = harness.AdjacencyListBfs();
-
-        Assert.Equal(AnswerGraphText.Of(harness.DisjointSetUnionFind()), AnswerGraphText.Of(answer));
-        Assert.Equal(SmallestLength, answer.Length);
-    }
-
-    [Fact]
-    public void DisjointSetUnionFind_TwoHundredIndexSource_AgreesWithAdjacencyListBfs()
-    {
-        var harness = BuildHarness();
-        var answer = harness.DisjointSetUnionFind();
-
-        Assert.Equal(AnswerGraphText.Of(harness.AdjacencyListBfs()), AnswerGraphText.Of(answer));
-        Assert.Equal(SmallestLength, answer.Length);
-    }
+    public void AdjacencyListBfs_TwoHundredIndexSource_KeepsTheSourceLength() =>
+        Assert.Equal(SmallestLength, BuildHarness().AdjacencyListBfs().Length);
 
     private static SmallestStringWithSwapsBenchmarks BuildHarness()
     {

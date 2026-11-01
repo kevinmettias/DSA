@@ -2,10 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountNumberOfTrapezoidsIBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - the C(n, 4) four-point scan against counting pairs of
-// horizontal segments grouped by y - so a harness whose arms disagree is timing two different
-// problems. Setup seeds the points, so the same PointCount must rebuild the same set.
+// Harness coverage for CountNumberOfTrapezoidsIBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests
+// already holds the arms to agreeing on a fresh harness, so this asserts what it cannot: a lower
+// bound on the answer that comes from the workload's shape rather than from either arm, and that a
+// harness which has already answered once answers as a rebuild does, since BenchmarkDotNet calls an
+// arm many times on one harness while the generic check builds a fresh harness for every call.
+// Setup seeds the points, so the same PointCount must rebuild the same set.
 public sealed partial class CountNumberOfTrapezoidsIBenchmarksTests
 {
     private const int SmallestPointCount = 30;
@@ -22,22 +24,6 @@ public sealed partial class CountNumberOfTrapezoidsIBenchmarksTests
         // trapezoid - so the count is never degenerate.
         Assert.InRange(first.BruteForce(), 1, int.MaxValue);
         Assert.Equal(first.BruteForce(), second.BruteForce());
-    }
-
-    [Fact]
-    public void BruteForce_RepeatedYValues_AgreesWithHorizontalPairCounting()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.HorizontalPairCounting(), harness.BruteForce());
-    }
-
-    [Fact]
-    public void HorizontalPairCounting_RepeatedYValues_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.HorizontalPairCounting());
     }
 
     private static CountNumberOfTrapezoidsIBenchmarks BuildHarness()

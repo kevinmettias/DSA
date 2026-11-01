@@ -1,22 +1,13 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ReverseLinkedListIIBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - materializing every value into an array and reversing the
-// sub-range there against head-inserting the sub-range's nodes in place - so a harness whose arms
-// disagree is timing two different problems. The two boundaries are derived from Length alone, so
-// the same Length must rebuild the same workload; otherwise two published numbers were never
-// comparable in the first place.
-//
+// Harness coverage for ReverseLinkedListIIBenchmarks (ARCHITECTURE 17.9). Arm agreement is
+// BenchmarkArmsTests' job; this pins the baseline's answer to one derived from the workload's shape.
 // [GlobalSetup] fills the chain with 1..Length in ascending order, which makes the reversal's
 // boundary visible on the answer itself: only the values between the two positions swap, so the
 // expected sequence is the head prefix, then the sub-range backwards, then the untouched tail.
-//
-// Each arm rebuilds or rewires the chain it is handed, and both build it from the hoisted values
-// inside the measured call, so one harness is safe to call twice in either order.
 public sealed partial class ReverseLinkedListIIBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -26,30 +17,8 @@ public sealed partial class ReverseLinkedListIIBenchmarksTests
     private const int ThreeQuarterNumerator = 3;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayRebuild())),
-            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayRebuild())));
-
-    [Fact]
-    public void ArrayRebuild_QuarterToThreeQuarterRange_AgreesWithHeadInsertion()
-    {
-        var harness = BuildHarness();
-        var reversed = harness.ArrayRebuild();
-
-        Assert.Equal(ExpectedSubRangeReversed(SmallestLength), ValuesOf(reversed));
-        Assert.Equal(AnswerGraphText.Of(ValuesOf(harness.HeadInsertion())), AnswerGraphText.Of(ValuesOf(reversed)));
-    }
-
-    [Fact]
-    public void HeadInsertion_QuarterToThreeQuarterRange_AgreesWithArrayRebuild()
-    {
-        var harness = BuildHarness();
-        var reversed = harness.HeadInsertion();
-
-        Assert.Equal(ExpectedSubRangeReversed(SmallestLength), ValuesOf(reversed));
-        Assert.Equal(AnswerGraphText.Of(ValuesOf(harness.ArrayRebuild())), AnswerGraphText.Of(ValuesOf(reversed)));
-    }
+    public void ArrayRebuild_QuarterToThreeQuarterRange_ReversesOnlyTheSubRange() =>
+        Assert.Equal(ExpectedSubRangeReversed(SmallestLength), ValuesOf(BuildHarness().ArrayRebuild()));
 
     private static int[] ValuesOf(SinglyLinkedListNode<int>? head)
     {

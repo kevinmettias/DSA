@@ -2,9 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ValidPalindromeBenchmarks (ARCHITECTURE 17.9): both arms are competing
-// strategies for the same question - the two-pointer scan and the normalized-reversal copy - so a
-// harness whose arms disagree is classifying two different strings.
+// Harness coverage for ValidPalindromeBenchmarks (ARCHITECTURE 17.9): the generic check holds the
+// arms to agreeing with each other, which a shared wrong verdict would pass, so this pins the
+// baseline's verdict to the one the workload's construction fixes.
 //
 // Setup's operand comes from ValidPalindromeWorkloads, which builds punctuation and casing noise
 // around a mirrored run of letters and digits - a shape its own tests pin - so its decisive answer
@@ -20,14 +20,6 @@ public sealed partial class ValidPalindromeBenchmarksTests
     [Fact]
     public void IsPalindromeByTwoPointerScan_NoisyPalindrome_AcceptsIt() =>
         Assert.Equal(ExpectedIsPalindrome, BuildHarness().IsPalindromeByTwoPointerScan());
-
-    [Fact]
-    public void NormalizedReversal_NoisyPalindrome_AcceptsIt() =>
-        Assert.Equal(ExpectedIsPalindrome, BuildHarness().NormalizedReversal());
-
-    [Fact]
-    public void NormalizedReversal_AgreesWithIsPalindromeByTwoPointerScan() =>
-        Assert.Equal(BuildHarness().IsPalindromeByTwoPointerScan(), BuildHarness().NormalizedReversal());
 
     private static ValidPalindromeBenchmarks BuildHarness()
     {

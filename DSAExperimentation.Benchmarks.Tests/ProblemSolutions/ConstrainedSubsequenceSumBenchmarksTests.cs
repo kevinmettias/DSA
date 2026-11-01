@@ -2,11 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ConstrainedSubsequenceSumBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - rescanning the whole window per position against the
-// monotonic deque - so a harness whose arms disagree is timing two different problems. Setup draws
-// the array from one fixed seed, so the same Length must rebuild the same array; otherwise two
-// published numbers were never comparable in the first place.
+// Harness coverage for ConstrainedSubsequenceSumBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests
+// already holds the arms to agreeing on a rebuilt workload, so this asserts only a bound that comes
+// from the workload's shape rather than from either arm.
 //
 // The array is private, so its documented shape is asserted through the arm's own answer: values are
 // drawn from [-SmallestValueBound, SmallestValueBound) and the answer is the sum of a subsequence of
@@ -18,30 +16,11 @@ public sealed partial class ConstrainedSubsequenceSumBenchmarksTests
     private const int SmallestValueBound = 1_000;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameValueArray()
-    {
+    public void RescanWindowEachPosition_WindowOfFifty_StaysWithinTheValueBound() =>
         Assert.InRange(
             BuildHarness().RescanWindowEachPosition(),
             0,
             SmallestLength * SmallestValueBound);
-        Assert.Equal(BuildHarness().RescanWindowEachPosition(), BuildHarness().RescanWindowEachPosition());
-    }
-
-    [Fact]
-    public void RescanWindowEachPosition_WindowOfFifty_AgreesWithMonotonicDequeDp()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MonotonicDequeDp(), harness.RescanWindowEachPosition());
-    }
-
-    [Fact]
-    public void MonotonicDequeDp_WindowOfFifty_AgreesWithRescanWindowEachPosition()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.RescanWindowEachPosition(), harness.MonotonicDequeDp());
-    }
 
     private static ConstrainedSubsequenceSumBenchmarks BuildHarness()
     {

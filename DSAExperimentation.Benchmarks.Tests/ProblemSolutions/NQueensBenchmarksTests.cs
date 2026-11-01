@@ -22,15 +22,5 @@ public sealed partial class NQueensBenchmarksTests
             AnswerGraphText.Of(harness.RecursiveDfs()));
     }
 
-    [Fact]
-    public void BacktrackEngine_EightQueens_AgreesWithRecursiveDfs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.RecursiveDfs()),
-            AnswerGraphText.Of(harness.BacktrackEngine()));
-    }
-
     private static NQueensBenchmarks BuildHarness() => new() { Size = EightQueens };
 }

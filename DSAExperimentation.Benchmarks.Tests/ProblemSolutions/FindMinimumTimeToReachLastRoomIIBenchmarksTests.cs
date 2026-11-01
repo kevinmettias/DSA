@@ -2,11 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FindMinimumTimeToReachLastRoomIIBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question - the same alternating-cost grid relaxation over a
-// (row, col, parity) state, fronted by the BCL PriorityQueue against this repo's own Heap - so a
-// harness whose arms disagree has relaxed two different arrival rules. Both answers are one int, so
-// they are compared directly.
+// Harness coverage for FindMinimumTimeToReachLastRoomIIBenchmarks (ARCHITECTURE 17.9): the generic
+// arms check only compares the arms with each other, so this bounds the baseline's answer by the
+// workload itself.
 //
 // Setup's grid gives the origin moveTime 0 and every other cell a random wait, so the answer is the
 // earliest arrival at the far corner and is positive on every run: the path to it is at least one
@@ -17,26 +15,8 @@ public sealed partial class FindMinimumTimeToReachLastRoomIIBenchmarksTests
     private const int SmallestSize = 20;
 
     [Fact]
-    public void Setup_SameSize_RebuildsTheSameMinimumTime() =>
-        Assert.Equal(BuildHarness().BclPriorityQueue(), BuildHarness().BclPriorityQueue());
-
-    [Fact]
-    public void BclPriorityQueue_AlternatingCostGrid_AgreesWithHeap()
-    {
-        var harness = BuildHarness();
-
-        Assert.True(harness.BclPriorityQueue() > 0);
-        Assert.Equal(harness.Heap(), harness.BclPriorityQueue());
-    }
-
-    [Fact]
-    public void Heap_AlternatingCostGrid_AgreesWithBclPriorityQueue()
-    {
-        var harness = BuildHarness();
-
-        Assert.True(harness.Heap() > 0);
-        Assert.Equal(harness.BclPriorityQueue(), harness.Heap());
-    }
+    public void BclPriorityQueue_AlternatingCostGrid_ReturnsAPositiveTime() =>
+        Assert.True(BuildHarness().BclPriorityQueue() > 0);
 
     private static FindMinimumTimeToReachLastRoomIIBenchmarks BuildHarness()
     {

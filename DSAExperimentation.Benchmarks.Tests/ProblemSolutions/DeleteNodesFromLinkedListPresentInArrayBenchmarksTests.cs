@@ -1,16 +1,12 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for DeleteNodesFromLinkedListPresentInArrayBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question - scanning the deleted-value array per node against this
-// repo's Set<int> membership filter - so a harness whose arms disagree is timing two different problems.
-// Setup draws both the list values and the deleted values from one fixed seed, and either strategy
-// splices the chain it is handed, so each arm is given a list rebuilt from the same values. The reading
-// is that surviving chain, whose documented shape is at most one node per value the list started with;
-// the same Length must rebuild the same lists and with them the same survivors.
+// Harness coverage for DeleteNodesFromLinkedListPresentInArrayBenchmarks (ARCHITECTURE 17.9): the
+// generic arm check compares the arms only with each other, so what stays here is a bound derived
+// without either arm. The reading is the surviving chain, whose documented shape is at most one node
+// per value the list started with.
 public sealed partial class DeleteNodesFromLinkedListPresentInArrayBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -19,38 +15,13 @@ public sealed partial class DeleteNodesFromLinkedListPresentInArrayBenchmarksTes
     private const int MinimumSurvivorCount = 0;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload()
-    {
+    public void ArrayScan_TwoHundredSeededValues_KeepsAtMostOneNodePerValue() =>
         Assert.InRange(
             Values(BuildHarness().ArrayScan()).Count,
             MinimumSurvivorCount,
             SmallestLength);
-        Assert.Equal(
-            AnswerGraphText.Of(Values(BuildHarness().ArrayScan())),
-            AnswerGraphText.Of(Values(BuildHarness().ArrayScan())));
-    }
 
-    [Fact]
-    public void ArrayScan_TwoHundredSeededValues_AgreesWithSetFilter()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(Values(harness.SetFilter())),
-            AnswerGraphText.Of(Values(harness.ArrayScan())));
-    }
-
-    [Fact]
-    public void SetFilter_TwoHundredSeededValues_AgreesWithArrayScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(Values(harness.ArrayScan())),
-            AnswerGraphText.Of(Values(harness.SetFilter())));
-    }
-
-    // Both arms report the surviving chain, so the test reads the values off it rather than comparing nodes.
+    // The arm reports the surviving chain, so the test reads the values off it rather than counting nodes.
     private static List<int> Values(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();

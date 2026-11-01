@@ -2,11 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CherryPickupBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - the exponential (row1, col1, col2) recursion against the same
-// recurrence remembered in the Memoizer - so a harness whose arms disagree is timing two different
-// problems. Both arms answer with a single int, the most cherries a round trip can bank, so
-// agreement between them says the two walks settled on the same total for the same grid.
+// Harness coverage for CherryPickupBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests already holds
+// the arms to agreeing on a rebuilt grid, so this pins the baseline to the most cherries the
+// all-cherry grid's shape allows, derived independently of either arm.
 public sealed partial class CherryPickupBenchmarksTests
 {
     private const int SmallestSize = 4;
@@ -16,35 +14,12 @@ public sealed partial class CherryPickupBenchmarksTests
     // two of them make 14 cell visits and must share at least the two ends of the walk, leaving at
     // most 12 distinct cells - and taking the top row then the right column for one walker and the
     // left column then the bottom row for the other shares exactly those two ends, covering 12 of the
-    // 16 cells. With every cell worth one cherry, 12 is both achievable and the ceiling, so a rebuilt
-    // grid has to bank it.
+    // 16 cells. With every cell worth one cherry, 12 is both achievable and the ceiling.
     private const int ExpectedCherries = 12;
 
     [Fact]
-    public void Setup_SameSize_RebuildsTheAllCherryGrid()
-    {
-        var first = BuildHarness();
-        var second = BuildHarness();
-
-        Assert.Equal(ExpectedCherries, first.UnmemoizedRecursion(SmallestSize));
-        Assert.Equal(ExpectedCherries, second.MemoizedRecursion(SmallestSize));
-    }
-
-    [Fact]
-    public void UnmemoizedRecursion_AllCherryFourByFourGrid_AgreesWithMemoizedRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MemoizedRecursion(SmallestSize), harness.UnmemoizedRecursion(SmallestSize));
-    }
-
-    [Fact]
-    public void MemoizedRecursion_AllCherryFourByFourGrid_AgreesWithUnmemoizedRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.UnmemoizedRecursion(SmallestSize), harness.MemoizedRecursion(SmallestSize));
-    }
+    public void UnmemoizedRecursion_AllCherryFourByFourGrid_BanksTwelveCherries() =>
+        Assert.Equal(ExpectedCherries, BuildHarness().UnmemoizedRecursion(SmallestSize));
 
     private static CherryPickupBenchmarks BuildHarness()
     {

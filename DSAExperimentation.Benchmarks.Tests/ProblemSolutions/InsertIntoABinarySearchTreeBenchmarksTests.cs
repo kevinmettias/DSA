@@ -1,6 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -12,8 +11,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // root of the tree it built, and the one thing the two trees do share is the value set both are
 // asked to produce - so each [Fact] asserts its arm's root against a value derived here from the
 // fixture's documented shape (a shuffled stride-two insertion order plus the odd new key), and
-// then asserts that the same tree carries exactly the expected values in order. Each arm rebuilds
-// its own tree inside the measured call, so one harness is safe to call twice in either order.
+// then asserts that the same tree carries exactly the expected values in order.
 public sealed partial class InsertIntoABinarySearchTreeBenchmarksTests
 {
     private const int SmallestNodeCount = 500;
@@ -26,17 +24,6 @@ public sealed partial class InsertIntoABinarySearchTreeBenchmarksTests
 
     // The index a sorted range is split at, the same HalvingFactor BuildBalanced divides by.
     private const int HalvingFactor = 2;
-
-    [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameInsertionOrder()
-    {
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().BinarySearchTreeInsert()),
-            AnswerGraphText.Of(BuildHarness().BinarySearchTreeInsert()));
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().CollectSortInsertRebuild()),
-            AnswerGraphText.Of(BuildHarness().CollectSortInsertRebuild()));
-    }
 
     [Fact]
     public void CollectSortInsertRebuild_RebuiltBalancedTree_RootsAtTheSortedMiddle()

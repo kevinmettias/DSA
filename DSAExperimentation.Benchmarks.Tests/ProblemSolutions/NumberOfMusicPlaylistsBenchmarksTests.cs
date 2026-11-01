@@ -2,12 +2,10 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for NumberOfMusicPlaylistsBenchmarks (ARCHITECTURE 17.9): both arms count the same
-// playlists - bottom-up tabulation over the (length, unique) table against the Memoizer-driven
-// top-down recursion over that table - so a harness whose arms disagree is timing two different
-// questions. Both return the count modulo 1e9+7, the problem's whole answer rather than a proxy. This
-// class has no Setup: its workload is entirely the [Params] axis plus the Goal property, so the same
-// SongCount is the whole of what a rebuild can vary.
+// Harness coverage for NumberOfMusicPlaylistsBenchmarks (ARCHITECTURE 17.9): a property of the
+// workload's shape across sizes, which the generic check - run at the smallest SongCount only -
+// cannot see. This class has no Setup: its workload is entirely the [Params] axis plus the derived
+// Goal property.
 public sealed partial class NumberOfMusicPlaylistsBenchmarksTests
 {
     private const int SmallestSongCount = 20;
@@ -27,14 +25,6 @@ public sealed partial class NumberOfMusicPlaylistsBenchmarksTests
 
         Assert.Equal(SmallestSongCount, smallestGoal);
         Assert.Equal(LargestSongCount, harness.Goal);
-    }
-
-    [Fact]
-    public void Tabulation_AgreesWithMemoized()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.Memoized(), harness.Tabulation());
     }
 
     private static NumberOfMusicPlaylistsBenchmarks BuildHarness() =>

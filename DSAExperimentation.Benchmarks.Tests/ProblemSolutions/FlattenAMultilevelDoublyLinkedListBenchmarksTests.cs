@@ -5,10 +5,11 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for FlattenAMultilevelDoublyLinkedListBenchmarks (ARCHITECTURE 17.9), for what
 // BenchmarkArmsTests cannot pin: the flattened order, known from the fixture's own structure rather
-// than from either arm. The class has no [GlobalSetup] - each arm rebuilds its own list inside the
-// call, because flattening is destructive - so the harness is the bare initializer plus Length.
+// than from either arm, so the baseline is held to it. The class has no [GlobalSetup] - each arm
+// rebuilds its own list inside the call, because flattening is destructive - so the harness is the
+// bare initializer plus Length.
 //
-// Each arm returns the flattened list's head as object? (the node type is internal, CS0050). The arm
+// The baseline returns the flattened list's head as object? (the node type is internal, CS0050). It
 // builds a Length-node chain 1, 2, ... and hangs one single-node child valued Length plus its parent's
 // value off each node but the last, so a correct flatten splices each child straight after its parent:
 // Length + (Length - 1) nodes alternating chain value and child value, which catches a dropped,
@@ -21,10 +22,6 @@ public sealed partial class FlattenAMultilevelDoublyLinkedListBenchmarksTests
     [Fact]
     public void BruteForceRescanFromHead_ChildOnEveryNodeButTheLast_SplicesEachChildAfterItsParent() =>
         Assert.Equal(FlattenedValues(), ValuesOf(BuildHarness().BruteForceRescanFromHead()));
-
-    [Fact]
-    public void StackBasedOnePass_ChildOnEveryNodeButTheLast_SplicesEachChildAfterItsParent() =>
-        Assert.Equal(FlattenedValues(), ValuesOf(BuildHarness().StackBasedOnePass()));
 
     private static IEnumerable<int> FlattenedValues() =>
         Enumerable.Range(1, SmallestLength - 1)

@@ -2,16 +2,14 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ValidateStackSequencesBenchmarks (ARCHITECTURE 17.9): its two arms are
-// ValidateStackSequencesSolution's competing strategies for the same question - exhaustive
-// push/pop-timing backtracking against the single greedy stack sweep - so a harness whose arms
-// disagree is answering two different questions about LC 946.
+// Harness coverage for ValidateStackSequencesBenchmarks (ARCHITECTURE 17.9): the generic check holds
+// the arms to agreeing with each other, which a shared wrong verdict would pass, so this pins the
+// baseline's verdict to the one the workload's construction fixes.
 //
 // Setup builds each popped order through the shared StackSequenceWorkloads fixture's
 // BuildValidPopOrder, so the pair really is a valid one: the backtracking arm has to search rather
-// than fail on its first branch, and LC 946's answer is true. That decisive literal is asserted
-// alongside the arms' agreement so a shared wrong verdict cannot pass. Both arms return bool, so this
-// harness witnesses the verdict only, not the interleaving behind it.
+// than fail on its first branch, and LC 946's answer is true. Both arms return bool, so this harness
+// witnesses the verdict only, not the interleaving behind it.
 public sealed partial class ValidateStackSequencesBenchmarksTests
 {
     // The smallest length both arms run.
@@ -21,35 +19,8 @@ public sealed partial class ValidateStackSequencesBenchmarksTests
     private const bool ExpectedIsValid = true;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload()
-    {
-        Assert.Equal(
-            BuildHarness().IsValidByGreedyStackSweep(SmallestLength),
-            BuildHarness().IsValidByGreedyStackSweep(SmallestLength));
-        Assert.Equal(ExpectedIsValid, BuildHarness().IsValidByGreedyStackSweep(SmallestLength));
-    }
-
-    [Fact]
-    public void IsValidByBacktrackingSearch_SmallestLength_AgreesWithTheSiblingArm()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            harness.IsValidByGreedyStackSweep(SmallestLength),
-            harness.IsValidByBacktrackingSearch(SmallestLength));
-        Assert.Equal(ExpectedIsValid, harness.IsValidByBacktrackingSearch(SmallestLength));
-    }
-
-    [Fact]
-    public void IsValidByGreedyStackSweep_SmallestLength_AgreesWithTheSiblingArm()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            harness.IsValidByBacktrackingSearch(SmallestLength),
-            harness.IsValidByGreedyStackSweep(SmallestLength));
-        Assert.Equal(ExpectedIsValid, harness.IsValidByGreedyStackSweep(SmallestLength));
-    }
+    public void IsValidByBacktrackingSearch_BuiltValidPopOrder_AcceptsTheSequences() =>
+        Assert.Equal(ExpectedIsValid, BuildHarness().IsValidByBacktrackingSearch(SmallestLength));
 
     private static ValidateStackSequencesBenchmarks BuildHarness()
     {

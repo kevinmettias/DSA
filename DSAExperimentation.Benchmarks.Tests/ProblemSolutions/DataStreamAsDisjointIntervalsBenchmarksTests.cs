@@ -17,10 +17,6 @@ public sealed partial class DataStreamAsDisjointIntervalsBenchmarksTests
     public void FullRebuildEachCall_TwoHundredSeededValues_SummarizesIntoAtMostOneIntervalPerValue() =>
         Assert.InRange(BuildHarness().FullRebuildEachCall().Count, MinimumIntervalCount, SmallestLength);
 
-    [Fact]
-    public void IntervalSetMerge_TwoHundredSeededValues_SummarizesIntoAtMostOneIntervalPerValue() =>
-        Assert.InRange(BuildHarness().IntervalSetMerge().Count, MinimumIntervalCount, SmallestLength);
-
     private static DataStreamAsDisjointIntervalsBenchmarks BuildHarness()
     {
         var harness = new DataStreamAsDisjointIntervalsBenchmarks { Length = SmallestLength };

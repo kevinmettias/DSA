@@ -2,12 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountTheNumberOfCompleteComponentsBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question - a pairwise adjacency-set scan against a
-// union-find tally - so a harness whose arms disagree is timing two different problems, not two ways
-// of answering one. Setup derives the edge array from NodeCount alone, so the same NodeCount must
-// rebuild the same workload; otherwise two published numbers were never comparable in the first
-// place.
+// Harness coverage for CountTheNumberOfCompleteComponentsBenchmarks (ARCHITECTURE 17.9):
+// BenchmarkArmsTests already holds the arms to agreeing on a rebuilt workload, so this asserts only
+// an expected count derived from the workload's construction rather than from either arm.
 //
 // The edge array is private, and the workload's defining property - NodeCount / CliqueSize disjoint
 // cliques, every one of them already complete - is exactly what the arms count, so the setup is
@@ -21,29 +18,8 @@ public sealed partial class CountTheNumberOfCompleteComponentsBenchmarksTests
     private const int ExpectedCompleteComponents = SmallestNodeCount / CliqueSize;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameCliques()
-    {
+    public void AdjacencySetPairwiseScan_DisjointCompleteCliques_CountsEveryClique() =>
         Assert.Equal(ExpectedCompleteComponents, BuildHarness().AdjacencySetPairwiseScan());
-        Assert.Equal(
-            BuildHarness().AdjacencySetPairwiseScan(),
-            BuildHarness().AdjacencySetPairwiseScan());
-    }
-
-    [Fact]
-    public void AdjacencySetPairwiseScan_DisjointCompleteCliques_AgreesWithDisjointSetTally()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DisjointSetTally(), harness.AdjacencySetPairwiseScan());
-    }
-
-    [Fact]
-    public void DisjointSetTally_DisjointCompleteCliques_AgreesWithAdjacencySetPairwiseScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.AdjacencySetPairwiseScan(), harness.DisjointSetTally());
-    }
 
     private static CountTheNumberOfCompleteComponentsBenchmarks BuildHarness()
     {

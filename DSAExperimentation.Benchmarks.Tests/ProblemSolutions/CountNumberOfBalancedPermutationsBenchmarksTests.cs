@@ -2,11 +2,13 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountNumberOfBalancedPermutationsBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question - enumerating distinct permutations against the
-// per-digit split DP - so a harness whose arms disagree is timing two different problems. Setup
-// seeds num from a fixed random draw over a small digit alphabet, so the same Length must rebuild
-// the same num.
+// Harness coverage for CountNumberOfBalancedPermutationsBenchmarks (ARCHITECTURE 17.9):
+// BenchmarkArmsTests already holds the arms to agreeing on a fresh harness, so this asserts what it
+// cannot: a ceiling on the answer that comes from the workload's shape rather than from either arm,
+// and that a harness which has already answered once answers as a rebuild does, since
+// BenchmarkDotNet calls an arm many times on one harness while the generic check builds a fresh
+// harness for every call. Setup seeds num from a fixed random draw over a small digit alphabet, so
+// the same Length must rebuild the same num.
 public sealed partial class CountNumberOfBalancedPermutationsBenchmarksTests
 {
     private const int SmallestLength = 6;
@@ -24,22 +26,6 @@ public sealed partial class CountNumberOfBalancedPermutationsBenchmarksTests
         // the SmallestLength! distinct permutations they can be arranged into.
         Assert.InRange(first.BruteForce(SmallestLength), 0L, MostSixDigitPermutations);
         Assert.Equal(first.BruteForce(SmallestLength), second.BruteForce(SmallestLength));
-    }
-
-    [Fact]
-    public void BruteForce_SmallDigitAlphabet_AgreesWithDigitCountDp()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DigitCountDp(SmallestLength), harness.BruteForce(SmallestLength));
-    }
-
-    [Fact]
-    public void DigitCountDp_SmallDigitAlphabet_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(SmallestLength), harness.DigitCountDp(SmallestLength));
     }
 
     private static CountNumberOfBalancedPermutationsBenchmarks BuildHarness()

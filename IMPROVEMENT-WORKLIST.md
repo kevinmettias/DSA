@@ -406,12 +406,15 @@ using) removed from 1,111 files.
   - A project cannot discover at build time who references it.
   - A `DSAExperimentation.*` wildcard would also grant the solution tier's internals to
     `DSAExperimentation.Tests`, which is kept unable to reach them.
-- **P6, the companion tree — two steps open.** The nomos exemption for BenchmarkDotNet entry points
+- **P6, the companion tree — one step open.** The nomos exemption for BenchmarkDotNet entry points
   (`[Benchmark]`, `[GlobalSetup]`, `[Params]`, `[ArgumentsSource]`, …) is still uncommitted in
-  `code-standards`, so committed nomos reports the deleted companions' classes as uncovered. And
-  311 kept companion files still hold 623 methods named `…_AgreesWith…`, most of which only
-  compare one arm with another - what `BenchmarkArmsTests` already asserts - beside the methods
-  that pin something.
+  `code-standards`, so committed nomos reports the deleted companions' classes, and the arms no
+  companion test names any more, as uncovered. The companions themselves now hold only what
+  §17.9 says they are for: every rebuild check, every arm-against-arm comparison and every copy of
+  one expected value asserted per arm that `BenchmarkArmsTests` already implies was removed
+  (1,438 test methods down to 565; 9 files deleted). The 19 `…_AgreesWith…` methods left compare
+  arms at a size the generic check never builds, in an order an unordered class's generic check
+  ignores, or on a stateful harness reused between arms.
 
 ---
 

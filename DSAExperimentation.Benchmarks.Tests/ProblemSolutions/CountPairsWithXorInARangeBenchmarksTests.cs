@@ -2,10 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountPairsWithXorInARangeBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - rescanning every earlier value against querying this
-// repo's BitTrie for the range - so a harness whose arms disagree is timing two different problems.
-// Setup seeds the values, so the same Length must rebuild the same array.
+// Harness coverage for CountPairsWithXorInARangeBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests
+// already holds the arms to agreeing on a fresh harness, so this asserts what it cannot: a range for
+// the answer that comes from the workload's shape rather than from either arm, and that a harness
+// which has already answered once answers as a rebuild does, since BenchmarkDotNet calls an arm many
+// times on one harness while the generic check builds a fresh harness for every call. Setup seeds
+// the values, so the same Length must rebuild the same array.
 public sealed partial class CountPairsWithXorInARangeBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -23,22 +25,6 @@ public sealed partial class CountPairsWithXorInARangeBenchmarksTests
         // [100, 5_000], so real pairs land inside it - and none of them can be counted twice.
         Assert.InRange(first.PairwiseScan(), 1, MostIndexPairs);
         Assert.Equal(first.PairwiseScan(), second.PairwiseScan());
-    }
-
-    [Fact]
-    public void PairwiseScan_SmallestLength_AgreesWithBitTrieRangeCount()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BitTrieRangeCount(), harness.PairwiseScan());
-    }
-
-    [Fact]
-    public void BitTrieRangeCount_SmallestLength_AgreesWithPairwiseScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.PairwiseScan(), harness.BitTrieRangeCount());
     }
 
     private static CountPairsWithXorInARangeBenchmarks BuildHarness()

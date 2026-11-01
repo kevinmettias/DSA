@@ -6,60 +6,22 @@ using DSAExperimentation.LeetCode.Conventions;
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks (ARCHITECTURE
-// 17.9): its three arms are competing strategies for the same question - two that materialize both
-// trees back into grids and rebuild the OR with LC 427's builders, against the canonical direct
-// recursive merge - so a harness whose arms disagree is timing two different problems. All three
-// return the merged QuadTreeNode, so each is projected with QuadTreeGrid.Materialize - the walk LC
-// 558's own coverage test decodes its trees with - into the grid the tree denotes, and
-// AnswerGraphText.Of renders that jagged grid element-wise. Assert.Equal on int[][] itself would fall
-// back to reference equality for the inner arrays.
-//
-// Setup splits grid1 top/bottom and grid2 left/right, so the OR of the two documented grids is the
-// answer independently of all three arms, and the same Size must rebuild it.
+// 17.9): Setup splits grid1 top/bottom and grid2 left/right, so the OR of the two documented grids is
+// the answer independently of all three arms - an expected value the generic agreement check, which
+// only compares arms with each other, cannot supply. The arm returns the merged QuadTreeNode, so it is
+// projected with QuadTreeGrid.Materialize - the walk LC 558's own coverage test decodes its trees
+// with - into the grid the tree denotes, and AnswerGraphText.Of renders that jagged grid
+// element-wise. Assert.Equal on int[][] itself would fall back to reference equality for the inner
+// arrays.
 public sealed partial class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarksTests
 {
     private const int SmallestSize = 16;
 
     [Fact]
-    public void Setup_SameSize_RebuildsTheSameSplitGridsAndTheirOr()
-    {
+    public void BruteForceGridMaterialize_SplitGrids_DenotesTheOrOfBothGrids() =>
         Assert.Equal(
             AnswerGraphText.Of(ExpectedOrGrid()),
             AnswerGraphText.Of(Materialized(BuildHarness().BruteForceGridMaterialize())));
-        Assert.Equal(
-            AnswerGraphText.Of(Materialized(BuildHarness().DirectRecursiveMerge())),
-            AnswerGraphText.Of(Materialized(BuildHarness().DirectRecursiveMerge())));
-    }
-
-    [Fact]
-    public void BruteForceGridMaterialize_SplitGrids_AgreesWithDirectRecursiveMerge()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(Materialized(harness.DirectRecursiveMerge())),
-            AnswerGraphText.Of(Materialized(harness.BruteForceGridMaterialize())));
-    }
-
-    [Fact]
-    public void FenwickGridMaterialize_SplitGrids_AgreesWithBruteForceGridMaterialize()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(Materialized(harness.BruteForceGridMaterialize())),
-            AnswerGraphText.Of(Materialized(harness.FenwickGridMaterialize())));
-    }
-
-    [Fact]
-    public void DirectRecursiveMerge_SplitGrids_AgreesWithFenwickGridMaterialize()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(Materialized(harness.FenwickGridMaterialize())),
-            AnswerGraphText.Of(Materialized(harness.DirectRecursiveMerge())));
-    }
 
     // grid1 is 0 in its top half and 1 below it, grid2 is 0 in its left half and 1 to the right of
     // it, so their OR is 0 exactly where both are 0 - the top-left quadrant.

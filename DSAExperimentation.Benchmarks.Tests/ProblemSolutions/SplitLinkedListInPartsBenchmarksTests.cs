@@ -1,20 +1,14 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SplitLinkedListInPartsBenchmarks (ARCHITECTURE 17.9): both arms are
-// SplitLinkedListInPartsSolution's splits of the same prepared chain into the same number of
-// parts - one rebuilding from an array, the other rewiring in place - so a harness whose arms
-// disagree is timing two different problems. Setup is a pure function of Length and each arm
-// clones the chain before mutating it, so the same Length must rebuild the same values and one
-// harness is safe to call twice in either order.
-//
-// Each arm returns the parts themselves, and they are derivable from Length alone: node i holds
-// the value i, and LC 725 cuts the chain into consecutive parts whose sizes differ by at most one,
-// the larger ones first. Length is far larger than the part count, so every part is non-empty.
-// Each arm is asserted against those parts, which catches a dropped node and a misplaced cut alike.
+// Harness coverage for SplitLinkedListInPartsBenchmarks (ARCHITECTURE 17.9): each arm returns the
+// parts themselves, and they are derivable from Length alone: node i holds the value i, and LC 725
+// cuts the chain into consecutive parts whose sizes differ by at most one, the larger ones first.
+// Length is far larger than the part count, so every part is non-empty. The baseline is asserted
+// against those parts, which catches a dropped node and a misplaced cut alike; the generic arm
+// check holds the other arm to the baseline's answer.
 public sealed partial class SplitLinkedListInPartsBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -23,16 +17,8 @@ public sealed partial class SplitLinkedListInPartsBenchmarksTests
     private const int ExpectedPartCount = 7;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameChain() =>
-        Assert.Equal(AnswerGraphText.Of(BuildHarness().ArrayRebuild()), AnswerGraphText.Of(BuildHarness().ArrayRebuild()));
-
-    [Fact]
     public void ArrayRebuild_TwoHundredNodes_CutsEqualConsecutiveParts() =>
         AssertExpectedParts(BuildHarness().ArrayRebuild());
-
-    [Fact]
-    public void InPlaceRewire_TwoHundredNodes_CutsEqualConsecutiveParts() =>
-        AssertExpectedParts(BuildHarness().InPlaceRewire());
 
     private static void AssertExpectedParts(SinglyLinkedListNode<int>?[] parts)
     {

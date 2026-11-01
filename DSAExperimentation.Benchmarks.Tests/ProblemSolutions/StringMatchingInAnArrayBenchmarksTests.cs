@@ -1,18 +1,12 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for StringMatchingInAnArrayBenchmarks (ARCHITECTURE 17.9): both arms answer
-// the same question - which of LC 1408's words are contained in another word - one by a raw
-// char-index double loop, one by the prefix-function search, so a harness whose arms disagree
-// is timing two different problems. Setup's words are built from their index alone, so the same
-// word count must rebuild the same workload.
-//
-// Both arms return the contained words themselves. The derived expectation below pins them to
-// the fixture's own structure, which is what keeps the check from being satisfied by two arms
-// that are both wrong in the same way; LC 1408 accepts the words in any order, so they are
-// compared as a set.
+// Harness coverage for StringMatchingInAnArrayBenchmarks (ARCHITECTURE 17.9): the arms return
+// the contained words themselves, and Setup's words are built from their index alone. The derived
+// expectation below pins the baseline's answer to the fixture's own structure, which is what keeps
+// the generic arm check's agreement from being satisfied by two arms that are both wrong in the
+// same way; LC 1408 accepts the words in any order, so they are compared as a set.
 public sealed partial class StringMatchingInAnArrayBenchmarksTests
 {
     private const int SmallestWordCount = 60;
@@ -25,18 +19,8 @@ public sealed partial class StringMatchingInAnArrayBenchmarksTests
     private const char FirstTrailingLetter = 'b';
 
     [Fact]
-    public void Setup_SameWordCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().NaiveNestedLoop()),
-            AnswerGraphText.Of(BuildHarness().NaiveNestedLoop()));
-
-    [Fact]
     public void NaiveNestedLoop_AdversarialWords_FindsEveryWordButEachFamilysLongest() =>
         AssertEveryWordButEachFamilysLongest(BuildHarness().NaiveNestedLoop());
-
-    [Fact]
-    public void KmpSubstringSearch_AdversarialWords_FindsEveryWordButEachFamilysLongest() =>
-        AssertEveryWordButEachFamilysLongest(BuildHarness().KmpSubstringSearch());
 
     // Within a family a word is a run of 'a's and the family's letter, so it is a substring of every
     // longer word in its family and of no word in another: every word is contained except the last,

@@ -2,10 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FindIfPathExistsInGraphBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - an iterative BCL depth-first reachability search
-// against this repo's own DisjointSet - so a harness whose arms disagree is answering two different
-// connectivity questions. Both answers are one bool, so they are compared directly.
+// Harness coverage for FindIfPathExistsInGraphBenchmarks (ARCHITECTURE 17.9): the generic arms check
+// only compares the arms with each other, so this pins the baseline's verdict to the one Setup's
+// construction fixes independently of any arm.
 //
 // Setup builds two separate spanning trees, [0, half) and [half, NodeCount), and puts the source at
 // node 0 and the destination at node NodeCount - 1 - one in each component. No path can therefore
@@ -20,28 +19,8 @@ public sealed partial class FindIfPathExistsInGraphBenchmarksTests
     private const bool ExpectedPathExists = false;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameVerdict() =>
-        Assert.Equal(
-            BuildHarness().HasPathByDepthFirstSearch(),
-            BuildHarness().HasPathByDepthFirstSearch());
-
-    [Fact]
-    public void HasPathByDepthFirstSearch_DisjointComponents_AgreesWithHasPathByDisjointSet()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedPathExists, harness.HasPathByDepthFirstSearch());
-        Assert.Equal(harness.HasPathByDisjointSet(), harness.HasPathByDepthFirstSearch());
-    }
-
-    [Fact]
-    public void HasPathByDisjointSet_DisjointComponents_AgreesWithHasPathByDepthFirstSearch()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedPathExists, harness.HasPathByDisjointSet());
-        Assert.Equal(harness.HasPathByDepthFirstSearch(), harness.HasPathByDisjointSet());
-    }
+    public void HasPathByDepthFirstSearch_DisjointComponents_FindsNoPath() =>
+        Assert.Equal(ExpectedPathExists, BuildHarness().HasPathByDepthFirstSearch());
 
     private static FindIfPathExistsInGraphBenchmarks BuildHarness()
     {

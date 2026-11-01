@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for DesignTwitterBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot pin: which
 // tweets the feed holds, known from Setup's construction rather than from either arm. Setup builds the whole call
-// script from one fixed seed, and each arm returns the feed the replay reads at the end.
+// script from one fixed seed, and the baseline arm returns the feed the replay reads at the end.
 public sealed partial class DesignTwitterBenchmarksTests
 {
     private const int SmallestFollowedUsers = 50;
@@ -21,10 +21,6 @@ public sealed partial class DesignTwitterBenchmarksTests
     [Fact]
     public void GatherAllAndSort_InterleavedSourceScript_ReadsTheNewestTweetsNewestFirst() =>
         Assert.Equal(NewestTweetIds(), BuildHarness().GatherAllAndSort());
-
-    [Fact]
-    public void HeapKWayMerge_InterleavedSourceScript_ReadsTheNewestTweetsNewestFirst() =>
-        Assert.Equal(NewestTweetIds(), BuildHarness().HeapKWayMerge());
 
     // Tweet ids are posted in increasing order, one per source drawn at random, so the newest
     // FeedSize of them are the ids the script posted last whatever order the sources came out in.

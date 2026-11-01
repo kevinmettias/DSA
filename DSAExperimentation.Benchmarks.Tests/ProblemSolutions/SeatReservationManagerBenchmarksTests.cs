@@ -18,10 +18,6 @@ public sealed partial class SeatReservationManagerBenchmarksTests
     public void LinearScanArray_ReserveReleaseReserveScript_HandsOutTheSmallestFreeSeatEachTime() =>
         Assert.Equal(ExpectedSeats(), BuildHarness().LinearScanArray());
 
-    [Fact]
-    public void SmallestFreeAllocator_ReserveReleaseReserveScript_HandsOutTheSmallestFreeSeatEachTime() =>
-        Assert.Equal(ExpectedSeats(), BuildHarness().SmallestFreeAllocator());
-
     private static int[] ExpectedSeats()
     {
         var freed = SmallestOperationCount / UnreserveStride;

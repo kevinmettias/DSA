@@ -1,17 +1,12 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CombinationSumBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - specialized recursion over a fixed candidate set against the
-// general backtracking engine - so a harness whose arms disagree is timing two different problems.
-// Setup installs the candidate set the comment names, and Target is the only [Params] property, so
-// the same Target must rebuild the same candidate workload; the combinations a candidate set can
-// make are exactly the ones that sum to Target, which is the shape asserted below.
-//
-// AnswerGraphText.OfUnordered, not Of: LeetCode leaves the order of the returned combination set
-// unspecified, while the order inside one combination is the ascending order the arms both build.
+// Harness coverage for CombinationSumBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests already holds
+// the arms to agreeing on a rebuilt workload at the smallest target, so this asserts what that check
+// cannot - that every combination the candidate set makes sums to Target, a property of the problem
+// rather than of either arm, and the count at the largest target, which the generic check never
+// builds.
 public sealed partial class CombinationSumBenchmarksTests
 {
     private const int SmallestTarget = 30;
@@ -23,33 +18,8 @@ public sealed partial class CombinationSumBenchmarksTests
     private const int CombinationsSummingToLargestTarget = 90;
 
     [Fact]
-    public void Setup_SameTarget_RebuildsTheSameCandidateWorkload()
-    {
+    public void SpecializedRecursive_CandidatesTwoThreeFiveSeven_SumsEveryCombinationToTarget() =>
         Assert.All(BuildHarness().SpecializedRecursive(), combination => Assert.Equal(SmallestTarget, combination.Sum()));
-        Assert.Equal(
-            AnswerGraphText.OfUnordered(BuildHarness().Backtracking()),
-            AnswerGraphText.OfUnordered(BuildHarness().Backtracking()));
-    }
-
-    [Fact]
-    public void Backtracking_CandidatesTwoThreeFiveSeven_AgreesWithSpecializedRecursive()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.OfUnordered(harness.SpecializedRecursive()),
-            AnswerGraphText.OfUnordered(harness.Backtracking()));
-    }
-
-    [Fact]
-    public void SpecializedRecursive_CandidatesTwoThreeFiveSeven_AgreesWithBacktracking()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.OfUnordered(harness.Backtracking()),
-            AnswerGraphText.OfUnordered(harness.SpecializedRecursive()));
-    }
 
     // BenchmarkArmsTests only builds the smallest target, so the largest one's count is pinned here.
     [Fact]

@@ -4,8 +4,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for DesignSpreadsheetBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot pin: a
 // bound on every value the replay reads, which follows from the script's construction rather than from either arm.
-// Setup builds the whole call script from one fixed seed, and each arm returns every value GetValue reported, in
-// order.
+// Setup builds the whole call script from one fixed seed, and the baseline arm returns every value GetValue
+// reported, in order.
 public sealed partial class DesignSpreadsheetBenchmarksTests
 {
     private const int SmallestCellCount = 200;
@@ -21,10 +21,6 @@ public sealed partial class DesignSpreadsheetBenchmarksTests
     [Fact]
     public void Dictionary_SetAndFormulaScript_ReadsOnlySumsOfTwoDrawnValues() =>
         AssertReadsOnlySumsOfTwoDrawnValues(BuildHarness().Dictionary());
-
-    [Fact]
-    public void HashMap_SetAndFormulaScript_ReadsOnlySumsOfTwoDrawnValues() =>
-        AssertReadsOnlySumsOfTwoDrawnValues(BuildHarness().HashMap());
 
     // A cell value and a formula's literal are both drawn from zero up to ValueUpperBound, and every
     // formula is either two cells or one cell and one literal - so each of the CellCount reads reports

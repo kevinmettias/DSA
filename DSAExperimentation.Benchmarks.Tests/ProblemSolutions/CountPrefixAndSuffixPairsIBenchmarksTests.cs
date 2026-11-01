@@ -1,13 +1,10 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountPrefixAndSuffixPairsIBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - comparing each candidate pair character by character
-// against comparing pre-built RollingHash values - so a harness whose arms disagree is timing two
-// different problems. Setup draws words from a fixed seed through PrefixSuffixPairWorkloads and
-// builds their hashes, so the same WordCount must rebuild both.
+// Harness coverage for CountPrefixAndSuffixPairsIBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests
+// already holds the arms to agreeing on a rebuilt workload, so this asserts only the shape of the
+// words Setup draws through PrefixSuffixPairWorkloads, which no arm's answer reveals.
 public sealed partial class CountPrefixAndSuffixPairsIBenchmarksTests
 {
     private const int SmallestWordCount = 25;
@@ -19,7 +16,7 @@ public sealed partial class CountPrefixAndSuffixPairsIBenchmarksTests
     private const int MaxWordLength = 10;
 
     [Fact]
-    public void Setup_SmallestWordCount_RebuildsTheSameWorkload()
+    public void Setup_SmallestWordCount_DrawsWordsWithinTheLengthBound()
     {
         var words = PrefixSuffixPairWorkloads.BuildWords(SmallestWordCount, MaxWordLength, Seed);
 
@@ -27,30 +24,5 @@ public sealed partial class CountPrefixAndSuffixPairsIBenchmarksTests
         // four-letter alphabet, so every word is a real candidate for a prefix/suffix span.
         Assert.Equal(SmallestWordCount, words.Length);
         Assert.All(words, word => Assert.InRange(word.Length, 1, MaxWordLength));
-        Assert.Equal(BuildHarness().BruteForce(), BuildHarness().BruteForce());
-    }
-
-    [Fact]
-    public void BruteForce_FourLetterAlphabet_AgreesWithRollingHash()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.RollingHash(), harness.BruteForce());
-    }
-
-    [Fact]
-    public void RollingHash_FourLetterAlphabet_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.RollingHash());
-    }
-
-    private static CountPrefixAndSuffixPairsIBenchmarks BuildHarness()
-    {
-        var harness = new CountPrefixAndSuffixPairsIBenchmarks { WordCount = SmallestWordCount };
-        harness.Setup();
-
-        return harness;
     }
 }

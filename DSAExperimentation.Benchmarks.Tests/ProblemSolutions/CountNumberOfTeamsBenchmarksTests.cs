@@ -2,10 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountNumberOfTeamsBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - the cubic triple loop against the pair of coordinate-compressed
-// Fenwick sweeps - so a harness whose arms disagree is timing two different problems. Setup seeds
-// the ratings, so the same Length must rebuild the same array.
+// Harness coverage for CountNumberOfTeamsBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests already
+// holds the arms to agreeing on a fresh harness, so this asserts what it cannot: a range for the
+// answer that comes from the workload's shape rather than from either arm, and that a harness which
+// has already answered once answers as a rebuild does, since BenchmarkDotNet calls an arm many times
+// on one harness while the generic check builds a fresh harness for every call. Setup seeds the
+// ratings, so the same Length must rebuild the same array.
 public sealed partial class CountNumberOfTeamsBenchmarksTests
 {
     private const int SmallestLength = 80;
@@ -24,22 +26,6 @@ public sealed partial class CountNumberOfTeamsBenchmarksTests
         // the index triples it contains.
         Assert.InRange(first.TripleLoopScan(), 1, MostIndexTriples);
         Assert.Equal(first.TripleLoopScan(), second.TripleLoopScan());
-    }
-
-    [Fact]
-    public void TripleLoopScan_WideRatingRange_AgreesWithFenwickTreeSweeps()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.FenwickTreeSweeps(), harness.TripleLoopScan());
-    }
-
-    [Fact]
-    public void FenwickTreeSweeps_WideRatingRange_AgreesWithTripleLoopScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.TripleLoopScan(), harness.FenwickTreeSweeps());
     }
 
     private static CountNumberOfTeamsBenchmarks BuildHarness()

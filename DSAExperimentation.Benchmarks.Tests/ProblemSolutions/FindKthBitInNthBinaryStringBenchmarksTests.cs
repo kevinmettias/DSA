@@ -2,10 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FindKthBitInNthBinaryStringBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - materializing S(n) and indexing it, against walking
-// down one level per recursive call - so a harness whose arms disagree has read two different bits
-// of the same string. Both answers are one char, so they are compared directly.
+// Harness coverage for FindKthBitInNthBinaryStringBenchmarks (ARCHITECTURE 17.9): the generic arms
+// check only compares the arms with each other, so this pins the baseline's bit to the value the
+// construction rule decides independently of any arm.
 //
 // Setup pins the bit position to the last bit of S(n), which the construction rule decides outright:
 // S(n) ends with the inverted first bit of S(n-1), and S(n-1) always starts with S(1)'s '0', so the
@@ -20,28 +19,8 @@ public sealed partial class FindKthBitInNthBinaryStringBenchmarksTests
     private const char ExpectedLastBit = '1';
 
     [Fact]
-    public void Setup_SameStringOrder_RebuildsTheSameBitPosition() =>
-        Assert.Equal(
-            BuildHarness().BruteForceConstruction(),
-            BuildHarness().BruteForceConstruction());
-
-    [Fact]
-    public void BruteForceConstruction_LastBitOfTheString_AgreesWithRecursiveBisection()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedLastBit, harness.BruteForceConstruction());
-        Assert.Equal(harness.RecursiveBisection(), harness.BruteForceConstruction());
-    }
-
-    [Fact]
-    public void RecursiveBisection_LastBitOfTheString_AgreesWithBruteForceConstruction()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedLastBit, harness.RecursiveBisection());
-        Assert.Equal(harness.BruteForceConstruction(), harness.RecursiveBisection());
-    }
+    public void BruteForceConstruction_LastBitOfTheString_ReturnsOne() =>
+        Assert.Equal(ExpectedLastBit, BuildHarness().BruteForceConstruction());
 
     private static FindKthBitInNthBinaryStringBenchmarks BuildHarness()
     {

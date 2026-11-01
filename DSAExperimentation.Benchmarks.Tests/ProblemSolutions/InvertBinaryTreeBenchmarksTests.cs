@@ -1,4 +1,3 @@
-using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
@@ -10,9 +9,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // derived independently of the fixture. BinaryTrees.Balanced builds a complete tree in heap
 // layout - node i's children at 2i + 1 and 2i + 2, node i's value i - so a mirror image
 // traversed pre-order with the children swapped yields a fixed sequence computed from the layout
-// arithmetic alone. The harness's own tree is private and Setup returns void, so the Setup
-// [Fact] states the workload against the one expression [GlobalSetup] builds it from and calls
-// the arm to prove the harness is constructible.
+// arithmetic alone.
 public sealed partial class InvertBinaryTreeBenchmarksTests
 {
     private const int SmallestNodeCount = 10;
@@ -20,16 +17,6 @@ public sealed partial class InvertBinaryTreeBenchmarksTests
     // Heap-layout offsets, restated from the fixture's documented child arithmetic.
     private const int LeftChildOffset = 1;
     private const int RightChildOffset = 2;
-
-    [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameWorkload()
-    {
-        BuildHarness().RecursiveSwap();
-
-        Assert.Equal(
-            PreorderOf(BinaryTrees.Balanced(SmallestNodeCount)),
-            PreorderOf(BinaryTrees.Balanced(SmallestNodeCount)));
-    }
 
     [Fact]
     public void RecursiveSwap_BalancedTree_MirrorsTheHeapLayout() =>

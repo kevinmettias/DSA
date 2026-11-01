@@ -1,7 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.IntersectionOfTwoLinkedLists;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
@@ -14,29 +13,14 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // whose value is 100,000 and which has no successor, so a walk that fell off both lists fails the null
 // check before its value is read. The decisive oracle beside it is reference identity - the fixture
 // places the shared node at index PrefixLength of the first chain and at index 2 * PrefixLength of
-// the second - and each [Fact] asserts the walk lands on that exact node, which no fallback can
-// counterfeit. Chain construction is charged to [GlobalSetup], so one harness is safe to call twice
-// in either order.
+// the second - and the [Fact] asserts the walk lands on that exact node, which no fallback can
+// counterfeit.
 public sealed partial class IntersectionOfTwoLinkedListsBenchmarksTests
 {
     private const int SmallestPrefixLength = 100;
 
     // The value of the shared node the fixture appends both chains to.
     private const int SharedNodeValue = 100_000;
-
-    [Fact]
-    public void Setup_SamePrefixLength_RebuildsTheSameChains()
-    {
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().TwoPointerWalk()),
-            AnswerGraphText.Of(BuildHarness().TwoPointerWalk()));
-
-        var (firstHead, secondHead) = IntersectionOfTwoLinkedListsWorkloads.Build(SmallestPrefixLength);
-
-        Assert.Same(
-            NodeAt(firstHead, SmallestPrefixLength),
-            IntersectionOfTwoLinkedListsSolution.GetIntersectionNodeByTwoPointerWalk(firstHead, secondHead));
-    }
 
     [Fact]
     public void TwoPointerWalk_ConvergentChains_ReturnsTheSharedTailNode()

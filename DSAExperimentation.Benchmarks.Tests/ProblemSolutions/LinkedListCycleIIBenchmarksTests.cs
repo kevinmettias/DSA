@@ -3,24 +3,18 @@ using DSAExperimentation.DataStructures.SinglyLinkedList;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for LinkedListCycleIIBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - the visited-set baseline against this repo's own Floyd detector -
-// so a harness whose arms disagree is timing two different problems. Both return the cycle's entry
-// node. The arms are compared by reference identity, which is what "the same node starts the cycle"
-// means: a rendering compares the shape reachable from a node, and two different nodes of one cycle
-// reach the same shape.
+// Harness coverage for LinkedListCycleIIBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests already
+// holds the arms to agreeing on the rendering of their answers, so this asserts what a rendering
+// cannot. Both arms return the cycle's entry node, and here they are compared by reference identity
+// on one harness, which is what "the same node starts the cycle" means: a rendering compares the
+// shape reachable from a node, and two different nodes of one cycle reach the same shape.
 //
 // Setup builds a Length-node chain whose tail rejoins its head, so the entry is the head node - the
-// one carrying HeadValue. Two independently built harnesses hold different node instances, so the
-// Setup test compares that value rather than the instances.
+// one carrying HeadValue, which is asserted on the baseline independently of either arm.
 public sealed partial class LinkedListCycleIIBenchmarksTests
 {
     private const int SmallestLength = 200;
     private const int HeadValue = 0;
-
-    [Fact]
-    public void Setup_SameLength_RebuildsAChainWithTheSameCycleEntry() =>
-        Assert.Equal(EntryValue(BuildHarness().VisitedSet()), EntryValue(BuildHarness().VisitedSet()));
 
     [Fact]
     public void VisitedSet_TailRejoinsHead_FindsTheSameEntryAsFloydCycleDetection()
@@ -28,15 +22,6 @@ public sealed partial class LinkedListCycleIIBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(HeadValue, EntryValue(harness.VisitedSet()));
-        Assert.Same(harness.VisitedSet(), harness.FloydCycleDetection());
-    }
-
-    [Fact]
-    public void FloydCycleDetection_TailRejoinsHead_FindsTheSameEntryAsVisitedSet()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(HeadValue, EntryValue(harness.FloydCycleDetection()));
         Assert.Same(harness.VisitedSet(), harness.FloydCycleDetection());
     }
 

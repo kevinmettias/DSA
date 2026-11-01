@@ -1,6 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -14,10 +13,6 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 public sealed partial class InsertionSortListBenchmarksTests
 {
     private const int SmallestLength = 100;
-
-    [Fact]
-    public void Setup_SameLength_RebuildsTheSameShuffledValues() =>
-        Assert.Equal(RenderedValues(BuildHarness().DummyHeadInsertion()), RenderedValues(BuildHarness().DummyHeadInsertion()));
 
     [Fact]
     public void DummyHeadInsertion_ShuffledValues_SortsThemBackIntoAscendingOrder()
@@ -34,8 +29,6 @@ public sealed partial class InsertionSortListBenchmarksTests
 
         return harness;
     }
-
-    private static string RenderedValues(SinglyLinkedListNode<int>? answer) => AnswerGraphText.Of(ValuesOf(answer));
 
     private static int[] ValuesOf(SinglyLinkedListNode<int>? answer)
     {

@@ -2,16 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SnapshotArrayBenchmarks (ARCHITECTURE 17.9): both arms are
-// SnapshotArraySolution's stateful ISnapshotArray, seeded identically by Setup, so a harness
-// whose arms disagree is timing two different problems. Setup is a pure function of Length, so
-// the same Length must rebuild the same seeded array and the same query id.
-//
-// Get only reads, so one harness is safe to call twice in either order. The seeding is
+// Harness coverage for SnapshotArrayBenchmarks (ARCHITECTURE 17.9). Arm agreement is
+// BenchmarkArmsTests' job; this pins the answer the workload is built to have. The seeding is
 // arithmetic: Setup writes i * ValueScaleFactor to the single index before each of the Length
 // snaps, so the history holds snap ids 0 .. Length - 1, and the query at the last of them must
-// floor to the value written just before it. Both arms are asserted against that value and not only against each other,
-// so agreement cannot be two arms reporting the same wrong floor.
+// floor to the value written just before it. The baseline is asserted against that value, so
+// agreement cannot be two arms reporting the same wrong floor.
 public sealed partial class SnapshotArrayBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -25,26 +21,8 @@ public sealed partial class SnapshotArrayBenchmarksTests
     private const int ExpectedFlooredValue = LastSeededSnapId * ValueScaleFactor;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(BuildHarness().LinearFloorScan(), BuildHarness().LinearFloorScan());
-
-    [Fact]
-    public void LinearFloorScan_QueryAtTheLastSnap_FloorsToTheLastWrittenValue()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedFlooredValue, harness.LinearFloorScan());
-        Assert.Equal(harness.BinarySearchFloor(), harness.LinearFloorScan());
-    }
-
-    [Fact]
-    public void BinarySearchFloor_QueryAtTheLastSnap_FloorsToTheLastWrittenValue()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedFlooredValue, harness.BinarySearchFloor());
-        Assert.Equal(harness.LinearFloorScan(), harness.BinarySearchFloor());
-    }
+    public void LinearFloorScan_QueryAtTheLastSnap_FloorsToTheLastWrittenValue() =>
+        Assert.Equal(ExpectedFlooredValue, BuildHarness().LinearFloorScan());
 
     private static SnapshotArrayBenchmarks BuildHarness()
     {

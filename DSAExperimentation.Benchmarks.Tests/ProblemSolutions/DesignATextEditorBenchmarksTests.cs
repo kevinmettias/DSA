@@ -19,10 +19,6 @@ public sealed partial class DesignATextEditorBenchmarksTests
     public void ListBacked_ChunksWalkedBackToTheirFirstLetter_ReportsTheLastTenFirstLetters() =>
         Assert.Equal(ExpectedReports(), BuildHarness().ListBacked());
 
-    [Fact]
-    public void CursorSequenceBacked_ChunksWalkedBackToTheirFirstLetter_ReportsTheLastTenFirstLetters() =>
-        Assert.Equal(ExpectedReports(), BuildHarness().CursorSequenceBacked());
-
     private static string[] ExpectedReports()
     {
         var reports = new string[SmallestOperationCount];

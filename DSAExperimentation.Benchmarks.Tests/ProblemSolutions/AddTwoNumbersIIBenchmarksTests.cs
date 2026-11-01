@@ -5,8 +5,8 @@ using DSAExperimentation.LeetCode.Conventions;
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for AddTwoNumbersIIBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot pin: a
-// bound on the answer that follows from the workload's construction rather than from either arm. Both arms return
-// the sum list itself, so the tests read its digits back out.
+// bound on the answer that follows from the workload's construction rather than from either arm. The baseline
+// returns the sum list itself, so the test reads its digits back out.
 public sealed partial class AddTwoNumbersIIBenchmarksTests
 {
     private const int SmallestLength = 10;
@@ -18,10 +18,6 @@ public sealed partial class AddTwoNumbersIIBenchmarksTests
     [Fact]
     public void BigIntegerConvertAndBack_RandomDigits_GrowsByAtMostOneCarryDigit() =>
         Assert.InRange(DigitsOf(BuildHarness().BigIntegerConvertAndBack()).Length, FewestDigits, DigitsGrownByTheCarry);
-
-    [Fact]
-    public void TwoStacksDigitwiseAdd_RandomDigits_GrowsByAtMostOneCarryDigit() =>
-        Assert.InRange(DigitsOf(BuildHarness().TwoStacksDigitwiseAdd()).Length, FewestDigits, DigitsGrownByTheCarry);
 
     private static int[] DigitsOf(SinglyLinkedListNode<int>? answer) =>
         LeetCodeWireFormat.FromLinkedList(answer);

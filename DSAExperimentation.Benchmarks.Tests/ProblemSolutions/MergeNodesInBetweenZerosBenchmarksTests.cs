@@ -1,20 +1,14 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for MergeNodesInBetweenZerosBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - buffering every value into a list and bucketing it into
-// group sums against appending each group's sum on a single pass - so a harness whose arms disagree is
-// timing two different problems. Both arms report the merged chain, so the test reads the values off it
-// rather than comparing nodes.
-//
-// The generated list is a leading zero, GroupCount runs of one to four non-zero values each closed by
-// a zero, so the answer is documented to be exactly one sum node per run - GroupCount nodes, none of
-// them the delimiter. Neither arm mutates the chain it is handed, so the shared prepared list makes one
-// harness safe to read twice in either order; Setup draws the runs from one fixed seed, so the same
-// GroupCount must rebuild the same chain.
+// Harness coverage for MergeNodesInBetweenZerosBenchmarks (ARCHITECTURE 17.9): the generated list is
+// a leading zero, GroupCount runs of one to four non-zero values each closed by a zero, so the answer
+// is documented to be exactly one sum node per run - GroupCount nodes - an expected value derived
+// from the workload's construction rather than from either arm, which the generic agreement check
+// cannot supply. The baseline reports the merged chain, so the test reads the values off it rather
+// than comparing nodes.
 public sealed partial class MergeNodesInBetweenZerosBenchmarksTests
 {
     private const int SmallestGroupCount = 200;
@@ -22,34 +16,10 @@ public sealed partial class MergeNodesInBetweenZerosBenchmarksTests
     private const int ExpectedMergedNodeCount = SmallestGroupCount;
 
     [Fact]
-    public void Setup_SameGroupCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(Values(BuildHarness().TwoPassValueBuffer())),
-            AnswerGraphText.Of(Values(BuildHarness().TwoPassValueBuffer())));
+    public void TwoPassValueBuffer_DelimitedSeededList_SumsEachRunIntoOneNode() =>
+        Assert.Equal(ExpectedMergedNodeCount, Values(BuildHarness().TwoPassValueBuffer()).Count);
 
-    [Fact]
-    public void TwoPassValueBuffer_DelimitedSeededList_AgreesWithSinglePassSum()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedMergedNodeCount, Values(harness.TwoPassValueBuffer()).Count);
-        Assert.Equal(
-            AnswerGraphText.Of(Values(harness.SinglePassSum())),
-            AnswerGraphText.Of(Values(harness.TwoPassValueBuffer())));
-    }
-
-    [Fact]
-    public void SinglePassSum_DelimitedSeededList_AgreesWithTwoPassValueBuffer()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedMergedNodeCount, Values(harness.SinglePassSum()).Count);
-        Assert.Equal(
-            AnswerGraphText.Of(Values(harness.TwoPassValueBuffer())),
-            AnswerGraphText.Of(Values(harness.SinglePassSum())));
-    }
-
-    // Both arms report the merged chain, so the test reads the values off it rather than comparing nodes.
+    // The arm reports the merged chain, so the test reads the values off it rather than comparing nodes.
     private static List<int> Values(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();

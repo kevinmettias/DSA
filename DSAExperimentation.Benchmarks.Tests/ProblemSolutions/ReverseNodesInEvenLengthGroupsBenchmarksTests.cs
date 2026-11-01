@@ -1,24 +1,15 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ReverseNodesInEvenLengthGroupsBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - materializing every value into an array, computing
-// the increasing-then-truncated group boundaries there and reversing each even run with
-// Array.Reverse, against pointer splicing with no array materialization at all - so a harness whose
-// arms disagree is timing two different problems. [GlobalSetup] builds the values 1..Length in
-// order, so the same Length must rebuild the same chain; otherwise two published numbers were never
-// comparable in the first place.
-//
-// The boundary rule fixes the answer independently of either data structure: the groups are 1, 2, 3,
-// ... nodes with the final one taking whatever is left, and it is the final group's REAL length -
-// not the size it was reaching for - that decides whether it reverses. The chain is still in
-// ascending order, so each reversed run is visible as a descending stretch of the same values.
-//
-// Both arms return the new head and rebuild the chain inside the measured call, so one harness is
-// safe to call twice in either order.
+// Harness coverage for ReverseNodesInEvenLengthGroupsBenchmarks (ARCHITECTURE 17.9). Arm agreement is
+// BenchmarkArmsTests' job; this pins the baseline's answer to one derived from the workload's shape.
+// [GlobalSetup] builds the values 1..Length in order, and the boundary rule fixes the answer
+// independently of either data structure: the groups are 1, 2, 3, ... nodes with the final one
+// taking whatever is left, and it is the final group's REAL length - not the size it was reaching
+// for - that decides whether it reverses. The chain is still in ascending order, so each reversed
+// run is visible as a descending stretch of the same values.
 public sealed partial class ReverseNodesInEvenLengthGroupsBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -27,34 +18,8 @@ public sealed partial class ReverseNodesInEvenLengthGroupsBenchmarksTests
     private const int SecondGroupSize = 2;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayEvenLengthGroupReverse())),
-            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayEvenLengthGroupReverse())));
-
-    [Fact]
-    public void ArrayEvenLengthGroupReverse_GrowingGroups_AgreesWithTheLinkedListPointerReversal()
-    {
-        var harness = BuildHarness();
-        var reversed = harness.ArrayEvenLengthGroupReverse();
-
-        Assert.Equal(ExpectedEvenLengthRunsReversed(SmallestLength), ValuesOf(reversed));
-        Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(harness.LinkedListEvenLengthGroupReverse())),
-            AnswerGraphText.Of(ValuesOf(reversed)));
-    }
-
-    [Fact]
-    public void LinkedListEvenLengthGroupReverse_GrowingGroups_AgreesWithTheArrayRebuild()
-    {
-        var harness = BuildHarness();
-        var reversed = harness.LinkedListEvenLengthGroupReverse();
-
-        Assert.Equal(ExpectedEvenLengthRunsReversed(SmallestLength), ValuesOf(reversed));
-        Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(harness.ArrayEvenLengthGroupReverse())),
-            AnswerGraphText.Of(ValuesOf(reversed)));
-    }
+    public void ArrayEvenLengthGroupReverse_GrowingGroups_ReversesEachEvenLengthRun() =>
+        Assert.Equal(ExpectedEvenLengthRunsReversed(SmallestLength), ValuesOf(BuildHarness().ArrayEvenLengthGroupReverse()));
 
     private static int[] ValuesOf(SinglyLinkedListNode<int>? head)
     {

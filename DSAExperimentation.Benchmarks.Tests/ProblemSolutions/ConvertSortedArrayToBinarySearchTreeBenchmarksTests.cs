@@ -7,9 +7,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // has a single arm - the original benchmark's two [Benchmark] methods called the identical private
 // helper - so there is no second strategy to reconcile it against and the assertion has to come from
 // what LeetCode 108's own contract makes decisive instead: the tree must carry the ascending input in
-// order, and height-balanced means it stands at the minimum height its node count admits. Setup
-// builds that ascending array, so the same Length must rebuild the same tree, asserted through the
-// one observable the arm exposes, its tree.
+// order, and height-balanced means it stands at the minimum height its node count admits.
 public sealed partial class ConvertSortedArrayToBinarySearchTreeBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -17,12 +15,6 @@ public sealed partial class ConvertSortedArrayToBinarySearchTreeBenchmarksTests
     // A binary tree gives every node this many children, so one more level holds this many times the
     // nodes below it - which is what makes a tree of height h hold at most 2^h - 1 nodes.
     private const int BinaryBranchingFactor = 2;
-
-    [Fact]
-    public void Setup_SameLength_RebuildsTheSameTree()
-    {
-        Assert.Equal(InOrderValues(Built()), InOrderValues(Built()));
-    }
 
     [Fact]
     public void MidpointRecursion_TwoHundredAscendingValues_ReturnsTheMinimumHeightBstOverThem()

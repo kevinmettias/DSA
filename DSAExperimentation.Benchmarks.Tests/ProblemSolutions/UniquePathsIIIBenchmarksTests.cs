@@ -3,17 +3,15 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for UniquePathsIIIBenchmarks (ARCHITECTURE 17.9): its two arms are
-// UniquePathsIIISolution's competing strategies for the same question - a purpose-built recursion
-// against the generic backtracking engine, whose per-branch delegate dispatch is the cost being
-// measured - so a harness whose arms disagree is enumerating two different walks.
+// Harness coverage for UniquePathsIIIBenchmarks (ARCHITECTURE 17.9): the generic check holds the
+// arms to agreeing with each other, which a shared wrong count would pass, so this pins the
+// baseline's count to one derived without either arm.
 //
 // Setup's grid is fully documented - UniquePathsIIIWorkloads with seeded Random(1083), two rows of
 // five at the smallest size, one obstacle - so the expected count is derived here from a rebuilt
 // grid by an independent enumeration: a walk that tracks the cells it has used as bits of one
 // integer and counts the walks that reach the end having used every walkable cell. It shares
-// neither arm's visited grid nor its marker rewriting, so the count is asserted as derived alongside
-// the arms' agreement rather than left to the two arms to agree on a shared wrong number.
+// neither arm's visited grid nor its marker rewriting.
 public sealed partial class UniquePathsIIIBenchmarksTests
 {
     private const int SmallestRows = 2;
@@ -24,26 +22,8 @@ public sealed partial class UniquePathsIIIBenchmarksTests
     private static readonly (int Row, int Column)[] Steps = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
     [Fact]
-    public void Setup_SameRows_RebuildsTheSameWorkload() =>
-        Assert.Equal(BuildHarness().SpecializedRecursive(), BuildHarness().SpecializedRecursive());
-
-    [Fact]
-    public void SpecializedRecursive_SeededGrid_AgreesWithTheSiblingArm()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(IndependentPathCount(RebuildGrid()), harness.SpecializedRecursive());
-        Assert.Equal(harness.BacktrackEngine(), harness.SpecializedRecursive());
-    }
-
-    [Fact]
-    public void BacktrackEngine_SeededGrid_AgreesWithTheSiblingArm()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(IndependentPathCount(RebuildGrid()), harness.BacktrackEngine());
-        Assert.Equal(harness.SpecializedRecursive(), harness.BacktrackEngine());
-    }
+    public void SpecializedRecursive_SeededGrid_CountsTheIndependentlyEnumeratedWalks() =>
+        Assert.Equal(IndependentPathCount(RebuildGrid()), BuildHarness().SpecializedRecursive());
 
     private static UniquePathsIIIBenchmarks BuildHarness()
     {

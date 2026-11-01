@@ -2,14 +2,11 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ShortestDistanceToTargetStringInACircularArrayBenchmarks (ARCHITECTURE 17.9):
-// both arms answer the same circular-distance question about the same word circle, so a harness whose
-// arms disagree is timing two different circles. Setup builds that circle through the shared
-// CircularArrayWorkloads fixture and the graph the BFS arm walks from the same words, so the same
-// Length must rebuild both. The fixture places the single target word diametrically opposite
-// StartIndex, which pins the answer independently of either strategy: the shorter way round the
-// circle is half its length, so the Setup test asserts that derived distance rather than only the
-// rebuild.
+// Harness coverage for ShortestDistanceToTargetStringInACircularArrayBenchmarks (ARCHITECTURE 17.9).
+// Arm agreement is BenchmarkArmsTests' job; this pins the answer the workload is built to have. Setup
+// builds the word circle through the shared CircularArrayWorkloads fixture, which places the single
+// target word diametrically opposite StartIndex - pinning the answer independently of either
+// strategy: the shorter way round the circle is half its length.
 public sealed partial class ShortestDistanceToTargetStringInACircularArrayBenchmarksTests
 {
     private const int SmallestLength = 10;
@@ -20,27 +17,8 @@ public sealed partial class ShortestDistanceToTargetStringInACircularArrayBenchm
     private const int ExpectedDistance = SmallestLength / DiametricDivisor;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload()
-    {
-        Assert.Equal(BuildHarness().LinearScan(), BuildHarness().LinearScan());
+    public void LinearScan_DiametricTarget_ReturnsHalfTheCircle() =>
         Assert.Equal(ExpectedDistance, BuildHarness().LinearScan());
-    }
-
-    [Fact]
-    public void LinearScan_DiametricTarget_AgreesWithReduceGraphBfs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ReduceGraphBfs(), harness.LinearScan());
-    }
-
-    [Fact]
-    public void ReduceGraphBfs_DiametricTarget_AgreesWithLinearScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LinearScan(), harness.ReduceGraphBfs());
-    }
 
     private static ShortestDistanceToTargetStringInACircularArrayBenchmarks BuildHarness()
     {

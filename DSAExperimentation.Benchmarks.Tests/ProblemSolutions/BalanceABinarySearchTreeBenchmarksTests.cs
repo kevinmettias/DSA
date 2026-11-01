@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // Harness coverage for BalanceABinarySearchTreeBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot
 // pin: that the rebuilt tree is as short as any tree of its node count can be, a bound known without consulting
 // either arm. Setup's input is a right-only chain of the ascending values 1..n, which the midpoint split turns
-// into a minimum-height BST. Both arms return the rebuilt root.
+// into a minimum-height BST. The baseline returns the rebuilt root.
 public sealed partial class BalanceABinarySearchTreeBenchmarksTests
 {
     // The smaller of Setup's [Params(200, 2_000)] node counts.
@@ -21,10 +21,6 @@ public sealed partial class BalanceABinarySearchTreeBenchmarksTests
     [Fact]
     public void RepeatedKthSmallestScan_TwoHundredNodeSkewedTree_RebuildsAMinimumHeightTree() =>
         Assert.Equal(MinimumBalancedHeight(SmallestNodeCount), HeightOf(BuildHarness().RepeatedKthSmallestScan()));
-
-    [Fact]
-    public void InOrderTraversalCollectAndRebuild_TwoHundredNodeSkewedTree_RebuildsAMinimumHeightTree() =>
-        Assert.Equal(MinimumBalancedHeight(SmallestNodeCount), HeightOf(BuildHarness().InOrderTraversalCollectAndRebuild()));
 
     private static int HeightOf(BinaryTreeNode<int>? answer) =>
         TreeMetrics.Height<

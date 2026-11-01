@@ -1,14 +1,12 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for AllElementsInTwoBinarySearchTreesBenchmarks (ARCHITECTURE 17.9): its two arms are
-// AllElementsInTwoBinarySearchTreesSolution's competing strategies for the same question - dump both trees and
-// sort against collect each tree's ascending run and merge - so a harness whose arms disagree is timing two
-// different forests. Setup grows both trees from the same shuffled 0..n-1 permutation under two seeds, so each
-// tree holds every value once and the merged answer is strictly ascending with two values per node count; both
-// facts are asserted directly, since identical arms could still agree on a wrongly shaped answer.
+// Harness coverage for AllElementsInTwoBinarySearchTreesBenchmarks (ARCHITECTURE 17.9): the generic check holds
+// the arms to each other, and this pins the baseline's answer to the shape the workload fixes. Setup grows both
+// trees from a shuffled 0..n-1 permutation under two seeds, so each tree holds every value once and the merged
+// answer is ascending with two values per node count; both facts are asserted directly, since arms that agree
+// could still agree on a wrongly shaped answer.
 public sealed partial class AllElementsInTwoBinarySearchTreesBenchmarksTests
 {
     // The smaller of Setup's [Params(300, 5_000)] node counts.
@@ -19,31 +17,12 @@ public sealed partial class AllElementsInTwoBinarySearchTreesBenchmarksTests
     private const int ExpectedValueCount = 2 * SmallestNodeCount;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().CollectAllThenSort()),
-            AnswerGraphText.Of(BuildHarness().CollectAllThenSort()));
-
-    [Fact]
-    public void CollectAllThenSort_ThreeHundredNodeTrees_AgreesWithInOrderTraversalMerge()
+    public void CollectAllThenSort_ThreeHundredNodeTrees_ReturnsBothTreesValuesInAscendingOrder()
     {
-        var harness = BuildHarness();
-        var answer = harness.CollectAllThenSort();
+        var answer = BuildHarness().CollectAllThenSort();
 
         Assert.Equal(ExpectedValueCount, answer.Length);
         Assert.True(IsAscending(answer));
-        Assert.Equal(AnswerGraphText.Of(harness.InOrderTraversalMerge()), AnswerGraphText.Of(answer));
-    }
-
-    [Fact]
-    public void InOrderTraversalMerge_ThreeHundredNodeTrees_AgreesWithCollectAllThenSort()
-    {
-        var harness = BuildHarness();
-        var answer = harness.InOrderTraversalMerge();
-
-        Assert.Equal(ExpectedValueCount, answer.Length);
-        Assert.True(IsAscending(answer));
-        Assert.Equal(AnswerGraphText.Of(harness.CollectAllThenSort()), AnswerGraphText.Of(answer));
     }
 
     private static AllElementsInTwoBinarySearchTreesBenchmarks BuildHarness()

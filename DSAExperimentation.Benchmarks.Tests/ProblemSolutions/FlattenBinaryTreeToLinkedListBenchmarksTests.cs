@@ -5,15 +5,13 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FlattenBinaryTreeToLinkedListBenchmarks (ARCHITECTURE 17.9). Each arm returns
-// the clone it flattened, and each [Fact] pins that clone's right-child chain to a preorder oracle
-// derived independently of the fixture.
+// Harness coverage for FlattenBinaryTreeToLinkedListBenchmarks (ARCHITECTURE 17.9): the generic arms
+// check only compares the arms with each other, so this pins the baseline's flattened clone - its
+// right-child chain - to a preorder oracle derived independently of the fixture.
 //
-// That oracle is what makes the agreement meaningful. [GlobalSetup] hands BinaryTrees.Complete a
-// level order, which it lays out in heap order - node i's children at 2i + 1 and 2i + 2 - and the
-// level order gives node i the value -100 + (i mod 201), inside LC 114's -100..100, so the preorder
-// sequence is fixed by that arithmetic alone. Both arms are therefore asserted against the same
-// independently derived chain, which is exactly the claim that they agree with each other.
+// [GlobalSetup] hands BinaryTrees.Complete a level order, which it lays out in heap order - node i's
+// children at 2i + 1 and 2i + 2 - and the level order gives node i the value -100 + (i mod 201),
+// inside LC 114's -100..100, so the preorder sequence is fixed by that arithmetic alone.
 public sealed partial class FlattenBinaryTreeToLinkedListBenchmarksTests
 {
     private const int SmallestNodeCount = 500;
@@ -37,12 +35,8 @@ public sealed partial class FlattenBinaryTreeToLinkedListBenchmarksTests
     }
 
     [Fact]
-    public void RecursiveSplice_AgreesWithTopDownPreorderRelinkOnThePreorderChain() =>
+    public void RecursiveSplice_CompleteTree_FlattensToThePreorderChain() =>
         Assert.Equal(ExpectedPreorder(SmallestNodeCount), RightChain(BuildHarness().RecursiveSplice()));
-
-    [Fact]
-    public void TopDownPreorderRelink_AgreesWithRecursiveSpliceOnThePreorderChain() =>
-        Assert.Equal(ExpectedPreorder(SmallestNodeCount), RightChain(BuildHarness().TopDownPreorderRelink()));
 
     // The one expression [GlobalSetup] builds its tree from.
     private static BinaryTreeNode<int> Workload(int nodeCount)

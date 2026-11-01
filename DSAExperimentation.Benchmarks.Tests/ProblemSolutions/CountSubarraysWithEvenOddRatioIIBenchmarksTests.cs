@@ -2,11 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountSubarraysWithEvenOddRatioIIBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question - enumerating every subarray against a Fenwick
-// prefix sweep - so a harness whose arms disagree is timing two different problems rather than two
-// ways of answering one. Setup draws the array from one fixed seed, so the same Length must rebuild
-// the same array; otherwise two published numbers were never comparable in the first place.
+// Harness coverage for CountSubarraysWithEvenOddRatioIIBenchmarks (ARCHITECTURE 17.9):
+// BenchmarkArmsTests already holds the arms to agreeing on a rebuilt workload, so this asserts only
+// a bound that comes from the workload's shape rather than from either arm.
 //
 // The generated array is private and the subarray count is the only thing either arm reports, so the
 // documented shape is asserted through that: the answer counts subarrays of a Length-long array, so
@@ -18,27 +16,8 @@ public sealed partial class CountSubarraysWithEvenOddRatioIIBenchmarksTests
     private const long SubarrayCount = (long)SmallestLength * (SmallestLength + 1) / 2;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameArray()
-    {
+    public void BruteForce_SmallestLength_StaysWithinTheSubarrayCount() =>
         Assert.InRange(BuildHarness().BruteForce(), 0, SubarrayCount);
-        Assert.Equal(BuildHarness().BruteForce(), BuildHarness().BruteForce());
-    }
-
-    [Fact]
-    public void BruteForce_SeededArrayWithEqualRatio_AgreesWithFenwickPrefixSweep()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.FenwickPrefixSweep(), harness.BruteForce());
-    }
-
-    [Fact]
-    public void FenwickPrefixSweep_SeededArrayWithEqualRatio_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.FenwickPrefixSweep());
-    }
 
     private static CountSubarraysWithEvenOddRatioIIBenchmarks BuildHarness()
     {

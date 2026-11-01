@@ -2,12 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountSubarraysWithFixedBoundsBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - rescoring every subarray's own min/max from scratch
-// against the build-once segment-tree pair - so a harness whose arms disagree is timing two different
-// problems, not two ways of answering one. Setup draws the array from one fixed seed, so the same
-// Length must rebuild the same array; otherwise two published numbers were never comparable in the
-// first place.
+// Harness coverage for CountSubarraysWithFixedBoundsBenchmarks (ARCHITECTURE 17.9):
+// BenchmarkArmsTests already holds the arms to agreeing on a rebuilt workload, so this asserts only
+// a bound that comes from the workload's shape rather than from either arm.
 //
 // The generated array is private and the subarray count is the only thing either arm reports, so the
 // documented shape is asserted through that: the answer counts subarrays of a Length-long array, so
@@ -19,27 +16,8 @@ public sealed partial class CountSubarraysWithFixedBoundsBenchmarksTests
     private const long SubarrayCount = (long)SmallestLength * (SmallestLength + 1) / 2;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameArray()
-    {
+    public void RescanEachSubarray_SmallestLength_StaysWithinTheSubarrayCount() =>
         Assert.InRange(BuildHarness().RescanEachSubarray(), 0, SubarrayCount);
-        Assert.Equal(BuildHarness().RescanEachSubarray(), BuildHarness().RescanEachSubarray());
-    }
-
-    [Fact]
-    public void RescanEachSubarray_SeededArrayWithMinTwoMaxEight_AgreesWithSegmentTreeRangeQueries()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.SegmentTreeRangeQueries(), harness.RescanEachSubarray());
-    }
-
-    [Fact]
-    public void SegmentTreeRangeQueries_SeededArrayWithMinTwoMaxEight_AgreesWithRescanEachSubarray()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.RescanEachSubarray(), harness.SegmentTreeRangeQueries());
-    }
 
     private static CountSubarraysWithFixedBoundsBenchmarks BuildHarness()
     {

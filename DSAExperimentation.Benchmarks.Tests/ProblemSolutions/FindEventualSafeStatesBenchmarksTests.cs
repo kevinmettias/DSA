@@ -4,11 +4,9 @@ using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FindEventualSafeStatesBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - a per-node three-color DFS against modeling the
-// same question as Kahn's algorithm over the reversed graph - so a harness whose arms disagree is
-// peeling two different graphs. Both arms return the safe ids ascending, which is the order the
-// problem fixes, so they are compared as ordered sequences.
+// Harness coverage for FindEventualSafeStatesBenchmarks (ARCHITECTURE 17.9): the generic arms check
+// only compares the arms with each other, so this pins the baseline's safe ids, ascending as the
+// problem fixes them, to the set Setup's layout determines independently of any arm.
 //
 // Setup splits the nodes in half: [0, half) is a forward DAG whose every node reaches the terminal
 // node half - 1 (its own fan-out shrinks to nothing there), and [half, NodeCount) is one ring cycle
@@ -20,32 +18,8 @@ public sealed partial class FindEventualSafeStatesBenchmarksTests
     private const int SmallestNodeCount = 50;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameSafeNodeList() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().DfsThreeColoring()),
-            AnswerGraphText.Of(BuildHarness().DfsThreeColoring()));
-
-    [Fact]
-    public void DfsThreeColoring_SafeForwardHalfAndRingCycle_ReturnsTheForwardHalfAscending()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.Of(ExpectedSafeNodes()), AnswerGraphText.Of(harness.DfsThreeColoring()));
-        Assert.Equal(
-            AnswerGraphText.Of(harness.ReversedKahnsTopologicalSort()),
-            AnswerGraphText.Of(harness.DfsThreeColoring()));
-    }
-
-    [Fact]
-    public void ReversedKahnsTopologicalSort_SafeForwardHalfAndRingCycle_AgreesWithDfsThreeColoring()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.Of(ExpectedSafeNodes()), AnswerGraphText.Of(harness.ReversedKahnsTopologicalSort()));
-        Assert.Equal(
-            AnswerGraphText.Of(harness.DfsThreeColoring()),
-            AnswerGraphText.Of(harness.ReversedKahnsTopologicalSort()));
-    }
+    public void DfsThreeColoring_SafeForwardHalfAndRingCycle_ReturnsTheForwardHalfAscending() =>
+        Assert.Equal(AnswerGraphText.Of(ExpectedSafeNodes()), AnswerGraphText.Of(BuildHarness().DfsThreeColoring()));
 
     private static FindEventualSafeStatesBenchmarks BuildHarness()
     {

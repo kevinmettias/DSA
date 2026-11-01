@@ -2,13 +2,10 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for PermutationSequenceBenchmarks (ARCHITECTURE 17.9): its two arms are
-// PermutationSequenceSolution's, competing selections for the same permutation - enumerating the
-// lexicographic order until the requested rank is reached against the factorial number system
-// picking each digit directly - so a harness whose arms disagree is timing two different problems.
-// Setup fixes the rank at DigitCount!, the lexicographically last permutation, which is what makes
-// the expected string a fixture-derived constant rather than a value read off either arm; the
-// tests pin it as well as the agreement.
+// Harness coverage for PermutationSequenceBenchmarks (ARCHITECTURE 17.9): the baseline's permutation
+// against a fixture-derived constant rather than a value read off either arm, which the generic check
+// cannot supply - it holds the factoradic selection to the baseline. Setup fixes the rank at
+// DigitCount!, the lexicographically last permutation.
 public sealed partial class PermutationSequenceBenchmarksTests
 {
     private const int SmallestDigitCount = 6;
@@ -18,26 +15,8 @@ public sealed partial class PermutationSequenceBenchmarksTests
     private const string LexicographicallyLastPermutation = "654321";
 
     [Fact]
-    public void Setup_SameDigitCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(BuildHarness().BacktrackEnumeration(), BuildHarness().BacktrackEnumeration());
-
-    [Fact]
-    public void BacktrackEnumeration_LastLexicographicRank_AgreesWithFactoradicSelection()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(LexicographicallyLastPermutation, harness.FactoradicSelection());
-        Assert.Equal(harness.FactoradicSelection(), harness.BacktrackEnumeration());
-    }
-
-    [Fact]
-    public void FactoradicSelection_LastLexicographicRank_AgreesWithBacktrackEnumeration()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(LexicographicallyLastPermutation, harness.BacktrackEnumeration());
-        Assert.Equal(harness.BacktrackEnumeration(), harness.FactoradicSelection());
-    }
+    public void BacktrackEnumeration_LastLexicographicRank_ReturnsTheDescendingArrangement() =>
+        Assert.Equal(LexicographicallyLastPermutation, BuildHarness().BacktrackEnumeration());
 
     private static PermutationSequenceBenchmarks BuildHarness()
     {

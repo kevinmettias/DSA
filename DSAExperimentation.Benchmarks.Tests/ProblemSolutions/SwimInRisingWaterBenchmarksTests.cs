@@ -2,16 +2,13 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SwimInRisingWaterBenchmarks (ARCHITECTURE 17.9): both arms are
-// SwimInRisingWaterSolution's - the binary search over elevations with a flood fill at each probe
-// against the heap Dijkstra over the same grid - so a harness whose arms disagree is timing two
-// different questions. Both answer with a bare int.
-//
-// The grid is decisive rather than merely agreed: [GlobalSetup] lays a random permutation of
+// Harness coverage for SwimInRisingWaterBenchmarks (ARCHITECTURE 17.9): both arms answer with a bare
+// int, and the grid is decisive rather than merely agreed: [GlobalSetup] lays a random permutation of
 // 0..Size*Size-1 out row by row, so the answer is the smallest elevation at which the two corners are
 // joined through cells no higher than it. That is restated below by scanning the elevations in order
 // and testing each with its own breadth-first walk over a mirrored copy of the grid, which shares no
-// traversal with either arm.
+// traversal with either arm. The baseline is held to it; the generic arm check holds the heap
+// Dijkstra arm to the baseline's answer.
 public sealed partial class SwimInRisingWaterBenchmarksTests
 {
     // Mirrors SwimInRisingWaterBenchmarks' own private RandomSeed.
@@ -19,28 +16,8 @@ public sealed partial class SwimInRisingWaterBenchmarksTests
     private const int SmallestSize = 15;
 
     [Fact]
-    public void Setup_SameSize_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            BuildHarness().BinarySearchFloodFill(),
-            BuildHarness().BinarySearchFloodFill());
-
-    [Fact]
-    public void BinarySearchFloodFill_PermutationGrid_AgreesWithTheOtherArmAndTheJoiningRule()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.HeapDijkstra(), harness.BinarySearchFloodFill());
-        Assert.Equal(ExpectedMinimumTime(), harness.BinarySearchFloodFill());
-    }
-
-    [Fact]
-    public void HeapDijkstra_PermutationGrid_AgreesWithTheOtherArmAndTheJoiningRule()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BinarySearchFloodFill(), harness.HeapDijkstra());
-        Assert.Equal(ExpectedMinimumTime(), harness.HeapDijkstra());
-    }
+    public void BinarySearchFloodFill_PermutationGrid_FollowsTheJoiningRule() =>
+        Assert.Equal(ExpectedMinimumTime(), BuildHarness().BinarySearchFloodFill());
 
     private static SwimInRisingWaterBenchmarks BuildHarness()
     {

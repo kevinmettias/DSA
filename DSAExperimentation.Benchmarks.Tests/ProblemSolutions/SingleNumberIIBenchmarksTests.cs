@@ -2,14 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SingleNumberIIBenchmarks (ARCHITECTURE 17.9). Its two arms - the per-bit
-// count-mod-three sweep and the ones/twos state machine - are competing strategies for the same
-// question, so a harness whose arms disagree is solving two different problems. Setup builds its
+// Harness coverage for SingleNumberIIBenchmarks (ARCHITECTURE 17.9). Arm agreement is
+// BenchmarkArmsTests' job; this pins the answer the workload is built to have. Setup builds its
 // workload in closed form: every value it draws is contributed three times and therefore cancels
 // in each bit's count mod three, and the one unpaired value it appends is its own fixed singleton,
-// so either arm has exactly one possible answer whatever the values and whatever order the shuffle
-// put them in. Setup draws from a fixed seed, so the same TripleCount must rebuild the same array;
-// otherwise two published numbers were never comparable.
+// so there is exactly one possible answer whatever the values and whatever order the shuffle put
+// them in.
 public sealed partial class SingleNumberIIBenchmarksTests
 {
     private const int SmallestTripleCount = 200;
@@ -19,24 +17,8 @@ public sealed partial class SingleNumberIIBenchmarksTests
     private const int ExpectedSingleton = -1;
 
     [Fact]
-    public void Setup_SameTripleCount_RebuildsTheSameValues() =>
-        Assert.Equal(BuildHarness().BitCountModThree(), BuildHarness().BitCountModThree());
-
-    [Fact]
     public void BitCountModThree_TripledValues_ReturnsTheSeededSingleton() =>
         Assert.Equal(ExpectedSingleton, BuildHarness().BitCountModThree());
-
-    [Fact]
-    public void TwoBitCounters_TripledValues_ReturnsTheSeededSingleton() =>
-        Assert.Equal(ExpectedSingleton, BuildHarness().TwoBitCounters());
-
-    [Fact]
-    public void TwoBitCounters_AgreesWithBitCountModThree()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BitCountModThree(), harness.TwoBitCounters());
-    }
 
     private static SingleNumberIIBenchmarks BuildHarness()
     {

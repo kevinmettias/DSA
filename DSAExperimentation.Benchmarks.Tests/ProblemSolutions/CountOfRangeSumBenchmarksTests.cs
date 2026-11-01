@@ -2,10 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountOfRangeSumBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - a pairwise scan over the prefix sums against the
-// coordinate-compressed Fenwick sweep - so a harness whose arms disagree is timing two different
-// problems. Setup sizes and seeds nums, so the same Length must rebuild the same array.
+// Harness coverage for CountOfRangeSumBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests already
+// holds the arms to agreeing on a fresh harness, so this asserts what it cannot: a range for the
+// answer that comes from the workload's shape rather than from either arm, and that a harness which
+// has already answered once answers as a rebuild does, since BenchmarkDotNet calls an arm many times
+// on one harness while the generic check builds a fresh harness for every call. Setup sizes and
+// seeds nums, so the same Length must rebuild the same array.
 public sealed partial class CountOfRangeSumBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -24,22 +26,6 @@ public sealed partial class CountOfRangeSumBenchmarksTests
         // array's own length - and never more than its number of subarrays.
         Assert.InRange(first.PairwisePrefixScan(), SmallestLength, MostIndexPairs);
         Assert.Equal(first.PairwisePrefixScan(), second.PairwisePrefixScan());
-    }
-
-    [Fact]
-    public void PairwisePrefixScan_SeededNums_AgreesWithFenwickTreeSweep()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.FenwickTreeSweep(), harness.PairwisePrefixScan());
-    }
-
-    [Fact]
-    public void FenwickTreeSweep_SeededNums_AgreesWithPairwisePrefixScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.PairwisePrefixScan(), harness.FenwickTreeSweep());
     }
 
     private static CountOfRangeSumBenchmarks BuildHarness()

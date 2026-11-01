@@ -33,10 +33,6 @@ public sealed partial class ImplementMagicDictionaryBenchmarksTests
         AssertMatchesTheWholeDictionary(BuildHarness().BruteForce());
 
     [Fact]
-    public void TrieSearch_EverySearchWordIsOneCharacterAway_MatchesTheWholeDictionary() =>
-        AssertMatchesTheWholeDictionary(BuildHarness().TrieSearch());
-
-    [Fact]
     public void BruteForce_DiscriminatingQueries_MatchesOnlyTheOneSubstitutionAway() =>
         Assert.Equal(DiscriminatingVerdicts, VerdictsOf(ImplementMagicDictionarySolution.CreateByBruteForce()));
 

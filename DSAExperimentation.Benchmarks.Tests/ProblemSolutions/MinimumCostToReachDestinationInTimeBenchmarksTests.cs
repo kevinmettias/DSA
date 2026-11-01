@@ -2,12 +2,10 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for MinimumCostToReachDestinationInTimeBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question - the textbook unmemoized walk over every route the
-// minute budget can pay for against ShortestPath.Dijkstra run over the (city, elapsedTime) expansion
-// of the same map - so a harness whose arms disagree is timing two different maps. Setup builds both
-// views from the same step chain and cycling fees, so the same last city must rebuild both. An
-// unreachable destination is reported as the shared sentinel in both arms.
+// Harness coverage for MinimumCostToReachDestinationInTimeBenchmarks (ARCHITECTURE 17.9): an
+// unreachable destination is reported as a shared sentinel in both arms, so two arms that both gave
+// up would still agree; Setup builds a solvable step chain, and that the baseline reaches the last
+// city is a property of the workload the generic agreement check cannot supply.
 public sealed partial class MinimumCostToReachDestinationInTimeBenchmarksTests
 {
     private const int SmallestLastCity = 10;
@@ -17,25 +15,8 @@ public sealed partial class MinimumCostToReachDestinationInTimeBenchmarksTests
     private const int UnreachableSentinel = -1;
 
     [Fact]
-    public void Setup_SameLastCity_RebuildsTheSameMap() =>
-        Assert.Equal(BuildHarness().NaiveDfs(SmallestLastCity), BuildHarness().NaiveDfs(SmallestLastCity));
-
-    [Fact]
-    public void NaiveDfs_TwoWayStepChain_AgreesWithStateExpandedDijkstra()
-    {
-        var harness = BuildHarness();
-
-        Assert.NotEqual(UnreachableSentinel, harness.NaiveDfs(SmallestLastCity));
-        Assert.Equal(harness.StateExpandedDijkstra(SmallestLastCity), harness.NaiveDfs(SmallestLastCity));
-    }
-
-    [Fact]
-    public void StateExpandedDijkstra_TwoWayStepChain_AgreesWithNaiveDfs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.NaiveDfs(SmallestLastCity), harness.StateExpandedDijkstra(SmallestLastCity));
-    }
+    public void NaiveDfs_TwoWayStepChain_ReachesTheLastCity() =>
+        Assert.NotEqual(UnreachableSentinel, BuildHarness().NaiveDfs(SmallestLastCity));
 
     private static MinimumCostToReachDestinationInTimeBenchmarks BuildHarness()
     {

@@ -30,10 +30,6 @@ public sealed partial class DesignAnATMMachineBenchmarksTests
     public void FiveSlotArrayDispatch_ThousandWithdrawals_DispensesEveryRequestedAmount() =>
         AssertDispensesEveryRequestedAmount(BuildHarness().FiveSlotArrayDispatch());
 
-    [Fact]
-    public void HashMapDispatch_ThousandWithdrawals_DispensesEveryRequestedAmount() =>
-        AssertDispensesEveryRequestedAmount(BuildHarness().HashMapDispatch());
-
     // A machine carrying two hundred million notes of each denomination can always make a whole number of
     // hundreds, so no withdrawal is LC 2241's [-1] refusal, and the money dispensed lands near the
     // middle of the draw rather than at the zero a greedy walk rejecting amounts it can cover would

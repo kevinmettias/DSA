@@ -1,45 +1,18 @@
 using DSAExperimentation.Benchmarks.StrategySwaps;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.StrategySwaps;
 
 // Harness coverage for SkewedTreeFoldBenchmarks (ARCHITECTURE 17.9): same fold and algebra as the
 // balanced case, over the degenerate right-only chain where recursion depth grows one step per
-// node. The two arms are competing fold-evaluation strategies for one question, and SizeAlgebra
-// answers that question with the node count.
+// node. The generic check holds the arms to agreeing with each other, which a shared wrong count
+// would pass; SizeAlgebra answers with the node count, which is pinned on the baseline.
 public sealed partial class SkewedTreeFoldBenchmarksTests
 {
     private const int SmallestNodeCount = 1_000;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().Recursive()),
-            AnswerGraphText.Of(BuildHarness().Recursive()));
-
-    [Fact]
-    public void Recursive_AgreesWithIterative()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.Recursive(), harness.Iterative());
-    }
-
-    [Fact]
-    public void Iterative_AgreesWithRecursive()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.Iterative(), harness.Recursive());
-    }
-
-    [Fact]
     public void Recursive_SizeAlgebra_CountsEveryNode() =>
         Assert.Equal(SmallestNodeCount, BuildHarness().Recursive());
-
-    [Fact]
-    public void Iterative_SizeAlgebra_CountsEveryNode() =>
-        Assert.Equal(SmallestNodeCount, BuildHarness().Iterative());
 
     private static SkewedTreeFoldBenchmarks BuildHarness()
     {

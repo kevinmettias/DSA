@@ -2,17 +2,15 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for BeautifulArrayBenchmarks (ARCHITECTURE 17.9): its two arms are BeautifulArraySolution's
-// competing strategies for the same question - a pruned prefix search against a memoized divide and conquer - but
-// this is the one class in the batch where ARM AGREEMENT IS NOT AN AVAILABLE ASSERTION, and deliberately so.
+// Harness coverage for BeautifulArrayBenchmarks (ARCHITECTURE 17.9): the generic check holds the arms to each
+// other only at 6, the smallest length both run, and past it ARM AGREEMENT IS NOT AN AVAILABLE ASSERTION.
 // LC 932 accepts ANY beautiful permutation, and the solution's own note records that the two strategies return
 // different ones from n = 8 onward: the backtracking arm returns the lexicographically smallest, the divide and
-// conquer arm returns the one its parity recursion builds. Neither is wrong, so disagreeing here is not a defect
-// and there is nothing for the root-cause rule to fix. What the harness asserts instead is the property the
-// problem actually pins, independently re-derived: each arm's answer is a permutation of 1..length in which no
-// element is the arithmetic mean of one before it and one after, at BOTH sizes the two arms share - the larger
-// one being exactly where the two answers diverge, so a test that quietly compared them would fail for the wrong
-// reason.
+// conquer arm returns the one its parity recursion builds. Neither is wrong, so disagreeing there is not a defect.
+// What the harness asserts instead is the property the problem actually pins, independently re-derived: the
+// answer is a permutation of 1..length in which no element is the arithmetic mean of one before it and one
+// after - for the baseline at both shared sizes, and for the divide and conquer arm at 8, exactly where the two
+// answers diverge and the generic check never looks.
 public sealed partial class BeautifulArrayBenchmarksTests
 {
     // The smaller of the two lengths both arms run, 6 and 8.
@@ -36,11 +34,8 @@ public sealed partial class BeautifulArrayBenchmarksTests
     }
 
     [Fact]
-    public void MemoizedDivideAndConquer_SixAndEightElementPermutations_ReturnsBeautifulArrays()
-    {
-        Assert.True(IsBeautiful(new BeautifulArrayBenchmarks().MemoizedDivideAndConquer(SmallestLength), SmallestLength));
+    public void MemoizedDivideAndConquer_EightElementPermutation_ReturnsABeautifulArray() =>
         Assert.True(IsBeautiful(new BeautifulArrayBenchmarks().MemoizedDivideAndConquer(LargestLength), LargestLength));
-    }
 
     // LC 932's contract, re-derived rather than read off either arm: every value from 1 to length
     // appears exactly once, and no triple i < k < j averages.

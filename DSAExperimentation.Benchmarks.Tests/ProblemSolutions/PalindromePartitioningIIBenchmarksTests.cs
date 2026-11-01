@@ -3,13 +3,13 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for PalindromePartitioningIIBenchmarks (ARCHITECTURE 17.9). Its two arms are
-// competing strategies for the same question - the memoized suffix recurrence and the bottom-up cut
-// table - so a harness whose arms disagree is cutting two different strings: both must report the
-// same minimum. Setup's string is fully documented (seeded Random(132), letters drawn over "ab"), so
-// the expected minimum is derived here from a rebuilt string by the plainest recurrence there is: the
-// fewest palindromes any prefix splits into, tried over every last piece and checked letter by letter.
-// That shares neither arm's suffix memo nor its centre expansion.
+// Harness coverage for PalindromePartitioningIIBenchmarks (ARCHITECTURE 17.9): the baseline's minimum
+// against one derived independently of the arms, which the generic check cannot supply - it holds the
+// memoized suffix recurrence to the baseline. Setup's string is fully documented (seeded
+// Random(132), letters drawn over "ab"), so the expected minimum is derived here from a rebuilt string
+// by the plainest recurrence there is: the fewest palindromes any prefix splits into, tried over every
+// last piece and checked letter by letter. That shares neither arm's suffix memo nor its centre
+// expansion.
 public sealed partial class PalindromePartitioningIIBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -17,20 +17,8 @@ public sealed partial class PalindromePartitioningIIBenchmarksTests
     private const string Alphabet = "ab";
 
     [Fact]
-    public void MemoizedSuffixRecurrence_SeededText_ReturnsTheMinimumCut() =>
-        Assert.Equal(IndependentMinCut(RebuildText()), BuildHarness().MemoizedSuffixRecurrence());
-
-    [Fact]
     public void IterativeDynamicProgramming_SeededText_ReturnsTheMinimumCut() =>
         Assert.Equal(IndependentMinCut(RebuildText()), BuildHarness().IterativeDynamicProgramming());
-
-    [Fact]
-    public void IterativeDynamicProgramming_AgreesWithMemoizedSuffixRecurrence()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MemoizedSuffixRecurrence(), harness.IterativeDynamicProgramming());
-    }
 
     private static PalindromePartitioningIIBenchmarks BuildHarness()
     {

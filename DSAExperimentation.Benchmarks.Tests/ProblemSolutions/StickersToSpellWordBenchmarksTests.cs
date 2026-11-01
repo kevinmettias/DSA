@@ -1,13 +1,11 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for StickersToSpellWordBenchmarks (ARCHITECTURE 17.9): both arms answer the
-// same question - the fewest stickers that spell the target - one by re-exploring every
-// equivalent choice path, one by memoizing the state those choices lead to, so a harness whose
-// arms disagree is timing two different problems. Setup builds the target from a fixed pair
-// count, so the same count must rebuild the same workload.
+// Harness coverage for StickersToSpellWordBenchmarks (ARCHITECTURE 17.9): the fewest stickers
+// that spell the target is derivable from the pair count alone, so the baseline is asserted
+// against it - the generic arm check only holds the memoized arm to the baseline's answer, which
+// two arms sharing one wrong count would pass.
 public sealed partial class StickersToSpellWordBenchmarksTests
 {
     private const int SmallestPairCount = 3;
@@ -18,20 +16,8 @@ public sealed partial class StickersToSpellWordBenchmarksTests
     private const int ExpectedMinStickers = SmallestPairCount;
 
     [Fact]
-    public void Setup_SamePairCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().Naive()),
-            AnswerGraphText.Of(BuildHarness().Naive()));
-
-    [Fact]
-    public void Naive_AgreesWithMemoized()
-    {
-        var harness = BuildHarness();
-        var naive = harness.Naive();
-
-        Assert.Equal(naive, harness.Memoized());
-        Assert.Equal(ExpectedMinStickers, naive);
-    }
+    public void Naive_ThreePairs_NeedsOneStickerPerPair() =>
+        Assert.Equal(ExpectedMinStickers, BuildHarness().Naive());
 
     private static StickersToSpellWordBenchmarks BuildHarness()
     {

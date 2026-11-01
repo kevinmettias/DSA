@@ -3,11 +3,8 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for CountTheNumberOfArraysWithKMatchingAdjacentElementsBenchmarks
-// (ARCHITECTURE 17.9): its two arms are competing strategies for the same question - enumerating all
-// m^n arrays against the closed binomial-times-power form - so a harness whose arms disagree is
-// timing two different problems, not two ways of answering one. Setup derives the match count from
-// ArrayLength alone, so the same ArrayLength must rebuild the same match count and with it the same
-// workload; otherwise two published numbers were never comparable in the first place.
+// (ARCHITECTURE 17.9): BenchmarkArmsTests already holds the arms to agreeing on a rebuilt workload,
+// so this asserts only a bound that comes from the workload's shape rather than from either arm.
 //
 // The match count is private and the array count is the only thing either arm reports, so the
 // documented shape is asserted through that: the answer counts length-n arrays over a 2-value
@@ -19,27 +16,8 @@ public sealed partial class CountTheNumberOfArraysWithKMatchingAdjacentElementsB
     private const long ArrayCount = 1L << SmallestArrayLength;
 
     [Fact]
-    public void Setup_SameArrayLength_RebuildsTheSameMatchCount()
-    {
+    public void BruteForce_SmallestArrayLength_StaysWithinTheArrayCount() =>
         Assert.InRange(BuildHarness().BruteForce(SmallestArrayLength), 0, ArrayCount);
-        Assert.Equal(BuildHarness().BruteForce(SmallestArrayLength), BuildHarness().BruteForce(SmallestArrayLength));
-    }
-
-    [Fact]
-    public void BruteForce_BinaryAlphabetWithHalfTheGapsMatching_AgreesWithModularCombinatorics()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ModularCombinatorics(SmallestArrayLength), harness.BruteForce(SmallestArrayLength));
-    }
-
-    [Fact]
-    public void ModularCombinatorics_BinaryAlphabetWithHalfTheGapsMatching_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(SmallestArrayLength), harness.ModularCombinatorics(SmallestArrayLength));
-    }
 
     private static CountTheNumberOfArraysWithKMatchingAdjacentElementsBenchmarks BuildHarness()
     {

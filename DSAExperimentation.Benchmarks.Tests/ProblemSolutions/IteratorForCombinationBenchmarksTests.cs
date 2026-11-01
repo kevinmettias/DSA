@@ -5,8 +5,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // Harness coverage for IteratorForCombinationBenchmarks (ARCHITECTURE 17.9): its two arms are
 // competing strategies for one question - enumerate every length-c combination of the first n
 // letters - and each returns every combination its iterator produced, in order. That the arms
-// agree is BenchmarkArmsTests' check; what this pins is independent of both arms: there are
-// C(n, c) combinations, and LC 1286 hands them out in lexicographical order.
+// agree is BenchmarkArmsTests' check, so what this pins, independently of both arms, is checked on
+// the baseline: there are C(n, c) combinations, and LC 1286 hands them out in lexicographical order.
 public sealed partial class IteratorForCombinationBenchmarksTests
 {
     private const int SmallestCharacterCount = 10;
@@ -16,21 +16,14 @@ public sealed partial class IteratorForCombinationBenchmarksTests
     private const int SmallestCombinationLength = SmallestCharacterCount / 2;
 
     [Fact]
-    public void Setup_SmallestCharacterCount_DrainsTheCentralBinomialCount()
-    {
-        var expected = BinomialCoefficient(SmallestCharacterCount, SmallestCombinationLength);
-
-        Assert.Equal(expected, BuildHarness().BitmaskEnumeration().Count);
-        Assert.Equal(expected, BuildHarness().BacktrackComposed().Count);
-    }
+    public void BitmaskEnumeration_HalfLengthCombinations_DrainsTheCentralBinomialCount() =>
+        Assert.Equal(
+            BinomialCoefficient(SmallestCharacterCount, SmallestCombinationLength),
+            BuildHarness().BitmaskEnumeration().Count);
 
     [Fact]
     public void BitmaskEnumeration_HalfLengthCombinations_DrainsInLexicographicalOrder() =>
         AssertStrictlyAscending(BuildHarness().BitmaskEnumeration());
-
-    [Fact]
-    public void BacktrackComposed_HalfLengthCombinations_DrainsInLexicographicalOrder() =>
-        AssertStrictlyAscending(BuildHarness().BacktrackComposed());
 
     private static void AssertStrictlyAscending(List<string> combinations) =>
         Assert.All(

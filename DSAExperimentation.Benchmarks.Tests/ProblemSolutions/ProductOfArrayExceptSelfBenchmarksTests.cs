@@ -21,12 +21,6 @@ public sealed partial class ProductOfArrayExceptSelfBenchmarksTests
     private const int MagnitudeBoundExclusive = 31;
 
     [Fact]
-    public void Setup_SeededNumbers_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().PrefixSuffixPass()),
-            AnswerGraphText.Of(BuildHarness().PrefixSuffixPass()));
-
-    [Fact]
     public void PrefixSuffixPass_SeededNumbers_MatchesTheIndependentlyMultipliedProducts() =>
         Assert.Equal(
             AnswerGraphText.Of(IndependentProductsExceptSelf(RebuildNumbers())),

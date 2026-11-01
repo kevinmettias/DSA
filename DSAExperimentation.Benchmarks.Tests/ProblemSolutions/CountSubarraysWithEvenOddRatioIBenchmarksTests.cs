@@ -2,10 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountSubarraysWithEvenOddRatioIBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question - enumerating every subarray against the weighted
-// prefix-sum Fenwick sweep - so a harness whose arms disagree is timing two different problems.
-// Setup seeds nums, so the same Length must rebuild the same array.
+// Harness coverage for CountSubarraysWithEvenOddRatioIBenchmarks (ARCHITECTURE 17.9):
+// BenchmarkArmsTests already holds the arms to agreeing on a fresh harness, so this asserts what it
+// cannot: a range for the answer that comes from the workload's shape rather than from either arm,
+// and that a harness which has already answered once answers as a rebuild does, since
+// BenchmarkDotNet calls an arm many times on one harness while the generic check builds a fresh
+// harness for every call. Setup seeds nums, so the same Length must rebuild the same array.
 public sealed partial class CountSubarraysWithEvenOddRatioIBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -23,22 +25,6 @@ public sealed partial class CountSubarraysWithEvenOddRatioIBenchmarksTests
         // (zero evens against one odd), so a two-hundred value array is never an empty scan.
         Assert.InRange(first.BruteForce(), 1, MostSubarrays);
         Assert.Equal(first.BruteForce(), second.BruteForce());
-    }
-
-    [Fact]
-    public void BruteForce_HalfOfAllSubarraysQualify_AgreesWithFenwickPrefixSweep()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.FenwickPrefixSweep(), harness.BruteForce());
-    }
-
-    [Fact]
-    public void FenwickPrefixSweep_HalfOfAllSubarraysQualify_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.FenwickPrefixSweep());
     }
 
     private static CountSubarraysWithEvenOddRatioIBenchmarks BuildHarness()

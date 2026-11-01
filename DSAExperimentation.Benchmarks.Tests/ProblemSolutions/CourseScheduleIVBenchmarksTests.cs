@@ -1,15 +1,11 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CourseScheduleIVBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - a fresh reachability search per query against one all-pairs
-// closure plus a dictionary lookup per query - so a harness whose arms disagree is timing two
-// different problems. Setup draws the prerequisite edges and the queries from one fixed seed, and both
-// arms answer each query with exactly one boolean, so the reading's shape is one verdict per query;
-// the same CourseCount must rebuild the same edges and with them the same queries, otherwise two
-// published numbers were never comparable in the first place.
+// Harness coverage for CourseScheduleIVBenchmarks (ARCHITECTURE 17.9): the generic arm check compares
+// the arms only with each other, so what stays here is the workload's documented shape. Setup draws a
+// fixed number of queries, and both arms answer each query with exactly one boolean, so the reading's
+// shape is one verdict per query.
 public sealed partial class CourseScheduleIVBenchmarksTests
 {
     private const int SmallestCourseCount = 50;
@@ -18,31 +14,8 @@ public sealed partial class CourseScheduleIVBenchmarksTests
     private const int QueryCount = 300;
 
     [Fact]
-    public void Setup_SameCourseCount_RebuildsTheSameWorkload()
-    {
+    public void BfsPerQuery_ThreeHundredReachabilityQueries_AnswersOneVerdictPerQuery() =>
         Assert.Equal(QueryCount, BuildHarness().BfsPerQuery().Count);
-        Assert.Equal(BuildHarness().BfsPerQuery(), BuildHarness().BfsPerQuery());
-    }
-
-    [Fact]
-    public void BfsPerQuery_ThreeHundredReachabilityQueries_AgreesWithFloydWarshallAllPairs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.FloydWarshallAllPairs()),
-            AnswerGraphText.Of(harness.BfsPerQuery()));
-    }
-
-    [Fact]
-    public void FloydWarshallAllPairs_ThreeHundredReachabilityQueries_AgreesWithBfsPerQuery()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.BfsPerQuery()),
-            AnswerGraphText.Of(harness.FloydWarshallAllPairs()));
-    }
 
     private static CourseScheduleIVBenchmarks BuildHarness()
     {

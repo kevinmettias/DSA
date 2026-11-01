@@ -2,12 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountWaysToBuildRoomsInAnAntColonyBenchmarks (ARCHITECTURE 17.9): its three
-// arms are competing strategies for the same question - a plain recursion and a fold recomputing
-// Factorial(subtree size) at every node, against a fold over a table prepared once - so a harness
-// whose arms disagree is timing different problems, not ways of answering one. Setup builds the tree from RoomCount alone, so the same RoomCount
-// must rebuild the same tree; otherwise two published numbers were never comparable in the first
-// place.
+// Harness coverage for CountWaysToBuildRoomsInAnAntColonyBenchmarks (ARCHITECTURE 17.9):
+// BenchmarkArmsTests already holds the arms to agreeing on a rebuilt workload, so this asserts only
+// an expected count derived from the workload's construction rather than from any arm.
 //
 // The tree is private, and the workload's defining property - a straight chain, the deepest tree a
 // given room count admits - decides the answer outright: a chain has exactly one build order, the
@@ -19,35 +16,8 @@ public sealed partial class CountWaysToBuildRoomsInAnAntColonyBenchmarksTests
     private const int ExpectedBuildOrders = 1;
 
     [Fact]
-    public void Setup_SameRoomCount_RebuildsTheSameChain()
-    {
+    public void PerNodeFactorials_StraightChain_FindsTheOneBuildOrder() =>
         Assert.Equal(ExpectedBuildOrders, BuildHarness().PerNodeFactorials());
-        Assert.Equal(BuildHarness().PerNodeFactorials(), BuildHarness().PerNodeFactorials());
-    }
-
-    [Fact]
-    public void PostOrderRecursion_StraightChain_AgreesWithPerNodeFactorials()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.PerNodeFactorials(), harness.PostOrderRecursion());
-    }
-
-    [Fact]
-    public void PerNodeFactorials_StraightChain_AgreesWithPrecomputedFactorials()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.PrecomputedFactorials(), harness.PerNodeFactorials());
-    }
-
-    [Fact]
-    public void PrecomputedFactorials_StraightChain_AgreesWithPerNodeFactorials()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.PerNodeFactorials(), harness.PrecomputedFactorials());
-    }
 
     private static CountWaysToBuildRoomsInAnAntColonyBenchmarks BuildHarness()
     {

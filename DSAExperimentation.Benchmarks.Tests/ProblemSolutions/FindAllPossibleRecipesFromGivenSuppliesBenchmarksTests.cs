@@ -17,10 +17,6 @@ public sealed partial class FindAllPossibleRecipesFromGivenSuppliesBenchmarksTes
     public void FixedPointSweep_StraightLineDependencyChain_MakesEveryRecipe() =>
         Assert.Equal(EveryRecipe(), BuildHarness().FixedPointSweep().Order(StringComparer.Ordinal));
 
-    [Fact]
-    public void KahnsAlgorithm_StraightLineDependencyChain_MakesEveryRecipe() =>
-        Assert.Equal(EveryRecipe(), BuildHarness().KahnsAlgorithm().Order(StringComparer.Ordinal));
-
     // Setup's chain is rooted at the one initial supply and never breaks, so every recipe is makeable.
     private static IEnumerable<string> EveryRecipe() =>
         Enumerable.Range(0, SmallestRecipeCount).Select(index => RecipePrefix + LowercaseNames.Of(index)).Order(StringComparer.Ordinal);

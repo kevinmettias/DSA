@@ -1,19 +1,13 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for IncrementalMemoryLeakBenchmarks (ARCHITECTURE 17.9). Both arms are
-// competing strategies for the same question - two ints and an if/else against routing the same
-// round-by-round allocation through this repo's own max-heap - so a harness whose arms disagree
-// is timing two different problems. Both arms answer with LeetCode 1860's own triple
-// [crashSecond, memory1, memory2], whose positions the problem pins, so AnswerGraphText.Of is the
-// right rendering. This class has no [GlobalSetup] and nothing to seed: both sticks start from
-// the [Params] capacity, so each [Fact] constructs the harness with the smallest capacity and
-// calls both arms. Each arm's own arithmetic is then checked against the accounting the problem
-// statement fixes - every second before the crash gives away exactly that many megabytes, so the
-// two capacities plus the leftovers must still add up to the total allocated - which is a claim
-// derived from the problem rather than read back out of an arm.
+// Harness coverage for IncrementalMemoryLeakBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests
+// already holds the arms to agreeing on the smallest capacity, so this asserts only the accounting
+// the problem statement fixes independently of either arm. Both arms answer with LeetCode 1860's
+// own triple [crashSecond, memory1, memory2], and every second before the crash gives away exactly
+// that many megabytes, so the two capacities plus the leftovers must still add up to the total
+// allocated.
 public sealed partial class IncrementalMemoryLeakBenchmarksTests
 {
     private const int SmallestCapacity = 1_000_000;
@@ -32,24 +26,8 @@ public sealed partial class IncrementalMemoryLeakBenchmarksTests
     private const int TriangularNumberDivisor = 2;
 
     [Fact]
-    public void Arithmetic_EqualSticks_AgreesWithHeapSimulation()
-    {
-        var harness = BuildHarness();
-        var answer = harness.Arithmetic();
-
-        Assert.Equal(AnswerGraphText.Of(harness.HeapSimulation()), AnswerGraphText.Of(answer));
-        Assert.Equal(TotalCapacity(), AllocatedPlusRemaining(answer));
-    }
-
-    [Fact]
-    public void HeapSimulation_EqualSticks_AgreesWithArithmetic()
-    {
-        var harness = BuildHarness();
-        var answer = harness.HeapSimulation();
-
-        Assert.Equal(AnswerGraphText.Of(harness.Arithmetic()), AnswerGraphText.Of(answer));
-        Assert.Equal(TotalCapacity(), AllocatedPlusRemaining(answer));
-    }
+    public void Arithmetic_EqualSticks_AccountsForTheWholeCapacity() =>
+        Assert.Equal(TotalCapacity(), AllocatedPlusRemaining(BuildHarness().Arithmetic()));
 
     private static IncrementalMemoryLeakBenchmarks BuildHarness() =>
         new() { Capacity = SmallestCapacity };

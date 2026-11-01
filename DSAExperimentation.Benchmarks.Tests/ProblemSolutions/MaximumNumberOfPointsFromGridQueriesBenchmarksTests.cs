@@ -1,49 +1,20 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for MaximumNumberOfPointsFromGridQueriesBenchmarks (ARCHITECTURE 17.9): both arms
-// are MaximumNumberOfPointsFromGridQueriesSolution's competing strategies for one question - a fresh
-// per-query flood fill against one shared min-heap frontier drained across all queries - so a
-// harness whose arms disagree is timing two different problems.
-//
-// Each arm answers with one point count per query, in the queries' original order, which is part of
-// this answer: count i belongs to query i, so AnswerGraphText.Of and not OfUnordered is the rendering
-// that keeps each count scored against its own query. The per-query arm keeps its own visited
-// bitmap and never writes the grid, so one harness instance is safe to call twice in either order.
+// Harness coverage for MaximumNumberOfPointsFromGridQueriesBenchmarks (ARCHITECTURE 17.9): each arm
+// answers with one point count per query, in the queries' original order - count i belongs to query
+// i - and Setup draws QueriesCount queries. That shape is a property of the workload the generic
+// agreement check, which only compares arms with each other, cannot supply, so the baseline's count
+// of answers is pinned to it.
 public sealed partial class MaximumNumberOfPointsFromGridQueriesBenchmarksTests
 {
     private const int SmallestQueriesCount = 50;
 
+    // One count per query is the shape both arms promise.
     [Fact]
-    public void Setup_SameQueriesCount_RebuildsTheSameGridAndQueries()
-    {
-        var first = BuildHarness();
-        var second = BuildHarness();
-
-        // One count per query is the shape both arms promise, so the rebuilt workload is pinned
-        // through the counts it produces: the same QueriesCount must draw the same seeded grid and
-        // query list and answer it identically.
-        Assert.Equal(SmallestQueriesCount, first.FloodFillPerQuery().Length);
-        Assert.Equal(AnswerGraphText.Of(first.MinHeapFloodFill()), AnswerGraphText.Of(second.MinHeapFloodFill()));
-    }
-
-    [Fact]
-    public void FloodFillPerQuery_SeededGridAndQueries_AgreesWithMinHeapFloodFill()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.Of(harness.MinHeapFloodFill()), AnswerGraphText.Of(harness.FloodFillPerQuery()));
-    }
-
-    [Fact]
-    public void MinHeapFloodFill_SeededGridAndQueries_AgreesWithFloodFillPerQuery()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.Of(harness.FloodFillPerQuery()), AnswerGraphText.Of(harness.MinHeapFloodFill()));
-    }
+    public void FloodFillPerQuery_SeededGridAndQueries_AnswersEveryQuery() =>
+        Assert.Equal(SmallestQueriesCount, BuildHarness().FloodFillPerQuery().Length);
 
     private static MaximumNumberOfPointsFromGridQueriesBenchmarks BuildHarness()
     {

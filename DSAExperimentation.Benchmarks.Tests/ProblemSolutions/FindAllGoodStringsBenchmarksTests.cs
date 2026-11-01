@@ -2,14 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FindAllGoodStringsBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - enumerating every candidate and substring-checking it with the
-// BCL against the KMP-automaton digit DP - so a harness whose arms disagree is counting two
-// different languages. Both arms return the count, a plain int. Setup builds s1 as all 'a's and s2
-// as all 'z's at the same length, so the bounds span every string of that length and the count is
-// decisive rather than merely agreed: 26^3 candidates, less the 52 that contain the forbidden "ab"
-// (26 starting at index 0, 26 starting at index 1, with no overlap possible between them). The same
-// Length must rebuild the same bounds and the same forbidden substring.
+// Harness coverage for FindAllGoodStringsBenchmarks (ARCHITECTURE 17.9): the generic arms check only
+// compares the arms with each other, so this pins the baseline's count to a value derived
+// independently of every arm. Setup builds s1 as all 'a's and s2 as all 'z's at the same length, so
+// the bounds span every string of that length: 26^3 candidates, less the 52 that contain the
+// forbidden "ab" (26 starting at index 0, 26 starting at index 1, with no overlap possible between
+// them).
 public sealed partial class FindAllGoodStringsBenchmarksTests
 {
     private const int SmallestLength = 3;
@@ -21,32 +19,8 @@ public sealed partial class FindAllGoodStringsBenchmarksTests
     private const int ExpectedGoodStringCount = 17524;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameBounds()
-    {
+    public void EnumerationScan_FullAlphabetBounds_CountsEveryStringWithoutTheForbiddenPair() =>
         Assert.Equal(ExpectedGoodStringCount, BuildHarness().EnumerationScan(SmallestLength));
-
-        Assert.Equal(BuildHarness().EnumerationScan(SmallestLength), BuildHarness().EnumerationScan(SmallestLength));
-    }
-
-    [Fact]
-    public void EnumerationScan_FullAlphabetBounds_AgreesWithAutomatonDigitDp()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedGoodStringCount, harness.EnumerationScan(SmallestLength));
-
-        Assert.Equal(harness.AutomatonDigitDp(SmallestLength), harness.EnumerationScan(SmallestLength));
-    }
-
-    [Fact]
-    public void AutomatonDigitDp_FullAlphabetBounds_AgreesWithEnumerationScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedGoodStringCount, harness.AutomatonDigitDp(SmallestLength));
-
-        Assert.Equal(harness.EnumerationScan(SmallestLength), harness.AutomatonDigitDp(SmallestLength));
-    }
 
     private static FindAllGoodStringsBenchmarks BuildHarness()
     {

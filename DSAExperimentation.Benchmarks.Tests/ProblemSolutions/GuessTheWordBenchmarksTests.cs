@@ -2,17 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for GuessTheWordBenchmarks (ARCHITECTURE 17.9): both arms are
-// GuessTheWordSolution's - in-place removal from a BCL List against this repo's DynamicArray pool
-// rebuilt each round - so a harness whose arms disagree is timing two different searches. Both arms
-// take candidate 0 every round, so they converge on the identical secret in the identical number of
-// rounds, and both answer with the secret word itself. The expected secret is derived here from
+// Harness coverage for GuessTheWordBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests already holds
+// the arms to agreeing on the smallest workload, so this asserts only the secret derived here from
 // [GlobalSetup]'s own documented draw sequence - one Random seeded with the problem number, six
 // lowercase letters per candidate, the first WordCount distinct words kept in draw order and the
 // secret at index WordCount / 2 - rather than read back out of either arm, so the assertion says
 // the search found the hidden word and not merely that the two arms chose the same wrong one.
-// Neither arm mutates the pool (the in-place arm copies the array into a List first), so one
-// harness is safe to call twice in either order.
 public sealed partial class GuessTheWordBenchmarksTests
 {
     private const int SmallestWordCount = 10;
@@ -22,26 +17,8 @@ public sealed partial class GuessTheWordBenchmarksTests
     private const int AlphabetSize = 26;
 
     [Fact]
-    public void Setup_SameWordCount_RebuildsTheSamePool() =>
-        Assert.Equal(BuildHarness().InPlaceListRemoval(), BuildHarness().InPlaceListRemoval());
-
-    [Fact]
-    public void InPlaceListRemoval_SeededWordPool_AgreesWithShrinkingCandidatePool()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedSecretWord(), harness.InPlaceListRemoval());
-        Assert.Equal(harness.ShrinkingCandidatePool(), harness.InPlaceListRemoval());
-    }
-
-    [Fact]
-    public void ShrinkingCandidatePool_SeededWordPool_AgreesWithInPlaceListRemoval()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedSecretWord(), harness.ShrinkingCandidatePool());
-        Assert.Equal(harness.InPlaceListRemoval(), harness.ShrinkingCandidatePool());
-    }
+    public void InPlaceListRemoval_SeededWordPool_FindsTheHiddenWord() =>
+        Assert.Equal(ExpectedSecretWord(), BuildHarness().InPlaceListRemoval());
 
     // [GlobalSetup]'s own draw sequence, restated: duplicates redrawn until the pool holds
     // SmallestWordCount distinct words, and the secret taken from the middle of that pool.

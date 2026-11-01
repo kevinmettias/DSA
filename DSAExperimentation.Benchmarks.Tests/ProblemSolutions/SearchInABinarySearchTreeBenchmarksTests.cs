@@ -1,30 +1,20 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SearchInABinarySearchTreeBenchmarks (ARCHITECTURE 17.9): both arms search the
-// same tree for the same key, so a harness whose arms disagree is timing two different problems.
-// Setup builds the tree from one shuffled insertion order seeded at 1 and aims at the highest
-// value, so the same NodeCount must rebuild the same tree - and since the tree holds every value
-// 1..NodeCount, that highest value is present and the node holding it is the answer both arms
-// must return. Neither arm changes the tree, so one harness instance is safe to read twice in
-// either order.
+// Harness coverage for SearchInABinarySearchTreeBenchmarks (ARCHITECTURE 17.9). Arm agreement is
+// BenchmarkArmsTests' job; this pins the baseline's answer to one derived from the workload's shape.
+// Setup builds the tree from a shuffled insertion order and aims at the highest value - and since
+// the tree holds every value 1..NodeCount, that highest value is present and the node holding it is
+// the answer.
 public sealed partial class SearchInABinarySearchTreeBenchmarksTests
 {
     private const int SmallestNodeCount = 500;
     private const int HighestValue = SmallestNodeCount;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameWorkload()
-    {
-        Assert.Equal(AnswerGraphText.Of(BuildHarness().LinearScan()), AnswerGraphText.Of(BuildHarness().LinearScan()));
+    public void LinearScan_SeededTree_FindsTheHighestValue() =>
         Assert.Equal(HighestValue, BuildHarness().LinearScan()?.Value);
-    }
-
-    [Fact]
-    public void BinarySearchTreeDescent_SeededTree_FindsTheHighestValue() =>
-        Assert.Equal(HighestValue, BuildHarness().BinarySearchTreeDescent()?.Value);
 
     private static SearchInABinarySearchTreeBenchmarks BuildHarness()
     {

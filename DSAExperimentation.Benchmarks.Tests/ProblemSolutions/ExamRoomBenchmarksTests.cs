@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // seats land, bounded by Setup's construction rather than by either arm. The room is stateful and rebuilt per
 // invocation, so Setup fixes only the workload size: the room is padded beyond Length so the end-of-room gap is
 // never the binding constraint, which means every one of the Length seats handed out has to land inside the
-// padded capacity. Each arm returns every seat Seat() handed out, in order.
+// padded capacity. The baseline arm returns every seat Seat() handed out, in order.
 public sealed partial class ExamRoomBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -19,10 +19,6 @@ public sealed partial class ExamRoomBenchmarksTests
     [Fact]
     public void LinearScanList_DrainedPaddedRoom_SeatsEveryStudentInsideTheRoom() =>
         AssertSeatsEveryStudentInsideTheRoom(BuildHarness().LinearScanList());
-
-    [Fact]
-    public void BinarySearchDynamicArray_DrainedPaddedRoom_SeatsEveryStudentInsideTheRoom() =>
-        AssertSeatsEveryStudentInsideTheRoom(BuildHarness().BinarySearchDynamicArray());
 
     // No two students present at once share a seat, and nobody leaves until all are seated.
     private static void AssertSeatsEveryStudentInsideTheRoom(int[] seats)

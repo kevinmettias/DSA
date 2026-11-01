@@ -14,10 +14,6 @@ public sealed partial class DeleteDuplicateFoldersInSystemBenchmarksTests
     public void BruteForcePairwiseComparison_IdenticalTopLevelSubtrees_LeavesNoSurvivors() =>
         Assert.Empty(BuildHarness().BruteForcePairwiseComparison());
 
-    [Fact]
-    public void HashMapSignatureGrouping_IdenticalTopLevelSubtrees_LeavesNoSurvivors() =>
-        Assert.Empty(BuildHarness().HashMapSignatureGrouping());
-
     private static DeleteDuplicateFoldersInSystemBenchmarks BuildHarness()
     {
         var harness = new DeleteDuplicateFoldersInSystemBenchmarks { TopLevelCount = SmallestTopLevelCount };

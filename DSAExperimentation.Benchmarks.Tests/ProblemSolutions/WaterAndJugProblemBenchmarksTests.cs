@@ -1,49 +1,20 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for WaterAndJugProblemBenchmarks (ARCHITECTURE 17.9): all three arms are
-// competing strategies for the same question, so a harness whose arms disagree is timing three
-// different problems. Setup picks the target unreachable by construction (the class comment names
-// jugX + jugY - 1 as never a multiple of the jugs' gcd), which is what makes the expected answer a
-// decisive value rather than a re-reading of whichever arm answered first.
+// Harness coverage for WaterAndJugProblemBenchmarks (ARCHITECTURE 17.9): the generic check holds the
+// arms to agreeing with each other, which a shared wrong verdict would pass. Setup picks the target
+// unreachable by construction (the class comment names jugX + jugY - 1 as never a multiple of the
+// jugs' gcd), which is what makes the expected answer a decisive value rather than a re-reading of
+// whichever arm answered first.
 public sealed partial class WaterAndJugProblemBenchmarksTests
 {
     private const int SmallestCapacity = 40;
 
+    // The decisive value: an unreachable target is unmeasurable.
     [Fact]
-    public void Setup_SameCapacity_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().CanMeasureWaterByGcdFormula()),
-            AnswerGraphText.Of(BuildHarness().CanMeasureWaterByGcdFormula()));
-
-    [Fact]
-    public void CanMeasureWaterByStackSearch_AgreesWithDepthFirstSearch()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.CanMeasureWaterByStackSearch(), harness.CanMeasureWaterByDepthFirstSearch());
-    }
-
-    [Fact]
-    public void CanMeasureWaterByDepthFirstSearch_AgreesWithGcdFormula()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.CanMeasureWaterByDepthFirstSearch(), harness.CanMeasureWaterByGcdFormula());
-    }
-
-    // The decisive value: an unreachable target is unmeasurable, whichever strategy is asked.
-    [Fact]
-    public void CanMeasureWaterByGcdFormula_UnreachableTarget_ReportsImmeasurable()
-    {
-        var harness = BuildHarness();
-
-        Assert.False(harness.CanMeasureWaterByGcdFormula());
-        Assert.False(harness.CanMeasureWaterByStackSearch());
-        Assert.False(harness.CanMeasureWaterByDepthFirstSearch());
-    }
+    public void CanMeasureWaterByStackSearch_UnreachableTarget_ReportsImmeasurable() =>
+        Assert.False(BuildHarness().CanMeasureWaterByStackSearch());
 
     private static WaterAndJugProblemBenchmarks BuildHarness()
     {

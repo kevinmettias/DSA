@@ -2,11 +2,10 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for DesignHashMapBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - a flat list scanned for the key against this repo's own
-// HashMap - so a harness whose arms disagree is timing two different problems. Setup derives both
-// the populated keys and the probe keys from Length, so the same Length must rebuild the same
-// workload, and that workload has to split its probes evenly between hits and misses.
+// Harness coverage for DesignHashMapBenchmarks (ARCHITECTURE 17.9): the generic arm check compares
+// the arms only with each other, so what stays here is a count derived from the workload's
+// construction rather than from either arm: the workload has to split its probes evenly between hits
+// and misses.
 public sealed partial class DesignHashMapBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -15,32 +14,13 @@ public sealed partial class DesignHashMapBenchmarksTests
     // an absent one, so the hits are this share of the length.
     private const int HitShareDivisor = 2;
 
+    // Keys 0..Length-1 are all populated with their own value, and the probes alternate between one of
+    // those keys and one past the populated range - which has to report the absent-key sentinel rather
+    // than a value, since every value stored equals its own key and so is never negative. Half of
+    // SmallestLength hits is what both halves together allow.
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameKeyAndProbeWorkload()
-    {
-        // Keys 0..Length-1 are all populated with their own value, and the probes alternate
-        // between one of those keys and one past the populated range - which has to report the
-        // absent-key sentinel rather than a value, since every value stored equals its own key and
-        // so is never negative. Half of SmallestLength hits is what both halves together allow.
+    public void LinearScanList_HalfHitHalfMissProbes_FindsExactlyTheHits() =>
         Assert.Equal(SmallestLength / HitShareDivisor, BuildHarness().LinearScanList());
-        Assert.Equal(BuildHarness().LinearScanList(), BuildHarness().LinearScanList());
-    }
-
-    [Fact]
-    public void LinearScanList_HalfHitHalfMissProbes_AgreesWithHashMapBacked()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.HashMapBacked(), harness.LinearScanList());
-    }
-
-    [Fact]
-    public void HashMapBacked_HalfHitHalfMissProbes_AgreesWithLinearScanList()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LinearScanList(), harness.HashMapBacked());
-    }
 
     private static DesignHashMapBenchmarks BuildHarness()
     {

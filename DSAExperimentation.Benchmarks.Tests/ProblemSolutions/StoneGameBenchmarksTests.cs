@@ -1,12 +1,11 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for StoneGameBenchmarks (ARCHITECTURE 17.9): both arms answer the same
-// question - whether Alice wins LC 877 - one by plain minimax over (left, right) bounds, one by
-// memoizing that pair, so a harness whose arms disagree is timing two different problems.
-// Setup's piles are seeded, so the same pile count must rebuild the same workload.
+// Harness coverage for StoneGameBenchmarks (ARCHITECTURE 17.9): whether Alice wins LC 877 is
+// known without running either arm, so the baseline is asserted against it - the generic arm
+// check only holds the memoized arm to the baseline's answer, which two arms sharing one wrong
+// verdict would pass.
 public sealed partial class StoneGameBenchmarksTests
 {
     private const int SmallestPileCount = 22;
@@ -17,20 +16,8 @@ public sealed partial class StoneGameBenchmarksTests
     private const bool ExpectedAliceWins = true;
 
     [Fact]
-    public void Setup_SamePileCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().CanAliceWinByMemoizedRecursion()),
-            AnswerGraphText.Of(BuildHarness().CanAliceWinByMemoizedRecursion()));
-
-    [Fact]
-    public void CanAliceWinByUnmemoizedRecursion_AgreesWithCanAliceWinByMemoizedRecursion()
-    {
-        var harness = BuildHarness();
-        var unmemoized = harness.CanAliceWinByUnmemoizedRecursion();
-
-        Assert.Equal(unmemoized, harness.CanAliceWinByMemoizedRecursion());
-        Assert.Equal(ExpectedAliceWins, unmemoized);
-    }
+    public void CanAliceWinByUnmemoizedRecursion_EvenPileCount_AliceWins() =>
+        Assert.Equal(ExpectedAliceWins, BuildHarness().CanAliceWinByUnmemoizedRecursion());
 
     private static StoneGameBenchmarks BuildHarness()
     {

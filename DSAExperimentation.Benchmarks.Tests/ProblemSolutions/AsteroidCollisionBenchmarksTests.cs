@@ -1,14 +1,10 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for AsteroidCollisionBenchmarks (ARCHITECTURE 17.9): its two arms are AsteroidCollisionSolution's
-// competing strategies for the same question - a repeated restart-from-the-beginning scan against one textbook
-// stack pass - so a harness whose arms disagree has resolved two different fields. Beyond agreeing, the surviving
-// field is asserted to be collision-free: nothing that still moves right may stand anywhere before something that
-// still moves left, since that pair would have met. Setup draws magnitudes and directions from one seed, so the
-// same Length must rebuild the same asteroids.
+// Harness coverage for AsteroidCollisionBenchmarks (ARCHITECTURE 17.9): the generic check holds the arms to each
+// other, and this asserts what agreement alone cannot - that the surviving field is collision-free: nothing that
+// still moves right may stand anywhere before something that still moves left, since that pair would have met.
 public sealed partial class AsteroidCollisionBenchmarksTests
 {
     // The smaller of Setup's [Params(200, 3_000)] field sizes; a resolved field never grows,
@@ -16,31 +12,12 @@ public sealed partial class AsteroidCollisionBenchmarksTests
     private const int SmallestLength = 200;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().RepeatedScan()),
-            AnswerGraphText.Of(BuildHarness().RepeatedScan()));
-
-    [Fact]
-    public void RepeatedScan_TwoHundredAsteroidField_AgreesWithStackPass()
+    public void RepeatedScan_TwoHundredAsteroidField_LeavesAFullyResolvedField()
     {
-        var harness = BuildHarness();
-        var survivors = harness.RepeatedScan();
+        var survivors = BuildHarness().RepeatedScan();
 
         Assert.InRange(survivors.Length, 0, SmallestLength);
         Assert.True(IsFullyResolved(survivors));
-        Assert.Equal(AnswerGraphText.Of(harness.StackPass()), AnswerGraphText.Of(survivors));
-    }
-
-    [Fact]
-    public void StackPass_TwoHundredAsteroidField_AgreesWithRepeatedScan()
-    {
-        var harness = BuildHarness();
-        var survivors = harness.StackPass();
-
-        Assert.InRange(survivors.Length, 0, SmallestLength);
-        Assert.True(IsFullyResolved(survivors));
-        Assert.Equal(AnswerGraphText.Of(harness.RepeatedScan()), AnswerGraphText.Of(survivors));
     }
 
     private static AsteroidCollisionBenchmarks BuildHarness()

@@ -2,16 +2,15 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ValidParenthesisStringBenchmarks (ARCHITECTURE 17.9): its two arms are
-// ValidParenthesisStringSolution's competing strategies for the same question - the reachable-open-
-// count DP against the two-index stack sweep - so a harness whose arms disagree is answering two
-// different questions about LC 678.
+// Harness coverage for ValidParenthesisStringBenchmarks (ARCHITECTURE 17.9): the generic check holds
+// the arms to agreeing with each other, which a shared wrong verdict would pass, so this pins the
+// baseline's verdict to the one the workload's construction fixes.
 //
 // Setup's _text is one '(' followed by stars and one ')' - the shape that maximizes the DP's
 // reachable-set growth while the sweep never inspects its star stack's contents. LC 678 lets each
 // star stand for an empty string, so the well-formed reading is always available and the answer is
-// true, which is the decisive literal asserted alongside the agreement. Both arms return bool, so
-// this harness can only witness the verdict and not the reachable set behind it.
+// true. Both arms return bool, so this harness can only witness the verdict and not the reachable
+// set behind it.
 public sealed partial class ValidParenthesisStringBenchmarksTests
 {
     // The smaller of Setup's [Params(10, 100)] lengths.
@@ -21,31 +20,8 @@ public sealed partial class ValidParenthesisStringBenchmarksTests
     private const bool ExpectedIsValid = true;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload()
-    {
-        Assert.Equal(
-            BuildHarness().IsValidStringByTwoIndexStackSweep(),
-            BuildHarness().IsValidStringByTwoIndexStackSweep());
-        Assert.Equal(ExpectedIsValid, BuildHarness().IsValidStringByTwoIndexStackSweep());
-    }
-
-    [Fact]
-    public void IsValidStringByReachableOpenCountDp_SmallestLength_AgreesWithTheSiblingArm()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.IsValidStringByTwoIndexStackSweep(), harness.IsValidStringByReachableOpenCountDp());
-        Assert.Equal(ExpectedIsValid, harness.IsValidStringByReachableOpenCountDp());
-    }
-
-    [Fact]
-    public void IsValidStringByTwoIndexStackSweep_SmallestLength_AgreesWithTheSiblingArm()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.IsValidStringByReachableOpenCountDp(), harness.IsValidStringByTwoIndexStackSweep());
-        Assert.Equal(ExpectedIsValid, harness.IsValidStringByTwoIndexStackSweep());
-    }
+    public void IsValidStringByReachableOpenCountDp_StarsBetweenOnePair_AcceptsTheText() =>
+        Assert.Equal(ExpectedIsValid, BuildHarness().IsValidStringByReachableOpenCountDp());
 
     private static ValidParenthesisStringBenchmarks BuildHarness()
     {

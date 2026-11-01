@@ -2,11 +2,10 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CatAndMouseIIBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - the raw minimax game-tree recursion against the identical
-// recurrence routed through the repo's own Memoizer - so a harness whose arms disagree is timing
-// two different problems. Both arms answer with a bare bool, so agreement between them says the
-// two strategies reached the same verdict on the same corridor and nothing more than that.
+// Harness coverage for CatAndMouseIIBenchmarks (ARCHITECTURE 17.9): the generic check holds the
+// arms to each other, but both answer with a bare bool, so agreement between them says the two
+// strategies reached the same verdict on the same corridor and nothing more than that. This pins
+// the baseline's verdict to one worked out from the corridor's layout without either arm.
 public sealed partial class CatAndMouseIIBenchmarksTests
 {
     private const int SmallestCorridorLength = 4;
@@ -19,30 +18,8 @@ public sealed partial class CatAndMouseIIBenchmarksTests
     private const bool MouseCanForceWinFromSmallestCorridor = false;
 
     [Fact]
-    public void Setup_SameCorridorLength_RebuildsTheAdjacentCatCorridor()
-    {
-        var first = BuildHarness();
-        var second = BuildHarness();
-
-        Assert.Equal(MouseCanForceWinFromSmallestCorridor, first.CanMouseWinByExhaustiveRecursion());
-        Assert.Equal(MouseCanForceWinFromSmallestCorridor, second.CanMouseWinByMemoizedRecursion());
-    }
-
-    [Fact]
-    public void CanMouseWinByExhaustiveRecursion_MouseAdjacentToTheCat_AgreesWithMemoizedRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.CanMouseWinByMemoizedRecursion(), harness.CanMouseWinByExhaustiveRecursion());
-    }
-
-    [Fact]
-    public void CanMouseWinByMemoizedRecursion_MouseAdjacentToTheCat_AgreesWithExhaustiveRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.CanMouseWinByExhaustiveRecursion(), harness.CanMouseWinByMemoizedRecursion());
-    }
+    public void CanMouseWinByExhaustiveRecursion_MouseAdjacentToTheCat_ReportsTheMouseCannotForceAWin() =>
+        Assert.Equal(MouseCanForceWinFromSmallestCorridor, BuildHarness().CanMouseWinByExhaustiveRecursion());
 
     private static CatAndMouseIIBenchmarks BuildHarness()
     {

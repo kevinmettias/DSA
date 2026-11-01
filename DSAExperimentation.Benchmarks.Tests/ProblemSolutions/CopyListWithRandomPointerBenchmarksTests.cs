@@ -1,6 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -10,22 +9,10 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // the clone of whatever the original pointed at, never to the original node itself. Every Random
 // reachable from the returned clone must therefore be one of that clone's own nodes and nothing
 // else, which is what the class comment's "references pointing both forward and backward" shape
-// exists to exercise. Setup draws from one fixed seed, so the same NodeCount must rebuild the same
-// list, asserted through the one observable the arm exposes, its clone.
+// exists to exercise.
 public sealed partial class CopyListWithRandomPointerBenchmarksTests
 {
     private const int SmallestNodeCount = 200;
-
-    // What the rendering writes where a node's Random resolves to nothing.
-    private const string NullRandomText = "null";
-
-    [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameWorkload()
-    {
-        Assert.Equal(SmallestNodeCount, Chain(Copied()).Count);
-
-        Assert.Equal(Render(Copied()), Render(Copied()));
-    }
 
     [Fact]
     public void HashMapMemo_TwoHundredNodeList_ReturnsADeepCopyWhoseRandomsStayInsideIt()
@@ -66,11 +53,4 @@ public sealed partial class CopyListWithRandomPointerBenchmarksTests
 
         return nodes;
     }
-
-    // One entry per node, naming the node it is reached from and the value its Random resolves to.
-    // Rendering the clone this way compares two builds without caring about node identity, which is
-    // the only thing two separate clones never share.
-    private static string Render(RandomLinkedListNode<int>? clone) =>
-        AnswerGraphText.Of(Chain(clone).Select(node =>
-            $"{node.Value}:{(node.Random is null ? NullRandomText : node.Random.Value.ToString())}"));
 }

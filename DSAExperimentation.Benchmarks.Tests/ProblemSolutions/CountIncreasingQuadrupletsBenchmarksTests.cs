@@ -2,13 +2,11 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountIncreasingQuadrupletsBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - the four nested loops testing the inequality as the
-// statement writes it against the Fenwick sweep over the inverted middle pair - so a harness whose
-// arms disagree is timing two different problems. Both arms return a long, so they are compared
-// directly. Setup builds a permutation of 1..Length from one fixed seed, so the same Length must
-// rebuild the same permutation, and that shape bounds the answer: one quadruplet is one choice of
-// four distinct indices, so no permutation can admit more than Length choose 4 of them.
+// Harness coverage for CountIncreasingQuadrupletsBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests
+// already holds the arms to agreeing on a rebuilt workload, so this asserts only a bound that comes
+// from the workload's shape rather than from either arm. Setup builds a permutation of 1..Length,
+// and one quadruplet is one choice of four distinct indices, so no permutation can admit more than
+// Length choose 4 of them.
 public sealed partial class CountIncreasingQuadrupletsBenchmarksTests
 {
     private const int SmallestLength = 8;
@@ -25,31 +23,11 @@ public sealed partial class CountIncreasingQuadrupletsBenchmarksTests
     private const long FewestQuadruplets = 0L;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSamePermutationWithinTheIndexBound()
-    {
-        Assert.Equal(BuildHarness().BruteForce(SmallestLength), BuildHarness().BruteForce(SmallestLength));
-
+    public void FenwickTreeSweep_EightElementPermutation_StaysWithinTheIndexBound() =>
         Assert.InRange(
             BuildHarness().FenwickTreeSweep(SmallestLength),
             FewestQuadruplets,
             FourIndexSelections(SmallestLength));
-    }
-
-    [Fact]
-    public void BruteForce_EightElementPermutation_AgreesWithFenwickTreeSweep()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.FenwickTreeSweep(SmallestLength), harness.BruteForce(SmallestLength));
-    }
-
-    [Fact]
-    public void FenwickTreeSweep_EightElementPermutation_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(SmallestLength), harness.FenwickTreeSweep(SmallestLength));
-    }
 
     private static CountIncreasingQuadrupletsBenchmarks BuildHarness()
     {

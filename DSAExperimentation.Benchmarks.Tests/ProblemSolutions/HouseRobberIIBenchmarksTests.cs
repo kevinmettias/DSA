@@ -3,14 +3,13 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for HouseRobberIIBenchmarks (ARCHITECTURE 17.9). Its two arms are competing
-// strategies for the same question - the memoized circular split and the iterative two-pass split -
-// so a harness whose arms disagree is timing two different problems: both must report the same
-// haul. Setup's circle is fully documented (seeded Random(213), each house drawn from [0, 1000]), so
-// the expected haul is derived here from a rebuilt circle by trying every set of houses at the
-// smallest size of ten - all 1,024 of them - and keeping the best one with no two neighbours, the
-// first and last house counting as neighbours too. That brute force shares nothing with either arm's
-// split of the circle into two lines.
+// Harness coverage for HouseRobberIIBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests already holds
+// the arms to agreeing on the smallest workload, so this asserts only a haul derived independently
+// of either arm. Setup's circle is fully documented (seeded Random(213), each house drawn from
+// [0, 1000]), so the expected haul is derived here from a rebuilt circle by trying every set of
+// houses at the smallest size of ten - all 1,024 of them - and keeping the best one with no two
+// neighbours, the first and last house counting as neighbours too. That brute force shares nothing
+// with either arm's split of the circle into two lines.
 public sealed partial class HouseRobberIIBenchmarksTests
 {
     private const int SmallestLength = 10;
@@ -18,20 +17,8 @@ public sealed partial class HouseRobberIIBenchmarksTests
     private const int MaxValue = 1_000;
 
     [Fact]
-    public void MemoizedRecursion_SeededCircle_ReturnsTheBestNonAdjacentHaul() =>
-        Assert.Equal(BruteForceBestHaul(RebuildCircle()), BuildHarness().MemoizedRecursion());
-
-    [Fact]
     public void IterativeTwoPass_SeededCircle_ReturnsTheBestNonAdjacentHaul() =>
         Assert.Equal(BruteForceBestHaul(RebuildCircle()), BuildHarness().IterativeTwoPass());
-
-    [Fact]
-    public void IterativeTwoPass_AgreesWithMemoizedRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MemoizedRecursion(), harness.IterativeTwoPass());
-    }
 
     private static HouseRobberIIBenchmarks BuildHarness()
     {

@@ -5,20 +5,18 @@ using DSAExperimentation.LeetCode.SurroundedRegions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SurroundedRegionsBenchmarks (ARCHITECTURE 17.9): the class carries two arms -
-// the depth-first and breadth-first captures from the border - so the pair must agree on the board as
-// well as each matching an independent oracle.
+// Harness coverage for SurroundedRegionsBenchmarks (ARCHITECTURE 17.9): LC 130's contract is
+// decisive, not merely reproducible: the capture is exactly the 'O' cells that cannot reach the
+// border, which the marking pass below decides for itself from the board's own shape rather than from
+// the arms' traversals. The baseline - the breadth-first capture - is held to that oracle; the generic
+// arm check holds the depth-first capture to the baseline's board.
 //
-// Two things shape the tests below. Both arms return void and mutate the board they are handed, and the
-// board is a private field that both [GlobalSetup] and [IterationSetup] fill from the same seeded
-// fixture expression, so no test can read the harness's own board: the workload-rebuild pins are
-// therefore statements about the expression the class names, each reached through an arm's own effect
-// on a board built from it. And LC 130's contract is decisive, not merely reproducible: the capture is
-// exactly the 'O' cells that cannot reach the border, which the marking pass below decides for itself
-// from the board's own shape rather than from the arms' traversals. That oracle's border-reach walk is
-// itself queue-based, so it now shares the breadth-first arm's shape - it stays a separate
-// implementation (its own bool[,] reached map), and the depth-first arm's agreement with it is what
-// keeps the oracle honest.
+// Both arms return void and mutate the board they are handed, and the board is a private field that
+// both [GlobalSetup] and [IterationSetup] fill from the same seeded fixture expression, so the test
+// cannot read the harness's own board: it applies the arm's own call to a board built from that
+// expression. The oracle's border-reach walk is itself queue-based, so it shares the breadth-first
+// arm's shape - it stays a separate implementation (its own bool[,] reached map), and the depth-first
+// arm's agreement with the baseline is what keeps the oracle honest.
 public sealed partial class SurroundedRegionsBenchmarksTests
 {
     // Mirrors the Size and seed the class's own [GlobalSetup] and [IterationSetup] pass.
@@ -28,42 +26,12 @@ public sealed partial class SurroundedRegionsBenchmarksTests
     private const char CapturedCell = 'X';
 
     [Fact]
-    public void Setup_SameSize_RebuildsTheSameBoard()
-    {
-        BuildHarness().BorderDepthFirstSearch();
-
-        Assert.Equal(AnswerGraphText.Of(GradedBoard()), AnswerGraphText.Of(GradedBoard()));
-    }
-
-    [Fact]
-    public void IterationSetup_AfterAGradedRun_RePresentsThePristineBoard()
-    {
-        var harness = BuildHarness();
-        harness.BorderDepthFirstSearch();
-        harness.IterationSetup();
-
-        Assert.Equal(AnswerGraphText.Of(GradedBoard()), AnswerGraphText.Of(GradedBoard()));
-    }
-
-    [Fact]
-    public void BorderDepthFirstSearch_SeededBoard_CapturesExactlyTheRegionsCutOffFromTheBorder()
-    {
-        BuildHarness().BorderDepthFirstSearch();
-
-        Assert.Equal(AnswerGraphText.Of(ExpectedCapture()), AnswerGraphText.Of(GradedBoard()));
-    }
-
-    [Fact]
     public void BorderBreadthFirstSearch_SeededBoard_CapturesExactlyTheRegionsCutOffFromTheBorder()
     {
         BuildHarness().BorderBreadthFirstSearch();
 
         Assert.Equal(AnswerGraphText.Of(ExpectedCapture()), AnswerGraphText.Of(BreadthFirstGradedBoard()));
     }
-
-    [Fact]
-    public void BorderBreadthFirstSearch_AgreesWithBorderDepthFirstSearch() =>
-        Assert.Equal(AnswerGraphText.Of(GradedBoard()), AnswerGraphText.Of(BreadthFirstGradedBoard()));
 
     private static SurroundedRegionsBenchmarks BuildHarness()
     {
@@ -73,16 +41,7 @@ public sealed partial class SurroundedRegionsBenchmarksTests
         return harness;
     }
 
-    // The arm's own call, applied to a board built by the expression both preparation hooks name.
-    private static char[][] GradedBoard()
-    {
-        var board = PristineBoard();
-        SurroundedRegionsSolution.SolveByBorderDepthFirstSearch(board);
-
-        return board;
-    }
-
-    // The new arm's own call, applied to a board built by the expression both preparation hooks name.
+    // The baseline arm's own call, applied to a board built by the expression both preparation hooks name.
     private static char[][] BreadthFirstGradedBoard()
     {
         var board = PristineBoard();

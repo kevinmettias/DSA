@@ -2,11 +2,10 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CheckIfAParenthesesStringCanBeValidBenchmarks (ARCHITECTURE 17.9): its two
-// arms are competing strategies for the same question - the DP over the reachable open-parenthesis
-// counts against the two-stack index sweep - so a harness whose arms disagree is timing two
-// different problems. Both arms answer with a bare bool, so agreement between them says the two
-// strategies reached the same verdict on the same bracket string and lock mask.
+// Harness coverage for CheckIfAParenthesesStringCanBeValidBenchmarks (ARCHITECTURE 17.9): the
+// generic check holds the arms to each other, but both answer with a bare bool, so agreement says
+// only that the two strategies reached the same verdict on the same bracket string and lock mask.
+// This pins the baseline's verdict to one worked out from Setup's layout without either arm.
 public sealed partial class CheckIfAParenthesesStringCanBeValidBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -20,30 +19,8 @@ public sealed partial class CheckIfAParenthesesStringCanBeValidBenchmarksTests
     private const bool CanBeBalancedByTheFreeMiddle = true;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheLockedEndsAroundAFreeMiddle()
-    {
-        var first = BuildHarness();
-        var second = BuildHarness();
-
-        Assert.Equal(CanBeBalancedByTheFreeMiddle, first.CanBeValidByIndexStackSweep());
-        Assert.Equal(CanBeBalancedByTheFreeMiddle, second.CanBeValidByReachableOpenCountDp());
-    }
-
-    [Fact]
-    public void CanBeValidByIndexStackSweep_LockedEndsFreeMiddle_AgreesWithReachableOpenCountDp()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.CanBeValidByReachableOpenCountDp(), harness.CanBeValidByIndexStackSweep());
-    }
-
-    [Fact]
-    public void CanBeValidByReachableOpenCountDp_LockedEndsFreeMiddle_AgreesWithIndexStackSweep()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.CanBeValidByIndexStackSweep(), harness.CanBeValidByReachableOpenCountDp());
-    }
+    public void CanBeValidByReachableOpenCountDp_LockedEndsFreeMiddle_ReturnsTrue() =>
+        Assert.Equal(CanBeBalancedByTheFreeMiddle, BuildHarness().CanBeValidByReachableOpenCountDp());
 
     private static CheckIfAParenthesesStringCanBeValidBenchmarks BuildHarness()
     {

@@ -1,15 +1,11 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for DisplayTableOfFoodOrdersInARestaurantBenchmarks (ARCHITECTURE 17.9): its two
-// arms are competing strategies for the same question - rescanning every raw order once per
-// (table, food) cell against one grouped pass into a nested HashMap - so a harness whose arms
-// disagree is timing two different problems. AnswerGraphText.Of, not OfUnordered: LC 1418 fixes the
-// display table's order outright - "Table" then the foods alphabetically, then one row per table in
-// increasing numeric order - so that order is the answer. Setup draws tables and foods from the two
-// fixed pools below, never from the order count, which is what bounds the table's dimensions.
+// Harness coverage for DisplayTableOfFoodOrdersInARestaurantBenchmarks (ARCHITECTURE 17.9): the
+// display table's frame, known from the workload's shape without either arm. LC 1418 puts "Table"
+// in the header's first cell, and Setup draws tables and foods from the two fixed pools below,
+// never from the order count, which is what bounds the table's dimensions.
 public sealed partial class DisplayTableOfFoodOrdersInARestaurantBenchmarksTests
 {
     // The two fixed pools Setup draws from, mirrored so the shape of the table it builds can be
@@ -26,35 +22,13 @@ public sealed partial class DisplayTableOfFoodOrdersInARestaurantBenchmarksTests
     private const int MinimumTableDimensionCount = 2;
 
     [Fact]
-    public void Setup_BoundedTableAndFoodPools_FrameTheDisplayTableAndRebuildTheSameWorkload()
+    public void RescanEveryOrderPerCell_BoundedTableAndFoodPools_FramesTheDisplayTable()
     {
-        var harness = BuildHarness();
-        var table = harness.RescanEveryOrderPerCell();
+        var table = BuildHarness().RescanEveryOrderPerCell();
 
         Assert.Equal(ExpectedHeaderFirstCell, table[0][0]);
         Assert.InRange(table.Count, MinimumTableDimensionCount, MaximumTableRowCount);
         Assert.InRange(table[0].Count, MinimumTableDimensionCount, MaximumColumnCount);
-        Assert.Equal(AnswerGraphText.Of(table), AnswerGraphText.Of(BuildHarness().RescanEveryOrderPerCell()));
-    }
-
-    [Fact]
-    public void RescanEveryOrderPerCell_BoundedPools_AgreesWithGroupedHashMapThenMergeSort()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.GroupedHashMapThenMergeSort()),
-            AnswerGraphText.Of(harness.RescanEveryOrderPerCell()));
-    }
-
-    [Fact]
-    public void GroupedHashMapThenMergeSort_BoundedPools_AgreesWithRescanEveryOrderPerCell()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.RescanEveryOrderPerCell()),
-            AnswerGraphText.Of(harness.GroupedHashMapThenMergeSort()));
     }
 
     private static DisplayTableOfFoodOrdersInARestaurantBenchmarks BuildHarness()

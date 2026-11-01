@@ -2,12 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for JumpGameIIBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for one question - the fewest jumps from index 0 to the last index - so a harness
-// whose arms disagree is timing two different problems. Setup's jump array is fully documented
-// (seeded Random(1), every non-final entry drawn from [1, MaxJumpDistanceExclusive), the final
-// entry left at its zeroed default), so the expected hop count is derived here from the plain
-// greedy scan over a rebuilt array rather than restated from either arm.
+// Harness coverage for JumpGameIIBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests already holds
+// the arms to agreeing on the smallest workload, so this asserts only a hop count derived
+// independently of either arm. Setup's jump array is fully documented (seeded Random(1), every
+// non-final entry drawn from [1, MaxJumpDistanceExclusive), the final entry left at its zeroed
+// default), so the expected hop count is derived here from the plain greedy scan over a rebuilt
+// array rather than restated from either arm.
 public sealed partial class JumpGameIIBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -16,29 +16,8 @@ public sealed partial class JumpGameIIBenchmarksTests
     private const int MaxJumpDistance = 10;
 
     [Fact]
-    public void Setup_SeededJumps_MatchesTheIndependentlyCountedMinimum()
-    {
-        var expected = IndependentMinJumpCount(RebuildJumps());
-
-        Assert.Equal(expected, BuildHarness().GreedyTwoPointer());
-        Assert.Equal(expected, BuildHarness().DijkstraOverHopGraph());
-    }
-
-    [Fact]
-    public void GreedyTwoPointer_SeededJumps_AgreesWithDijkstraOverHopGraph()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DijkstraOverHopGraph(), harness.GreedyTwoPointer());
-    }
-
-    [Fact]
-    public void DijkstraOverHopGraph_SeededJumps_AgreesWithGreedyTwoPointer()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.GreedyTwoPointer(), harness.DijkstraOverHopGraph());
-    }
+    public void GreedyTwoPointer_SeededJumps_MatchesTheIndependentlyCountedMinimum() =>
+        Assert.Equal(IndependentMinJumpCount(RebuildJumps()), BuildHarness().GreedyTwoPointer());
 
     private static JumpGameIIBenchmarks BuildHarness()
     {

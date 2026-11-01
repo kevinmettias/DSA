@@ -2,10 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FindGreatestCommonDivisorOfArrayBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question - repeated subtraction against the modulo-based
-// Euclidean algorithm - over the same min/max scan, so a harness whose arms disagree has computed
-// two different gcds. Both answers are one int, so they are compared directly.
+// Harness coverage for FindGreatestCommonDivisorOfArrayBenchmarks (ARCHITECTURE 17.9): the generic
+// arms check only compares the arms with each other, so this pins the baseline's gcd to the value
+// Setup's construction fixes independently of any arm.
 //
 // Setup pins _nums[0] to 1, so the array's minimum is 1 on every run and the gcd of the smallest and
 // largest elements is 1 whatever the seed produced for the maximum - the answer is decisive, and it
@@ -19,28 +18,8 @@ public sealed partial class FindGreatestCommonDivisorOfArrayBenchmarksTests
     private const int ExpectedGreatestCommonDivisor = 1;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameGreatestCommonDivisor() =>
-        Assert.Equal(
-            BuildHarness().SubtractionGcdOfMinAndMax(),
-            BuildHarness().SubtractionGcdOfMinAndMax());
-
-    [Fact]
-    public void SubtractionGcdOfMinAndMax_MinimumPinnedToOne_AgreesWithEuclideanGcdOfMinAndMax()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedGreatestCommonDivisor, harness.SubtractionGcdOfMinAndMax());
-        Assert.Equal(harness.EuclideanGcdOfMinAndMax(), harness.SubtractionGcdOfMinAndMax());
-    }
-
-    [Fact]
-    public void EuclideanGcdOfMinAndMax_MinimumPinnedToOne_AgreesWithSubtractionGcdOfMinAndMax()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedGreatestCommonDivisor, harness.EuclideanGcdOfMinAndMax());
-        Assert.Equal(harness.SubtractionGcdOfMinAndMax(), harness.EuclideanGcdOfMinAndMax());
-    }
+    public void SubtractionGcdOfMinAndMax_MinimumPinnedToOne_ReturnsOne() =>
+        Assert.Equal(ExpectedGreatestCommonDivisor, BuildHarness().SubtractionGcdOfMinAndMax());
 
     private static FindGreatestCommonDivisorOfArrayBenchmarks BuildHarness()
     {

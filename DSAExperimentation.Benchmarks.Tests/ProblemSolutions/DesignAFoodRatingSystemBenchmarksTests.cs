@@ -20,10 +20,6 @@ public sealed partial class DesignAFoodRatingSystemBenchmarksTests
     public void LinearScan_TwoHundredSeededFoods_ReportsOnlyFoodNames() =>
         AssertReportsOnlyFoodNames(BuildHarness().LinearScan());
 
-    [Fact]
-    public void LazyDeletionHeap_TwoHundredSeededFoods_ReportsOnlyFoodNames() =>
-        AssertReportsOnlyFoodNames(BuildHarness().LazyDeletionHeap());
-
     private static void AssertReportsOnlyFoodNames(string[] reported) =>
         Assert.All(reported, AssertIsFoodName);
 

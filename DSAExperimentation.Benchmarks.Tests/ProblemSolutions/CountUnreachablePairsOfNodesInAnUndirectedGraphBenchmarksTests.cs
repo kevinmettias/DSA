@@ -3,11 +3,8 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for CountUnreachablePairsOfNodesInAnUndirectedGraphBenchmarks (ARCHITECTURE
-// 17.9): its two arms are competing strategies for the same question - a DFS flood fill against
-// this repo's own DisjointSet plus a HashMap size tally - so a harness whose arms disagree is timing
-// two different problems, not two ways of answering one. Setup derives the edge array from NodeCount
-// alone, so the same NodeCount must rebuild the same graph; otherwise two published numbers were
-// never comparable in the first place.
+// 17.9): BenchmarkArmsTests already holds the arms to agreeing on a rebuilt workload, so this asserts
+// only an expected count derived from the workload's construction rather than from either arm.
 //
 // The edge array is private, and the workload's defining property - NodeCount / 25 disjoint chains,
 // every one of them a real component to discover - decides the answer outright: every pair inside
@@ -22,29 +19,10 @@ public sealed partial class CountUnreachablePairsOfNodesInAnUndirectedGraphBench
     private const int UnorderedPairDivisor = 2;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameChains()
-    {
+    public void DepthFirstFloodFill_DisjointChains_CountsEveryPairSplitAcrossTwoChains() =>
         Assert.Equal(
             UnreachablePairsAcrossEqualChains(SmallestNodeCount, ChainNodeCount),
             BuildHarness().DepthFirstFloodFill());
-        Assert.Equal(BuildHarness().DepthFirstFloodFill(), BuildHarness().DepthFirstFloodFill());
-    }
-
-    [Fact]
-    public void DepthFirstFloodFill_DisjointChains_AgreesWithDisjointSetUnionFind()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DisjointSetUnionFind(), harness.DepthFirstFloodFill());
-    }
-
-    [Fact]
-    public void DisjointSetUnionFind_DisjointChains_AgreesWithDepthFirstFloodFill()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DepthFirstFloodFill(), harness.DisjointSetUnionFind());
-    }
 
     private static CountUnreachablePairsOfNodesInAnUndirectedGraphBenchmarks BuildHarness()
     {

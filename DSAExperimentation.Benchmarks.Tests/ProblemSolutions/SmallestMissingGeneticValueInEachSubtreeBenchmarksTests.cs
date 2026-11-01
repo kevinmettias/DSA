@@ -3,17 +3,14 @@ using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SmallestMissingGeneticValueInEachSubtreeBenchmarks (ARCHITECTURE 17.9):
-// its two arms are competing strategies for the same question - rescanning every node's whole
-// subtree from scratch against one ancestor-chain walk - so a harness whose arms disagree is
-// answering two different family trees. Setup builds the chain and its genetic values from a
-// closed form with no draw from any stream, so the same NodeCount is the whole of what pins
-// the workload.
+// Harness coverage for SmallestMissingGeneticValueInEachSubtreeBenchmarks (ARCHITECTURE 17.9).
+// Arm agreement is BenchmarkArmsTests' job; this pins the baseline's answer to one derived from the
+// workload's shape. Setup builds the chain and its genetic values from a closed form, and the
+// chain's values are decisive enough to check the baseline against directly: see the two answers
+// below.
 //
 // Answers come back one per node in node order, and node i's mex belongs to node i, so
-// AnswerGraphText.Of rather than OfUnordered keeps each mex scored against its own node. The
-// chain's values are also decisive enough to check the arms against directly rather than
-// against each other: see the two answers below.
+// AnswerGraphText.Of rather than OfUnordered keeps each mex scored against its own node.
 public sealed partial class SmallestMissingGeneticValueInEachSubtreeBenchmarksTests
 {
     private const int SmallestNodeCount = 200;
@@ -28,32 +25,8 @@ public sealed partial class SmallestMissingGeneticValueInEachSubtreeBenchmarksTe
     private const int ChainNodeAnswer = 2;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameFamilyTree() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().BruteForce()),
-            AnswerGraphText.Of(BuildHarness().BruteForce()));
-
-    [Fact]
-    public void BruteForce_TwoHundredNodeChain_AgreesWithAncestorChainWithSkip()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.AncestorChainWithSkip()),
-            AnswerGraphText.Of(harness.BruteForce()));
-        Assert.Equal(AnswerGraphText.Of(ExpectedMexes()), AnswerGraphText.Of(harness.BruteForce()));
-    }
-
-    [Fact]
-    public void AncestorChainWithSkip_TwoHundredNodeChain_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.BruteForce()),
-            AnswerGraphText.Of(harness.AncestorChainWithSkip()));
-        Assert.Equal(AnswerGraphText.Of(ExpectedMexes()), AnswerGraphText.Of(harness.AncestorChainWithSkip()));
-    }
+    public void BruteForce_TwoHundredNodeChain_ReturnsEachNodesMex() =>
+        Assert.Equal(AnswerGraphText.Of(ExpectedMexes()), AnswerGraphText.Of(BuildHarness().BruteForce()));
 
     // The oracle Setup's own documentation settles: the root answers RootSubtreeAnswer and every
     // chain node after it answers ChainNodeAnswer.

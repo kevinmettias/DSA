@@ -2,12 +2,10 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for DesignRideSharingSystemBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - a queue that skips cancelled riders by rebuilding
-// against one that skips them by lazily discarding popped entries - so a harness whose arms
-// disagree is timing two different problems. Setup builds the whole call script from one fixed
-// seed, so the same RiderCount must rebuild the same script, and that script has to seed every
-// rider and driver id before it matches any of them.
+// Harness coverage for DesignRideSharingSystemBenchmarks (ARCHITECTURE 17.9): the generic arm check
+// compares the arms only with each other, so what stays here is a bound derived from the script
+// rather than from either arm: the script has to seed every rider and driver id before it matches
+// any of them.
 public sealed partial class DesignRideSharingSystemBenchmarksTests
 {
     private const int SmallestRiderCount = 32;
@@ -18,16 +16,6 @@ public sealed partial class DesignRideSharingSystemBenchmarksTests
     private const int CancelledRiderCount = SmallestRiderCount / 10;
 
     [Fact]
-    public void Setup_SameRiderCount_RebuildsTheSameCallScript()
-    {
-        // Every match reports the pair it consumed, and the summed report is bounded below by the
-        // smallest total two sets of that many distinct ids can have - which the match rounds only
-        // reach if the seeding script put every one of those ids in.
-        Assert.InRange(BuildHarness().LinearScanQueue(), MinimumMatchedIdSum(), MaximumMatchedIdSum());
-        Assert.Equal(BuildHarness().LinearScanQueue(), BuildHarness().LinearScanQueue());
-    }
-
-    [Fact]
     public void Apply_SeededRiderAndDriverOperations_RegisterEveryDistinctId()
     {
         // The two seeding passes are what the match rounds draw on, and each is a single-id call
@@ -35,22 +23,6 @@ public sealed partial class DesignRideSharingSystemBenchmarksTests
         // from the seeded ranges, matched at most once each. A seeding pass whose ids collapsed to
         // one value would leave a single pair to match and a sum near zero instead.
         Assert.InRange(BuildHarness().LinearScanQueue(), MinimumMatchedIdSum(), MaximumMatchedIdSum());
-    }
-
-    [Fact]
-    public void LinearScanQueue_CancelledRiderScript_AgreesWithLazyDeletionQueue()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LazyDeletionQueue(), harness.LinearScanQueue());
-    }
-
-    [Fact]
-    public void LazyDeletionQueue_CancelledRiderScript_AgreesWithLinearScanQueue()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LinearScanQueue(), harness.LazyDeletionQueue());
     }
 
     private static DesignRideSharingSystemBenchmarks BuildHarness()

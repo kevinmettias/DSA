@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for InsertDeleteGetRandomO1Benchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot
 // pin: that the script drains the set completely, which follows from Setup's construction rather than from either
-// arm. Each arm replays the same fixed script against an instance it builds inside the call and returns every
+// arm, checked on the baseline because that check already holds the other arm to it. Each arm replays the same fixed script against an instance it builds inside the call and returns every
 // Insert verdict, then every Remove verdict. The script inserts the distinct values 0..Count-1 and then removes a
 // permutation of them, so every insert finds the value absent and every removal finds it present: all 2 * Count
 // verdicts are true and nothing is left behind. A harness that skipped its removals, or removed values it never
@@ -19,10 +19,6 @@ public sealed partial class InsertDeleteGetRandomO1BenchmarksTests
     [Fact]
     public void ListScan_InsertThenRemoveEveryValue_DrainsTheSetCompletely() =>
         AssertDrainsTheSetCompletely(BuildHarness().ListScan());
-
-    [Fact]
-    public void HashMapSwapRemove_InsertThenRemoveEveryValue_DrainsTheSetCompletely() =>
-        AssertDrainsTheSetCompletely(BuildHarness().HashMapSwapRemove());
 
     private static void AssertDrainsTheSetCompletely(bool[] verdicts)
     {

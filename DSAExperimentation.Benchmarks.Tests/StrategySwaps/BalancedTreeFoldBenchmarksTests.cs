@@ -1,45 +1,17 @@
 using DSAExperimentation.Benchmarks.StrategySwaps;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.StrategySwaps;
 
-// Harness coverage for BalancedTreeFoldBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// fold-evaluation strategies for one question on one balanced tree, so a harness whose arms
-// disagree is timing two different problems. SizeAlgebra answers with the node count, so the
-// seeded fixture pins both arms to a decisive value as well as to each other.
+// Harness coverage for BalancedTreeFoldBenchmarks (ARCHITECTURE 17.9): the generic check holds the
+// arms to agreeing with each other, which a shared wrong count would pass. SizeAlgebra answers with
+// the node count, so the fixture pins the baseline to that decisive value.
 public sealed partial class BalancedTreeFoldBenchmarksTests
 {
     private const int SmallestNodeCount = 10_000;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().Recursive()),
-            AnswerGraphText.Of(BuildHarness().Recursive()));
-
-    [Fact]
-    public void Recursive_AgreesWithIterative()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.Recursive(), harness.Iterative());
-    }
-
-    [Fact]
-    public void Iterative_AgreesWithRecursive()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.Iterative(), harness.Recursive());
-    }
-
-    [Fact]
     public void Recursive_SizeAlgebra_CountsEveryNode() =>
         Assert.Equal(SmallestNodeCount, BuildHarness().Recursive());
-
-    [Fact]
-    public void Iterative_SizeAlgebra_CountsEveryNode() =>
-        Assert.Equal(SmallestNodeCount, BuildHarness().Iterative());
 
     private static BalancedTreeFoldBenchmarks BuildHarness()
     {

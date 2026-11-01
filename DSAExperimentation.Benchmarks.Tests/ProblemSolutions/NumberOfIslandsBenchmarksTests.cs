@@ -3,15 +3,13 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for NumberOfIslandsBenchmarks (ARCHITECTURE 17.9): the class carries two arms - this
-// repo's depth-first sink and its breadth-first counterpart - so the pair must agree on the count as
-// well as each matching an independent oracle. Setup's workload comes from
-// NumberOfIslandsWorkloads.BuildGrid, which is seeded and so reproducible: the same GridSize rebuilds
-// the same cells. The expected island count is recomputed here by a breadth-first flood fill over that
-// rebuilt grid. That oracle now shares the new arm's queue-based shape, so on this workload it
-// corroborates rather than independently refutes the breadth-first arm; it stays a separate
-// implementation (a visited bool[][] rather than the arms' claimed set), and the depth-first arm's
-// agreement with it is what keeps the oracle itself honest.
+// Harness coverage for NumberOfIslandsBenchmarks (ARCHITECTURE 17.9): the baseline's count against an
+// independent oracle, which the generic check cannot supply - it holds the depth-first arm to the
+// baseline. Setup's workload comes from NumberOfIslandsWorkloads.BuildGrid, which is seeded and so
+// reproducible, and the expected island count is recomputed here by a breadth-first flood fill over
+// that rebuilt grid. That oracle shares the baseline's queue-based shape, so on this workload it
+// corroborates rather than independently refutes it; it stays a separate implementation (a visited
+// bool[][] rather than the arms' claimed set).
 public sealed partial class NumberOfIslandsBenchmarksTests
 {
     private const int SmallestGridSize = 50;
@@ -22,30 +20,11 @@ public sealed partial class NumberOfIslandsBenchmarksTests
     private const char Land = '1';
 
     [Fact]
-    public void Setup_SameGridSize_RebuildsTheSameWorkload() =>
-        Assert.Equal(BuildHarness().DepthFirstSink(), BuildHarness().DepthFirstSink());
-
-    [Fact]
-    public void DepthFirstSink_SeededHalfLandGrid_CountsTheIndependentFloodFillTally() =>
-        Assert.Equal(
-            ExpectedIslandCount(
-                NumberOfIslandsWorkloads.BuildGrid(SmallestGridSize, SmallestGridSize, WorkloadSeed)),
-            BuildHarness().DepthFirstSink());
-
-    [Fact]
     public void BreadthFirstSink_SeededHalfLandGrid_CountsTheIndependentFloodFillTally() =>
         Assert.Equal(
             ExpectedIslandCount(
                 NumberOfIslandsWorkloads.BuildGrid(SmallestGridSize, SmallestGridSize, WorkloadSeed)),
             BuildHarness().BreadthFirstSink());
-
-    [Fact]
-    public void BreadthFirstSink_AgreesWithDepthFirstSink()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DepthFirstSink(), harness.BreadthFirstSink());
-    }
 
     // Breadth-first flood fill: every still-unvisited land cell starts exactly one island, and the
     // queue carries only that island's own cells out to their four neighbours. So the number of starts

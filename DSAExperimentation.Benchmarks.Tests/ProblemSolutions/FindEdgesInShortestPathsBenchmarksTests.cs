@@ -1,15 +1,12 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FindEdgesInShortestPathsBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - a plain BCL Dijkstra from each end against this
-// repo's own ShortestPath.Dijkstra over EdgeGraphTopology - so a harness whose arms disagree is
-// reporting two different sets of shortest-path edges under one benchmark. Both answers are one
-// verdict per edge in the input's own edge order, so they are compared as ordered sequences.
-// Setup's workload guarantees reachability (every node i > 0 gets a back edge to an earlier node),
-// so nodes 0 and NodeCount - 1 are connected and at least one edge lies on a shortest path.
+// Harness coverage for FindEdgesInShortestPathsBenchmarks (ARCHITECTURE 17.9): the generic arms check
+// only compares the arms with each other, and arms that all answer false for every edge would agree
+// too, so this holds the baseline to what Setup's workload guarantees. It answers one verdict per
+// edge. Setup's workload guarantees reachability (every node i > 0 gets a back edge to an earlier
+// node), so nodes 0 and NodeCount - 1 are connected and at least one edge lies on a shortest path.
 public sealed partial class FindEdgesInShortestPathsBenchmarksTests
 {
     // The smaller of Setup's [Params(50, 500)] node counts, so the harness drives the real
@@ -17,32 +14,8 @@ public sealed partial class FindEdgesInShortestPathsBenchmarksTests
     private const int SmallestNodeCount = 50;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameEdgeVerdicts() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().BruteForceDijkstra()),
-            AnswerGraphText.Of(BuildHarness().BruteForceDijkstra()));
-
-    [Fact]
-    public void BruteForceDijkstra_ConnectedWeightedGraph_AgreesWithShortestPathDijkstra()
-    {
-        var harness = BuildHarness();
-
-        Assert.Contains(true, harness.BruteForceDijkstra());
-        Assert.Equal(
-            AnswerGraphText.Of(harness.ShortestPathDijkstra()),
-            AnswerGraphText.Of(harness.BruteForceDijkstra()));
-    }
-
-    [Fact]
-    public void ShortestPathDijkstra_ConnectedWeightedGraph_AgreesWithBruteForceDijkstra()
-    {
-        var harness = BuildHarness();
-
-        Assert.Contains(true, harness.ShortestPathDijkstra());
-        Assert.Equal(
-            AnswerGraphText.Of(harness.BruteForceDijkstra()),
-            AnswerGraphText.Of(harness.ShortestPathDijkstra()));
-    }
+    public void BruteForceDijkstra_ConnectedWeightedGraph_PutsSomeEdgeOnAShortestPath() =>
+        Assert.Contains(true, BuildHarness().BruteForceDijkstra());
 
     private static FindEdgesInShortestPathsBenchmarks BuildHarness()
     {

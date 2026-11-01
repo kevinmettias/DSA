@@ -1,15 +1,12 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CycleLengthQueriesInATreeBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - a per-query ancestor dictionary against the
-// parent-index two-pointer walk - so a harness whose arms disagree is timing two different problems.
+// Harness coverage for CycleLengthQueriesInATreeBenchmarks (ARCHITECTURE 17.9): the generic arm check
+// compares the arms only with each other, so what stays here is the workload's documented shape.
 // Setup fixes the id range to a complete binary tree of a fixed depth and draws one pair of distinct
 // ids per query, so the reading's documented shape is one length per query, each at least the closing
-// edge plus a single path edge and at most the two full root paths of a deepest-leaf pair. The same
-// QueriesCount must rebuild the same pairs and with them the same lengths.
+// edge plus a single path edge and at most the two full root paths of a deepest-leaf pair.
 public sealed partial class CycleLengthQueriesInATreeBenchmarksTests
 {
     private const int SmallestQueriesCount = 1_000;
@@ -24,35 +21,12 @@ public sealed partial class CycleLengthQueriesInATreeBenchmarksTests
     private const int MaximumCycleLength = (2 * TreeLevels) - 1;
 
     [Fact]
-    public void Setup_SameQueriesCount_RebuildsTheSameWorkload()
+    public void AncestorDictionaryWalk_OneThousandSeededQueries_AnswersOneBoundedLengthPerQuery()
     {
         var lengths = BuildHarness().AncestorDictionaryWalk();
 
         Assert.Equal(SmallestQueriesCount, lengths.Length);
         Assert.All(lengths, length => Assert.InRange(length, MinimumCycleLength, MaximumCycleLength));
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().AncestorDictionaryWalk()),
-            AnswerGraphText.Of(BuildHarness().AncestorDictionaryWalk()));
-    }
-
-    [Fact]
-    public void AncestorDictionaryWalk_OneThousandSeededQueries_AgreesWithParentIndexTwoPointerWalk()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.ParentIndexTwoPointerWalk()),
-            AnswerGraphText.Of(harness.AncestorDictionaryWalk()));
-    }
-
-    [Fact]
-    public void ParentIndexTwoPointerWalk_OneThousandSeededQueries_AgreesWithAncestorDictionaryWalk()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.AncestorDictionaryWalk()),
-            AnswerGraphText.Of(harness.ParentIndexTwoPointerWalk()));
     }
 
     private static CycleLengthQueriesInATreeBenchmarks BuildHarness()

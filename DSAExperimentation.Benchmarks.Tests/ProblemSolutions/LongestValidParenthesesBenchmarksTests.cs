@@ -2,12 +2,10 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for LongestValidParenthesesBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - the DP table recording the length ending at each
-// position against the index-stack scan that matches each ')' to its '(' - so a harness whose arms
-// disagree is timing two different problems. The workload is "(()())" repeated, a closed form over
-// Length with no draw from any stream, so the same Length rebuilds the same string and the answer
-// can be pinned rather than only compared.
+// Harness coverage for LongestValidParenthesesBenchmarks (ARCHITECTURE 17.9): the workload is
+// "(()())" repeated, a closed form over Length with no draw from any stream, so the answer can be
+// pinned independently of the arms - an expected value the generic agreement check, which only
+// compares arms with each other, cannot supply.
 public sealed partial class LongestValidParenthesesBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -19,29 +17,8 @@ public sealed partial class LongestValidParenthesesBenchmarksTests
     private const int ExpectedLongestValidLength = 198;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload()
-    {
-        Assert.Equal(BuildHarness().DynamicProgrammingArray(), BuildHarness().DynamicProgrammingArray());
-        Assert.Equal(BuildHarness().StackScan(), BuildHarness().StackScan());
-    }
-
-    [Fact]
-    public void DynamicProgrammingArray_RepeatedBalancedPattern_AgreesWithStackScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedLongestValidLength, harness.DynamicProgrammingArray());
-        Assert.Equal(harness.StackScan(), harness.DynamicProgrammingArray());
-    }
-
-    [Fact]
-    public void StackScan_RepeatedBalancedPattern_AgreesWithDynamicProgrammingArray()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedLongestValidLength, harness.StackScan());
-        Assert.Equal(harness.DynamicProgrammingArray(), harness.StackScan());
-    }
+    public void DynamicProgrammingArray_RepeatedBalancedPattern_SpansTheWholeCopies() =>
+        Assert.Equal(ExpectedLongestValidLength, BuildHarness().DynamicProgrammingArray());
 
     private static LongestValidParenthesesBenchmarks BuildHarness()
     {

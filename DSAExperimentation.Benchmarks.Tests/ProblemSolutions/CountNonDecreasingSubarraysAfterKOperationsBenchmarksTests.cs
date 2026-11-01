@@ -1,13 +1,11 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for CountNonDecreasingSubarraysAfterKOperationsBenchmarks (ARCHITECTURE 17.9):
-// its two arms are competing strategies for the same question - a backward rescan from every right
-// endpoint against the monotonic sliding window - so a harness whose arms disagree is timing two
-// different problems. Setup draws nums from a fixed seed through NonDecreasingSubarrayWorkloads, so
-// the same Size must rebuild the same array.
+// BenchmarkArmsTests already holds the arms to agreeing on a rebuilt workload, so this asserts only
+// the shape of the array Setup draws through NonDecreasingSubarrayWorkloads, which no arm's answer
+// reveals.
 public sealed partial class CountNonDecreasingSubarraysAfterKOperationsBenchmarksTests
 {
     private const int SmallestSize = 200;
@@ -19,7 +17,7 @@ public sealed partial class CountNonDecreasingSubarraysAfterKOperationsBenchmark
     private const int MaxValue = 999;
 
     [Fact]
-    public void Setup_SmallestSize_RebuildsTheSameWorkload()
+    public void Setup_SmallestSize_DrawsASizeLongArrayOfBoundedValues()
     {
         var nums = NonDecreasingSubarrayWorkloads.BuildNums(SmallestSize, Seed);
 
@@ -27,30 +25,5 @@ public sealed partial class CountNonDecreasingSubarraysAfterKOperationsBenchmark
         // subarrays land on both sides of the budget, instead of every one of them blowing it.
         Assert.Equal(SmallestSize, nums.Length);
         Assert.All(nums, value => Assert.InRange(value, 1, MaxValue));
-        Assert.Equal(BuildHarness().PrefixMaxBruteForce(), BuildHarness().PrefixMaxBruteForce());
-    }
-
-    [Fact]
-    public void PrefixMaxBruteForce_SmallestSize_AgreesWithMonotonicDequeWindow()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MonotonicDequeWindow(), harness.PrefixMaxBruteForce());
-    }
-
-    [Fact]
-    public void MonotonicDequeWindow_SmallestSize_AgreesWithPrefixMaxBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.PrefixMaxBruteForce(), harness.MonotonicDequeWindow());
-    }
-
-    private static CountNonDecreasingSubarraysAfterKOperationsBenchmarks BuildHarness()
-    {
-        var harness = new CountNonDecreasingSubarraysAfterKOperationsBenchmarks { Size = SmallestSize };
-        harness.Setup();
-
-        return harness;
     }
 }

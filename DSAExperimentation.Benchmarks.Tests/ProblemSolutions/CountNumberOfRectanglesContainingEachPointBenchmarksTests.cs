@@ -3,11 +3,13 @@ using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountNumberOfRectanglesContainingEachPointBenchmarks (ARCHITECTURE 17.9): its
-// two arms are competing strategies for the same question - checking every point against every
-// rectangle against grouping lengths by height and bisecting - so a harness whose arms disagree is
-// timing two different problems. Setup seeds both arrays, so the same RectangleCount must rebuild
-// the same rectangles and points. AnswerGraphText.Of, not OfUnordered: the answer is one count per
+// Harness coverage for CountNumberOfRectanglesContainingEachPointBenchmarks (ARCHITECTURE 17.9):
+// BenchmarkArmsTests already holds the arms to agreeing on a fresh harness, so this asserts what it
+// cannot: the answer's length and per-point bound, which come from the workload's shape rather than
+// from either arm, and that a harness which has already answered once answers as a rebuild does,
+// since BenchmarkDotNet calls an arm many times on one harness while the generic check builds a
+// fresh harness for every call. Setup seeds both arrays, so the same RectangleCount must rebuild the
+// same rectangles and points. AnswerGraphText.Of, not OfUnordered: the answer is one count per
 // point, so the position of each count in the array is part of it.
 public sealed partial class CountNumberOfRectanglesContainingEachPointBenchmarksTests
 {
@@ -24,26 +26,6 @@ public sealed partial class CountNumberOfRectanglesContainingEachPointBenchmarks
         Assert.Equal(SmallestRectangleCount, first.BruteForce().Length);
         Assert.All(first.BruteForce(), count => Assert.InRange(count, 0, SmallestRectangleCount));
         Assert.Equal(AnswerGraphText.Of(first.BruteForce()), AnswerGraphText.Of(second.BruteForce()));
-    }
-
-    [Fact]
-    public void BruteForce_SmallestRectangleCount_AgreesWithGroupedSortedBinarySearch()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.GroupedSortedBinarySearch()),
-            AnswerGraphText.Of(harness.BruteForce()));
-    }
-
-    [Fact]
-    public void GroupedSortedBinarySearch_SmallestRectangleCount_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.BruteForce()),
-            AnswerGraphText.Of(harness.GroupedSortedBinarySearch()));
     }
 
     private static CountNumberOfRectanglesContainingEachPointBenchmarks BuildHarness()

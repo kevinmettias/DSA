@@ -1,43 +1,18 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for AmbiguousCoordinatesBenchmarks (ARCHITECTURE 17.9): its two arms are
-// AmbiguousCoordinatesSolution's competing strategies for the same question - rebuild every dotted candidate and
-// re-scan the finished string against slicing the split point directly - so a harness whose arms disagree is
-// reporting two different coordinate sets. Both enumerate the same split points, whole forms before dotted ones,
-// and the solution documents that each offered form is already in the scan's own order, so the outer order is
-// pinned by construction and the harness compares positionally. Setup builds the parenthesized digit run from one
-// seed, so the same Length must rebuild the same run.
+// Harness coverage for AmbiguousCoordinatesBenchmarks (ARCHITECTURE 17.9): the generic check holds the arms to
+// each other on Setup's seeded parenthesized digit run, and this asserts the run yields at least one coordinate -
+// an empty answer would make that agreement vacuous.
 public sealed partial class AmbiguousCoordinatesBenchmarksTests
 {
     // The smaller of Setup's [Params(8, 10)] digit-run lengths.
     private const int SmallestLength = 8;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().RebuildAndRescan()),
-            AnswerGraphText.Of(BuildHarness().RebuildAndRescan()));
-
-    [Fact]
-    public void RebuildAndRescan_EightDigitRun_AgreesWithSliceAndCheckBoundary()
-    {
-        var harness = BuildHarness();
-
-        Assert.NotEmpty(harness.RebuildAndRescan());
-        Assert.Equal(AnswerGraphText.Of(harness.SliceAndCheckBoundary()), AnswerGraphText.Of(harness.RebuildAndRescan()));
-    }
-
-    [Fact]
-    public void SliceAndCheckBoundary_EightDigitRun_AgreesWithRebuildAndRescan()
-    {
-        var harness = BuildHarness();
-
-        Assert.NotEmpty(harness.SliceAndCheckBoundary());
-        Assert.Equal(AnswerGraphText.Of(harness.RebuildAndRescan()), AnswerGraphText.Of(harness.SliceAndCheckBoundary()));
-    }
+    public void RebuildAndRescan_EightDigitRun_OffersAtLeastOneCoordinate() =>
+        Assert.NotEmpty(BuildHarness().RebuildAndRescan());
 
     private static AmbiguousCoordinatesBenchmarks BuildHarness()
     {

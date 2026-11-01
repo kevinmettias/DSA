@@ -2,11 +2,10 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for DecodeWaysIIBenchmarks (ARCHITECTURE 17.9): its two arms are competing strategies
-// for the same question - a bottom-up table against the same recurrence memoized from the top - so a
-// harness whose arms disagree is timing two different problems. Setup repeats the wildcard pair "2*"
-// Length/2 times, which decodes to the fixed count below, so the reading is a decisive value rather
-// than an arbitrary one, and the same Length must rebuild the same script and with it the same count.
+// Harness coverage for DecodeWaysIIBenchmarks (ARCHITECTURE 17.9): the generic arm check compares the
+// arms only with each other, so what stays here is a count derived without either arm. Setup repeats
+// the wildcard pair "2*" Length/2 times, which decodes to the fixed count below, so the reading is a
+// decisive value rather than an arbitrary one.
 public sealed partial class DecodeWaysIIBenchmarksTests
 {
     private const int SmallestLength = 20;
@@ -20,27 +19,8 @@ public sealed partial class DecodeWaysIIBenchmarksTests
     private const long ExpectedDecodingCount = UnreducedDecodingCount % RequiredModulus;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload()
-    {
+    public void Tabulation_TenWildcardPairs_CountsTheReducedDecodings() =>
         Assert.Equal(ExpectedDecodingCount, BuildHarness().Tabulation());
-        Assert.Equal(BuildHarness().Tabulation(), BuildHarness().Tabulation());
-    }
-
-    [Fact]
-    public void Tabulation_TenWildcardPairs_AgreesWithMemoized()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.Memoized(), harness.Tabulation());
-    }
-
-    [Fact]
-    public void Memoized_TenWildcardPairs_AgreesWithTabulation()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.Tabulation(), harness.Memoized());
-    }
 
     private static DecodeWaysIIBenchmarks BuildHarness()
     {

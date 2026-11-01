@@ -2,12 +2,10 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for DecodeStringBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - a recursive-descent walk against a single stack scan - so a
-// harness whose arms disagree is timing two different problems. Setup builds the encoding from
-// DecodeStringWorkloads' fixed five-character tile, which decodes to four characters, so the decoded
-// answer's documented shape is four characters per tile the encoding held; the same Length must rebuild
-// the same encoding and with it the same decoded string.
+// Harness coverage for DecodeStringBenchmarks (ARCHITECTURE 17.9): the generic arm check compares the
+// arms only with each other, so what stays here is the workload's documented shape. Setup builds the
+// encoding from DecodeStringWorkloads' fixed five-character tile, which decodes to four characters, so
+// the decoded answer's documented shape is four characters per tile the encoding held.
 public sealed partial class DecodeStringBenchmarksTests
 {
     private const int SmallestLength = 10;
@@ -19,27 +17,8 @@ public sealed partial class DecodeStringBenchmarksTests
     private const int ExpectedDecodedLength = (SmallestLength / EncodedTileLength) * DecodedTileLength;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload()
-    {
+    public void StackScan_TenCharacterEncoding_DecodesFourCharactersPerTile() =>
         Assert.Equal(ExpectedDecodedLength, BuildHarness().StackScan().Length);
-        Assert.Equal(BuildHarness().StackScan(), BuildHarness().StackScan());
-    }
-
-    [Fact]
-    public void RecursiveDescent_TenCharacterEncoding_AgreesWithStackScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.StackScan(), harness.RecursiveDescent());
-    }
-
-    [Fact]
-    public void StackScan_TenCharacterEncoding_AgreesWithRecursiveDescent()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.RecursiveDescent(), harness.StackScan());
-    }
 
     private static DecodeStringBenchmarks BuildHarness()
     {

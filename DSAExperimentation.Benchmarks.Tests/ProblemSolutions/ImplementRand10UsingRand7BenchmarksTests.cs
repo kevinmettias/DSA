@@ -23,13 +23,6 @@ public sealed partial class ImplementRand10UsingRand7BenchmarksTests
     private const int MostDrawsOfAValue = 150;
 
     [Fact]
-    public void Setup_SameCalls_RebuildsTheSameDrawStream()
-    {
-        Assert.Equal(BuildHarness().RejectionSampling(), BuildHarness().RejectionSampling());
-        Assert.Equal(BuildHarness().RecycledRejectionSampling(), BuildHarness().RecycledRejectionSampling());
-    }
-
-    [Fact]
     public void RejectionSampling_SeededStream_SpreadsEvenlyOverOneToTen() =>
         AssertSpreadEvenlyOverOneToTen(BuildHarness().RejectionSampling());
 

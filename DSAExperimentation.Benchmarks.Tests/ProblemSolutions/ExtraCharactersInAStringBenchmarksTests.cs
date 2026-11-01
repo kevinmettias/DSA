@@ -2,13 +2,11 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ExtraCharactersInAStringBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - a full-length substring sweep against a trie walk
-// that stops at the first dead prefix - so a harness whose arms disagree is minimising two
-// different texts. Setup builds the text from 'k'..'o' while every dictionary word is built from
-// 'a'..'j', so no word can cover a single character; that is what forces both arms through their
-// full per-start scan instead of an early exact match, and it makes the answer decisive: every
-// character of the text is an extra character. The same Length must rebuild the same text.
+// Harness coverage for ExtraCharactersInAStringBenchmarks (ARCHITECTURE 17.9): an expected count
+// known from the workload's shape. Setup builds the text from 'k'..'o' while every dictionary word is
+// built from 'a'..'j', so no word can cover a single character; that is what forces both arms through
+// their full per-start scan instead of an early exact match, and it makes the answer decisive: every
+// character of the text is an extra character.
 public sealed partial class ExtraCharactersInAStringBenchmarksTests
 {
     private const int SmallestLength = 10;
@@ -18,28 +16,8 @@ public sealed partial class ExtraCharactersInAStringBenchmarksTests
     private const int ExpectedExtraCharacterCount = SmallestLength;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameText()
-    {
+    public void HashSetFullScan_UndictionaryableText_CountsEveryCharacterAsExtra() =>
         Assert.Equal(ExpectedExtraCharacterCount, BuildHarness().HashSetFullScan());
-
-        Assert.Equal(BuildHarness().HashSetFullScan(), BuildHarness().HashSetFullScan());
-    }
-
-    [Fact]
-    public void HashSetFullScan_UndictionaryableText_AgreesWithTriePrunedScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.TriePrunedScan(), harness.HashSetFullScan());
-    }
-
-    [Fact]
-    public void TriePrunedScan_UndictionaryableText_AgreesWithHashSetFullScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.HashSetFullScan(), harness.TriePrunedScan());
-    }
 
     private static ExtraCharactersInAStringBenchmarks BuildHarness()
     {

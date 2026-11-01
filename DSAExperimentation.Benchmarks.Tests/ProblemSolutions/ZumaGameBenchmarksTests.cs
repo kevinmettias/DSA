@@ -1,40 +1,20 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ZumaGameBenchmarks (ARCHITECTURE 17.9): both arms are competing search orders
-// over one (board, hand) state space, so a harness whose arms disagree is timing two different
-// problems. The board repeats a unit with no run long enough to collapse on its own, and the
-// baseline is asserted against the decisive minimum at the smaller size, the 3 balls the class
-// comment names for 3 repeats - an escape hatch that reported "no solution" would otherwise agree
-// with a correct arm only by accident.
+// Harness coverage for ZumaGameBenchmarks (ARCHITECTURE 17.9): the generic check holds the arms to
+// agreeing with each other. The board repeats a unit with no run long enough to collapse on its own,
+// and the baseline is asserted against the decisive minimum at the smaller size, the 3 balls the
+// class comment names for 3 repeats - an escape hatch that reported "no solution" would otherwise
+// agree with a correct arm only by accident.
 public sealed partial class ZumaGameBenchmarksTests
 {
     private const int SmallestBoardRepeats = 3;
     private const int ExpectedMinimumSteps = 3;
 
     [Fact]
-    public void Setup_SameBoardRepeats_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().BruteForceDfs()),
-            AnswerGraphText.Of(BuildHarness().BruteForceDfs()));
-
-    [Fact]
-    public void BruteForceDfs_AgreesWithQueueBfsDedup()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceDfs(), harness.QueueBfsDedup());
-    }
-
-    [Fact]
     public void BruteForceDfs_OddBoardRepeats_NeedsTheDocumentedMinimumSteps() =>
         Assert.Equal(ExpectedMinimumSteps, BuildHarness().BruteForceDfs());
-
-    [Fact]
-    public void QueueBfsDedup_OddBoardRepeats_NeedsTheDocumentedMinimumSteps() =>
-        Assert.Equal(ExpectedMinimumSteps, BuildHarness().QueueBfsDedup());
 
     private static ZumaGameBenchmarks BuildHarness()
     {

@@ -4,8 +4,9 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for IncreasingOrderSearchTreeBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot
-// pin: the relinked chain itself, derived independently from the fixture rather than from either arm. Each arm
-// returns the relinked chain's root. [GlobalSetup] shuffles the values 1..NodeCount with a fixed seed, so an
+// pin: the relinked chain itself, derived independently from the fixture rather than from either arm, and checked
+// on the baseline because that check already holds the other arm to the baseline's chain. Each arm returns the
+// relinked chain's root. [GlobalSetup] shuffles the values 1..NodeCount with a fixed seed, so an
 // in-order relink must produce exactly 1..NodeCount ascending with no left child, rooted at the lowest shuffled
 // value - LC 897 makes the smallest value the root.
 public sealed partial class IncreasingOrderSearchTreeBenchmarksTests
@@ -18,10 +19,6 @@ public sealed partial class IncreasingOrderSearchTreeBenchmarksTests
     [Fact]
     public void RecursiveRelink_ShuffledValues_RelinksEveryValueIntoOneAscendingChain() =>
         Assert.Equal(AscendingValues(SmallestNodeCount), ChainValues(BuildHarness().RecursiveRelink()));
-
-    [Fact]
-    public void InOrderTraversalHooks_ShuffledValues_RelinksEveryValueIntoOneAscendingChain() =>
-        Assert.Equal(AscendingValues(SmallestNodeCount), ChainValues(BuildHarness().InOrderTraversalHooks()));
 
     private static IncreasingOrderSearchTreeBenchmarks BuildHarness()
     {

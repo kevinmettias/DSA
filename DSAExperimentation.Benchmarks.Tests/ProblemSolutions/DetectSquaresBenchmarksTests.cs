@@ -18,12 +18,6 @@ public sealed partial class DetectSquaresBenchmarksTests
             ExpectedCornerTally(SmallestGridDimension),
             BuildHarness().ListBased(SmallestGridDimension).Sum(count => (long)count));
 
-    [Fact]
-    public void HashMapGroupedByX_FullLatticeQueries_FindsEverySquareOncePerCorner() =>
-        Assert.Equal(
-            ExpectedCornerTally(SmallestGridDimension),
-            BuildHarness().HashMapGroupedByX(SmallestGridDimension).Sum(count => (long)count));
-
     private static DetectSquaresBenchmarks BuildHarness()
     {
         var harness = new DetectSquaresBenchmarks();

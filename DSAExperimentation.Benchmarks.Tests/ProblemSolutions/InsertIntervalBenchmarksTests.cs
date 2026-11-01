@@ -7,7 +7,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // the new interval is [Length, 2 * Length], so at Length = 200 the new interval [200, 400] swallows the chain of
 // intervals 67..133 - whose starts 201..399 all fall inside it, the last ending at 400 - and nothing else, since
 // interval 66 ends at 199 and interval 134 starts at 402. That leaves the 67 intervals before the chain, the one
-// merged block [200, 400], and the 66 after it: 134 in all. Each arm returns the merged intervals.
+// merged block [200, 400], and the 66 after it: 134 in all. Each arm returns the merged intervals; the baseline's
+// are checked here, since BenchmarkArmsTests already holds the other arm to the baseline's answer.
 public sealed partial class InsertIntervalBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -29,15 +30,6 @@ public sealed partial class InsertIntervalBenchmarksTests
     public void ListInsertAndMerge_NewIntervalSwallowsAChain_MergesItIntoOneBlock()
     {
         var merged = BuildHarness().ListInsertAndMerge();
-
-        Assert.Equal(ExpectedMergedIntervalCount, merged.Count);
-        Assert.Equal(ExpectedIntervals(), merged);
-    }
-
-    [Fact]
-    public void IntervalSetAdd_NewIntervalSwallowsAChain_MergesItIntoOneBlock()
-    {
-        var merged = BuildHarness().IntervalSetAdd();
 
         Assert.Equal(ExpectedMergedIntervalCount, merged.Count);
         Assert.Equal(ExpectedIntervals(), merged);

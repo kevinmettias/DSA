@@ -4,15 +4,12 @@ using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SwappingNodesInALinkedListBenchmarks (ARCHITECTURE 17.9): both arms are
-// SwappingNodesInALinkedListSolution's - the array materialization against the fast/slow two-pointer
-// walk - so a harness whose arms disagree is timing two different questions.
-//
-// The node at 1-based position p holds p mod 101 and [GlobalSetup] fixes which position k picks, and
-// at the smallest Length the two swapped positions hold different values, so the swapped run is
-// decisive rather than merely agreed: LC 1721 exchanges the kth value from the front with the kth
-// from the end, which the oracle below restates from the run and the position alone. Each arm builds its own list
-// from the hoisted values, so one harness is safe to call twice in either order.
+// Harness coverage for SwappingNodesInALinkedListBenchmarks (ARCHITECTURE 17.9): the node at 1-based
+// position p holds p mod 101 and [GlobalSetup] fixes which position k picks, and at the smallest
+// Length the two swapped positions hold different values, so the swapped run is decisive rather than
+// merely agreed: LC 1721 exchanges the kth value from the front with the kth from the end, which the
+// oracle below restates from the run and the position alone. The baseline is held to it; the generic
+// arm check holds the two-pointer arm to the baseline's answer.
 public sealed partial class SwappingNodesInALinkedListBenchmarksTests
 {
     // Mirrors SwappingNodesInALinkedListBenchmarks' own private TargetIndexDivisor.
@@ -24,36 +21,10 @@ public sealed partial class SwappingNodesInALinkedListBenchmarksTests
     private const int KthPosition = SmallestLength / TargetIndexDivisor;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
+    public void ArrayMaterializeSwap_RunWithOnePositionPair_FollowsTheSwapRule() =>
         Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayMaterializeSwap())),
+            AnswerGraphText.Of(ExpectedSwappedValues()),
             AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayMaterializeSwap())));
-
-    [Fact]
-    public void ArrayMaterializeSwap_RunWithOnePositionPair_AgreesWithTheOtherArmAndTheSwapRule()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(harness.LinkedListTwoPointerSwap())),
-            AnswerGraphText.Of(ValuesOf(harness.ArrayMaterializeSwap())));
-        Assert.Equal(
-            AnswerGraphText.Of(ExpectedSwappedValues()),
-            AnswerGraphText.Of(ValuesOf(harness.ArrayMaterializeSwap())));
-    }
-
-    [Fact]
-    public void LinkedListTwoPointerSwap_RunWithOnePositionPair_AgreesWithTheOtherArmAndTheSwapRule()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(harness.ArrayMaterializeSwap())),
-            AnswerGraphText.Of(ValuesOf(harness.LinkedListTwoPointerSwap())));
-        Assert.Equal(
-            AnswerGraphText.Of(ExpectedSwappedValues()),
-            AnswerGraphText.Of(ValuesOf(harness.LinkedListTwoPointerSwap())));
-    }
 
     private static SwappingNodesInALinkedListBenchmarks BuildHarness()
     {

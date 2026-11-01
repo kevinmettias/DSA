@@ -3,8 +3,8 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for LongestUploadedPrefixBenchmarks (ARCHITECTURE 17.9). Arm agreement is
-// BenchmarkArmsTests' job; this pins every answer the replay reports, from the workload's
-// construction alone.
+// BenchmarkArmsTests' job; this pins every answer the baseline's replay reports, from the
+// workload's construction alone.
 //
 // Setup shuffles 1..VideoCount from a fixed seed, so the order can be restated here, and the answer
 // after each upload is the longest run 1..k already uploaded - read off by keeping the highest
@@ -18,10 +18,6 @@ public sealed partial class LongestUploadedPrefixBenchmarksTests
     [Fact]
     public void RescanArray_ShuffledUploads_ReportsTheLongestPrefixAfterEveryUpload() =>
         Assert.Equal(ExpectedLongest(), BuildHarness().RescanArray());
-
-    [Fact]
-    public void SetFrontierAdvance_ShuffledUploads_ReportsTheLongestPrefixAfterEveryUpload() =>
-        Assert.Equal(ExpectedLongest(), BuildHarness().SetFrontierAdvance());
 
     [Fact]
     public void Setup_ShuffledUploads_EndsWithEveryVideoInThePrefix() =>

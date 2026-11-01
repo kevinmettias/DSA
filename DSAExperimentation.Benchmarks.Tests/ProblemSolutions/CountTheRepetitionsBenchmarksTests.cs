@@ -2,11 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountTheRepetitionsBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - the full O(N1 * |S1|) walk against the pigeonhole cycle
-// shortcut - so a harness whose arms disagree is timing two different problems, not two ways of
-// answering one. Setup rebuilds the same s1 on every call, so two published numbers over the same
-// parameters were comparable in the first place.
+// Harness coverage for CountTheRepetitionsBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests already
+// holds the arms to agreeing on a rebuilt workload, so this asserts only a range that comes from the
+// workload's shape rather than from either arm.
 //
 // s1 is private, but the reading depends on its size in a way the answer itself reports: s1 is the
 // 2-character block "ab" repeated 25 times, so [s1, N1] holds SmallestN1 * 50 characters and can
@@ -31,27 +29,8 @@ public sealed partial class CountTheRepetitionsBenchmarksTests
     private const int FewestRepetitions = 1;
 
     [Fact]
-    public void Setup_SameN1_RebuildsTheSameS1()
-    {
+    public void NaiveFullSimulation_AlternatingBlock_StaysWithinTheRepetitionBound() =>
         Assert.InRange(BuildHarness().NaiveFullSimulation(), FewestRepetitions, MaxRepetitions);
-        Assert.Equal(BuildHarness().NaiveFullSimulation(), BuildHarness().NaiveFullSimulation());
-    }
-
-    [Fact]
-    public void NaiveFullSimulation_AlternatingBlockAndNoN2Repetition_AgreesWithHashMapCycleDetection()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.HashMapCycleDetection(), harness.NaiveFullSimulation());
-    }
-
-    [Fact]
-    public void HashMapCycleDetection_AlternatingBlockAndNoN2Repetition_AgreesWithNaiveFullSimulation()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.NaiveFullSimulation(), harness.HashMapCycleDetection());
-    }
 
     private static CountTheRepetitionsBenchmarks BuildHarness()
     {

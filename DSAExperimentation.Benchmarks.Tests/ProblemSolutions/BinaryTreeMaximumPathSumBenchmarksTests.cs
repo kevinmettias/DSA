@@ -8,8 +8,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // from the workload's documented construction instead - a gapless level-order array of values drawn
 // from seeded Random(124) across [-1000, 1000], turned into its complete tree. The expected sum is
 // derived here from that rebuilt array by an index-based pass that never builds a tree at all, so it
-// is not a restatement of the arm. The same NodeCount must always rebuild the same tree, and so the
-// same sum.
+// is not a restatement of the arm.
 public sealed partial class BinaryTreeMaximumPathSumBenchmarksTests
 {
     private const int SmallestNodeCount = 300;
@@ -19,10 +18,6 @@ public sealed partial class BinaryTreeMaximumPathSumBenchmarksTests
 
     // In a gapless level order, node i's children sit at ChildrenPerNode * i + 1 and the slot after it.
     private const int ChildrenPerNode = 2;
-
-    [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(BuildHarness().GainRecursion(), BuildHarness().GainRecursion());
 
     [Fact]
     public void GainRecursion_SeededCompleteTree_ReturnsTheIndependentlyComputedSum() =>

@@ -19,10 +19,6 @@ public sealed partial class DesignANumberContainerSystemBenchmarksTests
     public void LinearScan_TwoHundredSeededIndices_ReportsOnlyIndicesTheScriptAssigned() =>
         AssertReportsOnlyAssignedIndices(BuildHarness().LinearScan());
 
-    [Fact]
-    public void LazyDeletionHeap_TwoHundredSeededIndices_ReportsOnlyIndicesTheScriptAssigned() =>
-        AssertReportsOnlyAssignedIndices(BuildHarness().LazyDeletionHeap());
-
     private static void AssertReportsOnlyAssignedIndices(int[] found) =>
         Assert.All(found, index => Assert.True(index == NotFound || index is >= 1 and <= SmallestCount));
 

@@ -11,17 +11,12 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // then Length baskets. The expected count is therefore re-derived here from that rule applied to a
 // fixture rebuilt from that sequence, with the oracle walking a shrinking list of the remaining
 // capacities in index order rather than the arm's bool[] used scan, so the test states the rule
-// rather than replaying the arm. Setup is a pure function of Length off that seed, so the same
-// Length must rebuild the same two arrays.
+// rather than replaying the arm.
 public sealed partial class FruitsIntoBasketsIIBenchmarksTests
 {
     private const int SmallestLength = 20;
     private const int Seed = 3477;
     private const int MaxCapacityExclusive = 1_000;
-
-    [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(BuildHarness().BruteForce(), BuildHarness().BruteForce());
 
     [Fact]
     public void BruteForce_SeededFruitsAndBaskets_LeavesTheCountThePlacementRulePredicts()

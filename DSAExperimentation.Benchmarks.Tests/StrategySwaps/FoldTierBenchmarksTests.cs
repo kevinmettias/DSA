@@ -13,14 +13,6 @@ public sealed partial class FoldTierBenchmarksTests
     public void TreeTier_BalancedTree_AnswersTheNodeCount() =>
         Assert.Equal(SmallestNodeCount, BuildHarness().TreeTier());
 
-    [Fact]
-    public void DagTier_BalancedTree_AnswersTheNodeCount() =>
-        Assert.Equal(SmallestNodeCount, BuildHarness().DagTier());
-
-    [Fact]
-    public void GraphTier_BalancedTree_AnswersTheNodeCount() =>
-        Assert.Equal(SmallestNodeCount, BuildHarness().GraphTier());
-
     private static FoldTierBenchmarks BuildHarness()
     {
         var harness = new FoldTierBenchmarks { NodeCount = SmallestNodeCount };

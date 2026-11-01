@@ -18,10 +18,6 @@ public sealed partial class DesignAnOrderedStreamBenchmarksTests
     public void ListBacked_ShuffledArrivalOrder_HandsOutEveryValueOnceInIdOrder() =>
         AssertHandsOutEveryValueOnceInIdOrder(BuildHarness().ListBacked());
 
-    [Fact]
-    public void DynamicArrayBacked_ShuffledArrivalOrder_HandsOutEveryValueOnceInIdOrder() =>
-        AssertHandsOutEveryValueOnceInIdOrder(BuildHarness().DynamicArrayBacked());
-
     // The cursor only ever advances, so each slot is handed out at most once over the whole script,
     // and in id order: the chunks laid end to end are every value exactly once, which is what a script
     // covering every id 1..Size produces once the last gap closes, and what a script that dropped or

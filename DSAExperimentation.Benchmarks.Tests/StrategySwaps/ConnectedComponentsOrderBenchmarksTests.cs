@@ -15,10 +15,6 @@ public sealed partial class ConnectedComponentsOrderBenchmarksTests
     public void DepthFirst_IslandGrid_CountsEveryIsland() =>
         Assert.Equal(IslandsAtSmallestSide, BuildHarness().DepthFirst());
 
-    [Fact]
-    public void BreadthFirst_IslandGrid_CountsEveryIsland() =>
-        Assert.Equal(IslandsAtSmallestSide, BuildHarness().BreadthFirst());
-
     private static ConnectedComponentsOrderBenchmarks BuildHarness()
     {
         var harness = new ConnectedComponentsOrderBenchmarks { Side = SmallestSide };

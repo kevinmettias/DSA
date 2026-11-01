@@ -2,11 +2,10 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for MaximumNumberOfTasksYouCanAssignBenchmarks (ARCHITECTURE 17.9): both arms
-// are MaximumNumberOfTasksYouCanAssignSolution's competing strategies for one question - a linear
-// walk down "try k = maxK, maxK - 1, ..." against MonotonePredicateSearch.LastTrue over the
-// candidate counts - so a harness whose arms disagree is timing two different problems. Both
-// answer with a single assignment count, compared directly.
+// Harness coverage for MaximumNumberOfTasksYouCanAssignBenchmarks (ARCHITECTURE 17.9): the answer
+// the workload forces is known from Setup's draw ranges alone, an expected value the generic
+// agreement check, which only compares arms with each other, cannot supply. The baseline answers
+// with a single assignment count, compared directly.
 public sealed partial class MaximumNumberOfTasksYouCanAssignBenchmarksTests
 {
     private const int SmallestLength = 2_000;
@@ -15,37 +14,12 @@ public sealed partial class MaximumNumberOfTasksYouCanAssignBenchmarksTests
     // reaches only 99 + 5 pills * strength 100 = 599, so no worker can ever take a task and the
     // whole workload is unassignable. This is deliberately the answer the harness forces - it is
     // what makes the linear scan walk its full range before stopping - so it is asserted rather
-    // than left implicit, and it is the decisive literal the Setup path is judged against.
+    // than left implicit.
     private const int ExpectedAssignableTasks = 0;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameUnassignableWorkload()
-    {
-        var first = BuildHarness();
-        var second = BuildHarness();
-
-        // Both arrays and the prepared SortedTaskAssignment are private, so the rebuild is pinned
-        // through the count they produce: the same Length must sort the same seeded tasks and
-        // workers into the same prepared assignment.
-        Assert.Equal(ExpectedAssignableTasks, first.LinearScan());
-        Assert.Equal(ExpectedAssignableTasks, second.PredicateSearch());
-    }
-
-    [Fact]
-    public void LinearScan_UnassignableWorkload_AgreesWithPredicateSearch()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.PredicateSearch(), harness.LinearScan());
-    }
-
-    [Fact]
-    public void PredicateSearch_UnassignableWorkload_AgreesWithLinearScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LinearScan(), harness.PredicateSearch());
-    }
+    public void LinearScan_UnassignableWorkload_AssignsNoTask() =>
+        Assert.Equal(ExpectedAssignableTasks, BuildHarness().LinearScan());
 
     private static MaximumNumberOfTasksYouCanAssignBenchmarks BuildHarness()
     {

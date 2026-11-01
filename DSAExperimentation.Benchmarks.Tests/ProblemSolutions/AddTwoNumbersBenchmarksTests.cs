@@ -1,56 +1,26 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for AddTwoNumbersBenchmarks (ARCHITECTURE 17.9): its two arms are AddTwoNumbersSolution's,
-// the same methods AddTwoNumbersSolutionTests proves correct - a BigInteger conversion and back against a single
-// digit-wise walk with a running carry - so a harness whose arms disagree is timing two different problems.
-// Both arms return the sum list, so the tests read the digit sequence off the returned list and compare that,
-// which is the answer LC 2 actually asks for. Setup draws both operands from one fixed seed, so the same
-// Length must rebuild the same two lists.
+// Harness coverage for AddTwoNumbersBenchmarks (ARCHITECTURE 17.9): the generic check holds the arms to each
+// other on the seeded operands, and this bounds the baseline's sum by what addition itself allows - a property
+// no comparison between arms can establish. The baseline returns the sum list, so the test reads the digit
+// sequence off the returned list, which is the answer LC 2 actually asks for.
 public sealed partial class AddTwoNumbersBenchmarksTests
 {
     private const int SmallestLength = 10;
     private const int FewestDigits = 1;
     private const int DigitsGrownByTheCarry = SmallestLength + 1;
 
-    [Fact]
-    public void Setup_SameLength_RebuildsTheSameDigitLists()
-    {
-        Assert.Equal(
-            AnswerGraphText.Of(DigitsOf(BuildHarness().DigitwiseListWalk())),
-            AnswerGraphText.Of(DigitsOf(BuildHarness().DigitwiseListWalk())));
-        Assert.Equal(
-            AnswerGraphText.Of(DigitsOf(BuildHarness().BigIntegerConvertAndBack())),
-            AnswerGraphText.Of(DigitsOf(BuildHarness().BigIntegerConvertAndBack())));
-    }
-
     // Adding two Length-digit lists cannot outgrow a single carry digit, so the sum is as long as its operands
     // or one digit longer - the bound the answer has to satisfy whichever arm produced it.
     [Fact]
-    public void BigIntegerConvertAndBack_RandomDigits_AgreesWithDigitwiseListWalk()
-    {
-        var harness = BuildHarness();
-        var sum = DigitsOf(harness.DigitwiseListWalk());
+    public void BigIntegerConvertAndBack_RandomDigits_GrowsByAtMostOneCarryDigit() =>
+        Assert.InRange(DigitsOf(BuildHarness().BigIntegerConvertAndBack()).Length, FewestDigits, DigitsGrownByTheCarry);
 
-        Assert.InRange(sum.Length, FewestDigits, DigitsGrownByTheCarry);
-        Assert.Equal(AnswerGraphText.Of(sum), AnswerGraphText.Of(DigitsOf(harness.BigIntegerConvertAndBack())));
-    }
-
-    [Fact]
-    public void DigitwiseListWalk_RandomDigits_AgreesWithBigIntegerConvertAndBack()
-    {
-        var harness = BuildHarness();
-        var sum = DigitsOf(harness.BigIntegerConvertAndBack());
-
-        Assert.InRange(sum.Length, FewestDigits, DigitsGrownByTheCarry);
-        Assert.Equal(AnswerGraphText.Of(sum), AnswerGraphText.Of(DigitsOf(harness.DigitwiseListWalk())));
-    }
-
-    // Both arms hand back a linked list, so walking it into its digit sequence puts them into one comparable
-    // form without changing what either computed - the digits are the answer.
+    // The arm hands back a linked list, so walking it into its digit sequence reads the answer off without
+    // changing what it computed - the digits are the answer.
     private static int[] DigitsOf(SinglyLinkedListNode<int>? answer)
     {
         var digits = new List<int>();

@@ -3,13 +3,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for HouseRobberBenchmarks (ARCHITECTURE 17.9). Its two arms are competing
-// strategies for the same question - the memoized recurrence and the rolling-totals pass - so a
-// harness whose arms disagree is timing two different problems: both must report the same haul.
-// Setup's street is fully documented (seeded Random(198), each house drawn from [0, 400]), so the
-// expected haul is derived here from a rebuilt street by trying every set of houses at the smallest
-// size of ten - all 1,024 of them - and keeping the best one with no two neighbours, a brute force
-// that shares nothing with either arm's recurrence.
+// Harness coverage for HouseRobberBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests already holds
+// the arms to agreeing on the smallest workload, so this asserts only a haul derived independently
+// of either arm. Setup's street is fully documented (seeded Random(198), each house drawn from
+// [0, 400]), so the expected haul is derived here from a rebuilt street by trying every set of
+// houses at the smallest size of ten - all 1,024 of them - and keeping the best one with no two
+// neighbours, a brute force that shares nothing with either arm's recurrence.
 public sealed partial class HouseRobberBenchmarksTests
 {
     private const int SmallestLength = 10;
@@ -17,20 +16,8 @@ public sealed partial class HouseRobberBenchmarksTests
     private const int MaxValue = 400;
 
     [Fact]
-    public void MemoizedRecursion_SeededStreet_ReturnsTheBestNonAdjacentHaul() =>
-        Assert.Equal(BruteForceBestHaul(RebuildStreet()), BuildHarness().MemoizedRecursion());
-
-    [Fact]
     public void IterativeRollingTotals_SeededStreet_ReturnsTheBestNonAdjacentHaul() =>
         Assert.Equal(BruteForceBestHaul(RebuildStreet()), BuildHarness().IterativeRollingTotals());
-
-    [Fact]
-    public void IterativeRollingTotals_AgreesWithMemoizedRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MemoizedRecursion(), harness.IterativeRollingTotals());
-    }
 
     private static HouseRobberBenchmarks BuildHarness()
     {

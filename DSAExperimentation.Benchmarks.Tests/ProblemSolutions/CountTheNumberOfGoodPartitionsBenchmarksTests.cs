@@ -2,12 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CountTheNumberOfGoodPartitionsBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - enumerating every cut mask against merging each
-// value's first and last occurrence - so a harness whose arms disagree is timing two different
-// problems, not two ways of answering one. Setup draws the array from one fixed seed, so the same
-// ArrayLength must rebuild the same array; otherwise two published numbers were never comparable in
-// the first place.
+// Harness coverage for CountTheNumberOfGoodPartitionsBenchmarks (ARCHITECTURE 17.9):
+// BenchmarkArmsTests already holds the arms to agreeing on a rebuilt workload, so this asserts only
+// a range that comes from the workload's shape rather than from either arm.
 //
 // The generated array is private and the partition count is the only thing either arm reports, so the
 // documented shape is asserted through that: an ArrayLength-long array admits only ArrayLength - 1
@@ -23,27 +20,8 @@ public sealed partial class CountTheNumberOfGoodPartitionsBenchmarksTests
     private const long FewestPartitions = 1;
 
     [Fact]
-    public void Setup_SameArrayLength_RebuildsTheSameArray()
-    {
+    public void BruteForce_SmallestArrayLength_StaysWithinThePartitionCount() =>
         Assert.InRange(BuildHarness().BruteForce(SmallestArrayLength), FewestPartitions, PartitionCount);
-        Assert.Equal(BuildHarness().BruteForce(SmallestArrayLength), BuildHarness().BruteForce(SmallestArrayLength));
-    }
-
-    [Fact]
-    public void BruteForce_FourValueAlphabet_AgreesWithLastOccurrenceMerge()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LastOccurrenceMerge(SmallestArrayLength), harness.BruteForce(SmallestArrayLength));
-    }
-
-    [Fact]
-    public void LastOccurrenceMerge_FourValueAlphabet_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(SmallestArrayLength), harness.LastOccurrenceMerge(SmallestArrayLength));
-    }
 
     private static CountTheNumberOfGoodPartitionsBenchmarks BuildHarness()
     {

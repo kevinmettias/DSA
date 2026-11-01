@@ -2,22 +2,17 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FindNumberOfWaysToReachTheKthStairBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question - the recurrence evaluated by plain unmemoized
-// recursion against the same recurrence run through this repo's own Memoizer - so a harness whose
-// arms disagree is counting two different sets of operation sequences. Both answers are one int, so
-// they are compared directly.
+// Harness coverage for FindNumberOfWaysToReachTheKthStairBenchmarks (ARCHITECTURE 17.9): the generic
+// arms check only compares the arms with each other, so this pins the baseline's count to a value
+// derived independently of every arm.
 //
 // The benchmark has no [GlobalSetup] and no tuned input beyond TargetStair itself, which is set on
 // the bare initializer: there is nothing to build before calling an arm, and TargetStair is the
-// whole workload. It is deterministic per value, so both arms must agree on the same counted ways.
+// whole workload.
 //
-// The agreement is WEAK BY CONSTRUCTION here, and honestly so: Alice's reachable stairs are the ones
-// she can actually stand on - 2^m - d after m up moves and d down moves, with the no-two-downs-in-a-
-// row rule bounding d by m + 1 - and neither of the benchmark's own target stairs is in that set, so
-// both arms count 0 on every run. Agreement therefore witnesses that both walks exhausted the same
-// reachable region, not that they agreed on a positive count. What it does catch is an arm that
-// counts a sequence the other does not.
+// Alice's reachable stairs are the ones she can actually stand on - 2^m - d after m up moves and d
+// down moves, with the no-two-downs-in-a-row rule bounding d by m + 1 - and the smallest target
+// stair is not in that set, so the count is 0.
 public sealed partial class FindNumberOfWaysToReachTheKthStairBenchmarksTests
 {
     // The smaller of the benchmark's [Params(1_000_000, 20_000_000)] target stairs, the one below
@@ -29,22 +24,8 @@ public sealed partial class FindNumberOfWaysToReachTheKthStairBenchmarksTests
     private const int ExpectedWayCount = 0;
 
     [Fact]
-    public void BruteRecursion_UnreachableStair_AgreesWithMemoizedRecurrence()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedWayCount, harness.BruteRecursion());
-        Assert.Equal(harness.MemoizedRecurrence(), harness.BruteRecursion());
-    }
-
-    [Fact]
-    public void MemoizedRecurrence_UnreachableStair_AgreesWithBruteRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedWayCount, harness.MemoizedRecurrence());
-        Assert.Equal(harness.BruteRecursion(), harness.MemoizedRecurrence());
-    }
+    public void BruteRecursion_UnreachableStair_CountsNoWays() =>
+        Assert.Equal(ExpectedWayCount, BuildHarness().BruteRecursion());
 
     private static FindNumberOfWaysToReachTheKthStairBenchmarks BuildHarness() =>
         new() { TargetStair = SmallestTargetStair };

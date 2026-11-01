@@ -8,8 +8,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // placeholder returning the literal 1 - so there is no second strategy to reconcile it against and
 // the assertion has to come from what LeetCode 109's own contract makes decisive instead: the tree
 // must carry the ascending list in order, and height-balanced means it stands at the minimum height
-// its node count admits. Setup builds that ascending list with a constant step, so the same Length
-// must rebuild the same tree, asserted through the one observable the arm exposes, its tree.
+// its node count admits. Setup builds that ascending list with a constant step.
 public sealed partial class ConvertSortedListToBinarySearchTreeBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -20,12 +19,6 @@ public sealed partial class ConvertSortedListToBinarySearchTreeBenchmarksTests
     // A binary tree gives every node this many children, so one more level holds this many times the
     // nodes below it - which is what makes a tree of height h hold at most 2^h - 1 nodes.
     private const int BinaryBranchingFactor = 2;
-
-    [Fact]
-    public void Setup_SameLength_RebuildsTheSameTree()
-    {
-        Assert.Equal(InOrderValues(Built()), InOrderValues(Built()));
-    }
 
     [Fact]
     public void MidpointRecursion_TwoHundredAscendingListValues_ReturnsTheMinimumHeightBstOverThem()

@@ -3,11 +3,8 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for CountTheNumberOfComputerUnlockingPermutationsBenchmarks (ARCHITECTURE 17.9):
-// its two arms are competing strategies for the same question - a DFS over every legal unlock order
-// against the closed (n-1)! form - so a harness whose arms disagree is timing two different problems,
-// not two ways of answering one. Setup draws the complexities from one fixed seed, so the same
-// ComputerCount must rebuild the same workload; otherwise two published numbers were never
-// comparable in the first place.
+// BenchmarkArmsTests already holds the arms to agreeing on a rebuilt workload, so this asserts only
+// an expected count derived from the workload's construction rather than from either arm.
 //
 // The complexity array is private, and the workload's defining property - it is always solvable,
 // complexity[0] being the strict minimum - is exactly what the arms read, so the setup is asserted
@@ -20,29 +17,8 @@ public sealed partial class CountTheNumberOfComputerUnlockingPermutationsBenchma
     private const long ExpectedUnlockOrders = 720; // (SmallestComputerCount - 1)!
 
     [Fact]
-    public void Setup_SameComputerCount_RebuildsTheSameSolvableWorkload()
-    {
+    public void FactorialFormula_MinimumComplexityFirst_CountsEveryOrderOfTheOthers() =>
         Assert.Equal(ExpectedUnlockOrders, BuildHarness().FactorialFormula(SmallestComputerCount));
-        Assert.Equal(
-            BuildHarness().FactorialFormula(SmallestComputerCount),
-            BuildHarness().FactorialFormula(SmallestComputerCount));
-    }
-
-    [Fact]
-    public void Backtracking_MinimumComplexityFirst_AgreesWithFactorialFormula()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.FactorialFormula(SmallestComputerCount), harness.Backtracking(SmallestComputerCount));
-    }
-
-    [Fact]
-    public void FactorialFormula_MinimumComplexityFirst_AgreesWithBacktracking()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.Backtracking(SmallestComputerCount), harness.FactorialFormula(SmallestComputerCount));
-    }
 
     private static CountTheNumberOfComputerUnlockingPermutationsBenchmarks BuildHarness()
     {

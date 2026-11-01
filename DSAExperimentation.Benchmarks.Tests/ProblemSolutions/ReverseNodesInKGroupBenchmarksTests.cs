@@ -1,22 +1,15 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ReverseNodesInKGroupBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - reversing each complete run with Array.Reverse over a
-// materialized array against splicing the same runs on the list's own pointers - so a harness whose
-// arms disagree is timing two different problems. [GlobalSetup] builds the values 1..Length in
-// order - they wrap only past LC 25's highest value, 1,000, which the smallest length never reaches -
-// so the same Length must rebuild the same chain; otherwise two published numbers were never
-// comparable in the first place.
-//
-// The group size is fixed at four and Length is a multiple of it, so every group is complete and no
-// truncated tail is left over - the answer is the same ascending range with each run of four
-// rendered backwards, which is stated here from the fixture's own shape rather than read back out of
-// an arm. Both arms return the new head and rebuild the chain inside the measured call, so one
-// harness is safe to call twice in either order.
+// Harness coverage for ReverseNodesInKGroupBenchmarks (ARCHITECTURE 17.9). Arm agreement is
+// BenchmarkArmsTests' job; this pins the baseline's answer to one derived from the workload's shape.
+// [GlobalSetup] builds the values 1..Length in order - they wrap only past LC 25's highest value,
+// 1,000, which the smallest length never reaches. The group size is fixed at four and Length is a
+// multiple of it, so every group is complete and no truncated tail is left over - the answer is the
+// same ascending range with each run of four rendered backwards, which is stated here from the
+// fixture's own shape rather than read back out of an arm.
 public sealed partial class ReverseNodesInKGroupBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -25,34 +18,8 @@ public sealed partial class ReverseNodesInKGroupBenchmarksTests
     private const int GroupSize = 4;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayGroupReverse())),
-            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayGroupReverse())));
-
-    [Fact]
-    public void ArrayGroupReverse_FullGroupsOfFour_AgreesWithTheLinkedListPointerReversal()
-    {
-        var harness = BuildHarness();
-        var reversed = harness.ArrayGroupReverse();
-
-        Assert.Equal(ExpectedGroupsReversed(SmallestLength), ValuesOf(reversed));
-        Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(harness.LinkedListGroupReverse())),
-            AnswerGraphText.Of(ValuesOf(reversed)));
-    }
-
-    [Fact]
-    public void LinkedListGroupReverse_FullGroupsOfFour_AgreesWithTheArrayReverse()
-    {
-        var harness = BuildHarness();
-        var reversed = harness.LinkedListGroupReverse();
-
-        Assert.Equal(ExpectedGroupsReversed(SmallestLength), ValuesOf(reversed));
-        Assert.Equal(
-            AnswerGraphText.Of(ValuesOf(harness.ArrayGroupReverse())),
-            AnswerGraphText.Of(ValuesOf(reversed)));
-    }
+    public void ArrayGroupReverse_FullGroupsOfFour_ReversesEveryGroup() =>
+        Assert.Equal(ExpectedGroupsReversed(SmallestLength), ValuesOf(BuildHarness().ArrayGroupReverse()));
 
     private static int[] ValuesOf(SinglyLinkedListNode<int>? head)
     {

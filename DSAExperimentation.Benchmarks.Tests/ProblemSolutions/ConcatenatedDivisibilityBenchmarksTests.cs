@@ -1,50 +1,20 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ConcatenatedDivisibilityBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - enumerating permutations against the bitmask DP - so
-// a harness whose arms disagree is timing two different problems. Setup draws the numbers and the
-// divisor from `Seed + NumberCount`, so the same NumberCount must rebuild the same numbers and the
-// same divisor; otherwise two published numbers were never comparable in the first place.
-//
-// The numbers and the divisor are both private, and IList<int> is the only thing either arm reports,
-// so the workload's documented shape is asserted through that: LC 3533's answer is either the empty
-// arrangement (no permutation's concatenation is divisible) or a full SmallestNumberCount-element
-// permutation - never a partial one.
+// Harness coverage for ConcatenatedDivisibilityBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests
+// already holds the arms to agreeing on a rebuilt workload, so this asserts only the answer's shape,
+// which comes from the problem rather than from either arm. The numbers and the divisor are both
+// private, and IList<int> is the only thing either arm reports, so the shape is asserted through
+// that: LC 3533's answer is either the empty arrangement (no permutation's concatenation is
+// divisible) or a full SmallestNumberCount-element permutation - never a partial one.
 public sealed partial class ConcatenatedDivisibilityBenchmarksTests
 {
     private const int SmallestNumberCount = 6;
 
     [Fact]
-    public void Setup_SameNumberCount_RebuildsTheSameNumbersAndDivisor()
-    {
+    public void Backtracking_SixSeededNumbers_ReturnsNoneOrAFullPermutation() =>
         Assert.True(BuildHarness().Backtracking(SmallestNumberCount).Count is 0 or SmallestNumberCount);
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().Backtracking(SmallestNumberCount)),
-            AnswerGraphText.Of(BuildHarness().Backtracking(SmallestNumberCount)));
-    }
-
-    [Fact]
-    public void Backtracking_SixSeededNumbers_AgreesWithBitmaskMemo()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.BitmaskMemo(SmallestNumberCount)),
-            AnswerGraphText.Of(harness.Backtracking(SmallestNumberCount)));
-    }
-
-    [Fact]
-    public void BitmaskMemo_SixSeededNumbers_AgreesWithBacktracking()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.Backtracking(SmallestNumberCount)),
-            AnswerGraphText.Of(harness.BitmaskMemo(SmallestNumberCount)));
-    }
 
     private static ConcatenatedDivisibilityBenchmarks BuildHarness()
     {

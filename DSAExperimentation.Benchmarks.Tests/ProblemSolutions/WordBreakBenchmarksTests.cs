@@ -1,12 +1,10 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for WordBreakBenchmarks (ARCHITECTURE 17.9). Its two arms are competing
-// strategies for the same question - the Trie + Memoizer composition and the bottom-up reachability
-// sweep - so a harness whose arms disagree is segmenting two different strings: both must report the
-// same answer. The decisive value is the one its own comment names - a source that tiles one
+// Harness coverage for WordBreakBenchmarks (ARCHITECTURE 17.9): the generic check holds the arms to
+// agreeing with each other, which a shared wrong verdict would pass, so this pins the baseline's
+// verdict. The decisive value is the one the benchmark's own comment names - a source that tiles one
 // dictionary word and is therefore segmentable end to end, the full-scan case rather than an early
 // bail-out on a dead prefix.
 public sealed partial class WordBreakBenchmarksTests
@@ -14,26 +12,8 @@ public sealed partial class WordBreakBenchmarksTests
     private const int SmallestLength = 30;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().CanBreakByTrieMemoized()),
-            AnswerGraphText.Of(BuildHarness().CanBreakByTrieMemoized()));
-
-    [Fact]
-    public void CanBreakByTrieMemoized_TiledDictionaryWord_SegmentsTheWholeSource() =>
-        Assert.True(BuildHarness().CanBreakByTrieMemoized());
-
-    [Fact]
     public void IterativeReachability_TiledDictionaryWord_SegmentsTheWholeSource() =>
         Assert.True(BuildHarness().IterativeReachability());
-
-    [Fact]
-    public void IterativeReachability_AgreesWithCanBreakByTrieMemoized()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.CanBreakByTrieMemoized(), harness.IterativeReachability());
-    }
 
     private static WordBreakBenchmarks BuildHarness()
     {

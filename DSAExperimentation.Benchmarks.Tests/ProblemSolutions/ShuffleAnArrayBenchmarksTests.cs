@@ -15,23 +15,10 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // What both arms genuinely share - and what is asserted below - is that each returns a
 // permutation of Setup's stored array and that the two permutations carry the same values.
 // That is weaker than arm agreement and is reported as such: it witnesses that both arms
-// shuffled the workload they were given, not that they shuffled it identically. Setup builds
-// its array from a closed form with no draw from any stream, so the same Length is the whole
-// of what pins it.
+// shuffled the workload they were given, not that they shuffled it identically.
 public sealed partial class ShuffleAnArrayBenchmarksTests
 {
     private const int SmallestLength = 5;
-
-    [Fact]
-    public void Setup_SameLength_RebuildsTheSameOriginalArray()
-    {
-        var first = BuildHarness();
-        var second = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(Sorted(first.RemoveRandomRemaining())),
-            AnswerGraphText.Of(Sorted(second.RemoveRandomRemaining())));
-    }
 
     [Fact]
     public void RemoveRandomRemaining_SmallestLength_AgreesWithFisherYatesDynamicArrayOnThePermutedValues()

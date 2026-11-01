@@ -2,12 +2,11 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ParallelCoursesIIBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for one minimum semester count - the brute-force recursion against the memoized one - so
-// a harness whose arms disagree is timing two different problems. Setup only clears the prerequisite
-// list, and the benchmark takes at most two courses a semester, so with no prerequisites every
-// semester can take a full pair: SmallestCourseCount courses need exactly half as many semesters.
-// Both arms are held to that fixed count as well as to each other.
+// Harness coverage for ParallelCoursesIIBenchmarks (ARCHITECTURE 17.9): the baseline's semester count
+// against one derived from the workload's shape, which the generic check cannot supply - it holds the
+// memoized recursion to the baseline. Setup only clears the prerequisite list, and the benchmark takes
+// at most two courses a semester, so with no prerequisites every semester can take a full pair:
+// SmallestCourseCount courses need exactly half as many semesters.
 public sealed partial class ParallelCoursesIIBenchmarksTests
 {
     private const int SmallestCourseCount = 6;
@@ -17,32 +16,8 @@ public sealed partial class ParallelCoursesIIBenchmarksTests
     private const int ExpectedSemesterCount = SmallestCourseCount / CoursesPerSemester;
 
     [Fact]
-    public void Setup_SameCourseCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            BuildHarness().BruteForceRecursion(SmallestCourseCount),
-            BuildHarness().BruteForceRecursion(SmallestCourseCount));
-
-    [Fact]
-    public void BruteForceRecursion_SmallestCourseCount_ReturnsTheFewestSemesters()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedSemesterCount, harness.BruteForceRecursion(SmallestCourseCount));
-        Assert.Equal(
-            harness.MemoizedRecursion(SmallestCourseCount),
-            harness.BruteForceRecursion(SmallestCourseCount));
-    }
-
-    [Fact]
-    public void MemoizedRecursion_SmallestCourseCount_ReturnsTheFewestSemesters()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedSemesterCount, harness.MemoizedRecursion(SmallestCourseCount));
-        Assert.Equal(
-            harness.BruteForceRecursion(SmallestCourseCount),
-            harness.MemoizedRecursion(SmallestCourseCount));
-    }
+    public void BruteForceRecursion_SmallestCourseCount_ReturnsTheFewestSemesters() =>
+        Assert.Equal(ExpectedSemesterCount, BuildHarness().BruteForceRecursion(SmallestCourseCount));
 
     private static ParallelCoursesIIBenchmarks BuildHarness()
     {

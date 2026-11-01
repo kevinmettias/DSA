@@ -8,8 +8,9 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // arms - the backtracking walk and the precomputed-table walk - whose workload is a string drawn
 // from seeded Random(131) over "ab". The expected partitions are derived here from a rebuilt string
 // by brute force: at the smallest length every one of the 2^(n-1) ways to cut it is tried, and those
-// whose pieces all read the same backwards are kept. Each arm is checked against that set - the
-// walks emit it in their own order, which LeetCode leaves free - and the pair against each other.
+// whose pieces all read the same backwards are kept. The baseline is checked against that set - the
+// walk emits it in its own order, which LeetCode leaves free - an expected value the generic check
+// cannot supply; it holds the precomputed-table arm to the baseline.
 public sealed partial class PalindromePartitioningBenchmarksTests
 {
     private const int SmallestLength = 4;
@@ -21,20 +22,6 @@ public sealed partial class PalindromePartitioningBenchmarksTests
         Assert.Equal(
             AnswerGraphText.OfUnordered(BruteForcePartitions(RebuildText())),
             AnswerGraphText.OfUnordered(BuildHarness().Backtracking()));
-
-    [Fact]
-    public void PrecomputedPalindromeTable_SeededText_ReturnsEveryPalindromePartition() =>
-        Assert.Equal(
-            AnswerGraphText.OfUnordered(BruteForcePartitions(RebuildText())),
-            AnswerGraphText.OfUnordered(BuildHarness().PrecomputedPalindromeTable()));
-
-    [Fact]
-    public void PrecomputedPalindromeTable_AgreesWithBacktracking()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.Of(harness.Backtracking()), AnswerGraphText.Of(harness.PrecomputedPalindromeTable()));
-    }
 
     private static PalindromePartitioningBenchmarks BuildHarness()
     {

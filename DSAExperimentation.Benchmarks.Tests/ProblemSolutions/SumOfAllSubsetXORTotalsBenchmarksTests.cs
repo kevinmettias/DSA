@@ -2,10 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SumOfAllSubsetXORTotalsBenchmarks (ARCHITECTURE 17.9): both arms are
-// SumOfAllSubsetXORTotalsSolution's, so a harness whose arms disagree is timing two different
-// questions. Both answer with a bare int and the workload is a seeded draw, so beside the agreement
-// each arm is pinned to an oracle derived from that workload rather than read back out of an arm:
+// Harness coverage for SumOfAllSubsetXORTotalsBenchmarks (ARCHITECTURE 17.9): both arms answer
+// with a bare int and the workload is a seeded draw, so beside the generic arm check's agreement the
+// baseline is pinned to an oracle derived from that workload rather than read back out of an arm:
 // a bit position that any drawn value sets is set in the XOR of exactly half of the 2^Length subsets,
 // so the total over all subsets is the bitwise OR of the drawn values scaled by 2^(Length-1).
 public sealed partial class SumOfAllSubsetXORTotalsBenchmarksTests
@@ -16,26 +15,8 @@ public sealed partial class SumOfAllSubsetXORTotalsBenchmarksTests
     private const int SmallestLength = 10;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(BuildHarness().BruteForceBitmask(), BuildHarness().BruteForceBitmask());
-
-    [Fact]
-    public void BruteForceBitmask_SeededValues_AgreesWithTheOtherArmAndTheOrScalingRule()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.Backtracking(), harness.BruteForceBitmask());
-        Assert.Equal(ExpectedXorTotal(), harness.BruteForceBitmask());
-    }
-
-    [Fact]
-    public void Backtracking_SeededValues_AgreesWithTheOtherArmAndTheOrScalingRule()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceBitmask(), harness.Backtracking());
-        Assert.Equal(ExpectedXorTotal(), harness.Backtracking());
-    }
+    public void BruteForceBitmask_SeededValues_MatchesTheOrScalingRule() =>
+        Assert.Equal(ExpectedXorTotal(), BuildHarness().BruteForceBitmask());
 
     // Mirrors [GlobalSetup]'s own draw of Length values from [1, MaxValue].
     private static int[] WorkloadValues()

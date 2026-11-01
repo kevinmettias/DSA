@@ -34,15 +34,6 @@ public sealed partial class IsGraphBipartiteBenchmarksTests
         Assert.Equal(BipartiteByConstruction, harness.IsBipartiteByColorArrayDfs());
     }
 
-    [Fact]
-    public void IsBipartiteByBipartiteCheck_TwoWaySplit_AgreesWithIsBipartiteByColorArrayDfs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.IsBipartiteByColorArrayDfs(), harness.IsBipartiteByBipartiteCheck());
-        Assert.Equal(BipartiteByConstruction, harness.IsBipartiteByBipartiteCheck());
-    }
-
     private static IsGraphBipartiteBenchmarks BuildHarness()
     {
         var harness = new IsGraphBipartiteBenchmarks { NodeCount = SmallestNodeCount };

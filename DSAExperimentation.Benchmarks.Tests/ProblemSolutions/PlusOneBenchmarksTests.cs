@@ -1,34 +1,17 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for PlusOneBenchmarks (ARCHITECTURE 17.9): its two arms are competing strategies
-// for one question - the digits of the number plus one - so a harness whose arms disagree is timing
-// two different problems. Setup hands both arms the all-nines operand the class comment names, so
-// the carry cascades through every position; the same Length must rebuild that same operand.
+// Harness coverage for PlusOneBenchmarks (ARCHITECTURE 17.9): the baseline's answer against a
+// length derived from the workload's shape, which the generic check cannot supply - it holds the
+// digit stack to the baseline. Setup hands both arms the all-nines operand the class comment names,
+// so the carry cascades through every position and the number gains a leading digit.
 public sealed partial class PlusOneBenchmarksTests
 {
     private const int SmallestLength = 10;
 
     // The all-nines operand grows the number by exactly one digit.
     private const int GrownLength = SmallestLength + 1;
-
-    [Fact]
-    public void Setup_SameLength_RebuildsTheSameDigits() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().ArrayWalk()),
-            AnswerGraphText.Of(BuildHarness().ArrayWalk()));
-
-    [Fact]
-    public void ArrayWalk_AgreesWithDigitStack()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerGraphText.Of(harness.DigitStack()),
-            AnswerGraphText.Of(harness.ArrayWalk()));
-    }
 
     [Fact]
     public void ArrayWalk_AllNines_GrowsTheNumberByOneDigit() =>

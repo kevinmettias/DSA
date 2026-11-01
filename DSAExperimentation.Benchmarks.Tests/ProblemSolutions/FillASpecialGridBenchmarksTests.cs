@@ -1,15 +1,11 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FillASpecialGridBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same grid - recursing into the four quadrants against computing each cell's
-// value directly from its row/column bits - so a harness whose arms disagree is filling two
-// different grids. Both arms return the whole int[][] grid, and every row and cell position is the
-// answer rather than an incidental order, so the two grids are compared as ordered sequences. A
-// level-n grid is 2^n cells on a side, which is the shape the comparison has to hold over; the
-// class has no [GlobalSetup], so the [Params] level count is the whole workload.
+// Harness coverage for FillASpecialGridBenchmarks (ARCHITECTURE 17.9): the generic arms check only
+// compares the arms' grids with each other, so this pins the baseline's grid to the shape the
+// problem fixes independently of any arm - a level-n grid is 2^n cells on a side. The class has no
+// [GlobalSetup], so the [Params] level count is the whole workload.
 public sealed partial class FillASpecialGridBenchmarksTests
 {
     private const int SmallestLevelCount = 5;
@@ -18,27 +14,12 @@ public sealed partial class FillASpecialGridBenchmarksTests
     private const int ExpectedSideLength = 1 << SmallestLevelCount;
 
     [Fact]
-    public void RecursiveQuadrants_FifthLevelGrid_AgreesWithBitQuadrantDigits()
+    public void RecursiveQuadrants_FifthLevelGrid_IsTwoToTheLevelCellsOnASide()
     {
-        var harness = BuildHarness();
-        var grid = harness.RecursiveQuadrants();
+        var grid = BuildHarness().RecursiveQuadrants();
 
         Assert.Equal(ExpectedSideLength, grid.Length);
         Assert.All(grid, row => Assert.Equal(ExpectedSideLength, row.Length));
-
-        Assert.Equal(AnswerGraphText.Of(harness.BitQuadrantDigits()), AnswerGraphText.Of(grid));
-    }
-
-    [Fact]
-    public void BitQuadrantDigits_FifthLevelGrid_AgreesWithRecursiveQuadrants()
-    {
-        var harness = BuildHarness();
-        var grid = harness.BitQuadrantDigits();
-
-        Assert.Equal(ExpectedSideLength, grid.Length);
-        Assert.All(grid, row => Assert.Equal(ExpectedSideLength, row.Length));
-
-        Assert.Equal(AnswerGraphText.Of(harness.RecursiveQuadrants()), AnswerGraphText.Of(grid));
     }
 
     private static FillASpecialGridBenchmarks BuildHarness() =>

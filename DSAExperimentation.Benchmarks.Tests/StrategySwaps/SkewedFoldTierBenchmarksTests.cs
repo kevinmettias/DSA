@@ -12,14 +12,6 @@ public sealed partial class SkewedFoldTierBenchmarksTests
     public void TreeTier_SkewedChain_AnswersTheNodeCount() =>
         Assert.Equal(SmallestNodeCount, BuildHarness().TreeTier());
 
-    [Fact]
-    public void DagTier_SkewedChain_AnswersTheNodeCount() =>
-        Assert.Equal(SmallestNodeCount, BuildHarness().DagTier());
-
-    [Fact]
-    public void GraphTier_SkewedChain_AnswersTheNodeCount() =>
-        Assert.Equal(SmallestNodeCount, BuildHarness().GraphTier());
-
     private static SkewedFoldTierBenchmarks BuildHarness()
     {
         var harness = new SkewedFoldTierBenchmarks { NodeCount = SmallestNodeCount };

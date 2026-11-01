@@ -1,17 +1,14 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for LongestConsecutiveSequenceBenchmarks (ARCHITECTURE 17.9): both arms are
-// competing strategies for the same question - this repo's set-based run expansion and a sorted
-// scan - so a harness whose arms disagree is timing two different problems, and the oracle below
-// derives the answer independently. Setup's workload comes from
-// LongestConsecutiveSequenceWorkloads, which is seeded and so reproducible: the same Length
-// rebuilds the same array, whose values all lie in [0, Length / 2). The expected longest run is
-// recomputed here by taking the distinct values, ordering them and walking once - close in spirit
-// to the sorted arm, so the arms' agreement test is what actually pins the two strategies together.
+// Harness coverage for LongestConsecutiveSequenceBenchmarks (ARCHITECTURE 17.9), for what the
+// generic agreement check cannot supply: the workload's shape and an answer derived independently of
+// the arms. Setup's workload comes from LongestConsecutiveSequenceWorkloads, seeded so it is
+// reproducible, whose values all lie in [0, Length / 2). The expected longest run is recomputed here
+// by taking the distinct values, ordering them and walking once, and checked against the baseline;
+// the generic check holds the set-based arm to the baseline's answer.
 public sealed partial class LongestConsecutiveSequenceBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -25,23 +22,12 @@ public sealed partial class LongestConsecutiveSequenceBenchmarksTests
     private const int HighestFixtureValue = (SmallestLength / 2) - 1;
 
     [Fact]
-    public void Setup_SmallestLength_RebuildsTheSameWorkload()
+    public void Setup_SmallestLength_DrawsLengthValuesBelowHalfTheLength()
     {
         var nums = LongestConsecutiveSequenceWorkloads.BuildArray(SmallestLength, WorkloadSeed);
 
         Assert.Equal(SmallestLength, nums.Length);
         Assert.All(nums, value => Assert.InRange(value, LowestFixtureValue, HighestFixtureValue));
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().SetRunExpansion()),
-            AnswerGraphText.Of(BuildHarness().SetRunExpansion()));
-    }
-
-    [Fact]
-    public void SetRunExpansion_SmallestLength_CountsTheLongestConsecutiveRun()
-    {
-        var nums = LongestConsecutiveSequenceWorkloads.BuildArray(SmallestLength, WorkloadSeed);
-
-        Assert.Equal(ExpectedLongestRun(nums), BuildHarness().SetRunExpansion());
     }
 
     [Fact]
@@ -50,14 +36,6 @@ public sealed partial class LongestConsecutiveSequenceBenchmarksTests
         var nums = LongestConsecutiveSequenceWorkloads.BuildArray(SmallestLength, WorkloadSeed);
 
         Assert.Equal(ExpectedLongestRun(nums), BuildHarness().SortedScan());
-    }
-
-    [Fact]
-    public void SortedScan_AgreesWithSetRunExpansion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.SetRunExpansion(), harness.SortedScan());
     }
 
     // Sorted-and-walked oracle: after ordering the distinct values, a run of successive integers

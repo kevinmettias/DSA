@@ -12,7 +12,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // low/high span the tree's whole value range, so no node is out of range, and LC 669 forbids a trim
 // from changing the relative structure of the nodes it keeps: the answer must be Setup's own tree,
 // unchanged, and calling an arm must leave the tree as it found it - which is what lets every
-// invocation trim the same tree.
+// invocation trim the same tree. The baseline's answer is pinned to that tree; the generic arm check
+// holds the boundary walk to the baseline's answer.
 public sealed partial class TrimABinarySearchTreeBenchmarksTests
 {
     private const int SmallestNodeCount = 200;
@@ -21,10 +22,6 @@ public sealed partial class TrimABinarySearchTreeBenchmarksTests
     [Fact]
     public void InPlaceTrim_WholeValueRange_ReturnsSetupsTreeUnchanged() =>
         Assert.Equal(SetupTree(), AnswerGraphText.Of(BuildHarness().InPlaceTrim()));
-
-    [Fact]
-    public void IterativeBoundaryWalk_WholeValueRange_ReturnsSetupsTreeUnchanged() =>
-        Assert.Equal(SetupTree(), AnswerGraphText.Of(BuildHarness().IterativeBoundaryWalk()));
 
     // The shuffled insertion is what keeps the tree shallow; a sorted insertion would build a chain
     // and make the boundary walk visit every node, which is the comparison the class comment rules out.

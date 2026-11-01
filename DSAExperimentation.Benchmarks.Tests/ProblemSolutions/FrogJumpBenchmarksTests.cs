@@ -1,40 +1,19 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FrogJumpBenchmarks (ARCHITECTURE 17.9): its two arms are competing strategies
-// for the same question, so a harness whose arms disagree is timing two different problems. Setup
-// derives the stone array from StoneCount alone, so the same StoneCount must rebuild the same
-// workload.
-//
-// The agreement is weak by construction and the assertions say only what the fixture supports: the
-// stones are the consecutive run 0..StoneCount - 2 with one unreachable stone appended a fixed gap
-// beyond it, so nothing can ever land on the last stone and both arms answer false. The comparison
-// catches an arm that ever says true, but both arms reaching the same false is not evidence that
-// either walked the whole exponential search the workload exists to force - the false verdict
-// assertions are what pin them to the verdict the fixture guarantees.
+// Harness coverage for FrogJumpBenchmarks (ARCHITECTURE 17.9): the generic arms check only compares
+// the arms with each other, so this pins the baseline's verdict to the one the fixture guarantees.
+// The stones are the consecutive run 0..StoneCount - 2 with one unreachable stone appended a fixed
+// gap beyond it, so nothing can ever land on the last stone and the answer is false.
 public sealed partial class FrogJumpBenchmarksTests
 {
     private const int SmallestStoneCount = 10;
     private const bool ExpectedCrossingVerdict = false;
 
     [Fact]
-    public void Setup_SameStoneCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().CanCrossByRecursiveBruteForce(SmallestStoneCount)),
-            AnswerGraphText.Of(BuildHarness().CanCrossByRecursiveBruteForce(SmallestStoneCount)));
-
-    [Fact]
-    public void CanCrossByRecursiveBruteForce_AgreesWithCanCrossByHashMapDynamicProgramming()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedCrossingVerdict, harness.CanCrossByRecursiveBruteForce(SmallestStoneCount));
-        Assert.Equal(
-            harness.CanCrossByHashMapDynamicProgramming(SmallestStoneCount),
-            harness.CanCrossByRecursiveBruteForce(SmallestStoneCount));
-    }
+    public void CanCrossByRecursiveBruteForce_UnreachableLastStone_CannotCross() =>
+        Assert.Equal(ExpectedCrossingVerdict, BuildHarness().CanCrossByRecursiveBruteForce(SmallestStoneCount));
 
     private static FrogJumpBenchmarks BuildHarness()
     {

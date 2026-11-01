@@ -5,15 +5,16 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for MatrixCellsInDistanceOrderBenchmarks (ARCHITECTURE 17.9): its two arms are
 // competing strategies for the same question - the closed-form Manhattan distance plus Array.Sort
-// against this repo's Grid BFS distance map plus MergeSort - so a harness whose arms disagree is
-// timing two different problems. Answers come back one cell per position in nondecreasing distance
-// order, which is the whole of what LC 1030 pins: it accepts any ordering among equidistant cells,
-// and the two sorts are not tie-compatible - Array.Sort is unstable, MergeSort is stable, and they
-// start from different input orders, so the raw coordinate sequences genuinely differ from the fifth
-// cell onward on this fixture. AnswerGraphText.Of on the raw coordinates would therefore compare two
-// permutations the problem never fixed. What is compared instead is the quantity the problem does
-// fix - each cell's Manhattan distance from the center, in order - with the full grid coverage
-// checked separately, the same reading DSAExperimentation.Tests' own LC 1030 coverage uses.
+// against this repo's Grid BFS distance map plus MergeSort. Answers come back one cell per position
+// in nondecreasing distance order, which is the whole of what LC 1030 pins: it accepts any ordering
+// among equidistant cells, and the two sorts are not tie-compatible - Array.Sort is unstable,
+// MergeSort is stable, and they start from different input orders, so the raw coordinate sequences
+// genuinely differ from the fifth cell onward on this fixture. ArmAgreement.UnorderedAnswers
+// therefore has the generic check compare only the cells each arm returns, and the order is this
+// file's to check: what is compared here is the quantity the problem does fix - each cell's
+// Manhattan distance from the center, in order - on rebuilt harnesses and across the arms, with
+// the full grid coverage checked against every cell of the grid, the same reading
+// DSAExperimentation.Tests' own LC 1030 coverage uses.
 public sealed partial class MatrixCellsInDistanceOrderBenchmarksTests
 {
     private const int SmallestSize = 20;
@@ -42,18 +43,6 @@ public sealed partial class MatrixCellsInDistanceOrderBenchmarksTests
         Assert.Equal(AnswerGraphText.Of(DistancesOf(byGridBfs)), AnswerGraphText.Of(DistancesOf(byFormula)));
         Assert.Equal(AnswerGraphText.OfUnordered(EveryCell()), AnswerGraphText.OfUnordered(byFormula));
         Assert.Equal(AnswerGraphText.OfUnordered(EveryCell()), AnswerGraphText.OfUnordered(byGridBfs));
-    }
-
-    [Fact]
-    public void GridBfsThenMergeSort_OpenGrid_AgreesWithManhattanFormulaThenArraySortOnDistanceOrder()
-    {
-        var harness = BuildHarness();
-        var byGridBfs = harness.GridBfsThenMergeSort();
-        var byFormula = harness.ManhattanFormulaThenArraySort();
-
-        Assert.Equal(AnswerGraphText.Of(DistancesOf(byFormula)), AnswerGraphText.Of(DistancesOf(byGridBfs)));
-        Assert.Equal(AnswerGraphText.OfUnordered(EveryCell()), AnswerGraphText.OfUnordered(byGridBfs));
-        Assert.Equal(AnswerGraphText.OfUnordered(EveryCell()), AnswerGraphText.OfUnordered(byFormula));
     }
 
     private static IEnumerable<int> DistancesOf(int[][] cells) =>

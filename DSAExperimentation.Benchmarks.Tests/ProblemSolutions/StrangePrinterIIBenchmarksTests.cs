@@ -1,14 +1,11 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for StrangePrinterIIBenchmarks (ARCHITECTURE 17.9): both arms answer the
-// same question - whether LC 1591's color dependency graph is acyclic - one by rescanning every
-// remaining color per step, one by Kahn's algorithm proper, so a harness whose arms disagree is
-// timing two different problems. Setup's graph is a guaranteed-acyclic chain, so the same color
-// count must rebuild the same workload; neither arm mutates the prepared graph (each builds its
-// own in-degree bookkeeping), so one harness instance is safe to call twice in either order.
+// Harness coverage for StrangePrinterIIBenchmarks (ARCHITECTURE 17.9): Setup's color dependency
+// graph is a guaranteed-acyclic chain, so whether LC 1591's grid is printable is known without
+// running either arm, and the baseline is asserted against it - the generic arm check only holds
+// the Kahn's arm to the baseline's answer, which two arms sharing one wrong verdict would pass.
 public sealed partial class StrangePrinterIIBenchmarksTests
 {
     private const int SmallestColorCount = 50;
@@ -18,20 +15,8 @@ public sealed partial class StrangePrinterIIBenchmarksTests
     private const bool ExpectedPrintable = true;
 
     [Fact]
-    public void Setup_SameColorCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().IsPrintableByKahnsTopologicalSort()),
-            AnswerGraphText.Of(BuildHarness().IsPrintableByKahnsTopologicalSort()));
-
-    [Fact]
-    public void IsPrintableByNaiveRescan_AgreesWithIsPrintableByKahnsTopologicalSort()
-    {
-        var harness = BuildHarness();
-        var naiveRescan = harness.IsPrintableByNaiveRescan();
-
-        Assert.Equal(naiveRescan, harness.IsPrintableByKahnsTopologicalSort());
-        Assert.Equal(ExpectedPrintable, naiveRescan);
-    }
+    public void IsPrintableByNaiveRescan_AcyclicChain_ReportsPrintable() =>
+        Assert.Equal(ExpectedPrintable, BuildHarness().IsPrintableByNaiveRescan());
 
     private static StrangePrinterIIBenchmarks BuildHarness()
     {

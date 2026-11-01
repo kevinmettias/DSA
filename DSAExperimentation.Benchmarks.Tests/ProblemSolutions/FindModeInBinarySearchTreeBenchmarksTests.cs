@@ -3,16 +3,14 @@ using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FindModeInBinarySearchTreeBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - a dictionary frequency count over the whole tree
-// against an in-order walk that exploits the BST ordering - so a harness whose arms disagree has
-// found two different sets of modes.
+// Harness coverage for FindModeInBinarySearchTreeBenchmarks (ARCHITECTURE 17.9): the generic arms
+// check only compares the arms with each other, so this pins each arm's modes to the set Setup's
+// construction fixes independently of any arm.
 //
 // AnswerGraphText.OfUnordered, not Of, because the outer order here is genuinely unfixed: LC 501
 // accepts the modes in any order, the hash arm reports them in its dictionary's iteration order and
-// the in-order arm reports them ascending. Neither order is promised by the problem, and the arms'
-// disagreement about it is not a disagreement about the answer - which is why the elements are
-// compared as a set while each mode's own value is still compared exactly.
+// the in-order arm reports them ascending, so the elements are compared as a set while each mode's
+// own value is still compared exactly.
 //
 // Setup's tree holds NodeCount / NodesPerDistinctValue distinct values, each repeated
 // NodesPerDistinctValue times, so every one of them ties for the mode and the answer is decisive: the
@@ -27,32 +25,12 @@ public sealed partial class FindModeInBinarySearchTreeBenchmarksTests
     private const int NodesPerDistinctValue = 20;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameModes() =>
-        Assert.Equal(
-            AnswerGraphText.OfUnordered(BuildHarness().HashMapFrequencyCount()),
-            AnswerGraphText.OfUnordered(BuildHarness().HashMapFrequencyCount()));
+    public void HashMapFrequencyCount_EveryValueTiedForTheMode_ReturnsEveryDistinctValue() =>
+        Assert.Equal(AnswerGraphText.OfUnordered(ExpectedModes()), AnswerGraphText.OfUnordered(BuildHarness().HashMapFrequencyCount()));
 
     [Fact]
-    public void HashMapFrequencyCount_EveryValueTiedForTheMode_AgreesWithInOrderTraversalStreak()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.OfUnordered(ExpectedModes()), AnswerGraphText.OfUnordered(harness.HashMapFrequencyCount()));
-        Assert.Equal(
-            AnswerGraphText.OfUnordered(harness.InOrderTraversalStreak()),
-            AnswerGraphText.OfUnordered(harness.HashMapFrequencyCount()));
-    }
-
-    [Fact]
-    public void InOrderTraversalStreak_EveryValueTiedForTheMode_AgreesWithHashMapFrequencyCount()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.OfUnordered(ExpectedModes()), AnswerGraphText.OfUnordered(harness.InOrderTraversalStreak()));
-        Assert.Equal(
-            AnswerGraphText.OfUnordered(harness.HashMapFrequencyCount()),
-            AnswerGraphText.OfUnordered(harness.InOrderTraversalStreak()));
-    }
+    public void InOrderTraversalStreak_EveryValueTiedForTheMode_ReturnsEveryDistinctValue() =>
+        Assert.Equal(AnswerGraphText.OfUnordered(ExpectedModes()), AnswerGraphText.OfUnordered(BuildHarness().InOrderTraversalStreak()));
 
     private static FindModeInBinarySearchTreeBenchmarks BuildHarness()
     {

@@ -3,15 +3,12 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for MaximumBinaryTreeBenchmarks (ARCHITECTURE 17.9): both arms are competing
-// strategies for one question - the maximum binary tree over the array - so a harness whose arms
-// disagree is timing two different problems, and both now return the built tree rather than a
-// height proxy.
-//
-// Setup pins the workload to Enumerable.Range, an ascending run, and the maximum binary tree of an
-// ascending run is fixed by that shape alone: the maximum sits last, so the root takes the largest
-// value and every left child takes the next one down while every right subtree stays empty. The
-// oracle below is derived from that layout, not read back out of either arm.
+// Harness coverage for MaximumBinaryTreeBenchmarks (ARCHITECTURE 17.9): the arms return the built
+// tree, and Setup pins the workload to Enumerable.Range, an ascending run, whose maximum binary tree
+// is fixed by that shape alone: the maximum sits last, so the root takes the largest value and every
+// left child takes the next one down while every right subtree stays empty. The oracle below is
+// derived from that layout, not read back out of either arm - an expected value the generic
+// agreement check, which only compares arms with each other, cannot supply.
 public sealed partial class MaximumBinaryTreeBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -20,19 +17,8 @@ public sealed partial class MaximumBinaryTreeBenchmarksTests
     private const string EmptyNode = "#";
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload()
-    {
-        Assert.Equal(RenderTree(BuildHarness().RescanForMax()), RenderTree(BuildHarness().RescanForMax()));
+    public void RescanForMax_AscendingRun_BuildsALeftLeaningChain() =>
         Assert.Equal(ExpectedAscendingChain(SmallestLength), RenderTree(BuildHarness().RescanForMax()));
-    }
-
-    [Fact]
-    public void RescanForMax_AgreesWithMonotonicStack()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(RenderTree(harness.RescanForMax()), RenderTree(harness.MonotonicStack()));
-    }
 
     private static MaximumBinaryTreeBenchmarks BuildHarness()
     {

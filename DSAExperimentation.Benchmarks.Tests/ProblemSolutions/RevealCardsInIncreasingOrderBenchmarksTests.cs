@@ -1,49 +1,19 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for RevealCardsInIncreasingOrderBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - a BCL List<int> with RemoveAt(0) standing in for
-// "pop the front" against this repo's Queue<int>, whose front-dequeue/back-enqueue is literally the
-// reveal and the move-to-bottom - so a harness whose arms disagree is timing two different problems.
-// Setup draws the deck from one fixed seed, so the same Length must rebuild the same deck;
-// otherwise two published numbers were never comparable in the first place.
-//
-// Both arms clone the deck before sorting it, so the hoisted deck is never written to and one
-// harness is safe to call twice in either order. The class's own problem statement is the
-// independent oracle the answer is checked against: running the reveal/move-to-bottom process over
-// an answer must produce the deck's values in non-decreasing order, which no arm can satisfy by
-// agreeing with the other about a wrong ordering.
+// Harness coverage for RevealCardsInIncreasingOrderBenchmarks (ARCHITECTURE 17.9). Arm agreement is
+// BenchmarkArmsTests' job; the class's own problem statement is the independent oracle the baseline's
+// answer is checked against: running the reveal/move-to-bottom process over an answer must produce
+// the deck's values in non-decreasing order, which no arm can satisfy by agreeing with the other
+// about a wrong ordering.
 public sealed partial class RevealCardsInIncreasingOrderBenchmarksTests
 {
     private const int SmallestLength = 200;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().ListRemoveAtSimulation()),
-            AnswerGraphText.Of(BuildHarness().ListRemoveAtSimulation()));
-
-    [Fact]
-    public void ListRemoveAtSimulation_SeededDeck_AgreesWithQueueSimulation()
-    {
-        var harness = BuildHarness();
-        var ordered = harness.ListRemoveAtSimulation();
-
-        Assert.True(IsRevealedInIncreasingOrder(ordered));
-        Assert.Equal(AnswerGraphText.Of(harness.QueueSimulation()), AnswerGraphText.Of(ordered));
-    }
-
-    [Fact]
-    public void QueueSimulation_SeededDeck_AgreesWithListRemoveAtSimulation()
-    {
-        var harness = BuildHarness();
-        var ordered = harness.QueueSimulation();
-
-        Assert.True(IsRevealedInIncreasingOrder(ordered));
-        Assert.Equal(AnswerGraphText.Of(harness.ListRemoveAtSimulation()), AnswerGraphText.Of(ordered));
-    }
+    public void ListRemoveAtSimulation_SeededDeck_RevealsInIncreasingOrder() =>
+        Assert.True(IsRevealedInIncreasingOrder(BuildHarness().ListRemoveAtSimulation()));
 
     // Runs the problem's own process over the candidate ordering: reveal the front, then move the
     // next card to the bottom, until nothing is left. The revealed values must come out

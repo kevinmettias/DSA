@@ -4,11 +4,8 @@ using DSAExperimentation.LeetCode.Conventions;
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for FindFirstAndLastPositionOfElementInSortedArrayBenchmarks (ARCHITECTURE
-// 17.9): its two arms are competing strategies for the same question - BCL Array.IndexOf/
-// LastIndexOf walking in from each end, against this repo's own LowerBound/UpperBound pair over an
-// ArraySequence - so a harness whose arms disagree is delimiting two different runs of the target.
-// Both answers are the closed [first, last] index range, two positional values in a fixed order, so
-// they are compared as ordered sequences rather than as a set.
+// 17.9): the generic arms check only compares the arms with each other, so this pins the baseline's
+// closed [first, last] index range to one derived from Setup's construction rather than from any arm.
 //
 // Setup's array is each value repeated ValueDuplicationFactor times, so the target's run is exactly
 // ValueDuplicationFactor indices long and its position is arithmetic on the two generator constants.
@@ -22,28 +19,8 @@ public sealed partial class FindFirstAndLastPositionOfElementInSortedArrayBenchm
     private const int TargetDivisor = 8;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameTargetRange() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().LinearScan()),
-            AnswerGraphText.Of(BuildHarness().LinearScan()));
-
-    [Fact]
-    public void LinearScan_TargetWithFourOccurrences_ReturnsItsClosedRun()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.Of(ExpectedTargetRange()), AnswerGraphText.Of(harness.LinearScan()));
-        Assert.Equal(AnswerGraphText.Of(harness.BinarySearchBounds()), AnswerGraphText.Of(harness.LinearScan()));
-    }
-
-    [Fact]
-    public void BinarySearchBounds_TargetWithFourOccurrences_AgreesWithLinearScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerGraphText.Of(ExpectedTargetRange()), AnswerGraphText.Of(harness.BinarySearchBounds()));
-        Assert.Equal(AnswerGraphText.Of(harness.LinearScan()), AnswerGraphText.Of(harness.BinarySearchBounds()));
-    }
+    public void LinearScan_TargetWithFourOccurrences_ReturnsItsClosedRun() =>
+        Assert.Equal(AnswerGraphText.Of(ExpectedTargetRange()), AnswerGraphText.Of(BuildHarness().LinearScan()));
 
     private static FindFirstAndLastPositionOfElementInSortedArrayBenchmarks BuildHarness()
     {
