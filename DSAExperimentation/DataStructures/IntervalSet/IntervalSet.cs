@@ -29,11 +29,15 @@ namespace DSAExperimentation.DataStructures.IntervalSet;
 // The comparer stays a plain runtime IComparer<TKey> - same §9.2 reasoning
 // BinarySearch/MergeSort already establish: any TKey, any total order, is a
 // valid comparer, an open-ended space no witness could usefully close over.
+/// <summary>
+/// A sorted set of disjoint intervals, each added interval merging with every interval it overlaps or touches.
+/// </summary>
 public sealed class IntervalSet<TKey>
 {
     private readonly DynamicArray<(TKey Start, TKey End)> _intervals = new();
     private readonly IComparer<TKey> _comparer;
 
+    /// <summary>The number of disjoint intervals in the set.</summary>
     public int Count => _intervals.Count;
 
     public IntervalSet()
@@ -43,9 +47,16 @@ public sealed class IntervalSet<TKey>
 
     public IntervalSet(IComparer<TKey> comparer) => _comparer = comparer;
 
+    /// <summary>Reads the interval at a position in the set's sorted order.</summary>
+    /// <param name="index">The 0-based position of the interval, in order of start.</param>
+    /// <returns>The interval at that position, as its start and end.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is outside [0, Count).</exception>
     public (TKey Start, TKey End) Get(int index) => _intervals.Get(index);
 
     // Inserts [start, end], merging with every existing interval it overlaps.
+    /// <summary>Adds the interval from start to end, merging it with every interval it overlaps or touches.</summary>
+    /// <param name="start">The interval's start.</param>
+    /// <param name="end">The interval's end, at or after <paramref name="start"/> in the set's order.</param>
     public void Add(TKey start, TKey end)
     {
         var mergeStart = LowerBoundByEnd(start);
@@ -80,6 +91,10 @@ public sealed class IntervalSet<TKey>
     }
 
     // Whether any existing interval shares a point with [start, end].
+    /// <summary>Reports whether any interval in the set shares a point with the closed query [start, end].</summary>
+    /// <param name="start">The query's first point.</param>
+    /// <param name="end">The query's last point, at or after <paramref name="start"/> in the set's order.</param>
+    /// <returns>True when some interval overlaps the query, a shared endpoint included; false when none does.</returns>
     public bool HasOverlap(TKey start, TKey end)
     {
         var candidate = LowerBoundByEnd(start);
