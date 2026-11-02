@@ -1477,6 +1477,35 @@ trees and lists, `LeetCodeAnswer`'s `-1` — stay at the LeetCode tier's root, b
 about LeetCode rather than about any problem's world, and one problem's own spelling of its answer
 (LC 1275's `"Draw"`) stays in that problem's folder.
 
+**What qualifies, and in what form (the owner's rulings, 2026-11-01).**
+
+- **Knowledge, not a puzzle's set-up.** Domain holds real-world or mathematical knowledge that is
+  general beyond the problem: worth knowing and filing on its own, or usable by another problem,
+  "even if just for intellectual categorization". Examples are a standard (the E.161 keypad), a real
+  object (a die), a notation (folder paths), a real game's rule (Conway's Life, Zuma) and a
+  mathematical fact. A rule a problem invented for itself stays in its folder, however complete a
+  world it makes: LC 818's race car and LC 2241's banknotes are such rules.
+- **The general rule, configured per problem.** Domain holds the general form, parameterized the
+  way the data structures and algorithms are, with zero-cost static dispatch (§17.6a's witnesses).
+  A problem's own variant is a configuration in its folder: LC 752's four wheels of `0`–`9`, LC
+  773's 2x3 board. Locks, SlidingPuzzle and Modular predate this rule and are being brought to it
+  (§17.10). A variant the real world commonly uses may be named in Domain as a preset,
+  because other problems are likely to want it. Holding the general rule shows what the variants
+  have in common, and which of their properties belong to only some of them.
+- **Mathematics names what it assumes.** A mathematical fact states the geometry or topology it
+  holds in. A triangle's angles make 180° only on the flat plane: on a surface of constant
+  curvature K, Gauss–Bonnet gives π + K·Area. So the flat case is named as flat, and the general
+  form is written only where it is exact. Fuller generalization waits until the architecture is
+  settled, and is then weighed for whether it helps or makes the code worse (§17.10).
+- **Mathematics against algorithms.** In the owner's words: algorithms "are swappable and are
+  chosen based on the input data shape and usage constrains while the math facts are the things
+  those algorithms exist to compute or solve or use, and the algorithms may be useful in cases
+  outside any particular math problem or fact". An algorithm serves many mathematical problems, and
+  problems outside mathematics, so it is not confined to one mathematical category. A mathematical
+  problem can be solved by many algorithms, and "the truth or invariants still holds among all". So
+  a procedure with interchangeable implementations of different cost is `Algorithms/`, and what
+  every such implementation must agree on is `Domain/`.
+
 **Where the domain models are today:**
 
 | Folder | Holds | What it fixes |
@@ -1763,6 +1792,19 @@ stays. A rule of the problem's world, in that world's terms, is `Domain/`. A sha
 share is tier 1. A rule the structure applies on its own is a mechanism. If nothing stays, there
 is nothing to move. The rest goes subject by subject, with composed arms using `Domain/` and
 baselines keeping their copies.
+
+Two rules govern each move:
+
+- **An adoption is done when breaking it breaks a test of the problem itself.** For every Domain
+  member a problem adopts, a mutation of that member, made in a mirror of HEAD, must fail one of
+  the problem's own tests, not only the Domain type's tests. LeetCode's published examples are
+  often too few for this. LC 1041's never told a right turn from a left, LC 17's never named keys 4
+  to 9, and LC 289's never crowded a cell. A mutation that survives gets the example that kills it,
+  in the same commit.
+- **Generalize only on evidence.** A rule is generalized when its general form is exact and well
+  known, a second variant exists in the repo or commonly in the world, and measurement shows the
+  parameter costs nothing. LC 1155's k-sided dice and the knight problems' n×n boards are second
+  variants of that kind. Without all three, the specific form stays, named for what it assumes.
 
 A second wave took the four subjects that more than one folder restated, or that sat in tier 1
 by mistake:
