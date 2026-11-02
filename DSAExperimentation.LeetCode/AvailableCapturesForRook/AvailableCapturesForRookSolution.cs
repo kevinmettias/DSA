@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Chess;
 
 namespace DSAExperimentation.LeetCode.AvailableCapturesForRook;
 
@@ -6,8 +7,9 @@ namespace DSAExperimentation.LeetCode.AvailableCapturesForRook;
 // can capture in one move - walking outward until the edge, a bishop ('B', which
 // blocks), or a pawn ('p', which is captured and stops the walk).
 //
-// The ray walk takes its four directions from GridDirections.Orthogonal and its edge
-// from GridSize, and nothing heavier, which is a judgement rather than an omission:
+// The ray walk takes its four directions from ChessRules.RookLines, a rook's lines
+// (Domain/Chess), and its edge from GridSize, and nothing heavier, which is a
+// judgement rather than an omission:
 // Grid/GridNode/GridChildren model unordered single-step orthogonal adjacency for
 // graph walks, whereas this problem is a directional ray cast that stops at the
 // first non-empty square, so routing it through a graph walk would not be a genuine
@@ -66,7 +68,7 @@ internal static class AvailableCapturesForRookSolution
         var size = GridSize.Of(board);
         var captures = 0;
 
-        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
+        foreach (var (dRow, dCol) in ChessRules.RookLines)
         {
             var row = rook.Row + dRow;
             var col = rook.Col + dCol;

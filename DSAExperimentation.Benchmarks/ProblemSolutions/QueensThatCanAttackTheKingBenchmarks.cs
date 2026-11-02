@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Chess;
 using DSAExperimentation.LeetCode.QueensThatCanAttackTheKing;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,11 +16,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // where previously both counted attackers without building the list (§17.8's
 // deliberate-measurement-change note).
 //
-// The board is LC 1222's own 8 x 8, so QueensCount stops at 63: a queen on every square
+// The board is chess's own 8 x 8 (ChessRules.BoardSize), so QueensCount stops at 63: a queen on every square
 // but the king's, the most LeetCode poses.
 public class QueensThatCanAttackTheKingBenchmarks
 {
-    private const int BoardSize = 8;
+    private const int BoardSize = ChessRules.BoardSize;
     private const int BoardCenter = BoardSize / 2;
     private const int RandomSeed = 1222;
 

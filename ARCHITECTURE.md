@@ -854,6 +854,7 @@ specifically:
 
 | Folder | Holds |
 | --- | --- |
+| `Chess/` | `ChessRules` — the 8x8 board and a rook's, a bishop's and a queen's lines, shared by LC 999, LC 1222 and LC 2056. LC 2596 and LC 3283 move a knight on boards other than chess's, so they keep `GridDirections.Knight`; LC 3001's same-line tests are grid geometry with one user; and LC 51 and LC 52 track attacks by diagonal index, which is their strategy. None of them uses it |
 | `Locks/` | `LockNode`, `LockTopology`, `LockGraph`, `LockWheels` — LC 752's four-wheel lock |
 | `Modular/` | `ModularArithmetic`, `FactorialTable` — arithmetic modulo 1e9+7 |
 | `SlidingPuzzle/` | `PuzzleNode`, `PuzzleTopology`, `PuzzleGraph` — LC 773's 2x3 board |
@@ -1474,13 +1475,14 @@ about LeetCode rather than about any problem's world, and one problem's own spel
 
 | Folder | Holds | What it fixes |
 | --- | --- | --- |
+| `Domain/Chess/` | `ChessRules` | The 8x8 board and the lines a sliding piece moves along: a rook its row and column, a bishop its diagonals, a queen both. The lines are `GridDirections`' tables, which stay tier 1 as grid shapes, in their order, since LC 1222's arms are compared answer for answer. A knight's and a king's moves stay there too: the knight problems are played on other boards, and no problem moves a king. |
 | `Domain/Locks/` | `LockNode`, `LockTopology`, `LockGraph`, `LockWheels` | `LockWheels` pins `Count = 4`, `Modulus = 10`, `CombinationSpace = 10_000`. This is a concrete *instance*, not a shape — the general form would be "Cayley graph over Z_m^k with ±1 generators", and *that* would be a data structure. Still the thinnest of the judgment calls here. |
 | `Domain/Modular/` | `ModularArithmetic`, `FactorialTable` | Modular exponentiation *is* a classic algorithm, and it stays one — `Algorithms/NumberTheory/ModularPower` — but `1_000_000_007` is the modulus counting problems report their answers in, not a property of any algorithm. `FactorialTable`'s nCr lookup is fixed by the same modulus. |
 | `Domain/SlidingPuzzle/` | `PuzzleNode`, `PuzzleTopology`, `PuzzleGraph` | Pins LC 773's 2x3 board: its blank-slide adjacency table and the 720 permutations of `"012345"`. A concrete instance in the same sense as the lock — a sliding puzzle over an arbitrary m×n board would be a data structure; this one board is content. |
 | `Domain/Sudoku/` | `SudokuRules` | The 9x9 board of 3x3 boxes, its `'1'`–`'9'` and `'.'` notation, and the rule that no digit repeats in a row, column or box — what LC 36 and LC 37 both say about the board. Which cell a solver fills next and how a validator tracks what it has seen stay with each strategy. |
 | `Domain/TicTacToe/` | `TicTacToeRules`, `TicTacToePlayer`, `TicTacToeOutcome` | The 3x3 board, A moving first, the two diagonals and how a game stands: a completed line wins even on the last square, otherwise a full board is a draw and a short one pending. LC 1275's spelling of that answer (`"A"`, `"Draw"`, …) and the strategies' ±1 marks stay in its folder. |
 
-Their tests mirror them in `DSAExperimentation.Tests/Domain/{Locks,Modular,SlidingPuzzle,Sudoku,TicTacToe}/`. The
+Their tests mirror them in `DSAExperimentation.Tests/Domain/{Chess,Locks,Modular,SlidingPuzzle,Sudoku,TicTacToe}/`. The
 domain knowledge still written inside individual problem folders moves here problem by problem
 (§17.10).
 

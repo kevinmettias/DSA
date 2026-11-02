@@ -11,8 +11,16 @@ namespace DSAExperimentation.LeetCode.MinimumMovesToCaptureTheQueen;
 // each other without either restating the algorithm. Neither needs a repo
 // container - ChessSquare is the whole domain, and it lives beside this solution
 // the way RookSquare already does for LC 999.
+//
+// Only the baseline walks the board, so it alone needs the board's size and the
+// pieces' lines; they are chess's (Domain/Chess), and it keeps its own copies
+// (ARCHITECTURE §17.5). The line-of-sight arm's same-line tests are grid geometry
+// with no second user, so they stay below.
 internal static class MinimumMovesToCaptureTheQueenSolution
 {
+    // The baseline's own copy of chess's 8x8 board, whose squares LeetCode numbers from 1.
+    private const int BoardSize = 8;
+
     private static readonly (int DeltaRow, int DeltaCol)[] RookDirections = [(1, 0), (-1, 0), (0, 1), (0, -1)];
     private static readonly (int DeltaRow, int DeltaCol)[] BishopDirections = [(1, 1), (1, -1), (-1, 1), (-1, -1)];
 
@@ -57,7 +65,7 @@ internal static class MinimumMovesToCaptureTheQueenSolution
         var row = from.Row + direction.DeltaRow;
         var col = from.Col + direction.DeltaCol;
 
-        while (row is >= 1 and <= MinimumMovesToCaptureTheQueenConstants.BoardSize && col is >= 1 and <= MinimumMovesToCaptureTheQueenConstants.BoardSize)
+        while (row is >= 1 and <= BoardSize && col is >= 1 and <= BoardSize)
         {
             if (row == target.Row && col == target.Col)
             {

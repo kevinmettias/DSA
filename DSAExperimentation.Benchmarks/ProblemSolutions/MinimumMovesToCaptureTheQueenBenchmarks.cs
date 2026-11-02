@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Chess;
 using DSAExperimentation.LeetCode.MinimumMovesToCaptureTheQueen;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -43,7 +44,7 @@ public class MinimumMovesToCaptureTheQueenBenchmarks
 
         while (squares.Count < PieceCount)
         {
-            squares.Add((random.Next(1, MinimumMovesToCaptureTheQueenConstants.BoardSize + 1), random.Next(1, MinimumMovesToCaptureTheQueenConstants.BoardSize + 1)));
+            squares.Add((random.Next(1, ChessRules.BoardSize + 1), random.Next(1, ChessRules.BoardSize + 1)));
         }
 
         var picked = squares.ToArray();

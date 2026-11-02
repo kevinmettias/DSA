@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Chess;
 
 namespace DSAExperimentation.LeetCode.QueensThatCanAttackTheKing;
 
@@ -19,8 +20,13 @@ namespace DSAExperimentation.LeetCode.QueensThatCanAttackTheKing;
 // MinimumAreaRectangleSolution and TwoSumSolution both make. Building that set is
 // deliberately inside the measured strategy rather than hoisted, because paying
 // O(queens) once is precisely what the arm has to earn back.
+//
+// The board and the queen's lines are chess's (Domain/Chess): the set arm reads
+// them from ChessRules, and the baseline keeps its own copies (ARCHITECTURE §17.5),
+// in the same order, since the arms are compared answer for answer.
 internal static class QueensThatCanAttackTheKingSolution
 {
+    // The baseline's own copy of a queen's eight lines, in ChessRules.QueenLines' order.
     private static readonly (int DRow, int DCol)[] Directions =
     [
         (-1, -1), (-1, 0), (-1, 1),
@@ -75,7 +81,7 @@ internal static class QueensThatCanAttackTheKingSolution
     // One pass over the queens into a Set<(int Row, int Col)>, after which each of
     // the at most 8*boardSize ray steps is an O(1) membership test.
     public static List<(int Row, int Col)> QueensAttackTheKingBySetLookup(int[][] queens, int[] king) =>
-        QueensAttackTheKingBySetLookup(queens, KingBoard.Standard(king));
+        QueensAttackTheKingBySetLookup(queens, new KingBoard(king[0], king[1], ChessRules.BoardSize));
 
     public static List<(int Row, int Col)> QueensAttackTheKingBySetLookup(int[][] queens, KingBoard board)
     {
@@ -88,9 +94,9 @@ internal static class QueensThatCanAttackTheKingSolution
 
         var attackers = new List<(int Row, int Col)>();
 
-        foreach (var direction in Directions)
+        foreach (var line in ChessRules.QueenLines)
         {
-            var attacker = FindAttackerAlongRay(occupied, board, direction);
+            var attacker = FindAttackerAlongRay(occupied, board, line);
 
             if (attacker is not null)
             {
@@ -102,15 +108,15 @@ internal static class QueensThatCanAttackTheKingSolution
     }
 
     private static (int Row, int Col)? FindAttackerAlongRay(
-        Set<(int Row, int Col)> occupied, KingBoard board, (int DRow, int DCol) direction)
+        Set<(int Row, int Col)> occupied, KingBoard board, (int DeltaRow, int DeltaCol) line)
     {
-        var row = board.KingRow + direction.DRow;
-        var col = board.KingCol + direction.DCol;
+        var row = board.KingRow + line.DeltaRow;
+        var col = board.KingCol + line.DeltaCol;
 
         while (board.IsInBounds(row, col) && !occupied.Has((row, col)))
         {
-            row += direction.DRow;
-            col += direction.DCol;
+            row += line.DeltaRow;
+            col += line.DeltaCol;
         }
 
         return board.IsInBounds(row, col) ? Position(row, col) : null;

@@ -1,4 +1,6 @@
+using System.Collections.Immutable;
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.Domain.Chess;
 
 namespace DSAExperimentation.LeetCode.NumberOfValidMoveCombinationsOnChessboard;
 
@@ -20,8 +22,14 @@ namespace DSAExperimentation.LeetCode.NumberOfValidMoveCombinationsOnChessboard;
 // timestep-by-timestep collision check are problem-specific glue over Backtrack's
 // existing choose/explore/unchoose contract, so both the Move choice and the shared
 // mutable State live here beside the solution (ARCHITECTURE.md #17.3).
+//
+// The board and each piece's lines are chess's (Domain/Chess): the backtracking arm
+// reads them from ChessRules, and the cartesian-product baseline keeps its own
+// copies below (ARCHITECTURE §17.5). The piece names and the 1-based squares are
+// LeetCode's.
 internal static class NumberOfValidMoveCombinationsOnChessboardSolution
 {
+    // The baseline's own copies of chess's board and lines.
     private const int BoardSize = 8;
     private const string RookPieceType = "rook";
     private const string BishopPieceType = "bishop";
@@ -64,6 +72,16 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
         return moves;
     }
 
+    private static (int DRow, int DCol)[] DirectionsFor(string pieceType) => pieceType switch
+    {
+        RookPieceType => RookDirections,
+        BishopPieceType => BishopDirections,
+        QueenPieceType => QueenDirections,
+        _ => throw new ArgumentOutOfRangeException(nameof(pieceType), pieceType, UnknownPieceTypeMessage),
+    };
+
+    private static bool IsOnBoard(int row, int col) => row is >= 1 and <= BoardSize && col is >= 1 and <= BoardSize;
+
     // This repo's own backtracking engine: Candidates for the next piece only offers
     // (direction, distance) moves whose full simultaneous-movement trajectory never
     // collides, at any time step, with a piece already chosen earlier in the
@@ -87,19 +105,24 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
     // Every piece has been given a move, so the combination has no children left.
     private static IEnumerable<Move> NoCandidates() => [];
 
+    // The lines are walked by index rather than a foreach: this is an iterator, and an
+    // ImmutableArray's enumerator would be kept in the iterator's object, so it would
+    // allocate more for each piece.
     private static IEnumerable<Move> CandidateMoves(State state)
     {
         var pieceIndex = state.Moves.Count;
         var start = state.Positions[pieceIndex];
+        var lines = LinesFor(state.PieceTypes[pieceIndex]);
 
         if (IsCollisionFree(state, pieceIndex, new Move(0, 0, 0)))
         {
             yield return new Move(0, 0, 0);
         }
 
-        foreach (var (dRow, dCol) in DirectionsFor(state.PieceTypes[pieceIndex]))
+        for (var line = 0; line < lines.Length; line++)
         {
-            for (var distance = 1; IsOnBoard(start[0] + (dRow * distance), start[1] + (dCol * distance)); distance++)
+            var (dRow, dCol) = lines[line];
+            for (var distance = 1; IsOnChessBoard(start[0] + (dRow * distance), start[1] + (dCol * distance)); distance++)
             {
                 var move = new Move(dRow, dCol, distance);
 
@@ -110,6 +133,15 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
             }
         }
     }
+
+    // The backtracking arm's lines and board, chess's own; LeetCode numbers squares from 1.
+    private static ImmutableArray<(int DeltaRow, int DeltaCol)> LinesFor(string pieceType) => pieceType switch
+    {
+        RookPieceType => ChessRules.RookLines,
+        BishopPieceType => ChessRules.BishopLines,
+        QueenPieceType => ChessRules.QueenLines,
+        _ => throw new ArgumentOutOfRangeException(nameof(pieceType), pieceType, UnknownPieceTypeMessage),
+    };
 
     private static bool IsCollisionFree(State state, int pieceIndex, Move candidate)
     {
@@ -125,6 +157,9 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
 
         return true;
     }
+
+    private static bool IsOnChessBoard(int row, int col) =>
+        row is >= 1 and <= ChessRules.BoardSize && col is >= 1 and <= ChessRules.BoardSize;
 
     private static int CountValidCombinations(int[][] positions, List<Move>[] perPiece, Move[] combo, int pieceIndex)
     {
@@ -184,16 +219,6 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
 
         return (start[0] + (move.DRow * step), start[1] + (move.DCol * step));
     }
-
-    private static bool IsOnBoard(int row, int col) => row is >= 1 and <= BoardSize && col is >= 1 and <= BoardSize;
-
-    private static (int DRow, int DCol)[] DirectionsFor(string pieceType) => pieceType switch
-    {
-        RookPieceType => RookDirections,
-        BishopPieceType => BishopDirections,
-        QueenPieceType => QueenDirections,
-        _ => throw new ArgumentOutOfRangeException(nameof(pieceType), pieceType, UnknownPieceTypeMessage),
-    };
 
     private readonly record struct Move(int DRow, int DCol, int Distance);
 
