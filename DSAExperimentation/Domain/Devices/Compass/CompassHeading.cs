@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Domain.Compass;
+namespace DSAExperimentation.Domain.Devices.Compass;
 
 // The four headings in clockwise order from North, numbered so that a quarter turn right is one
 // step along them and the numbers wrap at CompassRules.HeadingCount.

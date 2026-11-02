@@ -1,6 +1,6 @@
-using DSAExperimentation.Domain.Compass;
+using DSAExperimentation.Domain.Devices.Compass;
 
-namespace DSAExperimentation.Tests.Domain.Compass;
+namespace DSAExperimentation.Tests.Domain.Devices.Compass;
 
 public sealed partial class CompassRulesTests
 {

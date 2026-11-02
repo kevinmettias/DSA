@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.Domain.Compass;
+using DSAExperimentation.Domain.Devices.Compass;
 
 namespace DSAExperimentation.LeetCode.WalkingRobotSimulation;
 
@@ -16,7 +16,7 @@ namespace DSAExperimentation.LeetCode.WalkingRobotSimulation;
 // and answers each step in O(1), the same "brute force vs. hashed lookup" shape
 // TwoSum uses for complement lookups.
 //
-// The robot's headings, turns and steps are the compass's (Domain/Compass): the
+// The robot's headings, turns and steps are the compass's (Domain/Devices/Compass): the
 // obstacle-set arm reads CompassRules, with east as +X and north as +Y, and the
 // baseline keeps its own copies below (ARCHITECTURE §17.5). The -2 and -1 commands
 // are LeetCode's.

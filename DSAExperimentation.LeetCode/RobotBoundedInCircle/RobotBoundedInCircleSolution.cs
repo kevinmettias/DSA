@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.Domain.Compass;
+using DSAExperimentation.Domain.Devices.Compass;
 
 namespace DSAExperimentation.LeetCode.RobotBoundedInCircle;
 
@@ -18,7 +18,7 @@ namespace DSAExperimentation.LeetCode.RobotBoundedInCircle;
 // move character because going forward needs the *current* facing rather than a
 // fixed per-character delta.
 //
-// The facings, turns and steps are the compass's (Domain/Compass): the lookup-table
+// The facings, turns and steps are the compass's (Domain/Devices/Compass): the lookup-table
 // arm reads CompassRules and fills its map from CompassRules.StepOf, and the switch
 // baseline keeps its own copies, RobotDirection and RobotMotion (ARCHITECTURE
 // §17.5). The 'G', 'L' and 'R' of RobotInstruction are LeetCode's.

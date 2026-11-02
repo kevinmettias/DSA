@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Domain.Compass;
+namespace DSAExperimentation.Domain.Devices.Compass;
 
 // A walker on the plane as LC 874 and LC 1041 state it: it faces one of four compass headings,
 // turns a quarter turn left or right, and steps one unit along its heading. These are the

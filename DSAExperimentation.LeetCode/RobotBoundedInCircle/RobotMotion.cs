@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.RobotBoundedInCircle;
 // RobotInstruction; what stays here is the arithmetic that turns one facing into the
 // next, which neither set can state about itself.
 //
-// The switch baseline's own copy of the compass's turns (Domain/Compass's
+// The switch baseline's own copy of the compass's turns (Domain/Devices/Compass's
 // CompassRules; ARCHITECTURE §17.5): the lookup-table arm reads CompassRules instead.
 // Owned here rather than in RobotBoundedInCircleSolution because that class's two
 // strategies are its own subject - these describe the robot.
