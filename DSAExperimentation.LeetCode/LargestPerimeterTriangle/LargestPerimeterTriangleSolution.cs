@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.Domain.Mathematics.Geometry;
 
 namespace DSAExperimentation.LeetCode.LargestPerimeterTriangle;
 
@@ -10,6 +11,10 @@ namespace DSAExperimentation.LeetCode.LargestPerimeterTriangle;
 // baseline checks the triangle inequality against every unordered triple, while the
 // composed strategy sorts first and then only ever inspects consecutive triples off
 // the top of the sorted run.
+//
+// The triangle inequality is the flat plane's (Domain/Mathematics/Geometry): the sorted scan
+// asks EuclideanPolygons of its longest side, and the brute-force baseline keeps its own
+// CanFormTriangle (ARCHITECTURE §17.5).
 internal static class LargestPerimeterTriangleSolution
 {
     // sorted[i - TripleWindowOffset .. i] is the candidate triple at index i.
@@ -71,7 +76,7 @@ internal static class LargestPerimeterTriangleSolution
 
         for (var i = sorted.Length - 1; i >= TripleWindowOffset; i--)
         {
-            if (sorted[i - TripleWindowOffset] + sorted[i - 1] > sorted[i])
+            if (EuclideanPolygons.CanClose(sorted[i], (long)sorted[i - TripleWindowOffset] + sorted[i - 1]))
             {
                 return sorted[i - TripleWindowOffset] + sorted[i - 1] + sorted[i];
             }

@@ -20,6 +20,10 @@ public sealed partial class MaximumNumberOfVisiblePointsSolutionTests
             // 270 degrees apart in a plain ascending sort - only wrapping finds the
             // window that groups them.
             { [[0, -1], [-1, 0]], 90, [0, 0], 2 },
+            // Across the same seam the bearings 168.7 and -168.7 are 22.6 degrees apart,
+            // too wide for 15, so only one is seen. A wrap of less than a full turn would
+            // close that gap and wrongly report both.
+            { [[-10, 2], [-10, -2]], 15, [0, 0], 1 },
             // Angles -45, 0 and 45 with a 60-degree field of view: no window of width
             // 60 holds all three, but one *centered* on 0 degrees would span 120 and
             // wrongly report 3.

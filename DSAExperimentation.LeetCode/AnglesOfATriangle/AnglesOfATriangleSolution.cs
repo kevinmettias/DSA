@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Mathematics.Geometry;
+
 namespace DSAExperimentation.LeetCode.AnglesOfATriangle;
 
 // LeetCode 3899. Angles of a Triangle: given three side lengths, return the
@@ -9,6 +11,10 @@ namespace DSAExperimentation.LeetCode.AnglesOfATriangle;
 // formula; they differ only in how the third angle is obtained - a direct
 // Acos of its own, or the cheaper 180-minus-the-other-two derivation every
 // triangle's angle sum already guarantees, saving one transcendental call.
+//
+// That angle sum is the flat plane's (Domain/Mathematics/Geometry): the angle-sum arm reads
+// EuclideanPlane. The shared validity check, law of cosines and DegreesPerRadian stay here, as
+// the baseline reads them too (ARCHITECTURE §17.5).
 internal static class AnglesOfATriangleSolution
 {
     private const double DegreesPerRadian = 180.0 / Math.PI;
@@ -43,7 +49,7 @@ internal static class AnglesOfATriangleSolution
         }
 
         var (angleA, angleB) = TwoAnglesByLawOfCosines(sideA, sideB, sideC);
-        var angleC = 180.0 - angleA - angleB;
+        var angleC = EuclideanPlane.TriangleAngleSumDegrees - angleA - angleB;
 
         return Sort(angleA, angleB, angleC);
     }

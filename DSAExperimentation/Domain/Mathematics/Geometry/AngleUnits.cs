@@ -1,0 +1,16 @@
+namespace DSAExperimentation.Domain.Mathematics.Geometry;
+
+// Angles in degrees, which LC 1610 measures with: a degree is defined as a 360th of a full turn, so
+// a turn is 360 degrees and a radian is 180/pi of them. These are units, true on any surface. That
+// the angles around a point make a full turn is a further fact that holds only where the surface is
+// flat at that point (ARCHITECTURE §17.6). How a strategy wraps its angles around the 360/0 seam
+// stays with it, and the baseline keeps its own copy (§17.5).
+/// <summary>Angles measured in degrees.</summary>
+public static class AngleUnits
+{
+    /// <summary>The degrees in one full turn, which defines the degree.</summary>
+    public const double FullTurnDegrees = 360.0;
+
+    /// <summary>The degrees in one radian: a half turn is pi radians.</summary>
+    public const double DegreesPerRadian = FullTurnDegrees / 2 / Math.PI;
+}

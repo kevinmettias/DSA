@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Mathematics.Geometry;
+
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
 // Benchmark workload sizing for LC 3899 - a single random side triple, rejection
@@ -26,7 +28,7 @@ internal static class TriangleSideWorkloads
             var sorted = (int[])sides.Clone();
             Array.Sort(sorted);
 
-            if (sorted[0] + sorted[1] > sorted[2])
+            if (EuclideanPolygons.CanClose(sorted[2], sorted[0] + sorted[1]))
             {
                 return sides;
             }

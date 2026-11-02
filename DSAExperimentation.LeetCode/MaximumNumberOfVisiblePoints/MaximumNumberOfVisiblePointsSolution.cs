@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.Domain.Mathematics.Geometry;
 
 namespace DSAExperimentation.LeetCode.MaximumNumberOfVisiblePoints;
 
@@ -11,10 +12,15 @@ namespace DSAExperimentation.LeetCode.MaximumNumberOfVisiblePoints;
 // What is left is "the widest window of width `angle` on a circle", answered either
 // by trying every point's angle as the window's leading edge, or by sorting once and
 // sliding.
+//
+// A full turn's degrees are geometry's (Domain/Mathematics/Geometry): the sliding arm's wrap reads
+// AngleUnits, and the brute-force baseline keeps its own FullCircleDegrees (ARCHITECTURE §17.5).
 internal static class MaximumNumberOfVisiblePointsSolution
 {
     private const double FullCircleDegrees = 360.0;
-    private const double DegreesPerRadian = 180.0;
+
+    // Degrees in half a turn, which is pi radians: Atan2's radians times this, over pi, are degrees.
+    private const double HalfTurnDegrees = 180.0;
     private const double AngleEpsilon = 1e-9;
     private const int AngleDoublingFactor = 2;
 
@@ -85,7 +91,7 @@ internal static class MaximumNumberOfVisiblePointsSolution
         for (var i = 0; i < sorted.Length; i++)
         {
             doubled[i] = sorted[i];
-            doubled[i + sorted.Length] = sorted[i] + FullCircleDegrees;
+            doubled[i + sorted.Length] = sorted[i] + AngleUnits.FullTurnDegrees;
         }
 
         return doubled;
@@ -128,7 +134,7 @@ internal static class MaximumNumberOfVisiblePointsSolution
                 continue;
             }
 
-            angles.Add(Math.Atan2(dy, dx) * DegreesPerRadian / Math.PI);
+            angles.Add(Math.Atan2(dy, dx) * HalfTurnDegrees / Math.PI);
         }
 
         return ([.. angles], atLocation);

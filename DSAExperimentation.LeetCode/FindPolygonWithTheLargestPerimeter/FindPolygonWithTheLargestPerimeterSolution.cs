@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.Domain.Mathematics.Geometry;
 
 namespace DSAExperimentation.LeetCode.FindPolygonWithTheLargestPerimeter;
 
@@ -6,6 +7,10 @@ namespace DSAExperimentation.LeetCode.FindPolygonWithTheLargestPerimeter;
 // lengths from nums (any subset, not necessarily contiguous) whose longest
 // side is smaller than the sum of the rest, maximizing total perimeter, or
 // report -1 if no such choice exists.
+//
+// When sides close into a polygon is the flat plane's (Domain/Mathematics/Geometry): the
+// running-sum arm asks EuclideanPolygons, and the subset baseline keeps its own test
+// (ARCHITECTURE §17.5).
 internal static class FindPolygonWithTheLargestPerimeterSolution
 {
     // Textbook baseline: try every subset of size >= 3 directly against the
@@ -62,11 +67,11 @@ internal static class FindPolygonWithTheLargestPerimeterSolution
         var sorted = MergeSort.SortedCopy(nums);
         var total = TotalPerimeter(sorted);
 
-        for (var i = sorted.Length - 1; i >= 2; i--)
+        for (var i = sorted.Length - 1; i >= EuclideanPolygons.FewestSides - 1; i--)
         {
             var sumOfSmaller = total - sorted[i];
 
-            if (sorted[i] < sumOfSmaller)
+            if (EuclideanPolygons.CanClose(sorted[i], sumOfSmaller))
             {
                 return total;
             }
