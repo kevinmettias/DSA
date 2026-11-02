@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.RaceCar;
 // doubles the current speed.
 //
 // Owned here rather than in RaceCarStateSpace because RaceCarSolution and
-// RaceCarStateGraph name them too - they describe the car's motion, of which the
+// RaceCarCommands name them too - they describe the car's motion, of which the
 // state space is only one reading.
 internal static class RaceCarMotion
 {

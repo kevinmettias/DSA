@@ -1,5 +1,7 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.DataStructures.Graph.States;
+using CarState = (int Position, int Speed);
 
 namespace DSAExperimentation.LeetCode.RaceCar;
 
@@ -76,46 +78,58 @@ internal static class RaceCarSolution
     // every node", so the puzzle reduces to the cheapest of the states that share the
     // target position - the car may arrive at any speed.
     public static int MinCommandsByReduceGraph(int target) =>
-        MinCommandsByReduceGraph(RaceCarStateGraph.Build(target), target);
+        MinCommandsByReduceGraph(BuildCommandGraph(target), target);
 
-    public static int MinCommandsByReduceGraph(RaceCarStateGraph graph, int target)
+    public static int MinCommandsByReduceGraph(StateGraph<CarState> graph, int target)
     {
-        var distances = BreadthFirstDistances.From<RaceCarNode, RaceCarTopology, ListChildren<RaceCarNode>>(graph.Start);
+        if (!graph.TryGetNode((RaceCarMotion.StartPosition, RaceCarMotion.StartSpeed), out var start))
+        {
+            return LeetCodeAnswer.None;
+        }
 
-        var best = BestArrival(distances, graph, target);
+        var distances = BreadthFirstDistances.From<StateNode<CarState>, StateTopology<CarState>, ListChildren<StateNode<CarState>>>(start);
+
+        var best = BestArrival(distances, graph, RaceCarStateSpace.For(target), target);
 
         return best == int.MaxValue ? LeetCodeAnswer.None : best;
     }
 
+    // The cheapest arrival at the target over every speed in the box: both signs of each power of
+    // two up to its bound, as RaceCarStateSpace.Speeds lists them, walked here rather than listed so
+    // the search allocates nothing beyond the walk.
     private static int BestArrival(
-        Dictionary<RaceCarNode, int> distances, RaceCarStateGraph graph, int target)
+        Dictionary<StateNode<CarState>, int> distances, StateGraph<CarState> graph, RaceCarStateSpace box, int target)
     {
         var best = int.MaxValue;
 
-        foreach (var speed in graph.Speeds)
+        for (var magnitude = RaceCarMotion.StartSpeed;
+            magnitude <= box.MaxSpeedMagnitude;
+            magnitude *= RaceCarMotion.SpeedDoublingFactor)
         {
-            var distance = ArrivalDistance(graph, distances, target, speed);
-
-            if (distance < best)
-            {
-                best = distance;
-            }
+            var forward = ArrivalDistance(graph, distances, (target, magnitude));
+            var backward = ArrivalDistance(graph, distances, (target, -magnitude));
+            var atThisMagnitude = Math.Min(forward, backward);
+            best = Math.Min(best, atThisMagnitude);
         }
 
         return best;
     }
 
-    // The command count the BFS recorded for arriving at `target` at this speed -
-    // int.MaxValue when that arrival has no recorded distance at all, so it can
-    // never beat one that does.
-    private static int ArrivalDistance(
-        RaceCarStateGraph graph, Dictionary<RaceCarNode, int> distances, int target, int speed)
+    // The command count the BFS recorded for arriving in this state - int.MaxValue when that
+    // arrival has no recorded distance at all, so it can never beat one that does.
+    private static int ArrivalDistance(StateGraph<CarState> graph, Dictionary<StateNode<CarState>, int> distances, CarState arrival)
     {
-        if (graph.TryGetNode(target, speed, out var node) && distances.TryGetValue(node, out var distance))
+        if (graph.TryGetNode(arrival, out var node) && distances.TryGetValue(node, out var distance))
         {
             return distance;
         }
 
         return int.MaxValue;
     }
+
+    // The composed arm's input: every (position, speed) in the target's box, joined by the 'A' and
+    // 'R' commands that stay inside it. Public so a benchmark can build it outside the timed region
+    // (ARCHITECTURE.md section 17.4).
+    public static StateGraph<CarState> BuildCommandGraph(int target)
+        => StateGraph<CarState>.Build(new RaceCarCommands(RaceCarStateSpace.For(target)), new EveryState<CarState>());
 }

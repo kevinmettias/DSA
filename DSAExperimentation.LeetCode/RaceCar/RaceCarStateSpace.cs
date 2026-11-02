@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.RaceCar;
 // smallest power of two past 4*target (ample headroom to overshoot and correct with
 // an 'R'), and position stays within that same margin either side of zero.
 //
-// Describing the box separately from RaceCarStateGraph is what lets the textbook
+// Describing the box separately from RaceCarCommands is what lets the textbook
 // arm stay textbook: it needs the bound, not a materialized graph.
 internal readonly record struct RaceCarStateSpace(int PositionBound, int MaxSpeedMagnitude)
 {

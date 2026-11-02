@@ -49,4 +49,40 @@ public sealed partial class RaceCarSolutionTests
     [MemberData(nameof(Examples))]
     public void MinCommandsByReduceGraph_LeetCodeExamples_ReturnsShortestCommandCount(int target, int expected) =>
         Assert.Equal(expected, RaceCarSolution.MinCommandsByReduceGraph(target));
+
+    // Target 3's box runs from -14 to 14, with speeds of magnitude 1 to 16: 29 positions of 10 speeds.
+    [Fact]
+    public void BuildCommandGraph_HoldsEveryStateInTheTargetsBox() =>
+        Assert.Equal(290, RaceCarSolution.BuildCommandGraph(3).Count);
+
+    [Fact]
+    public void BuildCommandGraph_SpansTheBoxEvenlyEitherSideOfZero()
+    {
+        var graph = RaceCarSolution.BuildCommandGraph(3);
+
+        Assert.True(graph.TryGetNode((-14, 1), out _));
+        Assert.True(graph.TryGetNode((14, -16), out _));
+        Assert.False(graph.TryGetNode((15, 1), out _));
+        Assert.False(graph.TryGetNode((-15, 1), out _));
+    }
+
+    // From the start, 'A' moves to (1, 2) and 'R' turns the car round in place.
+    [Fact]
+    public void BuildCommandGraph_JoinsAStateByItsTwoCommands()
+    {
+        var graph = RaceCarSolution.BuildCommandGraph(3);
+
+        Assert.True(graph.TryGetNode((0, 1), out var start));
+        Assert.Equal([(1, 2), (0, -1)], start.Successors.Select(successor => successor.State));
+    }
+
+    // An 'A' that would leave the box lands on no state, so the graph keeps only the 'R'.
+    [Fact]
+    public void BuildCommandGraph_LeavesOutAnAccelerationThatLeavesTheBox()
+    {
+        var graph = RaceCarSolution.BuildCommandGraph(3);
+
+        Assert.True(graph.TryGetNode((14, 16), out var edge));
+        Assert.Equal([(14, -1)], edge.Successors.Select(successor => successor.State));
+    }
 }
