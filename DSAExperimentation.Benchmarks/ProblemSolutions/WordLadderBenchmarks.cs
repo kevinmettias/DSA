@@ -1,6 +1,7 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Hamming;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.WordLadder;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -27,7 +28,7 @@ public class WordLadderBenchmarks
     public void Setup()
     {
         var (words, beginWord, endWord) =
-            HammingWorkloads.BuildChain(WordCount, WordLength, StandardAlphabets.LowercaseLatin, seed: RandomSeed);
+            HammingWorkloads.BuildChain<EnglishLowercase>(WordCount, WordLength, seed: RandomSeed);
 
         _beginWord = beginWord;
         _endWord = endWord;

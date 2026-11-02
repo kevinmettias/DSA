@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.Graph.Hamming;
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.PalindromicPathQueriesInATree;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
@@ -74,9 +74,7 @@ internal static class PalindromicPathQueryWorkloads
     private static string DrawLetters(int count, Random random)
     {
         var indices = SeededDraws.Values(count, 0, LetterCount, random);
-        var alphabet = StandardAlphabets.LowercaseLatin.Characters;
-
-        return new string(Array.ConvertAll(indices, index => alphabet[index]));
+        return new string(Array.ConvertAll(indices, EnglishLowercase.LetterAt));
     }
 
     // A fair coin: heads on one of CoinFaces equally likely draws.

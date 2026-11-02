@@ -800,7 +800,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `Graph/Engines/Dags/` | `IDagTopology` (§3.2) |
 | `Graph/Engines/Dags/Trees/` | `ITreeTopology`; the binary tree (`BinaryTreeNode`, `BinaryTreeChildren`, `BinaryTreeTopology`, `ChildSide`, `BinarySearchTree`, `InOrderTraversal`, `IInOrderHooks`, `FindClosest`); the tries with real witnesses (`LowercaseTrie*`, `BitTrie*`, §13.8, §13.9); the rooted tree (`RootedTreeNode`, `RootedTreeTopology`, `ParentArrayTree`, `EdgeListTree`, `PreOrderTour`, `PreOrderLowestCommonAncestor`); the quad tree (`QuadTreeNode`, `QuadTreeGrid`). `EdgeListTree` roots LeetCode's undirected edge list with a breadth-first walk, returning the parent array `ParentArrayTree` reads and, for each node, the index of the edge that joins it to its parent - the one thing a parent array cannot recover. `PreOrderTour` lays a `RootedTreeNode` tree out in pre-order, so every subtree is one contiguous range of positions; `PreOrderLowestCommonAncestor` reads ancestors off that layout with one range minimum, O(log n) per query after O(n) preparation. It is hardwired to the tour, so it lives here rather than beside `Algorithms/Ancestry/LowestCommonAncestor`, which is generic over `ITreeTopology` (§13.5) |
 | `Graph/Grids/` | `Grid`, `GridNode`, `GridChildren`, `GridDirections`, `GridSize`, `GridNeighbors`, `IGridCellFilter`, `GridTopology`, and the weighted `WeightedGrid*` (§17.6). `GridSize` is a board's extent and its one bounds rule; `GridNeighbors` is a cell's on-board neighbours in a direction table's order, filtered by an `IGridCellFilter`, for a `DepthFirstSearch.Traverse` successor whose "open" is decided by the problem's cells rather than a fixed map like `Grid`'s |
-| `Graph/Hamming/` | `HammingNode`, `HammingTopology`, `HammingGraph`, `HammingSearch`, `Alphabet`, `StandardAlphabets`, `MutationStart`, `MutationTarget` (§17.6) |
+| `Graph/Hamming/` | `HammingNode`, `HammingTopology`, `HammingGraph`, `HammingSearch`, `MutationStart`, `MutationTarget` (§17.6); the letters a mutation writes are an `IAlphabet` type argument (§19.6) |
 | `Graph/ShortestPaths/` | `ByPriorityOrder` (§13.2) |
 | `Graph/States/` | `IStateSpace`, `IStateFilter`, `EveryState`, `StateNode`, `StateTopology`, `StateGraph`. A state space numbers its states and writes a state's successors into a buffer; `StateGraph` makes the explicit graph of the states a filter keeps, which a breadth-first walk then searches. The spaces are Domain models' to state: a combination lock's turns (`LockTurns`), a sliding puzzle's slides (`PuzzleSlides`) |
 | `HashMap/` | `HashMapStorage`, `HashMapEntry`, `HashMap` (§14.2) |
@@ -877,7 +877,7 @@ specifically:
 | `Language/English/` | `EnglishLowercase`, `EnglishUppercase` — the 26 letters in each case, read by the count tables and the trie, and by LC 424's and LC 621's capitals; `EnglishLetters` — both cases folded, with English's numbering, A as 1 through Z as 26, read by LC 2156's rolling-hash arm and LC 91's memoized arm; `EnglishVowels` — the five vowels as a letter set over it, shared by LC 1641, LC 2063 and LC 3227. LC 639's letter count sits in a helper its baseline shares, and LC 273's number words are only half of English's rule, whose other half, teens, hundreds and groups of a thousand, is what both its arms are made of. Neither uses it |
 | `Mathematics/Geometry/` | `EuclideanPolygons`, `EuclideanPlane`, `ConstantCurvatureSurface`, `AngleUnits` — when sides close into a polygon and a triangle's angle sum on the flat plane, read by the composed arms of LC 2971, LC 976, LC 3024 and LC 3899; a triangle's angle sum on any surface of constant curvature; and a turn's degrees, read by LC 1610 |
 | `Mathematics/Modular/` | `IModulus`, `IPrimeModulus` — a modulus as a struct witness, and a prime one, under which every nonzero residue has a Fermat inverse; the algorithms over them are `Algorithms/NumberTheory`'s, and LeetCode's 10^9 + 7 is `LeetCodeModulus` at the LeetCode tier's root |
-| `Science/Dna/` | `DnaBases` — DNA's four bases, the alphabet LC 433's benchmark mutates its genes over and the letters LC 187's workload strings are spelled in. LC 187's 2-bit code per base is its strategy and stays in its folder, so no solution reads it |
+| `Science/Dna/` | `DnaBase`, `DnaBases` — DNA's four bases as named values and as an alphabet, the one LC 433's benchmark mutates its genes over and the letters LC 187's workload strings are spelled in. LC 187's 2-bit code per base is its strategy and stays in its folder, so no solution reads it |
 
 `DSAExperimentation.Tests/` mirrors every tree one level deeper (§7, §18.1). Fixture files go to the
 utility folder matching the interface they implement, not a shared grab-bag: the `Recording*Hooks`
@@ -1604,7 +1604,7 @@ about LeetCode rather than about any problem's world, and one problem's own spel
 | `Domain/Language/English/` | `EnglishLowercase`, `EnglishUppercase`, `EnglishLetters`, `EnglishVowels` | The 26 letters in each case as presets of tier 1's `IAlphabet` (§19.6), each a run of character codes, and the two folded into `EnglishLetters`. English numbers its letters from one, A as 1 through Z as 26: a notation people use, and English's rather than every alphabet's, since Greek and Hebrew numerals give kappa and kaf the value 20, so `NumberOf` is `EnglishLetters`' and not the contract's. The five written vowels are a letter set over the folded letters, so 'A' is a vowel as 'a' is; y, a vowel only in some words, is not one of them. How a strategy counts or finds them stays with it. |
 | `Domain/Mathematics/Geometry/` | `EuclideanPolygons`, `EuclideanPlane`, `ConstantCurvatureSurface`, `AngleUnits` | Mathematical facts no data structure or algorithm represents, which the owner ruled are Domain's, each named for the geometry it holds in. On the flat plane, sides close into a polygon when the longest is shorter than the rest together, which for three sides is the triangle inequality, and a polygon has at least three sides; a sphere has two-sided lunes. A triangle's angles make 180 degrees on the flat plane, a constant a caller pays nothing for, and on a surface of constant curvature K, Gauss–Bonnet's π + K·Area, which is exact. A turn is 360 degrees by the degree's definition. Sorting, scanning and the law of cosines stay with the strategies, and `Algorithms/Geometry` keeps operations such as the convex hull. |
 | `Domain/Mathematics/Modular/` | `IModulus`, `IPrimeModulus` | What a modulus is, as mathematics rather than LeetCode's convention: the residues 0 to m - 1, the bound that keeps the product of two residues inside a long, and for a prime, Fermat's inverse a^(p - 2). An algorithm over them is swappable, so `ModularInverse.ByFermat` and `FactorialTable<TModulus>` are `Algorithms/NumberTheory`'s, beside `ModularPower`. A modulus that is a compile-time constant is a struct witness the JIT folds. LeetCode's own prime, 10^9 + 7, is `LeetCodeModulus` at the LeetCode tier's root, since it is LeetCode's choice; its tests check it is prime and within the bound. |
-| `Domain/Science/Dna/` | `DnaBases` | The four bases, A, C, G and T. They were tier 1's `StandardAlphabets.Dna`, a fact about DNA in a graph's folder, whose own header said the alphabet a mutation walks belongs to the problem and not to the graph. The `Alphabet` record they fill stays tier 1, as the lock's graph does. A number for each base is not DNA's: LC 187's 2-bit order is its own strategy. |
+| `Domain/Science/Dna/` | `DnaBase`, `DnaBases` | The four bases, adenine A, cytosine C, guanine G and thymine T, each a named value carrying its name and letter. `DnaBases.All` lists them once, and its letters, names, spelled-out string and alphabet slots are all read from that one list. As an alphabet they are A to T with gaps, so their slots come from a `LetterTable` (§19.6). They were tier 1's `StandardAlphabets.Dna`, a fact about DNA in a graph's folder. A number for each base is not DNA's: LC 187's 2-bit order is its own strategy. |
 
 Their tests mirror them in `DSAExperimentation.Tests/Domain/{Computing/Filesystem,Computing/Paths,Devices/Compass,Devices/Locks,Devices/Telephone,Games/Chess,Games/Dice,Games/Life,Games/SlidingPuzzle,Games/Sudoku,Games/TicTacToe,Games/Zuma,Language,Language/English,Mathematics/Geometry,Science/Dna}/`. The
 domain knowledge still written inside individual problem folders moves here problem by problem
@@ -1923,7 +1923,7 @@ by mistake:
   disagree on axes.
 - **English's vowels.** `EnglishVowels` serves LC 1641, LC 2063 and LC 3227.
 - **DNA's bases.** `DnaBases` left tier 1's `StandardAlphabets`, a graph's folder. The `Alphabet`
-  record they fill stays there.
+  record they filled has since folded into the alphabet contract (§19.6).
 
 Measuring the wave found two costs that moving a rule into `Domain/` can carry. Both were fixed
 before the step landed:
@@ -2256,8 +2256,12 @@ covering both cases and usable for other languages, built by composition (2026-1
   spelled-out string are read from (the owner's ruling), so the vowels' count is derived rather than
   written beside them; as a non-constant it is no longer one `LibraryValueCopies` compares.
 
-Graph/Hamming's `Alphabet` is a different thing — a runtime-chosen set a mutation substitutes from —
-and stays separate (§5 step 5). A solution adopts it only when no baseline reads its constant. The
+Graph/Hamming's `Alphabet` record, the letters a mutation substitutes from, was kept separate as a
+runtime-chosen set (§5 step 5), but only two fixed values ever built it: the English lowercase letters
+and DNA's bases. It folded into the contract: `HammingGraph.OneCharacterMutations<TAlphabet>` and
+`HammingSearch.MutationDistance<TAlphabet>` take the alphabet as a type argument, which still cannot
+be transposed with the value mutated, and `StandardAlphabets` went. A solution adopts an alphabet only
+when no baseline reads its constant. The
 owner ruled that a baseline may not read even a compile-time constant from a core type, so a
 constant shared with a baseline stays local.
 

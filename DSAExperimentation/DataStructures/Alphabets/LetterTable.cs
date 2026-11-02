@@ -10,8 +10,6 @@ namespace DSAExperimentation.DataStructures.Alphabets;
 /// <summary>An alphabet laid out by spelling its letters out in order.</summary>
 public sealed class LetterTable
 {
-    private const string NotALetterMessage = "Expected a letter of the alphabet.";
-    private const string NotASlotMessage = "Expected a slot of the alphabet.";
     private const string RepeatedLetterMessage = "An alphabet's letters must each appear once.";
     private const int NoSlot = -1;
 
@@ -63,14 +61,11 @@ public sealed class LetterTable
     {
         if (!TryIndexOf(letter, out var index))
         {
-            ThrowNotALetter(letter);
+            AlphabetFailures.ThrowNotALetter(letter);
         }
 
         return index;
     }
-
-    private static void ThrowNotALetter(char letter) =>
-        throw new ArgumentOutOfRangeException(nameof(letter), letter, NotALetterMessage);
 
     /// <summary>Finds the slot a character takes, if it is a letter of the alphabet.</summary>
     /// <param name="letter">The character to look up.</param>
@@ -91,12 +86,9 @@ public sealed class LetterTable
     {
         if ((uint)index >= (uint)_letters.Length)
         {
-            ThrowNotASlot(index);
+            AlphabetFailures.ThrowNotASlot(index);
         }
 
         return _letters[index];
     }
-
-    private static void ThrowNotASlot(int index) =>
-        throw new ArgumentOutOfRangeException(nameof(index), index, NotASlotMessage);
 }

@@ -1,4 +1,6 @@
+using DSAExperimentation.DataStructures.Alphabets;
 using DSAExperimentation.DataStructures.Graph.Hamming;
+using DSAExperimentation.Domain.Science.Dna;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Hamming;
 
@@ -84,7 +86,7 @@ public sealed partial class HammingGraphTests
     [Fact]
     public void OneCharacterMutations_ProducesEveryReplacementAndNeverTheOriginal()
     {
-        var mutations = HammingGraph.OneCharacterMutations("ab", new Alphabet("abc")).ToList();
+        var mutations = HammingGraph.OneCharacterMutations<FirstThreeLetters>("ab").ToList();
         var sorted = mutations.OrderBy(m => m, StringComparer.Ordinal);
 
         Assert.Equal(["aa", "ac", "bb", "cb"], sorted);
@@ -94,13 +96,13 @@ public sealed partial class HammingGraphTests
     [Fact]
     public void OneCharacterMutations_YieldsPositionsTimesAlphabetMinusOneResults()
     {
-        var overTheAlphabet = HammingGraph.OneCharacterMutations("AAAA", new Alphabet("ACGT")).ToList();
+        var overTheAlphabet = HammingGraph.OneCharacterMutations<DnaBases>("AAAA").ToList();
 
         Assert.Equal(4 * 3, overTheAlphabet.Count);
 
         // A source character outside the alphabet is never skipped, so that
         // position contributes a full alphabet's worth of replacements instead.
-        var outsideTheAlphabet = HammingGraph.OneCharacterMutations("aAAA", new Alphabet("ACGT")).ToList();
+        var outsideTheAlphabet = HammingGraph.OneCharacterMutations<DnaBases>("aAAA").ToList();
 
         Assert.Equal(4 * 3 + 1, outsideTheAlphabet.Count);
     }
@@ -110,7 +112,7 @@ public sealed partial class HammingGraphTests
     {
         // A stale buffer would leak an earlier position's replacement into later
         // results; every mutation must differ from the source in exactly one place.
-        var mutations = HammingGraph.OneCharacterMutations("aaa", new Alphabet("ab"));
+        var mutations = HammingGraph.OneCharacterMutations<FirstTwoLetters>("aaa");
 
         Assert.All(mutations, m =>
         {
@@ -142,4 +144,30 @@ public sealed partial class HammingGraphTests
     // one position. Named fields rather than two adjacent `string` positions, so the
     // row states which value it is talking about.
     public readonly record struct OneApartExample(string First, string Second, bool Expected);
+
+    private readonly struct FirstTwoLetters : IAlphabet
+    {
+        public static int Size => 2;
+
+        private static LetterRun Run => new('a', Size);
+
+        public static int IndexOf(char letter) => Run.IndexOf(letter);
+
+        public static bool TryIndexOf(char letter, out int index) => Run.TryIndexOf(letter, out index);
+
+        public static char LetterAt(int index) => Run.LetterAt(index);
+    }
+
+    private readonly struct FirstThreeLetters : IAlphabet
+    {
+        public static int Size => 3;
+
+        private static LetterRun Run => new('a', Size);
+
+        public static int IndexOf(char letter) => Run.IndexOf(letter);
+
+        public static bool TryIndexOf(char letter, out int index) => Run.TryIndexOf(letter, out index);
+
+        public static char LetterAt(int index) => Run.LetterAt(index);
+    }
 }

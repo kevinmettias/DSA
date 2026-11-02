@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.Alphabets;
 using DSAExperimentation.DataStructures.HashMap;
 
 namespace DSAExperimentation.DataStructures.Graph.Hamming;
@@ -105,14 +106,15 @@ public sealed class HammingGraph
         return differences == 1;
     }
 
-    // Every string one character away from `value` over `alphabet`, whether or not
+    // Every string one character away from `value` over the alphabet, whether or not
     // it is a member of any graph - what a search that never materializes the
     // graph generates on the fly instead of following edges.
     /// <summary>Generates every string one character away from a value over an alphabet.</summary>
+    /// <typeparam name="TAlphabet">The letters each position may be changed to.</typeparam>
     /// <param name="value">The string to mutate.</param>
-    /// <param name="alphabet">The characters each position may be changed to.</param>
     /// <returns>Each string with one position changed to a different alphabet character, generated lazily.</returns>
-    public static IEnumerable<string> OneCharacterMutations(string value, Alphabet alphabet)
+    public static IEnumerable<string> OneCharacterMutations<TAlphabet>(string value)
+        where TAlphabet : struct, IAlphabet
     {
         var buffer = value.ToCharArray();
 
@@ -120,8 +122,10 @@ public sealed class HammingGraph
         {
             var original = buffer[position];
 
-            foreach (var replacement in alphabet.Characters)
+            for (var slot = 0; slot < TAlphabet.Size; slot++)
             {
+                var replacement = TAlphabet.LetterAt(slot);
+
                 if (replacement != original)
                 {
                     buffer[position] = replacement;

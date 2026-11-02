@@ -22,7 +22,7 @@ public sealed partial class HammingWorkloadsTests
     public void BuildChain_ValueCount_ListsAtMostOneValuePerStepAndKeepsTheChainEnds()
     {
         var (values, first, last) =
-            HammingWorkloads.BuildChain(ValueCount, ValueLength, DnaBases.Alphabet, Seed);
+            HammingWorkloads.BuildChain<DnaBases>(ValueCount, ValueLength, Seed);
 
         Assert.InRange(values.Length, MutationCount + 1, ValueCount);
         Assert.Equal(values[ChainStart], first);
@@ -38,12 +38,12 @@ public sealed partial class HammingWorkloadsTests
     [Fact]
     public void BuildChain_EveryValue_StaysOnTheAlphabetAtTheRequestedLength()
     {
-        var (values, _, _) = HammingWorkloads.BuildChain(ValueCount, ValueLength, DnaBases.Alphabet, Seed);
+        var (values, _, _) = HammingWorkloads.BuildChain<DnaBases>(ValueCount, ValueLength, Seed);
 
         Assert.All(values, value => Assert.Equal(ValueLength, value.Length));
         Assert.All(
             values,
-            value => Assert.All(value, character => Assert.Contains(character, DnaBases.Alphabet.Characters)));
+            value => Assert.All(value, character => Assert.Contains(character, DnaBases.Letters)));
     }
 
     // Each word entered the list as one mutation of the word the walk stood on, whose first copy is
@@ -60,12 +60,18 @@ public sealed partial class HammingWorkloadsTests
         }
     }
 
+    // Each step draws from the alphabet with the replaced letter taken out, so over a long chain every
+    // letter is written somewhere; a draw that kept the replaced letter in would never reach the last.
+    [Fact]
+    public void BuildChain_EveryLetterOfTheAlphabet_IsWrittenSomewhere() =>
+        Assert.All(DnaBases.Letters, letter => Assert.Contains(BuildChain(), value => value.Contains(letter)));
+
     [Fact]
     public void BuildChain_SameSeed_ReturnsTheSameChain()
     {
-        var (values, first, last) = HammingWorkloads.BuildChain(ValueCount, ValueLength, DnaBases.Alphabet, Seed);
+        var (values, first, last) = HammingWorkloads.BuildChain<DnaBases>(ValueCount, ValueLength, Seed);
         var (repeatValues, repeatFirst, repeatLast) =
-            HammingWorkloads.BuildChain(ValueCount, ValueLength, DnaBases.Alphabet, Seed);
+            HammingWorkloads.BuildChain<DnaBases>(ValueCount, ValueLength, Seed);
 
         Assert.Equal(values, repeatValues);
         Assert.Equal(first, repeatFirst);
@@ -73,7 +79,7 @@ public sealed partial class HammingWorkloadsTests
     }
 
     private static string[] BuildChain() =>
-        HammingWorkloads.BuildChain(ValueCount, ValueLength, DnaBases.Alphabet, Seed).Values;
+        HammingWorkloads.BuildChain<DnaBases>(ValueCount, ValueLength, Seed).Values;
 
     private static int DifferingPositions(string left, string right) =>
         left.Where((character, position) => character != right[position]).Count();

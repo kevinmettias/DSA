@@ -28,7 +28,7 @@ public class MinimumGeneticMutationBenchmarks
     public void Setup()
     {
         var (genes, startGene, endGene) =
-            HammingWorkloads.BuildChain(GeneCount, GeneLength, DnaBases.Alphabet, seed: RandomSeed);
+            HammingWorkloads.BuildChain<DnaBases>(GeneCount, GeneLength, seed: RandomSeed);
 
         _startGene = startGene;
         _endGene = endGene;

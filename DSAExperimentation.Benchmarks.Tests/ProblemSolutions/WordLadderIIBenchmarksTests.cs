@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.DataStructures.Graph.Hamming;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -32,7 +32,7 @@ public sealed partial class WordLadderIIBenchmarksTests
     public void Setup_LargestWordCount_ShortestSequencesStayInsideTheOutputCap()
     {
         var (words, beginWord, endWord) =
-            HammingWorkloads.BuildChain(LargestWordCount, WordLength, StandardAlphabets.LowercaseLatin, seed: Seed);
+            HammingWorkloads.BuildChain<EnglishLowercase>(LargestWordCount, WordLength, seed: Seed);
         var (sequenceCount, wordsPerSequence) = CountShortestSequences(words.ToHashSet(), beginWord, endWord);
 
         Assert.InRange(sequenceCount * wordsPerSequence, 1, MaxTotalSequenceWords);

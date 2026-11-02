@@ -20,7 +20,7 @@ public sealed partial class DnaSequenceWorkloadsTests
     {
         var sequence = DnaSequenceWorkloads.BuildSequence(Length, Seed);
 
-        Assert.All(sequence, nucleotide => Assert.True(DnaBases.Letters.Contains(nucleotide)));
+        Assert.All(sequence, nucleotide => Assert.Contains(nucleotide, DnaBases.Letters));
     }
 
     [Fact]

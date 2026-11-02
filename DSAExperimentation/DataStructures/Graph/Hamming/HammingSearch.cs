@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.Alphabets;
 using DSAExperimentation.DataStructures.Set;
 
 namespace DSAExperimentation.DataStructures.Graph.Hamming;
@@ -6,11 +7,11 @@ namespace DSAExperimentation.DataStructures.Graph.Hamming;
 // HammingGraph: candidates are generated on the fly and kept only when the allowed
 // set contains them.
 //
-// This is the "textbook" half of every benchmark in this family - a BCL Queue and
-// HashSet, deliberately composing none of this repo's graph engine, so that
-// HammingDistances has something to be measured against. It lives here rather than
-// beside any one problem because LC 127 and LC 433 are the same search, differing
-// only in alphabet and in whether the answer counts nodes or edges.
+// A BCL Queue and HashSet, deliberately composing none of this repo's graph engine. It
+// lives here rather than beside any one problem because LC 127 and LC 433 are the same
+// search, differing only in alphabet and in whether the answer counts nodes or edges.
+// No benchmark arm calls it: each problem's baseline keeps its own copy (ARCHITECTURE
+// 17.5), and its composed arms use HammingDistances.
 /// <summary>
 /// Breadth-first search over one-character mutations that never builds a <see cref="HammingGraph"/>.
 /// </summary>
@@ -25,15 +26,15 @@ public static class HammingSearch
     /// <summary>
     /// Finds the fewest one-character mutations that turn start into target through allowed strings.
     /// </summary>
+    /// <typeparam name="TAlphabet">The letters a mutation may write.</typeparam>
     /// <param name="start">The string to start from, which need not be in <paramref name="allowed"/>.</param>
     /// <param name="target">The string to reach.</param>
     /// <param name="allowed">The strings every mutation along the way must produce.</param>
-    /// <param name="alphabet">The characters a mutation may write.</param>
     /// <returns>The mutation count of a shortest path, 0 when start is the target, or null when none exists.</returns>
-    public static int? MutationDistance(
-        MutationStart start, MutationTarget target, Set<string> allowed, Alphabet alphabet)
+    public static int? MutationDistance<TAlphabet>(MutationStart start, MutationTarget target, Set<string> allowed)
+        where TAlphabet : struct, IAlphabet
     {
-        var walk = new MutationWalk(alphabet, allowed, [start.Text], new Queue<(string, int)>());
+        var walk = new MutationWalk(allowed, [start.Text], new Queue<(string, int)>());
         walk.Queue.Enqueue((start.Text, 0));
 
         while (walk.Queue.Count > 0)
@@ -45,15 +46,16 @@ public static class HammingSearch
                 return distance;
             }
 
-            EnqueueAllowedMutations(value, distance, walk);
+            EnqueueAllowedMutations<TAlphabet>(value, distance, walk);
         }
 
         return null;
     }
 
-    private static void EnqueueAllowedMutations(string value, int distance, MutationWalk walk)
+    private static void EnqueueAllowedMutations<TAlphabet>(string value, int distance, MutationWalk walk)
+        where TAlphabet : struct, IAlphabet
     {
-        foreach (var candidate in HammingGraph.OneCharacterMutations(value, walk.Alphabet))
+        foreach (var candidate in HammingGraph.OneCharacterMutations<TAlphabet>(value))
         {
             if (walk.Allowed.Has(candidate) && walk.Visited.Add(candidate))
             {
@@ -62,10 +64,8 @@ public static class HammingSearch
         }
     }
 
-    // The three collections one breadth-first walk threads through every step,
-    // plus the alphabet it mutates over.
+    // The three collections one breadth-first walk threads through every step.
     private readonly record struct MutationWalk(
-        Alphabet Alphabet,
         Set<string> Allowed,
         HashSet<string> Visited,
         Queue<(string Value, int Distance)> Queue);

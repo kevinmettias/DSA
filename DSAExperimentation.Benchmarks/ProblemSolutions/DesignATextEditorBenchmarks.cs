@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.Graph.Hamming;
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.DesignATextEditor;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -33,8 +33,8 @@ public class DesignATextEditorBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var alphabet = StandardAlphabets.LowercaseLatin.Characters;
-        _chunks = [.. Enumerable.Range(0, OperationCount).Select(i => alphabet[i % alphabet.Length] + new string(Filler, StepsBack))];
+        _chunks = [.. Enumerable.Range(0, OperationCount)
+            .Select(i => EnglishLowercase.LetterAt(i % EnglishLetters.Size) + new string(Filler, StepsBack))];
         _reported = new string[OperationCount];
     }
 

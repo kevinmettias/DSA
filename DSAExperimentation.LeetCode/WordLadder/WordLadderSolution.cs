@@ -17,7 +17,7 @@ internal static class WordLadderSolution
     private const int NoLadder = 0;
 
     // The letters a ladder word is spelled in, restated rather than read from
-    // StandardAlphabets: a baseline reaches no library type, not even a constant
+    // EnglishLowercase: a baseline reaches no library type, not even a constant
     // (ARCHITECTURE 17.5).
     private const string LadderLetters = "abcdefghijklmnopqrstuvwxyz";
 

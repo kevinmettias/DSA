@@ -10,9 +10,6 @@ namespace DSAExperimentation.DataStructures.Alphabets;
 /// <param name="size">How many letters the run holds.</param>
 public readonly struct LetterRun(char first, int size)
 {
-    private const string NotALetterMessage = "Expected a letter of the alphabet.";
-    private const string NotASlotMessage = "Expected a slot of the alphabet.";
-
     /// <summary>The first letter, which takes slot 0.</summary>
     public char First { get; } = first;
 
@@ -27,14 +24,11 @@ public readonly struct LetterRun(char first, int size)
     {
         if (!TryIndexOf(letter, out var index))
         {
-            ThrowNotALetter(letter);
+            AlphabetFailures.ThrowNotALetter(letter);
         }
 
         return index;
     }
-
-    private static void ThrowNotALetter(char letter) =>
-        throw new ArgumentOutOfRangeException(nameof(letter), letter, NotALetterMessage);
 
     /// <summary>Finds the slot a character takes, if it lies in the run.</summary>
     /// <param name="letter">The character to look up.</param>
@@ -54,14 +48,11 @@ public readonly struct LetterRun(char first, int size)
     {
         if (!IsSlot(index))
         {
-            ThrowNotASlot(index);
+            AlphabetFailures.ThrowNotASlot(index);
         }
 
         return (char)(First + index);
     }
-
-    private static void ThrowNotASlot(int index) =>
-        throw new ArgumentOutOfRangeException(nameof(index), index, NotASlotMessage);
 
     private bool IsSlot(int index) => (uint)index < (uint)Size;
 }
