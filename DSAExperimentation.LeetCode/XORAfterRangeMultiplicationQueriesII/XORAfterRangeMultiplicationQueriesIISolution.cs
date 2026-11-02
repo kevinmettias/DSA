@@ -75,7 +75,7 @@ internal static class XORAfterRangeMultiplicationQueriesIISolution
     {
         for (var idx = query.L; idx <= query.R; idx += query.K)
         {
-            values[idx] = values[idx] * query.V % ModularArithmetic.Modulo;
+            values[idx] = values[idx] * query.V % LeetCodeModulus.Value;
         }
     }
 
@@ -119,8 +119,8 @@ internal static class XORAfterRangeMultiplicationQueriesIISolution
         var posL = (query.L - residue) / query.K;
         var posR = (query.R - residue) / query.K;
 
-        diff[posL] = diff[posL] * query.V % ModularArithmetic.Modulo;
-        diff[posR + 1] = diff[posR + 1] * ModularArithmetic.Inverse(query.V) % ModularArithmetic.Modulo;
+        diff[posL] = diff[posL] * query.V % LeetCodeModulus.Value;
+        diff[posR + 1] = diff[posR + 1] * ModularArithmetic.Inverse(query.V) % LeetCodeModulus.Value;
     }
 
     // Applies every bucket's multiplicative difference array to the values it covers.
@@ -138,10 +138,10 @@ internal static class XORAfterRangeMultiplicationQueriesIISolution
 
         for (var t = 0; t < diff.Length - 1; t++)
         {
-            running = running * diff[t] % ModularArithmetic.Modulo;
+            running = running * diff[t] % LeetCodeModulus.Value;
 
             var idx = residue + t * stride;
-            values[idx] = values[idx] * running % ModularArithmetic.Modulo;
+            values[idx] = values[idx] * running % LeetCodeModulus.Value;
         }
     }
 

@@ -18,10 +18,6 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToArriveAtDestination;
 // cycle defense.
 internal static class NumberOfWaysToArriveAtDestinationSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook answer: recurse into every neighbor exactly one shortest-path
     // step closer and add up what comes back, with no memory between branches, so an
     // intersection reachable by k distinct prefixes is recounted k times - genuinely
@@ -50,7 +46,7 @@ internal static class NumberOfWaysToArriveAtDestinationSolution
         {
             if (node.Dist - weight == target.Dist)
             {
-                total = (total + CountWaysFrom(target)) % Modulo;
+                total = (total + CountWaysFrom(target)) % LeetCodeModulus.Value;
             }
         }
 

@@ -22,10 +22,6 @@ namespace DSAExperimentation.LeetCode.TheNumberOfGoodSubsets;
 // prime factors, so each occurrence independently doubles whatever the recursion counted.
 internal static class TheNumberOfGoodSubsetsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Each 1 in nums may be in or out of any good subset independently.
     private const int OnesDoublingBase = 2;
 
@@ -59,9 +55,9 @@ internal static class TheNumberOfGoodSubsetsSolution
             return skip;
         }
 
-        var take = weight * WaysFrom(candidates, index + 1, usedMask | mask) % Modulo;
+        var take = weight * WaysFrom(candidates, index + 1, usedMask | mask) % LeetCodeModulus.Value;
 
-        return (skip + take) % Modulo;
+        return (skip + take) % LeetCodeModulus.Value;
     }
 
     // The same recursion, with Memoizer owning the (index, usedMask) cache: at most one
@@ -103,9 +99,9 @@ internal static class TheNumberOfGoodSubsetsSolution
             }
 
             var take = weight * rest.Replay((index + 1, usedMask | mask), rest)
-                % ModularArithmetic.Modulo;
+                % LeetCodeModulus.Value;
 
-            return (skip + take) % ModularArithmetic.Modulo;
+            return (skip + take) % LeetCodeModulus.Value;
         }
     }
 
@@ -114,23 +110,23 @@ internal static class TheNumberOfGoodSubsetsSolution
     private static int WithOnesDoubling(long waysWithNonEmptyMask, int onesCount) =>
         (int)(waysWithNonEmptyMask
             * ModPower(OnesDoublingBase, onesCount)
-            % Modulo);
+            % LeetCodeModulus.Value);
 
-    // value^exponent mod Modulo by repeated squaring, restated rather than called on
-    // ModularArithmetic for the same reason as Modulo itself.
+    // value^exponent mod LeetCodeModulus.Value by repeated squaring, restated rather than called on
+    // ModularArithmetic for the same reason as LeetCodeModulus.Value itself.
     private static long ModPower(long value, long exponent)
     {
         var result = 1L;
-        value %= Modulo;
+        value %= LeetCodeModulus.Value;
 
         while (exponent > 0)
         {
             if ((exponent & 1) == 1)
             {
-                result = result * value % Modulo;
+                result = result * value % LeetCodeModulus.Value;
             }
 
-            value = value * value % Modulo;
+            value = value * value % LeetCodeModulus.Value;
             exponent >>= 1;
         }
 

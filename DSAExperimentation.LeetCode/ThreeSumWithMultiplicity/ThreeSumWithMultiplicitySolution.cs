@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.ThreeSumWithMultiplicity;
 
@@ -13,10 +12,6 @@ namespace DSAExperimentation.LeetCode.ThreeSumWithMultiplicity;
 // span's combinations in closed form.
 internal static class ThreeSumWithMultiplicitySolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Need at least 2 more elements after the anchor for a triple.
     private const int RemainingPairSize = 2;
 
@@ -38,7 +33,7 @@ internal static class ThreeSumWithMultiplicitySolution
             }
         }
 
-        return (int)(count % Modulo);
+        return (int)(count % LeetCodeModulus.Value);
     }
 
     private static long CountThirdIndexMatches(int[] arr, int firstIndex, int secondIndex, int target)
@@ -104,7 +99,7 @@ internal static class ThreeSumWithMultiplicitySolution
             else
             {
                 var span = right - left + 1;
-                count = (count + ((long)span * (span - 1) / ChooseTwoDivisor)) % ModularArithmetic.Modulo;
+                count = (count + ((long)span * (span - 1) / ChooseTwoDivisor)) % LeetCodeModulus.Value;
                 break;
             }
         }
@@ -126,7 +121,7 @@ internal static class ThreeSumWithMultiplicitySolution
             right--;
         }
 
-        count = (count + ((long)leftCount * rightCount)) % ModularArithmetic.Modulo;
+        count = (count + ((long)leftCount * rightCount)) % LeetCodeModulus.Value;
         left++;
         right--;
     }

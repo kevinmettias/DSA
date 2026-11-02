@@ -12,10 +12,6 @@ namespace DSAExperimentation.LeetCode.CountAnagrams;
 // without either restating the algorithm (TwoSumSolution precedent).
 internal static class CountAnagramsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Textbook baseline: recursively enumerates every permutation of each word into
     // a HashSet<string> to dedupe, then multiplies the per-word counts (reduced mod
     // 1e9+7 after every word, the same running-product LeetCode itself asks for, so
@@ -27,7 +23,7 @@ internal static class CountAnagramsSolution
 
         foreach (var word in sentence.Split(' '))
         {
-            answer = answer * DistinctPermutationsByBruteForce(word) % Modulo;
+            answer = answer * DistinctPermutationsByBruteForce(word) % LeetCodeModulus.Value;
         }
 
         return answer;
@@ -60,7 +56,7 @@ internal static class CountAnagramsSolution
 
         foreach (var word in words)
         {
-            answer = answer * DistinctPermutationsByModularFactorial(word, table) % ModularArithmetic.Modulo;
+            answer = answer * DistinctPermutationsByModularFactorial(word, table) % LeetCodeModulus.Value;
         }
 
         return answer;
@@ -79,7 +75,7 @@ internal static class CountAnagramsSolution
 
         foreach (var count in counts)
         {
-            result = result * table.InverseFactorial(count) % ModularArithmetic.Modulo;
+            result = result * table.InverseFactorial(count) % LeetCodeModulus.Value;
         }
 
         return result;

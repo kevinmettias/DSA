@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfWaysToPaintN3Grid;
 
@@ -23,10 +22,6 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToPaintN3Grid;
 // pairing, on a state that is just the row index.
 internal static class NumberOfWaysToPaintN3GridSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private const int FirstRow = 1;
     private const int SecondRow = 2;
     private const long FirstRowPatternCount = 6;
@@ -44,14 +39,14 @@ internal static class NumberOfWaysToPaintN3GridSolution
         for (var row = SecondRow; row <= rowCount; row++)
         {
             var nextSame = ((SameFollowerWeight * same) + (DifferentFollowerWeight * different))
-                % Modulo;
+                % LeetCodeModulus.Value;
             var nextDifferent = ((DifferentFollowerWeight * same) + (DifferentFollowerWeight * different))
-                % Modulo;
+                % LeetCodeModulus.Value;
             same = nextSame;
             different = nextDifferent;
         }
 
-        return (same + different) % Modulo;
+        return (same + different) % LeetCodeModulus.Value;
     }
 
     // This repo's own top-down engine: Memoizer.Memoize caches each row's
@@ -60,7 +55,7 @@ internal static class NumberOfWaysToPaintN3GridSolution
     public static long CountWaysByMemoizedRecurrence(int rowCount)
     {
         var (same, different) = Memoizer.Memoize<int, (long Same, long Different)>(rowCount, new RowPatternCounts());
-        return (same + different) % ModularArithmetic.Modulo;
+        return (same + different) % LeetCodeModulus.Value;
     }
 
     // The recurrence, as a named type: the row-pattern counts one row on are the previous
@@ -80,9 +75,9 @@ internal static class NumberOfWaysToPaintN3GridSolution
 
             return (
                 ((SameFollowerWeight * prevSame) + (DifferentFollowerWeight * prevDifferent))
-                    % ModularArithmetic.Modulo,
+                    % LeetCodeModulus.Value,
                 ((DifferentFollowerWeight * prevSame) + (DifferentFollowerWeight * prevDifferent))
-                    % ModularArithmetic.Modulo);
+                    % LeetCodeModulus.Value);
         }
     }
 }

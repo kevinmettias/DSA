@@ -19,10 +19,6 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToWearDifferentHatsToEachOther
 // arm re-explores each one from scratch.
 internal static class NumberOfWaysToWearDifferentHatsToEachOtherSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook answer: the same recurrence as plain recursion with no cache
     // behind it - written out as a method that calls itself, rather than handed to
     // this repo's Memoizer through its IRecurrence contract, because a baseline
@@ -71,7 +67,7 @@ internal static class NumberOfWaysToWearDifferentHatsToEachOtherSolution
 
             if ((mask & personBit) != 0)
             {
-                total = (total + BruteForceWays(preferences, (hat - 1, mask & ~personBit))) % Modulo;
+                total = (total + BruteForceWays(preferences, (hat - 1, mask & ~personBit))) % LeetCodeModulus.Value;
             }
         }
 
@@ -135,7 +131,7 @@ internal static class NumberOfWaysToWearDifferentHatsToEachOtherSolution
 
             if ((mask & personBit) != 0)
             {
-                total = (total + rest.Replay((hat - 1, mask & ~personBit), rest)) % Modulo;
+                total = (total + rest.Replay((hat - 1, mask & ~personBit), rest)) % LeetCodeModulus.Value;
             }
         }
 

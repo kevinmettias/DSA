@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using System.Numerics;
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountTheNumberOfIdealArrays;
 
@@ -27,10 +26,6 @@ namespace DSAExperimentation.LeetCode.CountTheNumberOfIdealArrays;
 // O(log value).
 internal static class CountTheNumberOfIdealArraysSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Smallest prime, and the starting point for both trial division and the sieve.
     private const int SmallestPrime = 2;
 
@@ -49,7 +44,7 @@ internal static class CountTheNumberOfIdealArraysSolution
 
         for (var value = 1; value <= maxValue; value++)
         {
-            total = (total + CountEndingAtByTrialDivision(value, arrayLength)) % Modulo;
+            total = (total + CountEndingAtByTrialDivision(value, arrayLength)) % LeetCodeModulus.Value;
         }
 
         return (int)total;
@@ -67,7 +62,7 @@ internal static class CountTheNumberOfIdealArraysSolution
 
         if (remaining > 1)
         {
-            product = product * BinomialMod(arrayLength, LeftoverPrimeExponent) % Modulo;
+            product = product * BinomialMod(arrayLength, LeftoverPrimeExponent) % LeetCodeModulus.Value;
         }
 
         return product;
@@ -87,7 +82,7 @@ internal static class CountTheNumberOfIdealArraysSolution
             exponent++;
         }
 
-        return product * BinomialMod(exponent + arrayLength - 1, exponent) % Modulo;
+        return product * BinomialMod(exponent + arrayLength - 1, exponent) % LeetCodeModulus.Value;
     }
 
     // Build one smallest-prime-factor table over maxValue with this repo's own
@@ -101,7 +96,7 @@ internal static class CountTheNumberOfIdealArraysSolution
         for (var value = 1; value <= maxValue; value++)
         {
             total = (total + CountEndingAtBySieve(value, arrayLength, smallestPrimeFactor))
-                % ModularArithmetic.Modulo;
+                % LeetCodeModulus.Value;
         }
 
         return (int)total;
@@ -123,7 +118,7 @@ internal static class CountTheNumberOfIdealArraysSolution
                 exponent++;
             }
 
-            product = product * BinomialMod(exponent + arrayLength - 1, exponent) % ModularArithmetic.Modulo;
+            product = product * BinomialMod(exponent + arrayLength - 1, exponent) % LeetCodeModulus.Value;
         }
 
         return product;
@@ -143,6 +138,6 @@ internal static class CountTheNumberOfIdealArraysSolution
             denominator *= i;
         }
 
-        return (long)(numerator / denominator % Modulo);
+        return (long)(numerator / denominator % LeetCodeModulus.Value);
     }
 }

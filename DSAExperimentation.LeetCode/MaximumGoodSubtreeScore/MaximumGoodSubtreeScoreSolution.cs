@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.MaximumGoodSubtreeScore;
 
@@ -12,10 +11,6 @@ namespace DSAExperimentation.LeetCode.MaximumGoodSubtreeScore;
 // chosen values; the answer is the sum of maxScore over every node, modulo 1e9+7.
 internal static class MaximumGoodSubtreeScoreSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Per node, collect its subtree's values and brute-force every subset (2^size),
     // keeping the best digit-disjoint sum - the definition read literally, with none
     // of the composed strategy's cross-subtree reuse.
@@ -31,7 +26,7 @@ internal static class MaximumGoodSubtreeScoreSolution
             total += BestGoodSubsetScore(subtreeValues);
         }
 
-        return (int)(total % Modulo);
+        return (int)(total % LeetCodeModulus.Value);
     }
 
     private static List<int>[] BuildChildren(int[] par)
@@ -146,6 +141,6 @@ internal static class MaximumGoodSubtreeScoreSolution
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
             GoodSubtreeScoreAlgebra, (long[] Dp, long ScoreSum)>(root, new GoodSubtreeScoreAlgebra(vals));
 
-        return (int)(scoreSum % ModularArithmetic.Modulo);
+        return (int)(scoreSum % LeetCodeModulus.Value);
     }
 }

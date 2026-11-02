@@ -17,10 +17,6 @@ namespace DSAExperimentation.LeetCode.FindSumOfArrayProductOfMagicalSequences;
 // multinomial weight per count-assignment instead of visiting every ordering.
 internal static class FindSumOfArrayProductOfMagicalSequencesSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Every one of the nums.Length^sequenceLength sequences enumerated directly by
     // plain choose/recurse/unchoose recursion - one choice per sequence slot, the
     // textbook "Combination Sum"/"Generate Parentheses"-shaped exhaustive enumeration.
@@ -95,7 +91,7 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
         {
             AddChoice(state, index);
             var completions = SumOverSequences(state, sequenceLength, requiredSetBits, nums);
-            total = (total + completions) % Modulo;
+            total = (total + completions) % LeetCodeModulus.Value;
             RemoveChoice(state, index);
         }
 
@@ -117,7 +113,7 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
 
         foreach (var index in state.Chosen)
         {
-            product = product * nums[index] % Modulo;
+            product = product * nums[index] % LeetCodeModulus.Value;
         }
 
         return product;
@@ -172,7 +168,7 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
 
             for (var count = 0; count <= maxCount; count++)
             {
-                result = (result + CountTerm(state, count, rest)) % ModularArithmetic.Modulo;
+                result = (result + CountTerm(state, count, rest)) % LeetCodeModulus.Value;
             }
 
             return result;
@@ -197,10 +193,10 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
 
             var ways = digits.Table.Choose(remaining, count);
             var valuePower = bit < digits.Nums.Length ? ModularArithmetic.Power(digits.Nums[bit], count) : 1;
-            var weight = ways * valuePower % ModularArithmetic.Modulo;
+            var weight = ways * valuePower % LeetCodeModulus.Value;
             var sub = rest.Replay((bit + 1, remaining - count, nextNeed, total >> 1), rest);
 
-            return weight * sub % ModularArithmetic.Modulo;
+            return weight * sub % LeetCodeModulus.Value;
         }
     }
 }

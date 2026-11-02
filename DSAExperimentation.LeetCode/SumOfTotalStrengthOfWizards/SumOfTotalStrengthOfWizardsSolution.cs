@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.PrefixSums;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.SumOfTotalStrengthOfWizards;
 
@@ -26,10 +25,6 @@ namespace DSAExperimentation.LeetCode.SumOfTotalStrengthOfWizards;
 // stays O(n).
 internal static class SumOfTotalStrengthOfWizardsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private const int NoSmallerElementToTheLeft = -1;
 
     // The textbook answer: every subarray's minimum and total, computed directly.
@@ -48,7 +43,7 @@ internal static class SumOfTotalStrengthOfWizardsSolution
             {
                 min = Math.Min(min, strength[end]);
                 sum += strength[end];
-                total = (total + (min * (sum % Modulo) % Modulo)) % Modulo;
+                total = (total + (min * (sum % LeetCodeModulus.Value) % LeetCodeModulus.Value)) % LeetCodeModulus.Value;
             }
         }
 
@@ -99,17 +94,17 @@ internal static class SumOfTotalStrengthOfWizardsSolution
             var sumOfSumsStartingAtOrBeforeI = prefixOfPrefix.TotalBefore(i + 1) - prefixOfPrefix.TotalBefore(left + 1);
 
             var weightedSum = ((long)(i - left) * sumOfSumsEndingAtOrAfterI) - ((long)(right - i) * sumOfSumsStartingAtOrBeforeI);
-            var contribution = Mod(strength[i]) * Mod(weightedSum) % ModularArithmetic.Modulo;
+            var contribution = Mod(strength[i]) * Mod(weightedSum) % LeetCodeModulus.Value;
 
-            total = (total + contribution) % ModularArithmetic.Modulo;
+            total = (total + contribution) % LeetCodeModulus.Value;
         }
 
         return (int)total;
     }
 
     // weightedSum above can be negative (it is a difference of two large products),
-    // and C#'s % preserves the dividend's sign - so a bare `% Modulo` alone can
+    // and C#'s % preserves the dividend's sign - so a bare `% LeetCodeModulus.Value` alone can
     // still return a negative remainder, which the double-mod pattern below
-    // normalizes back into [0, Modulo).
-    private static long Mod(long value) => ((value % ModularArithmetic.Modulo) + ModularArithmetic.Modulo) % ModularArithmetic.Modulo;
+    // normalizes back into [0, LeetCodeModulus.Value).
+    private static long Mod(long value) => ((value % LeetCodeModulus.Value) + LeetCodeModulus.Value) % LeetCodeModulus.Value;
 }

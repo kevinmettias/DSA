@@ -12,10 +12,6 @@ namespace DSAExperimentation.LeetCode.XORAfterRangeMultiplicationQueriesI;
 // statement itself describes.
 internal static class XORAfterRangeMultiplicationQueriesISolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Textbook baseline: visit every index in [l, r] and filter by (idx - l) % k,
     // instead of stepping straight to the indices that qualify. O(sum of (r - l + 1))
     // - the arm the composed strategy below has to justify itself against.
@@ -31,7 +27,7 @@ internal static class XORAfterRangeMultiplicationQueriesISolution
             {
                 if ((idx - l) % k == 0)
                 {
-                    values[idx] = (int)((long)values[idx] * v % Modulo);
+                    values[idx] = (int)((long)values[idx] * v % LeetCodeModulus.Value);
                 }
             }
         }
@@ -53,7 +49,7 @@ internal static class XORAfterRangeMultiplicationQueriesISolution
 
             for (var idx = l; idx <= r; idx += k)
             {
-                values[idx] = (int)((long)values[idx] * v % Modulo);
+                values[idx] = (int)((long)values[idx] * v % LeetCodeModulus.Value);
             }
         }
 

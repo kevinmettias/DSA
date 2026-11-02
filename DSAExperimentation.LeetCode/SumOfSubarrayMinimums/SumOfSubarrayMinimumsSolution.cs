@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.SumOfSubarrayMinimums;
 
@@ -21,10 +20,6 @@ namespace DSAExperimentation.LeetCode.SumOfSubarrayMinimums;
 // index enters and leaves each sweep's stack once, so the whole thing is O(n).
 internal static class SumOfSubarrayMinimumsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private const int NoSmallerElementToTheLeft = -1;
 
     // The textbook answer: every subarray's minimum, computed directly.
@@ -41,7 +36,7 @@ internal static class SumOfSubarrayMinimumsSolution
             for (var end = start; end < arr.Length; end++)
             {
                 min = Math.Min(min, arr[end]);
-                sum = (sum + min) % Modulo;
+                sum = (sum + min) % LeetCodeModulus.Value;
             }
         }
 
@@ -71,7 +66,7 @@ internal static class SumOfSubarrayMinimumsSolution
         {
             var left = i - previousSmaller[i];
             var right = nextSmallerOrEqual[i] - i;
-            sum = (sum + ((long)arr[i] * left * right)) % ModularArithmetic.Modulo;
+            sum = (sum + ((long)arr[i] * left * right)) % LeetCodeModulus.Value;
         }
 
         return (int)sum;

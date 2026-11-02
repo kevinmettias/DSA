@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.SpecialPermutations;
 
@@ -137,7 +136,7 @@ internal static class SpecialPermutationsSolution
                     continue;
                 }
 
-                total = (total + rest.Replay((remaining & ~(1 << next), next), rest)) % ModularArithmetic.Modulo;
+                total = (total + rest.Replay((remaining & ~(1 << next), next), rest)) % LeetCodeModulus.Value;
             }
 
             return total;

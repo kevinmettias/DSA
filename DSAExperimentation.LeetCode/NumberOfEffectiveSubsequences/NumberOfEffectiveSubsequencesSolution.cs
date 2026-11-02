@@ -22,10 +22,6 @@ namespace DSAExperimentation.LeetCode.NumberOfEffectiveSubsequences;
 // whose OR is EXACTLY t" - read off at t = S's own compacted mask.
 internal static class NumberOfEffectiveSubsequencesSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook answer: walk every one of the 2^n subsets directly and
     // recompute the surviving OR from scratch. Deliberately written without
     // this repo's primitives - only tractable for small n, but it is the arm
@@ -44,7 +40,7 @@ internal static class NumberOfEffectiveSubsequencesSolution
             }
         }
 
-        return (int)(effective % Modulo);
+        return (int)(effective % LeetCodeModulus.Value);
     }
 
     // Whether removing exactly the index set `removed` lowers the array's OR:
@@ -84,8 +80,8 @@ internal static class NumberOfEffectiveSubsequencesSolution
 
         var subsetsWithFullOr = CountSubsetsWithFullOr(frequencyByMask, bitCount);
         var totalSubsets = ModularArithmetic.Power(2, n);
-        var effective = ((totalSubsets - subsetsWithFullOr) % ModularArithmetic.Modulo + ModularArithmetic.Modulo)
-            % ModularArithmetic.Modulo;
+        var effective = ((totalSubsets - subsetsWithFullOr) % LeetCodeModulus.Value + LeetCodeModulus.Value)
+            % LeetCodeModulus.Value;
 
         return (int)effective;
     }
@@ -173,8 +169,8 @@ internal static class NumberOfEffectiveSubsequencesSolution
             {
                 if ((mask & bitMask) != 0)
                 {
-                    values[mask] = ((values[mask] - values[mask ^ bitMask]) % ModularArithmetic.Modulo
-                        + ModularArithmetic.Modulo) % ModularArithmetic.Modulo;
+                    values[mask] = ((values[mask] - values[mask ^ bitMask]) % LeetCodeModulus.Value
+                        + LeetCodeModulus.Value) % LeetCodeModulus.Value;
                 }
             }
         }

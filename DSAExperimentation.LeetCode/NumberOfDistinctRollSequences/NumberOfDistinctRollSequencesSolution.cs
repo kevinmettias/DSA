@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.Domain.Games.Dice;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfDistinctRollSequences;
 
@@ -20,10 +19,6 @@ namespace DSAExperimentation.LeetCode.NumberOfDistinctRollSequences;
 // keeps its own DieFaces. Which roll may follow which is this problem's game and stays here.
 internal static class NumberOfDistinctRollSequencesSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The baseline's own copy of the die's faces, 1 through DieFaces.
     private const int DieFaces = 6;
     private const int FirstDay = 1;
@@ -64,7 +59,7 @@ internal static class NumberOfDistinctRollSequencesSolution
             }
 
             total = (total + CountSequences(sequenceLength, day + 1, lastRoll, face))
-                % Modulo;
+                % LeetCodeModulus.Value;
         }
 
         return total;
@@ -112,7 +107,7 @@ internal static class NumberOfDistinctRollSequencesSolution
                 }
 
                 total = (total + rest.Replay((day + 1, lastRoll, face), rest))
-                    % ModularArithmetic.Modulo;
+                    % LeetCodeModulus.Value;
             }
 
             return total;

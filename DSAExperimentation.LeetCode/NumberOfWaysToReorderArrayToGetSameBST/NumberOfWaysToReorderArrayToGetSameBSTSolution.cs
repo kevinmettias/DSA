@@ -3,7 +3,6 @@ using DSAExperimentation.Algorithms.Folding;
 using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfWaysToReorderArrayToGetSameBST;
 
@@ -22,10 +21,6 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToReorderArrayToGetSameBST;
 // answer excludes the original array itself, hence the subtracted 1.
 internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private const int BinaryChildCount = 2;
 
     // The textbook answer: at each call the first element is the root, the rest are
@@ -71,7 +66,7 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
             var aboveLeft = rest.Replay((n - 1, k - 1), rest);
             var aboveRight = rest.Replay((n - 1, k), rest);
 
-            return (aboveLeft + aboveRight) % ModularArithmetic.Modulo;
+            return (aboveLeft + aboveRight) % LeetCodeModulus.Value;
         }
     }
 
@@ -92,8 +87,8 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
             (belongsLeft ? left : right).Add(arr[i]);
         }
 
-        return DictionaryChoose(left.Count + right.Count, left.Count) * SplitWays([.. left]) % Modulo
-            * SplitWays([.. right]) % Modulo;
+        return DictionaryChoose(left.Count + right.Count, left.Count) * SplitWays([.. left]) % LeetCodeModulus.Value
+            * SplitWays([.. right]) % LeetCodeModulus.Value;
     }
 
     // The baseline's binomial: Pascal's rule over a fresh Dictionary memo per call - the
@@ -132,13 +127,13 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
         var aboveLeft = DictionaryPascalEntry((n - 1, k - 1), memo);
         var aboveRight = DictionaryPascalEntry((n - 1, k), memo);
 
-        return (aboveLeft + aboveRight) % Modulo;
+        return (aboveLeft + aboveRight) % LeetCodeModulus.Value;
     }
 
     // Every count above includes the original array's own insertion order, which LC
     // does not count as a reordering.
     private static int ExcludeOriginal(long ways) =>
-        (int)((ways - 1 + Modulo) % Modulo);
+        (int)((ways - 1 + LeetCodeModulus.Value) % LeetCodeModulus.Value);
 
     private static long Choose(int itemCount, int pickCount) =>
         Memoizer.Memoize<(int N, int K), long>((itemCount, pickCount), new PascalRow());
@@ -167,12 +162,12 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
             {
                 var child = children[i];
                 totalSize += child.Size;
-                ways = ways * child.Ways % ModularArithmetic.Modulo;
+                ways = ways * child.Ways % LeetCodeModulus.Value;
             }
 
             if (children.Count == BinaryChildCount)
             {
-                ways = ways * Choose(totalSize, children[0].Size) % ModularArithmetic.Modulo;
+                ways = ways * Choose(totalSize, children[0].Size) % LeetCodeModulus.Value;
             }
 
             return (totalSize + 1, ways);

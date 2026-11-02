@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using System.Numerics;
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountWaysToMakeArrayWithProduct;
 
@@ -24,10 +23,6 @@ namespace DSAExperimentation.LeetCode.CountWaysToMakeArrayWithProduct;
 // pays O(maxK log log maxK) once and then factors each k in O(log k).
 internal static class CountWaysToMakeArrayWithProductSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Smallest prime, and the starting point for both trial division and the sieve.
     private const int SmallestPrime = 2;
 
@@ -64,7 +59,7 @@ internal static class CountWaysToMakeArrayWithProductSolution
 
         if (remaining > 1)
         {
-            result = result * BinomialMod(arrayLength, LeftoverPrimeExponent) % Modulo;
+            result = result * BinomialMod(arrayLength, LeftoverPrimeExponent) % LeetCodeModulus.Value;
         }
 
         return (int)result;
@@ -84,7 +79,7 @@ internal static class CountWaysToMakeArrayWithProductSolution
             exponent++;
         }
 
-        return result * BinomialMod(exponent + arrayLength - 1, exponent) % Modulo;
+        return result * BinomialMod(exponent + arrayLength - 1, exponent) % LeetCodeModulus.Value;
     }
 
     // Build one smallest-prime-factor table over the largest product in the batch with
@@ -120,7 +115,7 @@ internal static class CountWaysToMakeArrayWithProductSolution
                 exponent++;
             }
 
-            result = result * BinomialMod(exponent + arrayLength - 1, exponent) % ModularArithmetic.Modulo;
+            result = result * BinomialMod(exponent + arrayLength - 1, exponent) % LeetCodeModulus.Value;
         }
 
         return (int)result;
@@ -140,6 +135,6 @@ internal static class CountWaysToMakeArrayWithProductSolution
             denominator *= i;
         }
 
-        return (long)(numerator / denominator % Modulo);
+        return (long)(numerator / denominator % LeetCodeModulus.Value);
     }
 }

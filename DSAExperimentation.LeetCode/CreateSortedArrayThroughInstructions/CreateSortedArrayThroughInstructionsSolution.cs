@@ -1,6 +1,5 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CreateSortedArrayThroughInstructions;
 
@@ -14,10 +13,6 @@ namespace DSAExperimentation.LeetCode.CreateSortedArrayThroughInstructions;
 // value-indexed Fenwick tree carried across the whole sweep.
 internal static class CreateSortedArrayThroughInstructionsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook answer: keep every inserted value in a list and re-count the
     // strictly-smaller and strictly-greater ones from scratch for each instruction.
     // Deliberately written without this repo's primitives - it is the arm the
@@ -33,7 +28,7 @@ internal static class CreateSortedArrayThroughInstructionsSolution
             inserted.Add(value);
         }
 
-        return (int)(cost % Modulo);
+        return (int)(cost % LeetCodeModulus.Value);
     }
 
     private static int CheaperSideOf(List<int> inserted, int value)
@@ -77,6 +72,6 @@ internal static class CreateSortedArrayThroughInstructionsSolution
             tree.Add(value, 1);
         }
 
-        return (int)(cost % ModularArithmetic.Modulo);
+        return (int)(cost % LeetCodeModulus.Value);
     }
 }

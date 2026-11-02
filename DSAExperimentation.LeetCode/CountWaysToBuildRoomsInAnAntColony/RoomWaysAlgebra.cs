@@ -27,16 +27,16 @@ internal readonly struct RoomWaysAlgebra : IFoldAlgebra<RootedTreeNode, (long Si
         for (var i = 0; i < children.Count; i++)
         {
             var (childSize, childWays) = children[i];
-            ways = ways * childWays % ModularArithmetic.Modulo;
+            ways = ways * childWays % LeetCodeModulus.Value;
             size += childSize;
         }
 
-        ways = ways * Factorial(size - 1) % ModularArithmetic.Modulo;
+        ways = ways * Factorial(size - 1) % LeetCodeModulus.Value;
 
         for (var i = 0; i < children.Count; i++)
         {
             var childSize = children[i].Size;
-            ways = ways * ModularArithmetic.Inverse(Factorial(childSize)) % ModularArithmetic.Modulo;
+            ways = ways * ModularArithmetic.Inverse(Factorial(childSize)) % LeetCodeModulus.Value;
         }
 
         return (size, ways);
@@ -48,7 +48,7 @@ internal readonly struct RoomWaysAlgebra : IFoldAlgebra<RootedTreeNode, (long Si
 
         for (var i = 2; i <= value; i++)
         {
-            result = result * i % ModularArithmetic.Modulo;
+            result = result * i % LeetCodeModulus.Value;
         }
 
         return result;

@@ -1,6 +1,5 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfPeopleAwareOfASecret;
 
@@ -19,10 +18,6 @@ namespace DSAExperimentation.LeetCode.NumberOfPeopleAwareOfASecret;
 // pair instead.
 internal static class NumberOfPeopleAwareOfASecretSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Day 1 is dp index 0: LeetCode numbers days from 1, the arrays from 0.
     private const int FirstDay = 1;
 
@@ -49,7 +44,7 @@ internal static class NumberOfPeopleAwareOfASecretSolution
             total += dp[day - 1];
         }
 
-        return total % Modulo;
+        return total % LeetCodeModulus.Value;
     }
 
     // The newcomers on one day: the dp values of every earlier day whose people are still
@@ -73,7 +68,7 @@ internal static class NumberOfPeopleAwareOfASecretSolution
             sum += dp[source - 1];
         }
 
-        return sum % Modulo;
+        return sum % LeetCodeModulus.Value;
     }
 
     // The same recurrence against FenwickTree<long, SumOperation<long>>, which is
@@ -92,13 +87,13 @@ internal static class NumberOfPeopleAwareOfASecretSolution
 
             if (high >= low)
             {
-                var stillSharing = dp.Query(low - 1, high - 1) % ModularArithmetic.Modulo;
+                var stillSharing = dp.Query(low - 1, high - 1) % LeetCodeModulus.Value;
                 dp.Add(day - 1, stillSharing);
             }
         }
 
         var finalLow = Math.Max(FirstDay, dayCount - forget + 1);
 
-        return dp.Query(finalLow - 1, dayCount - 1) % ModularArithmetic.Modulo;
+        return dp.Query(finalLow - 1, dayCount - 1) % LeetCodeModulus.Value;
     }
 }

@@ -23,15 +23,11 @@ namespace DSAExperimentation.LeetCode.FindTheNumberOfSubsequencesWithEqualGcd;
 // exact Memoizer-plus-ModularArithmetic composition).
 internal static class FindTheNumberOfSubsequencesWithEqualGcdSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     public static int CountPairsByBruteForce(int[] nums)
     {
         var count = CountFrom(0, 0, 0, nums);
 
-        return (int)(count % Modulo);
+        return (int)(count % LeetCodeModulus.Value);
     }
 
     public static int CountPairsByGcdMemoization(int[] nums)
@@ -60,7 +56,7 @@ internal static class FindTheNumberOfSubsequencesWithEqualGcdSolution
             var addToFirst = rest.Replay((state.Index + 1, Gcd(state.Gcd1, nums[state.Index]), state.Gcd2), rest);
             var addToSecond = rest.Replay((state.Index + 1, state.Gcd1, Gcd(state.Gcd2, nums[state.Index])), rest);
 
-            return (skip + addToFirst + addToSecond) % ModularArithmetic.Modulo;
+            return (skip + addToFirst + addToSecond) % LeetCodeModulus.Value;
         }
     }
 

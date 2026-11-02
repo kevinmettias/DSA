@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfWaysToReachAPositionAfterExactlyKSteps;
 
@@ -23,10 +22,6 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToReachAPositionAfterExactlyKS
 // (Index, Sum) already establishes - so each state is solved once.
 internal static class NumberOfWaysToReachAPositionAfterExactlyKStepsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook answer: plain recursion, no cache, BCL arithmetic only. This is
     // the arm the memoized strategy has to justify itself against, and stepCount must
     // stay modest because the recursion really is 2^stepCount.
@@ -67,7 +62,7 @@ internal static class NumberOfWaysToReachAPositionAfterExactlyKStepsSolution
             var towardTarget = rest.Replay((steps - 1, Math.Abs(diff - 1)), rest);
             var awayFromTarget = rest.Replay((steps - 1, diff + 1), rest);
 
-            return (towardTarget + awayFromTarget) % ModularArithmetic.Modulo;
+            return (towardTarget + awayFromTarget) % LeetCodeModulus.Value;
         }
     }
 
@@ -86,6 +81,6 @@ internal static class NumberOfWaysToReachAPositionAfterExactlyKStepsSolution
         var towardTarget = WaysWithoutCache(steps - 1, Math.Abs(diff - 1));
         var awayFromTarget = WaysWithoutCache(steps - 1, diff + 1);
 
-        return (towardTarget + awayFromTarget) % Modulo;
+        return (towardTarget + awayFromTarget) % LeetCodeModulus.Value;
     }
 }

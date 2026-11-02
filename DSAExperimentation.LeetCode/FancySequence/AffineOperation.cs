@@ -1,5 +1,4 @@
 using DSAExperimentation.DataStructures.LazySegmentTree;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.FancySequence;
 
@@ -32,12 +31,12 @@ internal readonly struct AffineOperation : IRangeUpdateOperation<long, (long Mul
 
     public static (long Mult, long Add) NoUpdate => (1L, 0L);
 
-    public static long Combine(long left, long right) => (left + right) % ModularArithmetic.Modulo;
+    public static long Combine(long left, long right) => (left + right) % LeetCodeModulus.Value;
 
     public static (long Mult, long Add) ComposeUpdate((long Mult, long Add) outer, (long Mult, long Add) inner)
-        => (outer.Mult * inner.Mult % ModularArithmetic.Modulo,
-            (outer.Mult * inner.Add + outer.Add) % ModularArithmetic.Modulo);
+        => (outer.Mult * inner.Mult % LeetCodeModulus.Value,
+            (outer.Mult * inner.Add + outer.Add) % LeetCodeModulus.Value);
 
     public static long ApplyUpdate(long aggregate, (long Mult, long Add) update, int rangeLength)
-        => (update.Mult * aggregate + update.Add) % ModularArithmetic.Modulo;
+        => (update.Mult * aggregate + update.Add) % LeetCodeModulus.Value;
 }

@@ -14,10 +14,6 @@ namespace DSAExperimentation.LeetCode.MaximumSubarrayMinProduct;
 // best subarray for a given minimum is always that element's whole span.
 internal static class MaximumSubarrayMinProductSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private const int NoSmallerElementToTheLeft = -1;
 
     // The textbook answer: extend every start index one element at a time, carrying a
@@ -71,5 +67,5 @@ internal static class MaximumSubarrayMinProductSolution
         return ReportedAnswer(best);
     }
 
-    private static int ReportedAnswer(long best) => (int)(best % Modulo);
+    private static int ReportedAnswer(long best) => (int)(best % LeetCodeModulus.Value);
 }

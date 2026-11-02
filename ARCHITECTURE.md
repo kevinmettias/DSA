@@ -1431,9 +1431,11 @@ PossibleBipartition, DivideNodesIntoTheMaximumNumberOfGroups and MinimumEdgeTogg
 their baselines' neighbour lists this way before the rule was written down. Apart from the input
 container the harness hands it, no library type enters a baseline, from any of the library's tiers:
 not a repo container, a traversal engine, a mechanism, `GridSize` or `GridNeighbors` as a slot or a
-call, not a Domain model (`Domain/Modular`'s arithmetic, LC 752's lock, LC 773's board), and not
-even a compile-time constant read from one, such as `ModularArithmetic.Modulo` or
-`AlgorithmConstants.HalvingFactor`. A baseline states its own constants.
+call, not a Domain model (a combination lock, a sliding puzzle, a modulus witness), and not even a
+compile-time constant read from one, such as `AlgorithmConstants.HalvingFactor`. A baseline states
+its own constants. LeetCode's own notation is not the library's, so a baseline reads it like any
+other arm: `LeetCodeAnswer.None`, and `LeetCodeModulus.Value`, the 10^9 + 7 counting answers are
+reported in, which the owner ruled a baseline may read (2026-11-01).
 
 `BaselineIsolationTests` holds every `Baseline = true` arm of a `ProblemSolutions` benchmark to this.
 `BaselineTrace` follows each arm through the compiled code (`RepositoryCompilation`, §18.5), so a
@@ -1479,8 +1481,8 @@ BCL sort and a plain recursion, `EscapeALargeMaze` beside a BCL breadth-first wa
 compares library algorithms with one another keeps every one and adds the textbook arm beside them:
 `ShortestPathAlgorithmBenchmarks` (LC 743's own priority-queue Dijkstra), LC 1334 (Floyd-Warshall
 over a plain matrix) and LC 1916 (the post-order recursion its tree fold stands for), so the
-library-against-library comparison each was written for still stands. Each local copy of LeetCode's
-modulus or of the halving factor this rule produces is one of a waived group in `suppressions.json`.
+library-against-library comparison each was written for still stands. Each local copy of the halving
+or branching factor this rule produces is one of a waived group in `suppressions.json`.
 
 ### 17.6 Tier 3: what a problem says about its world
 

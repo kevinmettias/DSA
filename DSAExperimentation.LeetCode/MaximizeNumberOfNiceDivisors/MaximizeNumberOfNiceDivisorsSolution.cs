@@ -19,10 +19,6 @@ namespace DSAExperimentation.LeetCode.MaximizeNumberOfNiceDivisors;
 // convention belongs.
 internal static class MaximizeNumberOfNiceDivisorsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private const int FactorOfTwo = 2;
     private const int FactorOfThree = 3;
 
@@ -101,7 +97,7 @@ internal static class MaximizeNumberOfNiceDivisorsSolution
         return best;
     }
 
-    private static int ReportedAnswer(BigInteger maxProduct) => (int)(maxProduct % Modulo);
+    private static int ReportedAnswer(BigInteger maxProduct) => (int)(maxProduct % LeetCodeModulus.Value);
 
     // The split rule, named: a budget either stands whole or peels off one factor of
     // two or three, and the larger resulting product wins. `rest` is the memo run's own

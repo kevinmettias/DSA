@@ -1,5 +1,4 @@
 using DSAExperimentation.DataStructures.MonotonicDeque;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountPartitionsWithMaxMinDifferenceAtMostK;
 
@@ -15,10 +14,6 @@ namespace DSAExperimentation.LeetCode.CountPartitionsWithMaxMinDifferenceAtMostK
 // running maximum, one of them under MinWindowOrder for a running minimum too.
 internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // dp[r] = sum of dp[l-1] over every l in [1, r] whose segment [l, r] has
     // max - min at most maxDifference, found by rescanning backward from r and
     // shrinking on the first violation - O(n) per r, O(n^2) overall.
@@ -55,7 +50,7 @@ internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
                 break;
             }
 
-            sum = (sum + dp[l - 1]) % Modulo;
+            sum = (sum + dp[l - 1]) % LeetCodeModulus.Value;
         }
 
         return sum;
@@ -83,9 +78,9 @@ internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
             left = AdvanceLeft((nums, maxDifference), r - 1, left, window);
 
             var lower = PrefixSumBefore(prefixSum, left);
-            dp[r] = ((prefixSum[r - 1] - lower) % ModularArithmetic.Modulo + ModularArithmetic.Modulo)
-                % ModularArithmetic.Modulo;
-            prefixSum[r] = (prefixSum[r - 1] + dp[r]) % ModularArithmetic.Modulo;
+            dp[r] = ((prefixSum[r - 1] - lower) % LeetCodeModulus.Value + LeetCodeModulus.Value)
+                % LeetCodeModulus.Value;
+            prefixSum[r] = (prefixSum[r - 1] + dp[r]) % LeetCodeModulus.Value;
         }
 
         return (int)dp[n];

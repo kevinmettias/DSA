@@ -17,10 +17,6 @@ namespace DSAExperimentation.LeetCode.MinimumNonZeroProductOfTheArrayElements;
 // "lighter repo-primitive fit" already accepted for Pow(x, n) and Super Pow.
 internal static class MinimumNonZeroProductOfTheArrayElementsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook baseline: multiply the pair value by itself once per pair.
     // Deliberately written without this repo's exponentiation - it is the arm the
     // squaring strategy has to justify itself against, and it only survives at
@@ -29,14 +25,14 @@ internal static class MinimumNonZeroProductOfTheArrayElementsSolution
     {
         var pairing = BitSwapPairing.Of(power);
         var product = 1L;
-        var pairProduct = pairing.PairValue % Modulo;
+        var pairProduct = pairing.PairValue % LeetCodeModulus.Value;
 
         for (var pair = 0L; pair < pairing.PairCount; pair++)
         {
-            product = product * pairProduct % Modulo;
+            product = product * pairProduct % LeetCodeModulus.Value;
         }
 
-        return product * (pairing.LargestValue % Modulo) % Modulo;
+        return product * (pairing.LargestValue % LeetCodeModulus.Value) % LeetCodeModulus.Value;
     }
 
     // Halve the exponent each step instead of decrementing it, squaring the base to
@@ -47,7 +43,7 @@ internal static class MinimumNonZeroProductOfTheArrayElementsSolution
         var pairing = BitSwapPairing.Of(power);
 
         return ModularArithmetic.Power(pairing.PairValue, pairing.PairCount)
-            * (pairing.LargestValue % ModularArithmetic.Modulo) % ModularArithmetic.Modulo;
+            * (pairing.LargestValue % LeetCodeModulus.Value) % LeetCodeModulus.Value;
     }
 
     // The decomposition both strategies start from, exact for LeetCode's p <= 60

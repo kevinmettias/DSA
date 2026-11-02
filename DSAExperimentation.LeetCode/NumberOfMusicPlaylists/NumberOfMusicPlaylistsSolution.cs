@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfMusicPlaylists;
 
@@ -24,10 +23,6 @@ namespace DSAExperimentation.LeetCode.NumberOfMusicPlaylists;
 // the CoinChangeII/DecodeWaysII pairing, on a two-field tuple state.
 internal static class NumberOfMusicPlaylistsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook answer: a BCL long[,] filled in increasing length order.
     // Deliberately written without this repo's primitives - it is the arm the
     // memoized strategy below has to justify itself against.
@@ -40,11 +35,11 @@ internal static class NumberOfMusicPlaylistsSolution
         {
             for (var unique = 1; unique <= songCount; unique++)
             {
-                var total = dp[length - 1, unique - 1] * (songCount - unique + 1) % Modulo;
+                var total = dp[length - 1, unique - 1] * (songCount - unique + 1) % LeetCodeModulus.Value;
 
                 if (unique > replayGap)
                 {
-                    total = (total + (dp[length - 1, unique] * (unique - replayGap))) % Modulo;
+                    total = (total + (dp[length - 1, unique] * (unique - replayGap))) % LeetCodeModulus.Value;
                 }
 
                 dp[length, unique] = total;
@@ -83,12 +78,12 @@ internal static class NumberOfMusicPlaylistsSolution
             }
 
             var total = rest.Replay((length - 1, unique - 1), rest) * (songCount - unique + 1)
-                % ModularArithmetic.Modulo;
+                % LeetCodeModulus.Value;
 
             if (unique > replayGap)
             {
                 total = (total + (rest.Replay((length - 1, unique), rest) * (unique - replayGap)))
-                    % ModularArithmetic.Modulo;
+                    % LeetCodeModulus.Value;
             }
 
             return total;

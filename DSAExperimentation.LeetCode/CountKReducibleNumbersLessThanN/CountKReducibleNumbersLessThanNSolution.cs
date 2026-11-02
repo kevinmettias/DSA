@@ -10,10 +10,6 @@ namespace DSAExperimentation.LeetCode.CountKReducibleNumbersLessThanN;
 // the same question with the same signature (TwoSumSolution precedent).
 internal static class CountKReducibleNumbersLessThanNSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Textbook baseline: parse n and simulate the popcount chain for every x in
     // [1, n), counting how many settle to 1 within maxSteps steps. Correct, but
     // the range [1, n) is itself exponential in binaryDigits.Length (n can be an
@@ -32,7 +28,7 @@ internal static class CountKReducibleNumbersLessThanNSolution
             }
         }
 
-        return (int)(count % Modulo);
+        return (int)(count % LeetCodeModulus.Value);
     }
 
     private static int StepsToOne(long value)
@@ -77,7 +73,7 @@ internal static class CountKReducibleNumbersLessThanNSolution
         {
             if (1 + steps[c] <= maxSteps)
             {
-                answer = (answer + countByPopcount[c]) % ModularArithmetic.Modulo;
+                answer = (answer + countByPopcount[c]) % LeetCodeModulus.Value;
             }
         }
 
@@ -125,7 +121,7 @@ internal static class CountKReducibleNumbersLessThanNSolution
         {
             var popcount = onesInPrefix + onesInSuffix;
             var ways = table.Choose(remainingBits, onesInSuffix);
-            counts[popcount] = (counts[popcount] + ways) % ModularArithmetic.Modulo;
+            counts[popcount] = (counts[popcount] + ways) % LeetCodeModulus.Value;
         }
     }
 }

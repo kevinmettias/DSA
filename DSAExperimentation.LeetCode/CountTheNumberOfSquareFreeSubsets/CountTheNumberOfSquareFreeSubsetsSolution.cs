@@ -17,10 +17,6 @@ namespace DSAExperimentation.LeetCode.CountTheNumberOfSquareFreeSubsets;
 // agreement and the benchmark harness can time them against each other.
 internal static class CountTheNumberOfSquareFreeSubsetsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private const int MaxValue = 30;
     private static readonly int[] Primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];
     private static readonly int[] PrimeMask = BuildPrimeMasks();
@@ -41,7 +37,7 @@ internal static class CountTheNumberOfSquareFreeSubsetsSolution
             }
         }
 
-        return count % Modulo;
+        return count % LeetCodeModulus.Value;
     }
 
     private static bool IsSquareFreeSubset(int[] nums, int subset)
@@ -84,9 +80,9 @@ internal static class CountTheNumberOfSquareFreeSubsetsSolution
             new SubsetsFromRemainingValues(squareFreeValues, frequency));
 
         var multiplier = ModularArithmetic.Power(2, frequency[1]);
-        var withOnes = totalWithEmpty * multiplier % ModularArithmetic.Modulo;
+        var withOnes = totalWithEmpty * multiplier % LeetCodeModulus.Value;
 
-        return (withOnes - 1 + ModularArithmetic.Modulo) % ModularArithmetic.Modulo;
+        return (withOnes - 1 + LeetCodeModulus.Value) % LeetCodeModulus.Value;
     }
 
     // How many times each value in [0, MaxValue] occurs. Order inside a subset never
@@ -212,8 +208,8 @@ internal static class CountTheNumberOfSquareFreeSubsetsSolution
                 return skip;
             }
 
-            var take = frequency[value] * rest.Replay((state.Index + 1, state.Mask | primeMask), rest) % ModularArithmetic.Modulo;
-            return (skip + take) % ModularArithmetic.Modulo;
+            var take = frequency[value] * rest.Replay((state.Index + 1, state.Mask | primeMask), rest) % LeetCodeModulus.Value;
+            return (skip + take) % LeetCodeModulus.Value;
         }
     }
 }

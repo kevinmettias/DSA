@@ -29,10 +29,6 @@ namespace DSAExperimentation.LeetCode.FancySequence;
 // range-assign-max instead of an affine op).
 internal static class FancySequenceSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Append plants a raw value with a single-point update whose Mult is 0 (not the
     // more obvious 1) specifically so the update can never equal AffineOperation's
     // NoUpdate = (1, 0), even when val is 0, which LazySegmentTree's own
@@ -65,13 +61,13 @@ internal static class FancySequenceSolution
     {
         private readonly List<long> _values = new(capacity);
 
-        public void Append(int val) => _values.Add(val % Modulo);
+        public void Append(int val) => _values.Add(val % LeetCodeModulus.Value);
 
         public void AddAll(int inc)
         {
             for (var i = 0; i < _values.Count; i++)
             {
-                _values[i] = (_values[i] + inc) % Modulo;
+                _values[i] = (_values[i] + inc) % LeetCodeModulus.Value;
             }
         }
 
@@ -79,7 +75,7 @@ internal static class FancySequenceSolution
         {
             for (var i = 0; i < _values.Count; i++)
             {
-                _values[i] = _values[i] * multiplier % Modulo;
+                _values[i] = _values[i] * multiplier % LeetCodeModulus.Value;
             }
         }
 

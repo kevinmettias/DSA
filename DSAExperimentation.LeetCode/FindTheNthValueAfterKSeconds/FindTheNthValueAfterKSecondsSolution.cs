@@ -12,10 +12,6 @@ namespace DSAExperimentation.LeetCode.FindTheNthValueAfterKSeconds;
 // against each other without either restating the algorithm.
 internal static class FindTheNthValueAfterKSecondsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook answer: run the secondCount seconds literally, one running-prefix-sum
     // pass per second. O(n * k), deliberately BCL-only (long[] only) - the arm
     // the closed-form strategy below has to justify itself against.
@@ -28,7 +24,7 @@ internal static class FindTheNthValueAfterKSecondsSolution
         {
             for (var i = 1; i < arrayLength; i++)
             {
-                values[i] = (values[i] + values[i - 1]) % Modulo;
+                values[i] = (values[i] + values[i - 1]) % LeetCodeModulus.Value;
             }
         }
 
@@ -50,12 +46,12 @@ internal static class FindTheNthValueAfterKSecondsSolution
 
         for (var i = 1; i <= upper; i++)
         {
-            factorial[i] = factorial[i - 1] * i % ModularArithmetic.Modulo;
+            factorial[i] = factorial[i - 1] * i % LeetCodeModulus.Value;
         }
 
         var denominator =
-            factorial[secondCount] * factorial[arrayLength - 1] % ModularArithmetic.Modulo;
-        var result = factorial[upper] * ModularArithmetic.Inverse(denominator) % ModularArithmetic.Modulo;
+            factorial[secondCount] * factorial[arrayLength - 1] % LeetCodeModulus.Value;
+        var result = factorial[upper] * ModularArithmetic.Inverse(denominator) % LeetCodeModulus.Value;
 
         return (int)result;
     }

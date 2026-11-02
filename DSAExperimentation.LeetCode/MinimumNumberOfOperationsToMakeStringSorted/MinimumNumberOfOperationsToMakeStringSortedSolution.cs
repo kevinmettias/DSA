@@ -22,10 +22,6 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeStringSorte
 // that same array.
 internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private const int AlphabetSize = 26;
 
     // The textbook answer without this repo: scan the frequency array for the
@@ -91,7 +87,7 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
 
         return new RankState(
             rank,
-            state.InverseFactorialProduct * remainingOfLetter % Modulo,
+            state.InverseFactorialProduct * remainingOfLetter % LeetCodeModulus.Value,
             state.Remaining - 1);
     }
 
@@ -99,8 +95,8 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
     // remaining suffix, each contributing (remaining-1)! over the current
     // inverse-factorial product.
     private static long RankAfterSmallerLeadingLetters(RankState state, int smaller, long[] factorial)
-        => (state.Rank + ((long)smaller * factorial[state.Remaining - 1] % Modulo
-            * state.InverseFactorialProduct)) % Modulo;
+        => (state.Rank + ((long)smaller * factorial[state.Remaining - 1] % LeetCodeModulus.Value
+            * state.InverseFactorialProduct)) % LeetCodeModulus.Value;
 
     private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTables(int length)
     {
@@ -110,14 +106,14 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
 
         for (var i = 1; i <= length; i++)
         {
-            factorial[i] = factorial[i - 1] * i % Modulo;
+            factorial[i] = factorial[i - 1] * i % LeetCodeModulus.Value;
         }
 
         inverseFactorial[length] = ModInverse(factorial[length]);
 
         for (var i = length; i > 0; i--)
         {
-            inverseFactorial[i - 1] = inverseFactorial[i] * i % Modulo;
+            inverseFactorial[i - 1] = inverseFactorial[i] * i % LeetCodeModulus.Value;
         }
 
         return (factorial, inverseFactorial);
@@ -141,7 +137,7 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
 
         foreach (var count in frequency)
         {
-            product = product * inverseFactorial[count] % Modulo;
+            product = product * inverseFactorial[count] % LeetCodeModulus.Value;
         }
 
         return product;
@@ -149,27 +145,27 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
 
     private readonly record struct RankState(long Rank, long InverseFactorialProduct, int Remaining);
 
-    // value^exponent mod Modulo by repeated squaring, restated rather than called on
-    // ModularArithmetic for the same reason as Modulo itself.
+    // value^exponent mod LeetCodeModulus.Value by repeated squaring, restated rather than called on
+    // ModularArithmetic for the same reason as LeetCodeModulus.Value itself.
     private static long ModPower(long value, long exponent)
     {
         var result = 1L;
-        value %= Modulo;
+        value %= LeetCodeModulus.Value;
 
         while (exponent > 0)
         {
             if ((exponent & 1) == 1)
             {
-                result = result * value % Modulo;
+                result = result * value % LeetCodeModulus.Value;
             }
 
-            value = value * value % Modulo;
+            value = value * value % LeetCodeModulus.Value;
             exponent >>= 1;
         }
 
         return result;
     }
 
-    // Fermat's little theorem: for the prime Modulo, value^(Modulo - 2) is value's inverse.
-    private static long ModInverse(long value) => ModPower(value, Modulo - 2);
+    // Fermat's little theorem: for the prime LeetCodeModulus.Value, value^(LeetCodeModulus.Value - 2) is value's inverse.
+    private static long ModInverse(long value) => ModPower(value, LeetCodeModulus.Value - 2);
 }

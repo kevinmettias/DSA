@@ -1,4 +1,3 @@
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountTheNumberOfComputerUnlockingPermutations;
 
@@ -8,10 +7,6 @@ namespace DSAExperimentation.LeetCode.CountTheNumberOfComputerUnlockingPermutati
 // [0, n-1] that are legal unlock orders, modulo 1e9+7.
 internal static class CountTheNumberOfComputerUnlockingPermutationsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Enumerate every legal unlock order by DFS: at each step, only a computer with
     // some earlier, already-unlocked index of strictly lower complexity is a legal
     // next choice. This is the textbook "count the leaves reached" backtracking
@@ -23,7 +18,7 @@ internal static class CountTheNumberOfComputerUnlockingPermutationsSolution
         var state = new UnlockState(complexity);
         var count = CountUnlockOrders(state);
 
-        return count % Modulo;
+        return count % LeetCodeModulus.Value;
     }
 
     // The insight that collapses the search: index 0 is always < every other index
@@ -47,7 +42,7 @@ internal static class CountTheNumberOfComputerUnlockingPermutationsSolution
 
         for (var i = 2; i < complexity.Length; i++)
         {
-            result = result * i % ModularArithmetic.Modulo;
+            result = result * i % LeetCodeModulus.Value;
         }
 
         return result;

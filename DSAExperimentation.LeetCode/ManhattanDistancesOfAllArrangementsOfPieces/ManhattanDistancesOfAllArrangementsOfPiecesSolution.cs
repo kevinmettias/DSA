@@ -16,10 +16,6 @@ namespace DSAExperimentation.LeetCode.ManhattanDistancesOfAllArrangementsOfPiece
 // form over 0..rowCount-1 / 0..columnCount-1.
 internal static class ManhattanDistancesOfAllArrangementsOfPiecesSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook answer: actually generate every pieceCount-cell arrangement
     // and, for each one, every pair inside it, and add up their Manhattan
     // distances. Combinatorially explosive - only tractable for small grids -
@@ -46,7 +42,7 @@ internal static class ManhattanDistancesOfAllArrangementsOfPiecesSolution
         }
 
         SearchArrangements(0, 0);
-        return total % Modulo;
+        return total % LeetCodeModulus.Value;
     }
 
     private static long ArrangementDistanceSum(int[] combination, int columns)
@@ -72,11 +68,11 @@ internal static class ManhattanDistancesOfAllArrangementsOfPiecesSolution
     public static long SumByPairwiseDistanceFormula(int rowCount, int columnCount, int pieceCount)
     {
         var cellCount = rowCount * columnCount;
-        var pairDistanceSum = ((long)columnCount * columnCount % Modulo * PairwiseIndexSum(rowCount) +
-                                (long)rowCount * rowCount % Modulo * PairwiseIndexSum(columnCount)) % Modulo;
+        var pairDistanceSum = ((long)columnCount * columnCount % LeetCodeModulus.Value * PairwiseIndexSum(rowCount) +
+                                (long)rowCount * rowCount % LeetCodeModulus.Value * PairwiseIndexSum(columnCount)) % LeetCodeModulus.Value;
         var arrangementsPerPair = BinomialCoefficient(cellCount - 2, pieceCount - 2);
 
-        return pairDistanceSum * arrangementsPerPair % Modulo;
+        return pairDistanceSum * arrangementsPerPair % LeetCodeModulus.Value;
     }
 
     // Sum of (j - i) over every 0 <= i < j < length: the pairwise-index-distance
@@ -84,11 +80,11 @@ internal static class ManhattanDistancesOfAllArrangementsOfPiecesSolution
     // done as multiplication by 6's modular inverse.
     private static long PairwiseIndexSum(long length)
     {
-        var lengthMod = length % Modulo;
-        var squareMinusOne = ((length * length - 1) % Modulo + Modulo) % Modulo;
+        var lengthMod = length % LeetCodeModulus.Value;
+        var squareMinusOne = ((length * length - 1) % LeetCodeModulus.Value + LeetCodeModulus.Value) % LeetCodeModulus.Value;
         var sixInverse = ModularArithmetic.Inverse(6);
 
-        return lengthMod * squareMinusOne % Modulo * sixInverse % Modulo;
+        return lengthMod * squareMinusOne % LeetCodeModulus.Value * sixInverse % LeetCodeModulus.Value;
     }
 
     private static long BinomialCoefficient(int totalCount, int selectedCount)
@@ -103,12 +99,12 @@ internal static class ManhattanDistancesOfAllArrangementsOfPiecesSolution
 
         for (var i = 1; i <= totalCount; i++)
         {
-            factorial[i] = factorial[i - 1] * i % Modulo;
+            factorial[i] = factorial[i - 1] * i % LeetCodeModulus.Value;
         }
 
         var inverseSelected = ModularArithmetic.Inverse(factorial[selectedCount]);
         var inverseUnselected = ModularArithmetic.Inverse(factorial[totalCount - selectedCount]);
 
-        return factorial[totalCount] * inverseSelected % Modulo * inverseUnselected % Modulo;
+        return factorial[totalCount] * inverseSelected % LeetCodeModulus.Value * inverseUnselected % LeetCodeModulus.Value;
     }
 }

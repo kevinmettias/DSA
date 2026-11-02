@@ -25,10 +25,6 @@ namespace DSAExperimentation.LeetCode.SumOfKDigitNumbersInARange;
 // Deliberately only tractable for small k.
 internal static class SumOfKDigitNumbersInARangeSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     public static long SumOfKDigitNumbersByBruteForceEnumeration(int low, int high, int digitCount) =>
         BruteForceEnumeration((Low: low, High: high), digitCount, position: 0, valueSoFar: 0);
 
@@ -37,11 +33,11 @@ internal static class SumOfKDigitNumbersInARangeSolution
         var digitChoices = high - low + 1;
         var digitSum = (low + high) * digitChoices / 2;
 
-        var repunit = (ModularArithmetic.Power(10, digitCount) - 1) % ModularArithmetic.Modulo
-            * ModularArithmetic.Inverse(9) % ModularArithmetic.Modulo;
+        var repunit = (ModularArithmetic.Power(10, digitCount) - 1) % LeetCodeModulus.Value
+            * ModularArithmetic.Inverse(9) % LeetCodeModulus.Value;
         var combinationsPerDigit = ModularArithmetic.Power(digitChoices, digitCount - 1);
 
-        return digitSum * combinationsPerDigit % ModularArithmetic.Modulo * repunit % ModularArithmetic.Modulo;
+        return digitSum * combinationsPerDigit % LeetCodeModulus.Value * repunit % LeetCodeModulus.Value;
     }
 
     // The digits one position may take are a single closed interval: `low` and `high`
@@ -57,9 +53,9 @@ internal static class SumOfKDigitNumbersInARangeSolution
         var total = 0L;
         for (var digit = digitRange.Low; digit <= digitRange.High; digit++)
         {
-            var next = (valueSoFar * 10 + digit) % Modulo;
+            var next = (valueSoFar * 10 + digit) % LeetCodeModulus.Value;
             total = (total + BruteForceEnumeration(digitRange, digitCount, position + 1, next))
-                % Modulo;
+                % LeetCodeModulus.Value;
         }
 
         return total;

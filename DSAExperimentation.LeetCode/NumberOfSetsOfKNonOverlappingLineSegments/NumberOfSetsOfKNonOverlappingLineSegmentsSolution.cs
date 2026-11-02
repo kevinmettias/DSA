@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfSetsOfKNonOverlappingLineSegments;
 
@@ -26,10 +25,6 @@ namespace DSAExperimentation.LeetCode.NumberOfSetsOfKNonOverlappingLineSegments;
 // with a negative upper index forever instead of hitting either base case.
 internal static class NumberOfSetsOfKNonOverlappingLineSegmentsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // C(pointCount + segmentCount - 1, 2 * segmentCount): the identity the problem
     // reduces to.
     private const int PointOffset = 1;
@@ -58,7 +53,7 @@ internal static class NumberOfSetsOfKNonOverlappingLineSegmentsSolution
     }
 
     private static long PascalEntry(long[,] table, int row, int col) =>
-        (table[row - 1, col - 1] + table[row - 1, col]) % Modulo;
+        (table[row - 1, col - 1] + table[row - 1, col]) % LeetCodeModulus.Value;
 
     // The same identity driven top-down through this repo's Memoizer, so each
     // binomial state is solved once and shared by every recursive call reaching it.
@@ -94,7 +89,7 @@ internal static class NumberOfSetsOfKNonOverlappingLineSegmentsSolution
 
             return (rest.Replay((totalCount - 1, chosenCount - 1), rest)
                 + rest.Replay((totalCount - 1, chosenCount), rest))
-                % ModularArithmetic.Modulo;
+                % LeetCodeModulus.Value;
         }
     }
 }

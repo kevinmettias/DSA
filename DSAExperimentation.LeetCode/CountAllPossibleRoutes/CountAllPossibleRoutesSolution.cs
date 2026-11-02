@@ -21,10 +21,6 @@ namespace DSAExperimentation.LeetCode.CountAllPossibleRoutes;
 // O(locations.Length^2 * fuel).
 internal static class CountAllPossibleRoutesSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook answer: plain recursion, no cache, BCL arithmetic only. This is
     // the arm the memoized strategy below has to justify itself against.
     public static int CountRoutesByNaiveRecursion(int[] locations, int start, int finish, int fuel) =>
@@ -88,5 +84,5 @@ internal static class CountAllPossibleRoutesSolution
     }
 
     private static int AddModulo(int total, int addend) =>
-        (int)((total + (long)addend) % Modulo);
+        (int)((total + (long)addend) % LeetCodeModulus.Value);
 }

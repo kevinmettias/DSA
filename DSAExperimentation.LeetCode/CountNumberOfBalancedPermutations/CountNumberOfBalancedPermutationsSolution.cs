@@ -9,10 +9,6 @@ namespace DSAExperimentation.LeetCode.CountNumberOfBalancedPermutations;
 // one contract.
 internal static class CountNumberOfBalancedPermutationsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private const int DigitCount = 10;
 
     // Textbook baseline: every distinct permutation of num's characters, deduped
@@ -35,7 +31,7 @@ internal static class CountNumberOfBalancedPermutationsSolution
             }
         }
 
-        return balanced % Modulo;
+        return balanced % LeetCodeModulus.Value;
     }
 
     private static bool IsBalanced(string permutation)
@@ -94,8 +90,8 @@ internal static class CountNumberOfBalancedPermutationsSolution
         var table = FactorialTable.Build(num.Length);
         var ways = FoldDigitSplits(counts, evenSlots, half, table);
 
-        return ways * table.Factorial(evenSlots) % ModularArithmetic.Modulo
-            * table.Factorial(oddSlots) % ModularArithmetic.Modulo;
+        return ways * table.Factorial(evenSlots) % LeetCodeModulus.Value
+            * table.Factorial(oddSlots) % LeetCodeModulus.Value;
     }
 
     private static long FoldDigitSplits(int[] counts, int evenSlots, int half, FactorialTable table)
@@ -157,9 +153,9 @@ internal static class CountNumberOfBalancedPermutationsSolution
                 break;
             }
 
-            var contribution = cell.Ways * table.InverseFactorial(k) % ModularArithmetic.Modulo *
-                table.InverseFactorial(group.Count - k) % ModularArithmetic.Modulo;
-            next[nextUsed, nextSum] = (next[nextUsed, nextSum] + contribution) % ModularArithmetic.Modulo;
+            var contribution = cell.Ways * table.InverseFactorial(k) % LeetCodeModulus.Value *
+                table.InverseFactorial(group.Count - k) % LeetCodeModulus.Value;
+            next[nextUsed, nextSum] = (next[nextUsed, nextSum] + contribution) % LeetCodeModulus.Value;
         }
     }
 

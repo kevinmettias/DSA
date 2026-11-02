@@ -23,19 +23,19 @@ internal readonly struct RoomWaysPrecomputedFactorialAlgebra(FactorialTable tabl
         for (var i = 0; i < children.Count; i++)
         {
             var (childSize, childWays) = children[i];
-            ways = ways * childWays % ModularArithmetic.Modulo;
+            ways = ways * childWays % LeetCodeModulus.Value;
             size += childSize;
         }
 
         // size and childSize are long because this algebra's Size contract is a
         // long; a subtree can hold no more nodes than the tree it came from, so
         // both narrow safely to FactorialTable's int indices.
-        ways = ways * table.Factorial((int)(size - 1)) % ModularArithmetic.Modulo;
+        ways = ways * table.Factorial((int)(size - 1)) % LeetCodeModulus.Value;
 
         for (var i = 0; i < children.Count; i++)
         {
             var childSize = children[i].Size;
-            ways = ways * table.InverseFactorial((int)childSize) % ModularArithmetic.Modulo;
+            ways = ways * table.InverseFactorial((int)childSize) % LeetCodeModulus.Value;
         }
 
         return (size, ways);

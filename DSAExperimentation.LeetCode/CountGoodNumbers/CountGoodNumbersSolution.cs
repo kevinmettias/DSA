@@ -18,10 +18,6 @@ namespace DSAExperimentation.LeetCode.CountGoodNumbers;
 // LeetCode's reporting convention rather than this problem's own value.
 internal static class CountGoodNumbersSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // LC 1922: even-index digits must be one of {0,2,4,6,8}, odd-index digits must
     // be one of the prime digits {2,3,5,7}.
     private const long EvenIndexDigitChoices = 5;
@@ -40,7 +36,7 @@ internal static class CountGoodNumbersSolution
         var evenChoices = NaivePower(EvenIndexDigitChoices, evenPositions);
         var oddChoices = NaivePower(OddIndexDigitChoices, oddPositions);
 
-        return (int)(evenChoices * oddChoices % Modulo);
+        return (int)(evenChoices * oddChoices % LeetCodeModulus.Value);
     }
 
     private static long NaivePower(long value, long exponent)
@@ -49,7 +45,7 @@ internal static class CountGoodNumbersSolution
 
         for (var i = 0L; i < exponent; i++)
         {
-            result = result * value % Modulo;
+            result = result * value % LeetCodeModulus.Value;
         }
 
         return result;
@@ -58,14 +54,14 @@ internal static class CountGoodNumbersSolution
     // Halve the exponent each step instead of decrementing it, squaring the base to
     // compensate - Domain.Modular's own exponentiation-by-squaring loop, which folds
     // under the modulus at every multiplication so intermediate values never grow
-    // past Modulo^2. O(log n) instead of O(n).
+    // past LeetCodeModulus.Value^2. O(log n) instead of O(n).
     public static int CountGoodNumbersByExponentiationBySquaring(long length)
     {
         var (evenPositions, oddPositions) = SplitByIndexParity(length);
         var evenChoices = ModularArithmetic.Power(EvenIndexDigitChoices, evenPositions);
         var oddChoices = ModularArithmetic.Power(OddIndexDigitChoices, oddPositions);
 
-        return (int)(evenChoices * oddChoices % ModularArithmetic.Modulo);
+        return (int)(evenChoices * oddChoices % LeetCodeModulus.Value);
     }
 
     // Index 0 is even, so a length-n string carries ceil(n/2) even-index positions

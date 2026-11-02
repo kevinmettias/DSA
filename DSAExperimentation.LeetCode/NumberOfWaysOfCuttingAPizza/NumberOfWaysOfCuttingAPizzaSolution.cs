@@ -21,10 +21,6 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysOfCuttingAPizza;
 // on its own path.
 internal static class NumberOfWaysOfCuttingAPizzaSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // A pizza with no apple left in it cannot be cut into apple-bearing pieces.
     private const int NoWays = 0;
 
@@ -62,7 +58,7 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
         var horizontalWays = UnmemoizedHorizontalCuts(apples, state, applesRemaining);
         var verticalWays = UnmemoizedVerticalCuts(apples, state, applesRemaining);
 
-        return (int)((horizontalWays + verticalWays) % Modulo);
+        return (int)((horizontalWays + verticalWays) % LeetCodeModulus.Value);
     }
 
     // Cuts below the current row: legal when the strip above the cut holds an apple.
@@ -75,7 +71,7 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
         {
             if (applesRemaining - apples.ApplesFrom(next, state.Col) > 0)
             {
-                total = (total + UnmemoizedWaysFrom(apples, (next, state.Col, state.RemainingCuts - 1))) % Modulo;
+                total = (total + UnmemoizedWaysFrom(apples, (next, state.Col, state.RemainingCuts - 1))) % LeetCodeModulus.Value;
             }
         }
 
@@ -92,7 +88,7 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
         {
             if (applesRemaining - apples.ApplesFrom(state.Row, next) > 0)
             {
-                total = (total + UnmemoizedWaysFrom(apples, (state.Row, next, state.RemainingCuts - 1))) % Modulo;
+                total = (total + UnmemoizedWaysFrom(apples, (state.Row, next, state.RemainingCuts - 1))) % LeetCodeModulus.Value;
             }
         }
 
@@ -142,7 +138,7 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
 
         var (horizontalWays, verticalWays) = SumCutsAlongBothAxes(apples, state, rest);
 
-        return (int)((horizontalWays + verticalWays) % Modulo);
+        return (int)((horizontalWays + verticalWays) % LeetCodeModulus.Value);
     }
 
     // Both axes of the recurrence: a cut may run below the current row or right of
@@ -185,7 +181,7 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
             if (applesRemaining - axis.ApplesFrom(next) > 0)
             {
                 total = (total + rest.Replay(axis.NextState(next), rest))
-                    % Modulo;
+                    % LeetCodeModulus.Value;
             }
         }
 

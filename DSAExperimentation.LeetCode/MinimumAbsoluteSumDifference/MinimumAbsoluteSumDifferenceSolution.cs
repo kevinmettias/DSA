@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.MinimumAbsoluteSumDifference;
 
@@ -24,10 +23,6 @@ namespace DSAExperimentation.LeetCode.MinimumAbsoluteSumDifference;
 // still the right one to subtract.
 internal static class MinimumAbsoluteSumDifferenceSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook answer: for every index, walk the whole of nums1 looking for the
     // closest replacement. BCL only - the arm the sorted strategy below has to
     // justify itself against.
@@ -51,7 +46,7 @@ internal static class MinimumAbsoluteSumDifferenceSolution
             maxReduction = Math.Max(maxReduction, diff - bestDiff);
         }
 
-        return (int)((baseSum - maxReduction) % Modulo);
+        return (int)((baseSum - maxReduction) % LeetCodeModulus.Value);
     }
 
     // The same answer, with the per-index rescan replaced by one sort plus a
@@ -71,7 +66,7 @@ internal static class MinimumAbsoluteSumDifferenceSolution
             maxReduction = Math.Max(maxReduction, diff - ClosestDiff(sortedSequence, nums2[i], diff));
         }
 
-        return (int)((baseSum - maxReduction) % ModularArithmetic.Modulo);
+        return (int)((baseSum - maxReduction) % LeetCodeModulus.Value);
     }
 
     // How small one index's term can be made: LowerBound returns where target would

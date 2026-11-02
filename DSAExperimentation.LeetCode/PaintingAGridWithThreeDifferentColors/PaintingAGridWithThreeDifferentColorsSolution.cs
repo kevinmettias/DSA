@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.PaintingAGridWithThreeDifferentColors;
 
@@ -15,10 +14,6 @@ namespace DSAExperimentation.LeetCode.PaintingAGridWithThreeDifferentColors;
 // column pattern once and then the columns.
 internal static class PaintingAGridWithThreeDifferentColorsSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private const int NumberOfColors = 3;
 
     // Stands in for "no column has been placed yet", so the first column accepts
@@ -35,7 +30,7 @@ internal static class PaintingAGridWithThreeDifferentColorsSolution
     {
         var total = CountFromCell(new int[rows * columns], 0, columns);
 
-        return (int)(total % Modulo);
+        return (int)(total % LeetCodeModulus.Value);
     }
 
     // This repo's own primitives, in two stages. rows <= 5 keeps a single column's
@@ -109,7 +104,7 @@ internal static class PaintingAGridWithThreeDifferentColorsSolution
                 if (state.PreviousPattern == NoPreviousPattern ||
                     IsCompatible(patterns[state.PreviousPattern], patterns[i]))
                 {
-                    total = (total + rest.Replay((state.Column + 1, i), rest)) % ModularArithmetic.Modulo;
+                    total = (total + rest.Replay((state.Column + 1, i), rest)) % LeetCodeModulus.Value;
                 }
             }
 

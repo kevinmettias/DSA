@@ -11,10 +11,6 @@ namespace DSAExperimentation.LeetCode.DirectionAssignmentsWithExactlyKVisiblePeo
 // segments: sum over a of C(pos, a) * C(personCount - 1 - pos, visibleCount - a).
 internal static class DirectionAssignmentsWithExactlyKVisiblePeopleSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Textbook baseline: build each segment's binomial-coefficient row with
     // Pascal's triangle addition alone (no modular inverse), then convolve the
     // two rows directly - the sum-over-a form before it is recognized as an
@@ -32,10 +28,10 @@ internal static class DirectionAssignmentsWithExactlyKVisiblePeopleSolution
 
         for (var a = lowA; a <= highA; a++)
         {
-            total = (total + leftRow[a] * rightRow[visibleCount - a]) % Modulo;
+            total = (total + leftRow[a] * rightRow[visibleCount - a]) % LeetCodeModulus.Value;
         }
 
-        return (int)(total * 2 % Modulo);
+        return (int)(total * 2 % LeetCodeModulus.Value);
     }
 
     private static long[] BuildBinomialRow(int size)
@@ -47,7 +43,7 @@ internal static class DirectionAssignmentsWithExactlyKVisiblePeopleSolution
         {
             for (var a = person; a >= 1; a--)
             {
-                row[a] = (row[a] + row[a - 1]) % Modulo;
+                row[a] = (row[a] + row[a - 1]) % LeetCodeModulus.Value;
             }
         }
 
@@ -66,6 +62,6 @@ internal static class DirectionAssignmentsWithExactlyKVisiblePeopleSolution
     {
         var combinations = FactorialTable.Build(personCount - 1).Choose(personCount - 1, visibleCount);
 
-        return (int)(combinations * 2 % ModularArithmetic.Modulo);
+        return (int)(combinations * 2 % LeetCodeModulus.Value);
     }
 }

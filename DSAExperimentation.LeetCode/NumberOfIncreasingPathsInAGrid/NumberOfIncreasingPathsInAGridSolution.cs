@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfIncreasingPathsInAGrid;
 
@@ -19,10 +18,6 @@ namespace DSAExperimentation.LeetCode.NumberOfIncreasingPathsInAGrid;
 // recurrence and its benchmark workload with.
 internal static class NumberOfIncreasingPathsInAGridSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
     // The grid together with the bounds every neighbor test needs, so the recurrences
@@ -44,7 +39,7 @@ internal static class NumberOfIncreasingPathsInAGridSolution
         {
             for (var col = 0; col < pathsGrid.Cols; col++)
             {
-                total = (total + PathsFromNaive(pathsGrid, (row, col))) % Modulo;
+                total = (total + PathsFromNaive(pathsGrid, (row, col))) % LeetCodeModulus.Value;
             }
         }
 
@@ -66,7 +61,7 @@ internal static class NumberOfIncreasingPathsInAGridSolution
             for (var col = 0; col < pathsGrid.Cols; col++)
             {
                 total += Memoizer.Memoize<(int Row, int Col), long>((row, col), pathsFromCell);
-                total %= ModularArithmetic.Modulo;
+                total %= LeetCodeModulus.Value;
             }
         }
 
@@ -87,7 +82,7 @@ internal static class NumberOfIncreasingPathsInAGridSolution
             }
         }
 
-        return count % Modulo;
+        return count % LeetCodeModulus.Value;
     }
 
     private static bool IsIncreasingStep(PathsGrid grid, (int Row, int Col) from, (int Row, int Col) to) =>
@@ -116,7 +111,7 @@ internal static class NumberOfIncreasingPathsInAGridSolution
                 }
             }
 
-            return count % ModularArithmetic.Modulo;
+            return count % LeetCodeModulus.Value;
         }
     }
 }

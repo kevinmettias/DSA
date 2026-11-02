@@ -16,10 +16,6 @@ namespace DSAExperimentation.LeetCode.MaximumAndMinimumSumsOfAtMostSizeKSubseque
 // how each C(i,j) is produced.
 internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook answer: Pascal's triangle, one row at a time, keeping only the
     // k columns the length cap ever needs. No modular inverse, no repo
     // primitive - the baseline SumByFactorialCombinatorics is measured against.
@@ -54,14 +50,14 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
 
         for (var j = cap; j >= 1; j--)
         {
-            row[j] = (row[j] + row[j - 1]) % Modulo;
+            row[j] = (row[j] + row[j - 1]) % LeetCodeModulus.Value;
         }
 
         var sum = 0L;
 
         for (var j = 0; j <= cap; j++)
         {
-            sum = (sum + row[j]) % Modulo;
+            sum = (sum + row[j]) % LeetCodeModulus.Value;
         }
 
         return sum;
@@ -101,7 +97,7 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
 
         for (var j = 0; j <= cap; j++)
         {
-            sum = (sum + table.Choose(rowIndex, j)) % Modulo;
+            sum = (sum + table.Choose(rowIndex, j)) % LeetCodeModulus.Value;
         }
 
         return sum;
@@ -125,8 +121,8 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
 
         for (var i = 0; i < n; i++)
         {
-            var count = (capped[i] + capped[n - 1 - i]) % Modulo;
-            total = (total + (long)sorted[i] * count) % Modulo;
+            var count = (capped[i] + capped[n - 1 - i]) % LeetCodeModulus.Value;
+            total = (total + (long)sorted[i] * count) % LeetCodeModulus.Value;
         }
 
         return total;

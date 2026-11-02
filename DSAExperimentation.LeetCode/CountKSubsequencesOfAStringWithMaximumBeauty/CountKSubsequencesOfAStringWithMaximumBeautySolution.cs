@@ -38,10 +38,6 @@ namespace DSAExperimentation.LeetCode.CountKSubsequencesOfAStringWithMaximumBeau
 // RoomWaysAlgebra's own doc comment already states.
 internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private const int AlphabetSize = 26;
 
     public static long CountByBruteForceCombinations(string text, int subsequenceLength)
@@ -104,8 +100,8 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
         }
 
         var taken = Math.Min(groupSize, remaining);
-        product = product * ModularArithmetic.Power(value, taken) % ModularArithmetic.Modulo;
-        product = product * Combinations(groupSize, taken) % ModularArithmetic.Modulo;
+        product = product * ModularArithmetic.Power(value, taken) % LeetCodeModulus.Value;
+        product = product * Combinations(groupSize, taken) % LeetCodeModulus.Value;
 
         return (index, remaining - taken, product);
     }
@@ -121,17 +117,17 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
 
         for (var i = 0; i < chooseCount; i++)
         {
-            numerator = numerator * (itemCount - i) % ModularArithmetic.Modulo;
+            numerator = numerator * (itemCount - i) % LeetCodeModulus.Value;
         }
 
         var denominator = 1L;
 
         for (var i = 2; i <= chooseCount; i++)
         {
-            denominator = denominator * i % ModularArithmetic.Modulo;
+            denominator = denominator * i % LeetCodeModulus.Value;
         }
 
-        return numerator * ModularArithmetic.Inverse(denominator) % ModularArithmetic.Modulo;
+        return numerator * ModularArithmetic.Inverse(denominator) % LeetCodeModulus.Value;
     }
 
     // One node of the combination tree: a complete size-k subset folds into the running
@@ -171,7 +167,7 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
         {
             var count = chosen.Frequency[chosen.Chars[index]];
             beauty += count;
-            ways = ways * count % Modulo;
+            ways = ways * count % LeetCodeModulus.Value;
         }
 
         if (beauty > best.Beauty)
@@ -181,7 +177,7 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
 
         if (beauty == best.Beauty)
         {
-            return (best.Beauty, (best.Count + ways) % Modulo);
+            return (best.Beauty, (best.Count + ways) % LeetCodeModulus.Value);
         }
 
         return best;

@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NthMagicalNumber;
 
@@ -17,10 +16,6 @@ namespace DSAExperimentation.LeetCode.NthMagicalNumber;
 // instead of a single comparison.
 internal static class NthMagicalNumberSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // Deliberately written without this repo's primitives - a plain counting walk
     // from 1 upward, O(answer), and the arm the binary search below has to justify
     // itself against.
@@ -39,7 +34,7 @@ internal static class NthMagicalNumberSolution
             }
         }
 
-        return (int)(x % Modulo);
+        return (int)(x % LeetCodeModulus.Value);
     }
 
     // The nth magical number is at most rank * min(firstFactor, secondFactor) - rank
@@ -55,6 +50,6 @@ internal static class NthMagicalNumberSolution
 
         var x = MonotonePredicateSearch.FirstTrue(1L, upperBound, rule);
 
-        return (int)(x % ModularArithmetic.Modulo);
+        return (int)(x % LeetCodeModulus.Value);
     }
 }

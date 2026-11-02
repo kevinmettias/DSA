@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.SumOfBeautifulSubsequences;
 
@@ -25,10 +24,6 @@ namespace DSAExperimentation.LeetCode.SumOfBeautifulSubsequences;
 // with the core GcdOperation, here applied to Fenwick instead of SegmentTree.
 internal static class SumOfBeautifulSubsequencesSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook baseline: walk every subset via bitmask, keep only the strictly
     // increasing ones, fold each into its GCD with a hand-rolled Euclid (what
     // you'd write without this repo - ARCHITECTURE.md 17.5), and bucket by exact
@@ -52,7 +47,7 @@ internal static class SumOfBeautifulSubsequencesSolution
 
         foreach (var (gcd, count) in countByGcd)
         {
-            answer = (answer + (gcd % Modulo) * (count % Modulo)) % Modulo;
+            answer = (answer + (gcd % LeetCodeModulus.Value) * (count % LeetCodeModulus.Value)) % LeetCodeModulus.Value;
         }
 
         return (int)answer;
@@ -99,7 +94,7 @@ internal static class SumOfBeautifulSubsequencesSolution
             var exact = ExactCountForDivisor(nums, g, exactCount);
 
             exactCount[g] = exact;
-            answer = (answer + (g % ModularArithmetic.Modulo) * exact) % ModularArithmetic.Modulo;
+            answer = (answer + (g % LeetCodeModulus.Value) * exact) % LeetCodeModulus.Value;
         }
 
         return (int)answer;
@@ -127,9 +122,9 @@ internal static class SumOfBeautifulSubsequencesSolution
             largerMultiples += exactCount[multiple];
         }
 
-        largerMultiples %= ModularArithmetic.Modulo;
+        largerMultiples %= LeetCodeModulus.Value;
 
-        return ((total - largerMultiples) % ModularArithmetic.Modulo + ModularArithmetic.Modulo) % ModularArithmetic.Modulo;
+        return ((total - largerMultiples) % LeetCodeModulus.Value + LeetCodeModulus.Value) % LeetCodeModulus.Value;
     }
 
     private static List<int> FilterMultiples(int[] nums, int divisor)
@@ -175,11 +170,11 @@ internal static class SumOfBeautifulSubsequencesSolution
     {
         var rank = coordinates.RankOf(value);
         var before = rank == 0 ? 0 : fenwick.Query(0, rank - 1);
-        var dp = (before + 1) % ModularArithmetic.Modulo;
+        var dp = (before + 1) % LeetCodeModulus.Value;
 
         fenwick.Add(rank, dp);
 
-        return (total + dp) % ModularArithmetic.Modulo;
+        return (total + dp) % LeetCodeModulus.Value;
     }
 
     private static int Gcd(int leftValue, int rightValue) =>

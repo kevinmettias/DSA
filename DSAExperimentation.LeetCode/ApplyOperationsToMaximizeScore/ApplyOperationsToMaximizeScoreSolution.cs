@@ -22,10 +22,6 @@ namespace DSAExperimentation.LeetCode.ApplyOperationsToMaximizeScore;
 // question here.
 internal static class ApplyOperationsToMaximizeScoreSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private const int SmallestPrime = 2;
 
     // Where a subarray's count comes from, both sentinels are one step outside the array
@@ -213,7 +209,7 @@ internal static class ApplyOperationsToMaximizeScoreSolution
             var subarraysPickingIndex = (long)(index - left[index]) * (right[index] - index);
             var operations = Math.Min(subarraysPickingIndex, remaining);
 
-            score = score * ModPower(entry.Value, operations) % Modulo;
+            score = score * ModPower(entry.Value, operations) % LeetCodeModulus.Value;
             remaining -= operations;
         }
 
@@ -222,21 +218,21 @@ internal static class ApplyOperationsToMaximizeScoreSolution
 
     private readonly record struct IndexedValue(int Value, int Index);
 
-    // value^exponent mod Modulo by repeated squaring, restated rather than called on
-    // ModularArithmetic for the same reason as Modulo itself.
+    // value^exponent mod LeetCodeModulus.Value by repeated squaring, restated rather than called on
+    // ModularArithmetic for the same reason as LeetCodeModulus.Value itself.
     private static long ModPower(long value, long exponent)
     {
         var result = 1L;
-        value %= Modulo;
+        value %= LeetCodeModulus.Value;
 
         while (exponent > 0)
         {
             if ((exponent & 1) == 1)
             {
-                result = result * value % Modulo;
+                result = result * value % LeetCodeModulus.Value;
             }
 
-            value = value * value % Modulo;
+            value = value * value % LeetCodeModulus.Value;
             exponent >>= 1;
         }
 

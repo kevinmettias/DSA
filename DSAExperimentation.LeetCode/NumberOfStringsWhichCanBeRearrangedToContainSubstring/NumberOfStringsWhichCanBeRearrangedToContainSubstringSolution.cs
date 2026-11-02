@@ -10,10 +10,6 @@ namespace DSAExperimentation.LeetCode.NumberOfStringsWhichCanBeRearrangedToConta
 // as "leet" followed by the rest in any order.
 internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     private const int AlphabetSize = 26;
     private const int RequiredLCount = 1;
     private const int RequiredECount = 2;
@@ -84,7 +80,7 @@ internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolut
     {
         var (cappedLCount, cappedECount, cappedTCount) = state;
         dp[cappedLCount, cappedECount, cappedTCount] =
-            (dp[cappedLCount, cappedECount, cappedTCount] + amount) % Modulo;
+            (dp[cappedLCount, cappedECount, cappedTCount] + amount) % LeetCodeModulus.Value;
     }
 
     // Inclusion-exclusion over the 3 ways to fail: A = no 'l' at all, B = fewer
@@ -108,11 +104,11 @@ internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolut
 
         var missingSomeRequirement =
             (noL + noT + shortOnE - noLAndNoT - noLAndShortOnE - noTAndShortOnE + noLAndNoTAndShortOnE)
-            % ModularArithmetic.Modulo;
+            % LeetCodeModulus.Value;
 
-        var answer = (total - missingSomeRequirement) % ModularArithmetic.Modulo;
+        var answer = (total - missingSomeRequirement) % LeetCodeModulus.Value;
 
-        return (int)((answer + ModularArithmetic.Modulo) % ModularArithmetic.Modulo);
+        return (int)((answer + LeetCodeModulus.Value) % LeetCodeModulus.Value);
     }
 
     // Strings of length stringLength drawn from an alphabet of (freeLetters + 1)
@@ -122,5 +118,5 @@ internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolut
     private static long AtMostOneMarked(int freeLetters, int stringLength) =>
         (ModularArithmetic.Power(freeLetters, stringLength)
             + (long)stringLength * ModularArithmetic.Power(freeLetters, stringLength - 1))
-        % ModularArithmetic.Modulo;
+        % LeetCodeModulus.Value;
 }

@@ -19,10 +19,6 @@ namespace DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 // per-node fold measures what the fold itself costs.
 internal static class CountWaysToBuildRoomsInAnAntColonySolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     public static int WaysToBuildOrderByPostOrderRecursion(int[] prevRoom)
     {
         var rooms = ParentArrayTree.Build(prevRoom);
@@ -63,7 +59,7 @@ internal static class CountWaysToBuildRoomsInAnAntColonySolution
         (long Size, long Ways) subtree, long childSize, long childWays)
     {
         var childFactorial = FactorialFromScratch(childSize);
-        var ways = subtree.Ways * childWays % Modulo * ModInverse(childFactorial) % Modulo;
+        var ways = subtree.Ways * childWays % LeetCodeModulus.Value * ModInverse(childFactorial) % LeetCodeModulus.Value;
 
         return (subtree.Size + childSize, ways);
     }
@@ -76,30 +72,30 @@ internal static class CountWaysToBuildRoomsInAnAntColonySolution
 
         for (var i = 2; i <= value; i++)
         {
-            result = result * i % Modulo;
+            result = result * i % LeetCodeModulus.Value;
         }
 
         return result;
     }
 
-    // Fermat's little theorem: for the prime Modulo, value^(Modulo - 2) is value's inverse.
-    private static long ModInverse(long value) => ModPower(value, Modulo - 2);
+    // Fermat's little theorem: for the prime LeetCodeModulus.Value, value^(LeetCodeModulus.Value - 2) is value's inverse.
+    private static long ModInverse(long value) => ModPower(value, LeetCodeModulus.Value - 2);
 
-    // value^exponent mod Modulo by repeated squaring, restated rather than called on
-    // ModularArithmetic for the same reason as Modulo itself.
+    // value^exponent mod LeetCodeModulus.Value by repeated squaring, restated rather than called on
+    // ModularArithmetic for the same reason as LeetCodeModulus.Value itself.
     private static long ModPower(long value, long exponent)
     {
         var result = 1L;
-        value %= Modulo;
+        value %= LeetCodeModulus.Value;
 
         while (exponent > 0)
         {
             if ((exponent & 1) == 1)
             {
-                result = result * value % Modulo;
+                result = result * value % LeetCodeModulus.Value;
             }
 
-            value = value * value % Modulo;
+            value = value * value % LeetCodeModulus.Value;
             exponent >>= 1;
         }
 
@@ -112,7 +108,7 @@ internal static class CountWaysToBuildRoomsInAnAntColonySolution
     {
         var interleavings = FactorialFromScratch(subtree.Size - 1);
 
-        return (subtree.Size, subtree.Ways * interleavings % Modulo);
+        return (subtree.Size, subtree.Ways * interleavings % LeetCodeModulus.Value);
     }
 
     public static int WaysToBuildOrderByPerNodeFactorial(int[] prevRoom)

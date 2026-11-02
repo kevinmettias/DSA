@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.DecodeWaysII;
 
@@ -15,10 +14,6 @@ namespace DSAExperimentation.LeetCode.DecodeWaysII;
 // ordinary recursion.
 internal static class DecodeWaysIISolution
 {
-    // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const long Modulo = 1_000_000_007;
-
     // The textbook answer: a BCL long[] filled from the end, dp[i] = ways to
     // decode digits[i..]. Deliberately written without this repo's primitives - it is
     // the arm the memoized strategy below has to justify itself against.
@@ -34,11 +29,11 @@ internal static class DecodeWaysIISolution
                 continue;
             }
 
-            dp[i] = SingleWays(digits[i]) * dp[i + 1] % Modulo;
+            dp[i] = SingleWays(digits[i]) * dp[i + 1] % LeetCodeModulus.Value;
 
             if (i + 1 < digits.Length)
             {
-                dp[i] = (dp[i] + (PairWays(digits[i], digits[i + 1]) * dp[i + DecodeWaysIIRecurrence.PairLength])) % Modulo;
+                dp[i] = (dp[i] + (PairWays(digits[i], digits[i + 1]) * dp[i + DecodeWaysIIRecurrence.PairLength])) % LeetCodeModulus.Value;
             }
         }
 
@@ -101,12 +96,12 @@ internal static class DecodeWaysIISolution
                 return 0;
             }
 
-            var total = SingleWays(digits[index]) * rest.Replay(index + 1, rest) % ModularArithmetic.Modulo;
+            var total = SingleWays(digits[index]) * rest.Replay(index + 1, rest) % LeetCodeModulus.Value;
 
             if (index + 1 < digits.Length)
             {
                 var paired = PairWays(digits[index], digits[index + 1]) * rest.Replay(index + DecodeWaysIIRecurrence.PairLength, rest);
-                total = (total + paired) % ModularArithmetic.Modulo;
+                total = (total + paired) % LeetCodeModulus.Value;
             }
 
             return total;

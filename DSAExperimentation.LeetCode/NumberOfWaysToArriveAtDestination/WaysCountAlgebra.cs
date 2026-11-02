@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Folding;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfWaysToArriveAtDestination;
 
@@ -26,7 +25,7 @@ internal readonly struct WaysCountAlgebra : IFoldAlgebra<WaysNode, long>
         for (var i = 0; i < children.Count; i++)
         {
             var child = children[i];
-            total = (total + child) % ModularArithmetic.Modulo;
+            total = (total + child) % LeetCodeModulus.Value;
         }
 
         return total;
