@@ -1,5 +1,6 @@
 using System.Text;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Games.Zuma;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<string>;
 
 namespace DSAExperimentation.LeetCode.ZumaGame;
@@ -8,8 +9,12 @@ namespace DSAExperimentation.LeetCode.ZumaGame;
 // cascade-collapse any run of 3+ same-colored balls, until the board empties or the
 // hand runs out. Both strategies search the same (board, remaining-hand) state
 // space; they differ only in search order and how repeated states are handled.
+//
+// The cascade collapse is the game's (Domain/Games/Zuma): the BFS arm calls ZumaRow<ClassicZuma>.Collapse, and
+// the DFS baseline keeps its own Collapse, CollapseOnePass and run length (ARCHITECTURE §17.5).
 internal static class ZumaGameSolution
 {
+    // The baseline's own copy of the shortest group that vanishes.
     private const int MinCollapseRunLength = 3;
     private const char StateSeparator = '|';
 
@@ -107,7 +112,7 @@ internal static class ZumaGameSolution
                 }
 
                 var placed = currentBoard.Text.Insert(pos, currentHand.Text[h].ToString());
-                var nextBoard = Collapse(placed);
+                var nextBoard = ZumaRow<ClassicZuma>.Collapse(placed);
                 var nextHand = currentHand.Text.Remove(h, 1);
                 var next = nextBoard + StateSeparator + nextHand;
 
