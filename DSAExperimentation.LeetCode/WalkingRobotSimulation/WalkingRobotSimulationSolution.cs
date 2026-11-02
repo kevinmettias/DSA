@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Compass;
 
 namespace DSAExperimentation.LeetCode.WalkingRobotSimulation;
 
@@ -14,14 +15,19 @@ namespace DSAExperimentation.LeetCode.WalkingRobotSimulation;
 // composed strategy hashes the obstacles into this repo's own Set<(int, int)> once
 // and answers each step in O(1), the same "brute force vs. hashed lookup" shape
 // TwoSum uses for complement lookups.
+//
+// The robot's headings, turns and steps are the compass's (Domain/Compass): the
+// obstacle-set arm reads CompassRules, with east as +X and north as +Y, and the
+// baseline keeps its own copies below (ARCHITECTURE §17.5). The -2 and -1 commands
+// are LeetCode's.
 internal static class WalkingRobotSimulationSolution
 {
     private const int TurnLeftCommand = -2;
     private const int TurnRightCommand = -1;
-    private const int DirectionCount = 4;
 
-    // Directions in clockwise order starting at north, so a right turn is +1 and a
-    // left turn is -1 modulo four.
+    // The baseline's own copy of the compass: directions in clockwise order starting
+    // at north, so a right turn is +1 and a left turn is -1 modulo four.
+    private const int DirectionCount = 4;
     private static readonly int[] DeltaX = [0, 1, 0, -1];
     private static readonly int[] DeltaY = [1, 0, -1, 0];
 
@@ -97,15 +103,15 @@ internal static class WalkingRobotSimulationSolution
 
     public static int MaxDistanceSquaredByObstacleSet(int[] commands, Set<(int X, int Y)> blocked)
     {
-        var state = new RobotState(0, 0, 0);
+        var state = new HeadingState(CompassHeading.North, 0, 0);
         var maxDistanceSquared = 0;
 
         foreach (var command in commands)
         {
             state = command switch
             {
-                TurnLeftCommand => TurnLeft(state),
-                TurnRightCommand => TurnRight(state),
+                TurnLeftCommand => state with { Heading = CompassRules.TurnLeft(state.Heading) },
+                TurnRightCommand => state with { Heading = CompassRules.TurnRight(state.Heading) },
                 _ => MoveForwardByObstacleSet(state, command, blocked),
             };
 
@@ -115,13 +121,13 @@ internal static class WalkingRobotSimulationSolution
         return maxDistanceSquared;
     }
 
-    private static RobotState MoveForwardByObstacleSet(RobotState state, int steps, Set<(int X, int Y)> blocked)
+    private static HeadingState MoveForwardByObstacleSet(HeadingState state, int steps, Set<(int X, int Y)> blocked)
     {
         var position = (X: state.X, Y: state.Y);
 
         for (var step = 0; step < steps; step++)
         {
-            var next = NextCell(position, state.Direction);
+            var next = NextCellFacing(position, state.Heading);
 
             if (blocked.Has(next))
             {
@@ -134,6 +140,12 @@ internal static class WalkingRobotSimulationSolution
         return state with { X = position.X, Y = position.Y };
     }
 
+    private static (int X, int Y) NextCellFacing((int X, int Y) position, CompassHeading heading)
+    {
+        var (east, north) = CompassRules.StepOf(heading);
+        return (position.X + east, position.Y + north);
+    }
+
     private static (int X, int Y) NextCell((int X, int Y) position, int direction) =>
         (position.X + DeltaX[direction], position.Y + DeltaY[direction]);
 
@@ -144,6 +156,11 @@ internal static class WalkingRobotSimulationSolution
         state with { Direction = (state.Direction + 1) % DirectionCount };
 
     private readonly record struct RobotState(int Direction, int X, int Y)
+    {
+        public int DistanceSquared => (X * X) + (Y * Y);
+    }
+
+    private readonly record struct HeadingState(CompassHeading Heading, int X, int Y)
     {
         public int DistanceSquared => (X * X) + (Y * Y);
     }

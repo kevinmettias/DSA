@@ -7,7 +7,7 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // the other three are row-major, so an answer that lists cells in the order they were reached comes
 // out the same from every caller. GridNeighbors yields in the order of whichever table it is given. A table whose order means something else - a turning cycle for a
 // spiral walk or a robot's heading, a puzzle's own numbered direction codes - is not a neighbour set,
-// and keeps its own table.
+// and keeps its own table; a compass heading's is Domain/Compass's CompassRules.
 //
 // ImmutableArray rather than a ReadOnlySpan property: a span of tuples cannot be backed by static
 // data, so the property would build a new array on every access, and a span cannot be enumerated

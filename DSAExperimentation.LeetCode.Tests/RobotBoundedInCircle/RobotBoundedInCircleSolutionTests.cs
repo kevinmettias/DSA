@@ -28,6 +28,11 @@ public sealed partial class RobotBoundedInCircleSolutionTests
             // that is not simply "G" repeated.
             new BoundedCircleExample(Instructions: "GLGLGGLGL", StaysWithinCircle: false),
 
+            // A left turn undone by a right one: north again, but displaced. Every other
+            // row reads the same with its right turns made left, so this one pins which way
+            // a right turn goes.
+            new BoundedCircleExample(Instructions: "GLGR", StaysWithinCircle: false),
+
             // A pure turn never leaves the origin.
             new BoundedCircleExample(Instructions: "R", StaysWithinCircle: true),
         };

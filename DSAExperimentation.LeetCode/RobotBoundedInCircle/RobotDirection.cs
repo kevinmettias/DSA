@@ -4,7 +4,8 @@ namespace DSAExperimentation.LeetCode.RobotBoundedInCircle;
 // turning is one modular step along this sequence and wraps back to North, which is
 // why the values are written down rather than left to the declaration order. North
 // is 0, the facing a fresh robot starts with and the one a changed facing is
-// measured against.
+// measured against. The switch baseline's own copy of Domain/Compass's
+// CompassHeading (ARCHITECTURE §17.5); the lookup-table arm uses that instead.
 internal enum RobotDirection
 {
     North = 0,
