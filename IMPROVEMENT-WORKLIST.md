@@ -378,9 +378,26 @@ using) removed from 1,111 files.
     beats the bucket strategy, at 93 µs against 179-187 µs on 500 values and 4.0-4.1 ms against
     6.0 ms on 20,000, and allocates 40-60% less.
 - On long words, LC 336's trie arm spends most of its time allocating each `LowercaseTrieNode`'s
-  26-slot child array up front. Open: a sparser child representation would be a core change, so
-  it is the owner's call. The benchmark stops at 400 words, inside LeetCode's 5,000. Open: per-arm
-  sizes would let the trie run past the O(n²) brute force.
+  26-slot child array up front. Two sparser layouts were measured on 2026-11-02, outside the tree
+  on `710a862b`, over two BenchmarkDotNet passes:
+  - Packed: a 26-bit occupancy mask plus an array holding only the children present, in letter
+    order, indexed by popcount.
+    - LC 336 at 400 to 5,000 words of length 300: 2.2 to 5 times faster, with 3.4 times less
+      allocation. At 2,000 words it went from 94 ms to 15.5 ms, and full gen-2 collections fell
+      from 1.6 to 0.25 per call.
+    - Every other trie user that builds its trie: 25-68% faster, with 3 to 4.4 times less
+      allocation.
+    - StreamOfCharacters, which only walks its trie: 52-70% slower.
+  - Lazy: the 26-slot array is allocated on the first child. It saved almost nothing on LC 336,
+    whose long random words make chains of single children rather than leaves.
+
+  Owner ruling, 2026-11-02: the children layout becomes a witness on the generalized alphabet
+  trie, with a dense preset (today's slot array) and a packed preset, and each adopter picks one
+  by measurement. A packed node cannot take `Children[i] ??= child`, so the four production sites
+  that do this move to a get-or-add call. Open until that lands.
+
+  The benchmark stops at 400 words, inside LeetCode's 5,000. Open: per-arm sizes would let the
+  trie run past the O(n²) brute force.
 - `DSAExperimentation.Benchmarks/baseline.tsv` (`042cdaef`) predates seven fold, reduce and
   traversal commits (`b2d7514c` through `d57a8a57`), after which the tree-fold StrategySwaps arms run
   13-17% faster, so it is stale in the faster direction: a slowdown back to the old speed would pass. Open: re-record it with
