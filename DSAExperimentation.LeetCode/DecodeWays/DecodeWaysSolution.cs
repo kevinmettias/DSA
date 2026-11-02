@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Domain.English;
 
 namespace DSAExperimentation.LeetCode.DecodeWays;
 
@@ -10,9 +11,14 @@ namespace DSAExperimentation.LeetCode.DecodeWays;
 // number of ways to decode digits[i..] - and differ only in evaluation order: bottom-up
 // tabulation fills an array from the end backwards, top-down memoization lets this
 // repo's own Memoizer cache the same recurrence written as ordinary recursion.
+//
+// The highest code is the last letter's number (Domain/English's LetterNumbers): the memoized
+// arm reads it, and the tabulation baseline keeps its own MaxTwoDigitCode (ARCHITECTURE §17.5).
 internal static class DecodeWaysSolution
 {
     private const int TwoDigitGroupLength = 2;
+
+    // The baseline's own copy of the last letter's number, Z's 26.
     private const int MaxTwoDigitCode = 26;
 
     // The textbook answer: a BCL int[] filled from the end, dp[index] = ways to decode
@@ -72,7 +78,7 @@ internal static class DecodeWaysSolution
         var span = digits.AsSpan(index, TwoDigitGroupLength);
         var twoDigit = int.Parse(span);
 
-        return twoDigit <= MaxTwoDigitCode;
+        return twoDigit <= LetterNumbers.Last;
     }
 
     // The recurrence, as a named type: an index past the end is one way, a leading

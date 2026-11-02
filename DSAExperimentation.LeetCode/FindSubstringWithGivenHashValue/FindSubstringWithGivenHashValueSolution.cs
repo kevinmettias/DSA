@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.RollingHash;
+using DSAExperimentation.Domain.English;
 
 namespace DSAExperimentation.LeetCode.FindSubstringWithGivenHashValue;
 
@@ -21,13 +22,17 @@ namespace DSAExperimentation.LeetCode.FindSubstringWithGivenHashValue;
 // fires on LeetCode's input. It is still reachable by any caller that passes a hash
 // no window has, so both strategies use this repo's ordinary Try shape instead of
 // throwing, as TwoSumSolution.TryFindIndicesBy* does.
+//
+// A letter's value is its number, a as 1 through z as 26 (Domain/English's LetterNumbers):
+// the rolling-hash arm reads it, and the window-rehash baseline keeps its own LetterValue
+// (ARCHITECTURE §17.5).
 internal static class FindSubstringWithGivenHashValueSolution
 {
-    // LC 2156's own character value, injected into RollingHash through the same
+    // The letters' numbers, injected into RollingHash through the same
     // IEqualityComparer<char> hook RollingHashTests' case-insensitive-comparer
     // test already exercises.
     private static readonly IEqualityComparer<char> LetterValues =
-        EqualityComparer<char>.Create((left, right) => left == right, LetterValue);
+        EqualityComparer<char>.Create((left, right) => left == right, LetterNumbers.NumberOfLowercase);
 
     // The textbook answer: walk each window's characters and rebuild its modular
     // hash from scratch, O(n * k) overall. Deliberately BCL-only - a bare long
@@ -66,6 +71,9 @@ internal static class FindSubstringWithGivenHashValueSolution
 
         return hash;
     }
+
+    // The baseline's own copy of a letter's number.
+    private static int LetterValue(char letter) => letter - 'a' + 1;
 
     // This repo's own RollingHash, built once in O(n) and then queried in O(1) per
     // window - queried over the REVERSED text, because the two hash formulas
@@ -127,6 +135,4 @@ internal static class FindSubstringWithGivenHashValueSolution
 
         return new RollingHash(reversed, LetterValues, lane, lane);
     }
-
-    private static int LetterValue(char letter) => letter - 'a' + 1;
 }

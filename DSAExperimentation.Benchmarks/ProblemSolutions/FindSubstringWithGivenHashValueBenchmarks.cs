@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.RollingHash;
+using DSAExperimentation.Domain.English;
 using DSAExperimentation.LeetCode.FindSubstringWithGivenHashValue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -50,7 +51,7 @@ public class FindSubstringWithGivenHashValueBenchmarks
     }
 
     // LC 2156's hash of the text's final K characters: the window's own first character
-    // on power^0, each letter valued by its alphabet index plus one.
+    // on power^0, each letter valued by its number, a as 1 through z as 26.
     private static long LastWindowHash(string text)
     {
         var hash = 0L;
@@ -58,7 +59,7 @@ public class FindSubstringWithGivenHashValueBenchmarks
 
         foreach (var letter in text[^K..])
         {
-            var letterValue = letter - 'a' + 1;
+            var letterValue = LetterNumbers.NumberOfLowercase(letter);
             hash = (hash + (letterValue * powerTerm)) % Modulo;
             powerTerm = powerTerm * Power % Modulo;
         }
