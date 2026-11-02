@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Domain.Games.Dice;
 using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfDistinctRollSequences;
@@ -14,12 +15,16 @@ namespace DSAExperimentation.LeetCode.NumberOfDistinctRollSequences;
 // is remembered: the baseline re-derives it on every distinct path that reaches it
 // (exponential in n), the composed arm routes it through this repo's own Memoizer
 // and visits each of the O(n) reachable states once.
+//
+// The die's faces are Domain/Games/Dice's: the memoized arm rolls a SixSidedDie, and the baseline
+// keeps its own DieFaces. Which roll may follow which is this problem's game and stays here.
 internal static class NumberOfDistinctRollSequencesSolution
 {
     // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
     // reaches no library type, not even a constant (ARCHITECTURE 17.5).
     private const long Modulo = 1_000_000_007;
 
+    // The baseline's own copy of the die's faces, 1 through DieFaces.
     private const int DieFaces = 6;
     private const int FirstDay = 1;
 
@@ -99,7 +104,7 @@ internal static class NumberOfDistinctRollSequencesSolution
 
             var total = 0L;
 
-            for (var face = 1; face <= DieFaces; face++)
+            for (var face = Die<SixSidedDie>.LowestFace; face <= Die<SixSidedDie>.HighestFace; face++)
             {
                 if (!CanFollow(face, secondLastRoll, lastRoll))
                 {
