@@ -94,13 +94,13 @@ public sealed partial class HammingGraphTests
     [Fact]
     public void OneCharacterMutations_YieldsPositionsTimesAlphabetMinusOneResults()
     {
-        var overTheAlphabet = HammingGraph.OneCharacterMutations("AAAA", StandardAlphabets.Dna).ToList();
+        var overTheAlphabet = HammingGraph.OneCharacterMutations("AAAA", new Alphabet("ACGT")).ToList();
 
         Assert.Equal(4 * 3, overTheAlphabet.Count);
 
         // A source character outside the alphabet is never skipped, so that
         // position contributes a full alphabet's worth of replacements instead.
-        var outsideTheAlphabet = HammingGraph.OneCharacterMutations("aAAA", StandardAlphabets.Dna).ToList();
+        var outsideTheAlphabet = HammingGraph.OneCharacterMutations("aAAA", new Alphabet("ACGT")).ToList();
 
         Assert.Equal(4 * 3 + 1, outsideTheAlphabet.Count);
     }

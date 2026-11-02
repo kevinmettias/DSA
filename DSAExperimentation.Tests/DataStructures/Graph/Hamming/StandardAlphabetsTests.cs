@@ -11,19 +11,10 @@ public sealed partial class StandardAlphabetsTests
         Assert.Equal(26, StandardAlphabets.LowercaseLatin.Characters.Length);
     }
 
+    // A repeated character would make OneCharacterMutations emit duplicates.
     [Fact]
-    public void Dna_IsTheFourBases() => Assert.Equal("ACGT", StandardAlphabets.Dna.Characters);
-
-    [Fact]
-    public void LowercaseLatin_And_Dna_ContainNoRepeats()
-    {
-        // A repeated character would make OneCharacterMutations emit duplicates.
+    public void LowercaseLatin_ContainsNoRepeats() =>
         Assert.Equal(
             StandardAlphabets.LowercaseLatin.Characters.Length,
             StandardAlphabets.LowercaseLatin.Characters.Distinct().Count());
-
-        Assert.Equal(
-            StandardAlphabets.Dna.Characters.Length,
-            StandardAlphabets.Dna.Characters.Distinct().Count());
-    }
 }

@@ -1,14 +1,13 @@
 namespace DSAExperimentation.DataStructures.Graph.Hamming;
 
-// The named Alphabet values LeetCode's mutation problems actually use. Which one
-// is in play is a property of the problem, not of the graph, so it is passed in
-// rather than baked into HammingGraph.
-/// <summary>The <see cref="Alphabet"/> values LeetCode's mutation problems use.</summary>
+// The Latin alphabet as an Alphabet, the one the word-ladder problems walk. Which
+// alphabet is in play is a property of the problem, not of the graph, so it is
+// passed in rather than baked into HammingGraph. The Latin letters are a shape many
+// problems share, like LowercaseAlphabet; a world's own alphabet is Domain's, as
+// DNA's four bases are Domain/Dna's DnaBases.Alphabet (ARCHITECTURE §17.6).
+/// <summary>The Latin <see cref="Alphabet"/> the word-ladder problems use.</summary>
 public static class StandardAlphabets
 {
     /// <summary>The 26 lowercase Latin letters, a through z.</summary>
     public static Alphabet LowercaseLatin => new("abcdefghijklmnopqrstuvwxyz");
-
-    /// <summary>The four DNA bases A, C, G and T.</summary>
-    public static Alphabet Dna => new("ACGT");
 }

@@ -50,10 +50,10 @@ public sealed partial class HammingSearchTests
     [Fact]
     public void MutationDistance_RespectsTheAlphabetItIsGiven()
     {
-        // 'z' is unreachable over the DNA alphabet however permissive the set is.
+        // 'z' is unreachable over an alphabet of four capitals however permissive the set is.
         var allowed = new Set<string>(["z"]);
         var distance = HammingSearch.MutationDistance(
-            new MutationStart("A"), new MutationTarget("z"), allowed, StandardAlphabets.Dna);
+            new MutationStart("A"), new MutationTarget("z"), allowed, new Alphabet("ACGT"));
 
         Assert.Null(distance);
     }

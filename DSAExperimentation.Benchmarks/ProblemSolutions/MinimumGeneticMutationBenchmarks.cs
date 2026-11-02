@@ -1,6 +1,7 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Hamming;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Dna;
 using DSAExperimentation.LeetCode.MinimumGeneticMutation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -27,7 +28,7 @@ public class MinimumGeneticMutationBenchmarks
     public void Setup()
     {
         var (genes, startGene, endGene) =
-            HammingWorkloads.BuildChain(GeneCount, GeneLength, StandardAlphabets.Dna, seed: RandomSeed);
+            HammingWorkloads.BuildChain(GeneCount, GeneLength, DnaBases.Alphabet, seed: RandomSeed);
 
         _startGene = startGene;
         _endGene = endGene;

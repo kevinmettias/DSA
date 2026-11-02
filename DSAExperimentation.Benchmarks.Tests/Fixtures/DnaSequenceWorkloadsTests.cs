@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.Domain.Dna;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -9,7 +10,6 @@ public sealed partial class DnaSequenceWorkloadsTests
 {
     private const int Length = 256;
     private const int Seed = 187; // LC problem number
-    private const string Alphabet = "ACGT";
 
     [Fact]
     public void BuildSequence_Length_ReturnsOneBasePerPosition() =>
@@ -20,7 +20,7 @@ public sealed partial class DnaSequenceWorkloadsTests
     {
         var sequence = DnaSequenceWorkloads.BuildSequence(Length, Seed);
 
-        Assert.All(sequence, nucleotide => Assert.True(Alphabet.Contains(nucleotide)));
+        Assert.All(sequence, nucleotide => Assert.True(DnaBases.Letters.Contains(nucleotide)));
     }
 
     [Fact]
