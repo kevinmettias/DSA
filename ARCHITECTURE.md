@@ -2219,6 +2219,21 @@ apart, and NextGreaterElementI's composed arm measured 16 µs in one pass and 28
 no single pass is read alone. Every change that moved code was checked by a later pass. A result
 that only one pass showed is reported as noise, not as a finding.
 
+When a timing moves and the code did not change enough to explain it, the JIT's own inlining
+decisions usually do. A call the JIT judged an unprofitable inline, or one through an interface it
+cannot resolve, stays a call in the hot loop. The benchmark runner reads those decisions:
+
+```bash
+dotnet run -c Release --project DSAExperimentation.Benchmarks -- inlining WalkingRobotSimulation SetObstacles 3 MaxDistanceSquaredByObstacleSet
+```
+
+It builds the class the way BenchmarkDotNet does, with its first `[Params]` values and its
+`[GlobalSetup]`, and calls the arm for the given seconds until it tiers up. It then prints the failed
+inlines of the last compile, of the arm itself or of the method named last. It reads them in its own
+process from the runtime's event source (the Jit and JitTracing keywords), which an out-of-process
+BenchmarkDotNet run cannot report. It needs a Release build, since Debug code is compiled without
+the inlining it would report.
+
 ## 20. Worked example: the queue family, configurations of one buffer
 
 A queue, a deque, a bounded queue and a bounded deque are one structure configured four ways, the

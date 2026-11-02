@@ -4,6 +4,7 @@ using BenchmarkDotNet.Running;
 
 using DSAExperimentation.Benchmarks;
 using DSAExperimentation.Benchmarks.Baseline;
+using DSAExperimentation.Benchmarks.Inlining;
 
 // The config is built from the arguments rather than attached as an assembly attribute, because
 // whether the pinned recording job applies depends on what the caller asked for - see
@@ -16,6 +17,13 @@ using DSAExperimentation.Benchmarks.Baseline;
 if (BaselineCommand.Handles(args))
 {
     return BaselineCommand.Run(args, Console.Out, Console.Error);
+}
+
+// `inlining` is the other: it runs one arm in this process to read the JIT's decisions about it,
+// which a BenchmarkDotNet run, out of process, cannot report.
+if (InliningCommand.IsAskedFor(args))
+{
+    return await InliningCommand.RunAsync(args, Console.Out, Console.Error);
 }
 
 BenchmarkSwitcher
