@@ -91,18 +91,20 @@ internal static class RobotBoundedInCircleSolution
         return state.IsBounded;
     }
 
-    private static HashMap<CompassHeading, (int East, int North)> BuildStepDeltas()
+    private static HashMap<CompassHeading, CompassStep> BuildStepDeltas()
     {
-        var stepDeltas = new HashMap<CompassHeading, (int East, int North)>();
-        stepDeltas.Set(CompassHeading.North, CompassRules.StepOf(CompassHeading.North));
-        stepDeltas.Set(CompassHeading.East, CompassRules.StepOf(CompassHeading.East));
-        stepDeltas.Set(CompassHeading.South, CompassRules.StepOf(CompassHeading.South));
-        stepDeltas.Set(CompassHeading.West, CompassRules.StepOf(CompassHeading.West));
+        var stepDeltas = new HashMap<CompassHeading, CompassStep>();
+
+        foreach (var point in CompassRules.Points)
+        {
+            stepDeltas.Set(point.Heading, point.Step);
+        }
+
         return stepDeltas;
     }
 
     private static void ApplyByStepDeltaMap(
-        HashMap<CompassHeading, (int East, int North)> stepDeltas, ref CompassWalk state,
+        HashMap<CompassHeading, CompassStep> stepDeltas, ref CompassWalk state,
         RobotInstruction instruction)
     {
         switch (instruction)
@@ -122,7 +124,7 @@ internal static class RobotBoundedInCircleSolution
     // Forward steps the robot one unit along whichever facing it currently holds; the map
     // turns that facing into the delta, so no per-facing arm is needed here.
     private static void AdvanceByStepDelta(
-        HashMap<CompassHeading, (int East, int North)> stepDeltas, ref CompassWalk state)
+        HashMap<CompassHeading, CompassStep> stepDeltas, ref CompassWalk state)
     {
         stepDeltas.TryGetValue(state.Heading, out var step);
         state.East += step.East;

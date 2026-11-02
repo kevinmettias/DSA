@@ -1,3 +1,5 @@
+using System.Collections.Immutable;
+
 namespace DSAExperimentation.Domain.Devices.Compass;
 
 // A walker on the plane as LC 874 and LC 1041 state it: it faces one of four compass headings,
@@ -11,7 +13,9 @@ namespace DSAExperimentation.Domain.Devices.Compass;
 // The heading count is a power of two, so a turn wraps with a mask rather than a %, whose signed
 // form costs a sign fix-up. A step is read from a table by the heading's number rather than
 // chosen by a switch: the JIT judged a four-way switch unprofitable to inline, so LC 874's step
-// loop made a call per step and ran about 10% slower, where a table read inlines.
+// loop made a call per step and ran about 10% slower, where a table read inlines. The table is built
+// from the named points, each step placed at its own point's heading, so the order the points are
+// listed in cannot put a step under the wrong heading.
 /// <summary>How a compass heading turns, and which way one step along it goes.</summary>
 public static class CompassRules
 {
@@ -21,8 +25,15 @@ public static class CompassRules
     // The mask that wraps a heading's number at HeadingCount.
     private const int HeadingMask = HeadingCount - 1;
 
+    // The cardinal points, the one source the step table is built from, declared first because static
+    // initializers run in the order they are written.
+    private static readonly ImmutableArray<CompassPoint> Cardinal = [CompassPoint.North, CompassPoint.East, CompassPoint.South, CompassPoint.West];
+
     // Each heading's step, at the heading's number.
-    private static readonly (int East, int North)[] Steps = [(0, 1), (1, 0), (0, -1), (-1, 0)];
+    private static readonly CompassStep[] StepsByHeading = PlaceSteps(Cardinal);
+
+    /// <summary>The four cardinal points, clockwise from north.</summary>
+    public static ImmutableArray<CompassPoint> Points => Cardinal;
 
     /// <summary>The heading a quarter turn clockwise of the given one.</summary>
     /// <param name="heading">The heading turned from.</param>
@@ -37,5 +48,17 @@ public static class CompassRules
     /// <summary>How far one step along a heading goes east and north.</summary>
     /// <param name="heading">The heading stepped along.</param>
     /// <returns>The step's eastward and northward parts, each -1, 0 or 1.</returns>
-    public static (int East, int North) StepOf(CompassHeading heading) => Steps[(int)heading];
+    public static CompassStep StepOf(CompassHeading heading) => StepsByHeading[(int)heading];
+
+    private static CompassStep[] PlaceSteps(ImmutableArray<CompassPoint> points)
+    {
+        var steps = new CompassStep[HeadingCount];
+
+        foreach (var point in points)
+        {
+            steps[(int)point.Heading] = point.Step;
+        }
+
+        return steps;
+    }
 }

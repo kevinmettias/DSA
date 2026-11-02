@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.Domain.Computing.Filesystem;
+using DSAExperimentation.Domain.Computing.Paths;
 
 namespace DSAExperimentation.LeetCode.RemoveSubFoldersFromTheFilesystem;
 
@@ -14,7 +15,7 @@ namespace DSAExperimentation.LeetCode.RemoveSubFoldersFromTheFilesystem;
 // against "<folder>/" rather than "<folder>".
 //
 // That rule and the separator are the filesystem's (Domain/Computing/Filesystem): the sort-then-scan
-// arm asks FolderPath, which reads the separator in place instead of building "<folder>/",
+// arm asks NamePath<FolderPaths>, which reads the separator in place instead of building "<folder>/",
 // and the pairwise baseline keeps its own copy (ARCHITECTURE §17.5).
 internal static class RemoveSubFoldersFromTheFilesystemSolution
 {
@@ -71,7 +72,7 @@ internal static class RemoveSubFoldersFromTheFilesystemSolution
 
         foreach (var folder in sorted)
         {
-            if (lastKept is null || !new FolderPath(lastKept).HasInside(folder))
+            if (lastKept is null || !new NamePath<FolderPaths>(lastKept).HasInside(folder))
             {
                 kept.Add(folder);
                 lastKept = folder;

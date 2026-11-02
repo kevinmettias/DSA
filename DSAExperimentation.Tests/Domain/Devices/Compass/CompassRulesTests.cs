@@ -37,7 +37,20 @@ public sealed partial class CompassRulesTests
     [Theory]
     [MemberData(nameof(Steps))]
     public void StepOf_GoesOneUnitAlongTheHeading(CompassHeading heading, int east, int north) =>
-        Assert.Equal((east, north), CompassRules.StepOf(heading));
+        Assert.Equal(new CompassStep(east, north), CompassRules.StepOf(heading));
+
+    // Every heading is named by exactly one point, so the step table has no empty or doubled slot.
+    [Fact]
+    public void Points_NameEveryHeadingOnce() =>
+        Assert.Equal(Enum.GetValues<CompassHeading>(), CompassRules.Points.Select(point => point.Heading).Order());
+
+    // The table is built from the pairing, not from the order the points are listed in.
+    [Fact]
+    public void StepOf_EveryPoint_IsThatPointsOwnStep() =>
+        Assert.All(CompassRules.Points, point => Assert.Equal(point.Step, CompassRules.StepOf(point.Heading)));
+
+    [Fact]
+    public void HeadingCount_IsTheNumberOfPoints() => Assert.Equal(CompassRules.HeadingCount, CompassRules.Points.Length);
 
     [Theory]
     [MemberData(nameof(Headings))]
