@@ -17,9 +17,9 @@ namespace DSAExperimentation.LeetCode.FindTheNumberOfSubsequencesWithEqualGcd;
 // composed arm is the identical recurrence run through this repo's
 // Algorithms.DynamicProgramming.Memoizer, collapsing the shared
 // (index, gcd1, gcd2) states to at most n * maxValue^2 distinct calls, reporting
-// through Domain.Modular.ModularArithmetic's shared 1e9+7 convention
+// under LeetCodeModulus, LeetCode's shared 1e9+7 convention
 // (CountTheNumberOfSquareFreeSubsets's own CountByBitmaskMemo precedent for this
-// exact Memoizer-plus-ModularArithmetic composition).
+// exact Memoizer-plus-LeetCodeModulus composition).
 internal static class FindTheNumberOfSubsequencesWithEqualGcdSolution
 {
     public static int CountPairsByBruteForce(int[] nums)

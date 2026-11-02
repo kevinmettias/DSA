@@ -82,7 +82,8 @@ internal static class CountValidSequencesSolution
     }
 
     // value^exponent mod LeetCodeModulus.Value by repeated squaring, restated rather than called on
-    // ModularArithmetic for the same reason as LeetCodeModulus.Value itself.
+    // ModularPower: a baseline may read LeetCode's modulus, but it runs no library algorithm
+    // (ARCHITECTURE 17.5).
     private static long ModPower(long value, long exponent)
     {
         var result = 1L;

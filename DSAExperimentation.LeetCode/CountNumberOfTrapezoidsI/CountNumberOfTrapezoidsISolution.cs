@@ -64,9 +64,9 @@ internal static class CountNumberOfTrapezoidsISolution
     // y (this repo's own HashMap<TKey, TValue>, the TwoSumSolution precedent)
     // turns "count 4-point splits into two distinct-y pairs" into "count
     // unordered pairs of horizontal-segment counts across distinct y groups" -
-    // (sum^2 - sum-of-squares) / 2, computed via ModularArithmetic's
-    // multiplicative inverse of 2 (Domain.Modular's own nCr-by-modular-inverse
-    // shape, applied here to a division instead of a binomial coefficient)
+    // (sum^2 - sum-of-squares) / 2, computed via ModularInverse's Fermat
+    // inverse of 2 (the nCr-by-modular-inverse shape FactorialTable uses,
+    // applied here to a division instead of a binomial coefficient)
     // rather than exact integer division, since the running sums are already
     // reduced mod 1e9+7.
     public static int CountTrapezoidsByHorizontalPairCounting(int[][] points)

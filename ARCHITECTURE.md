@@ -835,7 +835,7 @@ specifically:
 | `Geometry/` | `ConvexHull` | flat — points in the plane have no topology to be generic over; tier 2 because it composes `Sorting/MergeSort`, the reasoning that put `HammingDistances` in `Algorithms/` (§17.6) |
 | `Metrics/` | `DiameterAlgebra`, `HeightAlgebra`, `HeightDiameterState`, `SizeAlgebra`, `TreeMetrics` | flat — Tree is the only tier |
 | `MinimumSpanningTrees/` | `MinimumSpanningTree` | flat — `Kruskal` over `IEdgeTopology`, composing `KeyedDisjointSet` (§10.4) |
-| `NumberTheory/` | `GreatestCommonDivisor`, `GcdOperation`, `LeastCommonMultiple`, `Primality`, `PrimeFactorization`, `PrimeSieve`, `ModularPower`, `ModularInverse`, `FactorialTable<TModulus>`, `IntegerSquareRoot`, `SquareExceeds`, `PascalTriangle` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `Domain/Modular` keeps only LeetCode's modulus and delegates its exponentiation here (§17.6) |
+| `NumberTheory/` | `GreatestCommonDivisor`, `GcdOperation`, `LeastCommonMultiple`, `Primality`, `PrimeFactorization`, `PrimeSieve`, `ModularPower`, `ModularInverse`, `FactorialTable<TModulus>`, `IntegerSquareRoot`, `SquareExceeds`, `PascalTriangle` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `ModularInverse` and `FactorialTable<TModulus>` take their modulus as a struct witness (`Domain/Mathematics/Modular`'s `IPrimeModulus`), LeetCode's being `LeetCodeModulus` (§17.6) |
 | `Paths/` | `AllRootToLeafPaths` | flat — only one tier exists |
 | `Reducing/` | `BreadthFirstReduceOrder`, `DepthFirstReduceOrder`, `DistanceMapReduceAlgebra`, `IReduceAlgebra`, `IReduceOrderStrategy`, `Reduce`, `ZipReduceAlgebra` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
 | `Searching/` | `BinarySearch`, `SearchRange`, `NearestBoundary` (§19.7), `MonotonePredicateSearch`, `IMonotonePredicate` (§9.6), `CompressedCoordinates` (§19.3) | flat — no topology axis at all; `BinarySearch` is generic over `Sequence.IRandomAccessSequence<T>` (§13.6), `MonotonePredicateSearch` over a rule on an integer interval (§9.6) |
@@ -872,7 +872,6 @@ specifically:
 | `Language/English/` | `EnglishVowels` — the five lowercase vowels, shared by LC 1641, LC 2063 and LC 3227; `LetterNumbers` — A as 1 through Z as 26, read by LC 2156's rolling-hash arm and LC 91's memoized arm. LC 639's letter count sits in a helper its baseline shares, and LC 273's number words are only half of English's rule, whose other half, teens, hundreds and groups of a thousand, is what both its arms are made of. Neither uses it |
 | `Mathematics/Geometry/` | `EuclideanPolygons`, `EuclideanPlane`, `ConstantCurvatureSurface`, `AngleUnits` — when sides close into a polygon and a triangle's angle sum on the flat plane, read by the composed arms of LC 2971, LC 976, LC 3024 and LC 3899; a triangle's angle sum on any surface of constant curvature; and a turn's degrees, read by LC 1610 |
 | `Mathematics/Modular/` | `IModulus`, `IPrimeModulus` — a modulus as a struct witness, and a prime one, under which every nonzero residue has a Fermat inverse; the algorithms over them are `Algorithms/NumberTheory`'s, and LeetCode's 10^9 + 7 is `LeetCodeModulus` at the LeetCode tier's root |
-| `Modular/` | `ModularArithmetic`, `FactorialTable` — arithmetic modulo 1e9+7 |
 | `Science/Dna/` | `DnaBases` — DNA's four bases, the alphabet LC 433's benchmark mutates its genes over and the letters LC 187's workload strings are spelled in. LC 187's 2-bit code per base is its strategy and stays in its folder, so no solution reads it |
 
 `DSAExperimentation.Tests/` mirrors every tree one level deeper (§7, §18.1). Fixture files go to the
@@ -1492,8 +1491,8 @@ or branching factor this rule produces is one of a waived group in `suppressions
   contents, usable by anything with that shape — it is `DataStructures/`.
 - If it is an **Operations**/strategy witness, it is `Algorithms/`.
 - What a problem statement **fixes about its world** — a model (a lock, a board), a rule, a
-  constant (the modulus an answer is reported in), a notation the world itself uses — is `Domain/`, filed by
-  subject (`Domain/Locks`, `Domain/Modular`) and tested once at the mirrored path under
+  constant, a notation the world itself uses — is `Domain/`, filed by field and subject
+  (`Domain/Devices/Locks`, `Domain/Mathematics/Geometry`) and tested once at the mirrored path under
   `DSAExperimentation.Tests/Domain/`. Not "a shape that happens to have been introduced for one
   problem"; a shape is tier 1 or 2 by the first two rules.
 
@@ -1569,10 +1568,9 @@ about LeetCode rather than about any problem's world, and one problem's own spel
 | `Domain/Language/English/` | `EnglishVowels`, `LetterNumbers` | The five vowels, as lowercase letters, as their count, and as a test of one character. The problems' strings are lowercase, and the test's name says so, so that a mixed-case caller does not get a silent false. How a strategy counts them or finds them stays with it. The letters numbered from one, A as 1 through Z as 26, are a notation people use, which is `LowercaseAlphabet`'s zero-based slot plus one; only problems read them, so they are Domain's rather than tier 1's (§17.6a). |
 | `Domain/Mathematics/Geometry/` | `EuclideanPolygons`, `EuclideanPlane`, `ConstantCurvatureSurface`, `AngleUnits` | Mathematical facts no data structure or algorithm represents, which the owner ruled are Domain's, each named for the geometry it holds in. On the flat plane, sides close into a polygon when the longest is shorter than the rest together, which for three sides is the triangle inequality, and a polygon has at least three sides; a sphere has two-sided lunes. A triangle's angles make 180 degrees on the flat plane, a constant a caller pays nothing for, and on a surface of constant curvature K, Gauss–Bonnet's π + K·Area, which is exact. A turn is 360 degrees by the degree's definition. Sorting, scanning and the law of cosines stay with the strategies, and `Algorithms/Geometry` keeps operations such as the convex hull. |
 | `Domain/Mathematics/Modular/` | `IModulus`, `IPrimeModulus` | What a modulus is, as mathematics rather than LeetCode's convention: the residues 0 to m - 1, the bound that keeps the product of two residues inside a long, and for a prime, Fermat's inverse a^(p - 2). An algorithm over them is swappable, so `ModularInverse.ByFermat` and `FactorialTable<TModulus>` are `Algorithms/NumberTheory`'s, beside `ModularPower`. A modulus that is a compile-time constant is a struct witness the JIT folds. LeetCode's own prime, 10^9 + 7, is `LeetCodeModulus` at the LeetCode tier's root, since it is LeetCode's choice; its tests check it is prime and within the bound. |
-| `Domain/Modular/` | `ModularArithmetic`, `FactorialTable` | Modular exponentiation *is* a classic algorithm, and it stays one — `Algorithms/NumberTheory/ModularPower` — but `1_000_000_007` is the modulus counting problems report their answers in, not a property of any algorithm. `FactorialTable`'s nCr lookup is fixed by the same modulus. |
 | `Domain/Science/Dna/` | `DnaBases` | The four bases, A, C, G and T. They were tier 1's `StandardAlphabets.Dna`, a fact about DNA in a graph's folder, whose own header said the alphabet a mutation walks belongs to the problem and not to the graph. The `Alphabet` record they fill stays tier 1, as the lock's graph does. A number for each base is not DNA's: LC 187's 2-bit order is its own strategy. |
 
-Their tests mirror them in `DSAExperimentation.Tests/Domain/{Computing/Filesystem,Devices/Compass,Devices/Locks,Devices/Telephone,Games/Chess,Games/Dice,Games/Life,Games/SlidingPuzzle,Games/Sudoku,Games/TicTacToe,Games/Zuma,Language/English,Mathematics/Geometry,Modular,Science/Dna}/`. The
+Their tests mirror them in `DSAExperimentation.Tests/Domain/{Computing/Filesystem,Devices/Compass,Devices/Locks,Devices/Telephone,Games/Chess,Games/Dice,Games/Life,Games/SlidingPuzzle,Games/Sudoku,Games/TicTacToe,Games/Zuma,Language/English,Mathematics/Geometry,Science/Dna}/`. The
 domain knowledge still written inside individual problem folders moves here problem by problem
 (§17.10).
 
@@ -1777,11 +1775,11 @@ judge reads back from it: there, each level along its next pointers with `#` bet
   boundary it infers is already the file: the shared prefix is the one operation the problem asks
   for, and splitting the strategies apart is exactly the drift §17.1 exists to undo. This is a
   waiver on the *convention*, not on any one file's shortcomings.
-- **`check-constant-placement` is waived on the type whose subject IS its constants** —
-  `Domain/Modular/ModularArithmetic.cs`. The check's own prescribed remedy is "move them to a type
-  of its own, in its own file whose subject IS these values", and it already is that type; it still
-  fires. Where the criticism is fair it is acted on instead. The waiver on LC 752's `LockWheels` went
-  with it, when the general lock replaced it (§17.10).
+- **`check-constant-placement` was waived on the types whose subject IS their constants**,
+  `ModularArithmetic` and LC 752's `LockWheels`. The check's own prescribed remedy is "move them to
+  a type of its own, in its own file whose subject IS these values", and each already was that type,
+  yet it still fired. Both waivers went with their types, when the general lock and the modulus
+  witnesses replaced them (§17.10).
 - **A search reports "no path" as `null`, not as a shared sentinel.** `HammingSearch` returns
   `int?`: a public `Unreachable = -1` on a search type is the smell `check-constant-placement`
   names, and with a nullable result each caller maps "no path" onto its own problem's convention
@@ -1789,9 +1787,10 @@ judge reads back from it: there, each level along its next pointers with `#` bet
 - **LeetCode's reporting conventions are declared once, at the root of the tier.** `-1` for "no
   valid answer" is LeetCode's convention, not any one problem's value, so it is
   `LeetCode/LeetCodeAnswer.cs`'s, and `check-duplicate-constant` flags a solution that declares its
-  own. `1_000_000_007` is shared as widely but lands elsewhere: a counting problem states its whole
-  arithmetic modulo it, which makes it part of what the problem says about its world and so
-  `Domain/Modular`'s (§17.6), while `-1` says only how LeetCode encodes "no answer".
+  own. `1_000_000_007` is the same kind of convention, and lives beside it as
+  `LeetCode/LeetCodeModulus.cs`. What a modulus is belongs to `Domain/Mathematics/Modular`, and the
+  arithmetic over one to `Algorithms/NumberTheory` (§17.6); which prime LeetCode reports in is
+  LeetCode's.
 - **`check-test-coverage` asks for a corresponding file and member-named methods, nothing more.**
   It wants a test file whose **name corresponds to the source file** and whose **method names
   mention the members**: `HeapTests`' ordinary `Push_Pop_MinHeap_ReturnsElementsInAscendingOrder` /
@@ -1938,7 +1937,8 @@ problems says nothing about what it does with an empty frontier.
 
 - **One test file per source file**, at the mirrored path: `DataStructures/Heap/Heap.cs` is tested
   by `DSAExperimentation.Tests/DataStructures/Heap/HeapTests.cs`, and a Domain model the same way:
-  `Domain/Modular/FactorialTable.cs` by `DSAExperimentation.Tests/Domain/Modular/FactorialTableTests.cs`.
+  `Domain/Devices/Locks/CombinationLock.cs` by
+  `DSAExperimentation.Tests/Domain/Devices/Locks/CombinationLockTests.cs`.
 - **Test method names begin with the member under test**, in this repo's existing
   `Member_Scenario_Expectation` form: `TryPeek_EmptyHeap_ReturnsFalse`,
   `Count_ReflectsPushesAndPops`, `OneCharacterMutations_RestoresItsBufferBetweenPositions`.
@@ -2120,8 +2120,8 @@ a `ShortestPath` method for §16.1's reason: same output shape, no shared mechan
 
 ### 19.5 `PascalTriangle`: the general form of `FactorialTable`
 
-`FactorialTable` sits in `Domain/Modular/` because 1e9+7 fixes its content (§17.6), and it divides by
-factorials through modular inverses, which a composite modulus does not have. `PascalTriangle`
+`FactorialTable<TModulus>` divides by factorials through modular inverses, which only a prime
+modulus guarantees, so it takes an `IPrimeModulus` witness (§17.6). `PascalTriangle`
 builds by addition, so any modulus works — 10 and 5 are the ones LeetCode asks for — and an exact
 mode holds coefficients through row 66, the last whose middle entry fits in `long`. The modulus is
 the caller's, so it is an `Algorithms/NumberTheory` type beside `ModularPower`, not a LeetCode one.

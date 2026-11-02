@@ -63,10 +63,10 @@ internal static class CountNumberOfBalancedPermutationsSolution
     // ten digit values one at a time, weighting each split of a digit's own
     // copies between the two groups by 1/(k! * (count-k)!) - the same
     // inverse-factorial-weighted fold RoomWaysPrecomputedFactorialAlgebra and
-    // CountAnagrams' modular-factorial arm both use (Domain.Modular's Fermat's-
-    // little-theorem inverse) - so the running total only needs multiplying by
-    // evenCount! * oddCount! once at the end instead of renormalizing after
-    // every digit.
+    // CountAnagrams' modular-factorial arm both use (FactorialTable's inverse
+    // factorials, built on ModularInverse's Fermat inverse) - so the running
+    // total only needs multiplying by evenCount! * oddCount! once at the end
+    // instead of renormalizing after every digit.
     public static long CountBalancedPermutationsByDigitCountDp(string num)
     {
         var counts = new int[DigitCount];

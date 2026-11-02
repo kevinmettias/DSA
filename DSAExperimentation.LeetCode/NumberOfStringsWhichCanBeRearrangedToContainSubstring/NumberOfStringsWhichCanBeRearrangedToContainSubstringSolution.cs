@@ -87,7 +87,7 @@ internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolut
     // than 2 'e's, C = no 't' at all. |A|, |C| and every "no X" alphabet size drop
     // by one letter; B and every term that also caps 'e' at <=1 occurrence uses
     // AtMostOneMarked. answer = 26^n - |A ∪ B ∪ C|, O(log n) via modular
-    // exponentiation (Domain.Modular.ModularArithmetic).
+    // exponentiation (ModularPower).
     public static int CountRearrangeableStringsByInclusionExclusion(int stringLength)
     {
         var total = ModularPower.Of(AlphabetSize, stringLength, LeetCodeModulus.Value);

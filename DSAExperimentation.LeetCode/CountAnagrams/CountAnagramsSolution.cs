@@ -36,8 +36,8 @@ internal static class CountAnagramsSolution
         return distinct.Count;
     }
 
-    // One O(maxWordLength) FactorialTable<LeetCodeModulus>.Build (Domain.Modular's shared table, the
-    // one RoomWaysPrecomputedFactorialAlgebra and every other modulo-1e9+7 counting
+    // One O(maxWordLength) FactorialTable<LeetCodeModulus>.Build (the shared number-theory
+    // table, the one RoomWaysPrecomputedFactorialAlgebra and every other modulo-1e9+7 counting
     // problem in the catalogue builds), then O(word.Length) per word: the word's
     // factorial times the inverse factorial of each letter's repeat count, mod
     // 1e9+7. No permutation is ever materialized.

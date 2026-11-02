@@ -5,7 +5,7 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 namespace DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 
 // The same multinomial fold as RoomWaysAlgebra, with the factorials hoisted: the
-// caller builds one Domain.Modular FactorialTable<LeetCodeModulus>, O(n) total with a single
+// caller builds one FactorialTable<LeetCodeModulus>, O(n) total with a single
 // modular-inverse call, and hands it to the algebra, so every Combine is
 // O(children) instead of O(subtree size). The table is a field of the algebra the
 // fold is given, so each fold carries its own and the table travels whole - a

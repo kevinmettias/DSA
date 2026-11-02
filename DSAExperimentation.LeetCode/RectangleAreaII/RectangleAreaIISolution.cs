@@ -19,7 +19,7 @@ internal static class RectangleAreaIISolution
     // O(n^2) resulting cells whether some rectangle covers it, O(n^3). BCL
     // arrays and LINQ only - it is the arm the sweep below has to justify itself
     // against. The modulus is LeetCode's reporting convention rather than part
-    // of the algorithm, so it comes from Domain.Modular like every other
+    // of the algorithm, so it comes from LeetCodeModulus like every other
     // counting problem's.
     public static int TotalAreaByCoordinateCompression(int[][] rectangles)
     {

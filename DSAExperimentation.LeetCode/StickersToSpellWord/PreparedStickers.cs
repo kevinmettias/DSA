@@ -2,7 +2,7 @@ namespace DSAExperimentation.LeetCode.StickersToSpellWord;
 
 // Precomputed per-sticker letter counts and the canonically sorted target letters -
 // the state both StickersToSpellWordSolution strategies recurse over. Bespoke to
-// this one problem: unlike OpenTheLock's wheel geometry or Domain/Modular's 1e9+7,
+// this one problem: unlike OpenTheLock's wheel geometry or LeetCodeModulus's 1e9+7,
 // nothing here fixes a modulus or a vertex set that another problem could share -
 // it is simply this problem's own input shape, hoisted out of the measured
 // strategies so a benchmark can build it once in [GlobalSetup].

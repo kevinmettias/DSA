@@ -14,10 +14,10 @@ namespace DSAExperimentation.LeetCode.SumOfKDigitNumbersInARange;
 // independent of p. Summing that same quantity over every position's place
 // value 10^(k-1-p) collapses to repunit(k) = 111...1 (k ones) = (10^k - 1) / 9.
 // Both the modular exponentiation for 10^k and c^(k-1), and the modular
-// inverse of 9 that division needs, are this repo's own
-// Domain.Modular.ModularArithmetic - the "report modulo 1e9+7" LeetCode
-// convention it exists for, reused exactly as
-// FindTheNthValueAfterKSecondsSolution's binomial arm does.
+// inverse of 9 that division needs, are this repo's general number-theory
+// algorithms, ModularPower and ModularInverse's Fermat inverse, taken modulo
+// LeetCodeModulus - the "report modulo 1e9+7" LeetCode convention - and reused
+// exactly as FindTheNthValueAfterKSecondsSolution's binomial arm does.
 //
 // SumOfKDigitNumbersByBruteForceEnumeration is the textbook baseline this has
 // to justify itself against: recurse digit-by-digit through every one of the

@@ -12,8 +12,8 @@ namespace DSAExperimentation.LeetCode.StringTransformation;
 // Counting length-k walks between two nodes of K_n has a closed form:
 // g(k) = ((n-1)^k - (-1)^k) / n and f(k) = g(k) + (-1)^k (mod 1e9+7), from
 // f(k) - g(k) = (-1)^k and f(k) + (n-1)*g(k) = (n-1)^k. That is elementary modular
-// arithmetic - Domain.Modular's fast power and Fermat inverse - not a repo
-// primitive; k reaches 1e15, so it has to be O(log k), which rules out an
+// arithmetic - a fast power and a Fermat inverse, written out below - not what the
+// arms compete on; k reaches 1e15, so it has to be O(log k), which rules out an
 // iterative DP over k for BOTH arms. The closed form is therefore shared, and the
 // one thing the two strategies actually differ in is the single count it needs:
 // how many of s's n rotations spell the target (t when s != t; s itself, i.e. s's
@@ -41,8 +41,9 @@ internal static class StringTransformationSolution
     // this repo's string-matching primitives - it is the O(n^2) arm the Z-function
     // strategy below has to justify itself against. (The closed-form tail it shares
     // with that strategy is not part of the contrast: modular exponentiation by
-    // squaring is what you would write inline either way, and 1e9+7 is LeetCode's
-    // reporting convention, which is exactly why Domain.Modular owns both.)
+    // squaring is what you would write inline either way, so it is written out below
+    // rather than called on ModularPower, and 1e9+7 is LeetCode's reporting
+    // convention, which every arm reads from LeetCodeModulus.)
     public static int NumberOfWaysByBruteForceRotationCompare(string source, string target, long operations)
     {
         var targetIsSource = source == target;
@@ -147,7 +148,8 @@ internal static class StringTransformationSolution
     }
 
     // value^exponent mod LeetCodeModulus.Value by repeated squaring, restated rather than called on
-    // ModularArithmetic for the same reason as LeetCodeModulus.Value itself.
+    // ModularPower: a baseline may read LeetCode's modulus, but it runs no library algorithm
+    // (ARCHITECTURE 17.5).
     private static long ModPower(long value, long exponent)
     {
         var result = 1L;

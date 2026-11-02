@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Count Anagrams (LC 2514): brute-force permutation enumeration (HashSet-deduped,
 // factorial-time per word) vs. this repo's modular factorial/inverse-factorial
-// table (Domain.Modular.ModularArithmetic), which computes the exact same
+// table (FactorialTable over LeetCodeModulus), which computes the exact same
 // multinomial-coefficient product without ever materializing a permutation. A
 // small 5-letter alphabet forces repeated letters within each word, exercising the
 // inverse-factorial division path instead of degenerating to a plain n!.

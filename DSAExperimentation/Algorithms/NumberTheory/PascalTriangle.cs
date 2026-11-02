@@ -8,9 +8,9 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 // through modular inverses, and mod 10 or mod 4 has no inverse for most of them, while the addition
 // recurrence never divides.
 //
-// It sits in Algorithms/NumberTheory beside ModularPower rather than in Domain/Modular beside
-// FactorialTable because the modulus here is the caller's, not a convention this type fixes (§17.6):
-// FactorialTable is the 1e9+7-pinned form of a binomial table, this is the general one. The two
+// It sits in Algorithms/NumberTheory beside ModularPower and FactorialTable, not at the LeetCode
+// tier, because the modulus here is the caller's, not a convention this type fixes (§17.6):
+// FactorialTable is the prime-modulus form of a binomial table, this is the general one. The two
 // modes are one type because they are one recurrence: an exact triangle is the triangle reduced by
 // long.MaxValue, which every coefficient through row 66 stays below, so reducing by it changes
 // nothing. Every query afterwards is the same read.

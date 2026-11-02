@@ -37,7 +37,7 @@ internal static class CountTheNumberOfInfectionSequencesSolution
     }
 
     // One O(n) scan measures every run between (and around) the sick children,
-    // then a single Domain.Modular FactorialTable<LeetCodeModulus>.Build - the same table
+    // then a single FactorialTable<LeetCodeModulus>.Build - the same table
     // RoomWaysPrecomputedFactorialAlgebra/CountAnagramsByModularFactorial read
     // their coefficients from - turns the whole answer into O(n) more work with
     // no recursion or enumeration.

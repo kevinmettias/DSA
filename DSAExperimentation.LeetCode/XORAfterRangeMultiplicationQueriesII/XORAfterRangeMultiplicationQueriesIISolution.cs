@@ -14,8 +14,8 @@ namespace DSAExperimentation.LeetCode.XORAfterRangeMultiplicationQueriesII;
 // bucket, a residue class's touched indices are contiguous in the bucket's own
 // compressed coordinates (position t <-> original index residue + t*k), so a query
 // becomes one O(1) multiplicative difference-array mark there instead of an O(n/k)
-// walk. Cancelling a mark needs the multiplier's modular inverse - Domain.Modular's
-// job, and always defined here since v is in [1, 1e5], never 0 mod the 1e9+7 prime.
+// walk. Cancelling a mark needs the multiplier's modular inverse - ModularInverse's
+// Fermat inverse, always defined here since v is in [1, 1e5], never 0 mod the 1e9+7 prime.
 // "Large-k" queries already touch at most n/k <= threshold indices, so they are
 // walked directly, the same way Part I walks every query.
 internal static class XORAfterRangeMultiplicationQueriesIISolution

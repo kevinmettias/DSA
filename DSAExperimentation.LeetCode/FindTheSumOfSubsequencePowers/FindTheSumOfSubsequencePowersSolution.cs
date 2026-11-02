@@ -35,8 +35,7 @@ internal static class FindTheSumOfSubsequencePowersSolution
     // Reuses this repo's own Sort (MergeSort over an ArrayIndexedSequence) for both
     // sorts it needs, and Algorithms.DynamicProgramming.Memoizer for the per-threshold
     // "how many subsequenceLength-element subsequences survive this minimum gap"
-    // count, and Domain.Modular.ModularArithmetic for LeetCode's own 1e9+7 reporting
-    // convention.
+    // count, and LeetCodeModulus for LeetCode's own 1e9+7 reporting convention.
     public static int SumOfPowersByThresholdCounting(int[] nums, int subsequenceLength)
     {
         var sorted = MergeSort.SortedCopy(nums);

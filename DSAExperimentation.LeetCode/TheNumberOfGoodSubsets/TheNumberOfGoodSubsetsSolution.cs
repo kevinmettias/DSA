@@ -104,7 +104,7 @@ internal static class TheNumberOfGoodSubsetsSolution
         }
     }
 
-    // 2^onesCount, via the 1e9+7 modular exponentiation this repo already declares once
+    // 2^onesCount, via the 1e9+7 modular exponentiation written out below
     // - shared by both arms, since the choice being measured is the recursion, not this.
     private static int WithOnesDoubling(long waysWithNonEmptyMask, int onesCount) =>
         (int)(waysWithNonEmptyMask
@@ -112,7 +112,8 @@ internal static class TheNumberOfGoodSubsetsSolution
             % LeetCodeModulus.Value);
 
     // value^exponent mod LeetCodeModulus.Value by repeated squaring, restated rather than called on
-    // ModularArithmetic for the same reason as LeetCodeModulus.Value itself.
+    // ModularPower: a baseline may read LeetCode's modulus, but it runs no library algorithm
+    // (ARCHITECTURE 17.5).
     private static long ModPower(long value, long exponent)
     {
         var result = 1L;

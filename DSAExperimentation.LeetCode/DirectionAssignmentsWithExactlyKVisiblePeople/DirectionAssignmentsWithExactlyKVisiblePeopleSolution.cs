@@ -54,7 +54,7 @@ internal static class DirectionAssignmentsWithExactlyKVisiblePeopleSolution
     // C(pos + rightSize, visibleCount) = C(personCount - 1, visibleCount), since
     // pos + rightSize is everyone except the person at pos. So the whole
     // convolution collapses to one binomial
-    // coefficient, doubled for pos's own free choice. Domain.Modular's shared
+    // coefficient, doubled for pos's own free choice. The shared number-theory
     // FactorialTable<LeetCodeModulus> supplies the coefficient (the same table
     // RoomWaysPrecomputedFactorialAlgebra and CountNumberOfBalancedPermutations
     // build).

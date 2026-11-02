@@ -28,10 +28,10 @@ namespace DSAExperimentation.LeetCode.CountKSubsequencesOfAStringWithMaximumBeau
 // freq^groupSize), and the one boundary group that only PARTIALLY fits
 // contributes C(groupSize, remaining) * freq^remaining - choose which `remaining`
 // of its tied characters join, and each character in that chosen set is picked in
-// freq(c) different actual index-positions. ModularArithmetic.Power computes
-// freq^exponent and nCr(n, r) below reuses ModularArithmetic.Inverse for the
-// modular Fermat inverse, the same factorial+inverse combination
-// RoomWaysAlgebra.Factorial/ModularArithmetic.Inverse already prove out for a
+// freq(c) different actual index-positions. ModularPower computes
+// freq^exponent and nCr(n, r) below divides by ModularInverse's Fermat
+// inverse, the same factorial+inverse combination RoomWaysAlgebra's
+// Factorial/ModularInverse.ByFermat pair already proves out for a
 // different counting problem - recomputed per call rather than a shared
 // FactorialTable<LeetCodeModulus> since n <= 26 here (one distinct-letter alphabet),
 // the same "answers one LeetCode problem, lives beside the solution" scope

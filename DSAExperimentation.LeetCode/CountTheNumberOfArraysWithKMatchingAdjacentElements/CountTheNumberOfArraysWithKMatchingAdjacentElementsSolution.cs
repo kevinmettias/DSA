@@ -10,9 +10,9 @@ namespace DSAExperimentation.LeetCode.CountTheNumberOfArraysWithKMatchingAdjacen
 // "equal" gaps (C(n-1, k) choices), a value for the first element (m choices),
 // and, independently for each of the remaining n-1-k "different" gaps, any of
 // the (m-1) values unequal to whatever precedes it. So the count is
-// C(n-1, k) * m * (m-1)^(n-1-k) - this repo's own Domain.Modular.ModularArithmetic
-// supplies both the modulus and the Fermat's-little-theorem inverse a binomial
-// coefficient needs, the same factorial/inverse-factorial table
+// C(n-1, k) * m * (m-1)^(n-1-k) - LeetCodeModulus supplies LeetCode's modulus,
+// and FactorialTable the Fermat's-little-theorem inverses a binomial
+// coefficient needs: the same factorial/inverse-factorial table
 // CountAnagramsByModularFactorial and RoomWaysPrecomputedFactorialAlgebra
 // already build for other counting problems.
 internal static class CountTheNumberOfArraysWithKMatchingAdjacentElementsSolution
@@ -29,7 +29,7 @@ internal static class CountTheNumberOfArraysWithKMatchingAdjacentElementsSolutio
 
     // Composed: one binomial coefficient (which n-1 gaps are equal) times one
     // modular power (every "different" gap's independent choice), both O(log n)
-    // once Domain.Modular's FactorialTable<LeetCodeModulus> is built - O(n) total against the
+    // once the shared FactorialTable<LeetCodeModulus> is built - O(n) total against the
     // baseline's O(m^n).
     public static long CountGoodArraysByModularCombinatorics(int arrayLength, int maxValue, int matchCount)
     {

@@ -13,8 +13,9 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeStringSorte
 // led the remaining suffix, and each such choice contributes (remaining-1)! divided by
 // the factorial of every letter's remaining count - folded here as a running
 // inverse-factorial product that costs one multiplication per step instead of a
-// recomputation. Domain.Modular supplies the modulus and the Fermat's-little-theorem
-// inverse the factorial table needs.
+// recomputation. LeetCodeModulus supplies the modulus, and the Fermat's-little-theorem
+// inverse the factorial table needs is written out below rather than read from
+// ModularInverse, since the baseline builds the same table.
 //
 // The only thing the two strategies differ in is how they answer "how many
 // remaining letters are smaller than this one": a linear scan of the 26-slot
@@ -146,7 +147,8 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
     private readonly record struct RankState(long Rank, long InverseFactorialProduct, int Remaining);
 
     // value^exponent mod LeetCodeModulus.Value by repeated squaring, restated rather than called on
-    // ModularArithmetic for the same reason as LeetCodeModulus.Value itself.
+    // ModularPower: a baseline may read LeetCode's modulus, but it runs no library algorithm
+    // (ARCHITECTURE 17.5).
     private static long ModPower(long value, long exponent)
     {
         var result = 1L;

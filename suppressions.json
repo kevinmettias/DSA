@@ -566,13 +566,6 @@
       "expires": "2026-11-22"
     },
     {
-      "check": "check-constant-placement",
-      "path": "DSAExperimentation/Domain/Modular/ModularArithmetic.cs",
-      "reason": "The check asks that a visible constant be moved to 'a type of its own whose subject IS these values'. ModularArithmetic is already that type: the modulus is not incidental state inside a class about something else, it is the single value the whole type is parameterised by, and both public operations (Inverse, Power) are defined only with respect to it. Extracting Modulo to a separate type would leave ModularArithmetic unable to state what it is arithmetic modulo of, in the one file a reader would look in.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
       "check": "check-literals",
       "path": "DSAExperimentation.LeetCode/CountWaysToBuildRoomsInAnAntColony/RoomWaysAlgebra.cs",
       "reason": "The `2` is Factorial's loop start: 0! and 1! are both 1, so multiplication only has to begin at 2. It is the arithmetic's own identity boundary and means nothing but itself - naming it (FirstNonIdentityFactor) would add a constant whose definition is strictly less clear than the literal it replaces.",
@@ -2615,7 +2608,7 @@
       "check": "check-function-size",
       "path": "DSAExperimentation.LeetCode/CountNumberOfBalancedPermutations/CountNumberOfBalancedPermutationsSolution.cs",
       "message": "distinct sections",
-      "reason": "Already decomposed where decomposition is real: every separable step of this digit-count DP is a named member of this problem's own algebra - FactorialTable.Build(num.Length), FoldDigitSplits(counts, evenSlots, half, table), table.Factorial(evenSlots) and table.Factorial(oddSlots), ModularArithmetic.Modulo - so what remains inline is the digit histogram (a 3-statement loop over a local array), the odd-total rejection, the three locals the DP is handed, and the one-expression return. The metric reports 24 lines, which is this check's own Minimum_Body_Lines: at the soft length the rule is a length signal looking for a piece to NAME, and the nameable pieces of this method have already been named elsewhere in the file.",
+      "reason": "Already decomposed where decomposition is real: every separable step of this digit-count DP is a named member of this problem's own algebra - FactorialTable<LeetCodeModulus>.Build(num.Length), FoldDigitSplits(counts, evenSlots, half, table), table.Factorial(evenSlots) and table.Factorial(oddSlots), LeetCodeModulus.Value - so what remains inline is the digit histogram (a 3-statement loop over a local array), the odd-total rejection, the three locals the DP is handed, and the one-expression return. The metric reports 24 lines, which is this check's own Minimum_Body_Lines: at the soft length the rule is a length signal looking for a piece to NAME, and the nameable pieces of this method have already been named elsewhere in the file.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },

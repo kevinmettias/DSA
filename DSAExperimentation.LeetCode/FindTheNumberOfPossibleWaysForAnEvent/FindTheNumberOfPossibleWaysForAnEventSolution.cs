@@ -34,9 +34,9 @@ internal static class FindTheNumberOfPossibleWaysForAnEventSolution
     // O(n * stageCount) table the textbook DP describes -
     // f(i, j) = f(i-1, j) * j (add to one of j existing bands)
     //         + f(i-1, j-1) * (stageCount - j + 1) (open a new band) - without
-    // hand-rolling the table's iteration order. ModularArithmetic.Power then folds
-    // maxScore^j into the final sum the same way Domain.Modular's own doc comment
-    // expects any "modulo 1e9+7" counting problem to.
+    // hand-rolling the table's iteration order. ModularPower then folds maxScore^j
+    // into the final sum modulo LeetCodeModulus, the same way every other
+    // "modulo 1e9+7" counting problem in the catalogue does.
     public static int NumberOfWaysByStagePartitionMemo(int performerCount, int stageCount, int maxScore)
     {
         var waysByStageCount = Memoizer.Memoize<int, long[]>(performerCount, new StagePartitionRows(stageCount));

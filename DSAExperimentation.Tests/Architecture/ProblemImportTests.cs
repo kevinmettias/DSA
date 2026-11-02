@@ -34,7 +34,8 @@ public sealed partial class ProblemImportTests
     private const string ProjectFolderPrefix = $"{SolutionProject}/";
 
     // Folders at the tier's root that hold what LeetCode fixes for every problem, not a problem: its
-    // notation and answer rules. Arithmetic modulo the 1e9+7 it reports answers in is Domain/Modular.
+    // notation and answer rules. The 1e9+7 it reports answers in is LeetCodeModulus, a file at the
+    // root beside LeetCodeAnswer rather than a folder.
     private static readonly string[] TierRootFolders = ["Conventions"];
 
     private static readonly string[] EdgeKinds = ["Delegation: ", "Subroutine: "];

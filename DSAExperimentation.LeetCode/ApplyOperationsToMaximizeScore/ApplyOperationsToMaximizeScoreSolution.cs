@@ -191,7 +191,7 @@ internal static class ApplyOperationsToMaximizeScoreSolution
     // operations left when the group is reached) whatever order its members are taken
     // in.
     //
-    // ModularArithmetic is LeetCode's own "report it modulo 1e9+7" convention rather
+    // LeetCodeModulus is LeetCode's own "report it modulo 1e9+7" convention rather
     // than a primitive either arm competes on (ARCHITECTURE.md 17.6), so both share it.
     private static long SpendOperations(IndexedValue[] valueDescending, int[] left, int[] right, int operationCount)
     {
@@ -219,7 +219,8 @@ internal static class ApplyOperationsToMaximizeScoreSolution
     private readonly record struct IndexedValue(int Value, int Index);
 
     // value^exponent mod LeetCodeModulus.Value by repeated squaring, restated rather than called on
-    // ModularArithmetic for the same reason as LeetCodeModulus.Value itself.
+    // ModularPower: the baseline reaches it through SpendOperations, and a baseline may read
+    // LeetCode's modulus but runs no library algorithm (ARCHITECTURE 17.5).
     private static long ModPower(long value, long exponent)
     {
         var result = 1L;
