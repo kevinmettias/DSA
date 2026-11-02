@@ -41,8 +41,7 @@ internal static class HeightCheckerSolution
     // Same shape, with this repo's MergeSort composed over ArrayIndexedSequence.
     public static int CountMismatchesByMergeSort(int[] heights)
     {
-        var expected = heights.ToArray();
-        MergeSort.Sort(expected);
+        var expected = MergeSort.SortedCopy(heights);
 
         return CountMismatches(heights, expected);
     }

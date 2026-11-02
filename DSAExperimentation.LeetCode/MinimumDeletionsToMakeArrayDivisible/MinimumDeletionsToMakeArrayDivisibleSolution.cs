@@ -61,8 +61,7 @@ internal static class MinimumDeletionsToMakeArrayDivisibleSolution
     public static int MinDeletionsByMergeSort(int[] nums, int[] numsDivide)
     {
         var divisor = GcdOfArray(numsDivide);
-        var sorted = nums.ToArray();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(nums);
 
         for (var i = 0; i < sorted.Length; i++)
         {

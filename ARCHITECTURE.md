@@ -546,7 +546,7 @@ them needs to write it back.
 | [`DataStructures/Sequence/IIndexedSequence.cs`](DSAExperimentation/DataStructures/Sequence/IIndexedSequence.cs) | Representation | Indexed get/set view, generic over the element type alone — earns the interface on day one via two witnesses, same §5-step-3 exception `IRandomAccessSequence<T>` used |
 | [`DataStructures/Sequence/ArrayIndexedSequence.cs`](DSAExperimentation/DataStructures/Sequence/ArrayIndexedSequence.cs), [`DynamicArrayIndexedSequence.cs`](DSAExperimentation/DataStructures/Sequence/DynamicArrayIndexedSequence.cs) | Representation | Two witnesses satisfying the doubled O(1) obligation, for the same two physical reasons `ArraySequence`/`DynamicArraySequence` already do |
 | [`Algorithms/Sorting/SortBounds.cs`](DSAExperimentation/Algorithms/Sorting/SortBounds.cs) | Operations-internal state | Groups the `[Low, High]` range being sorted — an immutable value bundle, not a mutable shared cursor, and not a Representation of the sequence (§13.6) |
-| [`Algorithms/Sorting/MergeSort.cs`](DSAExperimentation/Algorithms/Sorting/MergeSort.cs) | Operations | `Sort` — top-down recursive split/merge; owns neither witness |
+| [`Algorithms/Sorting/MergeSort.cs`](DSAExperimentation/Algorithms/Sorting/MergeSort.cs) | Operations | `Sort` — top-down recursive split/merge; `SortedCopy` runs it on a copy; owns neither witness |
 
 ### 11.1 Domain separation is the reason for a new contract, not read/write alone
 
@@ -586,7 +586,10 @@ The comparer stays a plain `IComparer<T>` parameter, same §9.2 reasoning as `Bi
 `T`, any total order, is a valid comparer, an open-ended space no witness could usefully close
 over. There is no precondition law analogous to `BinarySearch`'s sortedness, either — sortedness
 is `MergeSort`'s postcondition, not an assumed input. `Sort` takes a plain `T[]` as well, for §9.5's
-reason; an array meets §11.2's aliasing law because it is a reference type.
+reason; an array meets §11.2's aliasing law because it is a reference type. `SortedCopy` copies a span
+into a new array and sorts that, for a caller whose input is not its own to reorder: a solution's
+input is a benchmark's workload, reused by every invocation. It adds no axis, only the copy that
+thirty solutions' composed arms wrote by hand, six of them as a helper of their own.
 
 ### 11.4 Element algebras: one chain across four structures, and why §11.1 does not split it
 
@@ -1932,8 +1935,8 @@ Every harness file is in scope of the witness rule.
 ## 19. The pieces the solutions kept writing
 
 A survey of the solution tier found the same mechanisms hand-written dozens of times over, each
-copy a little different: the long spelling of `MergeSort`/`BinarySearch` over an array (§9.5),
-binary search on the answer (§9.6), a one-way union-find link (§10.1), and the six below. Each was
+copy a little different: the long spelling of `MergeSort`/`BinarySearch` over an array (§9.5), a
+sorted copy of an input the solution may not reorder (§11.3), binary search on the answer (§9.6), a one-way union-find link (§10.1), and the six below. Each was
 added to tiers 1–2 with its own tests (§18.4), and then the *composed* arms were moved onto it.
 Baselines were left alone, along with any helper or constant a baseline reaches, because a baseline
 is what you would write without this repo (§17.5). The classification calls, each made before the

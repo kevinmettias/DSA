@@ -103,8 +103,7 @@ internal static class BoatsToSavePeopleSolution
 
     public static int NumberOfRescueBoatsBySortThenTwoPointer(int[] people, int limit)
     {
-        var sorted = (int[])people.Clone();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(people);
 
         var light = 0;
         var heavy = sorted.Length - 1;

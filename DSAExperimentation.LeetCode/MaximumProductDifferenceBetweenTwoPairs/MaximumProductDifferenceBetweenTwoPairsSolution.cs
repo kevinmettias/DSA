@@ -37,13 +37,11 @@ internal static class MaximumProductDifferenceBetweenTwoPairsSolution
 
     // Sort with this repo's own MergeSort over ArrayIndexedSequence - the same
     // composition ArrayPartitionSolution uses for LC 561 - and read the answer
-    // straight off the two ends, O(n log n) instead of O(n^2). The input array is
-    // copied first because MergeSort sorts the sequence in place and a caller's
-    // array is not the strategy's to reorder.
+    // straight off the two ends, O(n log n) instead of O(n^2). The sort runs on a
+    // copy, because a caller's array is not the strategy's to reorder.
     public static int MaxProductDifferenceByMergeSortExtremes(int[] nums)
     {
-        var sorted = nums.ToArray();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(nums);
 
         var n = sorted.Length;
         return (sorted[n - 1] * sorted[n - SecondFromEndOffset]) - (sorted[0] * sorted[1]);

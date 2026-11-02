@@ -43,8 +43,7 @@ internal static class HIndexSolution
     // a single O(n) scan from the most-cited paper down.
     public static int HIndexByMergeSortScan(int[] citations)
     {
-        var sorted = citations.ToArray();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(citations);
 
         var h = 0;
         for (var i = sorted.Length - 1; i >= 0; i--)

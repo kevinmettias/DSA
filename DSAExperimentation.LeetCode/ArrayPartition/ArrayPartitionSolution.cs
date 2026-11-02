@@ -61,8 +61,7 @@ internal static class ArrayPartitionSolution
     // even-indexed element of the sorted array - the pair-minimum once sorted.
     public static int MaxSumByMergeSort(int[] nums)
     {
-        var sorted = nums.ToArray();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(nums);
 
         var sum = 0;
         for (var i = 0; i < sorted.Length; i += PairSize)

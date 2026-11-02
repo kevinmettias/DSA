@@ -80,8 +80,7 @@ internal static class MaximumNumberOfCoinsYouCanGetSolution
     // one O(n log n) sort, then a walk over your n indices.
     public static int MaxCoinsByMergeSort(int[] piles)
     {
-        var sorted = piles.ToArray();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(piles);
 
         var rounds = sorted.Length / GroupSize;
         var total = 0;

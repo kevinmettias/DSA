@@ -38,8 +38,7 @@ internal static class ShortestUnsortedContinuousSubarraySolution
     // uses.
     public static int FindUnsortedSubarrayByMergeSortScan(int[] nums)
     {
-        var sorted = nums.ToArray();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(nums);
 
         return UnsortedSpanLength(nums, sorted);
     }

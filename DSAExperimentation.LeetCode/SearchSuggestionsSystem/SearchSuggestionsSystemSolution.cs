@@ -79,8 +79,7 @@ internal static class SearchSuggestionsSystemSolution
     // SortAnArray use individually.
     public static List<string[]> SuggestedProductsBySortedPrefixSearch(string[] products, string searchWord)
     {
-        var sorted = (string[])products.Clone();
-        MergeSort.Sort(sorted, StringComparer.Ordinal);
+        var sorted = MergeSort.SortedCopy(products, StringComparer.Ordinal);
 
         var result = new List<string[]>(searchWord.Length);
         var prefix = string.Empty;

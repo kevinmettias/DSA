@@ -118,6 +118,47 @@ public sealed partial class MergeSortTests
         Assert.Equal([(1, 'b'), (1, 'd'), (2, 'a'), (2, 'c')], pairs);
     }
 
+    [Fact]
+    public void SortedCopy_Array_ReturnsTheItemsSortedAndLeavesTheArrayAsItWas()
+    {
+        int[] values = [5, 3, 8, 1, 9, 2, 7];
+
+        var sorted = MergeSort.SortedCopy(values);
+
+        Assert.Equal([1, 2, 3, 5, 7, 8, 9], sorted);
+        Assert.Equal([5, 3, 8, 1, 9, 2, 7], values);
+    }
+
+    [Fact]
+    public void SortedCopy_Slice_SortsOnlyTheSlice()
+    {
+        int[] values = [9, 4, 2, 7, 0];
+
+        var sorted = MergeSort.SortedCopy(values.AsSpan(1, 3));
+
+        Assert.Equal([2, 4, 7], sorted);
+    }
+
+    [Fact]
+    public void SortedCopy_Empty_ReturnsAnEmptyArray()
+    {
+        var sorted = MergeSort.SortedCopy(ReadOnlySpan<int>.Empty);
+
+        Assert.Empty(sorted);
+    }
+
+    [Fact]
+    public void SortedCopy_ArrayWithComparer_KeepsEqualKeysInTheirOriginalOrderAndLeavesTheArrayAsItWas()
+    {
+        (int Key, char Label)[] pairs = [(2, 'a'), (1, 'b'), (2, 'c'), (1, 'd')];
+        var byKey = Comparer<(int Key, char Label)>.Create((left, right) => left.Key.CompareTo(right.Key));
+
+        var sorted = MergeSort.SortedCopy(pairs, byKey);
+
+        Assert.Equal([(1, 'b'), (1, 'd'), (2, 'a'), (2, 'c')], sorted);
+        Assert.Equal([(2, 'a'), (1, 'b'), (2, 'c'), (1, 'd')], pairs);
+    }
+
     private static int[] ToArray<TSequence>(TSequence sequence)
         where TSequence : struct, IIndexedSequence<int>
     {

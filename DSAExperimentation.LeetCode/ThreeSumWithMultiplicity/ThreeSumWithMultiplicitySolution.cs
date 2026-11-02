@@ -65,10 +65,9 @@ internal static class ThreeSumWithMultiplicitySolution
     // degenerating back to the cubic walk.
     public static int CountTripletsByMergeSortTwoPointers(int[] arr, int target)
     {
-        // The input is sorted in place, so the caller's array is left untouched -
-        // which also keeps repeated benchmark invocations measuring the same work.
-        var sorted = arr.ToArray();
-        MergeSort.Sort(sorted);
+        // A sorted copy, so the caller's array is left untouched - which also keeps
+        // repeated benchmark invocations measuring the same work.
+        var sorted = MergeSort.SortedCopy(arr);
 
         long count = 0;
 

@@ -89,7 +89,7 @@ internal static class GCDSortOfAnArraySolution
     public static bool CanBeSortedByPrimeFactorDisjointSet(int[] nums)
     {
         var components = BuildFactorComponents(nums);
-        var sorted = SortedCopy(nums);
+        var sorted = MergeSort.SortedCopy(nums);
 
         for (var i = 0; i < nums.Length; i++)
         {
@@ -115,14 +115,6 @@ internal static class GCDSortOfAnArraySolution
         }
 
         return components;
-    }
-
-    private static int[] SortedCopy(int[] nums)
-    {
-        var sorted = (int[])nums.Clone();
-        MergeSort.Sort(sorted);
-
-        return sorted;
     }
 
     private static int Gcd(int first, int second) => second == 0 ? first : Gcd(second, first % second);

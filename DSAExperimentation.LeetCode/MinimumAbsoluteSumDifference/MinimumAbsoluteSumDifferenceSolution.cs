@@ -58,8 +58,7 @@ internal static class MinimumAbsoluteSumDifferenceSolution
     // lower-bound probe per index.
     public static int MinAbsoluteSumDiffBySortedBinarySearch(int[] nums1, int[] nums2)
     {
-        var sorted = nums1.ToArray();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(nums1);
         var sortedSequence = new ArraySequence<int>(sorted);
 
         long baseSum = 0;

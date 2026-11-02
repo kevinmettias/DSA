@@ -48,8 +48,7 @@ internal static class CountElementsWithAtLeastKGreaterValuesSolution
     // exactly the "greater than me" count LC 3759 asks for.
     public static int CountQualifiedBySortedUpperBound(int[] nums, int requiredGreaterCount)
     {
-        var sorted = (int[])nums.Clone();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(nums);
 
         return CountQualifiedBySortedUpperBound(new ArraySequence<int>(sorted), requiredGreaterCount);
     }

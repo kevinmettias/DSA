@@ -37,14 +37,7 @@ internal static class SortAnArraySolution
         return sorted;
     }
 
-    // This repo's own O(n log n) MergeSort, which sorts anything satisfying
-    // IIndexedSequence<Element> in place - and takes a plain array directly, so one
-    // call on a copy is the whole solution.
-    public static int[] SortArrayByMergeSort(int[] nums)
-    {
-        var sorted = nums.ToArray();
-        MergeSort.Sort(sorted);
-
-        return sorted;
-    }
+    // This repo's own O(n log n) MergeSort, whose SortedCopy sorts a copy and leaves
+    // nums as it was, so one call is the whole solution.
+    public static int[] SortArrayByMergeSort(int[] nums) => MergeSort.SortedCopy(nums);
 }

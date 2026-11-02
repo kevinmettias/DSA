@@ -55,8 +55,7 @@ internal static class ThreeSumClosestSolution
     // overshoots the target.
     public static int ClosestSumByMergeSortTwoPointers(int[] nums, int target)
     {
-        var sorted = nums.ToArray();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(nums);
 
         var best = sorted[0] + sorted[1] + sorted[ThirdElementIndex];
 

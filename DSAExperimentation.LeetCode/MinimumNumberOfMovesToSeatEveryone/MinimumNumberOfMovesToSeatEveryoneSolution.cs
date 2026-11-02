@@ -51,20 +51,10 @@ internal static class MinimumNumberOfMovesToSeatEveryoneSolution
 
     public static int MinMovesToSeatByMergeSort(int[] seats, int[] students)
     {
-        var sortedSeats = MergeSorted(seats);
-        var sortedStudents = MergeSorted(students);
+        var sortedSeats = MergeSort.SortedCopy(seats);
+        var sortedStudents = MergeSort.SortedCopy(students);
 
         return RankPairedDistance(sortedSeats, sortedStudents);
-    }
-
-    // A copy of the input ordered by this repo's MergeSort, which sorts an
-    // ArrayIndexedSequence view of the array in place.
-    private static int[] MergeSorted(int[] source)
-    {
-        var values = source.ToArray();
-        MergeSort.Sort(values);
-
-        return values;
     }
 
     // The k-th nearest seat takes the k-th nearest student; the moves are the sum

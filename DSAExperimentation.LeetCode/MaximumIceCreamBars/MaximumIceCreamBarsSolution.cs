@@ -61,8 +61,7 @@ internal static class MaximumIceCreamBarsSolution
     // The copy is what keeps the caller's array unreordered.
     public static int MaxIceCreamByMergeSortGreedy(int[] costs, int coins)
     {
-        var sorted = costs.ToArray();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(costs);
 
         var count = 0;
 

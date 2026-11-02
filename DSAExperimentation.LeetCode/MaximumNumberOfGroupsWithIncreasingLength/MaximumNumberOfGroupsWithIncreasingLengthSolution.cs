@@ -53,8 +53,7 @@ internal static class MaximumNumberOfGroupsWithIncreasingLengthSolution
     // O(n log n) instead of O(n^2), followed by the identical sweep.
     public static int MaxIncreasingGroupsByMergeSort(int[] usageLimits)
     {
-        var sorted = (int[])usageLimits.Clone();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(usageLimits);
 
         return GreedySweep(sorted);
     }

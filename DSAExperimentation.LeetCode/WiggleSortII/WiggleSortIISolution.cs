@@ -38,8 +38,7 @@ internal static class WiggleSortIISolution
     // precedent) in place of the textbook sort.
     public static void WiggleSortByMergeSort(int[] nums)
     {
-        var sorted = (int[])nums.Clone();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(nums);
 
         InterleaveReversedHalves(sorted, nums);
     }

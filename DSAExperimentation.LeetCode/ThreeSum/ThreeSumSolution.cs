@@ -52,8 +52,7 @@ internal static class ThreeSumSolution
     // three positions so no triplet is ever reported twice.
     public static List<(int First, int Second, int Third)> FindTripletsByMergeSortTwoPointers(int[] nums)
     {
-        var sorted = nums.ToArray();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(nums);
 
         var results = new List<(int First, int Second, int Third)>();
 

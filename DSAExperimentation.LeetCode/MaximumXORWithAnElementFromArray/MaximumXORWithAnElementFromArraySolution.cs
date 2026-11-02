@@ -56,19 +56,10 @@ internal static class MaximumXORWithAnElementFromArraySolution
     // that query with TryMaxXor in O(32). O((n + q) log(n + q)) overall.
     public static int[] MaximizeXorByOfflineBitTrieSweep(int[] nums, int[][] queries)
     {
-        var sortedNums = AscendingCopyOf(nums);
+        var sortedNums = MergeSort.SortedCopy(nums);
         var queryOrder = QueryIndicesByLimit(queries);
 
         return AnswerInLimitOrder(new Sweep(sortedNums, new BitTrie()), queries, queryOrder);
-    }
-
-    // A copy, because the caller's nums is left as it was found.
-    private static int[] AscendingCopyOf(int[] nums)
-    {
-        var sorted = nums.ToArray();
-        MergeSort.Sort(sorted);
-
-        return sorted;
     }
 
     // The query indices, not the queries, so the sweep can answer in increasing-limit

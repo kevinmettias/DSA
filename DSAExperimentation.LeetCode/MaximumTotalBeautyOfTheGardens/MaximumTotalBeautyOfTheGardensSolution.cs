@@ -77,8 +77,7 @@ internal static class MaximumTotalBeautyOfTheGardensSolution
     public static long MaximumBeautyBySortAndBinarySearch(
         int[] flowers, long newFlowers, int target, BeautyWeights weights)
     {
-        var sorted = (int[])flowers.Clone();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(flowers);
 
         var (context, prefixSum, suffixCost) =
             PrepareSplitState(sorted, newFlowers, target, weights);

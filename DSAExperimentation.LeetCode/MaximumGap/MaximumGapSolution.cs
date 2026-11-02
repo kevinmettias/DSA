@@ -57,8 +57,7 @@ internal static class MaximumGapSolution
             return 0;
         }
 
-        var sorted = nums.ToArray();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(nums);
 
         return MaxAdjacentGap(sorted);
     }

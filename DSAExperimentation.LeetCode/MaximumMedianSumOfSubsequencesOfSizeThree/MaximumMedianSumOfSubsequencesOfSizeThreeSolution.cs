@@ -32,9 +32,7 @@ internal static class MaximumMedianSumOfSubsequencesOfSizeThreeSolution
     // n/3 mark onward.
     public static long MaximumMedianSumBySortedGreedy(int[] nums)
     {
-        var sorted = (int[])nums.Clone();
-
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(nums);
 
         var sum = 0L;
 

@@ -42,8 +42,7 @@ internal static class HowManyNumbersAreSmallerThanTheCurrentNumberSolution
     // problem is one sort plus n bisections - O(n log n).
     public static int[] SmallerNumbersThanCurrentBySortAndLowerBound(int[] nums)
     {
-        var sorted = (int[])nums.Clone();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(nums);
 
         var result = new int[nums.Length];
 

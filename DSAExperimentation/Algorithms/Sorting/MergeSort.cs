@@ -22,9 +22,44 @@ namespace DSAExperimentation.Algorithms.Sorting;
 // IIndexedSequence's aliasing law because it is a reference type. No call can reach the overload it did
 // not mean: an Element[] fails TSequence's struct constraint, and no sequence witness converts to an
 // Element[].
+//
+// SortedCopy is the in-place Sort run on a fresh copy, for a caller whose items are not its to reorder.
+// A solution's input is a benchmark's [GlobalSetup] workload, reused by every invocation, so sorting it
+// in place would hand each later invocation input that is already sorted. Thirty solutions' composed
+// arms wrote that copy and sort by hand, six of them as a helper of their own. It takes a span, so an
+// array, a slice or a stackalloc'd buffer all reach it.
 /// <summary>A stable O(n log n) merge sort that sorts an array or an indexed sequence in place.</summary>
 public static class MergeSort
 {
+    /// <summary>
+    /// Copies the items into a new array in ascending order, keeping equal elements in their original order.
+    /// </summary>
+    /// <param name="items">The items to copy, which are left as they are.</param>
+    /// <returns>A new array holding the items in ascending order.</returns>
+    public static Element[] SortedCopy<Element>(ReadOnlySpan<Element> items)
+        where Element : IComparable<Element>
+    {
+        var copy = items.ToArray();
+        Sort(copy);
+
+        return copy;
+    }
+
+    /// <summary>
+    /// Copies the items into a new array in the order <paramref name="comparer"/> gives, keeping equal
+    /// elements in their original order.
+    /// </summary>
+    /// <param name="items">The items to copy, which are left as they are.</param>
+    /// <param name="comparer">The total order to sort by.</param>
+    /// <returns>A new array holding the items in the comparer's order.</returns>
+    public static Element[] SortedCopy<Element>(ReadOnlySpan<Element> items, IComparer<Element> comparer)
+    {
+        var copy = items.ToArray();
+        Sort(copy, comparer);
+
+        return copy;
+    }
+
     /// <summary>
     /// Sorts the array in place into ascending order, keeping equal elements in their original order.
     /// </summary>

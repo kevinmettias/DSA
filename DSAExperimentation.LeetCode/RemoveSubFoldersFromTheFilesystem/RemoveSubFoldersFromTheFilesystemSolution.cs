@@ -51,14 +51,12 @@ internal static class RemoveSubFoldersFromTheFilesystemSolution
     // The sort is this repo's own MergeSort, ordinal-compared so the result never
     // depends on the current culture.
     //
-    // The input array is copied first: MergeSort sorts in place, and a strategy that
-    // reordered the caller's array would make the two arms non-interchangeable on the
-    // same input (the ArrayPartitionBenchmarks precedent, moved inside the strategy
-    // where it belongs).
+    // The sort runs on a copy: a strategy that reordered the caller's array would make
+    // the two arms non-interchangeable on the same input (the ArrayPartitionBenchmarks
+    // precedent, moved inside the strategy where it belongs).
     public static List<string> RemoveSubfoldersByMergeSortThenScan(string[] folders)
     {
-        var sorted = folders.ToArray();
-        MergeSort.Sort(sorted, StringComparer.Ordinal);
+        var sorted = MergeSort.SortedCopy(folders, StringComparer.Ordinal);
 
         var kept = new List<string>();
         string? lastKept = null;

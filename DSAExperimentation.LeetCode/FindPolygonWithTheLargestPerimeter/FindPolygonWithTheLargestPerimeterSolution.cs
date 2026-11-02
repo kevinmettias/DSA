@@ -59,7 +59,7 @@ internal static class FindPolygonWithTheLargestPerimeterSolution
     // left to dominate either arm's running time.
     public static long LargestPerimeterBySortedRunningSum(int[] nums)
     {
-        var sorted = SortedCopy(nums);
+        var sorted = MergeSort.SortedCopy(nums);
         var total = TotalPerimeter(sorted);
 
         for (var i = sorted.Length - 1; i >= 2; i--)
@@ -75,16 +75,6 @@ internal static class FindPolygonWithTheLargestPerimeterSolution
         }
 
         return LeetCodeAnswer.None;
-    }
-
-    // Sort a copy of nums with this repo's own MergeSort over
-    // ArrayIndexedSequence.
-    private static int[] SortedCopy(int[] nums)
-    {
-        var sorted = (int[])nums.Clone();
-        MergeSort.Sort(sorted);
-
-        return sorted;
     }
 
     private static long TotalPerimeter(int[] sorted)

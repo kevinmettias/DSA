@@ -101,7 +101,7 @@ internal static class HandOfStraightsSolution
         }
 
         var counts = BuildCounts(hand);
-        var sortedHand = SortedCopy(hand);
+        var sortedHand = MergeSort.SortedCopy(hand);
 
         return CanConsumeStraightsByHashMap(counts, sortedHand, groupSize);
     }
@@ -117,16 +117,6 @@ internal static class HandOfStraightsSolution
         }
 
         return counts;
-    }
-
-    // Sorts a clone so the caller's hand - a benchmark's [GlobalSetup] workload,
-    // reused across every invocation - is never reordered underneath it.
-    private static int[] SortedCopy(int[] hand)
-    {
-        var sortedHand = (int[])hand.Clone();
-        MergeSort.Sort(sortedHand);
-
-        return sortedHand;
     }
 
     private static bool CanConsumeStraightsByHashMap(HashMap<int, int> counts, int[] sortedHand, int groupSize)

@@ -67,8 +67,7 @@ internal static class LargestPerimeterTriangleSolution
     // maximum-perimeter answer. Sorting is the only work that scales.
     public static int LargestPerimeterBySortedScan(int[] nums)
     {
-        var sorted = (int[])nums.Clone();
-        MergeSort.Sort(sorted);
+        var sorted = MergeSort.SortedCopy(nums);
 
         for (var i = sorted.Length - 1; i >= TripleWindowOffset; i--)
         {

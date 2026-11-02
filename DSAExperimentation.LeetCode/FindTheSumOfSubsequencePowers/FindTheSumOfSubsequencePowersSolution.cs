@@ -44,21 +44,11 @@ internal static class FindTheSumOfSubsequencePowersSolution
     // convention.
     public static int SumOfPowersByThresholdCounting(int[] nums, int subsequenceLength)
     {
-        var sorted = SortedByRepoSort(nums);
+        var sorted = MergeSort.SortedCopy(nums);
         var gaps = PairwiseGaps(sorted);
-        var thresholds = SortedByRepoSort(gaps);
+        var thresholds = MergeSort.SortedCopy(gaps);
 
         return (int)SumThresholdContributions(sorted, subsequenceLength, thresholds);
-    }
-
-    // This repo's own Sort - MergeSort over an ArrayIndexedSequence - in place on a copy
-    // of the values, which is what the two sorts this strategy needs have in common.
-    private static int[] SortedByRepoSort(int[] values)
-    {
-        var sorted = (int[])values.Clone();
-        MergeSort.Sort(sorted);
-
-        return sorted;
     }
 
     private static int[] PairwiseGaps(int[] sorted)
