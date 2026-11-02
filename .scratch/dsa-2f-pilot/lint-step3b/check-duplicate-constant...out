@@ -1,3 +1,0 @@
-check-duplicate-constant: 172 csharp constant(s) declared in more than one file were not reported: every copy sits in a different independent unit declared by `independent_units` in F:\repos\DSA\checks.json.
-check-duplicate-constant: 52 finding(s) waived by suppressions.json (they were found, and this repository has accounted for them).
-check-duplicate-constant: no findings.

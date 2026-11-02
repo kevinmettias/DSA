@@ -1,8 +1,0 @@
-check-shipped-tests: 0 module(s) judged.
-check-shipped-tests: 12 language(s) not analyzed (this language offers no such surface, AND HAS DECLARED NO REASON — this is an unwritten gap, not a decision).
-check-shipped-tests: 4 language(s) not analyzed (this language declines this surface deliberately).
-check-shipped-tests: css declines this surface, and says why: CSS ships no tests, because it declares no test and no test could live in a stylesheet. This rule reports test code that reached a production artifact and needs a test to find there.
-check-shipped-tests: html declines this surface, and says why: HTML ships no tests, because it declares no test and no test could live in a document. This rule reports test code that reached a production artifact and needs a test to find.
-check-shipped-tests: proto declines this surface, and says why: Protobuf ships no tests, because it declares no test and no test could live in a schema. This rule reports test code that reached a production artifact and needs a test to find.
-check-shipped-tests: xaml declines this surface, and says why: XAML ships no tests, because it declares no test and no test could live in markup. This rule reports test code that reached a production artifact and needs a test to find there.
-check-shipped-tests: no findings.

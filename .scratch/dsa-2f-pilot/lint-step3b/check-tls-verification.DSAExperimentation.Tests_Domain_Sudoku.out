@@ -1,3 +1,0 @@
-check-tls-verification: 0 file(s) judged.
-check-tls-verification: 1 file(s) out of scope for this rule.
-check-tls-verification: no findings. Measured precision: medium.

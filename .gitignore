@@ -10,3 +10,4 @@ BenchmarkDotNet.Artifacts/
 # Generated / agent-workflow state: reproducible, not source
 .claude/leetcode-coverage/manifest.json
 *.bak-prune-*
+.scratch/

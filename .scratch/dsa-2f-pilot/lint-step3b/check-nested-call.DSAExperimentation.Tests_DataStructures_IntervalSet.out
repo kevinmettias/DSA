@@ -1,3 +1,0 @@
-check-nested-call: 1 file(s) judged.
-check-nested-call: 7 finding(s) waived by suppressions.json (they were found, and this repository has accounted for them).
-check-nested-call: no findings.

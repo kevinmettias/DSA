@@ -1,2 +1,0 @@
-check-sql-injection: 1 file(s) judged.
-check-sql-injection: no findings. Measured precision: LOW -- expect false positives, and read each finding before acting.

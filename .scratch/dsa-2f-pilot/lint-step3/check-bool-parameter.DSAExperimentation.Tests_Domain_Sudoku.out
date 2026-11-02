@@ -1,4 +1,0 @@
-check-bool-parameter: 1 file(s) judged.
-F:\repos\DSA\DSAExperimentation.Tests\Domain\Sudoku\SudokuRulesTests.cs:27: `CanPlace_BlocksADigitItsRowColumnOrBoxHolds` takes a bool among 4 parameters: the call site reads `CanPlace_BlocksADigitItsRowColumnOrBoxHolds(row, col, digit, true)`, and a position is not a name. Give it a named enum (`PanelState.Open`), or package the parameters into an options record
-check-bool-parameter: 1 finding(s). Measured precision: high.
-check-bool-parameter: ADVISORY — 1 finding(s) reported and NOT failed on (--advisory). Drop --advisory to fail.
