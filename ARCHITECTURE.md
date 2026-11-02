@@ -368,10 +368,12 @@ returns an answer — just a silently wrong one, with no failing build, exactly 
 
 `Find`'s comparer is a plain `IComparer<T>` method parameter — `HashMap<TKey,TValue>`/
 `ContiguousGroupBuffer<TItem,TKey>`'s precedent (§4.1) — not a `static abstract` witness like
-`IHeapOrder<T>`. The discriminator is not how often the comparer gets called: `HashMap.TryGetValue`'s
-`_comparer.Equals` already runs on every probe of a bucket's chain, exactly as often as `Find`'s
+`IHeapOrder<T>`. The discriminator is not how often the comparer gets called: `HashMap.TryGetValue`
+consults its comparer on every probe of a bucket's chain, exactly as often as `Find`'s
 `comparer.Compare` runs on every bisection step, and `HashMap` is still correctly modeled as an open
-runtime object. The discriminator is whether the space of valid choices is closed. `IHeapOrder<T>` is
+runtime object. That `HashMap` calls the default comparer directly for a value-type key (§14.2)
+changes how the call is dispatched, not which comparers are valid. The discriminator is whether the
+space of valid choices is closed. `IHeapOrder<T>` is
 closed to exactly two shapes this library enumerates itself (`MinHeapOrder`, `MaxHeapOrder`), with
 `ByPriorityOrder` only ever a *projection* of that same binary choice onto a different field, never a
 third fundamentally different ordering. `IComparer<T>` is not closed at all — any `T`, any total
@@ -1104,6 +1106,18 @@ bucket index, the same kind of silent-misrouting risk §8's "performance indepen
 about, except here it's a correctness risk, not a Big-O one. A test forcing a `Grow()` mid-sequence
 and then a `TryGetValue` on a key inserted immediately before the resize exists specifically to
 catch a regression here.
+
+The comparer stays a runtime object (§9.2), but the default one is not called through it. When
+`TKey` is a value type and the comparer is `EqualityComparer<TKey>.Default`, `_comparer` is null,
+and `IsSameKey` and `KeyHashCode` call `EqualityComparer<TKey>.Default` itself, which the JIT
+devirtualizes and inlines: the shape `Dictionary<TKey,TValue>` uses. Through the stored interface,
+the `inlining` verb (§19.8) read every probe of a chain in LC 874's arm as an interface call the JIT
+could not inline ("target not direct"). `IsSameKey` is always inlined, since without the attribute
+the JIT judged it an unprofitable inline in the same loop. Both test `typeof(TKey).IsValueType`
+first, which the JIT folds. A reference-type key's code is shared across every reference type, where
+`Default` is no more direct, so it keeps its comparer and compiles to the interface call it always
+made. With the dead `Default` arm left in, GroupAnagrams' string-keyed arm allocated 31 B more per
+call. A custom comparer is still called through the interface.
 
 ### 14.3 `DynamicArray`
 
@@ -1952,8 +1966,6 @@ Open items:
 - **LC 773 reads 1 to 3% slower** since its graph became a `StateGraph` (7408f14b). A variant
   with the problem's own non-generic topology recovered part of the gap. What remains is no larger
   than the spread on identical code, and its cause is not settled.
-- **`HashMap`'s comparer call is not inlined.** The `inlining` verb (§19.8) shows `FindEntryIndex`
-  calling `IEqualityComparer<T>.Equals` as "target not direct" in LC 874's `SetObstacles` arm.
 - **LC 3525 keeps its own `IModulus`,** five `int` witnesses for k = 1 to 5. Domain's `IModulus`
   is over `long`, so adopting it is a measured change, not a rename.
 - **A composed arm's private copy of a library value is not reported.** `barred_reads` cannot

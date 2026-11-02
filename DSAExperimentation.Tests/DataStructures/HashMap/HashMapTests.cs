@@ -119,6 +119,19 @@ public sealed partial class HashMapTests
     }
 
     [Fact]
+    public void Set_WithCustomComparerOnValueTypeKeys_TreatsKeysAsEqualPerComparer()
+    {
+        var lastDigit = EqualityComparer<int>.Create((left, right) => left % 10 == right % 10, key => key % 10);
+        var map = new HashMap<int, string>(lastDigit);
+
+        map.Set(13, "thirteen");
+        map.TryGetValue(23, out var value);
+
+        Assert.True(map.HasKey(3));
+        Assert.Equal("thirteen", value);
+    }
+
+    [Fact]
     public void Keys_AfterSet_ReturnsAllKeys()
     {
         var map = new HashMap<string, int>();

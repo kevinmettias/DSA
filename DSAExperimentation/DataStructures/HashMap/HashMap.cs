@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 
 namespace DSAExperimentation.DataStructures.HashMap;
 
@@ -10,7 +11,12 @@ namespace DSAExperimentation.DataStructures.HashMap;
 /// </summary>
 public sealed class HashMap<TKey, TValue>
 {
-    private readonly IEqualityComparer<TKey> _comparer;
+    // Null when TKey is a value type and the comparer is EqualityComparer<TKey>.Default, the way
+    // Dictionary<TKey,TValue> stores it. IsSameKey and KeyHashCode then call Default itself, which
+    // the JIT devirtualizes and inlines for a value-type key; a call through the stored interface
+    // is one it cannot inline (ARCHITECTURE 14.2). A reference-type key keeps its comparer, since
+    // its code is shared across every reference type and Default would be no more direct.
+    private readonly IEqualityComparer<TKey>? _comparer;
     private readonly HashMapStorage<TKey, TValue> _storage = new();
 
     /// <summary>How many entries the map holds.</summary>
@@ -58,7 +64,10 @@ public sealed class HashMap<TKey, TValue>
     {
     }
 
-    public HashMap(IEqualityComparer<TKey> comparer) => _comparer = comparer;
+    public HashMap(IEqualityComparer<TKey> comparer) => _comparer = StoredComparer(comparer);
+
+    private static IEqualityComparer<TKey>? StoredComparer(IEqualityComparer<TKey> comparer) =>
+        typeof(TKey).IsValueType && ReferenceEquals(comparer, EqualityComparer<TKey>.Default) ? null : comparer;
 
     /// <summary>Reports whether the map holds a key.</summary>
     /// <param name="key">The key to look for.</param>
@@ -111,7 +120,7 @@ public sealed class HashMap<TKey, TValue>
         {
             var entry = _storage.Entry(i);
 
-            if (entry.HashCode == hashCode && _comparer.Equals(entry.Key, key))
+            if (entry.HashCode == hashCode && IsSameKey(entry.Key, key))
             {
                 _storage.SetEntryValue(i, value);
                 return true;
@@ -137,7 +146,7 @@ public sealed class HashMap<TKey, TValue>
         {
             var entry = _storage.Entry(i);
 
-            if (entry.HashCode == hashCode && _comparer.Equals(entry.Key, key))
+            if (entry.HashCode == hashCode && IsSameKey(entry.Key, key))
             {
                 _storage.Unlink(bucketIndex, previous, i);
                 return true;
@@ -150,11 +159,18 @@ public sealed class HashMap<TKey, TValue>
         return false;
     }
 
+    private int ComputeHashCode(TKey key) => KeyHashCode(key) & int.MaxValue;
+
     // presumption: allow -- key! exists only because TKey is unconstrained, so the
     // compiler cannot see a reference-type key is non-null; a literal null key's
     // actual behavior is the comparer's own contract (EqualityComparer<TKey>.Default
     // treats null as a valid key, hashing it to 0), not something this map decides.
-    private int ComputeHashCode(TKey key) => _comparer.GetHashCode(key!) & int.MaxValue;
+    // _comparer! holds because _comparer is null only for a value-type key, which the
+    // first arm takes; see IsSameKey for why the test reads TKey first.
+    private int KeyHashCode(TKey key) =>
+        typeof(TKey).IsValueType && _comparer is null
+            ? EqualityComparer<TKey>.Default.GetHashCode(key!)
+            : _comparer!.GetHashCode(key!);
 
     private int FindEntryIndex(TKey key)
     {
@@ -166,7 +182,7 @@ public sealed class HashMap<TKey, TValue>
         {
             var entry = _storage.Entry(i);
 
-            if (entry.HashCode == hashCode && _comparer.Equals(entry.Key, key))
+            if (entry.HashCode == hashCode && IsSameKey(entry.Key, key))
             {
                 return i;
             }
@@ -176,4 +192,17 @@ public sealed class HashMap<TKey, TValue>
 
         return -1;
     }
+
+    // Always inlined. Without the attribute the JIT judged this an "unprofitable inline" in
+    // FindEntryIndex, read with the inlining verb (ARCHITECTURE 19.8) on LC 874's SetObstacles arm,
+    // so every probe of a chain still made a call, though Default.Equals inlined inside it. The
+    // test reads TKey first, as Dictionary's does: the JIT folds it, so a reference-type key's code
+    // never holds the Default arm, and is the interface call it always was. With the arm present
+    // but dead, GroupAnagrams' string-keyed arm allocated 31 B more per call.
+    // presumption: allow -- _comparer is null only for a value-type key, which the first arm takes.
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private bool IsSameKey(TKey stored, TKey key) =>
+        typeof(TKey).IsValueType && _comparer is null
+            ? EqualityComparer<TKey>.Default.Equals(stored, key)
+            : _comparer!.Equals(stored, key);
 }
