@@ -10,7 +10,7 @@ namespace DSAExperimentation.LeetCode.MinimumObstacleRemovalToReachCorner;
 // single-pair shortest-path query on a 4-directionally connected grid whose edge
 // weight is the DESTINATION cell's own 0/1 value - not WeightedGrid's fixed
 // unit-weight edges, so this problem wires its own graph (the same reason LC 3286
-// does, and the same reason LockGraph builds its own Cayley graph).
+// does, and the same reason OpenTheLock builds its graph from the lock's own turns).
 //
 // The start cell is guaranteed to be a 0, and Dijkstra charges every weight to
 // entering a cell, so the distance it reports at the far corner IS the answer

@@ -1354,9 +1354,9 @@ strategies and nothing else belongs there too, not at the tier's root:
 `LeetCode/CountWaysToBuildRoomsInAnAntColony/` holds `RoomWaysAlgebra.cs` and
 `RoomWaysPrecomputedFactorialAlgebra.cs`, two `IFoldAlgebra` witnesses that compute LC 1916's
 multinomial and are meaningless anywhere else. What a problem says about its *world* is Domain code
-instead (§17.6): LC 752's lock model, `LockGraph` through `LockWheels`, is `Domain/Locks/`, and only
-`LockStart`, the combination its strategies and its baseline both begin from, stays beside
-`OpenTheLockSolution`.
+instead (§17.6): the combination lock LC 752 opens is `Domain/Devices/Locks/`, and only its
+configuration stays beside `OpenTheLockSolution`: `LockStart`, the combination its strategies and
+its baseline both begin from, and `DeadendFilter`, the combinations it refuses.
 
 **A problem folder reaches into another only along a named edge.** It may use anything in the
 library — tiers 1–3 and Mechanisms — and anything at the root of this tier (`LeetCodeAnswer`,
@@ -1394,9 +1394,9 @@ overloads:
 
 ```csharp
 public static int MinTurnsByReduceGraph(IEnumerable<string> deadends, string target) =>
-    MinTurnsByReduceGraph(LockGraph.Build(deadends), target);   // LeetCode's shape
+    MinTurnsByReduceGraph(BuildLockGraph(deadends), target);   // LeetCode's shape
 
-public static int MinTurnsByReduceGraph(LockGraph graph, string target)                // pre-built
+public static int MinTurnsByReduceGraph(StateGraph<string> graph, string target)       // pre-built
 ```
 
 The prepared-input overload's parameter must be a type the LeetCode-shaped overload's arguments can
@@ -1773,11 +1773,11 @@ judge reads back from it: there, each level along its next pointers with `#` bet
   boundary it infers is already the file: the shared prefix is the one operation the problem asks
   for, and splitting the strategies apart is exactly the drift §17.1 exists to undo. This is a
   waiver on the *convention*, not on any one file's shortcomings.
-- **`check-constant-placement` is waived on the two types whose subject IS their constants** —
-  `Domain/Modular/ModularArithmetic.cs`, `Domain/Locks/LockWheels.cs`. The check's own prescribed
-  remedy is "move them to a type of its own, in its own file whose subject IS these values", and
-  `LockWheels` already is that type, split out of `LockGraph` for this check; it still fires. Where
-  the criticism is fair it is acted on instead: `LockGraph`'s wheel geometry has a type of its own.
+- **`check-constant-placement` is waived on the type whose subject IS its constants** —
+  `Domain/Modular/ModularArithmetic.cs`. The check's own prescribed remedy is "move them to a type
+  of its own, in its own file whose subject IS these values", and it already is that type; it still
+  fires. Where the criticism is fair it is acted on instead. The waiver on LC 752's `LockWheels` went
+  with it, when the general lock replaced it (§17.10).
 - **A search reports "no path" as `null`, not as a shared sentinel.** `HammingSearch` returns
   `int?`: a public `Unreachable = -1` on a search type is the smell `check-constant-placement`
   names, and with a nullable result each caller maps "no path" onto its own problem's convention
@@ -1816,7 +1816,8 @@ judge reads back from it: there, each level along its next pointers with `#` bet
   substitute.** A data structure, algorithm, mechanism or domain model is not covered because some
   LeetCode solution happens to compose it: a coverage tree shaped that way can only tell you a
   problem's answer changed, not which piece broke. `DSAExperimentation.Tests/` mirrors the source
-  tree for exactly this reason: `Domain/Locks/LockGraphTests.cs` tests `Domain/Locks/LockGraph.cs`.
+  tree for exactly this reason: `Domain/Devices/Locks/CombinationLockTests.cs` tests
+  `Domain/Devices/Locks/CombinationLock.cs`.
 - **A type's rationale goes in prose here, never in `<remarks>`, and `check-doc-schema` is why.**
   `<remarks>` is C#'s catch-all bucket: the check projects it as free prose rather than a section,
   because a type's doc is otherwise only its summary plus the sections its signature implies

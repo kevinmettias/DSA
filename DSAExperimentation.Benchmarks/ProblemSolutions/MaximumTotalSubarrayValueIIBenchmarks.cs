@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods MaximumTotalSubarrayValueIISolutionTests proves correct. The composed arm is
 // handed its two prebuilt SegmentTrees so tree construction is charged to
 // [GlobalSetup] rather than to the search being measured, mirroring
-// OpenTheLockBenchmarks' LockGraph hoist.
+// OpenTheLockBenchmarks' lock-graph hoist.
 public class MaximumTotalSubarrayValueIIBenchmarks
 {
     private const int Seed = 3691;

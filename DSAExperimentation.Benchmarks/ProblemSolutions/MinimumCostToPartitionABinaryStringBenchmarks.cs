@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The Fenwick arm is handed the prepared FenwickTree its hoisted overload
 // takes, so building it is charged to [GlobalSetup] rather than to the
 // recursion being measured - the same split OpenTheLockBenchmarks uses for
-// its LockGraph arm. Length is a power of two so the split-in-half recursion
+// its lock-graph arm. Length is a power of two so the split-in-half recursion
 // bottoms out at single characters instead of stopping early on an odd
 // length, giving both arms their deepest possible recursion tree.
 public class MinimumCostToPartitionABinaryStringBenchmarks

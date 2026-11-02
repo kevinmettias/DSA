@@ -59,7 +59,7 @@ internal static class MinimumOperationsToEqualizeSubarraysSolution
     // Builds the merge-sort tree and the run-id index once, then answers
     // every query against them - the same "hoist construction, keep the
     // search measured" split OpenTheLockSolution.MinTurnsByReduceGraph uses
-    // for LockGraph.Build.
+    // for BuildLockGraph.
     public static long[] MinOperationsByMergeSortTree(int[] nums, int[][] queries, int stepSize)
     {
         var (tree, runId) = BuildIndex(nums, stepSize);

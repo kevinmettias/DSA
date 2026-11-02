@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.ShortestPathWithAtMostKConsecutiveIdentica
 // maxRunLength. Every (node, runLength) pair the original graph can be in
 // becomes one ConsecutiveRunNode, wired up front over the full
 // nodeCount * maxRunLength state space - the same "domain model, not an answer
-// to one query about it" framing LockGraph and RecoveryNetwork both use for
+// to one query about it" framing StateGraph and RecoveryNetwork both use for
 // their own expanded graphs.
 internal sealed class ConsecutiveRunGraph
 {

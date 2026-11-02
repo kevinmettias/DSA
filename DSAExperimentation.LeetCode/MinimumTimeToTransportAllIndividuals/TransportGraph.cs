@@ -4,9 +4,9 @@ namespace DSAExperimentation.LeetCode.MinimumTimeToTransportAllIndividuals;
 
 // Every (mask, stage) pair for n individuals and m environmental stages,
 // wired with every legal round LC 3594's own rules allow - the domain model,
-// not an answer to any one query about it (LockGraph's own framing). Built
+// not an answer to any one query about it (StateGraph's own framing). Built
 // eagerly rather than discovered lazily by the search itself, the same
-// choice LockGraph and DigitStepGraph both make; n <= 12 and m <= 5 keep the
+// choice StateGraph and DigitStepGraph both make; n <= 12 and m <= 5 keep the
 // full (mask, stage, group-subset) enumeration well under a second.
 internal sealed class TransportGraph(
     Dictionary<(int Mask, int Stage), TransportState> nodes, int fullMask)

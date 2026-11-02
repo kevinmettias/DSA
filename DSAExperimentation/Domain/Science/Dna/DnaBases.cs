@@ -4,9 +4,10 @@ namespace DSAExperimentation.Domain.Science.Dna;
 
 // DNA's four bases as LC 187 and LC 433 spell a strand: adenine, cytosine, guanine and thymine,
 // written A, C, G and T. Which alphabet a mutation problem walks is a property of the problem, not
-// of the graph, so the bases are Domain while the Alphabet record they fill stays tier 1 (ARCHITECTURE
-// §17.6), as LockWheels' numbers are Domain and a graph is tier 1. Which number a solution gives each
-// base is its own encoding, not DNA's: LC 187's 2-bit code is its strategy, and stays in its folder.
+// of the graph, so the bases are Domain while the Alphabet record they fill stays tier 1
+// (ARCHITECTURE §17.6), as a lock's wheels are Domain and its graph is tier 1. Which number a
+// solution gives each base is its own encoding, not DNA's: LC 187's 2-bit code is its strategy, and
+// stays in its folder.
 /// <summary>The four DNA bases, as letters and as an alphabet for one-base mutations.</summary>
 public static class DnaBases
 {

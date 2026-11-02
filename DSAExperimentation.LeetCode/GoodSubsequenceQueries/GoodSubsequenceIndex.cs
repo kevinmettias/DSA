@@ -5,7 +5,7 @@ using DSAExperimentation.DataStructures.SegmentTree;
 namespace DSAExperimentation.LeetCode.GoodSubsequenceQueries;
 
 // LC 3901's own prepared-input witness for the composed strategy - the
-// "graph already built" role LockGraph plays for OpenTheLock's ReduceGraph arm,
+// "graph already built" role the lock graph plays for OpenTheLock's ReduceGraph arm,
 // or SegmentTree<int, GcdOperation<int>> plays bare for MinimumStabilityFactorOfArray.
 // A subsequence's gcd can only equal `modulus` exactly when every element it draws
 // from is a multiple of `modulus`, so this tracks nums divided by `modulus` wherever

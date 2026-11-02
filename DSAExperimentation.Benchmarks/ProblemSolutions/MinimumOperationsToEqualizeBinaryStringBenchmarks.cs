@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same methods MinimumOperationsToEqualizeBinaryStringSolutionTests proves correct.
 // ReduceGraph takes the prepared overload - an EqualizeStateGraph built once in
 // [GlobalSetup] - so graph construction is charged to setup rather than to the
-// search being measured, the same split OpenTheLockBenchmarks uses for LockGraph.
+// search being measured, the same split OpenTheLockBenchmarks uses for its lock graph.
 public class MinimumOperationsToEqualizeBinaryStringBenchmarks
 {
     private const int Seed = 3666;

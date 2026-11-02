@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // shape - unlike a strategy built on a reusable graph or a sorted array, the
 // offline heap sweep's own "preparation" (bucketing each query at its hi index)
 // IS the algorithm, not a separable setup cost, so nothing here is hoisted past
-// [GlobalSetup] the way OpenTheLockBenchmarks hoists LockGraph.Build.
+// [GlobalSetup] the way OpenTheLockBenchmarks hoists BuildLockGraph.
 public class FindBuildingWhereAliceAndBobCanMeetBenchmarks
 {
     private const int RandomSeed = 2940;

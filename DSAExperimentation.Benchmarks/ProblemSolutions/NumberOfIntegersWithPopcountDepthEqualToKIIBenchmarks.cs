@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are NumberOfIntegersWithPopcountDepthEqualToKIISolution's,
 // the same methods NumberOfIntegersWithPopcountDepthEqualToKIISolutionTests proves
 // correct (OpenTheLockBenchmarks precedent for the hoisted prepared-input
-// overload - PopcountDepthFenwickIndex here plays LockGraph's role). Building
+// overload - PopcountDepthFenwickIndex here plays the lock graph's role). Building
 // the index is real, isolable setup cost, so [IterationSetup] rebuilds it
 // fresh before every invocation rather than [GlobalSetup] doing it once: the
 // same queries reapply the same updates on every iteration, and an index left

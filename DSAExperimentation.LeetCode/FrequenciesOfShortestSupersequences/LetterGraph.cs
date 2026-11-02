@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.FrequenciesOfShortestSupersequences;
 // supersequence) - Letters is the distinct alphabet those edges range over, sorted
 // so both strategies enumerate doubled-letter subsets in the same deterministic
 // order. This is the hoisted overload's prepared type (§17.4), the same role
-// LockGraph.Build(deadends) plays for OpenTheLock.
+// OpenTheLockSolution.BuildLockGraph(deadends) plays for OpenTheLock.
 internal sealed class LetterGraph(List<char> letters, List<(char From, char To)> edges)
 {
     public IReadOnlyList<char> Letters { get; } = letters;

@@ -50,7 +50,7 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
 
     // Public so a benchmark's [GlobalSetup] can build the same prepared matrix
     // this overload's own hoisting builds internally, rather than reimplementing
-    // it - the same role LockGraph.Build plays for OpenTheLock's benchmark.
+    // it - the same role BuildLockGraph plays for OpenTheLock's benchmark.
     public static long[,] BuildDistanceMatrix(int branchCount, int[][] roads)
     {
         var distances = new long[branchCount, branchCount];

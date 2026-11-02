@@ -7,7 +7,7 @@ namespace DSAExperimentation.LeetCode.MinimizeMaximumComponentCost;
 
 // Builds LeetCode's own (nodeCount, edges) shape into ComponentNodes wired both
 // ways - the same "materialize once, hand the algorithm a vertex list" role
-// LockGraph.Build plays for OpenTheLock, just for an arbitrary
+// BuildLockGraph plays for OpenTheLock, just for an arbitrary
 // weighted graph instead of a wheel-turn Cayley graph. Kept problem-local
 // (LeetCode/MinimizeMaximumComponentCost, not a shared tier) per this pass's
 // instruction not to grow new shared production primitives - see

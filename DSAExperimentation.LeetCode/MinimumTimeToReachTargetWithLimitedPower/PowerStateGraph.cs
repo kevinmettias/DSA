@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.MinimumTimeToReachTargetWithLimitedPower;
 // power level u can still afford it from. Every reachable-by-construction
 // (node, remainingPower) pair becomes one PowerStateNode, wired up front over
 // the full n * (power + 1) state space - the same "domain model, not an answer
-// to one query about it" framing LockGraph and RecoveryNetwork both use for
+// to one query about it" framing StateGraph and RecoveryNetwork both use for
 // their own expanded graphs.
 internal sealed class PowerStateGraph
 {

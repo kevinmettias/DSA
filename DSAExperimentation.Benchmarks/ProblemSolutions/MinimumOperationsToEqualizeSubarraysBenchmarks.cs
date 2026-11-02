@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The merge-sort tree and run-id index are built once via the solution's own
 // BuildIndex and charged to [GlobalSetup] through the MergeSortTree arm's
 // hoisted overload, so only the per-query answering is measured - the same
-// split OpenTheLockBenchmarks uses for LockGraph.Build.
+// split OpenTheLockBenchmarks uses for BuildLockGraph.
 public class MinimumOperationsToEqualizeSubarraysBenchmarks
 {
     private const int Seed = 3762;

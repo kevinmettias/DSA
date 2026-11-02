@@ -19,7 +19,7 @@ internal static class DigitOperationsToMakeTwoIntegersEqualSolution
     // against. Still calls DigitStepGraph's own DigitMutations/IsPrime for
     // the problem's digit-move and primality rules, the same "reuse the
     // domain's own neighbor rule, keep only the search engine textbook" split
-    // OpenTheLockSolution's MinTurnsByMutationQueue makes with LockGraph.
+    // OpenTheLockSolution's MinTurnsByMutationQueue makes with its lock graph.
     public static int MinOperationsByBruteForceDijkstra(int startValue, int targetValue)
     {
         if (DigitStepGraph.IsPrime(startValue) || DigitStepGraph.IsPrime(targetValue))

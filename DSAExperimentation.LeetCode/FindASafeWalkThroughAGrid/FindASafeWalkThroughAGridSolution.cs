@@ -11,8 +11,8 @@ namespace DSAExperimentation.LeetCode.FindASafeWalkThroughAGrid;
 // single-pair shortest-path query on a 4-directionally connected grid whose edge
 // weight is the DESTINATION cell's own 0/1 cost - not WeightedGrid's fixed
 // unit-weight edges (a different edge-weight rule, so this problem builds its
-// own graph, the same way LockGraph builds its own Cayley graph rather than
-// reusing WeightedGrid's).
+// own graph, the same way OpenTheLock builds its graph from the lock's own turns
+// rather than reusing WeightedGrid's).
 //
 // Both strategies solve that shortest-path query; they differ in how. The
 // composed strategy hands the very same edge-weighted graph shape

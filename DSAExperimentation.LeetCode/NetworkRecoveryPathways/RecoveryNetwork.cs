@@ -9,7 +9,7 @@ namespace DSAExperimentation.LeetCode.NetworkRecoveryPathways;
 // touching an offline node can never lie on a valid path (0 and nodeCount - 1 are
 // always online per the problem's own constraint), so dropping such edges up front is
 // exactly "every intermediate node on the path is online" - the domain model,
-// not an answer to any one query about it (LockGraph's own framing). Both
+// not an answer to any one query about it (StateGraph's own framing). Both
 // strategies below share this same prepared network; only how each one searches
 // it differs.
 internal sealed class RecoveryNetwork(

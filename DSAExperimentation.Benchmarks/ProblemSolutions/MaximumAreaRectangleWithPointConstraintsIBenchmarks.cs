@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same methods MaximumAreaRectangleWithPointConstraintsISolutionTests proves correct.
 // The corner-lookup arm is handed its prepared Set<(int,int)> from [GlobalSetup]
 // so building it is never part of the measured search - the same reason
-// OpenTheLockBenchmarks hands ReduceGraphBfs a pre-built LockGraph. Points are a
+// OpenTheLockBenchmarks hands ReduceGraphBfs a pre-built lock graph. Points are a
 // dense grid so a large fraction of candidate diagonals actually have both
 // opposite corners present, rather than the corner-lookup arm's Set.Has calls
 // missing on every candidate.

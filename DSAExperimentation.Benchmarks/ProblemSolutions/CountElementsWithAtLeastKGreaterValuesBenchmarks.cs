@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Sorting is charged to [GlobalSetup] via the SortedUpperBound arm's hoisted
 // overload, so only the per-element bisection loop is measured - the same
 // "hoist construction, keep the search measured" split OpenTheLockBenchmarks
-// uses for LockGraph.Build.
+// uses for BuildLockGraph.
 public class CountElementsWithAtLeastKGreaterValuesBenchmarks
 {
     private const int Seed = 3759;

@@ -7,7 +7,7 @@ namespace DSAExperimentation.LeetCode.MinimumIncrementsForTargetMultiplesInAnArr
 //
 // This is what the hoisted overload takes: SubsetLcm[subset] is the one piece of
 // per-query setup worth charging to [GlobalSetup] rather than the measured method,
-// the same role LockGraph.Build(deadends) plays for OpenTheLock.
+// the same role OpenTheLockSolution.BuildLockGraph(deadends) plays for OpenTheLock.
 internal readonly record struct TargetLcmTable(int TargetCount, long[] SubsetLcm)
 {
     public static TargetLcmTable Build(int[] target)

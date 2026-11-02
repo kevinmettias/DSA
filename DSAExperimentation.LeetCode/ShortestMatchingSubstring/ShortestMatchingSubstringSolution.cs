@@ -154,7 +154,7 @@ internal static class ShortestMatchingSubstringSolution
     // (ascending, ties to PrefixFunctionSearch.FindAll's own guarantee) of each of
     // pattern's three literal parts within the text, computed once so a benchmark
     // measures the greedy binary-search combination alone - mirroring how
-    // OpenTheLockBenchmarks hoists LockGraph.Build out of the search it measures.
+    // OpenTheLockBenchmarks hoists BuildLockGraph out of the search it measures.
     internal readonly record struct PatternOccurrences(
         MatchPattern Pattern, int[] PrefixStarts, int[] MiddleStarts, int[] SuffixStarts)
     {

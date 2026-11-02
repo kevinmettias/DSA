@@ -6,8 +6,8 @@ using BranchNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdj
 namespace DSAExperimentation.LeetCode.NumberOfPossibleSetsOfClosingBranches;
 
 // The full road network over all branchCount branches, built once - the domain model, not an answer to
-// any one query about it, the same LockGraph split between "what the puzzle looks
-// like" and "what a caller wants to find out" (OpenTheLock.LockGraph's own
+// any one query about it, the same StateGraph split between "what the puzzle looks
+// like" and "what a caller wants to find out" (StateGraph's own
 // framing). Multiple roads between the same two branches are kept as separate
 // edges rather than pre-reduced to their minimum - AllPairsShortestPaths already
 // takes the shorter one on relax, so there is nothing to precompute here.

@@ -10,7 +10,7 @@ namespace DSAExperimentation.LeetCode.MinimumOperationsToEqualizeBinaryString;
 // Only the current zero-count matters, not which indices are zero - so the puzzle
 // is a shortest-path query on EqualizeStateGraph's zero-count graph (see its own
 // doc comment for the reachable-range derivation), reduced to a lookup exactly the
-// way OpenTheLockSolution reduces LC 752 to one on LockGraph's wheel-turn graph.
+// way OpenTheLockSolution reduces LC 752 to one on its lock's wheel-turn graph.
 internal static class MinimumOperationsToEqualizeBinaryStringSolution
 {
     // The textbook answer: BCL Queue + a visited array, generating each reachable

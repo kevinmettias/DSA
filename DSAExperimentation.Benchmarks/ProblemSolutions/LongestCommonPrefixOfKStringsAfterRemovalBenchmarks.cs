@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same methods LongestCommonPrefixOfKStringsAfterRemovalSolutionTests proves correct.
 // [GlobalSetup] builds the trie once, so the composed arm's measured call is only
 // the two Reduce.Tree passes plus the per-word answer walk - trie construction is
-// charged to setup exactly like OpenTheLockBenchmarks charges LockGraph.Build
+// charged to setup exactly like OpenTheLockBenchmarks charges BuildLockGraph
 // there. Word count stays modest: the brute-force arm is O(n * maxLength^2).
 public class LongestCommonPrefixOfKStringsAfterRemovalBenchmarks
 {
