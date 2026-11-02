@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.Domain.Devices.Telephone;
 
 namespace DSAExperimentation.LeetCode.LetterCombinationsOfAPhoneNumber;
 
@@ -10,9 +11,12 @@ namespace DSAExperimentation.LeetCode.LetterCombinationsOfAPhoneNumber;
 // The two strategies differ only in how they build that product: nested list
 // expansion carried by hand, or this repo's generic Backtrack.Search walking one
 // decision level per digit position.
+//
+// The keypad is the telephone's (Domain/Devices/Telephone): the backtracking arm reads PhoneKeypad, and
+// the expansion baseline keeps its own copy below (ARCHITECTURE §17.5).
 internal static class LetterCombinationsOfAPhoneNumberSolution
 {
-    // Phone-keypad letter groups, keyed by digit (LC 17 mapping).
+    // The baseline's own copy of the keypad's letter groups, keyed by digit.
     private const string Digit2Letters = "abc";
     private const string Digit3Letters = "def";
     private const string Digit4Letters = "ghi";
@@ -60,6 +64,20 @@ internal static class LetterCombinationsOfAPhoneNumberSolution
         return next;
     }
 
+    private static string LettersFor(char digit)
+        => digit switch
+        {
+            '2' => Digit2Letters,
+            '3' => Digit3Letters,
+            '4' => Digit4Letters,
+            '5' => Digit5Letters,
+            '6' => Digit6Letters,
+            '7' => Digit7Letters,
+            '8' => Digit8Letters,
+            '9' => Digit9Letters,
+            _ => string.Empty,
+        };
+
     // This repo's own Backtrack.Search: each digit position is a decision level,
     // Candidates offers that digit's letters, and a choice sequence as long as the
     // input is a solution.
@@ -81,7 +99,7 @@ internal static class LetterCombinationsOfAPhoneNumberSolution
         Backtrack.Search<CombinationState, char>(
             state,
             isSolution: s => s.Index == digits.Length,
-            candidates: s => s.Index == digits.Length ? Array.Empty<char>() : LettersFor(digits[s.Index]),
+            candidates: s => s.Index == digits.Length ? Array.Empty<char>() : PhoneKeypad.LowercaseLettersOf(digits[s.Index]),
             choose: (s, letter) =>
             {
                 s.Chosen.Add(letter);
@@ -96,20 +114,6 @@ internal static class LetterCombinationsOfAPhoneNumberSolution
 
         return results;
     }
-
-    private static string LettersFor(char digit)
-        => digit switch
-        {
-            '2' => Digit2Letters,
-            '3' => Digit3Letters,
-            '4' => Digit4Letters,
-            '5' => Digit5Letters,
-            '6' => Digit6Letters,
-            '7' => Digit7Letters,
-            '8' => Digit8Letters,
-            '9' => Digit9Letters,
-            _ => string.Empty,
-        };
 
     private sealed class CombinationState
     {
