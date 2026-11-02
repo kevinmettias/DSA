@@ -1903,15 +1903,61 @@ It also found one trap in reading the measurements. Some arms drift more between
 same code than the change under test moves them. LC 1222's set arm read ±20% against itself, so
 its result needed a pass of HEAD against HEAD to interpret.
 
+A third wave took the subjects that only one folder stated, and the owner's rulings settled the
+ones the second wave left open:
+
+- **Moved, each as the general rule with LeetCode's variant as its configuration.** These are:
+  - the phone keypad (E.161, LC 17);
+  - Life-like rules, with Conway's B3/S23 as a preset (LC 289);
+  - Zuma's collapse, with the classic game's shortest vanishing group as a preset (LC 488);
+  - a die of any face count, with the six-sided die as a preset (LC 2318);
+  - letters numbered from 1 (LC 91, LC 2156);
+  - folder-path notation (LC 1233).
+- **Geometry names its plane.** `EuclideanPolygons` and `EuclideanPlane` state the flat-plane facts
+  that LC 976, LC 2971, LC 3024, LC 3899 and LC 1610 use. `ConstantCurvatureSurface` gives the
+  angle sum on a sphere or a hyperbolic plane, so the triangle's 180° reads as the flat case of a
+  general rule.
+- **Invented rules stayed.** The race car's motion (LC 818) and the ATM's banknotes (LC 2241) are
+  rules those problems invent, so they stay in their folders (§17.6).
+
+`Domain/` was then grouped by field: Mathematics, Games, Devices, Language, Science and Computing.
+It is a peer of `DataStructures/` and `Algorithms/`. Any of the three may read another, and
+`LayeringTests` refuses a cycle between their folders (§17.6a).
+
+Three subjects were then generalized, each on the evidence the rule above asks for:
+
+- **The combination lock** (`Domain/Devices/Locks`) takes any wheel count and symbol range. LC
+  752's four decimal wheels are the `FourDigitLock` preset.
+- **The sliding puzzle** (`Domain/Games/SlidingPuzzle`) takes any board of at least 2x2, and
+  decides which arrangements can be solved by the parity law. `EightPuzzle` and `FifteenPuzzle`
+  are presets, and LC 773 configures its own 2x3 board.
+- **The modulus** (`Domain/Mathematics/Modular`) is `IModulus` and `IPrimeModulus`. The
+  arithmetic over one, Fermat inverses and a factorial table, is in `Algorithms/NumberTheory`.
+  LeetCode's 10^9 + 7 is `LeetCodeModulus`, at the root of the LeetCode tier.
+
+The lock and the puzzle present themselves as state spaces, and tier 1's `StateGraph` builds
+their graphs. LC 818 builds its graph the same way, over its own state space.
+
 Not started:
 
-- Subjects that only one folder states: time units (LC 1348), English number words (LC 273), the
-  phone keypad (LC 17), Life's B3/S23 rule (LC 289), Zuma's collapse (LC 488), the race car's
-  motion (LC 818), a die's faces (LC 2318) and path notation (LC 1233).
-- Subjects that wait on the owner's ruling about where they belong: triangles and angle units
-  (`Domain/`, or Euclidean geometry for `Algorithms/Geometry`); numbering letters from 1
-  (`Domain/`, or tier 1 beside `LowercaseAlphabet`); and money (LC 2241's banknotes, and the 100
-  in a percentage).
+- Time units (LC 1348) and English number words (LC 273), each stated by one folder.
+- The 100 in a percentage.
+- Generalizing beyond what is exact, such as geometry on surfaces of varying curvature. This waits
+  until the architecture is stable, and then happens only if it helps.
+- Moving `ElementAlgebra`'s group laws to `Domain/Mathematics`. The peer tier allows it, but it is
+  a separate decision.
+
+Open items:
+
+- **LC 773 reads 1 to 3% slower** since its graph became a `StateGraph` (7408f14b). A variant
+  with the problem's own non-generic topology recovered part of the gap. What remains is no larger
+  than the spread on identical code, and its cause is not settled.
+- **`HashMap`'s comparer call is not inlined.** The `inlining` verb (§19.8) shows `FindEntryIndex`
+  calling `IEqualityComparer<T>.Equals` as "target not direct" in LC 874's `SetObstacles` arm.
+- **LC 3525 keeps its own `IModulus`,** five `int` witnesses for k = 1 to 5. Domain's `IModulus`
+  is over `long`, so adopting it is a measured change, not a rename.
+- **A composed arm's private copy of a library value is not reported.** `barred_reads` cannot
+  tell it from a baseline's (§17.5), so review has to catch it.
 
 ### 17.11 What every harness shares: `Conventions/`
 
