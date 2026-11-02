@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.CountAnagrams;
 
@@ -64,7 +65,7 @@ internal static class CountAnagramsSolution
 
     private static long DistinctPermutationsByModularFactorial(string word, FactorialTable<LeetCodeModulus> table)
     {
-        var counts = new int[LowercaseAlphabet.Size];
+        var counts = new int[EnglishLetters.Size];
 
         foreach (var c in word)
         {

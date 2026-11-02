@@ -2,8 +2,8 @@ namespace DSAExperimentation.Domain.Devices.Telephone;
 
 // The letters on a telephone keypad's keys, as ITU-T E.161 assigns them and as LC 17 reads them:
 // 2 is abc, 3 def, 4 ghi, 5 jkl, 6 mno, 7 pqrs, 8 tuv and 9 wxyz, and 0 and 1 carry none. Keypads
-// print the letters in capitals, but LC 17's strings are lowercase, so the member says lowercase,
-// as EnglishVowels' does. These are the problem's *what* (ARCHITECTURE §17.6); how a strategy forms
+// print the letters in capitals, but LC 17's strings are lowercase, so the member says lowercase.
+// These are the problem's *what* (ARCHITECTURE §17.6); how a strategy forms
 // combinations from them stays with it, and the baseline keeps its own copy (§17.5).
 //
 // A key's letters are read from a table by its digit rather than chosen by a switch: a search reads

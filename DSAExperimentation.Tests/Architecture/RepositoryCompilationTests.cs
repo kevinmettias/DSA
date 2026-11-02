@@ -20,7 +20,7 @@ public sealed partial class RepositoryCompilationTests
     public static TheoryData<string> TypesEachCompilationDeclares =>
         new()
         {
-            "DSAExperimentation.DataStructures.LowercaseAlphabet",
+            "DSAExperimentation.DataStructures.AlgorithmConstants",
             "DSAExperimentation.LeetCode.TwoSum.TwoSumSolution",
             "DSAExperimentation.Benchmarks.ProblemSolutions.TwoSumBenchmarks",
             "DSAExperimentation.Benchmarks.Fixtures.PolygonWorkloads",

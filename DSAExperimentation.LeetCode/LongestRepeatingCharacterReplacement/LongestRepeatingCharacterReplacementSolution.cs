@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.LongestRepeatingCharacterReplacement;
 
@@ -10,7 +11,9 @@ namespace DSAExperimentation.LeetCode.LongestRepeatingCharacterReplacement;
 // frequent character" - mostFrequentCount is a running historical max, never
 // decreased when the window shrinks, which is all Longest needs to stay correct
 // since the window's length can then only ever grow or stay the same. They
-// differ only in how per-character counts are tracked.
+// differ only in how per-character counts are tracked: rescanned from every start,
+// hashed in this repo's HashMap, or kept in a 26-slot table indexed by
+// Domain's EnglishUppercase, since LeetCode's strings are uppercase letters only.
 internal static class LongestRepeatingCharacterReplacementSolution
 {
     private const int AlphabetSize = 26;
@@ -103,5 +106,33 @@ internal static class LongestRepeatingCharacterReplacementSolution
         counts.Set(outgoing, outgoingCount - 1);
 
         return windowStart + 1;
+    }
+
+    // The same single pass with the counts in a 26-slot table: EnglishUppercase
+    // gives each letter its slot, so admitting or evicting a letter is one array
+    // write rather than a hash lookup and a store.
+    public static int LongestRunBySlidingWindowLetterCounts(string text, int maxReplacements)
+    {
+        var counts = new int[EnglishLetters.Size];
+        var windowStart = 0;
+        var mostFrequentCount = 0;
+        var longest = 0;
+
+        for (var windowEnd = 0; windowEnd < text.Length; windowEnd++)
+        {
+            var incoming = EnglishUppercase.IndexOf(text[windowEnd]);
+            counts[incoming]++;
+            mostFrequentCount = Math.Max(mostFrequentCount, counts[incoming]);
+
+            if (windowEnd - windowStart + 1 - mostFrequentCount > maxReplacements)
+            {
+                counts[EnglishUppercase.IndexOf(text[windowStart])]--;
+                windowStart++;
+            }
+
+            longest = Math.Max(longest, windowEnd - windowStart + 1);
+        }
+
+        return longest;
     }
 }

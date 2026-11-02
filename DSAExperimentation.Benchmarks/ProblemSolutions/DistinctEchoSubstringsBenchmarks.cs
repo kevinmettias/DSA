@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.DistinctEchoSubstrings;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -26,7 +27,7 @@ public class DistinctEchoSubstringsBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = LowercaseAlphabet.LetterAt(random.Next(LowercaseAlphabet.Size));
+            chars[i] = EnglishLowercase.LetterAt(random.Next(EnglishLetters.Size));
         }
 
         _text = new string(chars);

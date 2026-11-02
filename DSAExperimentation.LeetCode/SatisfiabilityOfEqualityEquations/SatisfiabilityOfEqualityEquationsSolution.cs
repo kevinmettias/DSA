@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.SatisfiabilityOfEqualityEquations;
 
@@ -153,7 +154,7 @@ internal static class SatisfiabilityOfEqualityEquationsSolution
     // instead of account indices.
     public static bool IsSatisfiableByDisjointSet(string[] equations)
     {
-        var components = new DisjointSet(LowercaseAlphabet.Size);
+        var components = new DisjointSet(EnglishLetters.Size);
 
         foreach (var equation in equations)
         {

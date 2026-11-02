@@ -23,7 +23,7 @@ namespace DSAExperimentation.LeetCode.FindSubstringWithGivenHashValue;
 // no window has, so both strategies use this repo's ordinary Try shape instead of
 // throwing, as TwoSumSolution.TryFindIndicesBy* does.
 //
-// A letter's value is its number, a as 1 through z as 26 (Domain/Language/English's LetterNumbers):
+// A letter's value is its number, a as 1 through z as 26 (Domain/Language/English's EnglishLetters):
 // the rolling-hash arm reads it, and the window-rehash baseline keeps its own LetterValue
 // (ARCHITECTURE §17.5).
 internal static class FindSubstringWithGivenHashValueSolution
@@ -32,7 +32,7 @@ internal static class FindSubstringWithGivenHashValueSolution
     // IEqualityComparer<char> hook RollingHashTests' case-insensitive-comparer
     // test already exercises.
     private static readonly IEqualityComparer<char> LetterValues =
-        EqualityComparer<char>.Create((left, right) => left == right, LetterNumbers.NumberOfLowercase);
+        EqualityComparer<char>.Create((left, right) => left == right, EnglishLetters.NumberOf);
 
     // The textbook answer: walk each window's characters and rebuild its modular
     // hash from scratch, O(n * k) overall. Deliberately BCL-only - a bare long

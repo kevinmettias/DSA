@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Language.English;
+
 namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 // The bounded-alphabet counterpart to Trie<TValue> (DataStructures/Trie/) - same
@@ -39,7 +41,7 @@ public sealed class LowercaseTrie<TValue>
 
         foreach (var ch in key)
         {
-            current = current.Children[LowercaseAlphabet.IndexOf(ch)] ??= new LowercaseTrieNode<TValue>();
+            current = current.Children[EnglishLowercase.IndexOf(ch)] ??= new LowercaseTrieNode<TValue>();
         }
 
         if (!current.HasValue)
@@ -104,7 +106,7 @@ public sealed class LowercaseTrie<TValue>
 
         foreach (var ch in key)
         {
-            current = current.Children[LowercaseAlphabet.IndexOf(ch)];
+            current = current.Children[EnglishLowercase.IndexOf(ch)];
 
             if (current is null)
             {

@@ -59,7 +59,7 @@ public class FindSubstringWithGivenHashValueBenchmarks
 
         foreach (var letter in text[^K..])
         {
-            var letterValue = LetterNumbers.NumberOfLowercase(letter);
+            var letterValue = EnglishLetters.NumberOf(letter);
             hash = (hash + (letterValue * powerTerm)) % Modulo;
             powerTerm = powerTerm * Power % Modulo;
         }

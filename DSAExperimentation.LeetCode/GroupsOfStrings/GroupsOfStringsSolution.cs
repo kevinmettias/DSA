@@ -3,6 +3,7 @@ using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.GroupsOfStrings;
 
@@ -164,7 +165,7 @@ internal static class GroupsOfStringsSolution
 
         var context = new UnionContext(representativeByMask, components);
 
-        for (var removedBit = 0; removedBit < LowercaseAlphabet.Size; removedBit++)
+        for (var removedBit = 0; removedBit < EnglishLetters.Size; removedBit++)
         {
             UnionNeighborsWithoutBit(wordIndex, mask, removedBit, context);
         }
@@ -181,7 +182,7 @@ internal static class GroupsOfStringsSolution
         var withoutLetter = mask & ~(1 << removedBit);
         UnionIfPresent(wordIndex, withoutLetter, context);
 
-        for (var addedBit = 0; addedBit < LowercaseAlphabet.Size; addedBit++)
+        for (var addedBit = 0; addedBit < EnglishLetters.Size; addedBit++)
         {
             if ((mask & (1 << addedBit)) == 0)
             {

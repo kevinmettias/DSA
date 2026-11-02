@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.ReplaceWords;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -54,5 +55,5 @@ public class ReplaceWordsBenchmarks
     public string LowercaseTrieWalk() => ReplaceWordsSolution.ReplaceByTrieWalk(_dictionary, _sentence);
 
     private static string RandomWord(Random random, int length)
-        => new(Enumerable.Range(0, length).Select(_ => LowercaseAlphabet.LetterAt(random.Next(LowercaseAlphabet.Size))).ToArray());
+        => new(Enumerable.Range(0, length).Select(_ => EnglishLowercase.LetterAt(random.Next(EnglishLetters.Size))).ToArray());
 }

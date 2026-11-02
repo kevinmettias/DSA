@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.FindTheKthCharacterInStringGameII;
 
@@ -61,7 +62,7 @@ internal static class FindTheKthCharacterInStringGameIISolution
 
         var shift = TraceShiftBackward(targetPosition, operations, lengths);
 
-        return LowercaseAlphabet.LetterAt(shift % LowercaseAlphabet.Size);
+        return EnglishLowercase.LetterAt(shift % EnglishLetters.Size);
     }
 
     // The round's length as it stands, and the same length one doubling on.

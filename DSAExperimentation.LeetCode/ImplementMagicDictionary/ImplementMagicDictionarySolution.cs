@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.ImplementMagicDictionary;
 
@@ -99,7 +100,7 @@ internal static class ImplementMagicDictionarySolution
 
             var target = searchWord[index] - 'a';
 
-            for (var candidate = 0; candidate < LowercaseAlphabet.Size; candidate++)
+            for (var candidate = 0; candidate < EnglishLetters.Size; candidate++)
             {
                 var next = node.Children[candidate];
 

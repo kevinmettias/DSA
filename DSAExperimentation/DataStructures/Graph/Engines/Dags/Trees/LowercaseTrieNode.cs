@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Language.English;
+
 namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 // A trie node bounded to the 26 lowercase English letters, backed by a fixed slot
@@ -16,7 +18,7 @@ public sealed class LowercaseTrieNode<TValue>
     /// <summary>
     /// The child slots, 0 for 'a' through 25 for 'z', null where no path continues with that letter.
     /// </summary>
-    public LowercaseTrieNode<TValue>?[] Children { get; } = new LowercaseTrieNode<TValue>[LowercaseAlphabet.Size];
+    public LowercaseTrieNode<TValue>?[] Children { get; } = new LowercaseTrieNode<TValue>[EnglishLetters.Size];
 
     /// <summary>Whether a key ends at this node, so that <see cref="Value"/> holds its value.</summary>
     public bool HasValue { get; set; }

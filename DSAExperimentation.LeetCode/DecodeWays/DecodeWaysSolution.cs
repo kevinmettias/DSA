@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.DecodeWays;
 // tabulation fills an array from the end backwards, top-down memoization lets this
 // repo's own Memoizer cache the same recurrence written as ordinary recursion.
 //
-// The highest code is the last letter's number (Domain/Language/English's LetterNumbers): the
+// The highest code is the last letter's number (Domain/Language/English's EnglishLetters): the
 // memoized arm reads it, and the tabulation baseline keeps its own MaxTwoDigitCode (ARCHITECTURE
 // §17.5).
 internal static class DecodeWaysSolution
@@ -79,7 +79,7 @@ internal static class DecodeWaysSolution
         var span = digits.AsSpan(index, TwoDigitGroupLength);
         var twoDigit = int.Parse(span);
 
-        return twoDigit <= LetterNumbers.Last;
+        return twoDigit <= EnglishLetters.Size;
     }
 
     // The recurrence, as a named type: an index past the end is one way, a leading

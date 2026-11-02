@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.WordsWithinTwoEditsOfDictionary;
 
@@ -96,7 +97,7 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
     {
         var target = state.Query[state.Index] - 'a';
 
-        for (var candidate = 0; candidate < LowercaseAlphabet.Size; candidate++)
+        for (var candidate = 0; candidate < EnglishLetters.Size; candidate++)
         {
             var next = node.Children[candidate];
             var match = candidate == target ? ChildMatch.Target : ChildMatch.Substitution;

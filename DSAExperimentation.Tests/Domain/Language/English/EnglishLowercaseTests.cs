@@ -1,10 +1,10 @@
-using DSAExperimentation.DataStructures;
+using DSAExperimentation.Domain.Language.English;
 
-namespace DSAExperimentation.Tests.DataStructures;
+namespace DSAExperimentation.Tests.Domain.Language.English;
 
 // The characters on either side of 'a'..'z' - '`' and '{' - are the ones an off-by-one in the slot
 // arithmetic would let through, so they are the cases that must throw.
-public sealed partial class LowercaseAlphabetTests
+public sealed partial class EnglishLowercaseTests
 {
     public static TheoryData<char, int> LettersToSlots =>
         new() { { 'a', 0 }, { 'm', 12 }, { 'z', 25 } };
@@ -18,32 +18,33 @@ public sealed partial class LowercaseAlphabetTests
     public static TheoryData<int> NonSlots =>
         new() { -1, 26 };
 
-    [Fact]
-    public void Size_IsTwentySix() =>
-        Assert.Equal(26, LowercaseAlphabet.Size);
-
     [Theory]
     [MemberData(nameof(LettersToSlots))]
     public void IndexOf_LowercaseLetter_ReturnsItsSlot(char letter, int expected) =>
-        Assert.Equal(expected, LowercaseAlphabet.IndexOf(letter));
+        Assert.Equal(expected, EnglishLowercase.IndexOf(letter));
 
     [Theory]
     [MemberData(nameof(NonLowercaseLetters))]
     public void IndexOf_NotALowercaseLetter_Throws(char letter) =>
-        Assert.Throws<ArgumentOutOfRangeException>(() => LowercaseAlphabet.IndexOf(letter));
+        Assert.Throws<ArgumentOutOfRangeException>(() => EnglishLowercase.IndexOf(letter));
+
+    [Theory]
+    [MemberData(nameof(NonLowercaseLetters))]
+    public void TryIndexOf_NotALowercaseLetter_IsFalse(char letter) =>
+        Assert.False(EnglishLowercase.TryIndexOf(letter, out _));
 
     [Theory]
     [MemberData(nameof(SlotsToLetters))]
     public void LetterAt_Slot_ReturnsItsLetter(int index, char expected) =>
-        Assert.Equal(expected, LowercaseAlphabet.LetterAt(index));
+        Assert.Equal(expected, EnglishLowercase.LetterAt(index));
 
     [Theory]
     [MemberData(nameof(NonSlots))]
     public void LetterAt_OutsideTheSlots_Throws(int index) =>
-        Assert.Throws<ArgumentOutOfRangeException>(() => LowercaseAlphabet.LetterAt(index));
+        Assert.Throws<ArgumentOutOfRangeException>(() => EnglishLowercase.LetterAt(index));
 
     [Fact]
     public void LetterAt_IndexOf_RoundTripsEverySlot() =>
-        Assert.All(Enumerable.Range(0, LowercaseAlphabet.Size), index =>
-            Assert.Equal(index, LowercaseAlphabet.IndexOf(LowercaseAlphabet.LetterAt(index))));
+        Assert.All(Enumerable.Range(0, EnglishLetters.Size), index =>
+            Assert.Equal(index, EnglishLowercase.IndexOf(EnglishLowercase.LetterAt(index))));
 }

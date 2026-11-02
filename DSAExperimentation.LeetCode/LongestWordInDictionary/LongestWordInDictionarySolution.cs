@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.LongestWordInDictionary;
 
@@ -95,7 +96,7 @@ internal static class LongestWordInDictionarySolution
     {
         best = BetterOf(prefix, best);
 
-        for (var i = 0; i < LowercaseAlphabet.Size; i++)
+        for (var i = 0; i < EnglishLetters.Size; i++)
         {
             best = VisitChild(node, i, prefix, best);
         }

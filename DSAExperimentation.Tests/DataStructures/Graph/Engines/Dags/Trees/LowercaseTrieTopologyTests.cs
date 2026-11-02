@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
@@ -11,7 +12,7 @@ public sealed partial class LowercaseTrieTopologyTests
         // The node always allocates 26 slots; only occupied ones are children.
         var node = new LowercaseTrieNode<int>();
 
-        Assert.Equal(LowercaseAlphabet.Size, node.Children.Length);
+        Assert.Equal(EnglishLetters.Size, node.Children.Length);
         Assert.Equal(0, LowercaseTrieTopology<int>.GetChildren(node).Count);
     }
 

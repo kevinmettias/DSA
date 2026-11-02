@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.Domain.Language.English;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Remaining, int AvailableAt)>;
 
 namespace DSAExperimentation.LeetCode.TaskScheduler;
@@ -7,6 +8,11 @@ namespace DSAExperimentation.LeetCode.TaskScheduler;
 // LeetCode 621. Task Scheduler: fewest CPU ticks to run every task at least once,
 // where the same task must wait at least `cooldownTicks` ticks between occurrences
 // (idle ticks allowed while waiting).
+//
+// The baseline and the cooldown heap both simulate the schedule tick by tick. The
+// idle-slot formula does not simulate at all: it counts the tasks in a 26-slot table
+// indexed by Domain's EnglishUppercase (LeetCode's tasks are uppercase letters) and
+// reads the answer off the most frequent task's count.
 internal static class TaskSchedulerSolution
 {
     // Fixed A-Z array width the baseline uses for direct-index frequency/last-used
@@ -87,6 +93,26 @@ internal static class TaskSchedulerSolution
             cooldown.TryDequeue(out var ready);
             heap.Push(ready.Remaining);
         }
+    }
+
+    // The most frequent task, run maxCount times, fixes maxCount - 1 frames of
+    // cooldownTicks + 1 ticks each, then a last frame holding every task that ties it.
+    // Other tasks fill the frames' idle slots, and once they overflow them nothing
+    // idles at all, so the answer is the larger of that frame count and the task count.
+    public static int LeastIntervalByIdleSlotFormula(char[] tasks, int cooldownTicks)
+    {
+        var counts = new int[EnglishLetters.Size];
+
+        foreach (var task in tasks)
+        {
+            counts[EnglishUppercase.IndexOf(task)]++;
+        }
+
+        var maxCount = counts.Max();
+        var tasksAtMaxCount = counts.Count(count => count == maxCount);
+        var framedTicks = ((maxCount - 1) * (cooldownTicks + 1)) + tasksAtMaxCount;
+
+        return Math.Max(tasks.Length, framedTicks);
     }
 
     // The textbook answer: rescan a flat 26-slot frequency/last-used array every

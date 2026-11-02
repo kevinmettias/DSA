@@ -13,9 +13,9 @@ public sealed partial class BaselineTraceTests
     [Fact]
     public void From_ConstantTheBaselineReads_IsCharged()
         => Assert.Contains(
-            "DSAExperimentation.DataStructures.LowercaseAlphabet.Size",
+            "DSAExperimentation.Domain.Language.English.EnglishLetters.Size",
             ReachedLibraryNames(
-                "public static int Baseline(int[] values) => values.Length % DSAExperimentation.DataStructures.LowercaseAlphabet.Size;",
+                "public static int Baseline(int[] values) => values.Length % DSAExperimentation.Domain.Language.English.EnglishLetters.Size;",
                 ArmCalling("ProbeSolution.Baseline(_values)")));
 
     [Fact]

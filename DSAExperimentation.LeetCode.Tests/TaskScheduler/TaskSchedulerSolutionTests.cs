@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.TaskScheduler;
 
 namespace DSAExperimentation.LeetCode.Tests.TaskScheduler;
 
-// Harness only. Both strategies are TaskSchedulerSolution's; this file pins them to
+// Harness only. All three strategies are TaskSchedulerSolution's; this file pins them to
 // LeetCode's published examples and three schedules of its own.
 public sealed partial class TaskSchedulerSolutionTests
 {
@@ -28,6 +28,16 @@ public sealed partial class TaskSchedulerSolutionTests
         char[] tasks, int cooldownTicks, int expected)
     {
         var actual = TaskSchedulerSolution.LeastIntervalByCooldownHeap(tasks, cooldownTicks);
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LeastIntervalByIdleSlotFormula_LeetCodeExamples_ReturnsFewestCpuTicks(
+        char[] tasks, int cooldownTicks, int expected)
+    {
+        var actual = TaskSchedulerSolution.LeastIntervalByIdleSlotFormula(tasks, cooldownTicks);
 
         Assert.Equal(expected, actual);
     }

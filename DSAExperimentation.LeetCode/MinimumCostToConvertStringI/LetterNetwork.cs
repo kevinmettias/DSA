@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.MinimumCostToConvertStringI;
 
@@ -17,11 +18,11 @@ internal sealed class LetterNetwork
 
     public static LetterNetwork Build(char[] original, char[] changed, int[] cost)
     {
-        var nodes = new LetterNode[LowercaseAlphabet.Size];
+        var nodes = new LetterNode[EnglishLetters.Size];
 
         for (var i = 0; i < nodes.Length; i++)
         {
-            nodes[i] = new LetterNode(LowercaseAlphabet.LetterAt(i));
+            nodes[i] = new LetterNode(EnglishLowercase.LetterAt(i));
         }
 
         for (var i = 0; i < original.Length; i++)

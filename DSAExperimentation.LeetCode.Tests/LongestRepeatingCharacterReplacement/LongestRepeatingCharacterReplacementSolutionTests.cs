@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.LongestRepeatingCharacterReplacement;
 
 namespace DSAExperimentation.LeetCode.Tests.LongestRepeatingCharacterReplacement;
 
-// LeetCode 424. Longest Repeating Character Replacement: harness only. Both
+// LeetCode 424. Longest Repeating Character Replacement: harness only. All three
 // strategies are LongestRepeatingCharacterReplacementSolution's - this file just
 // pins them to LeetCode's published examples.
 public sealed partial class LongestRepeatingCharacterReplacementSolutionTests
@@ -32,6 +32,16 @@ public sealed partial class LongestRepeatingCharacterReplacementSolutionTests
         string text, int maxReplacements, int expected)
     {
         var actual = LongestRepeatingCharacterReplacementSolution.LongestRunBySlidingWindowHashMap(text, maxReplacements);
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LongestRunBySlidingWindowLetterCounts_LeetCodeExamples_ReturnsLongestAchievableRun(
+        string text, int maxReplacements, int expected)
+    {
+        var actual = LongestRepeatingCharacterReplacementSolution.LongestRunBySlidingWindowLetterCounts(text, maxReplacements);
 
         Assert.Equal(expected, actual);
     }

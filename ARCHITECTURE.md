@@ -781,8 +781,9 @@ Representations (§5 step 7, §13.5) co-locates with it:
 
 | Folder | Holds |
 | --- | --- |
-| (root) | `AlgorithmConstants`, `ArrayGrowth`, `LowercaseAlphabet` (§19.6), `RangeBounds` — constants and checks read by more than one structure, at the lowest tier that reads them (§17.6a) |
+| (root) | `AlgorithmConstants`, `ArrayGrowth`, `RangeBounds` — constants and checks read by more than one structure, at the lowest tier that reads them (§17.6a) |
 | `AhoCorasick/` | `AhoCorasick`, `AhoCorasickNode`, `AhoCorasickMatch` — witness-less, for §13.8's reasons |
+| `Alphabets/` | `IAlphabet`, `LetterRun`, `LetterTable`, `ILetterSet`, `LetterSet` — an alphabet as an index scheme, each letter in a dense slot, with presets as struct witnesses; its two layouts, a run of character codes and letters spelled out in order; and a named subset of an alphabet's letters as a mask over its slots (§19.6). The presets are Domain's |
 | `Buffers/` | `ContiguousGroupBuffer`, `ContiguousGroupBufferStorage` (§14.1) |
 | `CircularBuffer/` | `CircularBuffer`, `IBufferCapacity`, `UnboundedCapacity`, `BoundedCapacity` — the wraparound structure the queue family configures, with its capacity a witness (§20) |
 | `CountedBitTrie/` | `CountedBitTrie` — a bit trie over a multiset, whose values can be removed: every node carries a count, and a walk reads the counts to tell a live branch from a dead one. It stands beside `BitTrie` rather than inside it, so `BitTrie`'s insert-only users pay for no counts, and it has no `ITreeTopology` witness for both of §13.9's reasons: its nodes are slots in shared arrays, and after a removal it still holds paths whose values are gone |
@@ -872,7 +873,8 @@ specifically:
 | `Games/Sudoku/` | `SudokuRules` — the 9x9 board's notation and placement rule, shared by LC 36 and LC 37 |
 | `Games/TicTacToe/` | `TicTacToeRules`, `TicTacToePlayer`, `TicTacToeOutcome` — LC 1275's board, turn order, diagonals and outcome rule |
 | `Games/Zuma/` | `IZumaRule`, `ZumaRow<TRule>`, `ClassicZuma` — the cascading collapse of touching same-coloured balls, general over the group length that vanishes, with Zuma's own three the preset LC 488's BFS arm uses |
-| `Language/English/` | `EnglishVowels` — the five lowercase vowels, shared by LC 1641, LC 2063 and LC 3227; `LetterNumbers` — A as 1 through Z as 26, read by LC 2156's rolling-hash arm and LC 91's memoized arm. LC 639's letter count sits in a helper its baseline shares, and LC 273's number words are only half of English's rule, whose other half, teens, hundreds and groups of a thousand, is what both its arms are made of. Neither uses it |
+| `Language/` | `CaseFolded` — a cased alphabet with case set aside, a letter and its capital in one slot, exact only where case pairs letter for letter (§19.6) |
+| `Language/English/` | `EnglishLowercase`, `EnglishUppercase` — the 26 letters in each case, read by the count tables and the trie, and by LC 424's and LC 621's capitals; `EnglishLetters` — both cases folded, with English's numbering, A as 1 through Z as 26, read by LC 2156's rolling-hash arm and LC 91's memoized arm; `EnglishVowels` — the five vowels as a letter set over it, shared by LC 1641, LC 2063 and LC 3227. LC 639's letter count sits in a helper its baseline shares, and LC 273's number words are only half of English's rule, whose other half, teens, hundreds and groups of a thousand, is what both its arms are made of. Neither uses it |
 | `Mathematics/Geometry/` | `EuclideanPolygons`, `EuclideanPlane`, `ConstantCurvatureSurface`, `AngleUnits` — when sides close into a polygon and a triangle's angle sum on the flat plane, read by the composed arms of LC 2971, LC 976, LC 3024 and LC 3899; a triangle's angle sum on any surface of constant curvature; and a turn's degrees, read by LC 1610 |
 | `Mathematics/Modular/` | `IModulus`, `IPrimeModulus` — a modulus as a struct witness, and a prime one, under which every nonzero residue has a Fermat inverse; the algorithms over them are `Algorithms/NumberTheory`'s, and LeetCode's 10^9 + 7 is `LeetCodeModulus` at the LeetCode tier's root |
 | `Science/Dna/` | `DnaBases` — DNA's four bases, the alphabet LC 433's benchmark mutates its genes over and the letters LC 187's workload strings are spelled in. LC 187's 2-bit code per base is its strategy and stays in its folder, so no solution reads it |
@@ -1598,12 +1600,13 @@ about LeetCode rather than about any problem's world, and one problem's own spel
 | `Domain/Games/Sudoku/` | `SudokuRules` | The 9x9 board of 3x3 boxes, its `'1'`–`'9'` and `'.'` notation, and the rule that no digit repeats in a row, column or box — what LC 36 and LC 37 both say about the board. Which cell a solver fills next and how a validator tracks what it has seen stay with each strategy. |
 | `Domain/Games/TicTacToe/` | `TicTacToeRules`, `TicTacToePlayer`, `TicTacToeOutcome` | The 3x3 board, A moving first, the two diagonals and how a game stands: a completed line wins even on the last square, otherwise a full board is a draw and a short one pending. LC 1275's spelling of that answer (`"A"`, `"Draw"`, …) and the strategies' ±1 marks stay in its folder. |
 | `Domain/Games/Zuma/` | `IZumaRule`, `ZumaRow<TRule>`, `ClassicZuma` | A group of touching balls of one colour at least the rule's length vanishes, cascading; Zuma's own length is three. Each pass removes every such group at once, which is the game's one-at-a-time cascade while the row holds at most one, as after one ball goes into a settled row. The colour letters are LeetCode's, and nothing reads them. |
-| `Domain/Language/English/` | `EnglishVowels`, `LetterNumbers` | The five vowels, as lowercase letters, as their count, and as a test of one character. The problems' strings are lowercase, and the test's name says so, so that a mixed-case caller does not get a silent false. How a strategy counts them or finds them stays with it. The letters numbered from one, A as 1 through Z as 26, are a notation people use, which is `LowercaseAlphabet`'s zero-based slot plus one; only problems read them, so they are Domain's rather than tier 1's (§17.6a). |
+| `Domain/Language/` | `CaseFolded` | A cased writing system's letters with case set aside: a letter and its capital take one slot, and a letter's lowercase form stands for it. That holds only where case pairs letter for letter, as English's and Russian's do; German's ß capitalizes to two letters and Turkish pairs i with İ and ı with I, so the type says so rather than claiming every script. |
+| `Domain/Language/English/` | `EnglishLowercase`, `EnglishUppercase`, `EnglishLetters`, `EnglishVowels` | The 26 letters in each case as presets of tier 1's `IAlphabet` (§19.6), each a run of character codes, and the two folded into `EnglishLetters`. English numbers its letters from one, A as 1 through Z as 26: a notation people use, and English's rather than every alphabet's, since Greek and Hebrew numerals give kappa and kaf the value 20, so `NumberOf` is `EnglishLetters`' and not the contract's. The five written vowels are a letter set over the folded letters, so 'A' is a vowel as 'a' is; y, a vowel only in some words, is not one of them. How a strategy counts or finds them stays with it. |
 | `Domain/Mathematics/Geometry/` | `EuclideanPolygons`, `EuclideanPlane`, `ConstantCurvatureSurface`, `AngleUnits` | Mathematical facts no data structure or algorithm represents, which the owner ruled are Domain's, each named for the geometry it holds in. On the flat plane, sides close into a polygon when the longest is shorter than the rest together, which for three sides is the triangle inequality, and a polygon has at least three sides; a sphere has two-sided lunes. A triangle's angles make 180 degrees on the flat plane, a constant a caller pays nothing for, and on a surface of constant curvature K, Gauss–Bonnet's π + K·Area, which is exact. A turn is 360 degrees by the degree's definition. Sorting, scanning and the law of cosines stay with the strategies, and `Algorithms/Geometry` keeps operations such as the convex hull. |
 | `Domain/Mathematics/Modular/` | `IModulus`, `IPrimeModulus` | What a modulus is, as mathematics rather than LeetCode's convention: the residues 0 to m - 1, the bound that keeps the product of two residues inside a long, and for a prime, Fermat's inverse a^(p - 2). An algorithm over them is swappable, so `ModularInverse.ByFermat` and `FactorialTable<TModulus>` are `Algorithms/NumberTheory`'s, beside `ModularPower`. A modulus that is a compile-time constant is a struct witness the JIT folds. LeetCode's own prime, 10^9 + 7, is `LeetCodeModulus` at the LeetCode tier's root, since it is LeetCode's choice; its tests check it is prime and within the bound. |
 | `Domain/Science/Dna/` | `DnaBases` | The four bases, A, C, G and T. They were tier 1's `StandardAlphabets.Dna`, a fact about DNA in a graph's folder, whose own header said the alphabet a mutation walks belongs to the problem and not to the graph. The `Alphabet` record they fill stays tier 1, as the lock's graph does. A number for each base is not DNA's: LC 187's 2-bit order is its own strategy. |
 
-Their tests mirror them in `DSAExperimentation.Tests/Domain/{Computing/Filesystem,Computing/Paths,Devices/Compass,Devices/Locks,Devices/Telephone,Games/Chess,Games/Dice,Games/Life,Games/SlidingPuzzle,Games/Sudoku,Games/TicTacToe,Games/Zuma,Language/English,Mathematics/Geometry,Science/Dna}/`. The
+Their tests mirror them in `DSAExperimentation.Tests/Domain/{Computing/Filesystem,Computing/Paths,Devices/Compass,Devices/Locks,Devices/Telephone,Games/Chess,Games/Dice,Games/Life,Games/SlidingPuzzle,Games/Sudoku,Games/TicTacToe,Games/Zuma,Language,Language/English,Mathematics/Geometry,Science/Dna}/`. The
 domain knowledge still written inside individual problem folders moves here problem by problem
 (§17.10).
 
@@ -2218,12 +2221,41 @@ Two composed arms use it today, fewer than the eight that moved `FactorialTable`
 back to a rolling row (§19.8). It was built anyway, on the owner's call that an exact and
 composite-modulus binomial table belongs in the library before more solutions hand-roll one.
 
-### 19.6 `LowercaseAlphabet` leaves the trie's folder
+### 19.6 The alphabet: one contract, and its presets by language
 
 `LowercaseAlphabet` was declared beside `LowercaseTrieNode`, while twenty-two solutions declared their
-own `AlphabetSize = 26`. It now sits at the root of `DataStructures/` beside `AlgorithmConstants`,
-still in tier 1 because the trie reads it (§17.6a), and gains `IndexOf`/`LetterAt`. Both throw
-outside `a`–`z` rather than return -1, because a wrong slot silently reads another letter's count.
+own `AlphabetSize = 26`. It moved to the root of `DataStructures/` and gained `IndexOf`/`LetterAt`,
+which throw outside the alphabet rather than return -1, because a wrong slot silently reads another
+letter's count. An uppercase twin followed for LC 424 and LC 621, and `LetterNumbers` and
+`EnglishVowels` each restated part of the same alphabet. The owner asked for one general alphabet,
+covering both cases and usable for other languages, built by composition (2026-11-02):
+
+- **The contract is tier 1.** `DataStructures/Alphabets/IAlphabet` is an index scheme: `Size`,
+  `IndexOf`, `TryIndexOf` and `LetterAt`, each static abstract, so code generic over a preset is
+  compiled for that alphabet and a slot folds to arithmetic or a table read. It is a shape any
+  structure can be generic over, so §17.6's first rule files it in `DataStructures/`. `LetterRun`
+  is the layout of an alphabet that is one run of character codes, and `LetterTable` of one spelled
+  out in order, with its slots read from a table: most of the world's alphabets are not one run
+  (Russian's ё is coded after я), and a test-only Russian alphabet proves the contract beyond English. `ILetterSet` and `LetterSet` are
+  a named subset of an alphabet's letters, read as a mask over its slots: a primitive static
+  readonly field the JIT reads as a constant.
+- **The presets are Domain's.** Which letters, in what order, is a writing system's fact:
+  `EnglishLowercase` and `EnglishUppercase`; `CaseFolded`, two cases sharing slots, exact only
+  where case pairs letter for letter; `EnglishLetters`, English's two cases folded, with English's
+  numbering of its letters, which is English's and not every alphabet's; and `EnglishVowels`, a
+  letter set over it.
+- **Composition, not inheritance.** A preset is a struct that forwards to a layout, and folding case
+  composes two alphabets. Nothing derives from anything.
+- **A count belongs to the alphabet, not to a case.** English has 26 letters, and each case has 26
+  slots because English pairs them one for one, so the one constant is `EnglishLetters.Size`, and
+  the two case presets answer the interface from it. A count table reads `new int[EnglishLetters.Size]`,
+  one slot per English letter, in whichever case the problem writes.
+- **One source per fact.** `EnglishLetters.Size` stays `const`, with the interface member
+  implemented explicitly, so a caller that needs a constant has one and `LibraryValueCopies` (§17.5)
+  still sees a copy of it. A letter set's letters are an array, the one source its count and its
+  spelled-out string are read from (the owner's ruling), so the vowels' count is derived rather than
+  written beside them; as a non-constant it is no longer one `LibraryValueCopies` compares.
+
 Graph/Hamming's `Alphabet` is a different thing — a runtime-chosen set a mutation substitutes from —
 and stays separate (§5 step 5). A solution adopts it only when no baseline reads its constant. The
 owner ruled that a baseline may not read even a compile-time constant from a core type, so a

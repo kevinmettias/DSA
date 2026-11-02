@@ -57,7 +57,7 @@ internal static class VowelsOfAllSubstringsSolution
 
         for (var i = 0; i < length; i++)
         {
-            if (EnglishVowels.IsLowercaseVowel(word[i]))
+            if (EnglishVowels.Has(word[i]))
             {
                 total += (long)(i + 1) * (length - i);
             }

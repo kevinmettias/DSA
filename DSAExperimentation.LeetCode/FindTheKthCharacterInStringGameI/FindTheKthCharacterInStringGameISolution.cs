@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.FindTheKthCharacterInStringGameI;
 
@@ -49,6 +50,6 @@ internal static class FindTheKthCharacterInStringGameISolution
     {
         var shift = System.Numerics.BitOperations.PopCount(
             (uint)(kthPosition - 1));
-        return LowercaseAlphabet.LetterAt(shift % LowercaseAlphabet.Size);
+        return EnglishLowercase.LetterAt(shift % EnglishLetters.Size);
     }
 }

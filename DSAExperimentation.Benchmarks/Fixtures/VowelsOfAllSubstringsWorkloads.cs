@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
@@ -16,8 +17,8 @@ internal static class VowelsOfAllSubstringsWorkloads
 
         for (var i = 0; i < length; i++)
         {
-            var slot = random.Next(0, LowercaseAlphabet.Size);
-            chars[i] = LowercaseAlphabet.LetterAt(slot);
+            var slot = random.Next(0, EnglishLetters.Size);
+            chars[i] = EnglishLowercase.LetterAt(slot);
         }
 
         return new string(chars);
