@@ -1303,19 +1303,31 @@ are tier rules rather than naming conventions.
 
 ### 17.2 The tiers
 
-Bottom to top, each tier depending only on those below it:
+Bottom to top. The first three are peers, and every tier above them reads only those below it:
 
 | Tier | Location | Holds |
 | --- | --- | --- |
 | 1. Representation + Topology | `DSAExperimentation/DataStructures/**` | §2's first two axes |
 | 2. Operations | `DSAExperimentation/Algorithms/**` | §2's third axis |
-| Mechanisms | `DSAExperimentation/Mechanisms/**` | State run by a rule of its own that the caller observes — dropping what no caller named, or handing out what the caller never stored: the LRU and LFU caches, keys that expire, and an allocator of the smallest free number (§17.6b) |
 | 3. Domain | `DSAExperimentation/Domain/**` | What a problem says about its world, pulled out of the problems that say it: models, rules, constants (§17.6) |
+| Mechanisms | `DSAExperimentation/Mechanisms/**` | State run by a rule of its own that the caller observes — dropping what no caller named, or handing out what the caller never stored: the LRU and LFU caches, keys that expire, and an allocator of the smallest free number (§17.6b) |
 | 4. LeetCode solutions | `DSAExperimentation.LeetCode/**` (own project) | One folder per problem, every strategy for it; at the root, LeetCode's own notation and answer rules |
 | 5. Harnesses | `DSAExperimentation.Tests/**` (the library's tiers), `DSAExperimentation.LeetCode.Tests/**` (tier 4), `DSAExperimentation.Benchmarks/**` | Assertions and measurement, nothing else |
 
+Domain is a peer of DataStructures and Algorithms, not a tier above them. The owner ruled it as
+fundamental as they are (2026-11-01). A triangle's angles, a die's faces and a keypad's letters
+hold whichever structure represents them and whichever algorithm computes with them (§17.6), so
+nothing about Domain depends on the tiers below it. The three may therefore read one another, with
+two limits:
+
+- DataStructures still reads no algorithm, save the one edge §17.6a sanctions.
+- Their folders may form no cycle across tiers. A folder that reads itself back through another
+  tier has split one subject across two tiers, and neither half is a peer the other can read.
+
+Mechanisms reads all three, and none of them reads a mechanism.
+
 Mechanisms has a name and no number. It arrived after code across the repo had begun citing tiers
-by number, so it sits between tiers 2 and 3 without renumbering either, and "tier 3", "tier 4" and
+by number, so it sits between tiers 3 and 4 without renumbering either, and "tier 3", "tier 4" and
 "tier 5" keep their meaning. ARCHITECTURE-HISTORY.md §17.6 records why tier 3 was retired once and
 then restored with a wider remit.
 
@@ -1539,7 +1551,9 @@ domain knowledge still written inside individual problem folders moves here prob
 ### 17.6a How the tier order is enforced
 
 A constant or check that more than one tier reads lives at the lowest tier that reads it, whatever
-its name: `AlgorithmConstants` sits in `DataStructures/` because data structures read it.
+its name: `AlgorithmConstants` sits in `DataStructures/` because data structures read it. Among
+the three peers none is lowest, so such a value lives where its meaning does. A fact about the world
+lives in Domain, whichever peer reads it.
 
 Enforcement comes from the following, chosen deliberately over a project-per-tier split:
 
@@ -1592,11 +1606,24 @@ judged more strictly, because they put a namespace in scope for every tier at on
 `global using` directive in any of the project's files and a `<Using>` item in any build file
 MSBuild reads for the project: its project file, a `Directory.Build` file, or
 `Directory.Packages.props`, which NuGet imports into every project whether or not central package
-management is on. A global using may name `DataStructures` and nothing above it, and no allow-list
-entry can sanction one. All of this reads a tier off the namespace a name is written in, so every
-file must also declare its namespace inside its own tier: a type an `Algorithms/` file declared in
-a `DataStructures` namespace, in the root namespace or in none would reach `DataStructures` files
-by its simple name, with no tier written anywhere for the test to read.
+management is on. A global using may name no tier, and no allow-list entry can sanction one. It
+would put that tier in scope for every file with nothing in any file's code to show the read, so
+neither the tier rule nor the cycle check below could see it. All of this reads a tier off the
+namespace a name is written in, so every file must also declare its namespace inside its own tier:
+a type an `Algorithms/` file declared in a `DataStructures` namespace, in the root namespace or in
+none would reach `DataStructures` files by its simple name, with no tier written anywhere for the
+test to read.
+
+The peers' freedom to read one another is checked as a graph of folders. `FolderGraph` builds it
+from the same references:
+
+- Each name resolves to the deepest folder holding a file that its path reaches.
+- Each folder also counts as reading every enclosing folder that holds a file. C# lets a file name
+  an enclosing namespace's types with no `using`, so no text would show that read.
+
+`FolderCycles` then fails each read across tiers whose folder reaches its reader again, and
+states the cycle. A cycle inside one tier is left alone. Algorithms' walks, traversals and
+reductions form one today, and it splits no subject across tiers.
 
 ### 17.6b Mechanisms: a rule of their own that the caller observes
 
@@ -1628,8 +1655,10 @@ instead would be evicting, and so a mechanism. `Memoizer` is not one either — 
 discarded when the call returns — and nor is `MonotonicDeque`, whose dominance drop is its window
 order deciding what the front can reach, with the caller naming the window through `EvictBefore`.
 
-Mechanisms sits above Operations, so a mechanism may compose any structure or algorithm, and below
-Domain, so a domain model may hold one. Design problems that bury a mechanism under their rules
+Mechanisms sits above the three peers (§17.2). A mechanism may compose any structure or algorithm
+and read any of Domain's facts. A domain type holds no mechanism: Domain states what is true of a
+world whatever machinery runs it, and a mechanism is machinery. No domain type held one when Domain
+became a peer (2026-11-02). Design problems that bury a mechanism under their rules
 contribute it here when the problem is split (§17.6, §17.10), as LC 1797 gave up its expiry and LC
 1845 and LC 2336 their allocator. There is no tier for code that holds part of the machine itself;
 §17.6c keeps the tiers below the harness free of it.
@@ -1928,9 +1957,10 @@ not whoever is editing remembers them. The tests read the repository as *text* r
 would be blind in precisely the place duplication happens.
 
 - **§17.2's tier order** — `LayeringTests`: a file in `DSAExperimentation` may reference its own
-  tier or a lower one, whether in a `using` directive or inline in its code. The one deliberate
-  inversion is allow-listed by file and target namespace, and a global using may name only the
-  lowest tier (§17.6a). Every file of the project must sit in `DataStructures/`, `Algorithms/`,
+  tier or one its tier may read, whether in a `using` directive or inline in its code. The peers,
+  DataStructures, Algorithms and Domain, may read one another, and their folders may form no cycle
+  across tiers (`FolderGraph`, `FolderCycles`). The one deliberate inversion is allow-listed by
+  file and target namespace, and a global using may name no tier (§17.6a). Every file of the project must sit in `DataStructures/`, `Algorithms/`,
   `Mechanisms/` or `Domain/`, so a folder no rule judges fails instead of passing unread. Each
   file must also declare its namespace inside its own tier, since every reference is read by the
   tier its namespace names. The LeetCode tier

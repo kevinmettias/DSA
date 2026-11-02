@@ -3,7 +3,8 @@ using System.Text.RegularExpressions;
 namespace DSAExperimentation.Tests.Architecture;
 
 // Enforces ARCHITECTURE.md section 17.2's tier order, which is otherwise only a
-// convention the file tree implies: a tier may depend downward and never upward.
+// convention the file tree implies: a tier reads only the tiers Readable names, and the
+// three peer tiers that read one another form no cycle of folders between them.
 //
 // This is the guard a project-per-tier split would have bought from the compiler.
 // It is deliberately a test instead, for two reasons the split could not answer:
@@ -15,14 +16,27 @@ namespace DSAExperimentation.Tests.Architecture;
 // reason"; the allow-list below can.
 public sealed partial class LayeringTests
 {
-    // Lowest tier first. A file in tier i may reference tiers 0..i only. Mechanisms sits between
-    // Operations and Domain without a number of its own (section 17.6b), so the tier numbers code
-    // cites keep their meaning.
-    private static readonly string[] Tiers = ["DataStructures", "Algorithms", "Mechanisms", "Domain", "LeetCode"];
+    // Lowest tier first, LeetCode last: the tier folders a framework file may sit in, and the tier
+    // names a reference can name. Mechanisms has no number of its own (section 17.6b), so the tier
+    // numbers code cites keep their meaning.
+    private static readonly string[] Tiers = ["DataStructures", "Algorithms", "Domain", "Mechanisms", "LeetCode"];
 
-    // Upward edges that are deliberate, each with the reason it is allowed. An entry names the
-    // file and the one higher-tier namespace it may reach, so it sanctions that edge and no
-    // other: a second upward reference from the same file still fails.
+    // The tiers each framework tier may read besides its own. DataStructures, Algorithms and
+    // Domain are peers (section 17.2), save that DataStructures still reads no algorithm beyond the
+    // edges AllowedInversions sanctions, and PeerTiers_FormNoCycleOfFoldersAcrossTiers keeps peers
+    // from reading one another in a loop. Mechanisms reads all three, and none of them reads it.
+    // No tier reads LeetCode.
+    private static readonly Dictionary<string, string[]> Readable = new()
+    {
+        ["DataStructures"] = ["Domain"],
+        ["Algorithms"] = ["DataStructures", "Domain"],
+        ["Domain"] = ["DataStructures", "Algorithms"],
+        ["Mechanisms"] = ["DataStructures", "Algorithms", "Domain"],
+    };
+
+    // Reads of a tier Readable withholds that are deliberate, each with the reason it is allowed.
+    // An entry names the file and the one namespace it may reach, so it sanctions that edge and no
+    // other: a second such reference from the same file still fails.
     private static readonly Dictionary<AllowedInversion, string> AllowedInversions = new()
     {
         [new("DataStructures/IntervalSet/IntervalSet.cs", "DSAExperimentation.Algorithms.Searching")] =
@@ -52,7 +66,7 @@ public sealed partial class LayeringTests
     private const string RootNamespace = "DSAExperimentation";
 
     [Fact]
-    public void EveryFile_ReferencesItsOwnTierOrALowerOne()
+    public void EveryFile_ReferencesOnlyTiersItsOwnMayRead()
     {
         var offences = Inversions();
         var report = string.Join(Environment.NewLine, offences);
@@ -60,11 +74,23 @@ public sealed partial class LayeringTests
         Assert.True(offences.Count == 0, report);
     }
 
-    // A global using puts its namespace in scope for every file in the project, the lowest
-    // tier's included, so it is judged as though each of them had written it and no allow-list
-    // entry can sanction it: it may name the lowest tier and nothing above.
+    // DataStructures, Algorithms and Domain may read one another, which leaves a loop between them
+    // to rule out: a folder that reads itself back through another tier has split one subject
+    // across two tiers, and neither half is the peer the other may read.
     [Fact]
-    public void GlobalUsings_NameNoTierAboveTheLowest()
+    public void PeerTiers_FormNoCycleOfFoldersAcrossTiers()
+    {
+        var cycles = FolderCycles.AcrossTiers(FolderReads()).ToList();
+        var report = string.Join(Environment.NewLine, cycles);
+
+        Assert.True(cycles.Count == 0, report);
+    }
+
+    // A global using puts its namespace in scope for every file in the project, so a file could
+    // read that tier with nothing in its own code to show it: a read neither the tier rule nor the
+    // cycle check could see. It may name no tier, and no allow-list entry can sanction one.
+    [Fact]
+    public void GlobalUsings_NameNoTier()
     {
         var offences = GlobalUsingLeaks().ToList();
         var report = string.Join(Environment.NewLine, offences);
@@ -161,6 +187,27 @@ public sealed partial class LayeringTests
             { "DSAExperimentation.Algorithms.Sorting.MergeSort", false },
         };
 
+    // Who may read whom, stated as cases: the peers each way and Mechanisms over them, then the
+    // reads the table withholds.
+    public static TheoryData<string, string> PermittedReadsByTier =>
+        new()
+        {
+            { "DataStructures", "Domain" },
+            { "Algorithms", "Domain" },
+            { "Domain", "DataStructures" },
+            { "Domain", "Algorithms" },
+            { "Mechanisms", "Domain" },
+        };
+
+    public static TheoryData<string, string> WithheldReadsByTier =>
+        new()
+        {
+            { "DataStructures", "Algorithms" },
+            { "Domain", "Mechanisms" },
+            { "Algorithms", "Mechanisms" },
+            { "Mechanisms", "LeetCode" },
+        };
+
     [Theory]
     [MemberData(nameof(SpellingsOfAnAlgorithmsReference))]
     public void ReferencesIn_FindsAHigherTierHoweverItIsNamed(string source)
@@ -192,6 +239,16 @@ public sealed partial class LayeringTests
         Assert.Equal(covered, edge.Covers(new TierReference("Algorithms", target)));
     }
 
+    [Theory]
+    [MemberData(nameof(PermittedReadsByTier))]
+    public void CanRead_LetsPeersAndMechanismsReadTheTier(string readerTier, string readTier)
+        => Assert.True(CanRead(readerTier, readTier));
+
+    [Theory]
+    [MemberData(nameof(WithheldReadsByTier))]
+    public void CanRead_WithholdsEveryReadTheTableLeavesOut(string readerTier, string readTier)
+        => Assert.False(CanRead(readerTier, readTier));
+
     private static List<string> Inversions() => TieredFiles().SelectMany(InversionsIn).ToList();
 
     // Every framework file under a tier folder, with the tier its location puts it in. A file
@@ -212,9 +269,9 @@ public sealed partial class LayeringTests
         }
     }
 
-    // Every global using the framework project sees that names a tier above the lowest: a
-    // directive in any of its files - tiered or not, since one at the project root reaches every
-    // tier just the same - or a <Using> item in a build file MSBuild may import into it.
+    // Every global using the framework project sees that names a tier: a directive in any of its
+    // files - tiered or not, since one at the project root reaches every tier just the same - or a
+    // <Using> item in a build file MSBuild may import into it.
     private static IEnumerable<string> GlobalUsingLeaks()
     {
         var root = RepositoryFiles.Root();
@@ -223,10 +280,9 @@ public sealed partial class LayeringTests
             .Concat(BuildFilesOf(root));
 
         return files.SelectMany(file => GlobalImportsIn(file, File.ReadAllText(file))
-            .Where(reference => reference.Tier != Tiers[0])
             .Select(reference =>
                 $"{Path.GetRelativePath(root, file).Replace(Path.DirectorySeparatorChar, '/')}: a global using of "
-                + $"{reference.Target} puts {reference.Tier} in scope for every tier below it."));
+                + $"{reference.Target} puts {reference.Tier} in scope for every file, with no code of theirs to show it."));
     }
 
     // The framework project's own project file, which must exist, and whichever of the files
@@ -293,7 +349,6 @@ public sealed partial class LayeringTests
 
     private static IEnumerable<string> InversionsIn(TieredFile file)
     {
-        var rank = Array.IndexOf(Tiers, file.Tier);
         var pathInProject = TrimProject(file.RelativePath);
         var code = RepositoryFiles.CodeOf(File.ReadAllText(file.FullPath));
 
@@ -302,11 +357,37 @@ public sealed partial class LayeringTests
             var sanctioned = AllowedInversions.Keys
                 .Any(edge => edge.PathInProject == pathInProject && edge.Covers(reference));
 
-            if (Array.IndexOf(Tiers, reference.Tier) > rank && !sanctioned)
+            if (!CanRead(file.Tier, reference.Tier) && !sanctioned)
             {
-                yield return $"{file.RelativePath}: {file.Tier} references {reference.Target}, in {reference.Tier}, a higher tier.";
+                yield return $"{file.RelativePath}: {file.Tier} references {reference.Target}, in {reference.Tier}, which {file.Tier} may not read.";
             }
         }
+    }
+
+    private static bool CanRead(string readerTier, string readTier)
+        => readerTier == readTier || Readable[readerTier].Contains(readTier);
+
+    // Each folder's reads of another, off the same references the tier rule reads, each name turned
+    // into a path inside the project.
+    private static List<FolderGraph.FolderRead> FolderReads()
+    {
+        var files = TieredFiles().ToList();
+        var folders = files.Select(FolderOf).ToHashSet();
+
+        return files
+            .SelectMany(file => FolderGraph.ReadsFrom(
+                FolderOf(file),
+                ReferencesIn(RepositoryFiles.CodeOf(File.ReadAllText(file.FullPath)))
+                    .Select(reference => reference.Target[(RootNamespace.Length + 1)..].Replace('.', '/')),
+                folders))
+            .ToList();
+    }
+
+    private static string FolderOf(TieredFile file)
+    {
+        var pathInProject = TrimProject(file.RelativePath);
+
+        return pathInProject[..pathInProject.LastIndexOf('/')];
     }
 
     // Every tier namespace the code names, each written out in full. An unqualified match counts
