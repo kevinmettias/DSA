@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.DataStructures.PrefixSums;
 
 namespace DSAExperimentation.LeetCode.RangeSumQueryImmutable;
 
@@ -11,7 +12,10 @@ namespace DSAExperimentation.LeetCode.RangeSumQueryImmutable;
 // own FenwickTree<int, SumOperation<int>> (the point-update/range-query family
 // ARCHITECTURE.md's FenwickTree worked example describes): built once from the
 // array in O(n log n), so every SumRange afterward is an O(log n) Query instead
-// of a rescan.
+// of a rescan. SumRangeByPrefixSums is this repo's PrefixSums<int, SumOperation<int>>:
+// built in O(n), every SumRange afterward is one O(1) subtraction, the answer for an
+// array that never changes. FenwickTree pays its log factor for updates this problem
+// never makes (LC 307 does).
 internal static class RangeSumQueryImmutableSolution
 {
     // The textbook answer: sum the slice directly every call. Deliberately
@@ -38,4 +42,13 @@ internal static class RangeSumQueryImmutableSolution
     // pays construction once rather than per query.
     public static int SumRangeByFenwickTree(FenwickTree<int, SumOperation<int>> tree, int left, int right) =>
         tree.Query(left, right);
+
+    // LeetCode's shape: builds NumArray's running totals fresh for this one call.
+    public static int SumRangeByPrefixSums(int[] nums, int left, int right) =>
+        SumRangeByPrefixSums(new PrefixSums<int, SumOperation<int>>(nums), left, right);
+
+    // The prepared-input overload: the totals NumArray's constructor would already
+    // have built. LeetCode's bounds keep every total within 10^4 * 10^5, inside an int.
+    public static int SumRangeByPrefixSums(PrefixSums<int, SumOperation<int>> sums, int left, int right) =>
+        sums.Query(left, right);
 }

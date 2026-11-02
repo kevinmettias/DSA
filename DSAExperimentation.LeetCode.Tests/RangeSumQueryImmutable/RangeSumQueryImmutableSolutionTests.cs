@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.RangeSumQueryImmutable;
 
 namespace DSAExperimentation.LeetCode.Tests.RangeSumQueryImmutable;
 
-// Harness only. Both strategies are RangeSumQueryImmutableSolution's - this file
+// Harness only. All three strategies are RangeSumQueryImmutableSolution's - this file
 // just pins them to LeetCode's published examples.
 public sealed partial class RangeSumQueryImmutableSolutionTests
 {
@@ -20,6 +20,15 @@ public sealed partial class RangeSumQueryImmutableSolutionTests
     public void SumRangeByFenwickTree_LeetCodeExamples_ReturnsRangeSum(int[] nums, int left, int right, int expected)
     {
         var actual = RangeSumQueryImmutableSolution.SumRangeByFenwickTree(nums, left, right);
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SumRangeByPrefixSums_LeetCodeExamples_ReturnsRangeSum(int[] nums, int left, int right, int expected)
+    {
+        var actual = RangeSumQueryImmutableSolution.SumRangeByPrefixSums(nums, left, right);
 
         Assert.Equal(expected, actual);
     }

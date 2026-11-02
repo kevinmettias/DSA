@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.DataStructures.PrefixSums;
 
 namespace DSAExperimentation.LeetCode.RangeSumQuery2DImmutable;
 
@@ -12,8 +13,8 @@ namespace DSAExperimentation.LeetCode.RangeSumQuery2DImmutable;
 // pays: the baseline rescans every cell of the region; the row Fenwick trees - one of this repo's
 // own FenwickTree<int, SumOperation<int>> per row, the move RangeFenwickTree.cs makes with two -
 // pay O(log cols) per covered row, which is the right shape only if the matrix could change
-// (LC 308); and the prefix-sum table answers in four lookups, the O(1) LeetCode asks for, because
-// the matrix never changes.
+// (LC 308); and this repo's MatrixPrefixSums answers in four lookups, the O(1) LeetCode asks for,
+// because the matrix never changes.
 internal static class RangeSumQuery2DImmutableSolution
 {
     // The textbook baseline this composition has to justify itself against: no preprocessing at
@@ -67,30 +68,11 @@ internal static class RangeSumQuery2DImmutableSolution
         }
     }
 
-    private sealed class PrefixSumMatrix : INumMatrix
+    // MatrixPrefixSums holds the table. LeetCode's bounds keep every sum under 200 * 200 * 10^4, inside an int.
+    private sealed class PrefixSumMatrix(int[][] matrix) : INumMatrix
     {
-        // _prefix[r + 1, c + 1] is the sum of matrix[0..r][0..c]; the zero row and column in front
-        // let every region read four entries with no edge cases. LeetCode guarantees at least one
-        // row, and its bounds keep every sum under 200 * 200 * 10^4, inside an int.
-        private readonly int[,] _prefix;
+        private readonly MatrixPrefixSums<int, SumOperation<int>> _sums = new(matrix);
 
-        public PrefixSumMatrix(int[][] matrix)
-        {
-            var rows = matrix.Length;
-            var cols = matrix[0].Length;
-            _prefix = new int[rows + 1, cols + 1];
-
-            for (var row = 0; row < rows; row++)
-            {
-                for (var col = 0; col < cols; col++)
-                {
-                    _prefix[row + 1, col + 1] =
-                        matrix[row][col] + _prefix[row, col + 1] + _prefix[row + 1, col] - _prefix[row, col];
-                }
-            }
-        }
-
-        public int SumRegion(int row1, int col1, int row2, int col2) =>
-            _prefix[row2 + 1, col2 + 1] - _prefix[row1, col2 + 1] - _prefix[row2 + 1, col1] + _prefix[row1, col1];
+        public int SumRegion(int row1, int col1, int row2, int col2) => _sums.Query(row1, col1, row2, col2);
     }
 }

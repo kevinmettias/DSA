@@ -808,7 +808,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `KeyedDisjointSet/` | `KeyedDisjointSet` — composes `DisjointSet` and `HashMap` (§10.4) |
 | `LazySegmentTree/` | `LazySegmentTree`, `IRangeUpdateOperation` and its witnesses (§11.4) |
 | `MonotonicDeque/` | `IWindowOrder`, `MaxWindowOrder`, `MinWindowOrder`, `MonotonicDeque` — composes the unbounded `CircularBuffer` (§19.1, §20); `MinMaxWindow` — one `MonotonicDeque` per order (§19.1) |
-| `PrefixSums/` | `PrefixSums` — consumes `ElementAlgebra`'s `IGroupOperation` (§19.2) |
+| `PrefixSums/` | `PrefixSums`, `MatrixPrefixSums` — consume `ElementAlgebra`'s `IGroupOperation` (§19.2) |
 | `Queue/` | `Queue`, `BoundedQueue` — `CircularBuffer` unbounded and bounded, restricted to FIFO's ends (§20) |
 | `RangeFenwickTree/` | `RangeFenwickTree` |
 | `RollingHash/` | `RollingHash`, `RollingHashLane`, `RollingHashValue` |
@@ -2159,6 +2159,15 @@ that consume them. The exclusive read is named `TotalBefore(end)`, not `PrefixQu
 `FenwickTree.PrefixQuery` includes its index, and an exclusive member under the same name would be
 the off-by-one this type exists to remove. Widening `int` input to `long` totals stays the caller's
 choice, as choosing `SumOperation<long>` already is.
+
+`MatrixPrefixSums` is the same totals over a matrix, which LC 304's region sums were building by
+hand. LC 1738's coordinate xors build one too, but read every total in a loop, where `TotalBefore`'s
+bounds checks measured about 10% slower at 300 x 300, so it keeps its own table. `TotalBefore(rowEnd, columnEnd)` combines the top-left
+rectangle before both ends, and `Query(top, left, bottom, right)` answers an inclusive rectangle from
+four of those totals: the bottom-right one and the corner, less the strip above and the strip to the
+left. Regrouping the four is sound only because `IGroupOperation`'s operations commute, a law a
+one-dimensional range never needed. Rows arrive jagged, the shape the problems hand over, and a
+ragged matrix is refused. It has no `Totals` view, because no caller binary-searches a 2-D table.
 
 ### 19.3 `CompressedCoordinates`: a data structure by shape, filed by what it composes
 

@@ -1,15 +1,16 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.DataStructures.PrefixSums;
 using DSAExperimentation.LeetCode.RangeSumQueryImmutable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are RangeSumQueryImmutableSolution's, the same
+// Harness only: all three arms are RangeSumQueryImmutableSolution's, the same
 // methods RangeSumQueryImmutableSolutionTests proves correct, run over a fixed batch of
 // queries - NumArray is constructed once per arm and sumRange is called
 // QueryCount times against it, the pattern LeetCode's own class exposes, so the
-// comparison is "build + QueryCount O(log n) queries" against "no build +
-// QueryCount O(n) rescans".
+// comparison is "build + QueryCount O(log n) queries" and "build + QueryCount O(1)
+// queries" against "no build + QueryCount O(n) rescans".
 public class RangeSumQueryImmutableBenchmarks
 {
     private const int QueryCount = 500;
@@ -64,6 +65,19 @@ public class RangeSumQueryImmutableBenchmarks
         for (var i = 0; i < _queries.Length; i++)
         {
             _sums[i] = RangeSumQueryImmutableSolution.SumRangeByFenwickTree(tree, _queries[i].Left, _queries[i].Right);
+        }
+
+        return _sums;
+    }
+
+    [Benchmark]
+    public int[] PrefixSumsQuery()
+    {
+        var sums = new PrefixSums<int, SumOperation<int>>(_nums);
+
+        for (var i = 0; i < _queries.Length; i++)
+        {
+            _sums[i] = RangeSumQueryImmutableSolution.SumRangeByPrefixSums(sums, _queries[i].Left, _queries[i].Right);
         }
 
         return _sums;

@@ -1,7 +1,7 @@
 namespace DSAExperimentation.DataStructures;
 
 // Shared index/range precondition checks for the SegmentTree/LazySegmentTree/FenwickTree/
-// RangeFenwickTree/PrefixSums family - not a shared Representation type, just the one bounds
+// RangeFenwickTree/PrefixSums/MatrixPrefixSums family - not a shared Representation type, just the one bounds
 // check each would otherwise redeclare identically (the same class of cross-file duplication a
 // repo-wide structural-duplication check already flagged once, resolved for Split's
 // arithmetic by SegmentRange.cs). Every call site across the first four types already threw
