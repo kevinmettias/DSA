@@ -1758,8 +1758,44 @@ of seven subjects, chosen to be unlike each other, has settled where the line fa
 The pilot's test for the rest: take away every strategy and LeetCode's encoding, and see what
 stays. A rule of the problem's world, in that world's terms, is `Domain/`. A shape other problems
 share is tier 1. A rule the structure applies on its own is a mechanism. If nothing stays, there
-is nothing to move. The rest is not started. It goes subject by subject, with composed arms using
-`Domain/` and baselines keeping their copies.
+is nothing to move. The rest goes subject by subject, with composed arms using `Domain/` and
+baselines keeping their copies.
+
+A second wave took the four subjects that more than one folder restated, or that sat in tier 1
+by mistake:
+
+- **Chess.** `ChessRules` (LC 999, LC 1222, LC 2056) is the 8x8 board and which lines each
+  sliding piece moves along. The lines themselves stay `GridDirections`' tables, because they are
+  grid shapes that problems other than chess walk. The knight problems are played on other boards
+  and keep `GridDirections.Knight`.
+- **The compass.** `CompassHeading` and `CompassRules` (LC 874, LC 1041) are four headings,
+  quarter turns and a unit step. The step is given as east and north, because the problems
+  disagree on axes.
+- **English's vowels.** `EnglishVowels` serves LC 1641, LC 2063 and LC 3227.
+- **DNA's bases.** `DnaBases` left tier 1's `StandardAlphabets`, a graph's folder. The `Alphabet`
+  record they fill stays there.
+
+Measuring the wave found two costs that moving a rule into `Domain/` can carry. Both were fixed
+before the step landed:
+
+- A foreach over an `ImmutableArray` inside an iterator keeps the enumerator in the iterator's
+  object, so it allocates more. LC 2056 walks its lines by index.
+- A rule written as a switch can be too big for the JIT to inline into a hot loop. `StepOf` began
+  as a four-way switch, and LC 874 made a call per step and ran 10% slower. It reads a table now.
+
+It also found one trap in reading the measurements. Some arms drift more between two builds of the
+same code than the change under test moves them. LC 1222's set arm read ±20% against itself, so
+its result needed a pass of HEAD against HEAD to interpret.
+
+Not started:
+
+- Subjects that only one folder states: time units (LC 1348), English number words (LC 273), the
+  phone keypad (LC 17), Life's B3/S23 rule (LC 289), Zuma's collapse (LC 488), the race car's
+  motion (LC 818), a die's faces (LC 2318) and path notation (LC 1233).
+- Subjects that wait on the owner's ruling about where they belong: triangles and angle units
+  (`Domain/`, or Euclidean geometry for `Algorithms/Geometry`); numbering letters from 1
+  (`Domain/`, or tier 1 beside `LowercaseAlphabet`); and money (LC 2241's banknotes, and the 100
+  in a percentage).
 
 ### 17.11 What every harness shares: `Conventions/`
 
