@@ -799,6 +799,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `Graph/Grids/` | `Grid`, `GridNode`, `GridChildren`, `GridDirections`, `GridSize`, `GridNeighbors`, `IGridCellFilter`, `GridTopology`, and the weighted `WeightedGrid*` (§17.6). `GridSize` is a board's extent and its one bounds rule; `GridNeighbors` is a cell's on-board neighbours in a direction table's order, filtered by an `IGridCellFilter`, for a `DepthFirstSearch.Traverse` successor whose "open" is decided by the problem's cells rather than a fixed map like `Grid`'s |
 | `Graph/Hamming/` | `HammingNode`, `HammingTopology`, `HammingGraph`, `HammingSearch`, `Alphabet`, `StandardAlphabets`, `MutationStart`, `MutationTarget` (§17.6) |
 | `Graph/ShortestPaths/` | `ByPriorityOrder` (§13.2) |
+| `Graph/States/` | `IStateSpace`, `IStateFilter`, `EveryState`, `StateNode`, `StateTopology`, `StateGraph`. A state space numbers its states and writes a state's successors into a buffer; `StateGraph` makes the explicit graph of the states a filter keeps, which a breadth-first walk then searches |
 | `HashMap/` | `HashMapStorage`, `HashMapEntry`, `HashMap` (§14.2) |
 | `Heap/` | `IHeapOrder`, `MinHeapOrder`, `MaxHeapOrder`, `HeapArrayIndex`, `HeapArray`, `Heap` (§4) |
 | `IntervalSet/` | `IntervalSet` — the one sanctioned upward reference, to `Algorithms/Searching` (§17.6a) |
