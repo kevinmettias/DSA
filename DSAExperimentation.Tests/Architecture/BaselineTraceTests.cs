@@ -286,39 +286,6 @@ public sealed partial class BaselineTraceTests
             ["DSAExperimentation.LeetCode.Probe.ProbeSolution.Baseline(int[])"],
             TraceOf("public static int Baseline(int[] values) => values.Length;", ArmCalling("ProbeSolution.Baseline(_values)")).Entries);
 
-    // The sweep over the real benchmarks. Fewer arms than this means the sweep stopped finding them.
-    private const int ExpectedArmsAtLeast = 1000;
-
-    private static readonly Lazy<List<(IMethodSymbol Arm, BaselineTrace.ArmTrace Trace)>> Sweep = new(TraceEveryArm);
-
-    [Fact]
-    public void ArmsIn_TheBenchmarkProject_FindsTheBaselines()
-        => Assert.True(Sweep.Value.Count >= ExpectedArmsAtLeast, $"{Sweep.Value.Count} baseline arms found.");
-
-    // An arm whose trace found no entry checked nothing.
-    [Fact]
-    public void From_EveryBaselineArm_FindsAnEntry()
-        => Assert.Empty(Sweep.Value.Where(armTrace => armTrace.Trace.Entries.Count == 0).Select(armTrace => NameOf(armTrace.Arm)));
-
-    [Fact]
-    public void From_EveryBaselineArm_ReachesNoLibraryType()
-    {
-        var offences = Sweep.Value
-            .SelectMany(armTrace => armTrace.Trace.Reaches.Select(reach => $"{NameOf(armTrace.Arm)} reaches {reach.Name}, through {string.Join(" > ", reach.Chain)}"))
-            .ToList();
-
-        Assert.True(offences.Count == 0, string.Join(Environment.NewLine, offences));
-    }
-
-    private static List<(IMethodSymbol Arm, BaselineTrace.ArmTrace Trace)> TraceEveryArm()
-    {
-        var models = new SourceModels([RepositoryCompilation.Benchmarks, RepositoryCompilation.Solutions, RepositoryCompilation.Framework]);
-
-        return [.. BaselineTrace.ArmsIn(RepositoryCompilation.Benchmarks).Select(arm => (arm, BaselineTrace.From(arm, models)))];
-    }
-
-    private static string NameOf(IMethodSymbol arm) => $"{arm.ContainingType.Name}.{arm.Name}";
-
     private static string ArmCalling(string call)
         => $$"""
             private int[] _values = [];

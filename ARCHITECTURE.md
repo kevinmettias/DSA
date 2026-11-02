@@ -1434,18 +1434,41 @@ even a compile-time constant read from one, such as `ModularArithmetic.Modulo` o
 `AlgorithmConstants.HalvingFactor`. A baseline states its own constants.
 
 `BaselineIsolationTests` holds every `Baseline = true` arm of a `ProblemSolutions` benchmark to this.
-It starts at the solution method the arm calls — only the overloads its arguments fit, so a
-LeetCode-shaped overload that builds the prepared input is not charged to a baseline handed that
-input — or at the solution type the arm constructs, and follows every name the reached code spells:
-a member of the nearest enclosing type first, then a type the problem folder declares, then a static
-helper. A strategy class's members are therefore reached only through the class itself, never by a
-name a sibling strategy shares, and a type named only as `Type.Member` gives up only that member.
-Calls into another problem's solution class are followed into its folder (§17.3). What a baseline
-may meet without offence is its input: every type its entry's parameters name, and the types that
-stand for LeetCode's own I/O shapes — `BinaryTreeNode`, `SinglyLinkedListNode`, `QuadTreeNode`,
-and the `ICache` the LRU and LFU design problems are driven through. A link the text-level trace
-cannot rule out goes in its `AllowedReaches` with the reason the baseline never runs the library
-code; an entry the trace no longer needs fails the suite.
+`BaselineTrace` follows each arm through the compiled code (`RepositoryCompilation`, §18.5), so a
+name is read as what it binds to. The trace distinguishes the harness from the baseline:
+
+- **The harness hands the input over, and is never charged.** The harness is the arm and the
+  benchmark helpers it calls.
+  - Each solution member it reaches is an entry. Overloads resolve as the compiler resolves them, so
+    a LeetCode-shaped overload that builds the prepared input is not charged to an arm handed that
+    input.
+  - A benchmark field it reads is followed through every value the benchmark class assigns it, into
+    the solution code and the types that value creates. An arm that calls a method on an object
+    `[GlobalSetup]` built, behind an interface or not, starts where that object was made.
+  - `Fixtures/` only lays input out, and is not walked.
+- **The baseline is the solution code reached from an entry.** It is charged with every library
+  name it binds to:
+  - calls, constructions, method groups, and field, property and constant reads;
+  - each expression's own type, so a `var` local counts like a named one;
+  - type arguments, which is how a static witness is chosen;
+  - a static field's initializer once the field is read, and a static constructor once its type is
+    touched;
+  - instance initializers whenever their type is created;
+  - virtual and interface calls, resolved against the types created so far;
+  - a created type's overrides of BCL members, such as a comparer `Array.Sort` calls back.
+
+  Another problem's solution code is followed like this one's (§17.3). A strategy class gives up
+  only what the baseline calls on it, never a sibling strategy's members.
+
+What a baseline may meet without offence is its input:
+
+- every type its entries' parameters name, and whatever a member of that input hands back, since
+  the container the harness chose holds it;
+- the types that stand for LeetCode's own I/O shapes: `BinaryTreeNode`, `SinglyLinkedListNode`,
+  `QuadTreeNode`, and the `ICache` the LRU and LFU design problems are driven through.
+
+A reach through code the baseline never runs goes in `AllowedReaches` with the reason. An entry the
+trace no longer needs fails the suite.
 
 Where every strategy of a problem composes the library, the problem gains a textbook arm to be its
 baseline rather than losing a composition: `BinarySearchTreeIterator`, `ImplementQueueUsingStacks`,
@@ -2005,13 +2028,11 @@ unbound name answers with an error symbol and hides the reference a rule asked a
   entry fails once its edge disappears. The scan reads qualified names as well as using directives,
   because a sibling's namespace resolves with no using at all.
 - **§17.5's "what you would write without this repo"** — `BaselineIsolationTests`. Every
-  `Baseline = true` arm of every `ProblemSolutions` benchmark is traced from the solution member it
-  calls or constructs, as §17.5 describes, and fails on any library type — a Domain model or a
-  mechanism as much as a container — the trace reaches outside the arm's own input. The trace resolves a simple name through its file's
-  own usings, so the test also fails on any import of a library name past one file's scope - a
-  global using in the solution project, a `<Using>` item in its project file or in a
-  `Directory.Build` or `Directory.Packages` file, or a static using of a library type. Parser tests
-  pin each resolution rule the trace relies on.
+  `Baseline = true` arm of every `ProblemSolutions` benchmark is traced through the compiled code,
+  as §17.5 describes. The test fails on any library type the baseline binds to outside its input:
+  a Domain model or a mechanism as much as a container. It also fails if fewer than 1,000 arms are
+  found, or if any arm reaches no solution member. `BaselineTraceTests` compiles small probes
+  against the real library and pins each thing the trace follows and each input it excuses.
 - **§17.6a's "solutions see only the library's public types"** — `InternalsVisibilityTests`:
   `DSAExperimentation` grants its internals to its test assemblies and to nothing else.
 - **§1's "section numbers are stable"** — `SectionCitationTests`. Every section citation in the six
