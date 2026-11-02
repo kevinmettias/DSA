@@ -26,4 +26,10 @@ public sealed partial class MaximumStrongPairXORIISolutionTests
     public void MaximumStrongPairXorByBitTrieBuckets_LeetCodeExamples_ReturnsMaxStrongPairXor(
         int[] nums, int expected) =>
         Assert.Equal(expected, MaximumStrongPairXORIISolution.MaximumStrongPairXorByBitTrieBuckets(nums));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaximumStrongPairXorBySlidingWindow_LeetCodeExamples_ReturnsMaxStrongPairXor(
+        int[] nums, int expected) =>
+        Assert.Equal(expected, MaximumStrongPairXORIISolution.MaximumStrongPairXorBySlidingWindow(nums));
 }

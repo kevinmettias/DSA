@@ -5,12 +5,13 @@ using DSAExperimentation.LeetCode.MaximumStrongPairXORII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are MaximumStrongPairXORIISolution's, the same
+// Harness only: every arm is MaximumStrongPairXORIISolution's, the same
 // methods MaximumStrongPairXORIISolutionTests proves correct. Length and value range
 // match LC 2935's own bound (nums.Length <= 5*10^4, nums[i] < 2^20), where the
-// O(n^2) pairwise scan stops being competitive. BitTrieBuckets is handed the
-// pre-sorted ArrayIndexedSequence<int> its hoisted overload takes, so sorting
-// is charged to [GlobalSetup] rather than to the bucket sweep being measured.
+// O(n^2) pairwise scan stops being competitive. BitTrieBuckets and SlidingWindow
+// are each handed the pre-sorted ArrayIndexedSequence<int> their hoisted overloads
+// take, so sorting is charged to [GlobalSetup] rather than to the sweep being
+// measured. Neither writes to it, so one sorted copy serves both.
 public class MaximumStrongPairXORIIBenchmarks
 {
     private const int RandomSeed = 2935;
@@ -37,4 +38,7 @@ public class MaximumStrongPairXORIIBenchmarks
 
     [Benchmark]
     public int BitTrieBuckets() => MaximumStrongPairXORIISolution.MaximumStrongPairXorByBitTrieBuckets(_sortedNums);
+
+    [Benchmark]
+    public int SlidingWindow() => MaximumStrongPairXORIISolution.MaximumStrongPairXorBySlidingWindow(_sortedNums);
 }

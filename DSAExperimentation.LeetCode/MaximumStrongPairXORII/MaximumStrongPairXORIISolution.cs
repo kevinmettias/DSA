@@ -1,5 +1,6 @@
 using System.Numerics;
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.DataStructures.CountedBitTrie;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.Sequence;
 
@@ -31,10 +32,11 @@ namespace DSAExperimentation.LeetCode.MaximumStrongPairXORII;
 //     filled by a monotonic two-pointer sweep - insert-only, the same
 //     offline-sweep shape MaximumXORWithAnElementFromArraySolutionTests uses for LC
 //     1707, just keyed by "2x" instead of a query's own limit.
-// Insert-only is why this composes with BitTrie as it stands: BitTrie has no
-// delete, so a single shared trie over a window that must also shrink (the more
-// obvious "sort + two-pointer, removing nums[left] as it falls out of range"
-// shape) is not something this repo's BitTrie can do.
+// Insert-only is why the bucket strategy composes with BitTrie as it stands:
+// BitTrie has no delete. The more obvious shape - sort, then one window of
+// partners that grows on the right and shrinks on the left - needs a trie that
+// can take a value back out, and that is the sliding-window strategy below, over
+// CountedBitTrie (DataStructures/CountedBitTrie/CountedBitTrie.cs).
 internal static class MaximumStrongPairXORIISolution
 {
     // The textbook O(n^2) scan of every unordered pair. Correct at any scale,
@@ -160,6 +162,47 @@ internal static class MaximumStrongPairXORIISolution
         for (var i = start; i < end; i++)
         {
             if (trie.TryMaxXor(nums.Get(i), out var candidate))
+            {
+                best = Math.Max(best, candidate);
+            }
+        }
+
+        return best;
+    }
+
+    public static int MaximumStrongPairXorBySlidingWindow(int[] nums)
+    {
+        var sorted = new ArrayIndexedSequence<int>((int[])nums.Clone());
+        MergeSort.Sort<int, ArrayIndexedSequence<int>>(sorted);
+
+        return MaximumStrongPairXorBySlidingWindow(sorted);
+    }
+
+    // Prepared-input overload, `sortedNums` ascending, for the reason the bucket
+    // strategy's gives. Read each value as the larger of its pair, y: a smaller x
+    // is its partner exactly when 2x >= y. y only grows walking right, so the
+    // smallest partner only moves right too, and the window [left, right] holds
+    // exactly y's partners - y itself among them, whose XOR of 0 never wins.
+    // CountedBitTrie holds the window: a value that falls out on the left is
+    // removed, so one trie serves every y.
+    public static int MaximumStrongPairXorBySlidingWindow(ArrayIndexedSequence<int> sortedNums)
+    {
+        var window = new CountedBitTrie();
+        var best = 0;
+        var left = 0;
+
+        for (var right = 0; right < sortedNums.Length; right++)
+        {
+            var larger = sortedNums.Get(right);
+            window.Insert(larger);
+
+            while (2L * sortedNums.Get(left) < larger)
+            {
+                window.TryRemove(sortedNums.Get(left));
+                left++;
+            }
+
+            if (window.TryMaxXor(larger, out var candidate))
             {
                 best = Math.Max(best, candidate);
             }
