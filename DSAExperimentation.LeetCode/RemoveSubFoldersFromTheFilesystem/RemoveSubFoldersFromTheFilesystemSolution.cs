@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.Domain.Computing.Filesystem;
 
 namespace DSAExperimentation.LeetCode.RemoveSubFoldersFromTheFilesystem;
 
@@ -11,8 +12,15 @@ namespace DSAExperimentation.LeetCode.RemoveSubFoldersFromTheFilesystem;
 // Both strategies hinge on the same containment rule: "/a/b/ca" is not a subfolder of
 // "/a/b/c" even though it shares that raw string prefix, so every prefix test is
 // against "<folder>/" rather than "<folder>".
+//
+// That rule and the separator are the filesystem's (Domain/Computing/Filesystem): the sort-then-scan
+// arm asks FolderPath, which reads the separator in place instead of building "<folder>/",
+// and the pairwise baseline keeps its own copy (ARCHITECTURE §17.5).
 internal static class RemoveSubFoldersFromTheFilesystemSolution
 {
+    // The baseline's own copy of the separator LC 1233 writes folder paths with.
+    private const string PathSeparator = "/";
+
     // The textbook answer: for every folder, scan every other folder and ask whether
     // it is an ancestor - O(n^2) prefix comparisons, no ordering assumed and nothing
     // from this repo involved. This is the arm the sort-then-scan below has to
@@ -37,7 +45,7 @@ internal static class RemoveSubFoldersFromTheFilesystemSolution
         for (var other = 0; other < folders.Length; other++)
         {
             if (other != index &&
-                folders[index].StartsWith(folders[other] + RemoveSubFoldersFromTheFilesystemConstants.PathSeparator, StringComparison.Ordinal))
+                folders[index].StartsWith(folders[other] + PathSeparator, StringComparison.Ordinal))
             {
                 return true;
             }
@@ -63,8 +71,7 @@ internal static class RemoveSubFoldersFromTheFilesystemSolution
 
         foreach (var folder in sorted)
         {
-            if (lastKept is null ||
-                !folder.StartsWith(lastKept + RemoveSubFoldersFromTheFilesystemConstants.PathSeparator, StringComparison.Ordinal))
+            if (lastKept is null || !new FolderPath(lastKept).HasInside(folder))
             {
                 kept.Add(folder);
                 lastKept = folder;

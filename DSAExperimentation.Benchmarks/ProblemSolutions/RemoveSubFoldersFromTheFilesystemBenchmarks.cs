@@ -1,4 +1,5 @@
 using System.Text;
+using DSAExperimentation.Domain.Computing.Filesystem;
 using DSAExperimentation.LeetCode.RemoveSubFoldersFromTheFilesystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -44,7 +45,7 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
                 segments[d] = FolderNamePrefix + LetterName(segmentIndex);
             }
 
-            var folder = RemoveSubFoldersFromTheFilesystemConstants.PathSeparator + string.Join('/', segments);
+            var folder = FolderPaths.Separator + string.Join(FolderPaths.Separator, segments);
 
             if (drawn.Add(folder))
             {
