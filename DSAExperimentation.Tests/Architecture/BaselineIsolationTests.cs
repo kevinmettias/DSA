@@ -19,7 +19,8 @@ public sealed partial class BaselineIsolationTests
     {
     };
 
-    private static readonly Lazy<List<TracedArm>> Sweep = new(TraceEveryArm);
+    // Every baseline arm's trace, shared with ComposedCopyTests, which spares what a baseline reaches.
+    internal static readonly Lazy<List<TracedArm>> Sweep = new(TraceEveryArm);
 
     [Fact]
     public void EveryBaseline_ReachesNoLibraryType()
@@ -62,7 +63,7 @@ public sealed partial class BaselineIsolationTests
     }
 
     // One baseline arm and what its trace found.
-    private sealed record TracedArm(IMethodSymbol Arm, BaselineTrace.ArmTrace Trace)
+    internal sealed record TracedArm(IMethodSymbol Arm, BaselineTrace.ArmTrace Trace)
     {
         public string BenchmarkClass => Arm.ContainingType.Name;
     }

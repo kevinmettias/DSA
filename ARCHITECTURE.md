@@ -1452,6 +1452,21 @@ duplicate; a copy the problem exposes still is. LeetCode's own notation is not t
 other arm: `LeetCodeAnswer.None`, and `LeetCodeModulus.Value`, the 10^9 + 7 counting answers are
 reported in, which the owner ruled a baseline may read (2026-11-01).
 
+The bar has a composed side. A composed arm composes the library, so it reads a value the library
+states rather than keeping a copy. `barred_reads` cannot tell that copy from a baseline's, so
+`ComposedCopyTests` reports it instead. A copy is a constant declared in a problem's folder that
+repeats a public constant of the library or of the LeetCode tier's root, and that no baseline
+reaches. "No baseline reaches" means the trace below does not reach it, and neither does any other
+overload of a method the trace reaches, since a benchmark arm runs one overload of a strategy and
+LeetCode's shape is often another. `LibraryValueCopies` decides what counts as a copy:
+- A small integer or a single character means many things, so it counts only when its name shares
+  a subject word with the shared constant's name or its type's. Role words such as Size, Count and
+  Factor don't count as subjects.
+- An enum member's number is its encoding, not a value, so enums are skipped on both sides.
+
+When the test was added it found one match, `ValidSquare`'s `FourthSideIndex`: a place in a sorted
+list, not a polygon's side count. `AllowedCopies` excuses it.
+
 `BaselineIsolationTests` holds every `Baseline = true` arm of a `ProblemSolutions` benchmark to this.
 `BaselineTrace` follows each arm through the compiled code (`RepositoryCompilation`, §18.5), so a
 name is read as what it binds to. The trace distinguishes the harness from the baseline:
@@ -1969,8 +1984,6 @@ Open items:
 - **LC 773 reads 1 to 3% slower** since its graph became a `StateGraph` (7408f14b). A variant
   with the problem's own non-generic topology recovered part of the gap. What remains is no larger
   than the spread on identical code, and its cause is not settled.
-- **A composed arm's private copy of a library value is not reported.** `barred_reads` cannot
-  tell it from a baseline's (§17.5), so review has to catch it.
 
 ### 17.11 What every harness shares: `Conventions/`
 
@@ -2102,6 +2115,10 @@ unbound name answers with an error symbol and hides the reference a rule asked a
   a Domain model or a mechanism as much as a container. It also fails if fewer than 1,000 arms are
   found, or if any arm reaches no solution member. `BaselineTraceTests` compiles small probes
   against the real library and pins each thing the trace follows and each input it excuses.
+- **§17.5's composed side** — `ComposedCopyTests`. A constant in a problem's folder that repeats a
+  public constant of the library or of the LeetCode tier's root, and that no baseline reaches, fails
+  the test unless `AllowedCopies` says why it means something else. `LibraryValueCopiesTests`
+  compiles small probes and pins what a copy is.
 - **§17.6a's "solutions see only the library's public types"** — `InternalsVisibilityTests`:
   `DSAExperimentation` grants its internals to its test assemblies and to nothing else.
 - **§1's "section numbers are stable"** — `SectionCitationTests`. Every section citation in the six
