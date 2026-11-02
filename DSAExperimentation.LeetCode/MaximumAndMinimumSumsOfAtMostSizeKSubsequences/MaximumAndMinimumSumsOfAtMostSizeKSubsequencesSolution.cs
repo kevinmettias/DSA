@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.MaximumAndMinimumSumsOfAtMostSizeKSubsequences;
 
@@ -63,7 +63,7 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
         return sum;
     }
 
-    // This repo's own FactorialTable turns each row sum into direct C(i,j) lookups
+    // This repo's own FactorialTable<LeetCodeModulus> turns each row sum into direct C(i,j) lookups
     // against one precomputed factorial/inverse-factorial table - the table
     // RoomWaysPrecomputedFactorialAlgebra reads, one Inverse call total instead of
     // one per row.
@@ -77,7 +77,7 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
 
     private static long[] CappedRowSumsByFactorial(int elementCount, int maxLength)
     {
-        var table = FactorialTable.Build(elementCount - 1);
+        var table = FactorialTable<LeetCodeModulus>.Build(elementCount - 1);
         var capped = new long[elementCount];
 
         for (var i = 0; i < elementCount; i++)
@@ -90,7 +90,7 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
 
     // The factored counterpart of CappedRowSum: the same sum of C(i, 0) through
     // C(i, min(i, k-1)), each term read straight off the tables.
-    private static long CappedBinomialRowSum(FactorialTable table, int rowIndex, int maxLength)
+    private static long CappedBinomialRowSum(FactorialTable<LeetCodeModulus> table, int rowIndex, int maxLength)
     {
         var cap = Math.Min(rowIndex, maxLength - 1);
         var sum = 0L;

@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.SumOfKDigitNumbersInARange;
 
@@ -33,9 +33,9 @@ internal static class SumOfKDigitNumbersInARangeSolution
         var digitChoices = high - low + 1;
         var digitSum = (low + high) * digitChoices / 2;
 
-        var repunit = (ModularArithmetic.Power(10, digitCount) - 1) % LeetCodeModulus.Value
-            * ModularArithmetic.Inverse(9) % LeetCodeModulus.Value;
-        var combinationsPerDigit = ModularArithmetic.Power(digitChoices, digitCount - 1);
+        var repunit = (ModularPower.Of(10, digitCount, LeetCodeModulus.Value) - 1) % LeetCodeModulus.Value
+            * ModularInverse.ByFermat<LeetCodeModulus>(9) % LeetCodeModulus.Value;
+        var combinationsPerDigit = ModularPower.Of(digitChoices, digitCount - 1, LeetCodeModulus.Value);
 
         return digitSum * combinationsPerDigit % LeetCodeModulus.Value * repunit % LeetCodeModulus.Value;
     }

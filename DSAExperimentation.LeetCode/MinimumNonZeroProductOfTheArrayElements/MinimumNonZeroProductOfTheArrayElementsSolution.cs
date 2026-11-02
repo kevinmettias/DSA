@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.MinimumNonZeroProductOfTheArrayElements;
 
@@ -42,7 +42,7 @@ internal static class MinimumNonZeroProductOfTheArrayElementsSolution
     {
         var pairing = BitSwapPairing.Of(power);
 
-        return ModularArithmetic.Power(pairing.PairValue, pairing.PairCount)
+        return ModularPower.Of(pairing.PairValue, pairing.PairCount, LeetCodeModulus.Value)
             * (pairing.LargestValue % LeetCodeModulus.Value) % LeetCodeModulus.Value;
     }
 

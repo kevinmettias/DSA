@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.CountGoodNumbers;
 
@@ -58,8 +58,8 @@ internal static class CountGoodNumbersSolution
     public static int CountGoodNumbersByExponentiationBySquaring(long length)
     {
         var (evenPositions, oddPositions) = SplitByIndexParity(length);
-        var evenChoices = ModularArithmetic.Power(EvenIndexDigitChoices, evenPositions);
-        var oddChoices = ModularArithmetic.Power(OddIndexDigitChoices, oddPositions);
+        var evenChoices = ModularPower.Of(EvenIndexDigitChoices, evenPositions, LeetCodeModulus.Value);
+        var oddChoices = ModularPower.Of(OddIndexDigitChoices, oddPositions, LeetCodeModulus.Value);
 
         return (int)(evenChoices * oddChoices % LeetCodeModulus.Value);
     }

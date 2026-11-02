@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.LeetCode.XORAfterRangeMultiplicationQueriesI;
 
 namespace DSAExperimentation.LeetCode.XORAfterRangeMultiplicationQueriesII;
@@ -120,7 +120,7 @@ internal static class XORAfterRangeMultiplicationQueriesIISolution
         var posR = (query.R - residue) / query.K;
 
         diff[posL] = diff[posL] * query.V % LeetCodeModulus.Value;
-        diff[posR + 1] = diff[posR + 1] * ModularArithmetic.Inverse(query.V) % LeetCodeModulus.Value;
+        diff[posR + 1] = diff[posR + 1] * ModularInverse.ByFermat<LeetCodeModulus>(query.V) % LeetCodeModulus.Value;
     }
 
     // Applies every bucket's multiplicative difference array to the values it covers.

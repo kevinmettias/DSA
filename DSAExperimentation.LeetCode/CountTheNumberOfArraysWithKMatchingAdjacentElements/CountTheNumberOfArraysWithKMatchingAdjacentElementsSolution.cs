@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.CountTheNumberOfArraysWithKMatchingAdjacentElements;
 
@@ -29,13 +29,13 @@ internal static class CountTheNumberOfArraysWithKMatchingAdjacentElementsSolutio
 
     // Composed: one binomial coefficient (which n-1 gaps are equal) times one
     // modular power (every "different" gap's independent choice), both O(log n)
-    // once Domain.Modular's FactorialTable is built - O(n) total against the
+    // once Domain.Modular's FactorialTable<LeetCodeModulus> is built - O(n) total against the
     // baseline's O(m^n).
     public static long CountGoodArraysByModularCombinatorics(int arrayLength, int maxValue, int matchCount)
     {
-        var table = FactorialTable.Build(arrayLength);
+        var table = FactorialTable<LeetCodeModulus>.Build(arrayLength);
         var waysToChooseEqualGaps = table.Choose(arrayLength - 1, matchCount);
-        var waysToFillDifferentGaps = ModularArithmetic.Power(maxValue - 1, arrayLength - 1 - matchCount);
+        var waysToFillDifferentGaps = ModularPower.Of(maxValue - 1, arrayLength - 1 - matchCount, LeetCodeModulus.Value);
 
         return waysToChooseEqualGaps * maxValue % LeetCodeModulus.Value
             * waysToFillDifferentGaps % LeetCodeModulus.Value;

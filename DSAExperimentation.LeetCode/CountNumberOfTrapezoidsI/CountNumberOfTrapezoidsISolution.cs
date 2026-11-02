@@ -1,5 +1,5 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountNumberOfTrapezoidsI;
 
@@ -109,7 +109,7 @@ internal static class CountNumberOfTrapezoidsISolution
 
         var totalSquared = sum * sum % LeetCodeModulus.Value;
         var diff = (totalSquared - sumOfSquares + LeetCodeModulus.Value) % LeetCodeModulus.Value;
-        var inverseOfTwo = ModularArithmetic.Inverse(2);
+        var inverseOfTwo = ModularInverse.ByFermat<LeetCodeModulus>(2);
 
         return diff * inverseOfTwo % LeetCodeModulus.Value;
     }

@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.NumberOfEffectiveSubsequences;
 
@@ -79,7 +79,7 @@ internal static class NumberOfEffectiveSubsequencesSolution
         }
 
         var subsetsWithFullOr = CountSubsetsWithFullOr(frequencyByMask, bitCount);
-        var totalSubsets = ModularArithmetic.Power(2, n);
+        var totalSubsets = ModularPower.Of(2, n, LeetCodeModulus.Value);
         var effective = ((totalSubsets - subsetsWithFullOr) % LeetCodeModulus.Value + LeetCodeModulus.Value)
             % LeetCodeModulus.Value;
 
@@ -131,7 +131,7 @@ internal static class NumberOfEffectiveSubsequencesSolution
 
         for (var mask = 0; mask < subsetsByOrSubmask.Length; mask++)
         {
-            subsetsByOrSubmask[mask] = ModularArithmetic.Power(2, frequencyByMask[mask]);
+            subsetsByOrSubmask[mask] = ModularPower.Of(2, frequencyByMask[mask], LeetCodeModulus.Value);
         }
 
         MobiusInvertSubsetSums(subsetsByOrSubmask, bitCount);

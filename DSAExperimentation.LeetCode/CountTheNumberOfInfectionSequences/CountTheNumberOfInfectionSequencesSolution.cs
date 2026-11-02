@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.CountTheNumberOfInfectionSequences;
 
@@ -37,14 +37,14 @@ internal static class CountTheNumberOfInfectionSequencesSolution
     }
 
     // One O(n) scan measures every run between (and around) the sick children,
-    // then a single Domain.Modular FactorialTable.Build - the same table
+    // then a single Domain.Modular FactorialTable<LeetCodeModulus>.Build - the same table
     // RoomWaysPrecomputedFactorialAlgebra/CountAnagramsByModularFactorial read
     // their coefficients from - turns the whole answer into O(n) more work with
     // no recursion or enumeration.
     public static long CountSequencesByGapCombinatorics(int childCount, int[] sick)
     {
         var (runLengths, interiorRunLengths, totalMoves) = MeasureRuns(childCount, sick);
-        var table = FactorialTable.Build(totalMoves);
+        var table = FactorialTable<LeetCodeModulus>.Build(totalMoves);
 
         var answer = table.Factorial(totalMoves);
 
@@ -55,7 +55,7 @@ internal static class CountTheNumberOfInfectionSequencesSolution
 
         foreach (var length in interiorRunLengths)
         {
-            answer = answer * ModularArithmetic.Power(2, length - 1) % LeetCodeModulus.Value;
+            answer = answer * ModularPower.Of(2, length - 1, LeetCodeModulus.Value) % LeetCodeModulus.Value;
         }
 
         return answer;

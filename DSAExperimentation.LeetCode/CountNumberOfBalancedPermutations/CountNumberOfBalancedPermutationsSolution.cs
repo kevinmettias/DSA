@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.CountNumberOfBalancedPermutations;
 
@@ -87,14 +87,14 @@ internal static class CountNumberOfBalancedPermutationsSolution
         var half = total / 2;
         var evenSlots = (num.Length + 1) / 2;
         var oddSlots = num.Length / 2;
-        var table = FactorialTable.Build(num.Length);
+        var table = FactorialTable<LeetCodeModulus>.Build(num.Length);
         var ways = FoldDigitSplits(counts, evenSlots, half, table);
 
         return ways * table.Factorial(evenSlots) % LeetCodeModulus.Value
             * table.Factorial(oddSlots) % LeetCodeModulus.Value;
     }
 
-    private static long FoldDigitSplits(int[] counts, int evenSlots, int half, FactorialTable table)
+    private static long FoldDigitSplits(int[] counts, int evenSlots, int half, FactorialTable<LeetCodeModulus> table)
     {
         var dp = new long[evenSlots + 1, half + 1];
         dp[0, 0] = 1;
@@ -110,7 +110,7 @@ internal static class CountNumberOfBalancedPermutationsSolution
     // Every table the fold builds is (evenSlots + 1) x (half + 1), so both bounds are
     // the dimensions of the table it is handed - and one digit's value and its copy
     // count are a single fact about that digit rather than two.
-    private static long[,] FoldDigit(long[,] dp, int digit, int count, FactorialTable table)
+    private static long[,] FoldDigit(long[,] dp, int digit, int count, FactorialTable<LeetCodeModulus> table)
     {
         var evenSlots = dp.GetLength(0) - 1;
         var half = dp.GetLength(1) - 1;
@@ -138,7 +138,7 @@ internal static class CountNumberOfBalancedPermutationsSolution
         long[,] next,
         (int Used, int Sum, long Ways) cell,
         (int Value, int Count) group,
-        FactorialTable table)
+        FactorialTable<LeetCodeModulus> table)
     {
         var evenSlots = next.GetLength(0) - 1;
         var half = next.GetLength(1) - 1;

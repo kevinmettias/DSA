@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.CountTheNumberOfSquareFreeSubsets;
 
@@ -79,7 +79,7 @@ internal static class CountTheNumberOfSquareFreeSubsetsSolution
             (0, 0),
             new SubsetsFromRemainingValues(squareFreeValues, frequency));
 
-        var multiplier = ModularArithmetic.Power(2, frequency[1]);
+        var multiplier = ModularPower.Of(2, frequency[1], LeetCodeModulus.Value);
         var withOnes = totalWithEmpty * multiplier % LeetCodeModulus.Value;
 
         return (withOnes - 1 + LeetCodeModulus.Value) % LeetCodeModulus.Value;

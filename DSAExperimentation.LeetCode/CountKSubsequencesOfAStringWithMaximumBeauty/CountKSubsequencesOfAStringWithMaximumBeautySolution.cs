@@ -1,5 +1,5 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountKSubsequencesOfAStringWithMaximumBeauty;
 
@@ -33,7 +33,7 @@ namespace DSAExperimentation.LeetCode.CountKSubsequencesOfAStringWithMaximumBeau
 // modular Fermat inverse, the same factorial+inverse combination
 // RoomWaysAlgebra.Factorial/ModularArithmetic.Inverse already prove out for a
 // different counting problem - recomputed per call rather than a shared
-// FactorialTable since n <= 26 here (one distinct-letter alphabet),
+// FactorialTable<LeetCodeModulus> since n <= 26 here (one distinct-letter alphabet),
 // the same "answers one LeetCode problem, lives beside the solution" scope
 // RoomWaysAlgebra's own doc comment already states.
 internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
@@ -100,7 +100,7 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
         }
 
         var taken = Math.Min(groupSize, remaining);
-        product = product * ModularArithmetic.Power(value, taken) % LeetCodeModulus.Value;
+        product = product * ModularPower.Of(value, taken, LeetCodeModulus.Value) % LeetCodeModulus.Value;
         product = product * Combinations(groupSize, taken) % LeetCodeModulus.Value;
 
         return (index, remaining - taken, product);
@@ -127,7 +127,7 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
             denominator = denominator * i % LeetCodeModulus.Value;
         }
 
-        return numerator * ModularArithmetic.Inverse(denominator) % LeetCodeModulus.Value;
+        return numerator * ModularInverse.ByFermat<LeetCodeModulus>(denominator) % LeetCodeModulus.Value;
     }
 
     // One node of the combination tree: a complete size-k subset folds into the running

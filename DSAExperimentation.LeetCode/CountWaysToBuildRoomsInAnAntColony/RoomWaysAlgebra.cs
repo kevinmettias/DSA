@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Folding;
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 
@@ -36,7 +36,7 @@ internal readonly struct RoomWaysAlgebra : IFoldAlgebra<RootedTreeNode, (long Si
         for (var i = 0; i < children.Count; i++)
         {
             var childSize = children[i].Size;
-            ways = ways * ModularArithmetic.Inverse(Factorial(childSize)) % LeetCodeModulus.Value;
+            ways = ways * ModularInverse.ByFermat<LeetCodeModulus>(Factorial(childSize)) % LeetCodeModulus.Value;
         }
 
         return (size, ways);

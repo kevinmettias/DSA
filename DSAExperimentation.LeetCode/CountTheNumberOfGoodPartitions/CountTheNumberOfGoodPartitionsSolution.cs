@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.CountTheNumberOfGoodPartitions;
 
@@ -97,6 +97,6 @@ internal static class CountTheNumberOfGoodPartitionsSolution
             }
         }
 
-        return ModularArithmetic.Power(2, forcedCloses - 1);
+        return ModularPower.Of(2, forcedCloses - 1, LeetCodeModulus.Value);
     }
 }

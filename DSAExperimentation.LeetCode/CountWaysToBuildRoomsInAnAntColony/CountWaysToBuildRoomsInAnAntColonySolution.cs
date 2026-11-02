@@ -1,7 +1,7 @@
 using DSAExperimentation.Algorithms.Folding.Dags.Trees;
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 
@@ -141,7 +141,7 @@ internal static class CountWaysToBuildRoomsInAnAntColonySolution
         var (_, ways) = TreeFold.Fold<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
             RoomWaysPrecomputedFactorialAlgebra, (long Size, long Ways)>(
-            root, new RoomWaysPrecomputedFactorialAlgebra(FactorialTable.Build(roomCount)));
+            root, new RoomWaysPrecomputedFactorialAlgebra(FactorialTable<LeetCodeModulus>.Build(roomCount)));
 
         return (int)ways;
     }

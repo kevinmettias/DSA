@@ -1,6 +1,6 @@
-using System.Numerics;
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
+using System.Numerics;
 
 namespace DSAExperimentation.LeetCode.FindSumOfArrayProductOfMagicalSequences;
 
@@ -38,14 +38,14 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
     // last carry can fully drain. This repo's own Memoizer turns the recursion into a
     // DP over (bitPosition, slotsLeft, setBitsNeeded, carry); the weight for a count
     // split is "choose c of what's left" (the classic telescoping identity for
-    // m!/(c_0!...c_{n-1}!)), read from this repo's own FactorialTable - the table
+    // m!/(c_0!...c_{n-1}!)), read from this repo's own FactorialTable<LeetCodeModulus> - the table
     // RoomWaysPrecomputedFactorialAlgebra reads for LC 1916.
     public static int SumOfProductsByCarryDigitDp(int sequenceLength, int requiredSetBits, int[] nums)
     {
         var maxBit = nums.Length + CarryDrainSteps(sequenceLength);
         var digits = (
             Nums: nums,
-            Table: FactorialTable.Build(sequenceLength),
+            Table: FactorialTable<LeetCodeModulus>.Build(sequenceLength),
             MaxBit: maxBit);
 
         var total = Memoizer.Memoize<(int, int, int, int), long>(
@@ -148,7 +148,7 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
     /// only when every slot was placed, every set bit produced, and nothing left to carry.
     /// </summary>
     private sealed class CarryDigitSweep(
-        (int[] Nums, FactorialTable Table, int MaxBit) digits)
+        (int[] Nums, FactorialTable<LeetCodeModulus> Table, int MaxBit) digits)
         : IRecurrence<(int Bit, int Remaining, int Need, int Carry), long>
     {
         /// <inheritdoc/>
@@ -192,7 +192,7 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
             }
 
             var ways = digits.Table.Choose(remaining, count);
-            var valuePower = bit < digits.Nums.Length ? ModularArithmetic.Power(digits.Nums[bit], count) : 1;
+            var valuePower = bit < digits.Nums.Length ? ModularPower.Of(digits.Nums[bit], count, LeetCodeModulus.Value) : 1;
             var weight = ways * valuePower % LeetCodeModulus.Value;
             var sub = rest.Replay((bit + 1, remaining - count, nextNeed, total >> 1), rest);
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.FindTheNthValueAfterKSeconds;
 
@@ -51,7 +51,7 @@ internal static class FindTheNthValueAfterKSecondsSolution
 
         var denominator =
             factorial[secondCount] * factorial[arrayLength - 1] % LeetCodeModulus.Value;
-        var result = factorial[upper] * ModularArithmetic.Inverse(denominator) % LeetCodeModulus.Value;
+        var result = factorial[upper] * ModularInverse.ByFermat<LeetCodeModulus>(denominator) % LeetCodeModulus.Value;
 
         return (int)result;
     }

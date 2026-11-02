@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.CountValidSequences;
 
@@ -33,12 +33,12 @@ internal static class CountValidSequencesSolution
         return Difference(total, odd);
     }
 
-    // The composed arm: FactorialTable.Build(targetSum) does the same O(n) factorial
+    // The composed arm: FactorialTable<LeetCodeModulus>.Build(targetSum) does the same O(n) factorial
     // work once, up front, so both nCr lookups below are O(1).
     public static int CountByPrecomputedFactorials(int targetSum, int length) =>
-        CountByPrecomputedFactorials(FactorialTable.Build(targetSum), targetSum, length);
+        CountByPrecomputedFactorials(FactorialTable<LeetCodeModulus>.Build(targetSum), targetSum, length);
 
-    public static int CountByPrecomputedFactorials(FactorialTable table, int targetSum, int length)
+    public static int CountByPrecomputedFactorials(FactorialTable<LeetCodeModulus> table, int targetSum, int length)
     {
         var total = table.Choose(targetSum - 1, length - 1);
         var odd = HasAllOddSequences(targetSum, length)

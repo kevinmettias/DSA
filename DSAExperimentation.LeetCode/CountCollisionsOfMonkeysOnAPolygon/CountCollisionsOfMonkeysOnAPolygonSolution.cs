@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.CountCollisionsOfMonkeysOnAPolygon;
 
@@ -54,7 +54,7 @@ internal static class CountCollisionsOfMonkeysOnAPolygonSolution
     // grow past LeetCodeModulus.Value^2. O(log n) instead of O(n).
     public static int NumberOfWaysByExponentiationBySquaring(int monkeyCount)
     {
-        var configurations = ModularArithmetic.Power(DirectionChoices, monkeyCount);
+        var configurations = ModularPower.Of(DirectionChoices, monkeyCount, LeetCodeModulus.Value);
 
         return WithoutCollisionFreeConfigurations(configurations);
     }

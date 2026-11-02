@@ -1,6 +1,6 @@
 using System.Numerics;
 
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.CountKReducibleNumbersLessThanN;
 
@@ -54,7 +54,7 @@ internal static class CountKReducibleNumbersLessThanNSolution
     // '1' bit binaryDigits sets, fix it to 0 and freely choose every lower bit,
     // weighting each choice of how many of those free bits are set by the
     // binomial coefficient C(remaining bits, ones needed) (Domain.Modular's
-    // shared FactorialTable, the same table CountBalancedPermutationsSolution and
+    // shared FactorialTable<LeetCodeModulus>, the same table CountBalancedPermutationsSolution and
     // RoomWaysPrecomputedFactorialAlgebra read their coefficients from).
     // maxSteps >= 1 always (LC's own constraint), so x = 1 itself
     // (0 operations needed) never needs separating from the rest of its
@@ -64,7 +64,7 @@ internal static class CountKReducibleNumbersLessThanNSolution
     public static int CountKReducibleNumbersByPopcountCombinatorics(string binaryDigits, int maxSteps)
     {
         var length = binaryDigits.Length;
-        var table = FactorialTable.Build(length);
+        var table = FactorialTable<LeetCodeModulus>.Build(length);
         var steps = BuildReductionSteps(length);
         var countByPopcount = CountNumbersByPopcount(binaryDigits, table);
         var answer = 0L;
@@ -95,7 +95,7 @@ internal static class CountKReducibleNumbersLessThanNSolution
         return steps;
     }
 
-    private static long[] CountNumbersByPopcount(string binaryDigits, FactorialTable table)
+    private static long[] CountNumbersByPopcount(string binaryDigits, FactorialTable<LeetCodeModulus> table)
     {
         var length = binaryDigits.Length;
         var counts = new long[length + 1];
@@ -115,7 +115,7 @@ internal static class CountKReducibleNumbersLessThanNSolution
 
     // At a '1' bit forced to 0, every combination of the `remainingBits` lower
     // bits is a valid number less than n with that many extra set bits.
-    private static void AccumulateSuffixChoices(long[] counts, int onesInPrefix, int remainingBits, FactorialTable table)
+    private static void AccumulateSuffixChoices(long[] counts, int onesInPrefix, int remainingBits, FactorialTable<LeetCodeModulus> table)
     {
         for (var onesInSuffix = 0; onesInSuffix <= remainingBits; onesInSuffix++)
         {

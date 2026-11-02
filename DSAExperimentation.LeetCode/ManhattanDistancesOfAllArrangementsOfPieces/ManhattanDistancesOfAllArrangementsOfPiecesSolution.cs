@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.ManhattanDistancesOfAllArrangementsOfPieces;
 
@@ -82,7 +82,7 @@ internal static class ManhattanDistancesOfAllArrangementsOfPiecesSolution
     {
         var lengthMod = length % LeetCodeModulus.Value;
         var squareMinusOne = ((length * length - 1) % LeetCodeModulus.Value + LeetCodeModulus.Value) % LeetCodeModulus.Value;
-        var sixInverse = ModularArithmetic.Inverse(6);
+        var sixInverse = ModularInverse.ByFermat<LeetCodeModulus>(6);
 
         return lengthMod * squareMinusOne % LeetCodeModulus.Value * sixInverse % LeetCodeModulus.Value;
     }
@@ -102,8 +102,8 @@ internal static class ManhattanDistancesOfAllArrangementsOfPiecesSolution
             factorial[i] = factorial[i - 1] * i % LeetCodeModulus.Value;
         }
 
-        var inverseSelected = ModularArithmetic.Inverse(factorial[selectedCount]);
-        var inverseUnselected = ModularArithmetic.Inverse(factorial[totalCount - selectedCount]);
+        var inverseSelected = ModularInverse.ByFermat<LeetCodeModulus>(factorial[selectedCount]);
+        var inverseUnselected = ModularInverse.ByFermat<LeetCodeModulus>(factorial[totalCount - selectedCount]);
 
         return factorial[totalCount] * inverseSelected % LeetCodeModulus.Value * inverseUnselected % LeetCodeModulus.Value;
     }

@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.FindTheNumberOfPossibleWaysForAnEvent;
 
@@ -45,7 +45,7 @@ internal static class FindTheNumberOfPossibleWaysForAnEventSolution
 
         for (var stages = 1; stages <= stageCount; stages++)
         {
-            var scoreWays = ModularArithmetic.Power(maxScore, stages);
+            var scoreWays = ModularPower.Of(maxScore, stages, LeetCodeModulus.Value);
             total = (total + waysByStageCount[stages] * scoreWays) % LeetCodeModulus.Value;
         }
 

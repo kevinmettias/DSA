@@ -1,11 +1,12 @@
+using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode;
 using DSAExperimentation.LeetCode.CountValidSequences;
-using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountValidSequencesSolution's, the same methods
 // CountValidSequencesSolutionTests proves correct. PrecomputedFactorials is handed its
-// prepared FactorialTable - built once per TargetSum in [GlobalSetup] - so factorial
+// prepared FactorialTable<LeetCodeModulus> - built once per TargetSum in [GlobalSetup] - so factorial
 // construction is charged to setup rather than to the query being measured,
 // while DirectBinomial recomputes its own numerator/denominator from scratch
 // every call, exactly what it would cost with no [GlobalSetup] at all.
@@ -13,7 +14,7 @@ public class CountValidSequencesBenchmarks
 {
     private int _length;
 
-    private FactorialTable _table = null!;
+    private FactorialTable<LeetCodeModulus> _table = null!;
     [Params(1_000, 500_000)]
     public int TargetSum { get; set; }
 
@@ -21,7 +22,7 @@ public class CountValidSequencesBenchmarks
     public void Setup()
     {
         _length = TargetSum / 2;
-        _table = FactorialTable.Build(TargetSum);
+        _table = FactorialTable<LeetCodeModulus>.Build(TargetSum);
     }
 
     [Benchmark(Baseline = true)]

@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.DirectionAssignmentsWithExactlyKVisiblePeople;
 
@@ -55,12 +55,12 @@ internal static class DirectionAssignmentsWithExactlyKVisiblePeopleSolution
     // pos + rightSize is everyone except the person at pos. So the whole
     // convolution collapses to one binomial
     // coefficient, doubled for pos's own free choice. Domain.Modular's shared
-    // FactorialTable supplies the coefficient (the same table
+    // FactorialTable<LeetCodeModulus> supplies the coefficient (the same table
     // RoomWaysPrecomputedFactorialAlgebra and CountNumberOfBalancedPermutations
     // build).
     public static int CountAssignmentsByVandermondeIdentity(int personCount, int pos, int visibleCount)
     {
-        var combinations = FactorialTable.Build(personCount - 1).Choose(personCount - 1, visibleCount);
+        var combinations = FactorialTable<LeetCodeModulus>.Build(personCount - 1).Choose(personCount - 1, visibleCount);
 
         return (int)(combinations * 2 % LeetCodeModulus.Value);
     }

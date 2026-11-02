@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.NumberOfStringsWhichCanBeRearrangedToContainSubstring;
 
@@ -90,13 +90,13 @@ internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolut
     // exponentiation (Domain.Modular.ModularArithmetic).
     public static int CountRearrangeableStringsByInclusionExclusion(int stringLength)
     {
-        var total = ModularArithmetic.Power(AlphabetSize, stringLength);
+        var total = ModularPower.Of(AlphabetSize, stringLength, LeetCodeModulus.Value);
 
-        var noL = ModularArithmetic.Power(AlphabetSize - 1, stringLength);
-        var noT = ModularArithmetic.Power(AlphabetSize - 1, stringLength);
+        var noL = ModularPower.Of(AlphabetSize - 1, stringLength, LeetCodeModulus.Value);
+        var noT = ModularPower.Of(AlphabetSize - 1, stringLength, LeetCodeModulus.Value);
         var shortOnE = AtMostOneMarked(AlphabetSize - 1, stringLength);
 
-        var noLAndNoT = ModularArithmetic.Power(AlphabetSize - 2, stringLength);
+        var noLAndNoT = ModularPower.Of(AlphabetSize - 2, stringLength, LeetCodeModulus.Value);
         var noLAndShortOnE = AtMostOneMarked(AlphabetSize - 2, stringLength);
         var noTAndShortOnE = AtMostOneMarked(AlphabetSize - 2, stringLength);
 
@@ -116,7 +116,7 @@ internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolut
     // marked letter 0 or 1 times: freeLetters^stringLength (0 uses) +
     // stringLength * freeLetters^(stringLength - 1) (exactly one position holds it).
     private static long AtMostOneMarked(int freeLetters, int stringLength) =>
-        (ModularArithmetic.Power(freeLetters, stringLength)
-            + (long)stringLength * ModularArithmetic.Power(freeLetters, stringLength - 1))
+        (ModularPower.Of(freeLetters, stringLength, LeetCodeModulus.Value)
+            + (long)stringLength * ModularPower.Of(freeLetters, stringLength - 1, LeetCodeModulus.Value))
         % LeetCodeModulus.Value;
 }
