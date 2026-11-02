@@ -4,6 +4,14 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <!-- The architecture tests compile the repository's own source with Roslyn, so they can ask what
+       a name binds to rather than how it is spelled. Benchmark classes need BenchmarkDotNet's
+       attributes to bind, and nothing else of it. -->
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet.Annotations" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="coverlet.collector" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />

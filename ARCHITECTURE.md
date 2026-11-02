@@ -1954,7 +1954,13 @@ obligation for any primitive it composes — and if a problem needs a primitive 
 The rules below are asserted by `DSAExperimentation.Tests/Architecture/`, so they hold whether or
 not whoever is editing remembers them. The tests read the repository as *text* rather than as types
 — the benchmark project is not on the test project's reference list, and a reflection-only rule
-would be blind in precisely the place duplication happens.
+would be blind in precisely the place duplication happens. A rule that needs to know what a name
+binds to reads `RepositoryCompilation` instead. It compiles the framework, solution and benchmark
+sources with Roslyn, each handed what MSBuild hands the compiler: the shared framework, the
+implicit and declared usings, and the project's `InternalsVisibleTo` grants. The benchmark project
+is compiled only in `ProblemSolutions/` and `Fixtures/`, which bind to nothing of BenchmarkDotNet
+but its attributes. `RepositoryCompilationTests` fails if any of the three has an error, since an
+unbound name answers with an error symbol and hides the reference a rule asked about.
 
 - **§17.2's tier order** — `LayeringTests`: a file in `DSAExperimentation` may reference its own
   tier or one its tier may read, whether in a `using` directive or inline in its code. The peers,
