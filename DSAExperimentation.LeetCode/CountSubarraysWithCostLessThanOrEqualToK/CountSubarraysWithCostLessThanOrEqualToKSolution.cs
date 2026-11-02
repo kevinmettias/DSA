@@ -42,65 +42,41 @@ internal static class CountSubarraysWithCostLessThanOrEqualToKSolution
         return count;
     }
 
-    // This repo's MonotonicDeque, doubled up the same way LC 1438's coverage
-    // already does: one under MaxWindowOrder for the running max, one under
-    // MinWindowOrder for the running min, so both ends of the window's cost are
-    // an O(1) front-peek instead of an O(window) rescan. Every index is pushed
-    // and popped from each deque at most once, so the whole sweep is O(n)
-    // amortized even though left never resets between iterations of r.
+    // This repo's MinMaxWindow, as LC 1438's coverage already uses it: a monotonic
+    // deque for the running max and one for the running min, so both ends of the
+    // window's cost are an O(1) front-peek instead of an O(window) rescan. Every
+    // index is pushed and popped from each deque at most once, so the whole sweep is
+    // O(n) amortized even though left never resets between iterations of r.
     public static long CountByMonotonicDeques(int[] nums, long costLimit)
     {
-        var maxWindow = new MonotonicDeque<int, MaxWindowOrder<int>>();
-        var minWindow = new MonotonicDeque<int, MinWindowOrder<int>>();
+        var extremes = new MinMaxWindow<int>();
         var count = 0L;
         var left = 0;
 
         for (var right = 0; right < nums.Length; right++)
         {
-            maxWindow.Push(right, nums[right]);
-            minWindow.Push(right, nums[right]);
-            left = ShrinkToCost((maxWindow, minWindow), (left, right), costLimit);
+            extremes.Push(right, nums[right]);
+            left = ShrinkToCost(extremes, (left, right), costLimit);
             count += right - left + 1;
         }
 
         return count;
     }
 
-    // The window's two extremes travel together and so do its two bounds: each pair is
-    // one argument, and the shrunk left edge still comes back as the result rather than
-    // as a second out-of-band value.
-    private static int ShrinkToCost(
-        (MonotonicDeque<int, MaxWindowOrder<int>> MaxWindow, MonotonicDeque<int, MinWindowOrder<int>> MinWindow) extremes,
-        (int Left, int Right) window,
-        long costLimit)
+    // The window's two bounds travel together as one argument, and the shrunk left
+    // edge still comes back as the result rather than as a second out-of-band value.
+    private static int ShrinkToCost(MinMaxWindow<int> extremes, (int Left, int Right) window, long costLimit)
     {
-        var (maxWindow, minWindow) = extremes;
         var left = window.Left;
 
-        while (TryPeekWindowExtremes(maxWindow, minWindow, out var maxFront, out var minFront) &&
-               IsWindowCostOverBudget(maxFront.Key - minFront.Key, window.Right - left + 1, costLimit))
+        while (extremes.TryPeekRange(out var minimum, out var maximum) &&
+               IsWindowCostOverBudget(maximum - minimum, window.Right - left + 1, costLimit))
         {
             left++;
-            maxWindow.EvictBefore(left);
-            minWindow.EvictBefore(left);
+            extremes.EvictBefore(left);
         }
 
         return left;
-    }
-
-    // Both ends of the window are recorded at the deques' fronts, and the cost is only
-    // worth asking about once both are there.
-    private static bool TryPeekWindowExtremes(
-        MonotonicDeque<int, MaxWindowOrder<int>> maxWindow,
-        MonotonicDeque<int, MinWindowOrder<int>> minWindow,
-        out (int Position, int Key) maxFront,
-        out (int Position, int Key) minFront)
-    {
-        // Assigned on every path so the short-circuit below is still definite: the
-        // caller only reads minFront when the result is true.
-        minFront = default;
-
-        return maxWindow.TryPeekFront(out maxFront) && minWindow.TryPeekFront(out minFront);
     }
 
     // The problem's cost formula: the gap between the window's largest and smallest

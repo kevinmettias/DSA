@@ -801,7 +801,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `IntervalSet/` | `IntervalSet` — the one sanctioned upward reference, to `Algorithms/Searching` (§17.6a) |
 | `KeyedDisjointSet/` | `KeyedDisjointSet` — composes `DisjointSet` and `HashMap` (§10.4) |
 | `LazySegmentTree/` | `LazySegmentTree`, `IRangeUpdateOperation` and its witnesses (§11.4) |
-| `MonotonicDeque/` | `IWindowOrder`, `MaxWindowOrder`, `MinWindowOrder`, `MonotonicDeque` — composes the unbounded `CircularBuffer` (§19.1, §20) |
+| `MonotonicDeque/` | `IWindowOrder`, `MaxWindowOrder`, `MinWindowOrder`, `MonotonicDeque` — composes the unbounded `CircularBuffer` (§19.1, §20); `MinMaxWindow` — one `MonotonicDeque` per order (§19.1) |
 | `PrefixSums/` | `PrefixSums` — consumes `ElementAlgebra`'s `IGroupOperation` (§19.2) |
 | `Queue/` | `Queue`, `BoundedQueue` — `CircularBuffer` unbounded and bounded, restricted to FIFO's ends (§20) |
 | `RangeFenwickTree/` | `RangeFenwickTree` |
@@ -1912,6 +1912,16 @@ Neither ready-made contract fits. `IHeapOrder` is `Heap`'s own Topology contract
 of its arguments, so a deque over `SumOperation` would compile and mean nothing. Ties are dominated,
 because every hand-written copy evicted them; a "keep ties" order would be a third witness.
 
+`MinMaxWindow<Key>` pairs the two orders. Six solutions bound a window by its range rather than its
+width (LC 1438, 2762, 3578, 3589, 3835 and 3845). Each pushed every value into a max deque and a min
+deque, stepped the left edge forward while max − min, or a cost built on it, was too large, and
+evicted from both at every step. It adds no axis. Both orders are fixed, because a range is both
+extrema, and a caller that wants one extremum wants `MonotonicDeque`. It reports the range as keys
+alone, because none of the six read where an extremum sat. Every push and eviction reaches both
+deques, so they are empty together. The shrink condition stays with each caller, since that is
+where the six differ. It is a readonly struct, and its callers hold it in a local and pass it by
+value, for the reasons §19.8 measured.
+
 ### 19.2 `PrefixSums`: a consumer of the group chain, with a view rather than an interface
 
 `DataStructures/PrefixSums/` is the static sibling of `FenwickTree`: running totals under an
@@ -2022,6 +2032,17 @@ starts by a two-part key, transition then fewer subarrays, and every key can be 
 arrays by position. Stored beside the position, the key made 24-byte entries and a tuple comparison
 the JIT does not fold, about 10% slower in two passes. So that solution keeps a deque of bare starts.
 Part I, whose key is one `long`, moved onto `MonotonicDeque` at no cost.
+
+`MinMaxWindow` was a class at first, and it cost what any object between a caller and its storage
+costs (§20). LC 1438's sweep went from 23 pointer loads to 32, and its composed arm ran 8–18% slower
+in two passes, LC 2762's 16–42%. As a readonly struct it is no object of its own. But three adopters
+kept it in a field of a nested class, so the JIT reached it by address and reloaded both deques on
+every pass of the shrink loop. They now hold it in a local and pass it by value, as the other three
+already did. The sweeps compile to fewer instructions than the hand-written pair and at most two more
+pointer loads, with no calls: 321 instructions against 334 for LC 1438, 319 against 325 for LC 2762,
+and 338 against 342 for LC 3835. The timings that followed showed no consistent cost. One pass read
+LC 2762 10–15% slower, and LC 1438 19% slower at one size while its baseline arm moved 44%; the
+next pass repeated neither.
 
 Two adopters allocate more for the same time. CountSubmatricesWithAllOnes takes a boundary array per
 row where its stack stayed shallow (109 KB to 188 KB at n = 150). ShortestSubarrayWithSumAtLeastK

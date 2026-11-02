@@ -47,62 +47,45 @@ internal static class ContinuousSubarraysSolution
         return total;
     }
 
-    // Two of this repo's MonotonicDeque instances over the same expanding/shrinking
-    // range - one under MaxWindowOrder (so its front is the window's max) and one
-    // under MinWindowOrder (so its front is the window's min) - the exact
+    // This repo's MinMaxWindow over the expanding/shrinking range - two
+    // MonotonicDeques inside, one under each window order - the exact
     // LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit precedent,
     // accumulating window lengths instead of taking the largest. Each index is pushed
     // and popped from each deque at most once, so the whole sweep is O(n) rather than
     // the baseline's O(n^2) rescan.
     public static long CountContinuousSubarraysByMonotonicDeques(int[] nums)
     {
-        var window = new MinMaxWindow(nums);
+        var window = new MinMaxWindow<int>();
+        var left = 0;
         var total = 0L;
 
         for (var right = 0; right < nums.Length; right++)
         {
-            total += window.Advance(right);
+            window.Push(right, nums[right]);
+            left = ShrinkToLimit(window, left);
+
+            // One subarray per starting point from the left edge through right.
+            total += right - left + 1;
         }
 
         return total;
     }
 
-    private sealed class MinMaxWindow(int[] nums)
+    // Each step past the left edge drops whatever entries it leaves behind; the
+    // advanced left edge comes back as the result.
+    private static int ShrinkToLimit(MinMaxWindow<int> window, int left)
     {
-        private readonly MonotonicDeque<int, MaxWindowOrder<int>> _maxWindow = new();
-        private readonly MonotonicDeque<int, MinWindowOrder<int>> _minWindow = new();
-        private readonly int[] _nums = nums;
-        private int _left;
-
-        // Admits index right, restores the limit, and reports how many subarrays end
-        // at right - one per starting point from the left edge through right.
-        public int Advance(int right)
+        while (IsSpreadBeyondLimit(window))
         {
-            _maxWindow.Push(right, _nums[right]);
-            _minWindow.Push(right, _nums[right]);
-            ShrinkToLimit();
-
-            return right - _left + 1;
+            left++;
+            window.EvictBefore(left);
         }
 
-        // Each step past the left edge drops whatever front entries it leaves behind
-        // in both deques.
-        private void ShrinkToLimit()
-        {
-            while (IsSpreadBeyondLimit())
-            {
-                _left++;
-                _maxWindow.EvictBefore(_left);
-                _minWindow.EvictBefore(_left);
-            }
-        }
-
-        // The live window's spread is the max deque's front value minus the min
-        // deque's front value; an empty deque means there is no window left to
-        // measure, so nothing can exceed the limit.
-        private bool IsSpreadBeyondLimit()
-            => _maxWindow.TryPeekFront(out var maximum)
-                && _minWindow.TryPeekFront(out var minimum)
-                && maximum.Key - minimum.Key > Limit;
+        return left;
     }
+
+    // The live window's spread is its max minus its min; an empty window has
+    // nothing left to measure, so nothing can exceed the limit.
+    private static bool IsSpreadBeyondLimit(MinMaxWindow<int> window)
+        => window.TryPeekRange(out var minimum, out var maximum) && maximum - minimum > Limit;
 }

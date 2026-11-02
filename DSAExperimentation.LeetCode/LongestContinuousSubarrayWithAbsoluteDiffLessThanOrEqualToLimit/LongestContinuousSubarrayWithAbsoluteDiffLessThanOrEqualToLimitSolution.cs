@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.LongestContinuousSubarrayWithAbsoluteDiffL
 //
 // Both strategies answer the same question and differ only in how they learn a
 // window's max and min: the baseline rescans each window from its own start, while
-// the composed strategy keeps them incrementally in two of this repo's MonotonicDeques.
+// the composed strategy keeps them incrementally in this repo's MinMaxWindow.
 internal static class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitSolution
 {
     // The textbook answer: every starting index grows its own window from scratch,
@@ -42,62 +42,42 @@ internal static class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualTo
         return best;
     }
 
-    // Two MonotonicDeque instances over the same expanding/shrinking range - one under
-    // MaxWindowOrder (so its front is the window's max) and one under MinWindowOrder
-    // (so its front is the window's min) - the exact SlidingWindowMaximum precedent
-    // doubled up. The spread is always the max front's value minus the min front's;
-    // once it exceeds limit the left edge advances
-    // until it doesn't, with each index pushed and popped from each deque at most
-    // once for O(n) total instead of the baseline's O(n^2) rescan.
+    // A MinMaxWindow over the expanding/shrinking range - two MonotonicDeques inside,
+    // one under each window order, the SlidingWindowMaximum precedent doubled up. The
+    // spread is the window's max minus its min; once it exceeds limit the left edge
+    // advances until it doesn't, with each index pushed and popped from each deque at
+    // most once for O(n) total instead of the baseline's O(n^2) rescan.
     public static int LongestSubarrayByMonotonicDeques(int[] nums, int limit)
     {
-        var window = new MinMaxWindow(nums, limit);
+        var window = new MinMaxWindow<int>();
+        var left = 0;
         var best = 0;
 
         for (var right = 0; right < nums.Length; right++)
         {
-            best = Math.Max(best, window.Advance(right));
+            window.Push(right, nums[right]);
+            left = ShrinkToLimit(window, limit, left);
+            best = Math.Max(best, right - left + 1);
         }
 
         return best;
     }
 
-    private sealed class MinMaxWindow(int[] nums, int limit)
+    // Each step past the left edge drops whatever entries it leaves behind; the
+    // advanced left edge comes back as the result.
+    private static int ShrinkToLimit(MinMaxWindow<int> window, int limit, int left)
     {
-        private readonly MonotonicDeque<int, MaxWindowOrder<int>> _maxWindow = new();
-        private readonly MonotonicDeque<int, MinWindowOrder<int>> _minWindow = new();
-        private int _left;
-
-        // Admits index right, restores the limit, and reports the resulting window's
-        // length.
-        public int Advance(int right)
+        while (IsWindowSpreadOverLimit(window, limit))
         {
-            _maxWindow.Push(right, nums[right]);
-            _minWindow.Push(right, nums[right]);
-            ShrinkToLimit();
-
-            return right - _left + 1;
+            left++;
+            window.EvictBefore(left);
         }
 
-        // Each step past the left edge drops whatever front entries it leaves behind
-        // in both deques.
-        private void ShrinkToLimit()
-        {
-            while (IsWindowSpreadOverLimit(_maxWindow, _minWindow, limit))
-            {
-                _left++;
-                _maxWindow.EvictBefore(_left);
-                _minWindow.EvictBefore(_left);
-            }
-        }
-
-        // The window is over its limit while both deques still hold a front and the spread
-        // between those two fronts - largest value minus smallest - is past limit.
-        private static bool IsWindowSpreadOverLimit(
-            MonotonicDeque<int, MaxWindowOrder<int>> maxWindow,
-            MonotonicDeque<int, MinWindowOrder<int>> minWindow,
-            int limit) =>
-            maxWindow.TryPeekFront(out var maximum) && minWindow.TryPeekFront(out var minimum) &&
-            maximum.Key - minimum.Key > limit;
+        return left;
     }
+
+    // The window is over its limit while it still holds a value and its spread -
+    // largest value minus smallest - is past limit.
+    private static bool IsWindowSpreadOverLimit(MinMaxWindow<int> window, int limit) =>
+        window.TryPeekRange(out var minimum, out var maximum) && maximum - minimum > limit;
 }

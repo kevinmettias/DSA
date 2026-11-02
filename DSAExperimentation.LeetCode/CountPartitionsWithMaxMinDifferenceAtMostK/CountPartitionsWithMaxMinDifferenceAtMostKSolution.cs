@@ -10,9 +10,9 @@ namespace DSAExperimentation.LeetCode.CountPartitionsWithMaxMinDifferenceAtMostK
 // Both strategies solve the same recurrence - dp[r] = the number of ways to partition
 // the first r elements, summing dp[l-1] over every l whose segment [l, r] is valid -
 // and differ only in how they find, for each r, the smallest valid l. BruteForce
-// rescans the window from scratch; SlidingWindowDeque tracks it with two
-// MonotonicDeques, the same primitive SlidingWindowMaximum (LC 239) already uses for a
-// single running maximum, doubled up under MinWindowOrder for a running minimum too.
+// rescans the window from scratch; SlidingWindowDeque tracks it with a MinMaxWindow,
+// two of the MonotonicDeques SlidingWindowMaximum (LC 239) already uses for a single
+// running maximum, one of them under MinWindowOrder for a running minimum too.
 internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
 {
     // LeetCode's answer modulus, restated rather than read from ModularArithmetic: a baseline
@@ -62,11 +62,11 @@ internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
     }
 
     // The same recurrence, but the smallest valid l is tracked with a two-pointer
-    // sweep: as r grows, two monotonic deques (one under MaxWindowOrder for the running
-    // max, one under MinWindowOrder for the running min) answer "what is max - min over
-    // [left, r-1]" in O(1), and left only ever moves forward, so the whole sweep is
-    // O(n) amortized. A running prefix sum turns "sum of dp[l-1] over a range" into
-    // one subtraction instead of a rescan.
+    // sweep: as r grows, a MinMaxWindow (a monotonic deque for the running max and one
+    // for the running min) answers "what is max - min over [left, r-1]" in O(1), and
+    // left only ever moves forward, so the whole sweep is O(n) amortized. A running
+    // prefix sum turns "sum of dp[l-1] over a range" into one subtraction instead of a
+    // rescan.
     public static int CountPartitionsBySlidingWindowDeque(int[] nums, int maxDifference)
     {
         var n = nums.Length;
@@ -75,12 +75,12 @@ internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
         dp[0] = 1;
         prefixSum[0] = 1;
 
-        var deques = (Max: new MonotonicDeque<int, MaxWindowOrder<int>>(), Min: new MonotonicDeque<int, MinWindowOrder<int>>());
+        var window = new MinMaxWindow<int>();
         var left = 0;
 
         for (var r = 1; r <= n; r++)
         {
-            left = AdvanceLeft((nums, maxDifference), r - 1, left, deques);
+            left = AdvanceLeft((nums, maxDifference), r - 1, left, window);
 
             var lower = PrefixSumBefore(prefixSum, left);
             dp[r] = ((prefixSum[r - 1] - lower) % ModularArithmetic.Modulo + ModularArithmetic.Modulo)
@@ -91,54 +91,29 @@ internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
         return (int)dp[n];
     }
 
-    // Brings the element at `index` into both monotonic deques, then advances left past
-    // every window whose max - min still exceeds `maxDifference`, returning the advanced
-    // left.
+    // Brings the element at `index` into the window, then advances left past every
+    // window whose max - min still exceeds `maxDifference`, returning the advanced left.
     private static int AdvanceLeft(
         (int[] Nums, int MaxDifference) problem,
         int index,
         int left,
-        (MonotonicDeque<int, MaxWindowOrder<int>> Max, MonotonicDeque<int, MinWindowOrder<int>> Min) deques)
+        MinMaxWindow<int> window)
     {
-        deques.Max.Push(index, problem.Nums[index]);
-        deques.Min.Push(index, problem.Nums[index]);
+        window.Push(index, problem.Nums[index]);
 
-        return ShrinkToValidWindow(deques, problem.MaxDifference, left);
+        return ShrinkToValidWindow(window, problem.MaxDifference, left);
     }
 
-    // The running max and running min deques travel together everywhere in this file -
-    // AdvanceLeft already hands them over as one `deques` - so the shrink takes that
-    // same pair rather than splitting it back into two parameters. Each step past the
-    // left edge drops whatever front entries it leaves behind in both.
-    private static int ShrinkToValidWindow(
-        (MonotonicDeque<int, MaxWindowOrder<int>> Max, MonotonicDeque<int, MinWindowOrder<int>> Min) deques,
-        int maxDifference,
-        int left)
+    // Each step past the left edge drops whatever entries it leaves behind.
+    private static int ShrinkToValidWindow(MinMaxWindow<int> window, int maxDifference, int left)
     {
-        while (TryGetFrontSpan(deques.Max, deques.Min, out var frontMax, out var frontMin) &&
-               frontMax.Key - frontMin.Key > maxDifference)
+        while (window.TryPeekRange(out var minimum, out var maximum) && maximum - minimum > maxDifference)
         {
             left++;
-            deques.Max.EvictBefore(left);
-            deques.Min.EvictBefore(left);
+            window.EvictBefore(left);
         }
 
         return left;
-    }
-
-    // The window's max and min are the two deques' fronts, so the shrink test needs
-    // both of them readable before it can compare; the peeked values are only used
-    // when this reports true.
-    private static bool TryGetFrontSpan(
-        MonotonicDeque<int, MaxWindowOrder<int>> maxDeque,
-        MonotonicDeque<int, MinWindowOrder<int>> minDeque,
-        out (int Position, int Key) frontMax,
-        out (int Position, int Key) frontMin)
-    {
-        frontMax = default;
-        frontMin = default;
-
-        return maxDeque.TryPeekFront(out frontMax) && minDeque.TryPeekFront(out frontMin);
     }
 
     // The running prefix sum strictly before index left, or 0 at the very start of the

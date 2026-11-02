@@ -55,7 +55,7 @@ internal static class MaximumSubarrayXORWithBoundedRangeSolution
     // for each right edge the valid left edges form one run [left, right] whose
     // left end only ever moves right - the window
     // LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitSolution keeps
-    // with two MonotonicDeques. A subarray [l, r]'s XOR is TotalBefore(r + 1) XOR
+    // in a MinMaxWindow. A subarray [l, r]'s XOR is TotalBefore(r + 1) XOR
     // TotalBefore(l) of this repo's PrefixSums under XorOperation, so the best
     // subarray ending at r is the best XOR of TotalBefore(r + 1) against the live
     // totals TotalBefore(left..r) - one greedy walk down this repo's CountedBitTrie,
@@ -66,14 +66,15 @@ internal static class MaximumSubarrayXORWithBoundedRangeSolution
     {
         var prefix = new PrefixSums<int, XorOperation<int>>(nums);
         var live = new CountedBitTrie();
-        var window = new MinMaxWindow(nums, maxSpread);
+        var window = new MinMaxWindow<int>();
         var left = 0;
         var best = 0;
 
         for (var right = 0; right < nums.Length; right++)
         {
             live.Insert(prefix.TotalBefore(right));
-            var newLeft = window.Advance(right);
+            window.Push(right, nums[right]);
+            var newLeft = ShrinkToBound(window, maxSpread, left);
 
             for (; left < newLeft; left++)
             {
@@ -87,36 +88,22 @@ internal static class MaximumSubarrayXORWithBoundedRangeSolution
         return best;
     }
 
-    // Two MonotonicDeques over the same window - one under MaxWindowOrder (its front
-    // is the window's max), one under MinWindowOrder (its front is the min) - exactly
-    // as LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitSolution keeps
-    // them. Each index enters and leaves each deque at most once.
-    private sealed class MinMaxWindow(int[] nums, int maxSpread)
+    // Restores the spread bound on the MinMaxWindow, exactly as
+    // LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitSolution does - each
+    // step past the left edge dropping whatever entries it leaves behind - and reports
+    // the window's new left edge. Each index enters and leaves each of the window's two
+    // deques at most once.
+    private static int ShrinkToBound(MinMaxWindow<int> window, int maxSpread, int left)
     {
-        private readonly MonotonicDeque<int, MaxWindowOrder<int>> _maxWindow = new();
-        private readonly MonotonicDeque<int, MinWindowOrder<int>> _minWindow = new();
-        private int _left;
-
-        // Admits index right, restores the spread bound - each step past the left
-        // edge dropping whatever front entries it leaves behind in both deques - and
-        // reports the window's new left edge.
-        public int Advance(int right)
+        while (IsSpreadOverBound(window, maxSpread))
         {
-            _maxWindow.Push(right, nums[right]);
-            _minWindow.Push(right, nums[right]);
-
-            while (IsSpreadOverBound())
-            {
-                _left++;
-                _maxWindow.EvictBefore(_left);
-                _minWindow.EvictBefore(_left);
-            }
-
-            return _left;
+            left++;
+            window.EvictBefore(left);
         }
 
-        private bool IsSpreadOverBound() =>
-            _maxWindow.TryPeekFront(out var maximum) && _minWindow.TryPeekFront(out var minimum) &&
-            maximum.Key - minimum.Key > maxSpread;
+        return left;
     }
+
+    private static bool IsSpreadOverBound(MinMaxWindow<int> window, int maxSpread) =>
+        window.TryPeekRange(out var minimum, out var maximum) && maximum - minimum > maxSpread;
 }
