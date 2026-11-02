@@ -1,7 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.RangeFenwickTree;
-using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 
 namespace DSAExperimentation.LeetCode.ShortestPathInAWeightedTree;
 
@@ -15,8 +14,6 @@ namespace DSAExperimentation.LeetCode.ShortestPathInAWeightedTree;
 // each other without either restating the algorithm.
 internal static class ShortestPathInAWeightedTreeSolution
 {
-    private const int NoParentAssignedYet = -2;
-
     // Textbook: a mutable BCL adjacency map, walked with a fresh BCL BFS from the
     // root for every [2, x] query. O(n) per query, O(n * q) overall - the arm the
     // Euler-tour Fenwick sweep below has to beat.
@@ -113,10 +110,10 @@ internal static class ShortestPathInAWeightedTreeSolution
         }
     }
 
-    // Composed: edges[] becomes a parent array via a BFS over this repo's own
-    // Queue<int> (the same conversion MaximumPointsAfterCollectingCoinsFromAll-
-    // NodesSolution uses), materialized as DataStructures' RootedTreeNode via
-    // ParentArrayTree.Build, then laid out by DataStructures' PreOrderTour: every
+    // Composed: edges[] is rooted at node 1 by DataStructures' EdgeListTree (as
+    // MaximumPointsAfterCollectingCoinsFromAllNodesSolution's is), materialized as
+    // DataStructures' RootedTreeNode via ParentArrayTree.Build, then laid out by
+    // DataStructures' PreOrderTour: every
     // subtree is one contiguous run of positions, SubtreeOf(v), and the tour's
     // ParentOf names which endpoint of an edge hangs below the other.
     //
@@ -144,82 +141,22 @@ internal static class ShortestPathInAWeightedTreeSolution
         int[] CurrentWeight,
         RangeFenwickTree<long, SumOperation<long>> Fenwick) BuildEulerSweepState(int nodeCount, int[][] edges)
     {
-        var (parent, parentWeight) = BuildParentArrays(nodeCount, edges);
+        var (parent, parentEdge) = EdgeListTree.ParentsFrom(nodeCount, edges, root: 0, firstId: 1);
         var nodes = ParentArrayTree.Build(parent);
         var tour = PreOrderTour.Build(nodes[0], nodeCount);
-        var (currentWeight, fenwick) = PostInitialEdgeWeights(parentWeight, tour);
+        var (currentWeight, fenwick) = PostInitialEdgeWeights(edges, parentEdge, tour);
 
         return (tour, currentWeight, fenwick);
     }
 
-    // edges[] is undirected, so a BFS from the root turns it into the
-    // parent-points-at-child encoding ParentArrayTree.Build expects, carrying
-    // each child's edge weight alongside its parent pointer.
-    private static (int[] Parent, int[] ParentWeight) BuildParentArrays(int nodeCount, int[][] edges)
-    {
-        var adjacency = BuildWeightedAdjacency(nodeCount, edges);
-
-        var parent = new int[nodeCount];
-        var parentWeight = new int[nodeCount];
-        Array.Fill(parent, NoParentAssignedYet);
-        parent[0] = -1;
-
-        AssignParentsByBfs(adjacency, parent, parentWeight);
-
-        return (parent, parentWeight);
-    }
-
-    // An edge is undirected, so each endpoint records the other with the weight.
-    private static List<(int To, int Weight)>[] BuildWeightedAdjacency(int nodeCount, int[][] edges)
-    {
-        var adjacency = new List<(int To, int Weight)>[nodeCount];
-
-        for (var i = 0; i < nodeCount; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            var (u, v, w) = (edge[0] - 1, edge[1] - 1, edge[2]);
-            adjacency[u].Add((v, w));
-            adjacency[v].Add((u, w));
-        }
-
-        return adjacency;
-    }
-
-    // A BFS from the root gives every node its parent and the weight of the edge
-    // between them; NoParentAssignedYet marks "not reached yet", so the -1 the
-    // caller seeded on the root is what stops the walk from turning back into it.
-    private static void AssignParentsByBfs(
-        List<(int To, int Weight)>[] adjacency, int[] parent, int[] parentWeight)
-    {
-        var queue = new RepoQueue();
-        queue.Enqueue(0);
-
-        while (queue.TryDequeue(out var current))
-        {
-            foreach (var (next, weight) in adjacency[current])
-            {
-                if (parent[next] != NoParentAssignedYet)
-                {
-                    continue;
-                }
-
-                parent[next] = current;
-                parentWeight[next] = weight;
-                queue.Enqueue(next);
-            }
-        }
-    }
-
     // Every edge's weight is posted once as a range-add over the child's subtree:
     // that is what makes an update a delta over the same range and a [2, x] query
-    // a single point read. CurrentWeight records what was posted, so an update
-    // can post only the difference. Node 0 is the root and hangs from no edge.
+    // a single point read. A node's weight is the third entry of the edge row the
+    // rooting joined it to its parent by. CurrentWeight records what was posted,
+    // so an update can post only the difference. Node 0 is the root and hangs
+    // from no edge.
     private static (int[] CurrentWeight, RangeFenwickTree<long, SumOperation<long>> Fenwick)
-        PostInitialEdgeWeights(int[] parentWeight, PreOrderTour tour)
+        PostInitialEdgeWeights(int[][] edges, int[] parentEdge, PreOrderTour tour)
     {
         var fenwick = new RangeFenwickTree<long, SumOperation<long>>(tour.NodeCount);
         var currentWeight = new int[tour.NodeCount];
@@ -227,8 +164,9 @@ internal static class ShortestPathInAWeightedTreeSolution
         for (var id = 1; id < tour.NodeCount; id++)
         {
             var (first, last) = tour.SubtreeOf(id);
-            currentWeight[id] = parentWeight[id];
-            fenwick.RangeAdd(first, last, parentWeight[id]);
+            var weight = edges[parentEdge[id]][2];
+            currentWeight[id] = weight;
+            fenwick.RangeAdd(first, last, weight);
         }
 
         return (currentWeight, fenwick);

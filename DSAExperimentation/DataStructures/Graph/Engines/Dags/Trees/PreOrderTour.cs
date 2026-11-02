@@ -16,8 +16,9 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // tree-tier node that carries one. The walk still reads children through RootedTreeTopology,
 // the node's ITreeTopology witness, and leans on that witness's unique-ancestry promise: every
 // node is reached exactly once, so no visited set is kept. Not over AdjacencyNode either: an
-// undirected adjacency list promises no tree, so whoever can vouch for one roots it first - a
-// breadth-first pass to a parent array, then ParentArrayTree.Build - and hands this the root.
+// undirected adjacency list promises no tree, so whoever can vouch for one roots it first -
+// EdgeListTree's breadth-first pass to a parent array, then ParentArrayTree.Build - and hands
+// this the root.
 //
 // What stays distinct from its neighbours. ParentArrayTree materializes a tree and
 // RootedTreeNode answers "what is below v" one level at a time through its child list; this
@@ -35,8 +36,6 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 /// <summary>A rooted tree laid out in pre-order, so each subtree is a contiguous run of positions.</summary>
 public sealed class PreOrderTour
 {
-    // The root's entry in ParentOf: negative, as in the parent arrays ParentArrayTree reads.
-    private const int NoParent = -1;
     private const string UnreachedNodesMessage =
         "Every id below nodeCount must be reachable from the root, each exactly once.";
 
@@ -85,7 +84,7 @@ public sealed class PreOrderTour
         var parentOf = new int[nodeCount];
         var pending = new NodeStack();
         var nextPosition = 0;
-        parentOf[root.Id] = NoParent;
+        parentOf[root.Id] = ParentArrayTree.NoParent;
         pending.Push(root);
 
         while (pending.TryPop(out var node))

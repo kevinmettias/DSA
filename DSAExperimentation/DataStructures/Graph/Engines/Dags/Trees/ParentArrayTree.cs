@@ -5,6 +5,10 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 /// <summary>Builds <see cref="RootedTreeNode"/> trees from LeetCode's parent-array encoding.</summary>
 public static class ParentArrayTree
 {
+    // The root's entry in a parent array. Build accepts any negative entry; this is the one the
+    // library's own writers of the encoding (EdgeListTree, PreOrderTour) put there.
+    internal const int NoParent = -1;
+
     /// <summary>Creates one node per entry of a parent array and links each node under its parent.</summary>
     /// <param name="parent">Each node's parent id, indexed by node id, with a negative entry for the root.</param>
     /// <returns>Every node, indexed by id, with each node's children listed in increasing id order.</returns>
@@ -44,7 +48,7 @@ public static class ParentArrayTree
     private static int[] ChainParents(int nodeCount)
     {
         var parent = new int[nodeCount];
-        parent[0] = -1;
+        parent[0] = NoParent;
 
         for (var i = 1; i < nodeCount; i++)
         {

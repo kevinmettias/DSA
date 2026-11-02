@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 
 
 namespace DSAExperimentation.LeetCode.MaximumPointsAfterCollectingCoinsFromAllNodes;
@@ -18,12 +17,9 @@ namespace DSAExperimentation.LeetCode.MaximumPointsAfterCollectingCoinsFromAllNo
 // each other without either restating the algorithm.
 internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
 {
-    private const int NoParentAssignedYet = -2;
-
     // Plain recursive memoized DP over a BCL adjacency list -
-    // Dictionary<(node,h),long> keyed lookups, no repo primitive involved beyond
-    // the adjacency BFS's own Queue<int>. The arm the tree-fold strategy has to
-    // beat.
+    // Dictionary<(node,h),long> keyed lookups, no repo primitive involved. The arm
+    // the tree-fold strategy has to beat.
     public static long MaxPointsByMemoizedRecursion(int[][] edges, int[] coins, int cost)
     {
         var adjacency = BuildAdjacency(coins.Length, edges);
@@ -33,8 +29,11 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
         return Dfs(state, 0, -1, 0);
     }
 
-    // Composed: edges[] converted to a parent array via a BFS over this repo's own
-    // Queue<int>, materialized as DataStructures' RootedTreeNode/RootedTreeTopology
+    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges) =>
+        LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(nodeCount, edges, new NeighborIdSlots());
+
+    // Composed: edges[] rooted at node 0 by DataStructures' EdgeListTree,
+    // materialized as DataStructures' RootedTreeNode/RootedTreeTopology
     // (the same parent-array tree CountWaysToBuildRoomsInAnAntColonySolution builds),
     // then folded bottom-up with TreeFold closed over CoinPointsAlgebra - each
     // node's Combine produces its whole per-halving-level table in one pass, so no
@@ -42,7 +41,7 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
     // node exactly once.
     public static long MaxPointsByTreeFold(int[][] edges, int[] coins, int cost)
     {
-        var parent = BuildParentArray(coins.Length, edges);
+        var (parent, _) = EdgeListTree.ParentsFrom(coins.Length, edges, root: 0, firstId: 0);
         var nodes = ParentArrayTree.Build(parent);
 
         var table = TreeFold.Fold<
@@ -50,43 +49,6 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
             CoinPointsAlgebra, long[]>(nodes[0], new CoinPointsAlgebra(coins, cost));
 
         return table[0];
-    }
-
-    // edges[] is undirected, so a BFS from the root is what turns it into the
-    // parent-points-at-child encoding ParentArrayTree.Build expects.
-    private static int[] BuildParentArray(int nodeCount, int[][] edges)
-    {
-        var adjacency = BuildAdjacency(nodeCount, edges);
-        var parent = new int[nodeCount];
-        Array.Fill(parent, NoParentAssignedYet);
-        parent[0] = -1;
-
-        AssignParentsByBfs(adjacency, parent);
-
-        return parent;
-    }
-
-    // A BFS from the root fills in parent[]; NoParentAssignedYet marks "not
-    // reached yet", so the -1 the caller seeded on the root is what stops the
-    // walk from turning back into it.
-    private static void AssignParentsByBfs(List<int>[] adjacency, int[] parent)
-    {
-        var queue = new RepoQueue();
-        queue.Enqueue(0);
-
-        while (queue.TryDequeue(out var current))
-        {
-            foreach (var neighbor in adjacency[current])
-            {
-                if (parent[neighbor] != NoParentAssignedYet)
-                {
-                    continue;
-                }
-
-                parent[neighbor] = current;
-                queue.Enqueue(neighbor);
-            }
-        }
     }
 
     // The memo table, the adjacency and the problem constants travel together,
@@ -140,7 +102,4 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
 
         return (take, halve);
     }
-
-    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges) =>
-        LeetCodeAdjacency.ZeroBased<List<int>, NeighborIdSlots>(nodeCount, edges, new NeighborIdSlots());
 }

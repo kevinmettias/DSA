@@ -358,11 +358,16 @@ using) removed from 1,111 files.
     - The LCA sits beside the tour, not in `Algorithms/Ancestry`, because it is hardwired to one
       concrete type (§13.5, `b26afb45`).
 
-  Open, smaller:
-  - Rooting an undirected edge list (BFS to a parent array) is still hand-written in LC 3515,
-    MaximumPointsAfterCollectingCoins and ToggleTree.
-  - MaximumStrongPairXORII's comment rules out a sliding window because `BitTrie` has no Remove.
-    `CountedBitTrie` now has one.
+  Two smaller follow-ups, both done:
+  - Rooting an undirected edge list (BFS to a parent array) was hand-written in LC 3515,
+    MaximumPointsAfterCollectingCoins and ToggleTree. Each kept something different beside the
+    parent: nothing, the edge's weight, or the edge's index. The core `EdgeListTree` returns the
+    parent and the index of the joining edge, which covers all three, and all three use it now.
+  - MaximumStrongPairXORII's comment ruled out a sliding window because `BitTrie` has no Remove.
+    It now has a third strategy, `MaximumStrongPairXorBySlidingWindow`, over `CountedBitTrie`: one
+    window of partners that grows on the right and drops values off the left. Over two passes it
+    beats the bucket strategy, at 93 µs against 179-187 µs on 500 values and 4.0-4.1 ms against
+    6.0 ms on 20,000, and allocates 40-60% less.
 - On long words, LC 336's trie arm spends most of its time allocating each `LowercaseTrieNode`'s
   26-slot child array up front. Open: a sparser child representation would be a core change, so
   it is the owner's call. The benchmark stops at 400 words, inside LeetCode's 5,000. Open: per-arm
