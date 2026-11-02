@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.English;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.DecodeWays;
 
@@ -12,8 +12,9 @@ namespace DSAExperimentation.LeetCode.DecodeWays;
 // tabulation fills an array from the end backwards, top-down memoization lets this
 // repo's own Memoizer cache the same recurrence written as ordinary recursion.
 //
-// The highest code is the last letter's number (Domain/English's LetterNumbers): the memoized
-// arm reads it, and the tabulation baseline keeps its own MaxTwoDigitCode (ARCHITECTURE §17.5).
+// The highest code is the last letter's number (Domain/Language/English's LetterNumbers): the
+// memoized arm reads it, and the tabulation baseline keeps its own MaxTwoDigitCode (ARCHITECTURE
+// §17.5).
 internal static class DecodeWaysSolution
 {
     private const int TwoDigitGroupLength = 2;

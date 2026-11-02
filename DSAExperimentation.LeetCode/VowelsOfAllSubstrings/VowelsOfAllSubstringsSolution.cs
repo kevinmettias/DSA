@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.English;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.VowelsOfAllSubstrings;
 
@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.VowelsOfAllSubstrings;
 // the total is quadratic in the word length and overflows an int well inside
 // LeetCode's own 10^5 constraint.
 //
-// Which letters are vowels is English's (Domain/English): the contribution arm asks
+// Which letters are vowels is English's (Domain/Language/English): the contribution arm asks
 // EnglishVowels, and the baseline keeps its own IsVowel (ARCHITECTURE §17.5).
 internal static class VowelsOfAllSubstringsSolution
 {

@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.English;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.CountSortedVowelStrings;
 
@@ -14,7 +14,7 @@ namespace DSAExperimentation.LeetCode.CountSortedVowelStrings;
 // by state - (remaining length, smallest allowed vowel index) - and never builds a
 // string.
 //
-// The vowels are English's (Domain/English): the recurrence counts them through
+// The vowels are English's (Domain/Language/English): the recurrence counts them through
 // EnglishVowels, and the baseline keeps its own copies below (ARCHITECTURE §17.5).
 internal static class CountSortedVowelStringsSolution
 {

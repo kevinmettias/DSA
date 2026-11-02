@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures;
 
-namespace DSAExperimentation.Domain.English;
+namespace DSAExperimentation.Domain.Language.English;
 
 // The letters numbered from one, A as 1 through Z as 26, as LC 91 decodes them and LC 2156 values
 // them. It is a notation people use, not the alphabet's own order: LowercaseAlphabet, in tier 1 because

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.Domain.English;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.VowelsGameInAString;
 
@@ -17,7 +17,7 @@ namespace DSAExperimentation.LeetCode.VowelsGameInAString;
 // produce a losing-for-Alice odd-zero split), all the way down to a lone vowel
 // he cannot legally touch. With zero vowels she has no legal first move.
 //
-// The vowels are English's (Domain/English): the closed form's set is built from
+// The vowels are English's (Domain/Language/English): the closed form's set is built from
 // EnglishVowels.Letters, and the game-tree baseline keeps its own copy (ARCHITECTURE
 // §17.5).
 internal static class VowelsGameInAStringSolution

@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Domain.English;
+namespace DSAExperimentation.Domain.Language.English;
 
 // English's five vowels as LC 1641, LC 2063 and LC 3227 state them: a, e, i, o and u, in lowercase,
 // since all three problems' strings are lowercase. These are the problems' *what* (ARCHITECTURE
