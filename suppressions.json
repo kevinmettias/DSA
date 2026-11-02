@@ -2747,14 +2747,6 @@
       "expires": "2027-01-01"
     },
     {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/*Benchmarks.cs",
-      "anchor": "public static IEnumerable<int>",
-      "reason": "Each `public static IEnumerable<int> <Arm>Sizes` is the size list one benchmark arm names through `[ArgumentsSource(nameof(...))]` (ARCHITECTURE 17.7). BenchmarkDotNet reads it to enumerate the arm's cases, and BenchmarkArmsTests runs every one through BenchmarkClass.ArgumentsOf to find the size the arms share, so each is executed under test - but by reflection from the attribute, and no test method could name it without restating the class's sizes. The anchor confines this to those size-source declarations, the only members in these files with that signature: 142 findings across the 71 classes with per-arm sizes on 2026-10-03. The local nomos exemption for BenchmarkDotNet entry points lists ArgumentsSource, but that attribute sits on the arm, not on the provider it names.",
-      "owner": "@kmettias",
-      "expires": "2027-01-01"
-    },
-    {
       "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/Fixtures/InterleavingStringWorkloads.cs",
       "anchor": "`Alphabet = ",

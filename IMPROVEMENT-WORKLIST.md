@@ -270,10 +270,12 @@ using) removed from 1,111 files.
   itself against the others. Fixed in `ad8a353d`: 32 LeetCode graphs (17 weighted, 15 unweighted)
   now use the core `AdjacencyNode`/`WeightedAdjacencyNode`, kept by name through aliases.
 - This session's new workloads and tree harnesses drew 50 nomos findings; all are fixed in code or
-  waived in the ledger's existing form (`1cc9c535`). That pass found a gap in the uncommitted nomos
-  exemption P6 depends on: it lists `ArgumentsSource`, but that attribute sits on the arm, so the
-  142 `<Arm>Sizes` sources it names still read as untested public members. They are waived with an
-  anchored glob for now; teaching the exemption to follow `nameof` to the provider would retire it.
+  waived in the ledger's existing form (`1cc9c535`). That pass found a gap in the nomos exemption
+  P6 depends on: it listed `ArgumentsSource`, but that attribute sits on the arm, so the
+  `<Arm>Sizes` sources it names still read as untested public members, and an anchored glob waived
+  them. The exemption now follows `nameof(...)` to the provider (code-standards `f92ca52bd`, ledger
+  X84), and the waiver is gone. On Benchmarks and Benchmarks.Tests the check still reports the same
+  11 findings, and the 154 the waiver had absorbed are not reported at all.
 - 19 waivers had outlived the code they excused - the example-tree constants and the deleted
   `PathSumExampleTree` - and three presumption waivers described an expression their file no
   longer has; CountPairsWithXorInARange's claimed every bit-trie node has both children, which a
@@ -406,11 +408,11 @@ using) removed from 1,111 files.
   - A project cannot discover at build time who references it.
   - A `DSAExperimentation.*` wildcard would also grant the solution tier's internals to
     `DSAExperimentation.Tests`, which is kept unable to reach them.
-- **P6, the companion tree — one step open.** The nomos exemption for BenchmarkDotNet entry points
-  (`[Benchmark]`, `[GlobalSetup]`, `[Params]`, `[ArgumentsSource]`, …) is still uncommitted in
-  `code-standards`, so committed nomos reports the deleted companions' classes, and the arms no
-  companion test names any more, as uncovered. The companions themselves now hold only what
-  §17.9 says they are for: every rebuild check, every arm-against-arm comparison and every copy of
+- **P6, the companion tree — DONE.** The nomos exemption for BenchmarkDotNet entry points is
+  committed in `code-standards` (`f92ca52bd`, ledger X84). An arm, a lifecycle hook, and the
+  provider an `[ArgumentsSource(nameof(...))]` names are runner entry points there, so committed
+  nomos no longer reports the arms that no companion test names as uncovered. The companions
+  themselves now hold only what §17.9 says they are for: every rebuild check, every arm-against-arm comparison and every copy of
   one expected value asserted per arm that `BenchmarkArmsTests` already implies was removed
   (1,438 test methods down to 565; 9 files deleted). A repeat call on one harness, which
   BenchmarkDotNet makes on every iteration, is now a generic theory too
