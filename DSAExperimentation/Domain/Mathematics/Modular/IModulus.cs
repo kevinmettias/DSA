@@ -6,10 +6,12 @@ namespace DSAExperimentation.Domain.Mathematics.Modular;
 // constant folds into the code that reads it, and a division by it becomes a multiplication.
 //
 // The repository's modular arithmetic multiplies two residues before reducing, so the product of
-// the largest two, (m - 1)^2, must fit a long: m is at most 3,037,000,499.
+// the largest two, (m - 1)^2, must fit a long: m is at most 3,037,000,499. The least modulus is 1,
+// under which every integer is 0, the zero ring: trivial, but a range of moduli can include it, as
+// LC 3525's k = 1 to 5 does. Inverses need more, a prime, which is IPrimeModulus's to promise.
 /// <summary>A modulus: the number modular arithmetic wraps at.</summary>
 public interface IModulus
 {
-    /// <summary>The modulus, from 2 up to 3,037,000,499 so that the product of two residues fits a long.</summary>
+    /// <summary>The modulus, from 1 up to 3,037,000,499 so that the product of two residues fits a long.</summary>
     static abstract long Value { get; }
 }

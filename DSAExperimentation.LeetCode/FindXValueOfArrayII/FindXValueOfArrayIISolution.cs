@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.Domain.Mathematics.Modular;
 
 namespace DSAExperimentation.LeetCode.FindXValueOfArrayII;
 
@@ -52,9 +53,11 @@ internal static class FindXValueOfArrayIISolution
     }
 
     // The composed strategy: modulus <= 5 is a closed set, so dispatch once onto the
-    // matching IModulus witness and let XValueCombineOperation<TModulus> and
+    // matching witness of Domain's IModulus and let XValueCombineOperation<TModulus> and
     // SegmentTree carry every query in O(log n) - one point update plus one range
-    // query per query, versus the baseline's full O(n) rescan.
+    // query per query, versus the baseline's full O(n) rescan. k is a witness rather
+    // than a runtime field because XValueCombineOperation's Identity is static
+    // abstract (ICombineOperation), with no runtime channel to receive k through.
     public static int[] XValueCountsBySegmentTreeAutomaton(int[] nums, int modulus, int[][] queries) => modulus switch
     {
         1 => Solve<Modulus1>(nums, queries),
@@ -85,7 +88,7 @@ internal static class FindXValueOfArrayIISolution
         SegmentTree<XValueNode, XValueCombineOperation<TModulus>> tree, int[][] queries)
         where TModulus : struct, IModulus
     {
-        var startResidue = 1 % TModulus.Value;
+        var startResidue = (int)(1 % TModulus.Value);
         var results = new int[queries.Length];
 
         for (var i = 0; i < queries.Length; i++)

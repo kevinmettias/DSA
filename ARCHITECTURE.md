@@ -1947,7 +1947,10 @@ Three subjects were then generalized, each on the evidence the rule above asks f
   are presets, and LC 773 configures its own 2x3 board.
 - **The modulus** (`Domain/Mathematics/Modular`) is `IModulus` and `IPrimeModulus`. The
   arithmetic over one, Fermat inverses and a factorial table, is in `Algorithms/NumberTheory`.
-  LeetCode's 10^9 + 7 is `LeetCodeModulus`, at the root of the LeetCode tier.
+  LeetCode's 10^9 + 7 is `LeetCodeModulus`, at the root of the LeetCode tier. The least modulus
+  is 1, the zero ring, which the owner ruled in (2026-11-02) so that LC 3525's moduli k = 1 to 5
+  are `IModulus` witnesses too. Reading the `long` modulus as an `int` where k sizes an array
+  measured no different from the problem's own `int` witnesses.
 
 The lock and the puzzle present themselves as state spaces, and tier 1's `StateGraph` builds
 their graphs. LC 818 builds its graph the same way, over its own state space.
@@ -1966,8 +1969,6 @@ Open items:
 - **LC 773 reads 1 to 3% slower** since its graph became a `StateGraph` (7408f14b). A variant
   with the problem's own non-generic topology recovered part of the gap. What remains is no larger
   than the spread on identical code, and its cause is not settled.
-- **LC 3525 keeps its own `IModulus`,** five `int` witnesses for k = 1 to 5. Domain's `IModulus`
-  is over `long`, so adopting it is a measured change, not a rename.
 - **A composed arm's private copy of a library value is not reported.** `barred_reads` cannot
   tell it from a baseline's (§17.5), so review has to catch it.
 

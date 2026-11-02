@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Modular;
 
 namespace DSAExperimentation.LeetCode.FindXValueOfArrayII;
 
@@ -14,11 +15,15 @@ namespace DSAExperimentation.LeetCode.FindXValueOfArrayII;
 internal readonly struct XValueCombineOperation<TModulus> : ICombineOperation<XValueNode>
     where TModulus : struct, IModulus
 {
-    public static XValueNode Identity => new(1 % TModulus.Value, new int[TModulus.Value, TModulus.Value]);
+    // k sizes this problem's arrays, and LeetCode bounds it to 5, so the long a modulus is read as
+    // narrows to an int; the JIT folds the constant either way.
+    private static int Modulus => (int)TModulus.Value;
+
+    public static XValueNode Identity => new(1 % Modulus, new int[Modulus, Modulus]);
 
     public static XValueNode Combine(XValueNode left, XValueNode right)
     {
-        var k = TModulus.Value;
+        var k = Modulus;
         var counts = new int[k, k];
 
         for (var r = 0; r < k; r++)
@@ -38,7 +43,7 @@ internal readonly struct XValueCombineOperation<TModulus> : ICombineOperation<XV
     // k for every incoming residue r.
     public static XValueNode Leaf(int value)
     {
-        var k = TModulus.Value;
+        var k = Modulus;
         var v = value % k;
         var counts = new int[k, k];
 
