@@ -11,7 +11,7 @@ namespace DSAExperimentation.Algorithms.Connectivity;
 // node in a component gets double-counted as a component of its own. The single-root
 // overloads can't express this, since each constructs its own guard fresh, internally,
 // per call.
-/// <summary>Counts the connected components of an undirected graph stored as symmetric adjacency.</summary>
+/// <summary>Counts, or reduces one by one, the connected components of an undirected graph stored as symmetric adjacency.</summary>
 public static class ConnectedComponents
 {
     // TOrderStrategy generic rather than hardcoded to depth-first: which order
@@ -65,6 +65,38 @@ public static class ConnectedComponents
         where TChildren : struct, IChildren<TNode>
         where TOrderStrategy : struct, IReduceOrderStrategy<TNode>
         => Count<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren, TOrderStrategy>(nodes);
+
+    // Each component reduced on its own, in the order the nodes first reach one: the walk Count
+    // rides, with the caller's algebra in place of the no-op and every component starting from
+    // the same seed - what a per-island area, total or flag needs. The seed is copied into each
+    // walk, so a value seed keeps the components apart, and a seed holding a reference hands
+    // every component the same object.
+    /// <summary>Reduces every component the nodes reach, each from the same seed.</summary>
+    /// <param name="nodes">The candidate roots, each starting a component unless an earlier walk reached it.</param>
+    /// <param name="seed">The state each component's walk starts from.</param>
+    /// <returns>Each component's reduced state, in the order its first node appears in <paramref name="nodes"/>.</returns>
+    public static List<TState> ReduceEach<TNode, TTopology, TChildren, TOrderStrategy, TAlgebra, TState>(
+        IEnumerable<TNode> nodes, TState seed)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrderStrategy : struct, IReduceOrderStrategy<TNode>
+        where TAlgebra : struct, IReduceAlgebra<TNode, TState>
+    {
+        var visited = new HashSet<TNode>();
+        var states = new List<TState>();
+
+        foreach (var node in nodes)
+        {
+            if (!visited.Contains(node))
+            {
+                var component = Reduce.Graph<TNode, TTopology, TChildren, TOrderStrategy, TAlgebra, TState>(node, seed, visited);
+                states.Add(component);
+            }
+        }
+
+        return states;
+    }
 
     // Marks a component's nodes as visited via the walk itself; the count comes
     // from how many times a fresh root was found above, not from anything this

@@ -4,8 +4,7 @@ using DSAExperimentation.DataStructures.Graph.Grids;
 namespace DSAExperimentation.LeetCode.ContainVirus;
 
 // LeetCode 749. Contain Virus: each round's infected regions are 4-connected
-// components of 1-cells - the same flood fill MaxAreaOfIslandSolution already uses
-// for LC 695. Both strategies run the identical round-by-round simulation (find
+// components of 1-cells, as LC 695's islands are. Both strategies run the identical round-by-round simulation (find
 // regions, rank by threat, quarantine the worst, spread the rest) and differ only
 // in how a region's cells are collected; regions are rediscovered fresh every
 // round since quarantining and spreading both mutate the grid. Both strategies
@@ -27,8 +26,7 @@ internal static class ContainVirusSolution
         MinimumWalls(CloneGrid(grid), NaiveRecursiveFloodFill);
 
     // This repo's own DFS: DepthFirstSearch.Traverse walks one region's full
-    // infected component from each unvisited infected cell - the same
-    // border-flood-fill primitive MaxAreaOfIslandSolution uses for LC 695.
+    // infected component from each unvisited infected cell.
     public static int MinimumWallsByDepthFirstSearchTraversal(int[][] grid) =>
         MinimumWalls(CloneGrid(grid), DepthFirstSearchTraversal);
 

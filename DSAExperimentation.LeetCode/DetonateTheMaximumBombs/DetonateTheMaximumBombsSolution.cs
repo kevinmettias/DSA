@@ -1,4 +1,6 @@
-using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.Algorithms.Reducing;
+using DSAExperimentation.DataStructures.Graph.Adjacency;
+using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 namespace DSAExperimentation.LeetCode.DetonateTheMaximumBombs;
 
@@ -18,10 +20,11 @@ namespace DSAExperimentation.LeetCode.DetonateTheMaximumBombs;
 //
 // Both strategies run the identical O(n) scan per candidate over the identical
 // edges - no smarter algorithm applies, since LeetCode's own constraints assume the
-// try-every-source O(n^3) shape. They differ only in how the visited set is carried:
-// a bool[] indexed by bomb with hand-rolled recursion, against the same successor
-// closure handed to this repo's DepthFirstSearch.Traverse, which keeps a HashSet and
-// an explicit Stack. The comparison is about that container overhead, not asymptotics.
+// try-every-source O(n^3) shape. The baseline tests each blast edge as its walk meets
+// it, with a bool[] indexed by bomb and hand-rolled recursion; the composed arm builds
+// the blast graph once as this repo's AdjacencyNode and counts each trigger's reach
+// with Reduce.Graph and NodeCountReduceAlgebra. The comparison is about walking a
+// graph built once against re-testing every edge per trigger, not asymptotics.
 internal static class DetonateTheMaximumBombsSolution
 {
     // A bomb is [x, y, radius].
@@ -60,29 +63,50 @@ internal static class DetonateTheMaximumBombsSolution
         return count;
     }
 
-    // The same per-candidate walk expressed as a successor closure handed to this
-    // repo's DepthFirstSearch.Traverse, whose returned visit order doubles as the
-    // reachable set - so the chain size is just its Count.
-    public static int MaxDetonationsByRepoDepthFirstSearch(int[][] bombs)
+    // The blast graph built once - bomb i's neighbours are the bombs its blast reaches -
+    // then each trigger's chain is the number of nodes a Reduce.Graph walk from it
+    // enters, counted by NodeCountReduceAlgebra.
+    public static int MaxDetonationsByBlastGraphReduce(int[][] bombs)
     {
+        var blastGraph = BuildBlastGraph(bombs);
         var maxDetonated = 0;
 
-        for (var i = 0; i < bombs.Length; i++)
+        foreach (var trigger in blastGraph)
         {
-            var reached = DepthFirstSearch.Traverse(i, index => Reachable(bombs, index));
-            maxDetonated = Math.Max(maxDetonated, reached.Count);
+            var detonated = Reduce.Graph<
+                AdjacencyNode, AdjacencyTopology, ListChildren<AdjacencyNode>,
+                DepthFirstReduceOrder<AdjacencyNode>, NodeCountReduceAlgebra<AdjacencyNode>, int>(trigger);
+            maxDetonated = Math.Max(maxDetonated, detonated);
         }
 
         return maxDetonated;
     }
 
-    private static IEnumerable<int> Reachable(int[][] bombs, int index)
+    private static AdjacencyNode[] BuildBlastGraph(int[][] bombs)
+    {
+        var nodes = new AdjacencyNode[bombs.Length];
+
+        for (var i = 0; i < bombs.Length; i++)
+        {
+            nodes[i] = new AdjacencyNode(i);
+        }
+
+        for (var i = 0; i < bombs.Length; i++)
+        {
+            ConnectBlast(bombs, nodes, i);
+        }
+
+        return nodes;
+    }
+
+    // Bomb index's edges: one to every other bomb whose center its blast covers.
+    private static void ConnectBlast(int[][] bombs, AdjacencyNode[] nodes, int index)
     {
         for (var j = 0; j < bombs.Length; j++)
         {
             if (j != index && IsWithinBlastRadius(bombs, index, j))
             {
-                yield return j;
+                nodes[index].Neighbors.Add(nodes[j]);
             }
         }
     }

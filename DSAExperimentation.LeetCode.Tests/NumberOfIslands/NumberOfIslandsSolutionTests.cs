@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.NumberOfIslands;
 
 namespace DSAExperimentation.LeetCode.Tests.NumberOfIslands;
 
-// Harness only. Both flood-fill strategies are NumberOfIslandsSolution's; this file
+// Harness only. Both strategies are NumberOfIslandsSolution's; this file
 // just pins them to LeetCode's published examples plus the original coverage grid.
 // Neither arm mutates the grid, so the same grid can be handed to both.
 public sealed partial class NumberOfIslandsSolutionTests
@@ -45,9 +45,9 @@ public sealed partial class NumberOfIslandsSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountIslandsByDepthFirstSink_LeetCodeExamples_ReturnsComponentCount(
+    public void CountIslandsByConnectedComponents_LeetCodeExamples_ReturnsComponentCount(
         char[][] grid, int expected) =>
-        Assert.Equal(expected, NumberOfIslandsSolution.CountIslandsByDepthFirstSink(grid));
+        Assert.Equal(expected, NumberOfIslandsSolution.CountIslandsByConnectedComponents(grid));
 
     [Theory]
     [MemberData(nameof(Examples))]

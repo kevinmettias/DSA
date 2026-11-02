@@ -1,31 +1,29 @@
-using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.Algorithms.Connectivity;
+using DSAExperimentation.Algorithms.Reducing;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.NumberOfIslands;
 
 // LeetCode 200. Number of Islands: count 4-connected components of land ('1')
 // cells in a grid.
 //
-// DepthFirstSearch.Traverse already returns every cell reachable from a start
-// through an arbitrary successor function, so counting islands is one scan over
-// every cell that starts a fresh traversal from each still-unclaimed land cell.
-// A HashSet of claimed coordinates - not the pre-migration version's destructive
-// '1' -> '0' grid mutation - is what lets Neighbors skip cells a previous
-// island's traversal already covered; it also means the same grid can be
-// measured repeatedly without rebuilding it between benchmark invocations,
-// which the mutating version could not survive.
+// An island is a connected component of the land, so the count is this repo's
+// ConnectedComponents over GridTopology: the land becomes a Grid whose passable
+// cells are the '1's, and every land cell the walks have not yet reached starts
+// one more island. Neither strategy writes to the grid - the pre-migration
+// version's destructive '1' -> '0' mutation is gone - so the same grid can be
+// measured repeatedly without rebuilding it between benchmark invocations.
 //
-// Two strategies share that scan and that claimed set: the breadth-first sink below
-// drains an explicit queue in FIFO order, while the depth-first sink reaches the
-// same cells through DepthFirstSearch.Traverse's recursive walk. Both claim each
-// island's cells exactly once, so they must count the same islands.
+// The baseline is the textbook flood fill the component count stands for: one scan
+// that starts an explicit-queue fill from each still-unclaimed land cell, with a
+// HashSet of claimed coordinates standing in for the walks' shared visited set.
 internal static class NumberOfIslandsSolution
 {
-    // The explicit-queue counterpart to the recursive sink below: the same scan starts
-    // one flood fill per still-unclaimed land cell, but the frontier is a Queue drained
-    // from the front rather than a call stack, so a long thin island cannot deepen the
-    // recursion. It shares Neighbors and the claimed set, so it observes exactly the
-    // cells the depth-first arm does; only the order it drains them in differs, which
-    // is what the pair exists to time.
+    // The textbook answer: the scan starts one flood fill per still-unclaimed land
+    // cell, its frontier a BCL Queue drained from the front, so a long thin island
+    // cannot deepen any recursion. Deliberately written without this repo's
+    // primitives - it is the arm the component count below has to justify itself
+    // against.
     public static int CountIslandsByBreadthFirstSink(char[][] grid)
     {
         var claimed = new HashSet<(int Row, int Col)>();
@@ -66,35 +64,9 @@ internal static class NumberOfIslandsSolution
         }
     }
 
-    public static int CountIslandsByDepthFirstSink(char[][] grid)
-    {
-        var claimed = new HashSet<(int Row, int Col)>();
-        var count = 0;
-
-        for (var row = 0; row < grid.Length; row++)
-        {
-            for (var col = 0; col < grid[0].Length; col++)
-            {
-                if (grid[row][col] != '1' || !claimed.Add((row, col)))
-                {
-                    continue;
-                }
-
-                count++;
-
-                foreach (var cell in DepthFirstSearch.Traverse((row, col), cell => Neighbors(cell, grid, claimed)))
-                {
-                    claimed.Add(cell);
-                }
-            }
-        }
-
-        return count;
-    }
-
-    // The successor function the scan hands to DepthFirstSearch.Traverse: a cell's four
-    // orthogonal candidates, minus the ones that are off the grid, no longer hold land,
-    // or were already covered by an earlier island's traversal.
+    // The baseline's successor function: a cell's four orthogonal candidates, minus the
+    // ones that are off the grid, no longer hold land, or were already covered by an
+    // earlier island's fill.
     private static IEnumerable<(int Row, int Col)> Neighbors(
         (int Row, int Col) cell, char[][] grid, HashSet<(int Row, int Col)> claimed)
     {
@@ -123,4 +95,22 @@ internal static class NumberOfIslandsSolution
             && candidate.Col >= 0 && candidate.Col < grid[0].Length
             && grid[candidate.Row][candidate.Col] == '1'
             && !claimed.Contains(candidate);
+
+    // ConnectedComponents walks each component depth-first through the multi-root
+    // Reduce.Graph overload, whose one visited set is what keeps a land cell from
+    // starting a second island once an earlier walk has reached it.
+    public static int CountIslandsByConnectedComponents(char[][] grid)
+    {
+        var land = Grid.Where(GridSize.Of(grid), new LandCell(grid)).PassableNodes();
+
+        return ConnectedComponents.Count<GridNode, GridTopology, GridChildren, DepthFirstReduceOrder<GridNode>>(land);
+    }
+
+    // The cells an island is made of.
+    private readonly struct LandCell(char[][] grid) : IGridCellFilter
+    {
+        private readonly char[][] _grid = grid;
+
+        public bool CanEnter(int row, int col) => _grid[row][col] == '1';
+    }
 }

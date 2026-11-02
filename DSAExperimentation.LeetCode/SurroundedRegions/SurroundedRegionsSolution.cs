@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.SurroundedRegions;
 
@@ -12,7 +13,7 @@ namespace DSAExperimentation.LeetCode.SurroundedRegions;
 // starting from every interior region.
 //
 // Two arms share that inversion and that flip: the depth-first search below, which
-// expands each border flood through DepthFirstSearch.Traverse's recursive walk, and
+// walks each border region with this repo's DepthFirstTraversal over GridTopology, and
 // the breadth-first search above it, which drains an explicit Queue. They write the
 // same marker to the same cells and then share one capture pass, so the boards they
 // leave are identical.
@@ -35,6 +36,9 @@ internal static class SurroundedRegionsSolution
         CaptureUnmarked(board, rows, cols);
     }
 
+    // The board's 'O's become a Grid, and each border 'O' roots one DepthFirstTraversal
+    // walk over GridTopology. The walks share one visited set, so a region two border
+    // cells reach is walked once, and the hook marks every cell a walk enters.
     public static void SolveByBorderDepthFirstSearch(char[][] board)
     {
         var rows = board.Length;
@@ -63,32 +67,27 @@ internal static class SurroundedRegionsSolution
     // complement of what the flip above captures.
     private static void MarkBorderReachable(char[][] board, int rows, int cols)
     {
+        var walk = new BorderWalk(Grid.Where(new GridSize(rows, cols), new OpenCell(board)), new BorderConnectedMarker(board));
+
         for (var r = 0; r < rows; r++)
         {
-            MarkBorderConnected(board, (r, 0), rows, cols);
-            MarkBorderConnected(board, (r, cols - 1), rows, cols);
+            walk.From(r, 0);
+            walk.From(r, cols - 1);
         }
 
         for (var c = 0; c < cols; c++)
         {
-            MarkBorderConnected(board, (0, c), rows, cols);
-            MarkBorderConnected(board, (rows - 1, c), rows, cols);
+            walk.From(0, c);
+            walk.From(rows - 1, c);
         }
     }
 
-    // One entry point: a cell that is not an un-marked 'O' has nothing new behind
-    // it, and otherwise the cell and everything reachable from it get marked.
-    private static void MarkBorderConnected(char[][] board, (int Row, int Col) start, int rows, int cols)
+    // The cells a border region is made of.
+    private readonly struct OpenCell(char[][] board) : IGridCellFilter
     {
-        if (board[start.Row][start.Col] != Open)
-        {
-            return;
-        }
+        private readonly char[][] _board = board;
 
-        foreach (var (row, col) in DepthFirstSearch.Traverse(start, cell => OpenNeighbors(board, cell, rows, cols)))
-        {
-            board[row][col] = BorderConnected;
-        }
+        public bool CanEnter(int row, int col) => _board[row][col] == Open;
     }
 
     // The breadth-first twin of MarkBorderReachable: the same walk over every border
@@ -152,4 +151,36 @@ internal static class SurroundedRegionsSolution
     // visiting at all.
     private static bool IsInsideGrid(int row, int col, int rows, int cols) =>
         row >= 0 && row < rows && col >= 0 && col < cols;
+
+    // The border walks' shared state: the open cells as a Grid, the one visited set every
+    // walk adds to, and the hook that marks what they reach. A border cell that is not
+    // open, or that an earlier walk already reached, starts nothing.
+    private sealed class BorderWalk(Grid open, BorderConnectedMarker marker)
+    {
+        private readonly Grid _open = open;
+        private readonly BorderConnectedMarker _marker = marker;
+        private readonly HashSet<GridNode> _visited = [];
+
+        public void From(int row, int col)
+        {
+            if (_open.IsPassable(row, col))
+            {
+                DepthFirstTraversal.WalkGraph<GridNode, GridTopology, GridChildren, BorderConnectedMarker>(
+                    new GridNode(row, col, _open), _marker, _visited);
+            }
+        }
+    }
+
+    // Marks each cell a border walk enters on the board itself, so the shared capture
+    // pass reads the same BorderConnected marker the breadth-first arm writes.
+    private readonly struct BorderConnectedMarker(char[][] board) : IDepthFirstHooks<GridNode>
+    {
+        private readonly char[][] _board = board;
+
+        public void Enter(GridNode node, int depth) => _board[node.Row][node.Col] = BorderConnected;
+
+        public void Exit(GridNode node, int depth)
+        {
+        }
+    }
 }

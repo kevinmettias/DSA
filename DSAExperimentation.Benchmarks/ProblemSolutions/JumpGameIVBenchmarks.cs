@@ -1,5 +1,5 @@
 using DSAExperimentation.LeetCode.JumpGameIV;
-using ValueHopNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+using ValueHopNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // been enqueued" trick that keeps it from re-scanning a large equal-value run on
 // every visit - vs. modeling the exact same i+1/i-1/same-value reachability as an
 // implicit unweighted-hop graph and answering it with this repo's own
-// ShortestPath.Dijkstra. Values are drawn from a range five times narrower than
+// BreadthFirstDistances. Values are drawn from a range five times narrower than
 // Length so equal-value groups stay small (dense enough to matter, not so dense the
 // hop graph's edge count explodes past O(n)).
 //
@@ -46,5 +46,5 @@ public class JumpGameIVBenchmarks
     public int BfsWithGroupPruning() => JumpGameIVSolution.MinJumpsByBfsWithGroupPruning(_arr);
 
     [Benchmark]
-    public int DijkstraOverHopGraph() => JumpGameIVSolution.MinJumpsByDijkstraOverHopGraph(_hopGraph);
+    public int BreadthFirstDistances() => JumpGameIVSolution.MinJumpsByBreadthFirstDistances(_hopGraph);
 }

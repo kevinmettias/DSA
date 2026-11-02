@@ -1,10 +1,10 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
-// One index of LC 1345's implicit reachability graph: wired with a weight-1 edge to i+1, to
-// i-1, and to every other index holding the same value.
-using ValueHopNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
-using ValueHopTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<int>;
+// One index of LC 1345's implicit reachability graph: wired with an edge to i+1, to i-1, and
+// to every other index holding the same value. Every hop is one step, so the edges carry no weight.
+using ValueHopNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+using ValueHopTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
 
 namespace DSAExperimentation.LeetCode.JumpGameIV;
 
@@ -16,7 +16,7 @@ namespace DSAExperimentation.LeetCode.JumpGameIV;
 // member has been enqueued" trick that keeps a large equal-value run from being
 // re-scanned on every visit - and modeling the exact same reachability as an
 // implicit unweighted-hop graph answered with this repo's own
-// ShortestPath.Dijkstra.
+// BreadthFirstDistances, since every hop costs the same one step.
 internal static class JumpGameIVSolution
 {
     // The textbook answer: a BCL Queue, a BCL Dictionary of same-value index
@@ -109,21 +109,20 @@ internal static class JumpGameIVSolution
         bool[] Visited,
         Queue<int> Frontier);
 
-    public static int MinJumpsByDijkstraOverHopGraph(int[] arr)
+    public static int MinJumpsByBreadthFirstDistances(int[] arr)
     {
         var nodes = BuildHopGraph(arr);
 
-        return MinJumpsByDijkstraOverHopGraph(nodes);
+        return MinJumpsByBreadthFirstDistances(nodes);
     }
 
     // The prepared-input overload: a benchmark hoists graph construction into
     // [GlobalSetup] so it isn't charged to the search being measured.
     // ValueHopNode[] is never ambiguous with the int[] overload above - they share
     // no common type the caller's argument could bind to either way.
-    public static int MinJumpsByDijkstraOverHopGraph(ValueHopNode[] nodes)
+    public static int MinJumpsByBreadthFirstDistances(ValueHopNode[] nodes)
     {
-        var distances = ShortestPath.Dijkstra<
-            ValueHopNode, ValueHopTopology, ListEdges<ValueHopNode, int>, int>(nodes[0]);
+        var distances = BreadthFirstDistances.From<ValueHopNode, ValueHopTopology, ListChildren<ValueHopNode>>(nodes[0]);
 
         return distances[nodes[^1]];
     }
@@ -158,12 +157,12 @@ internal static class JumpGameIVSolution
     {
         if (index + 1 < nodes.Length)
         {
-            nodes[index].Edges.Add((1, nodes[index + 1]));
+            nodes[index].Neighbors.Add(nodes[index + 1]);
         }
 
         if (index - 1 >= 0)
         {
-            nodes[index].Edges.Add((1, nodes[index - 1]));
+            nodes[index].Neighbors.Add(nodes[index - 1]);
         }
     }
 
@@ -173,7 +172,7 @@ internal static class JumpGameIVSolution
         {
             if (j != index)
             {
-                nodes[index].Edges.Add((1, nodes[j]));
+                nodes[index].Neighbors.Add(nodes[j]);
             }
         }
     }

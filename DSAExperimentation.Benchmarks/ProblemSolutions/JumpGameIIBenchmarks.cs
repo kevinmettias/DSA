@@ -4,10 +4,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Jump Game II (LC 45): the textbook O(n) greedy two-pointer scan vs. modeling the
 // same reachability as an implicit unweighted-hop graph (index i -> every index one
-// jump away) and answering it with this repo's own ShortestPath.Dijkstra. Jump
+// jump away) and answering it with this repo's own BreadthFirstDistances. Jump
 // distances are capped at 10 so the implicit graph stays sparse (O(n) edges, not
 // O(n^2)) - the point of the comparison is the primitive composition, not stress
-// testing Dijkstra on a dense graph.
+// testing a search on a dense graph.
 //
 // Harness only: both arms are JumpGameIISolution's, the same methods
 // JumpGameIISolutionTests proves correct. The hop graph is built once in [GlobalSetup] so
@@ -40,5 +40,5 @@ public class JumpGameIIBenchmarks
     public int GreedyTwoPointer() => JumpGameIISolution.MinJumpsByGreedyTwoPointer(_jumps);
 
     [Benchmark]
-    public int DijkstraOverHopGraph() => JumpGameIISolution.MinJumpsByDijkstraOverHopGraph(_hopGraph);
+    public int BreadthFirstDistances() => JumpGameIISolution.MinJumpsByBreadthFirstDistances(_hopGraph);
 }

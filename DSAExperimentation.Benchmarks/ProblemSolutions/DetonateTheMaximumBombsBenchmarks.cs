@@ -4,8 +4,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DetonateTheMaximumBombsSolution's, the same methods
 // DetonateTheMaximumBombsSolutionTests proves correct - the hand-rolled bool[] recursion
-// against the same successor closure run through this repo's own
-// DepthFirstSearch.Traverse. Both are handed LeetCode's own input shape, generated
+// against the blast graph built once and walked with this repo's own Reduce.Graph.
+// Both are handed LeetCode's own input shape, generated
 // once in [GlobalSetup]. The radius range is deliberately wide enough relative to
 // the grid that blasts genuinely chain, so both arms walk real components rather
 // than bouncing off isolated bombs. LC 2101 caps the bombs at 100 and starts every
@@ -38,6 +38,6 @@ public class DetonateTheMaximumBombsBenchmarks
         DetonateTheMaximumBombsSolution.MaxDetonationsByManualRecursion(_bombs);
 
     [Benchmark]
-    public int RepoDepthFirstSearch() =>
-        DetonateTheMaximumBombsSolution.MaxDetonationsByRepoDepthFirstSearch(_bombs);
+    public int BlastGraphReduce() =>
+        DetonateTheMaximumBombsSolution.MaxDetonationsByBlastGraphReduce(_bombs);
 }

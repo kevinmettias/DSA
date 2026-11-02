@@ -23,22 +23,20 @@ public sealed partial class JumpGameIISolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinJumpsByDijkstraOverHopGraph_LeetCodeExamples_ReturnsMinimumJumpCount(int[] nums, int expected) =>
-        Assert.Equal(expected, JumpGameIISolution.MinJumpsByDijkstraOverHopGraph(nums));
+    public void MinJumpsByBreadthFirstDistances_LeetCodeExamples_ReturnsMinimumJumpCount(int[] nums, int expected) =>
+        Assert.Equal(expected, JumpGameIISolution.MinJumpsByBreadthFirstDistances(nums));
 
     // LeetCode's second example, 2 3 0 1 4: index i reaches i + 1 through i + nums[i],
-    // clamped to the last index, every hop weighing 1. 0 -> 1, 2; 1 -> 2, 3, 4; 2 cannot
+    // clamped to the last index. 0 -> 1, 2; 1 -> 2, 3, 4; 2 cannot
     // jump; 3 -> 4; and 4's reach of 8 is clamped to itself, so it has no hop at all.
     [Fact]
     public void BuildHopGraph_LeetCodeSecondExample_WiresAUnitHopToEveryIndexOneJumpReaches()
     {
         var nodes = JumpGameIISolution.BuildHopGraph([2, 3, 0, 1, 4]);
         var indices = nodes.Select(node => node.Index);
-        var weights = nodes.SelectMany(node => node.Edges).Select(edge => edge.Weight).Distinct();
-        var targets = nodes.Select(node => node.Edges.Select(edge => edge.Target.Index).ToArray());
+        var targets = nodes.Select(node => node.Targets.Select(target => target.Index).ToArray());
 
         Assert.Equal([0, 1, 2, 3, 4], indices);
-        Assert.Equal([1], weights);
         Assert.Equal([[1, 2], [2, 3, 4], [], [4], []], targets);
     }
 }

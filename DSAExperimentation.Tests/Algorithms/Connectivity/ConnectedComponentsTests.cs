@@ -52,6 +52,34 @@ public sealed partial class ConnectedComponentsTests
         Assert.Equal(0, count);
     }
 
+    // The scrambled universe lists C first, then D, then F, so the components come back in that
+    // order: A-B-C's three nodes, D alone, E-F's two.
+    [Fact]
+    public void ReduceEach_NodeCount_ReturnsEachComponentsSizeInFirstAppearanceOrder()
+    {
+        var sizes = ConnectedComponents.ReduceEach<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            DepthFirstReduceOrder<TestNode>, NodeCountReduceAlgebra<TestNode>, int>(ScrambledDisjointComponents(), 0);
+
+        Assert.Equal([3, 1, 2], sizes);
+    }
+
+    [Fact]
+    public void ReduceEach_Seed_StartsEveryComponentFromIt()
+    {
+        var sizes = ConnectedComponents.ReduceEach<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            BreadthFirstReduceOrder<TestNode>, NodeCountReduceAlgebra<TestNode>, int>(ScrambledDisjointComponents(), 10);
+
+        Assert.Equal([13, 11, 12], sizes);
+    }
+
+    [Fact]
+    public void ReduceEach_EmptyUniverse_ReturnsNoStates()
+        => Assert.Empty(ConnectedComponents.ReduceEach<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            DepthFirstReduceOrder<TestNode>, NodeCountReduceAlgebra<TestNode>, int>([], 0));
+
     // NoOpReduceAlgebra is private to ConnectedComponents and computes nothing: its Seed
     // is the state Reduce.Graph starts each fresh root's walk from, and that walk - not
     // any value threaded through it - is what marks a whole component visited. So Seed

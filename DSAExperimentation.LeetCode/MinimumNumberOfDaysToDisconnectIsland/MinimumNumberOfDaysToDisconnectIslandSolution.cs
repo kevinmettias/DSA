@@ -75,8 +75,7 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
     // This repo's own DepthFirstSearch.Traverse takes the successor function that
     // treats the skipped cell as water and returns the island reachable from a start,
     // so the component count is one scan claiming each island exactly once - the same
-    // composition NumberOfIslandsSolution (LC 200) and MakingALargeIslandSolution
-    // (LC 827) already use for grid connectivity.
+    // composition MakingALargeIslandSolution (LC 827) uses for grid connectivity.
     public static int MinDaysByDepthFirstSearch(int[][] grid)
         => MinDaysUsing(grid, TraversalCount);
 

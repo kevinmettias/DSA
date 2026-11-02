@@ -7,8 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // baseline is a hand-rolled recursive flood fill counting connected land components
 // (the textbook approach, no repo primitive) against this repo's own
 // DepthFirstSearch.Traverse doing the same count - the same primitive
-// MakingALargeIslandBenchmarks/NumberOfIslandsBenchmarks already use for grid
-// connectivity.
+// MakingALargeIslandBenchmarks already uses for grid connectivity.
 //
 // The workload is a solid all-land square: a full rectangular grid graph has no
 // articulation cell (removing any single land cell never disconnects it), so MinDays

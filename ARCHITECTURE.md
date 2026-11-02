@@ -839,7 +839,7 @@ specifically:
 | `MinimumSpanningTrees/` | `MinimumSpanningTree` | flat — `Kruskal` over `IEdgeTopology`, composing `KeyedDisjointSet` (§10.4) |
 | `NumberTheory/` | `GreatestCommonDivisor`, `GcdOperation`, `LeastCommonMultiple`, `Primality`, `PrimeFactorization`, `PrimeSieve`, `ModularPower`, `ModularInverse`, `FactorialTable<TModulus>`, `IntegerSquareRoot`, `SquareExceeds`, `PascalTriangle` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `ModularInverse` and `FactorialTable<TModulus>` take their modulus as a struct witness (`Domain/Mathematics/Modular`'s `IPrimeModulus`), LeetCode's being `LeetCodeModulus` (§17.6) |
 | `Paths/` | `AllRootToLeafPaths` | flat — only one tier exists |
-| `Reducing/` | `BreadthFirstReduceOrder`, `DepthFirstReduceOrder`, `DistanceMapReduceAlgebra`, `IReduceAlgebra`, `IReduceOrderStrategy`, `Reduce`, `ZipReduceAlgebra` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
+| `Reducing/` | `BreadthFirstReduceOrder`, `DepthFirstReduceOrder`, `DistanceMapReduceAlgebra`, `IReduceAlgebra`, `IReduceOrderStrategy`, `NodeCountReduceAlgebra`, `Reduce`, `ZipReduceAlgebra` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
 | `Searching/` | `BinarySearch`, `SearchRange`, `NearestBoundary` (§19.7), `MonotonePredicateSearch`, `IMonotonePredicate` (§9.6), `CompressedCoordinates` (§19.3) | flat — no topology axis at all; `BinarySearch` is generic over `Sequence.IRandomAccessSequence<T>` (§13.6), `MonotonePredicateSearch` over a rule on an integer interval (§9.6) |
 | `ShortestPaths/` | `IPathHeuristic`, `ZeroHeuristic`, `ManhattanHeuristic`, `ChebyshevHeuristic`, `ShortestPath`, `BellmanFord`, `AllPairsShortestPaths`, `DenseDistanceMatrix` (general edge-weighted tier, §16) + `BreadthFirstDistances` (unweighted, §19.4) + `Grids/{GridShortestPath,GridEarliestArrival,IArrivalRule,WaitInPlaceArrival,ParityBounceArrival}` (grid tier; `GridEarliestArrival` is the time-dependent search, where a move's cost depends on the second it leaves at and a static-abstract `IArrivalRule` prices it) + `Hamming/HammingDistances` (Hamming tier, §17.6) | structure-specific tiers nested beside the general one (§13.1) |
 | `Sorting/` | `MergeSort`, `SortBounds` | flat — no topology axis at all, generic over `Sequence.IIndexedSequence<T>` instead (§13.6) |
@@ -2320,6 +2320,42 @@ inlines of the last compile, of the arm itself or of the method named last. It r
 process from the runtime's event source (the Jit and JitTracing keywords), which an out-of-process
 BenchmarkDotNet run cannot report. It needs a Release build, since Debug code is compiled without
 the inlining it would report.
+
+### 19.9 Moving composed arms onto the engines
+
+The owner asked for every composed arm that fits an engine to move onto it (2026-11-02). Three
+read-only surveys covered about 250 traversal-heavy folders. About thirty fit cleanly. Most of the
+rest need something the engines did not have: an in-order position, an early exit or a stop at a
+target, a breadth-first search from several sources, state passed down from the root, weighted
+edges, or a binary node's null children (`BinaryTreeChildren` compacts them away).
+
+Each conversion was measured before and after, and an arm the engine made slower stayed
+hand-written. The measurements sorted the arms by what they replaced:
+- **Lambda and iterator traversals win.** Arms on `DepthFirstSearch.Traverse`'s successor lambda,
+  or on LINQ over the nodes a traversal returned, got faster on the engines. They lost an
+  allocation per node and a delegate call per edge. OperationsOnTree went from 204 to 6.2 us,
+  DetonateTheMaximumBombs ran 40% faster, MaxAreaOfIsland's ratio fell from 37 to 19, and
+  NumberOfIslands' from 2.24 to 1.55.
+- **Direct recursion does not.** `DepthFirstTraversal`'s hooks cost 15 to 40% over a hand-written
+  recursion on a tree (SerializeAndDeserializeBST and CheckIfDfsStringsArePalindromes, both
+  reverted). `TreeFold` costs four to five times the recursion it stands for on HouseRobberIII,
+  because the recursive evaluation allocates a child-results array per node.
+- **Unit-weight Dijkstra was a breadth-first search.** JumpGameII and JumpGameIV ran
+  `ShortestPath.Dijkstra` over graphs whose every edge weighs 1. `BreadthFirstDistances` answers
+  the same distances 30 to 50% faster.
+- **Large grid components pay per edge.** `GridChildren` builds a new `GridNode` for every neighbour
+  it lists, reached or not, and the visited set hashes each one. That outweighs the lambda's cost on
+  big components: CountSubIslands at 120 x 120, NumberOfClosedIslands at 100 x 100 and
+  MakingALargeIsland at 60 x 60 measured 22 to 98% slower, and stay hand-written. So do
+  MinimumNumberOfDaysToDisconnectIsland, which builds a `Grid` for each of its n^2 queries, and
+  JumpGameIII, whose hop graph cost far more to build than the few nodes its walk needs.
+
+Three pieces came out of it. `ConnectedComponents.ReduceEach` reduces each component on its own:
+the multi-root walk `Count` rides, returning every component's state. `NodeCountReduceAlgebra`
+counts the nodes a walk enters, which is a component's size. `Grid.Where` builds a board from an
+`IGridCellFilter`, and `Grid.PassableNodes` lists its open cells as the roots a whole-board scan
+needs. A reduce algebra is static, so a value it reads, such as a cell's fish or grid1's land, travels
+in the state it threads, as `MaximumNumberOfFishInAGrid`'s `FishCatch` does.
 
 ## 20. Worked example: the queue family, configurations of one buffer
 

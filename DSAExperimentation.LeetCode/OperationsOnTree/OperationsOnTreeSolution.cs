@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.LeetCode.OperationsOnTree;
@@ -29,11 +30,11 @@ internal static class OperationsOnTreeSolution
     // nothing ever asserted it.
     public static LockingTree CreateByWholeTreeScan(int[] parent) => new WholeTreeScanLockingTree(parent);
 
-    // This repo's own DepthFirstSearch.Traverse (ARCHITECTURE.md §12's bare-
-    // successor-function engine) over the RootedTreeNode tree DataStructures'
-    // ParentArrayTree materializes, with successors = node => node.Children. It
-    // only ever visits the target's actual subtree, so the cost is proportional to
-    // that subtree rather than to the whole tree.
+    // This repo's own DepthFirstTraversal over RootedTreeTopology, on the
+    // RootedTreeNode tree DataStructures' ParentArrayTree materializes, with a hook
+    // that keeps each locked node it enters. It only ever visits the target's actual
+    // subtree, so the cost is proportional to that subtree rather than to the whole
+    // tree.
     public static LockingTree CreateBySubtreeDepthFirstSearch(int[] parent) =>
         new SubtreeDepthFirstSearchLockingTree(parent);
 
@@ -82,15 +83,34 @@ internal static class OperationsOnTreeSolution
 
         public override int[] LockedDescendantsOf(int num)
         {
-            var subtree = DepthFirstSearch.Traverse(_nodes[num], node => node.Children);
+            var found = new List<int>();
 
-            return
-            [
-                .. subtree
-                    .Where(node => node.Id != num && IsLocked(node.Id))
-                    .Select(node => node.Id)
-                    .Order()
-            ];
+            DepthFirstTraversal.Walk<RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>, LockedDescendantCollector>(
+                _nodes[num], new LockedDescendantCollector(this, found));
+            found.Sort();
+
+            return [.. found];
+        }
+
+        // Keeps every locked node the walk enters below its root: depth 0 is the
+        // target itself, which Upgrade asks about separately.
+        private readonly struct LockedDescendantCollector(SubtreeDepthFirstSearchLockingTree tree, List<int> found)
+            : IDepthFirstHooks<RootedTreeNode>
+        {
+            private readonly SubtreeDepthFirstSearchLockingTree _tree = tree;
+            private readonly List<int> _found = found;
+
+            public void Enter(RootedTreeNode node, int depth)
+            {
+                if (depth > 0 && _tree.IsLocked(node.Id))
+                {
+                    _found.Add(node.Id);
+                }
+            }
+
+            public void Exit(RootedTreeNode node, int depth)
+            {
+            }
         }
     }
 }

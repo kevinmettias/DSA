@@ -72,4 +72,38 @@ public sealed partial class GridTests
     [MemberData(nameof(OutOfBoundsCells))]
     public void IsPassable_AllOpenGridOutOfBounds_ReturnsFalse(int row, int col)
         => Assert.False(new Grid(2, 3).IsPassable(row, col));
+
+    // The filter opens a cell exactly when its column is even: (0,0), (0,2), (1,0) and (1,2).
+    [Fact]
+    public void Where_Filter_OpensExactlyTheCellsItAccepts()
+    {
+        var grid = Grid.Where(new GridSize(2, 3), new EvenColumns());
+
+        Assert.Equal(
+            [true, false, true, true, false, true],
+            Enumerable.Range(0, 2).SelectMany(row => Enumerable.Range(0, 3).Select(col => grid.IsPassable(row, col))));
+    }
+
+    [Fact]
+    public void Where_Filter_SizesTheGridAsGiven() => Assert.Equal(new GridSize(2, 3), Grid.Where(new GridSize(2, 3), new EvenColumns()).Size);
+
+    [Fact]
+    public void PassableNodes_ListsTheOpenCellsRowByRow()
+        => Assert.Equal([(0, 0), (0, 1), (0, 2), (1, 0), (1, 1)], TwoByThree().PassableNodes().Select(node => (node.Row, node.Col)));
+
+    [Fact]
+    public void PassableNodes_EachNodeIsOfThisGrid()
+    {
+        var grid = TwoByThree();
+
+        Assert.All(grid.PassableNodes(), node => Assert.Same(grid, node.Grid));
+    }
+
+    [Fact]
+    public void PassableNodes_NoOpenCell_IsEmpty() => Assert.Empty(new Grid(new bool[2, 3]).PassableNodes());
+
+    private readonly struct EvenColumns : IGridCellFilter
+    {
+        public bool CanEnter(int row, int col) => col % 2 == 0;
+    }
 }

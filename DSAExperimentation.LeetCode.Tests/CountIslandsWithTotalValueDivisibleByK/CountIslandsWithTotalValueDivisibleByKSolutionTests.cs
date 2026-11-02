@@ -43,10 +43,10 @@ public sealed partial class CountIslandsWithTotalValueDivisibleByKSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByDepthFirstSearchTraverse_LeetCodeExamples_ReturnsIslandsWithTotalValueDivisibleByK(
+    public void CountByConnectedComponents_LeetCodeExamples_ReturnsIslandsWithTotalValueDivisibleByK(
         int[][] grid, int divisor, int expected)
     {
-        var actual = CountIslandsWithTotalValueDivisibleByKSolution.CountByDepthFirstSearchTraverse(
+        var actual = CountIslandsWithTotalValueDivisibleByKSolution.CountByConnectedComponents(
             grid, divisor);
         Assert.Equal(expected, actual);
     }

@@ -4,10 +4,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaxAreaOfIslandSolution's, the same methods
 // MaxAreaOfIslandSolutionTests proves correct - a hand-specialized recursive flood fill
-// (the textbook approach) vs. this repo's own DepthFirstSearch.Traverse walking
-// each island's reachable land cells. Each strategy clones the shared grid
-// fixture internally before mutating it, so repeated benchmark invocations each
-// start from the true input. Side stops at LC 695's 50 x 50 cap.
+// (the textbook approach) vs. this repo's own ConnectedComponents.ReduceEach counting
+// each island's cells over GridTopology. The baseline clones the shared grid fixture
+// internally before mutating it, and the composed arm never writes to it, so repeated
+// benchmark invocations each start from the true input. Side stops at LC 695's 50 x 50 cap.
 public class MaxAreaOfIslandBenchmarks
 {
     private const int RandomSeed = 3;
@@ -40,5 +40,5 @@ public class MaxAreaOfIslandBenchmarks
     public int ByNaiveFloodFill() => MaxAreaOfIslandSolution.MaxAreaByNaiveFloodFill(_grid);
 
     [Benchmark]
-    public int ByDepthFirstSearch() => MaxAreaOfIslandSolution.MaxAreaByDepthFirstSearch(_grid);
+    public int ByConnectedComponents() => MaxAreaOfIslandSolution.MaxAreaByConnectedComponents(_grid);
 }

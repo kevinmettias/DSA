@@ -32,7 +32,7 @@ public sealed partial class DetonateTheMaximumBombsSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxDetonationsByRepoDepthFirstSearch_LeetCodeExamples_ReturnsLargestChainOverEveryTrigger(
+    public void MaxDetonationsByBlastGraphReduce_LeetCodeExamples_ReturnsLargestChainOverEveryTrigger(
         int[][] bombs, int expected) =>
-        Assert.Equal(expected, DetonateTheMaximumBombsSolution.MaxDetonationsByRepoDepthFirstSearch(bombs));
+        Assert.Equal(expected, DetonateTheMaximumBombsSolution.MaxDetonationsByBlastGraphReduce(bombs));
 }

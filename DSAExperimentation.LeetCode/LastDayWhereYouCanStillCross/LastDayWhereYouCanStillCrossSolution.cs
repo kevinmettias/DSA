@@ -1,5 +1,7 @@
+using DSAExperimentation.Algorithms.Connectivity;
+using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.LastDayWhereYouCanStillCross;
 
@@ -11,16 +13,13 @@ namespace DSAExperimentation.LeetCode.LastDayWhereYouCanStillCross;
 // true...true] sequence and the answer is one bisection away. Both strategies bisect
 // the same predicate. The baseline runs the bisection by hand and probes each day with
 // its own explicit-stack flood fill; the composed arm hands the bisection to
-// MonotonePredicateSearch and probes with one DepthFirstSearch.Traverse.
+// MonotonePredicateSearch and probes with ConnectedComponents.ReduceEach over
+// GridTopology.
 internal static class LastDayWhereYouCanStillCrossSolution
 {
     // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
     // reaches no library type, not even a constant (ARCHITECTURE 17.5).
     private const int HalvingFactor = 2;
-
-    // A virtual node above the grid, wired to every still-dry top-row cell, so one
-    // Traverse call replaces one search per dry top-row column.
-    private const int AboveGrid = -1;
 
     private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
@@ -131,36 +130,19 @@ internal static class LastDayWhereYouCanStillCrossSolution
             && flooding.IsLand(cell.Row, cell.Col, day)
             && !visited[cell.Row, cell.Col];
 
+    // The composed arm's probe: the day's dry cells become a Grid, every dry top-row
+    // cell roots a walk unless an earlier one reached it, and the grid can be crossed
+    // when some walk enters the last row. PassableNodes lists the grid row by row, so
+    // the top row's dry cells are the ones it lists before any other row's.
     private static bool CanCross(FloodSchedule flooding, int day)
-        => DepthFirstSearch.Traverse(
-                (Row: AboveGrid, Col: AboveGrid), cell => Neighbors(cell, flooding, day))
-            .Any(cell => cell.Row == flooding.Rows - 1);
-
-    private static IEnumerable<(int Row, int Col)> Neighbors(
-        (int Row, int Col) cell, FloodSchedule flooding, int day)
     {
-        if (cell.Row == AboveGrid)
-        {
-            for (var col = 0; col < flooding.Cols; col++)
-            {
-                if (flooding.IsLand(0, col, day))
-                {
-                    yield return (0, col);
-                }
-            }
+        var dry = Grid.Where(new GridSize(flooding.Rows, flooding.Cols), new DryOnDay(flooding, day));
+        var topRow = dry.PassableNodes().TakeWhile(cell => cell.Row == 0);
+        var walks = ConnectedComponents.ReduceEach<
+            GridNode, GridTopology, GridChildren, DepthFirstReduceOrder<GridNode>, ReachesLastRow, Crossing>(
+            topRow, Crossing.Blocked);
 
-            yield break;
-        }
-
-        foreach (var (deltaRow, deltaCol) in Directions)
-        {
-            var next = (Row: cell.Row + deltaRow, Col: cell.Col + deltaCol);
-
-            if (flooding.IsInBounds(next.Row, next.Col) && flooding.IsLand(next.Row, next.Col, day))
-            {
-                yield return next;
-            }
-        }
+        return walks.Contains(Crossing.Crossed);
     }
 
     // IsSatisfiedBy(day) answers "can the grid still be crossed on this day" - true up to the
@@ -171,5 +153,35 @@ internal static class LastDayWhereYouCanStillCrossSolution
     private readonly struct CrossableOnDay(FloodSchedule flooding) : IMonotonePredicate<int>
     {
         public bool IsSatisfiedBy(int day) => CanCross(flooding, day);
+    }
+
+    // The cells still land on the day being probed.
+    private readonly struct DryOnDay(FloodSchedule flooding, int day) : IGridCellFilter
+    {
+        private readonly FloodSchedule _flooding = flooding;
+        private readonly int _day = day;
+
+        public bool CanEnter(int row, int col) => _flooding.IsLand(row, col, _day);
+    }
+
+    // What one walk from the top row has found: Blocked until it enters the last row.
+    private enum Crossing
+    {
+        Blocked,
+        Crossed,
+    }
+
+    // Crossed from the first cell on the grid's last row, read off the node's own Grid,
+    // and from then on.
+    private readonly struct ReachesLastRow : IReduceAlgebra<GridNode, Crossing>
+    {
+        public static Crossing Seed => Crossing.Blocked;
+
+        public static Crossing Enter(Crossing state, GridNode node, int depth)
+        {
+            var isOnLastRow = node.Row == node.Grid.Rows - 1;
+
+            return isOnLastRow ? Crossing.Crossed : state;
+        }
     }
 }

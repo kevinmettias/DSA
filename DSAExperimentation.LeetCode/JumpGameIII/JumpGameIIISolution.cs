@@ -71,8 +71,8 @@ internal static class JumpGameIIISolution
     // This repo's own DepthFirstSearch.Traverse, closed over a bare
     // Func<int, IEnumerable<int>> successor relation: reachability is exactly what
     // Traverse returns, so the puzzle reduces to asking whether any visited index
-    // holds a zero. Unlike JumpGameII (a minimum hop *count*, which needs the
-    // weighted ShortestPath tier), this one only needs the unweighted traversal.
+    // holds a zero. Unlike JumpGameII (a minimum hop *count*, which
+    // BreadthFirstDistances answers), this one only needs the traversal.
     public static bool CanReachByDepthFirstSearch(int[] arr, int start)
     {
         var visited = DepthFirstSearch.Traverse(start, index => Hops(arr, index));

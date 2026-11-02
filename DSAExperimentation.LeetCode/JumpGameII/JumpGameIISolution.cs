@@ -8,8 +8,8 @@ namespace DSAExperimentation.LeetCode.JumpGameII;
 //
 // The two strategies answer the same question two ways: the textbook O(n) greedy
 // two-pointer scan, and modeling reachability as an implicit unweighted-hop graph
-// (index i has a weight-1 edge to every index reachable in one jump) answered with
-// this repo's own ShortestPath.Dijkstra - not the greedy scan.
+// (index i has an edge to every index reachable in one jump) answered with this
+// repo's own BreadthFirstDistances - not the greedy scan.
 internal static class JumpGameIISolution
 {
     // The textbook answer: extend the farthest index reachable within the current
@@ -36,21 +36,20 @@ internal static class JumpGameIISolution
         return jumps;
     }
 
-    public static int MinJumpsByDijkstraOverHopGraph(int[] nums)
+    public static int MinJumpsByBreadthFirstDistances(int[] nums)
     {
         var nodes = BuildHopGraph(nums);
 
-        return MinJumpsByDijkstraOverHopGraph(nodes);
+        return MinJumpsByBreadthFirstDistances(nodes);
     }
 
     // The prepared-input overload: a benchmark hoists graph construction into
     // [GlobalSetup] so it isn't charged to the search being measured. HopNode[] is
     // never ambiguous with the int[] overload above - they share no common type
     // the caller's argument could bind to either way.
-    public static int MinJumpsByDijkstraOverHopGraph(HopNode[] nodes)
+    public static int MinJumpsByBreadthFirstDistances(HopNode[] nodes)
     {
-        var distances = ShortestPath.Dijkstra<
-            HopNode, HopTopology, ListEdges<HopNode, int>, int>(nodes[0]);
+        var distances = BreadthFirstDistances.From<HopNode, HopTopology, ListChildren<HopNode>>(nodes[0]);
 
         return distances[nodes[^1]];
     }
@@ -70,7 +69,7 @@ internal static class JumpGameIISolution
 
             for (var j = i + 1; j <= reach; j++)
             {
-                nodes[i].Edges.Add((1, nodes[j]));
+                nodes[i].Targets.Add(nodes[j]);
             }
         }
 

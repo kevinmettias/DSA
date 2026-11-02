@@ -1,4 +1,6 @@
+using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.CountedBitTrie;
+using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.LeetCode.MaximumGeneticDifferenceQuery;
@@ -45,9 +47,9 @@ internal static class MaximumGeneticDifferenceQuerySolution
         return best;
     }
 
-    // Composed: one offline depth-first pass over the ParentArrayTree.Build tree.
-    // Each node's id is inserted into this repo's own CountedBitTrie on the way down
-    // and removed again on the way back up, so while a node is being visited the trie
+    // Composed: one offline DepthFirstTraversal over the ParentArrayTree.Build tree.
+    // Each node's id is inserted into this repo's own CountedBitTrie as the walk enters
+    // it and removed again as it leaves, so while a node is being visited the trie
     // holds exactly its ancestor set - every query parked on that node is then
     // answered by one O(32) greedy max-XOR walk over the live values instead of an
     // O(depth) climb.
@@ -62,7 +64,8 @@ internal static class MaximumGeneticDifferenceQuerySolution
     {
         var answers = new int[queries.Length];
 
-        Visit(root, new AncestorWalk(GroupQueriesByNode(queries, nodeCount), new CountedBitTrie(), answers));
+        DepthFirstTraversal.Walk<RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>, AncestorWalk>(
+            root, new AncestorWalk(GroupQueriesByNode(queries, nodeCount), new CountedBitTrie(), answers));
 
         return answers;
     }
@@ -99,30 +102,28 @@ internal static class MaximumGeneticDifferenceQuerySolution
         return queriesByNode;
     }
 
-    // The DFS's own query index, ancestor trie and output buffer - every field here
-    // is the same reference at every level of the recursion; only the node (Visit's
-    // other parameter) changes between calls.
-    private readonly record struct AncestorWalk(
-        List<(int QueryIndex, int Value)>[] QueriesByNode,
-        CountedBitTrie Ancestors,
-        int[] Answers);
-
-    // The ancestor set always holds node itself while its queries are answered, so
-    // TryMaxXor always finds a live value and its result is the answer.
-    private static void Visit(RootedTreeNode node, AncestorWalk walk)
+    // The walk's own query index, ancestor trie and output buffer, each the same
+    // reference at every node. The ancestor set always holds node itself while its
+    // queries are answered, so TryMaxXor always finds a live value and its result is
+    // the answer.
+    private readonly struct AncestorWalk(
+        List<(int QueryIndex, int Value)>[] queriesByNode, CountedBitTrie ancestors, int[] answers)
+        : IDepthFirstHooks<RootedTreeNode>
     {
-        walk.Ancestors.Insert(node.Id);
+        private readonly List<(int QueryIndex, int Value)>[] _queriesByNode = queriesByNode;
+        private readonly CountedBitTrie _ancestors = ancestors;
+        private readonly int[] _answers = answers;
 
-        foreach (var (queryIndex, value) in walk.QueriesByNode[node.Id])
+        public void Enter(RootedTreeNode node, int depth)
         {
-            walk.Ancestors.TryMaxXor(value, out walk.Answers[queryIndex]);
+            _ancestors.Insert(node.Id);
+
+            foreach (var (queryIndex, value) in _queriesByNode[node.Id])
+            {
+                _ancestors.TryMaxXor(value, out _answers[queryIndex]);
+            }
         }
 
-        foreach (var child in node.Children)
-        {
-            Visit(child, walk);
-        }
-
-        walk.Ancestors.TryRemove(node.Id);
+        public void Exit(RootedTreeNode node, int depth) => _ancestors.TryRemove(node.Id);
     }
 }

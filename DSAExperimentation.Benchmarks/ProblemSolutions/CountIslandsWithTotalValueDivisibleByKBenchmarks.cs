@@ -25,6 +25,6 @@ public class CountIslandsWithTotalValueDivisibleByKBenchmarks
         CountIslandsWithTotalValueDivisibleByKSolution.CountByFloodFillStack(_grid, Divisor);
 
     [Benchmark]
-    public int DepthFirstSearchTraverse() =>
-        CountIslandsWithTotalValueDivisibleByKSolution.CountByDepthFirstSearchTraverse(_grid, Divisor);
+    public int ConnectedComponents() =>
+        CountIslandsWithTotalValueDivisibleByKSolution.CountByConnectedComponents(_grid, Divisor);
 }
