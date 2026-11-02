@@ -15,7 +15,7 @@ namespace DSAExperimentation.LeetCode.MinimumGeneticMutation;
 internal static class MinimumGeneticMutationSolution
 {
     // The four letters a gene is spelled in, restated rather than read from
-    // Domain/Dna's DnaBases: a baseline reaches no library type, not even a constant
+    // Domain/Science/Dna's DnaBases: a baseline reaches no library type, not even a constant
     // (ARCHITECTURE 17.5).
     private const string GeneLetters = "ACGT";
 

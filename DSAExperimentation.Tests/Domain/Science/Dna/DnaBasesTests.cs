@@ -1,6 +1,6 @@
-using DSAExperimentation.Domain.Dna;
+using DSAExperimentation.Domain.Science.Dna;
 
-namespace DSAExperimentation.Tests.Domain.Dna;
+namespace DSAExperimentation.Tests.Domain.Science.Dna;
 
 public sealed partial class DnaBasesTests
 {

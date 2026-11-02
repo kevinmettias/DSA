@@ -1,8 +1,8 @@
-using DSAExperimentation.Domain.Dna;
+using DSAExperimentation.Domain.Science.Dna;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
-// Benchmark workload sizing for LC 187 - a random DNA string over Domain/Dna's
+// Benchmark workload sizing for LC 187 - a random DNA string over Domain/Science/Dna's
 // four bases at a given length, so the fixed-window scan has real substrings to
 // walk regardless of how many of them happen to repeat.
 internal static class DnaSequenceWorkloads

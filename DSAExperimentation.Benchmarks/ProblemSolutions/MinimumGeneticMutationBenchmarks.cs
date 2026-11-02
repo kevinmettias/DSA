@@ -1,7 +1,7 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Hamming;
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.Domain.Dna;
+using DSAExperimentation.Domain.Science.Dna;
 using DSAExperimentation.LeetCode.MinimumGeneticMutation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

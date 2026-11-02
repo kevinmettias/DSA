@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.Domain.Dna;
+using DSAExperimentation.Domain.Science.Dna;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 

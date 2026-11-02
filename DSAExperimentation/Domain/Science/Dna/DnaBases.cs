@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Hamming;
 
-namespace DSAExperimentation.Domain.Dna;
+namespace DSAExperimentation.Domain.Science.Dna;
 
 // DNA's four bases as LC 187 and LC 433 spell a strand: adenine, cytosine, guanine and thymine,
 // written A, C, G and T. Which alphabet a mutation problem walks is a property of the problem, not

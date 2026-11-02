@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Hamming;
-using DSAExperimentation.Domain.Dna;
+using DSAExperimentation.Domain.Science.Dna;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 

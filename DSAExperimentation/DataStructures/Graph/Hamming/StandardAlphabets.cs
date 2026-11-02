@@ -4,7 +4,7 @@ namespace DSAExperimentation.DataStructures.Graph.Hamming;
 // alphabet is in play is a property of the problem, not of the graph, so it is
 // passed in rather than baked into HammingGraph. The Latin letters are a shape many
 // problems share, like LowercaseAlphabet; a world's own alphabet is Domain's, as
-// DNA's four bases are Domain/Dna's DnaBases.Alphabet (ARCHITECTURE §17.6).
+// DNA's four bases are Domain/Science/Dna's DnaBases.Alphabet (ARCHITECTURE §17.6).
 /// <summary>The Latin <see cref="Alphabet"/> the word-ladder problems use.</summary>
 public static class StandardAlphabets
 {
