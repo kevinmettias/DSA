@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.Domain.Locks;
+using DSAExperimentation.Domain.Devices.Locks;
 using DSAExperimentation.LeetCode.OpenTheLock;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
@@ -33,9 +33,9 @@ public sealed partial class LockWorkloadsTests
     public void BuildDeadends_EveryCombination_IsAFourDigitLockState()
     {
         var deadends = LockWorkloads.BuildDeadends(DeadendCount, Seed);
-        var highestWheelDigit = (char)(LowestWheelDigit + LockWheels.Modulus - 1);
+        var highestWheelDigit = (char)(LowestWheelDigit + FourDigitLock.SymbolsPerWheel - 1);
 
-        Assert.All(deadends, deadend => Assert.Equal(LockWheels.Count, deadend.Length));
+        Assert.All(deadends, deadend => Assert.Equal(FourDigitLock.WheelCount, deadend.Length));
         Assert.All(
             deadends,
             deadend => Assert.All(deadend, digit => Assert.InRange(digit, LowestWheelDigit, highestWheelDigit)));

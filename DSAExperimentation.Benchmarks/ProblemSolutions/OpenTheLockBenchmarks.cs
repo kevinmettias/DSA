@@ -1,13 +1,13 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.DataStructures.Graph.States;
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.Domain.Locks;
 using DSAExperimentation.LeetCode.OpenTheLock;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are OpenTheLockSolution's, the same methods
 // OpenTheLockSolutionTests proves correct. Each arm is handed the prepared input its
-// hoisted overload takes - a deadend Set for the mutation walk, a built LockGraph
+// hoisted overload takes - a deadend Set for the mutation walk, a built lock graph
 // for the Reduce.Graph walk - so graph construction is charged to [GlobalSetup]
 // rather than to the search being measured.
 public class OpenTheLockBenchmarks
@@ -17,7 +17,7 @@ public class OpenTheLockBenchmarks
 
     private Set<string> _deadends = new();
 
-    private LockGraph _graph = null!;
+    private StateGraph<string> _graph = null!;
     [Params(50, 500)]
     public int DeadendCount { get; set; }
 
@@ -26,7 +26,7 @@ public class OpenTheLockBenchmarks
     {
         var deadends = LockWorkloads.BuildDeadends(DeadendCount, seed: DeadendSeed);
         _deadends = new Set<string>(deadends);
-        _graph = LockGraph.Build(deadends);
+        _graph = OpenTheLockSolution.BuildLockGraph(deadends);
     }
 
     [Benchmark(Baseline = true)]

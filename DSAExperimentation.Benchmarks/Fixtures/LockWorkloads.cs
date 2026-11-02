@@ -1,9 +1,9 @@
-using DSAExperimentation.Domain.Locks;
+using DSAExperimentation.Domain.Devices.Locks;
 using DSAExperimentation.LeetCode.OpenTheLock;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
-// Benchmark workload sizing for LC 752 - the lock itself is Domain/Locks and its start
+// Benchmark workload sizing for LC 752 - the lock itself is Domain/Devices/Locks and its start
 // combination sits beside OpenTheLockSolution; what stays here is only the choice of how much
 // of it to prune, which is a measurement decision rather than a domain one.
 internal static class LockWorkloads
@@ -19,7 +19,7 @@ internal static class LockWorkloads
 
         while (deadends.Count < count)
         {
-            var candidate = LockWheels.Combination(random.Next(LockWheels.CombinationSpace));
+            var candidate = CombinationLock<FourDigitLock>.Combination(random.Next(CombinationLock<FourDigitLock>.CombinationCount));
 
             if (candidate != LockStart.Combination
                 && candidate != LockScenario.FarthestTarget)

@@ -580,13 +580,6 @@
       "expires": "2026-11-22"
     },
     {
-      "check": "check-constant-placement",
-      "path": "DSAExperimentation/Domain/Locks/LockWheels.cs",
-      "reason": "LockWheels IS the remedy this check prescribes - it was extracted from LockGraph in this same pass precisely because the check asked for 'a type of its own, in its own file whose subject IS these values'. Count/Modulus/CombinationSpace are the lock's dimensions and the entire subject of the type and file; there is no further type to move them to. Same shape as the ModularArithmetic.Modulo waiver.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
       "check": "check-responsibility-extraction",
       "path": "DSAExperimentation.LeetCode/*/*Solution.cs",
       "reason": "The check reads a shared method-name prefix as a hidden module boundary that wants extracting. In this tier the shared prefix IS the module: ARCHITECTURE.md section 17.3 requires every strategy for one LeetCode problem to live in that problem's one solution class, named \u003cOperation\u003eBy\u003cStrategy\u003e, so MinTurnsByMutationQueue/MinTurnsByReduceGraph (each with a LeetCode-shaped and a hoisted overload, hence four declarations) all share the operation the problem asks for. Extracting them apart is precisely the split this reorg existed to undo - it is what let the test and the benchmark drift onto different functions. The boundary the check infers is already the file. Scoped to `\u003cProblem\u003e/\u003cProblem\u003eSolution.cs`, which is what that argument covers; the 21 design-tier findings this same entry absorbs charge a broad public surface rather than a prefix, and section 17.3 answers those too - a design problem's strategies cannot be static methods, because LeetCode's published API for such a problem is a stateful object whose operation set is fixed by the problem statement rather than by this repo, so each strategy is a whole class with a constructor. The finding counts declarations per file, so it necessarily sums across the strategies 17.3 requires to be in that one file.",
