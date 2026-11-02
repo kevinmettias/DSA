@@ -2,8 +2,8 @@ using DSAExperimentation.LeetCode.SlidingPuzzle;
 
 namespace DSAExperimentation.LeetCode.Tests.SlidingPuzzle;
 
-// Harness only. The board-permutation graph itself is SlidingPuzzle.PuzzleGraph and
-// both search strategies are SlidingPuzzleSolution's - this file just pins them
+// Harness only. The puzzle itself is Domain/Games/SlidingPuzzle's, on this folder's
+// TwoByThreeBoard, and both search strategies are SlidingPuzzleSolution's - this file just pins them
 // to LeetCode's published examples.
 public sealed partial class SlidingPuzzleSolutionTests
 {
@@ -27,4 +27,15 @@ public sealed partial class SlidingPuzzleSolutionTests
     public void MinMovesByReduceGraph_LeetCodeExamples_ReturnsFewestSlidesOrMinusOne(
         int[][] board, int expected) =>
         Assert.Equal(expected, SlidingPuzzleSolution.MinMovesByReduceGraph(board));
+
+    // Every arrangement of the 2x3 board, each joined to the two or three one slide away.
+    [Fact]
+    public void BuildPuzzleGraph_HoldsEveryArrangementOfTheBoard()
+    {
+        var graph = SlidingPuzzleSolution.BuildPuzzleGraph();
+
+        Assert.Equal(720, graph.Count);
+        Assert.True(graph.TryGetNode("123450", out var solved));
+        Assert.Equal(["120453", "123405"], solved.Successors.Select(successor => successor.State));
+    }
 }

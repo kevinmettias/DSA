@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Domain.SlidingPuzzle;
+using DSAExperimentation.DataStructures.Graph.States;
+using DSAExperimentation.Domain.Games.SlidingPuzzle;
 
 namespace DSAExperimentation.LeetCode.SlidingPuzzle;
 
@@ -8,8 +9,9 @@ namespace DSAExperimentation.LeetCode.SlidingPuzzle;
 // to "123450" ("board solved"), or -1 if the board's permutation parity makes it
 // unreachable.
 //
-// Board permutations are nodes of PuzzleGraph's implicit state graph, so
-// the puzzle reduces to a shortest-path query on it - the same BreadthFirstDistances
+// Board arrangements are the states of the general sliding puzzle
+// (Domain/Games/SlidingPuzzle) on LC 773's own 2x3 board, so the puzzle reduces to a
+// shortest-path query on their state graph - the same BreadthFirstDistances
 // composition OpenTheLockSolution uses for LC 752's wheel-turn graph, just over a
 // 720-node board-permutation graph instead of a 10,000-combination lock.
 // MinMovesByMutationQueue is the textbook alternative: BFS over boards mutated on
@@ -36,7 +38,7 @@ internal static class SlidingPuzzleSolution
 
     // Deliberately written without this repo's primitives - BCL Queue + HashSet,
     // generating each candidate slide on the fly with its own board arithmetic rather
-    // than PuzzleGraph's, whose model a baseline may not read (ARCHITECTURE 17.5), is
+    // than SlidingPuzzle's, whose model a baseline may not read (ARCHITECTURE 17.5), is
     // what you would write without this repo.
     public static int MinMovesByMutationQueue(int[][] board) => MinMovesByMutationQueue(Flatten(board));
 
@@ -77,7 +79,7 @@ internal static class SlidingPuzzleSolution
         }
     }
 
-    // Every board one slide of the blank away, in the order PuzzleGraph wires its edges.
+    // Every board one slide of the blank away, in the order SlidingPuzzle writes them.
     private static IEnumerable<string> OneSlideAway(string state)
     {
         var blank = state.IndexOf(Blank);
@@ -96,19 +98,20 @@ internal static class SlidingPuzzleSolution
     // the same composition OpenTheLockSolution.MinTurnsByReduceGraph uses for LC 752.
     public static int MinMovesByReduceGraph(int[][] board)
     {
-        var graph = PuzzleGraph.Build();
+        var graph = BuildPuzzleGraph();
 
         return MinMovesByReduceGraph(graph, Flatten(board));
     }
 
-    public static int MinMovesByReduceGraph(PuzzleGraph graph, string start)
+    public static int MinMovesByReduceGraph(StateGraph<string> graph, string start)
     {
-        if (!graph.TryGetNode(start, out var startNode) || !graph.TryGetNode(Target, out var targetNode))
+        if (!graph.TryGetNode(start, out var startNode)
+            || !graph.TryGetNode(SlidingPuzzle<TwoByThreeBoard>.Solved, out var targetNode))
         {
             return LeetCodeAnswer.None;
         }
 
-        var distances = BreadthFirstDistances.From<PuzzleNode, PuzzleTopology, ListChildren<PuzzleNode>>(startNode);
+        var distances = BreadthFirstDistances.From<StateNode<string>, StateTopology<string>, ListChildren<StateNode<string>>>(startNode);
 
         return distances.TryGetValue(targetNode, out var distance) ? distance : LeetCodeAnswer.None;
     }
@@ -128,4 +131,9 @@ internal static class SlidingPuzzleSolution
 
         return new string(chars);
     }
+
+    // The composed arm's input: all 720 arrangements of LC 773's board, each joined to those one
+    // slide away. Public so a benchmark can build it outside the timed region (17.4).
+    public static StateGraph<string> BuildPuzzleGraph()
+        => StateGraph<string>.Build(new PuzzleSlides<TwoByThreeBoard>(), new EveryState<string>());
 }
