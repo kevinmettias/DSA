@@ -2,6 +2,14 @@
   "schema": 1,
   "waivers": [
     {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/Architecture/ReachWalker.cs",
+      "anchor": "`VisitObjectCreation`",
+      "reason": "VisitObjectCreation is Roslyn's own OperationVisitor method, which ReachWalker overrides to see each construction the walked code makes. An override keeps its base's name, so the word is Roslyn's choice, not this file's, and renaming it would stop it overriding.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/WordSearchIIBenchmarks.cs",
       "anchor": "`BoardSize = 8`",
