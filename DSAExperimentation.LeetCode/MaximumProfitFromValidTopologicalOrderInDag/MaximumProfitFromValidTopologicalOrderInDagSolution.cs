@@ -74,6 +74,22 @@ internal static class MaximumProfitFromValidTopologicalOrderInDagSolution
     public static long MaxProfitByBitmaskMemoization(PrecedenceMasks predecessors, int[] score)
         => Memoizer.Memoize<int, long>(0, new ProfitFromMask(predecessors.Masks, score));
 
+    // Composed over this repo's DenseMemoizer instead: the same rule, with the cache as
+    // arrays indexed by mask, since a mask is an int below 2^n. It allocates all 2^n
+    // slots up front, where Memoizer pays only for the masks it reaches. That is faster
+    // while 2^n is small. At LeetCode's n = 22 it is the memory arm, not the fast one:
+    // on the edgeless DAG, where every mask is reached, it holds 38 MB against the
+    // Dictionary's 324 MB in about the same time, and on a sparse DAG it is somewhat
+    // slower (DenseMemoizer.cs records the measurement).
+    public static long MaxProfitByDenseBitmaskMemoization(int nodeCount, int[][] edges, int[] score)
+    {
+        var predecessors = PrecedenceMasks.Build(nodeCount, edges);
+        return MaxProfitByDenseBitmaskMemoization(predecessors, score);
+    }
+
+    public static long MaxProfitByDenseBitmaskMemoization(PrecedenceMasks predecessors, int[] score)
+        => DenseMemoizer.Memoize(0, 1 << score.Length, new ProfitFromMask(predecessors.Masks, score));
+
     // `node` is placeable once every node its predecessorMasks bit names is already
     // in mask: not yet placed itself, and no required predecessor missing.
     private static bool CanPlace(int mask, int node, int[] predecessorMasks)

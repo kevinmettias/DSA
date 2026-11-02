@@ -830,7 +830,7 @@ specifically:
 | `Backtracking/` | `Backtrack`, `BacktrackingSteps` | flat — generic over a search state and its steps, no topology axis |
 | `Bipartiteness/` | `BipartiteCheck` | flat — graph tier only |
 | `Connectivity/` | `ConnectedComponents`, `StronglyConnectedComponents`, `BridgesAndArticulationPoints` | flat — three algorithms, all on the graph tier |
-| `DynamicProgramming/` | `IRecurrence`, `Memoizer` | flat — generic over a state and its recurrence, no topology axis |
+| `DynamicProgramming/` | `IRecurrence`, `Memoizer`, `DenseMemoizer` | flat — generic over a state and its recurrence, no topology axis. `DenseMemoizer` runs the same recurrences over int states below a stated bound, with flat arrays as the cache: it saves memory when the states reached fill their range, and time only while the range is small |
 | `Folding/` | `CheckedFold`, `CycleCheckedFold`, `FoldRecursion`, `IFoldAlgebra`, `IFoldEvaluationStrategy`, `IFoldMemo`, `IterativeFoldEvaluation`, `MemoizedFold`, `RecursiveFoldEvaluation`, `ZipFoldAlgebra` (general tier; `FoldRecursion` is the one recursion the DAG and graph tiers share, with the memo policy as the axis they differ by, while the tree tier's `RecursiveFoldEvaluation` keeps a recursion with nothing to remember, §12.4) + `Dags/DagFold` (DAG tier) + `Dags/Trees/TreeFold` (tree tier) | three nested tiers, mirroring §3.2's refinement chain |
 | `Geometry/` | `ConvexHull` | flat — points in the plane have no topology to be generic over; tier 2 because it composes `Sorting/MergeSort`, the reasoning that put `HammingDistances` in `Algorithms/` (§17.6) |
 | `Metrics/` | `DiameterAlgebra`, `HeightAlgebra`, `HeightDiameterState`, `SizeAlgebra`, `TreeMetrics` | flat — Tree is the only tier |

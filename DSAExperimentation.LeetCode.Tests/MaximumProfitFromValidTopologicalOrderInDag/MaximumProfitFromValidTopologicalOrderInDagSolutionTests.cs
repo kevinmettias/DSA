@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumProfitFromValidTopologicalOrderInDag;
 namespace DSAExperimentation.LeetCode.Tests.MaximumProfitFromValidTopologicalOrderInDag;
 
 // Harness only. PrecedenceMasks reduces LC 3530's DAG to one predecessor
-// bitmask per node and both strategies are
+// bitmask per node and every strategy is
 // MaximumProfitFromValidTopologicalOrderInDagSolution's - this file just pins
 // them to LeetCode's published examples.
 public sealed partial class MaximumProfitFromValidTopologicalOrderInDagSolutionTests
@@ -32,6 +32,17 @@ public sealed partial class MaximumProfitFromValidTopologicalOrderInDagSolutionT
         int nodeCount, int[][] edges, int[] score, long expected)
     {
         var actual = MaximumProfitFromValidTopologicalOrderInDagSolution.MaxProfitByBitmaskMemoization(
+            nodeCount, edges, score);
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxProfitByDenseBitmaskMemoization_LeetCodeExamples_ReturnsMaximumAchievableProfit(
+        int nodeCount, int[][] edges, int[] score, long expected)
+    {
+        var actual = MaximumProfitFromValidTopologicalOrderInDagSolution.MaxProfitByDenseBitmaskMemoization(
             nodeCount, edges, score);
 
         Assert.Equal(expected, actual);

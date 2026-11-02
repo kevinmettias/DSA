@@ -176,10 +176,19 @@ The last three are done too.
   multiply with the node count. The memo arm runs to LeetCode's n = 22 and takes 41 ms there. The
   backtracking baseline stops at 8 (`b41b150f`).
 
-Open: LeetCode also allows LC 3530's edgeless DAG, whose 2^22 placed sets all pass through
-`Memoizer`'s `Dictionary`. Measured with a stopwatch: about 0.75 s and 324 MB per call at
-n = 22. A dense memo for int states in [0, 2^n), with a flat array as the cache, would cut both.
-That is a new core type beside `Memoizer`, so it is the owner's call.
+LeetCode also allows LC 3530's edgeless DAG, whose 2^22 placed sets all pass through
+`Memoizer`'s `Dictionary`. A dense memo for int states in [0, 2^n), with flat arrays as the cache,
+was expected to cut both time and memory. The owner approved it, and `DenseMemoizer` now sits
+beside `Memoizer`. Measured with BenchmarkDotNet (two short-job passes), it cut only memory at
+LeetCode's n = 22:
+
+- Edgeless DAG: 38 MB against 324 MB, in about the same time (716-735 ms against 778-818 ms).
+  The time is the recurrence's branching and cache misses on 32 MB of results indexed by mask.
+- The benchmark's sparse DAG: the same memory, and about 15% slower (50-52 ms against 43-45 ms).
+- From 6 to 15 nodes, where the arrays stay small, it is 1.1-2.6 times faster.
+
+So LC 3530 keeps its `Dictionary` arm and gains `MaxProfitByDenseBitmaskMemoization` as a third.
+Its benchmark now runs both DAGs, so the memory trade shows up in BenchmarkDotNet.
 
 ### Tiny examples and timed rebuilds — DONE
 
