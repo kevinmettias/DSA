@@ -1,10 +1,11 @@
 using DSAExperimentation.Domain.Computing.Filesystem;
+using DSAExperimentation.Domain.Computing.Networking;
 using DSAExperimentation.Domain.Computing.Paths;
 
 namespace DSAExperimentation.Tests.Domain.Computing.Paths;
 
-// Folder paths, root first, and domain names, root last: one rule written in opposite directions.
-// The domain-name notation is test-only, since no problem here reads one (ARCHITECTURE §17.10).
+// Folder paths and Windows paths, root first, and domain names, root last: one rule written in
+// opposite directions.
 public sealed partial class NamePathTests
 {
     // A folder, and a path inside it, one level down and deeper.
@@ -48,6 +49,14 @@ public sealed partial class NamePathTests
     public void HasInside_FolderPathNotPastTheFolderAndASeparator_IsFalse(string folder, string path) =>
         Assert.False(new NamePath<FolderPaths>(folder).HasInside(path));
 
+    [Fact]
+    public void HasInside_WindowsPathPastTheFolderAndABackslash_IsTrue() =>
+        Assert.True(new NamePath<WindowsPaths>(@"C:\a").HasInside(@"C:\a\b"));
+
+    [Fact]
+    public void HasInside_WindowsPathSharingOnlyCharacters_IsFalse() =>
+        Assert.False(new NamePath<WindowsPaths>(@"C:\a").HasInside(@"C:\ab"));
+
     [Theory]
     [MemberData(nameof(DomainsAndInside))]
     public void HasInside_DomainNameBeforeTheDomainAndASeparator_IsTrue(string domain, string name) =>
@@ -57,11 +66,4 @@ public sealed partial class NamePathTests
     [MemberData(nameof(DomainsAndNotInside))]
     public void HasInside_DomainNameNotBeforeTheDomainAndASeparator_IsFalse(string domain, string name) =>
         Assert.False(new NamePath<DomainNames>(domain).HasInside(name));
-
-    private readonly struct DomainNames : IPathNotation
-    {
-        public static char Separator => '.';
-
-        public static bool IsRootFirst => false;
-    }
 }
