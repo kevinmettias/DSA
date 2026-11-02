@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Domain.English;
 
 namespace DSAExperimentation.LeetCode.CountSortedVowelStrings;
 
@@ -12,8 +13,12 @@ namespace DSAExperimentation.LeetCode.CountSortedVowelStrings;
 // every one of them and counts what it made, while the memoized recurrence counts
 // by state - (remaining length, smallest allowed vowel index) - and never builds a
 // string.
+//
+// The vowels are English's (Domain/English): the recurrence counts them through
+// EnglishVowels, and the baseline keeps its own copies below (ARCHITECTURE §17.5).
 internal static class CountSortedVowelStringsSolution
 {
+    // The baseline's own copies of English's vowels.
     private const int VowelCount = 5;
 
     private static readonly char[] Vowels = ['a', 'e', 'i', 'o', 'u'];
@@ -69,7 +74,7 @@ internal static class CountSortedVowelStringsSolution
 
             var total = 0;
 
-            for (var vowel = start; vowel < VowelCount; vowel++)
+            for (var vowel = start; vowel < EnglishVowels.Count; vowel++)
             {
                 total += rest.Replay((remaining - 1, vowel), rest);
             }

@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.English;
+
 namespace DSAExperimentation.LeetCode.VowelsOfAllSubstrings;
 
 // LeetCode 2063. Vowels of All Substrings: sum, over every substring of the word,
@@ -9,6 +11,9 @@ namespace DSAExperimentation.LeetCode.VowelsOfAllSubstrings;
 // per-vowel contribution count that replaces it; both answer with a long, because
 // the total is quadratic in the word length and overflows an int well inside
 // LeetCode's own 10^5 constraint.
+//
+// Which letters are vowels is English's (Domain/English): the contribution arm asks
+// EnglishVowels, and the baseline keeps its own IsVowel (ARCHITECTURE §17.5).
 internal static class VowelsOfAllSubstringsSolution
 {
     // The textbook baseline: fix a start index, extend the substring one character
@@ -37,6 +42,9 @@ internal static class VowelsOfAllSubstringsSolution
         return total;
     }
 
+    // The baseline's own copy of English's vowels.
+    private static bool IsVowel(char character) => character is 'a' or 'e' or 'i' or 'o' or 'u';
+
     // The vowel at index i is counted once by every substring that contains it, and
     // a substring contains it exactly when its start is one of the (i + 1) indices
     // at or before i and its end is one of the (n - i) indices at or after i. So the
@@ -49,7 +57,7 @@ internal static class VowelsOfAllSubstringsSolution
 
         for (var i = 0; i < length; i++)
         {
-            if (IsVowel(word[i]))
+            if (EnglishVowels.IsLowercaseVowel(word[i]))
             {
                 total += (long)(i + 1) * (length - i);
             }
@@ -57,6 +65,4 @@ internal static class VowelsOfAllSubstringsSolution
 
         return total;
     }
-
-    private static bool IsVowel(char character) => character is 'a' or 'e' or 'i' or 'o' or 'u';
 }

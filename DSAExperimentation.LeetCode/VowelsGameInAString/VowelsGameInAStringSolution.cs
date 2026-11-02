@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.English;
 
 namespace DSAExperimentation.LeetCode.VowelsGameInAString;
 
@@ -15,11 +16,16 @@ namespace DSAExperimentation.LeetCode.VowelsGameInAString;
 // forces the same trap on him one level down (his even-only moves can never
 // produce a losing-for-Alice odd-zero split), all the way down to a lone vowel
 // he cannot legally touch. With zero vowels she has no legal first move.
+//
+// The vowels are English's (Domain/English): the closed form's set is built from
+// EnglishVowels.Letters, and the game-tree baseline keeps its own copy (ARCHITECTURE
+// §17.5).
 internal static class VowelsGameInAStringSolution
 {
+    // The baseline's own copy of English's vowels.
     private const string Vowels = "aeiou";
 
-    private static readonly Set<char> VowelSet = new(Vowels);
+    private static readonly Set<char> VowelSet = new(EnglishVowels.Letters);
 
     // The textbook answer: play out the actual game tree. Alice's and Bob's
     // turns need separate recursive functions - the substrings each may
