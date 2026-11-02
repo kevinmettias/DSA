@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.Domain.Chess;
+using DSAExperimentation.Domain.Games.Chess;
 
 namespace DSAExperimentation.LeetCode.QueensThatCanAttackTheKing;
 
@@ -21,7 +21,7 @@ namespace DSAExperimentation.LeetCode.QueensThatCanAttackTheKing;
 // deliberately inside the measured strategy rather than hoisted, because paying
 // O(queens) once is precisely what the arm has to earn back.
 //
-// The board and the queen's lines are chess's (Domain/Chess): the set arm reads
+// The board and the queen's lines are chess's (Domain/Games/Chess): the set arm reads
 // them from ChessRules, and the baseline keeps its own copies (ARCHITECTURE §17.5),
 // in the same order, since the arms are compared answer for answer.
 internal static class QueensThatCanAttackTheKingSolution

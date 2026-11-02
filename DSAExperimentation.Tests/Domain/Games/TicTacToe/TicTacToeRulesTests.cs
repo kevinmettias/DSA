@@ -1,6 +1,6 @@
-using DSAExperimentation.Domain.TicTacToe;
+using DSAExperimentation.Domain.Games.TicTacToe;
 
-namespace DSAExperimentation.Tests.Domain.TicTacToe;
+namespace DSAExperimentation.Tests.Domain.Games.TicTacToe;
 
 public sealed partial class TicTacToeRulesTests
 {

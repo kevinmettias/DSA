@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.Domain.Sudoku;
+using DSAExperimentation.Domain.Games.Sudoku;
 
 namespace DSAExperimentation.LeetCode.ValidSudoku;
 
@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.ValidSudoku;
 // box) unit a digit already occupies; they differ only in what tracks
 // "already seen" - three dense bool grids sized to the fixed 9-cell axes, or
 // this repo's own Set<string> keyed by a composed row/col/box tag. The board's
-// dimensions and notation are Domain/Sudoku's; the baseline keeps its own copy of
+// dimensions and notation are Domain/Games/Sudoku's; the baseline keeps its own copy of
 // them, since it may use no library type (ARCHITECTURE §17.5).
 internal static class ValidSudokuSolution
 {

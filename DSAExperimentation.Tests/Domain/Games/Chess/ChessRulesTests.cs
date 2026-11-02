@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Grids;
-using DSAExperimentation.Domain.Chess;
+using DSAExperimentation.Domain.Games.Chess;
 
-namespace DSAExperimentation.Tests.Domain.Chess;
+namespace DSAExperimentation.Tests.Domain.Games.Chess;
 
 public sealed partial class ChessRulesTests
 {

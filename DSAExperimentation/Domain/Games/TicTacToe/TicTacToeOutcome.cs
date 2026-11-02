@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Domain.TicTacToe;
+namespace DSAExperimentation.Domain.Games.TicTacToe;
 
 /// <summary>How a tic-tac-toe game stands after some number of moves.</summary>
 public enum TicTacToeOutcome

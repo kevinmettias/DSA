@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.TicTacToe;
+using DSAExperimentation.Domain.Games.TicTacToe;
 
 namespace DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame;
 
@@ -9,8 +9,8 @@ namespace DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame;
 // subject.
 //
 // The game's rules - the board size, the turn order, the diagonals, how a game ends - are
-// Domain/TicTacToe's (ARCHITECTURE §17.6). The board-rescan baseline keeps its own copy of the ones it
-// uses, BoardSize and PlayerCount, since a baseline may use no library type (§17.5).
+// Domain/Games/TicTacToe's (ARCHITECTURE §17.6). The board-rescan baseline keeps its own copy of
+// the ones it uses, BoardSize and PlayerCount, since a baseline may use no library type (§17.5).
 internal static class TicTacToeVocabulary
 {
     // The baseline's own copy of LC 1275's 3 x 3 board and of its two players.

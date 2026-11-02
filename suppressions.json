@@ -5,7 +5,7 @@
       "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/WordSearchIIBenchmarks.cs",
       "anchor": "`BoardSize = 8`",
-      "reason": "`BoardSize = 8` is declared four times, and three of them mean chess's board. Domain/Chess's ChessRules.BoardSize is the 8x8 board that LC 1222's and LC 2056's composed arms and LC 1222's and LC 3001's benchmarks read. LC 2056's cartesian-product baseline and LC 3001's destination-enumeration baseline state that board themselves: ARCHITECTURE.md §17.5 bars a baseline from reading even a compile-time constant from a library type, and the owner ruled (2026-11-01) that when a rule moves to Domain the baseline keeps its own copy. The board is fixed by the game, so neither copy can drift without its problem's own examples failing. The fourth, WordSearchIIBenchmarks' BoardSize, sizes the letter grid LC 212's workload searches, 8 by choice rather than because it is a chess board, so it shares the value and not the meaning, and reading ChessRules there would be wrong.",
+      "reason": "`BoardSize = 8` is declared four times, and three of them mean chess's board. Domain/Games/Chess's ChessRules.BoardSize is the 8x8 board that LC 1222's and LC 2056's composed arms and LC 1222's and LC 3001's benchmarks read. LC 2056's cartesian-product baseline and LC 3001's destination-enumeration baseline state that board themselves: ARCHITECTURE.md §17.5 bars a baseline from reading even a compile-time constant from a library type, and the owner ruled (2026-11-01) that when a rule moves to Domain the baseline keeps its own copy. The board is fixed by the game, so neither copy can drift without its problem's own examples failing. The fourth, WordSearchIIBenchmarks' BoardSize, sizes the letter grid LC 212's workload searches, 8 by choice rather than because it is a chess board, so it shares the value and not the meaning, and reading ChessRules there would be wrong.",
       "owner": "@kmettias",
       "expires": "2027-04-01"
     },
@@ -13,7 +13,7 @@
       "check": "check-duplicate-constant",
       "path": "DSAExperimentation.LeetCode/FindWinnerOnATicTacToeGame/TicTacToeVocabulary.cs",
       "anchor": "`BoardSize = 3`",
-      "reason": "LC 1275's board-rescan baseline states the 3 x 3 board itself. ARCHITECTURE.md §17.5 bars a baseline from reading even a compile-time constant from a library type, so it cannot read Domain/TicTacToe's TicTacToeRules.BoardSize, which the running-counts arm uses, and the owner ruled (2026-11-01) that when a rule moves to Domain the baseline keeps its own copy. The board is fixed by the game itself, so the copy cannot drift without the problem's own examples failing.",
+      "reason": "LC 1275's board-rescan baseline states the 3 x 3 board itself. ARCHITECTURE.md §17.5 bars a baseline from reading even a compile-time constant from a library type, so it cannot read Domain/Games/TicTacToe's TicTacToeRules.BoardSize, which the running-counts arm uses, and the owner ruled (2026-11-01) that when a rule moves to Domain the baseline keeps its own copy. The board is fixed by the game itself, so the copy cannot drift without the problem's own examples failing.",
       "owner": "@kmettias",
       "expires": "2027-04-01"
     },
@@ -21,7 +21,7 @@
       "check": "check-duplicate-constant",
       "path": "DSAExperimentation.LeetCode/SudokuSolver/SudokuSolverSolution.cs",
       "anchor": "`BoxSize = 3`",
-      "reason": "Each copy is a baseline stating Sudoku's 3x3 box size itself: LC 37's TrySolveBySpecializedRecursion and LC 36's IsValidByBooleanGrid. ARCHITECTURE.md §17.5 bars a baseline from reading even a compile-time constant from a library type, so they cannot read Domain/Sudoku's SudokuRules.BoxSize, which the composed arms use, and the owner ruled (2026-11-01) that when a rule moves to Domain the baseline keeps its own copy. The value is fixed by the puzzle itself, so a copy cannot drift without the problem's own examples failing.",
+      "reason": "Each copy is a baseline stating Sudoku's 3x3 box size itself: LC 37's TrySolveBySpecializedRecursion and LC 36's IsValidByBooleanGrid. ARCHITECTURE.md §17.5 bars a baseline from reading even a compile-time constant from a library type, so they cannot read Domain/Games/Sudoku's SudokuRules.BoxSize, which the composed arms use, and the owner ruled (2026-11-01) that when a rule moves to Domain the baseline keeps its own copy. The value is fixed by the puzzle itself, so a copy cannot drift without the problem's own examples failing.",
       "owner": "@kmettias",
       "expires": "2027-04-01"
     },

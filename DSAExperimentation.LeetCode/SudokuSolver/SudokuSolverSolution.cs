@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
-using DSAExperimentation.Domain.Sudoku;
+using DSAExperimentation.Domain.Games.Sudoku;
 
 namespace DSAExperimentation.LeetCode.SudokuSolver;
 
@@ -23,7 +23,7 @@ namespace DSAExperimentation.LeetCode.SudokuSolver;
 // snapshot is copied back into the caller's own array once the search
 // returns, so the mutation LeetCode actually checks still happens.
 //
-// The engine arm reads the board's rules from Domain/Sudoku: which digits a cell
+// The engine arm reads the board's rules from Domain/Games/Sudoku: which digits a cell
 // may take, when a placement is legal and when the board is solved. Which cell
 // to branch on next (FindEmptyCell) is the search's own choice and stays here,
 // and the specialized recursion keeps its own copy of the rules, since a

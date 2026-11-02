@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Domain.TicTacToe;
+namespace DSAExperimentation.Domain.Games.TicTacToe;
 
 // Tic-tac-toe as LC 1275 states it: a 3x3 board on which two players, A first, take turns marking a
 // square, and the first to complete a row, a column or a diagonal wins; a full board with no line is

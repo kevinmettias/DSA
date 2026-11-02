@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 using DSAExperimentation.Algorithms.Backtracking;
-using DSAExperimentation.Domain.Chess;
+using DSAExperimentation.Domain.Games.Chess;
 
 namespace DSAExperimentation.LeetCode.NumberOfValidMoveCombinationsOnChessboard;
 
@@ -23,7 +23,7 @@ namespace DSAExperimentation.LeetCode.NumberOfValidMoveCombinationsOnChessboard;
 // existing choose/explore/unchoose contract, so both the Move choice and the shared
 // mutable State live here beside the solution (ARCHITECTURE.md #17.3).
 //
-// The board and each piece's lines are chess's (Domain/Chess): the backtracking arm
+// The board and each piece's lines are chess's (Domain/Games/Chess): the backtracking arm
 // reads them from ChessRules, and the cartesian-product baseline keeps its own
 // copies below (ARCHITECTURE §17.5). The piece names and the 1-based squares are
 // LeetCode's.

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Grids;
-using DSAExperimentation.Domain.Chess;
+using DSAExperimentation.Domain.Games.Chess;
 
 namespace DSAExperimentation.LeetCode.AvailableCapturesForRook;
 
@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.AvailableCapturesForRook;
 // blocks), or a pawn ('p', which is captured and stops the walk).
 //
 // The ray walk takes its four directions from ChessRules.RookLines, a rook's lines
-// (Domain/Chess), and its edge from GridSize, and nothing heavier, which is a
+// (Domain/Games/Chess), and its edge from GridSize, and nothing heavier, which is a
 // judgement rather than an omission:
 // Grid/GridNode/GridChildren model unordered single-step orthogonal adjacency for
 // graph walks, whereas this problem is a directional ray cast that stops at the

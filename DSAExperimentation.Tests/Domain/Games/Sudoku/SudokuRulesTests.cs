@@ -1,6 +1,6 @@
-using DSAExperimentation.Domain.Sudoku;
+using DSAExperimentation.Domain.Games.Sudoku;
 
-namespace DSAExperimentation.Tests.Domain.Sudoku;
+namespace DSAExperimentation.Tests.Domain.Games.Sudoku;
 
 public sealed partial class SudokuRulesTests
 {

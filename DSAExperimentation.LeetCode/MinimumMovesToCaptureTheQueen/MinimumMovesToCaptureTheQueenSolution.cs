@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.MinimumMovesToCaptureTheQueen;
 // the way RookSquare already does for LC 999.
 //
 // Only the baseline walks the board, so it alone needs the board's size and the
-// pieces' lines; they are chess's (Domain/Chess), and it keeps its own copies
+// pieces' lines; they are chess's (Domain/Games/Chess), and it keeps its own copies
 // (ARCHITECTURE §17.5). The line-of-sight arm's same-line tests are grid geometry
 // with no second user, so they stay below.
 internal static class MinimumMovesToCaptureTheQueenSolution

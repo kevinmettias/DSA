@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.TicTacToe;
+using DSAExperimentation.Domain.Games.TicTacToe;
 using DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are FindWinnerOnATicTacToeGameSolution's, the same
 // methods FindWinnerOnATicTacToeGameSolutionTests proves correct. LC 1275 fixes the
 // board at 3 x 3 and so at nine moves, which leaves one size to run, and Size is
-// that board's - Domain/TicTacToe's BoardSize, the board both strategies play on.
+// that board's - Domain/Games/TicTacToe's BoardSize, the board both strategies play on.
 // The workload shuffles every cell of the board into a move
 // order in [GlobalSetup], so only the replay is measured; at this seed the shuffle
 // completes no line - LC 1275 allows no move after a win - so both arms walk all

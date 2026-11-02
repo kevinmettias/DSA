@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Domain.Sudoku;
+namespace DSAExperimentation.Domain.Games.Sudoku;
 
 // Sudoku's world as LC 36 and LC 37 both state it: a 9x9 grid made of nine 3x3 boxes, holding the
 // digits '1' to '9', with '.' marking an empty cell, where no digit may repeat in a row, a column or

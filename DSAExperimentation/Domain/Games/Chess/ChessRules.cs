@@ -1,7 +1,7 @@
 using System.Collections.Immutable;
 using DSAExperimentation.DataStructures.Graph.Grids;
 
-namespace DSAExperimentation.Domain.Chess;
+namespace DSAExperimentation.Domain.Games.Chess;
 
 // Chess as LC 999, LC 1222 and LC 2056 state it: an 8x8 board, a rook moving along its row and its
 // column, a bishop along its two diagonals, and a queen along all of them, each sliding square by

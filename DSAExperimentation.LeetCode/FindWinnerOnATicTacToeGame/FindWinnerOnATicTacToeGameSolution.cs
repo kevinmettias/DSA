@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.TicTacToe;
+using DSAExperimentation.Domain.Games.TicTacToe;
 using Vocabulary = DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame.TicTacToeVocabulary;
 
 namespace DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame;
@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame;
 // how much of the board each move re-examines: rebuild and rescan every row,
 // column and diagonal, or keep running +/-1 tallies and touch only the lines the
 // new move actually falls on. Both play LC 1275's fixed 3 x 3 board. The game's
-// rules are Domain/TicTacToe's, which the running-counts arm reads; the
+// rules are Domain/Games/TicTacToe's, which the running-counts arm reads; the
 // board-rescan baseline keeps its own copy of them (ARCHITECTURE §17.5).
 internal static class FindWinnerOnATicTacToeGameSolution
 {
@@ -114,7 +114,7 @@ internal static class FindWinnerOnATicTacToeGameSolution
     // Running per-row, per-column and per-diagonal tallies moved by +1 for A and
     // -1 for B: a line is won the instant its tally reaches +/-BoardSize, so each
     // move costs O(1) instead of a full board rescan. Who moves, which diagonals a
-    // square lies on and how the game stands come from Domain/TicTacToe; the signed
+    // square lies on and how the game stands come from Domain/Games/TicTacToe; the signed
     // tally is this strategy's own.
     public static string FindWinnerByRunningCounts(int[][] moves)
     {
