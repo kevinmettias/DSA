@@ -31,6 +31,19 @@ public sealed partial class BenchmarkClassTests
         Assert.Throws<InvalidOperationException>(() => benchmark.Run(benchmark.Prepare(arm), arm));
     }
 
+    [Fact]
+    public void PrepareNextCall_ArmConsumingWhatItsIterationSetupGrants_GrantsItAgain()
+    {
+        var benchmark = BenchmarkClass.Of(typeof(RefilledAllowance));
+        var arm = benchmark.Arms[0];
+        var harness = benchmark.Prepare(arm);
+        benchmark.Run(harness, arm);
+
+        benchmark.PrepareNextCall(harness, arm);
+
+        Assert.Equal(RefilledAllowance.Granted, benchmark.Run(harness, arm));
+    }
+
     public sealed class PerArmSizes
     {
         public static IEnumerable<int> FastSizes => [5, 9, 200];
@@ -54,5 +67,24 @@ public sealed partial class BenchmarkClassTests
         [Benchmark]
         [Arguments(9)]
         public int Fast(int size) => size;
+    }
+
+    public sealed class RefilledAllowance
+    {
+        public const int Granted = 1;
+
+        private int _remaining;
+
+        [IterationSetup]
+        public void Refill() => _remaining = Granted;
+
+        [Benchmark]
+        public int TakeAll()
+        {
+            var taken = _remaining;
+            _remaining = 0;
+
+            return taken;
+        }
     }
 }

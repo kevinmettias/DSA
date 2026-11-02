@@ -4,8 +4,10 @@ using DSAExperimentation.LeetCode.Conventions;
 namespace DSAExperimentation.Benchmarks.Tests;
 
 // The properties every benchmark class owes, checked once for all of them instead of once per class:
-// rebuilding the workload from the same parameters reproduces it and every arm's answer, and every
-// arm answers what the baseline answers, since arms that disagree are timing different questions.
+// rebuilding the workload from the same parameters reproduces it and every arm's answer, every arm
+// answers what the baseline answers, since arms that disagree are timing different questions, and
+// every arm answers the same when called again on the harness it already ran on, since that is how
+// BenchmarkDotNet calls it.
 // Every class with a [Benchmark] method is a case by construction, so a new benchmark is covered the
 // moment it exists; ArmAgreement holds the only per-problem knowledge, which is when exact agreement
 // is not the claim.
@@ -68,19 +70,39 @@ public sealed partial class BenchmarkArmsTests
         Assert.All(benchmark.Arms, arm => Assert.Null(Record.Exception(() => AnswerOf(benchmark, arm))));
     }
 
+    // Every check above hands each call a harness of its own, but BenchmarkDotNet calls an arm over and
+    // over on one harness, re-running only its [IterationSetup] in between. An arm that consumes or
+    // advances state no iteration setup rebuilds - a queue it drains, a cursor it moves - answers
+    // differently from its second call on, and from then on it is timing a different workload. Only
+    // the first two calls are compared, so state that changes the answer only on a later call, like
+    // ApplyDiscountEveryNOrders' cashier discounting every third customer, goes unseen.
+    [Theory]
+    [MemberData(nameof(BenchmarkClasses))]
+    public void Arms_SameHarnessCalledAgain_AnswerTheSameAgain(string benchmarkName)
+    {
+        var benchmark = BenchmarkClass.Named(benchmarkName);
+
+        var drifts = benchmark.Arms
+            .Select(arm => DriftOf(benchmark, arm))
+            .OfType<string>()
+            .ToList();
+
+        Assert.True(drifts.Count == 0, string.Join(Environment.NewLine, drifts));
+    }
+
     private static TheoryData<string> CasesWhere(Func<Type, bool> includes) =>
         new(BenchmarkClass.All
             .Where(benchmark => includes(benchmark.Type))
             .Select(benchmark => benchmark.Name));
 
-    private static string AnswerOf(BenchmarkClass benchmark, MethodInfo arm)
-    {
-        var answer = benchmark.Run(benchmark.Prepare(arm), arm);
+    private static string AnswerOf(BenchmarkClass benchmark, MethodInfo arm) =>
+        TextOf(benchmark, benchmark.Run(benchmark.Prepare(arm), arm));
 
-        return ArmAgreement.UnorderedAnswers.Contains(benchmark.Type)
+    // Rendered the moment it is returned: an answer may be state the harness goes on to rewrite.
+    private static string TextOf(BenchmarkClass benchmark, object? answer) =>
+        ArmAgreement.UnorderedAnswers.Contains(benchmark.Type)
             ? AnswerGraphText.OfUnordered(answer)
             : AnswerGraphText.Of(answer);
-    }
 
     private static string? DisagreementOf(BenchmarkClass benchmark, MethodInfo arm, string expected)
     {
@@ -118,5 +140,19 @@ public sealed partial class BenchmarkArmsTests
         var start = Math.Max(0, at - ExcerptRadius);
 
         return text[start..Math.Min(text.Length, at + ExcerptRadius)];
+    }
+
+    private static string? DriftOf(BenchmarkClass benchmark, MethodInfo arm)
+    {
+        var harness = benchmark.Prepare(arm);
+        var first = TextOf(benchmark, benchmark.Run(harness, arm));
+
+        benchmark.PrepareNextCall(harness, arm);
+        var again = TextOf(benchmark, benchmark.Run(harness, arm));
+        var at = FirstDifference(first, again);
+
+        return at < 0
+            ? null
+            : $"drifts: {arm.Name} answered ...{Excerpt(again, at)}... on its second call where its first answered ...{Excerpt(first, at)}... (character {at})";
     }
 }

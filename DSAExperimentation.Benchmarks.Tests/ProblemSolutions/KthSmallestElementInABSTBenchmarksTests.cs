@@ -3,8 +3,9 @@ using DSAExperimentation.DataStructures;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for KthSmallestElementInABSTBenchmarks (ARCHITECTURE 17.9). Arm agreement and
-// rebuild determinism are BenchmarkArmsTests' job; this pins what the generic check cannot know.
+// Harness coverage for KthSmallestElementInABSTBenchmarks (ARCHITECTURE 17.9). Arm agreement,
+// rebuild determinism and repeat calls on one harness are BenchmarkArmsTests' job; this pins what
+// the generic check cannot know.
 //
 // The expected value is decisive and independent of either walk: Setup inserts the seeded shuffle
 // of 1..NodeCount (all distinct) into a BinarySearchTree, so the in-order sequence is exactly
@@ -17,18 +18,6 @@ public sealed partial class KthSmallestElementInABSTBenchmarksTests
     [Fact]
     public void RecursiveInOrderWalk_ShuffledTree_ReportsTheMedianRankValue() =>
         Assert.Equal(ExpectedRankValue, BuildHarness().RecursiveInOrderWalk());
-
-    // The hook arm counts its running rank in a hook it builds per call, so a second walk on one
-    // harness reports the same rank only if nothing carries over from the first.
-    [Fact]
-    public void InOrderTraversalHooks_CalledTwiceOnOneHarness_ReportsTheSameRankBothTimes()
-    {
-        var harness = BuildHarness();
-        var first = harness.InOrderTraversalHooks();
-        var second = harness.InOrderTraversalHooks();
-
-        Assert.Equal(first, second);
-    }
 
     private static KthSmallestElementInABSTBenchmarks BuildHarness()
     {

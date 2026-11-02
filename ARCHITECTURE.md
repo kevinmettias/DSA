@@ -1695,13 +1695,15 @@ judge reads back from it: there, each level along its next pointers with `#` bet
   asserts that once for every class with a `[Benchmark]` method, found by reflection, so a new
   benchmark is covered the moment it exists. At each `[Params]` member's smallest value, on a fresh
   harness per arm: rebuilding the workload reproduces it, every arm answers the same on a rebuilt
-  harness, and every arm answers what the baseline answers. Answers are compared by walking their
+  harness, every arm answers what the baseline answers, and every arm answers the same when called
+  again on the harness it already ran on, with only its `[IterationSetup]` re-run in between, as
+  BenchmarkDotNet calls it across iterations. Answers are compared by walking their
   fields (`AnswerGraphText`), so node-returning arms and void arms that rewrite the harness are
   compared by shape and value. The per-problem knowledge it cannot learn by reflection lives in
   `ArmAgreement`, each entry with its reason: answers LeetCode leaves unordered, random draws, and
   arms whose valid answers differ by design. An entry is for a difference the *problem* allows, not
-  for a harness defect — an arm that drops what it builds, a solution that seeds itself, a workload
-  outside the problem's contract are fixed instead. A `<Benchmark>Tests` companion exists only to
+  for a harness defect — an arm that drops what it builds, a solution that seeds itself, an arm that
+  consumes the workload it was handed, a workload outside the problem's contract are fixed instead. A `<Benchmark>Tests` companion exists only to
   assert what that check cannot — an expected value derived independently of the arms, a property
   of the workload's shape, a size other than the smallest. A companion that compares arms only with
   each other restates the generic check under a different name, and is not written.

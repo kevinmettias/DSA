@@ -6,8 +6,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 //
 // SeededRandomRand7 is a private nested type, so no test class can name it in code. Coverage is
 // attributed by TYPE, so the nested unit needs a class named after it, and the only surface that
-// runs SeededRandomRand7.Draw is the outer benchmark's arm, which passes the Setup-built Rand7 into
-// the solution. These tests drive that arm and assert what Draw must be doing.
+// runs SeededRandomRand7.Draw is the outer benchmark's arm, which seeds a fresh Rand7 per call and
+// passes it into the solution. These tests drive that arm and assert what Draw must be doing.
 //
 // The benchmark's two arms consume Draw's stream differently - the recycled sampler draws fewer times
 // per value - so this class does not assert that they agree. It uses the textbook arm,

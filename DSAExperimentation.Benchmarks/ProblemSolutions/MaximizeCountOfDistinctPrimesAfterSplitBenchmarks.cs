@@ -5,11 +5,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeCountOfDistinctPrimesAfterSplitSolution's,
 // the same methods MaximizeCountOfDistinctPrimesAfterSplitSolutionTests proves correct.
-// Each [Benchmark] call re-applies the same query list to whatever state
-// _nums was left in by the previous call - every index a query ever touches
-// gets overwritten to that query's own value regardless of starting point, so
-// repeated invocations within one job (and the two separate jobs BenchmarkDotNet
-// runs per [GlobalSetup]) still measure the identical, deterministic workload.
+// Both apply each query to the array in place, as LC 3569 does, so each call hands its
+// arm a fresh copy of the seeded array. Re-applied to the array a previous call left
+// behind, an early query would split an array whose later-queried indices already hold
+// their final values, and every call after the first would time a different workload
+// from the one the tests check. The copy is timed on purpose, and both arms pay it.
 public class MaximizeCountOfDistinctPrimesAfterSplitBenchmarks
 {
     private const int Seed = 3569; // LC problem number
@@ -38,9 +38,9 @@ public class MaximizeCountOfDistinctPrimesAfterSplitBenchmarks
 
     [Benchmark(Baseline = true)]
     public int[] BruteForce() =>
-        MaximizeCountOfDistinctPrimesAfterSplitSolution.MaxDistinctPrimeCountsByBruteForce(_nums, _queries);
+        MaximizeCountOfDistinctPrimesAfterSplitSolution.MaxDistinctPrimeCountsByBruteForce((int[])_nums.Clone(), _queries);
 
     [Benchmark]
     public int[] PrefixSuffixScan() =>
-        MaximizeCountOfDistinctPrimesAfterSplitSolution.MaxDistinctPrimeCountsByPrefixSuffixScan(_nums, _queries);
+        MaximizeCountOfDistinctPrimesAfterSplitSolution.MaxDistinctPrimeCountsByPrefixSuffixScan((int[])_nums.Clone(), _queries);
 }

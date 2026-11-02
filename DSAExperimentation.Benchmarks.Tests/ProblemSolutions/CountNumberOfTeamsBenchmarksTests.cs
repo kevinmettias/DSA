@@ -3,11 +3,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for CountNumberOfTeamsBenchmarks (ARCHITECTURE 17.9): BenchmarkArmsTests already
-// holds the arms to agreeing on a fresh harness, so this asserts what it cannot: a range for the
-// answer that comes from the workload's shape rather than from either arm, and that a harness which
-// has already answered once answers as a rebuild does, since BenchmarkDotNet calls an arm many times
-// on one harness while the generic check builds a fresh harness for every call. Setup seeds the
-// ratings, so the same Length must rebuild the same array.
+// holds the arms to agreeing, and to answering the same on a rebuilt harness and when called again
+// on one, so this asserts what it cannot: a range for the answer that comes from the workload's
+// shape rather than from either arm.
 public sealed partial class CountNumberOfTeamsBenchmarksTests
 {
     private const int SmallestLength = 80;
@@ -15,18 +13,12 @@ public sealed partial class CountNumberOfTeamsBenchmarksTests
     // Every team is one index triple, so no answer can exceed the number of triples the ratings hold.
     private const int MostIndexTriples = SmallestLength * (SmallestLength - 1) * (SmallestLength - 2) / 6;
 
+    // The documented shape: ratings are random draws from a 100_000-wide range, so the array
+    // holds many strictly monotone triples for both arms to find, and never more triples than
+    // the index triples it contains.
     [Fact]
-    public void Setup_SmallestLength_RebuildsTheSameWorkload()
-    {
-        var first = BuildHarness();
-        var second = BuildHarness();
-
-        // The documented shape: ratings are random draws from a 100_000-wide range, so the array
-        // holds many strictly monotone triples for both arms to find, and never more triples than
-        // the index triples it contains.
-        Assert.InRange(first.TripleLoopScan(), 1, MostIndexTriples);
-        Assert.Equal(first.TripleLoopScan(), second.TripleLoopScan());
-    }
+    public void TripleLoopScan_EightyRandomRatings_CountsWithinTheIndexTriples() =>
+        Assert.InRange(BuildHarness().TripleLoopScan(), 1, MostIndexTriples);
 
     private static CountNumberOfTeamsBenchmarks BuildHarness()
     {

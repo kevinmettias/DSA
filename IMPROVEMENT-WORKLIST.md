@@ -412,9 +412,15 @@ using) removed from 1,111 files.
   companion test names any more, as uncovered. The companions themselves now hold only what
   §17.9 says they are for: every rebuild check, every arm-against-arm comparison and every copy of
   one expected value asserted per arm that `BenchmarkArmsTests` already implies was removed
-  (1,438 test methods down to 565; 9 files deleted). The 19 `…_AgreesWith…` methods left compare
-  arms at a size the generic check never builds, in an order an unordered class's generic check
-  ignores, or on a stateful harness reused between arms.
+  (1,438 test methods down to 565; 9 files deleted). A repeat call on one harness, which
+  BenchmarkDotNet makes on every iteration, is now a generic theory too
+  (`Arms_SameHarnessCalledAgain_AnswerTheSameAgain`). It found two benchmarks timing a workload
+  their first call had used up, and both are fixed: ImplementRand10UsingRand7 shared one seeded
+  generator across calls, and MaximizeCountOfDistinctPrimesAfterSplit applied its queries to the
+  array in place. The companions' hand-written repeat calls went with it (6 more methods and 3 more
+  files deleted, and a repeat-call assertion dropped from 21 more tests). The 17 `…_AgreesWith…`
+  methods left compare arms at a size the generic check never builds, in an order an unordered
+  class's generic check ignores, or on one harness shared between two arms.
 
 ---
 

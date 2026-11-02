@@ -73,6 +73,11 @@ internal sealed class BenchmarkClass
         return harness;
     }
 
+    // Between two calls on one harness BenchmarkDotNet re-runs only the [IterationSetup] that targets
+    // the arm - before every call, since an iteration setup forces one invocation per iteration - so a
+    // second call starts from whatever the first left behind that no iteration setup rebuilds.
+    public void PrepareNextCall(object harness, MethodInfo arm) => RunSetups<IterationSetupAttribute>(harness, arm);
+
     public object? Run(object harness, MethodInfo arm)
     {
         var arguments = arm.GetParameters().Length == 0 ? null : new[] { _sharedArgument.Value };
