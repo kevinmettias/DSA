@@ -15,6 +15,14 @@ public sealed partial class GameOfLifeSolutionTests
                 [[0, 0, 0], [1, 0, 1], [0, 1, 1], [0, 1, 0]]
             },
             { [[1, 1], [1, 1]], [[1, 1], [1, 1]] },
+
+            // A full 3x3 board: each corner keeps its three neighbours and survives, and every
+            // other cell has five or eight and dies, so overcrowding is pinned too.
+            { [[1, 1, 1], [1, 1, 1], [1, 1, 1]], [[1, 0, 1], [0, 0, 0], [1, 0, 1]] },
+
+            // A plus: its centre has exactly four live neighbours and dies, each arm has three
+            // and survives, and each empty corner has three and is born.
+            { [[0, 1, 0], [1, 1, 1], [0, 1, 0]], [[1, 1, 1], [1, 0, 1], [1, 1, 1]] },
         };
 
     [Theory]

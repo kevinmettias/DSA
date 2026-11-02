@@ -1,4 +1,5 @@
 ﻿using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Games.Life;
 
 namespace DSAExperimentation.LeetCode.GameOfLife;
 
@@ -12,10 +13,12 @@ namespace DSAExperimentation.LeetCode.GameOfLife;
 // answer) vs. this repo's own Set<int>, which only remembers which cells started
 // live (row*cols+col encoded) instead of paying for every cell. The same "sparse Set
 // instead of a full copy" move SetMatrixZeroes makes.
+//
+// Conway's B3/S23 rule is the game's (Domain/Games/Life): the Set arm asks LifeLike<ConwayLife>, and the
+// board-copy baseline keeps its own copy below (ARCHITECTURE §17.5).
 internal static class GameOfLifeSolution
 {
-    // LC 289's fixed rule constants (Conway's B3/S23), not a property of either
-    // strategy.
+    // The baseline's own copy of Conway's B3/S23 counts.
     private const int BirthNeighborCount = 3;
     private const int SurvivalNeighborCount = 2;
 
@@ -67,6 +70,13 @@ internal static class GameOfLifeSolution
         return count;
     }
 
+    // The baseline's own copy of Conway's rule, named so the loop body reads as "write the
+    // next state" instead of applying && before || in its head. The current state is an int
+    // because it is the board's own 0/1.
+    private static bool IsAliveNextGeneration(int liveNeighbors, int currentState)
+        => liveNeighbors == BirthNeighborCount
+           || (liveNeighbors == SurvivalNeighborCount && currentState == 1);
+
     // This repo's own Set<int> snapshots which cells were live in the ORIGINAL board
     // before any in-place mutation - O(live cells) extra space instead of
     // O(rows*cols), since every cell's next state only ever needs to know which
@@ -82,8 +92,10 @@ internal static class GameOfLifeSolution
             for (var c = 0; c < cols; c++)
             {
                 var liveNeighbors = CountLiveNeighborsFromSet(originallyLive, rows, cols, (r, c));
-                var wasLive = originallyLive.Has(r * cols + c) ? 1 : 0;
-                board[r][c] = IsAliveNextGeneration(liveNeighbors, wasLive) ? 1 : 0;
+                var isLiveNext = originallyLive.Has(r * cols + c)
+                    ? LifeLike<ConwayLife>.IsSurvivalCount(liveNeighbors)
+                    : LifeLike<ConwayLife>.IsBirthCount(liveNeighbors);
+                board[r][c] = isLiveNext ? 1 : 0;
             }
         }
     }
@@ -134,15 +146,6 @@ internal static class GameOfLifeSolution
 
         return count;
     }
-
-    // Conway's two rules are the definition of a cell's next state, so they get a name and
-    // the loop body reads as "write the next state" instead of applying && before || in
-    // its head. The current state is an int rather than a bool because it is the board's
-    // own 0/1, which keeps the second strategy's Set membership from needing a conversion
-    // at a call site whose meaning would then move into the argument's position.
-    private static bool IsAliveNextGeneration(int liveNeighbors, int currentState)
-        => liveNeighbors == BirthNeighborCount
-           || (liveNeighbors == SurvivalNeighborCount && currentState == 1);
 
     // Both coordinates within the board is one idea, and it was written out twice.
     private static bool IsInside(int row, int col, int rows, int cols)
