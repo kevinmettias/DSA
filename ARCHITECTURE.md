@@ -1432,7 +1432,9 @@ container the harness hands it, no library type enters a baseline, from any of t
 not a repo container, a traversal engine, a mechanism, `GridSize` or `GridNeighbors` as a slot or a
 call, not a Domain model (a combination lock, a sliding puzzle, a modulus witness), and not even a
 compile-time constant read from one, such as `AlgorithmConstants.HalvingFactor`. A baseline states
-its own constants. LeetCode's own notation is not the library's, so a baseline reads it like any
+its own constants. `checks.json` declares this bar to `check-duplicate-constant` as `barred_reads`,
+so a private copy in `DSAExperimentation.LeetCode` of a library value is not reported as a
+duplicate; a copy the problem exposes still is. LeetCode's own notation is not the library's, so a baseline reads it like any
 other arm: `LeetCodeAnswer.None`, and `LeetCodeModulus.Value`, the 10^9 + 7 counting answers are
 reported in, which the owner ruled a baseline may read (2026-11-01).
 
