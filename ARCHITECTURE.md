@@ -2025,8 +2025,10 @@ unbound name answers with an error symbol and hides the reference a rule asked a
   `ProblemImportTests`. Inside `DSAExperimentation.LeetCode`, a folder may name another problem's
   folder only along an allow-listed edge whose reason opens `Delegation:` or `Subroutine:`. An
   imported folder imports none, and the tier's root and `Conventions/` import no problem. Every
-  entry fails once its edge disappears. The scan reads qualified names as well as using directives,
-  because a sibling's namespace resolves with no using at all.
+  entry fails once its edge disappears. The scan binds every name in the solution project's
+  compilation. A symbol declared in another problem's namespace is a reference to that problem,
+  whether the file reached it by a using, by a partly qualified name, which needs no using, or by a
+  bare call a static using brought in.
 - **§17.5's "what you would write without this repo"** — `BaselineIsolationTests`. Every
   `Baseline = true` arm of every `ProblemSolutions` benchmark is traced through the compiled code,
   as §17.5 describes. The test fails on any library type the baseline binds to outside its input:

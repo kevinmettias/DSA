@@ -1,5 +1,7 @@
 using System.Text.Json;
-using System.Text.RegularExpressions;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace DSAExperimentation.Tests.Architecture;
 
@@ -10,15 +12,17 @@ namespace DSAExperimentation.Tests.Architecture;
 // imports no problem, so delegation never chains and never runs both ways, and the tier's root and
 // Conventions/ import no problem at all.
 //
-// The scan reads qualified names as well as using directives: every problem's namespace sits inside
-// DSAExperimentation.LeetCode, so a sibling's class resolves as `PermutationsII.PermutationsIISolution`
-// with no using at all.
+// The scan reads the solution project's compilation (RepositoryCompilation): every name in a file is
+// bound, and a symbol in another problem's namespace is a reference to that problem, however the file
+// spelled it - a using of any kind, a partially qualified `PermutationsII.PermutationsIISolution`
+// that needs no using, or a bare call a static using brought in.
 public sealed partial class ProblemImportTests
 {
     private const string SolutionProject = "DSAExperimentation.LeetCode";
     private const string RootImporter = "(root)";
     private const string EdgeArrow = " -> ";
     private const string SolutionSuffix = "Solution.cs";
+    private const string TierNamespacePrefix = "DSAExperimentation.LeetCode.";
 
     // Where checks.json declares check-duplicate-constant's problem units, and the folders they share.
     private const string ChecksFile = "checks.json";
@@ -34,6 +38,10 @@ public sealed partial class ProblemImportTests
     private static readonly string[] TierRootFolders = ["Conventions"];
 
     private static readonly string[] EdgeKinds = ["Delegation: ", "Subroutine: "];
+
+    // Every reference one problem makes to another, read once: binding the project's names is the
+    // costly part of the scan.
+    private static readonly Lazy<List<ProblemReference>> References = new(ProblemReferences);
 
     // Keyed "Importer -> Imported" by folder.
     private static readonly Dictionary<string, string> AllowedProblemImports = new()
@@ -86,26 +94,11 @@ public sealed partial class ProblemImportTests
             "Subroutine: each arm builds its quad trees with Construct Quad Tree's matching arm.",
     };
 
-    // A sibling namespace named by a using directive of any kind: plain, static or aliased.
-    private static readonly Regex UsingDirective = new(
-        @"^[ \t]*(?:global\s+)?using\s+(?:static\s+)?(?:\w+\s*=\s*)?DSAExperimentation\.LeetCode\.(?<name>\w+)",
-        RegexOptions.Multiline);
-
-    // Directive lines, blanked before the qualified-name scan so a using is not read twice and a
-    // namespace declaration does not name its own folder.
-    private static readonly Regex Directive = new(
-        @"^[ \t]*(?:(?:global\s+)?using\s+[^;=]*(?:=[^;]*)?|namespace\s+[\w.]+)\s*[;{]",
-        RegexOptions.Multiline);
-
-    // The first segment of a qualified name, with or without the tier's own namespace in front. The
-    // lookbehind keeps member access (`x.Name.Other`) from matching mid-chain.
-    private static readonly Regex QualifiedName = new(
-        @"(?<![\w.])(?:DSAExperimentation\s*\.\s*LeetCode\s*\.\s*)?(?<name>\w+)\s*\.\s*\w");
 
     [Fact]
     public void EveryProblemFolder_ReferencesAnotherOnlyAlongAnAllowedEdge()
     {
-        var offences = ProblemReferences()
+        var offences = References.Value
             .Where(reference => !AllowedProblemImports.ContainsKey(reference.Edge))
             .Select(reference => $"{reference.File}: \"{reference.Edge}\" is not an allowed edge. "
                 + "A delegation or a subroutine gets an entry saying which it is (ARCHITECTURE.md 17.3); "
@@ -120,7 +113,7 @@ public sealed partial class ProblemImportTests
     [Fact]
     public void AllowedProblemImports_AreAllStillPresent()
     {
-        var present = ProblemReferences().Select(reference => reference.Edge).ToHashSet();
+        var present = References.Value.Select(reference => reference.Edge).ToHashSet();
 
         Assert.DoesNotContain(AllowedProblemImports.Keys, edge => !present.Contains(edge));
     }
@@ -157,65 +150,174 @@ public sealed partial class ProblemImportTests
 
     [Fact]
     public void ProblemReferencesIn_SelfAliasConventionsAndTheTierItself_FindsNone() =>
-        Assert.Empty(ProblemReferencesIn(
-            "Permutations",
-            "using Self = DSAExperimentation.LeetCode.Permutations.PermutationsSolution;\n"
-                + "using DSAExperimentation.LeetCode.Conventions;\nnamespace DSAExperimentation.LeetCode.Permutations;\n"
-                + "var answer = LeetCodeAnswer.None;",
-            ["Permutations", "PermutationsII"]));
+        Assert.Empty(ProbeReferences(
+            """
+            using DSAExperimentation.LeetCode.Conventions;
+            using Self = DSAExperimentation.LeetCode.Alpha.AlphaSolution;
+
+            namespace DSAExperimentation.LeetCode.Alpha;
+
+            internal static class AlphaSolution
+            {
+                public static int Answer() => Self.Other() + LeetCodeAnswer.None + RootRule.Value;
+
+                public static int Other() => 0;
+            }
+            """));
 
     [Fact]
     public void ProblemReferencesIn_SiblingNamespaceWithNoUsing_FindsTheSibling() =>
         Assert.Equal(
-            ["PermutationsII"],
-            ProblemReferencesIn("Permutations", "var all = PermutationsII.PermutationsIISolution.Permute(nums);", ["Permutations", "PermutationsII"]));
+            ["AlphaII"],
+            ProbeReferences(
+                """
+                namespace DSAExperimentation.LeetCode.Alpha;
+
+                internal static class AlphaSolution
+                {
+                    public static int Answer(int[] nums) => AlphaII.AlphaIISolution.Answer(nums);
+                }
+                """));
 
     [Fact]
     public void ProblemReferencesIn_SiblingNamedInACommentOrString_FindsNone() =>
-        Assert.Empty(ProblemReferencesIn(
-            "Permutations",
-            "// PermutationsII.PermutationsIISolution does the work\nvar text = \"PermutationsII.X\";",
-            ["Permutations", "PermutationsII"]));
+        Assert.Empty(ProbeReferences(
+            """
+            namespace DSAExperimentation.LeetCode.Alpha;
+
+            // AlphaII.AlphaIISolution does the work
+            internal static class AlphaSolution
+            {
+                public static string Answer() => "AlphaII.AlphaIISolution";
+            }
+            """));
+
+    // A static using brings the sibling's members in with no type name at the call.
+    [Fact]
+    public void ProblemReferencesIn_CallAStaticUsingBroughtIn_FindsTheSibling() =>
+        Assert.Equal(
+            ["AlphaII"],
+            ProbeReferences(
+                """
+                using static DSAExperimentation.LeetCode.AlphaII.AlphaIISolution;
+
+                namespace DSAExperimentation.LeetCode.Alpha;
+
+                internal static class AlphaSolution
+                {
+                    public static int Run(int[] nums) => Answer(nums);
+                }
+                """));
 
     [Fact]
-    public void ProblemReferencesIn_StaticAndAliasedUsings_FindTheSibling() =>
+    public void ProblemReferencesIn_AliasedUsing_FindsTheSibling() =>
         Assert.Equal(
-            ["PermutationsII"],
-            ProblemReferencesIn(
-                "Permutations",
-                "using static DSAExperimentation.LeetCode.PermutationsII.PermutationsIISolution;\n"
-                    + "using Owner = DSAExperimentation.LeetCode.PermutationsII.PermutationsIISolution;",
-                ["Permutations", "PermutationsII"]));
+            ["AlphaII"],
+            ProbeReferences(
+                """
+                using Owner = DSAExperimentation.LeetCode.AlphaII.AlphaIISolution;
 
-    // The problem folders a file names, other than its own: using directives first, then qualified
-    // names in the code with directives blanked. Comments and strings never count.
-    private static IEnumerable<string> ProblemReferencesIn(string importer, string source, ICollection<string> problems)
+                namespace DSAExperimentation.LeetCode.Alpha;
+
+                internal static class AlphaSolution
+                {
+                    public static int Run(int[] nums) => Owner.Answer(nums);
+                }
+                """));
+
+    // The problem folders the names in one file bind to, other than its own.
+    private static IEnumerable<string> ProblemReferencesIn(string importer, SyntaxTree tree, SemanticModel model, ICollection<string> problems)
+        => tree.GetRoot().DescendantNodes().OfType<IdentifierNameSyntax>()
+            .Select(name => model.GetSymbolInfo(name).Symbol)
+            .OfType<ISymbol>()
+            .Select(ProblemFolderOf)
+            .OfType<string>()
+            .Where(folder => problems.Contains(folder) && folder != importer)
+            .Distinct();
+
+    // The problem folder a symbol is declared in: the namespace segment after the tier's own.
+    private static string? ProblemFolderOf(ISymbol symbol)
     {
-        var code = RepositoryFiles.CodeOf(source);
-        var named = UsingDirective.Matches(code).Select(match => match.Groups["name"].Value)
-            .Concat(QualifiedName.Matches(Directive.Replace(code, string.Empty)).Select(match => match.Groups["name"].Value));
+        var name = (symbol as INamespaceSymbol ?? symbol.ContainingNamespace)?.ToDisplayString() ?? string.Empty;
 
-        return named.Where(name => problems.Contains(name) && name != importer).Distinct();
+        if (!name.StartsWith(TierNamespacePrefix, StringComparison.Ordinal))
+        {
+            return null;
+        }
+
+        return name[TierNamespacePrefix.Length..].Split('.')[0];
     }
 
     private static List<ProblemReference> ProblemReferences()
     {
         var project = Path.Combine(RepositoryFiles.Root(), SolutionProject);
         var problems = ProblemFolders().ToHashSet();
+        var compilation = RepositoryCompilation.Solutions;
         var references = new List<ProblemReference>();
 
-        foreach (var file in RepositoryFiles.SourceFilesIn(project))
+        foreach (var tree in compilation.SyntaxTrees.Where(tree => tree.FilePath.StartsWith(project, StringComparison.Ordinal)))
         {
-            var relative = RepositoryFiles.PathFromRoot(project, file);
+            var relative = RepositoryFiles.PathFromRoot(project, new RepositoryFiles.SourceFile(tree.FilePath));
             var importer = ImporterOf(relative);
 
             references.AddRange(
-                ProblemReferencesIn(importer, File.ReadAllText(file), problems)
+                ProblemReferencesIn(importer, tree, compilation.GetSemanticModel(tree), problems)
                     .Select(imported => new ProblemReference(relative, importer, imported)));
         }
 
         return references;
     }
+
+    // The problems Alpha's probe file names, the file compiled beside its Neighbours.
+    private static List<string> ProbeReferences(string alphaSource)
+    {
+        var alpha = CSharpSyntaxTree.ParseText(alphaSource);
+        var probe = ProbeCompilation(alpha);
+
+        return [.. ProblemReferencesIn("Alpha", alpha, probe.GetSemanticModel(alpha), ["Alpha", "AlphaII"])];
+    }
+
+    // A probe that does not compile would bind nothing, so it fails here instead.
+    private static CSharpCompilation ProbeCompilation(SyntaxTree alpha)
+    {
+        var probe = CSharpCompilation.Create(
+            "Probe",
+            [alpha, CSharpSyntaxTree.ParseText(Neighbours)],
+            RepositoryCompilation.Framework.References,
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+        Assert.Empty(probe.GetDiagnostics().Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error));
+
+        return probe;
+    }
+
+    // What a probe's Alpha folder can name: a sibling AlphaII, a Conventions folder and a tier-root
+    // rule.
+    private const string Neighbours = """
+            namespace DSAExperimentation.LeetCode.AlphaII
+            {
+                internal static class AlphaIISolution
+                {
+                    public static int Answer(int[] nums) => nums.Length;
+                }
+            }
+
+            namespace DSAExperimentation.LeetCode.Conventions
+            {
+                internal static class LeetCodeAnswer
+                {
+                    public const int None = -1;
+                }
+            }
+
+            namespace DSAExperimentation.LeetCode
+            {
+                internal static class RootRule
+                {
+                    public const int Value = 0;
+                }
+            }
+            """;
 
     private static IEnumerable<string> ProblemFolders() =>
         Directory.EnumerateDirectories(Path.Combine(RepositoryFiles.Root(), SolutionProject))
