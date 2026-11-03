@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.MonotonicDeque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaxValueOfEquation;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaxValueOfEquation;
 // on (y - x), evicting from the front once xj - xi exceeds maxDistance and from the
 // back once a later point's (y - x) dominates - measured in x-coordinates instead of
 // a fixed index-count window.
+[LeetCodeQuestion("max-value-of-equation", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaxValueOfEquationSolution
 {
     // The textbook baseline: score every in-window pair directly, breaking out of

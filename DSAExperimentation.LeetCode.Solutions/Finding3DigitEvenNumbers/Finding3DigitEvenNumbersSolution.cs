@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.Finding3DigitEvenNumbers;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.Finding3DigitEvenNumbers;
 // of the work is inherent to the problem: a candidate is defined by which three
 // positions were picked, not just which three values. What differs is how each
 // candidate is deduped and how the final list is sorted.
+[LeetCodeQuestion("finding-3-digit-even-numbers", LeetCodeAnswerOrder.AsWritten)]
 internal static class Finding3DigitEvenNumbersSolution
 {
     private const int HundredsPlace = 100;

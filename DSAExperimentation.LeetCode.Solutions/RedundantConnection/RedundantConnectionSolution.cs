@@ -1,10 +1,12 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RedundantConnection;
 
 // LeetCode 684. Redundant Connection: given a tree with one extra edge added, find
 // the extra edge - the first edge (in input order) that connects two nodes already
 // in the same DisjointSet component.
+[LeetCodeQuestion("redundant-connection", LeetCodeAnswerOrder.AsWritten)]
 internal static class RedundantConnectionSolution
 {
     // The textbook arm the disjoint set is measured against: keep the forest built so

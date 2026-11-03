@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumAbsoluteSumDifference;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumAbsoluteSumDifference;
 // The subtraction happens before the modulo reduction on purpose: the true sum fits
 // in a long, so no term is ever reduced past the point where the largest shrink is
 // still the right one to subtract.
+[LeetCodeQuestion("minimum-absolute-sum-difference", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumAbsoluteSumDifferenceSolution
 {
     // The textbook answer: for every index, walk the whole of nums1 looking for the

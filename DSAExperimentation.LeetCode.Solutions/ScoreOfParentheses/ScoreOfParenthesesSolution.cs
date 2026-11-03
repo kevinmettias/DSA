@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using ScoreStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ScoreOfParentheses;
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ScoreOfParentheses;
 // scope it closes - 1 if empty, doubled otherwise - into the scope enclosing it.
 // The sentinel is what makes that fold-back safe when ')' closes the outermost
 // pair, with no separate "am I at the top level" branch.
+[LeetCodeQuestion("score-of-parentheses", LeetCodeAnswerOrder.AsWritten)]
 internal static class ScoreOfParenthesesSolution
 {
     // "(A)" is worth twice "A"; an empty pair is worth 1 instead.

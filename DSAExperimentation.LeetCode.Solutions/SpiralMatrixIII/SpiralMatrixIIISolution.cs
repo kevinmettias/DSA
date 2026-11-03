@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrixIII;
 
 // LeetCode 885. Spiral Matrix III: walk outward from (rStart, cStart) with
@@ -11,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrixIII;
 // not a fixed clockwise turning order with growing strides, so there is no repo
 // Representation/Operations primitive to compose here - the same conclusion Spiral
 // Matrix (LC 54) and Spiral Matrix II (LC 59) already reached.
+[LeetCodeQuestion("spiral-matrix-iii", LeetCodeAnswerOrder.AsWritten)]
 internal static class SpiralMatrixIIISolution
 {
     private const int TurnsPerStride = 2;

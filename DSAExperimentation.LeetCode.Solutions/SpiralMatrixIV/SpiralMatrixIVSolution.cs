@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrixIV;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrixIV;
 // been here" and a bounds/visited check on every single cell. BoundaryShrink instead
 // pulls one of four cursors in after each side is walked, so a turn is decided once
 // per side rather than once per cell, with no allocation beyond the answer itself.
+[LeetCodeQuestion("spiral-matrix-iv", LeetCodeAnswerOrder.AsWritten)]
 internal static class SpiralMatrixIVSolution
 {
     // LeetCode's filler for a cell the list runs out before reaching. Not

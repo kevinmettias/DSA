@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SumOfBeautifulSubsequences;
 
@@ -22,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SumOfBeautifulSubsequences;
 // Algorithms.Searching.CompressedCoordinates supplies each value's compressed
 // rank - the custom-operation extension point MinimumStabilityFactorOfArray uses
 // with the core GcdOperation, here applied to Fenwick instead of SegmentTree.
+[LeetCodeQuestion("sum-of-beautiful-subsequences", LeetCodeAnswerOrder.AsWritten)]
 internal static class SumOfBeautifulSubsequencesSolution
 {
     // The textbook baseline: walk every subset via bitmask, keep only the strictly

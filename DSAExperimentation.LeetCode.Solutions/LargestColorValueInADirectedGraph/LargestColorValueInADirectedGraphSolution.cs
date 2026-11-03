@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.TopologicalSort;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LargestColorValueInADirectedGraph;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LargestColorValueInADirectedGrap
 // The answer is read off each node's count for its OWN color: for the path and
 // color that achieve the maximum, the last node on that path carrying that color
 // ends a prefix with the same count, so nothing is missed.
+[LeetCodeQuestion("largest-color-value-in-a-directed-graph", LeetCodeAnswerOrder.AsWritten)]
 internal static class LargestColorValueInADirectedGraphSolution
 {
     // Depth-first cycle-detection marks for the baseline's own walk.

@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumDepthOfBinaryTree;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumDepthOfBinaryTree;
 // Pre-migration the test's private helper and both of the benchmark's [Benchmark]
 // arms (RecursiveMinDepth, BinaryTreeNodeMinDepth) all called the identical
 // recursive walk under different names; only the recursion predates this pair.
+[LeetCodeQuestion("minimum-depth-of-binary-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumDepthOfBinaryTreeSolution
 {
     // Level-order through this repo's Reduce in BreadthFirstReduceOrder: FirstLeaf is done

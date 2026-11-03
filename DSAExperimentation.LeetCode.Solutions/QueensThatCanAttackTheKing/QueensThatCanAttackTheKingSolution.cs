@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Games.Chess;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.QueensThatCanAttackTheKing;
 
@@ -25,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.QueensThatCanAttackTheKing;
 // The board and the queen's lines are chess's (Domain/Games/Chess): the set arm reads
 // them from ChessRules, and the baseline keeps its own copies (ARCHITECTURE §17.5),
 // in the same order, since the arms are compared answer for answer.
+[LeetCodeQuestion("queens-that-can-attack-the-king", LeetCodeAnswerOrder.AnyOrder)]
 internal static class QueensThatCanAttackTheKingSolution
 {
     // The baseline's own copy of a queen's eight lines, in ChessPiece.Queen.Moves' order.

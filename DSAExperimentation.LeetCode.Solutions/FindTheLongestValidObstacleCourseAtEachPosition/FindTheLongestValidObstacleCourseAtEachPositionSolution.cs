@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheLongestValidObstacleCourseAtEachPosition;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheLongestValidObstacleCours
 //
 // The two strategies answer that with the classic quadratic DP and with patience
 // sorting over a "tails" buffer.
+[LeetCodeQuestion("find-the-longest-valid-obstacle-course-at-each-position", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheLongestValidObstacleCourseAtEachPositionSolution
 {
     // Baseline: dp[i] = 1 + max(dp[j]) over every earlier j whose obstacle is no taller,

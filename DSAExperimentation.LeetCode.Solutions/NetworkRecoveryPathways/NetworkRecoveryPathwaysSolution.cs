@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RecoveryNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<long>;
 using RecoveryTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<long>;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NetworkRecoveryPathways;
 // (MinimumTimeToTransportAllIndividualsSolution's own "graph search wrapped in
 // domain-specific driving logic" shape, here with the driving logic being the
 // binary search rather than a bitmask frontier).
+[LeetCodeQuestion("network-recovery-pathways", LeetCodeAnswerOrder.AsWritten)]
 internal static class NetworkRecoveryPathwaysSolution
 {
     // Textbook baseline: BCL Dictionary adjacency rebuilt per probe and BCL's

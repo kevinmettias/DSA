@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Mathematics.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PrimeNumberOfSetBitsInBinaryRepresentation;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PrimeNumberOfSetBitsInBinaryRepr
 // count prime" is membership in the fixed small set of primes <= 20, not a general
 // primality test - the two strategies differ only in whether that membership check
 // is re-derived (trial division) per value or looked up in a set built once.
+[LeetCodeQuestion("prime-number-of-set-bits-in-binary-representation", LeetCodeAnswerOrder.AsWritten)]
 internal static class PrimeNumberOfSetBitsInBinaryRepresentationSolution
 {
     private static readonly int[] PrimesUpToTwenty = { 2, 3, 5, 7, 11, 13, 17, 19 };

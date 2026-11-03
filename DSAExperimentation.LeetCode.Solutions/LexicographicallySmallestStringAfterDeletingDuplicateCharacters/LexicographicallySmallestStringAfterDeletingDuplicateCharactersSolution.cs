@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DupStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.LexicographicallySmallestStringAfterDeletingDuplicateCharacters;
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LexicographicallySmallestStringA
 // remains at the very end gets one more pass, since a trailing character with a
 // spare copy elsewhere can only shrink the string by leaving - a strict prefix of
 // a string is always lexicographically smaller than the string itself.
+[LeetCodeQuestion("lexicographically-smallest-string-after-deleting-duplicate-characters", LeetCodeAnswerOrder.AsWritten)]
 internal static class LexicographicallySmallestStringAfterDeletingDuplicateCharactersSolution
 {
     // The textbook answer: repeatedly bubble through the buffer for the leftmost

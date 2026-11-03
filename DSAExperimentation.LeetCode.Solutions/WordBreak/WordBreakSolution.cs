@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.DataStructures.Trie;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.WordBreak;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WordBreak;
 // instead of a single true/false. CanBreakByIterativeReachability rolls that
 // segmentability forward instead, marking every position a dictionary word reaches
 // from an already-reachable one.
+[LeetCodeQuestion("word-break", LeetCodeAnswerOrder.AsWritten)]
 internal static class WordBreakSolution
 {
     // The textbook arm the Trie + Memoizer composition is measured against: a

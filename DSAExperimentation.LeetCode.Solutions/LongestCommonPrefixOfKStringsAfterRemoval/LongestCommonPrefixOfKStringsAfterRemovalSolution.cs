@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using PrefixNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
     DSAExperimentation.Domain.Language.English.EnglishLowercase,
     DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
@@ -35,6 +36,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestCommonPrefixOfKStringsAft
 // need checking, and then only by walking that ONE path from the known deepest
 // depth back toward the root; both facts keep the whole per-word pass at O(word
 // length), summing to O(total input length) across all words.
+[LeetCodeQuestion("longest-common-prefix-of-k-strings-after-removal", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
 {
     // The textbook definition, unwound literally: for each removal, and for each

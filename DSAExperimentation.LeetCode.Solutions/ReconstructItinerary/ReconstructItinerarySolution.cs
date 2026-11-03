@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ReconstructItinerary;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReconstructItinerary;
 // uses every ticket exactly once, preferring the lexicographically smallest
 // destination at each branch. The two strategies differ only in how each airport
 // selects its next unused destination.
+[LeetCodeQuestion("reconstruct-itinerary", LeetCodeAnswerOrder.AsWritten)]
 internal static class ReconstructItinerarySolution
 {
     // The textbook answer: BCL Dictionary<string, List<string>>, scanning for the

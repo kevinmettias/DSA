@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumAndMinimumSumsOfAtMostSizeKSubarrays;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumAndMinimumSumsOfAtMostSiz
 // That index then dominates a contiguous index range; counting only the
 // subarrays inside it whose length is also <= maxSubarrayLength is closed-form
 // arithmetic, not a walk.
+[LeetCodeQuestion("maximum-and-minimum-sums-of-at-most-size-k-subarrays", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
 {
     private const int NoDominantToTheLeft = -1;

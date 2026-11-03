@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.Domain.Computing.Filesystem;
 using DSAExperimentation.Domain.Computing.Paths;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RemoveSubFoldersFromTheFilesystem;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveSubFoldersFromTheFilesyste
 // That rule and the separator are the filesystem's (Domain/Computing/Filesystem): the sort-then-scan
 // arm asks NamePath<FolderPaths>, which reads the separator in place instead of building "<folder>/",
 // and the pairwise baseline keeps its own copy (ARCHITECTURE §17.5).
+[LeetCodeQuestion("remove-sub-folders-from-the-filesystem", LeetCodeAnswerOrder.AnyOrder)]
 internal static class RemoveSubFoldersFromTheFilesystemSolution
 {
     // The baseline's own copy of the separator LC 1233 writes folder paths with.

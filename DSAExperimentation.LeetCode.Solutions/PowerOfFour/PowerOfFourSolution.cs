@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PowerOfFour;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PowerOfFour;
 // int (4^0..4^15 - 4^16 overflows) - this repo's own BinarySearch.Find over a
 // PowersOfFourSequence instead of a division loop, the same monotone-virtual-
 // sequence idiom SqrtXSolution uses for LeetCode 69.
+[LeetCodeQuestion("power-of-four", LeetCodeAnswerOrder.AsWritten)]
 internal static class PowerOfFourSolution
 {
     private const int PowerBase = 4;

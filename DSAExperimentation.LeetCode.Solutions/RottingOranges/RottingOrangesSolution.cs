@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>;
 
 namespace DSAExperimentation.LeetCode.Solutions.RottingOranges;
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RottingOranges;
 // already-rotten orange at minute 0, so a single multi-source sweep discovers each
 // cell exactly once via its true nearest source. The same shape ZeroOneMatrix uses
 // for LC 542, tracking minutes-to-rot instead of distance-to-nearest-zero.
+[LeetCodeQuestion("rotting-oranges", LeetCodeAnswerOrder.AsWritten)]
 internal static class RottingOrangesSolution
 {
     // The problem's own cell encoding: 0 empty, 1 fresh, 2 rotten.

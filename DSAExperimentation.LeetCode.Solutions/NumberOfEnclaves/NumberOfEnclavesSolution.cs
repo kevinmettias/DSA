@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfEnclaves;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfEnclaves;
 // grid it is handed first - the same clone-before-mutating shape
 // MaxAreaOfIslandSolution uses, which keeps a caller's own grid (or a benchmark
 // fixture reused across iterations) intact.
+[LeetCodeQuestion("number-of-enclaves", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfEnclavesSolution
 {
     private const int Land = 1;

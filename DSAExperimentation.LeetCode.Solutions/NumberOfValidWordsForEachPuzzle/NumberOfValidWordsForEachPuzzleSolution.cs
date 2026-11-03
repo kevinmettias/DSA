@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfValidWordsForEachPuzzle;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfValidWordsForEachPuzzle;
 // the baseline re-tests every word against every puzzle, while the composed arm
 // groups words by mask in this repo's own HashMap<int,int> and then enumerates the
 // puzzle mask's 2^7 submasks instead of the word list.
+[LeetCodeQuestion("number-of-valid-words-for-each-puzzle", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfValidWordsForEachPuzzleSolution
 {
 

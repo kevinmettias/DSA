@@ -1,4 +1,5 @@
 using System.Text;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using OpenerStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.RemoveOutermostParentheses;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveOutermostParentheses;
 // opener seen at depth 0 and the closer that returns to depth 0. They differ only
 // in what carries that depth: a plain running counter, or this repo's own
 // Stack<char> holding each unmatched opener explicitly so its Count is the depth.
+[LeetCodeQuestion("remove-outermost-parentheses", LeetCodeAnswerOrder.AsWritten)]
 internal static class RemoveOutermostParenthesesSolution
 {
     private const char Opener = '(';

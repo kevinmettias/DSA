@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfValidStringsToFormTargetII;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfValidStringsToFormTargetI;
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfValidStringsToFor
 // each other and the benchmark harness can time them side by side. LC 3292 asks
 // the same question at a 5*10^4 bound, so its class owns both arms (ARCHITECTURE
 // 17.3) and this class calls through; both parts answer an int, so nothing narrows.
+[LeetCodeQuestion("minimum-number-of-valid-strings-to-form-target-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumNumberOfValidStringsToFormTargetISolution
 {
     // Textbook O(target.Length * sum(words[i].Length)): for every start position,

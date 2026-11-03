@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.TheNumberOfGoodSubsets;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TheNumberOfGoodSubsets;
 //
 // The doubling for 1s is shared framing rather than part of either strategy: 1 has no
 // prime factors, so each occurrence independently doubles whatever the recursion counted.
+[LeetCodeQuestion("the-number-of-good-subsets", LeetCodeAnswerOrder.AsWritten)]
 internal static class TheNumberOfGoodSubsetsSolution
 {
 

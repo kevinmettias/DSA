@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.TaskSchedulerII;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TaskSchedulerII;
 // The whole problem is "when was this task type last performed?", asked once per
 // task. The two strategies differ only in how they answer it: rescan every earlier
 // task looking for the same type, or remember each type's most recent day as you go.
+[LeetCodeQuestion("task-scheduler-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class TaskSchedulerIISolution
 {
     // The textbook answer: for each task walk backwards over everything already

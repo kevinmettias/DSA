@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Buffers;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RemoveColoredPiecesIfBothNeighborsAreTheSameColor;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveColoredPiecesIfBothNeighbo
 // yields exactly max(L - 2, 0) moves no matter what order they are taken in, and
 // the two players' budgets never interact. Alice therefore wins iff her budget is
 // strictly larger than Bob's, which is one linear grouping pass over the string.
+[LeetCodeQuestion("remove-colored-pieces-if-both-neighbors-are-the-same-color", LeetCodeAnswerOrder.AsWritten)]
 internal static class RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution
 {
     // Alice's pieces and Bob's.

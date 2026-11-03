@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Metrics;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumDepthOfBinaryTree;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumDepthOfBinaryTree;
 // The two strategies compute the identical 1 + max(left, right) recurrence -
 // one written out by hand, the other composed from this repo's own
 // TreeFold-based TreeMetrics.Height, generic over any ITreeTopology.
+[LeetCodeQuestion("maximum-depth-of-binary-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumDepthOfBinaryTreeSolution
 {
     // Textbook baseline: plain recursion, stopping at null.

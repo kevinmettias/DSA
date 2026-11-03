@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Domain.Mathematics.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumPrimeDifference;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumPrimeDifference;
 // needs inspecting - but they differ in how each index gets tested for
 // primality, the same "trial division vs. precomputed sieve" contrast
 // MostFrequentPrimeSolution already draws for LC 3044.
+[LeetCodeQuestion("maximum-prime-difference", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumPrimeDifferenceSolution
 {
     // nums[i] is bounded by this LeetCode constraint, so a sieve only ever

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheLargestAreaOfSquareInsideTwoRectangles;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheLargestAreaOfSquareInside
 // min(c_i, c_j) - max(a_i, a_j) and overlapHeight is the same computation on
 // the y-axis. Maximize that side across every pair, square it, or report 0
 // if no pair overlaps with positive area.
+[LeetCodeQuestion("find-the-largest-area-of-square-inside-two-rectangles", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheLargestAreaOfSquareInsideTwoRectanglesSolution
 {
     // Textbook baseline: every pair, in input order, no repo primitives - the

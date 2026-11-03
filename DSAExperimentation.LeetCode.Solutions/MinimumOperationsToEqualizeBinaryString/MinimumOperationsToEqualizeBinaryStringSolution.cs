@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumOperationsToEqualizeBinaryString;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumOperationsToEqualizeBinar
 // is a shortest-path query on EqualizeStateGraph's zero-count graph (see its own
 // doc comment for the reachable-range derivation), reduced to a lookup exactly the
 // way OpenTheLockSolution reduces LC 752 to one on its lock's wheel-turn graph.
+[LeetCodeQuestion("minimum-operations-to-equalize-binary-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumOperationsToEqualizeBinaryStringSolution
 {
     // The textbook answer: BCL Queue + a visited array, generating each reachable

@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.TransposeMatrix;
 
 // LeetCode 867. Transpose Matrix: flip an m x n matrix over its main diagonal into a
@@ -16,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TransposeMatrix;
 // GridChildren model unordered orthogonal adjacency for graph walks, not a fixed
 // diagonal-flip copy, so routing this through Grid/** would not be a genuine fit -
 // the same reasoning SpiralMatrix already states for its index arithmetic.
+[LeetCodeQuestion("transpose-matrix", LeetCodeAnswerOrder.AsWritten)]
 internal static class TransposeMatrixSolution
 {
     private const int BlockSize = 32;

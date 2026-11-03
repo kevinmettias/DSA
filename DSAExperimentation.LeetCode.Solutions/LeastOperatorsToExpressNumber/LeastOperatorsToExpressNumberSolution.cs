@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LeastOperatorsToExpressNumber;
 
@@ -25,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LeastOperatorsToExpressNumber;
 // this repo's own Memoizer<TState,TResult> - the same 2-tuple state shape
 // BurstBalloonsSolution already uses - collapsing the tree to the handful of
 // distinct states digit DP actually needs.
+[LeetCodeQuestion("least-operators-to-express-number", LeetCodeAnswerOrder.AsWritten)]
 internal static class LeastOperatorsToExpressNumberSolution
 {
     // The units-digit (level 0) weight is always 2, independent of baseValue:

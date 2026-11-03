@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.RollingHash;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DistinctEchoSubstrings;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DistinctEchoSubstrings;
 //
 // Both strategies sweep the same (start, halfLength) candidate space and dedupe by
 // the echo's own text; they differ only in what one candidate's equality test costs.
+[LeetCodeQuestion("distinct-echo-substrings", LeetCodeAnswerOrder.AsWritten)]
 internal static class DistinctEchoSubstringsSolution
 {
     // An echo substring is exactly two equal-length halves back to back.

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimizeTheMaximumEdgeWeightOfGraph;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimizeTheMaximumEdgeWeightOfGr
 // reach 0? That is monotonic in W (a higher W only keeps more edges), so both
 // strategies binary search on W over the same EdgeWeightGraph and differ only in
 // how "is W feasible" gets answered - a plain BFS or a BreadthFirstDistances walk.
+[LeetCodeQuestion("minimize-the-maximum-edge-weight-of-graph", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
 {
     // The textbook approach: a BCL Queue<int>/bool[] BFS over the graph's own

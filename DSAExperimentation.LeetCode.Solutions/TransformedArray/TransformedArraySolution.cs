@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.TransformedArray;
 
 // LeetCode 3379. Transformed Array: replace each element with the value found by
@@ -7,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TransformedArray;
 // Nothing here calls for one of this repo's data structures - it is pure
 // circular-index arithmetic over the input array itself, so the two strategies
 // differ only in how they compute the landing index, not in what they compose.
+[LeetCodeQuestion("transformed-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class TransformedArraySolution
 {
     // Baseline: walks one step at a time in the literal direction LeetCode

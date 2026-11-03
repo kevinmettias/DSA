@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using OpenerStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumInsertionsToBalanceAParenthesesString;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumInsertionsToBalanceAParen
 // "closers still owed" counter that never stores an opener at all (the textbook
 // baseline), or this repo's Stack<char> holding each unmatched opener explicitly,
 // the same LIFO primitive the sibling problem MinimumAddToMakeParenthesesValid uses.
+[LeetCodeQuestion("minimum-insertions-to-balance-a-parentheses-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumInsertionsToBalanceAParenthesesStringSolution
 {
     private const int ClosersPerOpener = 2;

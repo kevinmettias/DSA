@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 using RepoCellQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>;
 
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheSafestPathInAGrid;
 // project's global `using System.Collections.Generic;` makes a bare `Queue<T>`
 // ambiguous (CS0104) against the BCL's own Queue<T> - see FinalStringByDeque's
 // sibling problems for the same collision on Stack<T>.
+[LeetCodeQuestion("find-the-safest-path-in-a-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheSafestPathInAGridSolution
 {
     private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];

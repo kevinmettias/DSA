@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.JumpGame;
 
 // LeetCode 55. Jump Game: starting at index 0, nums[i] is the farthest you may
@@ -9,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.JumpGame;
 // far. No repo primitive applies - this is a pure reachability scan over the
 // array itself, the same "no stronger reusable primitive" shape already
 // established for GasStation.
+[LeetCodeQuestion("jump-game", LeetCodeAnswerOrder.AsWritten)]
 internal static class JumpGameSolution
 {
     // The textbook DP: mark every index reachable from each already-reachable

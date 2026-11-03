@@ -1,11 +1,13 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PathSumIII;
 
 // LeetCode 437. Path Sum III: unlike PathSum/PathSumII, a qualifying path need
 // not start at the root or end at a leaf, so a plain root-to-leaf walk doesn't
 // apply directly.
+[LeetCodeQuestion("path-sum-iii", LeetCodeAnswerOrder.AsWritten)]
 internal static class PathSumIIISolution
 {
     // The textbook answer: for every node, walk its entire downward subtree

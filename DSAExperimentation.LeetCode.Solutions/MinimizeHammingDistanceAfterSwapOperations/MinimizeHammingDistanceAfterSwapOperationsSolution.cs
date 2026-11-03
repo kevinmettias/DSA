@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimizeHammingDistanceAfterSwapOperations;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimizeHammingDistanceAfterSwap
 // the array's own index positions; they differ only in how the components are
 // discovered. This is the SmallestStringWithSwaps (LC 1202) shape with a multiset
 // comparison at the end instead of a per-component sort.
+[LeetCodeQuestion("minimize-hamming-distance-after-swap-operations", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimizeHammingDistanceAfterSwapOperationsSolution
 {
     // The textbook answer: materialize an adjacency list over the indices and BFS

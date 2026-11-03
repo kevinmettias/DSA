@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ThreeSumWithMultiplicity;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ThreeSumWithMultiplicity;
 // values multiply rather than collapse. Both strategies below answer that count;
 // they differ only in whether they visit every triplet or count each equal-valued
 // span's combinations in closed form.
+[LeetCodeQuestion("3sum-with-multiplicity", LeetCodeAnswerOrder.AsWritten)]
 internal static class ThreeSumWithMultiplicitySolution
 {
     // Need at least 2 more elements after the anchor for a triple.

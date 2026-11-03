@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.XOfAKindInADeckOfCards;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.XOfAKindInADeckOfCards;
 // i.e. iff the GCD of all the counts is at least 2. Both strategies fold that same
 // GCD; they differ only in what counts the occurrences - the BCL's Dictionary or
 // this repo's own HashMap<int, int>.
+[LeetCodeQuestion("x-of-a-kind-in-a-deck-of-cards", LeetCodeAnswerOrder.AsWritten)]
 internal static class XOfAKindInADeckOfCardsSolution
 {
     // X of a kind requires groups of at least two cards.

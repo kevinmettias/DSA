@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.ShortestPaths.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindMinimumTimeToReachLastRoomI;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindMinimumTimeToReachLastRoomI;
 // WaitInPlaceArrival. Unlike LC 2577 there is no parity bounce and every room is
 // always reachable eventually (waiting is always enough), so there is no
 // "no first move exists" precondition to check.
+[LeetCodeQuestion("find-minimum-time-to-reach-last-room-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindMinimumTimeToReachLastRoomISolution
 {
     private static readonly (int DRow, int DCol)[] Directions = [(0, 1), (0, -1), (1, 0), (-1, 0)];

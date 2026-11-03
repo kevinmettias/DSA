@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MakeArrayNonDecreasing;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MakeArrayNonDecreasing;
 // into a single element equal to that run's max, so the question is exactly "what
 // is the largest number of contiguous blocks nums can be partitioned into whose
 // maxima are themselves non-decreasing left to right".
+[LeetCodeQuestion("make-array-non-decreasing", LeetCodeAnswerOrder.AsWritten)]
 internal static class MakeArrayNonDecreasingSolution
 {
     private const int EmptyPrefixMax = int.MinValue;

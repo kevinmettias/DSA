@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToPartitionABinaryString;
 
@@ -31,6 +32,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToPartitionABinaryStr
 // itself against: the same recursion, but counting sensitive elements with a
 // direct O(length) scan of the string every time - deliberately BCL-only (a
 // bare string index loop).
+[LeetCodeQuestion("minimum-cost-to-partition-a-binary-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumCostToPartitionABinaryStringSolution
 {
     public static long MinCostByLinearScanRecursion(string binaryString, int encCost, int flatCost) =>

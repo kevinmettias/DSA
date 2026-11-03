@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NQueensII;
 
@@ -6,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NQueensII;
 // queens on a `boardSize` x `boardSize` board (one per row and column, no two
 // sharing a diagonal), without ever materializing a board - the only thing
 // distinguishing this from LC 51's placement-listing shape.
+[LeetCodeQuestion("n-queens-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class NQueensIISolution
 {
     private const int DiagonalArrayMultiplier = 2;

@@ -2,6 +2,7 @@ using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MakingALargeIsland;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MakingALargeIsland;
 // is handed first - the same clone-before-mutating shape MaxAreaOfIslandSolution
 // uses for LC 695, so a caller's own grid (or a benchmark fixture reused across
 // iterations) is never left labeled.
+[LeetCodeQuestion("making-a-large-island", LeetCodeAnswerOrder.AsWritten)]
 internal static class MakingALargeIslandSolution
 {
     private const int FirstIslandId = 2;

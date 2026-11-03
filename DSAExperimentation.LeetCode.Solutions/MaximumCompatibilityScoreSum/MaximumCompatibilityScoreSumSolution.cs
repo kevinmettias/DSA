@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumCompatibilityScoreSum;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumCompatibilityScoreSum;
 // The score table itself is CompatibilityScoreMatrix; each strategy has a
 // LeetCode-shaped overload that builds it and a prepared-input overload (§17.4) so a
 // benchmark can charge that construction to [GlobalSetup] instead of to the search.
+[LeetCodeQuestion("maximum-compatibility-score-sum", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumCompatibilityScoreSumSolution
 {
     // The textbook answer: plain recursion over (student, usedMask) with no cache at

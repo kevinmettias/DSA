@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FruitIntoBaskets;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FruitIntoBaskets;
 // Count is exactly the number of distinct types currently held. The window only
 // shrinks from the left when a third type appears, so every fruit enters and
 // leaves at most once - O(n).
+[LeetCodeQuestion("fruit-into-baskets", LeetCodeAnswerOrder.AsWritten)]
 internal static class FruitIntoBasketsSolution
 {
     private const int MaxBasketTypes = 2;

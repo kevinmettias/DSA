@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.DataStructures.Trie;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ExtraCharactersInAString;
 
@@ -24,6 +25,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ExtraCharactersInAString;
 //   than by the remaining string length. The recurrence itself is Memoizer.Memoize over
 //   the start index - the same Trie + Memoizer segmentation WordBreak uses for LC 139,
 //   minimizing a leftover count instead of answering a yes/no reachability.
+[LeetCodeQuestion("extra-characters-in-a-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class ExtraCharactersInAStringSolution
 {
     // The naive arm: hash every substring against the dictionary. Internals are

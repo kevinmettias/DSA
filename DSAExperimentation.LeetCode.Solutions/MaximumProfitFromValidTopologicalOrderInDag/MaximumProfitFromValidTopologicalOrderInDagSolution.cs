@@ -1,5 +1,6 @@
 using System.Numerics;
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumProfitFromValidTopologicalOrderInDag;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumProfitFromValidTopologica
 // this repo's Memoizer, just without a "last node" half: profit only depends on
 // WHICH nodes are placed and how many, never on the order among them beyond that
 // count.
+[LeetCodeQuestion("maximum-profit-from-valid-topological-order-in-dag", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumProfitFromValidTopologicalOrderInDagSolution
 {
     // Textbook baseline: recursive backtracking that, at every position, tries

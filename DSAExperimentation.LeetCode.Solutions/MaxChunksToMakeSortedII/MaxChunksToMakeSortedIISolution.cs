@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaxChunksToMakeSortedII;
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaxChunksToMakeSortedII;
 // Sorted), arr isn't a 0..n-1 permutation here - duplicates and arbitrary values
 // are allowed, which is exactly why index-identity tricks don't work and a chunk
 // boundary has to be confirmed by comparing values instead.
+[LeetCodeQuestion("max-chunks-to-make-sorted-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaxChunksToMakeSortedIISolution
 {
     // The textbook boundary check: re-scan the entire remaining suffix from scratch

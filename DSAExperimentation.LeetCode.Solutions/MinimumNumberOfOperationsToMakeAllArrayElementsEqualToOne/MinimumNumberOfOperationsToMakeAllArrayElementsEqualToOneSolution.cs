@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOne;
 
@@ -25,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeA
 // the library's own Euclid, GreatestCommonDivisor.Of, as in those two; the
 // subtraction step stays in this file because the baseline arm runs on it
 // (ARCHITECTURE 17.5).
+[LeetCodeQuestion("minimum-number-of-operations-to-make-all-array-elements-equal-to-1", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneSolution
 {
     // The textbook answer: the subtraction form of Euclid's algorithm driving the

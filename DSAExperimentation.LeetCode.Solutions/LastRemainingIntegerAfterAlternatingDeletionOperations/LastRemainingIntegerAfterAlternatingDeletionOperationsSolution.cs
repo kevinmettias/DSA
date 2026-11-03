@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.LastRemainingIntegerAfterAlternatingDeletionOperations;
 
 // LeetCode 3782. Last Remaining Integer After Alternating Deletion
@@ -8,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LastRemainingIntegerAfterAlterna
 // same "lighter repo-primitive fit" case EliminationGameSolutionTests' own doc comment
 // already accepts for LC 390's closed-form solution (and Pow(x, n)/Rectangle Area
 // before it).
+[LeetCodeQuestion("last-remaining-integer-after-alternating-deletion-operations", LeetCodeAnswerOrder.AsWritten)]
 internal static class LastRemainingIntegerAfterAlternatingDeletionOperationsSolution
 {
     // The textbook simulation: materialize [1..startingCount] and repeatedly keep

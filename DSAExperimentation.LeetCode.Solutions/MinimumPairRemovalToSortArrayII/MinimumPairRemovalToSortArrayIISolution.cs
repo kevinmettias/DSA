@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures.DoublyLinkedList;
 using DSAExperimentation.DataStructures.Heap;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using PairNode = DSAExperimentation.DataStructures.DoublyLinkedList.DoublyLinkedListNode<(long Sum, int OriginalIndex)>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumPairRemovalToSortArrayII;
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumPairRemovalToSortArrayII;
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("minimum-pair-removal-to-sort-array-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumPairRemovalToSortArrayIISolution
 {
     // Textbook: rescan every adjacent pair for the minimum sum, merge with

@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.MinimumTimeToRevertWordToInitialStateII;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToRevertWordToInitialStateI;
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToRevertWordToInitial
 // (LC 3031's own bound is up to 10^6) would actually need. LC 3031 asks the same
 // question at that bound, so its class owns both arms (ARCHITECTURE 17.3) and
 // this class calls through, proving them at this smaller scale too.
+[LeetCodeQuestion("minimum-time-to-revert-word-to-initial-state-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumTimeToRevertWordToInitialStateISolution
 {
     // The textbook scan: try t = 1, 2, ... and compare the two candidate

@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.ProjectionAreaOf3DShapes;
 
 // LeetCode 883. Projection Area of 3D Shapes: grid[r][c] is the height of the stack
@@ -10,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ProjectionAreaOf3DShapes;
 // here is a plain grid reduction and the only thing that varies between them is how
 // many times the grid is walked. All three are O(rows * cols); the difference they
 // isolate is redundant-pass overhead, not an algorithm class.
+[LeetCodeQuestion("projection-area-of-3d-shapes", LeetCodeAnswerOrder.AsWritten)]
 internal static class ProjectionAreaOf3DShapesSolution
 {
     // Textbook baseline: one independent full-grid pass per projection - count the

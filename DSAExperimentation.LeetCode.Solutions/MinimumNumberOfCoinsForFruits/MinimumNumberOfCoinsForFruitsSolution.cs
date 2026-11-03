@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfCoinsForFruits;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfCoinsForFruits;
 //
 // Both strategies compute the exact same recurrence; they differ only in how that
 // range minimum over dp is answered.
+[LeetCodeQuestion("minimum-number-of-coins-for-fruits", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumNumberOfCoinsForFruitsSolution
 {
     // The textbook O(n^2) form: no structure at all, just rescan the window on

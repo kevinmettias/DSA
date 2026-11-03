@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.HouseRobber;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.HouseRobber;
 // Each arm also robs any contiguous run of the street, given as a Range: LC 213
 // (House Robber II) runs this problem's rule over two runs of its circle
 // (ARCHITECTURE 17.3), and the whole street is just the run Range.All.
+[LeetCodeQuestion("house-robber", LeetCodeAnswerOrder.AsWritten)]
 internal static class HouseRobberSolution
 {
     // The textbook arm the memoized recurrence is measured against: the same

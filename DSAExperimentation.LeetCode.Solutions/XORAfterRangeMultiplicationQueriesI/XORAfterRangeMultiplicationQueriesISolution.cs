@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.XORAfterRangeMultiplicationQueriesI;
 
 // LeetCode 3653. XOR After Range Multiplication Queries I: for each query
@@ -10,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.XORAfterRangeMultiplicationQueri
 // affected indices: checking every position in [l, r] and skipping the ones that
 // don't line up with the stride, versus stepping directly by k the way the problem
 // statement itself describes.
+[LeetCodeQuestion("xor-after-range-multiplication-queries-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class XORAfterRangeMultiplicationQueriesISolution
 {
     // Textbook baseline: visit every index in [l, r] and filter by (idx - l) % k,

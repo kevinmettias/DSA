@@ -1,10 +1,12 @@
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SlidingWindowMedian;
 
 // LeetCode 480. Sliding Window Median: return the median of every contiguous
 // window of size windowSize as nums slides across the array.
+[LeetCodeQuestion("sliding-window-median", LeetCodeAnswerOrder.AsWritten)]
 internal static class SlidingWindowMedianSolution
 {
     private const int MedianAverageDivisor = 2;

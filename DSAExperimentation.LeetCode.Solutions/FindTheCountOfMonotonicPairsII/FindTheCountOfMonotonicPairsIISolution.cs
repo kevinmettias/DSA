@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.FindTheCountOfMonotonicPairsII;
 
 // LeetCode 3251. Find the Count of Monotonic Pairs II: the exact same question as
@@ -18,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheCountOfMonotonicPairsII;
 // answer a long, so nothing narrows. The bigger maxValue is why this problem exists
 // as a separate LeetCode entry: the O(n * maxValue^2) brute-force row is still
 // correct here, just no longer the arm you'd ship - O(n * maxValue) prefix sums is.
+[LeetCodeQuestion("find-the-count-of-monotonic-pairs-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheCountOfMonotonicPairsIISolution
 {
     // Textbook baseline: every row re-sums its prefix from scratch for each j instead

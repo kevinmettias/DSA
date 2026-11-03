@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LastStoneWeight;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LastStoneWeight;
 // "repeated extract-max with re-insertion". The baseline rescans the whole
 // remaining list for both maxima every smash; the composed strategy hands that job
 // to this repo's own Heap<int, MaxHeapOrder<int>>.
+[LeetCodeQuestion("last-stone-weight", LeetCodeAnswerOrder.AsWritten)]
 internal static class LastStoneWeightSolution
 {
     // Baseline: an O(stones) rescan per smash, O(stones^2) overall. Deliberately

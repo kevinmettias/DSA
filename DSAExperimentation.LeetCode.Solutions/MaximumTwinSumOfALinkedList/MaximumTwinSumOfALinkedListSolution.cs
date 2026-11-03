@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Deque;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumTwinSumOfALinkedList;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumTwinSumOfALinkedList;
 // own Deque<int> (CircularBuffer-backed, ARCHITECTURE.md Sec.4.1): twins arrive at
 // the deque's two ends in lockstep, so draining a front and a back together yields
 // each twin pair with no index arithmetic at all.
+[LeetCodeQuestion("maximum-twin-sum-of-a-linked-list", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumTwinSumOfALinkedListSolution
 {
     // Twins pair the first half with the second, so exactly n / 2 pairs exist.

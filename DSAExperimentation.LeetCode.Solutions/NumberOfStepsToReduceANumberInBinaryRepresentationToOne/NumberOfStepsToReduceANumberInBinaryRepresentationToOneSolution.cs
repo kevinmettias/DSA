@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using BitStack = System.Collections.Generic.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfStepsToReduceANumberInBinaryRepresentationToOne;
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfStepsToReduceANumberInBi
 // Both strategies count the same steps and differ only in whether they materialize the
 // intermediate numbers: one performs every "+1" as a real binary addition, the other
 // reads the answer off a single right-to-left pass by carrying.
+[LeetCodeQuestion("number-of-steps-to-reduce-a-number-in-binary-representation-to-one", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfStepsToReduceANumberInBinaryRepresentationToOneSolution
 {
     private const int BinaryBase = 2;

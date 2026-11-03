@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeVisitingAllPoints;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeVisitingAllPoints;
 // max(|dx|, |dy|), or Algorithms.ShortestPaths' ChebyshevHeuristic - the same witness
 // ShortestPath.AStar composes for an 8-directional grid, used here purely for its
 // distance computation rather than an actual search.
+[LeetCodeQuestion("minimum-time-visiting-all-points", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumTimeVisitingAllPointsSolution
 {
     public static int MinTimeByInlineChebyshev(int[][] points)

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ValidateBinarySearchTree;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidateBinarySearchTree;
 // because the check needs each child position's presence-or-absence directly - the
 // ListChildren witness compacts missing children away, losing exactly the shape
 // information a BST bounds check depends on.
+[LeetCodeQuestion("validate-binary-search-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class ValidateBinarySearchTreeSolution
 {
     public static bool IsValidByBoundsRecursion(BinaryTreeNode<int>? root) =>

@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Connectivity;
 using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfIslands;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfIslands;
 // The baseline is the textbook flood fill the component count stands for: one scan
 // that starts an explicit-queue fill from each still-unclaimed land cell, with a
 // HashSet of claimed coordinates standing in for the walks' shared visited set.
+[LeetCodeQuestion("number-of-islands", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfIslandsSolution
 {
     // The textbook answer: the scan starts one flood fill per still-unclaimed land

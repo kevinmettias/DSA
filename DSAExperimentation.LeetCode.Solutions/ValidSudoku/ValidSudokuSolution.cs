@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Games.Sudoku;
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ValidSudoku;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidSudoku;
 // this repo's own Set<string> keyed by a composed row/col/box tag. The board's
 // dimensions and notation are Domain/Games/Sudoku's, and both arms read them there
 // (ARCHITECTURE §17.5).
+[LeetCodeQuestion("valid-sudoku", LeetCodeAnswerOrder.AsWritten)]
 internal static class ValidSudokuSolution
 {
     // The textbook answer: three dense bool[,] grids, one per constraint

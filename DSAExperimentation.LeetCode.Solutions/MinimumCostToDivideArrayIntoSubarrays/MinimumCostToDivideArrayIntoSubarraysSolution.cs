@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToDivideArrayIntoSubarrays;
 
@@ -24,6 +25,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToDivideArrayIntoSuba
 // contrast MinimumSumOfValuesByDividingArraySolution draws. The baseline writes the
 // recursion and its Dictionary memo out by hand rather than through Memoizer's
 // IRecurrence contract, because a baseline uses no library implementation (ARCHITECTURE 17.5).
+[LeetCodeQuestion("minimum-cost-to-divide-array-into-subarrays", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumCostToDivideArrayIntoSubarraysSolution
 {
     // The textbook form: recursion over a hand-rolled Dictionary memo table, its

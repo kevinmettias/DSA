@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ThreeDivisors;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ThreeDivisors;
 //
 // Both strategies take LeetCode's own single integer, so neither needs a hoisted
 // prepared-input overload - there is no input structure to build.
+[LeetCodeQuestion("three-divisors", LeetCodeAnswerOrder.AsWritten)]
 internal static class ThreeDivisorsSolution
 {
     private const int TargetDivisorCount = 3;

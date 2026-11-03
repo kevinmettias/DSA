@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FirstUniqueCharacterInAString;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FirstUniqueCharacterInAString;
 // second pass returning the first index whose count is 1 - the same
 // character-bookkeeping shape LongestSubstringWithoutRepeatingCharacters already
 // uses this repo's own HashMap<TKey,TValue> for.
+[LeetCodeQuestion("first-unique-character-in-a-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class FirstUniqueCharacterInAStringSolution
 {
     // The textbook answer: for every index, rescan the whole string counting

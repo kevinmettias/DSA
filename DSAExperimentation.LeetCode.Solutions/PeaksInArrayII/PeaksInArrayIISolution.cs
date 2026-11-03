@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PeaksInArrayII;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PeaksInArrayII;
 // subtraction; they differ only in how "no-peak subarrays" is counted. n, the
 // query bound and the peak count can all reach 1e5, so a single query's count
 // can exceed Int32 range (~5e9 pairs at n=1e5) - every answer here is a long.
+[LeetCodeQuestion("peaks-in-array-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class PeaksInArrayIISolution
 {
     // The textbook answer: keep a mutable copy of nums and, for every type-1

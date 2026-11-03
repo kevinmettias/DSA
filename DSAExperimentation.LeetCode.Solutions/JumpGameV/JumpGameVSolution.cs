@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.TopologicalSort;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 // Edges point i -> j only for indices actually reachable by a single valid jump (arr[i]
 // strictly greater than arr[j] and every value strictly between them) - every edge therefore
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.JumpGameV;
 // strategies below reach that same answer from opposite directions: the textbook
 // memoized DFS rooted at each start, and one topological pass over the whole
 // graph.
+[LeetCodeQuestion("jump-game-v", LeetCodeAnswerOrder.AsWritten)]
 internal static class JumpGameVSolution
 {
     // The textbook answer: a BCL Dictionary<int, int> memo and one recursive

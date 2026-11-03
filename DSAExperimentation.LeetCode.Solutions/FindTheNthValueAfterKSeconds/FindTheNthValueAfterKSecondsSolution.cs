@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheNthValueAfterKSeconds;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheNthValueAfterKSeconds;
 // Both strategies answer the same question with the same signature, so the
 // test harness can assert they agree and the benchmark harness can time them
 // against each other without either restating the algorithm.
+[LeetCodeQuestion("find-the-n-th-value-after-k-seconds", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheNthValueAfterKSecondsSolution
 {
     // The textbook answer: run the secondCount seconds literally, one running-prefix-sum

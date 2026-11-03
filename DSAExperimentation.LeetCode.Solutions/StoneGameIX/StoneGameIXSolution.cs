@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.StoneGameIX;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StoneGameIX;
 // search the fact the closed form states outright - a remainder-0 stone only ever flips
 // whose turn effectively "counts," and only remainder-1/remainder-2 stones can push the
 // running sum onto a multiple of 3.
+[LeetCodeQuestion("stone-game-ix", LeetCodeAnswerOrder.AsWritten)]
 internal static class StoneGameIXSolution
 {
     private const int RemainderBucketCount = 3;

@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.SumOfTwoIntegers;
 
 // LeetCode 371. Sum of Two Integers: the problem's own constraint (no + or -) rules
@@ -11,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SumOfTwoIntegers;
 // on every position at once: XOR gives the carry-less sum of each bit pair,
 // AND-then-shift gives the carries to fold back in next iteration, repeat until no
 // carry remains - as many steps as the longest carry chain.
+[LeetCodeQuestion("sum-of-two-integers", LeetCodeAnswerOrder.AsWritten)]
 internal static class SumOfTwoIntegersSolution
 {
     // A ripple-carry adder: a one-bit mask walks the 32 positions, low to high, and

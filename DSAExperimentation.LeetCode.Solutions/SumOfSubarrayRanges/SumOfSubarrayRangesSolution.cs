@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RangeIndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.SumOfSubarrayRanges;
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SumOfSubarrayRanges;
 // SumOfSubarrayMinimumsSolution uses for LC 907 and
 // LargestRectangleInHistogramSolution for LC 84, over this repo's own Stack<int>
 // holding indices rather than values.
+[LeetCodeQuestion("sum-of-subarray-ranges", LeetCodeAnswerOrder.AsWritten)]
 internal static class SumOfSubarrayRangesSolution
 {
     // Both pop conditions are stateless, so one instance each serves every call and

@@ -4,6 +4,7 @@ using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.GroupsOfStrings;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.GroupsOfStrings;
 // The two strategies differ only in how "which other words is this one connected
 // to?" is answered - every pair compared, or every candidate neighbour of a mask
 // enumerated directly and looked up.
+[LeetCodeQuestion("groups-of-strings", LeetCodeAnswerOrder.AsWritten)]
 internal static class GroupsOfStringsSolution
 {
     // Two set bits differing at equal popcount is a REPLACE; one bit differing is

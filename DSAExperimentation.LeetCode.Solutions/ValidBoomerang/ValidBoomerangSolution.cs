@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.ValidBoomerang;
 
 // LeetCode 1037. Valid Boomerang: three points form a boomerang exactly when they
@@ -9,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidBoomerang;
 // establish. The two strategies are instead the two ways the check itself is
 // commonly written: an inexact floating-point area, and the exact integer cross
 // product that makes the epsilon unnecessary.
+[LeetCodeQuestion("valid-boomerang", LeetCodeAnswerOrder.AsWritten)]
 internal static class ValidBoomerangSolution
 {
     private const int ThirdPointIndex = 2;

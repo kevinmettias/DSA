@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumGoodSubtreeScore;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumGoodSubtreeScore;
 // consumes). For each node u, maxScore[u] is the largest sum of a subset of values
 // drawn from u's subtree such that no decimal digit 0-9 is used twice across the
 // chosen values; the answer is the sum of maxScore over every node, modulo 1e9+7.
+[LeetCodeQuestion("maximum-good-subtree-score", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumGoodSubtreeScoreSolution
 {
     // Per node, collect its subtree's values and brute-force every subset (2^size),

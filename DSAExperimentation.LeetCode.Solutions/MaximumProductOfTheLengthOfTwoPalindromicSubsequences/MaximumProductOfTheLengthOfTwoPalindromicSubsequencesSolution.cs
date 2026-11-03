@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumProductOfTheLengthOfTwoPalindromicSubsequences;
 
@@ -24,6 +25,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumProductOfTheLengthOfTwoPa
 //
 // A single-character input has no second disjoint palindrome to pair with, so the answer
 // is 0 - both arms report it from the pairwise scan finding no pair at all.
+[LeetCodeQuestion("maximum-product-of-the-length-of-two-palindromic-subsequences", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumProductOfTheLengthOfTwoPalindromicSubsequencesSolution
 {
     // The naive arm: enumerate every non-empty index bitmask directly.

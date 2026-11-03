@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SearchInsertPosition;
 
@@ -7,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SearchInsertPosition;
 //
 // Both strategies answer the same "first index whose element is not less than
 // target" question - they differ only in how they find it.
+[LeetCodeQuestion("search-insert-position", LeetCodeAnswerOrder.AsWritten)]
 internal static class SearchInsertPositionSolution
 {
     // The textbook answer: a BCL linear scan for the first element not less than

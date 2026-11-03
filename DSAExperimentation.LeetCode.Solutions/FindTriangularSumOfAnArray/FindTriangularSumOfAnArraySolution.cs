@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTriangularSumOfAnArray;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTriangularSumOfAnArray;
 // machinery - so both strategies run the identical O(n^2) pairwise reduction and
 // differ only in the container the row lives in: a raw int[] rewritten in place, or
 // this repo's own DynamicArray<int> rebuilt one row at a time.
+[LeetCodeQuestion("find-triangular-sum-of-an-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTriangularSumOfAnArraySolution
 {
     // The textbook answer: one int[] buffer, each round overwriting the first

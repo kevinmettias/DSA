@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.TopologicalSort;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 // Edges point prerequisite -> dependent course, matching Kahn's algorithm's own in-degree
 // bookkeeping: a course's in-degree is its remaining unresolved prerequisite count.
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CourseSchedule;
 // prerequisite pairs? Exactly Kahn's algorithm's own "does a full ordering
 // exist" question - TopologicalSort.TrySort returns false precisely when a
 // cycle (courses that depend on each other) makes completion impossible.
+[LeetCodeQuestion("course-schedule", LeetCodeAnswerOrder.AsWritten)]
 internal static class CourseScheduleSolution
 {
     // The textbook arm the topological sort is measured against: colour each course

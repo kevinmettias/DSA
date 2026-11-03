@@ -1,11 +1,13 @@
 using DSAExperimentation.Algorithms.Paths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PathSumII;
 
 // LeetCode 113. Path Sum II: every root-to-leaf path whose node values sum to a
 // target, returned in full (not just counted or detected).
+[LeetCodeQuestion("path-sum-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class PathSumIISolution
 {
     // Textbook DFS backtracking: carry the running path and remaining budget down

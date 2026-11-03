@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.KthSmallestElementInABST;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.KthSmallestElementInABST;
 // Neither strategy early-exits once the kth value is found - IInOrderHooks.Visit
 // has no such signal - so both walk the whole tree; the comparison is
 // genuinely-distinct walk mechanics, not an asymptotic win.
+[LeetCodeQuestion("kth-smallest-element-in-a-bst", LeetCodeAnswerOrder.AsWritten)]
 internal static class KthSmallestElementInABSTSolution
 {
     // The textbook approach: a hand-rolled recursive in-order walk, counting down

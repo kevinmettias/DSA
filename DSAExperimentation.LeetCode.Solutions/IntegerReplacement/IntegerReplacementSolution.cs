@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.IntegerReplacement;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.IntegerReplacement;
 // repeated states are cached. Recursion runs over long, not int, even though
 // LeetCode's own n is an int: startValue can be int.MaxValue (2^31 - 1), and the
 // n+1 branch on the odd case would otherwise silently overflow Int32.
+[LeetCodeQuestion("integer-replacement", LeetCodeAnswerOrder.AsWritten)]
 internal static class IntegerReplacementSolution
 {
     private const int EvenCheckDivisor = 2;

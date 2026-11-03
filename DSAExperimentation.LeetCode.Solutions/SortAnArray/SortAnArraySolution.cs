@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SortAnArray;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SortAnArray;
 // which needs no glue beyond the wrapping. Both sort a copy rather than nums
 // itself, so a caller (and a benchmark re-invoking an arm) always starts from the
 // same unsorted input.
+[LeetCodeQuestion("sort-an-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class SortAnArraySolution
 {
     // The textbook baseline: BCL insertion sort over a plain array, written

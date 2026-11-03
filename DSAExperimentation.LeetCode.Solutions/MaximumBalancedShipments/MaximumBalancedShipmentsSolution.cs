@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumBalancedShipments;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumBalancedShipments;
 // itself as the max, which fails "strictly less"). Both strategies are the same
 // dp[i] = max(dp[i-1], 1 + dp[start-1]) recurrence over that fact - they differ
 // only in how they find each index's nearest earlier strictly-greater element.
+[LeetCodeQuestion("maximum-balanced-shipments", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumBalancedShipmentsSolution
 {
     // No earlier element is greater, so no balanced shipment ends at that index.

@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Bipartiteness;
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumPartitionFactor;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumPartitionFactor;
 // same-group pair is always one of those distances). n == 2 is a standalone
 // special case LeetCode defines as 0: two singleton groups have no same-group
 // pair at all.
+[LeetCodeQuestion("maximum-partition-factor", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumPartitionFactorSolution
 {
     private const int TrivialPairFactor = 0;

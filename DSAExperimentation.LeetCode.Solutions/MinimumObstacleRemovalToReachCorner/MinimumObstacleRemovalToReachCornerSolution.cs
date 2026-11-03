@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumObstacleRemovalToReachCorner;
 
@@ -22,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumObstacleRemovalToReachCor
 // O((mn)^2) Dijkstra with no priority queue at all, scanning a flat int[] for the
 // next unsettled minimum - a different complexity class, which is the point of
 // having it.
+[LeetCodeQuestion("minimum-obstacle-removal-to-reach-corner", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumObstacleRemovalToReachCornerSolution
 {
     private static readonly (int DeltaRow, int DeltaCol)[] Orthogonal = [(-1, 0), (1, 0), (0, -1), (0, 1)];

@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.TopKFrequentWords;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TopKFrequentWords;
 // for equal frequencies, exactly LeetCode 692's required order. It is meaningless
 // outside this problem's own tie-break rule, so it stays here rather than in
 // Algorithms/ or at the tier's root.
+[LeetCodeQuestion("top-k-frequent-words", LeetCodeAnswerOrder.AsWritten)]
 internal static class TopKFrequentWordsSolution
 {
     // The textbook answer: BCL Dictionary + a full sort with an explicit tie-break

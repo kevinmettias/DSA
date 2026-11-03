@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RowStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ZigzagGridTraversalWithSkip;
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ZigzagGridTraversalWithSkip;
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("zigzag-grid-traversal-with-skip", LeetCodeAnswerOrder.AsWritten)]
 internal static class ZigzagGridTraversalWithSkipSolution
 {
     // The textbook approach: no data structure at all, just an index formula for

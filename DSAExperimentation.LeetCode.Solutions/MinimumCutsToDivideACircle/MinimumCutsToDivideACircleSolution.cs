@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.MinimumCutsToDivideACircle;
 
 // LeetCode 2481. Minimum Cuts to Divide a Circle: the fewest straight cuts that
@@ -16,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCutsToDivideACircle;
 // fit" shape the other bit/arithmetic-only Easy problems have. Both arms therefore
 // live here in full, which is the point - the simulation used to be a benchmark-
 // only arm that nothing asserted.
+[LeetCodeQuestion("minimum-cuts-to-divide-a-circle", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumCutsToDivideACircleSolution
 {
     // A circle that is already one whole slice; no cut divides it further.

@@ -3,6 +3,7 @@ using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PermutationsIV;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PermutationsIV;
 // remaining candidate (by rank within its parity pool, not by value) goes next.
 // Both strategies share that structure; they differ only in how a parity pool
 // tracks "which of my values are still unused" and finds the r-th one.
+[LeetCodeQuestion("permutations-iv", LeetCodeAnswerOrder.AsWritten)]
 internal static class PermutationsIVSolution
 {
     private const long SaturationCap = 2_000_000_000_000_000L; // above the 10^15 bound on targetRank

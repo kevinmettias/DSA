@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.SuffixArray;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.OrderlyQueue;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.OrderlyQueue;
 // answer is simply text sorted. Both strategies below agree on the
 // movablePrefixLength > 1 half and differ only in how they find the smallest
 // rotation when it is 1.
+[LeetCodeQuestion("orderly-queue", LeetCodeAnswerOrder.AsWritten)]
 internal static class OrderlyQueueSolution
 {
     // movablePrefixLength == 1 is the rotation-only case; anything larger reaches

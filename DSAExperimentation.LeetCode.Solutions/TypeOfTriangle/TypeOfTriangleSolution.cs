@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.Domain.Mathematics.Geometry;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.TypeOfTriangle;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TypeOfTriangle;
 // The triangle inequality is the flat plane's (Domain/Mathematics/Geometry): the sorted arm
 // asks EuclideanPolygons of its largest side, and the pairwise baseline keeps its own
 // IsTriangleInequalityViolated (ARCHITECTURE §17.5). The four answer strings are LeetCode's.
+[LeetCodeQuestion("type-of-triangle", LeetCodeAnswerOrder.AsWritten)]
 internal static class TypeOfTriangleSolution
 {
     private const string None = "none";

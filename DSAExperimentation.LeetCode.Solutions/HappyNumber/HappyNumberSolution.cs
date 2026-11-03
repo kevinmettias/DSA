@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.HappyNumber;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.HappyNumber;
 // composed strategy runs the same Floyd tortoise-and-hare idea LinkedListCycle
 // uses, walking two virtual pointers through the sum-of-squares chain instead of
 // a linked list's Next pointers, so it needs none.
+[LeetCodeQuestion("happy-number", LeetCodeAnswerOrder.AsWritten)]
 internal static class HappyNumberSolution
 {
     // Textbook baseline: record every digit-square sum produced so far in a BCL

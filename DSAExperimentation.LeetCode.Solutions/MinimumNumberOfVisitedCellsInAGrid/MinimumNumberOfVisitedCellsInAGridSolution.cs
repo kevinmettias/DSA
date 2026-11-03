@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfVisitedCellsInAGrid;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfVisitedCellsInAGr
 // computes each cell's reachable jumps directly from its stored value instead of
 // scanning the whole row/column. LeetCode counts cells visited, not edges walked, so every strategy
 // here answers distance + 1.
+[LeetCodeQuestion("minimum-number-of-visited-cells-in-a-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumNumberOfVisitedCellsInAGridSolution
 {
     // Baseline: no on-demand jump arithmetic - for every dequeued cell, the entire

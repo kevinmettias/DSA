@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfDaysToDisconnectIsland;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfDaysToDisconnectI
 // is left, which always peels a corner off. So every strategy is the same three-step
 // decision driven by one primitive, "how many islands are there if this one cell is
 // treated as water?", and the two below differ only in how that count is taken.
+[LeetCodeQuestion("minimum-number-of-days-to-disconnect-island", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumNumberOfDaysToDisconnectIslandSolution
 {
     // ... and calls the grid connected when it holds exactly one island. The two are

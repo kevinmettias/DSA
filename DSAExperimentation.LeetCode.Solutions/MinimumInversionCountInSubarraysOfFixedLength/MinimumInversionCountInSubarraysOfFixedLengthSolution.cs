@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumInversionCountInSubarraysOfFixedLength;
 
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumInversionCountInSubarrays
 // contribution straight from the tree's prefix sums. The window then slides
 // one element at a time - remove the leftmost, insert the new rightmost -
 // each side O(log n), for O(n log n) overall.
+[LeetCodeQuestion("minimum-inversion-count-in-subarrays-of-fixed-length", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumInversionCountInSubarraysOfFixedLengthSolution
 {
     // The textbook approach: count every window's inversions from scratch

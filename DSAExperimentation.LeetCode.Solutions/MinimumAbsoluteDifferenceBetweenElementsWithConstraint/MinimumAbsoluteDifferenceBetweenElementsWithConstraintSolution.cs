@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumAbsoluteDifferenceBetweenElementsWithConstraint;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumAbsoluteDifferenceBetween
 // 0..j-minimumIndexDistance, and that set grows by exactly one element per step -
 // index j - minimumIndexDistance, which only just became eligible - so the structure
 // is built incrementally by the same loop that queries it, never rebuilt.
+[LeetCodeQuestion("minimum-absolute-difference-between-elements-with-constraint", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumAbsoluteDifferenceBetweenElementsWithConstraintSolution
 {
     // The textbook answer: for every i, walk every partner at or beyond

@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.DataStructures.Graph.Adjacency;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DetonateTheMaximumBombs;
 
@@ -25,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DetonateTheMaximumBombs;
 // the blast graph once as this repo's AdjacencyNode and counts each trigger's reach
 // with Reduce.Graph and NodeCountReduceAlgebra. The comparison is about walking a
 // graph built once against re-testing every edge per trigger, not asymptotics.
+[LeetCodeQuestion("detonate-the-maximum-bombs", LeetCodeAnswerOrder.AsWritten)]
 internal static class DetonateTheMaximumBombsSolution
 {
     // A bomb is [x, y, radius].

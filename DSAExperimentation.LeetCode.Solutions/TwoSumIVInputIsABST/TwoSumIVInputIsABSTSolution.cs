@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.TwoSumIVInputIsABST;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TwoSumIVInputIsABST;
 // Both strategies take LeetCode's own input shape directly - a BinaryTreeNode<int>
 // root - so there is no separate hoisted-input overload: the tree already IS the
 // prepared input, built once in a benchmark's [GlobalSetup] or once per test case.
+[LeetCodeQuestion("two-sum-iv-input-is-a-bst", LeetCodeAnswerOrder.AsWritten)]
 internal static class TwoSumIVInputIsABSTSolution
 {
     // The textbook answer: collect every value with a plain traversal, then a

@@ -1,5 +1,6 @@
 using System.Numerics;
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindNthSmallestIntegerWithKOneBits;
 
@@ -24,6 +25,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindNthSmallestIntegerWithKOneBi
 // Memoizer, the same "tuple state through Memoizer.Memoize" shape
 // ClimbingStairsSolution and MinimumSumOfValuesByDividingArraySolution
 // already use.
+[LeetCodeQuestion("find-nth-smallest-integer-with-k-one-bits", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindNthSmallestIntegerWithKOneBitsSolution
 {
     // Comfortably above the highest bit position the guarantee "answer < 2^50"

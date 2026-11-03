@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.StringMatching;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FormArrayByConcatenatingSubarraysOfAnotherArray;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FormArrayByConcatenatingSubarray
 // taken, which is correct here because matching as early as possible never removes
 // room a later group could have used. They differ only in how that one search is
 // performed: a from-scratch re-comparison at every start position, or KMP.
+[LeetCodeQuestion("form-array-by-concatenating-subarrays-of-another-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class FormArrayByConcatenatingSubarraysOfAnotherArraySolution
 {
     // The textbook answer: for each group, walk every start position in the

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfDartsInsideOfACircularDartboard;
 
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfDartsInsideOfACir
 // neither input dart). What the two strategies below differ in is therefore the
 // candidate buffer they grow: a plain BCL List, or this repo's own DynamicArray in the
 // same growable-scratch-buffer role CircleAndRectangleOverlapping (LC 1401) gives it.
+[LeetCodeQuestion("maximum-number-of-darts-inside-of-a-circular-dartboard", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumNumberOfDartsInsideOfACircularDartboardSolution
 {
     // Two darts more than a diameter apart can never share a circle of this radius.

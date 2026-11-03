@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.HIndex;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.HIndex;
 // sorted index i counted from the end, "papers cited at least this much"
 // is a running count, and h stops growing the moment a citation falls
 // below it.
+[LeetCodeQuestion("h-index", LeetCodeAnswerOrder.AsWritten)]
 internal static class HIndexSolution
 {
     // O(n^2): recount citations >= candidate for every candidate h. What

@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumXORWithAnElementFromArray;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumXORWithAnElementFromArray
 // insert-only BitTrie can be filled incrementally and never has to forget an
 // element. That is why this composes with this repo's BitTrie as it stands:
 // BitTrie has no delete.
+[LeetCodeQuestion("maximum-xor-with-an-element-from-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumXORWithAnElementFromArraySolution
 {
     // The textbook answer: for every query, walk all of nums and keep the best

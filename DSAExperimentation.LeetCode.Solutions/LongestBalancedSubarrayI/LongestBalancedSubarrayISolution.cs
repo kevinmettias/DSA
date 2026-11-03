@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.LongestBalancedSubarrayI;
 
 // LeetCode 3719. Longest Balanced Subarray I: how long is the longest subarray
@@ -8,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestBalancedSubarrayI;
 // tracks "already counted" - see LongestBalancedSubarrayII for the
 // O(n log^2 n) segment-tree strategy this problem's harder sibling (n <= 1e5)
 // actually forces.
+[LeetCodeQuestion("longest-balanced-subarray-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestBalancedSubarrayISolution
 {
     // The textbook answer: reset a fresh pair of hash sets at every start index

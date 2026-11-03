@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DailyTemperatures;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DailyTemperatures;
 // ahead, found by a monotonic stack that pushes every day once and pops it at most
 // once - and records each wait as the index gap to that day; a day with no warmer
 // day ahead keeps the 0 LeetCode expects.
+[LeetCodeQuestion("daily-temperatures", LeetCodeAnswerOrder.AsWritten)]
 internal static class DailyTemperaturesSolution
 {
     private const int NoWarmerDay = -1;

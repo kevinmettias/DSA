@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.VowelsOfAllSubstrings;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.VowelsOfAllSubstrings;
 //
 // Which letters are vowels is English's (Domain/Language/English): the contribution arm asks
 // EnglishVowels, and so does the baseline (ARCHITECTURE §17.5).
+[LeetCodeQuestion("vowels-of-all-substrings", LeetCodeAnswerOrder.AsWritten)]
 internal static class VowelsOfAllSubstringsSolution
 {
     // The textbook baseline: fix a start index, extend the substring one character

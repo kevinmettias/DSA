@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeStringSorted;
 
@@ -22,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeS
 // remaining letters are smaller than this one": a linear scan of the 26-slot
 // frequency array, or a PrefixQuery on this repo's own Binary Indexed Tree over
 // that same array.
+[LeetCodeQuestion("minimum-number-of-operations-to-make-string-sorted", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
 {
     // The textbook answer without this repo: scan the frequency array for the

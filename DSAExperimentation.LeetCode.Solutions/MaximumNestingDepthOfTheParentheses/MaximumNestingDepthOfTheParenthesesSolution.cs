@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using OpenerStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumNestingDepthOfTheParentheses;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNestingDepthOfTheParenthe
 // repo's own Stack<char> holding each unmatched opener explicitly so its own Count
 // is the depth - the same "stack size as depth" trick RemoveOutermostParentheses
 // uses to decide emission, here reporting the maximum instead.
+[LeetCodeQuestion("maximum-nesting-depth-of-the-parentheses", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumNestingDepthOfTheParenthesesSolution
 {
     private const char Opener = '(';

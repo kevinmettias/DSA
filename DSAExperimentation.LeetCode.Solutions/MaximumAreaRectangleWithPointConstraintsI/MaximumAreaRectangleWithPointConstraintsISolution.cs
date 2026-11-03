@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumAreaRectangleWithPointConstraintsI;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumAreaRectangleWithPointCon
 // that both strategies below stay polynomial in n. Part II (LC 3382), with n up
 // to 2e5, needs a genuinely different composed arm, and runs this class's
 // quadruple scan as its baseline (ARCHITECTURE.md section 17.3).
+[LeetCodeQuestion("maximum-area-rectangle-with-point-constraints-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumAreaRectangleWithPointConstraintsISolution
 {
     private const long None = -1;

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.MonotonicDeque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.JumpGameVI;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.JumpGameVI;
 // Unlike LC 1425 (ConstrainedSubsequenceSumSolution), every step here is a mandatory
 // jump rather than an optional "skip this index", so the window maximum has no
 // floor-at-zero and the answer is the last cell rather than the best cell.
+[LeetCodeQuestion("jump-game-vi", LeetCodeAnswerOrder.AsWritten)]
 internal static class JumpGameVISolution
 {
     // The textbook answer: at each position, walk the jumpLimit preceding best values

@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MergeSimilarItems;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MergeSimilarItems;
 // convention TwoSum's map uses, summing instead of recording an index - and orders
 // the distinct values with this repo's own MergeSort over an
 // ArrayIndexedSequence<int>.
+[LeetCodeQuestion("merge-similar-items", LeetCodeAnswerOrder.AsWritten)]
 internal static class MergeSimilarItemsSolution
 {
     // LeetCode gives each pair as a two-element array: [value, weight].

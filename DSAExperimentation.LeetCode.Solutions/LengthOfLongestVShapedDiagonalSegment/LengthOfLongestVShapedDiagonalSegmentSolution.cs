@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.LengthOfLongestVShapedDiagonalSegment;
 
 // LeetCode 3459. Length of Longest V-Shaped Diagonal Segment: a segment starts at a
@@ -11,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LengthOfLongestVShapedDiagonalSe
 // walk with a per-position value obligation and a one-shot turn. Both strategies
 // below are plain array composition over the raw grid instead - matching how
 // OpenTheLockSolution's own baseline is deliberately primitive-free.
+[LeetCodeQuestion("length-of-longest-v-shaped-diagonal-segment", LeetCodeAnswerOrder.AsWritten)]
 internal static class LengthOfLongestVShapedDiagonalSegmentSolution
 {
     // Clockwise order: north-east, south-east, south-west, north-west, then back to

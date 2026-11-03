@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PartitionString;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PartitionString;
 // never appears in the answer - LC's own reference solutions (every language)
 // do exactly this, with no special-casing at the end of the loop, and Example
 // 2 ("aaaa" -> ["a","aa"], not ["a","aa","a"]) is only explicable that way.
+[LeetCodeQuestion("partition-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class PartitionStringSolution
 {
     // Textbook baseline: BCL HashSet<string>.Add already returns whether the

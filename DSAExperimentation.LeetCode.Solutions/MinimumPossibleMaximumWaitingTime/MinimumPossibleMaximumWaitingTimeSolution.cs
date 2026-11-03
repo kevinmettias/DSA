@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumPossibleMaximumWaitingTime;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumPossibleMaximumWaitingTim
 // actual timestamps get. Combined with consumed0 (<= fuel[0] <= 50) and the
 // car index (<= 50), the whole reachable state space is a few hundred
 // thousand tuples at the problem's own worst case.
+[LeetCodeQuestion("minimum-possible-maximum-waiting-time", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumPossibleMaximumWaitingTimeSolution
 {
     // Plain recursive search over every dispenser choice for every car,

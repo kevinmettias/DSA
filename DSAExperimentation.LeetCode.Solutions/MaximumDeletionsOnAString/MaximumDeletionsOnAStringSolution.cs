@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.RollingHash;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumDeletionsOnAString;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumDeletionsOnAString;
 // instead of 3) - so every valid k's dp[i+k] is considered and the best one wins.
 //
 // The strategies differ only in what one candidate's half-equality test costs.
+[LeetCodeQuestion("maximum-deletions-on-a-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumDeletionsOnAStringSolution
 {
     // A deletable prefix is exactly two equal-length halves back to back.

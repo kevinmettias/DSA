@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using PrefixNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
     DSAExperimentation.Domain.Language.English.EnglishLowercase,
     DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SumOfPrefixScoresOfStrings;
 // Both strategies answer that same question; they differ only in whether the "how
 // many words start with this prefix" count is recomputed by re-scanning the word
 // list, or read off a trie that counted it once while the words were inserted.
+[LeetCodeQuestion("sum-of-prefix-scores-of-strings", LeetCodeAnswerOrder.AsWritten)]
 internal static class SumOfPrefixScoresOfStringsSolution
 {
     // The textbook answer: for each word, take each of its prefixes in turn and

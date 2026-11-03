@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.Dota2Senate;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.Dota2Senate;
 // found - repeatedly rescanning the circle with a BCL bool[] of banned flags, vs.
 // this repo's own Queue<int>, one per party, where re-enqueuing the winner at
 // index + n both records the ban and schedules the next round in one step.
+[LeetCodeQuestion("dota2-senate", LeetCodeAnswerOrder.AsWritten)]
 internal static class Dota2SenateSolution
 {
     private const string Radiant = "Radiant";

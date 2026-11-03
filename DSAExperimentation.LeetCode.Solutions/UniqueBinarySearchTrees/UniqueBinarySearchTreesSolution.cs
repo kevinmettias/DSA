@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.UniqueBinarySearchTrees;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.UniqueBinarySearchTrees;
 // so each distinct node count is still solved only once - the same
 // recurrence UniqueBinarySearchTreesIISolution drives to actually build the
 // trees rather than just count them.
+[LeetCodeQuestion("unique-binary-search-trees", LeetCodeAnswerOrder.AsWritten)]
 internal static class UniqueBinarySearchTreesSolution
 {
     private const int FirstComposedNodeCount = 2;

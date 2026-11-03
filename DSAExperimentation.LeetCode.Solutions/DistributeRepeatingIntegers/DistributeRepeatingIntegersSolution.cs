@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DistributeRepeatingIntegers;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DistributeRepeatingIntegers;
 // items and a per-value stock as each bucket's capacity, instead of one shared
 // target sum. Orders are placed largest first for the same pruning reason: the
 // hardest order fails fastest.
+[LeetCodeQuestion("distribute-repeating-integers", LeetCodeAnswerOrder.AsWritten)]
 internal static class DistributeRepeatingIntegersSolution
 {
     // The textbook recursion: a hand-written DFS that tries each value's remaining

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.IncrementalMemoryLeak;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.IncrementalMemoryLeak;
 // repo's own Heap<Element, TOrder> holding the two sticks as a max-heap - the same
 // "explicit priority-holding primitive per round" shape FindMedianFromDataStream
 // establishes for Heap<Element, TOrder>.
+[LeetCodeQuestion("incremental-memory-leak", LeetCodeAnswerOrder.AsWritten)]
 internal static class IncrementalMemoryLeakSolution
 {
     private const int FirstStickIndex = 1;

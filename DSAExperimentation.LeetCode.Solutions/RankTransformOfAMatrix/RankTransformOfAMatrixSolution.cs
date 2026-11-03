@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RankTransformOfAMatrix;
 
@@ -25,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RankTransformOfAMatrix;
 // every rank at 1 and rescan every row and column, nudging a rank up whenever a
 // pair violates the ordering or tie rule, until a full pass changes nothing - a
 // Bellman-Ford-shaped least fixed point over the rank constraints.
+[LeetCodeQuestion("rank-transform-of-a-matrix", LeetCodeAnswerOrder.AsWritten)]
 internal static class RankTransformOfAMatrixSolution
 {
     private const int LowestRank = 1;

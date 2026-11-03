@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ThreeSum;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ThreeSum;
 // duplicate-filtering set keyed on the sorted triplet, versus this repo's own
 // MergeSort followed by the usual sorted two-pointer sweep per fixed first
 // element, which never revisits a triplet in the first place.
+[LeetCodeQuestion("3sum", LeetCodeAnswerOrder.AnyOrder)]
 internal static class ThreeSumSolution
 {
     // Need at least 2 more elements after the first index for the two-pointer sweep.

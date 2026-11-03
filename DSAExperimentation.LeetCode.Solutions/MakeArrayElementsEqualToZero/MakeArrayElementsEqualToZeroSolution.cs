@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.MakeArrayElementsEqualToZero;
 
 // LeetCode 3354. Make Array Elements Equal to Zero: pick a zero index and a
@@ -5,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MakeArrayElementsEqualToZero;
 // untouched but decrementing and turning around at every nonzero cell it
 // lands on, until it steps out of bounds. Count the (index, direction) pairs
 // whose walk leaves every element zero.
+[LeetCodeQuestion("make-array-elements-equal-to-zero", LeetCodeAnswerOrder.AsWritten)]
 internal static class MakeArrayElementsEqualToZeroSolution
 {
     // The textbook baseline: actually run the walk the problem describes,

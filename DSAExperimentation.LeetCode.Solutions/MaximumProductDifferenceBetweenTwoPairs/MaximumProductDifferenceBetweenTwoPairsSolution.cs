@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumProductDifferenceBetweenTwoPairs;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumProductDifferenceBetweenT
 // array-wide largest product and the array-wide smallest product are always
 // achieved by disjoint pairs once nums.Length >= 4, because the two largest
 // elements and the two smallest are four different positions.
+[LeetCodeQuestion("maximum-product-difference-between-two-pairs", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumProductDifferenceBetweenTwoPairsSolution
 {
     // Index offset of the second-largest element from the sorted array's end.

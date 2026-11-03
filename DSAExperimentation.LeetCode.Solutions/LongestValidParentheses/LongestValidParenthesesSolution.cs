@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using IndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestValidParentheses;
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestValidParentheses;
 // the current valid run began - a classic O(n) DP array of "how far back does
 // a valid run reach", or a stack of unmatched indices whose top always marks
 // the boundary just before the current run.
+[LeetCodeQuestion("longest-valid-parentheses", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestValidParenthesesSolution
 {
     private const int MatchedPairLength = 2;

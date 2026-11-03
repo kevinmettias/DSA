@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.SimplifiedFractions;
 
 // LeetCode 1447. Simplified Fractions: list every fraction strictly between 0 and 1
@@ -11,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SimplifiedFractions;
 // over plain integers" case PowXnSolution and CheckIfItIsAGoodArraySolution already
 // are - so the one real algorithmic choice the problem has is how each pairwise gcd is
 // computed, and that is what the two strategies here differ in.
+[LeetCodeQuestion("simplified-fractions", LeetCodeAnswerOrder.AnyOrder)]
 internal static class SimplifiedFractionsSolution
 {
     // Every fraction is proper, so the smallest denominator that admits one is 2.

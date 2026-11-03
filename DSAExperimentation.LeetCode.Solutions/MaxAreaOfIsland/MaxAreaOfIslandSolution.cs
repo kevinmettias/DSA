@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaxAreaOfIsland;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaxAreaOfIsland;
 // clones the grid it is handed first - the same clone-before-mutating shape the
 // original benchmark arms used, now made unconditional so a caller's own grid (or
 // a benchmark fixture reused across iterations) is never left half-zeroed.
+[LeetCodeQuestion("max-area-of-island", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaxAreaOfIslandSolution
 {
     // The textbook answer: a hand-specialized recursive flood fill, BCL only.

@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using NextGreaterStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.NextGreaterElementII;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NextGreaterElementII;
 // yet, walked twice around the array (i % n) so every index gets a chance to
 // see a greater value that wraps around from the front. The baseline instead
 // scans up to n-1 positions ahead of each index directly.
+[LeetCodeQuestion("next-greater-element-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class NextGreaterElementIISolution
 {
     // The textbook answer: an O(n^2) scan ahead of each index (wrapping via

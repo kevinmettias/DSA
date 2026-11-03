@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RightTriangles;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RightTriangles;
 // up - the same "tally once, answer many queries" shape CountServersThatCommunicate
 // (LC 1267) uses for its own row/column counts, composed here with this repo's own
 // HashMap<int,int> in place of a BCL Dictionary.
+[LeetCodeQuestion("right-triangles", LeetCodeAnswerOrder.AsWritten)]
 internal static class RightTrianglesSolution
 {
     // Textbook baseline: for every 1-cell, rescans its whole row and whole column

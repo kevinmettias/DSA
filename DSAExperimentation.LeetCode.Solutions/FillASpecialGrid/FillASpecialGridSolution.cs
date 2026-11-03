@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.FillASpecialGrid;
 
 // LeetCode 3537. Fill a Special Grid: fill a 2^n x 2^n grid with 0..2^(2n)-1 so
@@ -15,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FillASpecialGrid;
 // and need nothing beyond plain arrays and bit arithmetic - there is no existing
 // primitive this composes, because there is no graph, search, or ordering problem
 // here to reuse one for.
+[LeetCodeQuestion("fill-a-special-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class FillASpecialGridSolution
 {
     // (rowBit, colBit) at each level names one of the four quadrants; QuadrantDigit

@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using PalindromeStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.SmallestPalindromicRearrangementI;
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SmallestPalindromicRearrangement
 // The two strategies differ only in how the right half is produced from the left
 // - a char[] the caller reverses at the end, or this repo's own Stack<char>, the
 // same "LIFO order undoes the reversal" trick AddBinarySolution uses.
+[LeetCodeQuestion("smallest-palindromic-rearrangement-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class SmallestPalindromicRearrangementISolution
 {
     public static string RearrangeByCharArrayReverse(string text)

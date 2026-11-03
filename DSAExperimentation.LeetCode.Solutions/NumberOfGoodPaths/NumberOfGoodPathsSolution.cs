@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfGoodPaths;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfGoodPaths;
 // to look - process the edges in increasing order of their higher-valued endpoint,
 // so at the moment two components are joined nothing already inside either of them
 // exceeds the value being considered.
+[LeetCodeQuestion("number-of-good-paths", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfGoodPathsSolution
 {
     // The textbook answer: build an adjacency list, then for each of the O(n^2)

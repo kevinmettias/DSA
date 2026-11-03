@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using ValueRunStack = DSAExperimentation.DataStructures.Stack.Stack<(int Value, long Count)>;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximum;
@@ -22,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheNumberOfSubarraysWhereBou
 // makes a bare `Stack<T>` ambiguous (CS0104) against the BCL's own Stack<T> - the
 // same collision MaximumEleganceOfAKLengthSubsequenceSolution's RepoProfitStack
 // works around.
+[LeetCodeQuestion("find-the-number-of-subarrays-where-boundary-elements-are-maximum", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximumSolution
 {
     // Baseline: extend every subarray's right endpoint in a plain nested loop

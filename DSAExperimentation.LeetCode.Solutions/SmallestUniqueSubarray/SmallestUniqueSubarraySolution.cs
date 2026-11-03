@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.RollingHash;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SmallestUniqueSubarray;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SmallestUniqueSubarray;
 // length-L slice to equal the subarray at p, contradicting its uniqueness.
 // So "the smallest feasible L" is a genuine binary-search boundary (L = n's
 // single whole-array subarray is always feasible, giving a valid upper bound).
+[LeetCodeQuestion("smallest-unique-subarray", LeetCodeAnswerOrder.AsWritten)]
 internal static class SmallestUniqueSubarraySolution
 {
     // Textbook: for each length from 1 up, bucket every window by an exact

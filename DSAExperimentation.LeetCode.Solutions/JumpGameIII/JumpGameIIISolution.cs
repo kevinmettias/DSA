@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.JumpGameIII;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.JumpGameIII;
 // The puzzle is plain reachability over an implicit bidirectional-hop graph - no
 // weights, no hop count to minimize - so the only thing the two strategies differ
 // in is who owns the visited set and the pending frontier.
+[LeetCodeQuestion("jump-game-iii", LeetCodeAnswerOrder.AsWritten)]
 internal static class JumpGameIIISolution
 {
     // The textbook answer: a BCL Stack<int> frontier over a bool[] visited map,

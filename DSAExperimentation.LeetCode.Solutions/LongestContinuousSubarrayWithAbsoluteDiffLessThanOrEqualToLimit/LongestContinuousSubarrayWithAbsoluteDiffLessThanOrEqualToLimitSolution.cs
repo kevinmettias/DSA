@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.MonotonicDeque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestContinuousSubarrayWithAbs
 // Both strategies answer the same question and differ only in how they learn a
 // window's max and min: the baseline rescans each window from its own start, while
 // the composed strategy keeps them incrementally in this repo's MinMaxWindow.
+[LeetCodeQuestion("longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitSolution
 {
     // The textbook answer: every starting index grows its own window from scratch,

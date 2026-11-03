@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CreateSortedArrayThroughInstructions;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CreateSortedArrayThroughInstruct
 // Both strategies answer the same two counting questions at every step and differ
 // only in what they ask - a rescan of everything inserted so far, or one
 // value-indexed Fenwick tree carried across the whole sweep.
+[LeetCodeQuestion("create-sorted-array-through-instructions", LeetCodeAnswerOrder.AsWritten)]
 internal static class CreateSortedArrayThroughInstructionsSolution
 {
     // The textbook answer: keep every inserted value in a list and re-count the

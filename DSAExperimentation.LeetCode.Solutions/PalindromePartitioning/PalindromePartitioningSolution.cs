@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.PalindromePartitioning;
 
 // LeetCode 131. Palindrome Partitioning: every way to cut `text` into a sequence
@@ -8,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PalindromePartitioning;
 // isPalindrome[i][j] table once, then runs the same choose/explore/unchoose walk
 // against it, so each candidate question is O(1) instead of O(n). The old benchmark's two [Benchmark] arms were both compile-smoke
 // placeholders (`=> 1`), not a second real approach to reconcile against.
+[LeetCodeQuestion("palindrome-partitioning", LeetCodeAnswerOrder.AsWritten)]
 internal static class PalindromePartitioningSolution
 {
     // The same choose/explore/unchoose walk as the arm below, with one difference:

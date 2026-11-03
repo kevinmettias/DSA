@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.EditDistance;
 
@@ -7,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.EditDistance;
 // distance(i, j) is 0 once both suffixes are exhausted, and otherwise either the
 // free match-through when the next characters agree or 1 plus the best of
 // insert/delete/replace on the remaining suffixes.
+[LeetCodeQuestion("edit-distance", LeetCodeAnswerOrder.AsWritten)]
 internal static class EditDistanceSolution
 {
     // Textbook baseline: BCL 2D array filled bottom-up from the empty-suffix

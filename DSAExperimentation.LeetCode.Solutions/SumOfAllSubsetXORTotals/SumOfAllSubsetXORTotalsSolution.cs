@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SumOfAllSubsetXORTotals;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SumOfAllSubsetXORTotals;
 // choose/explore/unchoose recursion, where every node of the recursion tree IS a
 // subset, so IsSolution is unconditionally true and one running XOR is toggled by a
 // single XOR on Choose and untoggled by the same XOR on Unchoose - O(2^n).
+[LeetCodeQuestion("sum-of-all-subset-xor-totals", LeetCodeAnswerOrder.AsWritten)]
 internal static class SumOfAllSubsetXORTotalsSolution
 {
     // The textbook answer: iterate the 2^n bitmasks and rescan the array for each

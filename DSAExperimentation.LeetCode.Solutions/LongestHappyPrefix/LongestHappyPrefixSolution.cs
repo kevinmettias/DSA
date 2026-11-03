@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestHappyPrefix;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestHappyPrefix;
 // That is precisely what KMP's prefix/failure function measures, so the composed
 // strategy has no separate algorithm at all: it runs
 // PrefixFunctionSearch.ComputeFailureFunction over s and reads its last entry.
+[LeetCodeQuestion("longest-happy-prefix", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestHappyPrefixSolution
 {
     // The textbook answer: try every candidate length from n-1 down to 1 and

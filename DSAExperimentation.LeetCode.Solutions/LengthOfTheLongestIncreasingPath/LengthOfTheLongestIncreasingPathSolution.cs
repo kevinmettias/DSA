@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<int, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<int>>;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LengthOfTheLongestIncreasingPath
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("length-of-the-longest-increasing-path", LeetCodeAnswerOrder.AsWritten)]
 internal static class LengthOfTheLongestIncreasingPathSolution
 {
     // Textbook O(n^2): memoized DP over every ordered pair, directly on

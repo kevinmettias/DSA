@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.StringMatchingInAnArray;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StringMatchingInAnArray;
 //
 // Words are returned in input order. LC 1408 accepts any order, but input order is
 // what the array-shaped sweep produces naturally and what the examples show.
+[LeetCodeQuestion("string-matching-in-an-array", LeetCodeAnswerOrder.AnyOrder)]
 internal static class StringMatchingInAnArraySolution
 {
     // The textbook baseline: a raw char-index double loop per pair, restarting the

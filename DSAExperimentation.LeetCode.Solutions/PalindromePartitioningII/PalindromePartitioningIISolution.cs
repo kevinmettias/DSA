@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PalindromePartitioningII;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PalindromePartitioningII;
 // and it drops the memoized arm's extra palindrome-rescan factor. The original
 // benchmark's two [Benchmark] arms were both compile-smoke placeholders (`=> 1`),
 // not a second real approach; these are.
+[LeetCodeQuestion("palindrome-partitioning-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class PalindromePartitioningIISolution
 {
     // The textbook arm the memoized suffix recurrence is measured against: a

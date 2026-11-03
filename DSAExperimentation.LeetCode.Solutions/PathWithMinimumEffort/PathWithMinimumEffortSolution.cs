@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PathWithMinimumEffort;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PathWithMinimumEffort;
 //
 // MinimumEffortPathByBinarySearchFloodFill is the textbook alternative: binary
 // search the answer, re-scanning the whole grid with a fresh BFS per candidate.
+[LeetCodeQuestion("path-with-minimum-effort", LeetCodeAnswerOrder.AsWritten)]
 internal static class PathWithMinimumEffortSolution
 {
     private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];

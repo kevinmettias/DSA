@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Heap;
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToVisitDisappearingNodes;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToVisitDisappearingNo
 // every settled node - so both strategies here hand-roll the same relax loop,
 // one off a priority queue this repo doesn't own, one off the priority queue it
 // does.
+[LeetCodeQuestion("minimum-time-to-visit-disappearing-nodes", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumTimeToVisitDisappearingNodesSolution
 {
     // Baseline: BCL PriorityQueue<int,int> - "what you'd write without this repo".

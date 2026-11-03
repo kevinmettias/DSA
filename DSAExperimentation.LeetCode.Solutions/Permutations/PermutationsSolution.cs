@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.PermutationsII;
 
 namespace DSAExperimentation.LeetCode.Solutions.Permutations;
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.Permutations;
 // answer). The engine arm is PermutationsIISolution's, called through - see that
 // class for why LC 47's driver is the general one - so this class's own writing is
 // the specialized recursion it is measured against.
+[LeetCodeQuestion("permutations", LeetCodeAnswerOrder.AnyOrder)]
 internal static class PermutationsSolution
 {
     // The textbook answer: plain recursion over a BCL used[] flag array and a

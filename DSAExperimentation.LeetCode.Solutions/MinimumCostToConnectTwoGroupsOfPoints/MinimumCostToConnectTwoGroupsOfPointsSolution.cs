@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToConnectTwoGroupsOfPoints;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToConnectTwoGroupsOfP
 // The two arms differ only in whether that recurrence remembers anything: many
 // different group-1 orderings reach the identical "these group-2 points are already
 // covered" state, so the unmemoized arm re-explores each one from scratch.
+[LeetCodeQuestion("minimum-cost-to-connect-two-groups-of-points", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumCostToConnectTwoGroupsOfPointsSolution
 {
     // The textbook answer: plain exponential recursion, no cache, nothing from this

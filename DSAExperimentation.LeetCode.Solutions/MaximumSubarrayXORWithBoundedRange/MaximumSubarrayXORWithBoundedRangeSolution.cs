@@ -2,6 +2,7 @@ using DSAExperimentation.DataStructures.CountedBitTrie;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.MonotonicDeque;
 using DSAExperimentation.DataStructures.PrefixSums;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumSubarrayXORWithBoundedRange;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumSubarrayXORWithBoundedRan
 // subarray whose largest and smallest elements differ by at most k (maxSpread
 // here), report the largest XOR of its elements. A single element always
 // qualifies (k >= 0), so there is always an answer.
+[LeetCodeQuestion("maximum-subarray-xor-with-bounded-range", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumSubarrayXORWithBoundedRangeSolution
 {
     // The textbook O(n^2) scan: from every start index, extend the end one element

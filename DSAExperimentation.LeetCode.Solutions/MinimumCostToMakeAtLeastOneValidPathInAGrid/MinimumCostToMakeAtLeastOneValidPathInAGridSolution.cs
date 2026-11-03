@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToMakeAtLeastOneValidPathInAGrid;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToMakeAtLeastOneValid
 // Dijkstra) or this repo's own Heap<Element,TOrder> ordered by
 // ByPriorityOrder<TNode,TWeight> - the same heap-backed frontier
 // SwimInRisingWater uses - giving O(E log V).
+[LeetCodeQuestion("minimum-cost-to-make-at-least-one-valid-path-in-a-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumCostToMakeAtLeastOneValidPathInAGridSolution
 {
     // Indexed so that Directions[d] is the move the arrow value d + 1 asks for:

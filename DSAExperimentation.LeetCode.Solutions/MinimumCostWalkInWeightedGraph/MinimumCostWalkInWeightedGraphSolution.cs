@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.MinimumCostWalkInWeightedGraph;
 
 // LeetCode 3108. Minimum Cost Walk in Weighted Graph: for each query [s, t], the
@@ -8,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostWalkInWeightedGraph;
 // edge of s's connected component before ending at t, which drives the cost down
 // to the AND of every one of those edges and no further. s and t in different
 // components have no walk between them at all.
+[LeetCodeQuestion("minimum-cost-walk-in-weighted-graph", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumCostWalkInWeightedGraphSolution
 {
     // Baseline: re-derives each query's component from scratch with a BFS over a

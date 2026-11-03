@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindMinimumTimeToReachLastRoomII;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindMinimumTimeToReachLastRoomII
 // by cell alone and prices a move without knowing how many came before it, so both
 // arms here write the relaxation directly - over the BCL PriorityQueue and over
 // this repo's Heap<Element,TOrder>.
+[LeetCodeQuestion("find-minimum-time-to-reach-last-room-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindMinimumTimeToReachLastRoomIISolution
 {
     private static readonly (int DRow, int DCol)[] Directions = [(0, 1), (0, -1), (1, 0), (-1, 0)];

@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumStabilityFactorOfArray;
 
@@ -28,6 +29,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumStabilityFactorOfArray;
 // factor" is the smallest L for which that minimum is <= maxC - a monotonic
 // predicate in L (any placement that already caps the longest stable run at L
 // also caps it at any L' >= L), so binary search applies directly.
+[LeetCodeQuestion("minimum-stability-factor-of-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumStabilityFactorOfArraySolution
 {
     // The gcd of no values - 0, since gcd(0, x) = x - where a running gcd starts folding from.

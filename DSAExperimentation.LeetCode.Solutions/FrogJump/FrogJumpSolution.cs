@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FrogJump;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FrogJump;
 // of jump sizes reachable at it. Stone positions double as the inner map's own key
 // space too, so no separate index/HashSet primitive is needed to enumerate a
 // stone's reachable jump sizes - HashMap<TKey,TValue>.Keys already does.
+[LeetCodeQuestion("frog-jump", LeetCodeAnswerOrder.AsWritten)]
 internal static class FrogJumpSolution
 {
     // The textbook arm: unmemoized recursive DFS, retrying every {-1,0,+1} jump-size

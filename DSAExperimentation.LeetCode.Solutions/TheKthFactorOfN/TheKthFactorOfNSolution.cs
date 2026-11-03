@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.TheKthFactorOfN;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TheKthFactorOfN;
 //
 // Both strategies take LeetCode's own two integers, so neither needs a hoisted
 // prepared-input overload - there is no input structure to build.
+[LeetCodeQuestion("the-kth-factor-of-n", LeetCodeAnswerOrder.AsWritten)]
 internal static class TheKthFactorOfNSolution
 {
 

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfMovesToSeatEveryone;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfMovesToSeatEveryo
 //   without this repo" arm, previously the benchmark's unasserted baseline.
 // - MinMovesToSeatByMergeSort uses this repo's own MergeSort over an
 //   ArrayIndexedSequence, the same composition ArrayPartition uses for LC 561.
+[LeetCodeQuestion("minimum-number-of-moves-to-seat-everyone", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumNumberOfMovesToSeatEveryoneSolution
 {
     public static int MinMovesToSeatBySelectionSort(int[] seats, int[] students)

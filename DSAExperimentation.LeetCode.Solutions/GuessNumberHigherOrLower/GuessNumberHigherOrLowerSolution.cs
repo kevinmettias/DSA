@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.GuessNumberHigherOrLower;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.GuessNumberHigherOrLower;
 // `pick` threshold rather than a live judge API - the same shape
 // FirstBadVersionSolution already uses for isBadVersion - so both strategies only ever
 // ask "how does pick compare to this candidate?".
+[LeetCodeQuestion("guess-number-higher-or-lower", LeetCodeAnswerOrder.AsWritten)]
 internal static class GuessNumberHigherOrLowerSolution
 {
     // The textbook baseline: probe every candidate from 1 upward until guess() reports

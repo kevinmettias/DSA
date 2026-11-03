@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 namespace DSAExperimentation.LeetCode.Solutions.FindGreatestCommonDivisorOfArray;
 
 // LeetCode 1979. Find Greatest Common Divisor of Array: the greatest common
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindGreatestCommonDivisorOfArray
 // XOfAKindInADeckOfCardsSolution already keep inline rather than promoting to a
 // shared production type - a reduction over a running integer has no repo
 // container or algorithm primitive to reach for.
+[LeetCodeQuestion("find-greatest-common-divisor-of-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindGreatestCommonDivisorOfArraySolution
 {
     // The textbook answer: subtract the smaller value from the larger until they

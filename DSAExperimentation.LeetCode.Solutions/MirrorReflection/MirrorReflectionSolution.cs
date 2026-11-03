@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 namespace DSAExperimentation.LeetCode.Solutions.MirrorReflection;
 
 // LeetCode 858. Mirror Reflection: a laser fired from the south-west corner of a
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MirrorReflection;
 // pair's parity is O(log(min(roomSide, rayHeight))). No repo container or algorithm
 // primitive applies to a single running (roomSide, rayHeight) pair - the same "lighter
 // repo-primitive fit" category ReachingPoints and Pow(x, n) already establish.
+[LeetCodeQuestion("mirror-reflection", LeetCodeAnswerOrder.AsWritten)]
 internal static class MirrorReflectionSolution
 {
     // Both strategies decide the receptor from the parity of the crossing counts.

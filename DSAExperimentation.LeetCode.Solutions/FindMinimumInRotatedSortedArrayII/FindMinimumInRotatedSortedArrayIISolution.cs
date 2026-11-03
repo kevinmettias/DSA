@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.FindMinimumInRotatedSortedArrayII;
 
 // LeetCode 154. Find Minimum in Rotated Sorted Array II: find the minimum value
@@ -13,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindMinimumInRotatedSortedArrayI
 // a tie instead. Worst case (an all-duplicate array) still degrades to O(n), the
 // same well-known result LC 81's SearchInRotatedSortedArrayIISolution documents
 // for presence search over the same kind of array.
+[LeetCodeQuestion("find-minimum-in-rotated-sorted-array-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindMinimumInRotatedSortedArrayIISolution
 {
     // The textbook O(n) scan - the arm DuplicateTolerantBinaryShrink has to beat.

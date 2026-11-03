@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfProvinces;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfProvinces;
 // asymptotic class - Union-Find's edge is near-constant-time merging via path
 // compression/union-by-rank instead of DFS's own recursion and visited-array
 // bookkeeping.
+[LeetCodeQuestion("number-of-provinces", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfProvincesSolution
 {
     // The textbook answer: a DFS flood-fill over the adjacency matrix with an

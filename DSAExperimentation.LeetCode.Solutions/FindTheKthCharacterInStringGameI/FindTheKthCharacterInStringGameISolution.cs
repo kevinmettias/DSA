@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheKthCharacterInStringGameI;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheKthCharacterInStringGameI
 // kthPosition <= 500, so the naive simulation is already fast - both
 // strategies are here to record the closed form the doubling structure
 // hides, not because the brute force needs replacing.
+[LeetCodeQuestion("find-the-k-th-character-in-string-game-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheKthCharacterInStringGameISolution
 {
     // The textbook answer: build the actual string one round at a time -

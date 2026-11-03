@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.MaximumSumCircularSubarray;
 
 // LeetCode 918. Maximum Sum Circular Subarray: the largest sum of any non-empty
@@ -6,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumSumCircularSubarray;
 // applies - this is a running-best scan over the array itself, the same "no
 // stronger reusable primitive" shape MaximumSubarraySolution already established
 // for LC 53's linear case.
+[LeetCodeQuestion("maximum-sum-circular-subarray", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumSumCircularSubarraySolution
 {
     // The textbook answer: try every circular subarray - every start index, every

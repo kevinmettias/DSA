@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.LazySegmentTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestBalancedSubarrayII;
 
@@ -33,6 +34,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestBalancedSubarrayII;
 // comparing a target against a range's [Min, Max] is enough to decide whether that
 // range actually contains it, so no change to LazySegmentTree is needed to support
 // the search.
+[LeetCodeQuestion("longest-balanced-subarray-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestBalancedSubarrayIISolution
 {
     // The textbook answer: reset a fresh pair of hash sets at every start index

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfVerticesToReachAllNodes;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfVerticesToReachAl
 // So neither strategy searches the graph at all; they differ only in how they answer
 // "does this node have an incoming edge" - by rescanning the edge list once per node,
 // or by marking every edge target up front.
+[LeetCodeQuestion("minimum-number-of-vertices-to-reach-all-nodes", LeetCodeAnswerOrder.AnyOrder)]
 internal static class MinimumNumberOfVerticesToReachAllNodesSolution
 {
     // Indices into LeetCode's own [from, to] edge pair.

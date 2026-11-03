@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.AhoCorasick;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ShortestUncommonSubstringInAnArray;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortestUncommonSubstringInAnArr
 // elsewhere too. Both strategies rank the same candidate list (every distinct
 // substring of the word, ordered shortest-first then lexicographically) and
 // differ only in how they check "does this candidate occur in some other word".
+[LeetCodeQuestion("shortest-uncommon-substring-in-an-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class ShortestUncommonSubstringInAnArraySolution
 {
     // The textbook check: BCL string.Contains against every other word, one

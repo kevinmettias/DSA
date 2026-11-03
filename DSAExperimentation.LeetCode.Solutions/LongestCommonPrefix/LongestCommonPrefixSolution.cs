@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestCommonPrefix;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestCommonPrefix;
 // The two strategies differ in how they locate that length - shrinking a
 // candidate prefix one character at a time versus binary-searching the
 // monotone predicate "a prefix of length n is shared by every string".
+[LeetCodeQuestion("longest-common-prefix", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestCommonPrefixSolution
 {
     // The textbook baseline: take the first string as a candidate prefix and

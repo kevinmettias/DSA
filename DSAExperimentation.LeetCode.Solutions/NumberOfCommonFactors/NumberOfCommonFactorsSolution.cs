@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfCommonFactors;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfCommonFactors;
 // candidate from 1 up to min(a, b) against both numbers, while the composed answer
 // reduces to the gcd first and enumerates only ITS divisors up to sqrt(gcd),
 // picking up the far side of each divisor pair for free.
+[LeetCodeQuestion("number-of-common-factors", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfCommonFactorsSolution
 {
     // The textbook answer: try every candidate divisor up to min(a, b) and keep the

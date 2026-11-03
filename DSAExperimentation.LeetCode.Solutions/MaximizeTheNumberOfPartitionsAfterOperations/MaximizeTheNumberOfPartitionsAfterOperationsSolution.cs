@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximizeTheNumberOfPartitionsAfterOperations;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeTheNumberOfPartitionsAft
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("maximize-the-number-of-partitions-after-operations", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximizeTheNumberOfPartitionsAfterOperationsSolution
 {
     // Whether the one permitted character change is still available is a state the

@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.TheEarliestAndLatestRoundsWherePlayersCompete;
 
@@ -35,6 +36,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TheEarliestAndLatestRoundsWhereP
 //
 // Recurrence hand-verified against both official LeetCode examples, which the
 // coverage tests state.
+[LeetCodeQuestion("the-earliest-and-latest-rounds-where-players-compete", LeetCodeAnswerOrder.AsWritten)]
 internal static class TheEarliestAndLatestRoundsWherePlayersCompeteSolution
 {
     // Next round's low is 1 + x; its high starts from low itself plus the

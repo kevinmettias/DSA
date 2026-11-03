@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.KthLargestElement;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.KthLargestElement;
 // O(n log n) sort followed by a direct index, or an O(n log k) size-k min-heap
 // (this repo's own Heap<T, MinHeapOrder<T>>) that discards its smallest root
 // whenever it grows past k, so its own log factor is on k rather than n.
+[LeetCodeQuestion("kth-largest-element-in-an-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class KthLargestElementSolution
 {
     // The textbook answer: sort a copy and index from the end. Deliberately

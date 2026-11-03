@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.SubarrayProductLessThanK;
 
 // LeetCode 713. Subarray Product Less Than K: count contiguous subarrays whose
@@ -8,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SubarrayProductLessThanK;
 // The window keeps its product exactly. A sum of logarithms would avoid large
 // products, but it is not exact: a subarray whose product equals the limit can sum
 // to a hair under log(limit) and be counted, as [5, 6] with limit 30 was.
+[LeetCodeQuestion("subarray-product-less-than-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class SubarrayProductLessThanKSolution
 {
     // The textbook O(n^2): for every start index, extend the running product

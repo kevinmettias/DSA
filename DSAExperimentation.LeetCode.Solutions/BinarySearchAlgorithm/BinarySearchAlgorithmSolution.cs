@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BinarySearchAlgorithm;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BinarySearchAlgorithm;
 // O(n) linear scan, or this repo's own O(log n) BinarySearch.Find over an
 // ArraySequence<int>, whose null ("not found") this class translates to LeetCode's
 // -1 convention at the call site.
+[LeetCodeQuestion("binary-search", LeetCodeAnswerOrder.AsWritten)]
 internal static class BinarySearchAlgorithmSolution
 {
     // The textbook baseline this composition has to justify itself against: a

@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 // LC 2662's own vertex: one of the finitely many points a route ever needs to turn at - the
 // start, the target, and each special road's two endpoints - carrying the outgoing weighted
@@ -30,6 +31,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostOfAPathWithSpecialRoa
 // LeetCode's own argument shape, and each strategy's own representation of the point
 // graph is part of what that strategy costs - handing both arms one shared pre-built
 // graph would measure neither of them.
+[LeetCodeQuestion("minimum-cost-of-a-path-with-special-roads", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumCostOfAPathWithSpecialRoadsSolution
 {
     // A point is [x, y]; a special road is [x1, y1, x2, y2, cost], whose first two

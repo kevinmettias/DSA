@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfFishInAGrid;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfFishInAGrid;
 // than the cell count. Both strategies visit cells by zeroing them in place, so
 // each clones the grid it is handed first - a caller's own grid (or a benchmark
 // fixture reused across iterations) is never left half-zeroed.
+[LeetCodeQuestion("maximum-number-of-fish-in-a-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumNumberOfFishInAGridSolution
 {
     // The textbook answer: a hand-specialized recursive flood fill that adds each

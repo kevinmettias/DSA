@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.OddEvenJump;
 
@@ -23,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.OddEvenJump;
 //   precedent). An index reached later in the sort order already qualifies for every
 //   position to its left, so the nearest later entry holding a larger index is the
 //   target, each found in amortized O(1), for O(n log n) overall.
+[LeetCodeQuestion("odd-even-jump", LeetCodeAnswerOrder.AsWritten)]
 internal static class OddEvenJumpSolution
 {
     // An index with no qualifying later index to jump to.

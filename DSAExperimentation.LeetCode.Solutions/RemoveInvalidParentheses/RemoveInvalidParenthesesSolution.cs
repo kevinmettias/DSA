@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<string>;
 using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveInvalidParentheses;
 // to test each candidate's validity. The first level containing any valid
 // candidate holds every result at the minimum removal count, so the search never
 // explores more removals than necessary.
+[LeetCodeQuestion("remove-invalid-parentheses", LeetCodeAnswerOrder.AnyOrder)]
 internal static class RemoveInvalidParenthesesSolution
 {
     // Enumerates every subset of text's characters, keeping the valid ones of

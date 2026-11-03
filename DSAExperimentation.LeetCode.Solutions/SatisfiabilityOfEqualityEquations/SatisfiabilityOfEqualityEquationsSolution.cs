@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SatisfiabilityOfEqualityEquations;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SatisfiabilityOfEqualityEquation
 // strategy replaces both halves with this repo's own DisjointSet over the fixed
 // 26-slot alphabet - O(a(26)) Union per equality, O(a(26)) IsConnected per
 // inequality, and no per-query allocation at all.
+[LeetCodeQuestion("satisfiability-of-equality-equations", LeetCodeAnswerOrder.AsWritten)]
 internal static class SatisfiabilityOfEqualityEquationsSolution
 {
     // The problem fixes single lowercase variable names, so an equation is always

@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.SegmentTree;
 using DSAExperimentation.Domain.Mathematics.Modular;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindXValueOfArrayII;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindXValueOfArrayII;
 // range aggregate over [starti, n-1] plus one point update - exactly what
 // SegmentTree<Element,TOperation> answers in O(log n), with XValueNode/
 // XValueCombineOperation as the element/operation pair.
+[LeetCodeQuestion("find-x-value-of-array-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindXValueOfArrayIISolution
 {
     // The textbook baseline: BCL array, no segment tree - recompute the running

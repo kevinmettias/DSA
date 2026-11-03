@@ -3,6 +3,7 @@ using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.CountedBitTrie;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumStrongPairXORII;
 
@@ -37,6 +38,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumStrongPairXORII;
 // partners that grows on the right and shrinks on the left - needs a trie that
 // can take a value back out, and that is the sliding-window strategy below, over
 // CountedBitTrie (DataStructures/CountedBitTrie/CountedBitTrie.cs).
+[LeetCodeQuestion("maximum-strong-pair-xor-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumStrongPairXORIISolution
 {
     // The textbook O(n^2) scan of every unordered pair. Correct at any scale,

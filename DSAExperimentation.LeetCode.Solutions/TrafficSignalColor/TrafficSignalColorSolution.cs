@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.TrafficSignalColor;
 
 // LeetCode 3894. Traffic Signal Color: map the remaining timer value to the
@@ -8,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TrafficSignalColor;
 // repo's DataStructures/Algorithms tiers applies to a single three-way range
 // check, the same shape TrafficSignalColorSolution shares with
 // BalancedBinaryTreeSolution's own "there is only one strategy here" precedent.
+[LeetCodeQuestion("traffic-signal-color", LeetCodeAnswerOrder.AsWritten)]
 internal static class TrafficSignalColorSolution
 {
     private const int GreenTimer = 0;

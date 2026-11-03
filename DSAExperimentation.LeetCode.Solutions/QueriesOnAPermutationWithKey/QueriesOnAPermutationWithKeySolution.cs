@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.QueriesOnAPermutationWithKey;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.QueriesOnAPermutationWithKey;
 // PermutationSequenceSolution's factoradic arm already leans on. So this pair
 // measures the repo primitive's overhead against the BCL type doing the
 // identical job, not a different complexity class.
+[LeetCodeQuestion("queries-on-a-permutation-with-key", LeetCodeAnswerOrder.AsWritten)]
 internal static class QueriesOnAPermutationWithKeySolution
 {
     private const int FrontIndex = 0;

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MergeTripletsToFormTargetTriplet;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MergeTripletsToFormTargetTriplet
 // target[i] exactly, for every coordinate i", tracked with this repo's own
 // Set<int> over the matched coordinate indices, the same membership-tracking role
 // ContainsDuplicate gives it.
+[LeetCodeQuestion("merge-triplets-to-form-target-triplet", LeetCodeAnswerOrder.AsWritten)]
 internal static class MergeTripletsToFormTargetTripletSolution
 {
     // The textbook answer without this repo: try all 2^n - 1 non-empty subsets,

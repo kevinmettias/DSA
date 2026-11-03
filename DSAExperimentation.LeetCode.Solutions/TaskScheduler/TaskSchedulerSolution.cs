@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.Heap;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Remaining, int AvailableAt)>;
 
 namespace DSAExperimentation.LeetCode.Solutions.TaskScheduler;
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TaskScheduler;
 // idle-slot formula does not simulate at all: it counts the tasks in a 26-slot table
 // indexed by Domain's EnglishUppercase (LeetCode's tasks are uppercase letters) and
 // reads the answer off the most frequent task's count.
+[LeetCodeQuestion("task-scheduler", LeetCodeAnswerOrder.AsWritten)]
 internal static class TaskSchedulerSolution
 {
     // A safely-in-the-past "never used" sentinel, halved to avoid overflow when

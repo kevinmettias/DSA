@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using PalindromeStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.SmallestPalindromicRearrangementII;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SmallestPalindromicRearrangement
 // palindrome tracks lexicographic order of that left half exactly - so this reduces
 // to "find the rank-th lexicographically smallest arrangement of a multiset" and
 // mirror it.
+[LeetCodeQuestion("smallest-palindromic-rearrangement-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class SmallestPalindromicRearrangementIISolution
 {
     // The textbook approach: plain depth-first backtracking over the half's letters

@@ -1,6 +1,7 @@
 using System.Text;
 using DSAExperimentation.Algorithms.StringMatching;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SubtreeOfAnotherTree;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SubtreeOfAnotherTree;
 // is structurally identical to subRoot? The two strategies differ in whether
 // that check runs directly against the tree shape at every node, or against a
 // serialized preorder string.
+[LeetCodeQuestion("subtree-of-another-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class SubtreeOfAnotherTreeSolution
 {
     private const string NullMarker = "#null";

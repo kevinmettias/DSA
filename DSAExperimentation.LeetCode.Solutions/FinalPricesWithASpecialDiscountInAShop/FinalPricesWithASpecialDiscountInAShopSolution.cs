@@ -1,10 +1,12 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FinalPricesWithASpecialDiscountInAShop;
 
 // LeetCode 1475. Final Prices With a Special Discount in a Shop: every item is
 // discounted by the first later price that does not exceed it - the classic "next
 // not-greater element" query, asked once per position.
+[LeetCodeQuestion("final-prices-with-a-special-discount-in-a-shop", LeetCodeAnswerOrder.AsWritten)]
 internal static class FinalPricesWithASpecialDiscountInAShopSolution
 {
     private const int NoDiscountingItem = -1;

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RobotReturnToOrigin;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RobotReturnToOrigin;
 // character, deliberately written without this repo's primitives. It is the arm
 // IsAtOriginByHashMapLookup - this repo's own HashMap<char,(int,int)> used as a
 // move-to-displacement lookup table - is measured against.
+[LeetCodeQuestion("robot-return-to-origin", LeetCodeAnswerOrder.AsWritten)]
 internal static class RobotReturnToOriginSolution
 {
     public static bool IsAtOriginBySwitch(string moves)

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestSubstringWithoutRepeatingCharacters;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestSubstringWithoutRepeating
 // The composed solution tracks each character's last-seen index in this repo's
 // own HashMap<char,int> and jumps the window's left edge straight past a repeat
 // instead of re-scanning from the next start index - the baseline it has to beat.
+[LeetCodeQuestion("longest-substring-without-repeating-characters", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestSubstringWithoutRepeatingCharactersSolution
 {
     // The textbook answer: re-scan forward from every start index until a repeat

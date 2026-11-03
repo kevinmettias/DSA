@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.IntervalSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SeparateSquaresII;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SeparateSquaresII;
 // covered x-length of a band's active squares is computed - that one step is
 // pulled out behind a strategy type so the sweep bookkeeping itself (which this
 // problem contributes, not either primitive) is written once.
+[LeetCodeQuestion("separate-squares-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class SeparateSquaresIISolution
 {
     // Both coverage arms are stateless, so one instance each serves every call and the

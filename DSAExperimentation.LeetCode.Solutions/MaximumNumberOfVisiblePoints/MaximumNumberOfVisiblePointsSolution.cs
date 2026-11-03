@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.Domain.Mathematics.Geometry;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfVisiblePoints;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfVisiblePoints;
 //
 // A turn's degrees are geometry's (Domain/Mathematics/Geometry): both arms read AngleUnits for the
 // full turn a bearing wraps at and the half turn Atan2's radians convert by (ARCHITECTURE §17.5).
+[LeetCodeQuestion("maximum-number-of-visible-points", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumNumberOfVisiblePointsSolution
 {
     private const double AngleEpsilon = 1e-9;

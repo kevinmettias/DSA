@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RelativeSortArray;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RelativeSortArray;
 // otherwise, ties broken by the value itself" - and differ only in how a value's
 // rank is obtained: rescanned out of arr2 on every single comparison, or looked up
 // once per comparison from a rank table built in one pass.
+[LeetCodeQuestion("relative-sort-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class RelativeSortArraySolution
 {
     // Sorts after every ranked value, tied among themselves by value ascending.

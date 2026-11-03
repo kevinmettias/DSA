@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumReverseOperations;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumReverseOperations;
 // reachable mirrors directly from the window arithmetic instead of scanning every
 // candidate. Banned positions are simply excluded as children, the same way
 // OpenTheLock's lock graph excludes deadends.
+[LeetCodeQuestion("minimum-reverse-operations", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumReverseOperationsSolution
 {
     // Baseline: no on-demand window arithmetic - for every dequeued position, every

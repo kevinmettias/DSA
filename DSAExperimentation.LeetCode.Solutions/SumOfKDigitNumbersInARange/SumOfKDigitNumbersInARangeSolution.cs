@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SumOfKDigitNumbersInARange;
 
@@ -23,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SumOfKDigitNumbersInARange;
 // to justify itself against: recurse digit-by-digit through every one of the
 // c^k combinations, folding each number's value modulo 1e9+7 as it goes.
 // Deliberately only tractable for small k.
+[LeetCodeQuestion("sum-of-k-digit-numbers-in-a-range", LeetCodeAnswerOrder.AsWritten)]
 internal static class SumOfKDigitNumbersInARangeSolution
 {
     public static long SumOfKDigitNumbersByBruteForceEnumeration(int low, int high, int digitCount) =>

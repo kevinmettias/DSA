@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SuperPow;
 
@@ -7,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SuperPow;
 // container or algorithm primitive applies here - there is nothing to compose over a
 // handful of running scalars (result/base/exponent), the same "lighter repo-primitive
 // fit" case this repo already accepted for Pow(x, n) and Power of Two.
+[LeetCodeQuestion("super-pow", LeetCodeAnswerOrder.AsWritten)]
 internal static class SuperPowSolution
 {
     private const int Modulus = 1337;

@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumScoreWordsFormedByLetters;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumScoreWordsFormedByLetters
 // PartitionToKEqualSumSubsetsSolution's bucket capacity already uses, per letter
 // instead of per sum. They differ only in whether the recursion is hand-written or
 // closed over this repo's Backtrack primitive.
+[LeetCodeQuestion("maximum-score-words-formed-by-letters", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumScoreWordsFormedByLettersSolution
 {
     // The textbook recursion: a hand-written include/skip DFS that undoes its own

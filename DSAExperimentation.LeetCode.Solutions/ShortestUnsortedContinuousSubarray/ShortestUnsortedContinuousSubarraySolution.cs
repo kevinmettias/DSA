@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ShortestUnsortedContinuousSubarray;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortestUnsortedContinuousSubarr
 // for the leftmost/rightmost index where the original and the sorted copy
 // disagree - the span between them is exactly what needs re-sorting. They
 // differ only in how the copy gets sorted.
+[LeetCodeQuestion("shortest-unsorted-continuous-subarray", LeetCodeAnswerOrder.AsWritten)]
 internal static class ShortestUnsortedContinuousSubarraySolution
 {
     // The textbook baseline: O(n^2) selection sort, written without this repo's

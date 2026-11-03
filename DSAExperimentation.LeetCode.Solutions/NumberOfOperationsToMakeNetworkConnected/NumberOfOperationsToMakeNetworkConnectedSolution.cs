@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfOperationsToMakeNetworkConnected;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfOperationsToMakeNetworkC
 // connection. Neither can do anything at all when there are fewer than
 // computerCount - 1 cables for computerCount computers, which is checked before
 // either counting pass begins.
+[LeetCodeQuestion("number-of-operations-to-make-network-connected", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfOperationsToMakeNetworkConnectedSolution
 {
     private const int From = 0;

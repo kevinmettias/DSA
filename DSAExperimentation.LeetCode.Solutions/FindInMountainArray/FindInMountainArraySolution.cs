@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindInMountainArray;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindInMountainArray;
 // slope is copied - DataStructures.Sequence's OffsetSequence<int> is already a
 // window into a sub-range of the backing array. The ascending slope is searched
 // first, so a value present on both slopes reports its smaller index.
+[LeetCodeQuestion("find-in-mountain-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindInMountainArraySolution
 {
     private static readonly IComparer<int> Descending = Comparer<int>.Create((a, b) => b.CompareTo(a));

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.TargetSum;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TargetSum;
 // sign-choice paths. The composed strategy memoizes that exact recursion through this
 // repo's own Memoizer<TState, TResult> (DecodeWays/PredictTheWinner precedent), so
 // each (index, runningSum) state is only ever solved once.
+[LeetCodeQuestion("target-sum", LeetCodeAnswerOrder.AsWritten)]
 internal static class TargetSumSolution
 {
     // Deliberately written without this repo's primitives - it is the arm the

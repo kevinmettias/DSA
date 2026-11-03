@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using NextGreaterStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.NextGreaterElementIV;
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NextGreaterElementIV;
 // strategy is the two-monotonic-stack sweep over this repo's own Stack<int> - the
 // NextGreaterElementII precedent generalized from "first greater" to "second
 // greater".
+[LeetCodeQuestion("next-greater-element-iv", LeetCodeAnswerOrder.AsWritten)]
 internal static class NextGreaterElementIVSolution
 {
     // "Second greater" is the second strictly-greater value seen walking forward.

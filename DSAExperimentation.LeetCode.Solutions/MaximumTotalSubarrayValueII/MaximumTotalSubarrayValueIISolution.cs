@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures.Heap;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumTotalSubarrayValueII;
 
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumTotalSubarrayValueII;
 // LC 373 relies on. Range max/min per candidate is exactly
 // DataStructures.SegmentTree's role, and DataStructures.Heap.Heap already exists
 // for the priority-queue side.
+[LeetCodeQuestion("maximum-total-subarray-value-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumTotalSubarrayValueIISolution
 {
     // What you would write without this repo: recompute every subarray's value

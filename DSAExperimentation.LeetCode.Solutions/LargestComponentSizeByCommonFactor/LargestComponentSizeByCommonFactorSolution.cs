@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LargestComponentSizeByCommonFactor;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LargestComponentSizeByCommonFact
 //   AccountsMerge applies to emails, applied to prime factors instead. Sharing a factor
 //   is discovered in O(1) the moment the second value reaches it, giving
 //   O(n*sqrt(maxValue)*alpha(n)) over this repo's own DisjointSet.
+[LeetCodeQuestion("largest-component-size-by-common-factor", LeetCodeAnswerOrder.AsWritten)]
 internal static class LargestComponentSizeByCommonFactorSolution
 {
 

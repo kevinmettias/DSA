@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using HistogramStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.LargestRectangleInHistogram;
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LargestRectangleInHistogram;
 // their run, so each bar's span is resolved exactly once - the same
 // TrappingRainWaterSolution precedent (Stack<int> of indices), applied to
 // histogram area instead of trapped water.
+[LeetCodeQuestion("largest-rectangle-in-histogram", LeetCodeAnswerOrder.AsWritten)]
 internal static class LargestRectangleInHistogramSolution
 {
     // The textbook brute force: for every bar, expand outward in both

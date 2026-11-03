@@ -1,4 +1,5 @@
 using System.Numerics;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfIntegersWithPopcountDepthEqualToKII;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfIntegersWithPopcountDept
 // ([2, idx, val]) with range-depth counts ([1, l, r, k]) instead of asking
 // one fixed range once. Both strategies answer the same question with the
 // same signature (TwoSumSolution precedent).
+[LeetCodeQuestion("number-of-integers-with-popcount-depth-equal-to-k-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfIntegersWithPopcountDepthEqualToKIISolution
 {
     // Textbook baseline: mutate a plain copy of nums directly and rescan

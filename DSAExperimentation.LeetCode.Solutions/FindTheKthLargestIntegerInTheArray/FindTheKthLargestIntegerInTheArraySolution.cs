@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheKthLargestIntegerInTheArray;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheKthLargestIntegerInTheArr
 // (this repo's own Heap<T, MinHeapOrder<T>>) that discards its smallest root
 // whenever it grows past k - the exact shape KthLargestElementSolution establishes
 // for LC 215, just over this comparable wrapper instead of int.
+[LeetCodeQuestion("find-the-kth-largest-integer-in-the-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheKthLargestIntegerInTheArraySolution
 {
     // The textbook answer: sort a copy under the numeric comparison and index from

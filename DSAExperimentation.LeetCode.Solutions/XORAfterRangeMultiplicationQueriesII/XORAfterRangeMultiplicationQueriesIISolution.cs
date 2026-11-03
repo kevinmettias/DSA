@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.XORAfterRangeMultiplicationQueriesI;
 
 namespace DSAExperimentation.LeetCode.Solutions.XORAfterRangeMultiplicationQueriesII;
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.XORAfterRangeMultiplicationQueri
 // Fermat inverse, always defined here since v is in [1, 1e5], never 0 mod the 1e9+7 prime.
 // "Large-k" queries already touch at most n/k <= threshold indices, so they are
 // walked directly, the same way Part I walks every query.
+[LeetCodeQuestion("xor-after-range-multiplication-queries-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class XORAfterRangeMultiplicationQueriesIISolution
 {
     // Textbook baseline: Part I's strided walk, unconditionally, regardless of k -

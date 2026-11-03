@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.RangeFenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfPairsAfterIncrement;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfPairsAfterIncrement;
 // value under a lazy per-block addition and answers either kind of query in
 // O(sqrt n). The core library's Fenwick and segment trees aggregate by index, not
 // by value, so that structure is this problem's own.
+[LeetCodeQuestion("number-of-pairs-after-increment", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfPairsAfterIncrementSolution
 {
     // Textbook baseline: nums2 as a plain mutable array, a range-add applied by

@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DiagonalStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.DiagonalTraverse;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DiagonalTraverse;
 // by row+col diagonal index and reverses every other diagonal with this repo's
 // own LIFO Stack<int> - the same row-reversal primitive RotateImageSolution
 // composes, applied to a matrix diagonal instead of a row.
+[LeetCodeQuestion("diagonal-traverse", LeetCodeAnswerOrder.AsWritten)]
 internal static class DiagonalTraverseSolution
 {
     private const int LastDiagonalIndexOffset = 2;

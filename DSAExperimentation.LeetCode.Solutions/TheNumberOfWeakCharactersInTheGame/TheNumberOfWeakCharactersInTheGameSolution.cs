@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.TheNumberOfWeakCharactersInTheGame;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TheNumberOfWeakCharactersInTheGa
 // contributed by an equal-attack character and "defense below the running maximum" is
 // exactly "weak". The sort is this repo's own MergeSort over ArrayIndexedSequence, the
 // same composition LC 1857's greedy uses.
+[LeetCodeQuestion("the-number-of-weak-characters-in-the-game", LeetCodeAnswerOrder.AsWritten)]
 internal static class TheNumberOfWeakCharactersInTheGameSolution
 {
     // The textbook answer: the problem's definition read straight off the page, every

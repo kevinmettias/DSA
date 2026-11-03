@@ -1,6 +1,7 @@
 using DSAExperimentation.Domain.Language.English;
 using System.Text;
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheSequenceOfStringsAppearedOnTheScreen;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheSequenceOfStringsAppeared
 // key presses - a BCL StringBuilder, or this repo's own DynamicArray<char>, the
 // same growable buffer Stack is built on and DataStructures.Sequence.
 // DynamicArraySequence already reuses unmodified for an unrelated domain.
+[LeetCodeQuestion("find-the-sequence-of-strings-appeared-on-the-screen", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheSequenceOfStringsAppearedOnTheScreenSolution
 {
 

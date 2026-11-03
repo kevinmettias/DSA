@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using CityNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
 using CityTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<int>;
 
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheCityWithTheSmallestNumber
 // question in a single call. The textbook answer, Floyd-Warshall over a plain
 // matrix, is what both are measured against. Ties favour the larger id by
 // scanning ascending and replacing the best candidate on a <=, in every arm.
+[LeetCodeQuestion("find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolution
 {
     // Half of int.MaxValue, so two of them still add without overflowing: the distance

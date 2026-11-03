@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoIndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ValidParenthesisString;
@@ -5,6 +6,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidParenthesisString;
 // LeetCode 678. Valid Parenthesis String: a string of '(', ')' and '*' (a
 // wildcard standing for '(', ')' or "") is valid if some substitution of every
 // '*' makes the parentheses balanced.
+[LeetCodeQuestion("valid-parenthesis-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class ValidParenthesisStringSolution
 {
     // The textbook answer: track every open-paren count reachable at each

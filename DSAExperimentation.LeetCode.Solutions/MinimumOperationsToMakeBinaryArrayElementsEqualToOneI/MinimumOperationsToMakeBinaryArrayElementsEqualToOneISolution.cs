@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using FlipStartQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumOperationsToMakeBinaryArrayElementsEqualToOneI;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumOperationsToMakeBinaryArr
 // hurts a later position - so the greedy left-to-right walk is optimal, and both
 // strategies below implement exactly that walk. They differ only in how they
 // track "how many pending flips still cover the current index."
+[LeetCodeQuestion("minimum-operations-to-make-binary-array-elements-equal-to-one-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumOperationsToMakeBinaryArrayElementsEqualToOneISolution
 {
     private const int FlipLength = 3;

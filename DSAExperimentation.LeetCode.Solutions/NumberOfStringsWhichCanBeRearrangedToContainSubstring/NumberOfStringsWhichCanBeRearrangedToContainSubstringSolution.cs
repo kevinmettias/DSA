@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfStringsWhichCanBeRearrangedToContainSubstring;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfStringsWhichCanBeRearran
 // letter counts: a string qualifies exactly when it has at least one 'l', at
 // least two 'e's and at least one 't' - any such multiset can always be arranged
 // as "leet" followed by the rest in any order.
+[LeetCodeQuestion("number-of-strings-which-can-be-rearranged-to-contain-substring", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution
 {
     private const int RequiredLCount = 1;

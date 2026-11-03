@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SmallestStringWithSwaps;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SmallestStringWithSwaps;
 // over the string's own index positions; they differ only in how the components are
 // discovered. This is the same shape as LexicographicallySmallestEquivalentString
 // (LC 1061), over index positions instead of the 26 letters.
+[LeetCodeQuestion("smallest-string-with-swaps", LeetCodeAnswerOrder.AsWritten)]
 internal static class SmallestStringWithSwapsSolution
 {
     // The textbook answer: materialize an adjacency list over the indices and BFS out

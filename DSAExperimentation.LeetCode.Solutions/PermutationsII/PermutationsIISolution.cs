@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PermutationsII;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PermutationsII;
 // arms merely counting completions - and worse, its two [Benchmark] methods called
 // the exact same private Count function, so nothing was actually being compared.
 // Promoted to the real answer per ARCHITECTURE.md 17.8's WordLadderII precedent.
+[LeetCodeQuestion("permutations-ii", LeetCodeAnswerOrder.AnyOrder)]
 internal static class PermutationsIISolution
 {
     // The textbook answer: plain recursion over a BCL used[] flag array and a

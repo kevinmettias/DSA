@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PropertiesGraph;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PropertiesGraph;
 // and what tracks components - the same "which primitive would you reach for"
 // contrast CountConnectedComponentsInLCMGraphSolution's two arms draw, just with
 // both axes (set membership, union-find) varied together here instead of one.
+[LeetCodeQuestion("properties-graph", LeetCodeAnswerOrder.AsWritten)]
 internal static class PropertiesGraphSolution
 {
     // Baseline: intersect() via a BCL HashSet per row, union-find via a

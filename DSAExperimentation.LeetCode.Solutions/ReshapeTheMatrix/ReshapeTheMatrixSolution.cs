@@ -1,8 +1,11 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.ReshapeTheMatrix;
 
 // LeetCode 566. Reshape the Matrix: refill a matrix with targetRows rows and
 // targetCols columns from an existing matrix's cells in row-major order, or return
 // the original unchanged when the two shapes don't hold the same number of cells.
+[LeetCodeQuestion("reshape-the-matrix", LeetCodeAnswerOrder.AsWritten)]
 internal static class ReshapeTheMatrixSolution
 {
     // Recomputes both the source and destination row/col from a flat index for

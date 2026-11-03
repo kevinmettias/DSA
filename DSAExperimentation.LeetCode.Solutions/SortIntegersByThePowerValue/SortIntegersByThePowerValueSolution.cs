@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SortIntegersByThePowerValue;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SortIntegersByThePowerValue;
 // order them. ValueTuple<int, int> already compares lexicographically, so sorting the
 // pairs sorts by Power first and Value second - exactly LeetCode's tie-break rule -
 // with no custom comparer on either side (the KClosestPointsToOrigin precedent).
+[LeetCodeQuestion("sort-integers-by-the-power-value", LeetCodeAnswerOrder.AsWritten)]
 internal static class SortIntegersByThePowerValueSolution
 {
     // Collatz step: even -> divide by CollatzDivisor; odd -> CollatzMultiplier * value + 1.

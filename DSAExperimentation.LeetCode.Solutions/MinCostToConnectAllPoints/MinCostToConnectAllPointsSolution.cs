@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.MinimumSpanningTrees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 // LC 1584's own vertex in the complete graph over the given points: one node per input index,
 // carrying the undirected Manhattan-distance edges to every other point as a symmetric
@@ -29,6 +30,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinCostToConnectAllPoints;
 //     .Kruskal, which sorts them and unions endpoints through a KeyedDisjointSet.
 //     Asymptotically O(n^2 log n) here precisely because the graph is dense, which
 //     is the comparison MinCostToConnectAllPointsBenchmarks exists to measure.
+[LeetCodeQuestion("min-cost-to-connect-all-points", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinCostToConnectAllPointsSolution
 {
     // The textbook answer for this exact "complete graph over points" shape: grow

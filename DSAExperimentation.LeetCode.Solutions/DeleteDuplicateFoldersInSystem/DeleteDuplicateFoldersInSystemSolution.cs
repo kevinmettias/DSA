@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DeleteDuplicateFoldersInSystem;
 
@@ -26,6 +27,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DeleteDuplicateFoldersInSystem;
 // Neither strategy takes a prepared-input overload: the tree is mutable marking state,
 // so it has to be rebuilt from the immutable paths on every call, and the paths array
 // already IS LeetCode's own input shape.
+[LeetCodeQuestion("delete-duplicate-folders-in-system", LeetCodeAnswerOrder.AnyOrder)]
 internal static class DeleteDuplicateFoldersInSystemSolution
 {
     private const string SignatureOpen = "(";

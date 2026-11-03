@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using System.Numerics;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SplitTheArrayToMakeCoprimeProducts;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SplitTheArrayToMakeCoprimeProduc
 // or notice that the two sides share a factor exactly when some prime divides an
 // element on each side, which turns the whole question into "where does the last
 // element carrying a prime seen so far sit?" and never multiplies anything.
+[LeetCodeQuestion("split-the-array-to-make-coprime-products", LeetCodeAnswerOrder.AsWritten)]
 internal static class SplitTheArrayToMakeCoprimeProductsSolution
 {
 

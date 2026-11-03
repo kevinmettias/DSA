@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.PrefixSums;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SumOfTotalStrengthOfWizards;
 
@@ -23,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SumOfTotalStrengthOfWizards;
 // taken over the prefix-sum array itself (PP.TotalBefore(i+1) = PP.TotalBefore(i) +
 // prefix[i]) in O(1) per index rather than re-summing each subarray. The whole pass
 // stays O(n).
+[LeetCodeQuestion("sum-of-total-strength-of-wizards", LeetCodeAnswerOrder.AsWritten)]
 internal static class SumOfTotalStrengthOfWizardsSolution
 {
     private const int NoSmallerElementToTheLeft = -1;

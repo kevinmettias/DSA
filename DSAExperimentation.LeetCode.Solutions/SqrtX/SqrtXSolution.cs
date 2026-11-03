@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SqrtX;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SqrtX;
 // "does i^2 exceed value" as a monotone predicate over a virtual sequence and finds
 // the first index where it flips - promoted to the library as IntegerSquareRoot.Floor,
 // which this arm calls.
+[LeetCodeQuestion("sqrtx", LeetCodeAnswerOrder.AsWritten)]
 internal static class SqrtXSolution
 {
     // Below this, a value is its own root (0 and 1).

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using GardenNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 using GardenTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FlowerPlantingWithNoAdjacent;
 // available type always succeeds, and no backtracking is ever needed. Both
 // strategies do exactly that and therefore return the same array; they differ only
 // in how a garden's already-planted neighbors are found.
+[LeetCodeQuestion("flower-planting-with-no-adjacent", LeetCodeAnswerOrder.AsWritten)]
 internal static class FlowerPlantingWithNoAdjacentSolution
 {
     // Flower types are numbered 1..4, the same 1-based convention LeetCode uses

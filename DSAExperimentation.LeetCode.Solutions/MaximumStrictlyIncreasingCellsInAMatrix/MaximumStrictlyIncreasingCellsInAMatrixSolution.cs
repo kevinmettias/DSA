@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumStrictlyIncreasingCellsInAMatrix;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumStrictlyIncreasingCellsIn
 // Both strategies answer the same question with the same signature, so the test
 // harness can pin them to the same examples and the benchmark can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("maximum-strictly-increasing-cells-in-a-matrix", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumStrictlyIncreasingCellsInAMatrixSolution
 {
     // Textbook DAG memoization: dp(row, col) recurses into every strictly-smaller

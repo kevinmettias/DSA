@@ -1,5 +1,6 @@
 using System.Numerics;
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximizeNumberOfNiceDivisors;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeNumberOfNiceDivisors;
 // long, keeps every candidate's max comparison exact however far the recursion
 // runs; the modulo is applied once at the end, where LeetCode's reporting
 // convention belongs.
+[LeetCodeQuestion("maximize-number-of-nice-divisors", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximizeNumberOfNiceDivisorsSolution
 {
     private const int FactorOfTwo = 2;

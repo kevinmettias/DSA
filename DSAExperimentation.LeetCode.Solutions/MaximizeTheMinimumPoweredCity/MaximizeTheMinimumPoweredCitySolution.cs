@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoRangeFenwickTree = DSAExperimentation.DataStructures.RangeFenwickTree.RangeFenwickTree<
     long, DSAExperimentation.DataStructures.ElementAlgebra.SumOperation<long>>;
 
@@ -22,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeTheMinimumPoweredCity;
 // MaximumNumberOfTasksYouCanAssignSolution uses. The bisection runs in long because
 // the range does: 10^5 stations of up to 10^5 each plus a budget of up to 10^9 put
 // the top target past int.MaxValue.
+[LeetCodeQuestion("maximize-the-minimum-powered-city", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximizeTheMinimumPoweredCitySolution
 {
     // The prepared input both hoisted overloads take (ARCHITECTURE.md section 17.4):

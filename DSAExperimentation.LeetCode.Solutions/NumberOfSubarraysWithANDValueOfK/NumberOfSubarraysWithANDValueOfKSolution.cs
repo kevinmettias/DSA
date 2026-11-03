@@ -1,9 +1,11 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfSubarraysWithANDValueOfK;
 
 // LeetCode 3209. Number of Subarrays With AND Value of K: count subarrays whose
 // bitwise AND of every element equals k.
+[LeetCodeQuestion("number-of-subarrays-with-and-value-of-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfSubarraysWithANDValueOfKSolution
 {
     // The textbook O(n^2) scan: extend every start index one element at a time,

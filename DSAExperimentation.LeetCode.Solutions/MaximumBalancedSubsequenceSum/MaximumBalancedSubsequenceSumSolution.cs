@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<long, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<long>>;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumBalancedSubsequenceSum;
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("maximum-balanced-subsequence-sum", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumBalancedSubsequenceSumSolution
 {
     // Textbook O(n^2): dp[i] = nums[i] + max(0, best dp[j] for j < i with

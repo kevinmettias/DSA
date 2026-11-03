@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumSumOfSubsequenceWithNonAdjacentElements;
 
@@ -7,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumSumOfSubsequenceWithNonAd
 // own "max sum, no two adjacent" answer over the whole array, modulo 1e9+7.
 // An empty subsequence (sum 0) is always a legal choice, so every per-query
 // answer - and therefore the running total - is never negative.
+[LeetCodeQuestion("maximum-sum-of-subsequence-with-non-adjacent-elements", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumSumOfSubsequenceWithNonAdjacentElementsSolution
 {
     // Baseline: LC 198's own House Robber recurrence recomputed over the whole

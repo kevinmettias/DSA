@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.Subsets;
 
@@ -6,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.Subsets;
 // (including the empty and full selections) IS a valid subset, so IsSolution is
 // unconditionally true and OnSolution just records a snapshot - the exhaustive-
 // enumeration shape Backtrack.Search's own doc comment names this for.
+[LeetCodeQuestion("subsets", LeetCodeAnswerOrder.AnyOrder)]
 internal static class SubsetsSolution
 {
     // The textbook arm the backtracking search is measured against: walk every bitmask

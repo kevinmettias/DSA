@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.MaximizeSubarrayGCDScore;
 
 // LeetCode 3574. Maximize Subarray GCD Score: pick a contiguous subarray and
@@ -9,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeSubarrayGCDScore;
 // ever), which caps the achievable gcd at exactly double the original: doable
 // only when every element AT that minimum exponent can be doubled, i.e. their
 // count doesn't exceed maxDoubledElements.
+[LeetCodeQuestion("maximize-subarray-gcd-score", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximizeSubarrayGCDScoreSolution
 {
     // The bottleneck scan's running state for the window so far: its gcd, the

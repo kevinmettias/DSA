@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumDeletionsToMakeArrayDivisible;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumDeletionsToMakeArrayDivis
 // exactly the number of elements strictly smaller than `v`, so the two formulations agree:
 // scan every valid candidate for the smallest such count, or sort once and take the position
 // of the first value that divides.
+[LeetCodeQuestion("minimum-deletions-to-make-array-divisible", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumDeletionsToMakeArrayDivisibleSolution
 {
     // The textbook O(n^2) approach: for each element that divides the gcd, count how many

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DirectionAssignmentsWithExactlyKVisiblePeople;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DirectionAssignmentsWithExactlyK
 // and every choice is independent, so the answer is 2 (the free choice at pos)
 // times the number of ways to split visibleCount "visible" votes between the two
 // segments: sum over a of C(pos, a) * C(personCount - 1 - pos, visibleCount - a).
+[LeetCodeQuestion("direction-assignments-with-exactly-k-visible-people", LeetCodeAnswerOrder.AsWritten)]
 internal static class DirectionAssignmentsWithExactlyKVisiblePeopleSolution
 {
     // Textbook baseline: build each segment's binomial-coefficient row with

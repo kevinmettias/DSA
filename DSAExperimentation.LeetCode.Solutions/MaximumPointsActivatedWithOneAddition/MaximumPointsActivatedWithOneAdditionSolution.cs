@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.KeyedDisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumPointsActivatedWithOneAddition;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumPointsActivatedWithOneAdd
 // from the two largest components (or the same single component when there is
 // only one) is always achievable and always at least as good as any other
 // choice, so the answer is simply the two largest component sizes plus one.
+[LeetCodeQuestion("maximum-points-activated-with-one-addition", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumPointsActivatedWithOneAdditionSolution
 {
     // The textbook union-find: a plain BCL Dictionary keyed by a (IsX, Value)

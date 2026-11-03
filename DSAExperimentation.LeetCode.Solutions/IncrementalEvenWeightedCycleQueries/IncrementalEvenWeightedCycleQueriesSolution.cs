@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.IncrementalEvenWeightedCycleQueries;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.IncrementalEvenWeightedCycleQuer
 // two u-v paths through the accepted graph agree on parity. What distinguishes
 // the strategies is only whether a different-component pair - which can never
 // already hold a cycle, so is always safe to add - gets to skip that BFS.
+[LeetCodeQuestion("incremental-even-weighted-cycle-queries", LeetCodeAnswerOrder.AsWritten)]
 internal static class IncrementalEvenWeightedCycleQueriesSolution
 {
     // Textbook baseline: BFS the accepted-edges adjacency from scratch for every

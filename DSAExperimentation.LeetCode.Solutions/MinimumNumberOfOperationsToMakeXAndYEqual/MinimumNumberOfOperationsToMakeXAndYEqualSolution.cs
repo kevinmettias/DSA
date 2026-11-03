@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeXAndYEqual;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeX
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("minimum-number-of-operations-to-make-x-and-y-equal", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumNumberOfOperationsToMakeXAndYEqualSolution
 {
     // Headroom above Math.Max(startValue, targetValue) the mutation-queue search is

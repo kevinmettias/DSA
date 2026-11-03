@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using MaxDigitsStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.CreateMaximumNumber;
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CreateMaximumNumber;
 // single array: a naive O(n * L) repeated scan of the still-eligible window, or this
 // repo's own O(n) Stack<int> monotonic sweep (the LargestRectangleInHistogram/
 // MultiplyStrings precedent).
+[LeetCodeQuestion("create-maximum-number", LeetCodeAnswerOrder.AsWritten)]
 internal static class CreateMaximumNumberSolution
 {
     // Both strategies are stateless, so one instance each serves every call and the

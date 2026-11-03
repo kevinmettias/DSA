@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NextGreaterElementI;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NextGreaterElementI;
 // nums2 from scratch for every value in nums1, or a single monotonic-decreasing
 // sweep through nums2 that records every value's next-greater element once, into
 // this repo's own HashMap<int,int>, so nums1's answers become O(1) lookups.
+[LeetCodeQuestion("next-greater-element-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class NextGreaterElementISolution
 {
     private const int NoGreaterPosition = -1;

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FirstBadVersion;
 
@@ -7,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FirstBadVersion;
 // models the oracle as a `firstBad` threshold rather than a live judge API, but both
 // strategies still only ever ask it "is this one version bad?", exactly as the real
 // API allows.
+[LeetCodeQuestion("first-bad-version", LeetCodeAnswerOrder.AsWritten)]
 internal static class FirstBadVersionSolution
 {
     // The textbook answer: call the oracle once per version, in order, until it turns

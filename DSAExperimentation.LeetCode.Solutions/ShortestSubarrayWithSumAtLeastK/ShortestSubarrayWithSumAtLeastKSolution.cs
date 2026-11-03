@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.MonotonicDeque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ShortestSubarrayWithSumAtLeastK;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortestSubarrayWithSumAtLeastK;
 // monotonic window SlidingWindowMaximumSolution composes for LC 239, applied to
 // prefix sums instead of raw values. Each index is pushed and popped at most once,
 // giving O(n).
+[LeetCodeQuestion("shortest-subarray-with-sum-at-least-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class ShortestSubarrayWithSumAtLeastKSolution
 {
     // The textbook answer: build the prefix sums, then for every start scan forward

@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Index, int Remaining)>;
 
 namespace DSAExperimentation.LeetCode.Solutions.TimeNeededToBuyTickets;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TimeNeededToBuyTickets;
 // min(tickets[i], tickets[targetPerson]) turns - one fewer when they stand behind
 // targetPerson, because targetPerson's final purchase stops the clock before their
 // next turn comes round.
+[LeetCodeQuestion("time-needed-to-buy-tickets", LeetCodeAnswerOrder.AsWritten)]
 internal static class TimeNeededToBuyTicketsSolution
 {
     // targetPerson's own turn is what ends the day, so nobody standing behind them

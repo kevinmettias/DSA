@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SameTree;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SameTree;
 // instead of the call stack. Pre-migration the test's private helper and both of the
 // old benchmark's [Benchmark] arms all called the recursive walk under different names,
 // so only that walk needed naming; the iterative arm is genuinely new, not a rename of it.
+[LeetCodeQuestion("same-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class SameTreeSolution
 {
     // The explicit-stack counterpart to the recursion below: each still-unvisited pair of

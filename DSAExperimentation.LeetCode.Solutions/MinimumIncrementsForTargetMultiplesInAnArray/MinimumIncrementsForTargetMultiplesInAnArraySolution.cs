@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumIncrementsForTargetMultiplesInAnArray;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumIncrementsForTargetMultip
 // up covering (by being raised to a multiple of that subset's LCM) is a bitmask
 // over at most 16 states - a textbook subset-cover DP over "targets covered so
 // far", assigning one nums element at a time.
+[LeetCodeQuestion("minimum-increments-for-target-multiples-in-an-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumIncrementsForTargetMultiplesInAnArraySolution
 {
     // The textbook bottom-up arm: a plain long[] indexed by bitmask, walked once per

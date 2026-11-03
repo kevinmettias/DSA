@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Trie;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountingWordsWithAGivenPrefix;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountingWordsWithAGivenPrefix;
 // Trie<TValue>. That is LC 1455's pairing
 // (CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution) asked of every word instead
 // of only up to the first match.
+[LeetCodeQuestion("counting-words-with-a-given-prefix", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountingWordsWithAGivenPrefixSolution
 {
     // The textbook answer: string.StartsWith per word. Deliberately written with nothing

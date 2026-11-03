@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MergeNodesInBetweenZeros;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MergeNodesInBetweenZeros;
 // SinglyLinkedListNode<int>.Next once and appends each completed sum straight onto
 // the answer - the same "extra pass, extra allocation" vs. "single primitive-native
 // pass" contrast MiddleOfTheLinkedListBenchmarks draws for LC 876.
+[LeetCodeQuestion("merge-nodes-in-between-zeros", LeetCodeAnswerOrder.AsWritten)]
 internal static class MergeNodesInBetweenZerosSolution
 {
     // The value LeetCode uses to delimit one group of nodes from the next, and the

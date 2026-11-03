@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.StoneGameV;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StoneGameV;
 // A prefix-sum table makes each side's sum O(1), so the two strategies differ only in
 // whether the (Left, Right) states are cached - the same memoize-or-not pairing
 // StoneGameIIISolution (LC 1406) runs, keyed on a range instead of a single index.
+[LeetCodeQuestion("stone-game-v", LeetCodeAnswerOrder.AsWritten)]
 internal static class StoneGameVSolution
 {
     // The textbook baseline: plain interval recursion with no caching. The same

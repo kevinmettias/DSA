@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysToPaintN3Grid;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysToPaintN3Grid;
 // direction: a bottom-up scan carrying the pair in two locals, or this repo's
 // own Memoizer driving the same pair top-down - the NumberOfMusicPlaylists
 // pairing, on a state that is just the row index.
+[LeetCodeQuestion("number-of-ways-to-paint-n-3-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfWaysToPaintN3GridSolution
 {
     private const int FirstRow = 1;

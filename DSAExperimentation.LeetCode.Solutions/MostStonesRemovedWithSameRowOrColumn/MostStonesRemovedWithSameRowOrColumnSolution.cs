@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MostStonesRemovedWithSameRowOrColumn;
 
@@ -23,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MostStonesRemovedWithSameRowOrCo
 //   single axis). Two stones end up connected exactly when they route through the same
 //   row or column id, whether or not they were ever compared, so this is O(n) unions
 //   instead of O(n^2) comparisons.
+[LeetCodeQuestion("most-stones-removed-with-same-row-or-column", LeetCodeAnswerOrder.AsWritten)]
 internal static class MostStonesRemovedWithSameRowOrColumnSolution
 {
     // The naive arm: discover the edges by brute force, union by stone index, then

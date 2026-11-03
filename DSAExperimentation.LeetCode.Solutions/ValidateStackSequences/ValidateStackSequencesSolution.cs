@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using BclIntStack = System.Collections.Generic.Stack<int>;
 using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidateStackSequences;
 //   popping is never wrong here: once the top equals the value popped expects next,
 //   nothing pushed later can ever be needed before it, so there is never anything to
 //   undo and one O(n) sweep settles it.
+[LeetCodeQuestion("validate-stack-sequences", LeetCodeAnswerOrder.AsWritten)]
 internal static class ValidateStackSequencesSolution
 {
     public static bool IsValidByBacktrackingSearch(int[] pushed, int[] popped) =>

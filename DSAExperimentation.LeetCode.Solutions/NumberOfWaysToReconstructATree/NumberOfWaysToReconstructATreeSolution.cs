@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysToReconstructATree;
 
@@ -23,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysToReconstructATree;
 //   - A tie for that minimal qualifying degree - including a tie with the node's
 //     own degree, which means the node and its parent could swap - means a second
 //     tree reproduces the same relation.
+[LeetCodeQuestion("number-of-ways-to-reconstruct-a-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfWaysToReconstructATreeSolution
 {
     // LC 1719's own three answers.

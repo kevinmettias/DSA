@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CouplesHoldingHands;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CouplesHoldingHands;
 // needs exactly (cycleLength - 1) swaps per cycle to fix, and summing that over
 // every component simplifies to coupleCount minus the distinct-root count, counted
 // with this repo's own Set<int>.
+[LeetCodeQuestion("couples-holding-hands", LeetCodeAnswerOrder.AsWritten)]
 internal static class CouplesHoldingHandsSolution
 {
     // The greedy swap simulation every LeetCode editorial leads with. Deliberately

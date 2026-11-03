@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SearchInRotatedSortedArrayII;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SearchInRotatedSortedArrayII;
 // slice. Worst case (e.g. an all-equal array) still degrades to O(n), matching the
 // well-known result that duplicates rule out a guaranteed O(log n) solution here.
 // HasTargetByLinearScan is the O(n) arm it has to beat regardless.
+[LeetCodeQuestion("search-in-rotated-sorted-array-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class SearchInRotatedSortedArrayIISolution
 {
     // The textbook O(n) scan. Written without this repo's own BinarySearch - the

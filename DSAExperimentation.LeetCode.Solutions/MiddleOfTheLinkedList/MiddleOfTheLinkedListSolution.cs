@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MiddleOfTheLinkedList;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MiddleOfTheLinkedList;
 // Both strategies answer with the node itself - LeetCode's actual answer shape,
 // which is what the walk has to land on; reading a value off it afterwards is the
 // caller's business.
+[LeetCodeQuestion("middle-of-the-linked-list", LeetCodeAnswerOrder.AsWritten)]
 internal static class MiddleOfTheLinkedListSolution
 {
     // Floyd's slow/fast two-pointer walk over this repo's own

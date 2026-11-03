@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumMedianSumOfSubsequencesOfSizeThree;
 
@@ -7,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumMedianSumOfSubsequencesOf
 // array is empty; maximize the sum of medians collected. Both strategies
 // answer the same question with the same signature (TwoSumSolution
 // precedent).
+[LeetCodeQuestion("maximum-median-sum-of-subsequences-of-size-3", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumMedianSumOfSubsequencesOfSizeThreeSolution
 {
     // Textbook baseline: try every way to partition the array into groups of

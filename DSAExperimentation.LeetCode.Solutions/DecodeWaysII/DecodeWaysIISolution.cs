@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DecodeWaysII;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DecodeWaysII;
 // bottom-up tabulation fills an array from the end backwards, top-down
 // memoization lets this repo's own Memoizer cache the same recurrence written as
 // ordinary recursion.
+[LeetCodeQuestion("decode-ways-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class DecodeWaysIISolution
 {
     // The textbook answer: a BCL long[] filled from the end, dp[i] = ways to

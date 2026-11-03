@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RainStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.TrappingRainWater;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TrappingRainWater;
 // O(n^2) approach), or a single left-to-right sweep using this repo's own
 // Stack<int> to hold indices of bars still waiting for a taller bar on their
 // right, so each bar is bounded exactly once.
+[LeetCodeQuestion("trapping-rain-water", LeetCodeAnswerOrder.AsWritten)]
 internal static class TrappingRainWaterSolution
 {
     // The textbook brute force: for every bar, rescan the whole array on both

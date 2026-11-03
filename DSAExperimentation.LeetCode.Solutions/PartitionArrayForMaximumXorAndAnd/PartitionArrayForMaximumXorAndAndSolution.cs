@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.PartitionArrayForMaximumXorAndAnd;
 
 // LeetCode 3630. Partition Array for Maximum XOR and AND: split nums into three
@@ -7,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PartitionArrayForMaximumXorAndAn
 // AND(B) depends only on the *set* B, never on how the rest splits between A and
 // C, so both strategies enumerate B and combine it with the best possible
 // XOR(A)+XOR(C) split of whatever nums doesn't put in B.
+[LeetCodeQuestion("partition-array-for-maximum-xor-and-and", LeetCodeAnswerOrder.AsWritten)]
 internal static class PartitionArrayForMaximumXorAndAndSolution
 {
     // The textbook answer: try every one of the 3^n ways to label each element A,

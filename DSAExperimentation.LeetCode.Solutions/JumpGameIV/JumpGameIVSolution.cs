@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 // One index of LC 1345's implicit reachability graph: wired with an edge to i+1, to i-1, and
 // to every other index holding the same value. Every hop is one step, so the edges carry no weight.
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.JumpGameIV;
 // re-scanned on every visit - and modeling the exact same reachability as an
 // implicit unweighted-hop graph answered with this repo's own
 // BreadthFirstDistances, since every hop costs the same one step.
+[LeetCodeQuestion("jump-game-iv", LeetCodeAnswerOrder.AsWritten)]
 internal static class JumpGameIVSolution
 {
     // The textbook answer: a BCL Queue, a BCL Dictionary of same-value index

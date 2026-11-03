@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 using CellFrontier = DSAExperimentation.DataStructures.Heap.Heap<
     (DSAExperimentation.DataStructures.Graph.Grids.GridNode Node, int Priority),
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfPointsFromGridQue
 // query, in the queries' original order - so the test harness asserts them against
 // the same examples and the benchmark harness times them against each other without
 // either restating the algorithm.
+[LeetCodeQuestion("maximum-number-of-points-from-grid-queries", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumNumberOfPointsFromGridQueriesSolution
 {
     private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];

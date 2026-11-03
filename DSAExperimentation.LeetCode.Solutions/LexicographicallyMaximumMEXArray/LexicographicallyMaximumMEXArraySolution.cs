@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.LexicographicallyMaximumMEXArray;
 
 // LeetCode 3948. Lexicographically Maximum MEX Array: repeatedly cut a prefix
@@ -15,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LexicographicallyMaximumMEXArray
 // since lexicographic comparison prefers a longer array once a shared prefix
 // ties, leaving more for later can only help. Both arms below implement exactly
 // that greedy cut; they differ only in how cheaply MEX gets recomputed.
+[LeetCodeQuestion("lexicographically-maximum-mex-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class LexicographicallyMaximumMEXArraySolution
 {
     // Textbook baseline: at each cut point, rescan the entire remaining suffix

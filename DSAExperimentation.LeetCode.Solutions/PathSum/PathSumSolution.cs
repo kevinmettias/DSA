@@ -1,10 +1,12 @@
 using DSAExperimentation.Algorithms.Paths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PathSum;
 
 // LeetCode 112. Path Sum: does any root-to-leaf path sum to a target value?
+[LeetCodeQuestion("path-sum", LeetCodeAnswerOrder.AsWritten)]
 internal static class PathSumSolution
 {
     // The textbook answer: BCL-only recursion, subtracting each node's value from

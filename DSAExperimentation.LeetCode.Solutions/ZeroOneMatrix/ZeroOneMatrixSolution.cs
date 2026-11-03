@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ZeroOneMatrix;
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ZeroOneMatrix;
 // a single multi-source BFS (this repo's own Queue<TElement> as the FIFO frontier)
 // discovers each cell exactly once, via its true nearest source - O(rows*cols)
 // total.
+[LeetCodeQuestion("01-matrix", LeetCodeAnswerOrder.AsWritten)]
 internal static class ZeroOneMatrixSolution
 {
     private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];

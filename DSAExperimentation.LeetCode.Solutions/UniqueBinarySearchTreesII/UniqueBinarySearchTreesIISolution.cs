@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.UniqueBinarySearchTreesII;
 
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.UniqueBinarySearchTreesII;
 // and again nested inside root=1's right subtree (2,4) - is regenerated from
 // scratch each time (call count grows as 3^n) or solved once and shared via
 // Memoizer.
+[LeetCodeQuestion("unique-binary-search-trees-ii", LeetCodeAnswerOrder.AnyOrder)]
 internal static class UniqueBinarySearchTreesIISolution
 {
     // Textbook baseline: plain left-root-right recursion, re-deriving any

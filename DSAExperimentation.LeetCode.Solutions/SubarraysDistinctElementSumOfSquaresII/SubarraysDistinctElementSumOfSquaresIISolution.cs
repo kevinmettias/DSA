@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoRangeFenwickTree = DSAExperimentation.DataStructures.RangeFenwickTree.RangeFenwickTree<long, DSAExperimentation.DataStructures.ElementAlgebra.SumOperation<long>>;
 
 namespace DSAExperimentation.LeetCode.Solutions.SubarraysDistinctElementSumOfSquaresII;
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SubarraysDistinctElementSumOfSqu
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("subarrays-distinct-element-sum-of-squares-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class SubarraysDistinctElementSumOfSquaresIISolution
 {
     // Textbook O(n^2): for each start l, grow r rightward tracking distinct count

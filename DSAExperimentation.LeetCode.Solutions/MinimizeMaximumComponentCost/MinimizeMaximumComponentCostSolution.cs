@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.MinimumSpanningTrees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using ComponentNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
 using ComponentTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<int>;
 
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimizeMaximumComponentCost;
 // algorithm - they exist only so the composed strategy below can hand
 // MinimumSpanningTree.Kruskal a vertex list instead of re-deriving Kruskal's
 // merge loop by hand.
+[LeetCodeQuestion("minimize-maximum-component-cost", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimizeMaximumComponentCostSolution
 {
     // The textbook Kruskal loop: BCL Array.Sort plus a hand-rolled union-find

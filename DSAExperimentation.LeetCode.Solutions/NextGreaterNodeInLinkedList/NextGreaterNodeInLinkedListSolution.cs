@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NextGreaterNodeInLinkedList;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NextGreaterNodeInLinkedList;
 // comes later - a list cannot be walked backwards. They differ in how that
 // forward question is answered: rescan from every node, or sweep once carrying
 // the nodes still waiting for an answer.
+[LeetCodeQuestion("next-greater-node-in-linked-list", LeetCodeAnswerOrder.AsWritten)]
 internal static class NextGreaterNodeInLinkedListSolution
 {
     private const int NoLargerNode = -1;

@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestRepeatingCharacterReplacement;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestRepeatingCharacterReplace
 // differ only in how per-character counts are tracked: rescanned from every start,
 // hashed in this repo's HashMap, or kept in a 26-slot table indexed by
 // Domain's EnglishUppercase, since LeetCode's strings are uppercase letters only.
+[LeetCodeQuestion("longest-repeating-character-replacement", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestRepeatingCharacterReplacementSolution
 {
     // The textbook answer: re-scan from every start index with a plain int[26]

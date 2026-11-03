@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.JumpGameIX;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.JumpGameIX;
 // a valid split point exists - max(nums[0..i]) <= min(nums[i+1..n-1]) - so only
 // those n - 1 boundaries, not all O(n^2) inversions, need to be checked to recover
 // every component with a union-find.
+[LeetCodeQuestion("jump-game-ix", LeetCodeAnswerOrder.AsWritten)]
 internal static class JumpGameIXSolution
 {
     // Textbook baseline: implements the two jump rules literally and BFS-explores

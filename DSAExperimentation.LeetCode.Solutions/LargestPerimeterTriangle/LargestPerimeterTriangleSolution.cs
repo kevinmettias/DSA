@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.Domain.Mathematics.Geometry;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LargestPerimeterTriangle;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LargestPerimeterTriangle;
 // The triangle inequality is the flat plane's (Domain/Mathematics/Geometry): the sorted scan
 // asks EuclideanPolygons of its longest side, and the brute-force baseline keeps its own
 // CanFormTriangle (ARCHITECTURE §17.5).
+[LeetCodeQuestion("largest-perimeter-triangle", LeetCodeAnswerOrder.AsWritten)]
 internal static class LargestPerimeterTriangleSolution
 {
     // sorted[i - TripleWindowOffset .. i] is the candidate triple at index i.

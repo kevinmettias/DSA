@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PacificAtlanticWaterFlow;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PacificAtlanticWaterFlow;
 // one multi-source flood fill per ocean - this repo's own DepthFirstSearch.Traverse
 // seeded at every border cell, deduped into a Set<(int,int)> - visits each cell at
 // most once per ocean regardless of how many interior cells are queried.
+[LeetCodeQuestion("pacific-atlantic-water-flow", LeetCodeAnswerOrder.AsWritten)]
 internal static class PacificAtlanticWaterFlowSolution
 {
     private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];

@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumEdgeTogglesOnATree;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumEdgeTogglesOnATree;
 // turn. If the root still disagrees after every subtree is resolved, no sequence
 // of toggles closes the gap. Both strategies are that same bottom-up walk; they
 // differ only in which primitives the tree and the walk are built from.
+[LeetCodeQuestion("minimum-edge-toggles-on-a-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumEdgeTogglesOnATreeSolution
 {
     // The textbook answer: a BCL adjacency list and a recursive DFS that returns

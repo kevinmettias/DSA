@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumSumOfValuesByDividingArray;
 
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumSumOfValuesByDividingArra
 // baseline writes its recursion out directly rather than through Memoizer's
 // IRecurrence contract, because a baseline uses no library implementation
 // (ARCHITECTURE 17.5).
+[LeetCodeQuestion("minimum-sum-of-values-by-dividing-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumSumOfValuesByDividingArraySolution
 {
     // The textbook form: recursion over a hand-rolled Dictionary memo table,

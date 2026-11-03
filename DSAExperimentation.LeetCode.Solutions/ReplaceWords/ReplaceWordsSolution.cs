@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RootTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
     DSAExperimentation.Domain.Language.English.EnglishLowercase,
     DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReplaceWords;
 // checked anyway, since the first match found is not guaranteed to be the shortest),
 // vs. this repo's own AlphabetTrie, where the shortest root falls out for free
 // by walking the word once and stopping at the first HasValue node reached.
+[LeetCodeQuestion("replace-words", LeetCodeAnswerOrder.AsWritten)]
 internal static class ReplaceWordsSolution
 {
     // The textbook answer: scan every root against every word with BCL StartsWith.

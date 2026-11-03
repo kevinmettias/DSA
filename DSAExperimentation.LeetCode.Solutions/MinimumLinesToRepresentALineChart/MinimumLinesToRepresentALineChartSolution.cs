@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumLinesToRepresentALineChart;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumLinesToRepresentALineChar
 // cross-product form (y1-y0)*(x2-x1) == (y2-y1)*(x1-x0), which involves no division and
 // so loses no precision. The products are widened to long first, since day and price can
 // each reach 1e9 per the problem's constraints and their product overflows int.
+[LeetCodeQuestion("minimum-lines-to-represent-a-line-chart", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumLinesToRepresentALineChartSolution
 {
     // LeetCode hands each point in as a two-element array, [day, price].

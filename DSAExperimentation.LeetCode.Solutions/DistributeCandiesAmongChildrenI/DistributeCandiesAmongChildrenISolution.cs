@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.DistributeCandiesAmongChildrenII;
 
 namespace DSAExperimentation.LeetCode.Solutions.DistributeCandiesAmongChildrenI;
@@ -7,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DistributeCandiesAmongChildrenI;
 // limit candies. The candy count and limit are both at most 50 here, which is
 // exactly what keeps the double loop below fast enough - LC 2929 asks the
 // identical question at up to 1e6 and needs the closed form.
+[LeetCodeQuestion("distribute-candies-among-children-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class DistributeCandiesAmongChildrenISolution
 {
     // The textbook double loop: fix the first two children's shares, the third is

@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ElevatorRequestsI;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ElevatorRequestsI;
 // points, so the second strategy reuses Algorithms.ShortestPaths'
 // ManhattanHeuristic against WeightedGridNode with every column pinned to 0,
 // rather than re-deriving |a-b| by hand a second time.
+[LeetCodeQuestion("elevator-requests-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class ElevatorRequestsISolution
 {
     private const int FixedColumn = 0;

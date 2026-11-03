@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 // LC 743's own directed, non-negative-weight edge list: Edges holds each node's out-edges as
 // (Weight, Target).
@@ -25,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NetworkDelayTime;
 // the max; otherwise -1") is exactly as generic as ShortestPath.Dijkstra itself, and
 // staying generic keeps the strategies honest about what they depend on: an edge
 // topology, not this problem's node type.
+[LeetCodeQuestion("network-delay-time", LeetCodeAnswerOrder.AsWritten)]
 internal static class NetworkDelayTimeSolution
 {
     // LeetCode numbers the nodes 1..nodeCount, so slot 0 of a node-indexed array is an

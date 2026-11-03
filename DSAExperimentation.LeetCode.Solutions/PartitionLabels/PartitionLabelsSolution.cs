@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PartitionLabels;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PartitionLabels;
 // each letter's last occurrence is found - re-derived with a backward scan every
 // time a partition's frontier expands, or looked up in one HashMap<char,int> built
 // up front (TwoSumSolution's exact shape).
+[LeetCodeQuestion("partition-labels", LeetCodeAnswerOrder.AsWritten)]
 internal static class PartitionLabelsSolution
 {
     // The textbook answer: no precomputed index, so extending a partition's

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PalindromePartitioningIV;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PalindromePartitioningIV;
 // - CanPartitionIntoThreePalindromesByMemoizedRecurrence drives the identical
 //   recurrence through this repo's Memoizer, so each state is resolved exactly once
 //   no matter how many first/second cut choices land on it.
+[LeetCodeQuestion("palindrome-partitioning-iv", LeetCodeAnswerOrder.AsWritten)]
 internal static class PalindromePartitioningIVSolution
 {
     // LC 1745 asks for exactly three pieces; the recurrence is otherwise general.

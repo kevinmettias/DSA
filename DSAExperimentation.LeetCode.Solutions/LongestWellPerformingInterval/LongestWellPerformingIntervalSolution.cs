@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestWellPerformingInterval;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestWellPerformingInterval;
 // already positive) or ends where the running score last matched EXACTLY one less
 // than the current score - the earliest such index, since a later match of the same
 // score value could only shorten the span.
+[LeetCodeQuestion("longest-well-performing-interval", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestWellPerformingIntervalSolution
 {
     // LeetCode's definition of a tiring day: strictly more than 8 hours worked.

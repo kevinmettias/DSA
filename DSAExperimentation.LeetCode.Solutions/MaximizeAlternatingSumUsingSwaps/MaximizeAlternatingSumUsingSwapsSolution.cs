@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximizeAlternatingSumUsingSwaps;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeAlternatingSumUsingSwaps
 // even-index (added) slots and the smallest to the odd-index (subtracted) slots.
 // Both strategies below share that greedy assignment; they differ only in how
 // connectivity is discovered.
+[LeetCodeQuestion("maximize-alternating-sum-using-swaps", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximizeAlternatingSumUsingSwapsSolution
 {
     // The textbook answer: a BCL adjacency list plus BFS, no repo primitive -

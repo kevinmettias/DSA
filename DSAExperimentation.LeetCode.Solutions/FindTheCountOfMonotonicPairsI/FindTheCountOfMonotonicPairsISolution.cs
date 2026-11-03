@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.FindTheCountOfMonotonicPairsII;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheCountOfMonotonicPairsI;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheCountOfMonotonicPairsI;
 // (ARCHITECTURE 17.3). Each arm here calls through; both parts answer a long, so
 // nothing narrows. This problem's own test and benchmark still run them at its own
 // bound.
+[LeetCodeQuestion("find-the-count-of-monotonic-pairs-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheCountOfMonotonicPairsISolution
 {
     // The O(n * maxValue^2) row rescan, which Part I's small bound keeps tractable.

@@ -1,6 +1,7 @@
 using System.Numerics;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using NumberStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.DoubleANumberRepresentedAsALinkedList;
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DoubleANumberRepresentedAsALinke
 // Stack<T> while walking .Next once, then pops them least-significant-first with a
 // running carry, prepending each doubled digit onto the front of the result as it
 // is produced - O(n), with the input list never reversed or mutated.
+[LeetCodeQuestion("double-a-number-represented-as-a-linked-list", LeetCodeAnswerOrder.AsWritten)]
 internal static class DoubleANumberRepresentedAsALinkedListSolution
 {
     // The digit-doubling factor LC 2816 asks for, spelled out so the carry walk

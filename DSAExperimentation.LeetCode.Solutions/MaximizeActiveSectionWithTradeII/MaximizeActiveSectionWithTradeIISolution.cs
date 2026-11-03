@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.MaximizeActiveSectionWithTradeII;
 
 // LeetCode 3501. Maximize Active Section with Trade II: for each query
@@ -6,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeActiveSectionWithTradeII
 // set one block of '0's surrounded by '1's (in the string that leaves
 // behind) to '1' - with everything outside [l, r] left untouched, and both
 // steps mandatory (no trade at all, i.e. 0 gain, is always the fallback).
+[LeetCodeQuestion("maximize-active-section-with-trade-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximizeActiveSectionWithTradeIISolution
 {
     // The textbook answer: for every query, literally run-length-encode the

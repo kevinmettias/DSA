@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.GenerateParentheses;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.GenerateParentheses;
 // paying for the List<string> allocation, which is a valid measurement choice but
 // not the question either strategy is proven correct against (ARCHITECTURE.md 17.8's
 // WordLadderII precedent for promoting a counting arm back to the real answer).
+[LeetCodeQuestion("generate-parentheses", LeetCodeAnswerOrder.AsWritten)]
 internal static class GenerateParenthesesSolution
 {
     // The composed solution: Backtrack.Search owns the recursion; ParenthesesState

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SubsetsII;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SubsetsII;
 // strategy, not a second strategy. Both strategies now are that one walk - sort, then
 // skip a value that repeats the one before it at the same depth - written as plain
 // recursion, or run on this repo's backtracking combinator.
+[LeetCodeQuestion("subsets-ii", LeetCodeAnswerOrder.AnyOrder)]
 internal static class SubsetsIISolution
 {
     // The textbook answer: the sort-then-skip walk as plain recursion, the arm the

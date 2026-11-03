@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PathExistenceQueriesInAGraphI;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PathExistenceQueriesInAGraphI;
 // captured by unioning only its n-1 adjacent pairs - the puzzle reduces to one
 // equivalence-class query per pair in queries, exactly DisjointSet's own reason
 // for existing.
+[LeetCodeQuestion("path-existence-queries-in-a-graph-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class PathExistenceQueriesInAGraphISolution
 {
     // Baseline: the same O(n) reduced adjacency (a genuine O(n^2) all-pairs scan

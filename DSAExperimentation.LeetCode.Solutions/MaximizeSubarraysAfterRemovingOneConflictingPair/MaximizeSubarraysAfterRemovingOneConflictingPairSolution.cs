@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximizeSubarraysAfterRemovingOneConflictingPair;
 
@@ -6,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeSubarraysAfterRemovingOn
 // implicitly [1..valueCount]; conflictingPairs bans any subarray containing both
 // endpoints of a pair that survives removal. Remove exactly one pair, maximize the
 // count of still-valid non-empty subarrays.
+[LeetCodeQuestion("maximize-subarrays-after-removing-one-conflicting-pair", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximizeSubarraysAfterRemovingOneConflictingPairSolution
 {
     // The textbook answer: try removing each pair in turn and, for that choice,

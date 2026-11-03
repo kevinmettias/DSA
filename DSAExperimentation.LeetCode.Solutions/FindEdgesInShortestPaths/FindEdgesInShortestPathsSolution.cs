@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using EdgeGraphNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<long>;
 using EdgeGraphTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<long>;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindEdgesInShortestPaths;
 // node gives every distance either check needs, instead of a fresh search per
 // edge. When nodes 0 and n-1 are not connected at all, no edge belongs to any
 // shortest path, so the answer is all false.
+[LeetCodeQuestion("find-edges-in-shortest-paths", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindEdgesInShortestPathsSolution
 {
     // Textbook baseline: BCL adjacency lists plus PriorityQueue<int,long>

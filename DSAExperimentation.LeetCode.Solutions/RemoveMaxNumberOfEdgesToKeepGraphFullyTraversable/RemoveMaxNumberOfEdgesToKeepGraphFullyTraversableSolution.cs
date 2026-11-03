@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RemoveMaxNumberOfEdgesToKeepGraphFullyTraversable;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveMaxNumberOfEdgesToKeepGrap
 // instances, one per traverser - the same flood-fill-vs-union-find contrast
 // NumberOfOperationsToMakeNetworkConnected draws, here needing a per-edge
 // reachability query rather than one final component count.
+[LeetCodeQuestion("remove-max-number-of-edges-to-keep-graph-fully-traversable", LeetCodeAnswerOrder.AsWritten)]
 internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
 {
     private const int EdgeTypeIndex = 0;

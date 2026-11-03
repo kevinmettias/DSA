@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.ValidPalindrome;
 
 // LeetCode 125. Valid Palindrome: reading only letters and digits, case-
@@ -7,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidPalindrome;
 // copying the string, or a normalized copy is built and compared against its own
 // reversal. The scan is O(1) extra space but has to skip characters as it goes;
 // the copy pays two full strings for a plain equality check.
+[LeetCodeQuestion("valid-palindrome", LeetCodeAnswerOrder.AsWritten)]
 internal static class ValidPalindromeSolution
 {
     // Keep only letters and digits, lower-cased, then compare that copy with its

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToBreakLocksI;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToBreakLocksI;
 // Minimize total minutes over every order the n <= 8 locks could be broken
 // in - the DP state is exactly "which locks remain," since x is a pure
 // function of how many are already broken.
+[LeetCodeQuestion("minimum-time-to-break-locks-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumTimeToBreakLocksISolution
 {
     // The textbook baseline: try every permutation of lock-breaking order by

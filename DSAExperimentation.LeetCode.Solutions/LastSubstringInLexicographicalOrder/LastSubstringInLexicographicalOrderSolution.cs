@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using SuffixArrayStructure = DSAExperimentation.DataStructures.SuffixArray.SuffixArray;
 
 namespace DSAExperimentation.LeetCode.Solutions.LastSubstringInLexicographicalOrder;
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LastSubstringInLexicographicalOr
 // the same index, and a proper prefix always compares smaller, so extending it to the
 // end of the string can only improve the answer. The problem is therefore "find the
 // maximal suffix", and the two strategies differ only in how they find it.
+[LeetCodeQuestion("last-substring-in-lexicographical-order", LeetCodeAnswerOrder.AsWritten)]
 internal static class LastSubstringInLexicographicalOrderSolution
 {
     // Baseline: hold the best suffix seen so far and compare each remaining suffix

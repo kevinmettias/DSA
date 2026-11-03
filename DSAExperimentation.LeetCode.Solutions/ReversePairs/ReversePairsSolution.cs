@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ReversePairs;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReversePairs;
 // every earlier nums[i] that forms a reverse pair with it. Same coordinate-
 // compression-plus-Fenwick-sweep shape CountOfSmallerNumbersAfterSelf and
 // CountOfRangeSum use, generalized to a value-dependent (not fixed) split point.
+[LeetCodeQuestion("reverse-pairs", LeetCodeAnswerOrder.AsWritten)]
 internal static class ReversePairsSolution
 {
     private const long ReversePairMultiplier = 2L;

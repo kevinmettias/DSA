@@ -1,11 +1,13 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FruitsIntoBasketsIII;
 
 // LeetCode 3479. Fruits Into Baskets III: the identical placement rule as LC
 // 3477 (Fruits Into Baskets II), but n up to 1e5 rules out II's O(n^2) rescan.
+[LeetCodeQuestion("fruits-into-baskets-iii", LeetCodeAnswerOrder.AsWritten)]
 internal static class FruitsIntoBasketsIIISolution
 {
     // The textbook O(n^2) form II already uses in full: rescan every basket,

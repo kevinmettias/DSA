@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using ReversedWordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
     DSAExperimentation.Domain.Language.English.EnglishLowercase,
     DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortEncodingOfWords;
 // with EndsWith, evict every proper suffix from a Set as each word is scanned, or
 // insert every REVERSED word into an AlphabetTrie and keep only the words whose
 // reversed node is a leaf.
+[LeetCodeQuestion("short-encoding-of-words", LeetCodeAnswerOrder.AsWritten)]
 internal static class ShortEncodingOfWordsSolution
 {
     // Every kept word costs its own characters plus the '#' that terminates it.

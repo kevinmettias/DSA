@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ShortestDistanceToTargetStringInACircularArray;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortestDistanceToTargetStringIn
 // BreadthFirstDistances, which is already "distance from a root to every node";
 // exploring both directions at once is what BFS does anyway, so no wraparound
 // formula appears anywhere.
+[LeetCodeQuestion("shortest-distance-to-target-string-in-a-circular-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class ShortestDistanceToTargetStringInACircularArraySolution
 {
     // The textbook answer: one pass over the raw array, closing the circle with

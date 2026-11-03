@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using WaitingQueue = DSAExperimentation.DataStructures.Queue.Queue<(string Word, int Index)>;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfMatchingSubsequences;
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfMatchingSubsequences;
 // single left-to-right pass over searchedText advances every waiting word in step
 // instead of re-scanning searchedText once per word -
 // O(searchedText.Length + total word length).
+[LeetCodeQuestion("number-of-matching-subsequences", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfMatchingSubsequencesSolution
 {
     // The textbook answer: check each word independently with a two-pointer walk.

@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.ReachingPoints;
 
 // LeetCode 780. Reaching Points: starting from (sx, sy), a move replaces the pair with
@@ -16,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReachingPoints;
 // No repo container or algorithm primitive applies here - there is nothing to compose
 // over two running integer pairs, the same "lighter repo-primitive fit" case Pow(x, n)'s
 // exponentiation by squaring already is.
+[LeetCodeQuestion("reaching-points", LeetCodeAnswerOrder.AsWritten)]
 internal static class ReachingPointsSolution
 {
     // Baseline: undo one growth step at a time, so the step count grows with the gap

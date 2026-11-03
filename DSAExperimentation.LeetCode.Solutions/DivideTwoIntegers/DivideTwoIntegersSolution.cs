@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DivideTwoIntegers;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DivideTwoIntegers;
 // whose product with the divisor still fits within the dividend" and hands that
 // monotone rule, with the candidate range, to this repo's own
 // MonotonePredicateSearch.LastTrue.
+[LeetCodeQuestion("divide-two-integers", LeetCodeAnswerOrder.AsWritten)]
 internal static class DivideTwoIntegersSolution
 {
     // What you would write without the "no division operator" constraint. Still

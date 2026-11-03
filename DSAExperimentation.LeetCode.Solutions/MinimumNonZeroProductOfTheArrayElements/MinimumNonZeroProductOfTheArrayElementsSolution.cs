@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNonZeroProductOfTheArrayElements;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNonZeroProductOfTheArrayE
 // convention this repo already declares once. No repo container applies to either
 // arm: there is nothing to compose over a handful of running scalars, the same
 // "lighter repo-primitive fit" already accepted for Pow(x, n) and Super Pow.
+[LeetCodeQuestion("minimum-non-zero-product-of-the-array-elements", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumNonZeroProductOfTheArrayElementsSolution
 {
     // The textbook baseline: multiply the pair value by itself once per pair.

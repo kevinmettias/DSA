@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
     DSAExperimentation.Domain.Language.English.EnglishLowercase,
     DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestWordInDictionary;
 // The two strategies differ in how "is this prefix a complete word" is answered -
 // a linear scan of the whole word list per prefix, or a single O(1) HasValue check
 // per step of one root-to-leaf walk over this repo's own AlphabetTrie.
+[LeetCodeQuestion("longest-word-in-dictionary", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestWordInDictionarySolution
 {
     private const string NoQualifyingWord = "";

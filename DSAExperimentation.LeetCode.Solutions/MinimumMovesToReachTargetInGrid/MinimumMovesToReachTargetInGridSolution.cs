@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.MinimumMovesToReachTargetInGrid;
 
 // LeetCode 3609. Minimum Moves to Reach Target in Grid: from (x, y), with
@@ -12,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumMovesToReachTargetInGrid;
 // predecessor up to a single ambiguous choice at tx == ty > 0, where the move could
 // have come from either axis - resolved by which one of sx/sy is 0, since once a
 // coordinate is driven to 0 on the way back it stays 0 for the rest of the walk.
+[LeetCodeQuestion("minimum-moves-to-reach-target-in-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumMovesToReachTargetInGridSolution
 {
     // The textbook answer: forward BFS, pruned the instant either coordinate would

@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.Shift2DGrid;
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.Shift2DGrid;
 // and differ only in how they express the rotation: destination index arithmetic
 // straight into a fresh array, or this repo's own Deque<int>, where TryPopBack +
 // PushFront *is* one right-shift step.
+[LeetCodeQuestion("shift-2d-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class Shift2DGridSolution
 {
     // The textbook answer: compute each source cell's shifted (row, col)

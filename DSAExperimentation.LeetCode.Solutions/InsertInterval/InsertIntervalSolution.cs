@@ -1,10 +1,12 @@
 using DSAExperimentation.DataStructures.IntervalSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.InsertInterval;
 
 // LeetCode 57. Insert Interval: given a set of non-overlapping intervals already
 // sorted by start, insert a new interval and merge as needed, returning the
 // resulting disjoint intervals sorted by start.
+[LeetCodeQuestion("insert-interval", LeetCodeAnswerOrder.AsWritten)]
 internal static class InsertIntervalSolution
 {
     // The textbook answer: append newInterval, sort once, then a single linear

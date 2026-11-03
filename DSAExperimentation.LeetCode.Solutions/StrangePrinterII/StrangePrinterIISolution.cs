@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.TopologicalSort;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.StrangePrinterII;
 
@@ -23,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StrangePrinterII;
 // Each takes a second overload on the prepared color graph (§17.4) so
 // StrangePrinterIIBenchmarks can charge graph construction to its [GlobalSetup];
 // List<ColorNode> can never be confused with LeetCode's own int[][] grid shape.
+[LeetCodeQuestion("strange-printer-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class StrangePrinterIISolution
 {
     // This repo's own Kahn's algorithm. TrySort returns false exactly when the

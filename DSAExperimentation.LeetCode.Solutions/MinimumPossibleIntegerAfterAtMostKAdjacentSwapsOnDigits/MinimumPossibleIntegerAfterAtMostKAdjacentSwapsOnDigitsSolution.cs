@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoIntQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigits;
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumPossibleIntegerAfterAtMos
 // the cost of pulling a digit forward is the number of still-unplaced digits sitting before
 // it. They differ in how that count is obtained - an O(length) rescan of the live digit list,
 // or an O(log length) Fenwick prefix query over a 0/1 "still unplaced" array.
+[LeetCodeQuestion("minimum-possible-integer-after-at-most-k-adjacent-swaps-on-digits", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSolution
 {
     // The textbook answer: physically simulate the swaps. Keep the live digits in a BCL

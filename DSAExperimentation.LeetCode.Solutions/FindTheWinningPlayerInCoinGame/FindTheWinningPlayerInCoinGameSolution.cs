@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.FindTheWinningPlayerInCoinGame;
 
 // LeetCode 3222. Find the Winning Player in Coin Game: each turn a player must
@@ -6,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheWinningPlayerInCoinGame;
 // within the given constraints (a second 75-coin alone already overshoots), so every
 // turn spends exactly one 75-coin and four 10-coins, and the game is really just
 // counting how many such turns are affordable before either pile runs dry.
+[LeetCodeQuestion("find-the-winning-player-in-coin-game", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheWinningPlayerInCoinGameSolution
 {
     private const int CoinsPerTurn = 4;

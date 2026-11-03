@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.FruitsIntoBasketsII;
 
 // LeetCode 3477. Fruits Into Baskets II: place each fruit type, left to right,
@@ -6,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FruitsIntoBasketsII;
 // this problem's own intended solution - no repo primitive earns its keep at
 // this size. See LC 3479 (Fruits Into Baskets III) for the identical rule at
 // n <= 1e5, where this repo's SegmentTree<int, MaxOperation<int>> does.
+[LeetCodeQuestion("fruits-into-baskets-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class FruitsIntoBasketsIISolution
 {
     public static int CountUnplacedByBruteForce(int[] fruits, int[] baskets)

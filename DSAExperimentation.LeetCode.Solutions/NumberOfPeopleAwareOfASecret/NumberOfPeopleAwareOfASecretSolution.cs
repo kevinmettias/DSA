@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfPeopleAwareOfASecret;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfPeopleAwareOfASecret;
 // FenwickRangeSum keeps dp in this repo's own
 // FenwickTree<long, SumOperation<long>> so each day costs one O(log n) Add/Query
 // pair instead.
+[LeetCodeQuestion("number-of-people-aware-of-a-secret", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfPeopleAwareOfASecretSolution
 {
     // Day 1 is dp index 0: LeetCode numbers days from 1, the arrays from 0.

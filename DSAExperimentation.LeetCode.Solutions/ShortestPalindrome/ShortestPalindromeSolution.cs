@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ShortestPalindrome;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortestPalindrome;
 // repo's own KMP failure function (PrefixFunctionSearch.ComputeFailureFunction):
 // the longest run that is simultaneously a prefix of text and a suffix of
 // reverse(text) is exactly the text's longest palindromic prefix.
+[LeetCodeQuestion("shortest-palindrome", LeetCodeAnswerOrder.AsWritten)]
 internal static class ShortestPalindromeSolution
 {
     private const string FailureFunctionSeparator = "#";

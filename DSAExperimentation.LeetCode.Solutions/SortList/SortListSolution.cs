@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SortList;
 // agreed on nothing real. Both strategies here flatten the list's values into an
 // array, sort it, then rebuild a fresh list from the sorted values, and differ only
 // in the sort: the BCL's Array.Sort, or this repo's own MergeSort.
+[LeetCodeQuestion("sort-list", LeetCodeAnswerOrder.AsWritten)]
 internal static class SortListSolution
 {
     // The textbook answer: the BCL's own sort, the arm this repo's MergeSort is measured

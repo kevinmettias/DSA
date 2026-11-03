@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DisplayTableOfFoodOrdersInARestaurant;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DisplayTableOfFoodOrdersInAResta
 // The strategies differ only in how a cell's count is obtained: rescanning every
 // raw order once per (table, food) cell, or a single grouped pass into a nested
 // HashMap<int, HashMap<string, int>>.
+[LeetCodeQuestion("display-table-of-food-orders-in-a-restaurant", LeetCodeAnswerOrder.AsWritten)]
 internal static class DisplayTableOfFoodOrdersInARestaurantSolution
 {
     private const int TableFieldIndex = 1;

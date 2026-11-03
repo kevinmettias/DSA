@@ -2,6 +2,7 @@ using DSAExperimentation.Algorithms.Bipartiteness;
 using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.KeyedDisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using GroupNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 using GroupTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DivideNodesIntoTheMaximumNumberO
 // conflict, group the nodes into components, then replay one BFS per node - and
 // differ only in what does the work: hand-rolled arrays, or this repo's own
 // BipartiteCheck, KeyedDisjointSet and Reduce.Graph.
+[LeetCodeQuestion("divide-nodes-into-the-maximum-number-of-groups", LeetCodeAnswerOrder.AsWritten)]
 internal static class DivideNodesIntoTheMaximumNumberOfGroupsSolution
 {
     // LeetCode numbers nodes from 1, so index 0 of a prepared adjacency array is

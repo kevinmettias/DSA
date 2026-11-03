@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.LazySegmentTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.HandlingSumQueriesAfterUpdate;
 
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.HandlingSumQueriesAfterUpdate;
 // Both strategies answer LeetCode's real shape - the long[] of type-3 readings - so
 // the test harness can assert them against the same examples and the benchmark
 // harness can time them against each other.
+[LeetCodeQuestion("handling-sum-queries-after-update", LeetCodeAnswerOrder.AsWritten)]
 internal static class HandlingSumQueriesAfterUpdateSolution
 {
     private const int FlipQuery = 1;

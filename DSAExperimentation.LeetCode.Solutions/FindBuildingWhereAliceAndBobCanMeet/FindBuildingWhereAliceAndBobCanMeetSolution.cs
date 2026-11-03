@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindBuildingWhereAliceAndBobCanMeet;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindBuildingWhereAliceAndBobCanM
 // hop; otherwise both need the first index j > hi whose height beats
 // heights[lo] (already >= heights[hi] in this branch, so beating it beats
 // heights[hi] too).
+[LeetCodeQuestion("find-building-where-alice-and-bob-can-meet", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindBuildingWhereAliceAndBobCanMeetSolution
 {
     // Per query, scan forward from hi for the first building taller than

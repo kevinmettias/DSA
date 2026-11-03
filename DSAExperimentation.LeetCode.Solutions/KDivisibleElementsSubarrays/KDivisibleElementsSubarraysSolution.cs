@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.KDivisibleElementsSubarrays;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.KDivisibleElementsSubarrays;
 // joined into a signature, then deduped either through a BCL HashSet<string> or
 // through this repo's HashMap-backed Set<string> - the same "dedupe by signature"
 // composition DistinctEchoSubstrings uses for substrings, here over subarrays.
+[LeetCodeQuestion("k-divisible-elements-subarrays", LeetCodeAnswerOrder.AsWritten)]
 internal static class KDivisibleElementsSubarraysSolution
 {
     // The textbook answer: same candidate enumeration, signatures deduped in a BCL

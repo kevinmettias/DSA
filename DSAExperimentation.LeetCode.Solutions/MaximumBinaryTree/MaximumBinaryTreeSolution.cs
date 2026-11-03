@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using NodeStack = DSAExperimentation.DataStructures.Stack.Stack<DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.BinaryTreeNode<int>>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumBinaryTree;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumBinaryTree;
 // Both strategies take LeetCode's own input shape directly - int[] - so there is
 // no separate hoisted-input overload: the array already IS the prepared input,
 // sized once in a benchmark's [GlobalSetup].
+[LeetCodeQuestion("maximum-binary-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumBinaryTreeSolution
 {
     // The textbook definition, taken literally: find the max in the current

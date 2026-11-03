@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfValidStringsToFormTargetII;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfValidStringsToFor
 // has to beat, and still correct at any scale) is no longer viable at this
 // problem's own bound - only the O(numWords * target.Length + sum(words[i].Length))
 // ZFunction strategy is, and words.length <= 100 keeps that factor small.
+[LeetCodeQuestion("minimum-number-of-valid-strings-to-form-target-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumNumberOfValidStringsToFormTargetIISolution
 {
     // Textbook O(target.Length * sum(words[i].Length)): for every start position,

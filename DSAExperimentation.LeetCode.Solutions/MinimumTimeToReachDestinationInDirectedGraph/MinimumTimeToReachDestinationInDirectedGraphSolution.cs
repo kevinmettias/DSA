@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToReachDestinationInDirectedGraph;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToReachDestinationInD
 // names. Both arms below hand-roll the same relax loop, one off a priority queue
 // this repo doesn't own, one off the priority queue it does - the same split
 // MinimumTimeToVisitDisappearingNodesSolution uses for the same reason.
+[LeetCodeQuestion("minimum-time-to-reach-destination-in-directed-graph", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumTimeToReachDestinationInDirectedGraphSolution
 {
     // Baseline: BCL PriorityQueue<int,int> - "what you'd write without this repo"

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.MinimumPairRemovalToSortArrayII;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumPairRemovalToSortArrayI;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumPairRemovalToSortArrayI;
 // bound where sums need a long, which answers this bound identically. The heap arm
 // stays this class's own - index links over the original positions, where LC 3510's
 // composed arm uses this repo's DoublyLinkedList - two different designs, both kept.
+[LeetCodeQuestion("minimum-pair-removal-to-sort-array-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumPairRemovalToSortArrayISolution
 {
     // The textbook answer: rescan the whole array for the minimum-sum adjacent

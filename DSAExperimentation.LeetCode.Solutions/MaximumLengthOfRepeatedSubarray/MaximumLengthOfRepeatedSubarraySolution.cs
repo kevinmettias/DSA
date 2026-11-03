@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumLengthOfRepeatedSubarray;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumLengthOfRepeatedSubarray;
 // later reference to it (from an earlier diagonal, or a neighboring row/column)
 // reuses the cached result instead of rescanning it - O(n*m) total. The max-over-
 // all-pairs answer falls out of Best at the start state.
+[LeetCodeQuestion("maximum-length-of-repeated-subarray", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumLengthOfRepeatedSubarraySolution
 {
     public static int FindLengthByBruteForce(int[] first, int[] second)

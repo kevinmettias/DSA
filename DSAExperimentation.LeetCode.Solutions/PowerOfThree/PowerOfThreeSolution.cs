@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PowerOfThree;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PowerOfThree;
 // closed set of powers of three that fit in a 32-bit int (PowersOfThreeTable):
 // precompute that sorted table once, then this repo's own BinarySearch.Find over it
 // in place of a division loop.
+[LeetCodeQuestion("power-of-three", LeetCodeAnswerOrder.AsWritten)]
 internal static class PowerOfThreeSolution
 {
     private const int PowerBase = 3;

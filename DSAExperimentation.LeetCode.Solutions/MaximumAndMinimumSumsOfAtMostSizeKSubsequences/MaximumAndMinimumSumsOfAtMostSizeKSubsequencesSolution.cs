@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumAndMinimumSumsOfAtMostSizeKSubsequences;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumAndMinimumSumsOfAtMostSiz
 // "row sum capped at k-1" table, indexed both forwards (max) and backwards
 // (min), answers both. Both strategies build that table; they differ only in
 // how each C(i,j) is produced.
+[LeetCodeQuestion("maximum-and-minimum-sums-of-at-most-size-k-subsequences", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
 {
     // The textbook answer: Pascal's triangle, one row at a time, keeping only the

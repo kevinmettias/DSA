@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfOperationsWithTheSameScoreII;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfOperationsWithThe
 // Both strategies share the same three-move recurrence over a (left, right)
 // window - advance past a front pair, retreat past a back pair, or close in
 // from both ends - differing only in how each window's memo table is kept.
+[LeetCodeQuestion("maximum-number-of-operations-with-the-same-score-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumNumberOfOperationsWithTheSameScoreIISolution
 {
     // The textbook form: recursion over hand-rolled Dictionary memo tables, one

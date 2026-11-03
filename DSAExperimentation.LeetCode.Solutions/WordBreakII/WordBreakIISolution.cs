@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.DataStructures.Trie;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.WordBreakII;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WordBreakII;
 // index; they differ only in how they test whether a candidate substring could
 // still extend into a dictionary word - the same HashSetScan-vs-TrieMemoized split
 // as this repo's Word Break (I) coverage.
+[LeetCodeQuestion("word-break-ii", LeetCodeAnswerOrder.AnyOrder)]
 internal static class WordBreakIISolution
 {
     // The textbook answer: a HashSet<string> membership test plus a hand-rolled

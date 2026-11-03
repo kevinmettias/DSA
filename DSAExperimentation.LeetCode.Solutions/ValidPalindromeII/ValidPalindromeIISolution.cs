@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.ValidPalindromeII;
 
 // LeetCode 680. Valid Palindrome II: can at most one character be deleted so the
@@ -8,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidPalindromeII;
 // intended O(n) answer. The baseline is the textbook "try deleting each
 // character in turn, then re-check the whole result" approach (O(n^2): n
 // candidate strings, each an O(n) build-plus-check) it has to beat.
+[LeetCodeQuestion("valid-palindrome-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class ValidPalindromeIISolution
 {
     public static bool IsValidPalindromeByBruteForceDeletion(string text)

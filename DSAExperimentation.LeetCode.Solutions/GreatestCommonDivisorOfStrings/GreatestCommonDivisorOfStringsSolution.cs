@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.GreatestCommonDivisorOfStrings;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.GreatestCommonDivisorOfStrings;
 // str1 + str2 is one repeating block - and differ only in how they test it: the
 // algebraic identity str1+str2 == str2+str1, or the shortest period of str1+str2 read
 // straight off a failure function.
+[LeetCodeQuestion("greatest-common-divisor-of-strings", LeetCodeAnswerOrder.AsWritten)]
 internal static class GreatestCommonDivisorOfStringsSolution
 {
     // The textbook answer: a common divisor exists iff the two concatenations agree,

@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.KthSmallestAmountWithSingleDenominationCombination;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.KthSmallestAmountWithSingleDenom
 // amounts are <= limit?" directly via inclusion-exclusion and binary search on
 // limit - the only shape that stays fast once rank reaches LeetCode's full
 // 2*10^9, since the achievable amount itself can then exceed Int32 range.
+[LeetCodeQuestion("kth-smallest-amount-with-single-denomination-combination", LeetCodeAnswerOrder.AsWritten)]
 internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
 {
     // The textbook k-way merge: a BCL PriorityQueue of coin indices keyed by

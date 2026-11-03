@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.JumpGameVII;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.JumpGameVII;
 // HashSet-backed visited tracking makes it one O(n * (maxJump - minJump)) walk - the
 // same "board too large or awkward to materialize as actual edges" composition
 // EscapeALargeMaze uses, just over a 1-D index range instead of a 2-D grid.
+[LeetCodeQuestion("jump-game-vii", LeetCodeAnswerOrder.AsWritten)]
 internal static class JumpGameVIISolution
 {
     // The textbook answer: plain recursion with no visited set at all. Deliberately

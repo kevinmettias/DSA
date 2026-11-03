@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfClosedIslands;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfClosedIslands;
 // relabelling them. Both strategies claim cells by filling them in place, so each
 // clones the grid it is handed first - a caller's own grid (or a benchmark
 // fixture reused across iterations) is never left half-filled.
+[LeetCodeQuestion("number-of-closed-islands", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfClosedIslandsSolution
 {
     private const int Water = 0;

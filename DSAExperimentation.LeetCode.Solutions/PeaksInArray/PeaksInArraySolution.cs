@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PeaksInArray;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PeaksInArray;
 // Both strategies answer the same question with the same signature, so the
 // test harness can assert they agree and the benchmark harness can time them
 // against each other without either restating the algorithm.
+[LeetCodeQuestion("peaks-in-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class PeaksInArraySolution
 {
     // The textbook answer: keep a mutable copy of nums and rescan the queried

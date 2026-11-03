@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.PowerOfTwo;
 
 // LeetCode 231. Power of Two: is `value` exactly 2^k for some non-negative integer k?
@@ -6,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PowerOfTwo;
 // survives; the bit trick recognizes that a power of two has exactly one set bit,
 // so clearing it with `value & (value - 1)` reduces the whole question to one
 // comparison.
+[LeetCodeQuestion("power-of-two", LeetCodeAnswerOrder.AsWritten)]
 internal static class PowerOfTwoSolution
 {
     // The textbook approach: repeatedly halve `value` while it is even, then check

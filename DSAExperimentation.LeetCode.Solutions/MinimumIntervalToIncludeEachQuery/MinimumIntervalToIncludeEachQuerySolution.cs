@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumIntervalToIncludeEachQuery;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumIntervalToIncludeEachQuer
 // Both strategies answer the same question - the per-query minimum covering size, in
 // the queries' original order. They differ only in whether each query re-examines
 // every interval or inherits the work the previous (smaller) query already did.
+[LeetCodeQuestion("minimum-interval-to-include-each-query", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumIntervalToIncludeEachQuerySolution
 {
     // The two endpoints' slots in LeetCode's own two-element interval array.

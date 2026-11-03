@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.HandOfStraights;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.HandOfStraights;
 // The two arms differ only in which structures do the counting and the sorting:
 // the BCL's Dictionary<int,int> plus Array.Sort, or this repo's own
 // HashMap<int,int> plus MergeSort over an ArrayIndexedSequence<int>.
+[LeetCodeQuestion("hand-of-straights", LeetCodeAnswerOrder.AsWritten)]
 internal static class HandOfStraightsSolution
 {
     // The textbook answer: BCL Dictionary<int,int> tally and Array.Sort.

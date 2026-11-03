@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfMusicPlaylists;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfMusicPlaylists;
 // only in evaluation order: a bottom-up 2-D table filled in increasing length
 // order, or this repo's own Memoizer driving the same recurrence top-down -
 // the CoinChangeII/DecodeWaysII pairing, on a two-field tuple state.
+[LeetCodeQuestion("number-of-music-playlists", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfMusicPlaylistsSolution
 {
     // The textbook answer: a BCL long[,] filled in increasing length order.

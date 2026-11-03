@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindASafeWalkThroughAGrid;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindASafeWalkThroughAGrid;
 // with no priority queue at all - deliberately a different complexity class, not
 // just a different implementation, since it is the arm ShortestPath's Heap-backed
 // version has to justify itself against.
+[LeetCodeQuestion("find-a-safe-walk-through-a-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindASafeWalkThroughAGridSolution
 {
     private static readonly (int DeltaRow, int DeltaCol)[] Orthogonal = [(-1, 0), (1, 0), (0, -1), (0, 1)];

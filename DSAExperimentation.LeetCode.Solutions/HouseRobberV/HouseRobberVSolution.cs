@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.HouseRobberV;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.HouseRobberV;
 // - the same DecodeWays precedent: bottom-up tabulation fills a long[] from the
 // front, top-down memoization lets this repo's own Memoizer cache the identical
 // recurrence written as ordinary recursion.
+[LeetCodeQuestion("house-robber-v", LeetCodeAnswerOrder.AsWritten)]
 internal static class HouseRobberVSolution
 {
     // The textbook answer: a BCL long[] filled front-to-back, dp[i] = the best

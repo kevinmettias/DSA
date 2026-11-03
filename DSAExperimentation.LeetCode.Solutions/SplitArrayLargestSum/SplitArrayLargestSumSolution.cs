@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SplitArrayLargestSum;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SplitArrayLargestSum;
 // directly, instead of hand-rolling a second bisection loop. Both arms
 // binary-search the same monotone predicate in
 // O(nums.Length * log(sum - max)).
+[LeetCodeQuestion("split-array-largest-sum", LeetCodeAnswerOrder.AsWritten)]
 internal static class SplitArrayLargestSumSolution
 {
     public static int MinimizedLargestSumByManualBinarySearch(int[] nums, int subarrayCount)

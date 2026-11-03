@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumScoreOfAPathBetweenTwoCities;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumScoreOfAPathBetweenTwoCit
 // Both strategies compute that same minimum; they differ only in how "is this road in
 // city 1's component?" is answered: reach the component by flooding it, or label
 // every city with a component root first.
+[LeetCodeQuestion("minimum-score-of-a-path-between-two-cities", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumScoreOfAPathBetweenTwoCitiesSolution
 {
     // Positions inside LeetCode's [from, to, distance] road triple.

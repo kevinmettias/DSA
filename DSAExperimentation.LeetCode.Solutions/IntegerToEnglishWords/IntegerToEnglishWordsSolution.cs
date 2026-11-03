@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using Vocabulary = DSAExperimentation.LeetCode.Solutions.IntegerToEnglishWords.IntegerToEnglishWordsVocabulary;
 using WordStack = DSAExperimentation.DataStructures.Stack.Stack<string>;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.IntegerToEnglishWords;
 // Stack<string>, pushed bottom-up and popped once into reading order in a
 // single string.Join - the same "build reversed, un-reverse through a
 // stack" composition AddBinarySolution uses for carry digits.
+[LeetCodeQuestion("integer-to-english-words", LeetCodeAnswerOrder.AsWritten)]
 internal static class IntegerToEnglishWordsSolution
 {
     // The naive baseline: prepend each group onto the accumulated result,

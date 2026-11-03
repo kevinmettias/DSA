@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DisjointSetOperations = DSAExperimentation.DataStructures.DisjointSet.DisjointSet;
 
 namespace DSAExperimentation.LeetCode.Solutions.MakeLexicographicallySmallestArrayBySwappingElements;
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MakeLexicographicallySmallestArr
 //
 // Both strategies sort once and assign identically; they differ only in how a
 // group's membership is decided while scanning the sorted order.
+[LeetCodeQuestion("make-lexicographically-smallest-array-by-swapping-elements", LeetCodeAnswerOrder.AsWritten)]
 internal static class MakeLexicographicallySmallestArrayBySwappingElementsSolution
 {
     // The textbook form: sorted adjacency alone decides where one group ends and

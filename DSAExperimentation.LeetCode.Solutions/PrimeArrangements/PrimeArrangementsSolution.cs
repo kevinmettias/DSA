@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.Domain.Mathematics.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PrimeArrangements;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PrimeArrangements;
 // strategies differ only in how the prime count in [1, upperBound] is produced -
 // O(n sqrt n) trial division against the O(n log log n) Sieve of Eratosthenes,
 // where n is upperBound.
+[LeetCodeQuestion("prime-arrangements", LeetCodeAnswerOrder.AsWritten)]
 internal static class PrimeArrangementsSolution
 {
 

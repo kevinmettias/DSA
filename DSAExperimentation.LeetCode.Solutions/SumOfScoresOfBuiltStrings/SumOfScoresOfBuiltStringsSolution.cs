@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SumOfScoresOfBuiltStrings;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SumOfScoresOfBuiltStrings;
 // "aab" (reports 3, the answer is 4) and on "banana" (reports 10, the answer is
 // 6). The suffix comparison was right, so the Z strategy below runs over s itself
 // and both of those inputs are now asserted.
+[LeetCodeQuestion("sum-of-scores-of-built-strings", LeetCodeAnswerOrder.AsWritten)]
 internal static class SumOfScoresOfBuiltStringsSolution
 {
     // The textbook answer: for every suffix, walk it against s from the front

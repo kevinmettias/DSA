@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestPathWithDifferentAdjacentCharacters;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestPathWithDifferentAdjacent
 // composition, closed over LongestPathAlgebra's per-edge label check instead of
 // DiameterAlgebra's unconditional one - so the two strategies differ only in
 // whether each node's height is reused from the fold or walked again from scratch.
+[LeetCodeQuestion("longest-path-with-different-adjacent-characters", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestPathWithDifferentAdjacentCharactersSolution
 {
     // The textbook answer: for every node, walk its subtree from scratch twice -

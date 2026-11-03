@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RecipeFrontier = DSAExperimentation.DataStructures.Queue.Queue<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindAllPossibleRecipesFromGivenSupplies;
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindAllPossibleRecipesFromGivenS
 //
 // Both strategies answer LeetCode's real shape - the list of makeable recipe names,
 // not a count.
+[LeetCodeQuestion("find-all-possible-recipes-from-given-supplies", LeetCodeAnswerOrder.AnyOrder)]
 internal static class FindAllPossibleRecipesFromGivenSuppliesSolution
 {
     // The textbook answer: hold everything currently on hand in a BCL HashSet and

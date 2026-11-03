@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrix;
 
 // LeetCode 54. Spiral Matrix: read every element of a rows x cols grid in
@@ -11,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrix;
 // GridChildren/GridTopology model unordered orthogonal adjacency for graph
 // walks, not a fixed clockwise visiting order, so forcing this through
 // Grid/** would not be a genuine fit.
+[LeetCodeQuestion("spiral-matrix", LeetCodeAnswerOrder.AsWritten)]
 internal static class SpiralMatrixSolution
 {
     private static readonly (int DRow, int DCol)[] Directions = [(0, 1), (1, 0), (0, -1), (-1, 0)];

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Deque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FaultyKeyboard;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FaultyKeyboard;
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("faulty-keyboard", LeetCodeAnswerOrder.AsWritten)]
 internal static class FaultyKeyboardSolution
 {
     // The textbook approach: physically reverse the buffer built so far every time

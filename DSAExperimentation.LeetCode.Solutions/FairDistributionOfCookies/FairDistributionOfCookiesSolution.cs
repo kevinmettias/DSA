@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FairDistributionOfCookies;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FairDistributionOfCookies;
 // BCL, while the composed arm hands those same five steps to this repo's
 // Backtrack.Search (the void, keep-enumerating overload), where Candidates is where
 // all pruning lives - the shape Backtrack.cs's own doc comment states.
+[LeetCodeQuestion("fair-distribution-of-cookies", LeetCodeAnswerOrder.AsWritten)]
 internal static class FairDistributionOfCookiesSolution
 {
     // The textbook arm: explicit recursion over a shared int[] of running totals,

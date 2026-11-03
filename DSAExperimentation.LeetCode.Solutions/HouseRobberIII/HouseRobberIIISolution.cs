@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.HouseRobberIII;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.HouseRobberIII;
 // this repo's generic TreeFold engine over RobFoldAlgebra, the exact same
 // catamorphism shape TreeMetrics.Height uses for MaximumDepthOfBinaryTree, just with
 // a richer per-node result than a single int.
+[LeetCodeQuestion("house-robber-iii", LeetCodeAnswerOrder.AsWritten)]
 internal static class HouseRobberIIISolution
 {
     // The textbook answer: a hand-rolled post-order recursion returning the

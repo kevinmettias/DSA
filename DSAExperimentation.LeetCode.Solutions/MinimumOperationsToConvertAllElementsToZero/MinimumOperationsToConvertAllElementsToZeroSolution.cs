@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using ValueStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumOperationsToConvertAllElementsToZero;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumOperationsToConvertAllEle
 // each level's boundary - a fresh linear scan for the range minimum (the textbook
 // divide-and-conquer reading of the operation itself) against this repo's own
 // Stack<int>, which discovers the same boundaries in one left-to-right pass.
+[LeetCodeQuestion("minimum-operations-to-convert-all-elements-to-zero", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumOperationsToConvertAllElementsToZeroSolution
 {
     // Recursively finds the minimum of the current range, counts one operation for

@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.FindTheScoreDifferenceInAGame;
 
 // LeetCode 3847. Find the Score Difference in a Game: two players, the first one
@@ -10,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheScoreDifferenceInAGame;
 // simulation keeps who is active and both totals, as the statement tells it. The
 // parity pass keeps only whether an odd number of swaps has happened, and adds
 // nums[i] into one running difference with the sign that parity gives it.
+[LeetCodeQuestion("find-the-score-difference-in-a-game", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheScoreDifferenceInAGameSolution
 {
     // Every 6th game swaps the players: games 5, 11, 17, ...

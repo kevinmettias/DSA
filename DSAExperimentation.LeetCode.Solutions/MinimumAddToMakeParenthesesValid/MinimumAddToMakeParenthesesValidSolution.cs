@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using OpenerStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumAddToMakeParenthesesValid;
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumAddToMakeParenthesesValid
 // unclosed at the end each need an inserted closer. The two strategies differ only
 // in what they keep about those pending openers - a running count, or the openers
 // themselves on this repo's own Stack<char>.
+[LeetCodeQuestion("minimum-add-to-make-parentheses-valid", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumAddToMakeParenthesesValidSolution
 {
     private const char Opener = '(';

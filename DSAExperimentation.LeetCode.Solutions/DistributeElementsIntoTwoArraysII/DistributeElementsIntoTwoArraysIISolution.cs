@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DistributeElementsIntoTwoArraysII;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DistributeElementsIntoTwoArraysI
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("distribute-elements-into-two-arrays-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class DistributeElementsIntoTwoArraysIISolution
 {
     // Textbook: keep arr1/arr2 as growing Lists and count "greater than" by a

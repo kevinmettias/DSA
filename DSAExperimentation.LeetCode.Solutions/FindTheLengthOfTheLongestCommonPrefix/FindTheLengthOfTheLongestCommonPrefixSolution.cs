@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Trie;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheLengthOfTheLongestCommonPrefix;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheLengthOfTheLongestCommonP
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("find-the-length-of-the-longest-common-prefix", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheLengthOfTheLongestCommonPrefixSolution
 {
     // The textbook all-pairs scan: every x compared digit by digit against

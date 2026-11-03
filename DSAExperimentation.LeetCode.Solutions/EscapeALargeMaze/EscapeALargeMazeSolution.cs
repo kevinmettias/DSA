@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.EscapeALargeMaze;
 
@@ -26,6 +27,7 @@ namespace DSAExperimentation.LeetCode.Solutions.EscapeALargeMaze;
 // breadth-first walk over a HashSet of seen cells. Each hoisted overload takes the
 // board's side length only as the coordinate clamp; the LeetCode-shaped ones pass
 // the real 10^6.
+[LeetCodeQuestion("escape-a-large-maze", LeetCodeAnswerOrder.AsWritten)]
 internal static class EscapeALargeMazeSolution
 {
     private const int PairCountDivisor = 2; // n choose 2: n * (n - 1) / PairCountDivisor

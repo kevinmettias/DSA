@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoCharStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ValidParentheses;
@@ -6,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidParentheses;
 // matches the most recently unmatched opening bracket - a single Stack<char> scan,
 // pushing openers and popping to check each closer against the top the instant it
 // is seen.
+[LeetCodeQuestion("valid-parentheses", LeetCodeAnswerOrder.AsWritten)]
 internal static class ValidParenthesesSolution
 {
     private static readonly Dictionary<char, char> ClosingToOpening = new()

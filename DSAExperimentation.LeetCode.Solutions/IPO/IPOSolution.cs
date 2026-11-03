@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.IPO;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.IPO;
 // now-affordable project's profit into the max-heap, then greedily takes the
 // best one, growing capital for the next round. The baseline instead rescans
 // every remaining project each round for the best affordable one.
+[LeetCodeQuestion("ipo", LeetCodeAnswerOrder.AsWritten)]
 internal static class IPOSolution
 {
     // The textbook answer: an O(k*n) linear rescan of every remaining project

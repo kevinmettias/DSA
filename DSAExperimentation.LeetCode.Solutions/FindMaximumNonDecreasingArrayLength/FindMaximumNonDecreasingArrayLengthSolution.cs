@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindMaximumNonDecreasingArrayLength;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindMaximumNonDecreasingArrayLen
 //
 // Both strategies compute the exact same dp/last recurrence; they differ only in
 // how the best predecessor j is found.
+[LeetCodeQuestion("find-maximum-non-decreasing-array-length", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindMaximumNonDecreasingArrayLengthSolution
 {
     // The textbook O(n^2) form: scan every earlier cut point j for each i instead

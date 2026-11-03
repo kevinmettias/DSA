@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SearchSuggestionsSystem;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SearchSuggestionsSystem;
 // prefix's matches: rescan the whole catalog per keystroke, keeping the smallest
 // three seen, or sort the catalog once and then let a binary search jump straight
 // to where each growing prefix begins.
+[LeetCodeQuestion("search-suggestions-system", LeetCodeAnswerOrder.AsWritten)]
 internal static class SearchSuggestionsSystemSolution
 {
     // LC 1268 asks for at most three suggestions per keystroke.

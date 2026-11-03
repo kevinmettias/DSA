@@ -2,6 +2,7 @@ using System.Numerics;
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.Domain.Mathematics.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountWaysToMakeArrayWithProduct;
 
@@ -22,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountWaysToMakeArrayWithProduct;
 // What separates the arms is the cost of factoring: trial division re-pays
 // O(sqrt(k)) on every single query, while one shared smallest-prime-factor sieve
 // pays O(maxK log log maxK) once and then factors each k in O(log k).
+[LeetCodeQuestion("count-ways-to-make-array-with-product", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountWaysToMakeArrayWithProductSolution
 {
 

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfTasksYouCanAssign;
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfTasksYouCanAssign
 // they search for k: the baseline walks k downwards one at a time, the composed
 // strategy bisects it with this repo's own MonotonePredicateSearch.LastTrue, the same
 // search-on-the-answer shape KokoEatingBananasSolution uses.
+[LeetCodeQuestion("maximum-number-of-tasks-you-can-assign", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumNumberOfTasksYouCanAssignSolution
 {
     // The textbook answer: try k = maxK, maxK - 1, ... and stop at the first k that

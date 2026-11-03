@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PalindromicSubstrings;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PalindromicSubstrings;
 // radius counts every palindromic substring in one pass - the same primitive
 // LongestPalindromicSubstringSolution reuses, read differently: that solution takes
 // the max radius, this one takes the sum.
+[LeetCodeQuestion("palindromic-substrings", LeetCodeAnswerOrder.AsWritten)]
 internal static class PalindromicSubstringsSolution
 {
     public static int CountSubstringsByExpandAroundCenter(string text)

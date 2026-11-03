@@ -1,5 +1,6 @@
 using System.Numerics;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RootMaskTree = DSAExperimentation.DataStructures.FenwickTree.FenwickTree<
     int, DSAExperimentation.DataStructures.ElementAlgebra.XorOperation<int>>;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PalindromicPathQueriesInATree;
 // Letters rearrange into a palindrome exactly when at most one of them occurs an
 // odd number of times, so a path is answered by its parity mask - bit c set when
 // letter c occurs an odd number of times - having at most one bit set.
+[LeetCodeQuestion("palindromic-path-queries-in-a-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class PalindromicPathQueriesInATreeSolution
 {
     private const int AtMostOneOddLetter = 1;

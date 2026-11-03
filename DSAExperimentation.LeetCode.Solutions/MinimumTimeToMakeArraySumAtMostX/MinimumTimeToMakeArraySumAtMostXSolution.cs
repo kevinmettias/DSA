@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToMakeArraySumAtMostX;
 
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToMakeArraySumAtMostX
 // Both strategies run that same O(n^2) recurrence; they differ only in the DP's
 // footprint - a dense table with a row per prefix, or the standard backward
 // iteration that collapses the table onto one rolling row.
+[LeetCodeQuestion("minimum-time-to-make-array-sum-at-most-x", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumTimeToMakeArraySumAtMostXSolution
 {
     // The textbook answer: Array.Sort with a comparison delegate and a dense

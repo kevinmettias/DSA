@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 namespace DSAExperimentation.LeetCode.Solutions.MaximumScoreWithCoPrimeElement;
 
 // LeetCode 3953. Maximum Score with Co-Prime Element: pick a final value v for
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumScoreWithCoPrimeElement;
 // must actually become v. Both arms below just evaluate every v this way; they
 // differ only in how bad(v) - "n minus how many original elements are coprime
 // with v" - gets computed.
+[LeetCodeQuestion("maximum-score-with-co-prime-element", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumScoreWithCoPrimeElementSolution
 {
     // Textbook baseline: bad(v) by direct Euclidean gcd against every element,

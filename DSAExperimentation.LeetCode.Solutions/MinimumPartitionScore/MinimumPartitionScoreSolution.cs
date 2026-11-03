@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumPartitionScore;
 
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumPartitionScore;
 // draws. The baseline writes its recursion out directly rather than through
 // Memoizer's IRecurrence contract, because a baseline uses no library
 // implementation (ARCHITECTURE 17.5).
+[LeetCodeQuestion("minimum-partition-score", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumPartitionScoreSolution
 {
     // The textbook form: recursion over a hand-rolled Dictionary memo table,

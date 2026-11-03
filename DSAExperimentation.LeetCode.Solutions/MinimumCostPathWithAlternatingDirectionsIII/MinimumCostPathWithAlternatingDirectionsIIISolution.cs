@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumCostPathWithAlternatingDirectionsIII;
 
@@ -22,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostPathWithAlternatingDi
 // hand-rolled BCL Dijkstra (PriorityQueue<T, TPriority> plus Dictionary, the
 // "what you'd write without this repo" arm) against ShortestPath.Dijkstra
 // composed with AlternatingGridTopology's on-the-fly edges.
+[LeetCodeQuestion("minimum-cost-path-with-alternating-directions-iii", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumCostPathWithAlternatingDirectionsIIISolution
 {
     private const long StartEntranceCost = 1; // (0 + 1) * (0 + 1), always.

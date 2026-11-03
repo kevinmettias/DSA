@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DigitStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ReverseInteger;
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReverseInteger;
 // The two strategies differ only in how the digits are reversed - direct
 // arithmetic via mod/div, or this repo's own Stack<char> used as an explicit
 // LIFO digit-reversal primitive - and agree on the same overflow guard.
+[LeetCodeQuestion("reverse-integer", LeetCodeAnswerOrder.AsWritten)]
 internal static class ReverseIntegerSolution
 {
     // The largest and smallest values an int can still be multiplied by ten from

@@ -1,5 +1,6 @@
 using System.Text;
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MostCommonWord;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MostCommonWord;
 // this repo's own HashMap<string,int> (word counts) plus Set<string> (words to
 // skip entirely), the same count-with-HashMap shape TopKFrequentWords uses for
 // LC 692.
+[LeetCodeQuestion("most-common-word", LeetCodeAnswerOrder.AsWritten)]
 internal static class MostCommonWordSolution
 {
     // The textbook answer: BCL Dictionary<string,int> for the tally and

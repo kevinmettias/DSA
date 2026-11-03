@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using BclQueue = System.Collections.Generic.Queue<(int Row, int Col)>;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortestPathInBinaryMatrix;
 // A distance of 0 means "not yet reached": real distances start at 1 for the start
 // cell, so the freshly allocated distance grid already reads as unvisited and needs
 // no sentinel fill.
+[LeetCodeQuestion("shortest-path-in-binary-matrix", LeetCodeAnswerOrder.AsWritten)]
 internal static class ShortestPathInBinaryMatrixSolution
 {
     // The problem's own cell encoding: 0 is clear ground, 1 is blocked.

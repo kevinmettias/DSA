@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaxSumOfRectangleNoLargerThanK;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaxSumOfRectangleNoLargerThanK;
 // Value/Left/Right rather than a new production primitive (the same kind of
 // problem-specific traversal KthSmallestElementInABSTSolution.RankHooks composes
 // over this same tree).
+[LeetCodeQuestion("max-sum-of-rectangle-no-larger-than-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaxSumOfRectangleNoLargerThanKSolution
 {
     // The textbook answer: every start/end window in the compressed row-sum array

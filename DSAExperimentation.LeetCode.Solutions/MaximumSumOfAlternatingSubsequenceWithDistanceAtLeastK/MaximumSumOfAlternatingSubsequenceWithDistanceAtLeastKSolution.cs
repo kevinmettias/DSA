@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<long, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<long>>;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumSumOfAlternatingSubsequen
 // nums[j] > nums[i]. "Eligible" means j <= i - k - the distance constraint,
 // enforced by only ever looking at predecessors already committed at the time i
 // is processed.
+[LeetCodeQuestion("maximum-sum-of-alternating-subsequence-with-distance-at-least-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolution
 {
     // Textbook O(n^2): for each i, scan every eligible earlier j directly. The

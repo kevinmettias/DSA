@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.RobotCollisions;
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RobotCollisions;
 // of (Position, Index) pairs, the same custom-comparer shape
 // QueueReconstructionByHeightSolution uses - and then differ in how collisions
 // are resolved afterward.
+[LeetCodeQuestion("robot-collisions", LeetCodeAnswerOrder.AsWritten)]
 internal static class RobotCollisionsSolution
 {
     private const char RightMoving = 'R';

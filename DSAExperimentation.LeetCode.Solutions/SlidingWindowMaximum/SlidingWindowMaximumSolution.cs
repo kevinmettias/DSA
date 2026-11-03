@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.MonotonicDeque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SlidingWindowMaximum;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SlidingWindowMaximum;
 // window from the front, and the front is the window's maximum. Every index is
 // pushed and popped at most once, giving O(n) total instead of the O(n*k)
 // per-window rescan.
+[LeetCodeQuestion("sliding-window-maximum", LeetCodeAnswerOrder.AsWritten)]
 internal static class SlidingWindowMaximumSolution
 {
     public static int[] MaxSlidingWindowByBruteForceRescan(int[] nums, int windowSize)

@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using CompetitiveStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheMostCompetitiveSubsequence;
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheMostCompetitiveSubsequenc
 // length selectionLength - and differ only in how many passes that takes: one
 // removal per O(n) scan, or every removal within a single sweep over a monotonic
 // stack.
+[LeetCodeQuestion("find-the-most-competitive-subsequence", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheMostCompetitiveSubsequenceSolution
 {
     // The textbook baseline this composition has to justify itself against:

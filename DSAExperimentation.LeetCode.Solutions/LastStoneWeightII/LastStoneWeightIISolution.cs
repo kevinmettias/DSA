@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LastStoneWeightII;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LastStoneWeightII;
 // Both strategies walk that same recurrence in O(stones.Length * half); they differ
 // only in direction - a bottom-up capacity table versus this repo's Memoizer driving
 // the recursion top-down.
+[LeetCodeQuestion("last-stone-weight-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class LastStoneWeightIISolution
 {
     private const int PartitionDifferenceMultiplier = 2;

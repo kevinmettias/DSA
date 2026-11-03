@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.LargestRectangleInHistogram;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximalRectangle;
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximalRectangle;
 // own monotonic-stack arm rather than a second copy of it: what this class
 // contributes is the reduction to per-row heights, and the histogram rectangle is
 // that class's problem, already asserted against its own fixtures.
+[LeetCodeQuestion("maximal-rectangle", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximalRectangleSolution
 {
     // The textbook brute force: for every pair of rows, collapse the strip

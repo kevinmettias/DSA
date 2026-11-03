@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountingBits;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountingBits;
 // ans[i] = ans[i >> 1] + (i & 1) - i's bit count is i>>1's bit count plus i's own
 // low bit - driven through Memoizer, the same Memoize<TState,TResult> composition
 // HouseRobberSolution/HouseRobberIISolution already use for a different recurrence.
+[LeetCodeQuestion("counting-bits", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountingBitsSolution
 {
     // Deliberately BCL: nothing here but the textbook per-value bit-clearing loop,

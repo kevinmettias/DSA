@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToBuyApplesII;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToBuyApplesII;
 // j -> i) - two independent shortest-path trees per source, one over plain-cost
 // edges and one over cost*tax edges (LC 2473's own single-multiplier trick does
 // not apply here, since tax varies per road rather than being one global k).
+[LeetCodeQuestion("minimum-cost-to-buy-apples-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumCostToBuyApplesIISolution
 {
     // Textbook: BCL Dictionary adjacency plus BCL's own PriorityQueue for

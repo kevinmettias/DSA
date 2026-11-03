@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RepeatedDNASequences;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RepeatedDNASequences;
 // mask, which keys the windows with no substring per position. Both do two
 // passes - one to mark which windows repeat, one to report them in first-
 // occurrence order.
+[LeetCodeQuestion("repeated-dna-sequences", LeetCodeAnswerOrder.AnyOrder)]
 internal static class RepeatedDNASequencesSolution
 {
     private const int SequenceLength = 10;

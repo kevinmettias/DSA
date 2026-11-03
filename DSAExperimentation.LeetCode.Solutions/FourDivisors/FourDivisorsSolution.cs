@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FourDivisors;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FourDivisors;
 // the library, the same anchor ClosestDivisors takes for LC 1362 - then walks down,
 // collecting both members of each divisor pair and bailing out the moment a fifth
 // divisor appears.
+[LeetCodeQuestion("four-divisors", LeetCodeAnswerOrder.AsWritten)]
 internal static class FourDivisorsSolution
 {
     private const int TargetDivisorCount = 4;

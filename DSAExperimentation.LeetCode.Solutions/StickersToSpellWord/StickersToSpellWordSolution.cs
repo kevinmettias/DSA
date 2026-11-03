@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.StickersToSpellWord;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StickersToSpellWord;
 // string: try each sticker that covers the state's first remaining letter, recurse
 // on what is left over, take the best. They differ only in whether repeated states
 // are cached.
+[LeetCodeQuestion("stickers-to-spell-word", LeetCodeAnswerOrder.AsWritten)]
 internal static class StickersToSpellWordSolution
 {
     // The textbook answer: plain recursion with no cache, recomputing every choice

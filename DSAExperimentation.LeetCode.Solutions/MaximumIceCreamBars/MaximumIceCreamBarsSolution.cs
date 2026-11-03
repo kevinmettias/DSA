@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumIceCreamBars;
 
@@ -7,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumIceCreamBars;
 // any optimal selection can be reordered to take strictly cheaper-or-equal bars
 // first without lowering its count - so both strategies buy in ascending price
 // order and differ only in how they get that order.
+[LeetCodeQuestion("maximum-ice-cream-bars", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumIceCreamBarsSolution
 {
     // The textbook answer without this repo: selection sort's inner loop, rescanning

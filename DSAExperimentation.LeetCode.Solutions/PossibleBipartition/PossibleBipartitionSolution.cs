@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Bipartiteness;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using PersonNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 using PersonTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PossibleBipartition;
 // coloring walk that fails the moment an edge joins two same-colored people. The
 // graph may be disconnected (and people nobody dislikes are isolated vertices),
 // so both restart from every still-uncolored person.
+[LeetCodeQuestion("possible-bipartition", LeetCodeAnswerOrder.AsWritten)]
 internal static class PossibleBipartitionSolution
 {
     // Uncolored; the two groups are +1 and -1 so switching groups is a negation.

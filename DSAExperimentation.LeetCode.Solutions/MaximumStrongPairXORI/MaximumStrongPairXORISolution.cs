@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.MaximumStrongPairXORII;
 using DSAExperimentation.DataStructures.Sequence;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumStrongPairXORI;
 // for the buckets is stated at LC 2935's bound because that is the bound that
 // needs it - so this class calls through rather than restating either at a second
 // scale.
+[LeetCodeQuestion("maximum-strong-pair-xor-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumStrongPairXORISolution
 {
     // The textbook O(n^2) scan of every unordered pair.

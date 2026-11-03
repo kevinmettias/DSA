@@ -1,5 +1,6 @@
 using System.Numerics;
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FinalElementAfterSubarrayDeletions;
 
@@ -25,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FinalElementAfterSubarrayDeletio
 // max(nums[0], nums[^1]); Bob can always answer by targeting whichever
 // interior element Alice tries to preserve instead, so neither player ever
 // does better than that bound. O(1), no repo primitive needed.
+[LeetCodeQuestion("final-element-after-subarray-deletions", LeetCodeAnswerOrder.AsWritten)]
 internal static class FinalElementAfterSubarrayDeletionsSolution
 {
     public static int FinalElementByDictionaryMinimax(int[] nums)

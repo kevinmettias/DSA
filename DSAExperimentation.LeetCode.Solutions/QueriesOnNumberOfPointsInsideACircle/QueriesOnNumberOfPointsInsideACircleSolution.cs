@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.QueriesOnNumberOfPointsInsideACircle;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.QueriesOnNumberOfPointsInsideACi
 // so they differ only in how many points they bother to test: the baseline tests
 // every point for every query, the composed strategy first narrows to the points
 // whose x-coordinate can possibly be within r.
+[LeetCodeQuestion("queries-on-number-of-points-inside-a-circle", LeetCodeAnswerOrder.AsWritten)]
 internal static class QueriesOnNumberOfPointsInsideACircleSolution
 {
     private const int XIndex = 0;

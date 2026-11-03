@@ -1,9 +1,11 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumXOROfTwoNumbersInAnArray;
 
 // LeetCode 421. Maximum XOR of Two Numbers in an Array: for every value, find the
 // other value in the array that maximizes their XOR.
+[LeetCodeQuestion("maximum-xor-of-two-numbers-in-an-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumXOROfTwoNumbersInAnArraySolution
 {
     // The textbook answer: check every pair directly, O(n^2). Deliberately written

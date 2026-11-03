@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PredictTheWinner;
 
@@ -6,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PredictTheWinner;
 // the best score DIFFERENCE the player to move can force from nums[left..right],
 // picking whichever end leaves the opponent the worse remaining sub-range. Player
 // one can force a win or tie exactly when that difference is non-negative.
+[LeetCodeQuestion("predict-the-winner", LeetCodeAnswerOrder.AsWritten)]
 internal static class PredictTheWinnerSolution
 {
     // The textbook baseline: plain recursion over (left, right) bounds with no

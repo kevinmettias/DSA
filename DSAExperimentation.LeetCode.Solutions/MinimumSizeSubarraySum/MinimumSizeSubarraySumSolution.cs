@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.PrefixSums;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumSizeSubarraySum;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumSizeSubarraySum;
 // (BinarySearch.LowerBound, PrefixSums) instead of a hand-rolled scan, the
 // same search-on-a-derived-monotonic-sequence idiom
 // MedianOfTwoSortedArraysSolutionTests already established.
+[LeetCodeQuestion("minimum-size-subarray-sum", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumSizeSubarraySumSolution
 {
     // The textbook baseline: every subarray start i, extending right until the sum

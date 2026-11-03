@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestIncreasingSubsequence;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestIncreasingSubsequence;
 // (the same engine SearchInsertPositionSolutionTests already exercises) over a
 // DynamicArraySequence view of a DynamicArray<int>, so Length tracks the run as it
 // grows.
+[LeetCodeQuestion("longest-increasing-subsequence", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestIncreasingSubsequenceSolution
 {
     // The textbook answer: BCL int[] DP table, deliberately written without this

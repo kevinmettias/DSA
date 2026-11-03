@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheStringWithLCP;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheStringWithLCP;
 // index order (the greedy that produces the lexicographically smallest valid word),
 // then reconstruct the LCP matrix the candidate actually has and compare it to the
 // given one - the only way to catch an lcp input no real string could ever produce.
+[LeetCodeQuestion("find-the-string-with-lcp", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheStringWithLCPSolution
 {
 

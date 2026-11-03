@@ -3,6 +3,7 @@ using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.PrefixSums;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumSubarraySumAfterAtMostKSwaps;
 
@@ -31,6 +32,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumSubarraySumAfterAtMostKSw
 // O(log cap) points via ternary search rather than at every swapCount. Both
 // strategies below try every window; they differ only in how "sum of the
 // swapCount smallest/largest present values" is answered as the window slides.
+[LeetCodeQuestion("maximum-subarray-sum-after-at-most-k-swaps", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
 {
     // Re-sorts the window and its complement from scratch for every one of the

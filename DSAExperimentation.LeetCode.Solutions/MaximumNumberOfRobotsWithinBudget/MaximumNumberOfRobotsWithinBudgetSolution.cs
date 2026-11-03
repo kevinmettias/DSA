@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.MonotonicDeque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfRobotsWithinBudget;
 
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfRobotsWithinBudge
 // edge advances rather than resummed. That same positivity is what makes shrinking
 // from the left safe instead of re-scanning, so every index is pushed and popped
 // at most once and the whole sweep is O(n).
+[LeetCodeQuestion("maximum-number-of-robots-within-budget", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumNumberOfRobotsWithinBudgetSolution
 {
     // Deliberately written without this repo's primitives - it is the arm the

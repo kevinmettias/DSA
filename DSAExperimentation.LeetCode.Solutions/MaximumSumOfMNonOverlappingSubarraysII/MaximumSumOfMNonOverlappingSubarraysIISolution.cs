@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Deque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.MaximumSumOfMNonOverlappingSubarraysI;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumSumOfMNonOverlappingSubarraysII;
@@ -22,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumSumOfMNonOverlappingSubar
 // count carried alongside each value both to steer the search and to keep the
 // "must select at least one" requirement from ever picking the free "select
 // nothing" scaffolding every transition still needs available to draw from.
+[LeetCodeQuestion("maximum-sum-of-m-non-overlapping-subarrays-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
 {
     private const long Infeasible = long.MinValue / 2;

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PoorPigs;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PoorPigs;
 // The two strategies differ only in how they find that first pigs: recomputing
 // basis^pigs from scratch for every candidate, or this repo's own
 // BinarySearch.LowerBound over an ArraySequence<long> of precomputed powers.
+[LeetCodeQuestion("poor-pigs", LeetCodeAnswerOrder.AsWritten)]
 internal static class PoorPigsSolution
 {
     // The textbook answer: recompute basis^pigs by repeated multiplication for every

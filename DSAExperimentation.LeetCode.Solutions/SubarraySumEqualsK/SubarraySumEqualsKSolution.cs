@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SubarraySumEqualsK;
 
@@ -7,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SubarraySumEqualsK;
 // earlier indices can share the same prefix sum, so the COUNT (not just existence)
 // of each earlier prefix sum must be tracked - the same running-prefix-sum move
 // ContinuousSubarraySumSolution already makes with this repo's own HashMap<int,int>.
+[LeetCodeQuestion("subarray-sum-equals-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class SubarraySumEqualsKSolution
 {
     // Baseline: the textbook O(n^2) double loop over every (start, end) pair. BCL

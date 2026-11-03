@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.HowManyNumbersAreSmallerThanTheCurrentNumber;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.HowManyNumbersAreSmallerThanTheC
 // Both strategies answer with the same int[] LeetCode asks for; they differ only
 // in how that count is obtained - counting every pair, or sorting once and then
 // asking each value where it would be inserted.
+[LeetCodeQuestion("how-many-numbers-are-smaller-than-the-current-number", LeetCodeAnswerOrder.AsWritten)]
 internal static class HowManyNumbersAreSmallerThanTheCurrentNumberSolution
 {
     // The textbook O(n^2) answer: for every element, walk the whole array again

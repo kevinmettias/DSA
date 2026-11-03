@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DetectCyclesIn2DGrid;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DetectCyclesIn2DGrid;
 // The grid graph is bipartite, so it has no cycles of length two or three at all -
 // which is why neither arm has to check the problem's "length >= 4" clause
 // separately. It is satisfied by the shape of the input.
+[LeetCodeQuestion("detect-cycles-in-2d-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class DetectCyclesIn2DGridSolution
 {
 

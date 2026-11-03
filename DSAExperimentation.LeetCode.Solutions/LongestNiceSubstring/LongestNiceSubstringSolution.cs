@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestNiceSubstring;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestNiceSubstring;
 // it. The baseline never makes that observation at all and tests each of the
 // O(n^2) substrings independently; the divide-and-conquer strategy uses it to
 // cut the string at the first such character and recurse on the two halves.
+[LeetCodeQuestion("longest-nice-substring", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestNiceSubstringSolution
 {
     // A single character can never be nice - it has no opposite-case partner

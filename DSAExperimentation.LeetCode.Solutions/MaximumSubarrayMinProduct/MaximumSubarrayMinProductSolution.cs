@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.PrefixSums;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumSubarrayMinProduct;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumSubarrayMinProduct;
 // how many subarrays they have to look at: every one of them, or only the single
 // maximal span in which each element is the minimum - which is enough, because the
 // best subarray for a given minimum is always that element's whole span.
+[LeetCodeQuestion("maximum-subarray-min-product", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumSubarrayMinProductSolution
 {
     private const int NoSmallerElementToTheLeft = -1;

@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using OneThreeTwoStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.OneThreeTwoPattern;
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.OneThreeTwoPattern;
 // paired with whatever "3" popped it) - the same LargestRectangleInHistogram/
 // TrappingRainWater precedent. A later, further-left value smaller than third
 // proves a valid 1 < 3-candidate... < 2 triple exists.
+[LeetCodeQuestion("132-pattern", LeetCodeAnswerOrder.AsWritten)]
 internal static class OneThreeTwoPatternSolution
 {
     // The textbook O(n^2) answer, deliberately written without this repo's

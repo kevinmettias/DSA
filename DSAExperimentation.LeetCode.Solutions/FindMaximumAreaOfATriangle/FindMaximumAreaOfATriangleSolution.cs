@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindMaximumAreaOfATriangle;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindMaximumAreaOfATriangle;
 // where the third point falls on the other axis. That collapses "pick any 3
 // points" down to "pick a row or column, then the single farthest point from
 // it anywhere in the whole set."
+[LeetCodeQuestion("find-maximum-area-of-a-triangle", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindMaximumAreaOfATriangleSolution
 {
     // Textbook O(n^3): every triple, keep only those with a shared x or shared y

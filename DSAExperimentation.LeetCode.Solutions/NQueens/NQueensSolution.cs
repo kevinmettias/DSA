@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NQueens;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NQueens;
 // Two strategies over the same column/diagonal occupancy state: a hand-rolled
 // recursive DFS (the textbook baseline) and this repo's own Backtrack.Search engine
 // driving row-by-row placement.
+[LeetCodeQuestion("n-queens", LeetCodeAnswerOrder.AnyOrder)]
 internal static class NQueensSolution
 {
     private const int DiagonalArrayMultiplier = 2;

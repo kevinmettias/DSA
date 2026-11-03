@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using SubdividedGraphNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
 using SubdividedGraphTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<int>;
 
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReachableNodesInSubdividedGraph;
 // whichever endpoint has leftover budget to walk out to them, so each edge
 // contributes min(cnt, fromU + fromV) - the cap being what stops the two sides'
 // overlap from double-counting a node both ends can reach.
+[LeetCodeQuestion("reachable-nodes-in-subdivided-graph", LeetCodeAnswerOrder.AsWritten)]
 internal static class ReachableNodesInSubdividedGraphSolution
 {
     // Sentinel for "no BFS distance assigned yet"; every real distance is >= 0.

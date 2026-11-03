@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheWinnerOfTheCircularGame;
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheWinnerOfTheCircularGame;
 // stepSize-1 friends that are merely counted past from front to back, which makes the
 // elimination itself O(1) and the total O(n * k) - the faster arm whenever stepSize is
 // small relative to friendCount, the common case this problem's constraints allow.
+[LeetCodeQuestion("find-the-winner-of-the-circular-game", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheWinnerOfTheCircularGameSolution
 {
     // The textbook answer: hold the survivors in a BCL List and delete the losers

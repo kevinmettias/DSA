@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using Stone = (int Alice, int Bob);
 
 namespace DSAExperimentation.LeetCode.Solutions.StoneGameVI;
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StoneGameVI;
 // The two strategies differ only in the sort primitive: the BCL's Array.Sort, or
 // this repo's own MergeSort over an ArrayIndexedSequence - the same "same
 // algorithm, different sort primitive" pairing TwoCityScheduling uses.
+[LeetCodeQuestion("stone-game-vi", LeetCodeAnswerOrder.AsWritten)]
 internal static class StoneGameVISolution
 {
     // Picks alternate from the front of the sorted stones: even index is Alice's

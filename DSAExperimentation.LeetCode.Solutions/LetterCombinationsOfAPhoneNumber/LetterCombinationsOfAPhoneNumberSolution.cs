@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Domain.Devices.Telephone;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LetterCombinationsOfAPhoneNumber;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LetterCombinationsOfAPhoneNumber
 //
 // The keypad is the telephone's (Domain/Devices/Telephone): the backtracking arm reads Keypad<E161Keypad>, and
 // the expansion baseline keeps its own copy below (ARCHITECTURE §17.5).
+[LeetCodeQuestion("letter-combinations-of-a-phone-number", LeetCodeAnswerOrder.AnyOrder)]
 internal static class LetterCombinationsOfAPhoneNumberSolution
 {
     // The baseline's own copy of the keypad's letter groups, keyed by digit.

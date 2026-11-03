@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.InverseCoinChange;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.InverseCoinChange;
 // numWays[v] must equal that fixed count exactly (v is not a coin) or that
 // count plus one (v is a coin); anything else means no denomination set could
 // have produced this array.
+[LeetCodeQuestion("inverse-coin-change", LeetCodeAnswerOrder.AsWritten)]
 internal static class InverseCoinChangeSolution
 {
     // Textbook baseline: the BCL array tabulation LC 518's own combinations-

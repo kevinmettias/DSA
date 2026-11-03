@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using ActiveFlipsQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfKConsecutiveBitFlips;
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfKConsecutiveBitFl
 // composed strategy never touches the array, tracking which flips are still in
 // range through this repo's own Queue<TElement> of flip start indices, whose Count
 // parity is the cumulative flip state at the current position in O(1).
+[LeetCodeQuestion("minimum-number-of-k-consecutive-bit-flips", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumNumberOfKConsecutiveBitFlipsSolution
 {
     private const int ParityModulus = 2;

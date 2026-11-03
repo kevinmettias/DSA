@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimizeDeviationInArray;
 
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimizeDeviationInArray;
 // Heap<int, MaxHeapOrder<int>>, which offers it up in O(log n) - the same
 // "repeatedly reduce the current max" pairing LastStoneWeightSolution runs for a
 // different per-step reduction rule.
+[LeetCodeQuestion("minimize-deviation-in-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimizeDeviationInArraySolution
 {
     private const int ParityDivisor = 2;

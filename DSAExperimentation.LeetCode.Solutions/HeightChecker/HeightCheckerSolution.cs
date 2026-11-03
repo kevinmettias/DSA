@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.HeightChecker;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.HeightChecker;
 // Both strategies sort a copy and then count mismatches; they differ only in the
 // sort - the textbook O(n^2) insertion sort a baseline would hand-roll, versus this
 // repo's MergeSort over ArrayIndexedSequence.
+[LeetCodeQuestion("height-checker", LeetCodeAnswerOrder.AsWritten)]
 internal static class HeightCheckerSolution
 {
     // Baseline: insertion sort of a copy, BCL-only internals.

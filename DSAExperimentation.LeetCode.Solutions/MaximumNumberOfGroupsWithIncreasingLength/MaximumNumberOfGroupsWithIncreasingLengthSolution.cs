@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfGroupsWithIncreasingLength;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfGroupsWithIncreas
 //
 // Since the sweep is shared and linear, the only thing the two strategies differ in
 // is the sort that precedes it.
+[LeetCodeQuestion("maximum-number-of-groups-with-increasing-length", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumNumberOfGroupsWithIncreasingLengthSolution
 {
     // The textbook answer: an in-place O(n^2) insertion sort of a copy, then the same

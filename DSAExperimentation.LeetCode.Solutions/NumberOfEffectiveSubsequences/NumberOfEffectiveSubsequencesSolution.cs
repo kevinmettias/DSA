@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfEffectiveSubsequences;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfEffectiveSubsequences;
 // submask of t" counts, 2^(that count) is "# subsets whose OR is a submask
 // of t", and a Mobius (inverse-zeta) pass over those recovers "# subsets
 // whose OR is EXACTLY t" - read off at t = S's own compacted mask.
+[LeetCodeQuestion("number-of-effective-subsequences", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfEffectiveSubsequencesSolution
 {
     // The textbook answer: walk every one of the 2^n subsets directly and

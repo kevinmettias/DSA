@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.WordSearch;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WordSearch;
 // visited grid and the coordinate trail) or is written out by hand as a plain
 // recursive function closing over a used[,] array - the textbook shape the
 // composed solution is measured against.
+[LeetCodeQuestion("word-search", LeetCodeAnswerOrder.AsWritten)]
 internal static class WordSearchSolution
 {
     // The textbook answer: a hand-rolled recursive DFS over a BCL bool[,] visited

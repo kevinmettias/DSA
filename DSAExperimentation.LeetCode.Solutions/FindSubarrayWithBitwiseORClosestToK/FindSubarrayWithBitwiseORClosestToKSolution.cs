@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.FindSubarrayWithBitwiseORClosestToK;
 
 // LeetCode 3171. Find Subarray With Bitwise OR Closest to K: over every
@@ -6,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindSubarrayWithBitwiseORClosest
 // Both strategies answer the same question with the same signature, so the
 // test harness can assert they agree and the benchmark harness can time them
 // against each other without either restating the algorithm.
+[LeetCodeQuestion("find-subarray-with-bitwise-or-closest-to-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindSubarrayWithBitwiseORClosestToKSolution
 {
     // The textbook answer: for every starting index, extend the window right

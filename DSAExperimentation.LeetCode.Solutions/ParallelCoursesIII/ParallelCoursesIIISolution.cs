@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.TopologicalSort;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ParallelCoursesIII;
 
@@ -22,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ParallelCoursesIII;
 //
 // Courses form a guaranteed-acyclic DAG per LC's own constraint, so the cycle case
 // TrySort's bool return would signal never fires here.
+[LeetCodeQuestion("parallel-courses-iii", LeetCodeAnswerOrder.AsWritten)]
 internal static class ParallelCoursesIIISolution
 {
     // LeetCode's own input shape: courses are 1-indexed, relations[j] =

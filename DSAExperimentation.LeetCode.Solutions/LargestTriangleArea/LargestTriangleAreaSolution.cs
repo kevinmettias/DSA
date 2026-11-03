@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Geometry;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LargestTriangleArea;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LargestTriangleArea;
 // A degenerate all-collinear input has no hull triangle at all - the sweep leaves
 // fewer than three corners - so the composed strategy falls back to the original
 // points, which all have zero area anyway, rather than enumerating an empty set.
+[LeetCodeQuestion("largest-triangle-area", LeetCodeAnswerOrder.AsWritten)]
 internal static class LargestTriangleAreaSolution
 {
     // A triangle needs three vertices; fewer hull corners than this means the

@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.ThresholdMajorityQueries;
 
 // LeetCode 3636. Threshold Majority Queries: for each [l, r, threshold] query,
@@ -10,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ThresholdMajorityQueries;
 // necessarily the answer, and if it doesn't, no lower-frequency element can either.
 // Both strategies therefore just compute the range mode and compare it to
 // threshold - they differ only in how the mode query itself is answered.
+[LeetCodeQuestion("threshold-majority-queries", LeetCodeAnswerOrder.AsWritten)]
 internal static class ThresholdMajorityQueriesSolution
 {
     // The textbook per-query scan: count nums[l..r] into a fresh frequency table

@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using ReversalGraphNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<long>;
 using ReversalGraphTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<long>;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostPathWithEdgeReversals
 // enter the search state at all: building a graph where every input edge (u, v, w)
 // contributes both u -> v at cost w and v -> u at cost 2w turns the puzzle into one
 // plain shortest-path query on the augmented graph.
+[LeetCodeQuestion("minimum-cost-path-with-edge-reversals", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumCostPathWithEdgeReversalsSolution
 {
     // Textbook baseline: BCL adjacency lists plus PriorityQueue<int,long> Dijkstra

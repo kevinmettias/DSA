@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PartitionArrayIntoTwoEqualProductSubsets;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PartitionArrayIntoTwoEqualProduc
 // partial assignment is allowed to keep growing once it can no longer possibly
 // reach target. Every nums[i] >= 1, so a group's running product never decreases,
 // which is what makes that pruning sound.
+[LeetCodeQuestion("partition-array-into-two-equal-product-subsets", LeetCodeAnswerOrder.AsWritten)]
 internal static class PartitionArrayIntoTwoEqualProductSubsetsSolution
 {
     // Every one of the 2^n ways to split the indices between the two groups,

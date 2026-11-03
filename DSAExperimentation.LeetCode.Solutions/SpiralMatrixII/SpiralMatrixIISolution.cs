@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrixII;
 
 // LeetCode 59. Spiral Matrix II: fill a size x size matrix with 1..size^2 in spiral
@@ -9,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrixII;
 // lookup at all, just four fixed index-arithmetic loops per layer. There is no
 // repo Representation/Operations primitive to compose here - a plain int[][] is
 // the same shape this repo's Spiral Matrix (LC 54) coverage already uses.
+[LeetCodeQuestion("spiral-matrix-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class SpiralMatrixIISolution
 {
     private const int DirectionCount = 4;

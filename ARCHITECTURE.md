@@ -2185,7 +2185,8 @@ The tests split by whose correctness each one is about:
   own.
 - A solution's own `<Problem>SolutionTests` keeps only what the catalog cannot state. Two Sum's keeps
   a target no pair reaches, which LC 1's promise rules out. Climbing Stairs and Merge Intervals had
-  nothing else, and theirs are gone.
+  nothing else, and theirs are gone. The 607 solutions enrolled after the pilot still carry their
+  example theories beside `CatalogCaseTests`, until the open item below trims them.
 - `CatalogBenchmarksTests` checks what belongs to the generated classes:
   - each baseline's buffer lines up with its cases and answers them as recorded, the pinning §17.9
     asks of a harness test;
@@ -2217,8 +2218,11 @@ The tests split by whose correctness each one is about:
     strategies any longer;
   - an Add Digits strategy off by one fails its `CatalogCaseTests` row and its generated class's arm
     agreement in `BenchmarkArmsTests`, which reads both arms in LeetCode's notation.
-- Enrolling the first 100 added 201 `CatalogCaseTests` rows and 600 benchmark-test rows. The
-  solutions' tests still ran in 4 s, and the benchmarks' tests went from 14 s to 17 to 19 s.
+- Enrolling the 610 added about 1,200 `CatalogCaseTests` rows and 3,600 benchmark-test rows, in a
+  Debug build:
+  - the solutions' tests went from 4 s to 8 to 12 s;
+  - the benchmarks' tests went from 14 s to 36 s, most of it the generated arms' repeat-call
+    checks in `BenchmarkArmsTests`.
 - Measured against the hand-written suite classes it replaced, in one BenchmarkDotNet run of both, two
   passes (2026-11-02):
   - every arm allocated the same bytes;
@@ -2266,17 +2270,42 @@ differently from their wording:
 - Matrix Cells in Distance Order frees the order only among cells at one distance, which an
   any-order comparison cannot see, so it is not enrolled.
 
-**Enrolled.** 103 solutions: the three of the pilot, and the first 100, by name, of the 619 that
-every case passes in under 250 ms each.
+Two kinds of solution that pass every case still stay out:
+
+- **A strategy that rewrites its input** (27 solutions, nearly all relinking a linked list). A
+  generated arm reads its columns once in `[GlobalSetup]`, and BenchmarkDotNet calls it again and
+  again on them, so from the second call on it would time a different workload. Merge k Sorted
+  Lists' second call merged lists its first had already spliced together, and never returned. The
+  probe now renders every input before and after each call to find these. A hand-written class
+  rebuilds such an input in `[IterationSetup]`, and the generator has no rule for that yet.
+- **A question with no recorded output to judge.** Kth Smallest Path XOR Sum's two examples state
+  none, and the Populating Next Right Pointers questions have only the empty tree. A check over
+  those would pass whatever the strategy did.
+
+**Enrolled.** 610 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 14 more found once the importer's two fixes landed or their folder was matched to
+its slug by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
 
 Open items:
 
 - **The sized workloads.** It is not yet decided whether the 1,026 hand-written `[Params]` classes
   stay as they are or become per-problem workload declarations the generator also consumes.
-- **Enrolling the rest.** The other 519 that pass are left to enroll. A solution whose answers
-  differ needs its statement read: a promise type for each constraint its failing cases break
-  (§17.12), or a judge rule below. An exponential baseline needs a case limit, or stays out, before
-  the dataset's largest inputs run through it.
+- **Enrolling the rest.** About 500 solutions are left, each blocked for a reason the table and
+  the exclusions above name. Each needs one of these, or stays out:
+  - A solution whose answers differ needs its statement read, then a promise type for each
+    constraint its failing cases break (§17.12), or a judge rule below.
+  - A strategy that rewrites its input needs a generated `[IterationSetup]` that rebuilds it.
+  - An exponential baseline, or one that overflows the stack, needs a case limit before the
+    dataset's largest inputs run through it.
+  - A statement that leaves the order free without saying so (Word Search II, Majority Element
+    II) needs the order rule LeetCode's judge applies, checked against its own submission rather
+    than read from the wording.
+  - A folder whose strategy takes its inputs in another order than LeetCode's, such as Best Time
+    to Buy and Sell Stock IV's `(prices, k)`, needs its parameters reordered.
+- **Trimming the enrolled solutions' own tests.** Each theory row that restates a catalog case, its
+  inputs and its answer, is the check `CatalogCaseTests` now makes. What the catalog cannot state
+  stays: an input outside the question's promise, an order property an any-order comparison cannot
+  see, a helper's own behaviour.
 - **Shapes the generator refuses.** Design problems, in-place answers, judge-only inputs,
   tolerance-compared answers and any-valid-answer judges each need a rule before their problems can
   enroll.

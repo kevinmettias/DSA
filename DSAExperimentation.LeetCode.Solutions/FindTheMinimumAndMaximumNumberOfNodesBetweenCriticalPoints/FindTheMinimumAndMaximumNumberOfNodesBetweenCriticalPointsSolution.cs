@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPoints;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheMinimumAndMaximumNumberOf
 // ConvertBinaryNumberInALinkedListToIntegerSolution walks - so no algorithm
 // primitive is needed beyond the node itself. What they differ in is whether the
 // critical indices are materialized before the gaps are computed.
+[LeetCodeQuestion("find-the-minimum-and-maximum-number-of-nodes-between-critical-points", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPointsSolution
 {
     // "Not seen yet" for a running index, distinct in meaning from LeetCode's

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.MonotonicDeque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumSumOfMNonOverlappingSubarraysI;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumSumOfMNonOverlappingSubar
 // "at most j" formulation would let j = 0 (sum 0) win whenever every subarray
 // is a net loss, which LeetCode's own example 4 explicitly forbids. The answer
 // is the best dpExact[elementCount][j] over j = 1..maxSubarrays.
+[LeetCodeQuestion("maximum-sum-of-m-non-overlapping-subarrays-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumSumOfMNonOverlappingSubarraysISolution
 {
     private const long Infeasible = long.MinValue / 2;

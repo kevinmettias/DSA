@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.Domain.Devices.Compass;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RobotBoundedInCircle;
 
@@ -22,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RobotBoundedInCircle;
 // from CompassRules (ARCHITECTURE §17.5). How a heading becomes a step is what the arms differ
 // in: the baseline switches over the four headings, and the lookup-table arm fills its map from
 // CompassRules.StepOf. The 'G', 'L' and 'R' of RobotInstruction are LeetCode's.
+[LeetCodeQuestion("robot-bounded-in-circle", LeetCodeAnswerOrder.AsWritten)]
 internal static class RobotBoundedInCircleSolution
 {
     // The textbook answer: a switch per instruction, and a second switch over the

@@ -1,11 +1,13 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.LazySegmentTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FallingSquares;
 
 // LeetCode 699. Falling Squares: each square in turn lands on top of whatever is
 // already stacked under its [left, left+size) footprint; report the running max
 // stack height after each square lands.
+[LeetCodeQuestion("falling-squares", LeetCodeAnswerOrder.AsWritten)]
 internal static class FallingSquaresSolution
 {
     private const int CoordinatesPerPosition = 2;

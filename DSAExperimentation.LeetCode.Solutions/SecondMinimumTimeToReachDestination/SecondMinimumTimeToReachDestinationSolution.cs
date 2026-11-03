@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Intersection, int Steps)>;
 
 namespace DSAExperimentation.LeetCode.Solutions.SecondMinimumTimeToReachDestination;
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SecondMinimumTimeToReachDestinat
 // behind a shared iterator neither would allocate on its own: a bare List<T> dequeued
 // from the front, paying an O(n) shift per step, against this repo's own Deque-backed
 // Queue<Element>, which is O(1) at both ends.
+[LeetCodeQuestion("second-minimum-time-to-reach-destination", LeetCodeAnswerOrder.AsWritten)]
 internal static class SecondMinimumTimeToReachDestinationSolution
 {
     // A depth this intersection has not been reached at yet.

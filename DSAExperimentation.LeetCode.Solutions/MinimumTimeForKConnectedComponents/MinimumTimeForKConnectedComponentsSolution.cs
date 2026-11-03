@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeForKConnectedComponents;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeForKConnectedComponen
 // search it: probing candidate times one at a time with a fresh union-find rebuilt
 // from scratch each probe (baseline), or a single descending pass that builds the
 // answer incrementally (composed).
+[LeetCodeQuestion("minimum-time-for-k-connected-components", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumTimeForKConnectedComponentsSolution
 {
     // The textbook answer: binary search over each candidate removal time - the

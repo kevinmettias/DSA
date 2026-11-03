@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ValidAnagram;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidAnagram;
 // one in target: an O(n) frequency-count pass through this repo's own
 // HashMap<char,int>, or the O(n^2) textbook approach of scanning target for an
 // unmatched occurrence of each character of source.
+[LeetCodeQuestion("valid-anagram", LeetCodeAnswerOrder.AsWritten)]
 internal static class ValidAnagramSolution
 {
     // The textbook answer: for every character of source, linearly scan target for an

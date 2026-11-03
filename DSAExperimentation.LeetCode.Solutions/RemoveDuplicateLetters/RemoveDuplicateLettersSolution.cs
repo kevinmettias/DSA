@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoCharSet = DSAExperimentation.DataStructures.Set.Set<char>;
 using RepoCharStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveDuplicateLetters;
 // rescanning the remaining substring and recursing; this repo's own approach
 // walks the string once, maintaining a monotonic candidate stack (this repo's
 // own Stack<char>) and a set of which letters are already on it (Set<char>).
+[LeetCodeQuestion("remove-duplicate-letters", LeetCodeAnswerOrder.AsWritten)]
 internal static class RemoveDuplicateLettersSolution
 {
     // The textbook recursive alternative: at each of up to 26 levels, finds the

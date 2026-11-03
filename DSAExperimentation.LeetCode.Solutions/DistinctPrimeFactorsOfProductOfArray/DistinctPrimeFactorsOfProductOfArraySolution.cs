@@ -2,6 +2,7 @@ using System.Numerics;
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Mathematics.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DistinctPrimeFactorsOfProductOfArray;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DistinctPrimeFactorsOfProductOfA
 // factors, so the product itself never has to exist. The two strategies are
 // precisely the two readings of that sentence: build the product and factor it, or
 // factor each element and union the results.
+[LeetCodeQuestion("distinct-prime-factors-of-product-of-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class DistinctPrimeFactorsOfProductOfArraySolution
 {
 

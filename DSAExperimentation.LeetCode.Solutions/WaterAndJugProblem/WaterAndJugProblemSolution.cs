@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.WaterAndJugProblem;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WaterAndJugProblem;
 // visited state's two jugs sum to it. GcdFormula replaces the search
 // entirely with Bezout's identity: target is reachable iff it does not
 // exceed the combined capacity and is a multiple of gcd(jugX, jugY).
+[LeetCodeQuestion("water-and-jug-problem", LeetCodeAnswerOrder.AsWritten)]
 internal static class WaterAndJugProblemSolution
 {
     // The textbook answer: a hand-rolled BCL Stack<T>/HashSet<T> DFS.

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DivisorGame;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DivisorGame;
 // wins"), which is the arm the recursion is measured against; keeping both here
 // is what finally puts them under the same assertions instead of one living in a
 // test and one in a benchmark.
+[LeetCodeQuestion("divisor-game", LeetCodeAnswerOrder.AsWritten)]
 internal static class DivisorGameSolution
 {
     private const int ParityDivisor = 2;

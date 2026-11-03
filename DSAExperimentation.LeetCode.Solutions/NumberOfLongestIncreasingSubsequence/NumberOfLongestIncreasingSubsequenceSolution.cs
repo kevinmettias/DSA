@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfLongestIncreasingSubsequence;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfLongestIncreasingSubsequ
 // this exact value, so duplicate values never use each other as predecessors but
 // still contribute to that value's own best-so-far. O(n log n) instead of the
 // O(n^2) above.
+[LeetCodeQuestion("number-of-longest-increasing-subsequence", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfLongestIncreasingSubsequenceSolution
 {
     public static int FindNumberOfLisByBruteForce(int[] nums)

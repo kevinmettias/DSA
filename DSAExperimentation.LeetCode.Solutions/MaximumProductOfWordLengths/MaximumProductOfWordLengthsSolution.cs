@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumProductOfWordLengths;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumProductOfWordLengths;
 // approach collapses each word to a 26-bit letter-presence mask once, dedupes
 // words sharing a mask down to the longest one via this repo's own
 // HashMap<int,int>, then tests disjointness with one bitwise AND per pair.
+[LeetCodeQuestion("maximum-product-of-word-lengths", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumProductOfWordLengthsSolution
 {
     // The textbook pairwise scan: for every pair of words, walks every

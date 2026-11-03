@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.RollingHash;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestChunkedPalindromeDecomposition;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestChunkedPalindromeDecompos
 // the same screen-then-verify shape RollingHashSearch.FindAll uses, since a hash
 // match is "probably equal," not "definitely equal" (RollingHashValue's own doc
 // comment).
+[LeetCodeQuestion("longest-chunked-palindrome-decomposition", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestChunkedPalindromeDecompositionSolution
 {
     // A matched left/right pair contributes two chunks to the decomposition.

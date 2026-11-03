@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DecimalStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MultiplyStrings;
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MultiplyStrings;
 // partial product by that digit's place, then fold it into the running total
 // with stack-based decimal-string addition (AddBinary's carry walk, base 10
 // instead of base 2).
+[LeetCodeQuestion("multiply-strings", LeetCodeAnswerOrder.AsWritten)]
 internal static class MultiplyStringsSolution
 {
     private const string ZeroDigitString = "0";

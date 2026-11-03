@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DeleteGreatestValueInEachRow;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DeleteGreatestValueInEachRow;
 // whole process, because the values deleted together on the j-th-from-last round
 // are then exactly column j - so the answer is the sum, over every column, of
 // that column's maximum.
+[LeetCodeQuestion("delete-greatest-value-in-each-row", LeetCodeAnswerOrder.AsWritten)]
 internal static class DeleteGreatestValueInEachRowSolution
 {
     // No row's maximum has been located yet this round.

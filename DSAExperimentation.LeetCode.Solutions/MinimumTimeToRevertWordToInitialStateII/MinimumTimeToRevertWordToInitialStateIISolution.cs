@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToRevertWordToInitialStateII;
 
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToRevertWordToInitial
 // O(n^2/k) brute-force scan (still included below, still what the composed
 // strategy has to beat, and still correct at any scale) is no longer viable
 // at this problem's own bound - only the O(n) ZFunction strategy is.
+[LeetCodeQuestion("minimum-time-to-revert-word-to-initial-state-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumTimeToRevertWordToInitialStateIISolution
 {
     // The textbook scan: try t = 1, 2, ... and compare the two candidate

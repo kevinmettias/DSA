@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumDeletionsToMakeAlternatingSubstring;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumDeletionsToMakeAlternatin
 // and every flip into at most two point updates (the flipped character only
 // ever touches its two adjacent edges) - exactly the point-update/range-sum
 // shape FenwickTree<Element, TOperation> already exists for.
+[LeetCodeQuestion("minimum-deletions-to-make-alternating-substring", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumDeletionsToMakeAlternatingSubstringSolution
 {
     private const int FlipQuery = 1;

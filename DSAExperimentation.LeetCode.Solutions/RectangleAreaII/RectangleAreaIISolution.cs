@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.IntervalSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RectangleAreaII;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RectangleAreaII;
 // Both strategies compress the x-coordinates to the O(n) distinct values where
 // the covered set can change, and both report LeetCode's modular answer; they
 // differ in what they do with a slab once they have one.
+[LeetCodeQuestion("rectangle-area-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class RectangleAreaIISolution
 {
     private const int X1 = 0;

@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.Algorithms.NumberTheory;
 using System.Numerics;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindSumOfArrayProductOfMagicalSequences;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindSumOfArrayProductOfMagicalSe
 // orderings. Both strategies exploit that - one by enumerating orderings directly and
 // letting equal products naturally sum together, the other by computing the
 // multinomial weight per count-assignment instead of visiting every ordering.
+[LeetCodeQuestion("find-sum-of-array-product-of-magical-sequences", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindSumOfArrayProductOfMagicalSequencesSolution
 {
     // Every one of the nums.Length^sequenceLength sequences enumerated directly by

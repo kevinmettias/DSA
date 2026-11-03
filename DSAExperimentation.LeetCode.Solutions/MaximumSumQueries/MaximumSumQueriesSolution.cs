@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<long, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<long>>;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumSumQueries;
 // Both strategies answer the same question with the same signature, so the test
 // harness can pin them to the same examples and the benchmark can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("maximum-sum-queries", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumSumQueriesSolution
 {
     // Textbook O(n*q): answer each query independently by rescanning every index for

@@ -1,11 +1,13 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumAbsoluteDifferenceInBST;
 
 // LeetCode 530. Minimum Absolute Difference in BST: an in-order walk of a BST
 // visits values in ascending order, so the minimum absolute difference between any
 // two nodes is always between some adjacent pair in that walk.
+[LeetCodeQuestion("minimum-absolute-difference-in-bst", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumAbsoluteDifferenceInBSTSolution
 {
 

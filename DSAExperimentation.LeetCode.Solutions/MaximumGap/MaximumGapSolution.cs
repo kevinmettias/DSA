@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumGap;
 
@@ -7,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumGap;
 // nums - a textbook O(n^2) selection sort or this repo's own O(n log n)
 // MergeSort over ArrayIndexedSequence - then share the same linear scan for the
 // largest adjacent gap.
+[LeetCodeQuestion("maximum-gap", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumGapSolution
 {
     // The textbook baseline: BCL selection sort, written without this repo's

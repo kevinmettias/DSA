@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FibonacciNumber;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FibonacciNumber;
 // ClimbingStairsSolution precedent, minus the "+1 shift" Climbing Stairs applies on top
 // of the same shape. FibByIterativeRollingPair is the O(n)-time, O(1)-space loop a
 // memo table does not need to exist to beat.
+[LeetCodeQuestion("fibonacci-number", LeetCodeAnswerOrder.AsWritten)]
 internal static class FibonacciNumberSolution
 {
     // Offset back to the second predecessor in the recurrence fib(n-1) + fib(n-2).

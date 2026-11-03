@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.TrappingRainWaterII;
 
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TrappingRainWaterII;
 // own SearchState.Queue already uses, with TNode a (row, col) cell and TWeight
 // the water level reached so far. Same Bellman-Ford-vs-Dijkstra complexity
 // contrast ARCHITECTURE.md documents for 1D shortest paths, here for a 2D grid.
+[LeetCodeQuestion("trapping-rain-water-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class TrappingRainWaterIISolution
 {
     // Deliberately written without this repo's primitives - a plain int[,]

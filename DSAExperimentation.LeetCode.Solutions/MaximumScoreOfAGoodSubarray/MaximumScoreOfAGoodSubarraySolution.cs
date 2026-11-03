@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumScoreOfAGoodSubarray;
 
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumScoreOfAGoodSubarray;
 // indices, so the answer is the best nums[i] * width among the indices whose
 // window actually straddles the required index. Every index is pushed and popped at
 // most once per sweep, so both are O(n).
+[LeetCodeQuestion("maximum-score-of-a-good-subarray", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumScoreOfAGoodSubarraySolution
 {
     // What the leftward sweep reports when nothing to an index's left is

@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Metrics;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DiameterOfBinaryTree;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DiameterOfBinaryTree;
 // this repo's own TreeMetrics.Diameter: DiameterAlgebra tracks, per node, the two
 // tallest child heights (the best path THROUGH that node) alongside the best
 // diameter seen in any subtree so far, via one bottom-up TreeFold pass - O(n).
+[LeetCodeQuestion("diameter-of-binary-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class DiameterOfBinaryTreeSolution
 {
     // The textbook answer: plain recursion over BinaryTreeNode<int>, recomputing

@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Folding.Dags;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfRestrictedPathsFromFirstToLastNode;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfRestrictedPathsFromFirst
 // graph a DAG by construction (Dist strictly decreases, so no walk can revisit a
 // node), which is what lets the composed arm use DagFold's memoized fold instead of
 // CheckedFold's runtime cycle defense.
+[LeetCodeQuestion("number-of-restricted-paths-from-first-to-last-node", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfRestrictedPathsFromFirstToLastNodeSolution
 {
     // The textbook answer: recurse into every strictly-closer neighbor and add up

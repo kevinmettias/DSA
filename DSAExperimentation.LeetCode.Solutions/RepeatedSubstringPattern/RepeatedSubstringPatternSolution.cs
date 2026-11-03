@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RepeatedSubstringPattern;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RepeatedSubstringPattern;
 // proper-prefix-that-is-also-a-suffix, taken at the last position, is nonzero and
 // evenly divides the string length - the same fact PrefixFunctionSearch's own doc
 // comment calls out beyond FindAll's matching loop.
+[LeetCodeQuestion("repeated-substring-pattern", LeetCodeAnswerOrder.AsWritten)]
 internal static class RepeatedSubstringPatternSolution
 {
     private const int MaxPeriodDivisor = 2;

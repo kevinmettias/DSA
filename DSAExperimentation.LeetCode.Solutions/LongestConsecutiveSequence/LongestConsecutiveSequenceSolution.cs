@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestConsecutiveSequence;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestConsecutiveSequence;
 // once. The set arm is expected O(n) but hashes every value; the sort arm is
 // O(n log n) and copies the array, but does no hashing. Which wins is what the
 // pair exists to measure.
+[LeetCodeQuestion("longest-consecutive-sequence", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestConsecutiveSequenceSolution
 {
     // Sorts a copy of the array and walks it once: after ordering, a run is

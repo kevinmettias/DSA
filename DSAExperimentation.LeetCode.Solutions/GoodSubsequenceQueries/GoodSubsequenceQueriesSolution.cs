@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.GoodSubsequenceQueries;
 
 // LeetCode 3901. Good Subsequence Queries: after each update, does nums have a
@@ -19,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.GoodSubsequenceQueries;
 // rescan from scratch, or two persistent SegmentTree instances point-updated in
 // O(log n) and range-queried in O(log n), falling back to a scan only for the
 // one case a range query alone cannot decide (see HasGoodSubsequenceByRangeQuery).
+[LeetCodeQuestion("good-subsequence-queries", LeetCodeAnswerOrder.AsWritten)]
 internal static class GoodSubsequenceQueriesSolution
 {
     // The gcd of no values - 0, since gcd(0, x) = x - where a running gcd starts folding from.

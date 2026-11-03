@@ -1,9 +1,12 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.MaximumSubarray;
 
 // LeetCode 53. Maximum Subarray: the largest sum of any non-empty contiguous
 // run of nums. No repo primitive applies - this is a pure running-best scan
 // over the array itself, the same "no stronger reusable primitive" shape
 // already established for BestTimeToBuyAndSellStock/GasStation.
+[LeetCodeQuestion("maximum-subarray", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumSubarraySolution
 {
     // The textbook answer: sum every contiguous subarray and keep the best,

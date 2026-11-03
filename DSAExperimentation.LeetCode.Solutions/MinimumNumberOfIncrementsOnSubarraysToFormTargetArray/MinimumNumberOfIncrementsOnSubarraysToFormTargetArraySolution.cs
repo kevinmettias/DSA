@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfIncrementsOnSubarraysToFormTargetArray;
 
 // LeetCode 1526. Minimum Number of Increments on Subarrays to Form a Target Array: each
@@ -12,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfIncrementsOnSubar
 // a single O(n) pass. No repo primitive applies to either side - both are pure array scans, the
 // same category MaximumSubarray and JumpGame already established for this kind of greedy
 // single-pass array problem.
+[LeetCodeQuestion("minimum-number-of-increments-on-subarrays-to-form-a-target-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumNumberOfIncrementsOnSubarraysToFormTargetArraySolution
 {
     // Baseline: actually run the operations. Each sweep walks left to right, starting a stroke

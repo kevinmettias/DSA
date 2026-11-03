@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 using BclProfitStack = System.Collections.Generic.Stack<int>;
 using RepoProfitStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
@@ -24,6 +25,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumEleganceOfAKLengthSubsequ
 // (RepoProfitStack) rather than used via a bare `using` + `new Stack<T>()`: this
 // project's global `using System.Collections.Generic;` makes a bare `Stack<T>`
 // ambiguous (CS0104) against the BCL's own Stack<T>.
+[LeetCodeQuestion("maximum-elegance-of-a-k-length-subsequence", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumEleganceOfAKLengthSubsequenceSolution
 {
     // Baseline: BCL OrderByDescending, System.Collections.Generic.Stack<int> for

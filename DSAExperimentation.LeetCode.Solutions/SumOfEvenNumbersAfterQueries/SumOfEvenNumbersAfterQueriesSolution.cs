@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SumOfEvenNumbersAfterQueries;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SumOfEvenNumbersAfterQueries;
 // ArrayPartitionSolution uses) and repairs it in O(1) per query - only the touched
 // index's even/odd status can change, so subtracting its old value when it was
 // even and adding its new value when it is even is the whole update.
+[LeetCodeQuestion("sum-of-even-numbers-after-queries", LeetCodeAnswerOrder.AsWritten)]
 internal static class SumOfEvenNumbersAfterQueriesSolution
 {
     private const int EvenDivisor = 2;

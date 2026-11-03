@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.NumberOfSubarraysThatMatchAPatternII;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfSubarraysThatMatchAPatternI;
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfSubarraysThatMatchAPatte
 // them. The matcher stays this class's own: Part I searches with the prefix
 // function where Part II uses the Z-function, two string-matching primitives
 // proving equally sufficient for one reduction.
+[LeetCodeQuestion("number-of-subarrays-that-match-a-pattern-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfSubarraysThatMatchAPatternISolution
 {
     // The textbook scan: for every candidate start, walk pattern directly against

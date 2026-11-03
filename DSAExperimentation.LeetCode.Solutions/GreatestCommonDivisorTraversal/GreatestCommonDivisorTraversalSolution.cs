@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.GreatestCommonDivisorTraversal;
 
@@ -25,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.GreatestCommonDivisorTraversal;
 //
 // A value of 1 has no prime factors at all, so it can never join anything: an array of
 // length greater than one that contains a 1 is always false, on both arms.
+[LeetCodeQuestion("greatest-common-divisor-traversal", LeetCodeAnswerOrder.AsWritten)]
 internal static class GreatestCommonDivisorTraversalSolution
 {
 

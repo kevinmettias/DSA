@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfPairsSatisfyingInequality;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfPairsSatisfyingInequalit
 // how many earlier d[i] sit at or below d[j]+diff. The two strategies differ only
 // in whether they answer that by re-scanning the prefix or by keeping it in a
 // Binary Indexed Tree of counts.
+[LeetCodeQuestion("number-of-pairs-satisfying-inequality", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfPairsSatisfyingInequalitySolution
 {
     // The textbook answer: test every pair against the inequality exactly as the

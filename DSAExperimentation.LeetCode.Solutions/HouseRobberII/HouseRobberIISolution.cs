@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.HouseRobber;
 
 namespace DSAExperimentation.LeetCode.Solutions.HouseRobberII;
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.HouseRobberII;
 // take. Each run is #198's answer over a stretch of the street, so each arm here
 // hands both runs to #198's matching arm (ARCHITECTURE 17.3): the rolling totals
 // walk them directly, the memoized recursion hands each to this repo's Memoizer.
+[LeetCodeQuestion("house-robber-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class HouseRobberIISolution
 {
     // The textbook arm the memoized two-run split is measured against: each half of

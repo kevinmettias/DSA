@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindFirstAndLastPositionOfElementInSortedArray;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindFirstAndLastPositionOfElemen
 //
 // Both strategies answer the same question - where does target's run start and end -
 // they differ only in how they locate the run's edges.
+[LeetCodeQuestion("find-first-and-last-position-of-element-in-sorted-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindFirstAndLastPositionOfElementInSortedArraySolution
 {
     // The textbook answer: BCL Array.IndexOf/LastIndexOf scan from each end toward the

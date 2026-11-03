@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.MaximumProductSubarray;
 
 // LeetCode 152. Maximum Product Subarray: the largest product of a contiguous
@@ -12,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumProductSubarray;
 // comparison baseline; the original test arm tracked int and the original
 // benchmark arm tracked long for the same computation, and long is the one that
 // cannot misbehave under the larger [Params] size, so it wins.
+[LeetCodeQuestion("maximum-product-subarray", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumProductSubarraySolution
 {
     // The textbook answer: every subarray's product, multiplied out from

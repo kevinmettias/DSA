@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ShortestPathWithAtMostKConsecutiveIdenticalCharacters;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortestPathWithAtMostKConsecuti
 // never depends on how the state was reached, so ShortestPath.Dijkstra's
 // fixed-weight IEdgeTopology applies directly - no hand-rolled relax loop needed
 // for the composed arm.
+[LeetCodeQuestion("shortest-path-with-at-most-k-consecutive-identical-characters", LeetCodeAnswerOrder.AsWritten)]
 internal static class ShortestPathWithAtMostKConsecutiveIdenticalCharactersSolution
 {
     // Baseline: BCL PriorityQueue + Dictionary, expanding (node, runLength)

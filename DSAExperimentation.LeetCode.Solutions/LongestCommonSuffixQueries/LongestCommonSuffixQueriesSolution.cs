@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Trie;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestCommonSuffixQueries;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestCommonSuffixQueries;
 // matches, and read off the best word recorded at the deepest node reached" - the
 // same suffix-as-reversed-prefix move SuffixArray/SuffixAutomaton document
 // elsewhere in this repo, here composed with the existing character trie instead.
+[LeetCodeQuestion("longest-common-suffix-queries", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestCommonSuffixQueriesSolution
 {
     public static int[] FindIndicesByBruteForce(string[] wordsContainer, string[] wordsQuery)

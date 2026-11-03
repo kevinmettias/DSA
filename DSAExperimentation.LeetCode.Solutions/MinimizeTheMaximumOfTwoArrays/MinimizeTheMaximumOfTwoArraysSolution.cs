@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimizeTheMaximumOfTwoArrays;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimizeTheMaximumOfTwoArrays;
 // divisor2, and eligibleEither = those divisible by neither divisor, hence usable by
 // whichever array still needs them. m works iff eligible1 covers uniqueCnt1,
 // eligible2 covers uniqueCnt2, and eligibleEither covers both counts at once.
+[LeetCodeQuestion("minimize-the-maximum-of-two-arrays", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimizeTheMaximumOfTwoArraysSolution
 {
     // Both arrays hold positive integers, so no maximum below 1 is worth asking about.

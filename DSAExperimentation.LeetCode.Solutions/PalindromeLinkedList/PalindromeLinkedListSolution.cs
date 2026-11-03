@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using IntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.PalindromeLinkedList;
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PalindromeLinkedList;
 // holding a copy. The old benchmark class was a compile-smoke placeholder
 // (Baseline() => 1, PrimitiveComposed() => 1) that took no input and computed nothing,
 // so there was no second arm to reconcile these against.
+[LeetCodeQuestion("palindrome-linked-list", LeetCodeAnswerOrder.AsWritten)]
 internal static class PalindromeLinkedListSolution
 {
     // The in-place counterpart to the stack arm below: two pointers advance at

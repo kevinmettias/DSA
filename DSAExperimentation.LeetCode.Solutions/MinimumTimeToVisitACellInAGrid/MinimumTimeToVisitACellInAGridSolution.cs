@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.ShortestPaths.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToVisitACellInAGrid;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToVisitACellInAGrid;
 // the very first move has no cell behind it to bounce with, so a start whose
 // neighbours all open after second 1 makes the grid unsolvable rather than just slow.
 // Both arms check that first.
+[LeetCodeQuestion("minimum-time-to-visit-a-cell-in-a-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumTimeToVisitACellInAGridSolution
 {
     // The latest second the first move may land, there being nothing to bounce with yet.

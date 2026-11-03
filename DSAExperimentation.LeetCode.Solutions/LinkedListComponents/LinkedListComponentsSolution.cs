@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LinkedListComponents;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LinkedListComponents;
 // count the same runs; they differ only in how "is this value in nums" is answered -
 // a linear scan of the array per node (O(n*k)) against one membership probe into
 // this repo's own Set<int> (O(n+k) overall, including seeding the set).
+[LeetCodeQuestion("linked-list-components", LeetCodeAnswerOrder.AsWritten)]
 internal static class LinkedListComponentsSolution
 {
     // The textbook answer: no auxiliary structure at all, just Array.IndexOf per

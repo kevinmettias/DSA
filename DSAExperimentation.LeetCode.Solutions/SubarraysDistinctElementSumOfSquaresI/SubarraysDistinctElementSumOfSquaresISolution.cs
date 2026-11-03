@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SubarraysDistinctElementSumOfSquaresI;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SubarraysDistinctElementSumOfSqu
 // Both strategies answer that question with the same signature, so the test
 // harness can assert both against LeetCode's examples and the benchmark harness
 // can time them against each other without either restating the algorithm.
+[LeetCodeQuestion("subarrays-distinct-element-sum-of-squares-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class SubarraysDistinctElementSumOfSquaresISolution
 {
     // Textbook O(n^3): for every subarray, re-derive its distinct count from

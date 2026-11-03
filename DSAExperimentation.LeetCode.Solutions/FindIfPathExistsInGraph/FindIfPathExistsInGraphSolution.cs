@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindIfPathExistsInGraph;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindIfPathExistsInGraph;
 // answer it by walking (a reachability search that must exhaust source's whole
 // component before it can say "no") or by partitioning (union every edge once, then
 // compare two roots).
+[LeetCodeQuestion("find-if-path-exists-in-graph", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindIfPathExistsInGraphSolution
 {
     // The endpoints' slots in LeetCode's own two-element edge array.

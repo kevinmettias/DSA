@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestCommonSubsequence;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestCommonSubsequence;
 // while LengthByMemoizedSuffixPairDp recurses top-down over (i, j) states through
 // this repo's Memoizer, the same two-string-DP shape EditDistanceSolution and
 // MaximumLengthOfRepeatedSubarraySolution already use.
+[LeetCodeQuestion("longest-common-subsequence", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestCommonSubsequenceSolution
 {
     // The textbook baseline: a plain int[,] table filled from the far corner back to

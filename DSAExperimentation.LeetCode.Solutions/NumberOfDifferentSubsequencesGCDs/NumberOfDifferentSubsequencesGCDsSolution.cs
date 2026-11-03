@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfDifferentSubsequencesGCDs;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfDifferentSubsequencesGCD
 // set (O(max log max) by the harmonic series). The private Euclidean gcd helper is
 // the same one CheckIfItIsAGoodArraySolution and XOfAKindInADeckOfCardsSolution
 // keep inline rather than promoting to a shared production type.
+[LeetCodeQuestion("number-of-different-subsequences-gcds", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfDifferentSubsequencesGCDsSolution
 {
     // The textbook answer: for each candidate, walk the whole array and fold the

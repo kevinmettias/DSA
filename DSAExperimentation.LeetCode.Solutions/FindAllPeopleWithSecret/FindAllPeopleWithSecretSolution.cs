@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.KeyedDisjointSet;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindAllPeopleWithSecret;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindAllPeopleWithSecret;
 //
 // MeetingSchedule does the grouping both strategies depend on; the strategies
 // differ only in how they resolve one timestamp group.
+[LeetCodeQuestion("find-all-people-with-secret", LeetCodeAnswerOrder.AnyOrder)]
 internal static class FindAllPeopleWithSecretSolution
 {
     // Person 0 holds the secret before any meeting happens - LC 2092's own initial

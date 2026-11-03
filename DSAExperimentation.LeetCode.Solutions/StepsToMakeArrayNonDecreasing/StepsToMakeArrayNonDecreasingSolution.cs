@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<(int Value, int Step)>;
 
 namespace DSAExperimentation.LeetCode.Solutions.StepsToMakeArrayNonDecreasing;
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StepsToMakeArrayNonDecreasing;
 // swallowed (DailyTemperaturesSolution's monotonic-stack precedent over this
 // repo's own Stack, generalized from "wait days" to "removal step"). The answer
 // is the largest removal step recorded.
+[LeetCodeQuestion("steps-to-make-array-non-decreasing", LeetCodeAnswerOrder.AsWritten)]
 internal static class StepsToMakeArrayNonDecreasingSolution
 {
     // The textbook answer: rebuild the array round by round until a round removes

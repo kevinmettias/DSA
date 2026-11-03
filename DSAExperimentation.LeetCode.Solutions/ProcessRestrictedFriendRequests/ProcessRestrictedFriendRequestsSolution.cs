@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ProcessRestrictedFriendRequests;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ProcessRestrictedFriendRequests;
 // Both strategies answer the same question - "would merging these two groups newly
 // connect a restricted pair?" - and differ only in how group membership is tracked
 // between requests.
+[LeetCodeQuestion("process-restricted-friend-requests", LeetCodeAnswerOrder.AsWritten)]
 internal static class ProcessRestrictedFriendRequestsSolution
 {
     // The textbook answer: keep an adjacency list of the friendships approved so far

@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.RevealCardsInIncreasingOrder;
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RevealCardsInIncreasingOrder;
 //
 // Both pay the same O(n log n) sort up front, so the asymmetry is entirely in the
 // simulation loop.
+[LeetCodeQuestion("reveal-cards-in-increasing-order", LeetCodeAnswerOrder.AsWritten)]
 internal static class RevealCardsInIncreasingOrderSolution
 {
     // The textbook arm: BCL List<int> as the pending-index buffer, shifting the whole

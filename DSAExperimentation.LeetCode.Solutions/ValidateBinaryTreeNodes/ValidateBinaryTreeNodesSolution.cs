@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ValidateBinaryTreeNodes;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidateBinaryTreeNodes;
 // yet (an indegree check) and must not already share a component with its parent (a
 // cycle check), and the structure is a single rooted tree only if exactly one node
 // ends up parentless and every node lands in one shared component.
+[LeetCodeQuestion("validate-binary-tree-nodes", LeetCodeAnswerOrder.AsWritten)]
 internal static class ValidateBinaryTreeNodesSolution
 {
     // LeetCode encodes "this node has no child on that side" as -1.

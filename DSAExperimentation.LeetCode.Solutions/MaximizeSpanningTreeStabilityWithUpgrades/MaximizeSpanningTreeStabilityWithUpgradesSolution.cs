@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DisjointSetOperations = DSAExperimentation.DataStructures.DisjointSet.DisjointSet;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximizeSpanningTreeStabilityWithUpgrades;
@@ -25,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeSpanningTreeStabilityWit
 // impossibility: a spanning TREE cannot contain a cycle, no matter how large the
 // upgrade budget is or how low X is allowed to go, so it is checked once up front
 // rather than folded into Feasible.
+[LeetCodeQuestion("maximize-spanning-tree-stability-with-upgrades", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
 {
     // The two questions the binary search probes its answer with, held once per arm

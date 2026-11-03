@@ -1,10 +1,12 @@
 using System.Numerics;
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestPalindromicPathInGraph;
 
 // LeetCode 3615. Longest Palindromic Path in Graph: the longest simple path
 // (n <= 14) whose visited-node labels read the same forwards and backwards.
+[LeetCodeQuestion("longest-palindromic-path-in-graph", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestPalindromicPathInGraphSolution
 {
     // The textbook answer: hand-rolled DFS over a visited bitmask, enumerating

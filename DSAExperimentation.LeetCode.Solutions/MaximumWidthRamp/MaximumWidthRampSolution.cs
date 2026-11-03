@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoIndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumWidthRamp;
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumWidthRamp;
 // Both strategies answer the same question with the same signature: the O(n^2) pairwise
 // scan over every candidate pair, and the O(n) two-pass candidate stack that only ever
 // keeps left endpoints no later index can improve on.
+[LeetCodeQuestion("maximum-width-ramp", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumWidthRampSolution
 {
     // The textbook O(n^2) baseline: widen the answer at every (i, j) pair that qualifies.

@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LexicographicalNumbers;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LexicographicalNumbers;
 // DepthFirstSearch.Traverse, the "implicit graph, no Representation axis" shape
 // ARCHITECTURE.md's Traversal section documents. Each root's subtree is a disjoint
 // range, so one Traverse call per root still produces the correct global order.
+[LeetCodeQuestion("lexicographical-numbers", LeetCodeAnswerOrder.AsWritten)]
 internal static class LexicographicalNumbersSolution
 {
     private const int MaxDigit = 9;

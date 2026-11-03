@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.UniqueThreeDigitEvenNumbers;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.UniqueThreeDigitEvenNumbers;
 // differently, since repeated digit VALUES at different array positions can reach
 // the same 3-digit number more than once (LC's own [0,2,2] example: 202 is
 // reachable via two different index orderings).
+[LeetCodeQuestion("unique-3-digit-even-numbers", LeetCodeAnswerOrder.AsWritten)]
 internal static class UniqueThreeDigitEvenNumbersSolution
 {
     private const int Length = 3;

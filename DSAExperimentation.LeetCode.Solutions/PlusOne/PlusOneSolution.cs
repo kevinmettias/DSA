@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DigitStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.PlusOne;
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PlusOne;
 // array edit that stops the instant a digit absorbs the carry without overflowing,
 // or this repo's own Stack<int>, which always walks every digit and lets the
 // stack's LIFO order rebuild the array in the original order.
+[LeetCodeQuestion("plus-one", LeetCodeAnswerOrder.AsWritten)]
 internal static class PlusOneSolution
 {
     private const int MaxDigitValue = DecimalDigits.Size - 1;

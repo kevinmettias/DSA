@@ -1,6 +1,7 @@
 using System.Numerics;
 
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfIntegersWithPopcountDepthEqualToKI;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfIntegersWithPopcountDept
 // popcount-depth of that value is how many replacements it takes. Count the values
 // in [1, upperBound] whose popcount-depth is exactly desiredDepth. Both strategies
 // answer the same question with the same signature (TwoSumSolution precedent).
+[LeetCodeQuestion("number-of-integers-with-popcount-depth-equal-to-k-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfIntegersWithPopcountDepthEqualToKISolution
 {
     // Textbook baseline: simulate every value in [1, upperBound] directly. Correct,

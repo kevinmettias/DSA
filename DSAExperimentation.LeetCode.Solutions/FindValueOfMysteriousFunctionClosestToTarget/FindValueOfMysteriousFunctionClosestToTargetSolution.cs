@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindValueOfMysteriousFunctionClosestToTarget;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindValueOfMysteriousFunctionClo
 // via .Keys (the same "membership via HashMap" idiom Set<Element> itself is built on; HashMap
 // is used directly rather than Set because this algorithm must walk every distinct value seen
 // so far and Set does not expose enumeration).
+[LeetCodeQuestion("find-a-value-of-a-mysterious-function-closest-to-target", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindValueOfMysteriousFunctionClosestToTargetSolution
 {
     // Baseline: extend each left endpoint one element at a time, ANDing as it goes, and score

@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestIncreasingSubsequenceII;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestIncreasingSubsequenceII;
 // this element" - and differ only in how they find the best predecessor. The
 // textbook DP rescans every earlier element; the composed arm keeps the dp indexed
 // by *value* and asks a range-max query for it.
+[LeetCodeQuestion("longest-increasing-subsequence-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestIncreasingSubsequenceIISolution
 {
     // The textbook O(n^2) DP: for each element, rescan every earlier one and take the
