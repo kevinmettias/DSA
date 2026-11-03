@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DSAExperimentation.LeetCode.Solutions\DSAExperimentation.LeetCode.Solutions.csproj" />
     <ProjectReference Include="..\DSAExperimentation.LeetCode.Catalog\DSAExperimentation.LeetCode.Catalog.csproj" />
+    <ProjectReference Include="..\DSAExperimentation.LeetCode.Harness\DSAExperimentation.LeetCode.Harness.csproj" />
     <ProjectReference Include="..\DSAExperimentation\DSAExperimentation.csproj" />
   </ItemGroup>
 

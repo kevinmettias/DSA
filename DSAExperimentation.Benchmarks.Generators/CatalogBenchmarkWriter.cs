@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.Generators;
 // folder's category times a problem's catalog cases with its sized workloads.
 internal sealed class CatalogBenchmarkWriter(string solution, string className, IReadOnlyList<StrategyShape> arms)
 {
-    private const string Columns = "global::DSAExperimentation.Benchmarks.Catalog.CatalogColumns";
+    private const string Columns = "global::DSAExperimentation.LeetCode.Harness.CatalogColumns";
     private const string Contract = "global::DSAExperimentation.Benchmarks.Catalog.ICatalogBenchmarks";
     private const string CaseList = "global::System.Collections.Generic.IReadOnlyList<global::DSAExperimentation.LeetCode.Catalog.LeetCodeCase>";
     private const string BaselineMark = "(Baseline = true)";

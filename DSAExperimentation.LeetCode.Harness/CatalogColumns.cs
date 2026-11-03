@@ -2,7 +2,7 @@ using System.Reflection;
 using DSAExperimentation.LeetCode.Catalog;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
-namespace DSAExperimentation.Benchmarks.Catalog;
+namespace DSAExperimentation.LeetCode.Harness;
 
 // The catalog's cases for one enrolled solution, read into the parameter types of one of its strategies
 // and laid out by column: Column<TValue>(k) holds every case's k-th input as a TValue[]. A generated arm
@@ -64,4 +64,7 @@ internal sealed class CatalogColumns(IReadOnlyList<LeetCodeCase> cases, object?[
 
     // Every case's value for one parameter, as the type the strategy takes it as.
     public TValue[] Column<TValue>(int parameter) => [.. columns[parameter].Cast<TValue>()];
+
+    // One case's value for one parameter, for a caller that holds the parameter's type only as a Type.
+    public object? ValueAt(int parameter, int caseIndex) => columns[parameter][caseIndex];
 }

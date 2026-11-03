@@ -4,7 +4,7 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
-namespace DSAExperimentation.Benchmarks.Catalog;
+namespace DSAExperimentation.LeetCode.Harness;
 
 // LeetCode's notation read into the type a strategy takes, chosen by that type at run time. The
 // catalog's own LeetCodeNotation.Parse<TValue> needs the type at compile time, and a generated harness
@@ -42,12 +42,43 @@ internal static class NotationReader
     // The sequences a strategy may add to, so they need a List<T> behind them.
     private static readonly Type[] ListBackedSequences = [typeof(List<>), typeof(IList<>), typeof(ICollection<>)];
 
+    private static readonly Type[] SequenceDefinitions = [.. ArrayBackedSequences, .. ListBackedSequences];
+
     public static object? Read(string text, Type type)
     {
         using var document = JsonDocument.Parse(text);
 
         return ValueOf(document.RootElement, type);
     }
+
+    // Whether Read has a reading for the type: the dispatch Read follows, asked of the type alone, which is
+    // how a strategy's parameters are checked before any case is read.
+    public static bool CanRead(Type type)
+    {
+        if (IsReadAsAWhole(type))
+        {
+            return true;
+        }
+
+        if (type.IsArray)
+        {
+            return type.GetArrayRank() == 1 && CanRead(ElementTypeOf(type));
+        }
+
+        if (IsTuple(type))
+        {
+            return type.GetGenericArguments().All(CanRead);
+        }
+
+        return IsSequence(type) && CanRead(type.GetGenericArguments()[0]);
+    }
+
+    // A scalar, or a tree or list LeetCodeWireFormat builds from one array: read in one step, not item by item.
+    private static bool IsReadAsAWhole(Type type) =>
+        ScalarReaders.ContainsKey(type) || type == typeof(BinaryTreeNode<int>) || type == typeof(SinglyLinkedListNode<int>);
+
+    private static bool IsSequence(Type type) =>
+        type.IsGenericType && SequenceDefinitions.Contains(type.GetGenericTypeDefinition());
 
     private static object SingleCharacterOf(JsonElement element)
     {

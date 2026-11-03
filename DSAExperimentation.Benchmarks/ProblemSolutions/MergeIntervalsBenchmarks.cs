@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.MergeIntervals;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MergeIntervalsSolution's, the same methods
-// MergeIntervalsSolutionTests proves correct. Merge Intervals (LC 56) has two honest
+// CatalogCaseTests proves correct. Merge Intervals (LC 56) has two honest
 // real-world shapes, not one "which is faster" answer: BatchSortAndMerge is the
 // classic textbook solution - sort once, O(n log n), a single linear merge pass -
 // built for "I have all N intervals up front." IncrementalIntervalSet instead

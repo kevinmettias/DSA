@@ -1,4 +1,5 @@
 using System.Reflection;
+using DSAExperimentation.LeetCode.Harness;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests;
@@ -54,13 +55,14 @@ public sealed partial class LeetCodeStrategyCoverageTests
     {
         var solution = SolutionNamed(solutionTypeName);
         var strategies = StrategyMembersOf(solution);
-        var unnamed = UnnamedAmong(strategies, solution);
+        var unnamed = UnnamedAmong([.. strategies.Except(RunByTheCatalogHarness(solution), StringComparer.Ordinal)], solution);
 
         Assert.NotEmpty(strategies);
         Assert.True(
             unnamed.Count == 0,
             $"{solution.Name}: no test method in {TestNamespaceFor(solution)} is named for [{Listed(unnamed)}]. "
-            + "Section 17.7 asks for one test method per strategy, starting with the strategy's own name.");
+            + "Section 17.7 asks for one test method per strategy, starting with the strategy's own name, "
+            + "unless the solution names its LeetCode question and CatalogCaseTests runs it (17.13).");
     }
 
     // A solution class need not have a helper at all, so unlike the theory above this
@@ -91,6 +93,19 @@ public sealed partial class LeetCodeStrategyCoverageTests
 
     private static Type SolutionNamed(string solutionTypeName)
         => LeetCodeTypes().Single(type => FullNameOf(type) == solutionTypeName);
+
+    // An enrolled solution's strategies are run, every one, by CatalogCaseTests (section 17.13), which
+    // names each in a theory row rather than in a method name. The set is the harness's own, so a strategy
+    // it would not run still needs a test of its own.
+    private static IEnumerable<string> RunByTheCatalogHarness(Type solution)
+    {
+        if (!solution.IsDefined(typeof(LeetCodeQuestionAttribute)))
+        {
+            return [];
+        }
+
+        return CatalogStrategy.Of(solution).Select(strategy => strategy.Name);
+    }
 
     private static List<string> UnnamedAmong(List<string> members, Type solution)
     {

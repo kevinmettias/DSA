@@ -1,9 +1,8 @@
-using DSAExperimentation.Benchmarks.Catalog;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
-namespace DSAExperimentation.Benchmarks.Tests.Catalog;
+namespace DSAExperimentation.LeetCode.Harness.Tests;
 
 public sealed partial class NotationReaderTests
 {
@@ -67,4 +66,14 @@ public sealed partial class NotationReaderTests
     [Fact]
     public void Read_TypeOutsideTheRules_ThrowsNotSupportedException() =>
         Assert.Throws<NotSupportedException>(() => NotationReader.Read("{}", typeof(Dictionary<int, int>)));
+
+    [Fact]
+    public void CanRead_TypeReadTakes_IsTrue() =>
+        Assert.True(NotationReader.CanRead(typeof(IEnumerable<(int, int)>)));
+
+    [Fact]
+    public void CanRead_TypeReadRefuses_IsFalse() => Assert.False(NotationReader.CanRead(typeof(Dictionary<int, int>)));
+
+    [Fact]
+    public void CanRead_RectangularArray_IsFalse() => Assert.False(NotationReader.CanRead(typeof(int[,])));
 }

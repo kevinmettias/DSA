@@ -143,4 +143,5 @@ reading an old file rather than something checked.
 | `DSAExperimentation.LeetCode.Catalog.Tests`, `DSAExperimentation.LeetCode.Catalog.Sync.Tests` | The catalog's and the sync tool's own tests, offline, and checks over the whole snapshot |
 | `DSAExperimentation.Benchmarks` | BenchmarkDotNet suites, one per problem, plus strategy-swap comparisons, and a generated `<Problem>CatalogBenchmarks` class timing every catalog case for each solution that names its LeetCode question |
 | `DSAExperimentation.Benchmarks.Generators` | The source generator that writes those catalog benchmark classes at build time (ARCHITECTURE §17.13) |
+| `DSAExperimentation.LeetCode.Harness`, `DSAExperimentation.LeetCode.Harness.Tests` | What both harnesses share to run an enrolled solution's strategies over the catalog's cases and judge the answers, and its tests; `CatalogCaseTests` in the solutions' tests is the one test those strategies need for LeetCode's cases |
 | `DSAExperimentation.Benchmarks.Tests` | Checks that benchmark arms agree and that their workloads are reproducible |

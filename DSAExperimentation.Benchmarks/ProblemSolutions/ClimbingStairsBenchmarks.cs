@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.ClimbingStairs;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ClimbingStairsSolution's, the same methods
-// ClimbingStairsSolutionTests proves correct. The two answer the same recurrence by
+// CatalogCaseTests proves correct. The two answer the same recurrence by
 // different means - one through Memoizer's dictionary plus a call stack as deep
 // as the step count, one through two running totals - so the ratio shows what the
 // memoized shape actually costs over the flattened one.

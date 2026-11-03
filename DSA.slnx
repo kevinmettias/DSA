@@ -6,6 +6,8 @@
   <Project Path="DSAExperimentation.LeetCode.Catalog.Sync.Tests/DSAExperimentation.LeetCode.Catalog.Sync.Tests.csproj" />
   <Project Path="DSAExperimentation.LeetCode.Catalog.Tests/DSAExperimentation.LeetCode.Catalog.Tests.csproj" />
   <Project Path="DSAExperimentation.LeetCode.Catalog/DSAExperimentation.LeetCode.Catalog.csproj" />
+  <Project Path="DSAExperimentation.LeetCode.Harness.Tests/DSAExperimentation.LeetCode.Harness.Tests.csproj" />
+  <Project Path="DSAExperimentation.LeetCode.Harness/DSAExperimentation.LeetCode.Harness.csproj" />
   <Project Path="DSAExperimentation.LeetCode.Solutions.Tests/DSAExperimentation.LeetCode.Solutions.Tests.csproj" />
   <Project Path="DSAExperimentation.LeetCode.Solutions/DSAExperimentation.LeetCode.Solutions.csproj" />
   <Project Path="DSAExperimentation.Tests/DSAExperimentation.Tests.csproj" />

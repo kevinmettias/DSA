@@ -1,10 +1,9 @@
-using DSAExperimentation.Benchmarks.Catalog;
 using DSAExperimentation.LeetCode.Catalog;
 using DSAExperimentation.LeetCode.Solutions.ClimbingStairs;
 using DSAExperimentation.LeetCode.Solutions.MergeIntervals;
 using DSAExperimentation.LeetCode.Solutions.TwoSum;
 
-namespace DSAExperimentation.Benchmarks.Tests.Catalog;
+namespace DSAExperimentation.LeetCode.Harness.Tests;
 
 public sealed partial class CatalogColumnsTests
 {
@@ -38,6 +37,14 @@ public sealed partial class CatalogColumnsTests
         var first = LeetCodeCatalog.Cases("merge-intervals")[0].Input<int[][]>(0);
 
         Assert.Equal(first.Select(row => (row[0], row[1])), columns.Column<IEnumerable<(int Start, int End)>>(0)[0]);
+    }
+
+    [Fact]
+    public void ValueAt_AnyCase_IsTheValueItsColumnHolds()
+    {
+        var columns = CatalogColumns.For(typeof(ClimbingStairsSolution), typeof(int));
+
+        Assert.Equal(columns.Column<int>(0)[0], columns.ValueAt(0, 0));
     }
 
     [Fact]

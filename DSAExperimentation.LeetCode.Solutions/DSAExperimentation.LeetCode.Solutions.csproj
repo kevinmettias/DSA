@@ -4,6 +4,8 @@
     <InternalsVisibleTo Include="DSAExperimentation.Benchmarks" />
     <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Solutions.Tests" />
     <InternalsVisibleTo Include="DSAExperimentation.Benchmarks.Tests" />
+    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Harness" />
+    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Harness.Tests" />
   </ItemGroup>
 
   <ItemGroup>

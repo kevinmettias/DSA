@@ -24,6 +24,7 @@
     <ProjectReference Include="..\DSAExperimentation\DSAExperimentation.csproj" />
     <ProjectReference Include="..\DSAExperimentation.LeetCode.Solutions\DSAExperimentation.LeetCode.Solutions.csproj" />
     <ProjectReference Include="..\DSAExperimentation.LeetCode.Catalog\DSAExperimentation.LeetCode.Catalog.csproj" />
+    <ProjectReference Include="..\DSAExperimentation.LeetCode.Harness\DSAExperimentation.LeetCode.Harness.csproj" />
   </ItemGroup>
 
   <!-- The catalog benchmark classes are written at build time, one per solution that names its LeetCode
