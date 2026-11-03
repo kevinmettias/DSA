@@ -47,5 +47,86 @@ public sealed partial class GridDirectionsTests
             (1, 2),
             (Math.Min(Math.Abs(offset.DeltaRow), Math.Abs(offset.DeltaCol)), Math.Max(Math.Abs(offset.DeltaRow), Math.Abs(offset.DeltaCol)))));
 
+    [Fact]
+    public void Clockwise_IsUpRightDownLeft() =>
+        Assert.Equal([(-1, 0), (0, 1), (1, 0), (0, -1)], GridDirections.Clockwise.Select(Pair).ToArray());
+
+    [Fact]
+    public void Clockwise_EachStep_IsTheOneBeforeItTurnedAQuarter() =>
+        Assert.All(Enumerable.Range(1, GridDirections.Clockwise.Length - 1), index => Assert.Equal(
+            GridStep.Rotate(GridDirections.Clockwise[index - 1]),
+            GridDirections.Clockwise[index]));
+
+    [Fact]
+    public void TurnRight_EachIndex_IndexesTheStepTurnedClockwise() =>
+        Assert.All(ClockwiseIndexes(), index => Assert.Equal(
+            GridStep.Rotate(GridDirections.Clockwise[index]),
+            GridDirections.Clockwise[GridDirections.TurnRight(index)]));
+
+    [Fact]
+    public void TurnLeft_EachIndex_IndexesTheStepTurnedAnticlockwise() =>
+        Assert.All(ClockwiseIndexes(), index => Assert.Equal(
+            LatticeSymmetry.Turn(GridDirections.Clockwise[index], -1),
+            GridDirections.Clockwise[GridDirections.TurnLeft(index)]));
+
+    [Fact]
+    public void OppositeOrthogonal_EachIndex_IndexesTheReversedStep() =>
+        Assert.All(Enumerable.Range(0, GridDirections.Orthogonal.Length), index => Assert.Equal(
+            -GridDirections.Orthogonal[index],
+            GridDirections.Orthogonal[GridDirections.OppositeOrthogonal(index)]));
+
+    [Fact]
+    public void WithinManhattan_RangeOne_IsTheOrthogonalStepsRowByRow() =>
+        Assert.Equal([GridStep.Up, GridStep.Left, GridStep.Right, GridStep.Down], GridDirections.WithinManhattan(1).ToArray());
+
+    [Fact]
+    public void WithinChebyshev_RangeOne_IsOctilinear() =>
+        Assert.Equal(GridDirections.Octilinear.ToArray(), GridDirections.WithinChebyshev(1).ToArray());
+
+    [Fact]
+    public void WithinManhattan_RangeZero_IsEmpty() => Assert.Empty(GridDirections.WithinManhattan(0));
+
+    [Theory]
+    [MemberData(nameof(Ranges))]
+    public void WithinManhattan_EachRange_HoldsTheDiamondLessTheCell(int range)
+    {
+        var steps = GridDirections.WithinManhattan(range);
+
+        Assert.Equal(2 * range * (range + 1), steps.Length);
+        Assert.All(steps, step => Assert.InRange(Math.Abs(step.DeltaRow) + Math.Abs(step.DeltaCol), 1, range));
+    }
+
+    [Theory]
+    [MemberData(nameof(Ranges))]
+    public void WithinChebyshev_EachRange_HoldsTheSquareLessTheCell(int range)
+    {
+        var steps = GridDirections.WithinChebyshev(range);
+
+        Assert.Equal(((2 * range) + 1) * ((2 * range) + 1) - 1, steps.Length);
+        Assert.All(steps, step => Assert.InRange(Math.Max(Math.Abs(step.DeltaRow), Math.Abs(step.DeltaCol)), 1, range));
+    }
+
+    // A neighbourhood agrees with the lattice when every symmetry maps it onto itself.
+    [Theory]
+    [MemberData(nameof(Ranges))]
+    public void WithinManhattan_EachRange_IsKeptByTheSquaresSymmetries(int range) =>
+        AssertKeptBySymmetries(GridDirections.WithinManhattan(range));
+
+    [Theory]
+    [MemberData(nameof(Ranges))]
+    public void WithinChebyshev_EachRange_IsKeptByTheSquaresSymmetries(int range) =>
+        AssertKeptBySymmetries(GridDirections.WithinChebyshev(range));
+
+    public static TheoryData<int> Ranges => [1, 2, 3, 5];
+
+    private static IEnumerable<int> ClockwiseIndexes() => Enumerable.Range(0, GridDirections.Clockwise.Length);
+
+    private static void AssertKeptBySymmetries(IReadOnlyCollection<GridStep> steps) =>
+        Assert.All(steps, step =>
+        {
+            Assert.Contains(GridStep.Rotate(step), steps);
+            Assert.Contains(GridStep.Reflect(step), steps);
+        });
+
     private static (int DeltaRow, int DeltaCol) Pair(GridStep step) => (step.DeltaRow, step.DeltaCol);
 }
