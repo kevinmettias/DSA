@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Devices.Locks;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DSAExperimentation.LeetCode.Solutions.OpenTheLock;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
@@ -19,7 +20,7 @@ internal static class LockWorkloads
 
         while (deadends.Count < count)
         {
-            var candidate = CombinationLock<FourDigitLock>.Combination(random.Next(CombinationLock<FourDigitLock>.CombinationCount));
+            var candidate = CombinationLock<FourDigitLock, DecimalDigits>.Combination(random.Next(CombinationLock<FourDigitLock, DecimalDigits>.CombinationCount));
 
             if (candidate != LockStart.Combination
                 && candidate != LockScenario.FarthestTarget)

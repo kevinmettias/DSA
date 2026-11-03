@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Domain.Devices.Locks;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DSAExperimentation.LeetCode.Solutions.OpenTheLock;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
@@ -11,7 +12,6 @@ public sealed partial class LockWorkloadsTests
 {
     private const int DeadendCount = 256;
     private const int Seed = 752; // LC problem number
-    private const char LowestWheelDigit = '0';
 
     // LC 752's fixed origin, the combination LockStart.Combination carries in the LeetCode project -
     // repeated here as the value the problem itself fixes, since this project cannot see that type.
@@ -33,12 +33,10 @@ public sealed partial class LockWorkloadsTests
     public void BuildDeadends_EveryCombination_IsAFourDigitLockState()
     {
         var deadends = LockWorkloads.BuildDeadends(DeadendCount, Seed);
-        var highestWheelDigit = (char)(LowestWheelDigit + FourDigitLock.SymbolsPerWheel - 1);
-
         Assert.All(deadends, deadend => Assert.Equal(FourDigitLock.WheelCount, deadend.Length));
         Assert.All(
             deadends,
-            deadend => Assert.All(deadend, digit => Assert.InRange(digit, LowestWheelDigit, highestWheelDigit)));
+            deadend => Assert.All(deadend, digit => Assert.True(DecimalDigits.TryIndexOf(digit, out _))));
     }
 
     [Fact]

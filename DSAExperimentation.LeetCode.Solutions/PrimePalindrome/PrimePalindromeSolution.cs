@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.PrimePalindrome;
 
@@ -18,7 +19,6 @@ namespace DSAExperimentation.LeetCode.Solutions.PrimePalindrome;
 //   ever trial-divided, so the long palindrome-sparse stretches cost nothing.
 internal static class PrimePalindromeSolution
 {
-    private const int DecimalBase = 10;
     private const int SmallestPrime = 2;
     private const int OddDivisorStep = 2;
     private const long FirstOddDivisor = 3L;
@@ -84,7 +84,7 @@ internal static class PrimePalindromeSolution
     private static long GeneratePrimePalindrome(int lowerBound)
     {
         var exponent = lowerBound.ToString().Length / AlgorithmConstants.HalvingFactor;
-        var half = (int)Math.Pow(DecimalBase, exponent);
+        var half = (int)Math.Pow(DecimalDigits.Size, exponent);
 
         // Stops at the first built palindrome >= the lower bound that is prime; half
         // only ever grows.
@@ -117,8 +117,8 @@ internal static class PrimePalindromeSolution
 
         while (remaining > 0)
         {
-            digits.Insert(0, remaining % DecimalBase);
-            remaining /= DecimalBase;
+            digits.Insert(0, remaining % DecimalDigits.Size);
+            remaining /= DecimalDigits.Size;
         }
     }
 
@@ -138,7 +138,7 @@ internal static class PrimePalindromeSolution
 
         for (var i = 0; i < digits.Count; i++)
         {
-            value = value * DecimalBase + digits.Get(i);
+            value = value * DecimalDigits.Size + digits.Get(i);
         }
 
         return value;

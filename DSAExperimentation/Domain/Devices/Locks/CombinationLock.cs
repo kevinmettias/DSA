@@ -1,19 +1,22 @@
+using DSAExperimentation.DataStructures.Alphabets;
+
 namespace DSAExperimentation.Domain.Devices.Locks;
 
-// What every rotary combination lock does, for the build TSpec names. A wheel clicks one symbol up
-// or down and wraps from its last symbol to its first, so its symbols are a cycle, and the lock's
-// combinations are every choice of one symbol per wheel. Numbering them reads the combination as a
-// number in base SymbolsPerWheel, the first wheel the most significant, so a four-digit lock's
-// combination 42 is "0042".
+// What every rotary combination lock does, for the build TSpec names and the wheel alphabet TWheel
+// it is built from. A wheel clicks one symbol up or down and wraps from its last symbol to its
+// first, so its symbols are a cycle of the alphabet's slots, and the lock's combinations are every
+// choice of one symbol per wheel. Numbering them reads the combination as a number written in base
+// TWheel.Size with the wheel's symbols as its digits, the first wheel the most significant, so a
+// four-digit lock's combination 42 is "0042".
 /// <summary>The combinations of a rotary combination lock, and the turns between them.</summary>
-/// <typeparam name="TSpec">The lock's build: its wheels and their symbols.</typeparam>
-public static class CombinationLock<TSpec>
-    where TSpec : struct, ILockSpec
+/// <typeparam name="TSpec">The lock's build: how many wheels it has.</typeparam>
+/// <typeparam name="TWheel">The alphabet each wheel carries, such as the decimal digits.</typeparam>
+public static class CombinationLock<TSpec, TWheel>
+    where TSpec : struct, ILockSpec<TWheel>
+    where TWheel : struct, IAlphabet
 {
     // A wheel clicks up or down.
     private const int DirectionsPerWheel = 2;
-
-    private static char LastSymbol => (char)(TSpec.FirstSymbol + TSpec.SymbolsPerWheel - 1);
 
     /// <summary>How many combinations the lock has: its symbols per wheel, to the power of its wheels.</summary>
     public static int CombinationCount { get; } = CountCombinations();
@@ -24,27 +27,23 @@ public static class CombinationLock<TSpec>
     /// <summary>The symbol one click up from another, the last symbol wrapping to the first.</summary>
     /// <param name="symbol">A symbol on the wheel.</param>
     /// <returns>The next symbol on the wheel.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="symbol"/> is not on the wheel.</exception>
     public static char ClickUp(char symbol)
     {
-        if (symbol == LastSymbol)
-        {
-            return TSpec.FirstSymbol;
-        }
+        var next = TWheel.IndexOf(symbol) + 1;
 
-        return (char)(symbol + 1);
+        return TWheel.LetterAt(next == TWheel.Size ? 0 : next);
     }
 
     /// <summary>The symbol one click down from another, the first symbol wrapping to the last.</summary>
     /// <param name="symbol">A symbol on the wheel.</param>
     /// <returns>The previous symbol on the wheel.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="symbol"/> is not on the wheel.</exception>
     public static char ClickDown(char symbol)
     {
-        if (symbol == TSpec.FirstSymbol)
-        {
-            return LastSymbol;
-        }
+        var slot = TWheel.IndexOf(symbol);
 
-        return (char)(symbol - 1);
+        return TWheel.LetterAt((slot == 0 ? TWheel.Size : slot) - 1);
     }
 
     /// <summary>Spells the combination with a given number, one symbol per wheel, the first wheel first.</summary>
@@ -55,8 +54,8 @@ public static class CombinationLock<TSpec>
         {
             for (var wheel = wheels.Length - 1; wheel >= 0; wheel--)
             {
-                wheels[wheel] = (char)(TSpec.FirstSymbol + (number % TSpec.SymbolsPerWheel));
-                number /= TSpec.SymbolsPerWheel;
+                wheels[wheel] = TWheel.LetterAt(number % TWheel.Size);
+                number /= TWheel.Size;
             }
         });
 
@@ -89,7 +88,7 @@ public static class CombinationLock<TSpec>
 
         for (var wheel = 0; wheel < TSpec.WheelCount; wheel++)
         {
-            count *= TSpec.SymbolsPerWheel;
+            count *= TWheel.Size;
         }
 
         return count;

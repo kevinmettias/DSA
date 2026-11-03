@@ -30,7 +30,7 @@ public static class GridNeighbors
     public static IEnumerable<(int Row, int Col)> Of<TFilter>(
         (int Row, int Col) cell,
         GridSize size,
-        ImmutableArray<(int DeltaRow, int DeltaCol)> directions,
+        ImmutableArray<GridStep> directions,
         TFilter filter)
         where TFilter : struct, IGridCellFilter
         => new Scan<TFilter>(cell, size, directions, filter);
@@ -40,7 +40,7 @@ public static class GridNeighbors
     private sealed class Scan<TFilter>(
         (int Row, int Col) cell,
         GridSize size,
-        ImmutableArray<(int DeltaRow, int DeltaCol)> directions,
+        ImmutableArray<GridStep> directions,
         TFilter filter)
         : IEnumerable<(int Row, int Col)>, IEnumerator<(int Row, int Col)>
         where TFilter : struct, IGridCellFilter

@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.Domain.Games.Chess;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfValidMoveCombinationsOnChessboard;
@@ -135,11 +136,11 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
     }
 
     // The backtracking arm's lines and board, chess's own; LeetCode numbers squares from 1.
-    private static ImmutableArray<(int DeltaRow, int DeltaCol)> LinesFor(string pieceType) => pieceType switch
+    private static ImmutableArray<GridStep> LinesFor(string pieceType) => pieceType switch
     {
-        RookPieceType => ChessRules.RookLines,
-        BishopPieceType => ChessRules.BishopLines,
-        QueenPieceType => ChessRules.QueenLines,
+        RookPieceType => ChessPiece.Rook.Moves,
+        BishopPieceType => ChessPiece.Bishop.Moves,
+        QueenPieceType => ChessPiece.Queen.Moves,
         _ => throw new ArgumentOutOfRangeException(nameof(pieceType), pieceType, UnknownPieceTypeMessage),
     };
 

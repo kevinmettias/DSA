@@ -40,4 +40,28 @@ public sealed partial class LifeLikeTests
         Assert.True(LifeLike<HighLife>.IsBirthCount(6));
         Assert.False(LifeLike<ConwayLife>.IsBirthCount(6));
     }
+
+    // Seeds, B2/S, names no survival count, so no live cell survives.
+    [Fact]
+    public void IsSurvivalCount_RuleWithNoSurvivalCounts_IsFalseForEveryCount() =>
+        Assert.All(Enumerable.Range(0, 9), liveNeighbors => Assert.False(LifeLike<Seeds>.IsSurvivalCount(liveNeighbors)));
+
+    // A count of nine is more neighbours than a cell has.
+    [Fact]
+    public void IsBirthCount_MalformedRulestring_Throws()
+    {
+        var thrown = Assert.Throws<TypeInitializationException>(() => LifeLike<NineNeighbours>.IsBirthCount(3));
+
+        Assert.IsType<InvalidOperationException>(thrown.InnerException);
+    }
+
+    private readonly struct Seeds : ILifeLikeRule
+    {
+        public static string Rulestring => "B2/S";
+    }
+
+    private readonly struct NineNeighbours : ILifeLikeRule
+    {
+        public static string Rulestring => "B39/S23";
+    }
 }

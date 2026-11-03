@@ -146,7 +146,7 @@ internal static class FindWinnerOnATicTacToeGameSolution
 
         public bool HasCompletedLine(int row, int column, TicTacToePlayer player)
         {
-            var mark = player == TicTacToePlayer.A ? Vocabulary.MarkA : Vocabulary.MarkB;
+            var mark = player == TicTacToePlayer.X ? Vocabulary.MarkA : Vocabulary.MarkB;
 
             _rowCount[row] += mark;
             _columnCount[column] += mark;

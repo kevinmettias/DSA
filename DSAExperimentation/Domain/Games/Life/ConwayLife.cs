@@ -5,9 +5,6 @@ namespace DSAExperimentation.Domain.Games.Life;
 /// <summary>Conway's Game of Life, the Life-like rule B3/S23.</summary>
 public readonly struct ConwayLife : ILifeLikeRule
 {
-    /// <summary>Born on three live neighbours.</summary>
-    public static int BirthMask => 1 << 3;
-
-    /// <summary>Survives on two or three live neighbours.</summary>
-    public static int SurvivalMask => (1 << 2) | (1 << 3);
+    /// <summary>B3/S23: born on three, survives on two or three.</summary>
+    public static string Rulestring => "B3/S23";
 }

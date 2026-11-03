@@ -17,6 +17,7 @@ internal static class TicTacToeVocabulary
     internal const int BoardSize = 3;
     internal const int PlayerCount = 2;
 
+    // LC 1275 names the game's X "A" and its O "B".
     internal const string PlayerA = "A";
     internal const string PlayerB = "B";
     internal const string Draw = "Draw";
@@ -30,8 +31,8 @@ internal static class TicTacToeVocabulary
     internal static string AnswerFor(TicTacToeOutcome outcome) =>
         outcome switch
         {
-            TicTacToeOutcome.AWins => PlayerA,
-            TicTacToeOutcome.BWins => PlayerB,
+            TicTacToeOutcome.XWins => PlayerA,
+            TicTacToeOutcome.OWins => PlayerB,
             TicTacToeOutcome.Draw => Draw,
             _ => Pending,
         };

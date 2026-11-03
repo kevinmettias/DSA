@@ -89,12 +89,12 @@ internal static class ValidSudokuSolution
     {
         var seen = new Set<string>();
 
-        for (var row = 0; row < SudokuRules.Size; row++)
+        for (var row = 0; row < ClassicSudoku.Size; row++)
         {
-            for (var col = 0; col < SudokuRules.Size; col++)
+            for (var col = 0; col < ClassicSudoku.Size; col++)
             {
                 var digit = board[row][col];
-                if (digit == SudokuRules.EmptyCell)
+                if (digit == ClassicSudoku.EmptyCell)
                 {
                     continue;
                 }
@@ -115,5 +115,5 @@ internal static class ValidSudokuSolution
     private static bool TryRecordDigit(Set<string> seen, int row, int col, char digit) =>
         seen.TryAdd($"r{row}:{digit}") &&
         seen.TryAdd($"c{col}:{digit}") &&
-        seen.TryAdd($"b{SudokuRules.BoxOf(row, col)}:{digit}");
+        seen.TryAdd($"b{Sudoku<ClassicSudoku>.BoxOf(row, col)}:{digit}");
 }

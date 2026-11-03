@@ -25,10 +25,10 @@ public sealed partial class GridNeighborsTests
             GridNeighbors.Of((1, 1), ThreeByThree, GridDirections.Orthogonal, new EveryCellBut((1, 0))));
 
     [Fact]
-    public void Of_KingTable_YieldsTheEightNeighboursRowMajor() =>
+    public void Of_OctilinearTable_YieldsTheEightNeighboursRowMajor() =>
         Assert.Equal(
             [(0, 0), (0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1), (2, 2)],
-            GridNeighbors.Of((1, 1), ThreeByThree, GridDirections.King, default(EveryCell)));
+            GridNeighbors.Of((1, 1), ThreeByThree, GridDirections.Octilinear, default(EveryCell)));
 
     // A one-row board: only left and right exist, so a Rows/Cols swap in the bounds check shows up.
     [Fact]

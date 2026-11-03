@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountNumberOfBalancedPermutations;
 
@@ -9,8 +10,6 @@ namespace DSAExperimentation.LeetCode.Solutions.CountNumberOfBalancedPermutation
 // one contract.
 internal static class CountNumberOfBalancedPermutationsSolution
 {
-    private const int DigitCount = 10;
-
     // Textbook baseline: every distinct permutation of num's characters, deduped
     // via HashSet<string> (CountAnagrams precedent - repeated digits would
     // otherwise recount the same string), each checked directly against the
@@ -69,7 +68,7 @@ internal static class CountNumberOfBalancedPermutationsSolution
     // instead of renormalizing after every digit.
     public static long CountBalancedPermutationsByDigitCountDp(string num)
     {
-        var counts = new int[DigitCount];
+        var counts = new int[DecimalDigits.Size];
         var total = 0;
 
         foreach (var c in num)

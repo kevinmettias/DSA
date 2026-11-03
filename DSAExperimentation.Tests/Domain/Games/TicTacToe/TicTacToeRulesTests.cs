@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.Domain.Games.TicTacToe;
 public sealed partial class TicTacToeRulesTests
 {
     public static TheoryData<int, TicTacToePlayer> MovesToTheirPlayers =>
-        new() { { 0, TicTacToePlayer.A }, { 1, TicTacToePlayer.B }, { 2, TicTacToePlayer.A }, { 7, TicTacToePlayer.B } };
+        new() { { 0, TicTacToePlayer.X }, { 1, TicTacToePlayer.O }, { 2, TicTacToePlayer.X }, { 7, TicTacToePlayer.O } };
 
     public static TheoryData<int, int> SquaresOnTheMainDiagonal => new() { { 0, 0 }, { 1, 1 }, { 2, 2 } };
 
@@ -19,9 +19,9 @@ public sealed partial class TicTacToeRulesTests
     public static TheoryData<TicTacToePlayer?, int, TicTacToeOutcome> GamesToTheirOutcomes =>
         new()
         {
-            { TicTacToePlayer.A, 5, TicTacToeOutcome.AWins },
-            { TicTacToePlayer.B, 6, TicTacToeOutcome.BWins },
-            { TicTacToePlayer.A, 9, TicTacToeOutcome.AWins },
+            { TicTacToePlayer.X, 5, TicTacToeOutcome.XWins },
+            { TicTacToePlayer.O, 6, TicTacToeOutcome.OWins },
+            { TicTacToePlayer.X, 9, TicTacToeOutcome.XWins },
             { null, 9, TicTacToeOutcome.Draw },
             { null, 4, TicTacToeOutcome.Pending },
             { null, 0, TicTacToeOutcome.Pending },

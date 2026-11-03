@@ -1,33 +1,24 @@
 namespace DSAExperimentation.Domain.Games.Sudoku;
 
-// Sudoku's world as LC 36 and LC 37 both state it: a 9x9 grid made of nine 3x3 boxes, holding the
-// digits '1' to '9', with '.' marking an empty cell, where no digit may repeat in a row, a column or
-// a box. These are the problems' *what* (ARCHITECTURE §17.6). Which cell a solver fills next, the
-// order it tries digits in and how a validator tracks what it has seen are each strategy's *how*, and
-// stay with the solutions; the baselines keep their own copies of the rules (§17.5).
-/// <summary>The Sudoku board's dimensions, its notation, and the rule a placed digit obeys.</summary>
-public static class SudokuRules
+// Sudoku's rule on any grid of box size n, as LC 36 and LC 37 state it for n = 3: no symbol repeats
+// in a row, a column or a box. These are the problems' *what* (ARCHITECTURE §17.6). Which cell a
+// solver fills next, the order it tries symbols in and how a validator tracks what it has seen are
+// each strategy's *how*, and stay with the solutions; the baselines keep their own copies of the
+// rules (§17.5). The grid's numbers are static abstract members of a struct, so they fold to
+// constants in each caller.
+/// <summary>The Sudoku board's size, and the rule a placed symbol obeys, for a grid of any box size.</summary>
+/// <typeparam name="TGrid">The grid, such as <see cref="ClassicSudoku"/>.</typeparam>
+public static class Sudoku<TGrid>
+    where TGrid : struct, ISudokuGrid
 {
-    /// <summary>The number of rows, of columns and of boxes on the board.</summary>
-    public const int Size = 9;
+    /// <summary>The number of rows, of columns and of boxes on the board: the box size squared.</summary>
+    public static int Size => TGrid.BoxSize * TGrid.BoxSize;
 
-    /// <summary>The side of one box, in cells.</summary>
-    public const int BoxSize = 3;
-
-    /// <summary>The character that marks an empty cell.</summary>
-    public const char EmptyCell = '.';
-
-    /// <summary>The smallest digit a cell can hold.</summary>
-    public const char LowestDigit = '1';
-
-    /// <summary>The largest digit a cell can hold.</summary>
-    public const char HighestDigit = '9';
-
-    /// <summary>Numbers the box a cell lies in, row by row from 0 at the top left to 8 at the bottom right.</summary>
+    /// <summary>Numbers the box a cell lies in, row by row from 0 at the top left.</summary>
     /// <param name="row">The cell's row, from 0.</param>
     /// <param name="col">The cell's column, from 0.</param>
     /// <returns>The number of the box holding the cell.</returns>
-    public static int BoxOf(int row, int col) => (row / BoxSize * BoxSize) + (col / BoxSize);
+    public static int BoxOf(int row, int col) => (row / TGrid.BoxSize * TGrid.BoxSize) + (col / TGrid.BoxSize);
 
     /// <summary>Whether a digit may go in an empty cell: it appears nowhere in the cell's row, column or box.</summary>
     /// <param name="board">The board, one array of <see cref="Size"/> characters per row.</param>
@@ -55,12 +46,12 @@ public static class SudokuRules
     // Whether the 3x3 box around the cell already holds the digit.
     private static bool IsInBox(char[][] board, int row, int col, char digit)
     {
-        var boxRow = row / BoxSize * BoxSize;
-        var boxCol = col / BoxSize * BoxSize;
+        var boxRow = row / TGrid.BoxSize * TGrid.BoxSize;
+        var boxCol = col / TGrid.BoxSize * TGrid.BoxSize;
 
-        for (var r = boxRow; r < boxRow + BoxSize; r++)
+        for (var r = boxRow; r < boxRow + TGrid.BoxSize; r++)
         {
-            for (var c = boxCol; c < boxCol + BoxSize; c++)
+            for (var c = boxCol; c < boxCol + TGrid.BoxSize; c++)
             {
                 if (board[r][c] == digit)
                 {
@@ -74,12 +65,12 @@ public static class SudokuRules
 
     /// <summary>Whether every cell of the board holds a digit.</summary>
     /// <param name="board">The board, one array of <see cref="Size"/> characters per row.</param>
-    /// <returns><see langword="true"/> when no cell is <see cref="EmptyCell"/>.</returns>
+    /// <returns><see langword="true"/> when no cell is the grid's empty-cell mark.</returns>
     public static bool IsComplete(char[][] board)
     {
         foreach (var cells in board)
         {
-            if (Array.IndexOf(cells, EmptyCell) >= 0)
+            if (Array.IndexOf(cells, TGrid.EmptyCell) >= 0)
             {
                 return false;
             }

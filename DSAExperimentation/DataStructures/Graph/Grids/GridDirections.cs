@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 
 namespace DSAExperimentation.DataStructures.Graph.Grids;
 
-// The neighbour offsets a grid move set is made of, as (DeltaRow, DeltaCol). Order is part of the
+// The neighbour offsets a grid move set is made of, each a named GridStep. Order is part of the
 // contract: Orthogonal is up, down, left, right - the order GridChildren yields neighbours in - and
 // the other three are row-major, so an answer that lists cells in the order they were reached comes
 // out the same from every caller. GridNeighbors yields in the order of whichever table it is given. A table whose order means something else - a turning cycle for a
@@ -13,19 +13,20 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // data, so the property would build a new array on every access, and a span cannot be enumerated
 // across a yield, which many grid searches do. ImmutableArray cannot be changed by a caller, indexes
 // straight into its array, and enumerates with a struct enumerator.
-/// <summary>The (DeltaRow, DeltaCol) offset tables of the grid move sets, each in a fixed order.</summary>
+/// <summary>The offset tables of the grid move sets, each a list of named steps in a fixed order.</summary>
 public static class GridDirections
 {
-    public static readonly ImmutableArray<(int DeltaRow, int DeltaCol)> Orthogonal =
-        [(-1, 0), (1, 0), (0, -1), (0, 1)];
+    public static readonly ImmutableArray<GridStep> Orthogonal =
+        [GridStep.Up, GridStep.Down, GridStep.Left, GridStep.Right];
 
-    public static readonly ImmutableArray<(int DeltaRow, int DeltaCol)> Diagonal =
-        [(-1, -1), (-1, 1), (1, -1), (1, 1)];
+    public static readonly ImmutableArray<GridStep> Diagonal =
+        [GridStep.UpLeft, GridStep.UpRight, GridStep.DownLeft, GridStep.DownRight];
 
-    // A chess king's moves: every orthogonal and diagonal neighbour.
-    public static readonly ImmutableArray<(int DeltaRow, int DeltaCol)> King =
-        [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)];
+    // Every orthogonal and diagonal neighbour: the eight directions of lines on a grid.
+    public static readonly ImmutableArray<GridStep> Octilinear =
+        [GridStep.UpLeft, GridStep.Up, GridStep.UpRight, GridStep.Left, GridStep.Right, GridStep.DownLeft, GridStep.Down, GridStep.DownRight];
 
-    public static readonly ImmutableArray<(int DeltaRow, int DeltaCol)> Knight =
-        [(-2, -1), (-2, 1), (-1, -2), (-1, 2), (1, -2), (1, 2), (2, -1), (2, 1)];
+    // The eight L-shaped jumps: two squares along one axis and one along the other.
+    public static readonly ImmutableArray<GridStep> LShaped =
+        [GridStep.UpUpLeft, GridStep.UpUpRight, GridStep.UpLeftLeft, GridStep.UpRightRight, GridStep.DownLeftLeft, GridStep.DownRightRight, GridStep.DownDownLeft, GridStep.DownDownRight];
 }

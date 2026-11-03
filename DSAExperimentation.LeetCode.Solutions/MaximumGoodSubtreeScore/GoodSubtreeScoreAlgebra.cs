@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Folding;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumGoodSubtreeScore;
 
@@ -20,8 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumGoodSubtreeScore;
 // CountWaysToBuildRoomsInAnAntColony's RoomWaysAlgebra already takes.
 internal readonly struct GoodSubtreeScoreAlgebra(int[] vals) : IFoldAlgebra<RootedTreeNode, (long[] Dp, long ScoreSum)>
 {
-    private const int DigitCount = 10;
-    private const int MaskCount = 1 << DigitCount;
+    private const int MaskCount = 1 << DecimalDigits.Size;
     private const long Unreachable = long.MinValue / 2;
 
     // The caller states every node's value up front as the algebra's own field, indexed
@@ -107,7 +107,7 @@ internal readonly struct GoodSubtreeScoreAlgebra(int[] vals) : IFoldAlgebra<Root
 
         while (value > 0)
         {
-            var bit = 1 << (value % DigitCount);
+            var bit = 1 << (value % DecimalDigits.Size);
 
             if ((mask & bit) != 0)
             {
@@ -116,7 +116,7 @@ internal readonly struct GoodSubtreeScoreAlgebra(int[] vals) : IFoldAlgebra<Root
             }
 
             mask |= bit;
-            value /= DigitCount;
+            value /= DecimalDigits.Size;
         }
 
         return true;

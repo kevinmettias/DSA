@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Games.Chess;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.Solutions.QueensThatCanAttackTheKing;
 
@@ -26,7 +27,7 @@ namespace DSAExperimentation.LeetCode.Solutions.QueensThatCanAttackTheKing;
 // in the same order, since the arms are compared answer for answer.
 internal static class QueensThatCanAttackTheKingSolution
 {
-    // The baseline's own copy of a queen's eight lines, in ChessRules.QueenLines' order.
+    // The baseline's own copy of a queen's eight lines, in ChessPiece.Queen.Moves' order.
     private static readonly (int DRow, int DCol)[] Directions =
     [
         (-1, -1), (-1, 0), (-1, 1),
@@ -94,7 +95,7 @@ internal static class QueensThatCanAttackTheKingSolution
 
         var attackers = new List<(int Row, int Col)>();
 
-        foreach (var line in ChessRules.QueenLines)
+        foreach (var line in ChessPiece.Queen.Moves)
         {
             var attacker = FindAttackerAlongRay(occupied, board, line);
 
@@ -108,7 +109,7 @@ internal static class QueensThatCanAttackTheKingSolution
     }
 
     private static (int Row, int Col)? FindAttackerAlongRay(
-        Set<(int Row, int Col)> occupied, KingBoard board, (int DeltaRow, int DeltaCol) line)
+        Set<(int Row, int Col)> occupied, KingBoard board, GridStep line)
     {
         var row = board.KingRow + line.DeltaRow;
         var col = board.KingCol + line.DeltaCol;

@@ -3,6 +3,7 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.States;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Devices.Locks;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.OpenTheLock;
 
@@ -137,5 +138,5 @@ internal static class OpenTheLockSolution
     // The composed arm's input: every live combination of a four-digit lock, joined to the live
     // ones one turn away. Public so a benchmark can build it outside the timed region (17.4).
     public static StateGraph<string> BuildLockGraph(IEnumerable<string> deadends)
-        => StateGraph<string>.Build(new LockTurns<FourDigitLock>(), new DeadendFilter(new Set<string>(deadends)));
+        => StateGraph<string>.Build(new LockTurns<FourDigitLock, DecimalDigits>(), new DeadendFilter(new Set<string>(deadends)));
 }

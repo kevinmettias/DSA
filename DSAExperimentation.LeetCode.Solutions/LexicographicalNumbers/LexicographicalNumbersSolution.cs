@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.LexicographicalNumbers;
 
@@ -14,7 +15,6 @@ namespace DSAExperimentation.LeetCode.Solutions.LexicographicalNumbers;
 internal static class LexicographicalNumbersSolution
 {
     private const int MaxDigit = 9;
-    private const int DecimalBase = 10;
 
     // The textbook answer: materialize every value's decimal string and sort by it.
     // Deliberately written without this repo's primitives - the O(n log n) arm the
@@ -42,7 +42,7 @@ internal static class LexicographicalNumbersSolution
     {
         for (var digit = 0; digit <= MaxDigit; digit++)
         {
-            var next = (current * DecimalBase) + digit;
+            var next = (current * DecimalDigits.Size) + digit;
             if (next > upperBound)
             {
                 yield break;
