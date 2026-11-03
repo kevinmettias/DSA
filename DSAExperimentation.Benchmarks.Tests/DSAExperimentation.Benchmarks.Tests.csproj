@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio" />
@@ -17,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DSAExperimentation.Benchmarks\DSAExperimentation.Benchmarks.csproj" />
+    <!-- Referenced as an assembly here, not as an analyzer, so its tests can drive it over probe sources. -->
+    <ProjectReference Include="..\DSAExperimentation.Benchmarks.Generators\DSAExperimentation.Benchmarks.Generators.csproj" />
   </ItemGroup>
 
 </Project>

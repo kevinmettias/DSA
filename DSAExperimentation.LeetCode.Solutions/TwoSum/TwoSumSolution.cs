@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.TwoSum;
 
@@ -7,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TwoSum;
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("two-sum", LeetCodeAnswerOrder.AnyOrder, Promise = typeof(TwoSumPromise))]
 internal static class TwoSumSolution
 {
     // The textbook O(n^2) scan of every unordered pair. Correct, and the arm the

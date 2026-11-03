@@ -26,4 +26,13 @@
     <ProjectReference Include="..\DSAExperimentation.LeetCode.Catalog\DSAExperimentation.LeetCode.Catalog.csproj" />
   </ItemGroup>
 
+  <!-- The catalog benchmark classes are written at build time, one per solution that names its LeetCode
+       question (ARCHITECTURE 17.13), so the generator runs as an analyzer and is never referenced as
+       an assembly. -->
+  <ItemGroup>
+    <ProjectReference Include="..\DSAExperimentation.Benchmarks.Generators\DSAExperimentation.Benchmarks.Generators.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="DSAExperimentation.Benchmarks.Tests/DSAExperimentation.Benchmarks.Tests.csproj" />
+  <Project Path="DSAExperimentation.Benchmarks.Generators/DSAExperimentation.Benchmarks.Generators.csproj" />
   <Project Path="DSAExperimentation.Benchmarks/DSAExperimentation.Benchmarks.csproj" />
   <Project Path="DSAExperimentation.LeetCode.Catalog.Sync/DSAExperimentation.LeetCode.Catalog.Sync.csproj" />
   <Project Path="DSAExperimentation.LeetCode.Catalog.Sync.Tests/DSAExperimentation.LeetCode.Catalog.Sync.Tests.csproj" />

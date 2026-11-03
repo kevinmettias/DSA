@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.IntervalSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MergeIntervals;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MergeIntervals;
 // Both strategies answer the same question - build the actual merged interval list,
 // not just count it - so IntervalSetTests already covers IntervalSet<TKey>'s own
 // merge invariant; this class only supplies the two ways of reaching LC 56's answer.
+[LeetCodeQuestion("merge-intervals", LeetCodeAnswerOrder.AsWritten)]
 internal static class MergeIntervalsSolution
 {
     // The textbook answer: sort once, O(n log n), then a single linear merge pass.

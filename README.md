@@ -141,5 +141,6 @@ reading an old file rather than something checked.
 | `DSAExperimentation.LeetCode.Catalog` | What LeetCode says about every covered problem - difficulty, contest rating, acceptance rate, topics, link, signature, constraints - and every case the harnesses run, read from the checked-in `Snapshot/` |
 | `DSAExperimentation.LeetCode.Catalog.Sync` | The command-line tool that refreshes `Snapshot/` from leetcode.com, zerotrac's contest ratings and LeetCodeDataset; run weekly by `.github/workflows/leetcode-catalog-sync.yml` |
 | `DSAExperimentation.LeetCode.Catalog.Tests`, `DSAExperimentation.LeetCode.Catalog.Sync.Tests` | The catalog's and the sync tool's own tests, offline, and checks over the whole snapshot |
-| `DSAExperimentation.Benchmarks` | BenchmarkDotNet suites, one per problem, plus strategy-swap comparisons |
+| `DSAExperimentation.Benchmarks` | BenchmarkDotNet suites, one per problem, plus strategy-swap comparisons, and a generated `<Problem>CatalogBenchmarks` class timing every catalog case for each solution that names its LeetCode question |
+| `DSAExperimentation.Benchmarks.Generators` | The source generator that writes those catalog benchmark classes at build time (ARCHITECTURE §17.13) |
 | `DSAExperimentation.Benchmarks.Tests` | Checks that benchmark arms agree and that their workloads are reproducible |

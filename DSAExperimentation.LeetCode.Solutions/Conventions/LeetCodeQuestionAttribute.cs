@@ -1,0 +1,22 @@
+namespace DSAExperimentation.LeetCode.Solutions.Conventions;
+
+// Names the LeetCode question a solution class answers, which enrolls the class in the catalog harness
+// (ARCHITECTURE 17.13): a benchmark class is generated for it at build time that times every strategy
+// over every case the LeetCode catalog holds for the question, and its answers are judged against the
+// catalog's. What it carries are the problem's own facts - which question, whether its answer's order
+// is free, and the type stating a promise a generated case can break - never a workload or a size,
+// which are measurement decisions and stay in the benchmarks (17.7). It is data: nothing in this tier
+// reads the catalog.
+[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+internal sealed class LeetCodeQuestionAttribute(string titleSlug, LeetCodeAnswerOrder answerOrder) : Attribute
+{
+    // The question's slug on leetcode.com, which keys it in the catalog.
+    public string TitleSlug { get; } = titleSlug;
+
+    public LeetCodeAnswerOrder AnswerOrder { get; } = answerOrder;
+
+    // A static class whose IsKeptBy takes a strategy's inputs and says whether a case keeps a promise
+    // the statement makes in prose, as TwoSumPromise does; null when the statement makes none that a
+    // generated case can break.
+    public Type? Promise { get; set; }
+}

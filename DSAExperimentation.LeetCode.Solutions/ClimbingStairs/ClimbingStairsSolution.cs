@@ -1,10 +1,12 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ClimbingStairs;
 
 // LeetCode 70. Climbing Stairs: ways(n) = ways(n-1) + ways(n-2), the same shape as
 // Fibonacci - natural-looking recursion via this repo's Memoizer, no hand-rolled
 // cache.
+[LeetCodeQuestion("climbing-stairs", LeetCodeAnswerOrder.AsWritten)]
 internal static class ClimbingStairsSolution
 {
     // The textbook arm the memoized recurrence is measured against: the identical

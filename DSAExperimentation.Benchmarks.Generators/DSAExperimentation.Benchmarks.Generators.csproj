@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- A source generator runs inside the compiler, which loads only netstandard2.0 analyzers, so this
+       project overrides the workspace's net10.0 and asks for the current language explicitly (a
+       netstandard2.0 project otherwise defaults to C# 7.3). The extended analyzer rules keep it to the
+       APIs a compiler host allows. RS2008 asks for analyzer release-tracking files, which exist for a
+       shipped analyzer package; this one ships nowhere but the benchmarks build. -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <IsRoslynComponent>true</IsRoslynComponent>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <IsPackable>false</IsPackable>
+    <NoWarn>$(NoWarn);RS2008</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="DSAExperimentation.Benchmarks.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

@@ -1348,7 +1348,7 @@ Bottom to top. The first three are peers, and every tier above them reads only t
 | 3. Domain | `DSAExperimentation/Domain/**` | What a problem says about its world, pulled out of the problems that say it: models, rules, constants (§17.6) |
 | Mechanisms | `DSAExperimentation/Mechanisms/**` | State run by a rule of its own that the caller observes — dropping what no caller named, or handing out what the caller never stored: the LRU and LFU caches, keys that expire, and an allocator of the smallest free number (§17.6b) |
 | 4. LeetCode solutions | `DSAExperimentation.LeetCode.Solutions/**` (own project) | One folder per problem, every strategy for it; at the root, LeetCode's own notation and answer rules |
-| 5. Harnesses | `DSAExperimentation.Tests/**` (the library's tiers), `DSAExperimentation.LeetCode.Solutions.Tests/**` (tier 4), `DSAExperimentation.Benchmarks/**` | Assertions and measurement, nothing else |
+| 5. Harnesses | `DSAExperimentation.Tests/**` (the library's tiers), `DSAExperimentation.LeetCode.Solutions.Tests/**` (tier 4), `DSAExperimentation.Benchmarks/**`, and `DSAExperimentation.Benchmarks.Generators/**`, which writes the catalog benchmark classes at build time (§17.13) | Assertions and measurement, nothing else |
 | LeetCode catalog | `DSAExperimentation.LeetCode.Catalog/**` (own project), written only by `DSAExperimentation.LeetCode.Catalog.Sync` | What LeetCode says about each covered problem, and every case a harness runs on it, as a checked-in snapshot (§17.12). It reads no tier, and only harnesses read it |
 
 Domain is a peer of DataStructures and Algorithms, not a tier above them. The owner ruled it as
@@ -2030,8 +2030,9 @@ Open items:
 
 ### 17.11 What every harness shares: `Conventions/`
 
-There is one harness shape: a hand-written test and a hand-written benchmark per problem, over its
-solution class. What they share is LeetCode's own conventions, in
+A problem's harness is a hand-written test and a hand-written benchmark over its solution class, with
+one exception: its benchmark of the catalog's cases is generated from its solution's
+`LeetCodeQuestionAttribute` (§17.13). What they share is LeetCode's own conventions, in
 `DSAExperimentation.LeetCode.Solutions/Conventions/`: `LeetCodeWireFormat` (LeetCode's array notation for
 trees and lists, both directions) and `LeetCodeAnswers` (its answer-equality rules — exact,
 sequence, any-order, rows-in-any-order, within tolerance). A test or benchmark that needs either
@@ -2088,15 +2089,127 @@ folder holds it so both harnesses share one statement, as `TwoSumPromise` does.
 
 - A test builds its `TheoryData` from `Cases(slug)`, reading each input with `Input<T>` in LeetCode's
   notation and converting trees and lists through `LeetCodeWireFormat` (§17.11).
-- A benchmark gains a `<Problem>SuiteBenchmarks` class. Each of its arms runs the solution's
+- A benchmark of the catalog's cases is generated rather than written: a solution that names its
+  question gets a `<Problem>CatalogBenchmarks` class at build time (§17.13). Each of its arms runs a
   strategy over every case per invocation, as LeetCode times a submission across its suite, and
   writes the answers into a buffer sized in `[GlobalSetup]` (§17.8).
-- The suite sits beside the sized workloads, not in place of them. Most catalog cases are small, so
-  the suite shows what a strategy costs on the inputs LeetCode poses, and the sized workloads (§17.7)
+- That workload sits beside the sized workloads, not in place of them. Most catalog cases are small,
+  so it shows what a strategy costs on the inputs LeetCode poses, and the sized workloads (§17.7)
   still show how it grows.
 
 Two Sum, Climbing Stairs and Merge Intervals have moved onto the catalog. The other harnesses still
 write their examples inline.
+
+### 17.13 The catalog harness: benchmark classes generated, not written per problem
+
+**Decided 2026-11-02, at the owner's request.** A problem's catalog workload is timed by a benchmark
+class written at build time, not by a hand-written `<Problem>SuiteBenchmarks`. Rolled out by hand,
+that hand-written class would have been 1,100 more files of the same loop with the names changed.
+What a problem must supply is the knowledge the catalog cannot state, and only that.
+
+**What a problem states.** One attribute on its solution class, beside the strategies it describes:
+
+```csharp
+[LeetCodeQuestion("two-sum", LeetCodeAnswerOrder.AnyOrder, Promise = typeof(TwoSumPromise))]
+internal static class TwoSumSolution
+```
+
+- The question's slug. A folder's name and LeetCode's title disagree for 35 of 1,105 problems, mostly
+  in acronym case (`Xor`, `XOR`), so the slug is stated rather than derived.
+- Whether LeetCode accepts the answer's elements in any order. This is the explicit choice
+  `LeetCodeAnswers` asks for (§17.11), and it is never a default.
+- The type that states a prose promise a generated case can break (§17.12), when there is one.
+
+All three are facts about the problem. The attribute names no size and no workload: the catalog's
+cases are the inputs LeetCode poses, and choosing sizes stays a tier-5 decision (§17.7). Being data,
+the attribute keeps tier 4 off the machine (§17.6c). Nothing in the solutions project reads the
+catalog.
+
+**What is generated.** `DSAExperimentation.Benchmarks.Generators` is a source generator the
+benchmarks project runs as an analyzer. It writes one `<Problem>CatalogBenchmarks` class per
+enrolled solution. They are filed in `ProblemSolutions` beside the hand-written problem benchmarks, so a
+run of that category times both, and `--filter '*CatalogBenchmarks*'` selects the generated ones alone.
+
+- Every strategy (§17.3) becomes an arm, and the first declared is the baseline.
+- `[GlobalSetup]` reads the cases into typed column arrays through `CatalogColumns`. That conversion
+  out of LeetCode's notation is paid once, never inside the timed loop. `NotationReader` holds the
+  rules: scalars, arrays, tuples from `[start, end]` rows, and trees and lists through
+  `LeetCodeWireFormat`.
+- Each arm copies its columns into locals and calls the strategy directly in a `for` loop, writing
+  each answer into a buffer (§17.8).
+- A `Try` strategy's answer is its return value gathered with its out parameters, as Two Sum's
+  `(found, first, second)`.
+- A strategy no arm can call fails the build with `DSACAT001`, naming why. It may be generic, answer
+  in place, or take a type the notation cannot be read into. Leaving it out instead would show an
+  enrolled solution as measured when one of its strategies was not.
+
+**Why generated, and not one class driven by parameters.** A single class whose arm is a
+`[ParamsSource]` value would call each strategy through a delegate or reflection. That breaks the
+static-dispatch rule this repo measures by, and it would lose everything the runner keys on a class:
+
+- `LibraryCategoryDiscoverer` reads categories from an arm's IL, which a reflective call hides;
+- `--filter` selects by class and method name;
+- the ratio column needs a `Baseline` arm within a class;
+- `BenchmarkArmsTests` and `ArmAgreement` are per class.
+
+A generated class is ordinary C#, so all of them apply unchanged.
+
+**How it answers the registry harness's retirement** (ARCHITECTURE-HISTORY §17.11):
+
+- *Nobody adopted it:* only ten registrations ever existed, and each problem kept its hand-written
+  classes as well. Here, enrolling is one line, and the hand-written suite classes were deleted, not
+  kept beside it.
+- *It sized workloads in tier 4:* the attribute carries no size, as above.
+- *It duplicated a check that already held everywhere:* `CatalogBenchmarksTests` judges every arm
+  of every generated class against the catalog's recorded output, by the question's order rule. That
+  is the pinning §17.9 asks of a harness test, which `<Problem>BenchmarksTests` did one class at a
+  time. It also checks that the generated classes are exactly the enrolled solutions'.
+  `BenchmarkArmsTests` holds them, like any class, to reproducing their workload and answers.
+
+**Checked.**
+
+- Every arm of the three generated classes answers every catalog case as recorded.
+- Two mutations, each run on an isolated copy, fail that judge and name the arm, the input and both
+  answers: a Climbing Stairs arm off by one, and Two Sum enrolled without its promise.
+- Measured against the hand-written suite classes it replaced, in one BenchmarkDotNet run of both, two
+  passes (2026-11-02):
+  - every arm allocated the same bytes;
+  - generated time over hand-written ranged 0.86 to 1.17, with the sign flipping between passes for
+    four of the six arms;
+  - the hand-written arms alone moved 9 to 14% between the two passes on identical code.
+
+  No difference showed beyond that spread. The hand-written classes were deleted.
+
+**Reach.** Of 1,105 solutions, 885 could enroll as they stand: every strategy has one overload a
+case can feed. That count is by shape only. Whether their answers match the catalog is what
+enrolling would show. The rest:
+
+| Blocker | Solutions |
+| --- | --- |
+| Design questions (a call script, not one function) | 92 |
+| A domain-typed parameter such as `SourceText` or `Haystack`, which the reader does not know | 51 |
+| A folder that differs from LeetCode's title (an explicit slug resolves it) | 35 |
+| Answers in place | 16 |
+| A judge-only input, such as Linked List Cycle's `pos` | 13 |
+| Several overloads that each bind | 12 |
+
+Open items:
+
+- **The sized workloads.** It is not yet decided whether the 1,026 hand-written `[Params]` classes
+  stay as they are or become per-problem workload declarations the generator also consumes.
+- **The solutions' own tests.** A per-problem `SolutionTests` that reads catalog cases repeats what
+  `CatalogBenchmarksTests` now checks. Moving that check onto the solution side needs two things.
+  First, a harness library outside the solutions project, since §17.6c keeps the catalog read out of
+  tier 4. Second, a decision that enrollment satisfies `LeetCodeStrategyCoverageTests`' rule of one
+  test method per strategy.
+- **Enrolling the rest** is a campaign of its own. Each problem needs its answer order and any
+  promise read from its statement. An exponential baseline may also need a case limit before the
+  dataset's largest inputs run through it.
+- **Shapes the generator refuses.** Design problems, in-place answers, judge-only inputs,
+  tolerance-compared answers and any-valid-answer judges each need a rule before their problems can
+  enroll.
+- **`ArmAgreement`** does not yet read `LeetCodeAnswerOrder`. An any-order class whose arms answer
+  in different orders would need an entry there, which repeats a fact the attribute already states.
 
 ## 18. Testing policy: every tier tests itself
 
