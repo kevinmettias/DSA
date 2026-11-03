@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Connectivity;
 using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountIslandsWithTotalValueDivisibleByK;
@@ -11,8 +12,6 @@ namespace DSAExperimentation.LeetCode.Solutions.CountIslandsWithTotalValueDivisi
 [LeetCodeQuestion("count-islands-with-total-value-divisible-by-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountIslandsWithTotalValueDivisibleByKSolution
 {
-    private static readonly (int DeltaRow, int DeltaCol)[] Orthogonal = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // The textbook flood fill: a hand-rolled BCL Stack<T> and a visited bool[,],
     // walking one island at a time - the arm the component reduce below has to
     // justify itself against.
@@ -62,7 +61,7 @@ internal static class CountIslandsWithTotalValueDivisibleByKSolution
     private static void PushUnvisitedNeighbors(
         int[][] grid, bool[,] visited, Stack<(int Row, int Col)> pending, (int Row, int Col) cell)
     {
-        foreach (var (deltaRow, deltaCol) in Orthogonal)
+        foreach (var (deltaRow, deltaCol) in GridDirections.Orthogonal)
         {
             var nextRow = cell.Row + deltaRow;
             var nextCol = cell.Col + deltaCol;

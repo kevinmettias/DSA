@@ -3,6 +3,7 @@ using System.Numerics;
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfMovesToKillAllPawns;
 
@@ -26,12 +27,6 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfMovesToKillAllPaw
 internal static class MaximumNumberOfMovesToKillAllPawnsSolution
 {
     private const int BoardSize = 50;
-
-    private static readonly (int DeltaRow, int DeltaCol)[] KnightOffsets =
-    [
-        (-2, -1), (-2, 1), (-1, -2), (-1, 2),
-        (1, -2), (1, 2), (2, -1), (2, 1),
-    ];
 
     // Textbook baseline: a BCL Queue-based BFS per point of interest for the
     // distance matrix (no repo topology/traversal primitives), and a hand-rolled
@@ -99,7 +94,7 @@ internal static class MaximumNumberOfMovesToKillAllPawnsSolution
         {
             var (row, col) = frontier.Dequeue();
 
-            foreach (var (deltaRow, deltaCol) in KnightOffsets)
+            foreach (var (deltaRow, deltaCol) in GridDirections.LShaped)
             {
                 var nextRow = row + deltaRow;
                 var nextCol = col + deltaCol;

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 using CellFrontier = DSAExperimentation.DataStructures.Heap.Heap<
@@ -21,8 +22,6 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfPointsFromGridQue
 [LeetCodeQuestion("maximum-number-of-points-from-grid-queries", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumNumberOfPointsFromGridQueriesSolution
 {
-    private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // Baseline: take the problem at its word and re-simulate every query
     // independently - a fresh 4-directional flood fill from (0,0) bounded by that
     // query's threshold, O(QueryCount * Rows * Cols) in total. A hand-rolled BCL
@@ -76,7 +75,7 @@ internal static class MaximumNumberOfPointsFromGridQueriesSolution
         var rows = walk.Cells.Length;
         var cols = walk.Cells[0].Length;
 
-        foreach (var (dRow, dCol) in Directions)
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
         {
             var (nextRow, nextCol) = (cell.Row + dRow, cell.Col + dCol);
 

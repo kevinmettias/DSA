@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrixIV;
@@ -23,6 +24,9 @@ internal static class SpiralMatrixIVSolution
     // real answer with an unfilled cell in it.
     private const int EmptyCell = -1;
 
+    // The walk starts facing right and turns clockwise, along GridDirections.Clockwise.
+    private static readonly int FacingRight = GridDirections.Clockwise.IndexOf(GridStep.Right);
+
     // The textbook answer: a direction vector plus a visited matrix, turning
     // right whenever the next step would leave the grid or revisit a cell.
     // Deliberately written with nothing but BCL arrays - it is the arm
@@ -31,15 +35,14 @@ internal static class SpiralMatrixIVSolution
     {
         var matrix = EmptyMatrix(rowCount, columnCount);
         var visited = new bool[rowCount, columnCount];
-        (int DeltaRow, int DeltaColumn)[] directions = [(0, 1), (1, 0), (0, -1), (-1, 0)];
-        int row = 0, column = 0, direction = 0;
+        int row = 0, column = 0, direction = FacingRight;
 
         for (var node = head; node is not null; node = node.Next)
         {
             matrix[row][column] = node.Value;
             visited[row, column] = true;
             (row, column, direction) =
-                NextSpiralStep((row, column, direction), (visited, directions, rowCount, columnCount));
+                NextSpiralStep((row, column, direction), (visited, rowCount, columnCount));
         }
 
         return matrix;
@@ -50,17 +53,17 @@ internal static class SpiralMatrixIVSolution
     // a cell already written.
     private static (int Row, int Column, int Direction) NextSpiralStep(
         (int Row, int Column, int Direction) cursor,
-        (bool[,] Visited, (int DeltaRow, int DeltaColumn)[] Directions, int Rows, int Columns) grid)
+        (bool[,] Visited, int Rows, int Columns) grid)
     {
         var (row, column, direction) = cursor;
-        var (deltaRow, deltaColumn) = grid.Directions[direction];
+        var (deltaRow, deltaColumn) = GridDirections.Clockwise[direction];
         var nextRow = row + deltaRow;
         var nextColumn = column + deltaColumn;
 
         if (IsOutsideGrid(nextRow, nextColumn, grid.Rows, grid.Columns) || grid.Visited[nextRow, nextColumn])
         {
-            direction = (direction + 1) % grid.Directions.Length;
-            (deltaRow, deltaColumn) = grid.Directions[direction];
+            direction = GridDirections.TurnRight(direction);
+            (deltaRow, deltaColumn) = GridDirections.Clockwise[direction];
             nextRow = row + deltaRow;
             nextColumn = column + deltaColumn;
         }

@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Devices.Compass;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.Tests.Domain.Devices.Compass;
 
@@ -48,6 +49,14 @@ public sealed partial class CompassRulesTests
     [Fact]
     public void StepOf_EveryPoint_IsThatPointsOwnStep() =>
         Assert.All(CompassRules.Points, point => Assert.Equal(point.Step, CompassRules.StepOf(point.Heading)));
+
+    // A heading's number is its step's index in the square lattice's turning cycle, read north up,
+    // which is what lets a compass turn be the lattice's turn.
+    [Fact]
+    public void StepOf_EachHeading_IsTheClockwiseStepAtItsNumberReadNorthUp() =>
+        Assert.All(Enum.GetValues<CompassHeading>(), heading => Assert.Equal(
+            CompassStep.From(GridDirections.Clockwise[(int)heading]),
+            CompassRules.StepOf(heading)));
 
     [Fact]
     public void HeadingCount_IsTheNumberOfPoints() => Assert.Equal(CompassRules.HeadingCount, CompassRules.Points.Length);

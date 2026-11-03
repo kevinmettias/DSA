@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Games.Chess;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumMovesToCaptureTheQueen;
 
@@ -15,26 +16,25 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumMovesToCaptureTheQueen;
 // the way RookSquare already does for LC 999.
 //
 // Only the baseline walks the board, so it alone needs the board's size and the
-// pieces' lines; they are chess's (Domain/Games/Chess): it reads the board's size there
-// and keeps its own copies of the lines (ARCHITECTURE §17.5). The line-of-sight arm's
-// same-line tests are grid geometry with no second user, so they stay below.
+// pieces' lines, and it reads both from chess (Domain/Games/Chess, ARCHITECTURE §17.5):
+// the rook's and the bishop's moves. It walks them as a span: handed the ImmutableArray
+// itself, the walk read 12-13% slower at 100,000 queries, and as a span it is within the
+// drift identical code shows. The line-of-sight arm's same-line tests are grid geometry
+// with no second user, so they stay below.
 internal static class MinimumMovesToCaptureTheQueenSolution
 {
-    private static readonly (int DeltaRow, int DeltaCol)[] RookDirections = [(1, 0), (-1, 0), (0, 1), (0, -1)];
-    private static readonly (int DeltaRow, int DeltaCol)[] BishopDirections = [(1, 1), (1, -1), (-1, 1), (-1, -1)];
-
     // The textbook baseline: simulate every square each sliding piece could
     // actually land on - walking outward in all 4 legal directions until the
     // board edge or the other piece blocks the ray - and check whether the queen
     // is among them. The arm the direct line-of-sight check below has to beat.
     public static int MinMovesByDestinationEnumeration(ChessSquare rook, ChessSquare bishop, ChessSquare queen)
     {
-        if (CanReachAnySquare(rook, RookDirections, bishop, queen))
+        if (CanReachAnySquare(rook, ChessPiece.Rook.Moves.AsSpan(), bishop, queen))
         {
             return 1;
         }
 
-        if (CanReachAnySquare(bishop, BishopDirections, rook, queen))
+        if (CanReachAnySquare(bishop, ChessPiece.Bishop.Moves.AsSpan(), rook, queen))
         {
             return 1;
         }
@@ -43,7 +43,7 @@ internal static class MinimumMovesToCaptureTheQueenSolution
     }
 
     private static bool CanReachAnySquare(
-        ChessSquare from, (int DeltaRow, int DeltaCol)[] directions, ChessSquare blocker, ChessSquare target)
+        ChessSquare from, ReadOnlySpan<GridStep> directions, ChessSquare blocker, ChessSquare target)
     {
         foreach (var direction in directions)
         {
@@ -59,7 +59,7 @@ internal static class MinimumMovesToCaptureTheQueenSolution
     // One ray outward from the piece, stepping until the board edge or the blocking
     // piece stops it: does it stand on the target before either of those happens?
     private static bool IsTargetOnRay(
-        ChessSquare from, ChessSquare blocker, ChessSquare target, (int DeltaRow, int DeltaCol) direction)
+        ChessSquare from, ChessSquare blocker, ChessSquare target, GridStep direction)
     {
         var row = from.Row + direction.DeltaRow;
         var col = from.Col + direction.DeltaCol;

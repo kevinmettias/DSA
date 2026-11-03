@@ -24,10 +24,11 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfValidMoveCombinationsOnC
 // existing choose/explore/unchoose contract, so both the Move choice and the shared
 // mutable State live here beside the solution (ARCHITECTURE.md #17.3).
 //
-// The board and each piece's lines are chess's (Domain/Games/Chess): the backtracking arm
-// reads both, and the cartesian-product baseline reads the board's size and keeps its
-// own copies of the lines below (ARCHITECTURE §17.5). The piece names and the 1-based
-// squares are LeetCode's.
+// The board and each piece's lines are chess's (Domain/Games/Chess), and both arms read
+// them there (ARCHITECTURE §17.5), through one lookup from LeetCode's piece name to the
+// piece's lines and one test of the 1-based board. The answer is a count, so the order a
+// piece's lines are listed in does not change it. The piece names and the 1-based squares
+// are LeetCode's.
 internal static class NumberOfValidMoveCombinationsOnChessboardSolution
 {
     // LeetCode's names for the pieces.
@@ -35,10 +36,6 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
     private const string BishopPieceType = "bishop";
     private const string QueenPieceType = "queen";
     private const string UnknownPieceTypeMessage = "Unknown piece type.";
-
-    private static readonly (int DRow, int DCol)[] RookDirections = [(1, 0), (-1, 0), (0, 1), (0, -1)];
-    private static readonly (int DRow, int DCol)[] BishopDirections = [(1, 1), (1, -1), (-1, 1), (-1, -1)];
-    private static readonly (int DRow, int DCol)[] QueenDirections = [.. RookDirections, .. BishopDirections];
 
     // The textbook answer: enumerate each piece's moves independently, form the full
     // cartesian product by plain recursion, and pairwise-validate each assembled
@@ -61,9 +58,9 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
     {
         var moves = new List<Move> { new(0, 0, 0) };
 
-        foreach (var (dRow, dCol) in DirectionsFor(pieceType))
+        foreach (var (dRow, dCol) in LinesFor(pieceType))
         {
-            for (var distance = 1; IsOnBoard(start[0] + (dRow * distance), start[1] + (dCol * distance)); distance++)
+            for (var distance = 1; IsOnChessBoard(start[0] + (dRow * distance), start[1] + (dCol * distance)); distance++)
             {
                 moves.Add(new Move(dRow, dCol, distance));
             }
@@ -71,16 +68,6 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
 
         return moves;
     }
-
-    private static (int DRow, int DCol)[] DirectionsFor(string pieceType) => pieceType switch
-    {
-        RookPieceType => RookDirections,
-        BishopPieceType => BishopDirections,
-        QueenPieceType => QueenDirections,
-        _ => throw new ArgumentOutOfRangeException(nameof(pieceType), pieceType, UnknownPieceTypeMessage),
-    };
-
-    private static bool IsOnBoard(int row, int col) => row is >= 1 and <= ChessRules.BoardSize && col is >= 1 and <= ChessRules.BoardSize;
 
     // This repo's own backtracking engine: Candidates for the next piece only offers
     // (direction, distance) moves whose full simultaneous-movement trajectory never
@@ -134,7 +121,7 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
         }
     }
 
-    // The backtracking arm's lines and board, chess's own; LeetCode numbers squares from 1.
+    // Each arm's lines and board, chess's own; LeetCode numbers squares from 1.
     private static ImmutableArray<GridStep> LinesFor(string pieceType) => pieceType switch
     {
         RookPieceType => ChessPiece.Rook.Moves,

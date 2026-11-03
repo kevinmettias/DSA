@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.LeetCode.Solutions.UniquePathsIII;
 
@@ -17,8 +18,6 @@ internal static class UniquePathsIIISolution
     private const int StartCellMarker = 1;
     private const int EndCellMarker = 2;
     private const int ObstacleMarker = -1;
-
-    private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
     // The textbook answer: a plain recursive walk that marks a visited square by
     // writing ObstacleMarker over it and restores the original value as the recursion
@@ -136,7 +135,7 @@ internal static class UniquePathsIIISolution
     {
         var count = 0;
 
-        foreach (var (dRow, dCol) in Directions)
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
         {
             var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
 
@@ -191,7 +190,7 @@ internal static class UniquePathsIIISolution
 
         public IEnumerable<(int Row, int Col)> Candidates()
         {
-            foreach (var (dRow, dCol) in Directions)
+            foreach (var (dRow, dCol) in GridDirections.Orthogonal)
             {
                 var row = Row + dRow;
                 var col = Col + dCol;

@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindASafeWalkThroughAGrid;
@@ -25,8 +26,6 @@ namespace DSAExperimentation.LeetCode.Solutions.FindASafeWalkThroughAGrid;
 [LeetCodeQuestion("find-a-safe-walk-through-a-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindASafeWalkThroughAGridSolution
 {
-    private static readonly (int DeltaRow, int DeltaCol)[] Orthogonal = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // Textbook baseline: Dijkstra with a plain O(V) linear scan for the next
     // unsettled minimum instead of a heap, over a flat int[] distance array - no
     // repo primitives at all.
@@ -99,7 +98,7 @@ internal static class FindASafeWalkThroughAGridSolution
         var row = current / size.Cols;
         var col = current % size.Cols;
 
-        foreach (var (deltaRow, deltaCol) in Orthogonal)
+        foreach (var (deltaRow, deltaCol) in GridDirections.Orthogonal)
         {
             var nextRow = row + deltaRow;
             var nextCol = col + deltaCol;
@@ -194,7 +193,7 @@ internal static class FindASafeWalkThroughAGridSolution
     {
         foreach (var ((row, col), node) in nodes)
         {
-            foreach (var (deltaRow, deltaCol) in Orthogonal)
+            foreach (var (deltaRow, deltaCol) in GridDirections.Orthogonal)
             {
                 var neighborRow = row + deltaRow;
                 var neighborCol = col + deltaCol;

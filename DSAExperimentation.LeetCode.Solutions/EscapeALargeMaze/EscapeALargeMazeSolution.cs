@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.EscapeALargeMaze;
@@ -31,8 +32,6 @@ namespace DSAExperimentation.LeetCode.Solutions.EscapeALargeMaze;
 internal static class EscapeALargeMazeSolution
 {
     private const int PairCountDivisor = 2; // n choose 2: n * (n - 1) / PairCountDivisor
-    private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
-
     // The textbook answer: the capped search from each end as a BCL breadth-first walk,
     // the arm the composed traversal below is measured against (ARCHITECTURE 17.5).
     public static bool CanEscapeByCappedBreadthFirstSearch(int[][] blockedCells, int[] source, int[] target) =>
@@ -87,9 +86,9 @@ internal static class EscapeALargeMazeSolution
         HashSet<(int Row, int Col)> seen,
         Queue<(int Row, int Col)> frontier)
     {
-        foreach (var direction in Directions)
+        foreach (var direction in GridDirections.Orthogonal)
         {
-            var next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
+            var next = (Row: cell.Row + direction.DeltaRow, Col: cell.Col + direction.DeltaCol);
 
             if (IsOpenCell(next, board) && seen.Add(next))
             {
@@ -154,8 +153,9 @@ internal static class EscapeALargeMazeSolution
             yield break;
         }
 
-        foreach (var direction in Directions)
+        for (var line = 0; line < GridDirections.Orthogonal.Length; line++)
         {
+            var direction = GridDirections.Orthogonal[line];
             if (TryGetOpenNeighbor(cell, direction, board, out var next))
             {
                 yield return next;
@@ -165,11 +165,11 @@ internal static class EscapeALargeMazeSolution
 
     private static bool TryGetOpenNeighbor(
         (int Row, int Col) cell,
-        (int DRow, int DCol) direction,
+        GridStep direction,
         (Set<(int Row, int Col)> Blocked, int Size) board,
         out (int Row, int Col) next)
     {
-        next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
+        next = (Row: cell.Row + direction.DeltaRow, Col: cell.Col + direction.DeltaCol);
 
         return IsInBounds(next.Row, next.Col, board.Size) && !board.Blocked.Has(next);
     }

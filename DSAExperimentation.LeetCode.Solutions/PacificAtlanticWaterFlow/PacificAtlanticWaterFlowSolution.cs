@@ -21,8 +21,6 @@ namespace DSAExperimentation.LeetCode.Solutions.PacificAtlanticWaterFlow;
 [LeetCodeQuestion("pacific-atlantic-water-flow", LeetCodeAnswerOrder.AsWritten)]
 internal static class PacificAtlanticWaterFlowSolution
 {
-    private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
-
     // The textbook answer: for every cell, independently DFS downhill toward each
     // ocean's border with a freshly-allocated visited grid - O(rows*cols) work
     // times rows*cols starting cells. Deliberately written without this repo's
@@ -153,7 +151,7 @@ internal static class PacificAtlanticWaterFlowSolution
 
     private static bool TryReachAnyDirection(int row, int col, DownhillSearch search)
     {
-        foreach (var direction in Directions)
+        foreach (var direction in GridDirections.Orthogonal)
         {
             if (TryReachViaDirection((row, col), direction, search))
             {
@@ -165,10 +163,10 @@ internal static class PacificAtlanticWaterFlowSolution
     }
 
     private static bool TryReachViaDirection(
-        (int Row, int Col) from, (int DRow, int DCol) direction, DownhillSearch search)
+        (int Row, int Col) from, GridStep direction, DownhillSearch search)
     {
-        var nextRow = from.Row + direction.DRow;
-        var nextCol = from.Col + direction.DCol;
+        var nextRow = from.Row + direction.DeltaRow;
+        var nextCol = from.Col + direction.DeltaCol;
 
         if (!CanStepTo(search.Heights, from, (nextRow, nextCol), search.Visited))
         {

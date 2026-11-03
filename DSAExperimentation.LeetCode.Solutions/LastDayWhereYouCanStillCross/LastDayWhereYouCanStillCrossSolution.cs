@@ -3,6 +3,7 @@ using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.LeetCode.Solutions.LastDayWhereYouCanStillCross;
 
@@ -18,8 +19,6 @@ namespace DSAExperimentation.LeetCode.Solutions.LastDayWhereYouCanStillCross;
 // GridTopology.
 internal static class LastDayWhereYouCanStillCrossSolution
 {
-    private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // The textbook baseline: a hand-rolled lo/hi bisection over the same predicate,
     // each probe a Stack-driven flood fill. Deliberately written without this repo's
     // BinarySearch or DepthFirstSearch - it is the arm the sequence strategy has to
@@ -107,7 +106,7 @@ internal static class LastDayWhereYouCanStillCrossSolution
                 return true;
             }
 
-            foreach (var (deltaRow, deltaCol) in Directions)
+            foreach (var (deltaRow, deltaCol) in GridDirections.Orthogonal)
             {
                 var next = (Row: cell.Row + deltaRow, Col: cell.Col + deltaCol);
 

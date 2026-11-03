@@ -38,18 +38,26 @@ public class MinimumMovesToCaptureTheQueenBenchmarks
         }
     }
 
+    // The squares are handed out in the order they were drawn. A HashSet's order follows the
+    // tuples' hashes, which .NET seeds afresh in every process, so each benchmark process gave the
+    // pieces different squares and the same code read up to 23% apart from run to run.
     private static QueenQuery RandomDistinctSquares(Random random)
     {
-        var squares = new HashSet<(int Row, int Col)>();
+        var squares = new List<(int Row, int Col)>(PieceCount);
 
         while (squares.Count < PieceCount)
         {
-            squares.Add((random.Next(1, ChessRules.BoardSize + 1), random.Next(1, ChessRules.BoardSize + 1)));
+            var square = (random.Next(1, ChessRules.BoardSize + 1), random.Next(1, ChessRules.BoardSize + 1));
+            var isNewSquare = !squares.Contains(square);
+
+            if (isNewSquare)
+            {
+                squares.Add(square);
+            }
         }
 
-        var picked = squares.ToArray();
         return new QueenQuery(
-            picked[0].Row, picked[0].Col, picked[1].Row, picked[1].Col, picked[2].Row, picked[2].Col);
+            squares[0].Row, squares[0].Col, squares[1].Row, squares[1].Col, squares[2].Row, squares[2].Col);
     }
 
     [Benchmark(Baseline = true)]

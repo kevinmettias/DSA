@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.PathWithMinimumEffort;
@@ -25,8 +26,6 @@ namespace DSAExperimentation.LeetCode.Solutions.PathWithMinimumEffort;
 [LeetCodeQuestion("path-with-minimum-effort", LeetCodeAnswerOrder.AsWritten)]
 internal static class PathWithMinimumEffortSolution
 {
-    private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // Deliberately written without this repo's primitives - a plain BCL
     // Queue<(int,int)> reachability scan per candidate effort is what you would
     // write without this repo. The search range is bounded by the grid's own
@@ -95,7 +94,7 @@ internal static class PathWithMinimumEffortSolution
     private static void EnqueueReachableNeighbors(
         EffortGrid grid, int effort, (int Row, int Col) current, ReachWalk reach)
     {
-        foreach (var (dr, dc) in Directions)
+        foreach (var (dr, dc) in GridDirections.Orthogonal)
         {
             var nr = current.Row + dr;
             var nc = current.Col + dc;
@@ -171,14 +170,14 @@ internal static class PathWithMinimumEffortSolution
 
     private static void RelaxNeighbors(EffortGrid grid, EffortWalk walk, SettledCell current)
     {
-        foreach (var direction in Directions)
+        foreach (var direction in GridDirections.Orthogonal)
         {
             RelaxNeighbor(grid, walk, current, direction);
         }
     }
 
     private static void RelaxNeighbor(
-        EffortGrid grid, EffortWalk walk, SettledCell current, (int Row, int Col) direction)
+        EffortGrid grid, EffortWalk walk, SettledCell current, GridStep direction)
     {
         var (nr, nc) = NeighborOf(current, direction);
 
@@ -199,8 +198,8 @@ internal static class PathWithMinimumEffortSolution
 
     // The cell one step from `current` along `direction`, named before it is known to
     // be on the grid at all.
-    private static (int Row, int Col) NeighborOf(SettledCell current, (int Row, int Col) direction) =>
-        (current.Row + direction.Row, current.Col + direction.Col);
+    private static (int Row, int Col) NeighborOf(SettledCell current, GridStep direction) =>
+        (current.Row + direction.DeltaRow, current.Col + direction.DeltaCol);
 
     private readonly record struct EffortGrid(int[][] Heights, int Rows, int Cols)
     {

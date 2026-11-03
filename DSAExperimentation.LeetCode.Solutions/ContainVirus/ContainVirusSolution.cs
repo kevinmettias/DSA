@@ -15,8 +15,6 @@ namespace DSAExperimentation.LeetCode.Solutions.ContainVirus;
 [LeetCodeQuestion("contain-virus", LeetCodeAnswerOrder.AsWritten)]
 internal static class ContainVirusSolution
 {
-    private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // Both strategies are stateless, so one instance each serves every call and the
     // benchmark arms that measure these two methods allocate nothing to pick one.
     private static readonly IRegionCollector NaiveRecursiveFloodFill = new RegionByNaiveRecursiveFloodFill();
@@ -85,7 +83,7 @@ internal static class ContainVirusSolution
 
         cells.Add(cell);
 
-        foreach (var (dRow, dCol) in Directions)
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
         {
             Flood(grid, (cell.Row + dRow, cell.Col + dCol), visited, cells);
         }
@@ -215,10 +213,13 @@ internal static class ContainVirusSolution
         }
     }
 
+    // An iterator, so the steps are read by index: an ImmutableArray's enumerator would be kept in the
+    // iterator's object and make each call's allocation larger.
     private static IEnumerable<(int Row, int Col)> FourNeighbors((int Row, int Col) cell, int[][] grid)
     {
-        foreach (var (dRow, dCol) in Directions)
+        for (var line = 0; line < GridDirections.Orthogonal.Length; line++)
         {
+            var (dRow, dCol) = GridDirections.Orthogonal[line];
             var candidate = (Row: cell.Row + dRow, Col: cell.Col + dCol);
 
             if (IsInBounds(candidate, grid))

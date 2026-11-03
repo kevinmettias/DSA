@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.ShortestPaths.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindMinimumTimeToReachLastRoomI;
@@ -17,8 +18,6 @@ namespace DSAExperimentation.LeetCode.Solutions.FindMinimumTimeToReachLastRoomI;
 [LeetCodeQuestion("find-minimum-time-to-reach-last-room-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindMinimumTimeToReachLastRoomISolution
 {
-    private static readonly (int DRow, int DCol)[] Directions = [(0, 1), (0, -1), (1, 0), (-1, 0)];
-
     // Baseline: the textbook Dijkstra over the rooms - a BCL PriorityQueue frontier,
     // a Dictionary of best arrivals and a HashSet of settled rooms, with the wait
     // written inline - "what you'd write without this repo" (ARCHITECTURE.md 17.5).
@@ -49,7 +48,7 @@ internal static class FindMinimumTimeToReachLastRoomISolution
     // where you stand until its moveTime, then take the one second the move costs.
     private static void OfferNeighbours(RoomSearch search, (int Row, int Col) room, int time)
     {
-        foreach (var (dRow, dCol) in Directions)
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
         {
             var next = (Row: room.Row + dRow, Col: room.Col + dCol);
 

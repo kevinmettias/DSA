@@ -14,6 +14,27 @@ public sealed partial class MinimumMovesToCaptureTheQueenSolutionTests
             { new QueenExample(Rook: (5, 3), Bishop: (3, 4), Queen: (5, 2), Expected: 1) },
         };
 
+    // Positions where only one piece's lines reach the queen, which LeetCode's examples do not pin:
+    // in its second example the bishop captures whenever the rook does. The rook along its column,
+    // the bishop along a diagonal, and the rook's row blocked by the bishop standing in it.
+    public static TheoryData<QueenExample> OnePieceCaptures =>
+        new()
+        {
+            { new QueenExample(Rook: (1, 1), Bishop: (2, 3), Queen: (5, 1), Expected: 1) },
+            { new QueenExample(Rook: (8, 1), Bishop: (3, 3), Queen: (5, 5), Expected: 1) },
+            { new QueenExample(Rook: (1, 1), Bishop: (1, 3), Queen: (1, 5), Expected: 2) },
+        };
+
+    [Theory]
+    [MemberData(nameof(OnePieceCaptures))]
+    public void MinMovesByDestinationEnumeration_OnlyOnePiecesLinesReach_ReturnsFewestMoves(QueenExample example) =>
+        MinMovesByDestinationEnumeration_LeetCodeExamples_ReturnsFewestMoves(example);
+
+    [Theory]
+    [MemberData(nameof(OnePieceCaptures))]
+    public void MinMovesByLineOfSight_OnlyOnePiecesLinesReach_ReturnsFewestMoves(QueenExample example) =>
+        MinMovesByLineOfSight_LeetCodeExamples_ReturnsFewestMoves(example);
+
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinMovesByDestinationEnumeration_LeetCodeExamples_ReturnsFewestMoves(QueenExample example)

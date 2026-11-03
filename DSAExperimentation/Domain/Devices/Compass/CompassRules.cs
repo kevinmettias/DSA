@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.Domain.Devices.Compass;
 
@@ -7,11 +8,12 @@ namespace DSAExperimentation.Domain.Devices.Compass;
 // problems' *what* (ARCHITECTURE §17.6). A step is given as how far it goes east and north, not
 // as (x, y) or (row, col), because the problems disagree on which axis is which: each maps the two
 // onto its own coordinates. How a solution reads its commands and tests a square stay with each
-// strategy; every arm, baselines among them, reads the headings, turns and steps here (§17.5). GridDirections' tables are not headings:
-// a heading's order is a turning cycle, not a neighbour set.
+// strategy; every arm, baselines among them, reads the headings, turns and steps here (§17.5).
 //
-// The heading count is a power of two, so a turn wraps with a mask rather than a %, whose signed
-// form costs a sign fix-up. A step is read from a table by the heading's number rather than
+// The headings are the square lattice's turning cycle, GridDirections.Clockwise, read with north up:
+// a heading's number is its step's index there (North is Up's), so a turn is the lattice's turn and
+// the heading count is its quarter turns (the owner's ruling, 2026-11-03). That count is a power of
+// two, so a turn wraps with a mask rather than a %, whose signed form costs a sign fix-up. A step is read from a table by the heading's number rather than
 // chosen by a switch: the JIT judged a four-way switch unprofitable to inline, so LC 874's step
 // loop made a call per step and ran about 10% slower, where a table read inlines. The table is built
 // from the named points, each step placed at its own point's heading, so the order the points are
@@ -20,10 +22,7 @@ namespace DSAExperimentation.Domain.Devices.Compass;
 public static class CompassRules
 {
     /// <summary>The number of headings, a quarter turn apart.</summary>
-    public const int HeadingCount = 4;
-
-    // The mask that wraps a heading's number at HeadingCount.
-    private const int HeadingMask = HeadingCount - 1;
+    public const int HeadingCount = GridStep.QuarterTurnsPerTurn;
 
     // The cardinal points, the one source the step table is built from, declared first because static
     // initializers run in the order they are written.
@@ -38,12 +37,12 @@ public static class CompassRules
     /// <summary>The heading a quarter turn clockwise of the given one.</summary>
     /// <param name="heading">The heading turned from.</param>
     /// <returns>The heading after turning right.</returns>
-    public static CompassHeading TurnRight(CompassHeading heading) => (CompassHeading)(((int)heading + 1) & HeadingMask);
+    public static CompassHeading TurnRight(CompassHeading heading) => (CompassHeading)GridDirections.TurnRight((int)heading);
 
     /// <summary>The heading a quarter turn anticlockwise of the given one.</summary>
     /// <param name="heading">The heading turned from.</param>
     /// <returns>The heading after turning left.</returns>
-    public static CompassHeading TurnLeft(CompassHeading heading) => (CompassHeading)(((int)heading + HeadingMask) & HeadingMask);
+    public static CompassHeading TurnLeft(CompassHeading heading) => (CompassHeading)GridDirections.TurnLeft((int)heading);
 
     /// <summary>How far one step along a heading goes east and north.</summary>
     /// <param name="heading">The heading stepped along.</param>

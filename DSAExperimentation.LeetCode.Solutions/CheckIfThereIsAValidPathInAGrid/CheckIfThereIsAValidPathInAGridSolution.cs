@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CheckIfThereIsAValidPathInAGrid;
@@ -20,14 +21,14 @@ internal static class CheckIfThereIsAValidPathInAGridSolution
     // The problem's whole content: which two of the four directions each street
     // piece opens toward. Meaningless outside LC 1391, so it lives beside the
     // strategies rather than at the tier's root (ARCHITECTURE.md section 17.3).
-    private static readonly Dictionary<int, (int DRow, int DCol)[]> Openings = new()
+    private static readonly Dictionary<int, GridStep[]> Openings = new()
     {
-        [1] = [(0, -1), (0, 1)],
-        [2] = [(-1, 0), (1, 0)],
-        [3] = [(0, -1), (1, 0)],
-        [4] = [(0, 1), (1, 0)],
-        [5] = [(0, -1), (-1, 0)],
-        [6] = [(0, 1), (-1, 0)],
+        [1] = [GridStep.Left, GridStep.Right],
+        [2] = [GridStep.Up, GridStep.Down],
+        [3] = [GridStep.Left, GridStep.Down],
+        [4] = [GridStep.Right, GridStep.Down],
+        [5] = [GridStep.Left, GridStep.Up],
+        [6] = [GridStep.Right, GridStep.Up],
     };
 
     // The textbook answer: hand-rolled recursive depth-first search over a
@@ -56,7 +57,7 @@ internal static class CheckIfThereIsAValidPathInAGridSolution
     {
         foreach (var direction in Openings[grid[cell.Row][cell.Col]])
         {
-            var next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
+            var next = (Row: cell.Row + direction.DeltaRow, Col: cell.Col + direction.DeltaCol);
 
             if (HasOpeningBackToward(next, direction, grid))
             {
@@ -96,9 +97,9 @@ internal static class CheckIfThereIsAValidPathInAGridSolution
     }
 
     private static bool TryReachCornerViaOpening(
-        (int Row, int Col) cell, (int DRow, int DCol) direction, bool[,] visited, int[][] grid)
+        (int Row, int Col) cell, GridStep direction, bool[,] visited, int[][] grid)
     {
-        var next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
+        var next = (Row: cell.Row + direction.DeltaRow, Col: cell.Col + direction.DeltaCol);
 
         if (!HasOpeningBackToward(next, direction, grid) || visited[next.Row, next.Col])
         {
@@ -112,14 +113,14 @@ internal static class CheckIfThereIsAValidPathInAGridSolution
     // the board and must itself open back along the direction it was entered from.
     // Plain array indexing and Array.IndexOf, so sharing it leaves the baseline's
     // textbook character intact (ARCHITECTURE.md section 17.5).
-    private static bool HasOpeningBackToward((int Row, int Col) next, (int DRow, int DCol) direction, int[][] grid)
+    private static bool HasOpeningBackToward((int Row, int Col) next, GridStep direction, int[][] grid)
     {
         if (!IsOnBoard(next, grid))
         {
             return false;
         }
 
-        return Array.IndexOf(Openings[grid[next.Row][next.Col]], (-direction.DRow, -direction.DCol)) >= 0;
+        return Array.IndexOf(Openings[grid[next.Row][next.Col]], -direction) >= 0;
     }
 
     // Whether the cell lies on the board at all.

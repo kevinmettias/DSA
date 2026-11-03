@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 using BclQueue = System.Collections.Generic.Queue<(int Row, int Col)>;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>;
@@ -27,17 +28,9 @@ internal static class ShortestPathInBinaryMatrixSolution
     // The problem's own cell encoding: 0 is clear ground, 1 is blocked.
     private const int ClearCell = 0;
 
-    // All 8 king moves - diagonal steps are legal in this problem.
-    private static readonly (int DRow, int DCol)[] Directions =
-    [
-        (-1, -1), (-1, 0), (-1, 1),
-        (0, -1), (0, 1),
-        (1, -1), (1, 0), (1, 1),
-    ];
-
     // The textbook answer: a BCL Queue<T> as the frontier and a plain rectangular
     // int grid as the distance map, generating each of the 8 candidate moves on the
-    // fly. Deliberately written without this repo's primitives - it is the arm the
+    // fly from GridDirections.Octilinear, since diagonal steps are legal in this problem. Deliberately written without this repo's primitives - it is the arm the
     // composed strategy below has to justify itself against.
     public static int ShortestPathBinaryMatrixByBclQueue(int[][] grid)
     {
@@ -67,7 +60,7 @@ internal static class ShortestPathInBinaryMatrixSolution
                 return field.Distance[cell.Row, cell.Col];
             }
 
-            foreach (var direction in Directions)
+            foreach (var direction in GridDirections.Octilinear)
             {
                 if (TryRelax(field, cell, direction, out var next))
                 {
@@ -106,7 +99,7 @@ internal static class ShortestPathInBinaryMatrixSolution
                 return field.Distance[cell.Row, cell.Col];
             }
 
-            foreach (var direction in Directions)
+            foreach (var direction in GridDirections.Octilinear)
             {
                 if (TryRelax(field, cell, direction, out var next))
                 {
@@ -144,7 +137,7 @@ internal static class ShortestPathInBinaryMatrixSolution
     // bounds, clear, and not yet reached, records its distance and reports it so the
     // caller can enqueue it. The self-contained relaxation step of both sweeps.
     private static bool TryRelax(
-        PathField field, (int Row, int Col) cell, (int DRow, int DCol) direction, out (int Row, int Col) next)
+        PathField field, (int Row, int Col) cell, GridStep direction, out (int Row, int Col) next)
     {
         var relaxed = RelaxedStepFrom(field, cell, direction);
         next = relaxed.GetValueOrDefault();
@@ -156,9 +149,9 @@ internal static class ShortestPathInBinaryMatrixSolution
     // or nothing when that step is out of bounds, blocked, or already reached, which is
     // also what leaves the caller's `next` at its default.
     private static (int Row, int Col)? RelaxedStepFrom(
-        PathField field, (int Row, int Col) cell, (int DRow, int DCol) direction)
+        PathField field, (int Row, int Col) cell, GridStep direction)
     {
-        var next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
+        var next = (Row: cell.Row + direction.DeltaRow, Col: cell.Col + direction.DeltaCol);
 
         if (!IsRelaxable(field, next.Row, next.Col))
         {

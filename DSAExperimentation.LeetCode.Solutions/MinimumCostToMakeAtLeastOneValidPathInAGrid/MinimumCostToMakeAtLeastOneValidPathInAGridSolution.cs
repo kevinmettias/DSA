@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToMakeAtLeastOneValidPathInAGrid;
@@ -21,7 +22,7 @@ internal static class MinimumCostToMakeAtLeastOneValidPathInAGridSolution
 {
     // Indexed so that Directions[d] is the move the arrow value d + 1 asks for:
     // 1=right, 2=left, 3=down, 4=up.
-    private static readonly (int DRow, int DCol)[] Directions = [(0, 1), (0, -1), (1, 0), (-1, 0)];
+    private static readonly GridStep[] Directions = [GridStep.Right, GridStep.Left, GridStep.Down, GridStep.Up];
 
     // The textbook answer: no priority queue at all, just a distance table that is
     // linear-scanned for the current unsettled minimum every round. Deliberately

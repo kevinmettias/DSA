@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.DetectCyclesIn2DGrid;
@@ -19,8 +20,6 @@ namespace DSAExperimentation.LeetCode.Solutions.DetectCyclesIn2DGrid;
 [LeetCodeQuestion("detect-cycles-in-2d-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class DetectCyclesIn2DGridSolution
 {
-
-    private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
     // The textbook baseline: one explicit-stack DFS per unvisited cell, with
     // visited marks and the parent cell tracked by hand, so a neighbor that is
@@ -57,7 +56,7 @@ internal static class DetectCyclesIn2DGridSolution
         {
             var current = walk.Stack.Pop();
 
-            foreach (var direction in Directions)
+            foreach (var direction in GridDirections.Orthogonal)
             {
                 if (HasCycleAtNeighbor(walk, current, direction))
                 {
@@ -69,10 +68,10 @@ internal static class DetectCyclesIn2DGridSolution
         return false;
     }
 
-    private static bool HasCycleAtNeighbor(CycleWalk walk, Step current, (int DRow, int DCol) direction)
+    private static bool HasCycleAtNeighbor(CycleWalk walk, Step current, GridStep direction)
     {
-        var nextRow = current.Row + direction.DRow;
-        var nextCol = current.Col + direction.DCol;
+        var nextRow = current.Row + direction.DeltaRow;
+        var nextCol = current.Col + direction.DeltaCol;
 
         if (IsOutsideGrid(nextRow, nextCol, walk.Grid.Length, walk.Grid[0].Length))
         {

@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Devices.Compass;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.Tests.Domain.Devices.Compass;
 
@@ -16,4 +17,8 @@ public sealed partial class CompassStepTests
 
     [Fact]
     public void Westward_IsOneUnitWest() => Assert.Equal(new CompassStep(-1, 0), CompassStep.Westward);
+
+    // Rows grow downward on the grid and north is up on the compass, so a step down the rows goes south.
+    [Fact]
+    public void From_AStepDownAndRight_GoesSouthAndEast() => Assert.Equal(new CompassStep(1, -2), CompassStep.From(GridStep.DownDownRight));
 }

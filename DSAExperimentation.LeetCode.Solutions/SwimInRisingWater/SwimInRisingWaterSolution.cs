@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.LeetCode.Solutions.SwimInRisingWater;
 
@@ -16,8 +17,6 @@ namespace DSAExperimentation.LeetCode.Solutions.SwimInRisingWater;
 // answer, re-scanning the whole grid with a fresh BFS per candidate time.
 internal static class SwimInRisingWaterSolution
 {
-    private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // Deliberately written without this repo's primitives - a plain BCL
     // Queue<(int,int)> flood-fill per candidate time is what you would write
     // without this repo.
@@ -87,7 +86,7 @@ internal static class SwimInRisingWaterSolution
     {
         var n = grid.Length;
 
-        foreach (var (dr, dc) in Directions)
+        foreach (var (dr, dc) in GridDirections.Orthogonal)
         {
             var nr = cell.Row + dr;
             var nc = cell.Col + dc;
@@ -161,7 +160,7 @@ internal static class SwimInRisingWaterSolution
         var time = entry.Priority;
         var n = grid.Length;
 
-        foreach (var (dr, dc) in Directions)
+        foreach (var (dr, dc) in GridDirections.Orthogonal)
         {
             var nr = row + dr;
             var nc = col + dc;

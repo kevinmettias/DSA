@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 using RepoCellQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>;
@@ -22,8 +23,6 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheSafestPathInAGrid;
 [LeetCodeQuestion("find-the-safest-path-in-a-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheSafestPathInAGridSolution
 {
-    private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // Baseline: safeness via a hand-rolled multi-source BFS over a BCL
     // Queue<(int,int)>, then binary search over the safeness threshold with a
     // hand-rolled single-source BFS reachability check each step - "what you'd
@@ -58,7 +57,7 @@ internal static class FindTheSafestPathInAGridSolution
         {
             var (row, col) = queue.Dequeue();
 
-            foreach (var (dRow, dCol) in Directions)
+            foreach (var (dRow, dCol) in GridDirections.Orthogonal)
             {
                 var (nextRow, nextCol) = (row + dRow, col + dCol);
 
@@ -156,7 +155,7 @@ internal static class FindTheSafestPathInAGridSolution
         {
             var (row, col) = queue.Dequeue();
 
-            foreach (var (dRow, dCol) in Directions)
+            foreach (var (dRow, dCol) in GridDirections.Orthogonal)
             {
                 var (nextRow, nextCol) = (row + dRow, col + dCol);
 
@@ -231,7 +230,7 @@ internal static class FindTheSafestPathInAGridSolution
     {
         while (frontier.TryDequeue(out var cell))
         {
-            foreach (var (dRow, dCol) in Directions)
+            foreach (var (dRow, dCol) in GridDirections.Orthogonal)
             {
                 var (nextRow, nextCol) = (cell.Row + dRow, cell.Col + dCol);
 

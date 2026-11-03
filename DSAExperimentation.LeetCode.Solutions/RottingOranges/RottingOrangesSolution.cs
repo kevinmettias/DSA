@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>;
 
@@ -21,8 +22,6 @@ internal static class RottingOrangesSolution
     private const int FreshOrangeState = 1;
 
     private const int RottenOrangeState = 2;
-    private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // The naive baseline: a freshly allocated visited grid and BCL Queue per fresh
     // orange, re-walked outward until it reaches a rotten one. Deliberately written
     // without this repo's primitives - it is the arm the composed solution has to
@@ -94,7 +93,7 @@ internal static class RottingOrangesSolution
     private static bool TryExpandCell(
         (int Row, int Col, int Minutes) current, SingleSourceBfsState state, out int rottenMinutes)
     {
-        foreach (var direction in Directions)
+        foreach (var direction in GridDirections.Orthogonal)
         {
             if (TryVisitNeighbor(current, direction, state, out var foundMinutes))
             {
@@ -112,7 +111,7 @@ internal static class RottingOrangesSolution
     // The self-contained per-neighbor step of the BFS above.
     private static bool TryVisitNeighbor(
         (int Row, int Col, int Minutes) current,
-        (int DRow, int DCol) direction,
+        GridStep direction,
         SingleSourceBfsState state,
         out int rottenMinutes)
     {
@@ -129,8 +128,8 @@ internal static class RottingOrangesSolution
 
     // The cell one step from current along direction.
     private static (int Row, int Col) NeighborCell(
-        (int Row, int Col, int Minutes) current, (int DRow, int DCol) direction)
-        => (current.Row + direction.DRow, current.Col + direction.DCol);
+        (int Row, int Col, int Minutes) current, GridStep direction)
+        => (current.Row + direction.DeltaRow, current.Col + direction.DeltaCol);
 
     // Consumes one on-grid, unvisited neighbor of the dequeued cell: a rotten one ends
     // the search with the distance to it, a fresh one joins the frontier at the next
@@ -224,7 +223,7 @@ internal static class RottingOrangesSolution
     // self-contained per-cell step of the multi-source BFS above.
     private static void ExpandRottenCell((int Row, int Col) cell, RotGrid grid, ref BfsProgress progress)
     {
-        foreach (var (dRow, dCol) in Directions)
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
         {
             var nextRow = cell.Row + dRow;
             var nextCol = cell.Col + dCol;

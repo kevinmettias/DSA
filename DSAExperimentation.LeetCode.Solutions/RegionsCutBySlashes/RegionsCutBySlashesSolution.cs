@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.LeetCode.Solutions.RegionsCutBySlashes;
 
@@ -117,13 +118,11 @@ internal static class RegionsCutBySlashesSolution
         stack.Push((startRow, startCol));
         grid.Visited[startRow, startCol] = true;
 
-        Span<(int DeltaRow, int DeltaCol)> directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
         while (stack.Count > 0)
         {
             var (row, col) = stack.Pop();
 
-            foreach (var (deltaRow, deltaCol) in directions)
+            foreach (var (deltaRow, deltaCol) in GridDirections.Orthogonal)
             {
                 VisitNeighborIfOpen(grid, stack, row + deltaRow, col + deltaCol);
             }

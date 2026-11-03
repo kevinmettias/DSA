@@ -28,8 +28,6 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
     // A count taken with no cell removed passes this as the skipped coordinate.
     private static readonly (int Row, int Col) NoSkippedCell = (-1, -1);
 
-    private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
-
     // Both counts are stateless, so one instance each serves every call and neither
     // benchmark arm allocates anything to pick one.
     private static readonly IConnectedComponentCount NaiveCount = new NaiveFloodFillCount();
@@ -136,7 +134,7 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
 
         visited[cell.Row, cell.Col] = true;
 
-        foreach (var (dRow, dCol) in Directions)
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
         {
             FloodFill(scan, visited, (cell.Row + dRow, cell.Col + dCol));
         }

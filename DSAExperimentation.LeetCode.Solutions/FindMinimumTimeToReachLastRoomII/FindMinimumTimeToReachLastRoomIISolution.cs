@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindMinimumTimeToReachLastRoomII;
@@ -21,8 +22,6 @@ namespace DSAExperimentation.LeetCode.Solutions.FindMinimumTimeToReachLastRoomII
 [LeetCodeQuestion("find-minimum-time-to-reach-last-room-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindMinimumTimeToReachLastRoomIISolution
 {
-    private static readonly (int DRow, int DCol)[] Directions = [(0, 1), (0, -1), (1, 0), (-1, 0)];
-
     // Baseline: "what you'd write without this repo" (§17.5) - BCL PriorityQueue.
     public static int MinTimeByBclPriorityQueue(int[][] moveTime)
     {
@@ -126,8 +125,9 @@ internal static class FindMinimumTimeToReachLastRoomIISolution
     private static IEnumerable<(int Row, int Col, int Parity)> Neighbors(
         (int Row, int Col, int Parity) node, int rows, int cols)
     {
-        foreach (var (dRow, dCol) in Directions)
+        for (var line = 0; line < GridDirections.Orthogonal.Length; line++)
         {
+            var (dRow, dCol) = GridDirections.Orthogonal[line];
             var (nextRow, nextCol) = (node.Row + dRow, node.Col + dCol);
 
             if (IsInsideGrid(nextRow, nextCol, rows, cols))

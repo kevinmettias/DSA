@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.MostFrequentPrime;
@@ -18,12 +19,6 @@ internal static class MostFrequentPrimeSolution
     // A generated number only qualifies once it exceeds this LeetCode-defined
     // threshold - single- and some two-digit numbers never count, even if prime.
     private const int MinimumQualifyingValue = 10;
-
-    private static readonly (int RowDelta, int ColDelta)[] Directions =
-    [
-        (-1, 0), (1, 0), (0, -1), (0, 1),
-        (-1, -1), (-1, 1), (1, -1), (1, 1),
-    ];
 
     // Textbook baseline: test every candidate with O(sqrt(value)) trial
     // division. The arm the sieve strategy below has to beat.
@@ -116,12 +111,13 @@ internal static class MostFrequentPrimeSolution
         }
     }
 
-    // Every direction's straight-line walk out of one cell, in the order the eight
-    // directions are listed.
+    // Every direction's straight-line walk out of one cell, in GridDirections.Octilinear's
+    // order. The answer counts the numbers walked, so the order does not change it.
     private static IEnumerable<int> WalkAllDirectionsFrom(int[][] mat, int row, int col)
     {
-        foreach (var direction in Directions)
+        for (var line = 0; line < GridDirections.Octilinear.Length; line++)
         {
+            var direction = GridDirections.Octilinear[line];
             foreach (var value in WalkOneDirection(mat, (row, col), direction))
             {
                 yield return value;
@@ -132,7 +128,7 @@ internal static class MostFrequentPrimeSolution
     // One straight-line walk: keep reading a digit while the cell stays on the grid,
     // yielding the running number as soon as it passes MinimumQualifyingValue.
     private static IEnumerable<int> WalkOneDirection(
-        int[][] mat, (int Row, int Col) origin, (int RowDelta, int ColDelta) direction)
+        int[][] mat, (int Row, int Col) origin, GridStep direction)
     {
         var rows = mat.Length;
         var cols = mat[0].Length;
@@ -148,8 +144,8 @@ internal static class MostFrequentPrimeSolution
                 yield return value;
             }
 
-            row += direction.RowDelta;
-            col += direction.ColDelta;
+            row += direction.DeltaRow;
+            col += direction.DeltaCol;
         }
     }
 

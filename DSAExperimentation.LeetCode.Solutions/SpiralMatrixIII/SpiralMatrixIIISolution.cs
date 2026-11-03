@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrixIII;
@@ -17,10 +18,9 @@ namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrixIII;
 internal static class SpiralMatrixIIISolution
 {
     private const int TurnsPerStride = 2;
-    private const int DirectionCount = 4;
 
-    private static readonly int[] DeltaRow = [0, 1, 0, -1];
-    private static readonly int[] DeltaCol = [1, 0, -1, 0];
+    // The walk starts facing right and turns clockwise, along GridDirections.Clockwise.
+    private static readonly int FacingRight = GridDirections.Clockwise.IndexOf(GridStep.Right);
 
     // The defensive answer: guard every step against re-adding a cell with a
     // membership set, the same shape Spiral Matrix II's own baseline uses.
@@ -61,7 +61,7 @@ internal static class SpiralMatrixIIISolution
         SpiralGrid grid, List<int[]> result, HashSet<(int Row, int Col)>? visited)
     {
         var walk = new SpiralWalk(grid, result, visited);
-        var position = new SpiralPosition { Row = grid.RowStart, Col = grid.ColumnStart };
+        var position = new SpiralPosition { Row = grid.RowStart, Col = grid.ColumnStart, Direction = FacingRight };
         var stride = 1;
 
         while (result.Count < grid.Total)
@@ -84,7 +84,7 @@ internal static class SpiralMatrixIIISolution
                 return true;
             }
 
-            position.Direction = (position.Direction + 1) % DirectionCount;
+            position.Direction = GridDirections.TurnRight(position.Direction);
         }
 
         return false;
@@ -105,8 +105,9 @@ internal static class SpiralMatrixIIISolution
 
     private static bool TryVisitCell(SpiralWalk walk, ref SpiralPosition position)
     {
-        position.Row += DeltaRow[position.Direction];
-        position.Col += DeltaCol[position.Direction];
+        var (deltaRow, deltaCol) = GridDirections.Clockwise[position.Direction];
+        position.Row += deltaRow;
+        position.Col += deltaCol;
 
         if (!walk.Grid.IsInBounds(position.Row, position.Col))
         {

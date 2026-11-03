@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrix;
@@ -16,7 +17,8 @@ namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrix;
 [LeetCodeQuestion("spiral-matrix", LeetCodeAnswerOrder.AsWritten)]
 internal static class SpiralMatrixSolution
 {
-    private static readonly (int DRow, int DCol)[] Directions = [(0, 1), (1, 0), (0, -1), (-1, 0)];
+    // The walk starts facing right and turns clockwise, along GridDirections.Clockwise.
+    private static readonly int FacingRight = GridDirections.Clockwise.IndexOf(GridStep.Right);
 
     // The textbook simulation: walk one cell at a time, turning clockwise
     // whenever the next cell would leave the grid or revisit one already
@@ -30,7 +32,7 @@ internal static class SpiralMatrixSolution
         var result = new List<int>(rows * cols);
         var row = 0;
         var col = 0;
-        var direction = 0;
+        var direction = FacingRight;
 
         for (var i = 0; i < rows * cols; i++)
         {
@@ -53,14 +55,14 @@ internal static class SpiralMatrixSolution
         visited[row, col] = true;
         result.Add(matrix[row][col]);
 
-        var (dRow, dCol) = Directions[direction];
+        var (dRow, dCol) = GridDirections.Clockwise[direction];
         var nextRow = row + dRow;
         var nextCol = col + dCol;
 
         if (!IsOnGrid(nextRow, nextCol, rows, cols) || visited[nextRow, nextCol])
         {
-            direction = (direction + 1) % Directions.Length;
-            (dRow, dCol) = Directions[direction];
+            direction = GridDirections.TurnRight(direction);
+            (dRow, dCol) = GridDirections.Clockwise[direction];
             nextRow = row + dRow;
             nextCol = col + dCol;
         }

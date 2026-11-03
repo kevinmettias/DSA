@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.LeetCode.Solutions.CatAndMouseII;
 
@@ -31,8 +32,6 @@ internal static class CatAndMouseIISolution
     // force a win from there. It stands in for the official "1000 turns" rule while
     // keeping the memoized state space small enough to actually enumerate.
     private const int TurnCapCellMultiplier = 2;
-
-    private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
     // The textbook answer: the same minimax recursion with no cache at all, so every
     // repeated board position is re-derived. Deliberately written without this
@@ -158,9 +157,9 @@ internal static class CatAndMouseIISolution
     {
         yield return origin;
 
-        foreach (var direction in Directions)
+        for (var line = 0; line < GridDirections.Orthogonal.Length; line++)
         {
-            foreach (var cell in PlainStepsInDirection(origin, direction, limit, passable))
+            foreach (var cell in PlainStepsInDirection(origin, GridDirections.Orthogonal[line], limit, passable))
             {
                 yield return cell;
             }
@@ -169,11 +168,11 @@ internal static class CatAndMouseIISolution
 
     // One direction's worth of PlainReachableCells.
     private static IEnumerable<(int Row, int Col)> PlainStepsInDirection(
-        (int Row, int Col) origin, (int Row, int Col) direction, StepLimit limit, bool[,] passable)
+        (int Row, int Col) origin, GridStep direction, StepLimit limit, bool[,] passable)
     {
         for (var step = 1; step <= limit.MaxSteps; step++)
         {
-            var cell = (Row: origin.Row + (direction.Row * step), Col: origin.Col + (direction.Col * step));
+            var cell = (Row: origin.Row + (direction.DeltaRow * step), Col: origin.Col + (direction.DeltaCol * step));
 
             if (!IsPassableCell(passable, cell.Row, cell.Col))
             {
@@ -272,9 +271,9 @@ internal static class CatAndMouseIISolution
     {
         yield return origin;
 
-        foreach (var direction in Directions)
+        for (var line = 0; line < GridDirections.Orthogonal.Length; line++)
         {
-            foreach (var cell in StepsInDirection(origin, direction, limit, board))
+            foreach (var cell in StepsInDirection(origin, GridDirections.Orthogonal[line], limit, board))
             {
                 yield return cell;
             }
@@ -283,11 +282,11 @@ internal static class CatAndMouseIISolution
 
     // One direction's worth of ReachableCells.
     private static IEnumerable<(int Row, int Col)> StepsInDirection(
-        (int Row, int Col) origin, (int Row, int Col) direction, StepLimit limit, Grid board)
+        (int Row, int Col) origin, GridStep direction, StepLimit limit, Grid board)
     {
         for (var step = 1; step <= limit.MaxSteps; step++)
         {
-            var cell = (Row: origin.Row + (direction.Row * step), Col: origin.Col + (direction.Col * step));
+            var cell = (Row: origin.Row + (direction.DeltaRow * step), Col: origin.Col + (direction.DeltaCol * step));
 
             if (!board.IsPassable(cell.Row, cell.Col))
             {

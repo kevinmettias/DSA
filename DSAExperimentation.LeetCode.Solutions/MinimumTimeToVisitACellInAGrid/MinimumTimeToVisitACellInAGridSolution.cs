@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.ShortestPaths.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToVisitACellInAGrid;
@@ -23,8 +24,6 @@ internal static class MinimumTimeToVisitACellInAGridSolution
 
     // There and back with the predecessor: the wait an early arrival can make.
     private const int SecondsPerBounce = 2;
-
-    private static readonly (int DRow, int DCol)[] Directions = [(0, 1), (0, -1), (1, 0), (-1, 0)];
 
     // Baseline: the textbook Dijkstra over the grid - a BCL PriorityQueue frontier, plain
     // arrays for each cell's best arrival and whether it has settled, and the bounce wait
@@ -124,7 +123,7 @@ internal static class MinimumTimeToVisitACellInAGridSolution
     // Every unsettled neighbour the move from `cell` reaches sooner than any route found so far.
     private static void OfferNeighbours(BounceSearch search, (int Row, int Col) cell, int time)
     {
-        foreach (var (dRow, dCol) in Directions)
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
         {
             var (row, col) = (cell.Row + dRow, cell.Col + dCol);
 

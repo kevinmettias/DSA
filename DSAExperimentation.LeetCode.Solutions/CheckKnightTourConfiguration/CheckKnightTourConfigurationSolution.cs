@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CheckKnightTourConfiguration;
@@ -16,17 +17,15 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckKnightTourConfiguration;
 // not the two-over-one-across offsets a knight makes, and nothing here is a search
 // in the first place: the move order is given, so this is fixed-shape index
 // arithmetic - the same call AvailableCapturesForRook and TransposeMatrix make.
-// The knight's own offsets stay beside this solution for the same reason
-// MaximumNumberOfMovesToKillAllPawns keeps its KnightChildren witness beside its.
+// The knight's jumps are the square lattice's L-shaped steps, GridDirections.LShaped
+// (Domain/Mathematics/Lattices); whether a move is one of them does not depend on
+// the order they are listed in.
 [LeetCodeQuestion("check-knight-tour-configuration", LeetCodeAnswerOrder.AsWritten)]
 internal static class CheckKnightTourConfigurationSolution
 {
     // A valid configuration starts at the top-left cell, so the cell holding move
     // zero is fixed by the problem rather than found.
     private const int FirstMove = 0;
-
-    private static readonly (int DRow, int DCol)[] KnightOffsets =
-        [(1, 2), (1, -2), (-1, 2), (-1, -2), (2, 1), (2, -1), (-2, 1), (-2, -1)];
 
     // The textbook answer: for every consecutive pair of move numbers, sweep the
     // whole board to find each one's cell. Deliberately BCL-only, and deliberately
@@ -116,7 +115,7 @@ internal static class CheckKnightTourConfigurationSolution
 
     private static bool IsKnightMove((int Row, int Col) from, (int Row, int Col) to)
     {
-        foreach (var (dRow, dCol) in KnightOffsets)
+        foreach (var (dRow, dCol) in GridDirections.LShaped)
         {
             if (from.Row + dRow == to.Row && from.Col + dCol == to.Col)
             {

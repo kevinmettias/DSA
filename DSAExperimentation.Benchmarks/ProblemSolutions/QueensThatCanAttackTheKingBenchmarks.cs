@@ -36,13 +36,17 @@ public class QueensThatCanAttackTheKingBenchmarks
         var random = new Random(RandomSeed);
         _board = new KingBoard(BoardCenter, BoardCenter, BoardSize);
 
-        var coordinates = new HashSet<(int Row, int Col)>();
+        // The queens are listed in the order they were drawn, which the linear scan walks. A
+        // HashSet's order follows the tuples' hashes, which .NET seeds afresh in every process, so
+        // each benchmark process would scan the queens in a different order.
+        var coordinates = new List<(int Row, int Col)>(QueensCount);
 
         while (coordinates.Count < QueensCount)
         {
             var candidate = (random.Next(BoardSize), random.Next(BoardSize));
+            var isNewQueen = candidate != (_board.KingRow, _board.KingCol) && !coordinates.Contains(candidate);
 
-            if (candidate != (_board.KingRow, _board.KingCol))
+            if (isNewQueen)
             {
                 coordinates.Add(candidate);
             }

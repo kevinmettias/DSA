@@ -36,6 +36,18 @@ public sealed partial class SharedValueCopyTests
         Assert.True(offences.Count == 0, string.Join(Environment.NewLine, offences));
     }
 
+    // The grid's steps are one fact too: a solution reads GridDirections' tables rather than writing
+    // their steps out as literal pairs (LatticeTableCopies).
+    [Fact]
+    public void SolutionCollections_RestateNoGridTable()
+    {
+        var offences = LatticeTableCopies.In(RepositoryCompilation.Solutions)
+            .Select(copy => $"{copy.Location} writes GridDirections.{copy.Table}'s steps; read the table (ARCHITECTURE.md 17.5).")
+            .ToList();
+
+        Assert.True(offences.Count == 0, string.Join(Environment.NewLine, offences));
+    }
+
     // An entry whose copy has gone would otherwise sit in the list excusing nothing.
     [Fact]
     public void AllowedCopies_AreAllStillCopies()

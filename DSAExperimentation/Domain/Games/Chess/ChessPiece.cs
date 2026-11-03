@@ -7,8 +7,8 @@ namespace DSAExperimentation.Domain.Games.Chess;
 // square until the edge or an occupied square stops it, as a rook, a bishop and a queen do, or makes
 // one step only, as a king and a knight do. Each piece is a named value carrying its moves, so a
 // solution asks ChessPiece.Rook for a rook's lines rather than holding a table it must keep right.
-// The steps are grid shapes, GridDirections' own tables, so what chess adds is which piece moves
-// along which. Their order is GridDirections' order, and part of the contract: LC 1222 lists the
+// The steps are the square lattice's, GridDirections' own tables (Domain/Mathematics/Lattices), so
+// what chess adds is which piece moves along which. Their order is GridDirections' order, and part of the contract: LC 1222 lists the
 // attacking queens in the order their lines are walked, so a queen's lines are the Octilinear table's
 // order, not a rook's then a bishop's.
 /// <summary>A chess piece: its name, the steps it moves along, and whether it slides along them.</summary>

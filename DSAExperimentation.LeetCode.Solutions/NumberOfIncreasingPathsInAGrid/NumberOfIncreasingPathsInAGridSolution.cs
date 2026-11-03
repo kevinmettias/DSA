@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfIncreasingPathsInAGrid;
 
@@ -18,8 +19,6 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfIncreasingPathsInAGrid;
 // recurrence and its benchmark workload with.
 internal static class NumberOfIncreasingPathsInAGridSolution
 {
-    private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // The grid together with the bounds every neighbor test needs, so the recurrences
     // below carry one value instead of three.
     private readonly record struct PathsGrid(int[,] Values, int Rows, int Cols);
@@ -72,7 +71,7 @@ internal static class NumberOfIncreasingPathsInAGridSolution
     {
         var count = 1L;
 
-        foreach (var (rowOffset, colOffset) in Directions)
+        foreach (var (rowOffset, colOffset) in GridDirections.Orthogonal)
         {
             var next = (Row: cell.Row + rowOffset, Col: cell.Col + colOffset);
 
@@ -101,7 +100,7 @@ internal static class NumberOfIncreasingPathsInAGridSolution
         {
             var count = 1L;
 
-            foreach (var (rowOffset, colOffset) in Directions)
+            foreach (var (rowOffset, colOffset) in GridDirections.Orthogonal)
             {
                 var next = (Row: cell.Row + rowOffset, Col: cell.Col + colOffset);
 

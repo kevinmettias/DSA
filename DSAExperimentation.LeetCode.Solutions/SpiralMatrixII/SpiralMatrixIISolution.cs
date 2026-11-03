@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrixII;
@@ -14,7 +15,8 @@ namespace DSAExperimentation.LeetCode.Solutions.SpiralMatrixII;
 [LeetCodeQuestion("spiral-matrix-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class SpiralMatrixIISolution
 {
-    private const int DirectionCount = 4;
+    // The walk starts facing right and turns clockwise, along GridDirections.Clockwise.
+    private static readonly int FacingRight = GridDirections.Clockwise.IndexOf(GridStep.Right);
 
     // The textbook approach: walk one cell at a time along a direction vector,
     // turning clockwise whenever the next cell would leave the bounds or has
@@ -25,10 +27,8 @@ internal static class SpiralMatrixIISolution
     {
         var matrix = Enumerable.Range(0, size).Select(_ => new int[size]).ToArray();
         var visited = new HashSet<(int Row, int Col)>();
-        int[] deltaRow = [0, 1, 0, -1];
-        int[] deltaCol = [1, 0, -1, 0];
-        var context = new SpiralWalkContext(matrix, visited, deltaRow, deltaCol, size);
-        var position = new SpiralPosition(0, 0, 0);
+        var context = new SpiralWalkContext(matrix, visited, size);
+        var position = new SpiralPosition(0, 0, FacingRight);
 
         for (var value = 1; value <= size * size; value++)
         {
@@ -40,20 +40,22 @@ internal static class SpiralMatrixIISolution
 
     private static SpiralPosition StepSpiral(SpiralWalkContext context, SpiralPosition position, int value)
     {
-        var (matrix, visited, deltaRow, deltaCol, size) = context;
+        var (matrix, visited, size) = context;
         var (row, col, direction) = position;
 
         matrix[row][col] = value;
         visited.Add((row, col));
 
-        var nextRow = row + deltaRow[direction];
-        var nextCol = col + deltaCol[direction];
+        var (deltaRow, deltaCol) = GridDirections.Clockwise[direction];
+        var nextRow = row + deltaRow;
+        var nextCol = col + deltaCol;
 
         if (IsBlocked(visited, nextRow, nextCol, size))
         {
-            direction = (direction + 1) % DirectionCount;
-            nextRow = row + deltaRow[direction];
-            nextCol = col + deltaCol[direction];
+            direction = GridDirections.TurnRight(direction);
+            (deltaRow, deltaCol) = GridDirections.Clockwise[direction];
+            nextRow = row + deltaRow;
+            nextCol = col + deltaCol;
         }
 
         return new SpiralPosition(nextRow, nextCol, direction);
@@ -124,7 +126,7 @@ internal static class SpiralMatrixIISolution
     }
 
     private readonly record struct SpiralWalkContext(
-        int[][] Matrix, HashSet<(int Row, int Col)> Visited, int[] DeltaRow, int[] DeltaCol, int N);
+        int[][] Matrix, HashSet<(int Row, int Col)> Visited, int N);
 
     private readonly record struct SpiralPosition(int Row, int Col, int Direction);
 

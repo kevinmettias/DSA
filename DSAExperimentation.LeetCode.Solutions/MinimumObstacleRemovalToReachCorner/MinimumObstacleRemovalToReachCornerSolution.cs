@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumObstacleRemovalToReachCorner;
@@ -26,8 +27,6 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumObstacleRemovalToReachCor
 [LeetCodeQuestion("minimum-obstacle-removal-to-reach-corner", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumObstacleRemovalToReachCornerSolution
 {
-    private static readonly (int DeltaRow, int DeltaCol)[] Orthogonal = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // Textbook baseline: Dijkstra whose frontier is a linear scan over a flat
     // distance array instead of a heap. BCL only, deliberately - it is the arm
     // ShortestPath.Dijkstra has to justify itself against.
@@ -93,7 +92,7 @@ internal static class MinimumObstacleRemovalToReachCornerSolution
     {
         var shape = (Rows: grid.Length, Cols: grid[0].Length);
 
-        foreach (var (deltaRow, deltaCol) in Orthogonal)
+        foreach (var (deltaRow, deltaCol) in GridDirections.Orthogonal)
         {
             RelaxNeighbour(current, (grid, removals), shape, (deltaRow, deltaCol));
         }
@@ -179,7 +178,7 @@ internal static class MinimumObstacleRemovalToReachCornerSolution
     {
         foreach (var ((row, col), node) in nodes)
         {
-            foreach (var (deltaRow, deltaCol) in Orthogonal)
+            foreach (var (deltaRow, deltaCol) in GridDirections.Orthogonal)
             {
                 var neighborRow = row + deltaRow;
                 var neighborCol = col + deltaCol;

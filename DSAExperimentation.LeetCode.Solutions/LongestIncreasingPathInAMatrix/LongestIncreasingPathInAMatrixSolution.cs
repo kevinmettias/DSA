@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestIncreasingPathInAMatrix;
 
@@ -9,8 +10,6 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestIncreasingPathInAMatrix;
 // in whether they do.
 internal static class LongestIncreasingPathInAMatrixSolution
 {
-    private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // The textbook answer: plain recursion, re-exploring every shared sub-path from
     // scratch per candidate start cell. Deliberately written without this repo's
     // primitives - it is the arm the memoized strategy below has to justify itself
@@ -61,7 +60,7 @@ internal static class LongestIncreasingPathInAMatrixSolution
         var rows = matrix.GetLength(0);
         var cols = matrix.GetLength(1);
 
-        foreach (var (rowOffset, colOffset) in Directions)
+        foreach (var (rowOffset, colOffset) in GridDirections.Orthogonal)
         {
             var nextRow = row + rowOffset;
             var nextCol = col + colOffset;
@@ -92,7 +91,7 @@ internal static class LongestIncreasingPathInAMatrixSolution
             var rows = matrix.GetLength(0);
             var cols = matrix.GetLength(1);
 
-            foreach (var (rowOffset, colOffset) in Directions)
+            foreach (var (rowOffset, colOffset) in GridDirections.Orthogonal)
             {
                 var nextRow = state.Row + rowOffset;
                 var nextCol = state.Col + colOffset;

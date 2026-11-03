@@ -23,20 +23,12 @@ namespace DSAExperimentation.LeetCode.Solutions.QueensThatCanAttackTheKing;
 // deliberately inside the measured strategy rather than hoisted, because paying
 // O(queens) once is precisely what the arm has to earn back.
 //
-// The board and the queen's lines are chess's (Domain/Games/Chess): the set arm reads
-// them from ChessRules, and the baseline keeps its own copies (ARCHITECTURE §17.5),
-// in the same order, since the arms are compared answer for answer.
+// The board and the queen's lines are chess's (Domain/Games/Chess), and both arms read
+// them there (ARCHITECTURE §17.5): ChessPiece.Queen.Moves' order is the order each arm
+// lists the attackers in, so the arms agree answer for answer.
 [LeetCodeQuestion("queens-that-can-attack-the-king", LeetCodeAnswerOrder.AnyOrder)]
 internal static class QueensThatCanAttackTheKingSolution
 {
-    // The baseline's own copy of a queen's eight lines, in ChessPiece.Queen.Moves' order.
-    private static readonly (int DRow, int DCol)[] Directions =
-    [
-        (-1, -1), (-1, 0), (-1, 1),
-        (0, -1), (0, 1),
-        (1, -1), (1, 0), (1, 1),
-    ];
-
     // The textbook baseline: no auxiliary index at all - every step of every ray
     // asks the queens array directly whether some queen sits on this square.
     // Deliberately written without this repo's primitives; it is the arm the set
@@ -48,15 +40,15 @@ internal static class QueensThatCanAttackTheKingSolution
     {
         var attackers = new List<(int Row, int Col)>();
 
-        foreach (var direction in Directions)
+        foreach (var (deltaRow, deltaCol) in ChessPiece.Queen.Moves)
         {
-            var row = board.KingRow + direction.DRow;
-            var col = board.KingCol + direction.DCol;
+            var row = board.KingRow + deltaRow;
+            var col = board.KingCol + deltaCol;
 
             while (board.IsInBounds(row, col) && !IsQueen(queens, row, col))
             {
-                row += direction.DRow;
-                col += direction.DCol;
+                row += deltaRow;
+                col += deltaCol;
             }
 
             if (board.IsInBounds(row, col))

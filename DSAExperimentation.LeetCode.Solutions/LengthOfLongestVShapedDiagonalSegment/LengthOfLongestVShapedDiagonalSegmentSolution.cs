@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LengthOfLongestVShapedDiagonalSegment;
@@ -16,16 +17,11 @@ namespace DSAExperimentation.LeetCode.Solutions.LengthOfLongestVShapedDiagonalSe
 [LeetCodeQuestion("length-of-longest-v-shaped-diagonal-segment", LeetCodeAnswerOrder.AsWritten)]
 internal static class LengthOfLongestVShapedDiagonalSegmentSolution
 {
-    // Clockwise order: north-east, south-east, south-west, north-west, then back to
+    // The four diagonals in turning order, each a quarter turn clockwise of the one before
+    // (GridStep.Rotate): north-east, south-east, south-west, north-west, then back to
     // north-east - verified against LC's own worked example (a segment turning
-    // south-east -> south-west at (2,4) in example 1).
-    private static readonly (int DRow, int DCol)[] Directions =
-    [
-        (-1, 1),
-        (1, 1),
-        (1, -1),
-        (-1, -1),
-    ];
+    // south-east -> south-west at (2,4) in example 1). The V's turn is the next index.
+    private static readonly GridStep[] Directions = [GridStep.UpRight, GridStep.DownRight, GridStep.DownLeft, GridStep.UpLeft];
 
     public static int LongestLengthByBruteForceWalk(int[][] grid)
     {
@@ -103,7 +99,7 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
     // The step a walk advances by after turning clockwise from `direction`: the turn
     // is simply the next direction in the clockwise table, and its own row/column
     // steps are what the turned walk follows.
-    private static (int DRow, int DCol) TurnedStep(int direction)
+    private static GridStep TurnedStep(int direction)
     {
         var turnDirection = (direction + 1) % Directions.Length;
 

@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Lattices;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>;
 
@@ -14,8 +15,6 @@ namespace DSAExperimentation.LeetCode.Solutions.ZeroOneMatrix;
 [LeetCodeQuestion("01-matrix", LeetCodeAnswerOrder.AsWritten)]
 internal static class ZeroOneMatrixSolution
 {
-    private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // The naive baseline: a fresh BCL Queue + visited grid per starting cell,
     // re-walked outward until the nearest 0 is found. Deliberately written without
     // this repo's primitives - it is the arm the composed solution has to justify
@@ -75,7 +74,7 @@ internal static class ZeroOneMatrixSolution
         {
             var cell = queue.Dequeue();
 
-            foreach (var (dRow, dCol) in Directions)
+            foreach (var (dRow, dCol) in GridDirections.Orthogonal)
             {
                 var distance = DistanceThroughNeighbor((mat, visited, queue), cell, (dRow, dCol));
 
@@ -176,7 +175,7 @@ internal static class ZeroOneMatrixSolution
         var rows = distances.Length;
         var cols = distances[0].Length;
 
-        foreach (var (dRow, dCol) in Directions)
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
         {
             var nextRow = cell.Row + dRow;
             var nextCol = cell.Col + dCol;
