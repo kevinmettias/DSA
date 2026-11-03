@@ -16,4 +16,12 @@ public static class HammingDistances
     /// </returns>
     public static Dictionary<HammingNode, int> From(HammingNode root) =>
         BreadthFirstDistances.From<HammingNode, HammingTopology, ListChildren<HammingNode>>(root);
+
+    // One target's mutation count, from a search that stops once it reaches the target.
+    /// <summary>Counts the fewest single-letter mutations from a root to one target.</summary>
+    /// <param name="root">The word the mutations start from.</param>
+    /// <param name="target">The word whose distance is wanted.</param>
+    /// <returns>The fewest mutations from root to target, or null when no chain of words joins them.</returns>
+    public static int? To(HammingNode root, HammingNode target) =>
+        BreadthFirstDistances.To<HammingNode, HammingTopology, ListChildren<HammingNode>>(root, target);
 }

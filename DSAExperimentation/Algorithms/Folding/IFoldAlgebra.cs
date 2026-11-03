@@ -12,6 +12,10 @@ namespace DSAExperimentation.Algorithms.Folding;
 // IterativeFoldEvaluation call Combine in different orders (post-order, reverse
 // breadth-first), which only an impure Combine could notice.
 //
+// The children arrive as a span, valid for the one call: the recursive evaluations keep every
+// open node's child results on one stack (FoldStack), so a fold allocates no array per node and
+// Combine reads them with no interface call. A Combine that needs them later copies them.
+//
 // Members are instance members on a struct type parameter. A runtime value an algebra
 // needs - a label string, a factorial table, a node's coin values - is a field of the
 // algebra handed to the fold rather than a static set beforehand: every engine takes
@@ -32,5 +36,5 @@ public interface IFoldAlgebra<TNode, TResult>
     /// <param name="node">The node being folded.</param>
     /// <param name="children">The folded results of the node's children, in child order; empty for a leaf.</param>
     /// <returns>The node's folded result.</returns>
-    TResult Combine(TNode node, IReadOnlyList<TResult> children);
+    TResult Combine(TNode node, ReadOnlySpan<TResult> children);
 }

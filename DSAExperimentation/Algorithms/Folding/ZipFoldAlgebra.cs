@@ -24,12 +24,12 @@ public struct ZipFoldAlgebra<TNode, TResultA, TResultB, TAlgebraA, TAlgebraB>(TA
     public (TResultA A, TResultB B) Empty
         => (_first.Empty, _second.Empty);
 
-    public (TResultA A, TResultB B) Combine(TNode node, IReadOnlyList<(TResultA A, TResultB B)> children)
+    public (TResultA A, TResultB B) Combine(TNode node, ReadOnlySpan<(TResultA A, TResultB B)> children)
     {
-        var childrenA = new TResultA[children.Count];
-        var childrenB = new TResultB[children.Count];
+        var childrenA = new TResultA[children.Length];
+        var childrenB = new TResultB[children.Length];
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             childrenA[i] = children[i].A;
             childrenB[i] = children[i].B;

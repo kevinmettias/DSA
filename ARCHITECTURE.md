@@ -834,13 +834,13 @@ specifically:
 | `Bipartiteness/` | `BipartiteCheck` | flat — graph tier only |
 | `Connectivity/` | `ConnectedComponents`, `StronglyConnectedComponents`, `BridgesAndArticulationPoints` | flat — three algorithms, all on the graph tier |
 | `DynamicProgramming/` | `IRecurrence`, `Memoizer`, `DenseMemoizer` | flat — generic over a state and its recurrence, no topology axis. `DenseMemoizer` runs the same recurrences over int states below a stated bound, with flat arrays as the cache: it saves memory when the states reached fill their range, and time only while the range is small |
-| `Folding/` | `CheckedFold`, `CycleCheckedFold`, `FoldRecursion`, `IFoldAlgebra`, `IFoldEvaluationStrategy`, `IFoldMemo`, `IterativeFoldEvaluation`, `MemoizedFold`, `RecursiveFoldEvaluation`, `ZipFoldAlgebra` (general tier; `FoldRecursion` is the one recursion the DAG and graph tiers share, with the memo policy as the axis they differ by, while the tree tier's `RecursiveFoldEvaluation` keeps a recursion with nothing to remember, §12.4) + `Dags/DagFold` (DAG tier) + `Dags/Trees/TreeFold` (tree tier) | three nested tiers, mirroring §3.2's refinement chain |
+| `Folding/` | `CheckedFold`, `CycleCheckedFold`, `FoldRecursion`, `FoldStack`, `IFoldAlgebra`, `IFoldEvaluationStrategy`, `IFoldMemo`, `IterativeFoldEvaluation`, `MemoizedFold`, `RecursiveFoldEvaluation`, `ZipFoldAlgebra` (general tier; `FoldRecursion` is the one recursion the DAG and graph tiers share, with the memo policy as the axis they differ by, while the tree tier's `RecursiveFoldEvaluation` keeps a recursion with nothing to remember, §12.4) + `Dags/DagFold` (DAG tier) + `Dags/Trees/TreeFold` (tree tier) | three nested tiers, mirroring §3.2's refinement chain |
 | `Geometry/` | `ConvexHull` | flat — points in the plane have no topology to be generic over; tier 2 because it composes `Sorting/MergeSort`, the reasoning that put `HammingDistances` in `Algorithms/` (§17.6) |
 | `Metrics/` | `DiameterAlgebra`, `HeightAlgebra`, `HeightDiameterState`, `SizeAlgebra`, `TreeMetrics` | flat — Tree is the only tier |
 | `MinimumSpanningTrees/` | `MinimumSpanningTree` | flat — `Kruskal` over `IEdgeTopology`, composing `KeyedDisjointSet` (§10.4) |
 | `NumberTheory/` | `GreatestCommonDivisor`, `GcdOperation`, `LeastCommonMultiple`, `Primality`, `PrimeFactorization`, `PrimeSieve`, `ModularPower`, `ModularInverse`, `FactorialTable<TModulus>`, `IntegerSquareRoot`, `SquareExceeds`, `PascalTriangle` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `ModularInverse` and `FactorialTable<TModulus>` take their modulus as a struct witness (`Domain/Mathematics/Modular`'s `IPrimeModulus`), LeetCode's being `LeetCodeModulus` (§17.6) |
 | `Paths/` | `AllRootToLeafPaths` | flat — only one tier exists |
-| `Reducing/` | `BreadthFirstReduceOrder`, `DepthFirstReduceOrder`, `DistanceMapReduceAlgebra`, `IReduceAlgebra`, `IReduceOrderStrategy`, `NodeCountReduceAlgebra`, `Reduce`, `ZipReduceAlgebra` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
+| `Reducing/` | `BreadthFirstReduceOrder`, `DepthFirstReduceOrder`, `InOrderReduceOrder`, `DistanceMapReduceAlgebra`, `IReduceAlgebra`, `IReduceOrderStrategy`, `NodeCountReduceAlgebra`, `Reduce`, `ZipReduceAlgebra` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
 | `Sampling/` | `PrefixSumSampler`, `AliasSampler` | flat — an index drawn with probability proportional to its weight, from a ticket the caller draws: prefix sums and a binary search, O(log n) per draw, or Vose's alias table, O(1); both exact, so a test enumerates every ticket |
 | `Searching/` | `BinarySearch`, `SearchRange`, `NearestBoundary` (§19.7), `MonotonePredicateSearch`, `IMonotonePredicate` (§9.6), `CompressedCoordinates` (§19.3) | flat — no topology axis at all; `BinarySearch` is generic over `Sequence.IRandomAccessSequence<T>` (§13.6), `MonotonePredicateSearch` over a rule on an integer interval (§9.6) |
 | `ShortestPaths/` | `IPathHeuristic`, `ZeroHeuristic`, `ManhattanHeuristic`, `ChebyshevHeuristic`, `ShortestPath`, `BellmanFord`, `AllPairsShortestPaths`, `DenseDistanceMatrix` (general edge-weighted tier, §16) + `BreadthFirstDistances` (unweighted, §19.4) + `Grids/{GridShortestPath,GridEarliestArrival,IArrivalRule,WaitInPlaceArrival,ParityBounceArrival}` (grid tier; `GridEarliestArrival` is the time-dependent search, where a move's cost depends on the second it leaves at and a static-abstract `IArrivalRule` prices it) + `Hamming/HammingDistances` (Hamming tier, §17.6) | structure-specific tiers nested beside the general one (§13.1) |
@@ -848,7 +848,7 @@ specifically:
 | `StringMatching/` | `PrefixFunctionSearch`, `ZFunction`, `RollingHashSearch`, `Manacher` | flat — over a `ReadOnlySpan<char>` with an optional `IEqualityComparer<char>`, no topology axis and no Representation of this repo's own |
 | `TopologicalSort/` | `TopologicalSort` | flat — only one tier exists (§15) |
 | `Traversal/` | `BreadthFirst/{BreadthFirstTraversal,LevelGroupedBreadthFirstTraversal,IBreadthFirstHooks,ILevelGroupedHooks}`, `DepthFirst/{DepthFirstSearch,DepthFirstTraversal,IDepthFirstHooks}`, `TopDown/{TopDownTraversal,ITopDownHooks,NodePosition}` | by traversal order; `DepthFirstSearch` is the weakest tier (no topology witness at all, a bare `Func`, §12), beside `DepthFirstTraversal` |
-| `Walking/` | `BreadthFirstWalk`, `DepthFirstWalk`, `TopDownWalk`, `IVisitGuard`, `TrackedVisitGuard`, `UnguardedVisit`, `Unit` | flat — the guard tier (tree vs. graph) is a constructor parameter, not a file split (§13.2) |
+| `Walking/` | `BreadthFirstWalk`, `DepthFirstWalk`, `TopDownWalk`, `IStopCheck`, `AlgebraStopCheck`, `NoStopCheck`, `IVisitGuard`, `TrackedVisitGuard`, `UnguardedVisit`, `Unit` | flat — the guard tier (tree vs. graph) is a constructor parameter, not a file split (§13.2), and the stop check a type argument (§19.10) |
 
 **`Mechanisms/`** holds state its caller owns, kept to a policy the caller can observe (§17.6b):
 
@@ -2463,6 +2463,62 @@ needs; NumberOfIslands and SurroundedRegions read them. `ReduceEach` has no solu
 yet: its three grid adopters wait on a grid that hands out one node per cell instead of a new one
 per neighbour, and are retried then. A reduce algebra is static, so a value it reads, such as a
 cell's fish or grid1's land, travels in the state it threads.
+
+### 19.10 Stopping early, several roots, in-order, and a fold without an array per node
+
+The survey in §19.9 named what the engines lacked, and the owner opted into closing three of the
+gaps (2026-11-02). The design question was where each one belongs, and each went to the piece that
+already knew the answer:
+
+- **Stopping early belongs to the state.** `IReduceAlgebra` gains `IsDone(TState)`, because a
+  search that has found its target or a count that has reached k is what knows the walk can end. A
+  walk that is told true makes no further `Enter` or `Exit` call. Asking has a price. Every node type
+  here is a reference type, so the walks run as shared generic code, and a call to the algebra's
+  static members is a runtime lookup the JIT cannot inline. Asking `IsDone` at every node measured 14%
+  on OperationsOnTree, whose algebra never stops. So an algebra also says whether it can stop at all,
+  through `StopsEarly`, which defaults to false. The order strategy reads it once per walk and picks
+  the walk's `IStopCheck` from it: `NoStopCheck` or `AlgebraStopCheck`. That check is a type argument,
+  not a flag. A flag passed down the recursion still measured 20% on OperationsOnTree's one-node
+  walks, while the `NoStopCheck` instantiation is the walk with no check in it at all. The read itself
+  folds to a constant wherever the strategy inlines into a caller with exact types, as
+  OperationsOnTree's does. Hooks still observe a whole walk: a `DepthFirstTraversal` or
+  `InOrderTraversal` hook has no `IsDone`, and an arm that can stop uses a reduce.
+- **Several roots belong to the order.** `Reduce.GraphFromAll` takes several roots, and each order
+  strategy says what "at once" means through `EvaluateFrom`. Breadth-first puts every root at depth 0,
+  one frontier, so a node's depth is its distance from the nearest root: the multi-source search.
+  Depth-first walks the roots in turn over one visited set. `BreadthFirstDistances.FromAll` names the
+  multi-source distance map, and `BreadthFirstDistances.To` names the stopping search for one target.
+  `GridShortestPath.Distance` and the new `HammingDistances.To` use it. A stopping algebra still pays
+  the lookup at every node, so `To` wins only when the target is reached well before the search would
+  end. JumpGameII's target is the last index the search reaches. MinimumNumberOfVisitedCellsInAGrid
+  and MinimumOperationsToEqualizeBinaryString measured slower at one size in two passes. All three
+  keep `From`.
+- **In-order is a third order.** `InOrderReduceOrder<TValue>` walks a `BinaryTreeNode`'s left
+  subtree, the node, then the right subtree, and fires `Enter` between them, the way breadth-first
+  fires `Enter` alone. It reads `Left` and `Right` directly, since a compacted `IChildren` view cannot
+  say which side a child was on. DataStructures' `InOrderTraversal` stays as it is:
+  `BinarySearchTree` walks itself with it, and the layering lets DataStructures read no `Reducing`
+  type (§17.6a). DesignMovieRentalSystem stops at the fifth key through it, and
+  MinimumDepthOfBinaryTree stops at its first leaf in breadth-first order. KthSmallestElementInABST
+  measured slower through it at 500 nodes in two passes (614 to 820 ns) and keeps its
+  `InOrderTraversal` hooks.
+- **A fold's child results live on one stack.** `IFoldAlgebra.Combine` takes `ReadOnlySpan<TResult>`
+  rather than `IReadOnlyList<TResult>`. The recursive evaluations keep every open node's child results
+  on one `FoldStack`: a node pushes each child's result, hands `Combine` its own span, and pops them.
+  The iterative evaluation reuses one buffer. A fold no longer allocates an array per node, and
+  `Combine` reads its children with no interface call. The span is valid for the one call, which a
+  pure `Combine` never outlives.
+
+Measured with bdn-ab against c7f8f09c (2026-11-02), on the composed arm. In two or three passes
+each: OpenTheLock 21–38% faster with half the allocation, WordLadder 14–32%, HouseRobberIII 19–38%
+from the span fold, DesignMovieRentalSystem 84–85% at 500 movies, and MinimumDepthOfBinaryTree 8–16%
+at 100,000 nodes. At 50 movies and 1,000 nodes the passes were mixed within error. In one pass:
+SlidingPuzzle 95–99% and JumpGameIV 91% at 200, both past the 45% this machine's noise has reached
+(§19.8); SmallestIntegerDivisibleByK, MinimumGeneticMutation and DiameterOfBinaryTree 6–39%, which
+says only that they are no slower, though DiameterOfBinaryTree's allocation fell from 64 KB to 88
+bytes at 2,000 nodes. A walk that never stops costs what it did: NumberOfIslands and
+MatrixCellsInDistanceOrder read level in every pass, and OperationsOnTree read between 4% slower
+within error and 34% faster in two passes.
 
 ## 20. Worked example: the queue family, configurations of one buffer
 

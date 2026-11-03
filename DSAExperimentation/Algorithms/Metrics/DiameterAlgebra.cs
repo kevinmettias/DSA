@@ -11,7 +11,7 @@ public readonly struct DiameterAlgebra<TNode> : IFoldAlgebra<TNode, HeightDiamet
     public HeightDiameterState Empty
         => new(Height: 0, Diameter: 0);
 
-    public HeightDiameterState Combine(TNode node, IReadOnlyList<HeightDiameterState> children)
+    public HeightDiameterState Combine(TNode node, ReadOnlySpan<HeightDiameterState> children)
     {
         var scan = ScanChildren(children);
         var height = 1 + scan.LargestHeight;
@@ -23,12 +23,12 @@ public readonly struct DiameterAlgebra<TNode> : IFoldAlgebra<TNode, HeightDiamet
     // Single linear scan for the top two child heights (needed for the path that passes
     // through this node) and the largest child diameter (needed for the path that
     // doesn't) - avoids sorting all of children just to read off the top two.
-    private static ChildScanResult ScanChildren(IReadOnlyList<HeightDiameterState> children)
+    private static ChildScanResult ScanChildren(ReadOnlySpan<HeightDiameterState> children)
     {
         var largestHeight = 0;
         var secondLargestHeight = 0;
         var largestChildDiameter = 0;
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             var child = children[i];
 

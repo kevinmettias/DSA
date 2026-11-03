@@ -31,13 +31,13 @@ internal readonly struct EdgeToggleAlgebra(string start, string target, int[] pa
     public (bool NeedsParentToggle, List<int> ToggledEdges) Empty => (false, []);
 
     public (bool NeedsParentToggle, List<int> ToggledEdges) Combine(
-        RootedTreeNode node, IReadOnlyList<(bool NeedsParentToggle, List<int> ToggledEdges)> children)
+        RootedTreeNode node, ReadOnlySpan<(bool NeedsParentToggle, List<int> ToggledEdges)> children)
     {
         var inputs = _inputs;
         var needsToggle = inputs.Start[node.Id] != inputs.Target[node.Id];
         var toggled = new List<int>();
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             var (childNeedsToggle, childToggled) = children[i];
             toggled.AddRange(childToggled);

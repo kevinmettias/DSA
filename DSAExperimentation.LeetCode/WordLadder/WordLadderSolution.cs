@@ -154,9 +154,9 @@ internal static class WordLadderSolution
             return NoLadder;
         }
 
-        var distances = HammingDistances.From(graph.Root);
+        var distance = HammingDistances.To(graph.Root, endNode);
 
-        return distances.TryGetValue(endNode, out var distance) ? WordCount(distance) : NoLadder;
+        return distance is { } steps ? WordCount(steps) : NoLadder;
     }
 
     // LeetCode counts the words in the chain, not the edges walked between them.

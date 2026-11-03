@@ -11,6 +11,18 @@ namespace DSAExperimentation.Algorithms.Reducing;
 // matched open/close events - e.g. tracking concurrently-open nodes, which no
 // single-event-per-node shape could express. Breadth-first has no Exit moment (see
 // IBreadthFirstHooks), so a breadth-first strategy simply never calls it.
+//
+// IsDone is how a reduce stops early, and it belongs to the state because the state is
+// what knows: a search that has found its target, a count that has reached k. A walk asks
+// it after each event and, once it answers true, makes no further Enter or Exit call and
+// hands the state back as it stands. It asks only when the algebra's StopsEarly says to:
+// every node type here is a reference type, so a walk runs as shared generic code where a
+// call to TAlgebra's static members is a runtime lookup, and asking IsDone at every node
+// measured 14% on a walk that never stops (OperationsOnTree). StopsEarly is read once per
+// walk instead, by the order strategy, which picks the walk's stop check from it (see
+// IStopCheck): an algebra that never stops gets the walk with no check in it, and pays at
+// most one lookup per walk, none where the strategy inlines into exact types. An algebra
+// that can stop overrides both.
 /// <summary>
 /// The per-node step of a reduce, threading one running state through Enter and Exit at each node visited.
 /// </summary>
@@ -38,4 +50,15 @@ public interface IReduceAlgebra<TNode, TState>
     /// </returns>
     static virtual TState Exit(TState state, TNode node, int depth)
         => state;
+
+    /// <summary>Whether a walk should ask <c>IsDone</c> at all; read once per walk.</summary>
+    /// <returns>True for an algebra that can stop early; the default never asks.</returns>
+    static virtual bool StopsEarly
+        => false;
+
+    /// <summary>Whether the reduce has its answer, so the walk can stop before its next event.</summary>
+    /// <param name="state">The state after the event just folded in.</param>
+    /// <returns>True to end the walk with <paramref name="state"/>; the default never ends it early.</returns>
+    static virtual bool IsDone(TState state)
+        => false;
 }

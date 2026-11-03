@@ -122,9 +122,9 @@ internal static class JumpGameIVSolution
     // no common type the caller's argument could bind to either way.
     public static int MinJumpsByBreadthFirstDistances(ValueHopNode[] nodes)
     {
-        var distances = BreadthFirstDistances.From<ValueHopNode, ValueHopTopology, ListChildren<ValueHopNode>>(nodes[0]);
-
-        return distances[nodes[^1]];
+        // Every index reaches its neighbours, so None never comes back.
+        return BreadthFirstDistances.To<ValueHopNode, ValueHopTopology, ListChildren<ValueHopNode>>(nodes[0], nodes[^1])
+            ?? LeetCodeAnswer.None;
     }
 
     public static ValueHopNode[] BuildHopGraph(int[] arr)

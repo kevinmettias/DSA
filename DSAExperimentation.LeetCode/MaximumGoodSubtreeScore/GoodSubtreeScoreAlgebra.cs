@@ -29,12 +29,12 @@ internal readonly struct GoodSubtreeScoreAlgebra(int[] vals) : IFoldAlgebra<Root
     public (long[] Dp, long ScoreSum) Empty => (EmptyDp(), 0);
 
     public (long[] Dp, long ScoreSum) Combine(
-        RootedTreeNode node, IReadOnlyList<(long[] Dp, long ScoreSum)> children)
+        RootedTreeNode node, ReadOnlySpan<(long[] Dp, long ScoreSum)> children)
     {
         var merged = EmptyDp();
         var childScoreSum = 0L;
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             var (childDp, scoreSum) = children[i];
             merged = MergeDisjoint(merged, childDp);

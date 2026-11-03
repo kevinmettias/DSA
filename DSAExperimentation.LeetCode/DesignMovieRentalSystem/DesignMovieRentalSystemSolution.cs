@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.HashMap;
 
@@ -78,9 +79,9 @@ internal static class DesignMovieRentalSystemSolution
                 .ToList();
     }
 
-    // This repo's own BinarySearchTree/InOrderTraversal composition - the same one
-    // KthSmallestElementInABSTSolution and AllElementsInTwoBinarySearchTreesSolution
-    // use. One tree of (Price, Shop) per movie holds that movie's unrented copies
+    // This repo's own BinarySearchTree, read by a Reduce in InOrderReduceOrder that
+    // stops once it holds a query's five - the walk KthSmallestElementInABSTSolution
+    // stops at the kth key with. One tree of (Price, Shop) per movie holds that movie's unrented copies
     // and a single tree of (Price, Shop, Movie) holds every rented copy, so both
     // queries are a prefix of an in-order walk and rent/drop just move one entry
     // between the two trees. Prices are recovered from a HashMap keyed by
@@ -158,27 +159,35 @@ internal static class DesignMovieRentalSystemSolution
         }
     }
 
-    // In-order visits a BST's values in ascending order, so the first cap of them
-    // are the answer. IInOrderHooks.Visit has no early-exit signal, so the walk
-    // covers the whole tree and the cap only bounds what is kept - the same
-    // arrangement KthSmallestElementInABSTSolution uses.
+    // In-order enters a BST's values in ascending order, so the first cap of them are
+    // the answer, and the walk stops once it holds them.
     private static List<TValue> CollectAscending<TValue>(BinaryTreeNode<TValue>? root, int cap)
         where TValue : IComparable<TValue>
     {
-        var values = new List<TValue>();
-        InOrderTraversal.Walk(root, new CollectHooks<TValue>(values, cap));
-        return values;
+        var prefix = new AscendingPrefix<TValue>([], cap);
+
+        return Reduce.Tree<
+            BinaryTreeNode<TValue>, BinaryTreeTopology<TValue>, BinaryTreeChildren<TValue>,
+            InOrderReduceOrder<TValue>, FirstValues<TValue>, AscendingPrefix<TValue>>(root, prefix).Values;
     }
 
-    private readonly struct CollectHooks<TValue>(List<TValue> values, int cap) : IInOrderHooks<TValue>
-        where TValue : IComparable<TValue>
+    // The values kept so far and how many the query wants.
+    private readonly record struct AscendingPrefix<TValue>(List<TValue> Values, int Cap);
+
+    // Keeps each value the walk enters, and is done once it holds the cap.
+    private readonly struct FirstValues<TValue> : IReduceAlgebra<BinaryTreeNode<TValue>, AscendingPrefix<TValue>>
     {
-        public void Visit(BinaryTreeNode<TValue> node, int depth)
+        public static AscendingPrefix<TValue> Seed => default;
+
+        public static bool StopsEarly => true;
+
+        public static AscendingPrefix<TValue> Enter(AscendingPrefix<TValue> state, BinaryTreeNode<TValue> node, int depth)
         {
-            if (values.Count < cap)
-            {
-                values.Add(node.Value);
-            }
+            state.Values.Add(node.Value);
+
+            return state;
         }
+
+        public static bool IsDone(AscendingPrefix<TValue> state) => state.Values.Count >= state.Cap;
     }
 }

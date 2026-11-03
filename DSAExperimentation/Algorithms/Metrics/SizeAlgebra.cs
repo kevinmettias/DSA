@@ -7,6 +7,15 @@ public readonly struct SizeAlgebra<TNode> : IFoldAlgebra<TNode, int>
 {
     public int Empty => 0;
 
-    public int Combine(TNode node, IReadOnlyList<int> children)
-        => 1 + children.Sum();
+    public int Combine(TNode node, ReadOnlySpan<int> children)
+    {
+        var size = 1;
+
+        foreach (var childSize in children)
+        {
+            size += childSize;
+        }
+
+        return size;
+    }
 }

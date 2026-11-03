@@ -25,7 +25,7 @@ namespace DSAExperimentation.Algorithms.Folding;
 internal static class FoldRecursion
 {
     internal static TResult Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TMemo, TAlgebra, TResult>(
-        TNode node, TMemo memo, TAlgebra algebra)
+        TNode node, TMemo memo, TAlgebra algebra, FoldStack<TResult> stack)
         where TNode : class
         where TTopology : struct, IGraphTopology<TNode, TChildren>
         where TChildren : struct, IChildren<TNode>
@@ -45,20 +45,24 @@ internal static class FoldRecursion
         }
 
         var orderedChildren = TOrder.Apply(TTopology.GetChildren(node));
-        var childResults = new TResult[orderedChildren.Count];
+        var start = stack.Top;
 
         for (var i = 0; i < orderedChildren.Count; i++)
         {
-            childResults[i] = Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TMemo, TAlgebra, TResult>(
-                orderedChildren.Get(i), memo, algebra);
+            var childResult = Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TMemo, TAlgebra, TResult>(
+                orderedChildren.Get(i), memo, algebra, stack);
 
             if (memo.Aborted)
             {
+                stack.PopTo(start);
                 return algebra.Empty;
             }
+
+            stack.Push(childResult);
         }
 
-        var result = algebra.Combine(node, childResults);
+        var result = algebra.Combine(node, stack.Since(start));
+        stack.PopTo(start);
         memo.Close(node, result);
 
         return result;

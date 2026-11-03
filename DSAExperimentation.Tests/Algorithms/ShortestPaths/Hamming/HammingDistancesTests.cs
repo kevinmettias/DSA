@@ -45,6 +45,25 @@ public sealed partial class HammingDistancesTests
         AssertDistanceTo(graph, "bb", 2);
     }
 
+    [Fact]
+    public void To_ReachableTarget_CountsItsEdits()
+    {
+        var graph = HammingGraph.Build("hit", ["hot", "dot", "dog", "cog"]);
+        graph.TryGetNode("cog", out var target);
+
+        Assert.Equal(4, HammingDistances.To(graph.Root, target));
+    }
+
+    // "zzz" shares no one-character edge with the "aaa" component.
+    [Fact]
+    public void To_TargetInAnotherComponent_IsNull()
+    {
+        var graph = HammingGraph.Build("aaa", ["aab", "zzz"]);
+        graph.TryGetNode("zzz", out var isolated);
+
+        Assert.Null(HammingDistances.To(graph.Root, isolated));
+    }
+
     // The named node has to come back at the given number of one-character edits: the BFS
     // edge count from the root, not the order in which the walk discovered it.
     private static void AssertDistanceTo(HammingGraph graph, string label, int expected)

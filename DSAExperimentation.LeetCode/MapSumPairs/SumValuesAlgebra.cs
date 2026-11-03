@@ -12,6 +12,15 @@ internal readonly struct SumValuesAlgebra : IFoldAlgebra<LowercaseTrieNode<int>,
 {
     public int Empty => 0;
 
-    public int Combine(LowercaseTrieNode<int> node, IReadOnlyList<int> children)
-        => (node.HasValue ? node.Value : 0) + children.Sum();
+    public int Combine(LowercaseTrieNode<int> node, ReadOnlySpan<int> children)
+    {
+        var total = node.HasValue ? node.Value : 0;
+
+        foreach (var childTotal in children)
+        {
+            total += childTotal;
+        }
+
+        return total;
+    }
 }

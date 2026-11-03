@@ -8,7 +8,7 @@ public sealed partial class ZipFoldAlgebraTests
 {
     private static readonly TestNode Node = new("A");
 
-    private static (int A, int B) Combine(IReadOnlyList<(int, int)> children) =>
+    private static (int A, int B) Combine(ReadOnlySpan<(int A, int B)> children) =>
         default(ZipFoldAlgebra<TestNode, int, int, SizeAlgebra<TestNode>, HeightAlgebra<TestNode>>).Combine(Node, children);
 
     [Fact]

@@ -56,7 +56,7 @@ public static class DagFold
             ? algebra.Empty
             : FoldRecursion.Visit<
                 TNode, TTopology, TChildren, TOrder, TOrderedChildren, MemoizedFold<TNode, TResult>, TAlgebra, TResult>(
-                root, new MemoizedFold<TNode, TResult>([]), algebra);
+                root, new MemoizedFold<TNode, TResult>([]), algebra, new FoldStack<TResult>());
 
     // In the topology's own child order.
     /// <summary>Folds a DAG with the given algebra and the topology's own child order.</summary>

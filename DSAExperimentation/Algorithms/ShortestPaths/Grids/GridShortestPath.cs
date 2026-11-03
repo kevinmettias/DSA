@@ -2,9 +2,8 @@ using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.Algorithms.ShortestPaths.Grids;
 
-// BreadthFirstDistances fixed to the grid's node, topology and children, read for one target - see
-// DistanceMapReduceAlgebra for why this particular runtime-parameterized query doesn't need a bespoke
-// traversal, unlike LowestCommonAncestor.
+// BreadthFirstDistances.To fixed to the grid's node, topology and children: one target's distance,
+// from a breadth-first search that stops at the target rather than mapping the whole board.
 /// <summary>Counts the fewest orthogonal moves between two cells of a grid, routing around its walls.</summary>
 public static class GridShortestPath
 {
@@ -17,8 +16,6 @@ public static class GridShortestPath
     /// </returns>
     public static int? Distance(GridNode start, GridNode target)
     {
-        var distances = BreadthFirstDistances.From<GridNode, GridTopology, GridChildren>(start);
-
-        return distances.TryGetValue(target, out var distance) ? distance : null;
+        return BreadthFirstDistances.To<GridNode, GridTopology, GridChildren>(start, target);
     }
 }

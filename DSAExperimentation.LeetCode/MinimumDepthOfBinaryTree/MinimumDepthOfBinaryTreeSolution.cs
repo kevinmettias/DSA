@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.LeetCode.MinimumDepthOfBinaryTree;
@@ -9,55 +10,40 @@ namespace DSAExperimentation.LeetCode.MinimumDepthOfBinaryTree;
 //
 // Two strategies sit here. MinDepthByRecursion is the natural recursive walk, but
 // its single-child rule means it may descend the long side of such a node before
-// finding the shallow leaf. MinDepthByBreadthFirstSearch is level-order, so it
-// returns the moment a leaf first surfaces and never visits a level below it.
+// finding the shallow leaf. MinDepthByBreadthFirstReduce is level-order - this repo's
+// Reduce in BreadthFirstReduceOrder - so it stops the moment a leaf first surfaces and
+// never visits a level below it.
 // Pre-migration the test's private helper and both of the benchmark's [Benchmark]
 // arms (RecursiveMinDepth, BinaryTreeNodeMinDepth) all called the identical
 // recursive walk under different names; only the recursion predates this pair.
 internal static class MinimumDepthOfBinaryTreeSolution
 {
-    // The textbook arm the recursive walk is measured against: level-order traversal
-    // that stops at the first leaf, so it never touches the levels below the
+    // Level-order through this repo's Reduce in BreadthFirstReduceOrder: FirstLeaf is done
+    // at the first leaf the walk enters, so it never touches the levels below the
     // shallowest one - unlike the recursion, which may follow the long side of a
-    // one-child node down before reaching that leaf.
-    public static int MinDepthByBreadthFirstSearch(BinaryTreeNode<int>? node)
+    // one-child node down before reaching that leaf. Depth counts edges from the root, so
+    // the leaf's depth in nodes is one more; no tree has depth 0.
+    public static int MinDepthByBreadthFirstReduce(BinaryTreeNode<int>? node)
+        => Reduce.Tree<
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
+            BreadthFirstReduceOrder<BinaryTreeNode<int>>, FirstLeaf, int>(node);
+
+    // The depth in nodes of the first leaf entered, 0 until there is one.
+    private readonly struct FirstLeaf : IReduceAlgebra<BinaryTreeNode<int>, int>
     {
-        if (node is null)
+        public static int Seed => 0;
+
+        public static bool StopsEarly => true;
+
+        public static int Enter(int state, BinaryTreeNode<int> node, int depth)
         {
-            return 0;
+            var isLeaf = node.Left is null && node.Right is null;
+            var depthInNodes = depth + 1;
+
+            return isLeaf ? depthInNodes : state;
         }
 
-        var frontier = new Queue<BinaryTreeNode<int>>();
-        frontier.Enqueue(node);
-        var depth = 0;
-
-        while (frontier.Count > 0)
-        {
-            depth++;
-            var levelCount = frontier.Count;
-
-            for (var i = 0; i < levelCount; i++)
-            {
-                var current = frontier.Dequeue();
-
-                if (current.Left is null && current.Right is null)
-                {
-                    return depth;
-                }
-
-                if (current.Left is not null)
-                {
-                    frontier.Enqueue(current.Left);
-                }
-
-                if (current.Right is not null)
-                {
-                    frontier.Enqueue(current.Right);
-                }
-            }
-        }
-
-        return depth;
+        public static bool IsDone(int state) => state > 0;
     }
 
     public static int MinDepthByRecursion(BinaryTreeNode<int>? node)

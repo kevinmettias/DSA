@@ -102,7 +102,7 @@ public sealed partial class BreadthFirstWalkTests
         BreadthFirstWalk.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            TGuard, RecordingWalkStep, List<(string, int)>>(
+            TGuard, RecordingWalkStep, List<(string, int)>, NoStopCheck>(
             root, [], guard);
 
     private static List<TestNode> NextLevelWith<TGuard>(List<TestNode> currentLevel, TGuard guard)

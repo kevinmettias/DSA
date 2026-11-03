@@ -39,9 +39,9 @@ public sealed partial class MinimumDepthOfBinaryTreeSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinDepthByBreadthFirstSearch_Examples_ReturnsShortestLeafDepth(int?[] values, int expectedDepth)
+    public void MinDepthByBreadthFirstReduce_Examples_ReturnsShortestLeafDepth(int?[] values, int expectedDepth)
     {
-        var depth = MinimumDepthOfBinaryTreeSolution.MinDepthByBreadthFirstSearch(LeetCodeWireFormat.ToBinaryTree(values));
+        var depth = MinimumDepthOfBinaryTreeSolution.MinDepthByBreadthFirstReduce(LeetCodeWireFormat.ToBinaryTree(values));
 
         Assert.Equal(expectedDepth, depth);
     }

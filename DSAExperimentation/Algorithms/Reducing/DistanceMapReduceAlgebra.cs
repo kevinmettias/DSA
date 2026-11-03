@@ -5,10 +5,10 @@ namespace DSAExperimentation.Algorithms.Reducing;
 // know the target to answer the question, not to compute the answer - Enter can
 // record every reachable node's distance with zero knowledge of which one the
 // caller actually wants, purely structurally, and the runtime lookup happens after
-// the reduce completes, in ordinary code. The one thing this gives up versus a
-// bespoke early-terminating BFS is efficiency: it computes distances to every
-// reachable node, not just the target, in exchange for staying a plain algebra
-// reusable by Reduce.Graph as-is.
+// the reduce completes, in ordinary code. What it gives up is stopping early: it
+// computes distances to every reachable node, not just one target. A caller that wants
+// one target uses BreadthFirstDistances.To, whose algebra is done once it enters the
+// target (IReduceAlgebra.IsDone).
 //
 // Topology-agnostic, not grid-specific - works for any TNode reachable from any
 // IGraphTopology-compatible root.

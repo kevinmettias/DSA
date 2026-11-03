@@ -130,9 +130,8 @@ internal static class OpenTheLockSolution
             return LeetCodeAnswer.None;
         }
 
-        var distances = BreadthFirstDistances.From<StateNode<string>, StateTopology<string>, ListChildren<StateNode<string>>>(startNode);
-
-        return distances.TryGetValue(targetNode, out var distance) ? distance : LeetCodeAnswer.None;
+        return BreadthFirstDistances.To<StateNode<string>, StateTopology<string>, ListChildren<StateNode<string>>>(startNode, targetNode)
+            ?? LeetCodeAnswer.None;
     }
 
     // The composed arm's input: every live combination of a four-digit lock, joined to the live

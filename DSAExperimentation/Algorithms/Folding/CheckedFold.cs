@@ -89,7 +89,7 @@ public static class CheckedFold
 
         result = FoldRecursion.Visit<
             TNode, TTopology, TChildren, TOrder, TOrderedChildren, CycleCheckedFold<TNode, TResult>, TAlgebra, TResult>(
-            root, memo, algebra);
+            root, memo, algebra, new FoldStack<TResult>());
 
         return !memo.Aborted;
     }

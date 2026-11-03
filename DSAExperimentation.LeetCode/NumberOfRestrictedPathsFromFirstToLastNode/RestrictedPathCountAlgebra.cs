@@ -13,7 +13,7 @@ internal readonly struct RestrictedPathCountAlgebra : IFoldAlgebra<RestrictedPat
 {
     public long Empty => 0;
 
-    public long Combine(RestrictedPathNode node, IReadOnlyList<long> children)
+    public long Combine(RestrictedPathNode node, ReadOnlySpan<long> children)
     {
         if (node.Dist == 0)
         {
@@ -22,7 +22,7 @@ internal readonly struct RestrictedPathCountAlgebra : IFoldAlgebra<RestrictedPat
 
         var total = 0L;
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             var child = children[i];
             total = (total + child) % LeetCodeModulus.Value;

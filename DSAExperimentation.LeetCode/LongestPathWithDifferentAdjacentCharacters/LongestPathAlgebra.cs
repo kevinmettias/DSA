@@ -26,12 +26,12 @@ internal readonly struct LongestPathAlgebra(string labels) : IFoldAlgebra<Rooted
     // largest-child-path values as Combine folds over one node's children.
     private readonly record struct ChildAccumulator(int LargestHeight, int SecondLargestHeight, int LargestChildPath);
 
-    public PathState Combine(RootedTreeNode node, IReadOnlyList<PathState> children)
+    public PathState Combine(RootedTreeNode node, ReadOnlySpan<PathState> children)
     {
         var label = labels[node.Id];
         var accumulator = new ChildAccumulator(0, 0, 1);
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             accumulator = AccumulateChild(label, children[i], accumulator);
         }

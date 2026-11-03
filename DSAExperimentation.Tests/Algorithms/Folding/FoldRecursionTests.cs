@@ -53,5 +53,5 @@ public sealed partial class FoldRecursionTests
         => FoldRecursion.Visit<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            TMemo, RecordingNamesFoldAlgebra, string>(root, memo, new RecordingNamesFoldAlgebra(combined));
+            TMemo, RecordingNamesFoldAlgebra, string>(root, memo, new RecordingNamesFoldAlgebra(combined), new FoldStack<string>());
 }

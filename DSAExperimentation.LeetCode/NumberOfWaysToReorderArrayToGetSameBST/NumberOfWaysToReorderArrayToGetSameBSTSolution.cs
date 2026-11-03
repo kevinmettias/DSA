@@ -148,9 +148,9 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
     {
         public (int Size, long Ways) Empty => (0, 1);
 
-        public (int Size, long Ways) Combine(BinaryTreeNode<int> node, IReadOnlyList<(int Size, long Ways)> children)
+        public (int Size, long Ways) Combine(BinaryTreeNode<int> node, ReadOnlySpan<(int Size, long Ways)> children)
         {
-            if (children.Count == 0)
+            if (children.Length == 0)
             {
                 return (1, 1);
             }
@@ -158,14 +158,14 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
             var totalSize = 0;
             var ways = 1L;
 
-            for (var i = 0; i < children.Count; i++)
+            for (var i = 0; i < children.Length; i++)
             {
                 var child = children[i];
                 totalSize += child.Size;
                 ways = ways * child.Ways % LeetCodeModulus.Value;
             }
 
-            if (children.Count == BinaryChildCount)
+            if (children.Length == BinaryChildCount)
             {
                 ways = ways * Choose(totalSize, children[0].Size) % LeetCodeModulus.Value;
             }

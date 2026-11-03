@@ -18,9 +18,9 @@ internal readonly struct DeepestSubtreeAlgebra
     public (int Depth, BinaryTreeNode<int>? Node) Empty => (-1, null);
 
     public (int Depth, BinaryTreeNode<int>? Node) Combine(
-        BinaryTreeNode<int> node, IReadOnlyList<(int Depth, BinaryTreeNode<int>? Node)> children)
+        BinaryTreeNode<int> node, ReadOnlySpan<(int Depth, BinaryTreeNode<int>? Node)> children)
     {
-        if (children.Count == 0)
+        if (children.Length == 0)
         {
             return (0, node);
         }
@@ -31,11 +31,11 @@ internal readonly struct DeepestSubtreeAlgebra
         return (maxDepth + 1, tieCount == 1 ? deepest : node);
     }
 
-    private static int MaxChildDepth(IReadOnlyList<(int Depth, BinaryTreeNode<int>? Node)> children)
+    private static int MaxChildDepth(ReadOnlySpan<(int Depth, BinaryTreeNode<int>? Node)> children)
     {
         var maxDepth = 0;
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             if (children[i].Depth > maxDepth)
             {
@@ -47,12 +47,12 @@ internal readonly struct DeepestSubtreeAlgebra
     }
 
     private static (BinaryTreeNode<int>? Deepest, int TieCount) DeepestTiedChild(
-        IReadOnlyList<(int Depth, BinaryTreeNode<int>? Node)> children, int maxDepth)
+        ReadOnlySpan<(int Depth, BinaryTreeNode<int>? Node)> children, int maxDepth)
     {
         BinaryTreeNode<int>? deepest = null;
         var tieCount = 0;
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             if (children[i].Depth == maxDepth)
             {

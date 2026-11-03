@@ -70,19 +70,25 @@ public readonly struct IterativeFoldEvaluation<TNode> : IFoldEvaluationStrategy<
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
     {
         var results = new Dictionary<TNode, TResult>();
+        var childResults = Array.Empty<TResult>();
 
         for (var i = state.Order.Count - 1; i >= 0; i--)
         {
             var node = state.Order[i];
             var children = state.ChildrenByNode[node];
-            var childResults = new TResult[children.Count];
+
+            if (children.Count > childResults.Length)
+            {
+                childResults = new TResult[children.Count];
+            }
 
             for (var j = 0; j < children.Count; j++)
             {
                 childResults[j] = results[children[j]];
             }
 
-            results[node] = algebra.Combine(node, childResults);
+            var ownChildren = childResults.AsSpan(0, children.Count);
+            results[node] = algebra.Combine(node, ownChildren);
         }
 
         return results[root];

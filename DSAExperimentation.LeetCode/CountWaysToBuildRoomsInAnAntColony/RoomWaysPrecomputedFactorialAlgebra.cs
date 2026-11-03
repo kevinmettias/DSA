@@ -15,12 +15,12 @@ internal readonly struct RoomWaysPrecomputedFactorialAlgebra(FactorialTable<Leet
 {
     public (long Size, long Ways) Empty => (0, 1);
 
-    public (long Size, long Ways) Combine(RootedTreeNode node, IReadOnlyList<(long Size, long Ways)> children)
+    public (long Size, long Ways) Combine(RootedTreeNode node, ReadOnlySpan<(long Size, long Ways)> children)
     {
         var size = 1L;
         var ways = 1L;
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             var (childSize, childWays) = children[i];
             ways = ways * childWays % LeetCodeModulus.Value;
@@ -32,7 +32,7 @@ internal readonly struct RoomWaysPrecomputedFactorialAlgebra(FactorialTable<Leet
         // both narrow safely to FactorialTable<LeetCodeModulus>'s int indices.
         ways = ways * table.Factorial((int)(size - 1)) % LeetCodeModulus.Value;
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             var childSize = children[i].Size;
             ways = ways * table.InverseFactorial((int)childSize) % LeetCodeModulus.Value;

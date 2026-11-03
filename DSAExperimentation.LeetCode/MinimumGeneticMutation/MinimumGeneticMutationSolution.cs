@@ -143,9 +143,7 @@ internal static class MinimumGeneticMutationSolution
             return LeetCodeAnswer.None;
         }
 
-        var distances = HammingDistances.From(graph.Root);
-
-        return distances.TryGetValue(endNode, out var distance) ? distance : LeetCodeAnswer.None;
+        return HammingDistances.To(graph.Root, endNode) ?? LeetCodeAnswer.None;
     }
 
     // LC 433's two endpoints, named for the roles they play here rather than left as two

@@ -9,11 +9,11 @@ namespace DSAExperimentation.Algorithms.Ancestry;
 // IFoldAlgebra) - but a fold cannot stop early: every child is folded before Combine
 // sees its parent, so a fold would walk the whole subtree beneath first or second,
 // where this recursion returns at the match without descending. The answer would be
-// the same; the walk below each match would be wasted. Nor is it an IReduceAlgebra,
-// whose members are static-abstract - fixed by TYPE, with no channel to a runtime
-// value - and deferring the check to after a structural pass (see
-// GridShortestPath.Distance) isn't an option either, since the check is what cuts the
-// descent. So it does what Dijkstra does: write the recursion directly and close over
+// the same; the walk below each match would be wasted. Nor is it an IReduceAlgebra.
+// A reduce's state can carry first and second, and IsDone can end the walk -
+// BreadthFirstDistances.To does both - but IsDone ends the whole walk: it cannot skip
+// the subtree below one match and keep walking the rest, and that cut is the point.
+// So it does what Dijkstra does: write the recursion directly and close over
 // first/second as ordinary parameters, the way any hand-written function would.
 /// <summary>The lowest common ancestor of two tree nodes: the deepest node whose subtree holds both.</summary>
 public static class LowestCommonAncestor

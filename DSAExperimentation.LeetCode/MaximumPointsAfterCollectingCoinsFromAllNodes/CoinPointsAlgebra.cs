@@ -38,7 +38,7 @@ internal readonly struct CoinPointsAlgebra : IFoldAlgebra<RootedTreeNode, long[]
         _inputs = new CoinInputs(stored, cost);
     }
 
-    public long[] Combine(RootedTreeNode node, IReadOnlyList<long[]> children)
+    public long[] Combine(RootedTreeNode node, ReadOnlySpan<long[]> children)
     {
         var inputs = _inputs;
         var coins = inputs.Coins[node.Id];
@@ -58,13 +58,13 @@ internal readonly struct CoinPointsAlgebra : IFoldAlgebra<RootedTreeNode, long[]
     // level down as well. children[i][level] is dp(child i, level), already folded by the
     // time Combine is handed the child results.
     private static long BestLevelValue(
-        long coins, long cost, int level, IReadOnlyList<long[]> children)
+        long coins, long cost, int level, ReadOnlySpan<long[]> children)
     {
         var nextLevel = Math.Min(level + 1, HalvingDepth.Max);
         var takeChildrenSum = 0L;
         var halveChildrenSum = 0L;
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             takeChildrenSum += children[i][level];
             halveChildrenSum += children[i][nextLevel];

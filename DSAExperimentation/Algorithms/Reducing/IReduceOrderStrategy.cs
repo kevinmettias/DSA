@@ -34,4 +34,22 @@ public interface IReduceOrderStrategy<TNode>
         where TOrderedChildren : struct, IChildren<TNode>
         where TGuard : struct, IVisitGuard<TNode>
         where TAlgebra : struct, IReduceAlgebra<TNode, TState>;
+
+    // Several roots at once, each entered only if the guard admits it. What "at once" means is
+    // the order's own: breadth-first puts every root at depth 0, so their distances share one
+    // frontier, and depth-first walks the roots in turn, a later one skipping what an earlier
+    // one reached.
+    /// <summary>Reduces every node a set of roots reaches, entering each root the guard admits at depth 0.</summary>
+    /// <param name="roots">The nodes to start from.</param>
+    /// <param name="seed">The state the walk starts from.</param>
+    /// <param name="guard">Which nodes may still be entered; it sees every root and every child.</param>
+    /// <returns>The state after the walk, or the state the algebra called done.</returns>
+    internal static abstract TState EvaluateFrom<TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TAlgebra, TState>(
+        IEnumerable<TNode> roots, TState seed, TGuard guard)
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
+        where TOrderedChildren : struct, IChildren<TNode>
+        where TGuard : struct, IVisitGuard<TNode>
+        where TAlgebra : struct, IReduceAlgebra<TNode, TState>;
 }

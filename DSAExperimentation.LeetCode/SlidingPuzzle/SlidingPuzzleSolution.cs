@@ -111,9 +111,8 @@ internal static class SlidingPuzzleSolution
             return LeetCodeAnswer.None;
         }
 
-        var distances = BreadthFirstDistances.From<StateNode<string>, StateTopology<string>, ListChildren<StateNode<string>>>(startNode);
-
-        return distances.TryGetValue(targetNode, out var distance) ? distance : LeetCodeAnswer.None;
+        return BreadthFirstDistances.To<StateNode<string>, StateTopology<string>, ListChildren<StateNode<string>>>(startNode, targetNode)
+            ?? LeetCodeAnswer.None;
     }
 
     private static string Flatten(int[][] board)

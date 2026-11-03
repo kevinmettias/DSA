@@ -43,6 +43,71 @@ public sealed partial class ReduceTests
         Assert.Equal(7, count);
     }
 
+    // NArySample is A -> (B -> E, F), C, (D -> G): depth-first enters A, B, E and is done there,
+    // before E, B or A is exited.
+    [Fact]
+    public void Tree_DepthFirstAlgebraDone_StopsBeforeAnyFurtherEnterOrExit()
+        => Assert.Equal("ABE", Reduce.Tree<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            DepthFirstReduceOrder<TestNode>, FirstThreeNamesReduceAlgebra, string>(TestTrees.NArySample()));
+
+    // Breadth-first enters A, then B and C of the next level, and stops mid-level before D.
+    [Fact]
+    public void Tree_BreadthFirstAlgebraDone_StopsMidLevel()
+        => Assert.Equal("ABC", Reduce.Tree<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            BreadthFirstReduceOrder<TestNode>, FirstThreeNamesReduceAlgebra, string>(TestTrees.NArySample()));
+
+    [Fact]
+    public void Graph_DepthFirstAlgebraDone_StopsBeforeAnyFurtherEnterOrExit()
+        => Assert.Equal("ABE", Reduce.Graph<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            DepthFirstReduceOrder<TestNode>, FirstThreeNamesReduceAlgebra, string>(TestTrees.NArySample()));
+
+    // An algebra that never says it is done walks the whole tree: every name, and every Exit.
+    [Fact]
+    public void Tree_AlgebraNeverDone_WalksEveryNode()
+        => Assert.Equal("ABEFCDG", Reduce.Tree<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            DepthFirstReduceOrder<TestNode>, PathReduceAlgebra, string>(TestTrees.NArySample()));
+
+    // Roots D then B of NArySample: breadth-first puts both at depth 0 and walks one frontier, D's
+    // child G before B's E and F; depth-first finishes D's subtree before starting B.
+    [Fact]
+    public void GraphFromAll_BreadthFirst_WalksEveryRootAsOneFrontier()
+    {
+        var root = TestTrees.NArySample();
+        var b = root.Children[0];
+        var d = root.Children[2];
+
+        Assert.Equal("DBGEF", Reduce.GraphFromAll<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            BreadthFirstReduceOrder<TestNode>, PathReduceAlgebra, string>([d, b], ""));
+    }
+
+    [Fact]
+    public void GraphFromAll_DepthFirst_WalksTheRootsInTurn()
+    {
+        var root = TestTrees.NArySample();
+        var b = root.Children[0];
+        var d = root.Children[2];
+
+        Assert.Equal("DGBEF", Reduce.GraphFromAll<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            DepthFirstReduceOrder<TestNode>, PathReduceAlgebra, string>([d, b], ""));
+    }
+
+    // B's walk enters B and E, exits E, and enters F as the third name: done, so D is never started.
+    [Fact]
+    public void GraphFromAll_DepthFirstAlgebraDone_SkipsTheRemainingRoots()
+    {
+        var root = TestTrees.NArySample();
+
+        Assert.Equal("BE)F", Reduce.GraphFromAll<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            DepthFirstReduceOrder<TestNode>, FirstThreeNamesReduceAlgebra, string>([root.Children[0], root.Children[2]], ""));
+    }
+
     [Fact]
     public void Tree_NullRoot_ReturnsSeed()
     {

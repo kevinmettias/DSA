@@ -11,10 +11,17 @@ internal readonly struct CountCombineCallsFoldAlgebra(CombineCounter counter) : 
 {
     public int Empty => 0;
 
-    public int Combine(TestNode node, IReadOnlyList<int> children)
+    public int Combine(TestNode node, ReadOnlySpan<int> children)
     {
         counter.Calls++;
-        return 1 + children.Sum();
+        var count = 1;
+
+        foreach (var childCount in children)
+        {
+            count += childCount;
+        }
+
+        return count;
     }
 }
 

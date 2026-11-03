@@ -13,12 +13,12 @@ internal readonly struct RobFoldAlgebra : IFoldAlgebra<BinaryTreeNode<int>, (int
     public (int Robbed, int NotRobbed) Empty => (0, 0);
 
     public (int Robbed, int NotRobbed) Combine(
-        BinaryTreeNode<int> node, IReadOnlyList<(int Robbed, int NotRobbed)> children)
+        BinaryTreeNode<int> node, ReadOnlySpan<(int Robbed, int NotRobbed)> children)
     {
         var robbed = node.Value;
         var notRobbed = 0;
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             var child = children[i];
             robbed += child.NotRobbed;

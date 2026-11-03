@@ -51,6 +51,71 @@ public sealed partial class BreadthFirstDistancesTests
         Assert.False(distances.ContainsKey(nodes[4]));
     }
 
+    [Fact]
+    public void To_ShortcutEdge_ReportsTheFewestEdges()
+    {
+        var nodes = SampleGraph();
+
+        Assert.Equal(2, To(nodes[0], nodes[3]));
+    }
+
+    [Fact]
+    public void To_RootItself_IsZero()
+    {
+        var nodes = SampleGraph();
+
+        Assert.Equal(0, To(nodes[0], nodes[0]));
+    }
+
+    [Fact]
+    public void To_UnreachableTarget_IsNull()
+    {
+        var nodes = SampleGraph();
+
+        Assert.Null(To(nodes[0], nodes[4]));
+    }
+
+    // Roots 0 and 4 of an undirected path 0 - 1 - 2 - 3 - 4: each node's distance is to the nearer end.
+    [Fact]
+    public void FromAll_TwoRoots_MeasuresEachNodeFromTheNearest()
+    {
+        var path = UndirectedPath(5);
+
+        var distances = BreadthFirstDistances.FromAll<AdjacencyNode, AdjacencyTopology, ListChildren<AdjacencyNode>>([path[0], path[4]]);
+
+        Assert.Equal([0, 1, 2, 1, 0], path.Select(node => distances[node]));
+    }
+
+    [Fact]
+    public void FromAll_RepeatedRoot_StartsOneSearch()
+    {
+        var path = UndirectedPath(3);
+
+        var distances = BreadthFirstDistances.FromAll<AdjacencyNode, AdjacencyTopology, ListChildren<AdjacencyNode>>([path[0], path[0]]);
+
+        Assert.Equal([0, 1, 2], path.Select(node => distances[node]));
+    }
+
+    [Fact]
+    public void FromAll_NoRoots_IsEmpty()
+        => Assert.Empty(BreadthFirstDistances.FromAll<AdjacencyNode, AdjacencyTopology, ListChildren<AdjacencyNode>>([]));
+
+    private static int? To(AdjacencyNode root, AdjacencyNode target) =>
+        BreadthFirstDistances.To<AdjacencyNode, AdjacencyTopology, ListChildren<AdjacencyNode>>(root, target);
+
+    private static AdjacencyNode[] UndirectedPath(int length)
+    {
+        var nodes = Enumerable.Range(0, length).Select(id => new AdjacencyNode(id)).ToArray();
+
+        for (var i = 1; i < length; i++)
+        {
+            nodes[i - 1].Neighbors.Add(nodes[i]);
+            nodes[i].Neighbors.Add(nodes[i - 1]);
+        }
+
+        return nodes;
+    }
+
     private static Dictionary<AdjacencyNode, int> From(AdjacencyNode root) =>
         BreadthFirstDistances.From<AdjacencyNode, AdjacencyTopology, ListChildren<AdjacencyNode>>(root);
 

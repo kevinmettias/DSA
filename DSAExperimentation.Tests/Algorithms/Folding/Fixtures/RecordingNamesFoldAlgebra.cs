@@ -13,7 +13,7 @@ internal readonly struct RecordingNamesFoldAlgebra(List<string> combined) : IFol
 {
     public string Empty => "";
 
-    public string Combine(TestNode node, IReadOnlyList<string> children)
+    public string Combine(TestNode node, ReadOnlySpan<string> children)
     {
         combined.Add(node.Name);
 

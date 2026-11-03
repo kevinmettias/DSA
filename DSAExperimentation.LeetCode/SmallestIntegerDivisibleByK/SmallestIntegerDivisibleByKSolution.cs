@@ -44,11 +44,11 @@ internal static class SmallestIntegerDivisibleByKSolution
 
     public static int SmallestRepunitLengthByReduceGraph(RemainderGraph graph)
     {
-        var distances = BreadthFirstDistances.From<
-            RemainderNode, RemainderTopology, ListChildren<RemainderNode>>(graph.Start);
+        var distance = BreadthFirstDistances.To<
+            RemainderNode, RemainderTopology, ListChildren<RemainderNode>>(graph.Start, graph.Zero);
 
-        return distances.TryGetValue(graph.Zero, out var distance)
-            ? RepunitLength(distance)
+        return distance is { } steps
+            ? RepunitLength(steps)
             : LeetCodeAnswer.None;
     }
 

@@ -19,12 +19,12 @@ internal readonly struct RoomWaysAlgebra : IFoldAlgebra<RootedTreeNode, (long Si
 {
     public (long Size, long Ways) Empty => (0, 1);
 
-    public (long Size, long Ways) Combine(RootedTreeNode node, IReadOnlyList<(long Size, long Ways)> children)
+    public (long Size, long Ways) Combine(RootedTreeNode node, ReadOnlySpan<(long Size, long Ways)> children)
     {
         var size = 1L;
         var ways = 1L;
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             var (childSize, childWays) = children[i];
             ways = ways * childWays % LeetCodeModulus.Value;
@@ -33,7 +33,7 @@ internal readonly struct RoomWaysAlgebra : IFoldAlgebra<RootedTreeNode, (long Si
 
         ways = ways * Factorial(size - 1) % LeetCodeModulus.Value;
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Length; i++)
         {
             var childSize = children[i].Size;
             ways = ways * ModularInverse.ByFermat<LeetCodeModulus>(Factorial(childSize)) % LeetCodeModulus.Value;

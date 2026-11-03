@@ -19,9 +19,13 @@ namespace DSAExperimentation.Algorithms.Walking;
 // Stepping through a level in list order and then computing the next level from it
 // visits nodes in the identical order a FIFO queue would: everything enqueued at
 // depth d is dequeued, in order, before anything enqueued at depth d + 1.
+//
+// A state the algebra calls done stops the walk at once, mid-level if need be, so a search
+// for one node stops at the first node of the depth that holds it. Whether to ask is
+// TStopCheck, as in DepthFirstWalk.
 internal static class BreadthFirstWalk
 {
-    internal static TState Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TStep, TState>(
+    internal static TState Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TStep, TState, TStopCheck>(
         TNode root, TState state, TGuard guard)
         where TNode : class
         where TTopology : struct, IGraphTopology<TNode, TChildren>
@@ -30,8 +34,47 @@ internal static class BreadthFirstWalk
         where TOrderedChildren : struct, IChildren<TNode>
         where TGuard : struct, IVisitGuard<TNode>
         where TStep : struct, IReduceAlgebra<TNode, TState>
+        where TStopCheck : struct, IStopCheck
+        => WalkLevels<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TStep, TState, TStopCheck>([root], state, guard);
+
+    // Every root the guard admits is depth 0, so the walk is one breadth-first search from all of
+    // them at once: a node's depth is its edge count from the nearest root.
+    internal static TState WalkFrom<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TStep, TState, TStopCheck>(
+        IEnumerable<TNode> roots, TState state, TGuard guard)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
+        where TOrderedChildren : struct, IChildren<TNode>
+        where TGuard : struct, IVisitGuard<TNode>
+        where TStep : struct, IReduceAlgebra<TNode, TState>
+        where TStopCheck : struct, IStopCheck
     {
-        var currentLevel = new List<TNode> { root };
+        var firstLevel = new List<TNode>();
+
+        foreach (var root in roots)
+        {
+            if (guard.ShouldVisit(root))
+            {
+                firstLevel.Add(root);
+            }
+        }
+
+        return WalkLevels<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TStep, TState, TStopCheck>(firstLevel, state, guard);
+    }
+
+    private static TState WalkLevels<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TStep, TState, TStopCheck>(
+        List<TNode> firstLevel, TState state, TGuard guard)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
+        where TOrderedChildren : struct, IChildren<TNode>
+        where TGuard : struct, IVisitGuard<TNode>
+        where TStep : struct, IReduceAlgebra<TNode, TState>
+        where TStopCheck : struct, IStopCheck
+    {
+        var currentLevel = firstLevel;
         var depth = 0;
 
         while (currentLevel.Count > 0)
@@ -39,6 +82,11 @@ internal static class BreadthFirstWalk
             foreach (var node in currentLevel)
             {
                 state = TStep.Enter(state, node, depth);
+
+                if (TStopCheck.IsEnabled && TStep.IsDone(state))
+                {
+                    return state;
+                }
             }
 
             currentLevel = NextLevel<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TGuard>(

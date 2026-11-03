@@ -7,6 +7,15 @@ public readonly struct HeightAlgebra<TNode> : IFoldAlgebra<TNode, int>
 {
     public int Empty => 0;
 
-    public int Combine(TNode node, IReadOnlyList<int> children)
-        => 1 + (children.Count == 0 ? 0 : children.Max());
+    public int Combine(TNode node, ReadOnlySpan<int> children)
+    {
+        var tallestChild = 0;
+
+        foreach (var childHeight in children)
+        {
+            tallestChild = Math.Max(tallestChild, childHeight);
+        }
+
+        return 1 + tallestChild;
+    }
 }

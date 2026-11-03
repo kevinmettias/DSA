@@ -24,10 +24,10 @@ public readonly struct RecursiveFoldEvaluation<TNode> : IFoldEvaluationStrategy<
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
-        => Visit<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(root, algebra);
+        => Visit<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(root, algebra, new FoldStack<TResult>());
 
     private static TResult Visit<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
-        TNode node, TAlgebra algebra)
+        TNode node, TAlgebra algebra, FoldStack<TResult> stack)
         where TTopology : struct, ITreeTopology<TNode, TChildren>
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
@@ -35,14 +35,18 @@ public readonly struct RecursiveFoldEvaluation<TNode> : IFoldEvaluationStrategy<
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
     {
         var orderedChildren = TOrder.Apply(TTopology.GetChildren(node));
-        var childResults = new TResult[orderedChildren.Count];
+        var start = stack.Top;
 
         for (var i = 0; i < orderedChildren.Count; i++)
         {
-            childResults[i] = Visit<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
-                orderedChildren.Get(i), algebra);
+            var childResult = Visit<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
+                orderedChildren.Get(i), algebra, stack);
+            stack.Push(childResult);
         }
 
-        return algebra.Combine(node, childResults);
+        var result = algebra.Combine(node, stack.Since(start));
+        stack.PopTo(start);
+
+        return result;
     }
 }

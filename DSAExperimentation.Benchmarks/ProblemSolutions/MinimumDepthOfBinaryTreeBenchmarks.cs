@@ -37,5 +37,5 @@ public class MinimumDepthOfBinaryTreeBenchmarks
     public int RecursiveMinDepth() => MinimumDepthOfBinaryTreeSolution.MinDepthByRecursion(_root);
 
     [Benchmark]
-    public int BreadthFirstSearch() => MinimumDepthOfBinaryTreeSolution.MinDepthByBreadthFirstSearch(_root);
+    public int BreadthFirstReduce() => MinimumDepthOfBinaryTreeSolution.MinDepthByBreadthFirstReduce(_root);
 }

@@ -83,7 +83,7 @@ public sealed partial class DepthFirstWalkTests
         DepthFirstWalk.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            TGuard, RecordingWalkStep, List<(string, int)>>(
+            TGuard, RecordingWalkStep, List<(string, int)>, NoStopCheck>(
             root, startDepth, [], guard);
 
     private static List<(string Name, int Depth)> WalkReversed<TGuard>(TestNode root, int startDepth, TGuard guard)
@@ -91,7 +91,7 @@ public sealed partial class DepthFirstWalkTests
         DepthFirstWalk.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
             ReverseChildOrder<TestNode, ListChildren<TestNode>>, ReversedChildren<TestNode, ListChildren<TestNode>>,
-            TGuard, RecordingWalkStep, List<(string Name, int Depth)>>(
+            TGuard, RecordingWalkStep, List<(string Name, int Depth)>, NoStopCheck>(
             root, startDepth, [], guard);
 
     private static bool IsTrackedGuardNeeded(GraphShape shape) =>
