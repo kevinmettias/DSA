@@ -1,0 +1,70 @@
+{
+  "QuestionId": 935,
+  "FrontendId": 899,
+  "Title": "Orderly Queue",
+  "TitleSlug": "orderly-queue",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Sorting",
+      "Slug": "sorting"
+    },
+    {
+      "Name": "Lexicographically Minimal String Rotation",
+      "Slug": "lexicographically-minimal-string-rotation"
+    }
+  ],
+  "SimilarQuestions": [],
+  "Hints": [],
+  "Constraints": [
+    "1 <= k <= s.length <= 1000",
+    "s consist of lowercase English letters."
+  ],
+  "Signature": {
+    "FunctionName": "orderlyQueue",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "string",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public string OrderlyQueue(string s, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"cba\"",
+        "1"
+      ],
+      "ExpectedOutput": "\"acb\""
+    },
+    {
+      "Inputs": [
+        "\"baaca\"",
+        "3"
+      ],
+      "ExpectedOutput": "\"aaabc\""
+    }
+  ],
+  "ContentHtml": "<p>You are given a string <code>s</code> and an integer <code>k</code>. You can choose one of the first <code>k</code> letters of <code>s</code> and append it at the end of the string.</p>\n\n<p>Return <em>the lexicographically smallest string you could have after applying the mentioned step any number of moves</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;cba&quot;, k = 1\n<strong>Output:</strong> &quot;acb&quot;\n<strong>Explanation:</strong> \nIn the first move, we move the 1<sup>st</sup> character &#39;c&#39; to the end, obtaining the string &quot;bac&quot;.\nIn the second move, we move the 1<sup>st</sup> character &#39;b&#39; to the end, obtaining the final result &quot;acb&quot;.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;baaca&quot;, k = 3\n<strong>Output:</strong> &quot;aaabc&quot;\n<strong>Explanation:</strong> \nIn the first move, we move the 1<sup>st</sup> character &#39;b&#39; to the end, obtaining the string &quot;aacab&quot;.\nIn the second move, we move the 3<sup>rd</sup> character &#39;c&#39; to the end, obtaining the final result &quot;aaabc&quot;.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= k &lt;= s.length &lt;= 1000</code></li>\n\t<li><code>s</code> consist of lowercase English letters.</li>\n</ul>\n"
+}

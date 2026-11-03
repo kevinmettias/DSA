@@ -1,0 +1,428 @@
+[
+  {
+    "Inputs": [
+      "[2,2,3]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[10,10,10]"
+    ],
+    "ExpectedOutput": "\"equilateral\""
+  },
+  {
+    "Inputs": [
+      "[1,1,2]"
+    ],
+    "ExpectedOutput": "\"none\""
+  },
+  {
+    "Inputs": [
+      "[6,6,10]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[6,6,12]"
+    ],
+    "ExpectedOutput": "\"none\""
+  },
+  {
+    "Inputs": [
+      "[8,15,17]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[1,2,3]"
+    ],
+    "ExpectedOutput": "\"none\""
+  },
+  {
+    "Inputs": [
+      "[5,7,10]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[6,6,6]"
+    ],
+    "ExpectedOutput": "\"equilateral\""
+  },
+  {
+    "Inputs": [
+      "[50,50,50]"
+    ],
+    "ExpectedOutput": "\"equilateral\""
+  },
+  {
+    "Inputs": [
+      "[5,5,8]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[5,7,5]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[7,10,5]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[4,4,7]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[99,99,98]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[5,5,5]"
+    ],
+    "ExpectedOutput": "\"equilateral\""
+  },
+  {
+    "Inputs": [
+      "[25,25,40]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[30,40,50]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[12,16,20]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[10,15,25]"
+    ],
+    "ExpectedOutput": "\"none\""
+  },
+  {
+    "Inputs": [
+      "[99,99,1]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[7,7,14]"
+    ],
+    "ExpectedOutput": "\"none\""
+  },
+  {
+    "Inputs": [
+      "[45,45,89]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[20,21,21]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[20,25,30]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[45,45,45]"
+    ],
+    "ExpectedOutput": "\"equilateral\""
+  },
+  {
+    "Inputs": [
+      "[3,4,6]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[50,60,60]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[50,50,80]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[99,99,99]"
+    ],
+    "ExpectedOutput": "\"equilateral\""
+  },
+  {
+    "Inputs": [
+      "[3,5,5]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[13,14,15]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[9,12,15]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[23,23,23]"
+    ],
+    "ExpectedOutput": "\"equilateral\""
+  },
+  {
+    "Inputs": [
+      "[9,9,9]"
+    ],
+    "ExpectedOutput": "\"equilateral\""
+  },
+  {
+    "Inputs": [
+      "[100,100,1]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[6,6,11]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[9,4,6]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[1,2,2]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[6,8,10]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[99,1,1]"
+    ],
+    "ExpectedOutput": "\"none\""
+  },
+  {
+    "Inputs": [
+      "[45,45,90]"
+    ],
+    "ExpectedOutput": "\"none\""
+  },
+  {
+    "Inputs": [
+      "[40,40,41]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[50,51,100]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[5,12,13]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[2,2,4]"
+    ],
+    "ExpectedOutput": "\"none\""
+  },
+  {
+    "Inputs": [
+      "[10,10,15]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[5,5,9]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[10,10,20]"
+    ],
+    "ExpectedOutput": "\"none\""
+  },
+  {
+    "Inputs": [
+      "[30,30,59]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[15,15,29]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[100,100,100]"
+    ],
+    "ExpectedOutput": "\"equilateral\""
+  },
+  {
+    "Inputs": [
+      "[25,25,30]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[7,24,25]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[9,40,41]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[17,17,34]"
+    ],
+    "ExpectedOutput": "\"none\""
+  },
+  {
+    "Inputs": [
+      "[33,44,55]"
+    ],
+    "ExpectedOutput": "\"scalene\""
+  },
+  {
+    "Inputs": [
+      "[3,4,4]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[25,25,49]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[10,14,14]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[5,7,12]"
+    ],
+    "ExpectedOutput": "\"none\""
+  },
+  {
+    "Inputs": [
+      "[1,1,1]"
+    ],
+    "ExpectedOutput": "\"equilateral\""
+  },
+  {
+    "Inputs": [
+      "[51,51,100]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[7,7,10]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[50,50,100]"
+    ],
+    "ExpectedOutput": "\"none\""
+  },
+  {
+    "Inputs": [
+      "[33,33,34]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[50,50,70]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[1,100,100]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[1,100,1]"
+    ],
+    "ExpectedOutput": "\"none\""
+  },
+  {
+    "Inputs": [
+      "[15,15,25]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  },
+  {
+    "Inputs": [
+      "[9,9,12]"
+    ],
+    "ExpectedOutput": "\"isosceles\""
+  }
+]

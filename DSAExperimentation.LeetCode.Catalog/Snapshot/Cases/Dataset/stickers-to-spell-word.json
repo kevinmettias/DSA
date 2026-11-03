@@ -1,0 +1,653 @@
+[
+  {
+    "Inputs": [
+      "[\"aaa\",\"bbb\"]",
+      "\"aabbbccc\""
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\"]",
+      "\"abc\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"abc\"]",
+      "\"abcabc\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\"]",
+      "\"abcdabcd\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"abc\"]",
+      "\"d\""
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"abc\"]",
+      "\"abcd\""
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"ab\",\"bc\"]",
+      "\"abc\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\"]",
+      "\"abcdef\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"a\"]",
+      "\"a\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"abc\"]",
+      "\"aabbbccc\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\"]",
+      "\"hold\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\"]",
+      "\"adgbehcfi\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"ccdd\"]",
+      "\"abcd\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\"]",
+      "\"helloworld\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"aaa\",\"aa\",\"a\"]",
+      "\"aaaaaaaaa\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"xyz\",\"zyx\",\"yxz\"]",
+      "\"zyxyzyxyzyx\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"again\"]",
+      "\"aginwodlloleh\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"bbcc\",\"cdda\"]",
+      "\"aabbccddaabb\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\"]",
+      "\"starstarsun\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"aaaaa\",\"bbbbb\",\"ccccc\",\"ddddd\",\"eeeee\"]",
+      "\"abcdeabcde\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"abcabc\",\"aabbc\"]",
+      "\"abcabcabc\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"ab\",\"bc\",\"cd\"]",
+      "\"abcdabcd\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"quick\",\"brown\",\"fox\"]",
+      "\"quickbrownfox\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"efgh\",\"ijkl\"]",
+      "\"dgheijlkfabci\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\"]",
+      "\"bananaapple\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\"]",
+      "\"bluegreenred\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"dcba\",\"abdc\",\"bacd\"]",
+      "\"abcdabcd\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"zzz\",\"zzzz\",\"zzzzz\"]",
+      "\"zzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"python\"]",
+      "\"pythonhello\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"abc\",\"abac\"]",
+      "\"aabbccabc\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"abacd\",\"bdfgh\",\"cdhij\",\"efgik\",\"ghklm\"]",
+      "\"abcdefghijklim\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"puzzle\",\"piece\",\"fit\"]",
+      "\"fittingpuzzle\""
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"aaa\",\"bbb\",\"ccc\"]",
+      "\"aabbbccc\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"sunshine\",\"rainbow\",\"cloud\"]",
+      "\"sunshinecloud\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"zoo\",\"book\",\"look\"]",
+      "\"bookzoolook\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"magic\",\"wand\",\"spell\"]",
+      "\"spellmagic\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"bbccdd\",\"aaccdd\"]",
+      "\"aabbccddee\""
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"dog\",\"bird\"]",
+      "\"cattog\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"bbcc\",\"ccdd\"]",
+      "\"bbaaccd\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"data\",\"structure\"]",
+      "\"datadstructure\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"bat\",\"rat\",\"car\"]",
+      "\"catabtar\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"lion\",\"tiger\"]",
+      "\"tigerlionzebra\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"repeat\",\"again\",\"once\"]",
+      "\"repeatagainonce\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"sticker\",\"stamps\",\"books\"]",
+      "\"tsickerbomskps\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"dcba\",\"efgh\",\"hgf\",\"ijkl\",\"lkji\"]",
+      "\"abcdefghijklij\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"aaaa\",\"bbbb\",\"cccc\"]",
+      "\"aabbcc\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"sticker\",\"book\",\"a\"]",
+      "\"stickers\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"x\",\"y\",\"z\"]",
+      "\"zyxzyxzyx\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"efgh\",\"ijkl\"]",
+      "\"ijklabcdeffgh\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"sticker\",\"book\",\"target\"]",
+      "\"booktarget\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"jump\",\"over\",\"lazy\"]",
+      "\"jumplazyover\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"dog\",\"bird\"]",
+      "\"birdcatdog\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"example\",\"science\",\"with\"]",
+      "\"thehatexample\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"laptop\",\"phone\",\"tablet\"]",
+      "\"telephonetablet\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"efgh\",\"ijkl\"]",
+      "\"abcdefghijlkl\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"ghijkl\",\"mnopqr\"]",
+      "\"mnopqrfedcba\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"bbcc\",\"ccdd\",\"ddeeff\",\"ffgg\"]",
+      "\"aabbccddeeffgg\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"zzz\",\"yyy\",\"xxx\",\"www\"]",
+      "\"zzzyyyxxxwww\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"coding\",\"is\",\"fun\"]",
+      "\"sindgnif\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"pizza\",\"pie\",\"cake\"]",
+      "\"pizzacakepie\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"fox\",\"quick\",\"brown\"]",
+      "\"brownquickfox\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"sticky\",\"loop\",\"again\"]",
+      "\"programming\""
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"steak\",\"egg\",\"bacon\"]",
+      "\"eggnestake\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"xy\",\"yz\",\"zx\"]",
+      "\"xyzyzxzyxzyzx\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"bird\"]",
+      "\"catdogbird\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\"]",
+      "\"onetwothree\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"up\",\"down\",\"left\",\"right\"]",
+      "\"rightleftdownup\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\"]",
+      "\"threetwoone\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"quick\",\"brown\",\"fox\"]",
+      "\"uqcfkibrowno\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\"]",
+      "\"abcdeabcde\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"dog\",\"bird\"]",
+      "\"cogbat\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"bbccdd\",\"ccddeeff\",\"ddeeffgg\"]",
+      "\"aabbccddeeffgg\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"bcd\",\"cde\",\"def\",\"efg\"]",
+      "\"abcdefg\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\"]",
+      "\"greengreenblue\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"zzz\",\"yyy\",\"xxx\"]",
+      "\"zzzyyyxxx\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"fast\",\"food\",\"truck\"]",
+      "\"truckfastfood\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"dcba\",\"abcd\"]",
+      "\"abcdabcdabcd\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"ddeeff\",\"gghhii\"]",
+      "\"abcdefghi\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"happy\",\"new\",\"year\"]",
+      "\"happynewyear\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"jump\",\"high\",\"long\"]",
+      "\"highjumplong\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"sticker\",\"sticker\",\"sticker\"]",
+      "\"stickers\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"ab\",\"bc\",\"ca\"]",
+      "\"abcabcabc\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"efgh\",\"ijkl\"]",
+      "\"fedcbahjiglke\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"wide\"]",
+      "\"worldwide\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"jump\",\"over\",\"lazy\"]",
+      "\"lazyjumpover\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\"]",
+      "\"moonstarsun\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"orange\",\"banana\"]",
+      "\"poeplange\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"abcde\",\"abcd\"]",
+      "\"abcdef\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"jkl\"]",
+      "\"abcdefghijkln\""
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"race\",\"car\",\"seat\"]",
+      "\"crecarstae\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"xy\",\"yx\",\"zz\"]",
+      "\"zyxzyxzyx\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"xy\",\"yz\",\"za\",\"ax\"]",
+      "\"xyzaxyzaxyza\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"dog\",\"bird\"]",
+      "\"birdcattwo\""
+    ],
+    "ExpectedOutput": "-1"
+  }
+]

@@ -1,0 +1,662 @@
+[
+  {
+    "Inputs": [
+      "[[1,1],[2,2],[1,3]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,5],[3,9]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[5,5],[6,6],[7,7]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,1],[3,1]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[1,1],[2,2]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[0,1],[1,1],[2,1]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[1,1],[1,0]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[1,1],[1,2]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[0,1],[0,2]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[5,0],[0,0],[0,5]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[1,2],[2,1]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,2],[2,1]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[10,10],[20,20],[30,30]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,0],[0,0],[0,1]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[1,2],[1,3]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,0],[2,1],[1,2]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,2],[2,3],[3,4]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[0,1],[1,1]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,0],[2,0],[3,0]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,1],[2,2]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[2,1],[1,2],[3,4]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[100,100],[50,50],[0,0]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,2],[3,4]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[-1,-1],[0,0],[1,1]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[3,3],[2,2]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[-10,10],[0,0],[10,-10]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,2],[2,4],[3,6]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,2],[3,4],[5,6]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,2],[2,3]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[0,1],[1,0],[0,0]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[100,100],[99,99],[98,98]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[100,0],[50,50],[0,100]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[50,50],[50,60],[60,50]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[33,33],[66,66],[99,99]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[10,10],[15,10],[10,15]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,2],[2,1],[3,4]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,2],[4,4]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,3],[1,5]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[50,0],[0,50],[25,25]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[1,2],[3,6]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[1,2],[2,2]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[0,100],[100,0],[50,50]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,2],[4,6],[5,3]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[1,2],[2,1]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,2],[1,2]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[1,0],[2,1]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[-1,0],[0,1],[1,0]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[100,100],[50,50]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[50,50],[60,60],[70,70]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[10,20],[20,30],[30,40]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[100,100],[99,98],[98,97]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[50,50],[50,60],[50,70]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[0,100],[50,50],[100,0]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[2,3],[5,6],[8,9]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[0,1],[1,0]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[10,0],[20,0],[30,0]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[0,1],[1,2],[2,3]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,2],[0,0]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[5,5],[10,5],[15,5]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,100],[100,1],[50,50]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[99,99],[98,98],[97,97]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[3,1],[2,2]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[2,4],[4,6],[6,8]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[99,98],[98,97],[97,96]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[10,20],[20,30],[30,30]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,2],[2,3],[4,5]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[0,1],[1,0],[2,1]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[5,0],[0,5],[5,5]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[10,20],[30,40],[50,60]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,3],[3,1]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[1,0],[2,0]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[5,5],[10,10],[15,15]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[5,5],[10,15],[20,25]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[2,3],[3,6],[5,10]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[3,6],[6,12],[9,18]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[10,20],[20,10],[30,0]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,3],[3,6]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,2],[3,5]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[33,55],[66,77],[99,88]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,0],[0,1],[0,2]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[50,50],[51,51],[52,52]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[2,2],[1,1],[3,3]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[5,5],[5,6],[6,5]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[5,5],[15,10],[25,15]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,3],[4,6]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[0,50],[50,0],[25,25]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[1,2],[2,4]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[1,2],[3,4]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,2],[4,5],[7,8]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[10,10],[20,30],[30,50]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[1,5],[3,4],[4,5]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[50,50],[50,51],[51,50]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[10,20],[20,10],[30,20]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,5],[2,3],[3,1]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[-5,-5],[-4,-4],[-3,-3]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[99,99],[50,50],[1,1]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[5,3],[6,4],[7,5]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[5,5],[5,6],[6,6]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[2,3],[4,5]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[2,4],[4,2],[0,0]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,2],[2,3],[3,5]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,1],[1,100],[100,1]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[1,0],[0,1],[-1,0]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[0,1],[1,0],[1,1]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[99,1],[100,1],[99,2]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[3,6],[6,12],[9,17]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[100,100],[0,0],[50,50]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[50,50],[100,100]]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[[0,0],[2,0],[1,1]]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[[7,7],[8,9],[9,7]]"
+    ],
+    "ExpectedOutput": "true"
+  }
+]

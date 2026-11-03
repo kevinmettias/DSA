@@ -1,0 +1,72 @@
+{
+  "QuestionId": 1159,
+  "FrontendId": 1081,
+  "Title": "Smallest Subsequence of Distinct Characters",
+  "TitleSlug": "smallest-subsequence-of-distinct-characters",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Stack",
+      "Slug": "stack"
+    },
+    {
+      "Name": "Greedy",
+      "Slug": "greedy"
+    },
+    {
+      "Name": "Monotonic Stack",
+      "Slug": "monotonic-stack"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Find the Most Competitive Subsequence",
+      "TitleSlug": "find-the-most-competitive-subsequence",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [
+    "Greedily try to add one missing character. How to check if adding some character will not cause problems ? Use bit-masks to check whether you will be able to complete the sub-sequence if you add the character at some index i."
+  ],
+  "Constraints": [
+    "1 <= s.length <= 1000",
+    "s consists of lowercase English letters."
+  ],
+  "Signature": {
+    "FunctionName": "smallestSubsequence",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "string",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public string SmallestSubsequence(string s) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"bcabc\""
+      ],
+      "ExpectedOutput": "\"abc\""
+    },
+    {
+      "Inputs": [
+        "\"cbacdcbc\""
+      ],
+      "ExpectedOutput": "\"acdb\""
+    }
+  ],
+  "ContentHtml": "<p>Given a string <code>s</code>, return <em>the </em><span data-keyword=\"lexicographically-smaller-string\"><em>lexicographically smallest</em></span> <span data-keyword=\"subsequence-string\"><em>subsequence</em></span><em> of</em> <code>s</code> <em>that contains all the distinct characters of</em> <code>s</code> <em>exactly once</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;bcabc&quot;\n<strong>Output:</strong> &quot;abc&quot;\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;cbacdcbc&quot;\n<strong>Output:</strong> &quot;acdb&quot;\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length &lt;= 1000</code></li>\n\t<li><code>s</code> consists of lowercase English letters.</li>\n</ul>\n\n<p>&nbsp;</p>\n<strong>Note:</strong> This question is the same as 316: <a href=\"https://leetcode.com/problems/remove-duplicate-letters/\" target=\"_blank\">https://leetcode.com/problems/remove-duplicate-letters/</a>"
+}

@@ -1,0 +1,79 @@
+{
+  "QuestionId": 22,
+  "FrontendId": 22,
+  "Title": "Generate Parentheses",
+  "TitleSlug": "generate-parentheses",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Backtracking",
+      "Slug": "backtracking"
+    },
+    {
+      "Name": "Bracket Sequences",
+      "Slug": "bracket-sequences"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Letter Combinations of a Phone Number",
+      "TitleSlug": "letter-combinations-of-a-phone-number",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Valid Parentheses",
+      "TitleSlug": "valid-parentheses",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Check if a Parentheses String Can Be Valid",
+      "TitleSlug": "check-if-a-parentheses-string-can-be-valid",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= n <= 8"
+  ],
+  "Signature": {
+    "FunctionName": "generateParenthesis",
+    "Parameters": [
+      {
+        "Name": "n",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "list<string>",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public IList<string> GenerateParenthesis(int n) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "3"
+      ],
+      "ExpectedOutput": "[\"((()))\",\"(()())\",\"(())()\",\"()(())\",\"()()()\"]"
+    },
+    {
+      "Inputs": [
+        "1"
+      ],
+      "ExpectedOutput": "[\"()\"]"
+    }
+  ],
+  "ContentHtml": "<p>Given <code>n</code> pairs of parentheses, write a function to <em>generate all combinations of well-formed parentheses</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<pre><strong>Input:</strong> n = 3\n<strong>Output:</strong> [\"((()))\",\"(()())\",\"(())()\",\"()(())\",\"()()()\"]\n</pre><p><strong class=\"example\">Example 2:</strong></p>\n<pre><strong>Input:</strong> n = 1\n<strong>Output:</strong> [\"()\"]\n</pre>\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= n &lt;= 8</code></li>\n</ul>\n"
+}

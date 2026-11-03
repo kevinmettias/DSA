@@ -1,0 +1,113 @@
+{
+  "QuestionId": 2106,
+  "FrontendId": 1979,
+  "Title": "Find Greatest Common Divisor of Array",
+  "TitleSlug": "find-greatest-common-divisor-of-array",
+  "Difficulty": "Easy",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Number Theory",
+      "Slug": "number-theory"
+    },
+    {
+      "Name": "Euclidean Algorithm",
+      "Slug": "euclidean-algorithm"
+    },
+    {
+      "Name": "Greatest Common Divisor",
+      "Slug": "greatest-common-divisor"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Greatest Common Divisor of Strings",
+      "TitleSlug": "greatest-common-divisor-of-strings",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Number of Different Subsequences GCDs",
+      "TitleSlug": "number-of-different-subsequences-gcds",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Three Divisors",
+      "TitleSlug": "three-divisors",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Smallest Even Multiple",
+      "TitleSlug": "smallest-even-multiple",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Number of Subarrays With GCD Equal to K",
+      "TitleSlug": "number-of-subarrays-with-gcd-equal-to-k",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Find the Number of Subsequences With Equal GCD",
+      "TitleSlug": "find-the-number-of-subsequences-with-equal-gcd",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Maximum Subarray With Equal Products",
+      "TitleSlug": "maximum-subarray-with-equal-products",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [
+    "Find the minimum and maximum in one iteration. Let them be mn and mx.",
+    "Try all the numbers in the range [1, mn] and check the largest number which divides both of them."
+  ],
+  "Constraints": [
+    "2 <= nums.length <= 1000",
+    "1 <= nums[i] <= 1000"
+  ],
+  "Signature": {
+    "FunctionName": "findGCD",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int FindGCD(int[] nums) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[2,5,6,9,10]"
+      ],
+      "ExpectedOutput": "2"
+    },
+    {
+      "Inputs": [
+        "[7,5,6,8,3]"
+      ],
+      "ExpectedOutput": "1"
+    },
+    {
+      "Inputs": [
+        "[3,3]"
+      ],
+      "ExpectedOutput": "3"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer array <code>nums</code>, return<strong> </strong><em>the <strong>greatest common divisor</strong> of the smallest number and largest number in </em><code>nums</code>.</p>\n\n<p>The <strong>greatest common divisor</strong> of two numbers is the largest positive integer that evenly divides both numbers.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [2,5,6,9,10]\n<strong>Output:</strong> 2\n<strong>Explanation:</strong>\nThe smallest number in nums is 2.\nThe largest number in nums is 10.\nThe greatest common divisor of 2 and 10 is 2.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [7,5,6,8,3]\n<strong>Output:</strong> 1\n<strong>Explanation:</strong>\nThe smallest number in nums is 3.\nThe largest number in nums is 8.\nThe greatest common divisor of 3 and 8 is 1.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [3,3]\n<strong>Output:</strong> 3\n<strong>Explanation:</strong>\nThe smallest number in nums is 3.\nThe largest number in nums is 3.\nThe greatest common divisor of 3 and 3 is 3.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>2 &lt;= nums.length &lt;= 1000</code></li>\n\t<li><code>1 &lt;= nums[i] &lt;= 1000</code></li>\n</ul>\n"
+}

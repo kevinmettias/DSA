@@ -1,0 +1,314 @@
+[
+  {
+    "Inputs": [
+      "\"(()())\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"(()(()))\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"((()))\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"((()()()))\""
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"()()(())\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"(()(()(())))\""
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "\"()(())\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"((())())\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"()((()))\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"(()(()(()())))\""
+    ],
+    "ExpectedOutput": "22"
+  },
+  {
+    "Inputs": [
+      "\"(((())()))\""
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"(())((()))\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"()(((())))\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"()()()\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"(())(())\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"()(()(()(())))\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"(()((())()))\""
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "\"(()())(()())\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"(()((()))(()))\""
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "\"((()()()()))\""
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "\"((()))()()\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"((())(()))\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"()(()(()))\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"((()())(()))\""
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"((()(()(())))())\""
+    ],
+    "ExpectedOutput": "30"
+  },
+  {
+    "Inputs": [
+      "\"(()(()()(())))\""
+    ],
+    "ExpectedOutput": "18"
+  },
+  {
+    "Inputs": [
+      "\"(((()))(()))\""
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"((()))()\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"(()(())(()))\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"((()))(())()\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"((()(()))())\""
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "\"()((())())\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"(((())))\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"(()())(())\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"((())()())\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"((()(())))\""
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"()(())(()(()))\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"((()()(())))\""
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "\"(((()()())))\""
+    ],
+    "ExpectedOutput": "24"
+  },
+  {
+    "Inputs": [
+      "\"(((()()(()))))\""
+    ],
+    "ExpectedOutput": "32"
+  },
+  {
+    "Inputs": [
+      "\"((((()))))\""
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "\"(()()(()))\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"(()((())))\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"()((()()()))\""
+    ],
+    "ExpectedOutput": "13"
+  },
+  {
+    "Inputs": [
+      "\"((()())())\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"(())(()(()))\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"(((()())()))\""
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "\"()((())()())\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"()()()()\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"((()))(())\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"((()()))\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"()(())(())\""
+    ],
+    "ExpectedOutput": "5"
+  }
+]

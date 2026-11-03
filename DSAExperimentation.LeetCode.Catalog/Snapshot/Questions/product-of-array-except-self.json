@@ -1,0 +1,91 @@
+{
+  "QuestionId": 238,
+  "FrontendId": 238,
+  "Title": "Product of Array Except Self",
+  "TitleSlug": "product-of-array-except-self",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Prefix Sum",
+      "Slug": "prefix-sum"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Trapping Rain Water",
+      "TitleSlug": "trapping-rain-water",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Maximum Product Subarray",
+      "TitleSlug": "maximum-product-subarray",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Paint House II",
+      "TitleSlug": "paint-house-ii",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Minimum Difference in Sums After Removal of Elements",
+      "TitleSlug": "minimum-difference-in-sums-after-removal-of-elements",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Construct Product Matrix",
+      "TitleSlug": "construct-product-matrix",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Find Sum of Array Product of Magical Sequences",
+      "TitleSlug": "find-sum-of-array-product-of-magical-sequences",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [
+    "Think how you can efficiently utilize prefix and suffix products to calculate the product of all elements except self for each index. Can you pre-compute the prefix and suffix products in linear time to avoid redundant calculations?",
+    "Can you minimize additional space usage by reusing memory or modifying the input array to store intermediate results?"
+  ],
+  "Constraints": [
+    "2 <= nums.length <= 10^5",
+    "-30 <= nums[i] <= 30",
+    "The input is generated such that answer[i] is guaranteed to fit in a 32-bit integer."
+  ],
+  "Signature": {
+    "FunctionName": "productExceptSelf",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "integer[]",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int[] ProductExceptSelf(int[] nums) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[1,2,3,4]"
+      ],
+      "ExpectedOutput": "[24,12,8,6]"
+    },
+    {
+      "Inputs": [
+        "[-1,1,0,-3,3]"
+      ],
+      "ExpectedOutput": "[0,0,9,0,0]"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer array <code>nums</code>, return <em>an array</em> <code>answer</code> <em>such that</em> <code>answer[i]</code> <em>is equal to the product of all the elements of</em> <code>nums</code> <em>except</em> <code>nums[i]</code>.</p>\n\n<p>The product of any prefix or suffix of <code>nums</code> is <strong>guaranteed</strong> to fit in a <strong>32-bit</strong> integer.</p>\n\n<p>You must write an algorithm that runs in&nbsp;<code>O(n)</code>&nbsp;time and without using the division operation.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<pre><strong>Input:</strong> nums = [1,2,3,4]\n<strong>Output:</strong> [24,12,8,6]\n</pre><p><strong class=\"example\">Example 2:</strong></p>\n<pre><strong>Input:</strong> nums = [-1,1,0,-3,3]\n<strong>Output:</strong> [0,0,9,0,0]\n</pre>\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>2 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>-30 &lt;= nums[i] &lt;= 30</code></li>\n\t<li>The input is generated such that <code>answer[i]</code> is <strong>guaranteed</strong> to fit in a <strong>32-bit</strong> integer.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Follow up:</strong>&nbsp;Can you solve the problem in <code>O(1)</code>&nbsp;extra&nbsp;space complexity? (The output array <strong>does not</strong> count as extra space for space complexity analysis.)</p>\n"
+}

@@ -1,0 +1,184 @@
+[
+  {
+    "Inputs": [
+      "\"aaaaaaa\"",
+      "[\"aa\",\"aaa\"]"
+    ],
+    "ExpectedOutput": "[\"aa aa aaa\",\"aa aaa aa\",\"aaa aa aa\"]"
+  },
+  {
+    "Inputs": [
+      "\"a\"",
+      "[\"a\"]"
+    ],
+    "ExpectedOutput": "[\"a\"]"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "[\"a\",\"abc\",\"b\",\"cd\"]"
+    ],
+    "ExpectedOutput": "[\"a b cd\"]"
+  },
+  {
+    "Inputs": [
+      "\"leetcodeleet\"",
+      "[\"leet\",\"code\"]"
+    ],
+    "ExpectedOutput": "[\"leet code leet\"]"
+  },
+  {
+    "Inputs": [
+      "\"nevergonnagiveyouup\"",
+      "[\"never\",\"gonna\",\"give\",\"you\",\"up\",\"nevergonna\",\"gonnagive\",\"onnagive\",\"nnagive\",\"nagive\",\"agive\",\"giveu\",\"giveyo\",\"giveyou\",\"giveyoup\",\"giveyoupu\",\"giveyoupup\",\"youpup\",\"oupup\",\"pupup\",\"upup\",\"pup\",\"up\"]"
+    ],
+    "ExpectedOutput": "[\"never gonna give you up\",\"never gonna giveyou up\",\"never gonnagive you up\",\"nevergonna give you up\",\"nevergonna giveyou up\"]"
+  },
+  {
+    "Inputs": [
+      "\"exampleofquestion\"",
+      "[\"example\",\"of\",\"question\",\"ex\",\"ample\",\"que\",\"stion\",\"exam\",\"ple\",\"quest\",\"uest\",\"ion\"]"
+    ],
+    "ExpectedOutput": "[\"ex ample of que stion\",\"ex ample of quest ion\",\"ex ample of question\",\"exam ple of que stion\",\"exam ple of quest ion\",\"exam ple of question\",\"example of que stion\",\"example of quest ion\",\"example of question\"]"
+  },
+  {
+    "Inputs": [
+      "\"amazingrace\"",
+      "[\"amazing\",\"race\",\"amaz\",\"ing\",\"zing\",\"ace\",\"rac\"]"
+    ],
+    "ExpectedOutput": "[\"amaz ing race\",\"amazing race\"]"
+  },
+  {
+    "Inputs": [
+      "\"skyscraper\"",
+      "[\"sky\",\"scraper\",\"sky\",\"scrap\",\"er\"]"
+    ],
+    "ExpectedOutput": "[\"sky scrap er\",\"sky scraper\"]"
+  },
+  {
+    "Inputs": [
+      "\"wordbreakproblem\"",
+      "[\"word\",\"break\",\"problem\",\"wordbreak\",\"prob\",\"lem\"]"
+    ],
+    "ExpectedOutput": "[\"word break prob lem\",\"word break problem\",\"wordbreak prob lem\",\"wordbreak problem\"]"
+  },
+  {
+    "Inputs": [
+      "\"amazingrace\"",
+      "[\"amazing\",\"race\",\"amazingr\",\"acer\",\"age\",\"maze\",\"rang\",\"racer\",\"ace\",\"zing\"]"
+    ],
+    "ExpectedOutput": "[\"amazing race\",\"amazingr ace\"]"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "[\"mis\",\"is\",\"sip\",\"issi\",\"ppi\",\"ippi\",\"pi\",\"pippi\",\"miss\",\"sipi\"]"
+    ],
+    "ExpectedOutput": "[\"miss is sip pi\",\"miss issi ppi\"]"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "[\"a\",\"ab\",\"abc\",\"abcd\",\"b\",\"bc\",\"bcd\",\"c\",\"cd\",\"d\"]"
+    ],
+    "ExpectedOutput": "[\"a b c d\",\"a b cd\",\"a bc d\",\"a bcd\",\"ab c d\",\"ab cd\",\"abc d\",\"abcd\"]"
+  },
+  {
+    "Inputs": [
+      "\"optimization\"",
+      "[\"opt\",\"im\",\"iza\",\"tio\",\"n\",\"on\",\"optim\",\"optimiz\",\"optimiza\",\"ization\"]"
+    ],
+    "ExpectedOutput": "[\"opt im iza tio n\",\"opt im ization\",\"optim iza tio n\",\"optim ization\",\"optimiza tio n\"]"
+  },
+  {
+    "Inputs": [
+      "\"thisisatest\"",
+      "[\"this\",\"is\",\"a\",\"test\",\"thisis\",\"ate\",\"st\"]"
+    ],
+    "ExpectedOutput": "[\"this is a test\",\"this is ate st\",\"thisis a test\",\"thisis ate st\"]"
+  },
+  {
+    "Inputs": [
+      "\"sololeveltwo\"",
+      "[\"sol\",\"olev\",\"el\",\"elv\",\"ello\",\"lev\",\"leve\",\"vel\",\"velt\",\"velto\",\"veltwo\",\"o\",\"l\",\"v\",\"t\",\"w\",\"two\",\"to\",\"level\",\"levelt\",\"levelto\",\"leveltwo\"]"
+    ],
+    "ExpectedOutput": "[\"sol o lev el t w o\",\"sol o lev el two\",\"sol o leve l t w o\",\"sol o leve l two\",\"sol o level t w o\",\"sol o level two\",\"sol o levelt w o\",\"sol o leveltwo\",\"sol olev el t w o\",\"sol olev el two\"]"
+  },
+  {
+    "Inputs": [
+      "\"solvetheproblem\"",
+      "[\"solve\",\"the\",\"problem\",\"sol\",\"ve\",\"prob\",\"lem\",\"othe\",\"probem\",\"solvethe\",\"heproblem\"]"
+    ],
+    "ExpectedOutput": "[\"sol ve the prob lem\",\"sol ve the problem\",\"solve the prob lem\",\"solve the problem\",\"solvethe prob lem\",\"solvethe problem\"]"
+  },
+  {
+    "Inputs": [
+      "\"leetcode\"",
+      "[\"leet\",\"code\",\"le\",\"et\",\"code\",\"cod\",\"leetco\"]"
+    ],
+    "ExpectedOutput": "[\"le et code\",\"leet code\"]"
+  },
+  {
+    "Inputs": [
+      "\"thethreefishes\"",
+      "[\"the\",\"three\",\"threefish\",\"fish\",\"fishes\"]"
+    ],
+    "ExpectedOutput": "[\"the three fishes\"]"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "[\"a\",\"b\",\"c\",\"d\",\"ab\",\"bc\",\"cd\",\"abcd\"]"
+    ],
+    "ExpectedOutput": "[\"a b c d\",\"a b cd\",\"a bc d\",\"ab c d\",\"ab cd\",\"abcd\"]"
+  },
+  {
+    "Inputs": [
+      "\"canadaday\"",
+      "[\"can\",\"ada\",\"day\",\"canada\",\"anada\",\"aday\"]"
+    ],
+    "ExpectedOutput": "[\"can ada day\",\"canada day\"]"
+  },
+  {
+    "Inputs": [
+      "\"abcdefgh\"",
+      "[\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\",\"abcdefg\",\"abcdefgh\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefgh\"]"
+  },
+  {
+    "Inputs": [
+      "\"elephant\"",
+      "[\"ele\",\"phant\",\"lephant\",\"el\",\"phant\",\"le\",\"pha\",\"nt\",\"e\",\"phantom\",\"pha\"]"
+    ],
+    "ExpectedOutput": "[\"e le pha nt\",\"e le phant\",\"e lephant\",\"el e pha nt\",\"el e phant\",\"ele pha nt\",\"ele phant\"]"
+  },
+  {
+    "Inputs": [
+      "\"aquickbrownfox\"",
+      "[\"a\",\"quick\",\"brown\",\"fox\",\"quickbrown\",\"brownfox\"]"
+    ],
+    "ExpectedOutput": "[\"a quick brown fox\",\"a quick brownfox\",\"a quickbrown fox\"]"
+  },
+  {
+    "Inputs": [
+      "\"thisisatoyproblem\"",
+      "[\"this\",\"is\",\"atoy\",\"problem\",\"isato\",\"oyprob\",\"lem\",\"toy\",\"prob\",\"em\",\"l\",\"em\",\"thisisato\",\"oy\",\"prob\"]"
+    ],
+    "ExpectedOutput": "[\"this is atoy prob l em\",\"this is atoy prob lem\",\"this is atoy problem\"]"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "[\"a\",\"b\",\"c\",\"d\",\"ab\",\"bc\",\"cd\",\"abcd\",\"abc\",\"bcd\",\"ab\",\"bc\",\"a\",\"d\",\"abcd\"]"
+    ],
+    "ExpectedOutput": "[\"a b c d\",\"a b cd\",\"a bc d\",\"a bcd\",\"ab c d\",\"ab cd\",\"abc d\",\"abcd\"]"
+  },
+  {
+    "Inputs": [
+      "\"wordbreakproblem\"",
+      "[\"word\",\"break\",\"problem\",\"wordbreak\",\"pro\",\"blem\"]"
+    ],
+    "ExpectedOutput": "[\"word break pro blem\",\"word break problem\",\"wordbreak pro blem\",\"wordbreak problem\"]"
+  }
+]

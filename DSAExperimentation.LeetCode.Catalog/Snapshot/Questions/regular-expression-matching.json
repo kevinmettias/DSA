@@ -1,0 +1,82 @@
+{
+  "QuestionId": 10,
+  "FrontendId": 10,
+  "Title": "Regular Expression Matching",
+  "TitleSlug": "regular-expression-matching",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Recursion",
+      "Slug": "recursion"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Wildcard Matching",
+      "TitleSlug": "wildcard-matching",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= s.length <= 20",
+    "1 <= p.length <= 20",
+    "s contains only lowercase English letters.",
+    "p contains only lowercase English letters, '.', and '*'.",
+    "It is guaranteed for each appearance of the character '*', there will be a previous valid character to match."
+  ],
+  "Signature": {
+    "FunctionName": "isMatch",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      },
+      {
+        "Name": "p",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "boolean",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public bool IsMatch(string s, string p) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"aa\"",
+        "\"a\""
+      ],
+      "ExpectedOutput": "false"
+    },
+    {
+      "Inputs": [
+        "\"aa\"",
+        "\"a*\""
+      ],
+      "ExpectedOutput": "true"
+    },
+    {
+      "Inputs": [
+        "\"ab\"",
+        "\".*\""
+      ],
+      "ExpectedOutput": "true"
+    }
+  ],
+  "ContentHtml": "<p>Given an input string <code>s</code>&nbsp;and a pattern <code>p</code>, implement regular expression matching with support for <code>&#39;.&#39;</code> and <code>&#39;*&#39;</code> where:</p>\n\n<ul>\n\t<li><code>&#39;.&#39;</code> Matches any single character.​​​​</li>\n\t<li><code>&#39;*&#39;</code> Matches zero or more of the preceding element.</li>\n</ul>\n\n<p>Return a boolean indicating whether the matching covers the entire input string (not partial).</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;aa&quot;, p = &quot;a&quot;\n<strong>Output:</strong> false\n<strong>Explanation:</strong> &quot;a&quot; does not match the entire string &quot;aa&quot;.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;aa&quot;, p = &quot;a*&quot;\n<strong>Output:</strong> true\n<strong>Explanation:</strong> &#39;*&#39; means zero or more of the preceding element, &#39;a&#39;. Therefore, by repeating &#39;a&#39; once, it becomes &quot;aa&quot;.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;ab&quot;, p = &quot;.*&quot;\n<strong>Output:</strong> true\n<strong>Explanation:</strong> &quot;.*&quot; means &quot;zero or more (*) of any character (.)&quot;.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length&nbsp;&lt;= 20</code></li>\n\t<li><code>1 &lt;= p.length&nbsp;&lt;= 20</code></li>\n\t<li><code>s</code> contains only lowercase English letters.</li>\n\t<li><code>p</code> contains only lowercase English letters, <code>&#39;.&#39;</code>, and&nbsp;<code>&#39;*&#39;</code>.</li>\n\t<li>It is guaranteed for each appearance of the character <code>&#39;*&#39;</code>, there will be a previous valid character to match.</li>\n</ul>\n"
+}

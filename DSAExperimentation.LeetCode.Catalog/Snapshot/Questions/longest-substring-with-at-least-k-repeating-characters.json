@@ -1,0 +1,102 @@
+{
+  "QuestionId": 395,
+  "FrontendId": 395,
+  "Title": "Longest Substring with At Least K Repeating Characters",
+  "TitleSlug": "longest-substring-with-at-least-k-repeating-characters",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Divide and Conquer",
+      "Slug": "divide-and-conquer"
+    },
+    {
+      "Name": "Sliding Window",
+      "Slug": "sliding-window"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Longest Subsequence Repeated k Times",
+      "TitleSlug": "longest-subsequence-repeated-k-times",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Number of Equal Count Substrings",
+      "TitleSlug": "number-of-equal-count-substrings",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Optimal Partition of String",
+      "TitleSlug": "optimal-partition-of-string",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Length of Longest Subarray With at Most K Frequency",
+      "TitleSlug": "length-of-longest-subarray-with-at-most-k-frequency",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Find Longest Special Substring That Occurs Thrice II",
+      "TitleSlug": "find-longest-special-substring-that-occurs-thrice-ii",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Find Longest Special Substring That Occurs Thrice I",
+      "TitleSlug": "find-longest-special-substring-that-occurs-thrice-i",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= s.length <= 10^4",
+    "s consists of only lowercase English letters.",
+    "1 <= k <= 10^5"
+  ],
+  "Signature": {
+    "FunctionName": "longestSubstring",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int LongestSubstring(string s, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"aaabb\"",
+        "3"
+      ],
+      "ExpectedOutput": "3"
+    },
+    {
+      "Inputs": [
+        "\"ababbc\"",
+        "2"
+      ],
+      "ExpectedOutput": "5"
+    }
+  ],
+  "ContentHtml": "<p>Given a string <code>s</code> and an integer <code>k</code>, return <em>the length of the longest substring of</em> <code>s</code> <em>such that the frequency of each character in this substring is greater than or equal to</em> <code>k</code>.</p>\n\n<p data-pm-slice=\"1 1 []\">if no such substring exists, return 0.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;aaabb&quot;, k = 3\n<strong>Output:</strong> 3\n<strong>Explanation:</strong> The longest substring is &quot;aaa&quot;, as &#39;a&#39; is repeated 3 times.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;ababbc&quot;, k = 2\n<strong>Output:</strong> 5\n<strong>Explanation:</strong> The longest substring is &quot;ababb&quot;, as &#39;a&#39; is repeated 2 times and &#39;b&#39; is repeated 3 times.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length &lt;= 10<sup>4</sup></code></li>\n\t<li><code>s</code> consists of only lowercase English letters.</li>\n\t<li><code>1 &lt;= k &lt;= 10<sup>5</sup></code></li>\n</ul>\n"
+}

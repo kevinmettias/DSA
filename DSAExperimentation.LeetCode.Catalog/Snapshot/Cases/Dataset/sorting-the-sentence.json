@@ -1,0 +1,410 @@
+[
+  {
+    "Inputs": [
+      "\"eight8 seven7 six6 five5 four4 three3 two2 one1\""
+    ],
+    "ExpectedOutput": "\"one two three four five six seven eight\""
+  },
+  {
+    "Inputs": [
+      "\"seven7 six6 five5 four4 three3 two2 one1\""
+    ],
+    "ExpectedOutput": "\"one two three four five six seven\""
+  },
+  {
+    "Inputs": [
+      "\"nine9 eight8 seven7 six6 five5 four4 three3 two2 one1\""
+    ],
+    "ExpectedOutput": "\"one two three four five six seven eight nine\""
+  },
+  {
+    "Inputs": [
+      "\"three3 two2 one1\""
+    ],
+    "ExpectedOutput": "\"one two three\""
+  },
+  {
+    "Inputs": [
+      "\"five5 four4 three3 two2 one1\""
+    ],
+    "ExpectedOutput": "\"one two three four five\""
+  },
+  {
+    "Inputs": [
+      "\"A9 B8 C7 D6 E5 F4 G3 H2 I1\""
+    ],
+    "ExpectedOutput": "\"I H G F E D C B A\""
+  },
+  {
+    "Inputs": [
+      "\"nine9 eight8 seven7 six6 five5 four4 three3 two2 one1 zero0\""
+    ],
+    "ExpectedOutput": "\"one two three four five six seven eight nine zero\""
+  },
+  {
+    "Inputs": [
+      "\"six6 five5 four4 three3 two2 one1\""
+    ],
+    "ExpectedOutput": "\"one two three four five six\""
+  },
+  {
+    "Inputs": [
+      "\"one1\""
+    ],
+    "ExpectedOutput": "\"one\""
+  },
+  {
+    "Inputs": [
+      "\"two1 one2\""
+    ],
+    "ExpectedOutput": "\"two one\""
+  },
+  {
+    "Inputs": [
+      "\"four4 three3 two2 one1\""
+    ],
+    "ExpectedOutput": "\"one two three four\""
+  },
+  {
+    "Inputs": [
+      "\"quick5 brown3 fox2 jumps9 over8 lazy4 the7 dog6 a1\""
+    ],
+    "ExpectedOutput": "\"a fox brown lazy quick dog the over jumps\""
+  },
+  {
+    "Inputs": [
+      "\"Quick5 brown4 fox3 jumps2 over1\""
+    ],
+    "ExpectedOutput": "\"over jumps fox brown Quick\""
+  },
+  {
+    "Inputs": [
+      "\"big2 bigger3 biggest1\""
+    ],
+    "ExpectedOutput": "\"biggest big bigger\""
+  },
+  {
+    "Inputs": [
+      "\"order10 words9 in8 correct7 sequence6 is5 important4 for3 understanding2 this1\""
+    ],
+    "ExpectedOutput": "\"this understanding for important is sequence correct in words order1\""
+  },
+  {
+    "Inputs": [
+      "\"a1 bc2 def3 ghij4 klmno5 pqrstu6 vwxyz7 abcdefg8 hijklmno9\""
+    ],
+    "ExpectedOutput": "\"a bc def ghij klmno pqrstu vwxyz abcdefg hijklmno\""
+  },
+  {
+    "Inputs": [
+      "\"abc1 def2 ghi3 jkl4 mno5 pqr6 stu7 vwx8 yza9\""
+    ],
+    "ExpectedOutput": "\"abc def ghi jkl mno pqr stu vwx yza\""
+  },
+  {
+    "Inputs": [
+      "\"Data2 Science1\""
+    ],
+    "ExpectedOutput": "\"Science Data\""
+  },
+  {
+    "Inputs": [
+      "\"alpha10 beta9 gamma8 delta7 epsilon6 zeta5 eta4 theta3 iota2 kappa1\""
+    ],
+    "ExpectedOutput": "\"kappa iota theta eta zeta epsilon delta gamma beta alpha1\""
+  },
+  {
+    "Inputs": [
+      "\"Quick5 Brown4 Fox3 Jumps2 Over1\""
+    ],
+    "ExpectedOutput": "\"Over Jumps Fox Brown Quick\""
+  },
+  {
+    "Inputs": [
+      "\"Digital2 Transformation1\""
+    ],
+    "ExpectedOutput": "\"Transformation Digital\""
+  },
+  {
+    "Inputs": [
+      "\"zebra9 yellow8 xenon7 winter6 volcano5 umbrella4 tornado3 storm2 rainbow1\""
+    ],
+    "ExpectedOutput": "\"rainbow storm tornado umbrella volcano winter xenon yellow zebra\""
+  },
+  {
+    "Inputs": [
+      "\"short1 longerWord2 evenLongerWord3\""
+    ],
+    "ExpectedOutput": "\"short longerWord evenLongerWord\""
+  },
+  {
+    "Inputs": [
+      "\"one9 two8 three7 four6 five5 six4 seven3 eight2 nine1\""
+    ],
+    "ExpectedOutput": "\"nine eight seven six five four three two one\""
+  },
+  {
+    "Inputs": [
+      "\"apple8 banana7 cherry6 date5 elderberry4 fig3 grape2 huckleberry1\""
+    ],
+    "ExpectedOutput": "\"huckleberry grape fig elderberry date cherry banana apple\""
+  },
+  {
+    "Inputs": [
+      "\"apple9 banana8 cherry7 date6 elderberry5 fig4 grape3 honeydew2 ice1\""
+    ],
+    "ExpectedOutput": "\"ice honeydew grape fig elderberry date cherry banana apple\""
+  },
+  {
+    "Inputs": [
+      "\"MixedCASE1 Word2 with3 DIFFERENT4 cases5\""
+    ],
+    "ExpectedOutput": "\"MixedCASE Word with DIFFERENT cases\""
+  },
+  {
+    "Inputs": [
+      "\"Python1 is2 great3\""
+    ],
+    "ExpectedOutput": "\"Python is great\""
+  },
+  {
+    "Inputs": [
+      "\"a9 b8 c7 d6 e5 f4 g3 h2 i1\""
+    ],
+    "ExpectedOutput": "\"i h g f e d c b a\""
+  },
+  {
+    "Inputs": [
+      "\"single1\""
+    ],
+    "ExpectedOutput": "\"single\""
+  },
+  {
+    "Inputs": [
+      "\"one1 two2 three3 four4 five5 six6 seven7 eight8 nine9\""
+    ],
+    "ExpectedOutput": "\"one two three four five six seven eight nine\""
+  },
+  {
+    "Inputs": [
+      "\"reverse9 order8 words7 in6 a5 sentence4 for3 testing2 purposes1\""
+    ],
+    "ExpectedOutput": "\"purposes testing for sentence a in words order reverse\""
+  },
+  {
+    "Inputs": [
+      "\"sun8 moon7 stars6 galaxy5 universe4 planets3 asteroid2 comet1\""
+    ],
+    "ExpectedOutput": "\"comet asteroid planets universe galaxy stars moon sun\""
+  },
+  {
+    "Inputs": [
+      "\"two2 one1 three3 four4 five5 six6 seven7 eight8 nine9\""
+    ],
+    "ExpectedOutput": "\"one two three four five six seven eight nine\""
+  },
+  {
+    "Inputs": [
+      "\"complex1 testing2 cases3 with4 multiple5 digits6 and7 shuffled8 order9\""
+    ],
+    "ExpectedOutput": "\"complex testing cases with multiple digits and shuffled order\""
+  },
+  {
+    "Inputs": [
+      "\"Sustainability1\""
+    ],
+    "ExpectedOutput": "\"Sustainability\""
+  },
+  {
+    "Inputs": [
+      "\"Hard2 Work3 Makes1 Success4\""
+    ],
+    "ExpectedOutput": "\"Makes Hard Work Success\""
+  },
+  {
+    "Inputs": [
+      "\"A5 B4 C3 D2 E1 F6 G7 H8 I9\""
+    ],
+    "ExpectedOutput": "\"E D C B A F G H I\""
+  },
+  {
+    "Inputs": [
+      "\"Alphabetically9 Better8 Christmas7 Does6 Everyone5 Feel4 Good3 Happy2 Indeed1\""
+    ],
+    "ExpectedOutput": "\"Indeed Happy Good Feel Everyone Does Christmas Better Alphabetically\""
+  },
+  {
+    "Inputs": [
+      "\"sun9 moon8 star7 planet6 comet5 asteroid4 meteor3 satellite2 galaxy1\""
+    ],
+    "ExpectedOutput": "\"galaxy satellite meteor asteroid comet planet star moon sun\""
+  },
+  {
+    "Inputs": [
+      "\"The9 quick8 brown7 fox6 jumps5 over4 lazy3 dog2 one1\""
+    ],
+    "ExpectedOutput": "\"one dog lazy over jumps fox brown quick The\""
+  },
+  {
+    "Inputs": [
+      "\"short6 longer5 very4 much3 more2 words1\""
+    ],
+    "ExpectedOutput": "\"words more much very longer short\""
+  },
+  {
+    "Inputs": [
+      "\"first1 second2 third3 fourth4 fifth5 sixth6 seventh7 eighth8 ninth9\""
+    ],
+    "ExpectedOutput": "\"first second third fourth fifth sixth seventh eighth ninth\""
+  },
+  {
+    "Inputs": [
+      "\"Two2 Words1\""
+    ],
+    "ExpectedOutput": "\"Words Two\""
+  },
+  {
+    "Inputs": [
+      "\"Complicated1 Sorting2 becomes3 significantly4 more5 challenging6 when7 words8 overlap9\""
+    ],
+    "ExpectedOutput": "\"Complicated Sorting becomes significantly more challenging when words overlap\""
+  },
+  {
+    "Inputs": [
+      "\"Python10 Java9 C8 Cpp7 Rust6 Go5 Ruby4 Swift3 Kotlin2 TypeScript1\""
+    ],
+    "ExpectedOutput": "\"TypeScript Kotlin Swift Ruby Go Rust Cpp C Java Python1\""
+  },
+  {
+    "Inputs": [
+      "\"zZ9 yY8 xX7 wW6 vV5 uU4 tT3 sS2 rR1\""
+    ],
+    "ExpectedOutput": "\"rR sS tT uU vV wW xX yY zZ\""
+  },
+  {
+    "Inputs": [
+      "\"A9 lot8 of7 testing6 needs5 to4 be3 done2 always1\""
+    ],
+    "ExpectedOutput": "\"always done be to needs testing of lot A\""
+  },
+  {
+    "Inputs": [
+      "\"z9 y8 x7 w6 v5 u4 t3 s2 r1\""
+    ],
+    "ExpectedOutput": "\"r s t u v w x y z\""
+  },
+  {
+    "Inputs": [
+      "\"twoWords2 oneWord1\""
+    ],
+    "ExpectedOutput": "\"oneWord twoWords\""
+  },
+  {
+    "Inputs": [
+      "\"ab9 cd8 ef7 gh6 ij5 kl4 mn3 op2 qr1\""
+    ],
+    "ExpectedOutput": "\"qr op mn kl ij gh ef cd ab\""
+  },
+  {
+    "Inputs": [
+      "\"Open3 Source2 Software1\""
+    ],
+    "ExpectedOutput": "\"Software Source Open\""
+  },
+  {
+    "Inputs": [
+      "\"a9 quick8 brown7 fox6 jumps5 over4 lazy3 dogs2 one1\""
+    ],
+    "ExpectedOutput": "\"one dogs lazy over jumps fox brown quick a\""
+  },
+  {
+    "Inputs": [
+      "\"aA9 bB8 cC7 dD6 eE5 fF4 gG3 hH2 iI1\""
+    ],
+    "ExpectedOutput": "\"iI hH gG fF eE dD cC bB aA\""
+  },
+  {
+    "Inputs": [
+      "\"shuffle7 sentence6 original5 reconstruct4 and3 a2 is1\""
+    ],
+    "ExpectedOutput": "\"is a and reconstruct original sentence shuffle\""
+  },
+  {
+    "Inputs": [
+      "\"shuffle9 words8 correctly7 to6 get5 the4 right3 order2 one1\""
+    ],
+    "ExpectedOutput": "\"one order right the get to correctly words shuffle\""
+  },
+  {
+    "Inputs": [
+      "\"HELLO1 woRLD2\""
+    ],
+    "ExpectedOutput": "\"HELLO woRLD\""
+  },
+  {
+    "Inputs": [
+      "\"Short1 words2 can3 also4 be5 tricky6\""
+    ],
+    "ExpectedOutput": "\"Short words can also be tricky\""
+  },
+  {
+    "Inputs": [
+      "\"Python3 Java2 C1 Ruby4 Go5\""
+    ],
+    "ExpectedOutput": "\"C Java Python Ruby Go\""
+  },
+  {
+    "Inputs": [
+      "\"mixed8 case7 word6 CASE5 Mixed4 CASE3 mixed2 CASE1\""
+    ],
+    "ExpectedOutput": "\"CASE mixed CASE Mixed CASE word case mixed\""
+  },
+  {
+    "Inputs": [
+      "\"Python3 Java2 C1\""
+    ],
+    "ExpectedOutput": "\"C Java Python\""
+  },
+  {
+    "Inputs": [
+      "\"This8 is7 a6 sample5 sentence4 with3 various2 words1\""
+    ],
+    "ExpectedOutput": "\"words various with sentence sample a is This\""
+  },
+  {
+    "Inputs": [
+      "\"ninja9 samurai8 katana7 wakizashi6 tanto5 yoroi4 kusarigama3 tsurugi2 ninja1\""
+    ],
+    "ExpectedOutput": "\"ninja tsurugi kusarigama yoroi tanto wakizashi katana samurai ninja\""
+  },
+  {
+    "Inputs": [
+      "\"alpha9 beta8 gamma7 delta6 epsilon5 zeta4 eta3 theta2 iota1\""
+    ],
+    "ExpectedOutput": "\"iota theta eta zeta epsilon delta gamma beta alpha\""
+  },
+  {
+    "Inputs": [
+      "\"zebra9 yak8 xenon7 wolf6 vulture5 unicorn4 tiger3 snake2 rabbit1\""
+    ],
+    "ExpectedOutput": "\"rabbit snake tiger unicorn vulture wolf xenon yak zebra\""
+  },
+  {
+    "Inputs": [
+      "\"repeated1 same2 numbers3 in4 different5 words6 should7 not8 be9 valid10\""
+    ],
+    "ExpectedOutput": "\"repeated same numbers in different words should not be valid1\""
+  },
+  {
+    "Inputs": [
+      "\"reverse9 order8 words7 in6 this5 shuffled4 sentence3 into2 proper1\""
+    ],
+    "ExpectedOutput": "\"proper into sentence shuffled this in words order reverse\""
+  },
+  {
+    "Inputs": [
+      "\"Single1\""
+    ],
+    "ExpectedOutput": "\"Single\""
+  }
+]

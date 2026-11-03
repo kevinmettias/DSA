@@ -1,0 +1,76 @@
+# Keeps DSAExperimentation.LeetCode.Catalog/Snapshot/ current: once a week it refetches every enrolled
+# question and its statistics from leetcode.com and the contest ratings from zerotrac, runs the
+# whole test suite against the refreshed snapshot, and opens a pull request when anything changed.
+# Tests never call the network themselves; this job is the only thing that does, and its result is
+# reviewed and merged like any other change.
+#
+# A pull request opened with GITHUB_TOKEN does not trigger ci.yml, so the tests run here, before the
+# pull request is opened. Opening one needs "Allow GitHub Actions to create and approve pull
+# requests" enabled under Settings > Actions > General.
+name: LeetCode catalog sync
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: leetcode-catalog-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore DSA.slnx
+
+      - name: Build
+        run: dotnet build DSA.slnx --no-restore
+
+      # Exits 1 when some question failed to fetch; those keep their previous files, so what did
+      # refresh is still worth proposing, and the failure stays visible on the run.
+      - name: Refresh the catalog
+        id: refresh
+        continue-on-error: true
+        run: dotnet run --project DSAExperimentation.LeetCode.Catalog.Sync --no-build -- weekly
+
+      - name: Test against the refreshed catalog
+        run: dotnet test DSA.slnx --no-build
+
+      - name: Open a pull request when the catalog changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$(git status --porcelain -- DSAExperimentation.LeetCode.Catalog/Snapshot)" ]; then
+            echo "The catalog is already current."
+            exit 0
+          fi
+          branch="chore/leetcode-catalog-$(date -u +%Y-%m-%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add -- DSAExperimentation.LeetCode.Catalog/Snapshot
+          git commit -m "Refresh the LeetCode catalog"
+          git push origin "$branch"
+          gh pr create \
+            --base "${{ github.event.repository.default_branch }}" \
+            --head "$branch" \
+            --title "chore(): Refresh the LeetCode catalog" \
+            --body "The weekly sync refetched every enrolled question, its statistics and the contest ratings, and the full test suite passed against the result. Refresh step outcome: ${{ steps.refresh.outcome }}."
+
+      - name: Fail the run if any question failed to fetch
+        if: steps.refresh.outcome == 'failure'
+        run: exit 1

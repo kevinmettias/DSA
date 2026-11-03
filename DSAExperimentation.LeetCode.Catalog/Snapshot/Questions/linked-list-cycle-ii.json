@@ -1,0 +1,89 @@
+{
+  "QuestionId": 142,
+  "FrontendId": 142,
+  "Title": "Linked List Cycle II",
+  "TitleSlug": "linked-list-cycle-ii",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "Linked List",
+      "Slug": "linked-list"
+    },
+    {
+      "Name": "Two Pointers",
+      "Slug": "two-pointers"
+    },
+    {
+      "Name": "Floyd's Cycle Finding Algorithm",
+      "Slug": "floyds-cycle-finding-algorithm"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Linked List Cycle",
+      "TitleSlug": "linked-list-cycle",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Find the Duplicate Number",
+      "TitleSlug": "find-the-duplicate-number",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "The number of the nodes in the list is in the range [0, 10^4].",
+    "-10^5 <= Node.val <= 10^5",
+    "pos is -1 or a valid index in the linked-list."
+  ],
+  "Signature": {
+    "FunctionName": "detectCycle",
+    "Parameters": [
+      {
+        "Name": "head",
+        "Type": "ListNode"
+      },
+      {
+        "Name": "pos",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "ListNode",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": true,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "/**\n * Definition for singly-linked list.\n * public class ListNode {\n *     public int val;\n *     public ListNode next;\n *     public ListNode(int x) {\n *         val = x;\n *         next = null;\n *     }\n * }\n */\npublic class Solution {\n    public ListNode DetectCycle(ListNode head) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[3,2,0,-4]",
+        "1"
+      ],
+      "ExpectedOutput": "tail connects to node index 1"
+    },
+    {
+      "Inputs": [
+        "[1,2]",
+        "0"
+      ],
+      "ExpectedOutput": "tail connects to node index 0"
+    },
+    {
+      "Inputs": [
+        "[1]",
+        "-1"
+      ],
+      "ExpectedOutput": "no cycle"
+    }
+  ],
+  "ContentHtml": "<p>Given the <code>head</code> of a linked list, return <em>the node where the cycle begins. If there is no cycle, return </em><code>null</code>.</p>\n\n<p>There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the <code>next</code> pointer. Internally, <code>pos</code> is used to denote the index of the node that tail&#39;s <code>next</code> pointer is connected to (<strong>0-indexed</strong>). It is <code>-1</code> if there is no cycle. <strong>Note that</strong> <code>pos</code> <strong>is not passed as a parameter</strong>.</p>\n\n<p><strong>Do not modify</strong> the linked list.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png\" style=\"height: 145px; width: 450px;\" />\n<pre>\n<strong>Input:</strong> head = [3,2,0,-4], pos = 1\n<strong>Output:</strong> tail connects to node index 1\n<strong>Explanation:</strong> There is a cycle in the linked list, where tail connects to the second node.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist_test2.png\" style=\"height: 105px; width: 201px;\" />\n<pre>\n<strong>Input:</strong> head = [1,2], pos = 0\n<strong>Output:</strong> tail connects to node index 0\n<strong>Explanation:</strong> There is a cycle in the linked list, where tail connects to the first node.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist_test3.png\" style=\"height: 65px; width: 65px;\" />\n<pre>\n<strong>Input:</strong> head = [1], pos = -1\n<strong>Output:</strong> no cycle\n<strong>Explanation:</strong> There is no cycle in the linked list.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li>The number of the nodes in the list is in the range <code>[0, 10<sup>4</sup>]</code>.</li>\n\t<li><code>-10<sup>5</sup> &lt;= Node.val &lt;= 10<sup>5</sup></code></li>\n\t<li><code>pos</code> is <code>-1</code> or a <strong>valid index</strong> in the linked-list.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Follow up:</strong> Can you solve it using <code>O(1)</code> (i.e. constant) memory?</p>\n"
+}

@@ -1,0 +1,62 @@
+{
+  "QuestionId": 812,
+  "FrontendId": 796,
+  "Title": "Rotate String",
+  "TitleSlug": "rotate-string",
+  "Difficulty": "Easy",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "String Matching",
+      "Slug": "string-matching"
+    }
+  ],
+  "SimilarQuestions": [],
+  "Hints": [],
+  "Constraints": [
+    "1 <= s.length, goal.length <= 100",
+    "s and goal consist of lowercase English letters."
+  ],
+  "Signature": {
+    "FunctionName": "rotateString",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      },
+      {
+        "Name": "goal",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "boolean",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public bool RotateString(string s, string goal) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"abcde\"",
+        "\"cdeab\""
+      ],
+      "ExpectedOutput": "true"
+    },
+    {
+      "Inputs": [
+        "\"abcde\"",
+        "\"abced\""
+      ],
+      "ExpectedOutput": "false"
+    }
+  ],
+  "ContentHtml": "<p>Given two strings <code>s</code> and <code>goal</code>, return <code>true</code> <em>if and only if</em> <code>s</code> <em>can become</em> <code>goal</code> <em>after some number of <strong>shifts</strong> on</em> <code>s</code>.</p>\n\n<p>A <strong>shift</strong> on <code>s</code> consists of moving the leftmost character of <code>s</code> to the rightmost position.</p>\n\n<ul>\n\t<li>For example, if <code>s = &quot;abcde&quot;</code>, then it will be <code>&quot;bcdea&quot;</code> after one shift.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">s = &quot;abcde&quot;, goal = &quot;cdeab&quot;</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">true</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<p>Rotating <code>s</code> to the left by 2 positions moves <code>&quot;ab&quot;</code> to the end, resulting in <code>&quot;cdeab&quot;</code>, which is equal to <code>goal</code>.</p>\n</div>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">s = &quot;abcde&quot;, goal = &quot;abced&quot;</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">false</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<p>No sequence of rotations of <code>s</code> can produce <code>&quot;abced&quot;</code>. The characters appear in a different relative order, so <code>goal</code> is not a rotation of <code>s</code>.</p>\n</div>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length, goal.length &lt;= 100</code></li>\n\t<li><code>s</code> and <code>goal</code> consist of lowercase English letters.</li>\n</ul>\n"
+}

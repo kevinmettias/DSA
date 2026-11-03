@@ -1,0 +1,91 @@
+{
+  "QuestionId": 1122,
+  "FrontendId": 1044,
+  "Title": "Longest Duplicate Substring",
+  "TitleSlug": "longest-duplicate-substring",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Binary Search",
+      "Slug": "binary-search"
+    },
+    {
+      "Name": "Sliding Window",
+      "Slug": "sliding-window"
+    },
+    {
+      "Name": "Rolling Hash",
+      "Slug": "rolling-hash"
+    },
+    {
+      "Name": "Suffix Array",
+      "Slug": "suffix-array"
+    },
+    {
+      "Name": "Hash Function",
+      "Slug": "hash-function"
+    },
+    {
+      "Name": "Suffix Automaton",
+      "Slug": "suffix-automaton"
+    },
+    {
+      "Name": "Suffix Tree",
+      "Slug": "suffix-tree"
+    },
+    {
+      "Name": "Z Algorithm",
+      "Slug": "z-algorithm"
+    },
+    {
+      "Name": "Boyer–Moore String-Search Algorithm",
+      "Slug": "boyer-moore-string-search-algorithm"
+    }
+  ],
+  "SimilarQuestions": [],
+  "Hints": [
+    "Binary search for the length of the answer.  (If there's an answer of length 10, then there are answers of length 9, 8, 7, ...)",
+    "To check whether an answer of length K exists, we can use Rabin-Karp 's algorithm."
+  ],
+  "Constraints": [
+    "2 <= s.length <= 3 * 10^4",
+    "s consists of lowercase English letters."
+  ],
+  "Signature": {
+    "FunctionName": "longestDupSubstring",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "string",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public string LongestDupSubstring(string s) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"banana\""
+      ],
+      "ExpectedOutput": "\"ana\""
+    },
+    {
+      "Inputs": [
+        "\"abcd\""
+      ],
+      "ExpectedOutput": "\"\""
+    }
+  ],
+  "ContentHtml": "<p>Given a string <code>s</code>, consider all <em>duplicated substrings</em>: (contiguous) substrings of s that occur 2 or more times.&nbsp;The occurrences&nbsp;may overlap.</p>\n\n<p>Return <strong>any</strong> duplicated&nbsp;substring that has the longest possible length.&nbsp;If <code>s</code> does not have a duplicated substring, the answer is <code>&quot;&quot;</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<pre><strong>Input:</strong> s = \"banana\"\n<strong>Output:</strong> \"ana\"\n</pre><p><strong class=\"example\">Example 2:</strong></p>\n<pre><strong>Input:</strong> s = \"abcd\"\n<strong>Output:</strong> \"\"\n</pre>\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>2 &lt;= s.length &lt;= 3 * 10<sup>4</sup></code></li>\n\t<li><code>s</code> consists of lowercase English letters.</li>\n</ul>\n"
+}

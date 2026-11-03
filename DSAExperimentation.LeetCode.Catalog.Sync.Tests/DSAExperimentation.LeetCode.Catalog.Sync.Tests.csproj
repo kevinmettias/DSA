@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Tests the sync tool without the network: its parsers, converter and tallies directly, and
+       CatalogIntegrationTests driving the catalog through them. The entry points that call
+       leetcode.com, zerotrac or Hugging Face are run by hand and by the weekly workflow. -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSAExperimentation.LeetCode.Catalog\DSAExperimentation.LeetCode.Catalog.csproj" />
+    <ProjectReference Include="..\DSAExperimentation.LeetCode.Catalog.Sync\DSAExperimentation.LeetCode.Catalog.Sync.csproj" />
+  </ItemGroup>
+
+</Project>

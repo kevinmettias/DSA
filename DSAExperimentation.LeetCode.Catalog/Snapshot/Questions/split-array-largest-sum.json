@@ -1,0 +1,121 @@
+{
+  "QuestionId": 410,
+  "FrontendId": 410,
+  "Title": "Split Array Largest Sum",
+  "TitleSlug": "split-array-largest-sum",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Binary Search",
+      "Slug": "binary-search"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Greedy",
+      "Slug": "greedy"
+    },
+    {
+      "Name": "Prefix Sum",
+      "Slug": "prefix-sum"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Capacity To Ship Packages Within D Days",
+      "TitleSlug": "capacity-to-ship-packages-within-d-days",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Divide Chocolate",
+      "TitleSlug": "divide-chocolate",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Fair Distribution of Cookies",
+      "TitleSlug": "fair-distribution-of-cookies",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Subsequence of Size K With the Largest Even Sum",
+      "TitleSlug": "subsequence-of-size-k-with-the-largest-even-sum",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Total Beauty of the Gardens",
+      "TitleSlug": "maximum-total-beauty-of-the-gardens",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Number of Ways to Split Array",
+      "TitleSlug": "number-of-ways-to-split-array",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Minimum Cost to Split an Array",
+      "TitleSlug": "minimum-cost-to-split-an-array",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Distribute Elements Into Two Arrays I",
+      "TitleSlug": "distribute-elements-into-two-arrays-i",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Distribute Elements Into Two Arrays II",
+      "TitleSlug": "distribute-elements-into-two-arrays-ii",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= nums.length <= 1000",
+    "0 <= nums[i] <= 10^6",
+    "1 <= k <= min(50, nums.length)"
+  ],
+  "Signature": {
+    "FunctionName": "splitArray",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int SplitArray(int[] nums, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[7,2,5,10,8]",
+        "2"
+      ],
+      "ExpectedOutput": "18"
+    },
+    {
+      "Inputs": [
+        "[1,2,3,4,5]",
+        "2"
+      ],
+      "ExpectedOutput": "9"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer array <code>nums</code> and an integer <code>k</code>, split <code>nums</code> into <code>k</code> non-empty subarrays such that the largest sum of any subarray is <strong>minimized</strong>.</p>\n\n<p>Return <em>the minimized largest sum of the split</em>.</p>\n\n<p>A <strong>subarray</strong> is a contiguous part of the array.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [7,2,5,10,8], k = 2\n<strong>Output:</strong> 18\n<strong>Explanation:</strong> There are four ways to split nums into two subarrays.\nThe best way is to split it into [7,2,5] and [10,8], where the largest sum among the two subarrays is only 18.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,2,3,4,5], k = 2\n<strong>Output:</strong> 9\n<strong>Explanation:</strong> There are four ways to split nums into two subarrays.\nThe best way is to split it into [1,2,3] and [4,5], where the largest sum among the two subarrays is only 9.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 1000</code></li>\n\t<li><code>0 &lt;= nums[i] &lt;= 10<sup>6</sup></code></li>\n\t<li><code>1 &lt;= k &lt;= min(50, nums.length)</code></li>\n</ul>\n"
+}

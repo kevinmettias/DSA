@@ -1,6 +1,6 @@
 {
   "telemetry": {
-    "none": "DSAExperimentation is a self-contained algorithms/data-structures practice library: its production projects do no I/O, run no services and have no consumers outside the repository's own test and benchmark projects - there is nothing there for a logger, tracer, or metric to observe. The one network client in the repository, the LeetCode catalog's GraphQL fetcher in DSAExperimentation.LeetCode.Tests/LeetCodeCatalog, is test tooling that refreshes cached problem fixtures when run by hand; it is not a service, and its only observer is the developer who ran it."
+    "none": "DSAExperimentation is a self-contained algorithms/data-structures practice library: its production projects do no I/O, run no services and have no consumers outside the repository's own test and benchmark projects - there is nothing there for a logger, tracer, or metric to observe. The one network client in the repository, DSAExperimentation.LeetCode.Catalog.Sync, is a command-line tool that refreshes the LeetCode catalog's checked-in snapshot from leetcode.com, zerotrac's ratings and LeetCodeDataset, run by hand or by the weekly leetcode-catalog-sync workflow; it is not a service, it prints a summary and a list of failures, and its only observers are the developer who ran it and the pull request the workflow opens."
   },
   "words": {
     "approved_abbreviations": [

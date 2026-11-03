@@ -1,0 +1,710 @@
+[
+  {
+    "Inputs": [
+      "\"b\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"bcbcbc\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"leetcodeisfun\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"uoiea\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"a\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bbaebebebe\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"ae\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bcdfe\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiaaioaaaaeiiiiouuuooaauuaeiu\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"xyz\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"bcdf\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"abcdefgh\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcd\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bcbcbcbcbcbcbc\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"abecidofug\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeaaaeaa\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"uuuuuu\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"vozxqwx\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aabbcc\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bvdfndkvflspvlvhlmvfyckqjgnvjcjgvdpelbvclvsgjgygsvjvlp\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiaeiaeiaeia\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aabbccdd\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bcdfg\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"zyxwvutsrqponmlkjihgfedcba\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bcd\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"bababababababababa\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffrrtgyhyuujuyuyuyukjhjhgfdszxcvbnmaaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bbbbbaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bbbbbaaaaabbbbbbbaaaaaaabbbbaaaaabbbbbaaaaaaabbbbbaaaaaaabbbbbaaaaaa\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"anagram\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"thisstringhasmanyvowelsaeiouanothersequenceofvowelsaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"leetcodeiscrazyandfun\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffrrtgyhyuujuyuyuyukjhjhgfdszxcvbnm\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aliceandbobareplayingagame\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bbbbbbaaaaaabbbbbbaaaaaabbbbbbaaaaaabbbbbbaaaaaabbbbbbaaaaaabbbbbbaaaaaa\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"leetcodedebuggingisfun\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"vwxyz\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"abacadaeafagahaiajakalamanaoapaqarasatauavawaxayaza\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"consonant\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aoeuiuiaoeuiuiaoeuiuiaoeuiuiaoeuiuiaoeuiuiaoeuiuiaoeuiuiaoeuiuiaoeuiuiaoeuiuiaoeuiui\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiaaioaaaaeiiiiouuuooaauuaeiuzyxwvutsrqponmlkjihgfedcba\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"vozdfvoazefovoziaovozifvoaeiofvaeivoaeiofvaeivoaeiofvaeivoaeiofvaeivoaeiof\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"zzzaaaiiiooouuuummmllooonnngggfffddeeerrrtttyy\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aebcideofuigohukimouoeqirouusotovowuy\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiouaeiouaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringwithseveralvowels\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bcdfghjklmnpqrstvwxyzaeiouaeiouaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"optimallyplayingthegamewithvowels\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiopasdfghjklzxcvbnm\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"evennumberofvowels\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bbaaaacceeeeeddooouuuiiiaaaa\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijkllllllllllmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiaaioaaaaeiiiiouuuooaauuaeiuuuuuuuuuuuuuuuuuuuuuuu\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bcaovkyutrfghjnmlopaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"programmingisfun\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"leetcodelovebaboon\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzaeiouabcdefghijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"leetcodeleetcode\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeioubcdfghjklmnpqrstvwxyz\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiouaabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"leetcodeword\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiouaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklnmopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijkloiuytrpqweoiuytrewqoiuytrewq\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"leetcoderbbaaaabbaaabbbaaaabbaaabbbaaaabbaaabbbaaaab\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiouzyxwvutsrqponmlkjihgfedcb\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiouaeiouaeiouaeiouaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeioubcdfghjklmnpqrstvwxyzaeioubcdfghjklmnpqrstvwxyzaeioubcdfghjklmnpqrstvwxyz\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"thisisalongstringwithmanyvowelsoooeiuaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"uuuuuaaaaaeeeeeooooouuuuuaaaaa\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"vowel\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aevbocudifoguhoeaio\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"babababababababababababababababababababababababababababababababababa\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzzabcdefghijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bbaaaacccceeeeedddd\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aevbocudifoguhoeaioaaaaeeeeeooooouuuuu\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"eiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"bcdfghjklmnpqrstvwxyz\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"vowelsareimportantinthisgame\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgg\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bbbbbaaaaabbbbbbaaaaabbbbbaaaa\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzzaeiouaeiouaeiouaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"leetcodeisreallyfun\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"zxcvbnmlkjhgfdsapoiuytrewq\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"sequencepalindrome\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"zaeiouzaeiouzaeiouzaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"zxcvbnmasdfghjklqwertyuiopmnbvcxzlkjhgfdsapoiuytrewqmnbvcxzlkjhgfdsapoiuytrew\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"lkjihgfedcbponmlkjihgfedcba\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefgheijouaeiouxyz\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzzaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aaabbbcccdddaabbccddeee\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"vowelsareaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"complexsubstringwithvariousvowels\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiaaioaaaaeiiiiouuuooaauuaeiuzyxwvutsrqponmlkjihgfedcbaaabbccddeeefffrrtgyhyuujuyuyuyukjhjhgfdszxcvbnmaaeiou\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"consonantsnvbnmnbmhngftrds\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bbaaaabbaaabbbaaaabbaaabbbaaaabbaaabbbaaaab\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bcaovkyutrfghjnmlop\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffagggihiiiijjjjkkkkllllmmmmnnnnooooo\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbcccccdddddaaaaabbbbb\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"oddnumberofvowels\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bbbaaaacceeeeeddooouuuiiiaaaabbbccc\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aebcdeoiufghijklmnoptqrstuwyxz\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aeiouvwxyzaeiouvwxyzaeiouvwxyz\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aliceandbob\""
+    ],
+    "ExpectedOutput": "true"
+  }
+]

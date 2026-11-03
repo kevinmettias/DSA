@@ -1,0 +1,103 @@
+{
+  "QuestionId": 139,
+  "FrontendId": 139,
+  "Title": "Word Break",
+  "TitleSlug": "word-break",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Trie",
+      "Slug": "trie"
+    },
+    {
+      "Name": "Memoization",
+      "Slug": "memoization"
+    },
+    {
+      "Name": "Brute-Force Search",
+      "Slug": "brute-force-search"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Word Break II",
+      "TitleSlug": "word-break-ii",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Extra Characters in a String",
+      "TitleSlug": "extra-characters-in-a-string",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= s.length <= 300",
+    "1 <= wordDict.length <= 1000",
+    "1 <= wordDict[i].length <= 20",
+    "s and wordDict[i] consist of only lowercase English letters.",
+    "All the strings of wordDict are unique."
+  ],
+  "Signature": {
+    "FunctionName": "wordBreak",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      },
+      {
+        "Name": "wordDict",
+        "Type": "list<string>"
+      }
+    ],
+    "ReturnType": "boolean",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public bool WordBreak(string s, IList<string> wordDict) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"leetcode\"",
+        "[\"leet\",\"code\"]"
+      ],
+      "ExpectedOutput": "true"
+    },
+    {
+      "Inputs": [
+        "\"applepenapple\"",
+        "[\"apple\",\"pen\"]"
+      ],
+      "ExpectedOutput": "true"
+    },
+    {
+      "Inputs": [
+        "\"catsandog\"",
+        "[\"cats\",\"dog\",\"sand\",\"and\",\"cat\"]"
+      ],
+      "ExpectedOutput": "false"
+    }
+  ],
+  "ContentHtml": "<p>Given a string <code>s</code> and a dictionary of strings <code>wordDict</code>, return <code>true</code> if <code>s</code> can be segmented into a space-separated sequence of one or more dictionary words.</p>\n\n<p><strong>Note</strong> that the same word in the dictionary may be reused multiple times in the segmentation.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;leetcode&quot;, wordDict = [&quot;leet&quot;,&quot;code&quot;]\n<strong>Output:</strong> true\n<strong>Explanation:</strong> Return true because &quot;leetcode&quot; can be segmented as &quot;leet code&quot;.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;applepenapple&quot;, wordDict = [&quot;apple&quot;,&quot;pen&quot;]\n<strong>Output:</strong> true\n<strong>Explanation:</strong> Return true because &quot;applepenapple&quot; can be segmented as &quot;apple pen apple&quot;.\nNote that you are allowed to reuse a dictionary word.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;catsandog&quot;, wordDict = [&quot;cats&quot;,&quot;dog&quot;,&quot;sand&quot;,&quot;and&quot;,&quot;cat&quot;]\n<strong>Output:</strong> false\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length &lt;= 300</code></li>\n\t<li><code>1 &lt;= wordDict.length &lt;= 1000</code></li>\n\t<li><code>1 &lt;= wordDict[i].length &lt;= 20</code></li>\n\t<li><code>s</code> and <code>wordDict[i]</code> consist of only lowercase English letters.</li>\n\t<li>All the strings of <code>wordDict</code> are <strong>unique</strong>.</li>\n</ul>\n"
+}

@@ -1,0 +1,542 @@
+[
+  {
+    "Inputs": [
+      "\"(a(b(c)d)e)\""
+    ],
+    "ExpectedOutput": "\"ebcda\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b)c(d(e)f)g)\""
+    ],
+    "ExpectedOutput": "\"gdefcba\""
+  },
+  {
+    "Inputs": [
+      "\"(abc)(def)\""
+    ],
+    "ExpectedOutput": "\"cbafed\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b)c(d)e(f)g)\""
+    ],
+    "ExpectedOutput": "\"gfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"(z)\""
+    ],
+    "ExpectedOutput": "\"z\""
+  },
+  {
+    "Inputs": [
+      "\"a(b)c(d(e)f)g\""
+    ],
+    "ExpectedOutput": "\"abcfedg\""
+  },
+  {
+    "Inputs": [
+      "\"x(abc)d(efg)h(ij(k(lm)n)op)q\""
+    ],
+    "ExpectedOutput": "\"xcbadgfehpokmlnjiq\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij(klmnop(qrstuvwxyz))\""
+    ],
+    "ExpectedOutput": "\"abcdefghijqrstuvwxyzponmlk\""
+  },
+  {
+    "Inputs": [
+      "\"abc\""
+    ],
+    "ExpectedOutput": "\"abc\""
+  },
+  {
+    "Inputs": [
+      "\"(abc)d(efg)\""
+    ],
+    "ExpectedOutput": "\"cbadgfe\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c)d)e(f(g)h)i\""
+    ],
+    "ExpectedOutput": "\"(adcbehgfi\""
+  },
+  {
+    "Inputs": [
+      "\"()\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"a(bcdefghijkl(mno)p)q\""
+    ],
+    "ExpectedOutput": "\"apmnolkjihgfedcbq\""
+  },
+  {
+    "Inputs": [
+      "\"(a)\""
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"ab(c(d(e(fg)h)i)j)k\""
+    ],
+    "ExpectedOutput": "\"abjdhfgeick\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h)i)j)k)l)m)n)o\""
+    ],
+    "ExpectedOutput": "\"(anclejghifkdmbo\""
+  },
+  {
+    "Inputs": [
+      "\"x(y(z(wvu)tsr)qpo)nm\""
+    ],
+    "ExpectedOutput": "\"xopqzuvwtsrynm\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c)d)e(f(g(h)i)j)k)l\""
+    ],
+    "ExpectedOutput": "\"kfihgjebcdal\""
+  },
+  {
+    "Inputs": [
+      "\"a(bc(def(ghi)jkl)mno(pqr(stu)vwx)y(z))\""
+    ],
+    "ExpectedOutput": "\"azypqrutsvwxonmdefihgjklcb\""
+  },
+  {
+    "Inputs": [
+      "\"a(b(c)d(e(f(g)h)i)j(k(l(m)n)o)p\""
+    ],
+    "ExpectedOutput": "\"a(bcdifghejolmnkp\""
+  },
+  {
+    "Inputs": [
+      "\"a(bc(def(ghi(jkl(mno)pqr)stu)vwx(yz))\""
+    ],
+    "ExpectedOutput": "\"a(bcyzxwvghirqpmnolkjstufed\""
+  },
+  {
+    "Inputs": [
+      "\"a(b(c)d(e(f(g(h)i)j)k)l)m\""
+    ],
+    "ExpectedOutput": "\"alejghifkdcbm\""
+  },
+  {
+    "Inputs": [
+      "\"x(y(z))a(b(c)d)e(f(g(h)i)j)k\""
+    ],
+    "ExpectedOutput": "\"xzyadcbejghifk\""
+  },
+  {
+    "Inputs": [
+      "\"x(y(z))w\""
+    ],
+    "ExpectedOutput": "\"xzyw\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h(i(j(k(l(m(n(o(p(q(r(s(t(u(v(w(x(y(z))))))))))))))))))))z(y(x(w(v(u(t(s(r(q(p(o(n(m(l(k(j(i(h(g(f(e(d(c(b(a))))))))))))))))))))\""
+    ],
+    "ExpectedOutput": "\"(a(b(c(d(e(fhjlnprtvxzywusqomkigz(y(x(w(v(usqomkigecabdfhjlnprt\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h(i(j(k(l(m(n(o(p)q)r)s)t)u)v)w)x)y)z))))\""
+    ],
+    "ExpectedOutput": "\"(a(bdfyhwjulsnqpormtkvixgzec\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h(i(j(k(l(m(n(o(p(q(r(s(t(u(v(w(x(y(z)))))))))))))))))))))(a(b(c(d(e(f(g(h(i(j(k(l(m(n(o(p(q(r(s(t(u(v(w(x(y(z))))))))))))))))))))\""
+    ],
+    "ExpectedOutput": "\"(a(b(c(d(egikmoqsuwyzxvtrpnljhf(a(b(c(d(e(fhjlnprtvxzywusqomkig\""
+  },
+  {
+    "Inputs": [
+      "\"(abc)(def)((ghi)(jkl))(mno)(pqr)((stu)(vwx))(yz)\""
+    ],
+    "ExpectedOutput": "\"cbafedjklghionmrqpvwxstuzy\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h(i))))))))\""
+    ],
+    "ExpectedOutput": "\"(acegihfdb\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h(i(j(k(l(m(n(o(p)q)r)s)t)u)v)w)x)y)z))))z(y(x(w(v(u(t(s(r(q(p(o(n(m(l(k(j(i(h(g(f(e(d(c(b(a))))))))))))))))))))\""
+    ],
+    "ExpectedOutput": "\"(a(bdfyhwjulsnqpormtkvixgzecz(y(x(w(v(usqomkigecabdfhjlnprt\""
+  },
+  {
+    "Inputs": [
+      "\"p(q(r(s)t)u)v(w(x(y(z))w)v)u\""
+    ],
+    "ExpectedOutput": "\"purstqvvxzywwu\""
+  },
+  {
+    "Inputs": [
+      "\"a(b(c(d(e(f(g)h)i)j)k)l)m\""
+    ],
+    "ExpectedOutput": "\"alcjehgfidkbm\""
+  },
+  {
+    "Inputs": [
+      "\"(a(bc)de)\""
+    ],
+    "ExpectedOutput": "\"edbca\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h)i)j)k)l)m)n)o(p(q(r(s(t(u(v(w(x(yz))))))))))\""
+    ],
+    "ExpectedOutput": "\"(anclejghifkdmboqsuwyzxvtrp\""
+  },
+  {
+    "Inputs": [
+      "\"a(bc(def(ghi(jkl(mno(pqr(stu(vwx(yz)))))))))b\""
+    ],
+    "ExpectedOutput": "\"adefjklpqrvwxzyutsonmihgcbb\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h)i)j)k)l)m)n)o(p(q(r(s(t(u)v)w)x)y)z)\""
+    ],
+    "ExpectedOutput": "\"(anclejghifkdmbozqxsvutwryp\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefgh(ijklmnopqrstuvwxyz)\""
+    ],
+    "ExpectedOutput": "\"abcdefghzyxwvutsrqponmlkji\""
+  },
+  {
+    "Inputs": [
+      "\"(abc(def(ghi(jkl(mno)pqr)stu)vwx(yz))(abc(def(ghi(jkl(mno)pqr)stu)vwx(yz))\""
+    ],
+    "ExpectedOutput": "\"(abcyzxwvghirqpmnolkjstufed(abcyzxwvghirqpmnolkjstufed\""
+  },
+  {
+    "Inputs": [
+      "\"(abcdefgh)ijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "\"hgfedcbaijklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"a(b(c(d(e(f(g(h)i)j)k)l)m)n)o(p(q(r(s(t(u(vw)x)y)z)))\""
+    ],
+    "ExpectedOutput": "\"anclejghifkdmbo(prztxvwuysq\""
+  },
+  {
+    "Inputs": [
+      "\"a(b(c)d(e(f)g)h)i\""
+    ],
+    "ExpectedOutput": "\"ahefgdcbi\""
+  },
+  {
+    "Inputs": [
+      "\"((abc)(def))\""
+    ],
+    "ExpectedOutput": "\"defabc\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c)d)e(f(g(h)i)j)k)\""
+    ],
+    "ExpectedOutput": "\"kfihgjebcda\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h)i)j)k(l)m)n)o(p(q(r)s)t)u(v(w)x)y(z)))\""
+    ],
+    "ExpectedOutput": "\"(acnejghifklmdotqrspuxwvyzb\""
+  },
+  {
+    "Inputs": [
+      "\"a(b(c)d(e(f(g)h)i)j(k(l(m)n)o)p(q(r)s)t(u(v)w)x(y(z)))\""
+    ],
+    "ExpectedOutput": "\"ayzxuvwtqrspknmlojehgfidcb\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h)i)j)k)l)m)n)o(p(q(r(s(t(u(v(w(x(y(z(u(v(w(x)y)z))))))))))))))\""
+    ],
+    "ExpectedOutput": "\"prtvxzvyxwzuywusqobmdkfihgjelcna\""
+  },
+  {
+    "Inputs": [
+      "\"a(b(c)d)e(f(g(h)i)j)k(l(m(n(o)p)q)r)s(t(u(v)w)x)yz\""
+    ],
+    "ExpectedOutput": "\"adcbejghifkrmponqlsxuvwtyz\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h)i)j)k)l)m)n)o(p(q(r)s)t)u(v(w)x)y(z))\""
+    ],
+    "ExpectedOutput": "\"zyvwxupsrqtobmdkfihgjelcna\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c)d)e(f(g)h)i)\""
+    ],
+    "ExpectedOutput": "\"ifghebcda\""
+  },
+  {
+    "Inputs": [
+      "\"abc(def(ghi)jkl)(mno(pqr)stu)(vw(x(yz)))\""
+    ],
+    "ExpectedOutput": "\"abclkjghifedutspqronmxzywv\""
+  },
+  {
+    "Inputs": [
+      "\"a(b(c(d(e(f(g(h(i(j(k(l(m(n(o(p(q(r(s(t(u(v(w(x(y(z))))))))))))))))))))b)c\""
+    ],
+    "ExpectedOutput": "\"a(b(c(d(ebgikmoqsuwyzxvtrpnljhfc\""
+  },
+  {
+    "Inputs": [
+      "\"a(b(c(d(e(f(g(h(i(j(k(l(m(n(o(p(q(r)s)t)u)v)w)x)y)z)))))))))\""
+    ],
+    "ExpectedOutput": "\"acegizkxmvotqrspunwlyjhfdb\""
+  },
+  {
+    "Inputs": [
+      "\"(ab)(cd)(ef)(gh)(ij)(kl)(mn)(op)(qr)(st)(uv)(wx)(yz)\""
+    ],
+    "ExpectedOutput": "\"badcfehgjilknmporqtsvuxwzy\""
+  },
+  {
+    "Inputs": [
+      "\"(abcdefgh(i(jklm(nopq)rst)uv)wxyz)\""
+    ],
+    "ExpectedOutput": "\"zyxwitsrnopqmlkjuvhgfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h)i)j)k)l)m)n)o(p(q(r(s(t(u)v(w)x)y)z)))\""
+    ],
+    "ExpectedOutput": "\"(anclejghifkdmboqzsxwvutyrp\""
+  },
+  {
+    "Inputs": [
+      "\"(p(q(r)s)t)(u(v(w)x)y)\""
+    ],
+    "ExpectedOutput": "\"tqrspyvwxu\""
+  },
+  {
+    "Inputs": [
+      "\"a(b(c(d(e(f(g(h)i)j)k)l)m)n)o(p(q(r)s)t)u\""
+    ],
+    "ExpectedOutput": "\"anclejghifkdmbotqrspu\""
+  },
+  {
+    "Inputs": [
+      "\"(ab(cd(ef(gh(ij)kl)mn)op)qr)st\""
+    ],
+    "ExpectedOutput": "\"rqcdnmghjiklfeopbast\""
+  },
+  {
+    "Inputs": [
+      "\"(x(y(z)))\""
+    ],
+    "ExpectedOutput": "\"yzx\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h)i)j)k)l)m)n)o(p(q(r(s(t(u(v(w)x)y)z)u)v)w)x)y(z))\""
+    ],
+    "ExpectedOutput": "\"zypwrutyvwxuzsvqxobmdkfihgjelcna\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b)c(d(e(f(g)h)i)j)k(l(m)n)o(p(q(r)s)t)u)\""
+    ],
+    "ExpectedOutput": "\"upsrqtolmnkdifghejcba\""
+  },
+  {
+    "Inputs": [
+      "\"((a(b)c)(d(e(f)g)h)i(j(k(l(m(n(o(p(q(r(s(t(u(v(w(x(y(z))))))))))))))))j)\""
+    ],
+    "ExpectedOutput": "\"(cbahefgdijkmoqsuwyzxvtrpnlj\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h)i(j)k)l)m)n)o(p(q(r)s)t)u)v)\""
+    ],
+    "ExpectedOutput": "\"(avcnelghijkfmdotqrspub\""
+  },
+  {
+    "Inputs": [
+      "\"x(y(z))\""
+    ],
+    "ExpectedOutput": "\"xzy\""
+  },
+  {
+    "Inputs": [
+      "\"x(a(y(b(z(c)d)e)f)g)h(i(j(k(l)m)n)o)p\""
+    ],
+    "ExpectedOutput": "\"xgyezcdbfahojmlknip\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h)i)j)k)l)m)n)o(p(q(r(s(t(u(v(w(x)y)z)u)v)w)x)y(z))w)x)y(z)\""
+    ],
+    "ExpectedOutput": "\"xpzyrwtuvyxwzuvsxqwobmdkfihgjelcnayz\""
+  },
+  {
+    "Inputs": [
+      "\"(ab)(cd)((ef)(gh))(ij(kl(mn(op)qr)st)(uv(w(x(yz))))\""
+    ],
+    "ExpectedOutput": "\"badcghef(ijtsmnpoqrlkwyzxvu\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h(i(j(k(l(m(n(o(p(q(r(s(t(u(v(w(x(y(z))))))))))))))))))))\""
+    ],
+    "ExpectedOutput": "\"(a(b(c(d(e(fhjlnprtvxzywusqomkig\""
+  },
+  {
+    "Inputs": [
+      "\"x(y(z)(w))v(u(t(s(r(q(p(o(n(m(l(k(j(i(h(g(f(e(d(c(b(a))))))))))))))))))))\""
+    ],
+    "ExpectedOutput": "\"xwzyv(usqomkigecabdfhjlnprt\""
+  },
+  {
+    "Inputs": [
+      "\"((((((((((((a))))))))))))\""
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"((a(b(c(d(e(f(g(h)i)j)k)l)m)n)o(p(q(r(s(t(u)v)w)x)y)z))\""
+    ],
+    "ExpectedOutput": "\"(pyrwtuvsxqzobmdkfihgjelcna\""
+  },
+  {
+    "Inputs": [
+      "\"x(y(z))a(b(c)d)e(f(g(h)i)j)k(l(m)n)o(p(q(r)s)t(u(v)w)x(y(z)))\""
+    ],
+    "ExpectedOutput": "\"xzyadcbejghifknmloyzxuvwtqrsp\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g)))))))\""
+    ],
+    "ExpectedOutput": "\"bdfgeca\""
+  },
+  {
+    "Inputs": [
+      "\"m(n(o(p(q(r(s(t(u(v(w(x(y(z(abc)def)ghi)jkl)mno)pqr)stu)vwx)yzz)\""
+    ],
+    "ExpectedOutput": "\"m(n(o(p(q(rzzytutsvonmxihgzcbadefyjklwpqruvwxs\""
+  },
+  {
+    "Inputs": [
+      "\"(p(q(r(s(t(u(v(w(x(y(z)))))))))))\""
+    ],
+    "ExpectedOutput": "\"qsuwyzxvtrp\""
+  },
+  {
+    "Inputs": [
+      "\"a(b(c(d(e(f(g(h(i(j(k(l(m(n(o(p(q(r(s(t(u(v(w(x(y(z))))))))))))))))))))b\""
+    ],
+    "ExpectedOutput": "\"a(b(c(d(e(fhjlnprtvxzywusqomkigb\""
+  },
+  {
+    "Inputs": [
+      "\"(p(q(r(s(t(u)v)w)x)y)z)\""
+    ],
+    "ExpectedOutput": "\"zqxsvutwryp\""
+  },
+  {
+    "Inputs": [
+      "\"(abc(def(ghi(jkl(mno(pqr(stu(vwx(yz)))))))))\""
+    ],
+    "ExpectedOutput": "\"defjklpqrvwxzyutsonmihgcba\""
+  },
+  {
+    "Inputs": [
+      "\"a(b(c(d(e(f(g)h)i)j)k)l)\""
+    ],
+    "ExpectedOutput": "\"alcjehgfidkb\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h(ij)kl)mno)pqr)stu)vw)xy)z)\""
+    ],
+    "ExpectedOutput": "\"(azcwverqpglkijhmnofstudxyb\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h)i)j)k)l)m)n)o(p(q(r)s)t(u(v)w)x)y(z))\""
+    ],
+    "ExpectedOutput": "\"zypsrqtwvuxobmdkfihgjelcna\""
+  },
+  {
+    "Inputs": [
+      "\"(a(bc(def)ghi)jkl)\""
+    ],
+    "ExpectedOutput": "\"lkjbcfedghia\""
+  },
+  {
+    "Inputs": [
+      "\"x(y(z)(w(v(u(t(s(r(q(p(o(n(m(l(k(j(i(h(g(f(e(d(c(b(a))))))))))))))))))))\""
+    ],
+    "ExpectedOutput": "\"x(yz(w(v(usqomkigecabdfhjlnprt\""
+  },
+  {
+    "Inputs": [
+      "\"((a(b)c)(d(e(f)g)h)i(j(k(l(m)n)o)p)q\""
+    ],
+    "ExpectedOutput": "\"(cbahefgdipknmlojq\""
+  },
+  {
+    "Inputs": [
+      "\"abc(def(ghi(jkl(mno(pqr(stu(vwx)y(z)))))))\""
+    ],
+    "ExpectedOutput": "\"abcghimnostuxwvyzrqplkjfed\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h)i)j)k(l)m)n)o(p(q(r)s)t)u(v(w)x)y(z)))(a(b(c(d(e(f(g(h)i)j)k(l)m)n)o(p(q(r)s)t)u(v(w)x)y(z))))\""
+    ],
+    "ExpectedOutput": "\"(acnejghifklmdotqrspuxwvyzbbzyvwxupsrqtodmlkfihgjenca\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h(i(j(k(l(m(n(o(p(q(r(s(t(u(v(w(x(y(z))))))))))))))))))))l(m(n(o(p(q(r(s(t(u(v(w(x(y(z))))))))))))))))\""
+    ],
+    "ExpectedOutput": "\"(a(b(c(dfhjlnprtvxzywusqomkiglnprtvxzywusqome\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f)g)h)i)j)\""
+    ],
+    "ExpectedOutput": "\"(ajchefgdib\""
+  },
+  {
+    "Inputs": [
+      "\"x(y(z((a)(b))c)d)e\""
+    ],
+    "ExpectedOutput": "\"xdzbacye\""
+  },
+  {
+    "Inputs": [
+      "\"(a(b(c(d(e(f(g(h(i(jk)lm)n)o)p)q)r)s)t)u)\""
+    ],
+    "ExpectedOutput": "\"ubsdqfohmljkingpercta\""
+  }
+]

@@ -1,0 +1,470 @@
+[
+  {
+    "Inputs": [
+      "\"mississippi\""
+    ],
+    "ExpectedOutput": "\"ssissippi\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcd\""
+    ],
+    "ExpectedOutput": "\"dabcdabcd\""
+  },
+  {
+    "Inputs": [
+      "\"banana\""
+    ],
+    "ExpectedOutput": "\"nana\""
+  },
+  {
+    "Inputs": [
+      "\"zyxzy\""
+    ],
+    "ExpectedOutput": "\"zyxzy\""
+  },
+  {
+    "Inputs": [
+      "\"zyxzyxzyx\""
+    ],
+    "ExpectedOutput": "\"zyxzyxzyx\""
+  },
+  {
+    "Inputs": [
+      "\"a\""
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"aaa\""
+    ],
+    "ExpectedOutput": "\"aaa\""
+  },
+  {
+    "Inputs": [
+      "\"abcd\""
+    ],
+    "ExpectedOutput": "\"d\""
+  },
+  {
+    "Inputs": [
+      "\"akjflaweproqwoijrpprpwlekfawpqwlekfqpwoqpwlekjqwlkfqpwlkerpqwlkfjqwlekflpqwlekfqpwlkerpqwlekfqwlekjfqpwekfqpwlkjqwlekjfqpwlkerpqwlekfpwoqwjfwqppqwjflawejqawlkjqwlkfjqwlkfjqwlkfjqwlkfjqwlekjqwlekjqwlekjqwlekjqwlekjqwlekjqwlkjqwlekjqwlekjqwlekjqwlekjqwlekjqwlkjqwlekjqwlekjqwlekjqwlekjqwlekjqwlkjqwlekjqwlekjqwlekjqwlekjqwlekjqwlkj\""
+    ],
+    "ExpectedOutput": "\"wqppqwjflawejqawlkjqwlkfjqwlkfjqwlkfjqwlkfjqwlekjqwlekjqwlekjqwlekjqwlekjqwlekjqwlkjqwlekjqwlekjqwlekjqwlekjqwlekjqwlkjqwlekjqwlekjqwlekjqwlekjqwlekjqwlkjqwlekjqwlekjqwlekjqwlekjqwlekjqwlkj\""
+  },
+  {
+    "Inputs": [
+      "\"aaaa\""
+    ],
+    "ExpectedOutput": "\"aaaa\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\""
+    ],
+    "ExpectedOutput": "\"ff\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabceabcdabcdabcdabceabcdabcdabcd\""
+    ],
+    "ExpectedOutput": "\"eabcdabcdabcdabceabcdabcdabcd\""
+  },
+  {
+    "Inputs": [
+      "\"aaaabbbbccccdddd\""
+    ],
+    "ExpectedOutput": "\"dddd\""
+  },
+  {
+    "Inputs": [
+      "\"leetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcode\""
+    ],
+    "ExpectedOutput": "\"tcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcode\""
+  },
+  {
+    "Inputs": [
+      "\"aaabaaaabaaaaabaaaaaaabaaaaaaaabaaaaaaaaaabaaaaaaaaaaabaaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "\"baaaabaaaaabaaaaaaabaaaaaaaabaaaaaaaaaabaaaaaaaaaaabaaaaaaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"aaaabaaaabaaaaaa\""
+    ],
+    "ExpectedOutput": "\"baaaabaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "\"z\""
+  },
+  {
+    "Inputs": [
+      "\"ababababababababababab\""
+    ],
+    "ExpectedOutput": "\"babababababababababab\""
+  },
+  {
+    "Inputs": [
+      "\"ananananananananananananananan\""
+    ],
+    "ExpectedOutput": "\"nanananananananananananananan\""
+  },
+  {
+    "Inputs": [
+      "\"aaaabbaaaabbaaa\""
+    ],
+    "ExpectedOutput": "\"bbaaaabbaaa\""
+  },
+  {
+    "Inputs": [
+      "\"aabbaabbaabbaabbaabb\""
+    ],
+    "ExpectedOutput": "\"bbaabbaabbaabbaabb\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringwithseveralrepeatedsubstringsrepeated\""
+    ],
+    "ExpectedOutput": "\"ylongstringwithseveralrepeatedsubstringsrepeated\""
+  },
+  {
+    "Inputs": [
+      "\"leetcodeloveleetcode\""
+    ],
+    "ExpectedOutput": "\"veleetcode\""
+  },
+  {
+    "Inputs": [
+      "\"abababababababababab\""
+    ],
+    "ExpectedOutput": "\"bababababababababab\""
+  },
+  {
+    "Inputs": [
+      "\"bcbcbcbcbcbcbcbc\""
+    ],
+    "ExpectedOutput": "\"cbcbcbcbcbcbcbc\""
+  },
+  {
+    "Inputs": [
+      "\"anananananananan\""
+    ],
+    "ExpectedOutput": "\"nananananananan\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcdabcdabcdabcdabcdabcdabcdabcd\""
+    ],
+    "ExpectedOutput": "\"dabcdabcdabcdabcdabcdabcdabcdabcdabcd\""
+  },
+  {
+    "Inputs": [
+      "\"xyxxyxyxxyxyxxyxyxyxxyxyx\""
+    ],
+    "ExpectedOutput": "\"yxyxyxxyxyx\""
+  },
+  {
+    "Inputs": [
+      "\"abababababababa\""
+    ],
+    "ExpectedOutput": "\"bababababababa\""
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\""
+    ],
+    "ExpectedOutput": "\"racadabra\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaabaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaab\""
+    ],
+    "ExpectedOutput": "\"baaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaab\""
+  },
+  {
+    "Inputs": [
+      "\"abcdbacdcbac\""
+    ],
+    "ExpectedOutput": "\"dcbac\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"bbaaabbaaabbaaa\""
+    ],
+    "ExpectedOutput": "\"bbaaabbaaabbaaa\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaab\""
+    ],
+    "ExpectedOutput": "\"b\""
+  },
+  {
+    "Inputs": [
+      "\"aaaabbbbccccddddeeeeffff\""
+    ],
+    "ExpectedOutput": "\"ffff\""
+  },
+  {
+    "Inputs": [
+      "\"abracadabraabracadabraabracadabraabracadabraabracadabra\""
+    ],
+    "ExpectedOutput": "\"racadabraabracadabraabracadabraabracadabraabracadabra\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"acbbccddeeefffggghhhh\""
+    ],
+    "ExpectedOutput": "\"hhhh\""
+  },
+  {
+    "Inputs": [
+      "\"racecar\""
+    ],
+    "ExpectedOutput": "\"racecar\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaab\""
+    ],
+    "ExpectedOutput": "\"b\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"cabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"abcdexyzxyzxyzxyzxyzxyzxyzxyzxyz\""
+    ],
+    "ExpectedOutput": "\"zxyzxyzxyzxyzxyzxyzxyzxyz\""
+  },
+  {
+    "Inputs": [
+      "\"rollingstonesrollingstonesrollingstones\""
+    ],
+    "ExpectedOutput": "\"tonesrollingstonesrollingstones\""
+  },
+  {
+    "Inputs": [
+      "\"abcdedcbaedcba\""
+    ],
+    "ExpectedOutput": "\"edcbaedcba\""
+  },
+  {
+    "Inputs": [
+      "\"aquickbrownfoxjumpsoverthelazydogaquickbrownfoxjumpsoverthelazydog\""
+    ],
+    "ExpectedOutput": "\"zydogaquickbrownfoxjumpsoverthelazydog\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzzyxwvutsrqponmlkjihgfedcba\""
+    ],
+    "ExpectedOutput": "\"zzyxwvutsrqponmlkjihgfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"ababababababab\""
+    ],
+    "ExpectedOutput": "\"babababababab\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "\"zabcdefghijklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"racecar racecar racecar\""
+    ],
+    "ExpectedOutput": "\"racecar racecar racecar\""
+  },
+  {
+    "Inputs": [
+      "\"bananaananabananaananabananaananaba\""
+    ],
+    "ExpectedOutput": "\"nanabananaananabananaananaba\""
+  },
+  {
+    "Inputs": [
+      "\"bbaaaaaaaaaaaaaaaaaaab\""
+    ],
+    "ExpectedOutput": "\"bbaaaaaaaaaaaaaaaaaaab\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"aazzzzzaazzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzaazzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"mmmmmmmllllllllkkkkkkkkjjjjjjjjiiiiiiiioooooooonnnnnnnmmm\""
+    ],
+    "ExpectedOutput": "\"oooooooonnnnnnnmmm\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaabaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaab\""
+    ],
+    "ExpectedOutput": "\"baaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaab\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgg\""
+    ],
+    "ExpectedOutput": "\"gg\""
+  },
+  {
+    "Inputs": [
+      "\"leetcodeisacodeleetcode\""
+    ],
+    "ExpectedOutput": "\"tcodeisacodeleetcode\""
+  },
+  {
+    "Inputs": [
+      "\"aabbaabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+    ],
+    "ExpectedOutput": "\"zz\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzyzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"xyzyxzyxyzyxzyxyzyxzyxyzyxzyxyzyxzyxyzyxzyxyzyxzyxyzyxzyx\""
+    ],
+    "ExpectedOutput": "\"zyxzyxyzyxzyxyzyxzyxyzyxzyxyzyxzyxyzyxzyxyzyxzyxyzyxzyx\""
+  },
+  {
+    "Inputs": [
+      "\"bananaananabananananaba\""
+    ],
+    "ExpectedOutput": "\"nanananaba\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaabbbbbbbbbbbbbbbbccccccccccccccdddddddddddddddddddd\""
+    ],
+    "ExpectedOutput": "\"dddddddddddddddddddd\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"racecarbananaappleorangeorangeapplebananaorangeorangeapplebananaorange\""
+    ],
+    "ExpectedOutput": "\"rbananaappleorangeorangeapplebananaorangeorangeapplebananaorange\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefgzyxwvutsrqpomnlkjihgfedcba\""
+    ],
+    "ExpectedOutput": "\"zyxwvutsrqpomnlkjihgfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+    ],
+    "ExpectedOutput": "\"zz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba\""
+    ],
+    "ExpectedOutput": "\"zyxwvutsrqponmlkjihgfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaabb\""
+    ],
+    "ExpectedOutput": "\"bb\""
+  },
+  {
+    "Inputs": [
+      "\"abcdzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaabbbbbbbccccccdddddeeeeeeffffffff\""
+    ],
+    "ExpectedOutput": "\"ffffffff\""
+  },
+  {
+    "Inputs": [
+      "\"bbaabbaabbaabbaabbaabbaabbaabbaabbaabbaabb\""
+    ],
+    "ExpectedOutput": "\"bbaabbaabbaabbaabbaabbaabbaabbaabbaabbaabb\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaabaaaaaaaaaabaaaaaaaaaab\""
+    ],
+    "ExpectedOutput": "\"baaaaaaaaaabaaaaaaaaaab\""
+  },
+  {
+    "Inputs": [
+      "\"abcdedcbaabcdedcbaabcdedcbaabcdedcbaabcdedcbaabcdedcba\""
+    ],
+    "ExpectedOutput": "\"edcbaabcdedcbaabcdedcbaabcdedcbaabcdedcbaabcdedcba\""
+  }
+]

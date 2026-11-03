@@ -1,0 +1,44 @@
+[
+  {
+    "Inputs": [
+      "8"
+    ],
+    "ExpectedOutput": "92"
+  },
+  {
+    "Inputs": [
+      "3"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "9"
+    ],
+    "ExpectedOutput": "352"
+  },
+  {
+    "Inputs": [
+      "6"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "2"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "7"
+    ],
+    "ExpectedOutput": "40"
+  },
+  {
+    "Inputs": [
+      "5"
+    ],
+    "ExpectedOutput": "10"
+  }
+]

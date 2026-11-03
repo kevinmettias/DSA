@@ -1,0 +1,79 @@
+{
+  "QuestionId": 1648,
+  "FrontendId": 1541,
+  "Title": "Minimum Insertions to Balance a Parentheses String",
+  "TitleSlug": "minimum-insertions-to-balance-a-parentheses-string",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Stack",
+      "Slug": "stack"
+    },
+    {
+      "Name": "Greedy",
+      "Slug": "greedy"
+    },
+    {
+      "Name": "Bracket Sequences",
+      "Slug": "bracket-sequences"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Minimum Number of Swaps to Make the String Balanced",
+      "TitleSlug": "minimum-number-of-swaps-to-make-the-string-balanced",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [
+    "Use a stack to keep opening brackets. If you face single closing ')' add 1 to the answer and consider it as '))'.",
+    "If you have '))' with empty stack, add 1 to the answer, If after finishing you have x opening remaining in the stack, add 2x to the answer."
+  ],
+  "Constraints": [
+    "1 <= s.length <= 10^5",
+    "s consists of '(' and ')' only."
+  ],
+  "Signature": {
+    "FunctionName": "minInsertions",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int MinInsertions(string s) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"(()))\""
+      ],
+      "ExpectedOutput": "1"
+    },
+    {
+      "Inputs": [
+        "\"())\""
+      ],
+      "ExpectedOutput": "0"
+    },
+    {
+      "Inputs": [
+        "\"))())(\""
+      ],
+      "ExpectedOutput": "3"
+    }
+  ],
+  "ContentHtml": "<p>You are given a parentheses string <code>s</code> containing only the characters <code>&#39;(&#39;</code> and <code>&#39;)&#39;</code>. A parentheses string is <strong>balanced</strong> if it can be formed using the following rules:</p>\n\n<ul>\n\t<li>The empty string is balanced.</li>\n\t<li>If <code>A</code> is balanced, then <code>&#39;(&#39;</code> + <code>A</code> + <code>&#39;))&#39;</code> is balanced.</li>\n\t<li>If <code>A</code> and <code>B</code> are balanced, then their concatenation is balanced.</li>\n</ul>\n\n<p>In other words, every left parenthesis <code>&#39;(&#39;</code> must have a corresponding pair of two consecutive right parentheses <code>&#39;))&#39;</code> that comes after it, and every right parenthesis must belong to exactly one such matching pair.</p>\n\n<p>For example, <code>&quot;())&quot;</code>, <code>&quot;())(())))&quot;</code> and <code>&quot;(())())))&quot;</code> are balanced, while <code>&quot;)()&quot;</code>, <code>&quot;()))&quot;</code> and <code>&quot;(()))&quot;</code> are not balanced.</p>\n\n<p>You can insert the characters <code>&#39;(&#39;</code> and <code>&#39;)&#39;</code> at any position of the string to balance it if needed.</p>\n\n<p>Return the <strong>minimum</strong> number of insertions needed to make <code>s</code> balanced.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">s = &quot;(()))&quot;</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">1</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<p>The second <code>&#39;(&#39;</code> is matched with two consecutive <code>&#39;)&#39;</code>, but the first <code>&#39;(&#39;</code> has only one matching <code>&#39;)&#39;</code>. We need to insert one more <code>&#39;)&#39;</code> at the end to make the string <code>&quot;(())))&quot;</code>, which is balanced.</p>\n</div>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">s = &quot;())&quot;</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">0</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<p>The string is already balanced because its <code>&#39;(&#39;</code> is followed by two consecutive <code>&#39;)&#39;</code>, and both right parentheses belong to that matching pair.</p>\n</div>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">s = &quot;))())(&quot;</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">3</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<p>Insert <code>&#39;(&#39;</code> at the beginning to match the first <code>&#39;))&#39;</code>, and insert <code>&#39;))&#39;</code> at the end to match the last <code>&#39;(&#39;</code>. Three insertions are needed in total.</p>\n</div>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>s</code> consists of <code>&#39;(&#39;</code> and <code>&#39;)&#39;</code> only.</li>\n</ul>\n"
+}

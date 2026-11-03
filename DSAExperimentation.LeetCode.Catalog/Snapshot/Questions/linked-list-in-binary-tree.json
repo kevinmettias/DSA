@@ -1,0 +1,80 @@
+{
+  "QuestionId": 1484,
+  "FrontendId": 1367,
+  "Title": "Linked List in Binary Tree",
+  "TitleSlug": "linked-list-in-binary-tree",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Linked List",
+      "Slug": "linked-list"
+    },
+    {
+      "Name": "Tree",
+      "Slug": "tree"
+    },
+    {
+      "Name": "Depth-First Search",
+      "Slug": "depth-first-search"
+    },
+    {
+      "Name": "Binary Tree",
+      "Slug": "binary-tree"
+    }
+  ],
+  "SimilarQuestions": [],
+  "Hints": [
+    "Create recursive function, given a pointer in a Linked List and any node in the Binary Tree. Check if all the elements in the linked list starting from the head correspond to some downward path in the binary tree."
+  ],
+  "Constraints": [
+    "The number of nodes in the tree will be in the range [1, 2500].",
+    "The number of nodes in the list will be in the range [1, 100].",
+    "1 <= Node.val <= 100 for each node in the linked list and binary tree."
+  ],
+  "Signature": {
+    "FunctionName": "isSubPath",
+    "Parameters": [
+      {
+        "Name": "head",
+        "Type": "ListNode"
+      },
+      {
+        "Name": "root",
+        "Type": "TreeNode"
+      }
+    ],
+    "ReturnType": "boolean",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "/**\n * Definition for singly-linked list.\n * public class ListNode {\n *     public int val;\n *     public ListNode next;\n *     public ListNode(int val=0, ListNode next=null) {\n *         this.val = val;\n *         this.next = next;\n *     }\n * }\n */\n/**\n * Definition for a binary tree node.\n * public class TreeNode {\n *     public int val;\n *     public TreeNode left;\n *     public TreeNode right;\n *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {\n *         this.val = val;\n *         this.left = left;\n *         this.right = right;\n *     }\n * }\n */\npublic class Solution {\n    public bool IsSubPath(ListNode head, TreeNode root) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[4,2,8]",
+        "[1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]"
+      ],
+      "ExpectedOutput": "true"
+    },
+    {
+      "Inputs": [
+        "[1,4,2,6]",
+        "[1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]"
+      ],
+      "ExpectedOutput": "true"
+    },
+    {
+      "Inputs": [
+        "[1,4,2,6,8]",
+        "[1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]"
+      ],
+      "ExpectedOutput": "false"
+    }
+  ],
+  "ContentHtml": "<p>Given a binary tree <code>root</code> and a&nbsp;linked list with&nbsp;<code>head</code>&nbsp;as the first node.&nbsp;</p>\n\n<p>Return True if all the elements in the linked list starting from the <code>head</code> correspond to some <em>downward path</em> connected in the binary tree&nbsp;otherwise return False.</p>\n\n<p>In this context downward path means a path that starts at some node and goes downwards.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<p><strong><img alt=\"\" src=\"https://assets.leetcode.com/uploads/2020/02/12/sample_1_1720.png\" style=\"width: 220px; height: 280px;\" /></strong></p>\n\n<pre>\n<strong>Input:</strong> head = [4,2,8], root = [1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]\n<strong>Output:</strong> true\n<strong>Explanation:</strong> Nodes in blue form a subpath in the binary Tree.  \n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<p><strong><img alt=\"\" src=\"https://assets.leetcode.com/uploads/2020/02/12/sample_2_1720.png\" style=\"width: 220px; height: 280px;\" /></strong></p>\n\n<pre>\n<strong>Input:</strong> head = [1,4,2,6], root = [1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]\n<strong>Output:</strong> true\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> head = [1,4,2,6,8], root = [1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3]\n<strong>Output:</strong> false\n<strong>Explanation:</strong> There is no path in the binary tree that contains all the elements of the linked list from <code>head</code>.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li>The number of nodes in the tree will be in the range <code>[1, 2500]</code>.</li>\n\t<li>The number of nodes in the list will be in the range <code>[1, 100]</code>.</li>\n\t<li><code>1 &lt;= Node.val&nbsp;&lt;= 100</code>&nbsp;for each node in the linked list and binary tree.</li>\n</ul>\n"
+}

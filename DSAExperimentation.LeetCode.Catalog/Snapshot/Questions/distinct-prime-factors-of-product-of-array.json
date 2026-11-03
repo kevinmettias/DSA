@@ -1,0 +1,118 @@
+{
+  "QuestionId": 2609,
+  "FrontendId": 2521,
+  "Title": "Distinct Prime Factors of Product of Array",
+  "TitleSlug": "distinct-prime-factors-of-product-of-array",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Number Theory",
+      "Slug": "number-theory"
+    },
+    {
+      "Name": "Prime Factorization",
+      "Slug": "prime-factorization"
+    },
+    {
+      "Name": "Euclidean Algorithm",
+      "Slug": "euclidean-algorithm"
+    },
+    {
+      "Name": "Primality Test",
+      "Slug": "primality-test"
+    },
+    {
+      "Name": "Greatest Common Divisor",
+      "Slug": "greatest-common-divisor"
+    },
+    {
+      "Name": "Sieve Theory",
+      "Slug": "sieve-theory"
+    },
+    {
+      "Name": "Prime Number Sieve",
+      "Slug": "prime-number-sieve"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "2 Keys Keyboard",
+      "TitleSlug": "2-keys-keyboard",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Largest Component Size by Common Factor",
+      "TitleSlug": "largest-component-size-by-common-factor",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Closest Divisors",
+      "TitleSlug": "closest-divisors",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Smallest Value After Replacing With Sum of Prime Factors",
+      "TitleSlug": "smallest-value-after-replacing-with-sum-of-prime-factors",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Count the Number of Square-Free Subsets",
+      "TitleSlug": "count-the-number-of-square-free-subsets",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [
+    "Do not multiply all the numbers together, as the product is too big to store.",
+    "Think about how each individual number's prime factors contribute to the prime factors of the product of the entire array.",
+    "Find the prime factors of each element in nums, and store all of them in a set to avoid duplicates."
+  ],
+  "Constraints": [
+    "1 <= nums.length <= 10^4",
+    "2 <= nums[i] <= 1000"
+  ],
+  "Signature": {
+    "FunctionName": "distinctPrimeFactors",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int DistinctPrimeFactors(int[] nums) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[2,4,3,7,10,6]"
+      ],
+      "ExpectedOutput": "4"
+    },
+    {
+      "Inputs": [
+        "[2,4,8,16]"
+      ],
+      "ExpectedOutput": "1"
+    }
+  ],
+  "ContentHtml": "<p>Given an array of positive integers <code>nums</code>, return <em>the number of <strong>distinct prime factors</strong> in the product of the elements of</em> <code>nums</code>.</p>\n\n<p><strong>Note</strong> that:</p>\n\n<ul>\n\t<li>A number greater than <code>1</code> is called <strong>prime</strong> if it is divisible by only <code>1</code> and itself.</li>\n\t<li>An integer <code>val1</code> is a factor of another integer <code>val2</code> if <code>val2 / val1</code> is an integer.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [2,4,3,7,10,6]\n<strong>Output:</strong> 4\n<strong>Explanation:</strong>\nThe product of all the elements in nums is: 2 * 4 * 3 * 7 * 10 * 6 = 10080 = 2<sup>5</sup> * 3<sup>2</sup> * 5 * 7.\nThere are 4 distinct prime factors so we return 4.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [2,4,8,16]\n<strong>Output:</strong> 1\n<strong>Explanation:</strong>\nThe product of all the elements in nums is: 2 * 4 * 8 * 16 = 1024 = 2<sup>10</sup>.\nThere is 1 distinct prime factor so we return 1.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>4</sup></code></li>\n\t<li><code>2 &lt;= nums[i] &lt;= 1000</code></li>\n</ul>\n"
+}

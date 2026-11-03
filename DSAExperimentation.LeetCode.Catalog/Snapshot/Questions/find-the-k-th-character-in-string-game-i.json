@@ -1,0 +1,71 @@
+{
+  "QuestionId": 3600,
+  "FrontendId": 3304,
+  "Title": "Find the K-th Character in String Game I",
+  "TitleSlug": "find-the-k-th-character-in-string-game-i",
+  "Difficulty": "Easy",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Bit Manipulation",
+      "Slug": "bit-manipulation"
+    },
+    {
+      "Name": "Recursion",
+      "Slug": "recursion"
+    },
+    {
+      "Name": "Simulation",
+      "Slug": "simulation"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Shifting Letters",
+      "TitleSlug": "shifting-letters",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [
+    "The constraints are small. Construct the string by simulating the operations."
+  ],
+  "Constraints": [
+    "1 <= k <= 500"
+  ],
+  "Signature": {
+    "FunctionName": "kthCharacter",
+    "Parameters": [
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "character",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public char KthCharacter(int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "5"
+      ],
+      "ExpectedOutput": "\"b\""
+    },
+    {
+      "Inputs": [
+        "10"
+      ],
+      "ExpectedOutput": "\"c\""
+    }
+  ],
+  "ContentHtml": "<p>Alice and Bob are playing a game. Initially, Alice has a string <code>word = &quot;a&quot;</code>.</p>\n\n<p>You are given a <strong>positive</strong> integer <code>k</code>.</p>\n\n<p>Now Bob will ask Alice to perform the following operation <strong>forever</strong>:</p>\n\n<ul>\n\t<li>Generate a new string by <strong>changing</strong> each character in <code>word</code> to its <strong>next</strong> character in the English alphabet, and <strong>append</strong> it to the <em>original</em> <code>word</code>.</li>\n</ul>\n\n<p>For example, performing the operation on <code>&quot;c&quot;</code> generates <code>&quot;cd&quot;</code> and performing the operation on <code>&quot;zb&quot;</code> generates <code>&quot;zbac&quot;</code>.</p>\n\n<p>Return the value of the <code>k<sup>th</sup></code> character in <code>word</code>, after enough operations have been done for <code>word</code> to have <strong>at least</strong> <code>k</code> characters.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">k = 5</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">&quot;b&quot;</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<p>Initially, <code>word = &quot;a&quot;</code>. We need to do the operation three times:</p>\n\n<ul>\n\t<li>Generated string is <code>&quot;b&quot;</code>, <code>word</code> becomes <code>&quot;ab&quot;</code>.</li>\n\t<li>Generated string is <code>&quot;bc&quot;</code>, <code>word</code> becomes <code>&quot;abbc&quot;</code>.</li>\n\t<li>Generated string is <code>&quot;bccd&quot;</code>, <code>word</code> becomes <code>&quot;abbcbccd&quot;</code>.</li>\n</ul>\n</div>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">k = 10</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">&quot;c&quot;</span></p>\n</div>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= k &lt;= 500</code></li>\n</ul>\n"
+}

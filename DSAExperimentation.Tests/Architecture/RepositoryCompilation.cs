@@ -10,7 +10,9 @@ namespace DSAExperimentation.Tests.Architecture;
 // SDK's implicit usings and the project's own <Using> items, its InternalsVisibleTo grants, and
 // nullable on. The benchmark project is compiled only where problems are measured, ProblemSolutions
 // and Fixtures: the rest drives BenchmarkDotNet's runner, which no benchmark arm enters, and binds to
-// more of BenchmarkDotNet than its attributes. Compiled once per test run.
+// more of BenchmarkDotNet than its attributes. It binds to the built LeetCode catalog rather than its
+// source, as it does to BenchmarkDotNet: the suite benchmarks read their cases from it only in
+// [GlobalSetup], and no rule here judges the catalog. Compiled once per test run.
 internal static class RepositoryCompilation
 {
     public const string FrameworkProject = "DSAExperimentation";
@@ -49,6 +51,7 @@ internal static class RepositoryCompilation
                 framework.ToMetadataReference(),
                 solutions.ToMetadataReference(),
                 MetadataReference.CreateFromFile(typeof(BenchmarkDotNet.Attributes.BenchmarkAttribute).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(DSAExperimentation.LeetCode.Catalog.LeetCodeCatalog).Assembly.Location),
             ]);
 
         return new CompiledProjects(framework, solutions, benchmarks);

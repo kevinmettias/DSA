@@ -1,0 +1,872 @@
+[
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"massissippi\"",
+      "[\"issi\",\"miss\"]",
+      "[\"assi\",\"mass\"]",
+      "[20,30]"
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyz\"",
+      "\"zyxzyxzyx\"",
+      "[\"xyz\",\"zyx\"]",
+      "[\"zyx\",\"xyz\"]",
+      "[500,500]"
+    ],
+    "ExpectedOutput": "1500"
+  },
+  {
+    "Inputs": [
+      "\"abcdeffedcba\"",
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "[\"abc\",\"def\",\"fed\",\"cba\"]",
+      "[\"zyx\",\"wvu\",\"tsr\",\"pon\"]",
+      "[50,60,70,80]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "\"zzxxwwvvuuttrrssqqppoonnmmllkkjjiihhggffeeeeddccbbaa\"",
+      "[\"ab\",\"bc\",\"cd\",\"de\",\"ef\",\"fg\",\"gh\",\"hi\",\"ij\",\"jk\",\"kl\",\"lm\",\"mn\",\"no\",\"op\",\"pq\",\"qr\",\"rs\",\"st\",\"tu\",\"uv\",\"vw\",\"wx\",\"xy\",\"yz\"]",
+      "[\"yx\",\"xw\",\"wg\",\"vf\",\"fu\",\"et\",\"ts\",\"sr\",\"rq\",\"qp\",\"po\",\"on\",\"nm\",\"ml\",\"lk\",\"kj\",\"ji\",\"ih\",\"hg\",\"gf\",\"fe\",\"ed\",\"dc\",\"cb\",\"ba\"]",
+      "[10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "[\"zyx\",\"wvu\",\"tsr\",\"pon\",\"mlk\",\"jih\",\"gf\",\"edc\",\"ba\"]",
+      "[200,150,100,50,150,200,50,100,150]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"mnopqr\"",
+      "\"rqpomn\"",
+      "[\"mnop\",\"opqr\",\"pqro\",\"qrop\",\"rpoq\",\"poqm\"]",
+      "[\"rpoq\",\"poqm\",\"mnop\",\"opqr\",\"pqro\",\"qrop\"]",
+      "[100,200,300,400,500,600]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefgabcdefgabcdefg\"",
+      "\"zyxwvutzyxwvutzyxwvut\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "[\"zyx\",\"wvu\",\"tsr\",\"pon\",\"mlk\",\"jih\",\"fed\",\"cba\",\"ba\"]",
+      "[1,2,3,4,5,6,7,8,9]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"mnopqrst\"",
+      "\"nopqrstu\"",
+      "[\"mnop\",\"qrst\",\"rstu\"]",
+      "[\"nopq\",\"mnop\",\"rstv\"]",
+      "[100,200,300]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\"",
+      "\"abracabadaa\"",
+      "[\"ra\"]",
+      "[\"aa\"]",
+      "[3]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\"",
+      "\"defdefdefdef\"",
+      "[\"abc\",\"def\"]",
+      "[\"def\",\"abc\"]",
+      "[1000,1000]"
+    ],
+    "ExpectedOutput": "4000"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbb\"",
+      "\"bbbbbbaaaa\"",
+      "[\"aaaaa\",\"bbbbb\"]",
+      "[\"bbbbb\",\"aaaaa\"]",
+      "[2000,1000]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"mssssssssss\"",
+      "[\"issi\",\"ssis\",\"ippi\",\"ppi\",\"missi\",\"ssipp\"]",
+      "[\"ssss\",\"ssss\",\"ppp\",\"pp\",\"sssss\",\"sssss\"]",
+      "[50,55,30,35,40,45]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbb\"",
+      "\"bbbbbbaaaa\"",
+      "[\"aaaaa\",\"bbbbb\"]",
+      "[\"bbbbb\",\"aaaaa\"]",
+      "[1000,1000]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefabcdefabcdef\"",
+      "\"ghijklghijklghijkl\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\"]",
+      "[\"ghi\",\"jkl\",\"abc\",\"def\"]",
+      "[10,20,30,40]"
+    ],
+    "ExpectedOutput": "90"
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiopqwertyuiopqwertyuiop\"",
+      "\"asdfghjklasdfghjklasdfghjkl\"",
+      "[\"qwerty\",\"uiop\",\"asdf\",\"ghjkl\",\"qwertyuiop\",\"asdfghjkl\"]",
+      "[\"asdfgh\",\"jklasdf\",\"qwerty\",\"uiopqw\",\"asdfghjkl\",\"qwertyui\"]",
+      "[150,250,350,450,550,650]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"ababababab\"",
+      "\"bababababa\"",
+      "[\"aba\",\"bab\"]",
+      "[\"bab\",\"aba\"]",
+      "[5,10]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"ababababab\"",
+      "\"cdcdcdcdcd\"",
+      "[\"ab\",\"ba\"]",
+      "[\"cd\",\"dc\"]",
+      "[1,2]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abababababababababababab\"",
+      "\"babababababababababababa\"",
+      "[\"ab\",\"ba\"]",
+      "[\"ba\",\"ab\"]",
+      "[1,2]"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"abcdefgabcdefg\"",
+      "\"gfedcbagfedcba\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "[\"cba\",\"fed\",\"ihg\",\"lkj\",\"onm\",\"rqp\",\"uts\",\"xwv\",\"zy\"]",
+      "[10,20,30,40,50,60,70,80,90]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabc\"",
+      "\"defdefdefdefdefdef\"",
+      "[\"abc\",\"def\"]",
+      "[\"def\",\"abc\"]",
+      "[1,2]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "\"fedcba\"",
+      "[\"abc\",\"def\",\"fed\"]",
+      "[\"def\",\"fed\",\"abc\"]",
+      "[100,200,300]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\"",
+      "\"cbacbacbacba\"",
+      "[\"abc\",\"cba\"]",
+      "[\"cba\",\"abc\"]",
+      "[25,35]"
+    ],
+    "ExpectedOutput": "100"
+  },
+  {
+    "Inputs": [
+      "\"aaaabbbbccccddddeeeeffff\"",
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "[\"aaaa\",\"bbbb\",\"cccc\",\"dddd\",\"eeee\",\"ffff\"]",
+      "[\"zzzz\",\"zzzz\",\"zzzz\",\"zzzz\",\"zzzz\",\"zzzz\"]",
+      "[100,200,300,400,500,600]"
+    ],
+    "ExpectedOutput": "2100"
+  },
+  {
+    "Inputs": [
+      "\"abababab\"",
+      "\"cdcdcdcd\"",
+      "[\"ab\",\"ba\",\"abcd\",\"cd\",\"dc\"]",
+      "[\"cd\",\"cd\",\"cdcd\",\"ab\",\"ab\"]",
+      "[10,20,30,40,50]"
+    ],
+    "ExpectedOutput": "40"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "\"jihgfedcba\"",
+      "[\"abcdefghi\",\"hgfedcba\"]",
+      "[\"jihgfedcba\",\"abcdefghij\"]",
+      "[500,600]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijkl\"",
+      "\"abcklmnopq\"",
+      "[\"def\",\"ghi\",\"jkl\",\"mnop\"]",
+      "[\"ghi\",\"jkl\",\"mnop\",\"nopq\"]",
+      "[10,15,20,25]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "\"jihgfedcba\"",
+      "[\"abcdefghi\",\"bcdefgh\",\"cdefgh\",\"defgh\",\"efgh\",\"fgh\",\"gh\",\"h\"]",
+      "[\"ihgfedcb\",\"ihgfedc\",\"ihgfed\",\"ihgfe\",\"ihgf\",\"ihg\",\"ih\",\"i\"]",
+      "[1000,900,800,700,600,500,400,300]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "[\"xyz\",\"wvu\",\"tsr\",\"qpo\",\"nml\",\"kji\",\"hgf\",\"edc\",\"ba\"]",
+      "[10,20,30,40,50,60,70,80,90]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefgabcdefg\"",
+      "\"ghijklmghijklm\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\"]",
+      "[\"ghi\",\"jkl\",\"mno\",\"pqr\"]",
+      "[50,75,100,125]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaaa\"",
+      "\"bbbbbbbbbbbbbbbbbbbb\"",
+      "[\"aaa\",\"bbb\",\"aab\",\"abb\"]",
+      "[\"bbb\",\"aaa\",\"abb\",\"aab\"]",
+      "[10,5,20,15]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"maddessippi\"",
+      "[\"issi\",\"ippi\",\"ippi\",\"issi\"]",
+      "[\"addi\",\"essi\",\"ppii\",\"ppii\"]",
+      "[100,200,50,300]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\"",
+      "\"abcdefg\"",
+      "[\"abc\",\"def\",\"ghi\"]",
+      "[\"bcd\",\"efg\",\"hij\"]",
+      "[10,20,30]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"thisisatargetstring\"",
+      "\"thisisanoriginalstr\"",
+      "[\"target\",\"string\",\"atarget\",\"original\"]",
+      "[\"original\",\"str\",\"isan\",\"target\"]",
+      "[12,15,7,18]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaabbbbbbccccccdddddd\"",
+      "\"ddddddddccccccccbbbbbaaaaa\"",
+      "[\"aaaaaa\",\"bbbbbb\",\"cccccc\",\"dddddd\"]",
+      "[\"dddddd\",\"cccccc\",\"bbbbbb\",\"aaaaaa\"]",
+      "[1000,2000,3000,4000]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"ababababab\"",
+      "\"bababababa\"",
+      "[\"aba\",\"bab\"]",
+      "[\"bab\",\"aba\"]",
+      "[5,7]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"missezzzzzzzzzz\"",
+      "[\"issi\",\"ssis\",\"ssiss\",\"ippi\",\"ppi\",\"ippii\"]",
+      "[\"zzzz\",\"pppi\",\"issip\",\"zzzz\",\"ippp\",\"zzzzz\"]",
+      "[100,200,300,400,500,600]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcd\"",
+      "\"zzzzzzzzzzzz\"",
+      "[\"abcd\",\"abc\",\"bcd\",\"cd\",\"d\",\"ab\"]",
+      "[\"zzzz\",\"zzz\",\"zzz\",\"zz\",\"z\",\"zz\"]",
+      "[100,110,120,130,140,150]"
+    ],
+    "ExpectedOutput": "300"
+  },
+  {
+    "Inputs": [
+      "\"transform\"",
+      "\"reformant\"",
+      "[\"trans\",\"form\",\"ant\"]",
+      "[\"reform\",\"orm\",\"tant\"]",
+      "[150,250,350]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aabbcc\"",
+      "\"bbaaccaa\"",
+      "[\"aa\",\"bb\",\"cc\",\"bb\",\"aa\"]",
+      "[\"bb\",\"cc\",\"bb\",\"aa\",\"cc\"]",
+      "[5,10,15,20,25]"
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "\"edcba\"",
+      "[\"abc\",\"cde\",\"edc\",\"cba\"]",
+      "[\"cde\",\"edc\",\"cba\",\"abc\"]",
+      "[10,20,30,40]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefgabcdefgabcdefg\"",
+      "\"bcdefgbcdefgbcdefga\"",
+      "[\"abcdefg\"]",
+      "[\"bcdefga\"]",
+      "[500]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"complexproblemcomplexproblem\"",
+      "\"simpleproblemcomplexproblem\"",
+      "[\"complex\",\"problem\",\"simple\"]",
+      "[\"simple\",\"solution\",\"complex\"]",
+      "[100,200,50]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abababab\"",
+      "\"babababa\"",
+      "[\"aba\",\"bab\",\"aab\"]",
+      "[\"bab\",\"aba\",\"bab\"]",
+      "[2,3,1]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefabcdef\"",
+      "\"fedcbafedcba\"",
+      "[\"abc\",\"def\"]",
+      "[\"def\",\"abc\"]",
+      "[50,60]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yza\"]",
+      "[\"uvw\",\"rst\",\"opq\",\"lmn\",\"fed\",\"cba\",\"zyx\",\"wvu\",\"tsr\"]",
+      "[10,20,30,40,50,60,70,80,90]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aaaabbbbcccc\"",
+      "\"bbbbaaaaaccc\"",
+      "[\"aaa\",\"bbb\",\"ccc\"]",
+      "[\"bbb\",\"aaa\",\"ccc\"]",
+      "[10,20,30]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"hellohellohello\"",
+      "\"worldworldworld\"",
+      "[\"hello\",\"world\"]",
+      "[\"world\",\"hello\"]",
+      "[500,300]"
+    ],
+    "ExpectedOutput": "1500"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\"",
+      "\"xyzxyzxyzxyz\"",
+      "[\"abc\",\"ab\",\"bc\"]",
+      "[\"xyz\",\"yx\",\"zx\"]",
+      "[100,50,30]"
+    ],
+    "ExpectedOutput": "400"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "\"jihgfedcba\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\"]",
+      "[\"cba\",\"fed\",\"ihg\",\"lkj\"]",
+      "[10,20,30,40]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\"",
+      "\"zzzzzzz\"",
+      "[\"abc\",\"def\",\"gh\",\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\"]",
+      "[\"zzz\",\"zzz\",\"zzz\",\"z\",\"z\",\"z\",\"z\",\"z\",\"z\",\"z\"]",
+      "[100,100,100,1,2,3,4,5,6,7]"
+    ],
+    "ExpectedOutput": "28"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "\"zzxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa\"",
+      "[\"ab\",\"cd\",\"ef\",\"gh\",\"ij\",\"kl\",\"mn\",\"op\",\"qr\",\"st\",\"uv\",\"wx\",\"yz\"]",
+      "[\"ba\",\"dc\",\"fe\",\"hg\",\"ji\",\"lk\",\"no\",\"po\",\"rq\",\"ts\",\"vu\",\"xw\",\"zy\"]",
+      "[111,222,333,444,555,666,777,888,999,1111,2222,3333,4444]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbcccc\"",
+      "\"bbbbbcccccddddd\"",
+      "[\"aaa\",\"bbb\",\"ccc\"]",
+      "[\"bbb\",\"ccc\",\"ddd\"]",
+      "[1,2,3]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "\"fedcba\"",
+      "[\"abc\",\"def\"]",
+      "[\"def\",\"abc\"]",
+      "[10,20]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\"",
+      "\"xyzxyzxyzxyzxyz\"",
+      "[\"aba\",\"bac\",\"cab\",\"abc\"]",
+      "[\"xyz\",\"zyx\",\"yxz\",\"yzx\"]",
+      "[1000,2000,3000,4000]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzz\"",
+      "\"zzzzzzzzzz\"",
+      "[\"zzz\",\"zzzz\"]",
+      "[\"zzzz\",\"zzz\"]",
+      "[1000,2000]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "[\"zyx\",\"wvu\",\"tsr\",\"pon\",\"mlk\",\"jih\",\"fed\",\"cba\",\"ba\"]",
+      "[10,20,30,40,50,60,70,80,90]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "\"zabcdefghi\"",
+      "[\"a\",\"z\"]",
+      "[\"z\",\"a\"]",
+      "[1000000]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"xyxyxyxyxy\"",
+      "\"yxyxyxyxyx\"",
+      "[\"xy\",\"yx\"]",
+      "[\"yx\",\"xy\"]",
+      "[10,5]"
+    ],
+    "ExpectedOutput": "50"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "\"abcdefghij\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\"]",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\"]",
+      "[1,1,1,1]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyz\"",
+      "\"zyxzyxzyx\"",
+      "[\"xyz\",\"zyx\"]",
+      "[\"zyx\",\"xyz\"]",
+      "[1,2]"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"hellohello\"",
+      "[\"issi\",\"issipp\",\"ippi\",\"issipp\",\"issipp\"]",
+      "[\"ello\",\"ello\",\"ello\",\"ello\",\"ello\"]",
+      "[1,2,3,4,5]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\"",
+      "\"ffeeddccbbaa\"",
+      "[\"aa\",\"bb\",\"cc\",\"dd\",\"ee\",\"ff\"]",
+      "[\"ff\",\"ee\",\"dd\",\"cc\",\"bb\",\"aa\"]",
+      "[1,2,3,4,5,6]"
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzz\"",
+      "\"yyyyyyyy\"",
+      "[\"zzz\",\"zyz\",\"yzy\"]",
+      "[\"yyy\",\"yyy\",\"yyy\"]",
+      "[10,20,5]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\"",
+      "\"ffeeddccbbaa\"",
+      "[\"ab\",\"bc\",\"cd\",\"de\",\"ef\"]",
+      "[\"fe\",\"ed\",\"dc\",\"cb\",\"ba\"]",
+      "[1,2,3,4,5]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\"",
+      "\"zzzzzzzzzzzz\"",
+      "[\"aa\",\"bb\",\"cc\",\"dd\",\"ee\",\"ff\",\"abcdef\"]",
+      "[\"zz\",\"zz\",\"zz\",\"zz\",\"zz\",\"zz\",\"zzzzzz\"]",
+      "[10,10,10,10,10,10,50]"
+    ],
+    "ExpectedOutput": "60"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzz\"",
+      "\"abcdefghij\"",
+      "[\"zzzz\",\"zzz\",\"zz\",\"z\"]",
+      "[\"abcd\",\"bcde\",\"cdef\",\"defg\"]",
+      "[1000,500,250,125]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringthatweneedtoconvert\"",
+      "\"toreallyconvertthislongstring\"",
+      "[\"this\",\"very\",\"long\",\"string\",\"that\",\"need\",\"to\"]",
+      "[\"to\",\"need\",\"that\",\"convert\",\"very\",\"long\",\"this\"]",
+      "[1,2,3,4,5,6,7]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "\"jihgfedcba\"",
+      "[\"abc\",\"def\",\"ghi\",\"jih\",\"fed\",\"cba\"]",
+      "[\"jih\",\"fed\",\"cba\",\"abc\",\"def\",\"ghi\"]",
+      "[100,200,300,400,500,600]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\"",
+      "\"ffeeddccbbaa\"",
+      "[\"aab\",\"bcc\",\"dde\",\"eff\"]",
+      "[\"ff\",\"ee\",\"dd\",\"cc\"]",
+      "[1,2,3,4]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbcccccdddddeeeee\"",
+      "\"eeeeeaaaaabbbbcccccd\"",
+      "[\"aaaaa\",\"bbbbb\",\"ccccc\",\"ddddd\",\"eeeee\"]",
+      "[\"eeeee\",\"aaaaa\",\"bbbbb\",\"ccccc\",\"ddddd\"]",
+      "[100,200,300,400,500]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabc\"",
+      "\"xyzxyzxyzxyzxyzxyzxyzxyzxyzxyz\"",
+      "[\"abc\",\"bc\",\"c\",\"a\",\"b\",\"ab\",\"bc\",\"ca\"]",
+      "[\"xyz\",\"yz\",\"z\",\"x\",\"y\",\"xy\",\"yz\",\"zx\"]",
+      "[10,20,30,40,50,60,70,80]"
+    ],
+    "ExpectedOutput": "100"
+  },
+  {
+    "Inputs": [
+      "\"conversionexampleexample\"",
+      "\"transformationexampleexample\"",
+      "[\"conversion\",\"transformation\"]",
+      "[\"transformation\",\"conversion\"]",
+      "[40,60]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\"",
+      "\"zzzzzzzzzzzzzzz\"",
+      "[\"aba\",\"abc\",\"aca\",\"bca\",\"cab\"]",
+      "[\"zzz\",\"zzz\",\"zzz\",\"zzz\",\"zzz\"]",
+      "[10,20,30,40,50]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacabad\"",
+      "\"xyzxyzxyzxyz\"",
+      "[\"aba\",\"bac\",\"cad\",\"bad\",\"abc\",\"acb\",\"bcd\",\"bca\",\"cab\",\"cba\"]",
+      "[\"xyz\",\"zyx\",\"yzx\",\"xyz\",\"zyx\",\"yzx\",\"xyz\",\"zyx\",\"yzx\",\"xyz\"]",
+      "[10,20,30,40,50,60,70,80,90,100]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyz\"",
+      "\"uvwuvwuvw\"",
+      "[\"xyz\",\"yzx\",\"zxy\",\"xy\",\"yz\",\"zx\",\"x\",\"y\",\"z\"]",
+      "[\"uvw\",\"uvw\",\"uvw\",\"uv\",\"uw\",\"vw\",\"u\",\"v\",\"w\"]",
+      "[100,150,200,10,20,30,1,2,3]"
+    ],
+    "ExpectedOutput": "18"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbb\"",
+      "\"bbbbbbaaaa\"",
+      "[\"aaaa\",\"bbbb\"]",
+      "[\"bbbb\",\"aaaa\"]",
+      "[1000,2000]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\"",
+      "\"aabbccddeeff\"",
+      "[\"aa\",\"bb\",\"cc\",\"dd\",\"ee\",\"ff\"]",
+      "[\"bb\",\"cc\",\"dd\",\"ee\",\"ff\",\"aa\"]",
+      "[10,20,30,40,50,60]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"abababababababababab\"",
+      "\"babababababababababa\"",
+      "[\"ab\",\"ba\"]",
+      "[\"ba\",\"ab\"]",
+      "[3,2]"
+    ],
+    "ExpectedOutput": "30"
+  },
+  {
+    "Inputs": [
+      "\"repeatedsubstringsubstring\"",
+      "\"differentsubstringsubstring\"",
+      "[\"repeated\",\"different\"]",
+      "[\"different\",\"repeated\"]",
+      "[100,120]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiop\"",
+      "\"zxcvbnmzxc\"",
+      "[\"qw\",\"er\",\"ty\",\"ui\",\"op\",\"zxc\",\"cv\",\"bn\",\"m\",\"zx\",\"xc\"]",
+      "[\"zx\",\"xc\",\"cv\",\"bn\",\"m\",\"qw\",\"er\",\"ty\",\"ui\",\"op\",\"zxc\"]",
+      "[1,2,3,4,5,6,7,8,9,10,11]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"mississippa\"",
+      "[\"ippi\"]",
+      "[\"appa\"]",
+      "[5]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "[\"zyx\",\"wvu\",\"tsr\",\"pon\",\"mlk\",\"jih\",\"gf\",\"ed\",\"cb\"]",
+      "[100,200,300,400,500,600,700,800,900]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbaaaaabbbbbaaaaabbbbbaaaaa\"",
+      "\"zzzzzxxxxxzzzzzxxxxxzzzzzxxxxxzzzzz\"",
+      "[\"aaaaa\",\"bbbbb\",\"xxxxx\",\"zzzzz\"]",
+      "[\"zzzzz\",\"aaaaa\",\"zzzzz\",\"xxxxx\"]",
+      "[100,200,300,400]"
+    ],
+    "ExpectedOutput": "2500"
+  },
+  {
+    "Inputs": [
+      "\"xyxyxyxyxyxyxyxyxy\"",
+      "\"yxyxyxyxyxyxyxyxyx\"",
+      "[\"xy\",\"yx\"]",
+      "[\"yx\",\"xy\"]",
+      "[1,2]"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "[\"zyx\",\"wvu\",\"tsr\",\"pon\",\"mlk\",\"jih\",\"fed\",\"cba\",\"abc\"]",
+      "[100,200,300,400,500,600,700,800,900]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"nestednestednested\"",
+      "\"deepdeepdeep\"",
+      "[\"nested\",\"deep\"]",
+      "[\"deep\",\"nested\"]",
+      "[50,30]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"thisisatest\"",
+      "\"tistiatest\"",
+      "[\"this\",\"test\"]",
+      "[\"tist\",\"taste\"]",
+      "[50,70]"
+    ],
+    "ExpectedOutput": "-1"
+  }
+]

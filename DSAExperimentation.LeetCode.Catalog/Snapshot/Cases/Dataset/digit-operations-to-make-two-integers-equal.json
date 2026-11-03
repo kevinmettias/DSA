@@ -1,0 +1,758 @@
+[
+  {
+    "Inputs": [
+      "5678",
+      "8765"
+    ],
+    "ExpectedOutput": "57404"
+  },
+  {
+    "Inputs": [
+      "1009",
+      "1010"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "1111",
+      "2222"
+    ],
+    "ExpectedOutput": "6789"
+  },
+  {
+    "Inputs": [
+      "3333",
+      "4444"
+    ],
+    "ExpectedOutput": "17899"
+  },
+  {
+    "Inputs": [
+      "1111",
+      "2221"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "7777",
+      "6666"
+    ],
+    "ExpectedOutput": "34564"
+  },
+  {
+    "Inputs": [
+      "1001",
+      "1011"
+    ],
+    "ExpectedOutput": "2012"
+  },
+  {
+    "Inputs": [
+      "77",
+      "88"
+    ],
+    "ExpectedOutput": "243"
+  },
+  {
+    "Inputs": [
+      "2222",
+      "1111"
+    ],
+    "ExpectedOutput": "6789"
+  },
+  {
+    "Inputs": [
+      "303",
+      "305"
+    ],
+    "ExpectedOutput": "912"
+  },
+  {
+    "Inputs": [
+      "303",
+      "303"
+    ],
+    "ExpectedOutput": "303"
+  },
+  {
+    "Inputs": [
+      "100",
+      "100"
+    ],
+    "ExpectedOutput": "100"
+  },
+  {
+    "Inputs": [
+      "1001",
+      "1101"
+    ],
+    "ExpectedOutput": "2102"
+  },
+  {
+    "Inputs": [
+      "2222",
+      "3333"
+    ],
+    "ExpectedOutput": "13244"
+  },
+  {
+    "Inputs": [
+      "9998",
+      "9999"
+    ],
+    "ExpectedOutput": "19997"
+  },
+  {
+    "Inputs": [
+      "99",
+      "98"
+    ],
+    "ExpectedOutput": "197"
+  },
+  {
+    "Inputs": [
+      "101",
+      "111"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "99",
+      "99"
+    ],
+    "ExpectedOutput": "99"
+  },
+  {
+    "Inputs": [
+      "18",
+      "16"
+    ],
+    "ExpectedOutput": "115"
+  },
+  {
+    "Inputs": [
+      "444",
+      "333"
+    ],
+    "ExpectedOutput": "1455"
+  },
+  {
+    "Inputs": [
+      "100",
+      "99"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "8080",
+      "9090"
+    ],
+    "ExpectedOutput": "25260"
+  },
+  {
+    "Inputs": [
+      "37",
+      "37"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "25",
+      "49"
+    ],
+    "ExpectedOutput": "232"
+  },
+  {
+    "Inputs": [
+      "101",
+      "110"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "14",
+      "20"
+    ],
+    "ExpectedOutput": "200"
+  },
+  {
+    "Inputs": [
+      "2468",
+      "1357"
+    ],
+    "ExpectedOutput": "8019"
+  },
+  {
+    "Inputs": [
+      "11",
+      "13"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "18",
+      "22"
+    ],
+    "ExpectedOutput": "269"
+  },
+  {
+    "Inputs": [
+      "123",
+      "122"
+    ],
+    "ExpectedOutput": "245"
+  },
+  {
+    "Inputs": [
+      "22",
+      "24"
+    ],
+    "ExpectedOutput": "145"
+  },
+  {
+    "Inputs": [
+      "100",
+      "200"
+    ],
+    "ExpectedOutput": "300"
+  },
+  {
+    "Inputs": [
+      "111",
+      "113"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "4444",
+      "5555"
+    ],
+    "ExpectedOutput": "23454"
+  },
+  {
+    "Inputs": [
+      "25",
+      "44"
+    ],
+    "ExpectedOutput": "127"
+  },
+  {
+    "Inputs": [
+      "1234",
+      "4321"
+    ],
+    "ExpectedOutput": "18528"
+  },
+  {
+    "Inputs": [
+      "22",
+      "11"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "999",
+      "998"
+    ],
+    "ExpectedOutput": "1997"
+  },
+  {
+    "Inputs": [
+      "14",
+      "18"
+    ],
+    "ExpectedOutput": "144"
+  },
+  {
+    "Inputs": [
+      "100",
+      "104"
+    ],
+    "ExpectedOutput": "1020"
+  },
+  {
+    "Inputs": [
+      "131",
+      "133"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "20",
+      "24"
+    ],
+    "ExpectedOutput": "186"
+  },
+  {
+    "Inputs": [
+      "100",
+      "144"
+    ],
+    "ExpectedOutput": "1080"
+  },
+  {
+    "Inputs": [
+      "333",
+      "444"
+    ],
+    "ExpectedOutput": "1455"
+  },
+  {
+    "Inputs": [
+      "999",
+      "997"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "21",
+      "21"
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "100",
+      "102"
+    ],
+    "ExpectedOutput": "535"
+  },
+  {
+    "Inputs": [
+      "1024",
+      "1024"
+    ],
+    "ExpectedOutput": "1024"
+  },
+  {
+    "Inputs": [
+      "5555",
+      "4444"
+    ],
+    "ExpectedOutput": "23454"
+  },
+  {
+    "Inputs": [
+      "100",
+      "101"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "1357",
+      "2468"
+    ],
+    "ExpectedOutput": "8019"
+  },
+  {
+    "Inputs": [
+      "1112",
+      "1111"
+    ],
+    "ExpectedOutput": "2223"
+  },
+  {
+    "Inputs": [
+      "1111",
+      "1110"
+    ],
+    "ExpectedOutput": "2221"
+  },
+  {
+    "Inputs": [
+      "222",
+      "224"
+    ],
+    "ExpectedOutput": "815"
+  },
+  {
+    "Inputs": [
+      "2345",
+      "5432"
+    ],
+    "ExpectedOutput": "26184"
+  },
+  {
+    "Inputs": [
+      "14",
+      "28"
+    ],
+    "ExpectedOutput": "126"
+  },
+  {
+    "Inputs": [
+      "123",
+      "321"
+    ],
+    "ExpectedOutput": "908"
+  },
+  {
+    "Inputs": [
+      "2020",
+      "1919"
+    ],
+    "ExpectedOutput": "28539"
+  },
+  {
+    "Inputs": [
+      "2020",
+      "2021"
+    ],
+    "ExpectedOutput": "4041"
+  },
+  {
+    "Inputs": [
+      "111",
+      "222"
+    ],
+    "ExpectedOutput": "567"
+  },
+  {
+    "Inputs": [
+      "88",
+      "88"
+    ],
+    "ExpectedOutput": "88"
+  },
+  {
+    "Inputs": [
+      "11",
+      "33"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "789",
+      "879"
+    ],
+    "ExpectedOutput": "2447"
+  },
+  {
+    "Inputs": [
+      "200",
+      "202"
+    ],
+    "ExpectedOutput": "603"
+  },
+  {
+    "Inputs": [
+      "18",
+      "20"
+    ],
+    "ExpectedOutput": "310"
+  },
+  {
+    "Inputs": [
+      "22",
+      "22"
+    ],
+    "ExpectedOutput": "22"
+  },
+  {
+    "Inputs": [
+      "999",
+      "999"
+    ],
+    "ExpectedOutput": "999"
+  },
+  {
+    "Inputs": [
+      "111",
+      "121"
+    ],
+    "ExpectedOutput": "232"
+  },
+  {
+    "Inputs": [
+      "1111",
+      "1113"
+    ],
+    "ExpectedOutput": "3336"
+  },
+  {
+    "Inputs": [
+      "200",
+      "210"
+    ],
+    "ExpectedOutput": "410"
+  },
+  {
+    "Inputs": [
+      "222",
+      "111"
+    ],
+    "ExpectedOutput": "567"
+  },
+  {
+    "Inputs": [
+      "111",
+      "111"
+    ],
+    "ExpectedOutput": "111"
+  },
+  {
+    "Inputs": [
+      "1001",
+      "1004"
+    ],
+    "ExpectedOutput": "4010"
+  },
+  {
+    "Inputs": [
+      "456",
+      "654"
+    ],
+    "ExpectedOutput": "2573"
+  },
+  {
+    "Inputs": [
+      "6666",
+      "7777"
+    ],
+    "ExpectedOutput": "34564"
+  },
+  {
+    "Inputs": [
+      "4321",
+      "1234"
+    ],
+    "ExpectedOutput": "18528"
+  },
+  {
+    "Inputs": [
+      "123",
+      "456"
+    ],
+    "ExpectedOutput": "2004"
+  },
+  {
+    "Inputs": [
+      "88",
+      "89"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "1001",
+      "1002"
+    ],
+    "ExpectedOutput": "2003"
+  },
+  {
+    "Inputs": [
+      "4567",
+      "7654"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "999",
+      "888"
+    ],
+    "ExpectedOutput": "3675"
+  },
+  {
+    "Inputs": [
+      "9999",
+      "8888"
+    ],
+    "ExpectedOutput": "46574"
+  },
+  {
+    "Inputs": [
+      "303",
+      "333"
+    ],
+    "ExpectedOutput": "1895"
+  },
+  {
+    "Inputs": [
+      "8888",
+      "9999"
+    ],
+    "ExpectedOutput": "46574"
+  },
+  {
+    "Inputs": [
+      "14",
+      "22"
+    ],
+    "ExpectedOutput": "159"
+  },
+  {
+    "Inputs": [
+      "14",
+      "16"
+    ],
+    "ExpectedOutput": "45"
+  },
+  {
+    "Inputs": [
+      "11",
+      "22"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "99",
+      "88"
+    ],
+    "ExpectedOutput": "285"
+  },
+  {
+    "Inputs": [
+      "99",
+      "100"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "1000",
+      "1002"
+    ],
+    "ExpectedOutput": "3003"
+  },
+  {
+    "Inputs": [
+      "3456",
+      "6543"
+    ],
+    "ExpectedOutput": "37406"
+  },
+  {
+    "Inputs": [
+      "1001",
+      "1001"
+    ],
+    "ExpectedOutput": "1001"
+  },
+  {
+    "Inputs": [
+      "1001",
+      "2002"
+    ],
+    "ExpectedOutput": "4005"
+  },
+  {
+    "Inputs": [
+      "22",
+      "28"
+    ],
+    "ExpectedOutput": "251"
+  },
+  {
+    "Inputs": [
+      "11",
+      "11"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "100",
+      "110"
+    ],
+    "ExpectedOutput": "210"
+  },
+  {
+    "Inputs": [
+      "37",
+      "39"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "202",
+      "202"
+    ],
+    "ExpectedOutput": "202"
+  },
+  {
+    "Inputs": [
+      "55",
+      "66"
+    ],
+    "ExpectedOutput": "177"
+  },
+  {
+    "Inputs": [
+      "999",
+      "111"
+    ],
+    "ExpectedOutput": "8196"
+  },
+  {
+    "Inputs": [
+      "30",
+      "36"
+    ],
+    "ExpectedOutput": "263"
+  },
+  {
+    "Inputs": [
+      "1001",
+      "1111"
+    ],
+    "ExpectedOutput": "3123"
+  },
+  {
+    "Inputs": [
+      "333",
+      "484"
+    ],
+    "ExpectedOutput": "2971"
+  },
+  {
+    "Inputs": [
+      "33",
+      "44"
+    ],
+    "ExpectedOutput": "111"
+  },
+  {
+    "Inputs": [
+      "3030",
+      "3032"
+    ],
+    "ExpectedOutput": "9093"
+  },
+  {
+    "Inputs": [
+      "23",
+      "23"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "777",
+      "888"
+    ],
+    "ExpectedOutput": "3231"
+  },
+  {
+    "Inputs": [
+      "22",
+      "25"
+    ],
+    "ExpectedOutput": "170"
+  }
+]

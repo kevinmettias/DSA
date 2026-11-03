@@ -1,0 +1,926 @@
+[
+  {
+    "Inputs": [
+      "-2147483648",
+      "2"
+    ],
+    "ExpectedOutput": "-1073741824"
+  },
+  {
+    "Inputs": [
+      "-2147483648",
+      "-1"
+    ],
+    "ExpectedOutput": "2147483647"
+  },
+  {
+    "Inputs": [
+      "-1",
+      "-1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "2147483647",
+      "1"
+    ],
+    "ExpectedOutput": "2147483647"
+  },
+  {
+    "Inputs": [
+      "1",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "1000000000",
+      "3"
+    ],
+    "ExpectedOutput": "333333333"
+  },
+  {
+    "Inputs": [
+      "-2147483648",
+      "1"
+    ],
+    "ExpectedOutput": "-2147483648"
+  },
+  {
+    "Inputs": [
+      "100",
+      "7"
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "-5",
+      "2"
+    ],
+    "ExpectedOutput": "-2"
+  },
+  {
+    "Inputs": [
+      "1",
+      "-1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "2147483647",
+      "2"
+    ],
+    "ExpectedOutput": "1073741823"
+  },
+  {
+    "Inputs": [
+      "0",
+      "1"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "1",
+      "2"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "-1",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "-7",
+      "3"
+    ],
+    "ExpectedOutput": "-2"
+  },
+  {
+    "Inputs": [
+      "-1000000000",
+      "1000000000"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "15",
+      "6"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "1",
+      "-2147483648"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "-15",
+      "-5"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "1000000000",
+      "500000000"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "2147483647",
+      "-1"
+    ],
+    "ExpectedOutput": "-2147483647"
+  },
+  {
+    "Inputs": [
+      "123456789",
+      "987654321"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "1",
+      "999999998"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "-15",
+      "-6"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "-1024",
+      "-2"
+    ],
+    "ExpectedOutput": "512"
+  },
+  {
+    "Inputs": [
+      "-15",
+      "3"
+    ],
+    "ExpectedOutput": "-5"
+  },
+  {
+    "Inputs": [
+      "-5",
+      "-2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "1024",
+      "10"
+    ],
+    "ExpectedOutput": "102"
+  },
+  {
+    "Inputs": [
+      "-1000000000",
+      "-1000000000"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "-1000000000",
+      "-987654321"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "-1500000000",
+      "-4"
+    ],
+    "ExpectedOutput": "375000000"
+  },
+  {
+    "Inputs": [
+      "-1023",
+      "10"
+    ],
+    "ExpectedOutput": "-102"
+  },
+  {
+    "Inputs": [
+      "-1000000000",
+      "3"
+    ],
+    "ExpectedOutput": "-333333333"
+  },
+  {
+    "Inputs": [
+      "15",
+      "-5"
+    ],
+    "ExpectedOutput": "-3"
+  },
+  {
+    "Inputs": [
+      "-1000000000",
+      "-3"
+    ],
+    "ExpectedOutput": "333333333"
+  },
+  {
+    "Inputs": [
+      "1023",
+      "10"
+    ],
+    "ExpectedOutput": "102"
+  },
+  {
+    "Inputs": [
+      "-10",
+      "1"
+    ],
+    "ExpectedOutput": "-10"
+  },
+  {
+    "Inputs": [
+      "1000000000",
+      "123456789"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "-1024",
+      "1024"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "-15",
+      "5"
+    ],
+    "ExpectedOutput": "-3"
+  },
+  {
+    "Inputs": [
+      "-1000000000",
+      "987654321"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "1024",
+      "-10"
+    ],
+    "ExpectedOutput": "-102"
+  },
+  {
+    "Inputs": [
+      "15",
+      "-4"
+    ],
+    "ExpectedOutput": "-3"
+  },
+  {
+    "Inputs": [
+      "15",
+      "-6"
+    ],
+    "ExpectedOutput": "-2"
+  },
+  {
+    "Inputs": [
+      "5",
+      "-2"
+    ],
+    "ExpectedOutput": "-2"
+  },
+  {
+    "Inputs": [
+      "-15",
+      "4"
+    ],
+    "ExpectedOutput": "-3"
+  },
+  {
+    "Inputs": [
+      "-15",
+      "-4"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "-15",
+      "-3"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "-123456789",
+      "987654321"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "100",
+      "-7"
+    ],
+    "ExpectedOutput": "-14"
+  },
+  {
+    "Inputs": [
+      "999999999",
+      "1"
+    ],
+    "ExpectedOutput": "999999999"
+  },
+  {
+    "Inputs": [
+      "-1024",
+      "-10"
+    ],
+    "ExpectedOutput": "102"
+  },
+  {
+    "Inputs": [
+      "10",
+      "-1"
+    ],
+    "ExpectedOutput": "-10"
+  },
+  {
+    "Inputs": [
+      "1000000000",
+      "25"
+    ],
+    "ExpectedOutput": "40000000"
+  },
+  {
+    "Inputs": [
+      "123456789",
+      "-987654321"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "1500000000",
+      "3"
+    ],
+    "ExpectedOutput": "500000000"
+  },
+  {
+    "Inputs": [
+      "15",
+      "4"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "-2147483648",
+      "3"
+    ],
+    "ExpectedOutput": "-715827882"
+  },
+  {
+    "Inputs": [
+      "-1024",
+      "10"
+    ],
+    "ExpectedOutput": "-102"
+  },
+  {
+    "Inputs": [
+      "1",
+      "999999999"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "-100",
+      "7"
+    ],
+    "ExpectedOutput": "-14"
+  },
+  {
+    "Inputs": [
+      "1024",
+      "2"
+    ],
+    "ExpectedOutput": "512"
+  },
+  {
+    "Inputs": [
+      "1024",
+      "1024"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "15",
+      "5"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "1025",
+      "3"
+    ],
+    "ExpectedOutput": "341"
+  },
+  {
+    "Inputs": [
+      "-123456789",
+      "-987654321"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "-1025",
+      "-3"
+    ],
+    "ExpectedOutput": "341"
+  },
+  {
+    "Inputs": [
+      "-1",
+      "999999999"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "1000000000",
+      "-1000000000"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "-1000000000",
+      "-25"
+    ],
+    "ExpectedOutput": "40000000"
+  },
+  {
+    "Inputs": [
+      "2147483647",
+      "-2147483648"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "150",
+      "3"
+    ],
+    "ExpectedOutput": "50"
+  },
+  {
+    "Inputs": [
+      "100",
+      "1"
+    ],
+    "ExpectedOutput": "100"
+  },
+  {
+    "Inputs": [
+      "1023",
+      "-10"
+    ],
+    "ExpectedOutput": "-102"
+  },
+  {
+    "Inputs": [
+      "-1000000000",
+      "25"
+    ],
+    "ExpectedOutput": "-40000000"
+  },
+  {
+    "Inputs": [
+      "-1023",
+      "-2"
+    ],
+    "ExpectedOutput": "511"
+  },
+  {
+    "Inputs": [
+      "-1",
+      "999999998"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "-999999999",
+      "999999999"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "-1",
+      "2147483647"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "15",
+      "3"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "1000000000",
+      "1000000000"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "1000000000",
+      "-25"
+    ],
+    "ExpectedOutput": "-40000000"
+  },
+  {
+    "Inputs": [
+      "-1023",
+      "-10"
+    ],
+    "ExpectedOutput": "102"
+  },
+  {
+    "Inputs": [
+      "-2147483648",
+      "-2147483648"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "2147483647",
+      "2147483647"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "100",
+      "-1"
+    ],
+    "ExpectedOutput": "-100"
+  },
+  {
+    "Inputs": [
+      "2147483647",
+      "3"
+    ],
+    "ExpectedOutput": "715827882"
+  },
+  {
+    "Inputs": [
+      "-2147483648",
+      "-3"
+    ],
+    "ExpectedOutput": "715827882"
+  },
+  {
+    "Inputs": [
+      "999999999",
+      "999999999"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "15",
+      "-3"
+    ],
+    "ExpectedOutput": "-5"
+  },
+  {
+    "Inputs": [
+      "-2147483648",
+      "2147483647"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "1000000000",
+      "-3"
+    ],
+    "ExpectedOutput": "-333333333"
+  },
+  {
+    "Inputs": [
+      "-1000000000",
+      "-500000000"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "1",
+      "100"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "-15",
+      "6"
+    ],
+    "ExpectedOutput": "-2"
+  },
+  {
+    "Inputs": [
+      "-999999999",
+      "1"
+    ],
+    "ExpectedOutput": "-999999999"
+  },
+  {
+    "Inputs": [
+      "1023",
+      "2"
+    ],
+    "ExpectedOutput": "511"
+  },
+  {
+    "Inputs": [
+      "-100",
+      "-7"
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "5",
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "10",
+      "-3"
+    ],
+    "ExpectedOutput": "-3"
+  },
+  {
+    "Inputs": [
+      "-50",
+      "-10"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "100",
+      "10"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "-1000",
+      "5"
+    ],
+    "ExpectedOutput": "-200"
+  },
+  {
+    "Inputs": [
+      "-1000",
+      "-5"
+    ],
+    "ExpectedOutput": "200"
+  },
+  {
+    "Inputs": [
+      "100",
+      "-2"
+    ],
+    "ExpectedOutput": "-50"
+  },
+  {
+    "Inputs": [
+      "56",
+      "7"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "-50",
+      "10"
+    ],
+    "ExpectedOutput": "-5"
+  },
+  {
+    "Inputs": [
+      "-50",
+      "5"
+    ],
+    "ExpectedOutput": "-10"
+  },
+  {
+    "Inputs": [
+      "15",
+      "2"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "-1",
+      "-2147483648"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "-10",
+      "3"
+    ],
+    "ExpectedOutput": "-3"
+  },
+  {
+    "Inputs": [
+      "100",
+      "33"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "150",
+      "6"
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "1",
+      "2147483647"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "-100",
+      "-5"
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "-7",
+      "-3"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "-100",
+      "10"
+    ],
+    "ExpectedOutput": "-10"
+  },
+  {
+    "Inputs": [
+      "100",
+      "-10"
+    ],
+    "ExpectedOutput": "-10"
+  },
+  {
+    "Inputs": [
+      "-2147483647",
+      "2"
+    ],
+    "ExpectedOutput": "-1073741823"
+  },
+  {
+    "Inputs": [
+      "-56",
+      "-7"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "100",
+      "2"
+    ],
+    "ExpectedOutput": "50"
+  },
+  {
+    "Inputs": [
+      "-100",
+      "-2"
+    ],
+    "ExpectedOutput": "50"
+  },
+  {
+    "Inputs": [
+      "100",
+      "-5"
+    ],
+    "ExpectedOutput": "-20"
+  },
+  {
+    "Inputs": [
+      "100",
+      "5"
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "0",
+      "5"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "-100",
+      "-10"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "-100",
+      "2"
+    ],
+    "ExpectedOutput": "-50"
+  },
+  {
+    "Inputs": [
+      "-100",
+      "5"
+    ],
+    "ExpectedOutput": "-20"
+  },
+  {
+    "Inputs": [
+      "0",
+      "-1"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "1000",
+      "5"
+    ],
+    "ExpectedOutput": "200"
+  },
+  {
+    "Inputs": [
+      "1000",
+      "-5"
+    ],
+    "ExpectedOutput": "-200"
+  },
+  {
+    "Inputs": [
+      "1000",
+      "3"
+    ],
+    "ExpectedOutput": "333"
+  }
+]

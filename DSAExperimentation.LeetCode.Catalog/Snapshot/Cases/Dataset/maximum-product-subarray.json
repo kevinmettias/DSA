@@ -1,0 +1,410 @@
+[
+  {
+    "Inputs": [
+      "[2,-5,-2,-4,3]"
+    ],
+    "ExpectedOutput": "24"
+  },
+  {
+    "Inputs": [
+      "[1]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[-2,3,-4]"
+    ],
+    "ExpectedOutput": "24"
+  },
+  {
+    "Inputs": [
+      "[3,-1,4]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[-1,-2,-3,0]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[0,2]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[-1,2,-3,4,-5,6,-7,8,-9,10]"
+    ],
+    "ExpectedOutput": "3628800"
+  },
+  {
+    "Inputs": [
+      "[1,2,-1,4]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[0,2,0]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[-1,-2,-3,-4]"
+    ],
+    "ExpectedOutput": "24"
+  },
+  {
+    "Inputs": [
+      "[-1]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[-2,3,-4,5,7,-8,2,3]"
+    ],
+    "ExpectedOutput": "20160"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5]"
+    ],
+    "ExpectedOutput": "120"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,8,9,10]"
+    ],
+    "ExpectedOutput": "3628800"
+  },
+  {
+    "Inputs": [
+      "[0,2,3,-2,4,-1,5]"
+    ],
+    "ExpectedOutput": "240"
+  },
+  {
+    "Inputs": [
+      "[-1,0,-1,0,-1,0,-1,0,-1,0]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[2,3,-2,4,-1,5,6]"
+    ],
+    "ExpectedOutput": "1440"
+  },
+  {
+    "Inputs": [
+      "[1,0,1,0,1,0,1,0,1,0]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[1,-1,1,-1,1,-1,1,-1]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[-2,-3,7,-4,0,5,-8,3,6]"
+    ],
+    "ExpectedOutput": "84"
+  },
+  {
+    "Inputs": [
+      "[5,0,5,-1,0,5,-1,0,5,-1]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[0,2,-3,4,-5,6]"
+    ],
+    "ExpectedOutput": "720"
+  },
+  {
+    "Inputs": [
+      "[2,3,0,-1,4,5,0,-2,3,0]"
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "[2,3,0,-1,-2,4,0,5,6,0,-7,8,-9]"
+    ],
+    "ExpectedOutput": "504"
+  },
+  {
+    "Inputs": [
+      "[1,0,-1,0,1,-1,0,1,0]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[5,6,-3,4,0,2,3,-2,4]"
+    ],
+    "ExpectedOutput": "30"
+  },
+  {
+    "Inputs": [
+      "[10,-10,10,-10,10,-10]"
+    ],
+    "ExpectedOutput": "100000"
+  },
+  {
+    "Inputs": [
+      "[5,6,-3,4,0,-1,2,-5]"
+    ],
+    "ExpectedOutput": "30"
+  },
+  {
+    "Inputs": [
+      "[0,2,3,-2,4,-1,5,6]"
+    ],
+    "ExpectedOutput": "1440"
+  },
+  {
+    "Inputs": [
+      "[2,-5,3,1,-4,2]"
+    ],
+    "ExpectedOutput": "240"
+  },
+  {
+    "Inputs": [
+      "[5,3,-1,2,0,-6,-2,0,5,3,-1,2,0,-6,-2]"
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "[0,0,0,0,0,0,0,0,0,0]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[0,2,-3,4,-1,2,1,-5,4]"
+    ],
+    "ExpectedOutput": "160"
+  },
+  {
+    "Inputs": [
+      "[10,-2,-3,5,-10,0,9,6]"
+    ],
+    "ExpectedOutput": "300"
+  },
+  {
+    "Inputs": [
+      "[-2,0,-1,0,1,2,-3]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[5,-2,-3,-4,-5,-6,-7,-8,-9,-10]"
+    ],
+    "ExpectedOutput": "1814400"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,-1,-2,-3,-4,-5]"
+    ],
+    "ExpectedOutput": "2880"
+  },
+  {
+    "Inputs": [
+      "[-1,-2,0,1,-3,4,-5,6,-7,8,-9,10]"
+    ],
+    "ExpectedOutput": "1814400"
+  },
+  {
+    "Inputs": [
+      "[1,0,-1,0,1,0,-1,0,1]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[10,-10,10,-10,10,-10,10]"
+    ],
+    "ExpectedOutput": "100000"
+  },
+  {
+    "Inputs": [
+      "[-10,0,0,0,0,0,0,0,0,-10]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[-10,0,10,0,-10,0,10,0,-10,0]"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "[10,9,8,7,6,5,4,3,2,1]"
+    ],
+    "ExpectedOutput": "3628800"
+  },
+  {
+    "Inputs": [
+      "[-3,-1,0,2,4,-2,0,-1]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[3,-1,4,1,5,-9,2,6,5,3,5]"
+    ],
+    "ExpectedOutput": "486000"
+  },
+  {
+    "Inputs": [
+      "[5,3,-2,5,-1,5,-1,0,5]"
+    ],
+    "ExpectedOutput": "750"
+  },
+  {
+    "Inputs": [
+      "[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[1,-2,3,-4,5,-6,7,-8,9,-10]"
+    ],
+    "ExpectedOutput": "1814400"
+  },
+  {
+    "Inputs": [
+      "[-5,-4,-3,-2,-1,0,1,2,3,4,5]"
+    ],
+    "ExpectedOutput": "120"
+  },
+  {
+    "Inputs": [
+      "[-10,0,5,2,-3,-2,4,5,0,-1,2]"
+    ],
+    "ExpectedOutput": "1200"
+  },
+  {
+    "Inputs": [
+      "[3,-1,4,1,5,-9,2,6,-5,3,5]"
+    ],
+    "ExpectedOutput": "162000"
+  },
+  {
+    "Inputs": [
+      "[0,2,-3,4,-1,0,5,-2]"
+    ],
+    "ExpectedOutput": "24"
+  },
+  {
+    "Inputs": [
+      "[-10,-9,-8,-7,-6,-5,-4,-3,-2,-1]"
+    ],
+    "ExpectedOutput": "3628800"
+  },
+  {
+    "Inputs": [
+      "[3,-1,4,-1,5,-9,2,6,-5,3,5]"
+    ],
+    "ExpectedOutput": "486000"
+  },
+  {
+    "Inputs": [
+      "[1,0,-1,0,-2,0,1,0,-1,0,-2,0]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[-1,-1,-1,-1,-1,-1,-1,-1]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[10,-10,0,10,-10,0,10]"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "[1,-2,3,-4,5,-6,7,-8,9]"
+    ],
+    "ExpectedOutput": "362880"
+  },
+  {
+    "Inputs": [
+      "[0,2,-3,-4,5,0,1]"
+    ],
+    "ExpectedOutput": "120"
+  },
+  {
+    "Inputs": [
+      "[1,-1,1,-1,1,-1,1,-1,1,-1]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[-10,-10,-10,-10,-10]"
+    ],
+    "ExpectedOutput": "10000"
+  },
+  {
+    "Inputs": [
+      "[1,1,1,1,1,1,1,1,1,1]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[10,-10,10,-10,10]"
+    ],
+    "ExpectedOutput": "100000"
+  },
+  {
+    "Inputs": [
+      "[5,-3,1,-2,0,4,-2,3,-1]"
+    ],
+    "ExpectedOutput": "30"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,0,-1,-2,-3,-4,5,6]"
+    ],
+    "ExpectedOutput": "720"
+  },
+  {
+    "Inputs": [
+      "[1,-2,3,-4,5,-6,7,-8]"
+    ],
+    "ExpectedOutput": "40320"
+  },
+  {
+    "Inputs": [
+      "[10,-10,10,-10,10,-10,10,-10]"
+    ],
+    "ExpectedOutput": "100000000"
+  },
+  {
+    "Inputs": [
+      "[2,0,1,0,2,3,-2,4,-1,5]"
+    ],
+    "ExpectedOutput": "240"
+  }
+]

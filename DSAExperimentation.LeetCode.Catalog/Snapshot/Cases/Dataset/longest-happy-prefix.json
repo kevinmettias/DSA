@@ -1,0 +1,962 @@
+[
+  {
+    "Inputs": [
+      "\"prefixprefix\""
+    ],
+    "ExpectedOutput": "\"prefix\""
+  },
+  {
+    "Inputs": [
+      "\"abcdef\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaa\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaabaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaa\""
+  },
+  {
+    "Inputs": [
+      "\"a\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\""
+    ],
+    "ExpectedOutput": "\"abacaba\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabc\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaabbbaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaa\""
+  },
+  {
+    "Inputs": [
+      "\"happy\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"noon\""
+    ],
+    "ExpectedOutput": "\"n\""
+  },
+  {
+    "Inputs": [
+      "\"banana\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"abc\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeaabbccdd\""
+    ],
+    "ExpectedOutput": "\"aabbccdd\""
+  },
+  {
+    "Inputs": [
+      "\"abcd\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgg\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"suffix\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"aaaa\""
+    ],
+    "ExpectedOutput": "\"aaa\""
+  },
+  {
+    "Inputs": [
+      "\"mississippi\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabc\""
+    ],
+    "ExpectedOutput": "\"abc\""
+  },
+  {
+    "Inputs": [
+      "\"abacababacab\""
+    ],
+    "ExpectedOutput": "\"abacab\""
+  },
+  {
+    "Inputs": [
+      "\"ababababcababab\""
+    ],
+    "ExpectedOutput": "\"ababab\""
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacabadabacaba\""
+    ],
+    "ExpectedOutput": "\"abacabadabacaba\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghijabcdefghijabcdefghij\""
+    ],
+    "ExpectedOutput": "\"abcdefghijabcdefghijabcdefghij\""
+  },
+  {
+    "Inputs": [
+      "\"bananaananabay\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\""
+    ],
+    "ExpectedOutput": "\"abra\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefabcdefabcdef\""
+    ],
+    "ExpectedOutput": "\"abcdefabcdef\""
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacabadabacabadabacabad\""
+    ],
+    "ExpectedOutput": "\"abacabadabacabadabacabad\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcd\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyzxyzxyzxyzxyz\""
+    ],
+    "ExpectedOutput": "\"xyzxyzxyzxyzxyzxyz\""
+  },
+  {
+    "Inputs": [
+      "\"aababaabaababaaba\""
+    ],
+    "ExpectedOutput": "\"aababaaba\""
+  },
+  {
+    "Inputs": [
+      "\"aaaabaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaa\""
+  },
+  {
+    "Inputs": [
+      "\"zazazazazazazazazazaz\""
+    ],
+    "ExpectedOutput": "\"zazazazazazazazazaz\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabca\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabca\""
+  },
+  {
+    "Inputs": [
+      "\"abbaabbaabbaabbaabbaabba\""
+    ],
+    "ExpectedOutput": "\"abbaabbaabbaabbaabba\""
+  },
+  {
+    "Inputs": [
+      "\"aabaaabaabaaabaabaabaaabaabaab\""
+    ],
+    "ExpectedOutput": "\"aab\""
+  },
+  {
+    "Inputs": [
+      "\"mississippimississippimississippimis\""
+    ],
+    "ExpectedOutput": "\"mississippimississippimis\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabad\""
+    ],
+    "ExpectedOutput": "\"abacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabad\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcba\""
+    ],
+    "ExpectedOutput": "\"abcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcbaabcdefghijkllkjihgfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaabaaaaaab\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbccccdddd\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"acacacacac\""
+    ],
+    "ExpectedOutput": "\"acacacac\""
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyzxyz\""
+    ],
+    "ExpectedOutput": "\"xyzxyzxyz\""
+  },
+  {
+    "Inputs": [
+      "\"mississippimississippi\""
+    ],
+    "ExpectedOutput": "\"mississippi\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaabbbaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbbbaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"bananaananabanana\""
+    ],
+    "ExpectedOutput": "\"banana\""
+  },
+  {
+    "Inputs": [
+      "\"mississippimississippimiss\""
+    ],
+    "ExpectedOutput": "\"mississippimiss\""
+  },
+  {
+    "Inputs": [
+      "\"aabbaabbaabbaabb\""
+    ],
+    "ExpectedOutput": "\"aabbaabbaabb\""
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacabadabacabadabacabadabacaba\""
+    ],
+    "ExpectedOutput": "\"abacabadabacabadabacabadabacaba\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"zazazazazazaz\""
+    ],
+    "ExpectedOutput": "\"zazazazazaz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefgh\""
+    ],
+    "ExpectedOutput": "\"abcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefgh\""
+  },
+  {
+    "Inputs": [
+      "\"ababcabababa\""
+    ],
+    "ExpectedOutput": "\"aba\""
+  },
+  {
+    "Inputs": [
+      "\"aaabaaaab\""
+    ],
+    "ExpectedOutput": "\"aaab\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaab\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"abacabacabac\""
+    ],
+    "ExpectedOutput": "\"abacabac\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcdabcdabcdabcdabcdabcdabcdabcd\""
+    ],
+    "ExpectedOutput": "\"abcdabcdabcdabcdabcdabcdabcdabcdabcd\""
+  },
+  {
+    "Inputs": [
+      "\"mississippimississippimississippi\""
+    ],
+    "ExpectedOutput": "\"mississippimississippi\""
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzzxyzxyz\""
+    ],
+    "ExpectedOutput": "\"xyzxyz\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcde\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"ababbababbababbabab\""
+    ],
+    "ExpectedOutput": "\"ababbababbabab\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcab\""
+    ],
+    "ExpectedOutput": "\"abcabcabcab\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaaaaaaaaaaaaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"ababababababab\""
+    ],
+    "ExpectedOutput": "\"abababababab\""
+  },
+  {
+    "Inputs": [
+      "\"abcdeedcba\""
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abababababababab\""
+    ],
+    "ExpectedOutput": "\"ababababababab\""
+  },
+  {
+    "Inputs": [
+      "\"ababababababababab\""
+    ],
+    "ExpectedOutput": "\"abababababababab\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaabaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaabaaaabaaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefgh\""
+    ],
+    "ExpectedOutput": "\"abcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefgh\""
+  },
+  {
+    "Inputs": [
+      "\"abababababababababababababab\""
+    ],
+    "ExpectedOutput": "\"ababababababababababababab\""
+  },
+  {
+    "Inputs": [
+      "\"racecaracecarace\""
+    ],
+    "ExpectedOutput": "\"racecarace\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcdabcdabcd\""
+    ],
+    "ExpectedOutput": "\"abcdabcdabcdabcd\""
+  },
+  {
+    "Inputs": [
+      "\"racecaracecaracecar\""
+    ],
+    "ExpectedOutput": "\"racecaracecar\""
+  },
+  {
+    "Inputs": [
+      "\"abcdeedcbaedcbaedcba\""
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"racecaracecaracecarace\""
+    ],
+    "ExpectedOutput": "\"racecaracecarace\""
+  },
+  {
+    "Inputs": [
+      "\"ababababababababababababa\""
+    ],
+    "ExpectedOutput": "\"abababababababababababa\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"racecaracecaracecaracecaracecarace\""
+    ],
+    "ExpectedOutput": "\"racecaracecaracecaracecarace\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaabaaaaaab\""
+    ],
+    "ExpectedOutput": "\"aaaaaab\""
+  },
+  {
+    "Inputs": [
+      "\"xyxyxyxyxyxyxyxyxyxy\""
+    ],
+    "ExpectedOutput": "\"xyxyxyxyxyxyxyxyxy\""
+  },
+  {
+    "Inputs": [
+      "\"xyxxyxyxyxxyx\""
+    ],
+    "ExpectedOutput": "\"xyxxyx\""
+  },
+  {
+    "Inputs": [
+      "\"zazazazazazaza\""
+    ],
+    "ExpectedOutput": "\"zazazazazaza\""
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabad\""
+    ],
+    "ExpectedOutput": "\"abacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabadabacabad\""
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyzxyzxyzxyz\""
+    ],
+    "ExpectedOutput": "\"xyzxyzxyzxyzxyz\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffggaabbccddeeffgg\""
+    ],
+    "ExpectedOutput": "\"aabbccddeeffgg\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcabc\""
+    ],
+    "ExpectedOutput": "\"abc\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaab\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaabaaaaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"mnopqrstuvutsrqponm\""
+    ],
+    "ExpectedOutput": "\"m\""
+  },
+  {
+    "Inputs": [
+      "\"ababababc\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefgabcdefg\""
+    ],
+    "ExpectedOutput": "\"abcdefg\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcabcabcd\""
+    ],
+    "ExpectedOutput": "\"abcd\""
+  },
+  {
+    "Inputs": [
+      "\"abcdeabcdeabcdeabcde\""
+    ],
+    "ExpectedOutput": "\"abcdeabcdeabcde\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaabcabcabc\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcdabcdabcda\""
+    ],
+    "ExpectedOutput": "\"abcdabcdabcdabcda\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abc\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaabaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacabadabacabadabacabadabacabadabacabad\""
+    ],
+    "ExpectedOutput": "\"abacabadabacabadabacabadabacabadabacabad\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffaabbccddeeff\""
+    ],
+    "ExpectedOutput": "\"aabbccddeeff\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaabaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abc\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcd\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcab\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcab\""
+  },
+  {
+    "Inputs": [
+      "\"ababababababababababababababababababababababababababababababababababababababab\""
+    ],
+    "ExpectedOutput": "\"abababababababababababababababababababababababababababababababababababababab\""
+  },
+  {
+    "Inputs": [
+      "\"aabbaabbaabbaabbaabb\""
+    ],
+    "ExpectedOutput": "\"aabbaabbaabbaabb\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcdabcdabcdabcdabcdabcdabcd\""
+    ],
+    "ExpectedOutput": "\"abcdabcdabcdabcdabcdabcdabcdabcd\""
+  },
+  {
+    "Inputs": [
+      "\"bananaananabananaananaba\""
+    ],
+    "ExpectedOutput": "\"bananaananaba\""
+  },
+  {
+    "Inputs": [
+      "\"aabaaabaabaaabaab\""
+    ],
+    "ExpectedOutput": "\"aabaaabaab\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijkllkjihgfedcba\""
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"aabaaab\""
+    ],
+    "ExpectedOutput": "\"aab\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaabaaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abcdeabcdeabcde\""
+    ],
+    "ExpectedOutput": "\"abcdeabcde\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcabcde\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"zxyxzyxyzxyxzyxzyz\""
+    ],
+    "ExpectedOutput": "\"z\""
+  },
+  {
+    "Inputs": [
+      "\"ababababab\""
+    ],
+    "ExpectedOutput": "\"abababab\""
+  },
+  {
+    "Inputs": [
+      "\"abababababababababababab\""
+    ],
+    "ExpectedOutput": "\"ababababababababababab\""
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyzxyzxyzxyzxyzxyz\""
+    ],
+    "ExpectedOutput": "\"xyzxyzxyzxyzxyzxyzxyz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcdabcdabcdabcdabcdabcd\""
+    ],
+    "ExpectedOutput": "\"abcdabcdabcdabcdabcdabcdabcd\""
+  },
+  {
+    "Inputs": [
+      "\"axbyczdxcyzbyxa\""
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefgabcdefgabcdefg\""
+    ],
+    "ExpectedOutput": "\"abcdefgabcdefg\""
+  },
+  {
+    "Inputs": [
+      "\"abcxyzabcxyzabcxyz\""
+    ],
+    "ExpectedOutput": "\"abcxyzabcxyz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghihgfedcba\""
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"racecar\""
+    ],
+    "ExpectedOutput": "\"r\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghij\""
+    ],
+    "ExpectedOutput": "\"abcdefghij\""
+  },
+  {
+    "Inputs": [
+      "\"abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab\""
+    ],
+    "ExpectedOutput": "\"ababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"bananaabanana\""
+    ],
+    "ExpectedOutput": "\"banana\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabcabcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"aabaaabaabaaabaabaab\""
+    ],
+    "ExpectedOutput": "\"aab\""
+  },
+  {
+    "Inputs": [
+      "\"ababcabcababc\""
+    ],
+    "ExpectedOutput": "\"ababc\""
+  },
+  {
+    "Inputs": [
+      "\"abababcabababc\""
+    ],
+    "ExpectedOutput": "\"abababc\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "\"abcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"abracadabracadabrac\""
+    ],
+    "ExpectedOutput": "\"abracadabrac\""
+  },
+  {
+    "Inputs": [
+      "\"ababababababababababababababababababab\""
+    ],
+    "ExpectedOutput": "\"abababababababababababababababababab\""
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzyzyzxzyzyzyzyzyz\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"papapapapapap\""
+    ],
+    "ExpectedOutput": "\"papapapapap\""
+  }
+]

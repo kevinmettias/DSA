@@ -1,0 +1,932 @@
+[
+  {
+    "Inputs": [
+      "\"abcba\""
+    ],
+    "ExpectedOutput": "\"abcba\""
+  },
+  {
+    "Inputs": [
+      "\"madam\""
+    ],
+    "ExpectedOutput": "\"madam\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "\"zyxwvutsrqponmlkjihgfedcbabcdefghijklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"abac\""
+    ],
+    "ExpectedOutput": "\"cabac\""
+  },
+  {
+    "Inputs": [
+      "\"zxcvbnm\""
+    ],
+    "ExpectedOutput": "\"mnbvcxzxcvbnm\""
+  },
+  {
+    "Inputs": [
+      "\"aabbaa\""
+    ],
+    "ExpectedOutput": "\"aabbaa\""
+  },
+  {
+    "Inputs": [
+      "\"abcdcba\""
+    ],
+    "ExpectedOutput": "\"abcdcba\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"a\""
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabc\""
+    ],
+    "ExpectedOutput": "\"cbacbacbabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"step\""
+    ],
+    "ExpectedOutput": "\"petstep\""
+  },
+  {
+    "Inputs": [
+      "\"abacdfgdcaba\""
+    ],
+    "ExpectedOutput": "\"abacdgfdcabacdfgdcaba\""
+  },
+  {
+    "Inputs": [
+      "\"ab\""
+    ],
+    "ExpectedOutput": "\"bab\""
+  },
+  {
+    "Inputs": [
+      "\"\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"abcde\""
+    ],
+    "ExpectedOutput": "\"edcbabcde\""
+  },
+  {
+    "Inputs": [
+      "\"abcabc\""
+    ],
+    "ExpectedOutput": "\"cbacbabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"rotor\""
+    ],
+    "ExpectedOutput": "\"rotor\""
+  },
+  {
+    "Inputs": [
+      "\"aabb\""
+    ],
+    "ExpectedOutput": "\"bbaabb\""
+  },
+  {
+    "Inputs": [
+      "\"racecar\""
+    ],
+    "ExpectedOutput": "\"racecar\""
+  },
+  {
+    "Inputs": [
+      "\"aabba\""
+    ],
+    "ExpectedOutput": "\"abbaabba\""
+  },
+  {
+    "Inputs": [
+      "\"abba\""
+    ],
+    "ExpectedOutput": "\"abba\""
+  },
+  {
+    "Inputs": [
+      "\"race\""
+    ],
+    "ExpectedOutput": "\"ecarace\""
+  },
+  {
+    "Inputs": [
+      "\"noon\""
+    ],
+    "ExpectedOutput": "\"noon\""
+  },
+  {
+    "Inputs": [
+      "\"banana\""
+    ],
+    "ExpectedOutput": "\"ananabanana\""
+  },
+  {
+    "Inputs": [
+      "\"deeee\""
+    ],
+    "ExpectedOutput": "\"eeeedeeee\""
+  },
+  {
+    "Inputs": [
+      "\"zzazzacca\""
+    ],
+    "ExpectedOutput": "\"accazzazzacca\""
+  },
+  {
+    "Inputs": [
+      "\"aba\""
+    ],
+    "ExpectedOutput": "\"aba\""
+  },
+  {
+    "Inputs": [
+      "\"abbacd\""
+    ],
+    "ExpectedOutput": "\"dcabbacd\""
+  },
+  {
+    "Inputs": [
+      "\"level\""
+    ],
+    "ExpectedOutput": "\"level\""
+  },
+  {
+    "Inputs": [
+      "\"zyxwvutsrqponmlkjihgfedcba\""
+    ],
+    "ExpectedOutput": "\"abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"aabbaab\""
+    ],
+    "ExpectedOutput": "\"baabbaab\""
+  },
+  {
+    "Inputs": [
+      "\"aabbaca\""
+    ],
+    "ExpectedOutput": "\"acabbaabbaca\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeeffgg\""
+    ],
+    "ExpectedOutput": "\"ggffeeeddccbbaabbccddeeeffgg\""
+  },
+  {
+    "Inputs": [
+      "\"noonappo\""
+    ],
+    "ExpectedOutput": "\"oppanoonappo\""
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacabadabacaba\""
+    ],
+    "ExpectedOutput": "\"abacabadabacabadabacaba\""
+  },
+  {
+    "Inputs": [
+      "\"repaperrepaper\""
+    ],
+    "ExpectedOutput": "\"repaperrepaper\""
+  },
+  {
+    "Inputs": [
+      "\"xyzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzyx\""
+    ],
+    "ExpectedOutput": "\"xyzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzyx\""
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\""
+    ],
+    "ExpectedOutput": "\"arbadacarbabracadabra\""
+  },
+  {
+    "Inputs": [
+      "\"rotorrotor\""
+    ],
+    "ExpectedOutput": "\"rotorrotor\""
+  },
+  {
+    "Inputs": [
+      "\"zzzz\""
+    ],
+    "ExpectedOutput": "\"zzzz\""
+  },
+  {
+    "Inputs": [
+      "\"abbaa\""
+    ],
+    "ExpectedOutput": "\"aabbaa\""
+  },
+  {
+    "Inputs": [
+      "\"zazazz\""
+    ],
+    "ExpectedOutput": "\"zzazazz\""
+  },
+  {
+    "Inputs": [
+      "\"aaaabaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaabaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"noonnoon\""
+    ],
+    "ExpectedOutput": "\"noonnoon\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffgg\""
+    ],
+    "ExpectedOutput": "\"ggfffeeeddccbbaabbccddeeefffgg\""
+  },
+  {
+    "Inputs": [
+      "\"repaid\""
+    ],
+    "ExpectedOutput": "\"diaperepaid\""
+  },
+  {
+    "Inputs": [
+      "\"algorithm\""
+    ],
+    "ExpectedOutput": "\"mhtiroglalgorithm\""
+  },
+  {
+    "Inputs": [
+      "\"ananabanana\""
+    ],
+    "ExpectedOutput": "\"ananabanana\""
+  },
+  {
+    "Inputs": [
+      "\"hello\""
+    ],
+    "ExpectedOutput": "\"ollehello\""
+  },
+  {
+    "Inputs": [
+      "\"abcdecba\""
+    ],
+    "ExpectedOutput": "\"abcedcbabcdecba\""
+  },
+  {
+    "Inputs": [
+      "\"redder\""
+    ],
+    "ExpectedOutput": "\"redder\""
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiop\""
+    ],
+    "ExpectedOutput": "\"poiuytrewqwertyuiop\""
+  },
+  {
+    "Inputs": [
+      "\"noonnoonnoonnoon\""
+    ],
+    "ExpectedOutput": "\"noonnoonnoonnoon\""
+  },
+  {
+    "Inputs": [
+      "\"deeeeffffgggggggggggggggggggggggggggggggg\""
+    ],
+    "ExpectedOutput": "\"ggggggggggggggggggggggggggggggggffffeeeedeeeeffffgggggggggggggggggggggggggggggggg\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabc\""
+    ],
+    "ExpectedOutput": "\"cbadcbabcdabc\""
+  },
+  {
+    "Inputs": [
+      "\"mississippimississippi\""
+    ],
+    "ExpectedOutput": "\"ippississimippississimississippimississippi\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeee\""
+    ],
+    "ExpectedOutput": "\"eeeddccbbaabbccddeee\""
+  },
+  {
+    "Inputs": [
+      "\"xyzzyx\""
+    ],
+    "ExpectedOutput": "\"xyzzyx\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghihgfedcbabc\""
+    ],
+    "ExpectedOutput": "\"cbabcdefghihgfedcbabc\""
+  },
+  {
+    "Inputs": [
+      "\"abca\""
+    ],
+    "ExpectedOutput": "\"acbabca\""
+  },
+  {
+    "Inputs": [
+      "\"bba\""
+    ],
+    "ExpectedOutput": "\"abba\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abbae\""
+    ],
+    "ExpectedOutput": "\"eabbae\""
+  },
+  {
+    "Inputs": [
+      "\"repaperandmorepaperrepaperandmorepaper\""
+    ],
+    "ExpectedOutput": "\"repaperomdnarepaperrepaperomdnarepaperandmorepaperrepaperandmorepaper\""
+  },
+  {
+    "Inputs": [
+      "\"algorhythmhmorthygrola\""
+    ],
+    "ExpectedOutput": "\"alorgyhtromhmhtyhroglalgorhythmhmorthygrola\""
+  },
+  {
+    "Inputs": [
+      "\"palindrome\""
+    ],
+    "ExpectedOutput": "\"emordnilapalindrome\""
+  },
+  {
+    "Inputs": [
+      "\"abacaxi\""
+    ],
+    "ExpectedOutput": "\"ixacabacaxi\""
+  },
+  {
+    "Inputs": [
+      "\"kayak\""
+    ],
+    "ExpectedOutput": "\"kayak\""
+  },
+  {
+    "Inputs": [
+      "\"abab\""
+    ],
+    "ExpectedOutput": "\"babab\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffhhh\""
+    ],
+    "ExpectedOutput": "\"hhhfffeeeddccbbaabbccddeeefffhhh\""
+  },
+  {
+    "Inputs": [
+      "\"aabbbaaa\""
+    ],
+    "ExpectedOutput": "\"aaabbbaaa\""
+  },
+  {
+    "Inputs": [
+      "\"xyxz\""
+    ],
+    "ExpectedOutput": "\"zxyxz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghihgfedcbabcd\""
+    ],
+    "ExpectedOutput": "\"dcbabcdefghihgfedcbabcd\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffggghhh\""
+    ],
+    "ExpectedOutput": "\"hhhgggfffeeeddccbbaabbccddeeefffggghhh\""
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiopasdfghjklzxcvbnm\""
+    ],
+    "ExpectedOutput": "\"mnbvcxzlkjhgfdsapoiuytrewqwertyuiopasdfghjklzxcvbnm\""
+  },
+  {
+    "Inputs": [
+      "\"levelup\""
+    ],
+    "ExpectedOutput": "\"pulevelup\""
+  },
+  {
+    "Inputs": [
+      "\"raceacar\""
+    ],
+    "ExpectedOutput": "\"racaecaraceacar\""
+  },
+  {
+    "Inputs": [
+      "\"levelupandnevergiveup\""
+    ],
+    "ExpectedOutput": "\"puevigrevendnapulevelupandnevergiveup\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzzzz\""
+    ],
+    "ExpectedOutput": "\"zzzzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdeedcba\""
+    ],
+    "ExpectedOutput": "\"abcdeedcba\""
+  },
+  {
+    "Inputs": [
+      "\"leveler\""
+    ],
+    "ExpectedOutput": "\"releveler\""
+  },
+  {
+    "Inputs": [
+      "\"xyzzyxw\""
+    ],
+    "ExpectedOutput": "\"wxyzzyxw\""
+  },
+  {
+    "Inputs": [
+      "\"abcbae\""
+    ],
+    "ExpectedOutput": "\"eabcbae\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeeff\""
+    ],
+    "ExpectedOutput": "\"ffeeeddccbbaabbccddeeeff\""
+  },
+  {
+    "Inputs": [
+      "\"abcdeffedcba\""
+    ],
+    "ExpectedOutput": "\"abcdeffedcba\""
+  },
+  {
+    "Inputs": [
+      "\"deeeeffffgggg\""
+    ],
+    "ExpectedOutput": "\"ggggffffeeeedeeeeffffgggg\""
+  },
+  {
+    "Inputs": [
+      "\"levellevel\""
+    ],
+    "ExpectedOutput": "\"levellevel\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffhhhiiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+    ],
+    "ExpectedOutput": "\"zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiiihhhfffeeeddccbbaabbccddeeefffhhhiiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+  },
+  {
+    "Inputs": [
+      "\"zyxwvutsrqponmlkjihgfedcbaabcdefghijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "\"zyxwvutsrqponmlkjihgfedcbaabcdefghijklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"aabcd\""
+    ],
+    "ExpectedOutput": "\"dcbaabcd\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefedcba\""
+    ],
+    "ExpectedOutput": "\"abcdefedcba\""
+  },
+  {
+    "Inputs": [
+      "\"thisisnotapalindrome\""
+    ],
+    "ExpectedOutput": "\"emordnilapatonsisihthisisnotapalindrome\""
+  },
+  {
+    "Inputs": [
+      "\"amanaplanacanalsofpnmala\""
+    ],
+    "ExpectedOutput": "\"alamnpfoslanacanalpanamanaplanacanalsofpnmala\""
+  },
+  {
+    "Inputs": [
+      "\"xyzzzzzzzzzzzzzzzzzyx\""
+    ],
+    "ExpectedOutput": "\"xyzzzzzzzzzzzzzzzzzyx\""
+  },
+  {
+    "Inputs": [
+      "\"aeroplaneeplanar\""
+    ],
+    "ExpectedOutput": "\"ranalpeenalporeaeroplaneeplanar\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaabbaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijk\""
+    ],
+    "ExpectedOutput": "\"kjihgfedcbabcdefghijk\""
+  },
+  {
+    "Inputs": [
+      "\"abababab\""
+    ],
+    "ExpectedOutput": "\"babababab\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghihgfedcbaa\""
+    ],
+    "ExpectedOutput": "\"aabcdefghihgfedcbaa\""
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\""
+    ],
+    "ExpectedOutput": "\"abacabadabacaba\""
+  },
+  {
+    "Inputs": [
+      "\"abababa\""
+    ],
+    "ExpectedOutput": "\"abababa\""
+  },
+  {
+    "Inputs": [
+      "\"bananaananab\""
+    ],
+    "ExpectedOutput": "\"bananaananab\""
+  },
+  {
+    "Inputs": [
+      "\"ananabananabana\""
+    ],
+    "ExpectedOutput": "\"anabananabananabana\""
+  },
+  {
+    "Inputs": [
+      "\"rotator\""
+    ],
+    "ExpectedOutput": "\"rotator\""
+  },
+  {
+    "Inputs": [
+      "\"redderredder\""
+    ],
+    "ExpectedOutput": "\"redderredder\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffgghhiiijjjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+    ],
+    "ExpectedOutput": "\"zzyyxxwwvvuuttssrrqqppoonnmmllkkjjjiiihhggfffeeeddccbbaabbccddeeefffgghhiiijjjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+  },
+  {
+    "Inputs": [
+      "\"xyzabcxyzabc\""
+    ],
+    "ExpectedOutput": "\"cbazyxcbazyxyzabcxyzabc\""
+  },
+  {
+    "Inputs": [
+      "\"world\""
+    ],
+    "ExpectedOutput": "\"dlroworld\""
+  },
+  {
+    "Inputs": [
+      "\"abcbabcba\""
+    ],
+    "ExpectedOutput": "\"abcbabcba\""
+  },
+  {
+    "Inputs": [
+      "\"abcbad\""
+    ],
+    "ExpectedOutput": "\"dabcbad\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffhhhiijj\""
+    ],
+    "ExpectedOutput": "\"jjiihhhfffeeeddccbbaabbccddeeefffhhhiijj\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefgh\""
+    ],
+    "ExpectedOutput": "\"hgfedcbabcdefgh\""
+  },
+  {
+    "Inputs": [
+      "\"civiccivic\""
+    ],
+    "ExpectedOutput": "\"civiccivic\""
+  },
+  {
+    "Inputs": [
+      "\"detartrated\""
+    ],
+    "ExpectedOutput": "\"detartrated\""
+  },
+  {
+    "Inputs": [
+      "\"racecarcar\""
+    ],
+    "ExpectedOutput": "\"racracecarcar\""
+  },
+  {
+    "Inputs": [
+      "\"aaabaaa\""
+    ],
+    "ExpectedOutput": "\"aaabaaa\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\""
+    ],
+    "ExpectedOutput": "\"ffeeddccbbaabbccddeeff\""
+  },
+  {
+    "Inputs": [
+      "\"reviver\""
+    ],
+    "ExpectedOutput": "\"reviver\""
+  },
+  {
+    "Inputs": [
+      "\"madamimadam\""
+    ],
+    "ExpectedOutput": "\"madamimadam\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffhhhiiijjkkll\""
+    ],
+    "ExpectedOutput": "\"llkkjjiiihhhfffeeeddccbbaabbccddeeefffhhhiiijjkkll\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+    ],
+    "ExpectedOutput": "\"zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+  },
+  {
+    "Inputs": [
+      "\"amanaplanacanalpanama\""
+    ],
+    "ExpectedOutput": "\"amanaplanacanalpanama\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcba\""
+    ],
+    "ExpectedOutput": "\"abcbadcbabcdabcba\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\""
+    ],
+    "ExpectedOutput": "\"gfedcbabcdefg\""
+  },
+  {
+    "Inputs": [
+      "\"aaaabbbbccccdddd\""
+    ],
+    "ExpectedOutput": "\"ddddccccbbbbaaaabbbbccccdddd\""
+  },
+  {
+    "Inputs": [
+      "\"racecarracecar\""
+    ],
+    "ExpectedOutput": "\"racecarracecar\""
+  },
+  {
+    "Inputs": [
+      "\"abbaab\""
+    ],
+    "ExpectedOutput": "\"baabbaab\""
+  },
+  {
+    "Inputs": [
+      "\"deified\""
+    ],
+    "ExpectedOutput": "\"deified\""
+  },
+  {
+    "Inputs": [
+      "\"repaper\""
+    ],
+    "ExpectedOutput": "\"repaper\""
+  },
+  {
+    "Inputs": [
+      "\"abbaabbaabba\""
+    ],
+    "ExpectedOutput": "\"abbaabbaabba\""
+  },
+  {
+    "Inputs": [
+      "\"abcdef\""
+    ],
+    "ExpectedOutput": "\"fedcbabcdef\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzy\""
+    ],
+    "ExpectedOutput": "\"yzzzzy\""
+  },
+  {
+    "Inputs": [
+      "\"abcdedcba\""
+    ],
+    "ExpectedOutput": "\"abcdedcba\""
+  },
+  {
+    "Inputs": [
+      "\"xyzzzzzzzyx\""
+    ],
+    "ExpectedOutput": "\"xyzzzzzzzyx\""
+  },
+  {
+    "Inputs": [
+      "\"bbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm\""
+    ],
+    "ExpectedOutput": "\"mnbvcxzlkjhgfdsapoiuytrewqmnbvcxzlkjhgfdsapoiuytrewqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm\""
+  },
+  {
+    "Inputs": [
+      "\"repaperandmorepaper\""
+    ],
+    "ExpectedOutput": "\"repaperomdnarepaperandmorepaper\""
+  },
+  {
+    "Inputs": [
+      "\"deifieddeified\""
+    ],
+    "ExpectedOutput": "\"deifieddeified\""
+  },
+  {
+    "Inputs": [
+      "\"abcddcba\""
+    ],
+    "ExpectedOutput": "\"abcddcba\""
+  },
+  {
+    "Inputs": [
+      "\"civic\""
+    ],
+    "ExpectedOutput": "\"civic\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaabaaa\""
+    ],
+    "ExpectedOutput": "\"aaabaaaaabaaa\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghihgfedcba\""
+    ],
+    "ExpectedOutput": "\"abcdefghihgfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"amanaplanacanalsofpnmalamalamalamalamal\""
+    ],
+    "ExpectedOutput": "\"lamalamalamalamalamnpfoslanacanalpanamanaplanacanalsofpnmalamalamalamalamal\""
+  },
+  {
+    "Inputs": [
+      "\"ababababa\""
+    ],
+    "ExpectedOutput": "\"ababababa\""
+  },
+  {
+    "Inputs": [
+      "\"aquickbrownfoxjumpsoverthelazydog\""
+    ],
+    "ExpectedOutput": "\"godyzalehtrevospmujxofnworbkciuqaquickbrownfoxjumpsoverthelazydog\""
+  },
+  {
+    "Inputs": [
+      "\"reviled\""
+    ],
+    "ExpectedOutput": "\"delivereviled\""
+  },
+  {
+    "Inputs": [
+      "\"levelupandnevergiveuplevelupandnevergiveup\""
+    ],
+    "ExpectedOutput": "\"puevigrevendnapulevelpuevigrevendnapulevelupandnevergiveuplevelupandnevergiveup\""
+  },
+  {
+    "Inputs": [
+      "\"amandaplanacanalpanama\""
+    ],
+    "ExpectedOutput": "\"amanaplanacanalpadnamandaplanacanalpanama\""
+  },
+  {
+    "Inputs": [
+      "\"aabbcc\""
+    ],
+    "ExpectedOutput": "\"ccbbaabbcc\""
+  },
+  {
+    "Inputs": [
+      "\"mississippi\""
+    ],
+    "ExpectedOutput": "\"ippississimississippi\""
+  },
+  {
+    "Inputs": [
+      "\"aeroplane\""
+    ],
+    "ExpectedOutput": "\"enalporeaeroplane\""
+  },
+  {
+    "Inputs": [
+      "\"deed\""
+    ],
+    "ExpectedOutput": "\"deed\""
+  },
+  {
+    "Inputs": [
+      "\"xyxzyzyx\""
+    ],
+    "ExpectedOutput": "\"xyzyzxyxzyzyx\""
+  },
+  {
+    "Inputs": [
+      "\"xyzabc\""
+    ],
+    "ExpectedOutput": "\"cbazyxyzabc\""
+  },
+  {
+    "Inputs": [
+      "\"refer\""
+    ],
+    "ExpectedOutput": "\"refer\""
+  }
+]

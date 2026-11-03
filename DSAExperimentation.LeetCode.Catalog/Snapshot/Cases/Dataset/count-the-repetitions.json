@@ -1,0 +1,956 @@
+[
+  {
+    "Inputs": [
+      "\"aaa\"",
+      "3",
+      "\"a\"",
+      "1"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"aabaacaabaab\"",
+      "8",
+      "\"aab\"",
+      "1"
+    ],
+    "ExpectedOutput": "24"
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "2",
+      "\"ace\"",
+      "1"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"banana\"",
+      "10",
+      "\"nan\"",
+      "1"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcd\"",
+      "5",
+      "\"abc\"",
+      "2"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\"",
+      "5",
+      "\"abcdef\"",
+      "1"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzz\"",
+      "1000",
+      "\"zz\"",
+      "100"
+    ],
+    "ExpectedOutput": "40"
+  },
+  {
+    "Inputs": [
+      "\"aabbcc\"",
+      "1000",
+      "\"abcabcabcabcabcabcabcabc\"",
+      "50"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\"",
+      "500",
+      "\"aceg\"",
+      "100"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"aabbccdd\"",
+      "25",
+      "\"abcdabcd\"",
+      "2"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"hello\"",
+      "20",
+      "\"lohel\"",
+      "4"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"pqrs\"",
+      "100",
+      "\"rqpqsr\"",
+      "5"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\"",
+      "100",
+      "\"aceg\"",
+      "5"
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "\"zzzzz\"",
+      "1000000",
+      "\"z\"",
+      "1"
+    ],
+    "ExpectedOutput": "5000000"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "100",
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "1"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"zabzabczb\"",
+      "10",
+      "\"abc\"",
+      "2"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyz\"",
+      "5",
+      "\"xyz\"",
+      "1"
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "100",
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "50"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "100000",
+      "\"dabc\"",
+      "1000"
+    ],
+    "ExpectedOutput": "99"
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "20",
+      "\"fedcba\"",
+      "1"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyz\"",
+      "3",
+      "\"xyzxyzxyz\"",
+      "1"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"hellohello\"",
+      "10",
+      "\"lohe\"",
+      "1"
+    ],
+    "ExpectedOutput": "19"
+  },
+  {
+    "Inputs": [
+      "\"abcdefgh\"",
+      "10",
+      "\"aceg\"",
+      "1"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyz\"",
+      "100",
+      "\"xyzxyzxyz\"",
+      "20"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "50000",
+      "\"xzy\"",
+      "10000"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "15",
+      "\"defabc\"",
+      "3"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabc\"",
+      "10",
+      "\"abcabcabcabcabcabcabcabc\"",
+      "1"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"acb\"",
+      "10",
+      "\"acbacb\"",
+      "1"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\"",
+      "10",
+      "\"xyz\"",
+      "1"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"ababababab\"",
+      "20",
+      "\"abab\"",
+      "5"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabc\"",
+      "999",
+      "\"abab\"",
+      "125"
+    ],
+    "ExpectedOutput": "19"
+  },
+  {
+    "Inputs": [
+      "\"aaa\"",
+      "10",
+      "\"aa\"",
+      "2"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "100",
+      "\"issi\"",
+      "5"
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgg\"",
+      "20",
+      "\"abcdefg\"",
+      "2"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzz\"",
+      "1000",
+      "\"zz\"",
+      "100"
+    ],
+    "ExpectedOutput": "50"
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiop\"",
+      "50",
+      "\"qrp\"",
+      "10"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyz\"",
+      "15",
+      "\"zyxzyx\"",
+      "1"
+    ],
+    "ExpectedOutput": "11"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabc\"",
+      "500",
+      "\"cab\"",
+      "250"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "5",
+      "\"xz\"",
+      "1"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabc\"",
+      "10",
+      "\"abc\"",
+      "1"
+    ],
+    "ExpectedOutput": "80"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "1000000",
+      "\"xyzz\"",
+      "1000"
+    ],
+    "ExpectedOutput": "500"
+  },
+  {
+    "Inputs": [
+      "\"hello\"",
+      "10",
+      "\"heo\"",
+      "1"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\"",
+      "12",
+      "\"abcabc\"",
+      "2"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\"",
+      "200",
+      "\"abad\"",
+      "10"
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "10",
+      "\"yxz\"",
+      "1"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abacabadaba\"",
+      "1000",
+      "\"abad\"",
+      "250"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"abababa\"",
+      "10",
+      "\"aba\"",
+      "2"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "50",
+      "\"bd\"",
+      "10"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "1",
+      "\"edcba\"",
+      "1"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"zabzabczabc\"",
+      "10",
+      "\"abc\"",
+      "3"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaab\"",
+      "1000",
+      "\"aab\"",
+      "100"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "6",
+      "\"fed\"",
+      "1"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"aabbcc\"",
+      "10",
+      "\"abc\"",
+      "2"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"ababcabc\"",
+      "10",
+      "\"abc\"",
+      "2"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"aaaa\"",
+      "1000000",
+      "\"aa\"",
+      "100000"
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "999999",
+      "\"fabcde\"",
+      "100000"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"aaaaa\"",
+      "100000",
+      "\"aa\"",
+      "10000"
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"abccbaabccba\"",
+      "20",
+      "\"abc\"",
+      "4"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"ababababababababababab\"",
+      "100",
+      "\"baba\"",
+      "25"
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "\"aeiou\"",
+      "10000",
+      "\"aeiouaeiou\"",
+      "500"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "3",
+      "\"issi\"",
+      "1"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcd\"",
+      "3",
+      "\"abcd\"",
+      "1"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiop\"",
+      "50",
+      "\"qo\"",
+      "10"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "1000",
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "10"
+    ],
+    "ExpectedOutput": "100"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcdabcd\"",
+      "20",
+      "\"abc\"",
+      "5"
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "100",
+      "\"dabc\"",
+      "50"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abababa\"",
+      "1000",
+      "\"aba\"",
+      "10"
+    ],
+    "ExpectedOutput": "200"
+  },
+  {
+    "Inputs": [
+      "\"banana\"",
+      "20",
+      "\"ban\"",
+      "5"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"xyzabc\"",
+      "5",
+      "\"cab\"",
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"aaa\"",
+      "500",
+      "\"a\"",
+      "100"
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"xyxzyxyxyxy\"",
+      "2",
+      "\"xyz\"",
+      "1"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "1000000",
+      "\"zzz\"",
+      "100000"
+    ],
+    "ExpectedOutput": "113"
+  },
+  {
+    "Inputs": [
+      "\"ababab\"",
+      "5",
+      "\"ab\"",
+      "2"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "10",
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "1"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"aabbcc\"",
+      "3",
+      "\"abc\"",
+      "1"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"ababcabcabc\"",
+      "6",
+      "\"abcabc\"",
+      "1"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcd\"",
+      "500",
+      "\"abcd\"",
+      "125"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\"",
+      "1000",
+      "\"abcdef\"",
+      "10"
+    ],
+    "ExpectedOutput": "100"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\"",
+      "10",
+      "\"abcabc\"",
+      "1"
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "\"aaaabbbbcccc\"",
+      "10",
+      "\"abccba\"",
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"abababab\"",
+      "100",
+      "\"aba\"",
+      "15"
+    ],
+    "ExpectedOutput": "13"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "50",
+      "\"adgj\"",
+      "5"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "10",
+      "\"issi\"",
+      "1"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaa\"",
+      "1000000",
+      "\"aa\"",
+      "100000"
+    ],
+    "ExpectedOutput": "30"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "10000",
+      "\"dcba\"",
+      "1000"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaa\"",
+      "100000",
+      "\"aa\"",
+      "10000"
+    ],
+    "ExpectedOutput": "40"
+  },
+  {
+    "Inputs": [
+      "\"ab\"",
+      "1000000",
+      "\"a\"",
+      "500000"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"aaaabaabaabaaaaaa\"",
+      "5",
+      "\"aab\"",
+      "1"
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"xyzabc\"",
+      "5",
+      "\"xz\"",
+      "1"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abababa\"",
+      "7",
+      "\"baab\"",
+      "1"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"banana\"",
+      "10",
+      "\"an\"",
+      "2"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\"",
+      "500",
+      "\"bcab\"",
+      "125"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcd\"",
+      "100",
+      "\"cdab\"",
+      "10"
+    ],
+    "ExpectedOutput": "19"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabc\"",
+      "1000",
+      "\"abcabc\"",
+      "200"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabc\"",
+      "1000",
+      "\"abc\"",
+      "100"
+    ],
+    "ExpectedOutput": "30"
+  },
+  {
+    "Inputs": [
+      "\"aaa\"",
+      "1000000",
+      "\"a\"",
+      "1"
+    ],
+    "ExpectedOutput": "3000000"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "10000",
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "5000"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzz\"",
+      "1000",
+      "\"z\"",
+      "100"
+    ],
+    "ExpectedOutput": "100"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "1000",
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "10"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"mnopqrstuvwxyz\"",
+      "10000",
+      "\"mnop\"",
+      "2000"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcdabcd\"",
+      "500",
+      "\"dcbadcbadcbadcba\"",
+      "100"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\"",
+      "100",
+      "\"abcabc\"",
+      "5"
+    ],
+    "ExpectedOutput": "40"
+  },
+  {
+    "Inputs": [
+      "\"abab\"",
+      "3",
+      "\"ab\"",
+      "2"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"abacabacabacabac\"",
+      "1000",
+      "\"acabacabacabacab\"",
+      "250"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"baba\"",
+      "20",
+      "\"ab\"",
+      "5"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"babccbababcabbbabcbbabbbbabcbbb\"",
+      "100",
+      "\"babccbabab\"",
+      "10"
+    ],
+    "ExpectedOutput": "10"
+  }
+]

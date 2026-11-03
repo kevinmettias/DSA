@@ -1,0 +1,702 @@
+[
+  {
+    "Inputs": [
+      "100",
+      "1"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "1",
+      "100"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "1",
+      "10"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "5",
+      "5"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "10",
+      "1"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "100",
+      "100"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "1",
+      "1"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "3",
+      "5"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "50",
+      "50"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "30",
+      "50"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "65",
+      "48"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "10",
+      "30"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "20",
+      "5"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "90",
+      "5"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "15",
+      "20"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "30",
+      "30"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "1",
+      "99"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "75",
+      "75"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "22",
+      "33"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "27",
+      "8"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "20",
+      "80"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "75",
+      "5"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "5",
+      "50"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "30",
+      "60"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "33",
+      "27"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "10",
+      "100"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "25",
+      "25"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "80",
+      "20"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "25",
+      "30"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "8",
+      "17"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "30",
+      "25"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "99",
+      "1"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "5",
+      "2"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "33",
+      "66"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "5",
+      "60"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "5",
+      "95"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "15",
+      "25"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "15",
+      "70"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "55",
+      "55"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "10",
+      "15"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "25",
+      "50"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "20",
+      "25"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "33",
+      "50"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "20",
+      "30"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "45",
+      "55"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "10",
+      "10"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "5",
+      "10"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "5",
+      "20"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "20",
+      "15"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "30",
+      "70"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "7",
+      "3"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "25",
+      "75"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "99",
+      "99"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "7",
+      "14"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "99",
+      "100"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "60",
+      "40"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "25",
+      "100"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "5",
+      "90"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "100",
+      "50"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "25",
+      "20"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "50",
+      "30"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "5",
+      "15"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "3",
+      "25"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "10",
+      "75"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "50",
+      "100"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "42",
+      "13"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "50",
+      "5"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "75",
+      "10"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "15",
+      "40"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "3",
+      "8"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "80",
+      "30"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "8",
+      "3"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "20",
+      "50"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "30",
+      "5"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "10",
+      "2"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "6",
+      "2"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "10",
+      "20"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "7",
+      "6"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "7",
+      "2"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "20",
+      "10"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "8",
+      "15"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "5",
+      "3"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "3",
+      "10"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "9",
+      "12"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "50",
+      "25"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "1",
+      "20"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "7",
+      "7"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "9",
+      "9"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "75",
+      "11"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "6",
+      "3"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "8",
+      "2"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "50",
+      "20"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "8",
+      "5"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "6",
+      "8"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "1",
+      "15"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "6",
+      "9"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "6",
+      "6"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  },
+  {
+    "Inputs": [
+      "3",
+      "3"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "8",
+      "8"
+    ],
+    "ExpectedOutput": "\"Bob\""
+  },
+  {
+    "Inputs": [
+      "20",
+      "20"
+    ],
+    "ExpectedOutput": "\"Alice\""
+  }
+]

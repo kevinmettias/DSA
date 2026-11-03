@@ -1,0 +1,576 @@
+[
+  {
+    "Inputs": [
+      "\"cars\"",
+      "[\"car\",\"ca\",\"rs\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"goals\"",
+      "[\"go\",\"goal\",\"goals\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"pineapplepenapple\"",
+      "[\"apple\",\"pen\",\"applepen\",\"pine\",\"pineapple\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "[\"a\",\"abc\",\"b\",\"cd\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"supercalifragilisticexpialidocious\"",
+      "[\"super\",\"cali\",\"fragi\",\"listic\",\"expi\",\"ali\",\"docious\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"skyscraper\"",
+      "[\"sky\",\"sc\",\"raper\",\"scra\",\"per\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"wordbreakproblem\"",
+      "[\"word\",\"break\",\"problem\",\"wordbreak\",\"breakproblem\",\"wordbreakproblem\",\"wordbreakpro\",\"blem\",\"wordprob\",\"lem\",\"wordb\",\"reak\",\"breakpro\",\"brea\",\"kprob\",\"wordbre\",\"akprob\",\"wordbreakp\",\"rob\",\"reakp\",\"reakpro\",\"wordbre\",\"reakproblem\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"cascadingsubstrings\"",
+      "[\"cascade\",\"sub\",\"strings\",\"cascade\",\"ing\",\"substring\"]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"breaktheglassceiling\"",
+      "[\"break\",\"the\",\"glass\",\"ceiling\",\"breaks\",\"theglass\",\"ceiling\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aquickbrownfoxjumpsoverthelazydog\"",
+      "[\"a\",\"quick\",\"brown\",\"fox\",\"jumps\",\"over\",\"the\",\"lazy\",\"dog\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcd\"",
+      "[\"a\",\"ab\",\"abc\",\"abcd\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "[\"a\",\"b\",\"c\",\"d\",\"abc\",\"bc\",\"abcd\",\"cd\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"wordbreakproblem\"",
+      "[\"word\",\"break\",\"problem\",\"pro\",\"gram\",\"wordbreak\",\"breakprob\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaab\"",
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\",\"aaaaaaaaa\",\"aaaaaaaaaa\"]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"interviewquestionsarehard\"",
+      "[\"interview\",\"questions\",\"are\",\"hard\",\"inter\",\"view\",\"quest\",\"ions\",\"ques\",\"tionsare\",\"arehard\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "[\"mis\",\"is\",\"sip\",\"i\",\"pi\",\"p\",\"mississipp\",\"missis\",\"miss\",\"issi\",\"ippi\",\"ssippi\",\"ssipp\",\"ssip\",\"ssips\",\"ssip\",\"issipi\",\"issipp\",\"issip\",\"issips\",\"issip\",\"issipp\",\"issip\",\"issips\",\"issip\",\"issipp\",\"issip\",\"issips\",\"issip\",\"issipp\",\"issip\",\"issips\",\"issip\",\"issipp\",\"issip\",\"issips\",\"issip\",\"issipp\",\"issip\",\"issips\",\"issip\",\"issipp\",\"issip\",\"issips\",\"issip\",\"issipp\",\"issip\",\"issips\",\"issip\",\"issipp\",\"issip\",\"issips\",\"issip\",\"issipp\",\"issip\",\"issips\",\"issip\",\"issipp\",\"issip\",\"issips\",\"issip\",\"issipp\",\"issip\",\"issips\",\"issip\",\"issipp\",\"issip\",\"issips\",\"issip\",\"issipp\",\"issip\",\"issips\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"complexwordbreakproblem\"",
+      "[\"complex\",\"word\",\"break\",\"problem\",\"wordbreak\",\"breakprob\",\"lem\",\"prob\",\"lemp\",\"complexword\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "[\"mis\",\"issi\",\"ppi\",\"issip\",\"ippi\",\"missis\",\"sip\",\"pi\",\"ssippi\",\"is\",\"ip\",\"sipi\",\"issipp\",\"ippi\",\"ippi\",\"mississi\",\"ppis\",\"ippii\",\"missi\",\"mississipp\",\"i\",\"p\",\"issippip\",\"issiippi\",\"mississippi\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\"",
+      "[\"abra\",\"cad\",\"abra\",\"cadabra\",\"ra\",\"dab\",\"ra\",\"cadabra\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"supercalifragilisticexpialidocious\"",
+      "[\"super\",\"cali\",\"fragilistic\",\"expiali\",\"docious\",\"superca\",\"li\",\"fragi\",\"listicex\",\"piali\",\"do\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abrakadabra\"",
+      "[\"abra\",\"kadabra\",\"abra\",\"ka\",\"da\",\"bra\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\"",
+      "[\"aa\",\"bb\",\"cc\",\"dd\",\"ee\",\"ff\",\"abc\",\"def\",\"ef\",\"fe\",\"efg\",\"gh\",\"abcdefgh\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"helplineshorthelpline\"",
+      "[\"help\",\"line\",\"short\",\"helpline\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"leetleetcodeleet\"",
+      "[\"leet\",\"code\",\"leetcode\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"racecar\"",
+      "[\"race\",\"car\",\"racec\",\"arc\",\"cec\",\"er\",\"c\",\"ra\",\"ec\",\"ce\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab\"",
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"ba\"]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "[\"mis\",\"sis\",\"ip\",\"is\"]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaa\"",
+      "[\"aa\",\"aaa\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "[\"mis\",\"is\",\"ip\",\"i\",\"ssip\"]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"banana\"",
+      "[\"ba\",\"na\",\"nan\",\"ban\",\"nana\",\"an\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"thisisatest\"",
+      "[\"this\",\"is\",\"a\",\"test\",\"thisis\",\"isatest\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefgh\"",
+      "[\"a\",\"abc\",\"abcd\",\"efg\",\"h\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdeabcdabcde\"",
+      "[\"abc\",\"abcd\",\"abcde\",\"de\",\"abcdabcde\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"ababcabcabcabab\"",
+      "[\"ab\",\"abc\",\"ababc\",\"ababcabc\",\"ababcabcabc\",\"abab\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"ababababab\"",
+      "[\"ab\",\"aba\",\"bab\",\"baba\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaa\"",
+      "[\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"dynamicprogramming\"",
+      "[\"dynamic\",\"programming\",\"dyna\",\"mic\",\"prog\",\"gram\",\"ming\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aquickbrownfoxjumpsoverthelazydog\"",
+      "[\"a\",\"quick\",\"brown\",\"fox\",\"jumps\",\"over\",\"the\",\"lazy\",\"dog\",\"aquick\",\"brownfox\",\"jump\",\"sover\",\"thelazy\",\"zydog\",\"quickbr\",\"ownfo\",\"xjump\",\"soverth\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringthatisdifficulttobreak\"",
+      "[\"this\",\"is\",\"a\",\"very\",\"long\",\"string\",\"that\",\"is\",\"difficult\",\"to\",\"break\",\"avery\",\"longstring\",\"isdifficult\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\"",
+      "[\"aa\",\"bb\",\"cc\",\"dd\",\"ee\",\"ff\",\"abc\",\"def\",\"ef\",\"cd\",\"ab\",\"de\",\"fe\",\"bc\",\"dc\",\"ad\",\"da\",\"fb\",\"bf\",\"ba\",\"ac\",\"ca\",\"ea\",\"ae\",\"be\",\"eb\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"programmingisfun\"",
+      "[\"pro\",\"gram\",\"ming\",\"is\",\"fun\",\"grammi\",\"ngis\",\"funny\",\"progr\",\"amming\",\"isfun\",\"ogramming\",\"grammi\",\"ngisfu\",\"n\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "[\"missi\",\"pi\",\"ssippi\",\"issipi\",\"ippi\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "[\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\",\"abcdefg\",\"abcdefgh\",\"abcdefghi\",\"abcdefghij\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijk\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\"]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"thefastbrownfoxjumpedoverthelazydog\"",
+      "[\"the\",\"fast\",\"brown\",\"fox\",\"jumped\",\"over\",\"lazy\",\"dog\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"solutionsarefun\"",
+      "[\"solution\",\"solutions\",\"are\",\"fun\",\"solu\",\"tions\",\"sol\",\"u\",\"n\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"thelongestword\"",
+      "[\"the\",\"long\",\"longest\",\"word\",\"lon\",\"gest\",\"longes\",\"estword\",\"longestwo\",\"longestwo\",\"longes\",\"gestwo\",\"est\",\"wordwo\",\"rdwo\",\"rdo\",\"wo\",\"o\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"bcbcbc\"",
+      "[\"b\",\"c\",\"bc\",\"cb\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"programming\"",
+      "[\"pro\",\"gram\",\"ming\",\"gramm\",\"ing\",\"program\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"xyzzyzyxzyzyzyzyxzyz\"",
+      "[\"xyz\",\"zyz\",\"zx\",\"zyxzy\",\"zyzyz\",\"zyzyzy\"]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"theskyisblue\"",
+      "[\"the\",\"sky\",\"is\",\"blue\",\"thesky\",\"isblue\",\"theskyisblue\",\"theblue\",\"theskyblue\",\"blueis\",\"isblue\",\"blueisblue\",\"theskyis\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "[\"miss\",\"issi\",\"ssippi\",\"ppi\",\"ipi\",\"i\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"sheisbeautiful\"",
+      "[\"she\",\"is\",\"beau\",\"tiful\",\"beauti\",\"ful\",\"be\",\"auti\",\"ful\",\"ti\",\"ful\",\"shi\",\"bea\",\"autiful\",\"sheis\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"exampleexampleexampleexample\"",
+      "[\"ex\",\"ample\",\"example\",\"pleexam\",\"ampleex\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefgh\"",
+      "[\"ab\",\"abc\",\"cd\",\"efgh\",\"abcd\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "[\"abcdefgh\",\"ijklmnop\",\"qrstuvwx\",\"yz\",\"mnopqr\",\"stuvwx\",\"yzab\",\"cdefghijklmnop\",\"qrstuvwxyza\",\"bcdefghijklmnopq\",\"rstuvwxyzabcde\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"supercalifragilisticexpialidocious\"",
+      "[\"super\",\"cali\",\"fragilistic\",\"expiali\",\"docious\",\"superfragilistic\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"ababababab\"",
+      "[\"a\",\"ab\",\"aba\",\"ababa\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongwordthatcanbebrokenintomultiplesubwords\"",
+      "[\"this\",\"is\",\"a\",\"very\",\"long\",\"word\",\"that\",\"can\",\"be\",\"broken\",\"into\",\"multiple\",\"sub\",\"words\",\"averylong\",\"bebroken\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"interview\"",
+      "[\"in\",\"ter\",\"view\",\"int\",\"ent\",\"rview\",\"terview\",\"erview\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "[\"ab\",\"abc\",\"cd\",\"efg\",\"hij\",\"abcdefghij\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"thisisatutorial\"",
+      "[\"this\",\"is\",\"a\",\"tu\",\"torial\",\"tuto\",\"rial\",\"ial\",\"al\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcde\"",
+      "[\"ab\",\"cd\",\"ef\",\"de\",\"abcde\",\"abcd\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "[\"mis\",\"is\",\"is\",\"ppi\",\"issi\",\"ippi\",\"pp\",\"miss\",\"mis\",\"ippi\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab\"",
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\"]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"findingthesolutionisfun\"",
+      "[\"find\",\"finding\",\"the\",\"solution\",\"is\",\"fun\",\"solutions\",\"funny\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"thelongestword\"",
+      "[\"the\",\"long\",\"longest\",\"word\",\"longestword\",\"oneword\",\"endword\",\"word\",\"one\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "[\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"xxyzzyyx\"",
+      "[\"xy\",\"xyz\",\"zy\",\"zyx\",\"yx\",\"xx\",\"zz\",\"zyxzyx\"]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"thelongestword\"",
+      "[\"the\",\"long\",\"est\",\"word\",\"longest\",\"estword\",\"ongestwor\",\"ngestwo\",\"gestw\",\"estwo\",\"stwo\",\"two\",\"thelo\",\"hello\",\"world\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"programmingisawesome\"",
+      "[\"pro\",\"gram\",\"ming\",\"is\",\"awe\",\"some\",\"awesome\",\"awe\",\"so\",\"me\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"thecodecanbeanything\"",
+      "[\"the\",\"code\",\"can\",\"be\",\"anything\",\"any\",\"thing\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"a\"",
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\",\"aaaaaaaaa\",\"aaaaaaaaaa\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcd\"",
+      "[\"ab\",\"abcd\",\"cd\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringthatshouldnotmatch\"",
+      "[\"this\",\"is\",\"very\",\"long\",\"string\",\"that\",\"should\",\"not\",\"match\"]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"programmingproblemsolver\"",
+      "[\"pro\",\"gram\",\"ming\",\"problem\",\"problemsolver\",\"solver\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaa\"",
+      "[\"aaa\",\"aaaa\",\"aa\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"skilfullyskilled\"",
+      "[\"skill\",\"ful\",\"ly\",\"ski\",\"lly\",\"ed\"]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"internationalization\"",
+      "[\"inter\",\"national\",\"ization\",\"inter\",\"nationalization\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab\"",
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\",\"aaaaaaaaa\",\"aaaaaaaaaa\"]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\"",
+      "[\"abra\",\"cad\",\"bra\",\"a\",\"ab\",\"rac\"]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"complexstringwithwords\"",
+      "[\"complex\",\"string\",\"with\",\"words\",\"complexstring\",\"stringwith\",\"withwords\"]"
+    ],
+    "ExpectedOutput": "true"
+  }
+]

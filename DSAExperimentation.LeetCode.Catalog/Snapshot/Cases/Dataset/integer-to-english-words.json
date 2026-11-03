@@ -1,0 +1,404 @@
+[
+  {
+    "Inputs": [
+      "9"
+    ],
+    "ExpectedOutput": "\"Nine\""
+  },
+  {
+    "Inputs": [
+      "10"
+    ],
+    "ExpectedOutput": "\"Ten\""
+  },
+  {
+    "Inputs": [
+      "100000000"
+    ],
+    "ExpectedOutput": "\"One Hundred Million\""
+  },
+  {
+    "Inputs": [
+      "999"
+    ],
+    "ExpectedOutput": "\"Nine Hundred Ninety Nine\""
+  },
+  {
+    "Inputs": [
+      "10000000"
+    ],
+    "ExpectedOutput": "\"Ten Million\""
+  },
+  {
+    "Inputs": [
+      "29"
+    ],
+    "ExpectedOutput": "\"Twenty Nine\""
+  },
+  {
+    "Inputs": [
+      "31"
+    ],
+    "ExpectedOutput": "\"Thirty One\""
+  },
+  {
+    "Inputs": [
+      "30"
+    ],
+    "ExpectedOutput": "\"Thirty\""
+  },
+  {
+    "Inputs": [
+      "1000000000"
+    ],
+    "ExpectedOutput": "\"One Billion\""
+  },
+  {
+    "Inputs": [
+      "110"
+    ],
+    "ExpectedOutput": "\"One Hundred Ten\""
+  },
+  {
+    "Inputs": [
+      "5"
+    ],
+    "ExpectedOutput": "\"Five\""
+  },
+  {
+    "Inputs": [
+      "11"
+    ],
+    "ExpectedOutput": "\"Eleven\""
+  },
+  {
+    "Inputs": [
+      "1000"
+    ],
+    "ExpectedOutput": "\"One Thousand\""
+  },
+  {
+    "Inputs": [
+      "1001"
+    ],
+    "ExpectedOutput": "\"One Thousand One\""
+  },
+  {
+    "Inputs": [
+      "21"
+    ],
+    "ExpectedOutput": "\"Twenty One\""
+  },
+  {
+    "Inputs": [
+      "0"
+    ],
+    "ExpectedOutput": "\"Zero\""
+  },
+  {
+    "Inputs": [
+      "39"
+    ],
+    "ExpectedOutput": "\"Thirty Nine\""
+  },
+  {
+    "Inputs": [
+      "100"
+    ],
+    "ExpectedOutput": "\"One Hundred\""
+  },
+  {
+    "Inputs": [
+      "111"
+    ],
+    "ExpectedOutput": "\"One Hundred Eleven\""
+  },
+  {
+    "Inputs": [
+      "2147483647"
+    ],
+    "ExpectedOutput": "\"Two Billion One Hundred Forty Seven Million Four Hundred Eighty Three Thousand Six Hundred Forty Seven\""
+  },
+  {
+    "Inputs": [
+      "100000"
+    ],
+    "ExpectedOutput": "\"One Hundred Thousand\""
+  },
+  {
+    "Inputs": [
+      "999999999"
+    ],
+    "ExpectedOutput": "\"Nine Hundred Ninety Nine Million Nine Hundred Ninety Nine Thousand Nine Hundred Ninety Nine\""
+  },
+  {
+    "Inputs": [
+      "1000000"
+    ],
+    "ExpectedOutput": "\"One Million\""
+  },
+  {
+    "Inputs": [
+      "999999"
+    ],
+    "ExpectedOutput": "\"Nine Hundred Ninety Nine Thousand Nine Hundred Ninety Nine\""
+  },
+  {
+    "Inputs": [
+      "19"
+    ],
+    "ExpectedOutput": "\"Nineteen\""
+  },
+  {
+    "Inputs": [
+      "10000"
+    ],
+    "ExpectedOutput": "\"Ten Thousand\""
+  },
+  {
+    "Inputs": [
+      "101"
+    ],
+    "ExpectedOutput": "\"One Hundred One\""
+  },
+  {
+    "Inputs": [
+      "500000050"
+    ],
+    "ExpectedOutput": "\"Five Hundred Million Fifty\""
+  },
+  {
+    "Inputs": [
+      "111111111"
+    ],
+    "ExpectedOutput": "\"One Hundred Eleven Million One Hundred Eleven Thousand One Hundred Eleven\""
+  },
+  {
+    "Inputs": [
+      "555555555"
+    ],
+    "ExpectedOutput": "\"Five Hundred Fifty Five Million Five Hundred Fifty Five Thousand Five Hundred Fifty Five\""
+  },
+  {
+    "Inputs": [
+      "1111111111"
+    ],
+    "ExpectedOutput": "\"One Billion One Hundred Eleven Million One Hundred Eleven Thousand One Hundred Eleven\""
+  },
+  {
+    "Inputs": [
+      "890123456"
+    ],
+    "ExpectedOutput": "\"Eight Hundred Ninety Million One Hundred Twenty Three Thousand Four Hundred Fifty Six\""
+  },
+  {
+    "Inputs": [
+      "508"
+    ],
+    "ExpectedOutput": "\"Five Hundred Eight\""
+  },
+  {
+    "Inputs": [
+      "1010101010"
+    ],
+    "ExpectedOutput": "\"One Billion Ten Million One Hundred One Thousand Ten\""
+  },
+  {
+    "Inputs": [
+      "50000050"
+    ],
+    "ExpectedOutput": "\"Fifty Million Fifty\""
+  },
+  {
+    "Inputs": [
+      "99"
+    ],
+    "ExpectedOutput": "\"Ninety Nine\""
+  },
+  {
+    "Inputs": [
+      "1000010001"
+    ],
+    "ExpectedOutput": "\"One Billion Ten Thousand One\""
+  },
+  {
+    "Inputs": [
+      "807000000"
+    ],
+    "ExpectedOutput": "\"Eight Hundred Seven Million\""
+  },
+  {
+    "Inputs": [
+      "900000009"
+    ],
+    "ExpectedOutput": "\"Nine Hundred Million Nine\""
+  },
+  {
+    "Inputs": [
+      "123456789"
+    ],
+    "ExpectedOutput": "\"One Hundred Twenty Three Million Four Hundred Fifty Six Thousand Seven Hundred Eighty Nine\""
+  },
+  {
+    "Inputs": [
+      "11000011"
+    ],
+    "ExpectedOutput": "\"Eleven Million Eleven\""
+  },
+  {
+    "Inputs": [
+      "900000090"
+    ],
+    "ExpectedOutput": "\"Nine Hundred Million Ninety\""
+  },
+  {
+    "Inputs": [
+      "1010001000"
+    ],
+    "ExpectedOutput": "\"One Billion Ten Million One Thousand\""
+  },
+  {
+    "Inputs": [
+      "1000000001"
+    ],
+    "ExpectedOutput": "\"One Billion One\""
+  },
+  {
+    "Inputs": [
+      "1001001001"
+    ],
+    "ExpectedOutput": "\"One Billion One Million One Thousand One\""
+  },
+  {
+    "Inputs": [
+      "999000999"
+    ],
+    "ExpectedOutput": "\"Nine Hundred Ninety Nine Million Nine Hundred Ninety Nine\""
+  },
+  {
+    "Inputs": [
+      "1234567890"
+    ],
+    "ExpectedOutput": "\"One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety\""
+  },
+  {
+    "Inputs": [
+      "2000000000"
+    ],
+    "ExpectedOutput": "\"Two Billion\""
+  },
+  {
+    "Inputs": [
+      "9876"
+    ],
+    "ExpectedOutput": "\"Nine Thousand Eight Hundred Seventy Six\""
+  },
+  {
+    "Inputs": [
+      "1000010"
+    ],
+    "ExpectedOutput": "\"One Million Ten\""
+  },
+  {
+    "Inputs": [
+      "987654321"
+    ],
+    "ExpectedOutput": "\"Nine Hundred Eighty Seven Million Six Hundred Fifty Four Thousand Three Hundred Twenty One\""
+  },
+  {
+    "Inputs": [
+      "990000000"
+    ],
+    "ExpectedOutput": "\"Nine Hundred Ninety Million\""
+  },
+  {
+    "Inputs": [
+      "123000456"
+    ],
+    "ExpectedOutput": "\"One Hundred Twenty Three Million Four Hundred Fifty Six\""
+  },
+  {
+    "Inputs": [
+      "203040506"
+    ],
+    "ExpectedOutput": "\"Two Hundred Three Million Forty Thousand Five Hundred Six\""
+  },
+  {
+    "Inputs": [
+      "101010101"
+    ],
+    "ExpectedOutput": "\"One Hundred One Million Ten Thousand One Hundred One\""
+  },
+  {
+    "Inputs": [
+      "500000500"
+    ],
+    "ExpectedOutput": "\"Five Hundred Million Five Hundred\""
+  },
+  {
+    "Inputs": [
+      "2100000100"
+    ],
+    "ExpectedOutput": "\"Two Billion One Hundred Million One Hundred\""
+  },
+  {
+    "Inputs": [
+      "450000000"
+    ],
+    "ExpectedOutput": "\"Four Hundred Fifty Million\""
+  },
+  {
+    "Inputs": [
+      "123000000"
+    ],
+    "ExpectedOutput": "\"One Hundred Twenty Three Million\""
+  },
+  {
+    "Inputs": [
+      "4321"
+    ],
+    "ExpectedOutput": "\"Four Thousand Three Hundred Twenty One\""
+  },
+  {
+    "Inputs": [
+      "900009000"
+    ],
+    "ExpectedOutput": "\"Nine Hundred Million Nine Thousand\""
+  },
+  {
+    "Inputs": [
+      "1100000000"
+    ],
+    "ExpectedOutput": "\"One Billion One Hundred Million\""
+  },
+  {
+    "Inputs": [
+      "123400000"
+    ],
+    "ExpectedOutput": "\"One Hundred Twenty Three Million Four Hundred Thousand\""
+  },
+  {
+    "Inputs": [
+      "1000001"
+    ],
+    "ExpectedOutput": "\"One Million One\""
+  },
+  {
+    "Inputs": [
+      "9999"
+    ],
+    "ExpectedOutput": "\"Nine Thousand Nine Hundred Ninety Nine\""
+  },
+  {
+    "Inputs": [
+      "900900000"
+    ],
+    "ExpectedOutput": "\"Nine Hundred Million Nine Hundred Thousand\""
+  },
+  {
+    "Inputs": [
+      "60012003"
+    ],
+    "ExpectedOutput": "\"Sixty Million Twelve Thousand Three\""
+  }
+]

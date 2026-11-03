@@ -1,0 +1,83 @@
+{
+  "QuestionId": 132,
+  "FrontendId": 132,
+  "Title": "Palindrome Partitioning II",
+  "TitleSlug": "palindrome-partitioning-ii",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Palindrome Partitioning",
+      "TitleSlug": "palindrome-partitioning",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Palindrome Partitioning IV",
+      "TitleSlug": "palindrome-partitioning-iv",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Maximum Number of Non-overlapping Palindrome Substrings",
+      "TitleSlug": "maximum-number-of-non-overlapping-palindrome-substrings",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Number of Great Partitions",
+      "TitleSlug": "number-of-great-partitions",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= s.length <= 2000",
+    "s consists of lowercase English letters only."
+  ],
+  "Signature": {
+    "FunctionName": "minCut",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int MinCut(string s) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"aab\""
+      ],
+      "ExpectedOutput": "1"
+    },
+    {
+      "Inputs": [
+        "\"a\""
+      ],
+      "ExpectedOutput": "0"
+    },
+    {
+      "Inputs": [
+        "\"ab\""
+      ],
+      "ExpectedOutput": "1"
+    }
+  ],
+  "ContentHtml": "<p>Given a string <code>s</code>, partition <code>s</code> such that every <span data-keyword=\"substring-nonempty\">substring</span> of the partition is a <span data-keyword=\"palindrome-string\">palindrome</span>.</p>\n\n<p>Return <em>the <strong>minimum</strong> cuts needed for a palindrome partitioning of</em> <code>s</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;aab&quot;\n<strong>Output:</strong> 1\n<strong>Explanation:</strong> The palindrome partitioning [&quot;aa&quot;,&quot;b&quot;] could be produced using 1 cut.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;a&quot;\n<strong>Output:</strong> 0\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;ab&quot;\n<strong>Output:</strong> 1\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length &lt;= 2000</code></li>\n\t<li><code>s</code> consists of lowercase English letters only.</li>\n</ul>\n"
+}

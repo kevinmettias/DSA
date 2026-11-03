@@ -1,0 +1,1059 @@
+[
+  {
+    "Inputs": [
+      "[\"test\",\"testing\",\"tested\",\"testing\"]",
+      "\"test\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"bcd\",\"cde\"]",
+      "\"a\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"helium\",\"helper\"]",
+      "\"hel\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"bandana\",\"banner\",\"balance\"]",
+      "\"ban\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"hero\",\"herald\"]",
+      "\"he\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\"]",
+      "\"hi\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"helper\"]",
+      "\"hel\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apricot\",\"application\"]",
+      "\"app\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apricot\",\"application\",\"appetite\"]",
+      "\"app\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"caterpillar\",\"catalog\",\"category\"]",
+      "\"cat\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apricot\",\"banana\",\"apex\"]",
+      "\"ap\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"band\",\"ball\"]",
+      "\"ba\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"bandana\",\"baptism\"]",
+      "\"ban\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"application\",\"apricot\",\"apex\"]",
+      "\"ap\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"database\",\"datacenter\",\"datamine\",\"data\"]",
+      "\"data\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"integration\",\"integrate\",\"interact\",\"interactive\"]",
+      "\"inte\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"array\",\"application\",\"arithmetic\"]",
+      "\"arr\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"intersection\",\"interface\",\"internal\",\"interact\"]",
+      "\"inter\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"unpredictable\",\"unpredicted\",\"unpredictably\",\"unpredicting\"]",
+      "\"unpred\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"prepend\",\"presentation\",\"preference\"]",
+      "\"pre\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"challenge\",\"champion\",\"chance\",\"character\"]",
+      "\"cha\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"management\",\"manager\",\"manufacture\",\"maintain\"]",
+      "\"man\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"interpolation\",\"interpolate\",\"interpolator\",\"interpolated\"]",
+      "\"inter\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"technology\",\"technique\",\"technical\",\"technological\"]",
+      "\"tech\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"universe\",\"uniform\",\"unique\",\"unit\"]",
+      "\"uni\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"python\",\"problem\",\"project\",\"practice\"]",
+      "\"pro\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"document\",\"documentation\",\"documentary\",\"documents\"]",
+      "\"docu\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"environment\",\"envelope\",\"encyclopedia\",\"enterprise\"]",
+      "\"env\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"interview\",\"international\",\"internet\",\"introduce\"]",
+      "\"inter\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"communication\",\"community\",\"commemoration\",\"commentary\"]",
+      "\"comm\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"array\",\"application\",\"apricot\"]",
+      "\"app\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"cryptography\",\"cryptanalysis\",\"cryptographic\",\"cryptology\"]",
+      "\"crypto\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"interact\",\"interaction\",\"interactive\",\"interior\",\"intercept\"]",
+      "\"inter\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"fantastic\",\"fancy\",\"fantasy\",\"fanatic\"]",
+      "\"fan\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"pseudo\",\"pseudocode\",\"pseudorandom\",\"pseudoscience\"]",
+      "\"pseudo\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"mathematical\",\"mathematics\",\"mathematically\",\"mathematize\"]",
+      "\"math\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"problem\",\"prefix\",\"preference\"]",
+      "\"pre\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"biography\",\"biologist\",\"biological\",\"biographical\"]",
+      "\"bio\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"unbelievable\",\"universe\",\"unique\",\"unanimous\"]",
+      "\"un\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"congratulations\",\"congratulate\",\"congratulatory\",\"congregate\",\"congruity\"]",
+      "\"cong\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"supplementary\",\"supplement\",\"supplier\",\"suppose\"]",
+      "\"sup\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"community\",\"commune\",\"communicate\",\"common\"]",
+      "\"comm\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"extraterrestrial\",\"extraterrestrial\",\"extraterrestrial\",\"extraterrestrial\"]",
+      "\"extra\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"array\",\"application\",\"applet\"]",
+      "\"app\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"abracadabra\",\"abstract\",\"absorb\",\"academic\"]",
+      "\"abs\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"congruence\",\"congruent\",\"congruently\",\"congruency\"]",
+      "\"congru\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"meticulous\",\"meticulate\",\"metaphor\",\"metaphysics\"]",
+      "\"metic\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"biological\",\"biography\",\"biologist\",\"biology\",\"bioluminescence\"]",
+      "\"biol\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"application\",\"approach\",\"appetizer\",\"append\"]",
+      "\"app\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"scientific\",\"scientist\",\"science\",\"sciences\"]",
+      "\"sci\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"communication\",\"community\",\"common\",\"commodity\"]",
+      "\"com\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"quantization\",\"quantize\",\"quantitative\",\"quantitative\"]",
+      "\"quant\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"prepend\",\"presentation\",\"premature\"]",
+      "\"pre\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"continuous\",\"concurrent\",\"conclusion\",\"condition\"]",
+      "\"con\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"program\",\"pro\",\"professor\"]",
+      "\"pro\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"management\",\"manager\",\"manage\",\"mandate\"]",
+      "\"man\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"transformation\",\"transmit\",\"transparent\",\"transient\"]",
+      "\"tran\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"administrator\",\"administration\",\"administrative\",\"administratively\"]",
+      "\"admin\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"circumstance\",\"circuit\",\"circulate\",\"circulation\",\"circular\"]",
+      "\"circu\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"characterization\",\"character\",\"characteristic\",\"characterization\"]",
+      "\"char\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"environment\",\"envy\",\"envelope\",\"evening\"]",
+      "\"env\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"database\",\"data\",\"datagram\",\"datastructure\"]",
+      "\"data\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"celebration\",\"celebrate\",\"celebrity\",\"celebratory\",\"celestial\"]",
+      "\"celeb\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"cryptography\",\"crypt\",\"crypto\",\"cryptanalysis\"]",
+      "\"crypt\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"photography\",\"photo\",\"photobook\",\"photographer\"]",
+      "\"photo\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"magnify\",\"magnificent\",\"magnetic\",\"magnetism\"]",
+      "\"mag\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"organization\",\"organize\",\"organ\",\"organically\"]",
+      "\"org\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algebra\",\"almond\",\"alert\"]",
+      "\"alg\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"array\",\"application\",\"apple\"]",
+      "\"app\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"communication\",\"community\",\"commitment\",\"common\"]",
+      "\"comm\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"developer\",\"debug\",\"deploy\",\"document\"]",
+      "\"de\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"perpendicular\",\"perpendicularity\",\"perpendicularity\",\"perpendicularly\"]",
+      "\"perpendicular\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"environment\",\"engine\",\"error\",\"example\"]",
+      "\"en\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"university\",\"uniform\",\"unique\",\"universe\"]",
+      "\"uni\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"community\",\"communist\",\"common\",\"comment\"]",
+      "\"comm\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"literature\",\"literacy\",\"literary\",\"literate\"]",
+      "\"lit\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"sequoia\",\"sequence\",\"series\",\"serial\"]",
+      "\"ser\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"communication\",\"community\",\"companion\",\"commune\"]",
+      "\"comm\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algebra\",\"alignment\",\"algorithmic\"]",
+      "\"algo\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"character\",\"chart\",\"chapter\",\"charge\"]",
+      "\"char\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"transport\",\"trap\",\"trapezium\",\"traverse\"]",
+      "\"tra\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"communication\",\"commute\",\"community\",\"commotion\",\"common\"]",
+      "\"comm\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"environment\",\"energy\",\"engage\",\"engageable\"]",
+      "\"en\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"identification\",\"individual\",\"idea\",\"illegal\"]",
+      "\"iden\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"supreme\",\"superior\",\"surpass\",\"surround\"]",
+      "\"sur\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"transformation\",\"transmit\",\"transit\",\"transformation\",\"transition\"]",
+      "\"trans\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"automation\",\"automatic\",\"automate\",\"auto\"]",
+      "\"auto\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"configuration\",\"compute\",\"container\",\"cloud\"]",
+      "\"con\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"communication\",\"community\",\"commitment\",\"compassionate\"]",
+      "\"comm\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"program\",\"pro\",\"progress\"]",
+      "\"pro\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"absolutely\",\"absolute\",\"absorb\",\"abnormal\"]",
+      "\"abs\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"statistics\",\"statistical\",\"statue\",\"status\"]",
+      "\"stat\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"prefixes\",\"preferring\",\"preference\"]",
+      "\"pref\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"congratulations\",\"congratulate\",\"congratulatory\",\"congratulated\"]",
+      "\"congrat\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"environment\",\"essential\",\"establish\",\"engage\"]",
+      "\"en\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"substitution\",\"substitute\",\"substituted\",\"substituting\"]",
+      "\"sub\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"distribution\",\"distribute\",\"disastrous\",\"discuss\",\"disease\"]",
+      "\"dis\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"development\",\"deploy\",\"debug\",\"document\"]",
+      "\"de\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"super\",\"superhero\",\"supercalifragilisticexpialidocious\",\"supervillain\"]",
+      "\"super\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"maintenance\",\"maintain\",\"maintenance\",\"maintained\"]",
+      "\"maint\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"pyramid\",\"pythia\",\"pyrotechnic\"]",
+      "\"pyt\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algebra\",\"alibi\",\"alien\",\"alimony\"]",
+      "\"ali\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"remarkable\",\"remark\",\"remember\",\"remind\"]",
+      "\"rem\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"septagon\",\"septagonal\",\"septembre\",\"septenary\"]",
+      "\"sept\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"progress\",\"prompt\",\"priority\"]",
+      "\"pro\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"document\",\"documentation\",\"documentary\",\"documents\"]",
+      "\"doc\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"monarch\",\"monarchy\",\"monarchic\",\"monarchically\"]",
+      "\"monarch\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"hemisphere\",\"hemispherical\",\"hemispheres\",\"hemispheric\"]",
+      "\"hemis\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"environment\",\"engage\",\"enhance\",\"enforce\",\"ensure\"]",
+      "\"enf\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"persistent\",\"perspective\",\"personality\",\"person\",\"personnel\"]",
+      "\"pers\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"preference\",\"presentation\",\"prevent\",\"president\"]",
+      "\"pre\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"parallelogram\",\"parallelepiped\",\"parallel\",\"parallelograms\"]",
+      "\"parallel\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"intelligence\",\"integrate\",\"intensity\",\"interact\"]",
+      "\"inte\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"information\",\"infrastructure\",\"insurance\",\"initial\"]",
+      "\"in\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"transport\",\"transmit\",\"transformation\",\"transition\"]",
+      "\"trans\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"establish\",\"estimate\",\"essential\",\"establishment\"]",
+      "\"est\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algebra\",\"alchemist\",\"alchemy\"]",
+      "\"alg\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"environment\",\"envelope\",\"engage\",\"enhance\"]",
+      "\"en\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"transport\",\"transmit\",\"transit\",\"transformation\",\"transition\"]",
+      "\"trans\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"problem\",\"process\",\"productivity\"]",
+      "\"pro\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"pro\",\"processor\",\"productivity\"]",
+      "\"pro\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"encyclopedia\",\"encyclopedias\",\"encyclopedic\",\"encyclopedically\"]",
+      "\"ency\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"application\",\"appetite\",\"apparent\"]",
+      "\"app\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zephyr\",\"zoo\",\"zealous\"]",
+      "\"ze\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"prefixes\",\"preference\",\"preferring\"]",
+      "\"pref\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"communication\",\"community\",\"commitment\",\"commission\"]",
+      "\"com\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"hypothesis\",\"historical\",\"hyphen\",\"hydrogen\"]",
+      "\"hy\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"transformation\",\"transfer\",\"transform\",\"transformer\"]",
+      "\"trans\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"transaction\",\"transfer\",\"transition\",\"transportation\"]",
+      "\"tran\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"abracadabra\",\"abrakadabras\",\"abracadabrac\",\"abracadabrad\"]",
+      "\"abrac\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"interview\",\"integrate\",\"interaction\",\"interface\"]",
+      "\"inte\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"fantastic\",\"fantasy\",\"fancy\",\"fantastician\"]",
+      "\"fant\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"communication\",\"communicate\",\"communist\",\"commune\"]",
+      "\"comm\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"environment\",\"environ\",\"environmental\",\"envelope\"]",
+      "\"env\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"education\",\"educational\",\"educate\",\"educator\"]",
+      "\"edu\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"automation\",\"automobile\",\"automatic\",\"automate\"]",
+      "\"auto\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"customization\",\"customize\",\"custom\",\"customarily\"]",
+      "\"cust\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"environment\",\"encourage\",\"endure\",\"ensure\"]",
+      "\"en\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"predict\",\"prevent\",\"preach\",\"prelude\"]",
+      "\"pre\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"elephant\",\"elegant\",\"elephantine\",\"election\"]",
+      "\"ele\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"celebration\",\"celebrity\",\"celebratory\",\"celebration\"]",
+      "\"celeb\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"achievement\",\"achieve\",\"achiever\",\"achievable\"]",
+      "\"achi\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"development\",\"debug\",\"document\",\"disk\"]",
+      "\"de\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"preference\",\"prevent\",\"president\"]",
+      "\"pre\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"automobile\",\"automatic\",\"automate\",\"automaton\"]",
+      "\"auto\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"terrific\",\"terrify\",\"terrestrial\",\"territory\"]",
+      "\"terr\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"synchronization\",\"synchronous\",\"synchronize\",\"synchronized\"]",
+      "\"synch\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"abbreviation\",\"abrupt\",\"absorb\",\"absolute\"]",
+      "\"abs\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"repetition\",\"reproductive\",\"represent\",\"reputation\",\"reprehend\"]",
+      "\"rep\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"application\",\"applicant\",\"appetite\"]",
+      "\"app\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"xylophone\",\"xylography\",\"xylophone\",\"xylophone\"]",
+      "\"xy\""
+    ],
+    "ExpectedOutput": "4"
+  }
+]

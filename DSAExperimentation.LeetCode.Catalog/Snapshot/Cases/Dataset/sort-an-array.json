@@ -1,0 +1,32 @@
+[
+  {
+    "Inputs": [
+      "[0]"
+    ],
+    "ExpectedOutput": "[0]"
+  },
+  {
+    "Inputs": [
+      "[-1]"
+    ],
+    "ExpectedOutput": "[-1]"
+  },
+  {
+    "Inputs": [
+      "[50000]"
+    ],
+    "ExpectedOutput": "[50000]"
+  },
+  {
+    "Inputs": [
+      "[-50000]"
+    ],
+    "ExpectedOutput": "[-50000]"
+  },
+  {
+    "Inputs": [
+      "[1]"
+    ],
+    "ExpectedOutput": "[1]"
+  }
+]

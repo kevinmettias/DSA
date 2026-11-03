@@ -1,0 +1,97 @@
+{
+  "QuestionId": 45,
+  "FrontendId": 45,
+  "Title": "Jump Game II",
+  "TitleSlug": "jump-game-ii",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Greedy",
+      "Slug": "greedy"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Jump Game",
+      "TitleSlug": "jump-game",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Jump Game III",
+      "TitleSlug": "jump-game-iii",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Jump Game VII",
+      "TitleSlug": "jump-game-vii",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Jump Game VIII",
+      "TitleSlug": "jump-game-viii",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Minimum Number of Visited Cells in a Grid",
+      "TitleSlug": "minimum-number-of-visited-cells-in-a-grid",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Maximum Number of Jumps to Reach the Last Index",
+      "TitleSlug": "maximum-number-of-jumps-to-reach-the-last-index",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Visit Array Positions to Maximize Score",
+      "TitleSlug": "visit-array-positions-to-maximize-score",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= nums.length <= 10^4",
+    "0 <= nums[i] <= 1000",
+    "It's guaranteed that you can reach nums[n - 1]."
+  ],
+  "Signature": {
+    "FunctionName": "jump",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int Jump(int[] nums) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[2,3,1,1,4]"
+      ],
+      "ExpectedOutput": "2"
+    },
+    {
+      "Inputs": [
+        "[2,3,0,1,4]"
+      ],
+      "ExpectedOutput": "2"
+    }
+  ],
+  "ContentHtml": "<p>You are given a <strong>0-indexed</strong> array of integers <code>nums</code> of length <code>n</code>. You are initially positioned at&nbsp;index 0.</p>\n\n<p>Each element <code>nums[i]</code> represents the maximum length of a forward jump from index <code>i</code>. In other words, if you are at index <code>i</code>, you can jump to any index <code>(i + j)</code>&nbsp;where:</p>\n\n<ul>\n\t<li><code>0 &lt;= j &lt;= nums[i]</code> and</li>\n\t<li><code>i + j &lt; n</code></li>\n</ul>\n\n<p>Return <em>the minimum number of jumps to reach index </em><code>n - 1</code>. The test cases are generated such that you can reach index&nbsp;<code>n - 1</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [2,3,1,1,4]\n<strong>Output:</strong> 2\n<strong>Explanation:</strong> The minimum number of jumps to reach the last index is 2. Jump 1 step from index 0 to 1, then 3 steps to the last index.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [2,3,0,1,4]\n<strong>Output:</strong> 2\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>4</sup></code></li>\n\t<li><code>0 &lt;= nums[i] &lt;= 1000</code></li>\n\t<li>It&#39;s guaranteed that you can reach <code>nums[n - 1]</code>.</li>\n</ul>\n"
+}

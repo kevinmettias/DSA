@@ -1,0 +1,73 @@
+{
+  "QuestionId": 1284,
+  "FrontendId": 1390,
+  "Title": "Four Divisors",
+  "TitleSlug": "four-divisors",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Prime Factorization",
+      "Slug": "prime-factorization"
+    },
+    {
+      "Name": "Sieve Theory",
+      "Slug": "sieve-theory"
+    }
+  ],
+  "SimilarQuestions": [],
+  "Hints": [
+    "Find the divisors of each element in the array.",
+    "You only need to loop to the square root of a number to find its divisors."
+  ],
+  "Constraints": [
+    "1 <= nums.length <= 10^4",
+    "1 <= nums[i] <= 10^5"
+  ],
+  "Signature": {
+    "FunctionName": "sumFourDivisors",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int SumFourDivisors(int[] nums) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[21,4,7]"
+      ],
+      "ExpectedOutput": "32"
+    },
+    {
+      "Inputs": [
+        "[21,21]"
+      ],
+      "ExpectedOutput": "64"
+    },
+    {
+      "Inputs": [
+        "[1,2,3,4,5]"
+      ],
+      "ExpectedOutput": "0"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer array <code>nums</code>, return <em>the sum of divisors of the integers in that array that have exactly four divisors</em>. If there is no such integer in the array, return <code>0</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [21,4,7]\n<strong>Output:</strong> 32\n<strong>Explanation:</strong> \n21 has 4 divisors: 1, 3, 7, 21\n4 has 3 divisors: 1, 2, 4\n7 has 2 divisors: 1, 7\nThe answer is the sum of divisors of 21 only.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [21,21]\n<strong>Output:</strong> 64\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,2,3,4,5]\n<strong>Output:</strong> 0\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>4</sup></code></li>\n\t<li><code>1 &lt;= nums[i] &lt;= 10<sup>5</sup></code></li>\n</ul>\n"
+}

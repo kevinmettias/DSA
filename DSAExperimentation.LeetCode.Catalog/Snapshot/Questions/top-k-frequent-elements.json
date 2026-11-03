@@ -1,0 +1,146 @@
+{
+  "QuestionId": 347,
+  "FrontendId": 347,
+  "Title": "Top K Frequent Elements",
+  "TitleSlug": "top-k-frequent-elements",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "Divide and Conquer",
+      "Slug": "divide-and-conquer"
+    },
+    {
+      "Name": "Sorting",
+      "Slug": "sorting"
+    },
+    {
+      "Name": "Heap (Priority Queue)",
+      "Slug": "heap-priority-queue"
+    },
+    {
+      "Name": "Bucket Sort",
+      "Slug": "bucket-sort"
+    },
+    {
+      "Name": "Counting",
+      "Slug": "counting"
+    },
+    {
+      "Name": "Quickselect",
+      "Slug": "quickselect"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Word Frequency",
+      "TitleSlug": "word-frequency",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Kth Largest Element in an Array",
+      "TitleSlug": "kth-largest-element-in-an-array",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Sort Characters By Frequency",
+      "TitleSlug": "sort-characters-by-frequency",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Split Array into Consecutive Subsequences",
+      "TitleSlug": "split-array-into-consecutive-subsequences",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Top K Frequent Words",
+      "TitleSlug": "top-k-frequent-words",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "K Closest Points to Origin",
+      "TitleSlug": "k-closest-points-to-origin",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Sort Features by Popularity",
+      "TitleSlug": "sort-features-by-popularity",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Sender With Largest Word Count",
+      "TitleSlug": "sender-with-largest-word-count",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Most Frequent Even Element",
+      "TitleSlug": "most-frequent-even-element",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Linked List Frequency",
+      "TitleSlug": "linked-list-frequency",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= nums.length <= 10^5",
+    "-10^4 <= nums[i] <= 10^4",
+    "k is in the range [1, the number of unique elements in the array].",
+    "It is guaranteed that the answer is unique."
+  ],
+  "Signature": {
+    "FunctionName": "topKFrequent",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer[]",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int[] TopKFrequent(int[] nums, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[1,1,1,2,2,3]",
+        "2"
+      ],
+      "ExpectedOutput": "[1,2]"
+    },
+    {
+      "Inputs": [
+        "[1]",
+        "1"
+      ],
+      "ExpectedOutput": "[1]"
+    },
+    {
+      "Inputs": [
+        "[1,2,1,2,1,2,3,1,3,2]",
+        "2"
+      ],
+      "ExpectedOutput": "[1,2]"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer array <code>nums</code> and an integer <code>k</code>, return <em>the</em> <code>k</code> <em>most frequent elements</em>. You may return the answer in <strong>any order</strong>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">nums = [1,1,1,2,2,3], k = 2</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">[1,2]</span></p>\n</div>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">nums = [1], k = 1</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">[1]</span></p>\n</div>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">nums = [1,2,1,2,1,2,3,1,3,2], k = 2</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">[1,2]</span></p>\n</div>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>-10<sup>4</sup> &lt;= nums[i] &lt;= 10<sup>4</sup></code></li>\n\t<li><code>k</code> is in the range <code>[1, the number of unique elements in the array]</code>.</li>\n\t<li>It is <strong>guaranteed</strong> that the answer is <strong>unique</strong>.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Follow up:</strong> Your algorithm&#39;s time complexity must be better than <code>O(n log n)</code>, where n is the array&#39;s size.</p>\n"
+}

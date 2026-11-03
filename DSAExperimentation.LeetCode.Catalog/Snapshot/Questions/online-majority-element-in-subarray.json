@@ -1,0 +1,100 @@
+{
+  "QuestionId": 1262,
+  "FrontendId": 1157,
+  "Title": "Online Majority Element In Subarray",
+  "TitleSlug": "online-majority-element-in-subarray",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Binary Search",
+      "Slug": "binary-search"
+    },
+    {
+      "Name": "Design",
+      "Slug": "design"
+    },
+    {
+      "Name": "Binary Indexed Tree",
+      "Slug": "binary-indexed-tree"
+    },
+    {
+      "Name": "Segment Tree",
+      "Slug": "segment-tree"
+    },
+    {
+      "Name": "Sqrt Decomposition",
+      "Slug": "sqrt-decomposition"
+    },
+    {
+      "Name": "Boyer–Moore Majority Vote Algorithm",
+      "Slug": "boyer-moore-majority-vote-algorithm"
+    }
+  ],
+  "SimilarQuestions": [],
+  "Hints": [
+    "What's special about a majority element ?",
+    "A majority element appears more than half the length of the array number of times.",
+    "If we tried a random index of the array, what's the probability that this index has a majority element ?",
+    "It's more than 50% if that array has a majority element.",
+    "Try a random index for a proper number of times so that the probability of not finding the answer tends to zero."
+  ],
+  "Constraints": [
+    "1 <= arr.length <= 2 * 10^4",
+    "1 <= arr[i] <= 2 * 10^4",
+    "0 <= left <= right < arr.length",
+    "threshold <= right - left + 1",
+    "2 * threshold > right - left + 1",
+    "At most 10^4 calls will be made to query."
+  ],
+  "Signature": {
+    "FunctionName": null,
+    "Parameters": [],
+    "ReturnType": null,
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": "MajorityChecker",
+    "ConstructorParameters": [
+      {
+        "Name": "arr",
+        "Type": "integer[]"
+      }
+    ],
+    "Methods": [
+      {
+        "Name": "query",
+        "Parameters": [
+          {
+            "Name": "left",
+            "Type": "integer"
+          },
+          {
+            "Name": "right",
+            "Type": "integer"
+          },
+          {
+            "Name": "threshold",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "integer"
+      }
+    ]
+  },
+  "CSharpStarterCode": "public class MajorityChecker {\n\n    public MajorityChecker(int[] arr) {\n        \n    }\n    \n    public int Query(int left, int right, int threshold) {\n        \n    }\n}\n\n/**\n * Your MajorityChecker object will be instantiated and called as such:\n * MajorityChecker obj = new MajorityChecker(arr);\n * int param_1 = obj.Query(left,right,threshold);\n */",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"MajorityChecker\",\"query\",\"query\",\"query\"]",
+        "[[[1,1,2,2,1,1]],[0,5,4],[0,3,3],[2,3,2]]"
+      ],
+      "ExpectedOutput": "[null, 1, -1, 2]"
+    }
+  ],
+  "ContentHtml": "<p>Design a data structure that efficiently finds the <strong>majority element</strong> of a given subarray.</p>\n\n<p>The <strong>majority element</strong> of a subarray is an element that occurs <code>threshold</code> times or more in the subarray.</p>\n\n<p>Implementing the <code>MajorityChecker</code> class:</p>\n\n<ul>\n\t<li><code>MajorityChecker(int[] arr)</code> Initializes the instance of the class with the given array <code>arr</code>.</li>\n\t<li><code>int query(int left, int right, int threshold)</code> returns the element in the subarray <code>arr[left...right]</code> that occurs at least <code>threshold</code> times, or <code>-1</code> if no such element exists.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input</strong>\n[&quot;MajorityChecker&quot;, &quot;query&quot;, &quot;query&quot;, &quot;query&quot;]\n[[[1, 1, 2, 2, 1, 1]], [0, 5, 4], [0, 3, 3], [2, 3, 2]]\n<strong>Output</strong>\n[null, 1, -1, 2]\n\n<strong>Explanation</strong>\nMajorityChecker majorityChecker = new MajorityChecker([1, 1, 2, 2, 1, 1]);\nmajorityChecker.query(0, 5, 4); // return 1\nmajorityChecker.query(0, 3, 3); // return -1\nmajorityChecker.query(2, 3, 2); // return 2\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= arr.length &lt;= 2 * 10<sup>4</sup></code></li>\n\t<li><code>1 &lt;= arr[i] &lt;= 2 * 10<sup>4</sup></code></li>\n\t<li><code>0 &lt;= left &lt;= right &lt; arr.length</code></li>\n\t<li><code>threshold &lt;= right - left + 1</code></li>\n\t<li><code>2 * threshold &gt; right - left + 1</code></li>\n\t<li>At most <code>10<sup>4</sup></code> calls will be made to <code>query</code>.</li>\n</ul>\n"
+}

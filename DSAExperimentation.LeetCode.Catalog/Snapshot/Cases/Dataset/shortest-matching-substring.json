@@ -1,0 +1,338 @@
+[
+  {
+    "Inputs": [
+      "\"abcdefg\"",
+      "\"*bcd*fg\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabc\"",
+      "\"*bc*bc\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"mis*si*\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"aaaaa\"",
+      "\"*aaa*\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "\"*x*z\""
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"xyxyxyxy\"",
+      "\"xy*xy*\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaa\"",
+      "\"a*a*a\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"hellothere\"",
+      "\"he*lo*re\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "\"*c*\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "\"*z*\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"mis*is*ip\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"*issi*\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\"",
+      "\"*bra*bra\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgg\"",
+      "\"*bbcc*eeff\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"hellohellohello\"",
+      "\"*llohe*llo\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"*iss*iss\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaabbbb\"",
+      "\"*aaaa*bbb\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "\"zz*zz*zz\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijkxyz\"",
+      "\"*def*xyz\""
+    ],
+    "ExpectedOutput": "11"
+  },
+  {
+    "Inputs": [
+      "\"hellohellohello\"",
+      "\"he*ll*ohello\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"*issi*ppi\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\"",
+      "\"*abc*abc\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"thisisateststring\"",
+      "\"*test*string\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"mississipi\"",
+      "\"*iss*issi\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghijabcdefghij\"",
+      "\"abc*efg*ij\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"racecar\"",
+      "\"*ace*car\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"banana\"",
+      "\"*na*na\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "\"aa*bb*cc\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghij\"",
+      "\"*def*ghijghij\""
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"ababababab\"",
+      "\"*aba*aba\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"ababababab\"",
+      "\"ab*a*ab\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"ababababa\"",
+      "\"*aba*aba\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzz\"",
+      "\"zz*zz*zz\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"abababab\"",
+      "\"*bab*ab\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaa\"",
+      "\"*aaaaa*aa\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"xyxzyzyx\"",
+      "\"*xyz*zyx\""
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"hellohellohello\"",
+      "\"ello*hello*\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"xyzyzyzyzyz\"",
+      "\"*zyz*zyz\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"abcdeabcde\"",
+      "\"*bcde*bc\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"zzzzyyyxxxwwww\"",
+      "\"*yyy*xxx\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"xylophone\"",
+      "\"*pho*ne\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "\"abc*xyz*\""
+    ],
+    "ExpectedOutput": "26"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "\"*def*ghij\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabc\"",
+      "\"*abc*abcabc\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\"",
+      "\"*bbcc*ccdd\""
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"abcdeabcdeabcde\"",
+      "\"*bcde*bcde\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"miss*ss*\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"hellohellohello\"",
+      "\"*hello*lo\""
+    ],
+    "ExpectedOutput": "10"
+  }
+]

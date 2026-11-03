@@ -1,0 +1,86 @@
+{
+  "QuestionId": 976,
+  "FrontendId": 939,
+  "Title": "Minimum Area Rectangle",
+  "TitleSlug": "minimum-area-rectangle",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Geometry",
+      "Slug": "geometry"
+    },
+    {
+      "Name": "Sorting",
+      "Slug": "sorting"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Minimum Rectangles to Cover Points",
+      "TitleSlug": "minimum-rectangles-to-cover-points",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Area Rectangle With Point Constraints I",
+      "TitleSlug": "maximum-area-rectangle-with-point-constraints-i",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Area Rectangle With Point Constraints II",
+      "TitleSlug": "maximum-area-rectangle-with-point-constraints-ii",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= points.length <= 500",
+    "points[i].length == 2",
+    "0 <= xi, yi <= 4 * 10^4",
+    "All the given points are unique."
+  ],
+  "Signature": {
+    "FunctionName": "minAreaRect",
+    "Parameters": [
+      {
+        "Name": "points",
+        "Type": "integer[][]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int MinAreaRect(int[][] points) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[[1,1],[1,3],[3,1],[3,3],[2,2]]"
+      ],
+      "ExpectedOutput": "4"
+    },
+    {
+      "Inputs": [
+        "[[1,1],[1,3],[3,1],[3,3],[4,1],[4,3]]"
+      ],
+      "ExpectedOutput": "2"
+    }
+  ],
+  "ContentHtml": "<p>You are given an array of points in the <strong>X-Y</strong> plane <code>points</code> where <code>points[i] = [x<sub>i</sub>, y<sub>i</sub>]</code>.</p>\n\n<p>Return <em>the minimum area of a rectangle formed from these points, with sides parallel to the X and Y axes</em>. If there is not any such rectangle, return <code>0</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2021/08/03/rec1.JPG\" style=\"width: 500px; height: 447px;\" />\n<pre>\n<strong>Input:</strong> points = [[1,1],[1,3],[3,1],[3,3],[2,2]]\n<strong>Output:</strong> 4\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2021/08/03/rec2.JPG\" style=\"width: 500px; height: 477px;\" />\n<pre>\n<strong>Input:</strong> points = [[1,1],[1,3],[3,1],[3,3],[4,1],[4,3]]\n<strong>Output:</strong> 2\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= points.length &lt;= 500</code></li>\n\t<li><code>points[i].length == 2</code></li>\n\t<li><code>0 &lt;= x<sub>i</sub>, y<sub>i</sub> &lt;= 4 * 10<sup>4</sup></code></li>\n\t<li>All the given points are <strong>unique</strong>.</li>\n</ul>\n"
+}

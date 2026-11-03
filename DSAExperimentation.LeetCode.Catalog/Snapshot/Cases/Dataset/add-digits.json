@@ -1,0 +1,212 @@
+[
+  {
+    "Inputs": [
+      "10"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "9"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "111111111"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "47"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "456789"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "45"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "234567890"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "1000000000"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "942"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "123"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "987654321"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "4567"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "111"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "999999999"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "19"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "9999"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "10000"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "222222222"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "555555555"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "888888888"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "1111111111"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "27"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "444444444"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "777777777"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "666666666"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "123456789"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "5"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "333333333"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "11"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "1234567890"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "94528"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "18"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "4321"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "369369369"
+    ],
+    "ExpectedOutput": "9"
+  }
+]

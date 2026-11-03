@@ -1,0 +1,92 @@
+{
+  "QuestionId": 67,
+  "FrontendId": 67,
+  "Title": "Add Binary",
+  "TitleSlug": "add-binary",
+  "Difficulty": "Easy",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Bit Manipulation",
+      "Slug": "bit-manipulation"
+    },
+    {
+      "Name": "Simulation",
+      "Slug": "simulation"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Add Two Numbers",
+      "TitleSlug": "add-two-numbers",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Multiply Strings",
+      "TitleSlug": "multiply-strings",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Plus One",
+      "TitleSlug": "plus-one",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Add to Array-Form of Integer",
+      "TitleSlug": "add-to-array-form-of-integer",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= a.length, b.length <= 10^4",
+    "a and b consist only of '0' or '1' characters.",
+    "Each string does not contain leading zeros except for the zero itself."
+  ],
+  "Signature": {
+    "FunctionName": "addBinary",
+    "Parameters": [
+      {
+        "Name": "a",
+        "Type": "string"
+      },
+      {
+        "Name": "b",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "string",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public string AddBinary(string a, string b) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"11\"",
+        "\"1\""
+      ],
+      "ExpectedOutput": "\"100\""
+    },
+    {
+      "Inputs": [
+        "\"1010\"",
+        "\"1011\""
+      ],
+      "ExpectedOutput": "\"10101\""
+    }
+  ],
+  "ContentHtml": "<p>Given two binary strings <code>a</code> and <code>b</code>, return <em>their sum as a binary string</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<pre><strong>Input:</strong> a = \"11\", b = \"1\"\n<strong>Output:</strong> \"100\"\n</pre><p><strong class=\"example\">Example 2:</strong></p>\n<pre><strong>Input:</strong> a = \"1010\", b = \"1011\"\n<strong>Output:</strong> \"10101\"\n</pre>\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= a.length, b.length &lt;= 10<sup>4</sup></code></li>\n\t<li><code>a</code> and <code>b</code> consist&nbsp;only of <code>&#39;0&#39;</code> or <code>&#39;1&#39;</code> characters.</li>\n\t<li>Each string does not contain leading zeros except for the zero itself.</li>\n</ul>\n"
+}

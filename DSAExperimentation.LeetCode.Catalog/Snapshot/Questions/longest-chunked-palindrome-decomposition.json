@@ -1,0 +1,87 @@
+{
+  "QuestionId": 1251,
+  "FrontendId": 1147,
+  "Title": "Longest Chunked Palindrome Decomposition",
+  "TitleSlug": "longest-chunked-palindrome-decomposition",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Two Pointers",
+      "Slug": "two-pointers"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Greedy",
+      "Slug": "greedy"
+    },
+    {
+      "Name": "Rolling Hash",
+      "Slug": "rolling-hash"
+    },
+    {
+      "Name": "Hash Function",
+      "Slug": "hash-function"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Palindrome Rearrangement Queries",
+      "TitleSlug": "palindrome-rearrangement-queries",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [
+    "Using a rolling hash, we can quickly check whether two strings are equal.",
+    "Use that as the basis of a dp."
+  ],
+  "Constraints": [
+    "1 <= text.length <= 1000",
+    "text consists only of lowercase English characters."
+  ],
+  "Signature": {
+    "FunctionName": "longestDecomposition",
+    "Parameters": [
+      {
+        "Name": "text",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int LongestDecomposition(string text) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"ghiabcdefhelloadamhelloabcdefghi\""
+      ],
+      "ExpectedOutput": "7"
+    },
+    {
+      "Inputs": [
+        "\"merchant\""
+      ],
+      "ExpectedOutput": "1"
+    },
+    {
+      "Inputs": [
+        "\"antaprezatepzapreanta\""
+      ],
+      "ExpectedOutput": "11"
+    }
+  ],
+  "ContentHtml": "<p>You are given a string <code>text</code>. You should split it to k substrings <code>(subtext<sub>1</sub>, subtext<sub>2</sub>, ..., subtext<sub>k</sub>)</code> such that:</p>\n\n<ul>\n\t<li><code>subtext<sub>i</sub></code> is a <strong>non-empty</strong> string.</li>\n\t<li>The concatenation of all the substrings is equal to <code>text</code> (i.e., <code>subtext<sub>1</sub> + subtext<sub>2</sub> + ... + subtext<sub>k</sub> == text</code>).</li>\n\t<li><code>subtext<sub>i</sub> == subtext<sub>k - i + 1</sub></code> for all valid values of <code>i</code> (i.e., <code>1 &lt;= i &lt;= k</code>).</li>\n</ul>\n\n<p>Return the largest possible value of <code>k</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> text = &quot;ghiabcdefhelloadamhelloabcdefghi&quot;\n<strong>Output:</strong> 7\n<strong>Explanation:</strong> We can split the string on &quot;(ghi)(abcdef)(hello)(adam)(hello)(abcdef)(ghi)&quot;.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> text = &quot;merchant&quot;\n<strong>Output:</strong> 1\n<strong>Explanation:</strong> We can split the string on &quot;(merchant)&quot;.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> text = &quot;antaprezatepzapreanta&quot;\n<strong>Output:</strong> 11\n<strong>Explanation:</strong> We can split the string on &quot;(a)(nt)(a)(pre)(za)(tep)(za)(pre)(a)(nt)(a)&quot;.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= text.length &lt;= 1000</code></li>\n\t<li><code>text</code> consists only of lowercase English characters.</li>\n</ul>\n"
+}

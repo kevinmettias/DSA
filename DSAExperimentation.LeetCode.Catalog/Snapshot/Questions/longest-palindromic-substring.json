@@ -1,0 +1,99 @@
+{
+  "QuestionId": 5,
+  "FrontendId": 5,
+  "Title": "Longest Palindromic Substring",
+  "TitleSlug": "longest-palindromic-substring",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Two Pointers",
+      "Slug": "two-pointers"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Manacher",
+      "Slug": "manacher"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Shortest Palindrome",
+      "TitleSlug": "shortest-palindrome",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Palindrome Permutation",
+      "TitleSlug": "palindrome-permutation",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Palindrome Pairs",
+      "TitleSlug": "palindrome-pairs",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Longest Palindromic Subsequence",
+      "TitleSlug": "longest-palindromic-subsequence",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Palindromic Substrings",
+      "TitleSlug": "palindromic-substrings",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Number of Non-overlapping Palindrome Substrings",
+      "TitleSlug": "maximum-number-of-non-overlapping-palindrome-substrings",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [
+    "How can we reuse a previously computed palindrome to compute a larger palindrome?",
+    "If “aba” is a palindrome, is “xabax” a palindrome? Similarly is “xabay” a palindrome?",
+    "Complexity based hint:</br>\r\nIf we use brute-force and check whether for every start and end position a substring is a palindrome we have O(n^2) start - end pairs and O(n) palindromic checks. Can we reduce the time for palindromic checks to O(1) by reusing some previous computation."
+  ],
+  "Constraints": [
+    "1 <= s.length <= 1000",
+    "s consist of only digits and English letters."
+  ],
+  "Signature": {
+    "FunctionName": "longestPalindrome",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "string",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public string LongestPalindrome(string s) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"babad\""
+      ],
+      "ExpectedOutput": "\"bab\""
+    },
+    {
+      "Inputs": [
+        "\"cbbd\""
+      ],
+      "ExpectedOutput": "\"bb\""
+    }
+  ],
+  "ContentHtml": "<p>Given a string <code>s</code>, return <em>the longest</em> <span data-keyword=\"palindromic-string\"><em>palindromic</em></span> <span data-keyword=\"substring-nonempty\"><em>substring</em></span> in <code>s</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;babad&quot;\n<strong>Output:</strong> &quot;bab&quot;\n<strong>Explanation:</strong> &quot;aba&quot; is also a valid answer.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;cbbd&quot;\n<strong>Output:</strong> &quot;bb&quot;\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length &lt;= 1000</code></li>\n\t<li><code>s</code> consist of only digits and English letters.</li>\n</ul>\n"
+}

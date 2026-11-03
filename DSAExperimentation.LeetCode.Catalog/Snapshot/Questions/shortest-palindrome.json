@@ -1,0 +1,102 @@
+{
+  "QuestionId": 214,
+  "FrontendId": 214,
+  "Title": "Shortest Palindrome",
+  "TitleSlug": "shortest-palindrome",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Rolling Hash",
+      "Slug": "rolling-hash"
+    },
+    {
+      "Name": "String Matching",
+      "Slug": "string-matching"
+    },
+    {
+      "Name": "Hash Function",
+      "Slug": "hash-function"
+    },
+    {
+      "Name": "Manacher",
+      "Slug": "manacher"
+    },
+    {
+      "Name": "Z Algorithm",
+      "Slug": "z-algorithm"
+    },
+    {
+      "Name": "Knuth–Morris–Pratt Algorithm",
+      "Slug": "knuth-morris-pratt-algorithm"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Longest Palindromic Substring",
+      "TitleSlug": "longest-palindromic-substring",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Find the Index of the First Occurrence in a String",
+      "TitleSlug": "find-the-index-of-the-first-occurrence-in-a-string",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Palindrome Pairs",
+      "TitleSlug": "palindrome-pairs",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Maximum Deletions on a String",
+      "TitleSlug": "maximum-deletions-on-a-string",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Smallest Palindromic Rearrangement I",
+      "TitleSlug": "smallest-palindromic-rearrangement-i",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "0 <= s.length <= 5 * 10^4",
+    "s consists of lowercase English letters only."
+  ],
+  "Signature": {
+    "FunctionName": "shortestPalindrome",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "string",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public string ShortestPalindrome(string s) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"aacecaaa\""
+      ],
+      "ExpectedOutput": "\"aaacecaaa\""
+    },
+    {
+      "Inputs": [
+        "\"abcd\""
+      ],
+      "ExpectedOutput": "\"dcbabcd\""
+    }
+  ],
+  "ContentHtml": "<p>You are given a string <code>s</code>. You can convert <code>s</code> to a <span data-keyword=\"palindrome-string\">palindrome</span> by adding characters in front of it.</p>\n\n<p>Return <em>the shortest palindrome you can find by performing this transformation</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<pre><strong>Input:</strong> s = \"aacecaaa\"\n<strong>Output:</strong> \"aaacecaaa\"\n</pre><p><strong class=\"example\">Example 2:</strong></p>\n<pre><strong>Input:</strong> s = \"abcd\"\n<strong>Output:</strong> \"dcbabcd\"\n</pre>\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>0 &lt;= s.length &lt;= 5 * 10<sup>4</sup></code></li>\n\t<li><code>s</code> consists of lowercase English letters only.</li>\n</ul>\n"
+}

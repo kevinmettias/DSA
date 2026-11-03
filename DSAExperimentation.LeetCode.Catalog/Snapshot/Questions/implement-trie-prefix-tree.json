@@ -1,0 +1,127 @@
+{
+  "QuestionId": 208,
+  "FrontendId": 208,
+  "Title": "Implement Trie (Prefix Tree)",
+  "TitleSlug": "implement-trie-prefix-tree",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Design",
+      "Slug": "design"
+    },
+    {
+      "Name": "Trie",
+      "Slug": "trie"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Design Add and Search Words Data Structure",
+      "TitleSlug": "design-add-and-search-words-data-structure",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Design Search Autocomplete System",
+      "TitleSlug": "design-search-autocomplete-system",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Replace Words",
+      "TitleSlug": "replace-words",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Implement Magic Dictionary",
+      "TitleSlug": "implement-magic-dictionary",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Encrypt and Decrypt Strings",
+      "TitleSlug": "encrypt-and-decrypt-strings",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Implement Trie II (Prefix Tree)",
+      "TitleSlug": "implement-trie-ii-prefix-tree",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Count Prefix and Suffix Pairs II",
+      "TitleSlug": "count-prefix-and-suffix-pairs-ii",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Count Prefix and Suffix Pairs I",
+      "TitleSlug": "count-prefix-and-suffix-pairs-i",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= word.length, prefix.length <= 2000",
+    "word and prefix consist only of lowercase English letters.",
+    "At most 3 * 10^4 calls in total will be made to insert, search, and startsWith."
+  ],
+  "Signature": {
+    "FunctionName": null,
+    "Parameters": [],
+    "ReturnType": null,
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": "Trie",
+    "ConstructorParameters": [],
+    "Methods": [
+      {
+        "Name": "insert",
+        "Parameters": [
+          {
+            "Name": "word",
+            "Type": "string"
+          }
+        ],
+        "ReturnType": "void"
+      },
+      {
+        "Name": "search",
+        "Parameters": [
+          {
+            "Name": "word",
+            "Type": "string"
+          }
+        ],
+        "ReturnType": "boolean"
+      },
+      {
+        "Name": "startsWith",
+        "Parameters": [
+          {
+            "Name": "prefix",
+            "Type": "string"
+          }
+        ],
+        "ReturnType": "boolean"
+      }
+    ]
+  },
+  "CSharpStarterCode": "public class Trie {\n\n    public Trie() {\n        \n    }\n    \n    public void Insert(string word) {\n        \n    }\n    \n    public bool Search(string word) {\n        \n    }\n    \n    public bool StartsWith(string prefix) {\n        \n    }\n}\n\n/**\n * Your Trie object will be instantiated and called as such:\n * Trie obj = new Trie();\n * obj.Insert(word);\n * bool param_2 = obj.Search(word);\n * bool param_3 = obj.StartsWith(prefix);\n */",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"Trie\",\"insert\",\"search\",\"search\",\"startsWith\",\"insert\",\"search\"]",
+        "[[],[\"apple\"],[\"apple\"],[\"app\"],[\"app\"],[\"app\"],[\"app\"]]"
+      ],
+      "ExpectedOutput": "[null, null, true, false, true, null, true]"
+    }
+  ],
+  "ContentHtml": "<p>A <a href=\"https://en.wikipedia.org/wiki/Trie\" target=\"_blank\"><strong>trie</strong></a> (pronounced as &quot;try&quot;) or <strong>prefix tree</strong> is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. There are various applications of this data structure, such as autocomplete and spellchecker.</p>\n\n<p>Implement the Trie class:</p>\n\n<ul>\n\t<li><code>Trie()</code> Initializes the trie object.</li>\n\t<li><code>void insert(String word)</code> Inserts the string <code>word</code> into the trie.</li>\n\t<li><code>boolean search(String word)</code> Returns <code>true</code> if the string <code>word</code> is in the trie (i.e., was inserted before), and <code>false</code> otherwise.</li>\n\t<li><code>boolean startsWith(String prefix)</code> Returns <code>true</code> if there is a previously inserted string <code>word</code> that has the prefix <code>prefix</code>, and <code>false</code> otherwise.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input</strong>\n[&quot;Trie&quot;, &quot;insert&quot;, &quot;search&quot;, &quot;search&quot;, &quot;startsWith&quot;, &quot;insert&quot;, &quot;search&quot;]\n[[], [&quot;apple&quot;], [&quot;apple&quot;], [&quot;app&quot;], [&quot;app&quot;], [&quot;app&quot;], [&quot;app&quot;]]\n<strong>Output</strong>\n[null, null, true, false, true, null, true]\n\n<strong>Explanation</strong>\nTrie trie = new Trie();\ntrie.insert(&quot;apple&quot;);\ntrie.search(&quot;apple&quot;);   // return True\ntrie.search(&quot;app&quot;);     // return False\ntrie.startsWith(&quot;app&quot;); // return True\ntrie.insert(&quot;app&quot;);\ntrie.search(&quot;app&quot;);     // return True\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= word.length, prefix.length &lt;= 2000</code></li>\n\t<li><code>word</code> and <code>prefix</code> consist only of lowercase English letters.</li>\n\t<li>At most <code>3 * 10<sup>4</sup></code> calls <strong>in total</strong> will be made to <code>insert</code>, <code>search</code>, and <code>startsWith</code>.</li>\n</ul>\n"
+}

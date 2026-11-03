@@ -1,0 +1,88 @@
+{
+  "QuestionId": 1211,
+  "FrontendId": 1286,
+  "Title": "Iterator for Combination",
+  "TitleSlug": "iterator-for-combination",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Backtracking",
+      "Slug": "backtracking"
+    },
+    {
+      "Name": "Design",
+      "Slug": "design"
+    },
+    {
+      "Name": "Iterator",
+      "Slug": "iterator"
+    }
+  ],
+  "SimilarQuestions": [],
+  "Hints": [
+    "Generate all combinations as a preprocessing.",
+    "Use bit masking to generate all the combinations."
+  ],
+  "Constraints": [
+    "1 <= combinationLength <= characters.length <= 15",
+    "All the characters of characters are unique.",
+    "At most 10^4 calls will be made to next and hasNext.",
+    "It is guaranteed that all calls of the function next are valid."
+  ],
+  "Signature": {
+    "FunctionName": null,
+    "Parameters": [
+      {
+        "Name": "inputs",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "inputs",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": null,
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": "CombinationIterator",
+    "ConstructorParameters": [
+      {
+        "Name": "characters",
+        "Type": "string"
+      },
+      {
+        "Name": "combinationLength",
+        "Type": "integer"
+      }
+    ],
+    "Methods": [
+      {
+        "Name": "next",
+        "Parameters": [],
+        "ReturnType": "string"
+      },
+      {
+        "Name": "hasNext",
+        "Parameters": [],
+        "ReturnType": "boolean"
+      }
+    ]
+  },
+  "CSharpStarterCode": "public class CombinationIterator {\n\n    public CombinationIterator(string characters, int combinationLength) {\n        \n    }\n    \n    public string Next() {\n        \n    }\n    \n    public bool HasNext() {\n        \n    }\n}\n\n/**\n * Your CombinationIterator object will be instantiated and called as such:\n * CombinationIterator obj = new CombinationIterator(characters, combinationLength);\n * string param_1 = obj.Next();\n * bool param_2 = obj.HasNext();\n */",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"CombinationIterator\",\"next\",\"hasNext\",\"next\",\"hasNext\",\"next\",\"hasNext\"]",
+        "[[\"abc\",2],[],[],[],[],[],[]]"
+      ],
+      "ExpectedOutput": "[null, \"ab\", true, \"ac\", true, \"bc\", false]"
+    }
+  ],
+  "ContentHtml": "<p>Design the <code>CombinationIterator</code> class:</p>\n\n<ul>\n\t<li><code>CombinationIterator(string characters, int combinationLength)</code> Initializes the object with a string <code>characters</code> of <strong>sorted distinct</strong> lowercase English letters and a number <code>combinationLength</code> as arguments.</li>\n\t<li><code>next()</code> Returns the next combination of length <code>combinationLength</code> in <strong>lexicographical order</strong>.</li>\n\t<li><code>hasNext()</code> Returns <code>true</code> if and only if there exists a next combination.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input</strong>\n[&quot;CombinationIterator&quot;, &quot;next&quot;, &quot;hasNext&quot;, &quot;next&quot;, &quot;hasNext&quot;, &quot;next&quot;, &quot;hasNext&quot;]\n[[&quot;abc&quot;, 2], [], [], [], [], [], []]\n<strong>Output</strong>\n[null, &quot;ab&quot;, true, &quot;ac&quot;, true, &quot;bc&quot;, false]\n\n<strong>Explanation</strong>\nCombinationIterator itr = new CombinationIterator(&quot;abc&quot;, 2);\nitr.next();    // return &quot;ab&quot;\nitr.hasNext(); // return True\nitr.next();    // return &quot;ac&quot;\nitr.hasNext(); // return True\nitr.next();    // return &quot;bc&quot;\nitr.hasNext(); // return False\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= combinationLength &lt;= characters.length &lt;= 15</code></li>\n\t<li>All the characters of <code>characters</code> are <strong>unique</strong>.</li>\n\t<li>At most <code>10<sup>4</sup></code> calls will be made to <code>next</code> and <code>hasNext</code>.</li>\n\t<li>It is guaranteed that all calls of the function <code>next</code> are valid.</li>\n</ul>\n"
+}

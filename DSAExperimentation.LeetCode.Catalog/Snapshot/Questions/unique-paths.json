@@ -1,0 +1,101 @@
+{
+  "QuestionId": 62,
+  "FrontendId": 62,
+  "Title": "Unique Paths",
+  "TitleSlug": "unique-paths",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Combinatorics",
+      "Slug": "combinatorics"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Unique Paths II",
+      "TitleSlug": "unique-paths-ii",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Minimum Path Sum",
+      "TitleSlug": "minimum-path-sum",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Dungeon Game",
+      "TitleSlug": "dungeon-game",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Minimum Path Cost in a Grid",
+      "TitleSlug": "minimum-path-cost-in-a-grid",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Minimum Cost Homecoming of a Robot in a Grid",
+      "TitleSlug": "minimum-cost-homecoming-of-a-robot-in-a-grid",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Number of Ways to Reach a Position After Exactly k Steps",
+      "TitleSlug": "number-of-ways-to-reach-a-position-after-exactly-k-steps",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Paths in Matrix Whose Sum Is Divisible by K",
+      "TitleSlug": "paths-in-matrix-whose-sum-is-divisible-by-k",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= m, n <= 100"
+  ],
+  "Signature": {
+    "FunctionName": "uniquePaths",
+    "Parameters": [
+      {
+        "Name": "m",
+        "Type": "integer"
+      },
+      {
+        "Name": "n",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int UniquePaths(int m, int n) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "3",
+        "7"
+      ],
+      "ExpectedOutput": "28"
+    },
+    {
+      "Inputs": [
+        "3",
+        "2"
+      ],
+      "ExpectedOutput": "3"
+    }
+  ],
+  "ContentHtml": "<p>There is a robot on an <code>m x n</code> grid. The robot is initially located at the <strong>top-left corner</strong> (i.e., <code>grid[0][0]</code>). The robot tries to move to the <strong>bottom-right corner</strong> (i.e., <code>grid[m - 1][n - 1]</code>). The robot can only move either down or right at any point in time.</p>\n\n<p>Given the two integers <code>m</code> and <code>n</code>, return <em>the number of possible unique paths that the robot can take to reach the bottom-right corner</em>.</p>\n\n<p>The test cases are generated so that the answer will be less than or equal to <code>2 * 10<sup>9</sup></code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<img src=\"https://assets.leetcode.com/uploads/2018/10/22/robot_maze.png\" style=\"width: 400px; height: 183px;\" />\n<pre>\n<strong>Input:</strong> m = 3, n = 7\n<strong>Output:</strong> 28\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> m = 3, n = 2\n<strong>Output:</strong> 3\n<strong>Explanation:</strong> From the top-left corner, there are a total of 3 ways to reach the bottom-right corner:\n1. Right -&gt; Down -&gt; Down\n2. Down -&gt; Down -&gt; Right\n3. Down -&gt; Right -&gt; Down\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= m, n &lt;= 100</code></li>\n</ul>\n"
+}

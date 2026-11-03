@@ -1,0 +1,93 @@
+{
+  "QuestionId": 43,
+  "FrontendId": 43,
+  "Title": "Multiply Strings",
+  "TitleSlug": "multiply-strings",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Simulation",
+      "Slug": "simulation"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Add Two Numbers",
+      "TitleSlug": "add-two-numbers",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Plus One",
+      "TitleSlug": "plus-one",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Add Binary",
+      "TitleSlug": "add-binary",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Add Strings",
+      "TitleSlug": "add-strings",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Apply Discount to Prices",
+      "TitleSlug": "apply-discount-to-prices",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= num1.length, num2.length <= 200",
+    "num1 and num2 consist of digits only.",
+    "Both num1 and num2 do not contain any leading zero, except the number 0 itself."
+  ],
+  "Signature": {
+    "FunctionName": "multiply",
+    "Parameters": [
+      {
+        "Name": "num1",
+        "Type": "string"
+      },
+      {
+        "Name": "num2",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "string",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public string Multiply(string num1, string num2) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"2\"",
+        "\"3\""
+      ],
+      "ExpectedOutput": "\"6\""
+    },
+    {
+      "Inputs": [
+        "\"123\"",
+        "\"456\""
+      ],
+      "ExpectedOutput": "\"56088\""
+    }
+  ],
+  "ContentHtml": "<p>Given two non-negative integers <code>num1</code> and <code>num2</code> represented as strings, return the product of <code>num1</code> and <code>num2</code>, also represented as a string.</p>\n\n<p><strong>Note:</strong>&nbsp;You must not use any built-in BigInteger library or convert the inputs to integer directly.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<pre><strong>Input:</strong> num1 = \"2\", num2 = \"3\"\n<strong>Output:</strong> \"6\"\n</pre><p><strong class=\"example\">Example 2:</strong></p>\n<pre><strong>Input:</strong> num1 = \"123\", num2 = \"456\"\n<strong>Output:</strong> \"56088\"\n</pre>\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= num1.length, num2.length &lt;= 200</code></li>\n\t<li><code>num1</code> and <code>num2</code> consist of digits only.</li>\n\t<li>Both <code>num1</code> and <code>num2</code>&nbsp;do not contain any leading zero, except the number <code>0</code> itself.</li>\n</ul>\n"
+}

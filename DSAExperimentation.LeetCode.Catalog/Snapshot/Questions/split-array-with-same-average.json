@@ -1,0 +1,87 @@
+{
+  "QuestionId": 823,
+  "FrontendId": 805,
+  "Title": "Split Array With Same Average",
+  "TitleSlug": "split-array-with-same-average",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Bit Manipulation",
+      "Slug": "bit-manipulation"
+    },
+    {
+      "Name": "Meet in the Middle",
+      "Slug": "meet-in-the-middle"
+    },
+    {
+      "Name": "Bitmask",
+      "Slug": "bitmask"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Partition Array Into Two Arrays to Minimize Sum Difference",
+      "TitleSlug": "partition-array-into-two-arrays-to-minimize-sum-difference",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Minimum Average Difference",
+      "TitleSlug": "minimum-average-difference",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= nums.length <= 30",
+    "0 <= nums[i] <= 10^4"
+  ],
+  "Signature": {
+    "FunctionName": "splitArraySameAverage",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "boolean",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public bool SplitArraySameAverage(int[] nums) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[1,2,3,4,5,6,7,8]"
+      ],
+      "ExpectedOutput": "true"
+    },
+    {
+      "Inputs": [
+        "[3,1]"
+      ],
+      "ExpectedOutput": "false"
+    }
+  ],
+  "ContentHtml": "<p>You are given an integer array <code>nums</code>.</p>\n\n<p>You should move each element of <code>nums</code> into one of the two arrays <code>A</code> and <code>B</code> such that <code>A</code> and <code>B</code> are non-empty, and <code>average(A) == average(B)</code>.</p>\n\n<p>Return <code>true</code> if it is possible to achieve that and <code>false</code> otherwise.</p>\n\n<p><strong>Note</strong> that for an array <code>arr</code>, <code>average(arr)</code> is the sum of all the elements of <code>arr</code> over the length of <code>arr</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,2,3,4,5,6,7,8]\n<strong>Output:</strong> true\n<strong>Explanation:</strong> We can split the array into [1,4,5,8] and [2,3,6,7], and both of them have an average of 4.5.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [3,1]\n<strong>Output:</strong> false\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 30</code></li>\n\t<li><code>0 &lt;= nums[i] &lt;= 10<sup>4</sup></code></li>\n</ul>\n"
+}

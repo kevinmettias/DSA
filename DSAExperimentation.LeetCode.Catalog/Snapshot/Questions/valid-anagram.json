@@ -1,0 +1,87 @@
+{
+  "QuestionId": 242,
+  "FrontendId": 242,
+  "Title": "Valid Anagram",
+  "TitleSlug": "valid-anagram",
+  "Difficulty": "Easy",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Sorting",
+      "Slug": "sorting"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Group Anagrams",
+      "TitleSlug": "group-anagrams",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Palindrome Permutation",
+      "TitleSlug": "palindrome-permutation",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Find All Anagrams in a String",
+      "TitleSlug": "find-all-anagrams-in-a-string",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Find Resultant Array After Removing Anagrams",
+      "TitleSlug": "find-resultant-array-after-removing-anagrams",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= s.length, t.length <= 5 * 10^4",
+    "s and t consist of lowercase English letters."
+  ],
+  "Signature": {
+    "FunctionName": "isAnagram",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      },
+      {
+        "Name": "t",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "boolean",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public bool IsAnagram(string s, string t) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"anagram\"",
+        "\"nagaram\""
+      ],
+      "ExpectedOutput": "true"
+    },
+    {
+      "Inputs": [
+        "\"rat\"",
+        "\"car\""
+      ],
+      "ExpectedOutput": "false"
+    }
+  ],
+  "ContentHtml": "<p>Given two strings <code>s</code> and <code>t</code>, return <code>true</code> if <code>t</code> is an <span data-keyword=\"anagram\">anagram</span> of <code>s</code>, and <code>false</code> otherwise.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">s = &quot;anagram&quot;, t = &quot;nagaram&quot;</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">true</span></p>\n</div>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">s = &quot;rat&quot;, t = &quot;car&quot;</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">false</span></p>\n</div>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length, t.length &lt;= 5 * 10<sup>4</sup></code></li>\n\t<li><code>s</code> and <code>t</code> consist of lowercase English letters.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Follow up:</strong> What if the inputs contain Unicode characters? How would you adapt your solution to such a case?</p>\n"
+}

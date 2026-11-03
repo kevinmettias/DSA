@@ -1,0 +1,662 @@
+[
+  {
+    "Inputs": [
+      "\"LULLDDRRUURRDDLL\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"UUUUUUUUUUDDDDDDDDDDLLLLRRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UDLR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDRRLL\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LUDD\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"RLUD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"RRDDLLUURR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"LRLRLRLR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"ULDRULDRULDR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LDRU\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UDLRUDLRUDLR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUUUUUUUUUUUUUDDDDDDDDDDDDDDLLLLLLLLRRRRRRRRRRRR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"LDRRLU\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDLLRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"RLUDRLUD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LLLLRRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"RULD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUUUUUUUUUDDDDDDDDDDLLLLLLLLRRRRRRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UDUDUDUD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUUUUUUUUUUUUUUUDDDDDDDDDDDDDDDDLLLLLLLLLLLLRRRRRRRRRRRRRR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"RRDDLLUU\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUUUDDDDLLLLRRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LRUD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDLLRRUUDDLLRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUUUDDDD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"RRDD\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"UUUUUUUUUUUUDDDDDDDDDDDDLLLLRRRRRRRRRRRR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"RRRLLLDDDUUU\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUUUUUUUUUUUUUUUUUDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLRRRRRRRRRRRRRRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UDLRUDLRUDLRUDLRUDLRUDLRUDLRUDLRUDLRUDLRUDLRUDLRUDLR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LDDRUURLDDRUURLDDRUURLDDRUURLDDR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"LLLLLRRRRRRLLLLRRRRRRLLL\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDDDUUUUUUUUUUDDDD\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"UDUDUDUDUDUDUDUDUDUDUDUDUDUD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UDUDUDUDUDUDUDUD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LLLLRRRRUUUUDDDDLRRRLLLLUUUUDDDD\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"RRDDLLUURRDDLLUURRDDLLUU\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LRLRLRLRLRLRLRLR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LLRRLLRRLLRRLLRRLLRRLLRRLLRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LDRULDRULDRU\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LLLLRRRRLLLLRRRRLLLLRRRRLLLLRRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LLRRDDUULLRRDDUULLRRDDUULLRRDDUULL\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"RULLDDRRULLDDRRULLDDRR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"LLLLUUUUUURRRRRRRRDDDDDD\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"RULLDRLDURDURLDLURDURLDLURDURLDL\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"UDLRUDLRUDLRUDLR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDUUDDUUDDUUDDLLLLRRRRLLLLRRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"RLRLRLRLRLRLRLRL\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDUUDDUUDDUUDDUUDDUUDD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UDLLRRUUDDLLRRUUDDLLRRUUDDLLRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUUDDDLLLRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUUUDDDDLLLLRRRRUUUUDDDDLLLLRRRRUUUUDDDDLLLLRRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDUUDDUUDDUUDDUUDDUUDDUUDD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUUUDDDDLLLLRRRRUUUUDDDDLLLLRRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDLLLLRRRRUUDDLLRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UDUDUDUDUD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"RLRLRLRLUDUDUDUD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"URDLURDLURDLURDL\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"ULDRULDRLDURDLURDLURDLURDLURDL\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"RRDDLLUURRDDLLUURRDDLLUURRDDLLUU\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LUDRLUDRLUDRLUDRLUDRLUDR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LRRLRLRLUDUDUDUD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDUUDDUUDDUUDD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"RRDDUULLRRDDUULL\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LRUDLRUDLRUD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LURDLURDLURDLURD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LLLLRRRRUUDDUUDD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UDUDLRRLRLUDUDLR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LLLLLLLLRRRRRRRRUUUUUUUUDDDDDDDD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UDLRUDLRUDLRUDLRUDLRUDLR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDDDUUDDDDUUDD\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"LLLLRRRRLLLLRRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"ULLDRRDUULLDRRDU\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDUUDDUUDDUUDDUUDDUUDDUUDDUUDDUUDDUUDDUUDDUUDDUUDD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"RRRRRRRRRRLLLLLLLLLLDDDDDDDDDDUUUUUUUUUU\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"RLRLRLRLRL\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LLLLDDDDUUUURRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDLLRRUUDDDDLLRRUUDDLLRR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"LLRRUUDDUUDDLLRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LRRLRLRLUDUDUDUDLRRLRLRLUDUDUDUD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"RLRLRLRLRLRLRLRLRLRL\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDUURRDD\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"UUDDUULLRR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"RRRRDDDDLLLLUUUU\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UDLRUDLRUDLRUDLRUDLRUDLRUDLRUDLR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LLLLRRRRUUUDDDUUUDDDLLLLRRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUUUUUUUDDDDDDDDLLLLLLLLRRRRRRRRRRLLRRUUDDLL\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"DDUUUUDDLLRRRR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"UUDDLLUURRDDDDLLRR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"RURURURURURURULULULULULULULU\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"UUUUUUDDDDDDLLLLRRRRRR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"UUDDDDLLLLRRRRUUDDDD\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"LLLLLLLLRRRRRRRRUUUUUUUUDDDDDDDDLLLLLLLLRRRRRRRRUUUUUUUUDDDDDDDD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"RRRDDDLLLUUUUUDDDD\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"UUUUUUUUUUDDDDDDDDDDLLLLLLLLRRRRRRRRRR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"RUDLRUDLRUDLRUDL\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDLLRRUUDDLLRRUUDDLLRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"RUDLRULDRLUDLRULDRLUDLRULDRL\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"UDUDUDUDUDUDUDUDUDUDUDUD\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"URDLURDLURDL\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUDDDDDDDLLLLRRRRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUDDDDDDDLLLLRRRR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"RRDDLLUURRDDLLUU\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UUUUUUUUDDDDDDDDLLLLRRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"RRRLLLLDDDUUUUUDDDLLLLURRRDDDDUUU\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"DDDDLLLLUUUUUUUUDDDDLLLLRRRRRRRR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"UDUDUDUDLRRLRLRL\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"LURDLURDLURDLURDLURDLURDLURDLURDL\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"UUUUUUUUDDDDDDDDLLLLRRRRRRRR\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"RRUUDDLLDDUURLLR\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"ULURDLDRULURDLDRULURDLDRULURDLDR\""
+    ],
+    "ExpectedOutput": "true"
+  }
+]

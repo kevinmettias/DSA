@@ -1,0 +1,506 @@
+[
+  {
+    "Inputs": [
+      "15",
+      "50"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "10",
+      "15"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "8",
+      "25"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "10",
+      "40"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "10",
+      "25"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "20",
+      "21"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "5",
+      "50"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "10",
+      "100"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "20",
+      "28"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "15",
+      "100"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "12",
+      "30"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "7",
+      "15"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "6",
+      "16"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "3",
+      "8"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "20",
+      "300"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "16",
+      "80"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "18",
+      "150"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "15",
+      "70"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "8",
+      "30"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "20",
+      "199"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "9",
+      "36"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "16",
+      "85"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "20",
+      "200"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "18",
+      "120"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "11",
+      "33"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "13",
+      "45"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "10",
+      "99"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "16",
+      "90"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "14",
+      "49"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "13",
+      "30"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "20",
+      "180"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "14",
+      "60"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "13",
+      "80"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "14",
+      "80"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "16",
+      "60"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "12",
+      "80"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "10",
+      "55"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "19",
+      "135"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "14",
+      "99"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "19",
+      "110"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "12",
+      "75"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "5",
+      "15"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "14",
+      "95"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "7",
+      "28"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "14",
+      "50"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "20",
+      "250"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "17",
+      "140"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "19",
+      "180"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "16",
+      "110"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "13",
+      "60"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "9",
+      "45"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "12",
+      "35"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "17",
+      "85"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "20",
+      "150"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "15",
+      "80"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "8",
+      "28"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "7",
+      "25"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "18",
+      "130"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "11",
+      "55"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "17",
+      "90"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "17",
+      "100"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "16",
+      "120"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "20",
+      "130"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "19",
+      "120"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "16",
+      "130"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "7",
+      "20"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "18",
+      "180"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "18",
+      "100"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "12",
+      "60"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "15",
+      "120"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "14",
+      "70"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "10",
+      "50"
+    ],
+    "ExpectedOutput": "false"
+  }
+]

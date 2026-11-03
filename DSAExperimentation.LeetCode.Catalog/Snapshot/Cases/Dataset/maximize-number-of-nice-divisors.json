@@ -1,0 +1,20 @@
+[
+  {
+    "Inputs": [
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "3"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  }
+]

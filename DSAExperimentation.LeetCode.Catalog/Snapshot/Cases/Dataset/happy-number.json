@@ -1,0 +1,308 @@
+[
+  {
+    "Inputs": [
+      "100"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "4"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "20"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "1111111"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "1"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "1000000000"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "7"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "489"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "789789789"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "130"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "49"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "2147483647"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "32442"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "324"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "203"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "82"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "70"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "2736895"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "1000"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "44"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "190"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "58"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "28"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "289"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "444444444"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "14659"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "6892"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "145"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "14657"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "10000"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "23"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "784"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "133"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "999"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "89"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "9474"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "111111111"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "404"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "442"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "987654321"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "1234567890"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "139"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "1000000007"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "13441"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "200"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "3249"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "123456789"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "370"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "789999"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "1111111111"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "100000000"
+    ],
+    "ExpectedOutput": "true"
+  }
+]

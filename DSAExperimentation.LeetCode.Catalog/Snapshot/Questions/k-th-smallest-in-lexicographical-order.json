@@ -1,0 +1,63 @@
+{
+  "QuestionId": 440,
+  "FrontendId": 440,
+  "Title": "K-th Smallest in Lexicographical Order",
+  "TitleSlug": "k-th-smallest-in-lexicographical-order",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Trie",
+      "Slug": "trie"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Count Special Integers",
+      "TitleSlug": "count-special-integers",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= k <= n <= 10^9"
+  ],
+  "Signature": {
+    "FunctionName": "findKthNumber",
+    "Parameters": [
+      {
+        "Name": "n",
+        "Type": "integer"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int FindKthNumber(int n, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "13",
+        "2"
+      ],
+      "ExpectedOutput": "10"
+    },
+    {
+      "Inputs": [
+        "1",
+        "1"
+      ],
+      "ExpectedOutput": "1"
+    }
+  ],
+  "ContentHtml": "<p>Given two integers <code>n</code> and <code>k</code>, return <em>the</em> <code>k<sup>th</sup></code> <em>lexicographically smallest integer in the range</em> <code>[1, n]</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 13, k = 2\n<strong>Output:</strong> 10\n<strong>Explanation:</strong> The lexicographical order is [1, 10, 11, 12, 13, 2, 3, 4, 5, 6, 7, 8, 9], so the second smallest number is 10.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 1, k = 1\n<strong>Output:</strong> 1\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= k &lt;= n &lt;= 10<sup>9</sup></code></li>\n</ul>\n"
+}

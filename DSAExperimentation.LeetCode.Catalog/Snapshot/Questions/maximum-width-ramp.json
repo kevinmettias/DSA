@@ -1,0 +1,64 @@
+{
+  "QuestionId": 1002,
+  "FrontendId": 962,
+  "Title": "Maximum Width Ramp",
+  "TitleSlug": "maximum-width-ramp",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Two Pointers",
+      "Slug": "two-pointers"
+    },
+    {
+      "Name": "Stack",
+      "Slug": "stack"
+    },
+    {
+      "Name": "Monotonic Stack",
+      "Slug": "monotonic-stack"
+    }
+  ],
+  "SimilarQuestions": [],
+  "Hints": [],
+  "Constraints": [
+    "2 <= nums.length <= 5 * 10^4",
+    "0 <= nums[i] <= 5 * 10^4"
+  ],
+  "Signature": {
+    "FunctionName": "maxWidthRamp",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int MaxWidthRamp(int[] nums) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[6,0,8,2,1,5]"
+      ],
+      "ExpectedOutput": "4"
+    },
+    {
+      "Inputs": [
+        "[9,8,1,0,1,9,4,0,4,1]"
+      ],
+      "ExpectedOutput": "7"
+    }
+  ],
+  "ContentHtml": "<p>A <strong>ramp</strong> in an integer array <code>nums</code> is a pair <code>(i, j)</code> for which <code>i &lt; j</code> and <code>nums[i] &lt;= nums[j]</code>. The <strong>width</strong> of such a ramp is <code>j - i</code>.</p>\n\n<p>Given an integer array <code>nums</code>, return <em>the maximum width of a <strong>ramp</strong> in </em><code>nums</code>. If there is no <strong>ramp</strong> in <code>nums</code>, return <code>0</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [6,0,8,2,1,5]\n<strong>Output:</strong> 4\n<strong>Explanation:</strong> The maximum width ramp is achieved at (i, j) = (1, 5): nums[1] = 0 and nums[5] = 5.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [9,8,1,0,1,9,4,0,4,1]\n<strong>Output:</strong> 7\n<strong>Explanation:</strong> The maximum width ramp is achieved at (i, j) = (2, 9): nums[2] = 1 and nums[9] = 1.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>2 &lt;= nums.length &lt;= 5 * 10<sup>4</sup></code></li>\n\t<li><code>0 &lt;= nums[i] &lt;= 5 * 10<sup>4</sup></code></li>\n</ul>\n"
+}

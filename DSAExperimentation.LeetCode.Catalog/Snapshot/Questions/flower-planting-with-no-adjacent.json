@@ -1,0 +1,83 @@
+{
+  "QuestionId": 1120,
+  "FrontendId": 1042,
+  "Title": "Flower Planting With No Adjacent",
+  "TitleSlug": "flower-planting-with-no-adjacent",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Depth-First Search",
+      "Slug": "depth-first-search"
+    },
+    {
+      "Name": "Breadth-First Search",
+      "Slug": "breadth-first-search"
+    },
+    {
+      "Name": "Graph Theory",
+      "Slug": "graph"
+    },
+    {
+      "Name": "Graph Coloring",
+      "Slug": "graph-coloring"
+    }
+  ],
+  "SimilarQuestions": [],
+  "Hints": [
+    "Since each garden is connected to at most 3 gardens, there's always an available color for each garden.  For example, if one garden is next to gardens with colors 1, 3, 4,  then color #2 is available."
+  ],
+  "Constraints": [
+    "1 <= n <= 10^4",
+    "0 <= paths.length <= 2 * 10^4",
+    "paths[i].length == 2",
+    "1 <= xi, yi <= n",
+    "xi != yi",
+    "Every garden has at most 3 paths coming into or leaving it."
+  ],
+  "Signature": {
+    "FunctionName": "gardenNoAdj",
+    "Parameters": [
+      {
+        "Name": "n",
+        "Type": "integer"
+      },
+      {
+        "Name": "paths",
+        "Type": "integer[][]"
+      }
+    ],
+    "ReturnType": "integer[]",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int[] GardenNoAdj(int n, int[][] paths) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "3",
+        "[[1,2],[2,3],[3,1]]"
+      ],
+      "ExpectedOutput": "[1,2,3]"
+    },
+    {
+      "Inputs": [
+        "4",
+        "[[1,2],[3,4]]"
+      ],
+      "ExpectedOutput": "[1,2,1,2]"
+    },
+    {
+      "Inputs": [
+        "4",
+        "[[1,2],[2,3],[3,4],[4,1],[1,3],[2,4]]"
+      ],
+      "ExpectedOutput": "[1,2,3,4]"
+    }
+  ],
+  "ContentHtml": "<p>You have <code>n</code> gardens, labeled from <code>1</code> to <code>n</code>, and an array <code>paths</code> where <code>paths[i] = [x<sub>i</sub>, y<sub>i</sub>]</code> describes a bidirectional path between garden <code>x<sub>i</sub></code> to garden <code>y<sub>i</sub></code>. In each garden, you want to plant one of 4 types of flowers.</p>\n\n<p>All gardens have <strong>at most 3</strong> paths coming into or leaving it.</p>\n\n<p>Your task is to choose a flower type for each garden such that, for any two gardens connected by a path, they have different types of flowers.</p>\n\n<p>Return <em><strong>any</strong> such a choice as an array </em><code>answer</code><em>, where </em><code>answer[i]</code><em> is the type of flower planted in the </em><code>(i+1)<sup>th</sup></code><em> garden. The flower types are denoted </em><code>1</code><em>, </em><code>2</code><em>, </em><code>3</code><em>, or </em><code>4</code><em>. It is guaranteed an answer exists.</em></p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 3, paths = [[1,2],[2,3],[3,1]]\n<strong>Output:</strong> [1,2,3]\n<strong>Explanation:</strong>\nGardens 1 and 2 have different types.\nGardens 2 and 3 have different types.\nGardens 3 and 1 have different types.\nHence, [1,2,3] is a valid answer. Other valid answers include [1,2,4], [1,4,2], and [3,2,1].\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 4, paths = [[1,2],[3,4]]\n<strong>Output:</strong> [1,2,1,2]\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 4, paths = [[1,2],[2,3],[3,4],[4,1],[1,3],[2,4]]\n<strong>Output:</strong> [1,2,3,4]\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= n &lt;= 10<sup>4</sup></code></li>\n\t<li><code>0 &lt;= paths.length &lt;= 2 * 10<sup>4</sup></code></li>\n\t<li><code>paths[i].length == 2</code></li>\n\t<li><code>1 &lt;= x<sub>i</sub>, y<sub>i</sub> &lt;= n</code></li>\n\t<li><code>x<sub>i</sub> != y<sub>i</sub></code></li>\n\t<li>Every garden has <strong>at most 3</strong> paths coming into or leaving it.</li>\n</ul>\n"
+}

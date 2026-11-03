@@ -1,0 +1,98 @@
+{
+  "QuestionId": 206,
+  "FrontendId": 206,
+  "Title": "Reverse Linked List",
+  "TitleSlug": "reverse-linked-list",
+  "Difficulty": "Easy",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Linked List",
+      "Slug": "linked-list"
+    },
+    {
+      "Name": "Recursion",
+      "Slug": "recursion"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Reverse Linked List II",
+      "TitleSlug": "reverse-linked-list-ii",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Binary Tree Upside Down",
+      "TitleSlug": "binary-tree-upside-down",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Palindrome Linked List",
+      "TitleSlug": "palindrome-linked-list",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Reverse Nodes in Even Length Groups",
+      "TitleSlug": "reverse-nodes-in-even-length-groups",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Twin Sum of a Linked List",
+      "TitleSlug": "maximum-twin-sum-of-a-linked-list",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Remove Nodes From Linked List",
+      "TitleSlug": "remove-nodes-from-linked-list",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Insert Greatest Common Divisors in Linked List",
+      "TitleSlug": "insert-greatest-common-divisors-in-linked-list",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "The number of nodes in the list is the range [0, 5000].",
+    "-5000 <= Node.val <= 5000"
+  ],
+  "Signature": {
+    "FunctionName": "reverseList",
+    "Parameters": [
+      {
+        "Name": "head",
+        "Type": "ListNode"
+      }
+    ],
+    "ReturnType": "ListNode",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "/**\n * Definition for singly-linked list.\n * public class ListNode {\n *     public int val;\n *     public ListNode next;\n *     public ListNode(int val=0, ListNode next=null) {\n *         this.val = val;\n *         this.next = next;\n *     }\n * }\n */\npublic class Solution {\n    public ListNode ReverseList(ListNode head) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[1,2,3,4,5]"
+      ],
+      "ExpectedOutput": "[5,4,3,2,1]"
+    },
+    {
+      "Inputs": [
+        "[1,2]"
+      ],
+      "ExpectedOutput": "[2,1]"
+    },
+    {
+      "Inputs": [
+        "[]"
+      ],
+      "ExpectedOutput": "[]"
+    }
+  ],
+  "ContentHtml": "<p>Given the <code>head</code> of a singly linked list, reverse the list, and return <em>the reversed list</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg\" style=\"width: 542px; height: 222px;\" />\n<pre>\n<strong>Input:</strong> head = [1,2,3,4,5]\n<strong>Output:</strong> [5,4,3,2,1]\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2021/02/19/rev1ex2.jpg\" style=\"width: 182px; height: 222px;\" />\n<pre>\n<strong>Input:</strong> head = [1,2]\n<strong>Output:</strong> [2,1]\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> head = []\n<strong>Output:</strong> []\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li>The number of nodes in the list is the range <code>[0, 5000]</code>.</li>\n\t<li><code>-5000 &lt;= Node.val &lt;= 5000</code></li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Follow up:</strong> A linked list can be reversed either iteratively or recursively. Could you implement both?</p>\n"
+}

@@ -1,0 +1,72 @@
+{
+  "QuestionId": 190,
+  "FrontendId": 190,
+  "Title": "Reverse Bits",
+  "TitleSlug": "reverse-bits",
+  "Difficulty": "Easy",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Divide and Conquer",
+      "Slug": "divide-and-conquer"
+    },
+    {
+      "Name": "Bit Manipulation",
+      "Slug": "bit-manipulation"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Reverse Integer",
+      "TitleSlug": "reverse-integer",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Number of 1 Bits",
+      "TitleSlug": "number-of-1-bits",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "A Number After a Double Reversal",
+      "TitleSlug": "a-number-after-a-double-reversal",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "0 <= n <= 2^31 - 2",
+    "n is even."
+  ],
+  "Signature": {
+    "FunctionName": "reverseBits",
+    "Parameters": [
+      {
+        "Name": "n",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int ReverseBits(int n) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "43261596"
+      ],
+      "ExpectedOutput": "964176192"
+    },
+    {
+      "Inputs": [
+        "2147483644"
+      ],
+      "ExpectedOutput": "1073741822"
+    }
+  ],
+  "ContentHtml": "<p>Reverse bits of a given 32 bits signed integer.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">n = 43261596</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">964176192</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<table>\n\t<tbody>\n\t\t<tr>\n\t\t\t<th>Integer</th>\n\t\t\t<th>Binary</th>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>43261596</td>\n\t\t\t<td>00000010100101000001111010011100</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>964176192</td>\n\t\t\t<td>00111001011110000010100101000000</td>\n\t\t</tr>\n\t</tbody>\n</table>\n</div>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">n = 2147483644</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">1073741822</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<table>\n\t<tbody>\n\t\t<tr>\n\t\t\t<th>Integer</th>\n\t\t\t<th>Binary</th>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>2147483644</td>\n\t\t\t<td>01111111111111111111111111111100</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>1073741822</td>\n\t\t\t<td>00111111111111111111111111111110</td>\n\t\t</tr>\n\t</tbody>\n</table>\n</div>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>0 &lt;= n &lt;= 2<sup>31</sup> - 2</code></li>\n\t<li><code>n</code> is even.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Follow up:</strong> If this function is called many times, how would you optimize it?</p>\n"
+}

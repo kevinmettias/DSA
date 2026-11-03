@@ -1332,6 +1332,7 @@ Bottom to top. The first three are peers, and every tier above them reads only t
 | Mechanisms | `DSAExperimentation/Mechanisms/**` | State run by a rule of its own that the caller observes — dropping what no caller named, or handing out what the caller never stored: the LRU and LFU caches, keys that expire, and an allocator of the smallest free number (§17.6b) |
 | 4. LeetCode solutions | `DSAExperimentation.LeetCode/**` (own project) | One folder per problem, every strategy for it; at the root, LeetCode's own notation and answer rules |
 | 5. Harnesses | `DSAExperimentation.Tests/**` (the library's tiers), `DSAExperimentation.LeetCode.Tests/**` (tier 4), `DSAExperimentation.Benchmarks/**` | Assertions and measurement, nothing else |
+| LeetCode catalog | `DSAExperimentation.LeetCode.Catalog/**` (own project), written only by `DSAExperimentation.LeetCode.Catalog.Sync` | What LeetCode says about each covered problem, and every case a harness runs on it, as a checked-in snapshot (§17.12). It reads no tier, and only harnesses read it |
 
 Domain is a peer of DataStructures and Algorithms, not a tier above them. The owner ruled it as
 fundamental as they are (2026-11-01). A triangle's angles, a die's faces and a keypad's letters
@@ -1747,10 +1748,10 @@ on any of those accesses.
 Two things, and only two:
 
 - **Assertions.** A test file — `DSAExperimentation.LeetCode.Tests/<Problem>/<Problem>SolutionTests.cs`,
-  named for the solution class it tests, at the path that mirrors it — states LeetCode's published
-  examples once as a
-  `public static TheoryData<...> Examples`, then carries one
-  `[Theory] [MemberData(nameof(Examples))]` method *per strategy*, so a failure names the strategy
+  named for the solution class it tests, at the path that mirrors it — states its cases once as a
+  `public static TheoryData<...>`: read from the LeetCode catalog (§17.12) where the harness has
+  moved onto it, LeetCode's published examples written inline where it has not. It then carries one
+  `[Theory] [MemberData(...)]` method *per strategy*, so a failure names the strategy
   that broke rather than reporting a disagreement between two anonymous arms, and at least one test
   named for each input-preparation helper §17.4 makes public, asserting what that helper builds.
 - **Workload sizing.** How *large* an input to measure is a measurement decision, so it stays in
@@ -2003,6 +2004,64 @@ calls these rather than writing its own `BuildList` or order-insensitive compari
 workload stays in tier 5 (§17.7), and that every strategy is asserted is
 `LeetCodeStrategyCoverageTests`' to enforce (§18.5); a harness generated from a per-problem
 registration would move the first into tier 4 and duplicate the second.
+
+### 17.12 The LeetCode catalog: what LeetCode says, and the cases a harness runs
+
+`DSAExperimentation.LeetCode.Catalog` holds, for every covered problem, what LeetCode publishes about
+it and the cases its harnesses run, as JSON under `Snapshot/`. `LeetCodeCatalog.Problem(slug)` gives a
+problem's question, statistics and contest rating, and `LeetCodeCatalog.Cases(slug)` its cases.
+Nothing in the project calls the network. The snapshot's one writer is
+`DSAExperimentation.LeetCode.Catalog.Sync`, run by hand and weekly by
+`.github/workflows/leetcode-catalog-sync.yml`. That job runs the whole suite against what it wrote
+and opens a pull request, so `dotnet test` stays offline and every refresh is reviewed.
+
+**What a problem carries, and from where.** The files are split by how often their contents change,
+so a refresh's diff shows only what LeetCode changed:
+
+- `Questions/<slug>.json` is rewritten only when LeetCode edits the question. It holds the
+  question's identity and link, its Easy/Medium/Hard difficulty, its topics, similar questions and
+  hints, the statement, and the C# starter code. It also holds the constraint lines as text, from
+  which `LeetCodeBounds` reads the numeric ranges when asked rather than storing them.
+- The question file also holds the signature, metaData typed. Its parameters are the *judge's*
+  inputs, which can include one the function never sees, such as Linked List Cycle's `pos`. For an
+  in-place question, it names the input the judge reads the answer back from.
+- `Statistics.json` holds every question's acceptance rate, submission totals and votes, under one
+  date.
+- `ContestRatings.json` holds zerotrac's Elo-style rating, which exists only for a question that
+  appeared in a contest. LeetCode itself publishes no numeric difficulty.
+
+**The cases, and who vouches for them.** No public API exposes LeetCode's judge suite, so no case
+here is one of its hidden tests. Each case carries its source:
+
+- **Examples** are the published examples. Their outputs are read from the statement's prose and
+  paired with inputs only when the statement states exactly one output per example.
+- **Dataset** cases come from LeetCodeDataset (Apache-2.0). Their inputs were generated and their
+  outputs printed by a reference Python solution. The importer drops a case:
+  - whose reference failed;
+  - that it cannot translate;
+  - where the reference returned None for an answer that cannot be empty;
+  - that breaks a parsed bound;
+  - that repeats another case.
+- **LeetCodeRun** cases, outputs from LeetCode's own Run button, have a folder reserved and no
+  importer yet. That endpoint needs a signed-in session.
+
+A generated input can still break a promise written as prose, which no parser reads. Two Sum's
+"exactly one valid answer" is one. The harness states such a promise, and a type in the problem's
+folder holds it so both harnesses share one statement, as `TwoSumPromise` does.
+
+**How the harnesses use it.**
+
+- A test builds its `TheoryData` from `Cases(slug)`, reading each input with `Input<T>` in LeetCode's
+  notation and converting trees and lists through `LeetCodeWireFormat` (§17.11).
+- A benchmark gains a `<Problem>SuiteBenchmarks` class. Each of its arms runs the solution's
+  strategy over every case per invocation, as LeetCode times a submission across its suite, and
+  writes the answers into a buffer sized in `[GlobalSetup]` (§17.8).
+- The suite sits beside the sized workloads, not in place of them. Most catalog cases are small, so
+  the suite shows what a strategy costs on the inputs LeetCode poses, and the sized workloads (§17.7)
+  still show how it grows.
+
+Two Sum, Climbing Stairs and Merge Intervals have moved onto the catalog. The other harnesses still
+write their examples inline.
 
 ## 18. Testing policy: every tier tests itself
 

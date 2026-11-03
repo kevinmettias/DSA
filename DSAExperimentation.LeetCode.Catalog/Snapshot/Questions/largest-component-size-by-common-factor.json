@@ -1,0 +1,90 @@
+{
+  "QuestionId": 989,
+  "FrontendId": 952,
+  "Title": "Largest Component Size by Common Factor",
+  "TitleSlug": "largest-component-size-by-common-factor",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Union-Find",
+      "Slug": "union-find"
+    },
+    {
+      "Name": "Number Theory",
+      "Slug": "number-theory"
+    },
+    {
+      "Name": "Prime Factorization",
+      "Slug": "prime-factorization"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Groups of Strings",
+      "TitleSlug": "groups-of-strings",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Distinct Prime Factors of Product of Array",
+      "TitleSlug": "distinct-prime-factors-of-product-of-array",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= nums.length <= 2 * 10^4",
+    "1 <= nums[i] <= 10^5",
+    "All the values of nums are unique."
+  ],
+  "Signature": {
+    "FunctionName": "largestComponentSize",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int LargestComponentSize(int[] nums) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[4,6,15,35]"
+      ],
+      "ExpectedOutput": "4"
+    },
+    {
+      "Inputs": [
+        "[20,50,9,63]"
+      ],
+      "ExpectedOutput": "2"
+    },
+    {
+      "Inputs": [
+        "[2,3,6,7,4,12,21,39]"
+      ],
+      "ExpectedOutput": "8"
+    }
+  ],
+  "ContentHtml": "<p>You are given an integer array of unique positive integers <code>nums</code>. Consider the following graph:</p>\n\n<ul>\n\t<li>There are <code>nums.length</code> nodes, labeled <code>nums[0]</code> to <code>nums[nums.length - 1]</code>,</li>\n\t<li>There is an undirected edge between <code>nums[i]</code> and <code>nums[j]</code> if <code>nums[i]</code> and <code>nums[j]</code> share a common factor greater than <code>1</code>.</li>\n</ul>\n\n<p>Return <em>the size of the largest connected component in the graph</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2018/12/01/ex1.png\" style=\"width: 500px; height: 97px;\" />\n<pre>\n<strong>Input:</strong> nums = [4,6,15,35]\n<strong>Output:</strong> 4\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2018/12/01/ex2.png\" style=\"width: 500px; height: 85px;\" />\n<pre>\n<strong>Input:</strong> nums = [20,50,9,63]\n<strong>Output:</strong> 2\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2018/12/01/ex3.png\" style=\"width: 500px; height: 260px;\" />\n<pre>\n<strong>Input:</strong> nums = [2,3,6,7,4,12,21,39]\n<strong>Output:</strong> 8\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 2 * 10<sup>4</sup></code></li>\n\t<li><code>1 &lt;= nums[i] &lt;= 10<sup>5</sup></code></li>\n\t<li>All the values of <code>nums</code> are <strong>unique</strong>.</li>\n</ul>\n"
+}

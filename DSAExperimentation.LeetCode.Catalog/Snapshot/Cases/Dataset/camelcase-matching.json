@@ -1,0 +1,772 @@
+[
+  {
+    "Inputs": [
+      "[\"Interleaving\",\"InTerLeaVing\",\"InterLeaving\",\"InterLEAVING\"]",
+      "\"InLeV\""
+    ],
+    "ExpectedOutput": "[false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"MixedCASE\",\"MxCs\",\"MxCASE\",\"MixCsE\",\"MxCsECASE\"]",
+      "\"MxCsE\""
+    ],
+    "ExpectedOutput": "[false,false,false,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"AaAaAaAaAa\",\"aAaAaAaAa\",\"AaAaAaA\",\"AaAa\",\"Aa\"]",
+      "\"Aa\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,true]"
+  },
+  {
+    "Inputs": [
+      "[\"samePattern\",\"samePatternEverywhere\",\"same\",\"pattern\"]",
+      "\"sP\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"ComplexPattern\",\"CompPat\",\"ComplexPatt\",\"ComplPtn\",\"CompPattn\"]",
+      "\"CompPtn\""
+    ],
+    "ExpectedOutput": "[true,false,false,true,true]"
+  },
+  {
+    "Inputs": [
+      "[\"SoftwareEngineering\",\"softwareENGINEERING\",\"SoftWaReEnGiNeErInG\",\"SOFTWAREENGINEERING\"]",
+      "\"SWE\""
+    ],
+    "ExpectedOutput": "[false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"PatternMatching\",\"Pattern\",\"Pat\",\"PatMatch\",\"PatternMatchInString\"]",
+      "\"Pat\""
+    ],
+    "ExpectedOutput": "[false,true,true,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"testCase\",\"testCase1\",\"testCase2\",\"testCase3\",\"testCase4\"]",
+      "\"testCase\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"xYzAbCdEfG\",\"xYzAbCdEfGhI\",\"xYzAbCd\",\"xYzAbCdEfGhIjK\",\"xYzAbCdEfGhIjKlM\"]",
+      "\"xYzAbCd\""
+    ],
+    "ExpectedOutput": "[false,false,true,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"ComplexPattern\",\"ComplexPatternQuery\",\"ComplexPatternMatch\",\"ComplexPatternMismatch\",\"ComplexPatternCase\"]",
+      "\"CPM\""
+    ],
+    "ExpectedOutput": "[false,false,true,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"ComplexPatternMatching\",\"ComplexPattern\",\"ComplexMatch\",\"PatternMatching\",\"PatternMatch\"]",
+      "\"CPM\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"Java\",\"JavaScript\",\"JavaS\",\"JavaScr\",\"JavaScriptAndMore\"]",
+      "\"JS\""
+    ],
+    "ExpectedOutput": "[false,true,true,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"TestCase1\",\"TestCase2\",\"TestCase3\",\"testCase4\",\"testCase5\",\"testCase6\"]",
+      "\"TestCase\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"CamelCase\",\"CamelCasePattern\",\"Camel\",\"Case\"]",
+      "\"CCP\""
+    ],
+    "ExpectedOutput": "[false,true,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"MultipleUpperCaseLetters\",\"MultipleLowerCaseLetters\",\"MixOfUpperAndLowerCase\",\"OnlyUpperCase\",\"OnlyLowerCase\"]",
+      "\"MUCL\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"LongPatternMatchingExample\",\"LongPattern\",\"Long\",\"LongPatternExample\",\"LongPatternMatchingExampleInPython\"]",
+      "\"Long\""
+    ],
+    "ExpectedOutput": "[false,false,true,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"CamelHump\",\"CamelHumpQuery\",\"CamelHouse\",\"CamelHousekeeping\",\"CamelHorseRace\"]",
+      "\"CH\""
+    ],
+    "ExpectedOutput": "[true,false,true,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"EdgeCase\",\"EdgeCaseQuery\",\"EdgeCaseMatch\",\"EdgeCaseMismatch\",\"EdgeCaseCase\"]",
+      "\"ECMc\""
+    ],
+    "ExpectedOutput": "[false,false,true,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"ABcDeFgHiJkLmNoPqRsTuVwXyZ\",\"abcdefgHIJKLmnopQRstUVwxYZ\",\"AbCdEfGhIjKlMnOpQrStUvWxYz\"]",
+      "\"AbCdEfG\""
+    ],
+    "ExpectedOutput": "[false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"MixedCasePattern\",\"Mixed\",\"Case\",\"Pattern\",\"MixedPatternCase\"]",
+      "\"Mix\""
+    ],
+    "ExpectedOutput": "[false,true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"ExamplePattern\",\"Ex\",\"ExPat\",\"Example\",\"PatternExample\"]",
+      "\"Ex\""
+    ],
+    "ExpectedOutput": "[false,true,false,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"DeepLearning\",\"deepLEARNING\",\"DeEpLeArNiNg\",\"DEEPLEARNING\"]",
+      "\"DL\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"veryComplexPattern\",\"veryComplexPat\",\"veryComp\",\"very\"]",
+      "\"vCP\""
+    ],
+    "ExpectedOutput": "[true,true,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"LeetCode\",\"Leet_Code\",\"Leet_Co_Dee\",\"L_C_D\",\"L_C_D_E_T\"]",
+      "\"LCDE\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"ComplexPatternMatching\",\"Complex\",\"Pat\",\"ComplexPat\",\"PatternComplex\"]",
+      "\"Com\""
+    ],
+    "ExpectedOutput": "[false,true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"aAaAaAaA\",\"AAAAAAAA\",\"aAaAaAa\",\"AaAaAaAaAaAaAaAa\",\"aAaAaAaAaAaAaAaAa\",\"AaAaAaAaAaAaAaAaAaAa\",\"AaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAa\"]",
+      "\"aAaAaAaA\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"CamelCase\",\"camelCase\",\"Camelcase\",\"camelCASE\"]",
+      "\"Camel\""
+    ],
+    "ExpectedOutput": "[false,false,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"CamelCaseExample\",\"CamelCase\",\"CamelExample\",\"ExampleCamel\",\"Camel\"]",
+      "\"CamEx\""
+    ],
+    "ExpectedOutput": "[false,false,true,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"CamelCase\",\"Camel\",\"CamelCasePattern\",\"CamelPattern\",\"PatternCamel\"]",
+      "\"Cam\""
+    ],
+    "ExpectedOutput": "[false,true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"Match\",\"MaTch\",\"MatCh\",\"MatcH\",\"MatchiNg\"]",
+      "\"Match\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"aAbBcC\",\"aabbcc\",\"aaBbCc\",\"aAaBbCc\",\"aAbbcC\"]",
+      "\"abc\""
+    ],
+    "ExpectedOutput": "[false,true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"testCase\",\"TestCase\",\"testCase1\",\"testCase2\",\"testCase3\"]",
+      "\"tc\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"VariableLength\",\"VarLen\",\"VarLenPattern\",\"VL\",\"VariablePatLen\"]",
+      "\"VarPatLen\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,true]"
+  },
+  {
+    "Inputs": [
+      "[\"lowerCasePattern\",\"lowercasepattern\",\"LOWERCASEPATTERN\",\"lowerCASE\"]",
+      "\"lCP\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"Python\",\"PythoN\",\"PythOn\",\"PyThOn\",\"PYTHOn\",\"PYTHOnS\"]",
+      "\"PyTh\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"aAbBcCdDeEfF\",\"aabbccddeeff\",\"Aabbccddeeff\",\"aAbbccddeeff\"]",
+      "\"aBcDeF\""
+    ],
+    "ExpectedOutput": "[false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"Programming\",\"PrograMMing\",\"PROGRAMMING\",\"programming\"]",
+      "\"PrM\""
+    ],
+    "ExpectedOutput": "[false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"helloWorld\",\"HELLOworld\",\"hElLoWoRlD\",\"HeLLoWoRLd\",\"HELLOWORLD\"]",
+      "\"hELo\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"aAbB\",\"aabb\",\"AABB\",\"aAaA\"]",
+      "\"aAbB\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"aAbBcCdDeE\",\"aabbccddeeff\",\"AaBbCcDdEeFf\",\"AABBCCDDEEFF\"]",
+      "\"aBcDeF\""
+    ],
+    "ExpectedOutput": "[false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"DataScience\",\"Data_Science\",\"DaSc\",\"DaTaSci\",\"DaTaSceNiCe\"]",
+      "\"DaS\""
+    ],
+    "ExpectedOutput": "[true,false,true,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"AlGoRiThM\",\"algoRiThm\",\"AlgorIthM\",\"Algorithm\"]",
+      "\"AlGoRiThM\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"ThisIsJustARandomQuery\",\"ThisIsJustAQuery\",\"ThisIsARandomQuery\",\"ThisJustARandomQuery\",\"ThisIsJustARandomQ\"]",
+      "\"TIJARQ\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,true]"
+  },
+  {
+    "Inputs": [
+      "[\"ComplexPattern\",\"ComplexPAttern\",\"ComplexPattern1\",\"ComplexPattern2\",\"ComplexPattern3\"]",
+      "\"ComplexPat\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"QuantumComputing\",\"quantumCOMPUTING\",\"QuAnTuMCoMpUtInG\",\"QUANTUMCOMPUTING\"]",
+      "\"QC\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"ComplexPattern\",\"complexPattern\",\"ComplexPATTERN\",\"complexpATTERN\",\"ComplexpAtTeRn\"]",
+      "\"CP\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\",\"h\",\"i\",\"j\",\"k\",\"l\",\"m\",\"n\",\"o\",\"p\",\"q\",\"r\",\"s\",\"t\",\"u\",\"v\",\"w\",\"x\",\"y\",\"z\"]",
+      "\"a\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"aBcDeFgHiJ\",\"aBcDeFgHiJkLmNoPqR\",\"aBcDeFgHiJkL\",\"aBcDeFgHiJkLmNoP\",\"aBcDeFgHiJkLmNoPqRsTuVwXyZ\"]",
+      "\"aBcDeFgHiJ\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"EdgeCase\",\"EdgeCaseQuery\",\"EdgeCaseMatch\",\"EdgeCaseMismatch\",\"EdgeCaseCase\"]",
+      "\"ECq\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"EdgeCase\",\"EdgeCaseQuery\",\"EdgeCaseMatch\",\"EdgeCaseMismatch\",\"EdgeCaseCase\"]",
+      "\"ECM\""
+    ],
+    "ExpectedOutput": "[false,false,true,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"Pattern\",\"Pattern1\",\"Pattern2\",\"Pattern3\",\"Pattern4\"]",
+      "\"Pattern\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"ArtificialIntelligence\",\"artificialINTELLIGENCE\",\"ArTiFiCiAlInTeLlIgEnCe\",\"ARTIFICIALINTELLIGENCE\"]",
+      "\"AI\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"ComplexPattern\",\"ComplexPatternQuery\",\"ComplexPatternMatch\",\"ComplexPatternMismatch\",\"ComplexPatternCase\"]",
+      "\"CPMc\""
+    ],
+    "ExpectedOutput": "[false,false,true,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"camelMatch\",\"CamelMatch\",\"camelMATCH\",\"CamelMATCH\",\"camelMatchTEST\"]",
+      "\"CMt\""
+    ],
+    "ExpectedOutput": "[false,true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"MiXeDcAsE\",\"MiXeDcAsEc\",\"MiXeDcAsEcc\",\"MiXeDcAsEcce\",\"MiXeDcAsEcces\",\"MiXeDcAsEccese\"]",
+      "\"MiXeDcAsEcces\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,true,true]"
+  },
+  {
+    "Inputs": [
+      "[\"upperCASE\",\"UpperCASE\",\"upperCase\",\"UPPERcase\",\"uPPERCase\"]",
+      "\"uPR\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"AbCdEfGh\",\"AbCdEfGhIj\",\"AbCdEfGhIjKl\",\"AbCdEfGhIjKlMn\"]",
+      "\"ACEGIK\""
+    ],
+    "ExpectedOutput": "[false,false,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"SubsequenceMatching\",\"SubseqMatch\",\"SubSeqMatch\",\"SbqMtch\",\"SubsqMtch\"]",
+      "\"SbqMtch\""
+    ],
+    "ExpectedOutput": "[true,true,false,true,true]"
+  },
+  {
+    "Inputs": [
+      "[\"TestPattern\",\"TestPatternQuery\",\"TestPatternMatch\",\"TestPatternMismatch\",\"TestPatternCase\"]",
+      "\"TPq\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"xYzXyZ\",\"xyzyxzyx\",\"XYXYXY\",\"xyXyXy\"]",
+      "\"XyZ\""
+    ],
+    "ExpectedOutput": "[false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"multipleUpperCases\",\"multipleUPPERCASES\",\"MULTIPLEUPPERCASES\",\"multipleUPPER\"]",
+      "\"mUC\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"CamelMatch\",\"camelMatch\",\"CaMeLmAtCh\",\"CAMELMATCH\",\"camelMATCH\"]",
+      "\"CaM\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"PatternMatching\",\"PatternMATching\",\"PatternMATCHing\",\"PatternMATCHINg\"]",
+      "\"PatternMATCHINg\""
+    ],
+    "ExpectedOutput": "[false,false,false,true]"
+  },
+  {
+    "Inputs": [
+      "[\"ComplexPattern\",\"ComplexPatternQuery\",\"ComplexPatternMatch\",\"ComplexPatternMismatch\",\"ComplexPatternCase\"]",
+      "\"CPq\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"XyZ\",\"XYZabc\",\"xYzAbC\",\"xyZabc\",\"XyZABC\"]",
+      "\"XyZ\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"MachineLearning\",\"machineLEARNING\",\"MaChInELeArNiNg\",\"MACHINELEARNING\"]",
+      "\"ML\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"aBcDeFgHiJ\",\"aBcDeFgHiJkL\",\"aBcDeFgHiJkLmN\",\"aBcDeFgHiJkLmNoP\",\"aBcDeFgHiJkLmNoPqR\"]",
+      "\"aBcFj\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"CamelCasePatternMatching\",\"camelCasePatternMatching\",\"CamelCasePattern\",\"CamelCasePatternMatch\",\"CamelCasePatt\"]",
+      "\"CCPM\""
+    ],
+    "ExpectedOutput": "[true,false,false,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"AbCdEfG\",\"AbcDeFG\",\"AbCDefg\",\"AbcDefgHiJk\",\"AbCdEfGhIjk\"]",
+      "\"ACEG\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"TestPattern\",\"TestPatternQuery\",\"TestPatternMatch\",\"TestPatternMismatch\",\"TestPatternCase\"]",
+      "\"TPM\""
+    ],
+    "ExpectedOutput": "[false,false,true,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"CamelCase\",\"camelCase\",\"CamelCASE\",\"CAMELcase\"]",
+      "\"CaC\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ\",\"abcdefghijklmnopqrstuvwxyz\",\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\",\"aBcDeFgHiJkLmNoPqRsTuVwXyZ\",\"AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz\"]",
+      "\"aBcEfHjLpTz\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"OneTwoThreeFourFiveSixSevenEightNineTen\",\"OneTwoThreeFourFiveSixSevenEightNine\",\"OneTwoThreeFourFiveSixSevenEight\",\"OneTwoThreeFourFiveSixSeven\",\"OneTwoThreeFourFiveSix\"]",
+      "\"OTFSF\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"CamelCasePatternMatching\",\"camelCasePatternMatching\",\"CAMELCASEPATTERNMATCHING\",\"camelcasepatternmatching\"]",
+      "\"CamElCaSePaTtErNmAtChInG\""
+    ],
+    "ExpectedOutput": "[false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ\",\"aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyY\"]",
+      "\"aBcDeFgHiJkLmNoPqRsTuVwXyZ\""
+    ],
+    "ExpectedOutput": "[false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"AnotherExample\",\"Another\",\"An\",\"AnotherExampleString\",\"ExampleAnotherString\"]",
+      "\"An\""
+    ],
+    "ExpectedOutput": "[false,true,true,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"TestCase\",\"Test\",\"TestCasePattern\",\"TestPattern\",\"PatternTest\"]",
+      "\"Tes\""
+    ],
+    "ExpectedOutput": "[false,true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"MachineLearning\",\"ML\",\"MaChine_Learning\",\"MachLeaRning\",\"MachineLearNiNg\"]",
+      "\"MLe\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"PatternMatching\",\"PatternMatchingExample\",\"PatMatch\",\"PatMatchEx\"]",
+      "\"PM\""
+    ],
+    "ExpectedOutput": "[true,false,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"abAB\",\"abab\",\"ABab\",\"abABab\",\"abABAB\"]",
+      "\"abAB\""
+    ],
+    "ExpectedOutput": "[true,false,false,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"PatternMatchingIsFun\",\"PatternMatching\",\"PatternMatchingIs\",\"PatternIsFun\",\"PatternMatchingFun\"]",
+      "\"PMIF\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"AlGoRiThM\",\"algoR\",\"alGOrIthM\",\"aLGOrIth\",\"AlgOrIthM\"]",
+      "\"aGI\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"aBcDeFgHiJ\",\"aBcDeFgHiJkL\",\"aBcDeFgHiJkLmN\",\"aBcDeFgHiJkLmNoP\",\"aBcDeFgHiJkLmNoPqR\"]",
+      "\"aBcDFgHj\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"PaTtErN123\",\"Pattern123\",\"pAtTeRn123\",\"PaTtErN\",\"Pattern\",\"pAtTeRn\"]",
+      "\"PaTtErN\""
+    ],
+    "ExpectedOutput": "[false,false,false,true,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"aBCdEf\",\"abcdef\",\"abDef\",\"aBcDE\",\"aBcDeF\",\"aBcDEf\"]",
+      "\"aBcEf\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"TestCasesWithDifferentLengths\",\"TestCasesWithDifferentLength\",\"TestCasesWithDifferent\",\"TestCasesWith\",\"TestCases\"]",
+      "\"TCWDL\""
+    ],
+    "ExpectedOutput": "[true,true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"Pattern\",\"pattern\",\"PatternMatch\",\"PAtTERNmAtCH\",\"PaTtErNmAtCh\"]",
+      "\"PaT\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"ComputerVision\",\"computerVISION\",\"CoMpUtErViSiOn\",\"COMPUTERVISION\"]",
+      "\"CV\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"Xylophone\",\"xylophone\",\"XyLopHone\",\"XyLoPhone\",\"xyLoPhOnE\"]",
+      "\"XyLoPhOnE\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"CoMpLeXqUeRiEs\",\"complexqueries\",\"CoMpLeXqUeRiE\",\"CoMpLeXqUeRiEz\",\"CoMpLeXqUeRiEsZ\",\"CoMpLeXqUeRiEsZz\"]",
+      "\"CoMpLeXqUeRiEs\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"CamelHump\",\"CamelHumpQuery\",\"CamelHouse\",\"CamelHousekeeping\",\"CamelHorseRace\"]",
+      "\"CHq\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"OpenAI\",\"Open_Artificial_Intelligence\",\"O_A_I\",\"OpenA\",\"OpenAIAI\"]",
+      "\"OAI\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"looongPattern\",\"looongPattern\",\"longPattern\",\"lOnGPattern\",\"LoNgPatTerN\"]",
+      "\"LoNgPat\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"Algorithm\",\"AlgoRhythm\",\"AlGoRiThM\",\"ALGORITHM\"]",
+      "\"AlGM\""
+    ],
+    "ExpectedOutput": "[false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"TestString\",\"TestingString\",\"TeststrIng\",\"TstStr\",\"TestStrng\"]",
+      "\"TstStr\""
+    ],
+    "ExpectedOutput": "[true,true,false,true,true]"
+  },
+  {
+    "Inputs": [
+      "[\"OneTwoThreeFour\",\"OTFT\",\"OneTwoF\",\"OneTwoThrFor\",\"OTFTF\"]",
+      "\"OTFT\""
+    ],
+    "ExpectedOutput": "[false,true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"qWeRtY\",\"qwerty\",\"QwErTy\",\"QwErTyUiOp\"]",
+      "\"qWeRtY\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"TestPattern\",\"TestPatternQuery\",\"TestPatternMatch\",\"TestPatternMismatch\",\"TestPatternCase\"]",
+      "\"TPMc\""
+    ],
+    "ExpectedOutput": "[false,false,true,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"NaturalLanguageProcessing\",\"naturalLANGUAGEPROCESSING\",\"NaTuRaLlAnGuAgEPrOcEsSiNg\",\"NATURALLANGUAGEPROCESSING\"]",
+      "\"NLP\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"MIXEDcase\",\"MiXEDcase\",\"MiXeDCase\",\"MIXeDCase\",\"MiXEdCASE\"]",
+      "\"MXc\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"MiXeDcASe\",\"MiXeDCase\",\"MiXeD\",\"MiX\",\"MixeDCase\"]",
+      "\"MiX\""
+    ],
+    "ExpectedOutput": "[false,false,false,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"aAaAaA\",\"aaaaaa\",\"Aaaaaa\",\"aAaaaa\",\"aaaaAa\"]",
+      "\"aAa\""
+    ],
+    "ExpectedOutput": "[false,false,false,true,true]"
+  },
+  {
+    "Inputs": [
+      "[\"CamelHump\",\"CamelHumpQuery\",\"CamelHouse\",\"CamelHousekeeping\",\"CamelHorseRace\"]",
+      "\"CHH\""
+    ],
+    "ExpectedOutput": "[false,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"PatternMatching\",\"PatMat\",\"PatrnMtch\",\"PatternMtching\",\"PatMatch\"]",
+      "\"PtnMtch\""
+    ],
+    "ExpectedOutput": "[true,false,true,true,false]"
+  },
+  {
+    "Inputs": [
+      "[\"AlphabetPattern\",\"Al\",\"Alpha\",\"Pattern\",\"AlphabetPatternInString\"]",
+      "\"Al\""
+    ],
+    "ExpectedOutput": "[false,true,true,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"lowercase\",\"Lowercase\",\"LOWERCASE\",\"lowerCASE\",\"lowERCASE\"]",
+      "\"lwr\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"aAbBcCdDeEfFgG\",\"aBcDeFg\",\"aBcD\",\"aB\",\"a\"]",
+      "\"aBcD\""
+    ],
+    "ExpectedOutput": "[false,false,true,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"AlGoRiThM\",\"algorithm\",\"AlGoRiThMs\",\"AlGoRiThMuS\",\"algorithms\",\"AlGoRiThmSUs\",\"AlGoRiThMuSiC\"]",
+      "\"AlGoRiThMuS\""
+    ],
+    "ExpectedOutput": "[false,false,false,true,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"exampleQuery\",\"ExampleQUERY\",\"exampleQUERY\",\"exampleQueryTest\",\"exampleQueryTestTest\"]",
+      "\"eQ\""
+    ],
+    "ExpectedOutput": "[true,false,false,false,false]"
+  },
+  {
+    "Inputs": [
+      "[\"DataStructure\",\"dataStructure\",\"DataSTRUCTURE\",\"DATAstructure\"]",
+      "\"DtS\""
+    ],
+    "ExpectedOutput": "[true,false,false,false]"
+  }
+]

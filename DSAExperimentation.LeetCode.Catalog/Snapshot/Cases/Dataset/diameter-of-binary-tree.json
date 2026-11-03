@@ -1,0 +1,548 @@
+[
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[4,-7,-3,null,null,-9,-3,9,-7,-4,null,6,null,-6,-6,null,null,0,6,5,null,9,null,null,-1,-4,null,null,null,-2]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,null,2,null,3,null,4,null,5]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[3,1,4,null,2]"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[1,2,3]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,null,null,5]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[1,2,null,4,5]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[4,-7,-3,null,null,-9,-3,9,-4,null,6,null,-6,-6,null,null,0,6,5,null,9,null,null,-1,-4,null,null,null,-2]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[4,2,null,3,null,1]"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,null,4,5]"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[3,1,2]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[1]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[1,null,2,null,3]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[1,null,2,null,null,3,null,null,4,null,null,5]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[1,null,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9,null,10]"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "[1,null,2,3,null,null,4,5,null,null,6,null,7,null,8]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,null,2,3,null,null,4,5,null,null,null,null,null,null,6]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,null,null,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,null,null,5,null,null,6,null,null,7]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,null,8,null,9,null,10,null,11]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,8,9,null,null,10,11,12,13,14,15,null,null,null,null,16]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,null,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9,null,10,null,11,null,12,null,13,null,14,null,15]"
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,null,6,7,null,null,8,9,null,null,null,null,10]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[1,null,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,null,null,5,null,null,6,7,null,null,8,9]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[1,null,2,3,null,4,null,5,null,6,null,7,null,8,null,9]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,2,null,3,null,4,null,5,null,6,null,7,null,8]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9,null,10,null,11]"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,null,6,7,null,null,null,null,8]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,null,null,4,null,null,null,null,null,5,null,null,null,null,6]"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,null,4,5,6,7,8,9,10,11,12,13]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,null,null,5,null,null,6,null,null,7,null,null,8]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[1,null,2,null,null,null,3,null,null,null,null,4,null,null,null,null,5]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,null,5,null,6,null,7,null,8,null,9]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,2,null,4,null,6,7,8,9]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,null,null,5,null,null,null,null,6,7,null,null,8,null,null,9]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,8,null,null,10,11,null,null,12,13]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,null,5,6,null,7,8,null,null,9,null,null,10,11]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,null,null,6,7,8,9,null,null,null,null,10,11]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,null,null,5,null,6,null,7,null,8,null,9]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,null,8,null,null,null,9,null,null,null,null,10,null,null,null,null,11]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,8,9,10,null,null,11,null,null,12,null,null,13,null,null,14]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,4,null,null,5,6]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[1,2,null,3,null,4,null,5]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,null,null,8,9,null,null,null,null,10,11]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,null,6,null,null,null,null,7,null,null,8,null,null,null,null,null,null,9,null,null,10]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,null,null,8,9,null,null,10,11]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,4,5,null,null,6,7,null,8,null,null,9]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,4,null,null,5,null,null,6]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,4,5,6,7,8,9,10,null,null,11,12]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,null,null,5,null,6,null,null,7,null,8]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,null,null,null,null,null,null,4,null,null,null,null,5]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,null,4,null,null,5,null,6,null,null,7,null,null,8,null,9]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[1,2,null,null,3,null,null,null,4,null,null,null,null,5,null,null,null,null,null,6]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,4,null,5,null,6,null,7,null,8,null,9,null,10,null,11,null,12,null,13,null,14,null,15]"
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,null,null,8,null,null,9,null,null,10,null,null,11,null,null,12,null,null,13]"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,8,null,9,null,10,null,11,null,12]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,null,null,8,9,10,11,null,null,12,13]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,null,null,3,null,null,4,null,null,5,null,null,6,null,null,7]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[1,null,2,null,3,null,4,null,5,null,6,null,7]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[1,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9,null,10,null,11,null,12,null,13,null,14,null,15]"
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "[1,2,null,3,4,null,null,5,6,null,null,7,8,null,null,9,10]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,8,9,null,10,null,11,null,12,null,13,null,14,null,15]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,null,null,6,null,null,7,8,null,null,null,null,9]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,null,4,5,6,7,null,null,null,null,8,9]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[1,2,null,null,3,null,null,4,null,null,5,null,null,6,null,null,7,null,null,8,null,null,9,null,null,10]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,4,null,5,6,7]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,null,null,6,7,null,null,8,9]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,null,null,6,7,8,9,null,null,null,10,null,null,11,null,null,12]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,4,null,5,null,6]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,4,null,5,null,6,null,7,null,8,null,9]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,null,2,null,3,null,4,null,5,null,6]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,null,6,7,8,null,null,null,9,10,11]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,null,null,5,6,7,8,9,null,null,10]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,null,null,5,null,null,6,7,8,9,10,11,12,13,14,15]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9,null,10]"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "[1,2,null,3,4,5,null,null,6,7,null,null,8,9]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,null,4,null,5,null,6,null,7,null,8,null,9,null,10,null,11,null,12]"
+    ],
+    "ExpectedOutput": "11"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,null,null,8,9,10,11,null,null,null,null,null,12,13]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,4,null,5,null,null,6,7]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,null,null,6,7,8,9,10,11,12,13]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,8,9,null,null,null,null,null,null,10,11,12]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,null,null,4,5,null,null,6,null,7,null,8,null,9,null,10,null,11,null,12,null,13]"
+    ],
+    "ExpectedOutput": "11"
+  },
+  {
+    "Inputs": [
+      "[1,2,3,4,5,6,7,8,9,null,null,null,null,10,11,12,13,14,15]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "[1,null,2,3,null,4,null,5,null,6,null,7]"
+    ],
+    "ExpectedOutput": "6"
+  }
+]

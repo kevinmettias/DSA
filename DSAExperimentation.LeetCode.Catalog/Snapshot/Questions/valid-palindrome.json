@@ -1,0 +1,93 @@
+{
+  "QuestionId": 125,
+  "FrontendId": 125,
+  "Title": "Valid Palindrome",
+  "TitleSlug": "valid-palindrome",
+  "Difficulty": "Easy",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Two Pointers",
+      "Slug": "two-pointers"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Palindrome Linked List",
+      "TitleSlug": "palindrome-linked-list",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Valid Palindrome II",
+      "TitleSlug": "valid-palindrome-ii",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Maximum Product of the Length of Two Palindromic Subsequences",
+      "TitleSlug": "maximum-product-of-the-length-of-two-palindromic-subsequences",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Find First Palindromic String in the Array",
+      "TitleSlug": "find-first-palindromic-string-in-the-array",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Valid Palindrome IV",
+      "TitleSlug": "valid-palindrome-iv",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Palindromes After Operations",
+      "TitleSlug": "maximum-palindromes-after-operations",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= s.length <= 2 * 10^5",
+    "s consists only of printable ASCII characters."
+  ],
+  "Signature": {
+    "FunctionName": "isPalindrome",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "boolean",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public bool IsPalindrome(string s) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"A man, a plan, a canal: Panama\""
+      ],
+      "ExpectedOutput": "true"
+    },
+    {
+      "Inputs": [
+        "\"race a car\""
+      ],
+      "ExpectedOutput": "false"
+    },
+    {
+      "Inputs": [
+        "\" \""
+      ],
+      "ExpectedOutput": "true"
+    }
+  ],
+  "ContentHtml": "<p>A phrase is a <strong>palindrome</strong> if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.</p>\n\n<p>Given a string <code>s</code>, return <code>true</code><em> if it is a <strong>palindrome</strong>, or </em><code>false</code><em> otherwise</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;A man, a plan, a canal: Panama&quot;\n<strong>Output:</strong> true\n<strong>Explanation:</strong> &quot;amanaplanacanalpanama&quot; is a palindrome.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;race a car&quot;\n<strong>Output:</strong> false\n<strong>Explanation:</strong> &quot;raceacar&quot; is not a palindrome.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot; &quot;\n<strong>Output:</strong> true\n<strong>Explanation:</strong> s is an empty string &quot;&quot; after removing non-alphanumeric characters.\nSince an empty string reads the same forward and backward, it is a palindrome.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length &lt;= 2 * 10<sup>5</sup></code></li>\n\t<li><code>s</code> consists only of printable ASCII characters.</li>\n</ul>\n"
+}

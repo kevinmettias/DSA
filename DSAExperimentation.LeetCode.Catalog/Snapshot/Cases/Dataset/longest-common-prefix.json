@@ -1,0 +1,878 @@
+[
+  {
+    "Inputs": [
+      "[\"hello\",\"helium\",\"helper\"]"
+    ],
+    "ExpectedOutput": "\"hel\""
+  },
+  {
+    "Inputs": [
+      "[\"a\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"\",\"\",\"\",\"\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"app\",\"apricot\"]"
+    ],
+    "ExpectedOutput": "\"ap\""
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abce\",\"abcf\"]"
+    ],
+    "ExpectedOutput": "\"abc\""
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"app\",\"application\"]"
+    ],
+    "ExpectedOutput": "\"app\""
+  },
+  {
+    "Inputs": [
+      "[\"interview\",\"interrupt\",\"inter\"]"
+    ],
+    "ExpectedOutput": "\"inter\""
+  },
+  {
+    "Inputs": [
+      "[\"test\",\"testing\",\"tester\"]"
+    ],
+    "ExpectedOutput": "\"test\""
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"hella\"]"
+    ],
+    "ExpectedOutput": "\"hell\""
+  },
+  {
+    "Inputs": [
+      "[\"same\",\"same\",\"same\"]"
+    ],
+    "ExpectedOutput": "\"same\""
+  },
+  {
+    "Inputs": [
+      "[\"single\"]"
+    ],
+    "ExpectedOutput": "\"single\""
+  },
+  {
+    "Inputs": [
+      "[\"ab\",\"abc\",\"abcd\"]"
+    ],
+    "ExpectedOutput": "\"ab\""
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"abc\",\"abc\"]"
+    ],
+    "ExpectedOutput": "\"abc\""
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"dcba\",\"abdc\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"\",\"b\",\"abc\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ab\",\"abc\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"a\",\"a\",\"a\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"\",\"\",\"abc\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"abcd\",\"abcde\"]"
+    ],
+    "ExpectedOutput": "\"abc\""
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abc\",\"ab\",\"a\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"bandana\",\"banner\"]"
+    ],
+    "ExpectedOutput": "\"ban\""
+  },
+  {
+    "Inputs": [
+      "[\"aaaa\",\"aaab\",\"aaac\"]"
+    ],
+    "ExpectedOutput": "\"aaa\""
+  },
+  {
+    "Inputs": [
+      "[\"mississippi\",\"mississauga\",\"mission\",\"missed\"]"
+    ],
+    "ExpectedOutput": "\"miss\""
+  },
+  {
+    "Inputs": [
+      "[\"commonality\",\"commonwealth\",\"common\",\"commons\"]"
+    ],
+    "ExpectedOutput": "\"common\""
+  },
+  {
+    "Inputs": [
+      "[\"different\",\"prefixes\",\"here\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"repetition\",\"repetitive\",\"repeat\",\"repel\",\"repeal\",\"repetend\"]"
+    ],
+    "ExpectedOutput": "\"repe\""
+  },
+  {
+    "Inputs": [
+      "[\"million\",\"millionaire\",\"millionth\",\"millionfold\"]"
+    ],
+    "ExpectedOutput": "\"million\""
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algorithmic\",\"algebra\",\"alignment\"]"
+    ],
+    "ExpectedOutput": "\"al\""
+  },
+  {
+    "Inputs": [
+      "[\"difficult\",\"difficulty\",\"differ\"]"
+    ],
+    "ExpectedOutput": "\"diff\""
+  },
+  {
+    "Inputs": [
+      "[\"environment\",\"environmental\",\"envision\",\"enzyme\"]"
+    ],
+    "ExpectedOutput": "\"en\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"xylophone\",\"xylotomy\",\"xylography\",\"xylograph\"]"
+    ],
+    "ExpectedOutput": "\"xylo\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"abcde\",\"abc\",\"ab\",\"a\",\"abcde\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"unique\",\"unit\",\"universe\",\"unity\",\"un\"]"
+    ],
+    "ExpectedOutput": "\"un\""
+  },
+  {
+    "Inputs": [
+      "[\"same\",\"same\",\"same\",\"same\"]"
+    ],
+    "ExpectedOutput": "\"same\""
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"abcde\",\"abcd\",\"abc\",\"ab\",\"a\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"short\",\"small\",\"shallow\",\"shrink\"]"
+    ],
+    "ExpectedOutput": "\"s\""
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zoo\",\"zenith\",\"zest\",\"zone\",\"zephyr\"]"
+    ],
+    "ExpectedOutput": "\"z\""
+  },
+  {
+    "Inputs": [
+      "[\"multidimensional\",\"multidimensionalities\",\"multidimensionally\",\"multidimensionalization\"]"
+    ],
+    "ExpectedOutput": "\"multidimensional\""
+  },
+  {
+    "Inputs": [
+      "[\"computation\",\"compute\",\"computer\",\"comedy\"]"
+    ],
+    "ExpectedOutput": "\"com\""
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"ab\",\"a\",\"abcde\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"abcde\",\"abcdf\",\"abcde\",\"abcda\",\"abcde\",\"abcdf\"]"
+    ],
+    "ExpectedOutput": "\"abcd\""
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zoo\",\"zealot\"]"
+    ],
+    "ExpectedOutput": "\"z\""
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abcde\",\"ab\",\"a\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"microphone\",\"microwave\",\"microscope\",\"microbial\"]"
+    ],
+    "ExpectedOutput": "\"micro\""
+  },
+  {
+    "Inputs": [
+      "[\"longest\",\"long\",\"lonely\"]"
+    ],
+    "ExpectedOutput": "\"lon\""
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"preprocessor\",\"prevent\"]"
+    ],
+    "ExpectedOutput": "\"pre\""
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algorithmically\",\"\",\"algorithmic\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"alert\",\"alibaba\",\"allied\"]"
+    ],
+    "ExpectedOutput": "\"al\""
+  },
+  {
+    "Inputs": [
+      "[\"unbelievable\",\"unbeliever\",\"unbelievably\",\"unbelievability\"]"
+    ],
+    "ExpectedOutput": "\"unbeliev\""
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"preposition\",\"prevent\",\"premier\"]"
+    ],
+    "ExpectedOutput": "\"pre\""
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"prefixes\",\"prefixation\",\"prefixed\"]"
+    ],
+    "ExpectedOutput": "\"prefix\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"\",\"same\",\"same\",\"same\",\"same\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"same\",\"same\",\"same\",\"same\",\"same\"]"
+    ],
+    "ExpectedOutput": "\"same\""
+  },
+  {
+    "Inputs": [
+      "[\"optimization\",\"optimization\",\"optimized\",\"optimizer\"]"
+    ],
+    "ExpectedOutput": "\"optimiz\""
+  },
+  {
+    "Inputs": [
+      "[\"communication\",\"communicate\",\"commune\",\"communist\"]"
+    ],
+    "ExpectedOutput": "\"commun\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algorithmically\",\"algebra\",\"allegro\"]"
+    ],
+    "ExpectedOutput": "\"al\""
+  },
+  {
+    "Inputs": [
+      "[\"common\",\"commotion\",\"communicate\",\"community\"]"
+    ],
+    "ExpectedOutput": "\"comm\""
+  },
+  {
+    "Inputs": [
+      "[\"flower\",\"flow\",\"flight\",\"flew\",\"flying\",\"flowing\"]"
+    ],
+    "ExpectedOutput": "\"fl\""
+  },
+  {
+    "Inputs": [
+      "[\"single\",\"singlehandedly\",\"singlemindedness\",\"singlehanded\"]"
+    ],
+    "ExpectedOutput": "\"single\""
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algebra\",\"alaska\"]"
+    ],
+    "ExpectedOutput": "\"al\""
+  },
+  {
+    "Inputs": [
+      "[\"congratulations\",\"congruity\",\"congruent\"]"
+    ],
+    "ExpectedOutput": "\"congr\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ab\",\"abc\",\"abcd\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algorithmic\",\"algorithmically\",\"algorithmically\"]"
+    ],
+    "ExpectedOutput": "\"algorithm\""
+  },
+  {
+    "Inputs": [
+      "[\"preference\",\"prefix\",\"prevent\",\"prey\"]"
+    ],
+    "ExpectedOutput": "\"pre\""
+  },
+  {
+    "Inputs": [
+      "[\"abracadabra\",\"abracadabras\",\"abracadabaster\",\"abracadabration\"]"
+    ],
+    "ExpectedOutput": "\"abracadab\""
+  },
+  {
+    "Inputs": [
+      "[\"supercalifragilisticexpialidocious\",\"super\",\"supersonic\"]"
+    ],
+    "ExpectedOutput": "\"super\""
+  },
+  {
+    "Inputs": [
+      "[\"unanimity\",\"unanimous\",\"unanimously\",\"unanimated\"]"
+    ],
+    "ExpectedOutput": "\"unanim\""
+  },
+  {
+    "Inputs": [
+      "[\"orthogonal\",\"orthodox\",\"orthopedic\",\"orthography\"]"
+    ],
+    "ExpectedOutput": "\"ortho\""
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abcde\",\"abcdef\",\"abcdefg\"]"
+    ],
+    "ExpectedOutput": "\"abcd\""
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"programmer\",\"programmatic\",\"program\"]"
+    ],
+    "ExpectedOutput": "\"program\""
+  },
+  {
+    "Inputs": [
+      "[\"sequential\",\"sequence\",\"sequent\",\"sequel\"]"
+    ],
+    "ExpectedOutput": "\"seque\""
+  },
+  {
+    "Inputs": [
+      "[\"abracadabra\",\"abr\",\"abracadabrador\",\"abrac\"]"
+    ],
+    "ExpectedOutput": "\"abr\""
+  },
+  {
+    "Inputs": [
+      "[\"consistent\",\"consistency\",\"consistently\",\"consist\"]"
+    ],
+    "ExpectedOutput": "\"consist\""
+  },
+  {
+    "Inputs": [
+      "[\"common\",\"community\",\"comma\",\"communist\"]"
+    ],
+    "ExpectedOutput": "\"comm\""
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zoo\",\"zealot\",\"zest\"]"
+    ],
+    "ExpectedOutput": "\"z\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"a\",\"a\",\"a\",\"a\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algebra\",\"altitude\",\"altimeter\"]"
+    ],
+    "ExpectedOutput": "\"al\""
+  },
+  {
+    "Inputs": [
+      "[\"supercalifragilisticexpialidocious\",\"super\",\"supercal\"]"
+    ],
+    "ExpectedOutput": "\"super\""
+  },
+  {
+    "Inputs": [
+      "[\"maximum\",\"maximize\",\"maximal\"]"
+    ],
+    "ExpectedOutput": "\"maxim\""
+  },
+  {
+    "Inputs": [
+      "[\"complex\",\"complicated\",\"complect\",\"complete\"]"
+    ],
+    "ExpectedOutput": "\"compl\""
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"pre\",\"preface\",\"prefer\",\"preference\",\"prefixing\"]"
+    ],
+    "ExpectedOutput": "\"pre\""
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abcde\",\"abcdef\",\"abcdefg\",\"abcdefgh\",\"abcdefghi\"]"
+    ],
+    "ExpectedOutput": "\"abcd\""
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghij\",\"abcdefgh\",\"abcdefg\",\"abcdef\",\"abcde\",\"abcd\",\"abc\",\"ab\",\"a\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"abcde\",\"abcde\",\"abcde\",\"abcde\"]"
+    ],
+    "ExpectedOutput": "\"abcde\""
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algorhythm\",\"algae\"]"
+    ],
+    "ExpectedOutput": "\"alg\""
+  },
+  {
+    "Inputs": [
+      "[\"\",\"\",\"\",\"\",\"a\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"xylophone\",\"xylography\",\"xylogen\",\"xylophonist\"]"
+    ],
+    "ExpectedOutput": "\"xylo\""
+  },
+  {
+    "Inputs": [
+      "[\"onomatopoeia\",\"onomatopoetic\",\"onomatope\",\"onomatologist\"]"
+    ],
+    "ExpectedOutput": "\"onomato\""
+  },
+  {
+    "Inputs": [
+      "[\"rehabilitation\",\"rehabilitate\",\"rehabilitative\",\"rehabilitated\"]"
+    ],
+    "ExpectedOutput": "\"rehabilitat\""
+  },
+  {
+    "Inputs": [
+      "[\"mississippi\",\"missile\",\"mission\",\"missive\"]"
+    ],
+    "ExpectedOutput": "\"missi\""
+  },
+  {
+    "Inputs": [
+      "[\"longest\",\"longevity\",\"longitudinal\"]"
+    ],
+    "ExpectedOutput": "\"long\""
+  },
+  {
+    "Inputs": [
+      "[\"psychological\",\"psychologist\",\"psychology\",\"psychic\"]"
+    ],
+    "ExpectedOutput": "\"psych\""
+  },
+  {
+    "Inputs": [
+      "[\"environment\",\"envelope\",\"envoy\",\"evening\"]"
+    ],
+    "ExpectedOutput": "\"e\""
+  },
+  {
+    "Inputs": [
+      "[\"short\",\"shorthand\",\"shortfall\"]"
+    ],
+    "ExpectedOutput": "\"short\""
+  },
+  {
+    "Inputs": [
+      "[\"parallel\",\"parallelogram\",\"parallactic\",\"paralactic\"]"
+    ],
+    "ExpectedOutput": "\"paral\""
+  },
+  {
+    "Inputs": [
+      "[\"cryptography\",\"cryptographic\",\"cryptanalysis\",\"cryptanalytic\"]"
+    ],
+    "ExpectedOutput": "\"crypt\""
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zoo\",\"zero\",\"zapper\"]"
+    ],
+    "ExpectedOutput": "\"z\""
+  },
+  {
+    "Inputs": [
+      "[\"singleword\",\"single\",\"singleton\"]"
+    ],
+    "ExpectedOutput": "\"single\""
+  },
+  {
+    "Inputs": [
+      "[\"anthropomorphic\",\"anthropologist\",\"anthropology\",\"anthropocentric\"]"
+    ],
+    "ExpectedOutput": "\"anthropo\""
+  },
+  {
+    "Inputs": [
+      "[\"\",\"\",\"\",\"a\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\"]"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "[\"common\",\"commune\",\"command\",\"community\"]"
+    ],
+    "ExpectedOutput": "\"comm\""
+  },
+  {
+    "Inputs": [
+      "[\"same\",\"samsung\",\"sample\",\"sand\",\"satellite\",\"saturn\"]"
+    ],
+    "ExpectedOutput": "\"sa\""
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algebra\",\"altitude\"]"
+    ],
+    "ExpectedOutput": "\"al\""
+  },
+  {
+    "Inputs": [
+      "[\"implementation\",\"implement\",\"implementing\",\"implementor\"]"
+    ],
+    "ExpectedOutput": "\"implement\""
+  },
+  {
+    "Inputs": [
+      "[\"abracadabra\",\"abracadabra\",\"abracadabra\"]"
+    ],
+    "ExpectedOutput": "\"abracadabra\""
+  },
+  {
+    "Inputs": [
+      "[\"reorganization\",\"reorganize\",\"reorganized\",\"reorganizing\"]"
+    ],
+    "ExpectedOutput": "\"reorganiz\""
+  },
+  {
+    "Inputs": [
+      "[\"university\",\"universe\",\"unique\",\"unicorn\"]"
+    ],
+    "ExpectedOutput": "\"uni\""
+  },
+  {
+    "Inputs": [
+      "[\"\",\"longest\",\"longevity\",\"logistics\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"\",\"\",\"\",\"abc\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"environment\",\"envy\",\"envelop\",\"enviable\"]"
+    ],
+    "ExpectedOutput": "\"env\""
+  },
+  {
+    "Inputs": [
+      "[\"unique\",\"unicorn\",\"unify\",\"unity\"]"
+    ],
+    "ExpectedOutput": "\"uni\""
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"aabbc\",\"aabb\",\"aab\",\"aa\"]"
+    ],
+    "ExpectedOutput": "\"aa\""
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zoo\",\"zeal\",\"zither\"]"
+    ],
+    "ExpectedOutput": "\"z\""
+  },
+  {
+    "Inputs": [
+      "[\"\",\"a\",\"ab\",\"abc\",\"abcd\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"aardvark\",\"aardwolf\",\"aardvark\",\"aard\"]"
+    ],
+    "ExpectedOutput": "\"aard\""
+  },
+  {
+    "Inputs": [
+      "[\"zzzzzzzz\",\"zzzzz\",\"zzzz\",\"zzz\",\"zz\",\"z\"]"
+    ],
+    "ExpectedOutput": "\"z\""
+  },
+  {
+    "Inputs": [
+      "[\"separation\",\"separately\",\"separated\",\"separating\"]"
+    ],
+    "ExpectedOutput": "\"separat\""
+  },
+  {
+    "Inputs": [
+      "[\"mississippi\",\"missile\",\"mission\",\"miss\"]"
+    ],
+    "ExpectedOutput": "\"miss\""
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algebra\",\"alien\",\"alert\"]"
+    ],
+    "ExpectedOutput": "\"al\""
+  },
+  {
+    "Inputs": [
+      "[\"commonality\",\"common\",\"commune\",\"community\",\"communicate\",\"commemorative\"]"
+    ],
+    "ExpectedOutput": "\"comm\""
+  },
+  {
+    "Inputs": [
+      "[\"supercalifragilisticexpialidocious\",\"supercalifragilistic\",\"supercalifragili\",\"super\"]"
+    ],
+    "ExpectedOutput": "\"super\""
+  },
+  {
+    "Inputs": [
+      "[\"parallel\",\"parallelepiped\",\"paralleled\",\"paralegal\"]"
+    ],
+    "ExpectedOutput": "\"paral\""
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"preference\",\"presentation\"]"
+    ],
+    "ExpectedOutput": "\"pre\""
+  },
+  {
+    "Inputs": [
+      "[\"unified\",\"uniform\",\"universe\",\"unique\"]"
+    ],
+    "ExpectedOutput": "\"uni\""
+  },
+  {
+    "Inputs": [
+      "[\"anagram\",\"anagrams\",\"anagrammatic\",\"anagrammatical\"]"
+    ],
+    "ExpectedOutput": "\"anagram\""
+  },
+  {
+    "Inputs": [
+      "[\"environment\",\"environmental\",\"environments\",\"environmentally\"]"
+    ],
+    "ExpectedOutput": "\"environment\""
+  },
+  {
+    "Inputs": [
+      "[\"xylophone\",\"xylography\",\"xylophonist\",\"xylophonics\"]"
+    ],
+    "ExpectedOutput": "\"xylo\""
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"\",\"prefix\",\"prefix\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algebra\",\"altimeter\"]"
+    ],
+    "ExpectedOutput": "\"al\""
+  },
+  {
+    "Inputs": [
+      "[\"recognition\",\"recognizable\",\"recognize\",\"recognizably\"]"
+    ],
+    "ExpectedOutput": "\"recogni\""
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"preposition\",\"presentation\"]"
+    ],
+    "ExpectedOutput": "\"pre\""
+  },
+  {
+    "Inputs": [
+      "[\"challenges\",\"challenging\",\"challenge\",\"challengingly\"]"
+    ],
+    "ExpectedOutput": "\"challeng\""
+  },
+  {
+    "Inputs": [
+      "[\"universally\",\"universe\",\"universal\",\"universality\",\"universes\",\"universally\"]"
+    ],
+    "ExpectedOutput": "\"univers\""
+  },
+  {
+    "Inputs": [
+      "[\"mississippi\",\"missile\",\"missionary\",\"misspell\"]"
+    ],
+    "ExpectedOutput": "\"miss\""
+  },
+  {
+    "Inputs": [
+      "[\"photosynthesis\",\"photosynthetic\",\"photosynthesize\",\"photosynthetically\"]"
+    ],
+    "ExpectedOutput": "\"photosynthe\""
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apply\",\"appetite\",\"apparatus\"]"
+    ],
+    "ExpectedOutput": "\"app\""
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"pretext\",\"prevent\"]"
+    ],
+    "ExpectedOutput": "\"pre\""
+  },
+  {
+    "Inputs": [
+      "[\"development\",\"develop\",\"developer\",\"developmental\",\"developing\",\"devel\"]"
+    ],
+    "ExpectedOutput": "\"devel\""
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"preference\",\"presentation\",\"president\",\"pressure\",\"premier\"]"
+    ],
+    "ExpectedOutput": "\"pre\""
+  },
+  {
+    "Inputs": [
+      "[\"\",\"unique\",\"unanimous\",\"unicorn\",\"unicycle\",\"unify\"]"
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "[\"complex\",\"complicated\",\"completion\"]"
+    ],
+    "ExpectedOutput": "\"compl\""
+  }
+]

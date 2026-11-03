@@ -1,0 +1,96 @@
+{
+  "QuestionId": 2618,
+  "FrontendId": 2528,
+  "Title": "Maximize the Minimum Powered City",
+  "TitleSlug": "maximize-the-minimum-powered-city",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Binary Search",
+      "Slug": "binary-search"
+    },
+    {
+      "Name": "Greedy",
+      "Slug": "greedy"
+    },
+    {
+      "Name": "Queue",
+      "Slug": "queue"
+    },
+    {
+      "Name": "Sliding Window",
+      "Slug": "sliding-window"
+    },
+    {
+      "Name": "Prefix Sum",
+      "Slug": "prefix-sum"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Maximum Number of Tasks You Can Assign",
+      "TitleSlug": "maximum-number-of-tasks-you-can-assign",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [
+    "Pre calculate the number of stations on each city using Line Sweep.",
+    "Use binary search to maximize the minimum."
+  ],
+  "Constraints": [
+    "n == stations.length",
+    "1 <= n <= 10^5",
+    "0 <= stations[i] <= 10^5",
+    "0 <= r <= n - 1",
+    "0 <= k <= 10^9"
+  ],
+  "Signature": {
+    "FunctionName": "maxPower",
+    "Parameters": [
+      {
+        "Name": "stations",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "r",
+        "Type": "integer"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "long",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public long MaxPower(int[] stations, int r, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[1,2,4,5,0]",
+        "1",
+        "2"
+      ],
+      "ExpectedOutput": "5"
+    },
+    {
+      "Inputs": [
+        "[4,4,4,4]",
+        "0",
+        "3"
+      ],
+      "ExpectedOutput": "4"
+    }
+  ],
+  "ContentHtml": "<p>You are given a <strong>0-indexed</strong> integer array <code>stations</code> of length <code>n</code>, where <code>stations[i]</code> represents the number of power stations in the <code>i<sup>th</sup></code> city.</p>\n\n<p>Each power station can provide power to every city in a fixed <strong>range</strong>. In other words, if the range is denoted by <code>r</code>, then a power station at city <code>i</code> can provide power to all cities <code>j</code> such that <code>|i - j| &lt;= r</code> and <code>0 &lt;= i, j &lt;= n - 1</code>.</p>\n\n<ul>\n\t<li>Note that <code>|x|</code> denotes <strong>absolute</strong> value. For example, <code>|7 - 5| = 2</code> and <code>|3 - 10| = 7</code>.</li>\n</ul>\n\n<p>The <strong>power</strong> of a city is the total number of power stations it is being provided power from.</p>\n\n<p>The government has sanctioned building <code>k</code> more power stations, each of which can be built in any city, and have the same range as the pre-existing ones.</p>\n\n<p>Given the two integers <code>r</code> and <code>k</code>, return <em>the <strong>maximum possible minimum power</strong> of a city, if the additional power stations are built optimally.</em></p>\n\n<p><strong>Note</strong> that you can build the <code>k</code> power stations in multiple cities.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> stations = [1,2,4,5,0], r = 1, k = 2\n<strong>Output:</strong> 5\n<strong>Explanation:</strong> \nOne of the optimal ways is to install both the power stations at city 1. \nSo stations will become [1,4,4,5,0].\n- City 0 is provided by 1 + 4 = 5 power stations.\n- City 1 is provided by 1 + 4 + 4 = 9 power stations.\n- City 2 is provided by 4 + 4 + 5 = 13 power stations.\n- City 3 is provided by 5 + 4 = 9 power stations.\n- City 4 is provided by 5 + 0 = 5 power stations.\nSo the minimum power of a city is 5.\nSince it is not possible to obtain a larger power, we return 5.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> stations = [4,4,4,4], r = 0, k = 3\n<strong>Output:</strong> 4\n<strong>Explanation:</strong> \nIt can be proved that we cannot make the minimum power of a city greater than 4.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>n == stations.length</code></li>\n\t<li><code>1 &lt;= n &lt;= 10<sup>5</sup></code></li>\n\t<li><code>0 &lt;= stations[i] &lt;= 10<sup>5</sup></code></li>\n\t<li><code>0 &lt;= r&nbsp;&lt;= n - 1</code></li>\n\t<li><code>0 &lt;= k&nbsp;&lt;= 10<sup>9</sup></code></li>\n</ul>\n"
+}

@@ -1,0 +1,83 @@
+{
+  "QuestionId": 1985,
+  "FrontendId": 1856,
+  "Title": "Maximum Subarray Min-Product",
+  "TitleSlug": "maximum-subarray-min-product",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Stack",
+      "Slug": "stack"
+    },
+    {
+      "Name": "Monotonic Stack",
+      "Slug": "monotonic-stack"
+    },
+    {
+      "Name": "Prefix Sum",
+      "Slug": "prefix-sum"
+    },
+    {
+      "Name": "Cartesian Tree",
+      "Slug": "cartesian-tree"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Subarray With Elements Greater Than Varying Threshold",
+      "TitleSlug": "subarray-with-elements-greater-than-varying-threshold",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [
+    "Is there a way we can sort the elements to simplify the problem?",
+    "Can we find the maximum min-product for every value in the array?"
+  ],
+  "Constraints": [
+    "1 <= nums.length <= 10^5",
+    "1 <= nums[i] <= 10^7"
+  ],
+  "Signature": {
+    "FunctionName": "maxSumMinProduct",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int MaxSumMinProduct(int[] nums) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[1,2,3,2]"
+      ],
+      "ExpectedOutput": "14"
+    },
+    {
+      "Inputs": [
+        "[2,3,3,1,2]"
+      ],
+      "ExpectedOutput": "18"
+    },
+    {
+      "Inputs": [
+        "[3,1,5,6,4,2]"
+      ],
+      "ExpectedOutput": "60"
+    }
+  ],
+  "ContentHtml": "<p>The <strong>min-product</strong> of an array is equal to the <strong>minimum value</strong> in the array <strong>multiplied by</strong> the array&#39;s <strong>sum</strong>.</p>\n\n<ul>\n\t<li>For example, the array <code>[3,2,5]</code> (minimum value is <code>2</code>) has a min-product of <code>2 * (3+2+5) = 2 * 10 = 20</code>.</li>\n</ul>\n\n<p>Given an array of integers <code>nums</code>, return <em>the <strong>maximum min-product</strong> of any <strong>non-empty subarray</strong> of </em><code>nums</code>. Since the answer may be large, return it <strong>modulo</strong> <code>10<sup>9</sup> + 7</code>.</p>\n\n<p>Note that the min-product should be maximized <strong>before</strong> performing the modulo operation. Testcases are generated such that the maximum min-product <strong>without</strong> modulo will fit in a <strong>64-bit signed integer</strong>.</p>\n\n<p>A <strong>subarray</strong> is a <strong>contiguous</strong> part of an array.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,<u>2,3,2</u>]\n<strong>Output:</strong> 14\n<strong>Explanation:</strong> The maximum min-product is achieved with the subarray [2,3,2] (minimum value is 2).\n2 * (2+3+2) = 2 * 7 = 14.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [2,<u>3,3</u>,1,2]\n<strong>Output:</strong> 18\n<strong>Explanation:</strong> The maximum min-product is achieved with the subarray [3,3] (minimum value is 3).\n3 * (3+3) = 3 * 6 = 18.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [3,1,<u>5,6,4</u>,2]\n<strong>Output:</strong> 60\n<strong>Explanation:</strong> The maximum min-product is achieved with the subarray [5,6,4] (minimum value is 4).\n4 * (5+6+4) = 4 * 15 = 60.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>1 &lt;= nums[i] &lt;= 10<sup>7</sup></code></li>\n</ul>\n"
+}

@@ -1,0 +1,81 @@
+{
+  "QuestionId": 2083,
+  "FrontendId": 1952,
+  "Title": "Three Divisors",
+  "TitleSlug": "three-divisors",
+  "Difficulty": "Easy",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Enumeration",
+      "Slug": "enumeration"
+    },
+    {
+      "Name": "Number Theory",
+      "Slug": "number-theory"
+    },
+    {
+      "Name": "Prime Factorization",
+      "Slug": "prime-factorization"
+    },
+    {
+      "Name": "Sieve Theory",
+      "Slug": "sieve-theory"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Find Greatest Common Divisor of Array",
+      "TitleSlug": "find-greatest-common-divisor-of-array",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Smallest Even Multiple",
+      "TitleSlug": "smallest-even-multiple",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [
+    "You can count the number of divisors and just check that they are 3",
+    "Beware of the case of n equal 1 as some solutions might fail in it"
+  ],
+  "Constraints": [
+    "1 <= n <= 10^4"
+  ],
+  "Signature": {
+    "FunctionName": "isThree",
+    "Parameters": [
+      {
+        "Name": "n",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "boolean",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public bool IsThree(int n) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "2"
+      ],
+      "ExpectedOutput": "false"
+    },
+    {
+      "Inputs": [
+        "4"
+      ],
+      "ExpectedOutput": "true"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer <code>n</code>, return <code>true</code><em> if </em><code>n</code><em> has <strong>exactly three positive divisors</strong>. Otherwise, return </em><code>false</code>.</p>\n\n<p>An integer <code>m</code> is a <strong>divisor</strong> of <code>n</code> if there exists an integer <code>k</code> such that <code>n = k * m</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 2\n<strong>Output:</strong> false\n<strong>Explantion:</strong> 2 has only two divisors: 1 and 2.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 4\n<strong>Output:</strong> true\n<strong>Explantion:</strong> 4 has three divisors: 1, 2, and 4.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= n &lt;= 10<sup>4</sup></code></li>\n</ul>\n"
+}

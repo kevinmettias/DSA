@@ -1,0 +1,97 @@
+{
+  "QuestionId": 691,
+  "FrontendId": 691,
+  "Title": "Stickers to Spell Word",
+  "TitleSlug": "stickers-to-spell-word",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Backtracking",
+      "Slug": "backtracking"
+    },
+    {
+      "Name": "Bit Manipulation",
+      "Slug": "bit-manipulation"
+    },
+    {
+      "Name": "Memoization",
+      "Slug": "memoization"
+    },
+    {
+      "Name": "Bitmask",
+      "Slug": "bitmask"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Ransom Note",
+      "TitleSlug": "ransom-note",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [
+    "We want to perform an exhaustive search, but we need to speed it up based on the input data being random.  \r\n\r\nFor all stickers, we can ignore any letters that are not in the target word.  \r\n\r\nWhen our candidate answer won't be smaller than an answer we have already found, we can stop searching this path.  \r\n\r\nWhen a sticker dominates another, we shouldn't include the dominated sticker in our sticker collection.  [Here, we say a sticker `A` dominates `B` if `A.count(letter) >= B.count(letter)` for all letters.]"
+  ],
+  "Constraints": [
+    "n == stickers.length",
+    "1 <= n <= 50",
+    "1 <= stickers[i].length <= 10",
+    "1 <= target.length <= 15",
+    "stickers[i] and target consist of lowercase English letters."
+  ],
+  "Signature": {
+    "FunctionName": "minStickers",
+    "Parameters": [
+      {
+        "Name": "stickers",
+        "Type": "string[]"
+      },
+      {
+        "Name": "target",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int MinStickers(string[] stickers, string target) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"with\",\"example\",\"science\"]",
+        "\"thehat\""
+      ],
+      "ExpectedOutput": "3"
+    },
+    {
+      "Inputs": [
+        "[\"notice\",\"possible\"]",
+        "\"basicbasic\""
+      ],
+      "ExpectedOutput": "-1 Explanation: We cannot form the target \"basicbasic\" from cutting letters from the given stickers."
+    }
+  ],
+  "ContentHtml": "<p>We are given <code>n</code> different types of <code>stickers</code>. Each sticker has a lowercase English word on it.</p>\n\n<p>You would like to spell out the given string <code>target</code> by cutting individual letters from your collection of stickers and rearranging them. You can use each sticker more than once if you want, and you have infinite quantities of each sticker.</p>\n\n<p>Return <em>the minimum number of stickers that you need to spell out </em><code>target</code>. If the task is impossible, return <code>-1</code>.</p>\n\n<p><strong>Note:</strong> In all test cases, all words were chosen randomly from the <code>1000</code> most common US English words, and <code>target</code> was chosen as a concatenation of two random words.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> stickers = [&quot;with&quot;,&quot;example&quot;,&quot;science&quot;], target = &quot;thehat&quot;\n<strong>Output:</strong> 3\n<strong>Explanation:</strong>\nWe can use 2 &quot;with&quot; stickers, and 1 &quot;example&quot; sticker.\nAfter cutting and rearrange the letters of those stickers, we can form the target &quot;thehat&quot;.\nAlso, this is the minimum number of stickers necessary to form the target string.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> stickers = [&quot;notice&quot;,&quot;possible&quot;], target = &quot;basicbasic&quot;\n<strong>Output:</strong> -1\nExplanation:\nWe cannot form the target &quot;basicbasic&quot; from cutting letters from the given stickers.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>n == stickers.length</code></li>\n\t<li><code>1 &lt;= n &lt;= 50</code></li>\n\t<li><code>1 &lt;= stickers[i].length &lt;= 10</code></li>\n\t<li><code>1 &lt;= target.length &lt;= 15</code></li>\n\t<li><code>stickers[i]</code> and <code>target</code> consist of lowercase English letters.</li>\n</ul>\n"
+}

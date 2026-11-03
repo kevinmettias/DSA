@@ -1,0 +1,103 @@
+{
+  "QuestionId": 1728,
+  "FrontendId": 1622,
+  "Title": "Fancy Sequence",
+  "TitleSlug": "fancy-sequence",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Design",
+      "Slug": "design"
+    },
+    {
+      "Name": "Segment Tree",
+      "Slug": "segment-tree"
+    },
+    {
+      "Name": "Number Theory",
+      "Slug": "number-theory"
+    },
+    {
+      "Name": "Fermat's Little Theorem",
+      "Slug": "fermats-little-theorem"
+    }
+  ],
+  "SimilarQuestions": [],
+  "Hints": [
+    "Use two arrays to save the cumulative multipliers at each time point and cumulative sums adjusted by the current multiplier.",
+    "The function getIndex(idx) ask to the current value modulo 10^9+7. Use modular inverse and both arrays to calculate this value."
+  ],
+  "Constraints": [
+    "1 <= val, inc, m <= 100",
+    "0 <= idx <= 10^5",
+    "At most 10^5 calls total will be made to append, addAll, multAll, and getIndex."
+  ],
+  "Signature": {
+    "FunctionName": null,
+    "Parameters": [],
+    "ReturnType": null,
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": "Fancy",
+    "ConstructorParameters": [],
+    "Methods": [
+      {
+        "Name": "append",
+        "Parameters": [
+          {
+            "Name": "val",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "void"
+      },
+      {
+        "Name": "addAll",
+        "Parameters": [
+          {
+            "Name": "inc",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "void"
+      },
+      {
+        "Name": "multAll",
+        "Parameters": [
+          {
+            "Name": "m",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "void"
+      },
+      {
+        "Name": "getIndex",
+        "Parameters": [
+          {
+            "Name": "idx",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "integer"
+      }
+    ]
+  },
+  "CSharpStarterCode": "public class Fancy {\n\n    public Fancy() {\n        \n    }\n    \n    public void Append(int val) {\n        \n    }\n    \n    public void AddAll(int inc) {\n        \n    }\n    \n    public void MultAll(int m) {\n        \n    }\n    \n    public int GetIndex(int idx) {\n        \n    }\n}\n\n/**\n * Your Fancy object will be instantiated and called as such:\n * Fancy obj = new Fancy();\n * obj.Append(val);\n * obj.AddAll(inc);\n * obj.MultAll(m);\n * int param_4 = obj.GetIndex(idx);\n */",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"Fancy\",\"append\",\"addAll\",\"append\",\"multAll\",\"getIndex\",\"addAll\",\"append\",\"multAll\",\"getIndex\",\"getIndex\",\"getIndex\"]",
+        "[[],[2],[3],[7],[2],[0],[3],[10],[2],[0],[1],[2]]"
+      ],
+      "ExpectedOutput": "[null, null, null, null, null, 10, null, null, null, 26, 34, 20]"
+    }
+  ],
+  "ContentHtml": "<p>Write an API that generates fancy sequences using the <code>append</code>, <code>addAll</code>, and <code>multAll</code> operations.</p>\n\n<p>Implement the <code>Fancy</code> class:</p>\n\n<ul>\n\t<li><code>Fancy()</code> Initializes the object with an empty sequence.</li>\n\t<li><code>void append(val)</code> Appends an integer <code>val</code> to the end of the sequence.</li>\n\t<li><code>void addAll(inc)</code> Increments all existing values in the sequence by an integer <code>inc</code>.</li>\n\t<li><code>void multAll(m)</code> Multiplies all existing values in the sequence by an integer <code>m</code>.</li>\n\t<li><code>int getIndex(idx)</code> Gets the current value at index <code>idx</code> (0-indexed) of the sequence <strong>modulo</strong> <code>10<sup>9</sup> + 7</code>. If the index is greater or equal than the length of the sequence, return <code>-1</code>.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input</strong>\n[&quot;Fancy&quot;, &quot;append&quot;, &quot;addAll&quot;, &quot;append&quot;, &quot;multAll&quot;, &quot;getIndex&quot;, &quot;addAll&quot;, &quot;append&quot;, &quot;multAll&quot;, &quot;getIndex&quot;, &quot;getIndex&quot;, &quot;getIndex&quot;]\n[[], [2], [3], [7], [2], [0], [3], [10], [2], [0], [1], [2]]\n<strong>Output</strong>\n[null, null, null, null, null, 10, null, null, null, 26, 34, 20]\n\n<strong>Explanation</strong>\nFancy fancy = new Fancy();\nfancy.append(2);   // fancy sequence: [2]\nfancy.addAll(3);   // fancy sequence: [2+3] -&gt; [5]\nfancy.append(7);   // fancy sequence: [5, 7]\nfancy.multAll(2);  // fancy sequence: [5*2, 7*2] -&gt; [10, 14]\nfancy.getIndex(0); // return 10\nfancy.addAll(3);   // fancy sequence: [10+3, 14+3] -&gt; [13, 17]\nfancy.append(10);  // fancy sequence: [13, 17, 10]\nfancy.multAll(2);  // fancy sequence: [13*2, 17*2, 10*2] -&gt; [26, 34, 20]\nfancy.getIndex(0); // return 26\nfancy.getIndex(1); // return 34\nfancy.getIndex(2); // return 20\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= val, inc, m &lt;= 100</code></li>\n\t<li><code>0 &lt;= idx &lt;= 10<sup>5</sup></code></li>\n\t<li>At most <code>10<sup>5</sup></code> calls total will be made to <code>append</code>, <code>addAll</code>, <code>multAll</code>, and <code>getIndex</code>.</li>\n</ul>\n"
+}

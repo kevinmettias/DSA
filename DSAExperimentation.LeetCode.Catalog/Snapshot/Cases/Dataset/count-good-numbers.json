@@ -1,0 +1,158 @@
+[
+  {
+    "Inputs": [
+      "500"
+    ],
+    "ExpectedOutput": "315782032"
+  },
+  {
+    "Inputs": [
+      "15"
+    ],
+    "ExpectedOutput": "399999958"
+  },
+  {
+    "Inputs": [
+      "200"
+    ],
+    "ExpectedOutput": "864605215"
+  },
+  {
+    "Inputs": [
+      "9999"
+    ],
+    "ExpectedOutput": "581472940"
+  },
+  {
+    "Inputs": [
+      "1001"
+    ],
+    "ExpectedOutput": "180104935"
+  },
+  {
+    "Inputs": [
+      "999999"
+    ],
+    "ExpectedOutput": "292848977"
+  },
+  {
+    "Inputs": [
+      "5000"
+    ],
+    "ExpectedOutput": "942089435"
+  },
+  {
+    "Inputs": [
+      "100000"
+    ],
+    "ExpectedOutput": "86331955"
+  },
+  {
+    "Inputs": [
+      "987654"
+    ],
+    "ExpectedOutput": "23531209"
+  },
+  {
+    "Inputs": [
+      "30"
+    ],
+    "ExpectedOutput": "624001610"
+  },
+  {
+    "Inputs": [
+      "50000"
+    ],
+    "ExpectedOutput": "3743005"
+  },
+  {
+    "Inputs": [
+      "1000"
+    ],
+    "ExpectedOutput": "36020987"
+  },
+  {
+    "Inputs": [
+      "2000000"
+    ],
+    "ExpectedOutput": "673965923"
+  },
+  {
+    "Inputs": [
+      "1234567"
+    ],
+    "ExpectedOutput": "908610489"
+  },
+  {
+    "Inputs": [
+      "20"
+    ],
+    "ExpectedOutput": "999928327"
+  },
+  {
+    "Inputs": [
+      "5000000"
+    ],
+    "ExpectedOutput": "116786656"
+  },
+  {
+    "Inputs": [
+      "10000"
+    ],
+    "ExpectedOutput": "325891746"
+  },
+  {
+    "Inputs": [
+      "10"
+    ],
+    "ExpectedOutput": "3200000"
+  },
+  {
+    "Inputs": [
+      "7500000"
+    ],
+    "ExpectedOutput": "507123017"
+  },
+  {
+    "Inputs": [
+      "100"
+    ],
+    "ExpectedOutput": "564490093"
+  },
+  {
+    "Inputs": [
+      "500000"
+    ],
+    "ExpectedOutput": "39955027"
+  },
+  {
+    "Inputs": [
+      "12345"
+    ],
+    "ExpectedOutput": "162263372"
+  },
+  {
+    "Inputs": [
+      "67890"
+    ],
+    "ExpectedOutput": "934713327"
+  },
+  {
+    "Inputs": [
+      "10000000"
+    ],
+    "ExpectedOutput": "924188482"
+  },
+  {
+    "Inputs": [
+      "123456"
+    ],
+    "ExpectedOutput": "182747849"
+  },
+  {
+    "Inputs": [
+      "1000000"
+    ],
+    "ExpectedOutput": "171395901"
+  }
+]

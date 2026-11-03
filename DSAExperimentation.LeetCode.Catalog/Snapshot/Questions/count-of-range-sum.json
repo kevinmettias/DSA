@@ -1,0 +1,115 @@
+{
+  "QuestionId": 327,
+  "FrontendId": 327,
+  "Title": "Count of Range Sum",
+  "TitleSlug": "count-of-range-sum",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Binary Search",
+      "Slug": "binary-search"
+    },
+    {
+      "Name": "Divide and Conquer",
+      "Slug": "divide-and-conquer"
+    },
+    {
+      "Name": "Binary Indexed Tree",
+      "Slug": "binary-indexed-tree"
+    },
+    {
+      "Name": "Segment Tree",
+      "Slug": "segment-tree"
+    },
+    {
+      "Name": "Merge Sort",
+      "Slug": "merge-sort"
+    },
+    {
+      "Name": "Ordered Set",
+      "Slug": "ordered-set"
+    },
+    {
+      "Name": "Treap",
+      "Slug": "treap"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Count of Smaller Numbers After Self",
+      "TitleSlug": "count-of-smaller-numbers-after-self",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Reverse Pairs",
+      "TitleSlug": "reverse-pairs",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Count the Number of Fair Pairs",
+      "TitleSlug": "count-the-number-of-fair-pairs",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Find the Number of Copy Arrays",
+      "TitleSlug": "find-the-number-of-copy-arrays",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= nums.length <= 10^5",
+    "-2^31 <= nums[i] <= 2^31 - 1",
+    "-10^5 <= lower <= upper <= 10^5",
+    "The answer is guaranteed to fit in a 32-bit integer."
+  ],
+  "Signature": {
+    "FunctionName": "countRangeSum",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "lower",
+        "Type": "integer"
+      },
+      {
+        "Name": "upper",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int CountRangeSum(int[] nums, int lower, int upper) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[-2,5,-1]",
+        "-2",
+        "2"
+      ],
+      "ExpectedOutput": "3"
+    },
+    {
+      "Inputs": [
+        "[0]",
+        "0",
+        "0"
+      ],
+      "ExpectedOutput": "1"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer array <code>nums</code> and two integers <code>lower</code> and <code>upper</code>, return <em>the number of range sums that lie in</em> <code>[lower, upper]</code> <em>inclusive</em>.</p>\n\n<p>Range sum <code>S(i, j)</code> is defined as the sum of the elements in <code>nums</code> between indices <code>i</code> and <code>j</code> inclusive, where <code>i &lt;= j</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [-2,5,-1], lower = -2, upper = 2\n<strong>Output:</strong> 3\n<strong>Explanation:</strong> The three ranges are: [0,0], [2,2], and [0,2] and their respective sums are: -2, -1, 2.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [0], lower = 0, upper = 0\n<strong>Output:</strong> 1\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>-2<sup>31</sup> &lt;= nums[i] &lt;= 2<sup>31</sup> - 1</code></li>\n\t<li><code>-10<sup>5</sup> &lt;= lower &lt;= upper &lt;= 10<sup>5</sup></code></li>\n\t<li>The answer is <strong>guaranteed</strong> to fit in a <strong>32-bit</strong> integer.</li>\n</ul>\n"
+}

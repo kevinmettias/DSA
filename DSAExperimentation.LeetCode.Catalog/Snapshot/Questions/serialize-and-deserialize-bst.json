@@ -1,0 +1,93 @@
+{
+  "QuestionId": 449,
+  "FrontendId": 449,
+  "Title": "Serialize and Deserialize BST",
+  "TitleSlug": "serialize-and-deserialize-bst",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Tree",
+      "Slug": "tree"
+    },
+    {
+      "Name": "Depth-First Search",
+      "Slug": "depth-first-search"
+    },
+    {
+      "Name": "Breadth-First Search",
+      "Slug": "breadth-first-search"
+    },
+    {
+      "Name": "Design",
+      "Slug": "design"
+    },
+    {
+      "Name": "Binary Search Tree",
+      "Slug": "binary-search-tree"
+    },
+    {
+      "Name": "Binary Tree",
+      "Slug": "binary-tree"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Serialize and Deserialize Binary Tree",
+      "TitleSlug": "serialize-and-deserialize-binary-tree",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Find Duplicate Subtrees",
+      "TitleSlug": "find-duplicate-subtrees",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Serialize and Deserialize N-ary Tree",
+      "TitleSlug": "serialize-and-deserialize-n-ary-tree",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "The number of nodes in the tree is in the range [0, 10^4].",
+    "0 <= Node.val <= 10^4",
+    "The input tree is guaranteed to be a binary search tree."
+  ],
+  "Signature": {
+    "FunctionName": "CodecDriver",
+    "Parameters": [
+      {
+        "Name": "root",
+        "Type": "TreeNode"
+      }
+    ],
+    "ReturnType": "TreeNode",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": true,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "/**\n * Definition for a binary tree node.\n * public class TreeNode {\n *     public int val;\n *     public TreeNode left;\n *     public TreeNode right;\n *     public TreeNode(int x) { val = x; }\n * }\n */\npublic class Codec {\n\n    // Encodes a tree to a single string.\n    public string serialize(TreeNode root) {\n        \n    }\n\n    // Decodes your encoded data to tree.\n    public TreeNode deserialize(string data) {\n        \n    }\n}\n\n// Your Codec object will be instantiated and called as such:\n// Codec ser = new Codec();\n// Codec deser = new Codec();\n// String tree = ser.serialize(root);\n// TreeNode ans = deser.deserialize(tree);\n// return ans;",
+  "Examples": [
+    {
+      "Inputs": [
+        "[2,1,3]"
+      ],
+      "ExpectedOutput": "[2,1,3]"
+    },
+    {
+      "Inputs": [
+        "[]"
+      ],
+      "ExpectedOutput": "[]"
+    }
+  ],
+  "ContentHtml": "<p>Serialization is converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.</p>\n\n<p>Design an algorithm to serialize and deserialize a <b>binary search tree</b>. There is no restriction on how your serialization/deserialization algorithm should work. You need to ensure that a binary search tree can be serialized to a string, and this string can be deserialized to the original tree structure.</p>\n\n<p><b>The encoded string should be as compact as possible.</b></p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<pre><strong>Input:</strong> root = [2,1,3]\n<strong>Output:</strong> [2,1,3]\n</pre><p><strong class=\"example\">Example 2:</strong></p>\n<pre><strong>Input:</strong> root = []\n<strong>Output:</strong> []\n</pre>\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li>The number of nodes in the tree is in the range <code>[0, 10<sup>4</sup>]</code>.</li>\n\t<li><code>0 &lt;= Node.val &lt;= 10<sup>4</sup></code></li>\n\t<li>The input tree is <strong>guaranteed</strong> to be a binary search tree.</li>\n</ul>\n"
+}

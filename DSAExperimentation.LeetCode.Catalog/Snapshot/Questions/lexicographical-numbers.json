@@ -1,0 +1,55 @@
+{
+  "QuestionId": 386,
+  "FrontendId": 386,
+  "Title": "Lexicographical Numbers",
+  "TitleSlug": "lexicographical-numbers",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Depth-First Search",
+      "Slug": "depth-first-search"
+    },
+    {
+      "Name": "Trie",
+      "Slug": "trie"
+    }
+  ],
+  "SimilarQuestions": [],
+  "Hints": [],
+  "Constraints": [
+    "1 <= n <= 5 * 10^4"
+  ],
+  "Signature": {
+    "FunctionName": "lexicalOrder",
+    "Parameters": [
+      {
+        "Name": "n",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "list<integer>",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public IList<int> LexicalOrder(int n) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "13"
+      ],
+      "ExpectedOutput": "[1,10,11,12,13,2,3,4,5,6,7,8,9]"
+    },
+    {
+      "Inputs": [
+        "2"
+      ],
+      "ExpectedOutput": "[1,2]"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer <code>n</code>, return all the numbers in the range <code>[1, n]</code> sorted in lexicographical order.</p>\n\n<p>You must write an algorithm that runs in&nbsp;<code>O(n)</code>&nbsp;time and uses <code>O(1)</code> extra space.&nbsp;</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<pre><strong>Input:</strong> n = 13\n<strong>Output:</strong> [1,10,11,12,13,2,3,4,5,6,7,8,9]\n</pre><p><strong class=\"example\">Example 2:</strong></p>\n<pre><strong>Input:</strong> n = 2\n<strong>Output:</strong> [1,2]\n</pre>\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= n &lt;= 5 * 10<sup>4</sup></code></li>\n</ul>\n"
+}

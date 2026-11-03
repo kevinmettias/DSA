@@ -1,0 +1,122 @@
+{
+  "QuestionId": 859,
+  "FrontendId": 641,
+  "Title": "Design Circular Deque",
+  "TitleSlug": "design-circular-deque",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Linked List",
+      "Slug": "linked-list"
+    },
+    {
+      "Name": "Design",
+      "Slug": "design"
+    },
+    {
+      "Name": "Queue",
+      "Slug": "queue"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Design Circular Queue",
+      "TitleSlug": "design-circular-queue",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Design Front Middle Back Queue",
+      "TitleSlug": "design-front-middle-back-queue",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= k <= 1000",
+    "0 <= value <= 1000",
+    "At most 2000 calls will be made to insertFront, insertLast, deleteFront, deleteLast, getFront, getRear, isEmpty, isFull."
+  ],
+  "Signature": {
+    "FunctionName": null,
+    "Parameters": [],
+    "ReturnType": null,
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": "MyCircularDeque",
+    "ConstructorParameters": [
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "Methods": [
+      {
+        "Name": "insertFront",
+        "Parameters": [
+          {
+            "Name": "value",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "boolean"
+      },
+      {
+        "Name": "insertLast",
+        "Parameters": [
+          {
+            "Name": "value",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "boolean"
+      },
+      {
+        "Name": "deleteFront",
+        "Parameters": [],
+        "ReturnType": "boolean"
+      },
+      {
+        "Name": "deleteLast",
+        "Parameters": [],
+        "ReturnType": "boolean"
+      },
+      {
+        "Name": "getFront",
+        "Parameters": [],
+        "ReturnType": "integer"
+      },
+      {
+        "Name": "getRear",
+        "Parameters": [],
+        "ReturnType": "integer"
+      },
+      {
+        "Name": "isEmpty",
+        "Parameters": [],
+        "ReturnType": "boolean"
+      },
+      {
+        "Name": "isFull",
+        "Parameters": [],
+        "ReturnType": "boolean"
+      }
+    ]
+  },
+  "CSharpStarterCode": "public class MyCircularDeque {\n\n    public MyCircularDeque(int k) {\n        \n    }\n    \n    public bool InsertFront(int value) {\n        \n    }\n    \n    public bool InsertLast(int value) {\n        \n    }\n    \n    public bool DeleteFront() {\n        \n    }\n    \n    public bool DeleteLast() {\n        \n    }\n    \n    public int GetFront() {\n        \n    }\n    \n    public int GetRear() {\n        \n    }\n    \n    public bool IsEmpty() {\n        \n    }\n    \n    public bool IsFull() {\n        \n    }\n}\n\n/**\n * Your MyCircularDeque object will be instantiated and called as such:\n * MyCircularDeque obj = new MyCircularDeque(k);\n * bool param_1 = obj.InsertFront(value);\n * bool param_2 = obj.InsertLast(value);\n * bool param_3 = obj.DeleteFront();\n * bool param_4 = obj.DeleteLast();\n * int param_5 = obj.GetFront();\n * int param_6 = obj.GetRear();\n * bool param_7 = obj.IsEmpty();\n * bool param_8 = obj.IsFull();\n */",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"MyCircularDeque\",\"insertLast\",\"insertLast\",\"insertFront\",\"insertFront\",\"getRear\",\"isFull\",\"deleteLast\",\"insertFront\",\"getFront\"]",
+        "[[3],[1],[2],[3],[4],[],[],[],[4],[]]"
+      ],
+      "ExpectedOutput": "[null, true, true, true, false, 2, true, true, true, 4]"
+    }
+  ],
+  "ContentHtml": "<p>Design your implementation of the circular double-ended queue (deque).</p>\n\n<p>Implement the <code>MyCircularDeque</code> class:</p>\n\n<ul>\n\t<li><code>MyCircularDeque(int k)</code> Initializes the deque with a maximum size of <code>k</code>.</li>\n\t<li><code>boolean insertFront()</code> Adds an item at the front of Deque. Returns <code>true</code> if the operation is successful, or <code>false</code> otherwise.</li>\n\t<li><code>boolean insertLast()</code> Adds an item at the rear of Deque. Returns <code>true</code> if the operation is successful, or <code>false</code> otherwise.</li>\n\t<li><code>boolean deleteFront()</code> Deletes an item from the front of Deque. Returns <code>true</code> if the operation is successful, or <code>false</code> otherwise.</li>\n\t<li><code>boolean deleteLast()</code> Deletes an item from the rear of Deque. Returns <code>true</code> if the operation is successful, or <code>false</code> otherwise.</li>\n\t<li><code>int getFront()</code> Returns the front item from the Deque. Returns <code>-1</code> if the deque is empty.</li>\n\t<li><code>int getRear()</code> Returns the last item from Deque. Returns <code>-1</code> if the deque is empty.</li>\n\t<li><code>boolean isEmpty()</code> Returns <code>true</code> if the deque is empty, or <code>false</code> otherwise.</li>\n\t<li><code>boolean isFull()</code> Returns <code>true</code> if the deque is full, or <code>false</code> otherwise.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input</strong>\n[&quot;MyCircularDeque&quot;, &quot;insertLast&quot;, &quot;insertLast&quot;, &quot;insertFront&quot;, &quot;insertFront&quot;, &quot;getRear&quot;, &quot;isFull&quot;, &quot;deleteLast&quot;, &quot;insertFront&quot;, &quot;getFront&quot;]\n[[3], [1], [2], [3], [4], [], [], [], [4], []]\n<strong>Output</strong>\n[null, true, true, true, false, 2, true, true, true, 4]\n\n<strong>Explanation</strong>\nMyCircularDeque myCircularDeque = new MyCircularDeque(3);\nmyCircularDeque.insertLast(1);  // return True\nmyCircularDeque.insertLast(2);  // return True\nmyCircularDeque.insertFront(3); // return True\nmyCircularDeque.insertFront(4); // return False, the queue is full.\nmyCircularDeque.getRear();      // return 2\nmyCircularDeque.isFull();       // return True\nmyCircularDeque.deleteLast();   // return True\nmyCircularDeque.insertFront(4); // return True\nmyCircularDeque.getFront();     // return 4\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= k &lt;= 1000</code></li>\n\t<li><code>0 &lt;= value &lt;= 1000</code></li>\n\t<li>At most <code>2000</code> calls will be made to <code>insertFront</code>, <code>insertLast</code>, <code>deleteFront</code>, <code>deleteLast</code>, <code>getFront</code>, <code>getRear</code>, <code>isEmpty</code>, <code>isFull</code>.</li>\n</ul>\n"
+}

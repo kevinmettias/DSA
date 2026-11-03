@@ -1,0 +1,373 @@
+[
+  {
+    "Inputs": [
+      "\"qwertyuiopasdfghjklzxcvbnm\"",
+      "[\"qz\",\"qp\",\"qw\",\"qr\",\"qe\",\"qt\",\"qu\",\"qi\",\"qo\",\"qp\",\"qa\",\"qs\",\"qd\",\"qf\",\"qg\",\"qh\",\"qj\",\"qk\",\"ql\",\"qm\",\"zn\",\"zm\",\"zk\",\"zj\",\"zh\",\"zg\",\"zf\",\"qe\",\"qd\",\"qc\",\"qb\",\"qa\",\"zv\",\"zu\",\"zt\",\"zs\",\"zr\",\"zp\",\"zo\",\"zn\",\"zm\",\"zk\",\"zj\",\"zh\",\"zg\",\"zf\",\"ze\",\"zd\",\"zc\",\"zb\",\"za\"]"
+    ],
+    "ExpectedOutput": "32"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "[\"miss\",\"issi\",\"ssip\",\"ppis\",\"isip\",\"ippi\",\"sipi\",\"sspi\",\"issp\"]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"longstringwithvariouscharacters\"",
+      "[\"long\",\"string\",\"with\",\"various\",\"characters\",\"longstring\",\"withvarious\"]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbcccc\"",
+      "[\"aaabbb\",\"bbcc\",\"abac\",\"aabb\",\"accc\",\"bbbc\",\"cccc\",\"bbbb\",\"aabbcc\"]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\"",
+      "[\"aba\",\"abc\",\"bac\",\"bca\",\"cab\",\"acb\",\"a\",\"b\",\"c\",\"d\",\"ab\",\"ba\",\"bc\",\"cb\",\"ac\",\"ca\"]"
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaa\"",
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\",\"aaaaaaaaa\",\"aaaaaaaaaa\"]"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "[\"is\",\"issi\",\"miss\",\"issip\",\"ppi\",\"ipi\",\"mississippi\"]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"thefastbrownfoxjumpsoverthelazydog\"",
+      "[\"the\",\"fast\",\"brown\",\"fox\",\"jumps\",\"over\",\"lazy\",\"dog\",\"thebrownfox\",\"jumpsoverthelazy\"]"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "[\"abc\",\"xyz\",\"mnopqr\",\"uvw\",\"zabcdefghijklmnopqrst\"]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiopasdfghjklzxcvbnm\"",
+      "[\"qwerty\",\"asdfgh\",\"zxcvbn\",\"pol\",\"lkjhg\",\"mnbvcxz\",\"yuiop\",\"poiuyt\",\"hgfdsa\",\"xcvbnm\",\"qwertyuiop\",\"asdfghjklzxcvbnm\"]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "[\"miss\",\"issi\",\"ssip\",\"ssissipp\",\"is\",\"mp\",\"ms\",\"s\",\"i\",\"p\",\"pp\",\"ip\",\"mississippi\",\"mississ\",\"issipp\"]"
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\",\"aaa\",\"bbb\",\"ccc\"]"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\",\"abcd\",\"efgh\",\"ijkl\",\"mnop\",\"qrst\",\"uvwx\",\"yzab\",\"cdef\",\"ghij\",\"klmn\",\"opqr\",\"stuv\",\"wxyz\"]"
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\"",
+      "[\"abc\",\"abcabc\",\"abcabcabc\",\"abcabcabcabc\",\"ab\",\"bc\",\"ca\",\"a\",\"b\",\"c\"]"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"ababababab\"",
+      "[\"ab\",\"aba\",\"aab\",\"baba\",\"babababababab\"]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "[\"issi\",\"miss\",\"mip\",\"issip\",\"issipp\",\"mpis\",\"mississippi\"]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongandrandomstring\"",
+      "[\"this\",\"is\",\"very\",\"long\",\"and\",\"random\",\"string\",\"av\",\"er\",\"ry\",\"on\",\"nd\",\"ra\",\"nd\",\"om\",\"mi\",\"st\",\"in\",\"ng\"]"
+    ],
+    "ExpectedOutput": "19"
+  },
+  {
+    "Inputs": [
+      "\"repeatedcharacters\"",
+      "[\"repe\",\"peate\",\"atedchar\",\"char\",\"acter\",\"ters\",\"repeatedcharacters\"]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\"",
+      "[\"abc\",\"cab\",\"bac\",\"aaa\",\"bbb\",\"ccc\",\"abcabc\",\"abcbca\",\"bcbcab\",\"cabcab\",\"abcabcabc\",\"bcabcabc\",\"cabcabca\",\"a\",\"b\",\"c\"]"
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "\"babcabcabcabcabc\"",
+      "[\"ba\",\"ca\",\"ab\",\"bc\",\"ac\",\"abc\",\"bac\",\"bca\",\"cab\",\"cba\",\"acb\",\"bba\",\"aaa\",\"ccc\"]"
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "[\"abc\",\"xyz\",\"def\",\"uvw\",\"mnopqr\",\"st\",\"ghijkl\"]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"hellohellohellohello\"",
+      "[\"he\",\"lo\",\"ell\",\"hell\",\"hello\",\"heell\",\"hellohe\",\"helloell\",\"helloello\",\"hellohello\",\"hellohelloh\",\"hellohellohe\",\"hellohelloell\",\"hellohelloello\",\"hellohellohello\"]"
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\"",
+      "[\"abra\",\"rac\",\"cad\",\"bra\",\"dabra\",\"abra\",\"acad\",\"bracad\",\"bracadabra\",\"bracadabr\",\"abracadabr\",\"bracadabraa\",\"bracadabrac\"]"
+    ],
+    "ExpectedOutput": "11"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaa\"",
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\",\"aaaaaaaaa\",\"aaaaaaaaaa\"]"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\"",
+      "[\"aba\",\"abc\",\"bac\",\"bca\",\"cab\",\"cba\"]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzz\"",
+      "[\"z\",\"zz\",\"zzz\",\"zzzz\",\"zzzzz\",\"zzzzzz\",\"zzzzzzz\",\"zzzzzzzz\",\"zzzzzzzzz\",\"zzzzzzzzzz\"]"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiopasdfghjklzxcvbnm\"",
+      "[\"q\",\"w\",\"e\",\"r\",\"t\",\"y\",\"u\",\"i\",\"o\",\"p\",\"a\",\"s\",\"d\",\"f\",\"g\",\"h\",\"j\",\"k\",\"l\",\"z\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\"]"
+    ],
+    "ExpectedOutput": "26"
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\"",
+      "[\"abr\",\"rac\",\"aca\",\"dab\",\"bra\",\"cad\",\"bra\",\"abra\",\"brac\",\"acad\",\"radab\",\"cabra\",\"rabrac\",\"acadabra\",\"adabra\",\"bracadabra\",\"acabracadabra\"]"
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "[\"a\",\"z\",\"abc\",\"xyz\",\"abcdefghijklmnopqrstuvwxyzz\"]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "[\"z\",\"zz\",\"zzz\",\"zzzz\",\"zzzzz\",\"zzzzzz\",\"zzzzzzz\",\"zzzzzzzz\",\"zzzzzzzzz\",\"zzzzzzzzzz\"]"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "[\"abc\",\"xyz\",\"mnop\",\"qrstuv\",\"z\",\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\",\"h\",\"i\",\"j\",\"k\",\"l\",\"m\",\"n\",\"o\",\"p\",\"q\",\"r\",\"s\",\"t\",\"u\",\"v\",\"w\",\"x\",\"y\",\"z\"]"
+    ],
+    "ExpectedOutput": "31"
+  },
+  {
+    "Inputs": [
+      "\"ababababababababababababababababababababababab\"",
+      "[\"aa\",\"ab\",\"ba\",\"bb\",\"aab\",\"aba\",\"abb\",\"bba\",\"bab\",\"bbb\",\"aaaa\",\"abab\",\"baba\",\"abba\",\"baab\",\"abaa\",\"bbaa\",\"aabb\",\"abbb\",\"baaa\",\"baab\",\"baaa\",\"bbab\",\"bbba\",\"bbbb\",\"aaaaaaaa\",\"abababab\",\"babababa\",\"ababababa\",\"babababab\"]"
+    ],
+    "ExpectedOutput": "30"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "[\"miss\",\"issi\",\"ippi\",\"ssss\",\"ppii\",\"mississi\",\"issippi\",\"mississippi\",\"mpis\",\"ppis\",\"ipis\",\"mipp\",\"ssip\",\"piss\",\"missippi\",\"missisipp\",\"ississippi\",\"ssissippi\",\"ippii\",\"sippi\",\"pissi\",\"issis\",\"missis\",\"ssssip\",\"pisssippi\",\"issippis\",\"pississi\",\"sissippii\",\"ppisssippi\",\"mississippipp\",\"ississipp\",\"ppississippi\",\"sippisippi\",\"issississi\",\"ppississippi\",\"mississippippi\",\"issississipp\",\"ppissississi\",\"sissississippi\",\"issississippippi\"]"
+    ],
+    "ExpectedOutput": "18"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "[\"z\",\"zz\",\"zzz\",\"zzzz\",\"zzzzz\"]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"leetcodeisacommunityforcoders\"",
+      "[\"leetcode\",\"is\",\"acommunity\",\"of\",\"coders\",\"comm\",\"s\",\"t\"]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"abababababababababababababababababababababababababab\"",
+      "[\"aa\",\"bb\",\"ab\",\"ba\",\"aab\",\"abb\",\"bab\",\"bba\"]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"bbaaaaabbbb\"",
+      "[\"bb\",\"aaaa\",\"bbb\",\"baab\",\"abba\",\"aaaaa\",\"bbbbb\",\"bababa\",\"bbbbba\",\"ababab\",\"bbabba\"]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaabbbbbbbbccccccccdddddddd\"",
+      "[\"aaaa\",\"bbbb\",\"cccc\",\"dddd\",\"abdc\",\"dcba\",\"abcd\",\"dcba\",\"aabb\",\"bbcc\",\"ccdd\",\"dddd\",\"ac\",\"bd\",\"ca\",\"db\"]"
+    ],
+    "ExpectedOutput": "11"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "[\"zz\",\"zzz\",\"zzzz\",\"zzzzz\",\"zzzzzz\"]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiopasdfghjklzxcvbnm\"",
+      "[\"qaz\",\"wsx\",\"edc\",\"rfv\",\"tgb\",\"yhn\",\"ujm\",\"ikl\",\"opy\",\"asdf\",\"ghjkl\",\"zxcvbnm\",\"ertyui\",\"poiuyt\",\"lkjhgfdsa\",\"nmolkjiuhgfedcba\"]"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyz\"",
+      "[\"xyz\",\"xy\",\"yz\",\"xz\",\"xx\",\"yy\",\"zz\",\"xzy\",\"yzx\",\"zxy\",\"xyzxyz\",\"xyxyxy\",\"yzyzyz\",\"xzxzxz\",\"xxx\",\"yyy\",\"zzz\",\"xzyxzyxzy\",\"yzxyzxyz\",\"zxzyzxzyz\",\"xyzxyzxyzxyz\"]"
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaa\"",
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\",\"aaaaaaaaa\",\"aaaaaaaaaa\"]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"lkjhgfdsapoiuytrewq\"",
+      "[\"poi\",\"uyt\",\"rew\",\"qwe\",\"lkj\",\"hgf\",\"dsa\",\"lkjh\",\"gfds\",\"poiu\",\"uytr\",\"trew\",\"qwe\",\"lkjhg\",\"gfdsa\",\"poiu\",\"uytrw\",\"trewq\"]"
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\"",
+      "[\"aba\",\"abc\",\"aca\",\"ada\",\"baa\",\"bac\",\"bda\",\"cab\",\"cad\",\"cda\",\"daa\",\"dac\",\"dba\"]"
+    ],
+    "ExpectedOutput": "13"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaa\"",
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\",\"aaaaaaaaa\",\"aaaaaaaaaa\"]"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "[\"abc\",\"mnop\",\"xyz\",\"qrstuv\",\"wxyz\",\"defghijkl\",\"nopqrstuv\"]"
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaa\"",
+      "[\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\",\"aaaaaaaaa\",\"aaaaaaaaaa\"]"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"abababababababababababab\"",
+      "[\"aba\",\"bab\",\"aaa\",\"bbb\",\"aab\",\"aba\",\"aabbaa\",\"bbbabb\",\"ab\",\"ba\",\"aa\",\"bb\",\"abab\",\"baba\",\"ababa\",\"babab\",\"ababab\",\"bababa\"]"
+    ],
+    "ExpectedOutput": "18"
+  },
+  {
+    "Inputs": [
+      "\"bcbabbbbaabaaabaababbbbbbaaabbbabbababbababba\"",
+      "[\"bb\",\"ba\",\"bbba\",\"bab\",\"bbab\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"a\",\"b\",\"ab\",\"ba\",\"aba\",\"bab\",\"bba\",\"abb\",\"aab\",\"bbb\",\"bbbba\"]"
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringwithseveralrepetitions\"",
+      "[\"this\",\"is\",\"a\",\"very\",\"long\",\"string\",\"with\",\"several\",\"repetitions\",\"verylong\",\"stringwith\",\"longstring\",\"thisisavery\",\"averylongstring\",\"thisisaverylongstringwithseveralrepetitions\"]"
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "[\"abc\",\"xyz\",\"abcd\",\"uvw\",\"wxyz\",\"mnopqr\",\"def\",\"ghi\",\"jkl\",\"stu\"]"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "[\"zyx\",\"wvut\",\"srqp\",\"onml\",\"kjih\",\"gfed\",\"cba\",\"abc\"]"
+    ],
+    "ExpectedOutput": "7"
+  }
+]

@@ -1,0 +1,124 @@
+{
+  "QuestionId": 239,
+  "FrontendId": 239,
+  "Title": "Sliding Window Maximum",
+  "TitleSlug": "sliding-window-maximum",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Queue",
+      "Slug": "queue"
+    },
+    {
+      "Name": "Sliding Window",
+      "Slug": "sliding-window"
+    },
+    {
+      "Name": "Heap (Priority Queue)",
+      "Slug": "heap-priority-queue"
+    },
+    {
+      "Name": "Monotonic Queue",
+      "Slug": "monotonic-queue"
+    },
+    {
+      "Name": "Range Minimum/Maximum Query",
+      "Slug": "range-minimum-maximum-query"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Minimum Window Substring",
+      "TitleSlug": "minimum-window-substring",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Min Stack",
+      "TitleSlug": "min-stack",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Longest Substring with At Most Two Distinct Characters",
+      "TitleSlug": "longest-substring-with-at-most-two-distinct-characters",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Paint House II",
+      "TitleSlug": "paint-house-ii",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Jump Game VI",
+      "TitleSlug": "jump-game-vi",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Number of Robots Within Budget",
+      "TitleSlug": "maximum-number-of-robots-within-budget",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Maximum Tastiness of Candy Basket",
+      "TitleSlug": "maximum-tastiness-of-candy-basket",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximal Score After Applying K Operations",
+      "TitleSlug": "maximal-score-after-applying-k-operations",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [
+    "How about using a data structure such as deque (double-ended queue)?",
+    "The queue size need not be the same as the window’s size.",
+    "Remove redundant elements and the queue should store only elements that need to be considered."
+  ],
+  "Constraints": [
+    "1 <= nums.length <= 10^5",
+    "-10^4 <= nums[i] <= 10^4",
+    "1 <= k <= nums.length"
+  ],
+  "Signature": {
+    "FunctionName": "maxSlidingWindow",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer[]",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int[] MaxSlidingWindow(int[] nums, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[1,3,-1,-3,5,3,6,7]",
+        "3"
+      ],
+      "ExpectedOutput": "[3,3,5,5,6,7]"
+    },
+    {
+      "Inputs": [
+        "[1]",
+        "1"
+      ],
+      "ExpectedOutput": "[1]"
+    }
+  ],
+  "ContentHtml": "<p>You are given an array of integers&nbsp;<code>nums</code>, there is a sliding window of size <code>k</code> which is moving from the very left of the array to the very right. You can only see the <code>k</code> numbers in the window. Each time the sliding window moves right by one position.</p>\n\n<p>Return <em>the max sliding window</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,3,-1,-3,5,3,6,7], k = 3\n<strong>Output:</strong> [3,3,5,5,6,7]\n<strong>Explanation:</strong> \nWindow position                Max\n---------------               -----\n[1  3  -1] -3  5  3  6  7       <strong>3</strong>\n 1 [3  -1  -3] 5  3  6  7       <strong>3</strong>\n 1  3 [-1  -3  5] 3  6  7      <strong> 5</strong>\n 1  3  -1 [-3  5  3] 6  7       <strong>5</strong>\n 1  3  -1  -3 [5  3  6] 7       <strong>6</strong>\n 1  3  -1  -3  5 [3  6  7]      <strong>7</strong>\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1], k = 1\n<strong>Output:</strong> [1]\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>-10<sup>4</sup> &lt;= nums[i] &lt;= 10<sup>4</sup></code></li>\n\t<li><code>1 &lt;= k &lt;= nums.length</code></li>\n</ul>\n"
+}

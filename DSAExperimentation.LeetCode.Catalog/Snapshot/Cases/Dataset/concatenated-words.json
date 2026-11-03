@@ -1,0 +1,560 @@
+[
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"helloworld\",\"worldhello\"]"
+    ],
+    "ExpectedOutput": "[\"helloworld\",\"worldhello\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"appbanana\",\"banapple\",\"app\",\"ban\"]"
+    ],
+    "ExpectedOutput": "[\"banapple\",\"appbanana\"]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\",\"aaaaaaaaa\",\"aaaaaaaaaa\"]"
+    ],
+    "ExpectedOutput": "[\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\",\"aaaaaaaaa\",\"aaaaaaaaaa\"]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\"]"
+    ],
+    "ExpectedOutput": "[\"aa\",\"aaa\",\"aaaa\",\"aaaaa\"]"
+  },
+  {
+    "Inputs": [
+      "[\"fish\",\"dog\",\"cat\",\"dogfishcat\"]"
+    ],
+    "ExpectedOutput": "[\"dogfishcat\"]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\"]"
+    ],
+    "ExpectedOutput": "[\"aa\",\"aaa\",\"aaaa\"]"
+  },
+  {
+    "Inputs": [
+      "[\"word\",\"world\",\"wordworld\",\"worldword\",\"wordworldword\"]"
+    ],
+    "ExpectedOutput": "[\"wordworld\",\"worldword\",\"wordworldword\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"applepie\",\"apples\",\"pineapple\",\"pine\",\"pie\"]"
+    ],
+    "ExpectedOutput": "[\"applepie\",\"pineapple\"]"
+  },
+  {
+    "Inputs": [
+      "[\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"helloworld\"]"
+    ],
+    "ExpectedOutput": "[\"helloworld\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"appbanana\",\"banapple\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"applebanana\",\"bananasplit\",\"applesplit\",\"splitbananaapple\"]"
+    ],
+    "ExpectedOutput": "[\"applebanana\"]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"ab\",\"abc\",\"bc\",\"abcd\"]"
+    ],
+    "ExpectedOutput": "[\"ab\",\"abc\"]"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"onetwo\",\"twotwo\",\"twoone\",\"onetwothree\",\"threetwoone\",\"onetwoonetwo\",\"twoonetwoone\",\"onethree\",\"threeone\",\"onethreeone\",\"threeoneone\",\"threeonetwo\",\"twothreeone\",\"onetwothreeone\",\"onetwoonetwothree\"]"
+    ],
+    "ExpectedOutput": "[\"onetwo\",\"twotwo\",\"twoone\",\"onethree\",\"threeone\",\"onetwothree\",\"threetwoone\",\"onethreeone\",\"threeoneone\",\"threeonetwo\",\"twothreeone\",\"onetwoonetwo\",\"twoonetwoone\",\"onetwothreeone\",\"onetwoonetwothree\"]"
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"race\",\"racecar\",\"carrace\",\"racecarrace\",\"racecarcar\"]"
+    ],
+    "ExpectedOutput": "[\"racecar\",\"carrace\",\"racecarcar\",\"racecarrace\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"applebanana\",\"bananaapple\",\"grape\",\"pineapple\",\"pineappleapple\",\"applegrapebanana\"]"
+    ],
+    "ExpectedOutput": "[\"applebanana\",\"bananaapple\",\"pineappleapple\",\"applegrapebanana\"]"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\",\"redblue\",\"bluegreen\",\"greenred\",\"redgreengreen\",\"blueredblueblue\",\"greenredblue\"]"
+    ],
+    "ExpectedOutput": "[\"redblue\",\"greenred\",\"bluegreen\",\"greenredblue\",\"redgreengreen\",\"blueredblueblue\"]"
+  },
+  {
+    "Inputs": [
+      "[\"base\",\"ball\",\"baseball\",\"ballbase\",\"baseballbase\",\"basebaseball\",\"baseballball\",\"baseballbaseball\"]"
+    ],
+    "ExpectedOutput": "[\"baseball\",\"ballbase\",\"baseballbase\",\"basebaseball\",\"baseballball\",\"baseballbaseball\"]"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"sunny\",\"moonlight\",\"sunmoon\",\"moonsun\",\"sunnyday\",\"moonlightnight\",\"sunmoonlight\"]"
+    ],
+    "ExpectedOutput": "[\"sunmoon\",\"moonsun\",\"sunmoonlight\"]"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"onetwo\",\"twotwo\",\"threeone\",\"onetwothree\",\"twothreeone\",\"threeonetwo\",\"onetwothreeone\"]"
+    ],
+    "ExpectedOutput": "[\"onetwo\",\"twotwo\",\"threeone\",\"onetwothree\",\"twothreeone\",\"threeonetwo\",\"onetwothreeone\"]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"helloworld\",\"worldhello\",\"hellohello\",\"worldworld\",\"hellohellohello\",\"worldworldworld\"]"
+    ],
+    "ExpectedOutput": "[\"helloworld\",\"worldhello\",\"hellohello\",\"worldworld\",\"hellohellohello\",\"worldworldworld\"]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"helloworld\",\"worldhello\",\"hellohello\",\"worldworld\",\"helloworldhello\",\"worldhelloworld\"]"
+    ],
+    "ExpectedOutput": "[\"helloworld\",\"worldhello\",\"hellohello\",\"worldworld\",\"helloworldhello\",\"worldhelloworld\"]"
+  },
+  {
+    "Inputs": [
+      "[\"ab\",\"abc\",\"ababc\",\"abcabc\",\"aabbcc\",\"aabbaabb\"]"
+    ],
+    "ExpectedOutput": "[\"ababc\",\"abcabc\"]"
+  },
+  {
+    "Inputs": [
+      "[\"short\",\"long\",\"shortlong\",\"longshort\",\"shortshortlong\",\"longlongshort\",\"shortlongshort\",\"longshortlong\"]"
+    ],
+    "ExpectedOutput": "[\"shortlong\",\"longshort\",\"longlongshort\",\"longshortlong\",\"shortshortlong\",\"shortlongshort\"]"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"suffix\",\"prefixsuffix\",\"suffixprefix\",\"prefixprefix\",\"suffixsuffix\",\"prefixprefixsuffix\",\"suffixprefixprefix\"]"
+    ],
+    "ExpectedOutput": "[\"prefixsuffix\",\"suffixprefix\",\"prefixprefix\",\"suffixsuffix\",\"prefixprefixsuffix\",\"suffixprefixprefix\"]"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"suffix\",\"prefixsuffix\",\"suffixprefix\",\"prefixsuffixprefix\",\"suffixprefixsuffix\",\"prefixsuffixsuffixprefix\",\"suffixprefixprefixsuffix\"]"
+    ],
+    "ExpectedOutput": "[\"prefixsuffix\",\"suffixprefix\",\"prefixsuffixprefix\",\"suffixprefixsuffix\",\"prefixsuffixsuffixprefix\",\"suffixprefixprefixsuffix\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"dog\",\"catdog\",\"dogcat\",\"bird\",\"catdogbird\",\"dogcatbird\",\"catbird\",\"birdcat\",\"dogdogcat\",\"catcatdog\",\"dogcatdog\",\"catdogcat\",\"birdbird\",\"catbirdcat\",\"dogcatdogcat\",\"birdcatdogbird\"]"
+    ],
+    "ExpectedOutput": "[\"catdog\",\"dogcat\",\"catbird\",\"birdcat\",\"birdbird\",\"dogdogcat\",\"catcatdog\",\"dogcatdog\",\"catdogcat\",\"catdogbird\",\"dogcatbird\",\"catbirdcat\",\"dogcatdogcat\",\"birdcatdogbird\"]"
+  },
+  {
+    "Inputs": [
+      "[\"short\",\"longer\",\"longerword\",\"wordlonger\",\"shortword\",\"wordshort\",\"shortshortshort\",\"longerlongerlonger\"]"
+    ],
+    "ExpectedOutput": "[\"shortshortshort\",\"longerlongerlonger\"]"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"suffix\",\"prefixsuffix\",\"suffixprefix\",\"prefixsuffixprefix\",\"suffixprefixsuffix\",\"prefixsuffixsuffixprefix\",\"prefixprefixsuffix\",\"suffixsuffixprefix\"]"
+    ],
+    "ExpectedOutput": "[\"prefixsuffix\",\"suffixprefix\",\"prefixsuffixprefix\",\"suffixprefixsuffix\",\"prefixprefixsuffix\",\"suffixsuffixprefix\",\"prefixsuffixsuffixprefix\"]"
+  },
+  {
+    "Inputs": [
+      "[\"aaaa\",\"aaaab\",\"aaaaba\",\"aaaabaaa\",\"aaaabaaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\",\"aaaaaaaaa\",\"aaaaaaaaaa\"]"
+    ],
+    "ExpectedOutput": "[\"aaaaaaaa\",\"aaaabaaaa\",\"aaaaaaaaa\",\"aaaaaaaaaa\"]"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"redblue\",\"bluered\",\"redbluered\",\"blueredblue\",\"redredblue\",\"blueredred\"]"
+    ],
+    "ExpectedOutput": "[\"redblue\",\"bluered\",\"redbluered\",\"redredblue\",\"blueredred\",\"blueredblue\"]"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"sunnymoon\",\"moonstar\",\"star\",\"sunmoonstar\",\"moonmoonsun\"]"
+    ],
+    "ExpectedOutput": "[\"star\",\"moonstar\",\"sunmoonstar\",\"moonmoonsun\"]"
+  },
+  {
+    "Inputs": [
+      "[\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\",\"abcdefg\",\"abcdefgh\",\"abcdefghi\",\"abcdefghij\",\"abcdefghijk\",\"abcdefghijkl\",\"abcdefghijklm\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"ab\",\"ba\",\"aba\",\"baba\",\"abab\",\"bababa\",\"abababa\",\"babababa\"]"
+    ],
+    "ExpectedOutput": "[\"ab\",\"ba\",\"aba\",\"baba\",\"abab\",\"bababa\",\"abababa\",\"babababa\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"bcde\",\"cdef\",\"defg\",\"efgh\",\"fghi\",\"ghij\",\"hijk\",\"ijkl\",\"jklm\",\"klmn\",\"lmno\",\"mnop\",\"nopq\",\"opqr\",\"pqrs\",\"qrst\",\"rstu\",\"stuv\",\"tuvw\",\"uvwx\",\"vwxy\",\"wxyz\",\"xyz\",\"mnopqr\",\"qrstuv\",\"vwxyz\",\"mnopqrstuv\",\"mnopqrstuvwxy\",\"nopqrstuvwxyz\"]"
+    ],
+    "ExpectedOutput": "[\"mnopqrstuv\",\"nopqrstuvwxyz\"]"
+  },
+  {
+    "Inputs": [
+      "[\"tiny\",\"medium\",\"mediumtiny\",\"tinytiny\",\"tinymedium\",\"mediummedium\",\"mediumtinytiny\",\"tinytinytiny\",\"tinytinytinytiny\",\"tinytinytinytinytiny\"]"
+    ],
+    "ExpectedOutput": "[\"tinytiny\",\"mediumtiny\",\"tinymedium\",\"mediummedium\",\"tinytinytiny\",\"mediumtinytiny\",\"tinytinytinytiny\",\"tinytinytinytinytiny\"]"
+  },
+  {
+    "Inputs": [
+      "[\"word\",\"concatenate\",\"wordconcatenate\",\"concatenateword\",\"wordconcatenateword\",\"wordwordconcatenate\",\"concatenatethree\",\"concatenateconcatenate\",\"wordconcatenateconcatenate\"]"
+    ],
+    "ExpectedOutput": "[\"wordconcatenate\",\"concatenateword\",\"wordconcatenateword\",\"wordwordconcatenate\",\"concatenateconcatenate\",\"wordconcatenateconcatenate\"]"
+  },
+  {
+    "Inputs": [
+      "[\"alpha\",\"beta\",\"alphabeta\",\"betabeta\",\"betaalpha\",\"alphabetabet\",\"alphaalphabeta\",\"betaalphabeta\"]"
+    ],
+    "ExpectedOutput": "[\"betabeta\",\"alphabeta\",\"betaalpha\",\"betaalphabeta\",\"alphaalphabeta\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"applebanana\",\"bananaapple\",\"appleapplebanana\",\"bananabananaapple\"]"
+    ],
+    "ExpectedOutput": "[\"applebanana\",\"bananaapple\",\"appleapplebanana\",\"bananabananaapple\"]"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"bbaa\",\"aabbcc\",\"ccaabb\",\"aabbaa\",\"aabbccaabb\",\"aabbaabbcc\",\"ccccaabbaabb\",\"bbccccaabbaabb\",\"aabbcccaabbcccaabb\"]"
+    ],
+    "ExpectedOutput": "[\"aabbccaabb\",\"aabbaabbcc\"]"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"onetwo\",\"twotwo\",\"threetwo\",\"onethree\",\"twothree\",\"threethree\",\"onetwothree\",\"twothreeone\",\"threetwoone\",\"onetwoonetwo\",\"twotwoonetwo\",\"threethreethree\",\"onetwothreeonetwo\",\"twothreeonethree\",\"threetwooneonetwo\",\"onetwoonetwoonetwo\"]"
+    ],
+    "ExpectedOutput": "[\"onetwo\",\"twotwo\",\"threetwo\",\"onethree\",\"twothree\",\"threethree\",\"onetwothree\",\"twothreeone\",\"threetwoone\",\"onetwoonetwo\",\"twotwoonetwo\",\"threethreethree\",\"twothreeonethree\",\"onetwothreeonetwo\",\"threetwooneonetwo\",\"onetwoonetwoonetwo\"]"
+  },
+  {
+    "Inputs": [
+      "[\"tiny\",\"small\",\"tinysmall\",\"smallsmall\",\"tinytiny\",\"tinysmalltiny\"]"
+    ],
+    "ExpectedOutput": "[\"tinytiny\",\"tinysmall\",\"smallsmall\",\"tinysmalltiny\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"abcdef\",\"defabc\",\"abcdefg\",\"abcdefabc\",\"abcabcabc\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"defabc\",\"abcdefabc\",\"abcabcabc\"]"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"suffix\",\"prefixsuffix\",\"suffixprefix\",\"prefixsuffixprefix\",\"suffixprefixsuffix\",\"prefixsuffixprefixsuffix\"]"
+    ],
+    "ExpectedOutput": "[\"prefixsuffix\",\"suffixprefix\",\"prefixsuffixprefix\",\"suffixprefixsuffix\",\"prefixsuffixprefixsuffix\"]"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"bbaa\",\"ab\",\"ba\",\"aabbab\",\"baabaa\",\"bbaabb\",\"aabbaa\",\"ababab\",\"babaab\",\"abbaba\",\"bababb\",\"aabbaabb\",\"bbaabaab\"]"
+    ],
+    "ExpectedOutput": "[\"aabbab\",\"ababab\",\"babaab\",\"abbaba\",\"aabbaabb\",\"bbaabaab\"]"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"onetwo\",\"twotwo\",\"onetwothree\",\"threethreeone\",\"onetwothreeone\"]"
+    ],
+    "ExpectedOutput": "[\"onetwo\",\"twotwo\",\"onetwothree\",\"threethreeone\",\"onetwothreeone\"]"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"abab\",\"bbaa\",\"aabbaa\",\"ababaa\",\"baaabb\",\"aabbab\",\"bbaaab\",\"aabbba\",\"abababab\",\"baabbaab\",\"aabbaaba\"]"
+    ],
+    "ExpectedOutput": "[\"abababab\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"gh\",\"abcdefgh\",\"defgh\",\"abcdefg\",\"abcdefghi\",\"abcdefghij\",\"abcdefghijk\"]"
+    ],
+    "ExpectedOutput": "[\"defgh\",\"abcdefgh\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"abcdef\",\"defabc\",\"abcabcabc\",\"defdefdef\",\"abcdefabcdef\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"defabc\",\"abcabcabc\",\"defdefdef\",\"abcdefabcdef\"]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"helloworld\",\"worldhello\",\"hellotest\",\"testhello\",\"hellotesthello\"]"
+    ],
+    "ExpectedOutput": "[\"helloworld\",\"worldhello\",\"hellotesthello\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apples\",\"banana\",\"bananas\",\"applesandbananas\",\"bananaapple\"]"
+    ],
+    "ExpectedOutput": "[\"bananaapple\"]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"helloworld\",\"hellohello\",\"worldworldhello\"]"
+    ],
+    "ExpectedOutput": "[\"helloworld\",\"hellohello\",\"worldworldhello\"]"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"onel\",\"oneone\",\"two\",\"twotwo\",\"onetwo\",\"twotwoone\",\"onetwoone\",\"twoonetwo\",\"onetwotwo\",\"twoonetwotwo\",\"onetwoonetwoone\"]"
+    ],
+    "ExpectedOutput": "[\"oneone\",\"twotwo\",\"onetwo\",\"twotwoone\",\"onetwoone\",\"twoonetwo\",\"onetwotwo\",\"twoonetwotwo\",\"onetwoonetwoone\"]"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"onetwo\",\"twotwo\",\"twoone\",\"onetwoone\",\"twoonetwo\",\"onetwoonetwo\"]"
+    ],
+    "ExpectedOutput": "[\"onetwo\",\"twotwo\",\"twoone\",\"onetwoone\",\"twoonetwo\",\"onetwoonetwo\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"applebanana\",\"bananaapple\",\"grape\",\"grapeapple\",\"pineapple\"]"
+    ],
+    "ExpectedOutput": "[\"grapeapple\",\"applebanana\",\"bananaapple\"]"
+  },
+  {
+    "Inputs": [
+      "[\"happy\",\"sad\",\"happysad\",\"sadhappy\",\"happyhappy\",\"sadsad\",\"happyhappysad\",\"sadhappyhappy\",\"happysadsad\"]"
+    ],
+    "ExpectedOutput": "[\"sadsad\",\"happysad\",\"sadhappy\",\"happyhappy\",\"happysadsad\",\"happyhappysad\",\"sadhappyhappy\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"peach\",\"applepie\",\"bananapeach\",\"peachapple\"]"
+    ],
+    "ExpectedOutput": "[\"peachapple\",\"bananapeach\"]"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"suffix\",\"prefixsuffix\",\"suffixprefix\",\"prefixprefix\",\"suffixsuffix\",\"prefixsuffixprefix\",\"suffixprefixsuffix\"]"
+    ],
+    "ExpectedOutput": "[\"prefixsuffix\",\"suffixprefix\",\"prefixprefix\",\"suffixsuffix\",\"prefixsuffixprefix\",\"suffixprefixsuffix\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"applebanana\",\"bananasplit\",\"split\",\"applebananasplit\"]"
+    ],
+    "ExpectedOutput": "[\"applebanana\",\"bananasplit\",\"applebananasplit\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"ab\",\"bc\",\"abcabc\",\"abcab\",\"ababc\",\"aabbc\",\"abcababc\"]"
+    ],
+    "ExpectedOutput": "[\"abcab\",\"ababc\",\"abcabc\",\"abcababc\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"abcdef\",\"defabc\",\"abcdefdef\",\"abcabcabc\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"defabc\",\"abcdefdef\",\"abcabcabc\"]"
+  },
+  {
+    "Inputs": [
+      "[\"quick\",\"brown\",\"fox\",\"quickbrown\",\"brownfox\",\"foxquick\",\"quickbrownfox\",\"brownfoxquick\"]"
+    ],
+    "ExpectedOutput": "[\"brownfox\",\"foxquick\",\"quickbrown\",\"quickbrownfox\",\"brownfoxquick\"]"
+  },
+  {
+    "Inputs": [
+      "[\"tiny\",\"small\",\"tinytiny\",\"tinysmall\",\"smalltiny\",\"smallsmall\",\"tinytinysmall\",\"tinytinysmalltiny\",\"smallsml\",\"tinysmalltinytiny\",\"smalltinytiny\",\"tinytinytiny\",\"tinysmallsmallsml\"]"
+    ],
+    "ExpectedOutput": "[\"tinytiny\",\"tinysmall\",\"smalltiny\",\"smallsmall\",\"tinytinytiny\",\"tinytinysmall\",\"smalltinytiny\",\"tinytinysmalltiny\",\"tinysmalltinytiny\",\"tinysmallsmallsml\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"applebanana\",\"bananaapple\",\"appleapplebanana\"]"
+    ],
+    "ExpectedOutput": "[\"applebanana\",\"bananaapple\",\"appleapplebanana\"]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"helloworld\",\"worldhello\",\"hellohello\",\"worldworld\"]"
+    ],
+    "ExpectedOutput": "[\"helloworld\",\"worldhello\",\"hellohello\",\"worldworld\"]"
+  },
+  {
+    "Inputs": [
+      "[\"repeat\",\"repeated\",\"repeatrepeat\",\"repeatedrepeat\",\"repeatrepeatedrepeat\",\"repeatedrepeatrepeatedrepeat\",\"repeatedrepeated\",\"repeatrepeatrepeat\"]"
+    ],
+    "ExpectedOutput": "[\"repeatrepeat\",\"repeatedrepeat\",\"repeatedrepeated\",\"repeatrepeatrepeat\",\"repeatrepeatedrepeat\",\"repeatedrepeatrepeatedrepeat\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"cats\",\"catsdogcats\",\"dog\",\"dogcatsdog\",\"hippopotamuses\",\"rat\",\"ratcatdogcat\",\"hippo\",\"popo\",\"hippopop\"]"
+    ],
+    "ExpectedOutput": "[\"dogcatsdog\",\"catsdogcats\",\"ratcatdogcat\"]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"helloworld\",\"hellohello\",\"worldworld\",\"hellohelloworld\"]"
+    ],
+    "ExpectedOutput": "[\"helloworld\",\"hellohello\",\"worldworld\",\"hellohelloworld\"]"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"sunmoon\",\"moonsun\",\"sunsunmoon\",\"moonmoonsun\",\"sunmoonsunsun\"]"
+    ],
+    "ExpectedOutput": "[\"sunmoon\",\"moonsun\",\"sunsunmoon\",\"moonmoonsun\",\"sunmoonsunsun\"]"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"onetwo\",\"twotwo\",\"onethree\",\"threeone\",\"onetwothree\",\"twothreeone\"]"
+    ],
+    "ExpectedOutput": "[\"onetwo\",\"twotwo\",\"onethree\",\"threeone\",\"onetwothree\",\"twothreeone\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"abcdef\",\"defabc\",\"ghijkl\",\"mnop\",\"mnopqrst\",\"qrst\",\"mnopqrstmnopqrst\",\"nopqrst\",\"nopqr\",\"mnopq\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"defabc\",\"mnopqrst\",\"mnopqrstmnopqrst\"]"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\",\"redblue\",\"bluegreen\",\"greenred\",\"redbluegreen\",\"bluegreenred\",\"greenredblue\",\"redgreenred\",\"bluegreenblue\",\"greenredgreen\",\"redgreenbluegreen\",\"bluegreenredblue\",\"greenredbluegreenred\"]"
+    ],
+    "ExpectedOutput": "[\"redblue\",\"greenred\",\"bluegreen\",\"redgreenred\",\"redbluegreen\",\"bluegreenred\",\"greenredblue\",\"bluegreenblue\",\"greenredgreen\",\"bluegreenredblue\",\"redgreenbluegreen\",\"greenredbluegreenred\"]"
+  },
+  {
+    "Inputs": [
+      "[\"base\",\"ball\",\"baseball\",\"ballbase\",\"baseballbase\",\"ballbaseball\",\"baseballball\",\"baseballbaseball\"]"
+    ],
+    "ExpectedOutput": "[\"baseball\",\"ballbase\",\"baseballbase\",\"ballbaseball\",\"baseballball\",\"baseballbaseball\"]"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"onetwo\",\"twothree\",\"threeone\",\"onetwothree\",\"twothreeone\",\"threeonetwo\"]"
+    ],
+    "ExpectedOutput": "[\"onetwo\",\"twothree\",\"threeone\",\"onetwothree\",\"twothreeone\",\"threeonetwo\"]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\",\"h\",\"i\",\"j\",\"k\",\"l\",\"m\",\"n\",\"o\",\"p\",\"q\",\"r\",\"s\",\"t\",\"u\",\"v\",\"w\",\"x\",\"y\",\"z\",\"abcdefghijklmnopqrstuvwxyz\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghijklmnopqrstuvwxyz\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"applebanana\",\"bananapple\",\"bananaapplebanana\"]"
+    ],
+    "ExpectedOutput": "[\"applebanana\",\"bananaapplebanana\"]"
+  },
+  {
+    "Inputs": [
+      "[\"small\",\"medium\",\"large\",\"smallmedium\",\"mediumlarge\",\"largesmall\",\"smallmediumlarge\",\"mediumlargesmall\",\"largesmallmedium\",\"smallmediumlargesmall\"]"
+    ],
+    "ExpectedOutput": "[\"largesmall\",\"smallmedium\",\"mediumlarge\",\"smallmediumlarge\",\"mediumlargesmall\",\"largesmallmedium\",\"smallmediumlargesmall\"]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\",\"abcdefg\",\"abcdefgh\",\"abcdefghi\",\"abcdefghij\",\"abcdefghijk\",\"abcdefghijkl\",\"abcdefghijklm\",\"abcdefghijklmn\",\"abcdefghijklmno\",\"abcdefghijklmnop\",\"abcdefghijklmnopq\",\"abcdefghijklmnopqr\",\"abcdefghijklmnopqrs\",\"abcdefghijklmnopqrst\",\"abcdefghijklmnopqrstu\",\"abcdefghijklmnopqrstuv\",\"abcdefghijklmnopqrstuvw\",\"abcdefghijklmnopqrstuvwx\",\"abcdefghijklmnopqrstuvwxy\",\"abcdefghijklmnopqrstuvwxyz\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[\"bat\",\"ball\",\"batball\",\"ballbat\",\"batbatbat\",\"ballballball\",\"batballbat\"]"
+    ],
+    "ExpectedOutput": "[\"batball\",\"ballbat\",\"batbatbat\",\"batballbat\",\"ballballball\"]"
+  },
+  {
+    "Inputs": [
+      "[\"partone\",\"parttwo\",\"partthree\",\"onetwo\",\"twothree\",\"onetwothree\",\"threeonetwo\",\"twopartone\",\"threeparttwo\",\"onetwothreeonetwo\"]"
+    ],
+    "ExpectedOutput": "[\"onetwothreeonetwo\"]"
+  },
+  {
+    "Inputs": [
+      "[\"x\",\"xx\",\"xxx\",\"xxxx\",\"xxxxx\",\"xxxxxx\",\"xxxxxxx\",\"xxxxxxxx\",\"xxxxxxxxx\",\"xxxxxxxxxx\"]"
+    ],
+    "ExpectedOutput": "[\"xx\",\"xxx\",\"xxxx\",\"xxxxx\",\"xxxxxx\",\"xxxxxxx\",\"xxxxxxxx\",\"xxxxxxxxx\",\"xxxxxxxxxx\"]"
+  },
+  {
+    "Inputs": [
+      "[\"alpha\",\"beta\",\"gamma\",\"alphabeta\",\"betagamma\",\"alphagamma\",\"betaalpha\",\"gammaalpha\",\"betagammabetagamma\",\"gammabetagammaalpha\"]"
+    ],
+    "ExpectedOutput": "[\"alphabeta\",\"betagamma\",\"betaalpha\",\"alphagamma\",\"gammaalpha\",\"betagammabetagamma\",\"gammabetagammaalpha\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"abcdef\",\"defabc\",\"abcdefabc\",\"abcabcabc\",\"defdefdef\",\"abcdefdef\",\"defabcdef\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"defabc\",\"abcdefabc\",\"abcabcabc\",\"defdefdef\",\"abcdefdef\",\"defabcdef\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"appbanana\",\"bananapple\",\"applebananaapple\"]"
+    ],
+    "ExpectedOutput": "[\"applebananaapple\"]"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"sunset\",\"moonlight\",\"starlight\",\"sunmoon\",\"moonstar\",\"sunmoonstar\",\"moonstarsun\"]"
+    ],
+    "ExpectedOutput": "[\"sunmoon\",\"moonstar\",\"sunmoonstar\",\"moonstarsun\"]"
+  },
+  {
+    "Inputs": [
+      "[\"panda\",\"bear\",\"pandabear\",\"bearpanda\",\"pandapandabear\",\"bearpandapanda\",\"pandabearbear\",\"bearbearpanda\",\"pandapandapandabear\",\"bearpandapandapanda\"]"
+    ],
+    "ExpectedOutput": "[\"pandabear\",\"bearpanda\",\"pandabearbear\",\"bearbearpanda\",\"pandapandabear\",\"bearpandapanda\",\"pandapandapandabear\",\"bearpandapandapanda\"]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\",\"abcdefg\",\"abcdefgh\",\"abcdefghi\",\"abcdefghij\",\"abcdefghijk\",\"abcdefghijkl\",\"abcdefghijklm\",\"abcdefghijklmn\",\"abcdefghijklmno\",\"abcdefghijklmnop\",\"abcdefghijklmnopq\",\"abcdefghijklmnopqr\",\"abcdefghijklmnopqrs\",\"abcdefghijklmnopqrst\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"abcd\",\"bcde\",\"cdef\",\"defg\",\"efgh\",\"fghi\",\"ghij\",\"hijk\",\"ijkl\",\"jklm\",\"klmn\",\"lmno\",\"mnop\",\"nopq\",\"opqr\",\"pqrs\",\"qrst\",\"rstu\",\"stuv\",\"tuvw\",\"uvwxy\",\"vwxyz\",\"wxyzabc\",\"xyzabcd\",\"zabcde\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[\"foo\",\"bar\",\"foobar\",\"barfoo\",\"foofoobar\",\"barfoobaz\",\"baz\",\"foobazbar\"]"
+    ],
+    "ExpectedOutput": "[\"foobar\",\"barfoo\",\"foofoobar\",\"barfoobaz\",\"foobazbar\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"abcdef\",\"defabc\",\"ab\",\"bc\",\"de\",\"f\",\"abcd\",\"cdef\"]"
+    ],
+    "ExpectedOutput": "[\"def\",\"abcdef\",\"defabc\"]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"helloworld\",\"worldhello\",\"hellohellohello\",\"helloworldworld\"]"
+    ],
+    "ExpectedOutput": "[\"helloworld\",\"worldhello\",\"hellohellohello\",\"helloworldworld\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\",\"applebanana\",\"bananaapple\",\"cherryapple\",\"applecherry\",\"bananaapplebanana\"]"
+    ],
+    "ExpectedOutput": "[\"applebanana\",\"bananaapple\",\"cherryapple\",\"applecherry\",\"bananaapplebanana\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"abcdef\",\"defabc\",\"fedcba\",\"cab\",\"bac\",\"abcabc\",\"defdef\",\"ababab\",\"defdefdef\",\"abcdefgh\",\"ghijklmn\",\"opqrstuv\",\"wxyz\",\"abcdefghijk\",\"lmnopqrstuv\",\"wxyzabcd\",\"efghijklmnopqr\",\"stuvwxyzabcd\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"defabc\",\"abcabc\",\"defdef\",\"defdefdef\"]"
+  }
+]

@@ -1,0 +1,138 @@
+[
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "2",
+      "7"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "6",
+      "8"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[37,-34,-48,null,-100,-101,48,null,null,null,null,-54,null,-71,-22,null,null,null,8]",
+      "-100",
+      "-101"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[3,1,4,null,2]",
+      "2",
+      "1"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "6",
+      "4"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[6,2,8,0,4,7,9,null,null,3,5]",
+      "0",
+      "5"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "3",
+      "0"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[30,15,18,3,17,19,20,1,16,null,null,null,14,15,null,null,9,11]",
+      "3",
+      "17"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "6",
+      "2"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[3,1,4,null,2]",
+      "2",
+      "3"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "0",
+      "8"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[6,2,8,0,4,7,9,null,null,3,5]",
+      "3",
+      "5"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[2,1]",
+      "2",
+      "1"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "7",
+      "4"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[6,2,8,0,4,7,9,null,null,3,5]",
+      "2",
+      "4"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[6,2,8,0,4,7,9,null,null,3,5]",
+      "2",
+      "8"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[37,-34,-48,null,-100,-100,48,null,null,null,null,-54,null,-71,-22,null,null,null,8]",
+      "-100",
+      "48"
+    ],
+    "ExpectedOutput": "[]"
+  }
+]

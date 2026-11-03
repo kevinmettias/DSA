@@ -1,0 +1,158 @@
+{
+  "QuestionId": 56,
+  "FrontendId": 56,
+  "Title": "Merge Intervals",
+  "TitleSlug": "merge-intervals",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Sorting",
+      "Slug": "sorting"
+    },
+    {
+      "Name": "Quicksort",
+      "Slug": "quicksort"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Insert Interval",
+      "TitleSlug": "insert-interval",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Meeting Rooms",
+      "TitleSlug": "meeting-rooms",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Meeting Rooms II",
+      "TitleSlug": "meeting-rooms-ii",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Teemo Attacking",
+      "TitleSlug": "teemo-attacking",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Add Bold Tag in String",
+      "TitleSlug": "add-bold-tag-in-string",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Range Module",
+      "TitleSlug": "range-module",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Employee Free Time",
+      "TitleSlug": "employee-free-time",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Partition Labels",
+      "TitleSlug": "partition-labels",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Interval List Intersections",
+      "TitleSlug": "interval-list-intersections",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Amount of New Area Painted Each Day",
+      "TitleSlug": "amount-of-new-area-painted-each-day",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Longest Substring of One Repeating Character",
+      "TitleSlug": "longest-substring-of-one-repeating-character",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Count Integers in Intervals",
+      "TitleSlug": "count-integers-in-intervals",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Divide Intervals Into Minimum Number of Groups",
+      "TitleSlug": "divide-intervals-into-minimum-number-of-groups",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Determine if Two Events Have Conflict",
+      "TitleSlug": "determine-if-two-events-have-conflict",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Count Ways to Group Overlapping Ranges",
+      "TitleSlug": "count-ways-to-group-overlapping-ranges",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Points That Intersect With Cars",
+      "TitleSlug": "points-that-intersect-with-cars",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Count Days Without Meetings",
+      "TitleSlug": "count-days-without-meetings",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Minimize Connected Groups by Inserting Interval",
+      "TitleSlug": "minimize-connected-groups-by-inserting-interval",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= intervals.length <= 10^4",
+    "intervals[i].length == 2",
+    "0 <= starti <= endi <= 10^4"
+  ],
+  "Signature": {
+    "FunctionName": "merge",
+    "Parameters": [
+      {
+        "Name": "intervals",
+        "Type": "integer[][]"
+      }
+    ],
+    "ReturnType": "integer[][]",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int[][] Merge(int[][] intervals) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[[1,3],[2,6],[8,10],[15,18]]"
+      ],
+      "ExpectedOutput": "[[1,6],[8,10],[15,18]]"
+    },
+    {
+      "Inputs": [
+        "[[1,4],[4,5]]"
+      ],
+      "ExpectedOutput": "[[1,5]]"
+    },
+    {
+      "Inputs": [
+        "[[4,7],[1,4]]"
+      ],
+      "ExpectedOutput": "[[1,7]]"
+    }
+  ],
+  "ContentHtml": "<p>Given an array&nbsp;of <code>intervals</code>&nbsp;where <code>intervals[i] = [start<sub>i</sub>, end<sub>i</sub>]</code>, merge all overlapping intervals, and return <em>an array of the non-overlapping intervals that cover all the intervals in the input</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> intervals = [[1,3],[2,6],[8,10],[15,18]]\n<strong>Output:</strong> [[1,6],[8,10],[15,18]]\n<strong>Explanation:</strong> Since intervals [1,3] and [2,6] overlap, merge them into [1,6].\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> intervals = [[1,4],[4,5]]\n<strong>Output:</strong> [[1,5]]\n<strong>Explanation:</strong> Intervals [1,4] and [4,5] are considered overlapping.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> intervals = [[4,7],[1,4]]\n<strong>Output:</strong> [[1,7]]\n<strong>Explanation:</strong> Intervals [1,4] and [4,7] are considered overlapping.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= intervals.length &lt;= 10<sup>4</sup></code></li>\n\t<li><code>intervals[i].length == 2</code></li>\n\t<li><code>0 &lt;= start<sub>i</sub> &lt;= end<sub>i</sub> &lt;= 10<sup>4</sup></code></li>\n</ul>\n"
+}

@@ -1,0 +1,398 @@
+[
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\",\"e\"]"
+    ],
+    "ExpectedOutput": "[[\"a\"],[\"b\"],[\"c\"],[\"d\"],[\"e\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"bca\",\"cab\",\"xyz\",\"zyx\",\"yxz\"]"
+    ],
+    "ExpectedOutput": "[[\"abc\",\"bca\",\"cab\"],[\"xyz\",\"zyx\",\"yxz\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"jkl\"]"
+    ],
+    "ExpectedOutput": "[[\"abc\"],[\"def\"],[\"ghi\"],[\"jkl\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"acb\",\"bac\",\"bca\",\"cab\",\"cba\"]"
+    ],
+    "ExpectedOutput": "[[\"abc\",\"acb\",\"bac\",\"bca\",\"cab\",\"cba\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"listen\",\"silent\",\"enlist\"]"
+    ],
+    "ExpectedOutput": "[[\"listen\",\"silent\",\"enlist\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"bbaa\",\"abab\",\"baab\",\"baba\",\"abba\",\"aaaa\",\"bbbb\"]"
+    ],
+    "ExpectedOutput": "[[\"aabb\",\"bbaa\",\"abab\",\"baab\",\"baba\",\"abba\"],[\"aaaa\"],[\"bbbb\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"listen\",\"silent\",\"enlist\",\"google\",\"gooegl\"]"
+    ],
+    "ExpectedOutput": "[[\"listen\",\"silent\",\"enlist\"],[\"google\",\"gooegl\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"listen\",\"silent\",\"enlist\",\"google\",\"gooegl\",\"rat\",\"tar\",\"art\"]"
+    ],
+    "ExpectedOutput": "[[\"listen\",\"silent\",\"enlist\"],[\"google\",\"gooegl\"],[\"rat\",\"tar\",\"art\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"bac\",\"cab\",\"bca\",\"acb\",\"cba\"]"
+    ],
+    "ExpectedOutput": "[[\"abc\",\"bac\",\"cab\",\"bca\",\"acb\",\"cba\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"dormitory\",\"dirtyroom\",\"conversation\",\"voicesranton\",\"listen\",\"silent\"]"
+    ],
+    "ExpectedOutput": "[[\"dormitory\",\"dirtyroom\"],[\"conversation\",\"voicesranton\"],[\"listen\",\"silent\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\",\"h\",\"i\",\"j\"]"
+    ],
+    "ExpectedOutput": "[[\"a\"],[\"b\"],[\"c\"],[\"d\"],[\"e\"],[\"f\"],[\"g\"],[\"h\"],[\"i\"],[\"j\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"hold\",\"olelh\",\"dlrow\",\"owrld\"]"
+    ],
+    "ExpectedOutput": "[[\"hello\",\"olelh\"],[\"world\",\"dlrow\",\"owrld\"],[\"hold\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"dormitory\",\"dirtyroom\",\"conversation\",\"voicesranton\",\"schoolmaster\",\"theclassroom\"]"
+    ],
+    "ExpectedOutput": "[[\"dormitory\",\"dirtyroom\"],[\"conversation\",\"voicesranton\"],[\"schoolmaster\",\"theclassroom\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"bello\",\"olelh\",\"world\",\"dlrow\",\"dlorw\",\"droll\"]"
+    ],
+    "ExpectedOutput": "[[\"hello\",\"olelh\"],[\"bello\"],[\"world\",\"dlrow\",\"dlorw\"],[\"droll\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghijklmnopqrstuvwxyz\",\"zyxwvutsrqponmlkjihgfedcba\",\"cba\",\"bca\",\"bac\",\"acb\",\"cab\",\"abc\"]"
+    ],
+    "ExpectedOutput": "[[\"abcdefghijklmnopqrstuvwxyz\",\"zyxwvutsrqponmlkjihgfedcba\"],[\"cba\",\"bca\",\"bac\",\"acb\",\"cab\",\"abc\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"abcd\",\"abdc\",\"bacd\",\"badc\",\"cabd\",\"cadb\",\"dcba\",\"dcab\",\"abcd\",\"abdc\",\"bacd\",\"badc\",\"cabd\",\"cadb\",\"dcba\",\"dcab\",\"abcd\",\"abdc\",\"bacd\",\"badc\",\"cabd\",\"cadb\",\"dcba\",\"dcab\"]"
+    ],
+    "ExpectedOutput": "[[\"abc\"],[\"abcd\",\"abdc\",\"bacd\",\"badc\",\"cabd\",\"cadb\",\"dcba\",\"dcab\",\"abcd\",\"abdc\",\"bacd\",\"badc\",\"cabd\",\"cadb\",\"dcba\",\"dcab\",\"abcd\",\"abdc\",\"bacd\",\"badc\",\"cabd\",\"cadb\",\"dcba\",\"dcab\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghijklmnopqrstuvwxyz\",\"zyxwvutsrqponmlkjihgfedcba\",\"mnopqrstuvwxyzabcdefghijkl\",\"qrstuvwxyzaabcdefghijklmnop\",\"hgfedcbazyxwvutsrqponmlkjijklmnopqrstuvwxyzabcde\"]"
+    ],
+    "ExpectedOutput": "[[\"abcdefghijklmnopqrstuvwxyz\",\"zyxwvutsrqponmlkjihgfedcba\",\"mnopqrstuvwxyzabcdefghijkl\"],[\"qrstuvwxyzaabcdefghijklmnop\"],[\"hgfedcbazyxwvutsrqponmlkjijklmnopqrstuvwxyzabcde\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"dusty\",\"study\",\"night\",\"thing\",\"child\",\"brink\",\"drink\",\"crimp\",\"crimp\",\"stick\",\"smirk\",\"smirk\",\"smith\",\"tinsy\",\"stint\"]"
+    ],
+    "ExpectedOutput": "[[\"dusty\",\"study\"],[\"night\",\"thing\"],[\"child\"],[\"brink\"],[\"drink\"],[\"crimp\",\"crimp\"],[\"stick\"],[\"smirk\",\"smirk\"],[\"smith\"],[\"tinsy\"],[\"stint\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"abab\",\"baba\",\"baab\",\"abba\",\"bbaa\",\"aabb\",\"abab\",\"baba\",\"baab\",\"abba\",\"bbaa\"]"
+    ],
+    "ExpectedOutput": "[[\"aabb\",\"abab\",\"baba\",\"baab\",\"abba\",\"bbaa\",\"aabb\",\"abab\",\"baba\",\"baab\",\"abba\",\"bbaa\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"pepal\",\"ppale\",\"pplea\",\"ppela\",\"elppa\",\"ppael\",\"palpe\",\"ppale\",\"pplea\",\"ppela\",\"elppa\",\"ppael\",\"palpe\",\"appel\",\"ppale\",\"pplea\",\"ppela\",\"elppa\",\"ppael\",\"palpe\",\"ppale\",\"pplea\",\"ppela\",\"elppa\",\"ppael\",\"palpe\"]"
+    ],
+    "ExpectedOutput": "[[\"apple\",\"pepal\",\"ppale\",\"pplea\",\"ppela\",\"elppa\",\"ppael\",\"palpe\",\"ppale\",\"pplea\",\"ppela\",\"elppa\",\"ppael\",\"palpe\",\"appel\",\"ppale\",\"pplea\",\"ppela\",\"elppa\",\"ppael\",\"palpe\",\"ppale\",\"pplea\",\"ppela\",\"elppa\",\"ppael\",\"palpe\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"dusty\",\"study\",\"night\",\"thing\",\"delta\",\"tigon\",\"state\",\"taste\",\"date\",\"rated\"]"
+    ],
+    "ExpectedOutput": "[[\"dusty\",\"study\"],[\"night\",\"thing\"],[\"delta\"],[\"tigon\"],[\"state\",\"taste\"],[\"date\"],[\"rated\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"abcabc\",\"baccab\",\"acbbac\",\"cabbaa\",\"aabbcc\",\"abcabc\"]"
+    ],
+    "ExpectedOutput": "[[\"aabbcc\",\"abcabc\",\"baccab\",\"acbbac\",\"aabbcc\",\"abcabc\"],[\"cabbaa\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"rat\",\"car\",\"tar\",\"arc\",\"cat\",\"tac\",\"act\",\"rat\",\"car\",\"tar\",\"arc\",\"cat\",\"tac\",\"act\"]"
+    ],
+    "ExpectedOutput": "[[\"rat\",\"tar\",\"rat\",\"tar\"],[\"car\",\"arc\",\"car\",\"arc\"],[\"cat\",\"tac\",\"act\",\"cat\",\"tac\",\"act\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"abcabc\",\"bcaabc\",\"cababc\",\"aabbcc\",\"ccbaab\",\"abcabc\",\"baccab\",\"bacabc\",\"cababc\",\"abcabc\"]"
+    ],
+    "ExpectedOutput": "[[\"aabbcc\",\"abcabc\",\"bcaabc\",\"cababc\",\"aabbcc\",\"ccbaab\",\"abcabc\",\"baccab\",\"bacabc\",\"cababc\",\"abcabc\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"abab\",\"bbaa\",\"abba\",\"baab\",\"aaba\",\"baba\",\"bbba\",\"baaa\",\"aaaa\",\"bbbb\"]"
+    ],
+    "ExpectedOutput": "[[\"aabb\",\"abab\",\"bbaa\",\"abba\",\"baab\",\"baba\"],[\"aaba\",\"baaa\"],[\"bbba\"],[\"aaaa\"],[\"bbbb\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"ab\",\"ba\",\"ac\",\"ca\",\"ad\",\"da\",\"bc\",\"cb\",\"ef\",\"fe\",\"gh\",\"hg\",\"ij\",\"ji\",\"kl\",\"lk\",\"mnop\",\"nopm\",\"opmn\",\"pmno\",\"qrst\",\"srqt\",\"tqrs\",\"qrst\",\"stqr\",\"qrstuv\",\"rstquv\",\"tsrquv\",\"uvqrst\",\"vqrstu\",\"wxyz\",\"xyzw\",\"yzwx\",\"zwxy\"]"
+    ],
+    "ExpectedOutput": "[[\"ab\",\"ba\"],[\"ac\",\"ca\"],[\"ad\",\"da\"],[\"bc\",\"cb\"],[\"ef\",\"fe\"],[\"gh\",\"hg\"],[\"ij\",\"ji\"],[\"kl\",\"lk\"],[\"mnop\",\"nopm\",\"opmn\",\"pmno\"],[\"qrst\",\"srqt\",\"tqrs\",\"qrst\",\"stqr\"],[\"qrstuv\",\"rstquv\",\"tsrquv\",\"uvqrst\",\"vqrstu\"],[\"wxyz\",\"xyzw\",\"yzwx\",\"zwxy\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"listen\",\"silent\",\"enlist\",\"google\",\"gooegl\",\"rat\",\"tar\",\"art\",\"arc\",\"car\",\"arc\"]"
+    ],
+    "ExpectedOutput": "[[\"listen\",\"silent\",\"enlist\"],[\"google\",\"gooegl\"],[\"rat\",\"tar\",\"art\"],[\"arc\",\"car\",\"arc\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"listen\",\"silent\",\"enlist\",\"google\",\"gooegl\",\"abc\",\"cab\",\"bac\",\"bca\",\"acb\",\"cba\"]"
+    ],
+    "ExpectedOutput": "[[\"listen\",\"silent\",\"enlist\"],[\"google\",\"gooegl\"],[\"abc\",\"cab\",\"bac\",\"bca\",\"acb\",\"cba\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"zzzz\",\"zazaz\",\"zzzzz\",\"zz\",\"z\",\"za\",\"az\",\"zzzz\",\"zazaz\",\"zzzzz\",\"zz\",\"z\",\"za\",\"az\"]"
+    ],
+    "ExpectedOutput": "[[\"zzzz\",\"zzzz\"],[\"zazaz\",\"zazaz\"],[\"zzzzz\",\"zzzzz\"],[\"zz\",\"zz\"],[\"z\",\"z\"],[\"za\",\"az\",\"za\",\"az\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"bbaa\",\"abab\",\"abba\",\"baab\",\"baba\",\"aaaa\",\"bbbb\",\"aabbcc\",\"ccbaab\",\"aabbc\",\"abbac\",\"abc\",\"acb\",\"bac\",\"bca\",\"cab\",\"cba\",\"zzz\",\"zzzz\",\"zzzzz\"]"
+    ],
+    "ExpectedOutput": "[[\"aabb\",\"bbaa\",\"abab\",\"abba\",\"baab\",\"baba\"],[\"aaaa\"],[\"bbbb\"],[\"aabbcc\",\"ccbaab\"],[\"aabbc\",\"abbac\"],[\"abc\",\"acb\",\"bac\",\"bca\",\"cab\",\"cba\"],[\"zzz\"],[\"zzzz\"],[\"zzzzz\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"abcabc\",\"bcaabc\",\"cababc\",\"aabbcc\",\"ccbaab\",\"abcabc\",\"baccab\",\"bacabc\",\"cababc\",\"abcabc\",\"xyz\",\"zyx\",\"yzx\",\"zyx\",\"xyz\",\"yzx\",\"zyx\",\"xyz\",\"zyx\",\"yzx\",\"zyx\",\"xyz\",\"yzx\",\"zyx\",\"xyz\",\"zyx\",\"yzx\",\"zyx\",\"xyz\",\"yzx\",\"zyx\",\"xyz\"]"
+    ],
+    "ExpectedOutput": "[[\"aabbcc\",\"abcabc\",\"bcaabc\",\"cababc\",\"aabbcc\",\"ccbaab\",\"abcabc\",\"baccab\",\"bacabc\",\"cababc\",\"abcabc\"],[\"xyz\",\"zyx\",\"yzx\",\"zyx\",\"xyz\",\"yzx\",\"zyx\",\"xyz\",\"zyx\",\"yzx\",\"zyx\",\"xyz\",\"yzx\",\"zyx\",\"xyz\",\"zyx\",\"yzx\",\"zyx\",\"xyz\",\"yzx\",\"zyx\",\"xyz\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"typhon\",\"hypton\",\"pythno\",\"ypthon\",\"thypno\",\"hypnot\",\"hypnotize\",\"notphyno\",\"nothpyin\",\" hypnot\",\"hypnotic\",\"hypnothize\",\"hypnothise\",\"notthpyin\",\"pythonic\",\"typhonian\",\"pythongod\",\"hypno\",\"hypnosis\",\"hypnotherapy\",\"hypnagogia\",\"hypnoid\"]"
+    ],
+    "ExpectedOutput": "[[\"python\",\"typhon\",\"hypton\",\"pythno\",\"ypthon\",\"thypno\",\"hypnot\"],[\"hypnotize\"],[\"notphyno\"],[\"nothpyin\"],[\" hypnot\"],[\"hypnotic\",\"pythonic\"],[\"hypnothize\"],[\"hypnothise\"],[\"notthpyin\"],[\"typhonian\"],[\"pythongod\"],[\"hypno\"],[\"hypnosis\"],[\"hypnotherapy\"],[\"hypnagogia\"],[\"hypnoid\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"bacde\",\"cabde\",\"eabcd\",\"acbde\",\"dbcea\",\"adbce\"]"
+    ],
+    "ExpectedOutput": "[[\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"bacde\",\"cabde\",\"eabcd\",\"acbde\",\"dbcea\",\"adbce\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"edbac\",\"acbed\",\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"edbac\",\"acbed\",\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"edbac\",\"acbed\",\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"edbac\",\"acbed\",\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"edbac\",\"acbed\",\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"edbac\",\"acbed\"]"
+    ],
+    "ExpectedOutput": "[[\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"edbac\",\"acbed\",\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"edbac\",\"acbed\",\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"edbac\",\"acbed\",\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"edbac\",\"acbed\",\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"edbac\",\"acbed\",\"abcde\",\"edcba\",\"bcdea\",\"decba\",\"edbac\",\"acbed\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"dcba\",\"adbc\",\"cbad\",\"abcd\",\"bcda\",\"abcd\",\"dcba\",\"adbc\",\"cbad\",\"abcd\",\"bcda\",\"abcd\",\"dcba\",\"adbc\",\"cbad\",\"abcd\",\"bcda\",\"abcd\",\"dcba\"]"
+    ],
+    "ExpectedOutput": "[[\"abcd\",\"dcba\",\"adbc\",\"cbad\",\"abcd\",\"bcda\",\"abcd\",\"dcba\",\"adbc\",\"cbad\",\"abcd\",\"bcda\",\"abcd\",\"dcba\",\"adbc\",\"cbad\",\"abcd\",\"bcda\",\"abcd\",\"dcba\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"dcba\",\"cabd\",\"badc\",\"dacb\",\"cdab\",\"bcad\",\"bcda\",\"acbd\",\"cadb\",\"acdb\",\"abdc\"]"
+    ],
+    "ExpectedOutput": "[[\"abcd\",\"dcba\",\"cabd\",\"badc\",\"dacb\",\"cdab\",\"bcad\",\"bcda\",\"acbd\",\"cadb\",\"acdb\",\"abdc\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"dormitory\",\"dirtyroom\",\"listen\",\"silent\",\"enlist\",\"google\",\"gooegl\",\"abc\",\"cab\",\"bac\",\"bca\",\"acb\",\"cba\",\"zzz\",\"zzzz\",\"zzzzz\",\"zzzzzz\"]"
+    ],
+    "ExpectedOutput": "[[\"dormitory\",\"dirtyroom\"],[\"listen\",\"silent\",\"enlist\"],[\"google\",\"gooegl\"],[\"abc\",\"cab\",\"bac\",\"bca\",\"acb\",\"cba\"],[\"zzz\"],[\"zzzz\"],[\"zzzzz\"],[\"zzzzzz\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"dcba\",\"abcd\",\"cdab\",\"bdac\",\"cabd\",\"bacd\",\"abcd\",\"dcba\",\"abcd\"]"
+    ],
+    "ExpectedOutput": "[[\"abcd\",\"dcba\",\"abcd\",\"cdab\",\"bdac\",\"cabd\",\"bacd\",\"abcd\",\"dcba\",\"abcd\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"abab\",\"bbaa\",\"abba\",\"aaaa\",\"aaab\",\"baaa\",\"baba\",\"abba\",\"aabb\",\"abab\",\"bbaa\",\"aaaa\"]"
+    ],
+    "ExpectedOutput": "[[\"aabb\",\"abab\",\"bbaa\",\"abba\",\"baba\",\"abba\",\"aabb\",\"abab\",\"bbaa\"],[\"aaaa\",\"aaaa\"],[\"aaab\",\"baaa\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"dcba\",\"adcb\",\"cbad\",\"bdac\",\"cabd\",\"bacd\",\"acbd\",\"dbca\",\"bcad\",\"cadb\",\"abcd\",\"dcba\",\"adcb\",\"cbad\",\"bdac\",\"cabd\",\"bacd\",\"acbd\",\"dbca\",\"bcad\",\"cadb\",\"abcd\",\"dcba\",\"adcb\",\"cbad\",\"bdac\",\"cabd\",\"bacd\",\"acbd\",\"dbca\",\"bcad\",\"cadb\",\"abcd\",\"dcba\",\"adcb\",\"cbad\",\"bdac\",\"cabd\",\"bacd\",\"acbd\",\"dbca\",\"bcad\",\"cadb\"]"
+    ],
+    "ExpectedOutput": "[[\"abcd\",\"dcba\",\"adcb\",\"cbad\",\"bdac\",\"cabd\",\"bacd\",\"acbd\",\"dbca\",\"bcad\",\"cadb\",\"abcd\",\"dcba\",\"adcb\",\"cbad\",\"bdac\",\"cabd\",\"bacd\",\"acbd\",\"dbca\",\"bcad\",\"cadb\",\"abcd\",\"dcba\",\"adcb\",\"cbad\",\"bdac\",\"cabd\",\"bacd\",\"acbd\",\"dbca\",\"bcad\",\"cadb\",\"abcd\",\"dcba\",\"adcb\",\"cbad\",\"bdac\",\"cabd\",\"bacd\",\"acbd\",\"dbca\",\"bcad\",\"cadb\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"anagram\",\"nagaram\",\"margana\",\"anagrama\",\"anagram\",\"anagram\",\"granama\",\"nagaramm\"]"
+    ],
+    "ExpectedOutput": "[[\"anagram\",\"nagaram\",\"margana\",\"anagram\",\"anagram\",\"granama\"],[\"anagrama\"],[\"nagaramm\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aaa\",\"bbb\",\"ccc\",\"aaa\",\"bbb\",\"ccc\",\"aaa\",\"bbb\",\"ccc\",\"aaa\",\"bbb\",\"ccc\",\"aaa\",\"bbb\",\"ccc\",\"aaa\",\"bbb\",\"ccc\",\"aaa\",\"bbb\",\"ccc\",\"aaa\",\"bbb\",\"ccc\"]"
+    ],
+    "ExpectedOutput": "[[\"aaa\",\"aaa\",\"aaa\",\"aaa\",\"aaa\",\"aaa\",\"aaa\",\"aaa\"],[\"bbb\",\"bbb\",\"bbb\",\"bbb\",\"bbb\",\"bbb\",\"bbb\",\"bbb\"],[\"ccc\",\"ccc\",\"ccc\",\"ccc\",\"ccc\",\"ccc\",\"ccc\",\"ccc\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"bbaa\",\"abab\",\"baba\",\"abba\",\"baab\",\"abc\",\"bac\",\"bca\",\"acb\",\"cba\",\"zzz\",\"zzzz\",\"zzzzz\",\"zzzzzz\",\"zzzzzzz\",\"zzzzzzzz\",\"zzzzzzzzz\"]"
+    ],
+    "ExpectedOutput": "[[\"aabb\",\"bbaa\",\"abab\",\"baba\",\"abba\",\"baab\"],[\"abc\",\"bac\",\"bca\",\"acb\",\"cba\"],[\"zzz\"],[\"zzzz\"],[\"zzzzz\"],[\"zzzzzz\"],[\"zzzzzzz\"],[\"zzzzzzzz\"],[\"zzzzzzzzz\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"dusty\",\"study\",\"night\",\"thing\",\"gnhit\",\"inthe\",\"night\",\"thing\",\"night\",\"thing\",\"night\"]"
+    ],
+    "ExpectedOutput": "[[\"dusty\",\"study\"],[\"night\",\"thing\",\"gnhit\",\"night\",\"thing\",\"night\",\"thing\",\"night\"],[\"inthe\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"abcabc\",\"bcaacb\",\"cababc\",\"bcacab\",\"bacbac\",\"aabbcc\",\"aabbcc\",\"aabcbc\",\"bcaabc\",\"abacbc\",\"babcac\",\"abcabc\",\"bcaacb\",\"cababc\",\"bcacab\",\"bacbac\",\"aabbcc\",\"aabbcc\",\"aabcbc\",\"bcaabc\",\"abacbc\",\"babcac\",\"abcabc\",\"bcaacb\",\"cababc\",\"bcacab\",\"bacbac\",\"aabbcc\",\"aabbcc\",\"aabcbc\",\"bcaabc\",\"abacbc\",\"babcac\",\"abcabc\",\"bcaacb\",\"cababc\",\"bcacab\",\"bacbac\",\"aabbcc\",\"aabbcc\",\"aabcbc\",\"bcaabc\",\"abacbc\",\"babcac\"]"
+    ],
+    "ExpectedOutput": "[[\"aabbcc\",\"abcabc\",\"bcaacb\",\"cababc\",\"bcacab\",\"bacbac\",\"aabbcc\",\"aabbcc\",\"aabcbc\",\"bcaabc\",\"abacbc\",\"babcac\",\"abcabc\",\"bcaacb\",\"cababc\",\"bcacab\",\"bacbac\",\"aabbcc\",\"aabbcc\",\"aabcbc\",\"bcaabc\",\"abacbc\",\"babcac\",\"abcabc\",\"bcaacb\",\"cababc\",\"bcacab\",\"bacbac\",\"aabbcc\",\"aabbcc\",\"aabcbc\",\"bcaabc\",\"abacbc\",\"babcac\",\"abcabc\",\"bcaacb\",\"cababc\",\"bcacab\",\"bacbac\",\"aabbcc\",\"aabbcc\",\"aabcbc\",\"bcaabc\",\"abacbc\",\"babcac\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"abcabc\",\"bcaabc\",\"cababc\",\"abccba\",\"acbbac\",\"baccab\",\"bcacab\",\"bacbac\",\"acbacb\",\"bacbac\",\"bacbac\",\"bacbac\",\"bacbac\",\"bacbac\"]"
+    ],
+    "ExpectedOutput": "[[\"aabbcc\",\"abcabc\",\"bcaabc\",\"cababc\",\"abccba\",\"acbbac\",\"baccab\",\"bcacab\",\"bacbac\",\"acbacb\",\"bacbac\",\"bacbac\",\"bacbac\",\"bacbac\",\"bacbac\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"dusty\",\"study\",\"night\",\"thing\",\"eight\",\"gnite\",\"inthe\",\"front\",\"trofn\",\"gnhet\",\"gfno\",\"gnfoe\",\"thingo\",\"niothg\",\"ightn\"]"
+    ],
+    "ExpectedOutput": "[[\"dusty\",\"study\"],[\"night\",\"thing\",\"ightn\"],[\"eight\"],[\"gnite\"],[\"inthe\"],[\"front\",\"trofn\"],[\"gnhet\"],[\"gfno\"],[\"gnfoe\"],[\"thingo\",\"niothg\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"rat\",\"car\",\"tar\",\"arc\",\"arc\",\"rta\",\"cat\",\"tac\",\"act\",\"cta\",\"tca\",\"atc\"]"
+    ],
+    "ExpectedOutput": "[[\"rat\",\"tar\",\"rta\"],[\"car\",\"arc\",\"arc\"],[\"cat\",\"tac\",\"act\",\"cta\",\"tca\",\"atc\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcde\",\"edcba\",\"fghij\",\"jihgf\",\"mnopq\",\"qponm\",\"rstuv\",\"vutsr\",\"wxyz\",\"zyxw\",\"aaaaa\",\"bbbbb\",\"ccccc\",\"ddddd\",\"eeeee\",\"zzzzz\"]"
+    ],
+    "ExpectedOutput": "[[\"abcde\",\"edcba\"],[\"fghij\",\"jihgf\"],[\"mnopq\",\"qponm\"],[\"rstuv\",\"vutsr\"],[\"wxyz\",\"zyxw\"],[\"aaaaa\"],[\"bbbbb\"],[\"ccccc\"],[\"ddddd\"],[\"eeeee\"],[\"zzzzz\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"listen\",\"silent\",\"enlist\",\"google\",\"gooegl\",\"inlets\",\"banana\",\"anabna\",\"xyz\",\"zyx\"]"
+    ],
+    "ExpectedOutput": "[[\"listen\",\"silent\",\"enlist\",\"inlets\"],[\"google\",\"gooegl\"],[\"banana\",\"anabna\"],[\"xyz\",\"zyx\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"dcba\",\"abcd\",\"abcd\",\"dcba\",\"abcd\",\"dcba\",\"abcd\",\"abcd\"]"
+    ],
+    "ExpectedOutput": "[[\"abcd\",\"dcba\",\"abcd\",\"abcd\",\"dcba\",\"abcd\",\"dcba\",\"abcd\",\"abcd\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"zzzz\",\"zzz\",\"zz\",\"z\",\"aaaa\",\"aaa\",\"aa\",\"a\",\"bbbb\",\"bbb\",\"bb\",\"b\",\"cccc\",\"ccc\",\"cc\",\"c\",\"dddd\",\"ddd\",\"dd\",\"d\",\"eeee\",\"eee\",\"ee\",\"e\"]"
+    ],
+    "ExpectedOutput": "[[\"zzzz\"],[\"zzz\"],[\"zz\"],[\"z\"],[\"aaaa\"],[\"aaa\"],[\"aa\"],[\"a\"],[\"bbbb\"],[\"bbb\"],[\"bb\"],[\"b\"],[\"cccc\"],[\"ccc\"],[\"cc\"],[\"c\"],[\"dddd\"],[\"ddd\"],[\"dd\"],[\"d\"],[\"eeee\"],[\"eee\"],[\"ee\"],[\"e\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"listen\",\"silent\",\"enlist\",\"google\",\"gooegl\",\"rat\",\"tar\",\"art\",\"elbow\",\"below\"]"
+    ],
+    "ExpectedOutput": "[[\"listen\",\"silent\",\"enlist\"],[\"google\",\"gooegl\"],[\"rat\",\"tar\",\"art\"],[\"elbow\",\"below\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"listen\",\"silent\",\"enlist\",\"google\",\"gooegl\",\"abc\",\"cab\",\"bac\"]"
+    ],
+    "ExpectedOutput": "[[\"listen\",\"silent\",\"enlist\"],[\"google\",\"gooegl\"],[\"abc\",\"cab\",\"bac\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"xyz\",\"zyx\",\"yxz\",\"xzy\",\"zyx\",\"yzy\",\"xyx\",\"xxy\",\"xyy\",\"yxx\",\"yyx\",\"yyy\",\"xxx\"]"
+    ],
+    "ExpectedOutput": "[[\"xyz\",\"zyx\",\"yxz\",\"xzy\",\"zyx\"],[\"yzy\"],[\"xyx\",\"xxy\",\"yxx\"],[\"xyy\",\"yyx\"],[\"yyy\"],[\"xxx\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"dusty\",\"study\",\"night\",\"thing\",\"enlist\",\"google\",\"gogole\",\"inlets\",\"abc\",\"cba\",\"bac\",\"zyx\",\"xyz\",\"xyzzyx\",\"zyxzyx\"]"
+    ],
+    "ExpectedOutput": "[[\"dusty\",\"study\"],[\"night\",\"thing\"],[\"enlist\",\"inlets\"],[\"google\",\"gogole\"],[\"abc\",\"cba\",\"bac\"],[\"zyx\",\"xyz\"],[\"xyzzyx\",\"zyxzyx\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"ohell\",\"lohel\",\"ollhe\",\"elohl\",\"\",\"\",\"\",\"a\",\"a\",\"a\",\"a\",\"a\"]"
+    ],
+    "ExpectedOutput": "[[\"hello\",\"ohell\",\"lohel\",\"ollhe\",\"elohl\"],[\"\",\"\",\"\"],[\"a\",\"a\",\"a\",\"a\",\"a\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"listen\",\"silent\",\"enlist\",\"google\",\"gooegl\",\"rat\",\"tar\",\"art\",\"rom\",\"mor\",\"arm\",\"rmo\"]"
+    ],
+    "ExpectedOutput": "[[\"listen\",\"silent\",\"enlist\"],[\"google\",\"gooegl\"],[\"rat\",\"tar\",\"art\"],[\"rom\",\"mor\",\"rmo\"],[\"arm\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"abcabc\",\"aabbbc\",\"aacbbc\",\"aabcc\",\"abcacb\",\"abacbc\",\"bbaacc\",\"abccba\",\"bcaacb\"]"
+    ],
+    "ExpectedOutput": "[[\"aabbcc\",\"abcabc\",\"aacbbc\",\"abcacb\",\"abacbc\",\"bbaacc\",\"abccba\",\"bcaacb\"],[\"aabbbc\"],[\"aabcc\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"listen\",\"silent\",\"enlist\",\"google\",\"gooegl\",\"inlets\",\"banana\"]"
+    ],
+    "ExpectedOutput": "[[\"listen\",\"silent\",\"enlist\",\"inlets\"],[\"google\",\"gooegl\"],[\"banana\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcde\",\"edcba\",\"bcdea\",\"decab\",\"cabed\",\"edbac\",\"baced\",\"deabc\",\"ebadc\",\"acbed\"]"
+    ],
+    "ExpectedOutput": "[[\"abcde\",\"edcba\",\"bcdea\",\"decab\",\"cabed\",\"edbac\",\"baced\",\"deabc\",\"ebadc\",\"acbed\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"bcd\",\"cab\",\"bac\",\"bca\",\"cba\",\"xyz\",\"zyx\",\"yxz\",\"zy\",\"yz\",\"z\",\"a\",\"b\",\"c\"]"
+    ],
+    "ExpectedOutput": "[[\"abc\",\"cab\",\"bac\",\"bca\",\"cba\"],[\"bcd\"],[\"xyz\",\"zyx\",\"yxz\"],[\"zy\",\"yz\"],[\"z\"],[\"a\"],[\"b\"],[\"c\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"aa\",\"bb\",\"cc\",\"aaa\",\"bbb\",\"ccc\",\"aaaa\",\"bbbb\",\"cccc\"]"
+    ],
+    "ExpectedOutput": "[[\"a\"],[\"b\"],[\"c\"],[\"aa\"],[\"bb\"],[\"cc\"],[\"aaa\"],[\"bbb\"],[\"ccc\"],[\"aaaa\"],[\"bbbb\"],[\"cccc\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"dusty\",\"study\",\"night\",\"thing\",\"inhti\",\"ytsud\",\"ytsdu\",\"gnith\",\"dusty\",\"study\",\"night\",\"thing\",\"inhti\",\"ytsud\",\"ytsdu\",\"gnith\",\"dusty\",\"study\",\"night\",\"thing\",\"inhti\",\"ytsud\",\"ytsdu\",\"gnith\",\"dusty\",\"study\",\"night\",\"thing\",\"inhti\",\"ytsud\",\"ytsdu\",\"gnith\"]"
+    ],
+    "ExpectedOutput": "[[\"dusty\",\"study\",\"ytsud\",\"ytsdu\",\"dusty\",\"study\",\"ytsud\",\"ytsdu\",\"dusty\",\"study\",\"ytsud\",\"ytsdu\",\"dusty\",\"study\",\"ytsud\",\"ytsdu\"],[\"night\",\"thing\",\"gnith\",\"night\",\"thing\",\"gnith\",\"night\",\"thing\",\"gnith\",\"night\",\"thing\",\"gnith\"],[\"inhti\",\"inhti\",\"inhti\",\"inhti\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"ab\",\"ba\",\"abc\",\"cba\",\"bac\",\"bca\",\"cab\",\"acb\",\"abc\",\"cba\",\"bac\",\"bca\",\"cab\",\"acb\"]"
+    ],
+    "ExpectedOutput": "[[\"ab\",\"ba\"],[\"abc\",\"cba\",\"bac\",\"bca\",\"cab\",\"acb\",\"abc\",\"cba\",\"bac\",\"bca\",\"cab\",\"acb\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"dusty\",\"study\",\"night\",\"thing\",\"sight\",\"fling\",\"tying\",\"sting\",\"dusty\"]"
+    ],
+    "ExpectedOutput": "[[\"dusty\",\"study\",\"dusty\"],[\"night\",\"thing\"],[\"sight\"],[\"fling\"],[\"tying\"],[\"sting\"]]"
+  }
+]

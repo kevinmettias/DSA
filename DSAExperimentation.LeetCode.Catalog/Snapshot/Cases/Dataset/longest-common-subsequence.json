@@ -1,0 +1,968 @@
+[
+  {
+    "Inputs": [
+      "\"a\"",
+      "\"b\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "\"zyx\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"ezupkr\"",
+      "\"ubmrapg\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"aabcc\"",
+      "\"dbbca\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"programming\"",
+      "\"gaming\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"ylqpfxxqy\"",
+      "\"wxqxalnnsow\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"pqr\"",
+      "\"stu\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"abcdgh\"",
+      "\"aedfhr\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"hofubmnyg\"",
+      "\"hvmpywxck\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "\"z\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"mhunuzqrkz\"",
+      "\"dhlmfpnqjk\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\"",
+      "\"abdfg\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"a\"",
+      "\"a\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "\"abc\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"psnw\"",
+      "\"vozbbmloqjbpbprqs\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"abcxyz\"",
+      "\"xyzabc\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "\"zabcf\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"oxcpqrsvwf\"",
+      "\"shmtulqrypy\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"abcdxyz\"",
+      "\"xyzabcd\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"aaaa\"",
+      "\"aa\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"aggtab\"",
+      "\"gxtxayb\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"abcxyzabc\"",
+      "\"xyzabcxyz\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaa\"",
+      "\"aaaaaa\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"abacdfgdcaba\"",
+      "\"abacdgfdcaba\""
+    ],
+    "ExpectedOutput": "11"
+  },
+  {
+    "Inputs": [
+      "\"aabccbb\"",
+      "\"dbbcbab\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"longerstringone\"",
+      "\"short\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"pississippi\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\"",
+      "\"avadakedavra\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"",
+      "\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"aquickbrownfoxjumpsoverthelazydog\"",
+      "\"lazydog\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "\"acegik\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcdpqrs\"",
+      "\"efghijkl\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"aaaabbbbccccddddeeeeffffgggghhhhiiii\"",
+      "\"abcdefghi\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyz\"",
+      "\"zyxzyxzyx\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "\"abcdefghijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcdabcdabcdabcdabcdabcd\"",
+      "\"zyxwvutsrqponmlkjihgfedcba\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "\"zyxwvutsrqponmlkjihgfedcba\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"longestcommonsubsequence\"",
+      "\"shortestsub\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"ississippi\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabaaaabaaaabaaaa\"",
+      "\"bbbaabbaabbaabbaab\""
+    ],
+    "ExpectedOutput": "11"
+  },
+  {
+    "Inputs": [
+      "\"abcdeabcdeabcde\"",
+      "\"deabcdea\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"interpersonal\"",
+      "\"personality\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbb\"",
+      "\"ababababab\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\"",
+      "\"hijklmn\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"pqrstuvwxyzabcdefghijklmno\"",
+      "\"mnopqrstuvwxyzabcdefghijkl\""
+    ],
+    "ExpectedOutput": "23"
+  },
+  {
+    "Inputs": [
+      "\"pwwkew\"",
+      "\"wkepwkew\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaab\"",
+      "\"bbbbbaaa\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"abcdexyz\"",
+      "\"zyxeabcd\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "\"0123456789abcdefghij\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstring\"",
+      "\"shisivaverylongstring\""
+    ],
+    "ExpectedOutput": "19"
+  },
+  {
+    "Inputs": [
+      "\"acbdefgh\"",
+      "\"bdfg\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"cba\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\"",
+      "\"abacabadabacab\""
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabc\"",
+      "\"abcabcabcabc\""
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"aaaabbbbcccc\"",
+      "\"bbcccaabbbccc\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbbccccccdddddeeeeeeeeeffffff\"",
+      "\"dddddeeeeeeeeeccccccbbbbaaaaaa\""
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaa\"",
+      "\"aaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"ab\"",
+      "\"ba\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaabbbbbbbccccccdddddd\"",
+      "\"abcde\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"ababcabcabc\"",
+      "\"abcabcabc\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijk\"",
+      "\"lmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"aabccba\"",
+      "\"abcabcabc\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijlkmnopqrstuvwxyz\"",
+      "\"zxywvutsrqponmlkjihgfedcba\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"repeatedrepeated\"",
+      "\"repeated\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "\"acegikmopq\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijj\"",
+      "\"jjiihhggffeeddccbbaa\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"supercalifragilisticexpialidocious\"",
+      "\"superfragilistic\""
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaabbbbbbbcccccc\"",
+      "\"bbbbbbccccccdddddd\""
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghigklmnopqrstuvwxyz\"",
+      "\"zzzyyxxwwvvuuttrrqqppoonnmmllkkjjiihhggeeffddeeccbbbaa\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"abracadabraabracadabra\"",
+      "\"alacazamalacazam\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabc\"",
+      "\"abcabcabc\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"abababababababababababababababab\"",
+      "\"babababababababababababababababa\""
+    ],
+    "ExpectedOutput": "31"
+  },
+  {
+    "Inputs": [
+      "\"randomsequence\"",
+      "\"sequence\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"abcdeabcdeabcde\"",
+      "\"cdecdecdecde\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "\"mnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaabaaaaaa\"",
+      "\"bbbbbbbbaaaaaa\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaaaaaaaaa\"",
+      "\"aaaaaaaaaaaaaaaaaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "26"
+  },
+  {
+    "Inputs": [
+      "\"abcdeabcdeabcde\"",
+      "\"deabcdeabcdeabcdeab\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"abcdexyz\"",
+      "\"xyzabcd\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"aaaabbbb\"",
+      "\"bbaaaa\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"",
+      "\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "29"
+  },
+  {
+    "Inputs": [
+      "\"pneumonoultramicroscopicsilicovolcanoconiosis\"",
+      "\"ultramicroscopically\""
+    ],
+    "ExpectedOutput": "18"
+  },
+  {
+    "Inputs": [
+      "\"dynamicprogramming\"",
+      "\"rhythmprogramming\""
+    ],
+    "ExpectedOutput": "13"
+  },
+  {
+    "Inputs": [
+      "\"aaaa\"",
+      "\"bbbb\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"abcdpqrsabcd\"",
+      "\"dcbapqrscba\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"longestcommonsubsequence\"",
+      "\"shortestsubsequence\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\"",
+      "\"abacabadabacaba\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"findlongestcommonsubsequence\"",
+      "\"longestsubsequence\""
+    ],
+    "ExpectedOutput": "18"
+  },
+  {
+    "Inputs": [
+      "\"xyxzyzyxyzyx\"",
+      "\"zyzyxzyxzyzyxzyzyx\""
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklnmopqrstuvwxyz\"",
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghigklmnopqrstuvwxyz\"",
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"pneumonoultramicroscopicsilicovolcanoconiosis\"",
+      "\"supercalifragilisticexpialidocious\""
+    ],
+    "ExpectedOutput": "17"
+  },
+  {
+    "Inputs": [
+      "\"papiermuh\"",
+      "\"leidermuz\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcdabcdabcdabcdabcdabcd\"",
+      "\"cdabcdabcdabcdabcdabcdabcdabcdabc\""
+    ],
+    "ExpectedOutput": "31"
+  },
+  {
+    "Inputs": [
+      "\"pwwkew\"",
+      "\"wkep\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"xyxzyxyxzyx\"",
+      "\"zyxzyxzyxzyx\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"xyzzaz\"",
+      "\"yza\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"commonsubstring\"",
+      "\"substring\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "\"edcba\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"aabbaabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "\"ababababcabcacacacaddaddaeaeaeafaafagagahaiai\""
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcd\"",
+      "\"dcbaabcd\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabaaaacaaaaadaaaaa\"",
+      "\"aaabaaaaaaacaaaaaa\""
+    ],
+    "ExpectedOutput": "17"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringthatshouldtestthelimits\"",
+      "\"stringthatshouldtest\""
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"issipi\""
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"longestcommonsubsequence\"",
+      "\"shortcommonsequence\""
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcd\"",
+      "\"ddd\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"longestcommonsubsequence\"",
+      "\"commonsubsequences\""
+    ],
+    "ExpectedOutput": "17"
+  },
+  {
+    "Inputs": [
+      "\"longstringwithnocommonsubsequence\"",
+      "\"anotherlongstringwithoutcommonsubsequence\""
+    ],
+    "ExpectedOutput": "32"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghijabcdefghij\"",
+      "\"abcdefghijabcdefghij\""
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "\"lclcl\"",
+      "\"clcl\""
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"thequickbrownfoxjumpsoverthelazydog\"",
+      "\"quickbrownfoxjumpsoverthelazydo\""
+    ],
+    "ExpectedOutput": "31"
+  },
+  {
+    "Inputs": [
+      "\"longestcommonsubsequenceproblem\"",
+      "\"programmingproblemsolving\""
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "\"azbycxdwevfugthsirjqkplohnmgpfnoreqmtpslknjihgfedcba\""
+    ],
+    "ExpectedOutput": "17"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\"",
+      "\"cbacbacbacba\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"abcdeabcdeabcdeabcdeabcdeabcdeabcde\"",
+      "\"abcdeabcde\""
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyzxyz\"",
+      "\"zyxzyxzyxzyx\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"aabaaaabaaaaabaaaabaaabaaa\"",
+      "\"abaababaabaaaaabaaabaaaaabaaaab\""
+    ],
+    "ExpectedOutput": "24"
+  },
+  {
+    "Inputs": [
+      "\"qwertypasdfghjklzxcvbnm\"",
+      "\"qwertyuiopasdfghjklzxcvbnm\""
+    ],
+    "ExpectedOutput": "23"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\"",
+      "\"abcdefabcdef\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"abcxyzdefghijklmnopqrstuvwxyz\"",
+      "\"xyzabcghijklmnopqrstuvwxyzdef\""
+    ],
+    "ExpectedOutput": "23"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcdabcd\"",
+      "\"abcabcabcabc\""
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"thisisatestcase\"",
+      "\"testingthestcase\""
+    ],
+    "ExpectedOutput": "11"
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\"",
+      "\"cabacabacabaca\""
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "\"dynamicprogramming\"",
+      "\"longestincreasingsubsequence\""
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\"",
+      "\"xyz\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"1234567890\"",
+      "\"0987654321\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"thisisatest\"",
+      "\"testingthest\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaa\"",
+      "\"aaaaaaaaa\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"longestcommonsubsequence\"",
+      "\"commonsequences\""
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\"",
+      "\"alacazam\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"issip\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"1234567890\"",
+      "\"9876543210\""
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"thisisareallylongstringthatweneedtocheck\"",
+      "\"thisstringislong\""
+    ],
+    "ExpectedOutput": "11"
+  },
+  {
+    "Inputs": [
+      "\"abcdabcde\"",
+      "\"abcde\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "\"jihgfedcba\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abababababababab\"",
+      "\"babababababababa\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"mississsippississippi\""
+    ],
+    "ExpectedOutput": "11"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbcccc\"",
+      "\"cccbbaaaa\""
+    ],
+    "ExpectedOutput": "4"
+  }
+]

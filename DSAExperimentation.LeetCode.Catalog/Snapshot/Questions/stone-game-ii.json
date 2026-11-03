@@ -1,0 +1,104 @@
+{
+  "QuestionId": 1240,
+  "FrontendId": 1140,
+  "Title": "Stone Game II",
+  "TitleSlug": "stone-game-ii",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Minimax",
+      "Slug": "minimax-algorithm"
+    },
+    {
+      "Name": "Prefix Sum",
+      "Slug": "prefix-sum"
+    },
+    {
+      "Name": "Game Theory",
+      "Slug": "game-theory"
+    },
+    {
+      "Name": "Zero-Sum Game",
+      "Slug": "zero-sum-game"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Stone Game V",
+      "TitleSlug": "stone-game-v",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Stone Game VI",
+      "TitleSlug": "stone-game-vi",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Stone Game VII",
+      "TitleSlug": "stone-game-vii",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Stone Game VIII",
+      "TitleSlug": "stone-game-viii",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Stone Game IX",
+      "TitleSlug": "stone-game-ix",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [
+    "Use dynamic programming: the states are (i, m) for the answer of piles[i:] and that given m."
+  ],
+  "Constraints": [
+    "1 <= piles.length <= 100",
+    "1 <= piles[i] <= 10^4"
+  ],
+  "Signature": {
+    "FunctionName": "stoneGameII",
+    "Parameters": [
+      {
+        "Name": "piles",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int StoneGameII(int[] piles) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[2,7,9,4,4]"
+      ],
+      "ExpectedOutput": "10"
+    },
+    {
+      "Inputs": [
+        "[1,2,3,4,5,100]"
+      ],
+      "ExpectedOutput": "104"
+    }
+  ],
+  "ContentHtml": "<p>Alice and Bob continue their games with piles of stones. There are a number of piles <strong>arranged in a row</strong>, and each pile has a positive integer number of stones <code>piles[i]</code>. The objective of the game is to end with the most stones.</p>\n\n<p>Alice and Bob take turns, with Alice starting first.</p>\n\n<p>On each player&#39;s turn, that player can take <strong>all the stones</strong> in the <strong>first</strong> <code>X</code> remaining piles, where <code>1 &lt;= X &lt;= 2M</code>. Then, we set <code>M = max(M, X)</code>. Initially, M = 1.</p>\n\n<p>The game continues until all the stones have been taken.</p>\n\n<p>Assuming Alice and Bob play optimally, return the maximum number of stones Alice can get.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">piles = [2,7,9,4,4]</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">10</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<ul>\n\t<li>If Alice takes one pile at the beginning, Bob takes two piles, then Alice takes 2 piles again. Alice can get <code>2 + 4 + 4 = 10</code> stones in total.</li>\n\t<li>If Alice takes two piles at the beginning, then Bob can take all three piles left. In this case, Alice get <code>2 + 7 = 9</code> stones in total.</li>\n</ul>\n\n<p>So we return 10 since it&#39;s larger.</p>\n</div>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">piles = [1,2,3,4,5,100]</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">104</span></p>\n</div>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= piles.length &lt;= 100</code></li>\n\t<li><code>1 &lt;= piles[i]&nbsp;&lt;= 10<sup>4</sup></code></li>\n</ul>\n"
+}

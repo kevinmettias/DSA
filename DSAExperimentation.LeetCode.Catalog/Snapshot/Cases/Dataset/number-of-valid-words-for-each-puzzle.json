@@ -1,0 +1,254 @@
+[
+  {
+    "Inputs": [
+      "[\"hello\",\"world\"]",
+      "[\"ehlol\",\"dlrow\"]"
+    ],
+    "ExpectedOutput": "[1,1]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefg\"]",
+      "[\"abcdefg\"]"
+    ],
+    "ExpectedOutput": "[1]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abce\",\"abcf\",\"abcg\",\"abch\",\"abci\",\"abcj\",\"abck\",\"abcl\",\"abcm\",\"abcp\",\"abcd\",\"abcde\",\"abcdf\",\"abcde\",\"abcde\",\"abcdf\"]",
+      "[\"abcdefg\",\"gfedcba\",\"agfedcb\",\"bagfedc\",\"cagfedb\",\"defghij\",\"ghijklm\",\"ijklmno\",\"jklmnop\",\"klmnopq\",\"lmnopqr\",\"mnopqrs\",\"nopqrst\",\"opqrstu\",\"pqrstuv\",\"qrstuvw\",\"rstuvwx\",\"stuvwxy\",\"tuvwxyz\"]"
+    ],
+    "ExpectedOutput": "[10,1,10,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghijklmnop\",\"qrstuvwxyz\"]",
+      "[\"abcdefghijklnoprstuvwxyz\",\"zyxwvutsrqponmlkjihgfedcba\"]"
+    ],
+    "ExpectedOutput": "[0,1]"
+  },
+  {
+    "Inputs": [
+      "[\"abacax\",\"bacbac\",\"cababc\",\"xdsv\",\"abcd\",\"dcba\",\"abdc\",\"bacd\",\"acbd\",\"cabd\"]",
+      "[\"abcaxd\",\"bacxzd\",\"cabxdz\",\"xdsvab\",\"abcdx\",\"dcba\",\"abcd\",\"bacd\",\"acbd\",\"cabd\"]"
+    ],
+    "ExpectedOutput": "[9,9,9,1,9,6,8,8,8,8]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"ijklmnop\",\"qrstuvwx\",\"yzabcdef\",\"mnopqrst\",\"vwxyzabc\"]",
+      "[\"abcdefgh\",\"ijklmnop\",\"qrstuvwx\",\"yzabcdef\",\"mnopqrst\",\"vwxyzabc\"]"
+    ],
+    "ExpectedOutput": "[1,1,1,1,1,1]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"python\",\"programming\",\"challenge\",\"algorithms\",\"data\",\"structure\",\"complexity\",\"algorithm\"]",
+      "[\"ehlol\",\"dlrow\",\"htpon\",\"gnimmargorp\",\"llengec\",\"smhtloga\",\"aadtt\",\"ctreusd\",\"xytacpml\",\"lgoitamha\"]"
+    ],
+    "ExpectedOutput": "[1,1,0,1,0,0,1,1,0,0]"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"orange\",\"apple\",\"grape\",\"melon\",\"kiwi\",\"watermelon\",\"strawberry\",\"blueberry\",\"raspberry\",\"blackberry\",\"mango\",\"papaya\",\"pineapple\"]",
+      "[\"aegimno\",\"abegijm\",\"aceimnu\",\"agikmnp\",\"agiknpw\",\"aegilmn\",\"bcehikn\",\"abefhij\",\"acdefln\",\"acdelpw\",\"aeghijn\",\"aeiklnt\",\"agilnop\",\"abcklmn\"]"
+    ],
+    "ExpectedOutput": "[1,0,0,0,0,0,0,0,0,1,0,0,0,1]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"bcdefg\",\"cdefgh\",\"defghi\",\"efghij\",\"fghijk\",\"ghijkl\",\"hijklm\"]",
+      "[\"abcdefg\",\"bcdefgh\",\"cdefghi\",\"defghij\",\"efghijk\",\"fghijkl\",\"ghijklm\",\"hijklmn\"]"
+    ],
+    "ExpectedOutput": "[1,1,1,1,1,1,1,1]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"ijklmnop\",\"qrstuvwx\",\"yzabcdef\",\"mnopqrst\",\"vwxyzabc\",\"defghijk\",\"lmnopqrs\",\"tuvwxyz\",\"abcdeefg\"]",
+      "[\"aaaabbbb\",\"ccccdddd\",\"eeeeffff\",\"ggggghhh\",\"iiiijjjj\",\"kkkkllll\",\"mmmmnnnn\",\"oooooooo\",\"pppppppp\",\"qqqqqqqq\",\"rrrrrrrr\",\"ssssssss\",\"tttttttt\",\"uuuuuuuu\",\"vvvvvvvv\",\"wwwwwwww\",\"xxxxxxxx\",\"yyyyyyyy\",\"zzzzzzzz\"]"
+    ],
+    "ExpectedOutput": "[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"bbccdd\",\"ccddeeff\",\"ddeeffgg\",\"effgghhi\",\"ffgghhii\",\"gghhiijj\",\"hhiijjkk\"]",
+      "[\"abcdefgh\",\"hgfedcba\",\"ijklmnop\",\"ponmlkj\",\"efghijkl\",\"ghijklmn\",\"opqrstuv\",\"wzyxvutsr\"]"
+    ],
+    "ExpectedOutput": "[1,0,0,0,1,1,0,0]"
+  },
+  {
+    "Inputs": [
+      "[\"small\",\"larger\",\"largest\",\"tiny\",\"little\",\"biggest\"]",
+      "[\"smallest\",\"largestp\",\"tinyabc\",\"littlezyx\",\"biggestuvw\",\"smallxyz\"]"
+    ],
+    "ExpectedOutput": "[1,2,1,1,1,1]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"efghijkl\",\"ijklmnop\",\"mnopqrst\",\"opqrstuv\",\"qrstuvwx\",\"stuvwxyz\",\"vwxyzabc\",\"wxyzabcd\",\"xyzabcde\",\"yzabcdef\",\"abcdefgh\",\"ijklmnop\",\"qrstuvwx\",\"wxyzabcd\"]",
+      "[\"abcdefghijkl\",\"mnopqrstuv\",\"qrstuvwxy\",\"stuvwxyzab\",\"vwxyzabcde\",\"wxyzabcdef\",\"xyzabcdefg\",\"yzabcdefgh\",\"zabcdefghi\",\"abcdefghij\",\"bcdefghijk\",\"cdefghijkl\",\"defghijklm\",\"efghijklmn\",\"fghijklmno\",\"ghijklmnop\",\"hijklmnopq\",\"ijklmnopqr\",\"jklmnopqrs\",\"klmnopqrst\",\"lmnopqrstu\",\"mnopqrstuv\",\"nopqrstuvw\",\"opqrstuvwx\",\"pqrstuvwxy\",\"qrstuvwx\",\"rstuvwxy\",\"stuvwxyz\",\"tuvwxyz\",\"uvwxyz\",\"vwxyz\",\"wxyz\",\"xyz\",\"yz\",\"z\"]"
+    ],
+    "ExpectedOutput": "[2,1,2,1,1,2,1,1,0,2,0,0,0,1,0,0,0,2,0,0,0,1,0,1,0,2,0,1,0,0,0,0,0,0,0]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apricot\",\"banana\",\"berry\",\"blueberry\",\"grape\",\"orange\",\"peach\",\"pear\",\"pineapple\",\"plum\",\"raspberry\",\"strawberry\"]",
+      "[\"abcde\",\"fghij\",\"klmno\",\"pqrst\",\"uvwxy\",\"zabcde\",\"efghij\",\"klmnop\",\"qrstuv\",\"vwxyz\",\"abcdefg\",\"hijklmnop\",\"qrstuvwxy\"]"
+    ],
+    "ExpectedOutput": "[0,0,0,0,0,0,0,0,0,0,0,0,0]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefg\",\"hijklmnop\",\"qrstuvwxyz\"]",
+      "[\"abcdefg\",\"hijklmnop\",\"qrstuvwxyz\",\"mnopqrstuvw\",\"abcdefgxyz\"]"
+    ],
+    "ExpectedOutput": "[1,1,1,0,1]"
+  },
+  {
+    "Inputs": [
+      "[\"leetcode\",\"contest\",\"coding\",\"challenges\"]",
+      "[\"leetcodez\",\"contestx\",\"codingv\",\"challengesm\"]"
+    ],
+    "ExpectedOutput": "[1,1,1,1]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"bbaacc\",\"ccddaa\",\"aabbdd\",\"bbccdd\",\"aaccbb\",\"aaddee\",\"bbffee\",\"ccddee\",\"ddeeff\",\"aabb\",\"bbcc\",\"ccdd\",\"aadd\",\"bbeeff\",\"ddeegg\"]",
+      "[\"abcdeff\",\"aabbbcc\",\"ccdddee\",\"bbffeea\",\"ddeeggh\",\"ffggggg\",\"aabbccc\",\"dddeeff\",\"aabbccf\",\"aabbbcc\",\"aacceeg\",\"bbddeee\",\"cdddeee\",\"ddeeffe\",\"eefffgg\",\"bbbeeee\"]"
+    ],
+    "ExpectedOutput": "[8,4,2,3,1,0,4,1,4,4,0,0,2,1,0,0]"
+  },
+  {
+    "Inputs": [
+      "[\"puzzle\",\"word\",\"game\",\"challenge\",\"dictionary\",\"trivia\",\"clue\"]",
+      "[\"elpuzs\",\"drow\",\"emag\",\"nllgcahe\",\"arnidcwoy\",\"arvit\",\"ucl\"]"
+    ],
+    "ExpectedOutput": "[1,1,1,1,0,1,0]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"datastructure\",\"binarysearch\",\"hashmap\"]",
+      "[\"agrthmo\",\"dtaustruc\",\"binaryzse\",\"hashmpq\"]"
+    ],
+    "ExpectedOutput": "[0,0,0,1]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"ijklmnop\",\"qrstuvwx\",\"yzabcdef\"]",
+      "[\"abcdefgh\",\"ijklmnop\",\"qrstuvwx\",\"yzabcdef\"]"
+    ],
+    "ExpectedOutput": "[1,1,1,1]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"datastructure\",\"programming\",\"python\",\"java\",\"csharp\"]",
+      "[\"adphgrm\",\"lstcrud\",\"gyproam\",\"nohtyp\",\"avaj\",\"rphscwa\"]"
+    ],
+    "ExpectedOutput": "[0,0,0,1,1,1]"
+  },
+  {
+    "Inputs": [
+      "[\"aaaa\",\"asas\",\"able\",\"ability\",\"actt\",\"actor\",\"access\",\"zzzz\",\"zzzzz\",\"zzzzzz\"]",
+      "[\"aboveyz\",\"abrodyz\",\"abslute\",\"absoryz\",\"actresz\",\"gaswxyz\",\"zzzzzzy\",\"zzzzzzz\",\"zzzzzz\",\"zzzzz\"]"
+    ],
+    "ExpectedOutput": "[1,1,3,2,4,0,3,3,3,3]"
+  },
+  {
+    "Inputs": [
+      "[\"unique\",\"words\",\"only\",\"once\"]",
+      "[\"uniqwxyz\",\"wordpqr\",\"onlyzxcv\",\"oncevbnm\"]"
+    ],
+    "ExpectedOutput": "[0,0,1,1]"
+  },
+  {
+    "Inputs": [
+      "[\"aaaaa\",\"abcde\",\"fghij\",\"klmno\",\"pqrst\",\"uvwxy\",\"zabcd\",\"efghi\",\"jklmn\",\"opqrs\",\"tuvwx\",\"yzabc\"]",
+      "[\"abcdefgh\",\"ijklmnop\",\"qrstuvwx\",\"yzabcdef\",\"ghijklmn\",\"opqrstuv\",\"wxyzabcd\",\"efghijkl\",\"mnopqrst\",\"uvwxabcd\",\"yzmnopqr\",\"abcdefgh\"]"
+    ],
+    "ExpectedOutput": "[2,0,0,1,0,1,0,1,0,0,0,2]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"bbaacc\",\"ccaabb\",\"abbcdd\",\"ddeebf\",\"ffgghh\",\"iiijjk\",\"kkllmm\",\"nnoopp\",\"qqrstu\",\"vwxyzw\",\"abcdefg\",\"hijklmn\",\"opqrstu\",\"vwxyzab\"]",
+      "[\"abcdefg\",\"hijklmn\",\"opqrstu\",\"vwxyzab\",\"bcdefgh\",\"cdefghi\",\"defghij\",\"efghijk\",\"fghijkl\",\"ghijklm\",\"hijklmn\",\"ijklmno\",\"jklmnop\",\"klmnopq\",\"lmnopqr\",\"mnopqrs\",\"nopqrst\",\"opqrstu\",\"pqrstuv\",\"qrstuvw\",\"rstuvwx\",\"stuvwxy\",\"tuvwxyz\",\"uvwxyzx\",\"vwxyzwy\"]"
+    ],
+    "ExpectedOutput": "[5,1,1,2,1,0,0,0,1,0,1,1,0,1,0,0,1,1,0,1,0,0,0,0,1]"
+  },
+  {
+    "Inputs": [
+      "[\"optimization\",\"performance\",\"complexity\",\"computation\",\"algorithm\",\"graph\",\"network\"]",
+      "[\"optimiz\",\"perforanc\",\"complex\",\"compute\",\"algorit\",\"graphno\",\"network\"]"
+    ],
+    "ExpectedOutput": "[0,0,0,0,0,1,1]"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"elephant\",\"giraffe\",\"hippopotamus\",\"kangaroo\",\"koala\",\"panda\",\"penguin\",\"rhinoceros\",\"sloth\",\"tiger\",\"wombat\"]",
+      "[\"zebraele\",\"elephantg\",\"giraffehi\",\"hippopota\",\"kangaroop\",\"koalapd\",\"pandarh\",\"penguinr\",\"rhinocerosl\",\"slothti\",\"tigerwo\",\"wombatze\"]"
+    ],
+    "ExpectedOutput": "[1,1,1,0,1,1,1,1,1,1,1,1]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"data\",\"structure\",\"binary\",\"tree\",\"graph\",\"queue\",\"stack\"]",
+      "[\"dabtr\",\"qagtr\",\"stgfa\",\"gihrq\",\"pholm\",\"thrue\",\"qrtha\"]"
+    ],
+    "ExpectedOutput": "[1,0,0,0,0,1,0]"
+  },
+  {
+    "Inputs": [
+      "[\"aaaaab\",\"bbbbb\",\"ccccc\",\"ddddd\",\"eeeee\",\"fffff\",\"ggggg\"]",
+      "[\"abccccd\",\"bccdde\",\"ccdee\",\"ddeeef\",\"eeefff\",\"fffggg\",\"gggggh\"]"
+    ],
+    "ExpectedOutput": "[1,1,1,1,1,1,1]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"data\",\"structure\",\"binary\",\"tree\",\"graph\",\"queue\",\"stack\",\"hashmap\",\"trie\",\"heap\",\"array\",\"linkedlist\",\"hashset\",\"deque\",\"priorityqueue\",\"bloomfilter\",\"bitmask\",\"segmenttree\",\"binarysearchtree\"]",
+      "[\"hsdcafr\",\"gimnhpt\",\"qertabc\",\"xylotzp\",\"qexhtab\",\"qabctrs\",\"dhracgp\",\"fgihmpr\",\"afbnmpt\",\"bcdehmp\"]"
+    ],
+    "ExpectedOutput": "[0,0,0,0,0,0,0,0,0,0]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"abcdefg\",\"bcdefg\",\"cdefgh\",\"defghi\",\"efghij\",\"fghijk\",\"ghijkl\"]",
+      "[\"abcdefgh\",\"bcdefghi\",\"cdefghij\",\"defghijk\",\"efghijkl\",\"fghijklm\",\"ghijklmn\"]"
+    ],
+    "ExpectedOutput": "[2,1,1,1,1,1,1]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"bcdefgha\",\"cdefghab\",\"defghabc\",\"efghabcd\",\"fghabcde\",\"ghabcdef\",\"habcdefg\"]",
+      "[\"abcdefgh\",\"ghfedcba\",\"bagfedch\",\"cbaghfed\",\"dcbagfhe\",\"edcbaghf\",\"fedcbagh\",\"gfedcbah\"]"
+    ],
+    "ExpectedOutput": "[8,8,8,8,8,8,8,8]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"python\",\"programming\"]",
+      "[\"hellozp\",\"dlrowxy\",\"thonpqr\",\"grammxyz\"]"
+    ],
+    "ExpectedOutput": "[1,1,0,0]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\"]",
+      "[\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\"]"
+    ],
+    "ExpectedOutput": "[33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"data\",\"structure\",\"binary\",\"search\",\"tree\"]",
+      "[\"abcdert\",\"datastr\",\"binsear\",\"algorithm\"]"
+    ],
+    "ExpectedOutput": "[1,1,0,1]"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"coding\",\"debugging\",\"optimization\",\"compilation\",\"execution\",\"interpretation\",\"software\"]",
+      "[\"cpdibqr\",\"gingqru\",\"eohpamg\",\"spgroit\",\"qtoadfn\",\"hpramgi\",\"ironsgd\",\"digspqr\"]"
+    ],
+    "ExpectedOutput": "[0,0,0,0,0,0,0,0]"
+  }
+]

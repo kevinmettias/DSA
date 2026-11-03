@@ -1,0 +1,103 @@
+{
+  "QuestionId": 321,
+  "FrontendId": 321,
+  "Title": "Create Maximum Number",
+  "TitleSlug": "create-maximum-number",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Two Pointers",
+      "Slug": "two-pointers"
+    },
+    {
+      "Name": "Stack",
+      "Slug": "stack"
+    },
+    {
+      "Name": "Greedy",
+      "Slug": "greedy"
+    },
+    {
+      "Name": "Monotonic Stack",
+      "Slug": "monotonic-stack"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Remove K Digits",
+      "TitleSlug": "remove-k-digits",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Swap",
+      "TitleSlug": "maximum-swap",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "m == nums1.length",
+    "n == nums2.length",
+    "1 <= m, n <= 500",
+    "0 <= nums1[i], nums2[i] <= 9",
+    "1 <= k <= m + n",
+    "nums1 and nums2 do not have leading zeros."
+  ],
+  "Signature": {
+    "FunctionName": "maxNumber",
+    "Parameters": [
+      {
+        "Name": "nums1",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "nums2",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer[]",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int[] MaxNumber(int[] nums1, int[] nums2, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[3,4,6,5]",
+        "[9,1,2,5,8,3]",
+        "5"
+      ],
+      "ExpectedOutput": "[9,8,6,5,3]"
+    },
+    {
+      "Inputs": [
+        "[6,7]",
+        "[6,0,4]",
+        "5"
+      ],
+      "ExpectedOutput": "[6,7,6,0,4]"
+    },
+    {
+      "Inputs": [
+        "[3,9]",
+        "[8,9]",
+        "3"
+      ],
+      "ExpectedOutput": "[9,8,9]"
+    }
+  ],
+  "ContentHtml": "<p>You are given two integer arrays <code>nums1</code> and <code>nums2</code> of lengths <code>m</code> and <code>n</code> respectively. <code>nums1</code> and <code>nums2</code> represent the digits of two numbers. You are also given an integer <code>k</code>.</p>\n\n<p>Create the maximum number of length <code>k &lt;= m + n</code> from digits of the two numbers. The relative order of the digits from the same array must be preserved.</p>\n\n<p>Return an array of the <code>k</code> digits representing the answer.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums1 = [3,4,6,5], nums2 = [9,1,2,5,8,3], k = 5\n<strong>Output:</strong> [9,8,6,5,3]\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums1 = [6,7], nums2 = [6,0,4], k = 5\n<strong>Output:</strong> [6,7,6,0,4]\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums1 = [3,9], nums2 = [8,9], k = 3\n<strong>Output:</strong> [9,8,9]\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>m == nums1.length</code></li>\n\t<li><code>n == nums2.length</code></li>\n\t<li><code>1 &lt;= m, n &lt;= 500</code></li>\n\t<li><code>0 &lt;= nums1[i], nums2[i] &lt;= 9</code></li>\n\t<li><code>1 &lt;= k &lt;= m + n</code></li>\n\t<li><code>nums1</code> and <code>nums2</code> do not have leading zeros.</li>\n</ul>\n"
+}

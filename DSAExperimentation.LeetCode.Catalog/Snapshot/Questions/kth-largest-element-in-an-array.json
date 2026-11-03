@@ -1,0 +1,115 @@
+{
+  "QuestionId": 215,
+  "FrontendId": 215,
+  "Title": "Kth Largest Element in an Array",
+  "TitleSlug": "kth-largest-element-in-an-array",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Divide and Conquer",
+      "Slug": "divide-and-conquer"
+    },
+    {
+      "Name": "Sorting",
+      "Slug": "sorting"
+    },
+    {
+      "Name": "Heap (Priority Queue)",
+      "Slug": "heap-priority-queue"
+    },
+    {
+      "Name": "Quickselect",
+      "Slug": "quickselect"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Wiggle Sort II",
+      "TitleSlug": "wiggle-sort-ii",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Top K Frequent Elements",
+      "TitleSlug": "top-k-frequent-elements",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Third Maximum Number",
+      "TitleSlug": "third-maximum-number",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Kth Largest Element in a Stream",
+      "TitleSlug": "kth-largest-element-in-a-stream",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "K Closest Points to Origin",
+      "TitleSlug": "k-closest-points-to-origin",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Find the Kth Largest Integer in the Array",
+      "TitleSlug": "find-the-kth-largest-integer-in-the-array",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Find Subsequence of Length K With the Largest Sum",
+      "TitleSlug": "find-subsequence-of-length-k-with-the-largest-sum",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "K Highest Ranked Items Within a Price Range",
+      "TitleSlug": "k-highest-ranked-items-within-a-price-range",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= k <= nums.length <= 10^5",
+    "-10^4 <= nums[i] <= 10^4"
+  ],
+  "Signature": {
+    "FunctionName": "findKthLargest",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int FindKthLargest(int[] nums, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[3,2,1,5,6,4]",
+        "2"
+      ],
+      "ExpectedOutput": "5"
+    },
+    {
+      "Inputs": [
+        "[3,2,3,1,2,4,5,5,6]",
+        "4"
+      ],
+      "ExpectedOutput": "4"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer array <code>nums</code> and an integer <code>k</code>, return <em>the</em> <code>k<sup>th</sup></code> <em>largest element in the array</em>.</p>\n\n<p>Note that it is the <code>k<sup>th</sup></code> largest element in the sorted order, not the <code>k<sup>th</sup></code> distinct element.</p>\n\n<p>Can you solve it without sorting?</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<pre><strong>Input:</strong> nums = [3,2,1,5,6,4], k = 2\n<strong>Output:</strong> 5\n</pre><p><strong class=\"example\">Example 2:</strong></p>\n<pre><strong>Input:</strong> nums = [3,2,3,1,2,4,5,5,6], k = 4\n<strong>Output:</strong> 4\n</pre>\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= k &lt;= nums.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>-10<sup>4</sup> &lt;= nums[i] &lt;= 10<sup>4</sup></code></li>\n</ul>\n"
+}

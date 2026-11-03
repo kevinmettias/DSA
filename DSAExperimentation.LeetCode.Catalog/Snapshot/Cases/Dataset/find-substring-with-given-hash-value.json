@@ -1,0 +1,462 @@
+[
+  {
+    "Inputs": [
+      "\"abracadabra\"",
+      "5",
+      "11",
+      "3",
+      "4"
+    ],
+    "ExpectedOutput": "\"dab\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "26",
+      "101",
+      "5",
+      "53"
+    ],
+    "ExpectedOutput": "\"vwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"a\"",
+      "1",
+      "1",
+      "1",
+      "0"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"zaz\"",
+      "26",
+      "29",
+      "2",
+      "27"
+    ],
+    "ExpectedOutput": "\"az\""
+  },
+  {
+    "Inputs": [
+      "\"a\"",
+      "13",
+      "97",
+      "1",
+      "1"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "13",
+      "50",
+      "5",
+      "37"
+    ],
+    "ExpectedOutput": "\"klmno\""
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "2",
+      "11",
+      "3",
+      "7"
+    ],
+    "ExpectedOutput": "\"cde\""
+  },
+  {
+    "Inputs": [
+      "\"a\"",
+      "5",
+      "13",
+      "1",
+      "1"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"mmcp\"",
+      "13",
+      "457",
+      "2",
+      "33"
+    ],
+    "ExpectedOutput": "\"cp\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "29",
+      "101",
+      "20",
+      "95"
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"hellothereeveryone\"",
+      "37",
+      "101",
+      "6",
+      "74"
+    ],
+    "ExpectedOutput": "\"eryone\""
+  },
+  {
+    "Inputs": [
+      "\"a\"",
+      "7",
+      "13",
+      "1",
+      "1"
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "11",
+      "79",
+      "20",
+      "10"
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\"",
+      "19",
+      "83",
+      "15",
+      "28"
+    ],
+    "ExpectedOutput": "\"abcabcabcabcabc\""
+  },
+  {
+    "Inputs": [
+      "\"powerrangers\"",
+      "29",
+      "97",
+      "4",
+      "53"
+    ],
+    "ExpectedOutput": "\"gers\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz\"",
+      "17",
+      "53",
+      "10",
+      "49"
+    ],
+    "ExpectedOutput": "\"qrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij\"",
+      "2",
+      "13",
+      "8",
+      "7"
+    ],
+    "ExpectedOutput": "\"bcdefghi\""
+  },
+  {
+    "Inputs": [
+      "\"thisisjustanexampleofalongsstringwithseveralhashvalues\"",
+      "3",
+      "100",
+      "4",
+      "15"
+    ],
+    "ExpectedOutput": "\"lues\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "37",
+      "100000007",
+      "50",
+      "876543210"
+    ],
+    "ExpectedOutput": "\"bbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+  },
+  {
+    "Inputs": [
+      "\"mississippiisaverypopularstring\"",
+      "23",
+      "107",
+      "9",
+      "62"
+    ],
+    "ExpectedOutput": "\"larstring\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij\"",
+      "29",
+      "999983",
+      "9",
+      "456789"
+    ],
+    "ExpectedOutput": "\"bcdefghij\""
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "10",
+      "10007",
+      "10",
+      "7007"
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\"",
+      "10",
+      "61",
+      "5",
+      "31"
+    ],
+    "ExpectedOutput": "\"acaba\""
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringthatwillbeusedtohashandfindthesubstring\"",
+      "19",
+      "1000003",
+      "12",
+      "876543"
+    ],
+    "ExpectedOutput": "\"thesubstring\""
+  },
+  {
+    "Inputs": [
+      "\"xyzabcxyz\"",
+      "17",
+      "101",
+      "4",
+      "70"
+    ],
+    "ExpectedOutput": "\"cxyz\""
+  },
+  {
+    "Inputs": [
+      "\"aquickbrownfoxjumpsoverthelazydog\"",
+      "11",
+      "997",
+      "12",
+      "896"
+    ],
+    "ExpectedOutput": "\"erthelazydog\""
+  },
+  {
+    "Inputs": [
+      "\"banana\"",
+      "5",
+      "10007",
+      "2",
+      "22"
+    ],
+    "ExpectedOutput": "\"na\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba\"",
+      "19",
+      "47",
+      "15",
+      "29"
+    ],
+    "ExpectedOutput": "\"onmlkjihgfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "23",
+      "999983",
+      "15",
+      "123456"
+    ],
+    "ExpectedOutput": "\"zzzzzzzzzzzzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"thepowerofhashing\"",
+      "17",
+      "10007",
+      "9",
+      "9999"
+    ],
+    "ExpectedOutput": "\"ofhashing\""
+  },
+  {
+    "Inputs": [
+      "\"racecarannakayak\"",
+      "37",
+      "109",
+      "7",
+      "87"
+    ],
+    "ExpectedOutput": "\"nakayak\""
+  },
+  {
+    "Inputs": [
+      "\"abcdeabcdeabcdeabcdeabcdeabcdeabcdeabcde\"",
+      "7",
+      "13",
+      "5",
+      "5"
+    ],
+    "ExpectedOutput": "\"eabcd\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz\"",
+      "27",
+      "10007",
+      "26",
+      "4750"
+    ],
+    "ExpectedOutput": "\"abcdefghijklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"ababababababababababababababababababababababababab\"",
+      "23",
+      "29",
+      "7",
+      "17"
+    ],
+    "ExpectedOutput": "\"bababab\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbccccdddddeeeeefffffggggghhhhiiiiijjjjjkkkkklllllmmmmmnnnnnooooo\"",
+      "11",
+      "100000007",
+      "13",
+      "111222"
+    ],
+    "ExpectedOutput": "\"mmmnnnnnooooo\""
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringthatshouldworkwiththehashingfunctioncorrectly\"",
+      "13",
+      "107",
+      "25",
+      "67"
+    ],
+    "ExpectedOutput": "\"ehashingfunctioncorrectly\""
+  },
+  {
+    "Inputs": [
+      "\"abcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcd\"",
+      "97",
+      "10007",
+      "6",
+      "10001"
+    ],
+    "ExpectedOutput": "\"cdabcd\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz\"",
+      "17",
+      "89",
+      "10",
+      "67"
+    ],
+    "ExpectedOutput": "\"qrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"xyzzxyzzxyzzxyzzxyzzxyzzxyzzxyzzxyzzxyzzxyzzxyzzxyzz\"",
+      "11",
+      "97",
+      "6",
+      "76"
+    ],
+    "ExpectedOutput": "\"xyzzxy\""
+  },
+  {
+    "Inputs": [
+      "\"abcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcde\"",
+      "5",
+      "17",
+      "14",
+      "11"
+    ],
+    "ExpectedOutput": "\"abcdeabcdeabcd\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz\"",
+      "13",
+      "101",
+      "10",
+      "97"
+    ],
+    "ExpectedOutput": "\"qrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz\"",
+      "13",
+      "101",
+      "10",
+      "60"
+    ],
+    "ExpectedOutput": "\"xyzabcdefg\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "23",
+      "41",
+      "7",
+      "35"
+    ],
+    "ExpectedOutput": "\"cdefghi\""
+  },
+  {
+    "Inputs": [
+      "\"onetwothreefourfivesixseveneightnineseveneightsixfiv foureventhreetwooneonetwothreefourfivesix\"",
+      "13",
+      "103",
+      "8",
+      "45"
+    ],
+    "ExpectedOutput": "\"veneight\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "5",
+      "1000",
+      "7",
+      "500"
+    ],
+    "ExpectedOutput": "\"wxxyyzz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef\"",
+      "41",
+      "997",
+      "12",
+      "500"
+    ],
+    "ExpectedOutput": "\"abcdefabcdef\""
+  }
+]

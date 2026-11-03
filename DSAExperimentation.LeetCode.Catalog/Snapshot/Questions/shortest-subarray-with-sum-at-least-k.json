@@ -1,0 +1,101 @@
+{
+  "QuestionId": 892,
+  "FrontendId": 862,
+  "Title": "Shortest Subarray with Sum at Least K",
+  "TitleSlug": "shortest-subarray-with-sum-at-least-k",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Binary Search",
+      "Slug": "binary-search"
+    },
+    {
+      "Name": "Queue",
+      "Slug": "queue"
+    },
+    {
+      "Name": "Sliding Window",
+      "Slug": "sliding-window"
+    },
+    {
+      "Name": "Heap (Priority Queue)",
+      "Slug": "heap-priority-queue"
+    },
+    {
+      "Name": "Prefix Sum",
+      "Slug": "prefix-sum"
+    },
+    {
+      "Name": "Monotonic Queue",
+      "Slug": "monotonic-queue"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Shortest Subarray With OR at Least K II",
+      "TitleSlug": "shortest-subarray-with-or-at-least-k-ii",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Shortest Subarray With OR at Least K I",
+      "TitleSlug": "shortest-subarray-with-or-at-least-k-i",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= nums.length <= 10^5",
+    "-10^5 <= nums[i] <= 10^5",
+    "1 <= k <= 10^9"
+  ],
+  "Signature": {
+    "FunctionName": "shortestSubarray",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int ShortestSubarray(int[] nums, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[1]",
+        "1"
+      ],
+      "ExpectedOutput": "1"
+    },
+    {
+      "Inputs": [
+        "[1,2]",
+        "4"
+      ],
+      "ExpectedOutput": "-1"
+    },
+    {
+      "Inputs": [
+        "[2,-1,2]",
+        "3"
+      ],
+      "ExpectedOutput": "3"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer array <code>nums</code> and an integer <code>k</code>, return <em>the length of the shortest non-empty <strong>subarray</strong> of </em><code>nums</code><em> with a sum of at least </em><code>k</code>. If there is no such <strong>subarray</strong>, return <code>-1</code>.</p>\n\n<p>A <strong>subarray</strong> is a <strong>contiguous</strong> part of an array.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<pre><strong>Input:</strong> nums = [1], k = 1\n<strong>Output:</strong> 1\n</pre><p><strong class=\"example\">Example 2:</strong></p>\n<pre><strong>Input:</strong> nums = [1,2], k = 4\n<strong>Output:</strong> -1\n</pre><p><strong class=\"example\">Example 3:</strong></p>\n<pre><strong>Input:</strong> nums = [2,-1,2], k = 3\n<strong>Output:</strong> 3\n</pre>\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>-10<sup>5</sup> &lt;= nums[i] &lt;= 10<sup>5</sup></code></li>\n\t<li><code>1 &lt;= k &lt;= 10<sup>9</sup></code></li>\n</ul>\n"
+}

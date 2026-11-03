@@ -1,0 +1,764 @@
+[
+  {
+    "Inputs": [
+      "\"!(!(t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(t,t,t)\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(t,t,t,t,t,t)\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(&(t,f),|(t,t)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(f,t),&(t,f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(|(t,t))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(&(t,f),&(f,t))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(f,t,f,t)\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(f)\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(f,t)\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(!(t),f)\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(f),&(f,t)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(t,|(f,f,f,t),!(&(f,t)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(t,t,t,t)\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(t),|(f)),&(t,f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(f,f,f,f,f,f)\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"t\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(t,f)\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"f\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(|(t,f),&(f,f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(t)\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(&(t,f),t)\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(!(!(t)))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(&(f,t),|(t,f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(t,f),&(f,t),|(t,t),&(f,f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(t,f,t,f)\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(t,t,t)\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(t,f),|(f,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(f,&(t,f),|(f,f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(|(t,f),&(f,t))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(&(t,f),|(t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(f,!(t),&(|(f,f),|(t,t)))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(|(|(|(t,f),f),t),!(f),&(t,!(f)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(&(t,|(f,f),t),&(f,!(t),t),|(t,f,f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(f,t,f),&(t,f)),|(t,t,f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(t,&(f,f),t),&(f,|(t,f),t),|(&(f,t),f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(&(t,|(f,f,f)),!(|(t,t,t)),&(f,f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(|(&(t,f),&(f,f)),&(t,!(t)),f)\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(|(f,t),&(t,f),|(f,t),&(t,f),|(f,t),&(t,f),|(f,t),&(t,f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(f,!(t),|(&(t,!(t)),|(t,f,f,t,f)),&(f,f,t,t,t,t,f,t))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(t,|(f,!(t),&(t,f,t,t),|(f,f,f,f)),&(f,|(t,f,t,t,t)),!(f,|(t,f,f,f,f)),&(t,t,t),t)\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(&(t,f),&(f,t),|(t,t),|(f,f),!(t),!(f),&(t,|(t,t)),|(t,&(t,f)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(&(f,t),&(t,f),&(f,t),&(t,f),&(f,t),&(t,f),&(f,t),&(t,f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(|(|(|(|(|(|(|(t),f),t),f),f),f),&(t,t,t,t,t,t,t,t),|(t,f,f,t,f),&(f,f,t,t,t,t,f,t),f,t)\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(&(t,!(f)),&(f,!(t)),&(t,t),!(f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(f,!(t),&(t,f),!(f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(&(f,t),|(t,f),!(f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(f,t),&(f,f)),|(t,t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(f,f,t),!(t),|(f,f,f),&(|(t,f),f),|(t,t,t))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(t,f,f),f),|(t,t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(f,!(t),&(t,!(f)),|(f,t))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(|(t,f),|(f,t),&(t,t),|(t,t),&(t,f),|(f,t))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(f,!(t),&(t,f)),!(|(f,f,t)),&(t,f),|(f,t,t,t),&(t,|(f,f,f),t),&(t,f,f,t),|(t,!(f),f),f,!(t),&(f,t,f),|(t,f,t),f,!(t),&(f,t,f),|(t,f,t),f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(&(f,t),f),f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(f,!(f),&(t,f),|(t,t,f,f),&(t,t,t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(f,f,t),!(t),|(f,t,f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(&(t,f),&(f,f)),&(t,t),f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(f,!(t),|(f,f,t),&(t,t,t))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(t,|(f,!(t),&(t,f,t),|(f,f,f)),&(f,|(t,f,t,t)),!(f,|(t,f)))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(t,f),f),&(t,t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(t,|(f,!(t),&(t,f)),&(f,|(t,f,t)),!(f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(&(t,t),&(t,|(t,t)),&(t,|(t,|(t,t))),&(t,|(t,|(t,|(t,t)))))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(f,t),&(t,f)),|(f,f,f,f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(f,f,t),!(t),|(f,f,f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(f,|(&(f,t),f),|(t,t),!(&(f,t)))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(|(f,t),f),&(f,t,f,t)),|(f,f,f,f,f,t,t),&(t,t,t,t,t,t,t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(f,!(t),|(&(t,!(t)),|(t,f,f,t,f)),&(f,f,t,t,t,t),&(t,t,t,t,t,t,t,t),f)\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(|(|(|(f),f),t),&(t,f,t),!(f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(t,f),&(f,t)),|(t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(t,t,t),&(t,t,t),&(f,f,f),|(t,t,t),|(f,f,f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(&(!(f),t),|(f,&(t,f),f),&(t,f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(t,!(f),&(t,f)),!(|(f,f,t)),&(t,f),|(f,t,t,t))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(|(t,!(f),&(f,t)),|(t,!(t),&(f,f)),|(t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(&(t,!(t)),f,!(f),t)\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(&(t,t),&(f,f)),|(&(t,f),&(t,t)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(f,|(&(f,t),f),|(t,t))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(&(t,!(t)),f,!(f),t,!(|(&(f,t),f)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(f,|(&(t,f),f),&(t,t,t)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(f,&(|(t,f),&(t,f)),|(t,f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(t,!(f),|(&(t,t),|(f,f)),&(|(t,f),f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(&(t,f),t),&(f,|(t,f,t))),|(f,!(t),&(t,f,t)),!(f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(t,f),&(t,f),|(t,t),|(f,f),&(t,!(f)))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(|(|(f),f),f)\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(f,!(t),&(t,!(f)),|(f,t),!(&(t,!(t))))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(|(|(|(|(t),f),t),f),&(t,!(f)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(|(|(|(|(|(|(|(f),f),f),f),f),f),f),f)\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(f,f,f,t),!(t),|(t,t,t)),|(f,&(t,|(f,t),&(f,f)),!(f)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(|(|(|(t),f),t),f),&(t,t,t,t,t,t,t,t),|(t,f,f,t,f),&(f,f,t,t,t,t,f,t),f)\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(f,&(|(f,f),t),&(f,|(t,f),f),!(f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(|(t,f),f),&(t,!(f)),!(|(t,f)))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(|(f,f,f),|(t,f,t),&(t,t))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(|(t,&(f,t)),|(t,|(f,f)),&(t,|(t,|(f,t))),|(t,&(f,|(f,t))))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(|(f,&(t,|(t,f)),!(t)))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(|(|(|(f),t),f),t),&(t,f,t),!(f),|(t,f)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(t,f),&(f,f)),!(|(t,t,t,t)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(f,f,t),&(f,f,f),!(t),|(t,f,f,f,t),&(f,t,t,f))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(&(t,|(f,t)),t),&(f,!(t),t)),|(t,!(f),&(f,f)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(f,f,f,t),|(t,f,t,f),&(t,t,t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(f,&(t,|(f,t),&(f,f)),!(f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(|(|(|(|(|(|(t),f),t),f),f),f),&(t,t,t,t,t,t,t,t),&(t,t,t,t,t,t,t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(t,f),!(f),&(t,t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(t,&(|(f,f),&(t,f)),&(t,|(t,f),&(f,f)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(|(|(|(f,t),t),f),&(f,|(t,!(t),f),&(t,t,t,t,t,t)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(|(&(f,t),|(t,f),&(f,f),|(t,t),&(t,f),|(f,f)))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(&(t,t,t,t),|(|(f,f),f),&(t,f,f,t,t),!(t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(&(f,t),&(t,f),|(t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(|(f,f,f),&(t,t,t),!(|(f,f)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(&(f,f),t),f),|(f,|(t,f),&(f,t)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(&(t,t,t,t),|(f,f,f,f),&(t,f,t,f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(&(t,f,!(t)),&(t,f,t),&(f,!(t)),!(f),t)\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(|(|(f,t),t),f),&(f,|(t,!(t),f),&(t,t,t,t,t,t)),!(|(t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(&(t,!(f),&(t,t),|(t,f),&(t,!(t),&(f,f))))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(f,f),&(t,t),&(t,f)),|(t,!(t),&(t,f)),&(t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(|(|(|(|(f),t),f),t),&(t,f,t),!(f),|(t,f)),&(f,t,t,f),!(t))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(&(t,f),&(t,t,t),!(f),&(f,!(t)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(!(!(!(!(t)))))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(|(t,f),|(f,t),&(t,t),|(t,t),&(t,f),|(f,t),!(t),!(f),&(t,|(t,t)),|(t,&(t,f)),&(f,|(t,f)),|(f,|(t,f)))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"&(f,|(t,|(f,!(t))))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(|(|(|(|(f),f),t),&(t,f,t),!(f),|(t,f)),&(f,t,t,f))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(&(t,t),|(f,f),&(f,t)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(&(t,f),f),&(t,|(t,f))),|(t,!(f),t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(&(|(&(t,f),t),&(f,|(t,f))),|(f,!(t)))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"&(f,&(|(f,f,t),!(t),|(f,f,f)),|(f,&(t,|(f,t),&(f,f)),!(f)),!(&(|(f,f,f,t),!(t),|(t,t,t)),|(f,&(t,|(f,t),&(f,f)),!(f))))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"|(&(f,t,f),|(t,f,t),&(t,t,t,t,t))\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"|(|(|(t,f),f),&(|(t,t),&(f,t))),!(t)\""
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "\"!(|(t,!(t),&(t,!(f))))\""
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "\"!(|(&(t,!(t)),&(f,!(f)),&(t,t),!(f)))\""
+    ],
+    "ExpectedOutput": "false"
+  }
+]

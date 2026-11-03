@@ -1,0 +1,113 @@
+{
+  "QuestionId": 560,
+  "FrontendId": 560,
+  "Title": "Subarray Sum Equals K",
+  "TitleSlug": "subarray-sum-equals-k",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "Prefix Sum",
+      "Slug": "prefix-sum"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Two Sum",
+      "TitleSlug": "two-sum",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Continuous Subarray Sum",
+      "TitleSlug": "continuous-subarray-sum",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Subarray Product Less Than K",
+      "TitleSlug": "subarray-product-less-than-k",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Find Pivot Index",
+      "TitleSlug": "find-pivot-index",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Subarray Sums Divisible by K",
+      "TitleSlug": "subarray-sums-divisible-by-k",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Minimum Operations to Reduce X to Zero",
+      "TitleSlug": "minimum-operations-to-reduce-x-to-zero",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "K Radius Subarray Averages",
+      "TitleSlug": "k-radius-subarray-averages",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Sum Score of Array",
+      "TitleSlug": "maximum-sum-score-of-array",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [
+    "Will Brute force work here? Try to optimize it.",
+    "Can we optimize it by using some extra space?",
+    "What about storing sum frequencies in a hash table? Will it be useful?",
+    "sum(i,j)=sum(0,j)-sum(0,i), where sum(i,j) represents the sum of all the elements from index i to j-1.\r\n\r\nCan we use this property to optimize it."
+  ],
+  "Constraints": [
+    "1 <= nums.length <= 2 * 10^4",
+    "-1000 <= nums[i] <= 1000",
+    "-10^7 <= k <= 10^7"
+  ],
+  "Signature": {
+    "FunctionName": "subarraySum",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int SubarraySum(int[] nums, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[1,1,1]",
+        "2"
+      ],
+      "ExpectedOutput": "2"
+    },
+    {
+      "Inputs": [
+        "[1,2,3]",
+        "3"
+      ],
+      "ExpectedOutput": "2"
+    }
+  ],
+  "ContentHtml": "<p>Given an array of integers <code>nums</code> and an integer <code>k</code>, return <em>the total number of subarrays whose sum equals to</em> <code>k</code>.</p>\n\n<p>A subarray is a contiguous <strong>non-empty</strong> sequence of elements within an array.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<pre><strong>Input:</strong> nums = [1,1,1], k = 2\n<strong>Output:</strong> 2\n</pre><p><strong class=\"example\">Example 2:</strong></p>\n<pre><strong>Input:</strong> nums = [1,2,3], k = 3\n<strong>Output:</strong> 2\n</pre>\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 2 * 10<sup>4</sup></code></li>\n\t<li><code>-1000 &lt;= nums[i] &lt;= 1000</code></li>\n\t<li><code>-10<sup>7</sup> &lt;= k &lt;= 10<sup>7</sup></code></li>\n</ul>\n"
+}

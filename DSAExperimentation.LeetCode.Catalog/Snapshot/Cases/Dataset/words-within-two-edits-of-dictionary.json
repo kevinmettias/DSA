@@ -1,0 +1,786 @@
+[
+  {
+    "Inputs": [
+      "[\"test\",\"text\",\"sett\"]",
+      "[\"test\",\"text\",\"sett\",\"best\"]"
+    ],
+    "ExpectedOutput": "[\"test\",\"text\",\"sett\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"bcd\",\"cde\"]",
+      "[\"xyz\",\"zyx\",\"abc\"]"
+    ],
+    "ExpectedOutput": "[\"abc\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apply\"]",
+      "[\"appla\",\"apple\",\"apply\"]"
+    ],
+    "ExpectedOutput": "[\"apple\",\"apply\"]"
+  },
+  {
+    "Inputs": [
+      "[\"test\",\"text\",\"sett\"]",
+      "[\"text\",\"test\",\"sett\",\"best\"]"
+    ],
+    "ExpectedOutput": "[\"test\",\"text\",\"sett\"]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\"]",
+      "[\"hallo\",\"wurld\",\"holdo\"]"
+    ],
+    "ExpectedOutput": "[\"hello\",\"world\"]"
+  },
+  {
+    "Inputs": [
+      "[\"test\",\"sett\",\"best\"]",
+      "[\"rest\",\"test\",\"best\"]"
+    ],
+    "ExpectedOutput": "[\"test\",\"sett\",\"best\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abce\",\"abcf\"]",
+      "[\"abef\",\"abcf\",\"abcd\"]"
+    ],
+    "ExpectedOutput": "[\"abcd\",\"abce\",\"abcf\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apply\",\"spoil\"]",
+      "[\"appla\",\"appie\",\"spoil\"]"
+    ],
+    "ExpectedOutput": "[\"apple\",\"apply\",\"spoil\"]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\"]",
+      "[\"hallo\",\"werld\"]"
+    ],
+    "ExpectedOutput": "[\"hello\",\"world\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apply\",\"happy\"]",
+      "[\"pally\",\"apple\",\"happy\"]"
+    ],
+    "ExpectedOutput": "[\"apple\",\"apply\",\"happy\"]"
+  },
+  {
+    "Inputs": [
+      "[\"test\",\"text\",\"sett\"]",
+      "[\"best\",\"text\",\"west\"]"
+    ],
+    "ExpectedOutput": "[\"test\",\"text\",\"sett\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apply\"]",
+      "[\"spale\",\"spaly\"]"
+    ],
+    "ExpectedOutput": "[\"apple\",\"apply\"]"
+  },
+  {
+    "Inputs": [
+      "[\"aabb\",\"abab\",\"baba\"]",
+      "[\"aaaa\",\"bbbb\",\"abab\"]"
+    ],
+    "ExpectedOutput": "[\"aabb\",\"abab\",\"baba\"]"
+  },
+  {
+    "Inputs": [
+      "[\"test\"]",
+      "[\"tast\",\"test\",\"sett\"]"
+    ],
+    "ExpectedOutput": "[\"test\"]"
+  },
+  {
+    "Inputs": [
+      "[\"elephant\",\"giraffe\",\"hippo\"]",
+      "[\"elefant\",\"giraff\",\"hippo\"]"
+    ],
+    "ExpectedOutput": "[\"giraffe\",\"hippo\"]"
+  },
+  {
+    "Inputs": [
+      "[\"xylophone\",\"balloon\",\"umbrella\"]",
+      "[\"xylofune\",\"baloone\",\"umbrelia\",\"xylophine\",\"balloon\"]"
+    ],
+    "ExpectedOutput": "[\"xylophone\",\"balloon\",\"umbrella\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"abcdefghi\",\"abcdefghj\"]",
+      "[\"abcdefghj\",\"abcdefghi\",\"abcdefghk\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefgh\",\"abcdefghi\",\"abcdefghj\"]"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"bananb\",\"bananc\"]",
+      "[\"banana\",\"bananb\",\"bananc\",\"banand\"]"
+    ],
+    "ExpectedOutput": "[\"banana\",\"bananb\",\"bananc\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"abcdefgh\"]",
+      "[\"abcdefgh\",\"abcdefgh\",\"abcdefgh\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefgh\",\"abcdefgh\"]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"datastructure\",\"binarysearch\"]",
+      "[\"alorithm\",\"datstructure\",\"binrysearch\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"ananas\"]",
+      "[\"banana\",\"ananas\",\"bandana\",\"panama\",\"kanana\"]"
+    ],
+    "ExpectedOutput": "[\"banana\",\"ananas\"]"
+  },
+  {
+    "Inputs": [
+      "[\"racecar\",\"level\",\"rotor\"]",
+      "[\"racecer\",\"levek\",\"roter\"]"
+    ],
+    "ExpectedOutput": "[\"racecar\",\"level\",\"rotor\"]"
+  },
+  {
+    "Inputs": [
+      "[\"xylophone\",\"clarinet\"]",
+      "[\"xylophon\",\"clarinat\",\"xylopane\",\"clarinet\",\"xylophen\"]"
+    ],
+    "ExpectedOutput": "[\"xylophone\",\"clarinet\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"fedcba\"]",
+      "[\"fedcba\",\"abcdefg\",\"bacdef\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"fedcba\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghij\",\"klmnopqrst\"]",
+      "[\"abcdeffhij\",\"klmnopqrts\",\"abcdefghij\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghij\",\"klmnopqrst\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"ghijkl\",\"mnopqr\"]",
+      "[\"abcdeg\",\"ghijkm\",\"mnopqs\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"ghijkl\",\"mnopqr\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abce\",\"abcf\"]",
+      "[\"abcf\",\"abcg\",\"abcd\",\"abch\"]"
+    ],
+    "ExpectedOutput": "[\"abcd\",\"abce\",\"abcf\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghij\",\"jihgfedcba\"]",
+      "[\"abcdefghij\",\"jihgfedcba\",\"abcdefghij\",\"jihgfedcba\",\"abcdefghij\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghij\",\"jihgfedcba\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abdc\",\"acbd\",\"acdb\"]",
+      "[\"abcd\",\"abdc\",\"acbd\",\"acdb\",\"dcba\",\"bdca\"]"
+    ],
+    "ExpectedOutput": "[\"abcd\",\"abdc\",\"acbd\",\"acdb\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"abcdefghi\"]",
+      "[\"abcdefgh\",\"abcdefghij\",\"abcdefghi\",\"abcdefghijj\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefgh\",\"abcdefghi\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghij\",\"abcdefghij\",\"abcdefghij\"]",
+      "[\"abcdefghij\",\"abcdefghik\",\"abcdefghil\",\"abcdefghim\",\"abcdefghin\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghij\",\"abcdefghij\",\"abcdefghij\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"ghijkl\"]",
+      "[\"abchef\",\"ghijkl\",\"abcdeg\",\"ghijkl\",\"abcfeg\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"ghijkl\"]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"data\",\"structure\"]",
+      "[\"algorith\",\"datq\",\"strcuture\"]"
+    ],
+    "ExpectedOutput": "[\"algorithm\",\"data\",\"structure\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghij\",\"jihgfedcba\"]",
+      "[\"abcdefghij\",\"jihgfedcba\",\"abcdefghij\",\"jihgfedcba\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghij\",\"jihgfedcba\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghij\",\"jihgfedcba\"]",
+      "[\"abcdefghij\",\"jihgfedcba\",\"abcdefghij\",\"abcdefghij\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghij\",\"jihgfedcba\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"abceghij\",\"abcdefij\"]",
+      "[\"abcdefgh\",\"abceghij\",\"abcdefij\",\"abcdefgj\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefgh\",\"abceghij\",\"abcdefij\"]"
+  },
+  {
+    "Inputs": [
+      "[\"testcase\",\"unittest\",\"performance\"]",
+      "[\"testcases\",\"unitstest\",\"performence\"]"
+    ],
+    "ExpectedOutput": "[\"testcase\",\"performance\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghij\",\"klmnopqrst\",\"uvwxyz\"]",
+      "[\"abcdefghig\",\"klmnopqrsu\",\"uvwxyg\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghij\",\"klmnopqrst\",\"uvwxyz\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcde\",\"edcba\",\"bacde\"]",
+      "[\"abcde\",\"edcba\",\"bacde\",\"cabed\",\"abcde\",\"edcba\",\"bacde\",\"cabed\"]"
+    ],
+    "ExpectedOutput": "[\"abcde\",\"edcba\",\"bacde\"]"
+  },
+  {
+    "Inputs": [
+      "[\"sequence\",\"consequence\",\"subsequence\"]",
+      "[\"sequences\",\"consequense\",\"subsequense\",\"sequence\"]"
+    ],
+    "ExpectedOutput": "[\"sequence\",\"consequence\",\"subsequence\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"ghijkl\"]",
+      "[\"abcgef\",\"ghikjl\",\"abcdef\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"ghijkl\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abce\",\"abcf\"]",
+      "[\"abcf\",\"abce\",\"abcc\"]"
+    ],
+    "ExpectedOutput": "[\"abcd\",\"abce\",\"abcf\"]"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"development\",\"debugging\"]",
+      "[\"proogramming\",\"develpopment\",\"debguggin\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"python\"]",
+      "[\"programmmg\",\"pythoon\",\"progrqmig\"]"
+    ],
+    "ExpectedOutput": "[\"programming\",\"python\"]"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"pyhton\",\"pythpn\"]",
+      "[\"python\",\"pyhton\",\"pythpn\",\"pythun\"]"
+    ],
+    "ExpectedOutput": "[\"python\",\"pyhton\",\"pythpn\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"bat\",\"rat\"]",
+      "[\"cap\",\"bap\",\"rap\",\"tap\"]"
+    ],
+    "ExpectedOutput": "[\"cat\",\"bat\",\"rat\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghij\",\"klmnopqrst\"]",
+      "[\"abcdefghij\",\"klmnopqrts\",\"abcdefghik\",\"klmnopqrst\",\"abcdefghim\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghij\",\"klmnopqrst\"]"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"programing\",\"progrmaing\"]",
+      "[\"programming\",\"programing\",\"progrmaing\",\"prograaming\"]"
+    ],
+    "ExpectedOutput": "[\"programming\",\"programing\",\"progrmaing\"]"
+  },
+  {
+    "Inputs": [
+      "[\"kitten\",\"sitten\",\"bitten\"]",
+      "[\"sitten\",\"kitten\",\"biting\",\"bitten\"]"
+    ],
+    "ExpectedOutput": "[\"kitten\",\"sitten\",\"bitten\"]"
+  },
+  {
+    "Inputs": [
+      "[\"test\",\"tast\",\"rest\"]",
+      "[\"best\",\"rest\",\"tast\",\"test\"]"
+    ],
+    "ExpectedOutput": "[\"test\",\"tast\",\"rest\"]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"data\",\"structure\"]",
+      "[\"algorithim\",\"datum\",\"struckture\"]"
+    ],
+    "ExpectedOutput": "[\"algorithm\",\"data\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\"]",
+      "[\"appla\",\"banna\",\"chhery\"]"
+    ],
+    "ExpectedOutput": "[\"apple\",\"banana\",\"cherry\"]"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"coding\",\"debugging\"]",
+      "[\"programing\",\"codding\",\"debagging\"]"
+    ],
+    "ExpectedOutput": "[\"debugging\"]"
+  },
+  {
+    "Inputs": [
+      "[\"transform\",\"transforn\",\"tranformt\"]",
+      "[\"transfarm\",\"transform\",\"transfurm\"]"
+    ],
+    "ExpectedOutput": "[\"transform\",\"transforn\"]"
+  },
+  {
+    "Inputs": [
+      "[\"mississippi\",\"delaware\",\"rhodeisland\"]",
+      "[\"mississipp\",\"delawere\",\"rhodeiland\"]"
+    ],
+    "ExpectedOutput": "[\"mississippi\",\"delaware\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"ghijkl\",\"mnopqr\",\"stuvwx\"]",
+      "[\"abcdef\",\"ghijkl\",\"mnopqr\",\"stuvwx\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"ghijkl\",\"mnopqr\",\"stuvwx\"]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hallo\",\"hxllo\"]",
+      "[\"hallo\",\"hell\",\"hxllo\",\"hxllx\"]"
+    ],
+    "ExpectedOutput": "[\"hello\",\"hallo\",\"hxllo\"]"
+  },
+  {
+    "Inputs": [
+      "[\"kitten\",\"sitting\",\"flask\"]",
+      "[\"kitchen\",\"sitting\",\"fask\"]"
+    ],
+    "ExpectedOutput": "[\"kitten\",\"sitting\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghij\",\"abcdefghik\",\"abcdefghil\"]",
+      "[\"abcdefghio\",\"abcdefghij\",\"abcdefghim\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghij\",\"abcdefghik\",\"abcdefghil\"]"
+  },
+  {
+    "Inputs": [
+      "[\"qwertyuiop\",\"asdfghjklz\",\"xcvbnm\"]",
+      "[\"qwertyuioz\",\"asdfghjklx\",\"xcvbnml\"]"
+    ],
+    "ExpectedOutput": "[\"qwertyuiop\",\"asdfghjklz\",\"xcvbnm\"]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algorith\",\"algoritm\"]",
+      "[\"algorithm\",\"algorith\",\"algoritm\",\"algorithn\",\"aloritum\"]"
+    ],
+    "ExpectedOutput": "[\"algorithm\",\"algorith\",\"algoritm\"]"
+  },
+  {
+    "Inputs": [
+      "[\"elephant\",\"giraffe\",\"hippopotamus\"]",
+      "[\"elephont\",\"giraff\",\"hippopotamuse\",\"elephant\"]"
+    ],
+    "ExpectedOutput": "[\"elephant\",\"giraffe\",\"hippopotamus\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apply\",\"pally\"]",
+      "[\"appel\",\"abble\",\"appie\"]"
+    ],
+    "ExpectedOutput": "[\"apple\",\"apply\"]"
+  },
+  {
+    "Inputs": [
+      "[\"zzzzzz\",\"yyyyyy\",\"xxxxxx\"]",
+      "[\"zzzzzz\",\"yyyyyy\",\"xxxxxx\",\"wwwwww\",\"vvvvvv\",\"uuuuuu\",\"tttttt\"]"
+    ],
+    "ExpectedOutput": "[\"zzzzzz\",\"yyyyyy\",\"xxxxxx\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apply\",\"pally\"]",
+      "[\"appla\",\"appli\",\"apple\",\"pally\",\"polly\"]"
+    ],
+    "ExpectedOutput": "[\"apple\",\"apply\",\"pally\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apply\",\"appla\"]",
+      "[\"apple\",\"apply\",\"appel\",\"appla\"]"
+    ],
+    "ExpectedOutput": "[\"apple\",\"apply\",\"appla\"]"
+  },
+  {
+    "Inputs": [
+      "[\"aaaaaa\",\"bbbbbb\",\"cccccc\"]",
+      "[\"aaaaab\",\"bbbbc\",\"cccccd\"]"
+    ],
+    "ExpectedOutput": "[\"aaaaaa\",\"bbbbbb\",\"cccccc\"]"
+  },
+  {
+    "Inputs": [
+      "[\"kitten\",\"sitting\"]",
+      "[\"sitting\",\"kitten\",\"bitten\",\"biting\"]"
+    ],
+    "ExpectedOutput": "[\"kitten\",\"sitting\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"ghijkl\",\"mnopqr\",\"stuvwx\",\"yzabcd\"]",
+      "[\"abcdeg\",\"ghijkm\",\"mnopqs\",\"stuvwx\",\"yzabcd\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"ghijkl\",\"mnopqr\",\"stuvwx\",\"yzabcd\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"hgfedcba\",\"abcdefgh\"]",
+      "[\"abcdefgh\",\"hgfedcba\",\"zyxwvuts\",\"qrstuvwx\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefgh\",\"hgfedcba\",\"abcdefgh\"]"
+  },
+  {
+    "Inputs": [
+      "[\"kitten\",\"sitting\",\"kitten\"]",
+      "[\"sitting\",\"kitten\",\"bitten\",\"kettle\"]"
+    ],
+    "ExpectedOutput": "[\"kitten\",\"sitting\",\"kitten\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghijk\",\"lmnopqrstuv\"]",
+      "[\"abcdefghij\",\"lmnopqrstv\",\"abcdefghijk\",\"lmnopqrstuv\",\"abcdefghikl\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghijk\",\"lmnopqrstuv\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghij\",\"abcdefghij\",\"abcdefghij\"]",
+      "[\"abcdefghij\",\"abcdefghij\",\"abcdefghij\",\"abcdefghij\",\"abcdefghij\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghij\",\"abcdefghij\",\"abcdefghij\"]"
+  },
+  {
+    "Inputs": [
+      "[\"unbelievable\",\"incredible\",\"believable\"]",
+      "[\"unbelieveble\",\"incredibile\",\"believeble\"]"
+    ],
+    "ExpectedOutput": "[\"unbelievable\",\"incredible\",\"believable\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcde\",\"fghij\",\"klmno\"]",
+      "[\"abxde\",\"fghij\",\"klmnp\"]"
+    ],
+    "ExpectedOutput": "[\"abcde\",\"fghij\",\"klmno\"]"
+  },
+  {
+    "Inputs": [
+      "[\"repetition\",\"repetitions\",\"repetitive\"]",
+      "[\"repetion\",\"repetitons\",\"repetite\"]"
+    ],
+    "ExpectedOutput": "[\"repetition\",\"repetitions\",\"repetitive\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apply\",\"appla\"]",
+      "[\"appel\",\"apply\",\"ample\"]"
+    ],
+    "ExpectedOutput": "[\"apple\",\"apply\",\"appla\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"abcdefgh\",\"abcdefgh\"]",
+      "[\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefgh\",\"abcdefgh\",\"abcdefgh\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"ghijkl\",\"mnopqr\"]",
+      "[\"abcdeg\",\"ghikjl\",\"mnopqg\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"ghijkl\",\"mnopqr\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"abcdeg\",\"abcdeh\"]",
+      "[\"abcdef\",\"abcdeg\",\"abcdeh\",\"abcdei\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"abcdeg\",\"abcdeh\"]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"ddeeff\",\"gghhii\"]",
+      "[\"aabbcc\",\"ddeeff\",\"gghhij\"]"
+    ],
+    "ExpectedOutput": "[\"aabbcc\",\"ddeeff\",\"gghhii\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"hgfedcba\"]",
+      "[\"abcdefgh\",\"hgfedcba\",\"abcdefgh\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefgh\",\"hgfedcba\"]"
+  },
+  {
+    "Inputs": [
+      "[\"kitten\",\"sitting\",\"flask\"]",
+      "[\"kitchen\",\"kitten\",\"flasky\"]"
+    ],
+    "ExpectedOutput": "[\"kitten\",\"sitting\",\"flask\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"dog\",\"rat\"]",
+      "[\"bat\",\"bag\",\"rat\",\"tag\"]"
+    ],
+    "ExpectedOutput": "[\"cat\",\"dog\",\"rat\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"ghijkl\"]",
+      "[\"fedcba\",\"lkjihg\",\"abcdeg\",\"ghijkl\",\"mnopqr\",\"stuvwx\",\"yzabcd\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"ghijkl\"]"
+  },
+  {
+    "Inputs": [
+      "[\"aaaaaaaaaa\",\"bbbbbbbbbb\",\"cccccccccc\"]",
+      "[\"aaaaaaaaaa\",\"aaaaaaaabb\",\"aaaaaaabbb\",\"aaaaaabbbb\",\"aaaaabbbbb\",\"aaaabbbbbb\",\"aabbbbbbbb\",\"abbbbbbbbb\",\"bbbbbbbbbb\"]"
+    ],
+    "ExpectedOutput": "[\"aaaaaaaaaa\",\"bbbbbbbbbb\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghij\",\"abcdefghik\"]",
+      "[\"abcdefghix\",\"abcdefghiy\",\"abcdefghij\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghij\",\"abcdefghik\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"ghijkl\",\"mnopqr\"]",
+      "[\"abcdej\",\"ghijkl\",\"mnopqr\",\"mnopqs\",\"mnopqt\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"ghijkl\",\"mnopqr\"]"
+  },
+  {
+    "Inputs": [
+      "[\"dictionary\",\"queries\",\"solution\"]",
+      "[\"dictionry\",\"querries\",\"soultion\"]"
+    ],
+    "ExpectedOutput": "[\"dictionary\",\"solution\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"ghijkl\",\"mnopqr\"]",
+      "[\"abcdef\",\"ghijkl\",\"mnopqt\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"ghijkl\",\"mnopqr\"]"
+  },
+  {
+    "Inputs": [
+      "[\"mississippi\",\"mississipp\",\"mississippa\"]",
+      "[\"mississippi\",\"mississippa\",\"mississippb\"]"
+    ],
+    "ExpectedOutput": "[\"mississippi\",\"mississipp\",\"mississippa\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefg\",\"hijklmn\",\"opqrstu\"]",
+      "[\"abcdefg\",\"hijklmn\",\"opqrsuv\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefg\",\"hijklmn\",\"opqrstu\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"abcdefgh\"]",
+      "[\"abcdwxyz\",\"abcdefgz\",\"abcdefgh\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefgh\",\"abcdefgh\"]"
+  },
+  {
+    "Inputs": [
+      "[\"qwerty\",\"asdfgh\",\"zxcvbn\"]",
+      "[\"qwerty\",\"qwertr\",\"asdwgh\",\"zxcvbn\",\"qwertx\"]"
+    ],
+    "ExpectedOutput": "[\"qwerty\",\"asdfgh\",\"zxcvbn\"]"
+  },
+  {
+    "Inputs": [
+      "[\"aaaaaa\",\"bbbbbb\",\"cccccc\"]",
+      "[\"aaaaaa\",\"bbbbbb\",\"cccccc\",\"dddddd\",\"eeeeee\",\"ffffff\"]"
+    ],
+    "ExpectedOutput": "[\"aaaaaa\",\"bbbbbb\",\"cccccc\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghij\",\"jihgfedcba\",\"abcdefghij\"]",
+      "[\"abcdefghij\",\"jihgfedcba\",\"abcdefghji\",\"jihgfedcbj\",\"abcdefghii\",\"jihgfedcbi\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghij\",\"jihgfedcba\",\"abcdefghij\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefgh\",\"abcdefgh\"]",
+      "[\"abcdefgh\",\"abcdefgh\",\"abcdefgh\",\"abcdefgh\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefgh\",\"abcdefgh\"]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"alorithgm\",\"alohrithm\"]",
+      "[\"algorithm\",\"alorithgm\",\"alohrithm\",\"aloritrhm\"]"
+    ],
+    "ExpectedOutput": "[\"algorithm\",\"alorithgm\",\"alohrithm\"]"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"prograiming\",\"prograimng\"]",
+      "[\"programming\",\"prograiming\",\"prograimng\",\"prograimnig\"]"
+    ],
+    "ExpectedOutput": "[\"programming\",\"prograiming\",\"prograimng\"]"
+  },
+  {
+    "Inputs": [
+      "[\"education\",\"educatiom\",\"educatiin\"]",
+      "[\"education\",\"educatiom\",\"educatiin\",\"educatiomn\"]"
+    ],
+    "ExpectedOutput": "[\"education\",\"educatiom\",\"educatiin\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"ghijkl\",\"mnopqr\",\"stuvwx\",\"yzabcd\"]",
+      "[\"abcdefg\",\"ghijklm\",\"nopqrs\",\"stuvwxy\",\"yzabcdf\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"ghijkl\",\"stuvwx\",\"yzabcd\"]"
+  },
+  {
+    "Inputs": [
+      "[\"compiler\",\"comipler\",\"comipler\"]",
+      "[\"compiler\",\"comipler\",\"compilir\",\"comiplir\"]"
+    ],
+    "ExpectedOutput": "[\"compiler\",\"comipler\",\"comipler\"]"
+  },
+  {
+    "Inputs": [
+      "[\"zzzzz\",\"yyyyy\",\"xxxxx\"]",
+      "[\"zzzzz\",\"xyzyx\",\"zxyxz\"]"
+    ],
+    "ExpectedOutput": "[\"zzzzz\"]"
+  },
+  {
+    "Inputs": [
+      "[\"zxywvutsrqponmlkjihgfedcba\"]",
+      "[\"zyxwvutsrqponmlkjihgfedcba\",\"zxywvutsrqponmlkjihgfedcbb\"]"
+    ],
+    "ExpectedOutput": "[\"zxywvutsrqponmlkjihgfedcba\"]"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"language\"]",
+      "[\"progrgmmg\",\"langauge\",\"programming\"]"
+    ],
+    "ExpectedOutput": "[\"programming\",\"language\"]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apply\",\"ample\"]",
+      "[\"ample\",\"appli\",\"appel\"]"
+    ],
+    "ExpectedOutput": "[\"apple\",\"apply\",\"ample\"]"
+  },
+  {
+    "Inputs": [
+      "[\"kitten\",\"sitting\"]",
+      "[\"kitten\",\"sitting\",\"biting\",\"kiting\",\"kitting\"]"
+    ],
+    "ExpectedOutput": "[\"kitten\",\"sitting\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdef\",\"ghijkl\",\"mnopqr\",\"stuvwx\",\"yzabcd\"]",
+      "[\"abcdef\",\"ghijkl\",\"mnopqr\",\"stuvwx\",\"yzabcd\"]"
+    ],
+    "ExpectedOutput": "[\"abcdef\",\"ghijkl\",\"mnopqr\",\"stuvwx\",\"yzabcd\"]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algorith\",\"algoritm\"]",
+      "[\"algorithm\",\"algorith\",\"algoritm\",\"algorimt\"]"
+    ],
+    "ExpectedOutput": "[\"algorithm\",\"algorith\",\"algoritm\"]"
+  },
+  {
+    "Inputs": [
+      "[\"aaaaaa\",\"bbbbbb\",\"cccccc\"]",
+      "[\"aabbaa\",\"bbccbb\",\"ccddcc\"]"
+    ],
+    "ExpectedOutput": "[\"aaaaaa\",\"bbbbbb\",\"cccccc\"]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghij\",\"abcdefghij\",\"abcdefghij\"]",
+      "[\"abcdefghij\",\"abcdefghij\",\"abcdefghij\",\"abcdefghij\",\"abcdefghij\",\"abcdefghij\",\"abcdefghij\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefghij\",\"abcdefghij\",\"abcdefghij\"]"
+  },
+  {
+    "Inputs": [
+      "[\"sunshine\",\"rainbow\",\"cloud\"]",
+      "[\"sunshn\",\"rainbw\",\"clodu\"]"
+    ],
+    "ExpectedOutput": "[\"sunshine\",\"rainbow\",\"cloud\"]"
+  }
+]

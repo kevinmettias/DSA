@@ -1,0 +1,120 @@
+{
+  "QuestionId": 304,
+  "FrontendId": 304,
+  "Title": "Range Sum Query 2D - Immutable",
+  "TitleSlug": "range-sum-query-2d-immutable",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Design",
+      "Slug": "design"
+    },
+    {
+      "Name": "Matrix",
+      "Slug": "matrix"
+    },
+    {
+      "Name": "Prefix Sum",
+      "Slug": "prefix-sum"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Range Sum Query - Immutable",
+      "TitleSlug": "range-sum-query-immutable",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Range Sum Query 2D - Mutable",
+      "TitleSlug": "range-sum-query-2d-mutable",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Find the Grid of Region Average",
+      "TitleSlug": "find-the-grid-of-region-average",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "m == matrix.length",
+    "n == matrix[i].length",
+    "1 <= m, n <= 200",
+    "-10^4 <= matrix[i][j] <= 10^4",
+    "0 <= row1 <= row2 < m",
+    "0 <= col1 <= col2 < n",
+    "At most 10^4 calls will be made to sumRegion."
+  ],
+  "Signature": {
+    "FunctionName": null,
+    "Parameters": [
+      {
+        "Name": "inputs",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "inputs",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": null,
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": "NumMatrix",
+    "ConstructorParameters": [
+      {
+        "Name": "matrix",
+        "Type": "integer[][]"
+      },
+      {
+        "Name": "matrixRowSize",
+        "Type": "integer"
+      },
+      {
+        "Name": "matrixColSize",
+        "Type": "integer"
+      }
+    ],
+    "Methods": [
+      {
+        "Name": "sumRegion",
+        "Parameters": [
+          {
+            "Name": "row1",
+            "Type": "integer"
+          },
+          {
+            "Name": "col1",
+            "Type": "integer"
+          },
+          {
+            "Name": "row2",
+            "Type": "integer"
+          },
+          {
+            "Name": "col2",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "integer"
+      }
+    ]
+  },
+  "CSharpStarterCode": "public class NumMatrix {\n\n    public NumMatrix(int[][] matrix) {\n        \n    }\n    \n    public int SumRegion(int row1, int col1, int row2, int col2) {\n        \n    }\n}\n\n/**\n * Your NumMatrix object will be instantiated and called as such:\n * NumMatrix obj = new NumMatrix(matrix);\n * int param_1 = obj.SumRegion(row1,col1,row2,col2);\n */",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"NumMatrix\",\"sumRegion\",\"sumRegion\",\"sumRegion\"]",
+        "[[[[3,0,1,4,2],[5,6,3,2,1],[1,2,0,1,5],[4,1,0,1,7],[1,0,3,0,5]]],[2,1,4,3],[1,1,2,2],[1,2,2,4]]"
+      ],
+      "ExpectedOutput": "[null, 8, 11, 12]"
+    }
+  ],
+  "ContentHtml": "<p>Given a 2D matrix <code>matrix</code>, handle multiple queries of the following type:</p>\n\n<ul>\n\t<li>Calculate the <strong>sum</strong> of the elements of <code>matrix</code> inside the rectangle defined by its <strong>upper left corner</strong> <code>(row1, col1)</code> and <strong>lower right corner</strong> <code>(row2, col2)</code>.</li>\n</ul>\n\n<p>Implement the <code>NumMatrix</code> class:</p>\n\n<ul>\n\t<li><code>NumMatrix(int[][] matrix)</code> Initializes the object with the integer matrix <code>matrix</code>.</li>\n\t<li><code>int sumRegion(int row1, int col1, int row2, int col2)</code> Returns the <strong>sum</strong> of the elements of <code>matrix</code> inside the rectangle defined by its <strong>upper left corner</strong> <code>(row1, col1)</code> and <strong>lower right corner</strong> <code>(row2, col2)</code>.</li>\n</ul>\n\n<p>You must design an algorithm where <code>sumRegion</code> works on <code>O(1)</code> time complexity.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2021/03/14/sum-grid.jpg\" style=\"width: 415px; height: 415px;\" />\n<pre>\n<strong>Input</strong>\n[&quot;NumMatrix&quot;, &quot;sumRegion&quot;, &quot;sumRegion&quot;, &quot;sumRegion&quot;]\n[[[[3, 0, 1, 4, 2], [5, 6, 3, 2, 1], [1, 2, 0, 1, 5], [4, 1, 0, 1, 7], [1, 0, 3, 0, 5]]], [2, 1, 4, 3], [1, 1, 2, 2], [1, 2, 2, 4]]\n<strong>Output</strong>\n[null, 8, 11, 12]\n\n<strong>Explanation</strong>\nNumMatrix numMatrix = new NumMatrix([[3, 0, 1, 4, 2], [5, 6, 3, 2, 1], [1, 2, 0, 1, 5], [4, 1, 0, 1, 7], [1, 0, 3, 0, 5]]);\nnumMatrix.sumRegion(2, 1, 4, 3); // return 8 (i.e sum of the red rectangle)\nnumMatrix.sumRegion(1, 1, 2, 2); // return 11 (i.e sum of the green rectangle)\nnumMatrix.sumRegion(1, 2, 2, 4); // return 12 (i.e sum of the blue rectangle)\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>m == matrix.length</code></li>\n\t<li><code>n == matrix[i].length</code></li>\n\t<li><code>1 &lt;= m, n &lt;= 200</code></li>\n\t<li><code>-10<sup>4</sup> &lt;= matrix[i][j] &lt;= 10<sup>4</sup></code></li>\n\t<li><code>0 &lt;= row1 &lt;= row2 &lt; m</code></li>\n\t<li><code>0 &lt;= col1 &lt;= col2 &lt; n</code></li>\n\t<li>At most <code>10<sup>4</sup></code> calls will be made to <code>sumRegion</code>.</li>\n</ul>\n"
+}

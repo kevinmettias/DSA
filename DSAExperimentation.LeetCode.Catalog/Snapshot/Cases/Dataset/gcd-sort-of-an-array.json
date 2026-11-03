@@ -1,0 +1,962 @@
+[
+  {
+    "Inputs": [
+      "[12,15,18,20,25]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[8,4,12,6]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[2,3,5,7,11]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[2,4,6,8,10]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[18,9,27,3,6]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[3,9,6,18,27]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[37,49,111,143,169]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[100,200,400,800,1600]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[22,44,11,66,33]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[100,200,300,400,500]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[83,97,101,103,107]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[100000,99998,99999,99997,99996]"
+    ],
+    "ExpectedOutput": "false"
+  },
+  {
+    "Inputs": [
+      "[105,70,30,210,42]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[30,42,70,105,35]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[56,72,88,104,120,136,152]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[121,132,143,154,165,176,187,198,209]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[48,64,80,96,112]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[17,34,51,68,85,102,119]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[210,315,420,525,630,735]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[105,45,63,21,315]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[100,50,25,125,200,150]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[91,182,273,364,455]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[121,132,143,154,165,176]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[16,32,48,64,80,96,112,128,144]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[70,35,28,56,14,18]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[14,21,28,35,42,49,56,63,70]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[32,48,64,80,96,112]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[31,62,93,124,155,186,217,248,279,310]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[30,25,20,15,10,5]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[30,45,60,75,90,105]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[44,55,66,77,88,99,110,121]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[15,20,25,30,35]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[33,66,99,132,165]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[49,14,7,98,28]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[6,8,10,12,14,16,18,20]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[21,42,63,84,105,126,147,168,189]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[49,42,28,35,70]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[123,246,369,492,615,738,861,984]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[84,126,168,210,252,294,336,378,420]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[84,28,42,70,56]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[101,202,303,404,505,606]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[56,14,28,7,98,49]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[45,30,60,90,120,150]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[100,50,75,25,150]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[15,25,35,45,55,65]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[23,46,69,92,115,138,161,184]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[121,221,143,169,13]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[462,882,924,1092,1260]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[360,720,1080,1440,1800,2160]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[1000,500,250,125,625]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[48,120,180,240,300]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[16,32,48,64,80,96,112,128,144,160,176,192,208,224,240]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[210,70,35,14,105]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[1024,2048,512,256,128]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[56,112,168,224,280]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[100,25,50,20,40]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[24,36,48,12,60]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[99,33,66,22,11,132]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[21,42,63,84,105]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[13,26,39,52,65,78]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[30,45,60,75,90]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[77,154,231,308,385]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[91,130,169,182,273,338]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[22,15,45,33,10,55]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[18,27,36,45,54,63,72,81,90]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[111,222,333,444,555,666,777,888,999]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[171,342,513,684,855]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[33,55,66,88,110,121,132,143]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[4,6,8,10,12,14,16,18,20,22,24,26,28]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[45,90,135,180,225]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[20,40,60,80,100,120,140,160,180]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[100,50,25,20,125]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[18,24,30,36,42]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[1000,250,500,200,750,125,375,625,875,1250]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[102,136,170,204,238,272,306,340,374]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[19,38,57,76,95,114,133,152,171,190]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[27,54,81,108,135,162,189,216]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[119,238,357,476,595]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[81,27,54,162,324,486]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[84,12,14,21,63]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[15,30,45,60,75,90,105]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[18,27,36,45,54,63,72,81,90,99,108]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[49,63,77,91,105,119,133,147,161,175,189,203,217]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[72,108,144,180,216,252,288,324,360,396]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[225,150,100,50,25,75]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[121,110,99,88,77,66,55,44,33,22,11]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[22,44,66,88,110,132,154,176,198]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[1000,500,250,125,2000]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[135,90,45,60,30]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[9,18,27,36,45,54]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[17,34,51,68,85]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[105,15,35,21,63]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[81,135,207,279,351,423]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[36,48,60,72,84,96]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[180,120,90,60,45,30,20,15,10,5]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[28,14,42,70,98]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[17,19,23,29,31,37]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[81,27,54,108,162]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[121,11,22,33,44,55]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[165,330,495,660,825]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[49,98,147,196,245]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[121,44,88,22,176]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[15,25,35,45,55,65,75,85]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[100,101,102,103,104,105]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[17,19,23,29,31]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[315,105,35,7,14,21,42,63,84]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[2,3,5,7,11,13,17,19,23,29]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[13,26,39,52,65]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[15,25,35,45,55]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[7,49,343,2401,16807]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[2,4,6,8,10,12,14,16,18,20]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[19,38,57,76,95,114,133,152]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[14,21,35,49,70]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[33,66,99,132,165,198]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[18,24,30,36,42,48]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[22,44,66,88,110]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[84,56,28,14,7,49,35]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[48,64,80,96,112,128]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[1024,2048,4096,8192,16384,32768]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[56,63,70,77,84,91]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[99,33,66,132,264]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[100000,50000,25000,12500,6250]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[77,91,143,1001,1001,143]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[100,200,300,400,500,600,700]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[77,55,99,110,132]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[30,45,60,15,90]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[72,24,16,8,40]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[42,21,7,14,28]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[77,143,169,187,209,221,247,299,323,341]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[15,20,25,30,35,40,45,50]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[121,143,169,187,209]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[14,21,28,35,42,49,56,63]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[14,21,28,35,42,49]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[49,147,245,343,441,539]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[22,15,10,18,30]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[101,103,107,109,113,127,131,137,139,149]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[9,18,27,36,45,54,63,72,81]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[16,32,64,128,256,512,1024]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[102,204,306,408,510]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[1000,2000,3000,4000,5000]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[60,120,180,240,300,360]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[42,28,70,14,35]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[22,33,44,55,66]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[77,49,35,21,14,7]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[23,46,69,92,115]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[101,202,303,404,505]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[102,68,34,17,51,85]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[13,26,39,52,65,78,91,104,117]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[100,105,140,210,70]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[11,22,33,44,55,66]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[17,34,51,68,85,102,119,136,153]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[256,512,1024,2048,4096,8192,16384]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[1000,500,250,125,2000,10000,2500]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[30,45,60,75,90,105,120]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[12,18,24,30,36,42]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[25,45,65,85,105]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[100,200,150,300,250]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[14,28,42,56,70]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[81,135,225,315,405,525,675]"
+    ],
+    "ExpectedOutput": "true"
+  },
+  {
+    "Inputs": [
+      "[121,132,220,110,55]"
+    ],
+    "ExpectedOutput": "true"
+  }
+]

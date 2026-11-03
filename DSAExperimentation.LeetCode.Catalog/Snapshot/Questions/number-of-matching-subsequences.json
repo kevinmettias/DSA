@@ -1,0 +1,100 @@
+{
+  "QuestionId": 808,
+  "FrontendId": 792,
+  "Title": "Number of Matching Subsequences",
+  "TitleSlug": "number-of-matching-subsequences",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Binary Search",
+      "Slug": "binary-search"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Trie",
+      "Slug": "trie"
+    },
+    {
+      "Name": "Sorting",
+      "Slug": "sorting"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Is Subsequence",
+      "TitleSlug": "is-subsequence",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Shortest Way to Form String",
+      "TitleSlug": "shortest-way-to-form-string",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Count Vowel Substrings of a String",
+      "TitleSlug": "count-vowel-substrings-of-a-string",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= s.length <= 5 * 10^4",
+    "1 <= words.length <= 5000",
+    "1 <= words[i].length <= 50",
+    "s and words[i] consist of only lowercase English letters."
+  ],
+  "Signature": {
+    "FunctionName": "numMatchingSubseq",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      },
+      {
+        "Name": "words",
+        "Type": "string[]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int NumMatchingSubseq(string s, string[] words) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"abcde\"",
+        "[\"a\",\"bb\",\"acd\",\"ace\"]"
+      ],
+      "ExpectedOutput": "3"
+    },
+    {
+      "Inputs": [
+        "\"dsahjpjauf\"",
+        "[\"ahjpjau\",\"ja\",\"ahbwzgqnuk\",\"tnmlanowax\"]"
+      ],
+      "ExpectedOutput": "2"
+    }
+  ],
+  "ContentHtml": "<p>Given a string <code>s</code> and an array of strings <code>words</code>, return <em>the number of</em> <code>words[i]</code> <em>that is a subsequence of</em> <code>s</code>.</p>\n\n<p>A <strong>subsequence</strong> of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.</p>\n\n<ul>\n\t<li>For example, <code>&quot;ace&quot;</code> is a subsequence of <code>&quot;abcde&quot;</code>.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;abcde&quot;, words = [&quot;a&quot;,&quot;bb&quot;,&quot;acd&quot;,&quot;ace&quot;]\n<strong>Output:</strong> 3\n<strong>Explanation:</strong> There are three strings in words that are a subsequence of s: &quot;a&quot;, &quot;acd&quot;, &quot;ace&quot;.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;dsahjpjauf&quot;, words = [&quot;ahjpjau&quot;,&quot;ja&quot;,&quot;ahbwzgqnuk&quot;,&quot;tnmlanowax&quot;]\n<strong>Output:</strong> 2\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length &lt;= 5 * 10<sup>4</sup></code></li>\n\t<li><code>1 &lt;= words.length &lt;= 5000</code></li>\n\t<li><code>1 &lt;= words[i].length &lt;= 50</code></li>\n\t<li><code>s</code> and <code>words[i]</code> consist of only lowercase English letters.</li>\n</ul>\n"
+}

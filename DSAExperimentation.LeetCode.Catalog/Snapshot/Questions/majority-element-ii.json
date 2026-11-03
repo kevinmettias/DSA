@@ -1,0 +1,94 @@
+{
+  "QuestionId": 229,
+  "FrontendId": 229,
+  "Title": "Majority Element II",
+  "TitleSlug": "majority-element-ii",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "Sorting",
+      "Slug": "sorting"
+    },
+    {
+      "Name": "Counting",
+      "Slug": "counting"
+    },
+    {
+      "Name": "Boyer–Moore Majority Vote Algorithm",
+      "Slug": "boyer-moore-majority-vote-algorithm"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Majority Element",
+      "TitleSlug": "majority-element",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Check If a Number Is Majority Element in a Sorted Array",
+      "TitleSlug": "check-if-a-number-is-majority-element-in-a-sorted-array",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Most Frequent Even Element",
+      "TitleSlug": "most-frequent-even-element",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [
+    "Think about the possible number of elements that can appear more than ⌊ n/3 ⌋ times in the array.",
+    "It can be at most two. Why?",
+    "Consider using Boyer-Moore Voting Algorithm, which is efficient for finding elements that appear more than a certain threshold."
+  ],
+  "Constraints": [
+    "1 <= nums.length <= 5 * 10^4",
+    "-10^9 <= nums[i] <= 10^9"
+  ],
+  "Signature": {
+    "FunctionName": "majorityElement",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "list<integer>",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public IList<int> MajorityElement(int[] nums) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[3,2,3]"
+      ],
+      "ExpectedOutput": "[3]"
+    },
+    {
+      "Inputs": [
+        "[1]"
+      ],
+      "ExpectedOutput": "[1]"
+    },
+    {
+      "Inputs": [
+        "[1,2]"
+      ],
+      "ExpectedOutput": "[1,2]"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer array of size <code>n</code>, find all elements that appear more than <code>&lfloor;n / 3&rfloor;</code> times.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [3,2,3]\n<strong>Output:</strong> [3]\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1]\n<strong>Output:</strong> [1]\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,2]\n<strong>Output:</strong> [1,2]\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 5 * 10<sup>4</sup></code></li>\n\t<li><code>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></code></li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Follow up:</strong> Could you solve the problem in linear time and in <code>O(1)</code> space?</p>\n"
+}

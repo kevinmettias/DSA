@@ -1,0 +1,478 @@
+[
+  {
+    "Inputs": [
+      "[[\"a\",\"a\"]]",
+      "[\"a\"]"
+    ],
+    "ExpectedOutput": "[\"a\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\"],[\"a\"]]",
+      "[\"a\"]"
+    ],
+    "ExpectedOutput": "[\"a\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"a\"]]",
+      "[\"aaa\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\"]]",
+      "[\"a\"]"
+    ],
+    "ExpectedOutput": "[\"a\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"d\",\"e\",\"f\"],[\"g\",\"h\",\"i\"]]",
+      "[\"abc\",\"cfi\",\"beh\",\"defi\",\"ghi\"]"
+    ],
+    "ExpectedOutput": "[\"abc\",\"beh\",\"cfi\",\"defi\",\"ghi\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\"],[\"c\",\"f\"]]",
+      "[\"ab\",\"cf\",\"bf\",\"ca\"]"
+    ],
+    "ExpectedOutput": "[\"ab\",\"bf\",\"ca\",\"cf\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"a\",\"e\",\"d\"],[\"a\",\"f\",\"g\"]]",
+      "[\"abcdefg\",\"gfedcba\",\"abcd\",\"dcba\"]"
+    ],
+    "ExpectedOutput": "[\"abcd\",\"abcdefg\",\"dcba\",\"gfedcba\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\"]]",
+      "[\"aaaaa\",\"aaaab\",\"aaaba\"]"
+    ],
+    "ExpectedOutput": "[\"aaaaa\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\",\"d\",\"e\"],[\"f\",\"g\",\"h\",\"i\",\"j\"],[\"k\",\"l\",\"m\",\"n\",\"o\"],[\"p\",\"q\",\"r\",\"s\",\"t\"],[\"u\",\"v\",\"w\",\"x\",\"y\"]]",
+      "[\"abcdefg\",\"hijklmn\",\"opqrstu\",\"vwxyz\",\"abgmvxz\",\"abcdefghi\",\"pqrstuvwy\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"a\",\"b\",\"c\"],[\"a\",\"b\",\"c\"]]",
+      "[\"abc\",\"bca\",\"cab\",\"cba\",\"bac\",\"acb\",\"aabc\",\"abca\",\"bcab\",\"cbac\"]"
+    ],
+    "ExpectedOutput": "[\"abc\",\"aabc\",\"cba\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"o\",\"a\",\"b\",\"n\"],[\"o\",\"t\",\"a\",\"e\"],[\"a\",\"h\",\"k\",\"r\"],[\"a\",\"f\",\"l\",\"v\"]]",
+      "[\"oath\",\"path\",\"parent\",\"enact\"]"
+    ],
+    "ExpectedOutput": "[\"oath\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"p\",\"e\",\"a\",\"f\"],[\"t\",\"h\",\"o\",\"w\"],[\"o\",\"r\",\"a\",\"g\"],[\"n\",\"l\",\"e\",\"d\"]]",
+      "[\"pear\",\"flow\",\"tow\",\"orange\",\"lead\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[[\"z\",\"a\",\"b\",\"c\"],[\"z\",\"e\",\"f\",\"g\"],[\"z\",\"h\",\"i\",\"j\"],[\"z\",\"k\",\"l\",\"m\"]]",
+      "[\"zafe\",\"zjih\",\"zmkl\",\"zabc\",\"zefg\",\"zihj\",\"zkjg\",\"zlif\",\"zzzz\"]"
+    ],
+    "ExpectedOutput": "[\"zabc\",\"zzzz\",\"zefg\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"d\",\"e\",\"f\"],[\"g\",\"h\",\"i\"]]",
+      "[\"abc\",\"def\",\"ghi\",\"bfg\",\"hce\",\"dih\"]"
+    ],
+    "ExpectedOutput": "[\"abc\",\"def\",\"ghi\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\",\"d\",\"e\"],[\"f\",\"g\",\"h\",\"i\",\"j\"],[\"k\",\"l\",\"m\",\"n\",\"o\"],[\"p\",\"q\",\"r\",\"s\",\"t\"],[\"u\",\"v\",\"w\",\"x\",\"y\"]]",
+      "[\"abcde\",\"fghij\",\"klmno\",\"pqrst\",\"uvwxy\",\"ajgtw\",\"bsmr\"]"
+    ],
+    "ExpectedOutput": "[\"abcde\",\"fghij\",\"klmno\",\"pqrst\",\"uvwxy\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"c\",\"c\",\"c\",\"c\"],[\"c\",\"c\",\"c\",\"c\"],[\"c\",\"c\",\"c\",\"c\"],[\"c\",\"c\",\"c\",\"c\"]]",
+      "[\"cccc\",\"cccccc\",\"cccccccc\"]"
+    ],
+    "ExpectedOutput": "[\"cccc\",\"cccccc\",\"cccccccc\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"p\",\"z\",\"a\",\"n\"],[\"e\",\"t\",\"a\",\"e\"],[\"i\",\"h\",\"k\",\"r\"],[\"i\",\"f\",\"l\",\"v\"]]",
+      "[\"oath\",\"pea\",\"eat\",\"rain\",\"zeta\",\"pani\"]"
+    ],
+    "ExpectedOutput": "[\"eat\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"x\",\"y\",\"x\"],[\"y\",\"x\",\"y\"],[\"x\",\"y\",\"x\"]]",
+      "[\"xyx\",\"yxy\",\"xyy\",\"yxx\"]"
+    ],
+    "ExpectedOutput": "[\"xyx\",\"yxy\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"o\",\"a\",\"a\",\"n\"],[\"e\",\"t\",\"a\",\"e\"],[\"i\",\"h\",\"k\",\"r\"],[\"i\",\"f\",\"l\",\"v\"]]",
+      "[\"oath\",\"pea\",\"eat\",\"rain\",\"oathk\",\"vli\",\"hek\",\"tae\",\"rat\",\"iate\",\"tier\",\"neif\",\"heat\"]"
+    ],
+    "ExpectedOutput": "[\"oath\",\"oathk\",\"tae\",\"eat\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"s\",\"e\",\"e\",\"n\"],[\"e\",\"t\",\"a\",\"e\"],[\"i\",\"h\",\"k\",\"r\"],[\"i\",\"f\",\"l\",\"v\"]]",
+      "[\"seen\",\"seat\",\"heat\",\"pear\",\"rate\",\"feat\"]"
+    ],
+    "ExpectedOutput": "[\"seen\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\",\"d\",\"e\"],[\"f\",\"g\",\"h\",\"i\",\"j\"],[\"k\",\"l\",\"m\",\"n\",\"o\"],[\"p\",\"q\",\"r\",\"s\",\"t\"],[\"u\",\"v\",\"w\",\"x\",\"y\"]]",
+      "[\"cat\",\"dog\",\"bat\",\"rat\",\"mat\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[[\"o\",\"a\",\"a\",\"n\"],[\"e\",\"t\",\"a\",\"e\"],[\"i\",\"h\",\"k\",\"r\"],[\"i\",\"f\",\"l\",\"v\"]]",
+      "[\"oath\",\"pea\",\"eat\",\"rain\",\"oate\",\"hoaf\"]"
+    ],
+    "ExpectedOutput": "[\"oath\",\"oate\",\"eat\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"p\",\"e\",\"r\",\"f\"],[\"e\",\"t\",\"e\",\"r\"],[\"r\",\"e\",\"d\",\"o\"],[\"f\",\"o\",\"x\",\"o\"]]",
+      "[\"perfect\",\"robot\",\"redo\",\"fire\",\"fore\"]"
+    ],
+    "ExpectedOutput": "[\"redo\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"s\",\"e\",\"e\",\"n\"],[\"e\",\"t\",\"a\",\"e\"],[\"i\",\"h\",\"k\",\"r\"],[\"i\",\"f\",\"l\",\"v\"]]",
+      "[\"seen\",\"tear\",\"heap\",\"inter\",\"neat\",\"kite\"]"
+    ],
+    "ExpectedOutput": "[\"seen\",\"neat\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\",\"d\"],[\"e\",\"f\",\"g\",\"h\"],[\"i\",\"j\",\"k\",\"l\"],[\"m\",\"n\",\"o\",\"p\"]]",
+      "[\"abcf\",\"bceg\",\"cfil\",\"ghjo\",\"klon\",\"mnop\"]"
+    ],
+    "ExpectedOutput": "[\"mnop\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"s\",\"e\",\"e\",\"n\"],[\"e\",\"t\",\"e\",\"e\"],[\"e\",\"e\",\"s\",\"n\"],[\"n\",\"s\",\"t\",\"e\"]]",
+      "[\"seen\",\"nees\",\"tees\",\"test\",\"east\"]"
+    ],
+    "ExpectedOutput": "[\"seen\",\"nees\",\"test\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"d\",\"e\",\"f\"],[\"g\",\"h\",\"i\"]]",
+      "[\"abc\",\"bfg\",\"chi\",\"def\",\"geh\"]"
+    ],
+    "ExpectedOutput": "[\"abc\",\"def\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"x\",\"y\",\"x\",\"y\"],[\"y\",\"x\",\"y\",\"x\"],[\"x\",\"y\",\"x\",\"y\"],[\"y\",\"x\",\"y\",\"x\"]]",
+      "[\"xyxy\",\"yxyx\",\"xyyx\",\"yxyy\",\"xxyx\",\"yxx\",\"xyx\"]"
+    ],
+    "ExpectedOutput": "[\"xyx\",\"xyxy\",\"yxyx\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\",\"e\"],[\"z\",\"f\",\"c\",\"s\"],[\"a\",\"d\",\"e\",\"e\"]]",
+      "[\"abcced\",\"see\",\"abce\"]"
+    ],
+    "ExpectedOutput": "[\"abce\",\"abcced\",\"see\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"d\",\"e\",\"f\"],[\"g\",\"h\",\"i\"],[\"j\",\"k\",\"l\"],[\"m\",\"n\",\"o\"]]",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"adg\",\"beh\",\"cfi\",\"amk\",\"bnl\",\"co\"]"
+    ],
+    "ExpectedOutput": "[\"abc\",\"adg\",\"beh\",\"cfi\",\"def\",\"ghi\",\"jkl\",\"mno\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"o\",\"a\",\"b\",\"n\"],[\"o\",\"t\",\"a\",\"e\"],[\"a\",\"h\",\"k\",\"r\"],[\"a\",\"f\",\"l\",\"v\"]]",
+      "[\"oath\",\"pea\",\"eat\",\"rain\",\"oathf\",\"oat\",\"ate\"]"
+    ],
+    "ExpectedOutput": "[\"oat\",\"oath\",\"oathf\",\"eat\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"x\",\"x\",\"x\",\"x\"],[\"x\",\"x\",\"x\",\"x\"],[\"x\",\"x\",\"x\",\"x\"],[\"x\",\"x\",\"x\",\"x\"]]",
+      "[\"xxxx\",\"xxxy\",\"xyxx\",\"xxyx\"]"
+    ],
+    "ExpectedOutput": "[\"xxxx\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"a\",\"e\",\"d\"],[\"a\",\"f\",\"g\"]]",
+      "[\"abcdefg\",\"bed\",\"fad\",\"gfedcba\"]"
+    ],
+    "ExpectedOutput": "[\"abcdefg\",\"bed\",\"gfedcba\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"z\",\"a\",\"n\"],[\"e\",\"t\",\"a\",\"e\"],[\"i\",\"h\",\"k\",\"r\"],[\"i\",\"f\",\"l\",\"v\"]]",
+      "[\"zath\",\"zeat\",\"kait\",\"lain\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[[\"z\",\"z\",\"z\",\"z\"],[\"z\",\"z\",\"z\",\"z\"],[\"z\",\"z\",\"z\",\"z\"],[\"z\",\"z\",\"z\",\"z\"]]",
+      "[\"zzz\",\"zzzz\",\"zzzzz\"]"
+    ],
+    "ExpectedOutput": "[\"zzz\",\"zzzz\",\"zzzzz\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"a\",\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\",\"a\",\"a\"]]",
+      "[\"aaaaa\",\"aaaaaa\",\"aaaaaaaa\"]"
+    ],
+    "ExpectedOutput": "[\"aaaaa\",\"aaaaaa\",\"aaaaaaaa\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"o\",\"a\",\"a\",\"n\"],[\"e\",\"t\",\"a\",\"e\"],[\"i\",\"h\",\"k\",\"r\"],[\"i\",\"f\",\"l\",\"v\"]]",
+      "[\"oath\",\"pea\",\"eat\",\"rain\",\"kite\",\"pear\",\"lane\"]"
+    ],
+    "ExpectedOutput": "[\"oath\",\"eat\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"a\",\"e\",\"d\"],[\"a\",\"f\",\"g\"]]",
+      "[\"abcdefg\",\"gfedcba\",\"abcd\",\"efg\"]"
+    ],
+    "ExpectedOutput": "[\"abcd\",\"abcdefg\",\"efg\",\"gfedcba\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\",\"e\"],[\"s\",\"f\",\"c\",\"s\"],[\"a\",\"d\",\"e\",\"e\"]]",
+      "[\"abcced\",\"see\",\"abcb\"]"
+    ],
+    "ExpectedOutput": "[\"abcced\",\"see\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"x\",\"y\",\"z\"],[\"x\",\"y\",\"z\"],[\"x\",\"y\",\"z\"]]",
+      "[\"xyz\",\"zyx\",\"yy\",\"zzz\",\"xzy\"]"
+    ],
+    "ExpectedOutput": "[\"xyz\",\"yy\",\"zzz\",\"zyx\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"d\",\"e\",\"f\"],[\"g\",\"h\",\"i\"]]",
+      "[\"abc\",\"bcd\",\"cde\",\"efg\",\"fgh\",\"ghi\",\"adg\",\"beh\",\"cfi\"]"
+    ],
+    "ExpectedOutput": "[\"abc\",\"adg\",\"beh\",\"cfi\",\"ghi\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\",\"d\",\"e\",\"f\"],[\"g\",\"h\",\"i\",\"j\",\"k\",\"l\"],[\"m\",\"n\",\"o\",\"p\",\"q\",\"r\"],[\"s\",\"t\",\"u\",\"v\",\"w\",\"x\"],[\"y\",\"z\",\"a\",\"b\",\"c\",\"d\"]]",
+      "[\"abcdefghij\",\"mnopqrstuv\",\"wxyzabcd\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"a\",\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\",\"a\",\"a\"]]",
+      "[\"aaaaa\",\"aaaaaa\",\"aaaaaaaa\",\"aaaaaaa\"]"
+    ],
+    "ExpectedOutput": "[\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"z\",\"z\",\"z\",\"z\",\"z\"],[\"z\",\"z\",\"z\",\"z\",\"z\"],[\"z\",\"z\",\"z\",\"z\",\"z\"],[\"z\",\"z\",\"z\",\"z\",\"z\"],[\"z\",\"z\",\"z\",\"z\",\"z\"]]",
+      "[\"zzzzz\",\"zzzzzz\",\"zzzzzzz\"]"
+    ],
+    "ExpectedOutput": "[\"zzzzz\",\"zzzzzz\",\"zzzzzzz\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"d\",\"e\",\"f\"],[\"g\",\"h\",\"i\"]]",
+      "[\"abc\",\"def\",\"ghi\",\"bce\",\"dfi\",\"hcg\",\"bdf\",\"cei\",\"adg\"]"
+    ],
+    "ExpectedOutput": "[\"abc\",\"adg\",\"def\",\"ghi\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"x\",\"y\",\"z\"],[\"w\",\"v\",\"u\"],[\"t\",\"s\",\"r\"],[\"q\",\"p\",\"o\"]]",
+      "[\"xyz\",\"uvw\",\"rst\",\"qpo\",\"xuw\",\"ytv\",\"zsr\",\"wpo\"]"
+    ],
+    "ExpectedOutput": "[\"xyz\",\"uvw\",\"rst\",\"qpo\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\"]]",
+      "[\"aaaaa\",\"aaa\",\"aa\",\"a\"]"
+    ],
+    "ExpectedOutput": "[\"a\",\"aa\",\"aaa\",\"aaaaa\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"w\",\"o\",\"r\",\"l\"],[\"o\",\"n\",\"k\",\"n\"],[\"r\",\"l\",\"d\",\"t\"],[\"d\",\"t\",\"a\",\"e\"]]",
+      "[\"world\",\"note\",\"rate\",\"tare\"]"
+    ],
+    "ExpectedOutput": "[\"world\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"x\",\"y\",\"x\",\"y\",\"x\"],[\"y\",\"x\",\"y\",\"x\",\"y\"],[\"x\",\"y\",\"x\",\"y\",\"x\"],[\"y\",\"x\",\"y\",\"x\",\"y\"],[\"x\",\"y\",\"x\",\"y\",\"x\"]]",
+      "[\"xyxyx\",\"yxyxy\",\"xyyxy\"]"
+    ],
+    "ExpectedOutput": "[\"xyxyx\",\"yxyxy\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\"]]",
+      "[\"aaaaaaaaaa\",\"aaaaaaaab\",\"aaaaaaaac\"]"
+    ],
+    "ExpectedOutput": "[\"aaaaaaaaaa\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"c\",\"a\",\"t\"],[\"a\",\"t\",\"c\"],[\"t\",\"c\",\"a\"]]",
+      "[\"cat\",\"act\",\"tat\",\"tac\",\"att\",\"tat\",\"cta\"]"
+    ],
+    "ExpectedOutput": "[\"cat\",\"tat\",\"tac\",\"cta\",\"act\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"s\",\"e\",\"e\",\"n\"],[\"e\",\"t\",\"a\",\"e\"],[\"i\",\"h\",\"k\",\"r\"],[\"i\",\"f\",\"l\",\"v\"]]",
+      "[\"seen\",\"seat\",\"near\",\"tree\"]"
+    ],
+    "ExpectedOutput": "[\"seen\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\",\"a\"],[\"a\",\"a\",\"a\",\"a\",\"a\"]]",
+      "[\"aaaaa\",\"aaaaab\",\"aaaaac\",\"aaaaad\"]"
+    ],
+    "ExpectedOutput": "[\"aaaaa\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"p\",\"e\",\"a\"],[\"a\",\"o\",\"t\"],[\"t\",\"h\",\"t\"],[\"a\",\"i\",\"p\"]]",
+      "[\"peacht\",\"poth\",\"tophat\",\"peat\"]"
+    ],
+    "ExpectedOutput": "[\"peat\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"a\",\"e\",\"d\"],[\"a\",\"f\",\"g\"]]",
+      "[\"abc\",\"bce\",\"cda\",\"gfa\"]"
+    ],
+    "ExpectedOutput": "[\"abc\",\"gfa\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"m\",\"y\",\"b\",\"a\",\"b\",\"y\"],[\"x\",\"x\",\"x\",\"x\",\"x\",\"x\"],[\"x\",\"o\",\"a\",\"a\",\"a\",\"x\"],[\"x\",\"x\",\"x\",\"x\",\"x\",\"x\"],[\"m\",\"y\",\"b\",\"a\",\"b\",\"y\"]]",
+      "[\"baby\",\"my\",\"by\",\"ma\"]"
+    ],
+    "ExpectedOutput": "[\"my\",\"baby\",\"by\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"b\",\"c\",\"d\"],[\"c\",\"d\",\"e\"]]",
+      "[\"abc\",\"bcd\",\"cde\",\"abcd\",\"bcde\",\"ab\",\"cd\",\"de\"]"
+    ],
+    "ExpectedOutput": "[\"ab\",\"abc\",\"abcd\",\"bcd\",\"bcde\",\"cd\",\"cde\",\"de\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"x\",\"y\",\"z\",\"w\"],[\"x\",\"y\",\"z\",\"w\"],[\"x\",\"y\",\"z\",\"w\"],[\"x\",\"y\",\"z\",\"w\"]]",
+      "[\"xyzz\",\"xwyz\",\"wxzy\",\"zywx\",\"zwxy\",\"zyxw\",\"yxwz\",\"wyxz\"]"
+    ],
+    "ExpectedOutput": "[\"xyzz\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"d\",\"o\",\"g\"],[\"d\",\"o\",\"g\"],[\"d\",\"o\",\"g\"]]",
+      "[\"dog\",\"god\",\"dogo\",\"dogod\",\"dogodu\"]"
+    ],
+    "ExpectedOutput": "[\"dog\",\"god\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"p\",\"q\",\"r\",\"s\"],[\"t\",\"u\",\"v\",\"w\"],[\"x\",\"y\",\"z\",\"a\"],[\"b\",\"c\",\"d\",\"e\"]]",
+      "[\"pqrs\",\"tuvw\",\"xyzab\",\"pqru\",\"rtxy\",\"styz\",\"uvwz\"]"
+    ],
+    "ExpectedOutput": "[\"pqrs\",\"tuvw\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"h\",\"o\",\"l\",\"a\"],[\"o\",\"n\",\"k\",\"n\"],[\"r\",\"l\",\"d\",\"t\"],[\"d\",\"t\",\"a\",\"e\"]]",
+      "[\"hola\",\"note\",\"rode\",\"taen\"]"
+    ],
+    "ExpectedOutput": "[\"hola\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"x\",\"y\",\"z\"],[\"u\",\"v\",\"w\"],[\"p\",\"q\",\"r\"]]",
+      "[\"xyz\",\"uvw\",\"pqr\",\"yzw\",\"zwp\",\"vyu\"]"
+    ],
+    "ExpectedOutput": "[\"xyz\",\"yzw\",\"uvw\",\"pqr\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"d\",\"e\",\"f\"],[\"g\",\"h\",\"i\"],[\"j\",\"k\",\"l\"],[\"m\",\"n\",\"o\"]]",
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"adgjm\",\"behkn\",\"cfilor\",\"aeim\",\"bfjn\",\"cgko\",\"ahko\",\"bdil\",\"cehn\",\"aflo\",\"bgkn\",\"chim\"]"
+    ],
+    "ExpectedOutput": "[\"abc\",\"adgjm\",\"behkn\",\"def\",\"ghi\",\"jkl\",\"mno\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"m\",\"a\",\"r\",\"t\"],[\"a\",\"t\",\"e\",\"n\"],[\"r\",\"e\",\"t\",\"a\"],[\"t\",\"a\",\"n\",\"e\"]]",
+      "[\"mart\",\"rate\",\"tane\",\"tart\",\"ten\",\"mate\",\"ment\",\"taen\",\"meta\",\"atma\"]"
+    ],
+    "ExpectedOutput": "[\"mart\",\"mate\",\"rate\",\"tart\",\"ten\",\"tane\",\"taen\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"a\",\"e\",\"d\"],[\"e\",\"f\",\"g\"]]",
+      "[\"abc\",\"bce\",\"fed\",\"def\"]"
+    ],
+    "ExpectedOutput": "[\"abc\",\"def\",\"fed\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"o\",\"a\",\"a\",\"n\"],[\"e\",\"t\",\"a\",\"e\"],[\"i\",\"h\",\"k\",\"r\"],[\"i\",\"f\",\"l\",\"v\"],[\"g\",\"h\",\"i\",\"j\"]]",
+      "[\"oath\",\"pea\",\"eat\",\"rain\",\"ghij\",\"gfedcba\",\"nihao\"]"
+    ],
+    "ExpectedOutput": "[\"oath\",\"eat\",\"ghij\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"a\",\"b\",\"c\"],[\"d\",\"e\",\"f\"],[\"g\",\"h\",\"i\"]]",
+      "[\"abc\",\"bfg\",\"cfi\",\"adh\",\"beh\",\"cei\",\"aeg\"]"
+    ],
+    "ExpectedOutput": "[\"abc\",\"beh\",\"cfi\"]"
+  },
+  {
+    "Inputs": [
+      "[[\"p\",\"e\",\"a\"],[\"e\",\"r\",\"a\"],[\"a\",\"n\",\"a\"],[\"n\",\"l\",\"a\"]]",
+      "[\"pear\",\"peal\",\"pale\",\"pan\",\"lane\",\"paler\",\"panel\",\"paren\",\"pare\",\"parel\",\"parer\"]"
+    ],
+    "ExpectedOutput": "[]"
+  }
+]

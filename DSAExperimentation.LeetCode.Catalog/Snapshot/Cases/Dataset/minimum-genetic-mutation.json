@@ -1,0 +1,450 @@
+[
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AACCGGTA\"",
+      "[]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AACCGGTA\"",
+      "[\"TACCGGTA\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AAAAAAAA\"",
+      "\"CCCCCCCC\"",
+      "[\"AAAAAAAA\",\"AAAAAAAC\",\"AAAAAACC\",\"AAAAACCC\",\"AAAACCCC\",\"AAACCCCC\",\"AACCCCCC\",\"ACCCCCCC\",\"CCCCCCCC\"]"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AACCAAAA\"",
+      "[\"AACCAAAA\",\"AACCAAAT\",\"AACCAATA\",\"AACCGAAA\",\"AACCAATA\",\"AACCAATT\",\"AACAAATT\",\"AACCGGAA\",\"AACCGGAT\",\"AACCGGTT\"]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"ACCTGCTA\"",
+      "[\"AACCGGCA\",\"AACCGGTA\",\"AAACGGTA\",\"AACCGGAC\",\"ACCGGCTA\",\"ACCTGCTA\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"TTTTCCCC\"",
+      "[\"AAACGGCT\",\"AACCGGCA\",\"AAACGGTA\",\"AAACGGCC\",\"TTTTCCCC\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"ACCGCGCG\"",
+      "[\"AACCGGTA\",\"AACCGGCA\",\"AAACGGTA\",\"ACCGCGTA\",\"ACCGCGCG\",\"ACCGCGCT\",\"ACCGCGTT\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"GGCCGACT\"",
+      "[\"AACCGGCA\",\"AACCGGAA\",\"AACCGGGA\",\"GGCCGGTA\",\"GGCCGGCA\",\"GGCCGGAA\",\"GGCCGGGA\",\"GGCCGACT\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"ACAGACGG\"",
+      "\"AACCGGGA\"",
+      "[\"AACGACGG\",\"AACGACGT\",\"AACGGCGT\",\"AACGGCGA\",\"AACGGGGA\",\"AACCGGGA\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"ACGTACGT\"",
+      "\"TTACGTAC\"",
+      "[\"ACGTACGA\",\"TTACGTAA\",\"TTACGTAC\",\"TTACGTCG\",\"ACGTACGG\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AAAAAAAA\"",
+      "\"CCCCCCCC\"",
+      "[\"AAAAAACC\",\"AAAAACCC\",\"AAAACCCC\",\"AAACCCCC\",\"AACCACCC\",\"AACCCCAC\",\"AACCACCC\",\"ACCAACCC\",\"ACCCACCC\",\"CCCCCCCC\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"GACCGGTA\"",
+      "[\"AACCGGCA\",\"GACCGGTA\",\"AACCGGCT\",\"AACCGGAA\",\"AACCGGAT\",\"AACCGGTT\",\"GACCGGTT\",\"GACCGGTC\",\"GACCGGTA\",\"GACCGGAC\"]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AACCGTAA\"",
+      "[\"AACCGGCA\",\"AACCGGTA\",\"AACCGGTC\",\"AACCGTCA\",\"AACCGTAA\"]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AACCGGTA\"",
+      "[\"AACCGGCA\",\"AACCGGTA\",\"AACCGGCT\",\"AACCGGAA\",\"AACCGGAT\",\"AACCGGTT\"]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"TTTTTTTT\"",
+      "[\"AAACGGTA\",\"AACCGCTA\",\"AAACGGTT\",\"TTTTGGTT\",\"TTTTTGGT\",\"TTTTTTGT\",\"TTTTTTTT\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"GGGGGGGG\"",
+      "[\"AACCGGTA\",\"AACCGGTC\",\"TACCGGTT\",\"GGACGGTT\",\"GGGGGGTA\",\"GGGGGGTT\",\"GGGGGGGT\",\"GGGGGGGG\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"CGCGCGCG\"",
+      "[\"AACCGGTA\",\"AACCGGCA\",\"AAACGGTA\",\"CGCGGGTA\",\"CGCGCGCG\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"GGAACTTT\"",
+      "[\"AACCGGCA\",\"AACCGGTA\",\"AAACGGTA\",\"GAACGGTA\",\"GGAACTTA\",\"GGAACTTT\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AACCGGTA\"",
+      "[\"AACCGGCA\",\"AACCGGTA\",\"AACCGGCT\",\"AACCGGAA\",\"AACCGGAT\",\"AACCGGTT\",\"AACCGGTC\",\"AACCGGTA\",\"AACCGGTA\",\"AACCGGTA\"]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AACCGGCT\"",
+      "[\"AACCGGCA\",\"AACCGGCG\",\"AACCGGCT\",\"AACCGGCT\",\"AACCGGCT\"]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"TTCGCGCG\"",
+      "[\"AACCGGTA\",\"AACCGGCA\",\"AAACGGTA\",\"TTCGCGTA\",\"TTCGCGCG\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AAAAACCC\"",
+      "\"GGGGCCCC\"",
+      "[\"AAAACCCC\",\"AAAGCCCC\",\"AAGGCCCC\",\"GGGGCCCC\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AACCGGTA\"",
+      "[\"AACCGGTA\",\"AACCGGCA\",\"AAACGGTA\",\"AAACGGCA\",\"AACCGGCA\",\"AAACGGTA\",\"AAACGGCA\",\"AACCGGCA\",\"AAACGGTA\",\"AAACGGCA\"]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"GGGGGGGA\"",
+      "[\"AACCGGTA\",\"AACCGGCA\",\"AAACGGTA\",\"GGGGGGTT\",\"GGGGGGTA\",\"GGGGGGGA\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AACCGGTA\"",
+      "[\"AACCGGTA\",\"AACCGGTA\",\"AACCGGTA\",\"AACCGGTA\",\"AACCGGTA\",\"AACCGGTA\",\"AACCGGTA\"]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AAAAAAAA\"",
+      "[\"AACCGGTA\",\"AACCGGCA\",\"AAACGGTA\",\"AAAAAGTA\",\"AAAAAAAA\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"TTTTTTTT\"",
+      "[\"AACCGGCA\",\"AACCGGTA\",\"AAACGGTA\",\"AACCGGAC\",\"TTTTTTTA\",\"TTTTTTTT\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AAAAACCC\"",
+      "\"CCCCGGGG\"",
+      "[\"AACCCCCC\",\"ACCCCCCG\",\"ACCACCCC\",\"ACCACCCC\",\"ACCCCACG\",\"CCCCGGGA\",\"CCCCGGGG\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"ACCGTGTA\"",
+      "[\"AACCGGTA\",\"AACCGCTA\",\"AAACGGTA\",\"ACCGTGTA\",\"ACCGTGGT\",\"ACCGTGTT\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"ACCGCGCG\"",
+      "[\"AACCGGTA\",\"AACCGGCA\",\"AAACGGTA\",\"ACCGCGTA\",\"ACCGCGCG\",\"ACCGCGCT\",\"ACCGCGTT\",\"ACCGCGGA\",\"ACCGCGGC\",\"ACCGCGCC\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"ACCGGTTA\"",
+      "[\"AACCGGCA\",\"AACCGGTA\",\"AACCGGCT\",\"AACCGGAA\",\"AACCGGAT\",\"AACCGGTT\",\"ACCGGTTA\",\"ACCGGGTA\",\"ACCGGATA\",\"ACCGGTTT\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"GACCGGTA\"",
+      "\"AACCGGTA\"",
+      "[\"AACCGGCA\",\"AACCGGTA\",\"AACCGGCT\",\"AACCGGAA\",\"AACCGGAT\",\"AACCGGTT\",\"GACCGGTT\",\"GACCGGTC\",\"GACCGGTA\",\"GACCGGAC\"]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"AAACGGTA\"",
+      "\"AACCGGTA\"",
+      "[\"AAACGGTT\",\"AACCGGTT\",\"AACCGGTA\"]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AACCGGGA\"",
+      "[\"AACCGGTA\",\"AACCGGCA\",\"AACCGGGA\",\"AACCGGGA\",\"AACCGGGA\"]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"GGGGGGGG\"",
+      "[\"AACCGGTA\",\"AAACGGTA\",\"GGAAAAAA\",\"GGGGGGGA\",\"GGGGGGGG\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"ACCGGCTA\"",
+      "[\"AACCGGTA\",\"AACCGCTA\",\"ACCGGCTA\",\"ACCGGCTC\",\"ACCGGCCC\",\"ACCGGTTA\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AAACGGGA\"",
+      "[\"AACCGGTA\",\"AAACGGTA\",\"AAACGGCA\",\"AAACGGAA\",\"AAACGGGA\",\"AAACGGGA\"]"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"ACGGTACC\"",
+      "[\"AACCGGCA\",\"AACCGGTA\",\"AAACGGTA\",\"AACCGGAC\",\"ACGGTACC\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AACCGGTC\"",
+      "[\"AACCGGCA\",\"AACCGGTA\",\"AAACGGTA\",\"AACCGGAC\",\"AACCGGTC\"]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"GGGGGGGG\"",
+      "[\"AACCGGTA\",\"AACCGGCA\",\"AAACGGTA\",\"GGGGGGTA\",\"GGGGGGGG\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AAACGGCC\"",
+      "[\"AAACGGTA\",\"AAACGGCA\",\"AAACGGCC\",\"AACCGGCA\",\"AACCGGTA\",\"AACCGGTC\"]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"AGCTATAG\"",
+      "\"GACTGTAG\"",
+      "[\"AGCTATAC\",\"AGCTGTAG\",\"AGCTTTAG\",\"GACTATAG\",\"GACTGTAG\",\"GACTTTAG\",\"GAATATAG\",\"GGCTATAG\",\"AGGTATAG\"]"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"AAGAACGG\"",
+      "\"GGAACGGT\"",
+      "[\"AAGAACGA\",\"AAGAACGG\",\"AAGAACGT\",\"AAGACGGT\",\"AAGGACGT\",\"AGGAACGT\",\"GGAACGGT\",\"GGAACGGC\",\"GGAACGGA\",\"GGGAACGA\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AAACGGGA\"",
+      "[\"AACCGGTA\",\"AACCGCTA\",\"AAACGGTA\",\"AAACGGGA\",\"AAACGGGC\",\"AACCGGGT\",\"AACCGGGG\"]"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"ACGTACGT\"",
+      "\"TGCATGCA\"",
+      "[\"ACGTACGA\",\"ACGTACGC\",\"ACGTCAGT\",\"TACGACGT\",\"TGCATGCA\",\"TGCATGCG\",\"TGCATGTA\",\"TGCAACGT\",\"TGCGACGT\",\"TGCAACGG\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AAAAAAAA\"",
+      "\"AAAAAAAA\"",
+      "[\"AAAAAAAA\",\"AAAAAAAA\",\"AAAAAAAA\",\"AAAAAAAA\",\"AAAAAAAA\",\"AAAAAAAA\",\"AAAAAAAA\",\"AAAAAAAA\",\"AAAAAAAA\",\"AAAAAAAA\"]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AACCGGCT\"",
+      "[\"AACCGGCA\",\"AACCGGTA\",\"AAACGGTA\",\"AACCGGAC\",\"AACCGGCA\",\"AACCGGCT\"]"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"ACCGGTTA\"",
+      "[\"AACCGGTA\",\"AACCGGCT\",\"AACCGGCA\",\"ACCGGTTA\",\"ACCGGGTA\",\"ACCGGTCG\",\"ACCGGCTA\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AAGCGGTA\"",
+      "[\"AACCGGTA\",\"AAGCGGTA\",\"AACCGCTA\",\"AAACGGTA\"]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"CGTACGTA\"",
+      "[\"AACCGGCA\",\"AACCGGTA\",\"AAACGGTA\",\"AACCGGAC\",\"CGTACGTA\",\"CGTACGTT\",\"CGTACGCA\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"TTTTTTTT\"",
+      "[\"AACCGGTA\",\"AACCGGCA\",\"AAACGGTA\",\"TTTTGGTA\",\"TTTTTTTA\",\"TTTTTTTT\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"AAGCGGTA\"",
+      "[\"AACCGGCA\",\"AACCGGTA\",\"AACCGGTA\",\"AAGCGGTA\"]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"TACCGGTA\"",
+      "[\"AACCGGTC\",\"TACCGGTA\",\"AACCGGTA\",\"AACCGGCA\",\"AAACGGTA\",\"TACCGGTA\",\"TACCGGTT\",\"TACCGGTC\"]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"GGGGGGGG\"",
+      "[\"AACCGGTA\",\"AACCGGCA\",\"AACCGGGA\",\"AAGCGGGA\",\"AAGCGGTA\",\"AAGCGGGA\",\"GGGGGGGA\",\"GGGGGGGG\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"GACCGGTA\"",
+      "[\"AACCGGCA\",\"GACCGGTA\",\"AACCGGCT\",\"AACCGGAA\",\"AACCGGAT\",\"AACCGGTT\"]"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "\"AACCGGTT\"",
+      "\"ACCGCGCG\"",
+      "[\"AACCGGTA\",\"AACCGGCA\",\"AAACGGTA\",\"ACCGCGTA\",\"ACCGCGCG\",\"ACCGCGCT\",\"ACCGCGTT\",\"ACCGCGGA\"]"
+    ],
+    "ExpectedOutput": "-1"
+  }
+]

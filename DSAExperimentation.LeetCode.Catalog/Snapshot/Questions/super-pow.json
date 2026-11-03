@@ -1,0 +1,85 @@
+{
+  "QuestionId": 372,
+  "FrontendId": 372,
+  "Title": "Super Pow",
+  "TitleSlug": "super-pow",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Divide and Conquer",
+      "Slug": "divide-and-conquer"
+    },
+    {
+      "Name": "Euler's Totient Function",
+      "Slug": "eulers-totient-function"
+    },
+    {
+      "Name": "Euler's Theorem",
+      "Slug": "eulers-theorem"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Pow(x, n)",
+      "TitleSlug": "powx-n",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= a <= 2^31 - 1",
+    "1 <= b.length <= 2000",
+    "0 <= b[i] <= 9",
+    "b does not contain leading zeros."
+  ],
+  "Signature": {
+    "FunctionName": "superPow",
+    "Parameters": [
+      {
+        "Name": "a",
+        "Type": "integer"
+      },
+      {
+        "Name": "b",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int SuperPow(int a, int[] b) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "2",
+        "[3]"
+      ],
+      "ExpectedOutput": "8"
+    },
+    {
+      "Inputs": [
+        "2",
+        "[1,0]"
+      ],
+      "ExpectedOutput": "1024"
+    },
+    {
+      "Inputs": [
+        "1",
+        "[4,3,3,8,5,2]"
+      ],
+      "ExpectedOutput": "1"
+    }
+  ],
+  "ContentHtml": "<p>Your task is to calculate <code>a<sup>b</sup></code> mod <code>1337</code> where <code>a</code> is a positive integer and <code>b</code> is an extremely large positive integer given in the form of an array.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">a = 2, b = [3]</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">8</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<p>The array <code>b = [3]</code> represents the exponent 3. Therefore, <code>a<sup>3</sup> = 2<sup>3</sup> = 8</code>, so the result is 8.</p>\n</div>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">a = 2, b = [1,0]</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">1024</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<p>The array <code>b = [1, 0]</code> represents the exponent 10. Therefore, <code>a<sup>10</sup> = 2<sup>10</sup> = 1024</code>, so the result is 1024.</p>\n</div>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">a = 1, b = [4,3,3,8,5,2]</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">1</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<p>The array <code>b = [4, 3, 3, 8, 5, 2]</code> represents a positive exponent. Since <code>a = 1</code>, any positive power of 1 is 1. Therefore, the result is 1.</p>\n</div>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= a &lt;= 2<sup>31</sup> - 1</code></li>\n\t<li><code>1 &lt;= b.length &lt;= 2000</code></li>\n\t<li><code>0 &lt;= b[i] &lt;= 9</code></li>\n\t<li><code>b</code> does not contain leading zeros.</li>\n</ul>\n"
+}

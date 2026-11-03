@@ -1,0 +1,76 @@
+{
+  "QuestionId": 342,
+  "FrontendId": 342,
+  "Title": "Power of Four",
+  "TitleSlug": "power-of-four",
+  "Difficulty": "Easy",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Bit Manipulation",
+      "Slug": "bit-manipulation"
+    },
+    {
+      "Name": "Recursion",
+      "Slug": "recursion"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Power of Two",
+      "TitleSlug": "power-of-two",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Power of Three",
+      "TitleSlug": "power-of-three",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "-2^31 <= n <= 2^31 - 1"
+  ],
+  "Signature": {
+    "FunctionName": "isPowerOfFour",
+    "Parameters": [
+      {
+        "Name": "n",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "boolean",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public bool IsPowerOfFour(int n) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "16"
+      ],
+      "ExpectedOutput": "true"
+    },
+    {
+      "Inputs": [
+        "5"
+      ],
+      "ExpectedOutput": "false"
+    },
+    {
+      "Inputs": [
+        "1"
+      ],
+      "ExpectedOutput": "true"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer <code>n</code>, return <em><code>true</code> if it is a power of four. Otherwise, return <code>false</code></em>.</p>\n\n<p>An integer <code>n</code> is a power of four, if there exists an integer <code>x</code> such that <code>n == 4<sup>x</sup></code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<pre><strong>Input:</strong> n = 16\n<strong>Output:</strong> true\n</pre><p><strong class=\"example\">Example 2:</strong></p>\n<pre><strong>Input:</strong> n = 5\n<strong>Output:</strong> false\n</pre><p><strong class=\"example\">Example 3:</strong></p>\n<pre><strong>Input:</strong> n = 1\n<strong>Output:</strong> true\n</pre>\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>-2<sup>31</sup> &lt;= n &lt;= 2<sup>31</sup> - 1</code></li>\n</ul>\n\n<p>&nbsp;</p>\n<strong>Follow up:</strong> Could you solve it without loops/recursion?"
+}

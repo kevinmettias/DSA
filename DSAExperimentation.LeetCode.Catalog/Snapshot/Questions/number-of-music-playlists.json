@@ -1,0 +1,85 @@
+{
+  "QuestionId": 956,
+  "FrontendId": 920,
+  "Title": "Number of Music Playlists",
+  "TitleSlug": "number-of-music-playlists",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Combinatorics",
+      "Slug": "combinatorics"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Count the Number of Good Subsequences",
+      "TitleSlug": "count-the-number-of-good-subsequences",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "0 <= k < n <= goal <= 100"
+  ],
+  "Signature": {
+    "FunctionName": "numMusicPlaylists",
+    "Parameters": [
+      {
+        "Name": "n",
+        "Type": "integer"
+      },
+      {
+        "Name": "goal",
+        "Type": "integer"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int NumMusicPlaylists(int n, int goal, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "3",
+        "3",
+        "1"
+      ],
+      "ExpectedOutput": "6"
+    },
+    {
+      "Inputs": [
+        "2",
+        "3",
+        "0"
+      ],
+      "ExpectedOutput": "6"
+    },
+    {
+      "Inputs": [
+        "2",
+        "3",
+        "1"
+      ],
+      "ExpectedOutput": "2"
+    }
+  ],
+  "ContentHtml": "<p>Your music player contains <code>n</code> different songs. You want to listen to <code>goal</code> songs (not necessarily different) during your trip. To avoid boredom, you will create a playlist so that:</p>\n\n<ul>\n\t<li>Every song is played <strong>at least once</strong>.</li>\n\t<li>A song can only be played again only if <code>k</code> other songs have been played.</li>\n</ul>\n\n<p>Given <code>n</code>, <code>goal</code>, and <code>k</code>, return <em>the number of possible playlists that you can create</em>. Since the answer can be very large, return it <strong>modulo</strong> <code>10<sup>9</sup> + 7</code>.</p>\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 3, goal = 3, k = 1\n<strong>Output:</strong> 6\n<strong>Explanation:</strong> There are 6 possible playlists: [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], and [3, 2, 1].\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 2, goal = 3, k = 0\n<strong>Output:</strong> 6\n<strong>Explanation:</strong> There are 6 possible playlists: [1, 1, 2], [1, 2, 1], [2, 1, 1], [2, 2, 1], [2, 1, 2], and [1, 2, 2].\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 2, goal = 3, k = 1\n<strong>Output:</strong> 2\n<strong>Explanation:</strong> There are 2 possible playlists: [1, 2, 1] and [2, 1, 2].\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>0 &lt;= k &lt; n &lt;= goal &lt;= 100</code></li>\n</ul>\n"
+}

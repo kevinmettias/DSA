@@ -1,0 +1,485 @@
+[
+  {
+    "Inputs": [
+      "[\"A\",\"A\",\"A\"]",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"AA\",\"AA\"]",
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"A.A\",\"A.A\",\"A.A\"]",
+      "4"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[\"A.A\",\"A.A\",\"A.A\"]",
+      "5"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"...\",\"...\",\"...\",\"...\",\"...\",\"...\",\"AAA\"]",
+      "4"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"AAA\",\"...\",\"AAA\"]",
+      "2"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"AAA\",\"AAA\",\"AAA\"]",
+      "4"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "[\"AA.\",\"AA.\",\"..A\"]",
+      "2"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"AAA\",\"AAA\",\"AAA\"]",
+      "2"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"A.A\",\".A.\",\"A.A\"]",
+      "2"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"A..\",\"A..\"]",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"A.A\",\"A.A\"]",
+      "2"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"...\",\"...\",\"...\"]",
+      "1"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"AAAAA\",\"AA.AA\",\"AA.AA\",\"AA.AA\",\"AAAAA\"]",
+      "5"
+    ],
+    "ExpectedOutput": "346"
+  },
+  {
+    "Inputs": [
+      "[\"AAAA\",\"A.AA\",\"AA.A\",\"AAAA\"]",
+      "4"
+    ],
+    "ExpectedOutput": "56"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A\",\"A....\",\"A.A.A\"]",
+      "3"
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "[\"A.A\",\"A.A\",\"A.A\"]",
+      "3"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "[\"A...A\",\".....\",\"A...A\",\".....\",\"A...A\"]",
+      "3"
+    ],
+    "ExpectedOutput": "36"
+  },
+  {
+    "Inputs": [
+      "[\"...A\",\"...A\",\"...A\"]",
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"A...\",\"....\",\"....\",\"A...\"]",
+      "2"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"A...A\",\".A.A.\",\"A...A\",\".A.A.\",\"A...A\"]",
+      "5"
+    ],
+    "ExpectedOutput": "198"
+  },
+  {
+    "Inputs": [
+      "[\"A.A\",\".A.\",\"A.A\"]",
+      "3"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "[\"A.A\",\".A.\",\"A.A\",\".A.\",\"A.A\"]",
+      "3"
+    ],
+    "ExpectedOutput": "23"
+  },
+  {
+    "Inputs": [
+      "[\"A..A.\",\"A..A.\",\"A..A.\",\"A..A.\",\"A..A.\"]",
+      "3"
+    ],
+    "ExpectedOutput": "30"
+  },
+  {
+    "Inputs": [
+      "[\"AAAAAA\",\"A...A.\",\"A...A.\",\"A...A.\",\"AAAAAA\"]",
+      "4"
+    ],
+    "ExpectedOutput": "212"
+  },
+  {
+    "Inputs": [
+      "[\"AAAAA\",\".....\",\"AAAAA\",\".....\",\"AAAAA\"]",
+      "3"
+    ],
+    "ExpectedOutput": "42"
+  },
+  {
+    "Inputs": [
+      "[\"A...A\",\".....\",\".....\",\"A...A\"]",
+      "3"
+    ],
+    "ExpectedOutput": "24"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A.A.A\",\".A.A.A.A.\",\"A.A.A.A.A\",\".A.A.A.A.\",\"A.A.A.A.A\"]",
+      "5"
+    ],
+    "ExpectedOutput": "1955"
+  },
+  {
+    "Inputs": [
+      "[\"AAAA\",\"AAAA\",\"AAAA\",\"AAAA\"]",
+      "5"
+    ],
+    "ExpectedOutput": "78"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A\",\"A.A.A\",\"A.A.A\"]",
+      "2"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A\",\"A.A.A\",\"A.A.A\"]",
+      "3"
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A.A\",\"A.A.A.A\",\"A.A.A.A\"]",
+      "4"
+    ],
+    "ExpectedOutput": "98"
+  },
+  {
+    "Inputs": [
+      "[\"AAAA\",\"AAAA\",\"AAAA\"]",
+      "3"
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "[\"A\",\"A\",\"A\",\"A\",\"A\"]",
+      "3"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[\"A..\",\"...\",\"A..\",\"...\",\"A..\"]",
+      "3"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"AA.AA\",\"A...A\",\"A...A\",\"AA.AA\"]",
+      "3"
+    ],
+    "ExpectedOutput": "32"
+  },
+  {
+    "Inputs": [
+      "[\"A.....A\",\"A.....A\",\"A.....A\",\"A.....A\",\"A.....A\"]",
+      "2"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "[\"AA.\",\"A..\",\".AA\"]",
+      "2"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A\",\"A...A\",\"A.A.A\"]",
+      "3"
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "[\"A....A\",\"......\",\"......\",\"A....A\"]",
+      "4"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"AAA..\",\"AAA..\",\"AAA..\"]",
+      "3"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "[\"...A\",\"...A\",\"A...\",\"A...\"]",
+      "2"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A\",\"A.A.A\",\"A.A.A\",\"A.A.A\",\"A.A.A\"]",
+      "4"
+    ],
+    "ExpectedOutput": "124"
+  },
+  {
+    "Inputs": [
+      "[\"A....\",\".....\",\".....\",\".....\",\"A....\"]",
+      "2"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"A...\",\".A..\",\"..A.\",\"...A\"]",
+      "4"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "[\".A.A.\",\"A.A.A\",\".A.A.\",\"A.A.A\",\".A.A.\"]",
+      "6"
+    ],
+    "ExpectedOutput": "256"
+  },
+  {
+    "Inputs": [
+      "[\"AAAAA\",\"A...A\",\"A...A\",\"A...A\",\"AAAAA\"]",
+      "5"
+    ],
+    "ExpectedOutput": "346"
+  },
+  {
+    "Inputs": [
+      "[\"A....\",\".....\",\".....\",\".....\",\".....\"]",
+      "4"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A.A\",\".A.A.A.\",\"A.A.A.A\"]",
+      "3"
+    ],
+    "ExpectedOutput": "40"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A.A\",\"A.A.A.A\",\"A.A.A.A\",\"A.A.A.A\",\"A.A.A.A\",\"A.A.A.A\",\"A.A.A.A\",\"A.A.A.A\"]",
+      "8"
+    ],
+    "ExpectedOutput": "15387"
+  },
+  {
+    "Inputs": [
+      "[\"A...\",\".A.A\",\"....\",\"A...\"]",
+      "2"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A.A\",\".A.A.\",\"A.A.A.A\",\".A.A.\",\"A.A.A.A\"]",
+      "6"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"........\",\"...A....\",\"........\",\"........\",\"........\",\"........\",\"........\",\"........\"]",
+      "2"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\".A..A.\",\"A..A..\",\".A..A.\",\"A..A..\",\".A..A.\"]",
+      "3"
+    ],
+    "ExpectedOutput": "42"
+  },
+  {
+    "Inputs": [
+      "[\"A..A\",\"....\",\"A..A\",\"....\"]",
+      "3"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A\",\".A.A.\",\"A.A.A\"]",
+      "3"
+    ],
+    "ExpectedOutput": "23"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A.A\",\".A.A.A.\",\"A.A.A.A\",\".A.A.A.\"]",
+      "3"
+    ],
+    "ExpectedOutput": "51"
+  },
+  {
+    "Inputs": [
+      "[\"AAAAA\",\"A...A\",\"A...A\",\"A...A\",\"AAAAA\"]",
+      "4"
+    ],
+    "ExpectedOutput": "152"
+  },
+  {
+    "Inputs": [
+      "[\"A......\",\"A......\",\"A......\",\".......\",\".......\",\".......\"]",
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"A.A\",\"A.A\",\"A.A\",\"A.A\",\"A.A\"]",
+      "4"
+    ],
+    "ExpectedOutput": "40"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A\",\"A...A\",\"A...A\",\"A...A\",\"A.A.A\"]",
+      "5"
+    ],
+    "ExpectedOutput": "209"
+  },
+  {
+    "Inputs": [
+      "[\"AAAAA\",\"AAAAA\",\".....\",\".....\",\".....\"]",
+      "3"
+    ],
+    "ExpectedOutput": "14"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A\",\".A.A.\",\"A.A.A\"]",
+      "4"
+    ],
+    "ExpectedOutput": "46"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A\",\".....\",\"A.A.A\",\".....\",\"A.A.A\"]",
+      "5"
+    ],
+    "ExpectedOutput": "96"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A.A\",\".A.A.A.\",\"A.A.A.A\",\".A.A.A.\",\"A.A.A.A\",\".A.A.A.\",\"A.A.A.A\",\".A.A.A.\"]",
+      "6"
+    ],
+    "ExpectedOutput": "8692"
+  },
+  {
+    "Inputs": [
+      "[\"A.A..\",\".A.A.\",\"..A.A\"]",
+      "3"
+    ],
+    "ExpectedOutput": "17"
+  },
+  {
+    "Inputs": [
+      "[\"A....\",\".A...\",\"..A..\"]",
+      "3"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"A....\",\"..A..\",\"....A\",\".....\",\".....\"]",
+      "4"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"A.A.A.A\",\".....\",\"A.A.A.A\",\".....\",\"A.A.A.A\"]",
+      "5"
+    ],
+    "ExpectedOutput": "0"
+  }
+]

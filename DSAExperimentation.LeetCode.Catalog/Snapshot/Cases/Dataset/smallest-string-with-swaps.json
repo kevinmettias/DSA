@@ -1,0 +1,499 @@
+[
+  {
+    "Inputs": [
+      "\"acbd\"",
+      "[[0,3],[1,2]]"
+    ],
+    "ExpectedOutput": "\"abcd\""
+  },
+  {
+    "Inputs": [
+      "\"aabbcc\"",
+      "[[0,1],[2,3],[4,5]]"
+    ],
+    "ExpectedOutput": "\"aabbcc\""
+  },
+  {
+    "Inputs": [
+      "\"zyx\"",
+      "[[0,1],[1,2]]"
+    ],
+    "ExpectedOutput": "\"xyz\""
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "[[0,1],[1,2],[2,3]]"
+    ],
+    "ExpectedOutput": "\"abcd\""
+  },
+  {
+    "Inputs": [
+      "\"leetcode\"",
+      "[[0,2],[1,3]]"
+    ],
+    "ExpectedOutput": "\"eeltcode\""
+  },
+  {
+    "Inputs": [
+      "\"qwe\"",
+      "[[0,2]]"
+    ],
+    "ExpectedOutput": "\"ewq\""
+  },
+  {
+    "Inputs": [
+      "\"abdc\"",
+      "[[0,3]]"
+    ],
+    "ExpectedOutput": "\"abdc\""
+  },
+  {
+    "Inputs": [
+      "\"vokh\"",
+      "[[0,1],[1,3],[0,3]]"
+    ],
+    "ExpectedOutput": "\"hokv\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefgh\"",
+      "[[0,7],[1,6],[2,5],[3,4],[0,6],[1,5],[2,4]]"
+    ],
+    "ExpectedOutput": "\"abcdefgh\""
+  },
+  {
+    "Inputs": [
+      "\"jklmno\"",
+      "[[0,3],[1,4],[2,5],[0,5],[1,3]]"
+    ],
+    "ExpectedOutput": "\"jklmno\""
+  },
+  {
+    "Inputs": [
+      "\"dcabxy\"",
+      "[[0,3],[1,2],[4,5],[0,2]]"
+    ],
+    "ExpectedOutput": "\"abcdxy\""
+  },
+  {
+    "Inputs": [
+      "\"aazaa\"",
+      "[[0,1],[1,2],[2,3],[3,4]]"
+    ],
+    "ExpectedOutput": "\"aaaaz\""
+  },
+  {
+    "Inputs": [
+      "\"aefdcba\"",
+      "[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6]]"
+    ],
+    "ExpectedOutput": "\"aabcdef\""
+  },
+  {
+    "Inputs": [
+      "\"xyzabc\"",
+      "[[0,5],[1,4],[2,3],[0,2]]"
+    ],
+    "ExpectedOutput": "\"abcxyz\""
+  },
+  {
+    "Inputs": [
+      "\"xyzabc\"",
+      "[[0,5],[1,4],[2,3]]"
+    ],
+    "ExpectedOutput": "\"cbazyx\""
+  },
+  {
+    "Inputs": [
+      "\"abcdeffedcba\"",
+      "[[0,11],[1,10],[2,9],[3,8],[4,7],[5,6],[5,7],[6,7]]"
+    ],
+    "ExpectedOutput": "\"abcdeeffdcba\""
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiopasdfghjklzxcvbnm\"",
+      "[[0,25],[1,24],[2,23],[3,22],[4,21],[5,20],[6,19],[7,18],[8,17],[9,16],[10,15],[11,14],[12,13]]"
+    ],
+    "ExpectedOutput": "\"mnbrcxuikjagdfshpolzytvewq\""
+  },
+  {
+    "Inputs": [
+      "\"bdcagf\"",
+      "[[0,3],[1,4],[2,5]]"
+    ],
+    "ExpectedOutput": "\"adcbgf\""
+  },
+  {
+    "Inputs": [
+      "\"racecar\"",
+      "[[0,6],[1,5],[2,4]]"
+    ],
+    "ExpectedOutput": "\"racecar\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijk\"",
+      "[[0,3],[1,4],[2,5],[3,6],[4,7],[5,8],[6,9],[7,10]]"
+    ],
+    "ExpectedOutput": "\"abcdefghijk\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\"",
+      "[[0,1],[0,2],[1,3],[1,4],[2,5],[2,6]]"
+    ],
+    "ExpectedOutput": "\"abcdefg\""
+  },
+  {
+    "Inputs": [
+      "\"leetcode\"",
+      "[[0,2],[1,3],[4,5],[6,7]]"
+    ],
+    "ExpectedOutput": "\"eeltcode\""
+  },
+  {
+    "Inputs": [
+      "\"zyxzyx\"",
+      "[[0,1],[1,2],[2,3],[3,4],[4,5],[5,0]]"
+    ],
+    "ExpectedOutput": "\"xxyyzz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijk\"",
+      "[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[0,8],[0,9],[0,10]]"
+    ],
+    "ExpectedOutput": "\"abcdefghijk\""
+  },
+  {
+    "Inputs": [
+      "\"abacabad\"",
+      "[[0,2],[1,3],[4,6],[5,7]]"
+    ],
+    "ExpectedOutput": "\"abacabad\""
+  },
+  {
+    "Inputs": [
+      "\"lkjihgfedcba\"",
+      "[[0,10],[1,9],[2,8],[3,7],[4,6],[0,5],[1,6]]"
+    ],
+    "ExpectedOutput": "\"bcdefghijkla\""
+  },
+  {
+    "Inputs": [
+      "\"algorithm\"",
+      "[[0,6],[1,5],[2,4],[3,7]]"
+    ],
+    "ExpectedOutput": "\"aighrltom\""
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "[[0,1],[1,2],[2,3],[0,3],[1,2]]"
+    ],
+    "ExpectedOutput": "\"abcd\""
+  },
+  {
+    "Inputs": [
+      "\"acbdf\"",
+      "[[0,1],[0,2],[1,2],[3,4]]"
+    ],
+    "ExpectedOutput": "\"abcdf\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeff\"",
+      "[[0,1],[2,3],[4,5],[6,7],[8,9],[10,11],[0,2],[1,3],[4,6],[5,7],[8,10],[9,11]]"
+    ],
+    "ExpectedOutput": "\"aabbccddeeff\""
+  },
+  {
+    "Inputs": [
+      "\"stuvwx\"",
+      "[[0,3],[1,4],[2,5],[0,5],[1,3],[2,4]]"
+    ],
+    "ExpectedOutput": "\"stuvwx\""
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "[[0,1],[0,4],[1,2],[2,3]]"
+    ],
+    "ExpectedOutput": "\"abcde\""
+  },
+  {
+    "Inputs": [
+      "\"ympxz\"",
+      "[[0,1],[1,2],[2,3],[3,4]]"
+    ],
+    "ExpectedOutput": "\"mpxyz\""
+  },
+  {
+    "Inputs": [
+      "\"ekzpz\"",
+      "[[0,1],[1,2],[2,3],[3,4]]"
+    ],
+    "ExpectedOutput": "\"ekpzz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "[[0,25],[1,24],[2,23],[3,22],[4,21]]"
+    ],
+    "ExpectedOutput": "\"abcdefghijklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"fedcba\"",
+      "[[0,1],[1,2],[2,3],[3,4],[4,5]]"
+    ],
+    "ExpectedOutput": "\"abcdef\""
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\"",
+      "[[0,1],[2,3],[4,5],[6,7],[8,9],[10,11],[12,13],[0,2],[2,4],[4,6],[6,8],[8,10],[10,12],[1,3],[3,5],[5,7],[7,9],[9,11],[1,13]]"
+    ],
+    "ExpectedOutput": "\"aaaaaaabbbbccda\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\"",
+      "[[0,3],[1,4],[2,5],[0,5],[1,2],[3,4]]"
+    ],
+    "ExpectedOutput": "\"abcdefg\""
+  },
+  {
+    "Inputs": [
+      "\"hellothereeveryone\"",
+      "[[0,8],[1,3],[2,9],[5,11],[6,7],[12,16],[13,14],[15,17]]"
+    ],
+    "ExpectedOutput": "\"heelotehrleveryeno\""
+  },
+  {
+    "Inputs": [
+      "\"dcabxyz\"",
+      "[[0,3],[1,2],[3,5],[4,6]]"
+    ],
+    "ExpectedOutput": "\"bacdxyz\""
+  },
+  {
+    "Inputs": [
+      "\"xyzab\"",
+      "[[0,1],[1,2],[2,3],[3,4],[0,3]]"
+    ],
+    "ExpectedOutput": "\"abxyz\""
+  },
+  {
+    "Inputs": [
+      "\"uvuuvuvuvu\"",
+      "[[0,1],[2,3],[4,5],[6,7],[8,9],[0,2],[2,4],[4,6],[6,8],[1,3],[3,5],[5,7],[7,9],[0,9]]"
+    ],
+    "ExpectedOutput": "\"uuuuuuvvvv\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijk\"",
+      "[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10]]"
+    ],
+    "ExpectedOutput": "\"abcdefghijk\""
+  },
+  {
+    "Inputs": [
+      "\"uvazyx\"",
+      "[[0,5],[1,4],[2,3]]"
+    ],
+    "ExpectedOutput": "\"uvazyx\""
+  },
+  {
+    "Inputs": [
+      "\"xyzxyz\"",
+      "[[0,3],[1,4],[2,5]]"
+    ],
+    "ExpectedOutput": "\"xyzxyz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "[[0,9],[1,8],[2,7],[3,6],[4,5],[0,8],[1,7],[2,6],[3,5]]"
+    ],
+    "ExpectedOutput": "\"abcdefghij\""
+  },
+  {
+    "Inputs": [
+      "\"programming\"",
+      "[[0,8],[1,7],[2,6],[3,5],[4,9]]"
+    ],
+    "ExpectedOutput": "\"immangorprg\""
+  },
+  {
+    "Inputs": [
+      "\"ufyx\"",
+      "[[0,3],[1,2],[0,2],[1,3]]"
+    ],
+    "ExpectedOutput": "\"fuxy\""
+  },
+  {
+    "Inputs": [
+      "\"lkjhgfedcba\"",
+      "[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10]]"
+    ],
+    "ExpectedOutput": "\"abcdefghjkl\""
+  },
+  {
+    "Inputs": [
+      "\"aaaabbbbccccdddd\"",
+      "[[0,8],[1,9],[2,10],[3,11],[4,12],[5,13],[6,14],[7,15],[0,4],[1,5],[2,6],[3,7],[0,1],[2,3],[4,5],[6,7]]"
+    ],
+    "ExpectedOutput": "\"aaaabbbbccccdddd\""
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "[[0,1],[1,2],[2,3],[3,4],[4,5],[0,5]]"
+    ],
+    "ExpectedOutput": "\"abcdef\""
+  },
+  {
+    "Inputs": [
+      "\"nmosq\"",
+      "[[0,3],[1,2],[2,3],[3,4]]"
+    ],
+    "ExpectedOutput": "\"mnoqs\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefgh\"",
+      "[[0,7],[1,6],[2,5],[3,4],[0,3],[1,4]]"
+    ],
+    "ExpectedOutput": "\"abcdefgh\""
+  },
+  {
+    "Inputs": [
+      "\"helloworld\"",
+      "[[0,8],[1,7],[2,6],[3,5]]"
+    ],
+    "ExpectedOutput": "\"helloworld\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "[[0,9],[1,8],[2,7],[3,6],[4,5],[0,5],[1,4],[2,3],[0,1],[8,9]]"
+    ],
+    "ExpectedOutput": "\"abcdefghij\""
+  },
+  {
+    "Inputs": [
+      "\"abacabadaba\"",
+      "[[0,10],[1,9],[2,8],[3,7],[4,6],[0,5],[1,4],[2,3],[0,1],[8,9],[5,6]]"
+    ],
+    "ExpectedOutput": "\"aaaaaabbbcd\""
+  },
+  {
+    "Inputs": [
+      "\"programming\"",
+      "[[0,8],[1,7],[2,6],[3,5],[1,9]]"
+    ],
+    "ExpectedOutput": "\"immargonprg\""
+  },
+  {
+    "Inputs": [
+      "\"zxcvbnmlkjhgfdsapoiuytrewq\"",
+      "[[0,23],[1,22],[2,21],[3,20],[4,19],[5,18],[6,17],[7,16],[8,15],[9,14],[10,13],[11,12]]"
+    ],
+    "ExpectedOutput": "\"ercvbimlajdfghskponuytxzwq\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "[[0,9],[1,8],[2,7],[3,6],[4,5]]"
+    ],
+    "ExpectedOutput": "\"abcdefghij\""
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "[[0,1],[1,2],[2,0]]"
+    ],
+    "ExpectedOutput": "\"xyz\""
+  },
+  {
+    "Inputs": [
+      "\"xzy\"",
+      "[[0,1],[1,2],[0,2],[1,2],[0,1]]"
+    ],
+    "ExpectedOutput": "\"xyz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijk\"",
+      "[[0,10],[1,9],[2,8],[3,7],[4,6],[0,9],[1,8],[2,7],[3,6],[4,5]]"
+    ],
+    "ExpectedOutput": "\"abcdefghijk\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "[[0,25],[1,24],[2,23],[3,22],[4,21],[5,20],[6,19],[7,18],[8,17],[9,16],[10,15],[11,14],[12,13]]"
+    ],
+    "ExpectedOutput": "\"abcdefghijklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "[[0,25],[1,24],[2,23],[3,22],[4,21],[5,20],[6,19],[7,18],[8,17],[9,16],[10,15],[11,14],[12,13],[0,13],[1,14],[2,15],[3,16],[4,17],[5,18],[6,19],[7,20],[8,21],[9,22],[10,23],[11,24],[12,25]]"
+    ],
+    "ExpectedOutput": "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefgh\"",
+      "[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[0,7]]"
+    ],
+    "ExpectedOutput": "\"abcdefgh\""
+  },
+  {
+    "Inputs": [
+      "\"aaabbbccc\"",
+      "[[0,1],[2,3],[4,5],[0,5],[1,4],[2,8]]"
+    ],
+    "ExpectedOutput": "\"aaabbbccc\""
+  },
+  {
+    "Inputs": [
+      "\"abcdexyz\"",
+      "[[0,7],[1,6],[2,5],[3,4]]"
+    ],
+    "ExpectedOutput": "\"abcdexyz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10],[10,11],[11,12],[12,13],[13,14],[14,15],[15,16],[16,17],[17,18],[18,19],[19,20],[20,21],[21,22],[22,23],[23,24],[24,25]]"
+    ],
+    "ExpectedOutput": "\"abcdefghijklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\"",
+      "[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9]]"
+    ],
+    "ExpectedOutput": "\"abcdefghij\""
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "[[0,5],[1,4],[2,3]]"
+    ],
+    "ExpectedOutput": "\"abcdef\""
+  },
+  {
+    "Inputs": [
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+      "[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10],[10,11],[11,12],[12,13],[13,14],[14,15],[15,16],[16,17],[17,18],[18,19],[19,20],[20,21],[21,22],[22,23],[23,24],[24,25]]"
+    ],
+    "ExpectedOutput": "\"abcdefghijklmnopqrstuvwxyz\""
+  }
+]

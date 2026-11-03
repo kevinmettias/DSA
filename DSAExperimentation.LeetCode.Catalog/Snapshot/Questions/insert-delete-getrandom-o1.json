@@ -1,0 +1,91 @@
+{
+  "QuestionId": 380,
+  "FrontendId": 380,
+  "Title": "Insert Delete GetRandom O(1)",
+  "TitleSlug": "insert-delete-getrandom-o1",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Design",
+      "Slug": "design"
+    },
+    {
+      "Name": "Randomized",
+      "Slug": "randomized"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Insert Delete GetRandom O(1) - Duplicates allowed",
+      "TitleSlug": "insert-delete-getrandom-o1-duplicates-allowed",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "-2^31 <= val <= 2^31 - 1",
+    "At most 2 * 10^5 calls will be made to insert, remove, and getRandom.",
+    "There will be at least one element in the data structure when getRandom is called."
+  ],
+  "Signature": {
+    "FunctionName": null,
+    "Parameters": [],
+    "ReturnType": null,
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": "RandomizedSet",
+    "ConstructorParameters": [],
+    "Methods": [
+      {
+        "Name": "insert",
+        "Parameters": [
+          {
+            "Name": "val",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "boolean"
+      },
+      {
+        "Name": "remove",
+        "Parameters": [
+          {
+            "Name": "val",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "boolean"
+      },
+      {
+        "Name": "getRandom",
+        "Parameters": [],
+        "ReturnType": "integer"
+      }
+    ]
+  },
+  "CSharpStarterCode": "public class RandomizedSet {\n\n    public RandomizedSet() {\n        \n    }\n    \n    public bool Insert(int val) {\n        \n    }\n    \n    public bool Remove(int val) {\n        \n    }\n    \n    public int GetRandom() {\n        \n    }\n}\n\n/**\n * Your RandomizedSet object will be instantiated and called as such:\n * RandomizedSet obj = new RandomizedSet();\n * bool param_1 = obj.Insert(val);\n * bool param_2 = obj.Remove(val);\n * int param_3 = obj.GetRandom();\n */",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"RandomizedSet\",\"insert\",\"remove\",\"insert\",\"getRandom\",\"remove\",\"insert\",\"getRandom\"]",
+        "[[],[1],[2],[2],[],[1],[2],[]]"
+      ],
+      "ExpectedOutput": "[null, true, false, true, 2, true, false, 2]"
+    }
+  ],
+  "ContentHtml": "<p>Implement the <code>RandomizedSet</code> class:</p>\n\n<ul>\n\t<li><code>RandomizedSet()</code> Initializes the <code>RandomizedSet</code> object.</li>\n\t<li><code>bool insert(int val)</code> Inserts an item <code>val</code> into the set if not present. Returns <code>true</code> if the item was not present, <code>false</code> otherwise.</li>\n\t<li><code>bool remove(int val)</code> Removes an item <code>val</code> from the set if present. Returns <code>true</code> if the item was present, <code>false</code> otherwise.</li>\n\t<li><code>int getRandom()</code> Returns a random element from the current set of elements (it&#39;s guaranteed that at least one element exists when this method is called). Each element must have the <b>same probability</b> of being returned.</li>\n</ul>\n\n<p>You must implement the functions of the class such that each function works in&nbsp;<strong>average</strong>&nbsp;<code>O(1)</code>&nbsp;time complexity.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input</strong>\n[&quot;RandomizedSet&quot;, &quot;insert&quot;, &quot;remove&quot;, &quot;insert&quot;, &quot;getRandom&quot;, &quot;remove&quot;, &quot;insert&quot;, &quot;getRandom&quot;]\n[[], [1], [2], [2], [], [1], [2], []]\n<strong>Output</strong>\n[null, true, false, true, 2, true, false, 2]\n\n<strong>Explanation</strong>\nRandomizedSet randomizedSet = new RandomizedSet();\nrandomizedSet.insert(1); // Inserts 1 to the set. Returns true as 1 was inserted successfully.\nrandomizedSet.remove(2); // Returns false as 2 does not exist in the set.\nrandomizedSet.insert(2); // Inserts 2 to the set, returns true. Set now contains [1,2].\nrandomizedSet.getRandom(); // getRandom() should return either 1 or 2 randomly.\nrandomizedSet.remove(1); // Removes 1 from the set, returns true. Set now contains [2].\nrandomizedSet.insert(2); // 2 was already in the set, so return false.\nrandomizedSet.getRandom(); // Since 2 is the only number in the set, getRandom() will always return 2.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>-2<sup>31</sup> &lt;= val &lt;= 2<sup>31</sup> - 1</code></li>\n\t<li>At most <code>2 *&nbsp;</code><code>10<sup>5</sup></code> calls will be made to <code>insert</code>, <code>remove</code>, and <code>getRandom</code>.</li>\n\t<li>There will be <strong>at least one</strong> element in the data structure when <code>getRandom</code> is called.</li>\n</ul>\n"
+}

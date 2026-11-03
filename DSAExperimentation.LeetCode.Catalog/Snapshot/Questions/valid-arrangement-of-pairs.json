@@ -1,0 +1,97 @@
+{
+  "QuestionId": 2201,
+  "FrontendId": 2097,
+  "Title": "Valid Arrangement of Pairs",
+  "TitleSlug": "valid-arrangement-of-pairs",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Depth-First Search",
+      "Slug": "depth-first-search"
+    },
+    {
+      "Name": "Graph Theory",
+      "Slug": "graph"
+    },
+    {
+      "Name": "Eulerian Circuit",
+      "Slug": "eulerian-circuit"
+    },
+    {
+      "Name": "Eulerian Path",
+      "Slug": "eulerian-path"
+    },
+    {
+      "Name": "Semi-Eulerian Graph",
+      "Slug": "semi-eulerian-graph"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Reconstruct Itinerary",
+      "TitleSlug": "reconstruct-itinerary",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Find if Path Exists in Graph",
+      "TitleSlug": "find-if-path-exists-in-graph",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [
+    "Could you convert this into a graph problem?",
+    "Consider the pairs as edges and each number as a node.",
+    "We have to find an Eulerian path of this graph. Hierholzer’s algorithm can be used."
+  ],
+  "Constraints": [
+    "1 <= pairs.length <= 10^5",
+    "pairs[i].length == 2",
+    "0 <= starti, endi <= 10^9",
+    "starti != endi",
+    "No two pairs are exactly the same.",
+    "There exists a valid arrangement of pairs."
+  ],
+  "Signature": {
+    "FunctionName": "validArrangement",
+    "Parameters": [
+      {
+        "Name": "pairs",
+        "Type": "integer[][]"
+      }
+    ],
+    "ReturnType": "integer[][]",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int[][] ValidArrangement(int[][] pairs) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[[5,1],[4,5],[11,9],[9,4]]"
+      ],
+      "ExpectedOutput": "[[11,9],[9,4],[4,5],[5,1]]"
+    },
+    {
+      "Inputs": [
+        "[[1,3],[3,2],[2,1]]"
+      ],
+      "ExpectedOutput": "[[1,3],[3,2],[2,1]]"
+    },
+    {
+      "Inputs": [
+        "[[1,2],[1,3],[2,1]]"
+      ],
+      "ExpectedOutput": "[[1,2],[2,1],[1,3]]"
+    }
+  ],
+  "ContentHtml": "<p>You are given a <strong>0-indexed</strong> 2D integer array <code>pairs</code> where <code>pairs[i] = [start<sub>i</sub>, end<sub>i</sub>]</code>. An arrangement of <code>pairs</code> is <strong>valid</strong> if for every index <code>i</code> where <code>1 &lt;= i &lt; pairs.length</code>, we have <code>end<sub>i-1</sub> == start<sub>i</sub></code>.</p>\n\n<p>Return <em><strong>any</strong> valid arrangement of </em><code>pairs</code>.</p>\n\n<p><strong>Note:</strong> The inputs will be generated such that there exists a valid arrangement of <code>pairs</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> pairs = [[5,1],[4,5],[11,9],[9,4]]\n<strong>Output:</strong> [[11,9],[9,4],[4,5],[5,1]]\n<strong>Explanation:\n</strong>This is a valid arrangement since end<sub>i-1</sub> always equals start<sub>i</sub>.\nend<sub>0</sub> = 9 == 9 = start<sub>1</sub> \nend<sub>1</sub> = 4 == 4 = start<sub>2</sub>\nend<sub>2</sub> = 5 == 5 = start<sub>3</sub>\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> pairs = [[1,3],[3,2],[2,1]]\n<strong>Output:</strong> [[1,3],[3,2],[2,1]]\n<strong>Explanation:</strong>\nThis is a valid arrangement since end<sub>i-1</sub> always equals start<sub>i</sub>.\nend<sub>0</sub> = 3 == 3 = start<sub>1</sub>\nend<sub>1</sub> = 2 == 2 = start<sub>2</sub>\nThe arrangements [[2,1],[1,3],[3,2]] and [[3,2],[2,1],[1,3]] are also valid.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> pairs = [[1,2],[1,3],[2,1]]\n<strong>Output:</strong> [[1,2],[2,1],[1,3]]\n<strong>Explanation:</strong>\nThis is a valid arrangement since end<sub>i-1</sub> always equals start<sub>i</sub>.\nend<sub>0</sub> = 2 == 2 = start<sub>1</sub>\nend<sub>1</sub> = 1 == 1 = start<sub>2</sub>\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= pairs.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>pairs[i].length == 2</code></li>\n\t<li><code>0 &lt;= start<sub>i</sub>, end<sub>i</sub> &lt;= 10<sup>9</sup></code></li>\n\t<li><code>start<sub>i</sub> != end<sub>i</sub></code></li>\n\t<li>No two pairs are exactly the same.</li>\n\t<li>There <strong>exists</strong> a valid arrangement of <code>pairs</code>.</li>\n</ul>\n"
+}

@@ -1,0 +1,79 @@
+{
+  "QuestionId": 164,
+  "FrontendId": 164,
+  "Title": "Maximum Gap",
+  "TitleSlug": "maximum-gap",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Sorting",
+      "Slug": "sorting"
+    },
+    {
+      "Name": "Bucket Sort",
+      "Slug": "bucket-sort"
+    },
+    {
+      "Name": "Radix Sort",
+      "Slug": "radix-sort"
+    },
+    {
+      "Name": "Pigeonhole Principle",
+      "Slug": "pigeonhole-principle"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Widest Vertical Area Between Two Points Containing No Points",
+      "TitleSlug": "widest-vertical-area-between-two-points-containing-no-points",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Maximum Consecutive Floors Without Special Floors",
+      "TitleSlug": "maximum-consecutive-floors-without-special-floors",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= nums.length <= 10^5",
+    "0 <= nums[i] <= 10^9"
+  ],
+  "Signature": {
+    "FunctionName": "maximumGap",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int MaximumGap(int[] nums) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[3,6,9,1]"
+      ],
+      "ExpectedOutput": "3"
+    },
+    {
+      "Inputs": [
+        "[10]"
+      ],
+      "ExpectedOutput": "0"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer array <code>nums</code>, return <em>the maximum difference between two successive elements in its sorted form</em>. If the array contains less than two elements, return <code>0</code>.</p>\n\n<p>You must write an algorithm that runs in linear time and uses linear extra space.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [3,6,9,1]\n<strong>Output:</strong> 3\n<strong>Explanation:</strong> The sorted form of the array is [1,3,6,9], either (3,6) or (6,9) has the maximum difference 3.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [10]\n<strong>Output:</strong> 0\n<strong>Explanation:</strong> The array contains less than 2 elements, therefore return 0.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>0 &lt;= nums[i] &lt;= 10<sup>9</sup></code></li>\n</ul>\n"
+}

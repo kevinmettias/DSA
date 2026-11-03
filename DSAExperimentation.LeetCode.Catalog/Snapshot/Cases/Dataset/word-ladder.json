@@ -1,0 +1,90 @@
+[
+  {
+    "Inputs": [
+      "\"leet\"",
+      "\"code\"",
+      "[\"lest\",\"leet\",\"lose\",\"code\",\"lode\",\"robe\",\"home\",\"dote\",\"cake\"]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"talk\"",
+      "\"tell\"",
+      "[\"talk\",\"tell\",\"tall\",\"toll\",\"toll\"]"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"talk\"",
+      "\"walk\"",
+      "[\"talk\",\"walk\",\"tall\",\"tale\",\"tali\",\"wali\",\"wali\",\"wale\",\"wall\",\"walk\"]"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "\"leet\"",
+      "\"code\"",
+      "[\"lest\",\"leet\",\"lose\",\"code\",\"lode\",\"robe\",\"lost\"]"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "\"red\"",
+      "\"tax\"",
+      "[\"ted\",\"tex\",\"red\",\"tax\",\"tad\",\"den\",\"rex\",\"pee\"]"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "\"cat\"",
+      "\"dog\"",
+      "[\"bat\",\"rat\",\"hat\",\"hot\",\"dot\",\"dog\"]"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcf\"",
+      "\"aefh\"",
+      "[\"abcf\",\"aefg\",\"aefh\",\"aegh\",\"cefh\",\"cefh\",\"aegh\",\"cefg\",\"abcf\",\"abef\"]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"machine\"",
+      "\"natural\"",
+      "[\"machene\",\"machenr\",\"machrne\",\"machren\",\"machenl\",\"machenm\",\"machene\",\"machrne\",\"machren\",\"machenl\",\"machenm\",\"machane\",\"machrne\",\"machren\",\"machenl\",\"machenm\",\"machenl\",\"machene\",\"machrne\",\"machren\",\"machenl\",\"machenm\",\"nachenl\",\"nachene\",\"nachrne\",\"nachren\",\"nachenl\",\"nachenm\",\"nachene\",\"nachrne\",\"nachren\",\"nachenl\",\"nachenm\",\"nachene\",\"nachrne\",\"nachren\",\"nachenl\",\"nachenm\",\"nachene\",\"nachrne\",\"nachren\",\"nachenl\",\"nachenm\",\"nachene\",\"nachrne\",\"nachren\",\"nachenl\",\"nachenm\",\"nachene\",\"nachrne\",\"nachren\",\"nachenl\",\"nachenm\",\"nachene\",\"nachrne\",\"nachren\",\"nachenl\",\"nachenm\",\"nachene\",\"nachrne\",\"nachren\",\"nachenl\",\"nachenm\",\"natural\"]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"listen\"",
+      "\"silent\"",
+      "[\"lisen\",\"litesn\",\"litens\",\"listne\",\"listen\",\"siltne\",\"silent\",\"linset\",\"lintes\",\"sleint\",\"ltsine\",\"lintse\",\"lisnet\",\"lsitne\",\"lnties\",\"lintes\",\"lintes\",\"linsat\",\"slient\",\"lsinte\",\"linset\"]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"algorithm\"",
+      "\"rhythm\"",
+      "[\"alorhythm\",\"alohrhythm\",\"alohrhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"alorhythm\",\"rhythm\",\"rhythm\",\"rhythm\",\"rhythm\",\"rhythm\",\"rhythm\",\"rhythm\",\"rhythm\",\"rhythm\",\"rhythm\"]"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"physics\"",
+      "\"chemist\"",
+      "[\"phyiscs\",\"phyisic\",\"phyisct\",\"phyisci\",\"phyicsi\",\"physics\",\"physisi\",\"physcii\",\"physici\",\"phyiscs\",\"phyiscs\",\"phyiscs\",\"phyiscs\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"physcis\",\"chemics\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\",\"chemist\"]"
+    ],
+    "ExpectedOutput": "0"
+  }
+]

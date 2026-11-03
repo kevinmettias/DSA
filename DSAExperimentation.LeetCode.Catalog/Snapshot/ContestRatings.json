@@ -1,0 +1,3750 @@
+{
+  "Source": "https://github.com/zerotrac/leetcode_problem_rating",
+  "Questions": {
+    "3sum-with-multiplicity": {
+      "Rating": 1710.9105378431,
+      "ContestSlug": "weekly-contest-106",
+      "ProblemIndex": "Q3"
+    },
+    "all-ancestors-of-a-node-in-a-directed-acyclic-graph": {
+      "Rating": 1787.8550568757,
+      "ContestSlug": "biweekly-contest-73",
+      "ProblemIndex": "Q3"
+    },
+    "all-elements-in-two-binary-search-trees": {
+      "Rating": 1260.1755576607,
+      "ContestSlug": "weekly-contest-169",
+      "ProblemIndex": "Q2"
+    },
+    "all-paths-from-source-to-target": {
+      "Rating": 1382.5129151601,
+      "ContestSlug": "weekly-contest-75",
+      "ProblemIndex": "Q2"
+    },
+    "all-possible-full-binary-trees": {
+      "Rating": 1784.2539813582,
+      "ContestSlug": "weekly-contest-99",
+      "ProblemIndex": "Q3"
+    },
+    "alternating-groups-iii": {
+      "Rating": 3112.0402038423,
+      "ContestSlug": "weekly-contest-409",
+      "ProblemIndex": "Q4"
+    },
+    "ambiguous-coordinates": {
+      "Rating": 1707.8992927609,
+      "ContestSlug": "weekly-contest-80",
+      "ProblemIndex": "Q3"
+    },
+    "angles-of-a-triangle": {
+      "Rating": 1407.1018903705,
+      "ContestSlug": "weekly-contest-497",
+      "ProblemIndex": "Q2"
+    },
+    "apply-discount-every-n-orders": {
+      "Rating": 1429.6349292399,
+      "ContestSlug": "biweekly-contest-20",
+      "ProblemIndex": "Q2"
+    },
+    "apply-operations-to-maximize-score": {
+      "Rating": 2396.6770372863,
+      "ContestSlug": "weekly-contest-358",
+      "ProblemIndex": "Q4"
+    },
+    "available-captures-for-rook": {
+      "Rating": 1317.9521104466,
+      "ContestSlug": "weekly-contest-125",
+      "ProblemIndex": "Q2"
+    },
+    "backspace-string-compare": {
+      "Rating": 1227.7906887239,
+      "ContestSlug": "weekly-contest-87",
+      "ProblemIndex": "Q1"
+    },
+    "balance-a-binary-search-tree": {
+      "Rating": 1540.5750839091,
+      "ContestSlug": "weekly-contest-180",
+      "ProblemIndex": "Q3"
+    },
+    "basic-calculator-iv": {
+      "Rating": 2863.1378294349,
+      "ContestSlug": "weekly-contest-68",
+      "ProblemIndex": "Q5"
+    },
+    "beautiful-array": {
+      "Rating": 2294.0981174197,
+      "ContestSlug": "weekly-contest-108",
+      "ProblemIndex": "Q4"
+    },
+    "beautiful-towers-i": {
+      "Rating": 1519.2070276362,
+      "ContestSlug": "weekly-contest-364",
+      "ProblemIndex": "Q2"
+    },
+    "beautiful-towers-ii": {
+      "Rating": 2071.6322841217,
+      "ContestSlug": "weekly-contest-364",
+      "ProblemIndex": "Q3"
+    },
+    "best-time-to-buy-and-sell-stock-using-strategy": {
+      "Rating": 1556.7777620299,
+      "ContestSlug": "weekly-contest-463",
+      "ProblemIndex": "Q1"
+    },
+    "best-time-to-buy-and-sell-stock-v": {
+      "Rating": 1777.1347057233,
+      "ContestSlug": "biweekly-contest-158",
+      "ProblemIndex": "Q2"
+    },
+    "binary-search-tree-to-greater-sum-tree": {
+      "Rating": 1374.6755455786,
+      "ContestSlug": "weekly-contest-135",
+      "ProblemIndex": "Q2"
+    },
+    "block-placement-queries": {
+      "Rating": 2513.0284514744,
+      "ContestSlug": "biweekly-contest-131",
+      "ProblemIndex": "Q4"
+    },
+    "boats-to-save-people": {
+      "Rating": 1529.7617243868,
+      "ContestSlug": "weekly-contest-96",
+      "ProblemIndex": "Q2"
+    },
+    "booking-concert-tickets-in-groups": {
+      "Rating": 2470.2118194809,
+      "ContestSlug": "biweekly-contest-79",
+      "ProblemIndex": "Q4"
+    },
+    "bricks-falling-when-hit": {
+      "Rating": 2765.2533837781,
+      "ContestSlug": "weekly-contest-76",
+      "ProblemIndex": "Q4"
+    },
+    "build-a-matrix-with-conditions": {
+      "Rating": 1960.5517123728,
+      "ContestSlug": "weekly-contest-308",
+      "ProblemIndex": "Q4"
+    },
+    "calculate-amount-paid-in-taxes": {
+      "Rating": 1283.6412252736,
+      "ContestSlug": "weekly-contest-297",
+      "ProblemIndex": "Q1"
+    },
+    "camelcase-matching": {
+      "Rating": 1537.1387686755,
+      "ContestSlug": "weekly-contest-131",
+      "ProblemIndex": "Q3"
+    },
+    "capacity-to-ship-packages-within-d-days": {
+      "Rating": 1725.4481937307,
+      "ContestSlug": "weekly-contest-128",
+      "ProblemIndex": "Q3"
+    },
+    "car-fleet": {
+      "Rating": 1678.1133886034,
+      "ContestSlug": "weekly-contest-89",
+      "ProblemIndex": "Q2"
+    },
+    "car-fleet-ii": {
+      "Rating": 2530.6905139914,
+      "ContestSlug": "weekly-contest-230",
+      "ProblemIndex": "Q4"
+    },
+    "cat-and-mouse-ii": {
+      "Rating": 2849.4841858619,
+      "ContestSlug": "weekly-contest-224",
+      "ProblemIndex": "Q4"
+    },
+    "chalkboard-xor-game": {
+      "Rating": 2341.4506355884,
+      "ContestSlug": "weekly-contest-78",
+      "ProblemIndex": "Q4"
+    },
+    "cheapest-flights-within-k-stops": {
+      "Rating": 1786.4753467293,
+      "ContestSlug": "weekly-contest-72",
+      "ProblemIndex": "Q3"
+    },
+    "check-if-a-parentheses-string-can-be-valid": {
+      "Rating": 2037.6527962599,
+      "ContestSlug": "biweekly-contest-68",
+      "ProblemIndex": "Q3"
+    },
+    "check-if-a-string-contains-all-binary-codes-of-size-k": {
+      "Rating": 1504.0178888667,
+      "ContestSlug": "biweekly-contest-27",
+      "ProblemIndex": "Q2"
+    },
+    "check-if-a-word-occurs-as-a-prefix-of-any-word-in-a-sentence": {
+      "Rating": 1125.575238274,
+      "ContestSlug": "weekly-contest-190",
+      "ProblemIndex": "Q1"
+    },
+    "check-if-dfs-strings-are-palindromes": {
+      "Rating": 2454.1900261902,
+      "ContestSlug": "weekly-contest-420",
+      "ProblemIndex": "Q4"
+    },
+    "check-if-digits-are-equal-in-string-after-operations-i": {
+      "Rating": 1189.3715646147,
+      "ContestSlug": "weekly-contest-438",
+      "ProblemIndex": "Q1"
+    },
+    "check-if-digits-are-equal-in-string-after-operations-ii": {
+      "Rating": 2286.2394574531,
+      "ContestSlug": "weekly-contest-438",
+      "ProblemIndex": "Q3"
+    },
+    "check-if-it-is-a-good-array": {
+      "Rating": 1983.2319731313,
+      "ContestSlug": "weekly-contest-161",
+      "ProblemIndex": "Q4"
+    },
+    "check-if-it-is-a-straight-line": {
+      "Rating": 1247.3198836387,
+      "ContestSlug": "weekly-contest-159",
+      "ProblemIndex": "Q1"
+    },
+    "check-if-point-is-reachable": {
+      "Rating": 2220.8257124139,
+      "ContestSlug": "biweekly-contest-96",
+      "ProblemIndex": "Q4"
+    },
+    "check-if-there-is-a-valid-parentheses-string-path": {
+      "Rating": 2084.5752686737,
+      "ContestSlug": "weekly-contest-292",
+      "ProblemIndex": "Q4"
+    },
+    "check-if-there-is-a-valid-path-in-a-grid": {
+      "Rating": 1745.6490739887,
+      "ContestSlug": "weekly-contest-181",
+      "ProblemIndex": "Q3"
+    },
+    "check-knight-tour-configuration": {
+      "Rating": 1448.1865030721,
+      "ContestSlug": "weekly-contest-337",
+      "ProblemIndex": "Q2"
+    },
+    "checking-existence-of-edge-length-limited-paths": {
+      "Rating": 2300.1557840589,
+      "ContestSlug": "weekly-contest-220",
+      "ProblemIndex": "Q4"
+    },
+    "circle-and-rectangle-overlapping": {
+      "Rating": 1708.9983361411,
+      "ContestSlug": "biweekly-contest-23",
+      "ProblemIndex": "Q3"
+    },
+    "climbing-stairs-ii": {
+      "Rating": 1560.2611098329,
+      "ContestSlug": "biweekly-contest-166",
+      "ProblemIndex": "Q2"
+    },
+    "closest-divisors": {
+      "Rating": 1533.9285875234,
+      "ContestSlug": "weekly-contest-177",
+      "ProblemIndex": "Q3"
+    },
+    "closest-nodes-queries-in-a-binary-search-tree": {
+      "Rating": 1596.9852244916,
+      "ContestSlug": "weekly-contest-320",
+      "ProblemIndex": "Q2"
+    },
+    "closest-prime-numbers-in-range": {
+      "Rating": 1649.7120733311,
+      "ContestSlug": "weekly-contest-326",
+      "ProblemIndex": "Q4"
+    },
+    "closest-room": {
+      "Rating": 2081.7518764643,
+      "ContestSlug": "biweekly-contest-51",
+      "ProblemIndex": "Q4"
+    },
+    "closest-subsequence-sum": {
+      "Rating": 2363.5096568214,
+      "ContestSlug": "weekly-contest-227",
+      "ProblemIndex": "Q4"
+    },
+    "collect-coins-in-a-tree": {
+      "Rating": 2711.8717381409,
+      "ContestSlug": "weekly-contest-338",
+      "ProblemIndex": "Q4"
+    },
+    "complete-binary-tree-inserter": {
+      "Rating": 1690.9043557462,
+      "ContestSlug": "weekly-contest-105",
+      "ProblemIndex": "Q3"
+    },
+    "concatenated-divisibility": {
+      "Rating": 2257.480554229,
+      "ContestSlug": "weekly-contest-447",
+      "ProblemIndex": "Q3"
+    },
+    "constrained-subsequence-sum": {
+      "Rating": 2032.4773038683,
+      "ContestSlug": "weekly-contest-186",
+      "ProblemIndex": "Q4"
+    },
+    "construct-binary-search-tree-from-preorder-traversal": {
+      "Rating": 1562.9802666517,
+      "ContestSlug": "weekly-contest-127",
+      "ProblemIndex": "Q4"
+    },
+    "construct-binary-tree-from-preorder-and-postorder-traversal": {
+      "Rating": 1731.5555445321,
+      "ContestSlug": "weekly-contest-98",
+      "ProblemIndex": "Q3"
+    },
+    "construct-string-with-minimum-cost": {
+      "Rating": 2170.7313528632,
+      "ContestSlug": "weekly-contest-405",
+      "ProblemIndex": "Q4"
+    },
+    "contain-virus": {
+      "Rating": 2277.0238076464,
+      "ContestSlug": "weekly-contest-63",
+      "ProblemIndex": "Q4"
+    },
+    "continuous-subarrays": {
+      "Rating": 1940.2116985812,
+      "ContestSlug": "weekly-contest-352",
+      "ProblemIndex": "Q3"
+    },
+    "convert-binary-number-in-a-linked-list-to-integer": {
+      "Rating": 1151.3534799042,
+      "ContestSlug": "weekly-contest-167",
+      "ProblemIndex": "Q1"
+    },
+    "count-all-possible-routes": {
+      "Rating": 2055.0970201875,
+      "ContestSlug": "biweekly-contest-34",
+      "ProblemIndex": "Q4"
+    },
+    "count-all-valid-pickup-and-delivery-options": {
+      "Rating": 1722.8129701098,
+      "ContestSlug": "biweekly-contest-20",
+      "ProblemIndex": "Q4"
+    },
+    "count-almost-equal-pairs-ii": {
+      "Rating": 2545.1080433595,
+      "ContestSlug": "weekly-contest-412",
+      "ProblemIndex": "Q4"
+    },
+    "count-anagrams": {
+      "Rating": 2069.7848729824,
+      "ContestSlug": "biweekly-contest-94",
+      "ProblemIndex": "Q4"
+    },
+    "count-array-pairs-divisible-by-k": {
+      "Rating": 2246.0452639352,
+      "ContestSlug": "weekly-contest-281",
+      "ProblemIndex": "Q4"
+    },
+    "count-bowl-subarrays": {
+      "Rating": 1847.5451577224,
+      "ContestSlug": "weekly-contest-466",
+      "ProblemIndex": "Q3"
+    },
+    "count-cells-in-overlapping-horizontal-and-vertical-substrings": {
+      "Rating": 2105.0143242092,
+      "ContestSlug": "biweekly-contest-155",
+      "ProblemIndex": "Q3"
+    },
+    "count-collisions-of-monkeys-on-a-polygon": {
+      "Rating": 1662.7075394144,
+      "ContestSlug": "weekly-contest-330",
+      "ProblemIndex": "Q2"
+    },
+    "count-connected-components-in-lcm-graph": {
+      "Rating": 2532.0192714689,
+      "ContestSlug": "biweekly-contest-145",
+      "ProblemIndex": "Q4"
+    },
+    "count-connected-subgraphs-with-even-node-sum": {
+      "Rating": 1859.4380732602,
+      "ContestSlug": "biweekly-contest-181",
+      "ProblemIndex": "Q3"
+    },
+    "count-elements-with-at-least-k-greater-values": {
+      "Rating": 1372.7471551838,
+      "ContestSlug": "weekly-contest-478",
+      "ProblemIndex": "Q1"
+    },
+    "count-good-nodes-in-binary-tree": {
+      "Rating": 1360.2184128413,
+      "ContestSlug": "biweekly-contest-26",
+      "ProblemIndex": "Q3"
+    },
+    "count-good-numbers": {
+      "Rating": 1674.7986939472,
+      "ContestSlug": "weekly-contest-248",
+      "ProblemIndex": "Q3"
+    },
+    "count-good-subarrays": {
+      "Rating": 2230.1400164479,
+      "ContestSlug": "weekly-contest-494",
+      "ProblemIndex": "Q4"
+    },
+    "count-good-triplets-in-an-array": {
+      "Rating": 2272.4412003208,
+      "ContestSlug": "biweekly-contest-72",
+      "ProblemIndex": "Q4"
+    },
+    "count-increasing-quadruplets": {
+      "Rating": 2432.713399111,
+      "ContestSlug": "weekly-contest-330",
+      "ProblemIndex": "Q4"
+    },
+    "count-integers-in-intervals": {
+      "Rating": 2222.4805422748,
+      "ContestSlug": "weekly-contest-293",
+      "ProblemIndex": "Q4"
+    },
+    "count-islands-with-total-value-divisible-by-k": {
+      "Rating": 1461.186679202,
+      "ContestSlug": "biweekly-contest-161",
+      "ProblemIndex": "Q2"
+    },
+    "count-k-reducible-numbers-less-than-n": {
+      "Rating": 2450.5982290839,
+      "ContestSlug": "weekly-contest-423",
+      "ProblemIndex": "Q4"
+    },
+    "count-k-subsequences-of-a-string-with-maximum-beauty": {
+      "Rating": 2091.6580433632,
+      "ContestSlug": "biweekly-contest-112",
+      "ProblemIndex": "Q4"
+    },
+    "count-lattice-points-inside-a-circle": {
+      "Rating": 1602.7242171967,
+      "ContestSlug": "weekly-contest-290",
+      "ProblemIndex": "Q2"
+    },
+    "count-no-zero-pairs-that-sum-to-n": {
+      "Rating": 2419.2873599122,
+      "ContestSlug": "weekly-contest-470",
+      "ProblemIndex": "Q4"
+    },
+    "count-non-decreasing-subarrays-after-k-operations": {
+      "Rating": 2854.6879585019,
+      "ContestSlug": "weekly-contest-432",
+      "ProblemIndex": "Q4"
+    },
+    "count-number-of-balanced-permutations": {
+      "Rating": 2614.911779573,
+      "ContestSlug": "weekly-contest-422",
+      "ProblemIndex": "Q4"
+    },
+    "count-number-of-rectangles-containing-each-point": {
+      "Rating": 1997.7013718153,
+      "ContestSlug": "weekly-contest-290",
+      "ProblemIndex": "Q3"
+    },
+    "count-number-of-teams": {
+      "Rating": 1343.628913055,
+      "ContestSlug": "weekly-contest-182",
+      "ProblemIndex": "Q2"
+    },
+    "count-number-of-trapezoids-i": {
+      "Rating": 1579.7630863981,
+      "ContestSlug": "weekly-contest-459",
+      "ProblemIndex": "Q2"
+    },
+    "count-number-of-trapezoids-ii": {
+      "Rating": 2643.4108112417,
+      "ContestSlug": "weekly-contest-459",
+      "ProblemIndex": "Q4"
+    },
+    "count-pairs-with-xor-in-a-range": {
+      "Rating": 2479.3282985529,
+      "ContestSlug": "weekly-contest-233",
+      "ProblemIndex": "Q4"
+    },
+    "count-partitions-with-max-min-difference-at-most-k": {
+      "Rating": 2032.797382526,
+      "ContestSlug": "weekly-contest-453",
+      "ProblemIndex": "Q3"
+    },
+    "count-prefix-and-suffix-pairs-i": {
+      "Rating": 1214.2480880984,
+      "ContestSlug": "weekly-contest-385",
+      "ProblemIndex": "Q1"
+    },
+    "count-prefix-and-suffix-pairs-ii": {
+      "Rating": 2327.5726642605,
+      "ContestSlug": "weekly-contest-385",
+      "ProblemIndex": "Q4"
+    },
+    "count-prime-gap-balanced-subarrays": {
+      "Rating": 2235.2155688741,
+      "ContestSlug": "biweekly-contest-159",
+      "ProblemIndex": "Q3"
+    },
+    "count-sequences-to-k": {
+      "Rating": 1964.6174369373,
+      "ContestSlug": "weekly-contest-490",
+      "ProblemIndex": "Q4"
+    },
+    "count-servers-that-communicate": {
+      "Rating": 1374.574900311,
+      "ContestSlug": "weekly-contest-164",
+      "ProblemIndex": "Q2"
+    },
+    "count-sorted-vowel-strings": {
+      "Rating": 1519.1715594347,
+      "ContestSlug": "weekly-contest-213",
+      "ProblemIndex": "Q2"
+    },
+    "count-sub-islands": {
+      "Rating": 1678.7231378948,
+      "ContestSlug": "weekly-contest-246",
+      "ProblemIndex": "Q3"
+    },
+    "count-subarrays-with-cost-less-than-or-equal-to-k": {
+      "Rating": 1759.0629543156,
+      "ContestSlug": "weekly-contest-488",
+      "ProblemIndex": "Q3"
+    },
+    "count-subarrays-with-even-odd-ratio-i": {
+      "Rating": 1391.7523336531,
+      "ContestSlug": "weekly-contest-513",
+      "ProblemIndex": "Q2"
+    },
+    "count-subarrays-with-even-odd-ratio-ii": {
+      "Rating": 2155.6436834044,
+      "ContestSlug": "weekly-contest-513",
+      "ProblemIndex": "Q4"
+    },
+    "count-subarrays-with-fixed-bounds": {
+      "Rating": 2092.5366031561,
+      "ContestSlug": "weekly-contest-315",
+      "ProblemIndex": "Q4"
+    },
+    "count-subarrays-with-majority-element-i": {
+      "Rating": 1422.8776815753,
+      "ContestSlug": "biweekly-contest-169",
+      "ProblemIndex": "Q2"
+    },
+    "count-subarrays-with-majority-element-ii": {
+      "Rating": 2089.8733559225,
+      "ContestSlug": "biweekly-contest-169",
+      "ProblemIndex": "Q4"
+    },
+    "count-submatrices-with-all-ones": {
+      "Rating": 1845.0428731248,
+      "ContestSlug": "weekly-contest-196",
+      "ProblemIndex": "Q3"
+    },
+    "count-subtrees-with-max-distance-between-cities": {
+      "Rating": 2308.6545905335,
+      "ContestSlug": "weekly-contest-210",
+      "ProblemIndex": "Q4"
+    },
+    "count-the-number-of-arrays-with-k-matching-adjacent-elements": {
+      "Rating": 2309.7881448766,
+      "ContestSlug": "weekly-contest-430",
+      "ProblemIndex": "Q4"
+    },
+    "count-the-number-of-complete-components": {
+      "Rating": 1769.4344566771,
+      "ContestSlug": "weekly-contest-345",
+      "ProblemIndex": "Q4"
+    },
+    "count-the-number-of-computer-unlocking-permutations": {
+      "Rating": 1749.7304862181,
+      "ContestSlug": "weekly-contest-453",
+      "ProblemIndex": "Q2"
+    },
+    "count-the-number-of-good-partitions": {
+      "Rating": 1984.9685663849,
+      "ContestSlug": "weekly-contest-375",
+      "ProblemIndex": "Q4"
+    },
+    "count-the-number-of-ideal-arrays": {
+      "Rating": 2615.1468269481,
+      "ContestSlug": "weekly-contest-301",
+      "ProblemIndex": "Q4"
+    },
+    "count-the-number-of-infection-sequences": {
+      "Rating": 2644.8498152558,
+      "ContestSlug": "weekly-contest-374",
+      "ProblemIndex": "Q4"
+    },
+    "count-the-number-of-square-free-subsets": {
+      "Rating": 2419.5791089724,
+      "ContestSlug": "weekly-contest-333",
+      "ProblemIndex": "Q3"
+    },
+    "count-unreachable-pairs-of-nodes-in-an-undirected-graph": {
+      "Rating": 1604.0695445163,
+      "ContestSlug": "biweekly-contest-81",
+      "ProblemIndex": "Q2"
+    },
+    "count-valid-paths-in-a-tree": {
+      "Rating": 2428.3242593838,
+      "ContestSlug": "weekly-contest-364",
+      "ProblemIndex": "Q4"
+    },
+    "count-valid-sequences": {
+      "Rating": 1912.3257370029,
+      "ContestSlug": "weekly-contest-512",
+      "ProblemIndex": "Q3"
+    },
+    "count-visited-nodes-in-a-directed-graph": {
+      "Rating": 2209.8785430371,
+      "ContestSlug": "weekly-contest-365",
+      "ProblemIndex": "Q4"
+    },
+    "count-ways-to-build-rooms-in-an-ant-colony": {
+      "Rating": 2486.2339675701,
+      "ContestSlug": "weekly-contest-247",
+      "ProblemIndex": "Q4"
+    },
+    "count-ways-to-choose-coprime-integers-from-rows": {
+      "Rating": 1981.8184570058,
+      "ContestSlug": "biweekly-contest-168",
+      "ProblemIndex": "Q4"
+    },
+    "count-ways-to-make-array-with-product": {
+      "Rating": 2499.5640490579,
+      "ContestSlug": "biweekly-contest-44",
+      "ProblemIndex": "Q4"
+    },
+    "counting-words-with-a-given-prefix": {
+      "Rating": 1167.1241589729,
+      "ContestSlug": "weekly-contest-282",
+      "ProblemIndex": "Q1"
+    },
+    "couples-holding-hands": {
+      "Rating": 1999.1208076854,
+      "ContestSlug": "weekly-contest-67",
+      "ProblemIndex": "Q4"
+    },
+    "course-schedule-iv": {
+      "Rating": 1692.5884631801,
+      "ContestSlug": "biweekly-contest-27",
+      "ProblemIndex": "Q3"
+    },
+    "cracking-the-safe": {
+      "Rating": 2273.7910625337,
+      "ContestSlug": "weekly-contest-64",
+      "ProblemIndex": "Q4"
+    },
+    "create-grid-with-exactly-k-paths-i": {
+      "Rating": 2054.6741405769,
+      "ContestSlug": "weekly-contest-510",
+      "ProblemIndex": "Q3"
+    },
+    "create-sorted-array-through-instructions": {
+      "Rating": 2207.8565809952,
+      "ContestSlug": "weekly-contest-214",
+      "ProblemIndex": "Q4"
+    },
+    "critical-connections-in-a-network": {
+      "Rating": 2084.6866916045,
+      "ContestSlug": "weekly-contest-154",
+      "ProblemIndex": "Q4"
+    },
+    "cycle-length-queries-in-a-tree": {
+      "Rating": 1948.489500779,
+      "ContestSlug": "weekly-contest-324",
+      "ProblemIndex": "Q4"
+    },
+    "cyclically-rotating-a-grid": {
+      "Rating": 1766.2506177612,
+      "ContestSlug": "weekly-contest-247",
+      "ProblemIndex": "Q2"
+    },
+    "delete-duplicate-folders-in-system": {
+      "Rating": 2533.7796160302,
+      "ContestSlug": "weekly-contest-251",
+      "ProblemIndex": "Q4"
+    },
+    "delete-greatest-value-in-each-row": {
+      "Rating": 1309.7266159448,
+      "ContestSlug": "weekly-contest-323",
+      "ProblemIndex": "Q1"
+    },
+    "delete-nodes-from-linked-list-present-in-array": {
+      "Rating": 1341.7231008143,
+      "ContestSlug": "weekly-contest-406",
+      "ProblemIndex": "Q2"
+    },
+    "delete-the-middle-node-of-a-linked-list": {
+      "Rating": 1324.3520304377,
+      "ContestSlug": "weekly-contest-270",
+      "ProblemIndex": "Q2"
+    },
+    "delivering-boxes-from-storage-to-ports": {
+      "Rating": 2610.0826855063,
+      "ContestSlug": "biweekly-contest-41",
+      "ProblemIndex": "Q4"
+    },
+    "design-a-food-rating-system": {
+      "Rating": 1781.8156963676,
+      "ContestSlug": "weekly-contest-303",
+      "ProblemIndex": "Q3"
+    },
+    "design-a-number-container-system": {
+      "Rating": 1540.2351411176,
+      "ContestSlug": "biweekly-contest-83",
+      "ProblemIndex": "Q3"
+    },
+    "design-a-stack-with-increment-operation": {
+      "Rating": 1285.9726675488,
+      "ContestSlug": "weekly-contest-180",
+      "ProblemIndex": "Q2"
+    },
+    "design-a-text-editor": {
+      "Rating": 1911.8282317986,
+      "ContestSlug": "weekly-contest-296",
+      "ProblemIndex": "Q4"
+    },
+    "design-an-atm-machine": {
+      "Rating": 1616.2067360638,
+      "ContestSlug": "biweekly-contest-76",
+      "ProblemIndex": "Q3"
+    },
+    "design-an-ordered-stream": {
+      "Rating": 1418.8205349928,
+      "ContestSlug": "weekly-contest-215",
+      "ProblemIndex": "Q1"
+    },
+    "design-auction-system": {
+      "Rating": 1853.8452529101,
+      "ContestSlug": "weekly-contest-485",
+      "ProblemIndex": "Q3"
+    },
+    "design-authentication-manager": {
+      "Rating": 1534.0648719302,
+      "ContestSlug": "biweekly-contest-48",
+      "ProblemIndex": "Q2"
+    },
+    "design-bitset": {
+      "Rating": 1751.5101577001,
+      "ContestSlug": "weekly-contest-279",
+      "ProblemIndex": "Q3"
+    },
+    "design-browser-history": {
+      "Rating": 1453.7818053022,
+      "ContestSlug": "weekly-contest-192",
+      "ProblemIndex": "Q3"
+    },
+    "design-event-manager": {
+      "Rating": 1548.0314387523,
+      "ContestSlug": "weekly-contest-495",
+      "ProblemIndex": "Q2"
+    },
+    "design-front-middle-back-queue": {
+      "Rating": 1610.1866391145,
+      "ContestSlug": "biweekly-contest-40",
+      "ProblemIndex": "Q3"
+    },
+    "design-graph-with-shortest-path-calculator": {
+      "Rating": 1810.6470004623,
+      "ContestSlug": "biweekly-contest-102",
+      "ProblemIndex": "Q4"
+    },
+    "design-memory-allocator": {
+      "Rating": 1745.5352025872,
+      "ContestSlug": "weekly-contest-323",
+      "ProblemIndex": "Q3"
+    },
+    "design-movie-rental-system": {
+      "Rating": 2181.7821188042,
+      "ContestSlug": "biweekly-contest-55",
+      "ProblemIndex": "Q4"
+    },
+    "design-parking-system": {
+      "Rating": 1324.1757200103,
+      "ContestSlug": "biweekly-contest-36",
+      "ProblemIndex": "Q1"
+    },
+    "design-ride-sharing-system": {
+      "Rating": 1593.9561579617,
+      "ContestSlug": "weekly-contest-487",
+      "ProblemIndex": "Q3"
+    },
+    "design-spreadsheet": {
+      "Rating": 1523.7317629862,
+      "ContestSlug": "biweekly-contest-152",
+      "ProblemIndex": "Q2"
+    },
+    "design-task-manager": {
+      "Rating": 1806.5135130091,
+      "ContestSlug": "biweekly-contest-147",
+      "ProblemIndex": "Q2"
+    },
+    "detect-cycles-in-2d-grid": {
+      "Rating": 1837.8252904904,
+      "ContestSlug": "biweekly-contest-33",
+      "ProblemIndex": "Q4"
+    },
+    "detect-squares": {
+      "Rating": 1841.4067816266,
+      "ContestSlug": "weekly-contest-259",
+      "ProblemIndex": "Q3"
+    },
+    "detonate-the-maximum-bombs": {
+      "Rating": 1880.0511044074,
+      "ContestSlug": "biweekly-contest-67",
+      "ProblemIndex": "Q3"
+    },
+    "digit-operations-to-make-two-integers-equal": {
+      "Rating": 2186.3802199168,
+      "ContestSlug": "biweekly-contest-145",
+      "ProblemIndex": "Q3"
+    },
+    "direction-assignments-with-exactly-k-visible-people": {
+      "Rating": 1760.7597743663,
+      "ContestSlug": "biweekly-contest-179",
+      "ProblemIndex": "Q2"
+    },
+    "display-table-of-food-orders-in-a-restaurant": {
+      "Rating": 1485.135401269,
+      "ContestSlug": "weekly-contest-185",
+      "ProblemIndex": "Q2"
+    },
+    "distinct-echo-substrings": {
+      "Rating": 1836.536348078,
+      "ContestSlug": "biweekly-contest-17",
+      "ProblemIndex": "Q4"
+    },
+    "distinct-prime-factors-of-product-of-array": {
+      "Rating": 1413.0376809608,
+      "ContestSlug": "weekly-contest-326",
+      "ProblemIndex": "Q2"
+    },
+    "distribute-candies-among-children-i": {
+      "Rating": 1393.3604603199,
+      "ContestSlug": "biweekly-contest-117",
+      "ProblemIndex": "Q1"
+    },
+    "distribute-candies-among-children-ii": {
+      "Rating": 1701.4341867571,
+      "ContestSlug": "biweekly-contest-117",
+      "ProblemIndex": "Q2"
+    },
+    "distribute-elements-into-two-arrays-ii": {
+      "Rating": 2052.8622720512,
+      "ContestSlug": "weekly-contest-387",
+      "ProblemIndex": "Q4"
+    },
+    "distribute-repeating-integers": {
+      "Rating": 2307.0161713185,
+      "ContestSlug": "biweekly-contest-39",
+      "ProblemIndex": "Q4"
+    },
+    "divide-nodes-into-the-maximum-number-of-groups": {
+      "Rating": 2415.2802039252,
+      "ContestSlug": "weekly-contest-322",
+      "ProblemIndex": "Q4"
+    },
+    "divisor-game": {
+      "Rating": 1435.3564963722,
+      "ContestSlug": "weekly-contest-132",
+      "ProblemIndex": "Q1"
+    },
+    "double-a-number-represented-as-a-linked-list": {
+      "Rating": 1393.7857353048,
+      "ContestSlug": "weekly-contest-358",
+      "ProblemIndex": "Q2"
+    },
+    "elevator-requests-i": {
+      "Rating": 1187.4205094136,
+      "ContestSlug": "biweekly-contest-189",
+      "ProblemIndex": "Q1"
+    },
+    "encrypt-and-decrypt-strings": {
+      "Rating": 1944.5673996888,
+      "ContestSlug": "weekly-contest-287",
+      "ProblemIndex": "Q4"
+    },
+    "escape-a-large-maze": {
+      "Rating": 2164.8287157213,
+      "ContestSlug": "weekly-contest-134",
+      "ProblemIndex": "Q4"
+    },
+    "exam-room": {
+      "Rating": 2067.0643721733,
+      "ContestSlug": "weekly-contest-89",
+      "ProblemIndex": "Q3"
+    },
+    "extra-characters-in-a-string": {
+      "Rating": 1735.8505509901,
+      "ContestSlug": "biweekly-contest-105",
+      "ProblemIndex": "Q2"
+    },
+    "fair-distribution-of-cookies": {
+      "Rating": 1886.7040111218,
+      "ContestSlug": "weekly-contest-297",
+      "ProblemIndex": "Q3"
+    },
+    "fancy-sequence": {
+      "Rating": 2476.451764287,
+      "ContestSlug": "biweekly-contest-37",
+      "ProblemIndex": "Q4"
+    },
+    "faulty-keyboard": {
+      "Rating": 1192.9770230345,
+      "ContestSlug": "weekly-contest-357",
+      "ProblemIndex": "Q1"
+    },
+    "fill-a-special-grid": {
+      "Rating": 1541.5352218724,
+      "ContestSlug": "weekly-contest-448",
+      "ProblemIndex": "Q2"
+    },
+    "final-element-after-subarray-deletions": {
+      "Rating": 1591.216420723,
+      "ContestSlug": "weekly-contest-487",
+      "ProblemIndex": "Q2"
+    },
+    "final-prices-with-a-special-discount-in-a-shop": {
+      "Rating": 1212.2606422181,
+      "ContestSlug": "biweekly-contest-28",
+      "ProblemIndex": "Q1"
+    },
+    "find-a-safe-walk-through-a-grid": {
+      "Rating": 1607.8207466026,
+      "ContestSlug": "biweekly-contest-139",
+      "ProblemIndex": "Q2"
+    },
+    "find-a-value-of-a-mysterious-function-closest-to-target": {
+      "Rating": 2383.7724811656,
+      "ContestSlug": "weekly-contest-198",
+      "ProblemIndex": "Q4"
+    },
+    "find-all-good-strings": {
+      "Rating": 2666.668150845,
+      "ContestSlug": "weekly-contest-182",
+      "ProblemIndex": "Q4"
+    },
+    "find-all-people-with-secret": {
+      "Rating": 2003.5794613668,
+      "ContestSlug": "weekly-contest-269",
+      "ProblemIndex": "Q4"
+    },
+    "find-all-possible-recipes-from-given-supplies": {
+      "Rating": 1678.5871762113,
+      "ContestSlug": "biweekly-contest-68",
+      "ProblemIndex": "Q2"
+    },
+    "find-beautiful-indices-in-the-given-array-i": {
+      "Rating": 1480.1120711991,
+      "ContestSlug": "weekly-contest-380",
+      "ProblemIndex": "Q2"
+    },
+    "find-beautiful-indices-in-the-given-array-ii": {
+      "Rating": 2016.2085876254,
+      "ContestSlug": "weekly-contest-380",
+      "ProblemIndex": "Q4"
+    },
+    "find-building-where-alice-and-bob-can-meet": {
+      "Rating": 2327.4743300299,
+      "ContestSlug": "weekly-contest-372",
+      "ProblemIndex": "Q4"
+    },
+    "find-consecutive-integers-from-a-data-stream": {
+      "Rating": 1444.3218903725,
+      "ContestSlug": "biweekly-contest-95",
+      "ProblemIndex": "Q2"
+    },
+    "find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree": {
+      "Rating": 2571.552028121,
+      "ContestSlug": "weekly-contest-194",
+      "ProblemIndex": "Q4"
+    },
+    "find-edges-in-shortest-paths": {
+      "Rating": 2093.0316157073,
+      "ContestSlug": "weekly-contest-394",
+      "ProblemIndex": "Q4"
+    },
+    "find-elements-in-a-contaminated-binary-tree": {
+      "Rating": 1439.5656079032,
+      "ContestSlug": "weekly-contest-163",
+      "ProblemIndex": "Q2"
+    },
+    "find-eventual-safe-states": {
+      "Rating": 1962.3314335449,
+      "ContestSlug": "weekly-contest-76",
+      "ProblemIndex": "Q3"
+    },
+    "find-greatest-common-divisor-of-array": {
+      "Rating": 1184.4264833435,
+      "ContestSlug": "weekly-contest-255",
+      "ProblemIndex": "Q1"
+    },
+    "find-in-mountain-array": {
+      "Rating": 1827.090740222,
+      "ContestSlug": "weekly-contest-142",
+      "ProblemIndex": "Q3"
+    },
+    "find-kth-bit-in-nth-binary-string": {
+      "Rating": 1479.4837595809,
+      "ContestSlug": "weekly-contest-201",
+      "ProblemIndex": "Q2"
+    },
+    "find-kth-largest-xor-coordinate-value": {
+      "Rating": 1671.4657554194,
+      "ContestSlug": "weekly-contest-225",
+      "ProblemIndex": "Q3"
+    },
+    "find-maximum-area-of-a-triangle": {
+      "Rating": 1818.9996951505,
+      "ContestSlug": "biweekly-contest-159",
+      "ProblemIndex": "Q2"
+    },
+    "find-maximum-non-decreasing-array-length": {
+      "Rating": 2943.2173551759,
+      "ContestSlug": "biweekly-contest-118",
+      "ProblemIndex": "Q4"
+    },
+    "find-minimum-time-to-finish-all-jobs": {
+      "Rating": 2284.4463940346,
+      "ContestSlug": "weekly-contest-223",
+      "ProblemIndex": "Q4"
+    },
+    "find-minimum-time-to-reach-last-room-i": {
+      "Rating": 1721.4793821913,
+      "ContestSlug": "weekly-contest-422",
+      "ProblemIndex": "Q2"
+    },
+    "find-minimum-time-to-reach-last-room-ii": {
+      "Rating": 1861.7421056879,
+      "ContestSlug": "weekly-contest-422",
+      "ProblemIndex": "Q3"
+    },
+    "find-nth-smallest-integer-with-k-one-bits": {
+      "Rating": 2069.1534510743,
+      "ContestSlug": "weekly-contest-486",
+      "ProblemIndex": "Q4"
+    },
+    "find-number-of-ways-to-reach-the-k-th-stair": {
+      "Rating": 2071.3282145398,
+      "ContestSlug": "weekly-contest-398",
+      "ProblemIndex": "Q4"
+    },
+    "find-polygon-with-the-largest-perimeter": {
+      "Rating": 1521.1616133347,
+      "ContestSlug": "biweekly-contest-120",
+      "ProblemIndex": "Q2"
+    },
+    "find-positive-integer-solution-for-a-given-equation": {
+      "Rating": 1404.7016862187,
+      "ContestSlug": "weekly-contest-160",
+      "ProblemIndex": "Q1"
+    },
+    "find-servers-that-handled-most-number-of-requests": {
+      "Rating": 2275.7337818748,
+      "ContestSlug": "biweekly-contest-36",
+      "ProblemIndex": "Q4"
+    },
+    "find-subarray-with-bitwise-or-closest-to-k": {
+      "Rating": 2162.6859814587,
+      "ContestSlug": "weekly-contest-400",
+      "ProblemIndex": "Q4"
+    },
+    "find-substring-with-given-hash-value": {
+      "Rating": 2062.9876807625,
+      "ContestSlug": "weekly-contest-278",
+      "ProblemIndex": "Q3"
+    },
+    "find-sum-of-array-product-of-magical-sequences": {
+      "Rating": 2693.8309245934,
+      "ContestSlug": "weekly-contest-448",
+      "ProblemIndex": "Q4"
+    },
+    "find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance": {
+      "Rating": 1854.9547783559,
+      "ContestSlug": "weekly-contest-173",
+      "ProblemIndex": "Q3"
+    },
+    "find-the-count-of-good-integers": {
+      "Rating": 2382.24900347,
+      "ContestSlug": "biweekly-contest-138",
+      "ProblemIndex": "Q3"
+    },
+    "find-the-count-of-monotonic-pairs-i": {
+      "Rating": 1897.7992384398,
+      "ContestSlug": "weekly-contest-410",
+      "ProblemIndex": "Q3"
+    },
+    "find-the-count-of-monotonic-pairs-ii": {
+      "Rating": 2323.1267940801,
+      "ContestSlug": "weekly-contest-410",
+      "ProblemIndex": "Q4"
+    },
+    "find-the-k-th-character-in-string-game-i": {
+      "Rating": 1288.7807259285,
+      "ContestSlug": "weekly-contest-417",
+      "ProblemIndex": "Q1"
+    },
+    "find-the-k-th-character-in-string-game-ii": {
+      "Rating": 2232.067965725,
+      "ContestSlug": "weekly-contest-417",
+      "ProblemIndex": "Q4"
+    },
+    "find-the-kth-largest-integer-in-the-array": {
+      "Rating": 1414.4351202231,
+      "ContestSlug": "weekly-contest-256",
+      "ProblemIndex": "Q2"
+    },
+    "find-the-largest-area-of-square-inside-two-rectangles": {
+      "Rating": 1601.7402292728,
+      "ContestSlug": "weekly-contest-386",
+      "ProblemIndex": "Q2"
+    },
+    "find-the-largest-palindrome-divisible-by-k": {
+      "Rating": 2370.3848537389,
+      "ContestSlug": "weekly-contest-411",
+      "ProblemIndex": "Q3"
+    },
+    "find-the-length-of-the-longest-common-prefix": {
+      "Rating": 1688.6445178061,
+      "ContestSlug": "weekly-contest-385",
+      "ProblemIndex": "Q2"
+    },
+    "find-the-longest-valid-obstacle-course-at-each-position": {
+      "Rating": 1933.2169470617,
+      "ContestSlug": "weekly-contest-253",
+      "ProblemIndex": "Q4"
+    },
+    "find-the-minimum-and-maximum-number-of-nodes-between-critical-points": {
+      "Rating": 1310.9129840277,
+      "ContestSlug": "weekly-contest-265",
+      "ProblemIndex": "Q2"
+    },
+    "find-the-minimum-cost-array-permutation": {
+      "Rating": 2641.6067035188,
+      "ContestSlug": "weekly-contest-397",
+      "ProblemIndex": "Q4"
+    },
+    "find-the-most-competitive-subsequence": {
+      "Rating": 1802.2256875356,
+      "ContestSlug": "weekly-contest-217",
+      "ProblemIndex": "Q2"
+    },
+    "find-the-n-th-value-after-k-seconds": {
+      "Rating": 1369.0113807552,
+      "ContestSlug": "weekly-contest-401",
+      "ProblemIndex": "Q2"
+    },
+    "find-the-number-of-possible-ways-for-an-event": {
+      "Rating": 2413.5302827563,
+      "ContestSlug": "biweekly-contest-141",
+      "ProblemIndex": "Q4"
+    },
+    "find-the-number-of-subarrays-where-boundary-elements-are-maximum": {
+      "Rating": 2046.2618466463,
+      "ContestSlug": "biweekly-contest-128",
+      "ProblemIndex": "Q4"
+    },
+    "find-the-number-of-subsequences-with-equal-gcd": {
+      "Rating": 2402.5406421988,
+      "ContestSlug": "weekly-contest-421",
+      "ProblemIndex": "Q3"
+    },
+    "find-the-number-of-ways-to-place-people-i": {
+      "Rating": 1707.4309979043,
+      "ContestSlug": "biweekly-contest-123",
+      "ProblemIndex": "Q2"
+    },
+    "find-the-number-of-ways-to-place-people-ii": {
+      "Rating": 2020.1846215023,
+      "ContestSlug": "biweekly-contest-123",
+      "ProblemIndex": "Q4"
+    },
+    "find-the-occurrence-of-first-almost-equal-substring": {
+      "Rating": 2509.3686325754,
+      "ContestSlug": "biweekly-contest-140",
+      "ProblemIndex": "Q4"
+    },
+    "find-the-safest-path-in-a-grid": {
+      "Rating": 2153.5854429139,
+      "ContestSlug": "weekly-contest-357",
+      "ProblemIndex": "Q3"
+    },
+    "find-the-score-difference-in-a-game": {
+      "Rating": 1223.4978877568,
+      "ContestSlug": "weekly-contest-490",
+      "ProblemIndex": "Q1"
+    },
+    "find-the-sequence-of-strings-appeared-on-the-screen": {
+      "Rating": 1293.5035781966,
+      "ContestSlug": "weekly-contest-420",
+      "ProblemIndex": "Q1"
+    },
+    "find-the-shortest-superstring": {
+      "Rating": 2185.5444704515,
+      "ContestSlug": "weekly-contest-111",
+      "ProblemIndex": "Q4"
+    },
+    "find-the-string-with-lcp": {
+      "Rating": 2681.7054310332,
+      "ContestSlug": "weekly-contest-333",
+      "ProblemIndex": "Q4"
+    },
+    "find-the-sum-of-subsequence-powers": {
+      "Rating": 2552.505777081,
+      "ContestSlug": "biweekly-contest-127",
+      "ProblemIndex": "Q4"
+    },
+    "find-the-winner-of-the-circular-game": {
+      "Rating": 1412.3053230205,
+      "ContestSlug": "weekly-contest-236",
+      "ProblemIndex": "Q2"
+    },
+    "find-the-winning-player-in-coin-game": {
+      "Rating": 1269.9581395809,
+      "ContestSlug": "biweekly-contest-135",
+      "ProblemIndex": "Q1"
+    },
+    "find-triangular-sum-of-an-array": {
+      "Rating": 1317.2976846981,
+      "ContestSlug": "biweekly-contest-75",
+      "ProblemIndex": "Q2"
+    },
+    "find-winner-on-a-tic-tac-toe-game": {
+      "Rating": 1336.9494482313,
+      "ContestSlug": "weekly-contest-165",
+      "ProblemIndex": "Q1"
+    },
+    "find-x-value-of-array-ii": {
+      "Rating": 2644.6037406331,
+      "ContestSlug": "weekly-contest-446",
+      "ProblemIndex": "Q4"
+    },
+    "finding-3-digit-even-numbers": {
+      "Rating": 1454.7459647138,
+      "ContestSlug": "weekly-contest-270",
+      "ProblemIndex": "Q1"
+    },
+    "finding-mk-average": {
+      "Rating": 2395.8765531206,
+      "ContestSlug": "weekly-contest-236",
+      "ProblemIndex": "Q4"
+    },
+    "flipping-an-image": {
+      "Rating": 1243.1009943284,
+      "ContestSlug": "weekly-contest-84",
+      "ProblemIndex": "Q1"
+    },
+    "flower-planting-with-no-adjacent": {
+      "Rating": 1712.4010133221,
+      "ContestSlug": "weekly-contest-136",
+      "ProblemIndex": "Q2"
+    },
+    "form-array-by-concatenating-subarrays-of-another-array": {
+      "Rating": 1588.3835994255,
+      "ContestSlug": "biweekly-contest-46",
+      "ProblemIndex": "Q2"
+    },
+    "four-divisors": {
+      "Rating": 1478.3848028264,
+      "ContestSlug": "weekly-contest-181",
+      "ProblemIndex": "Q2"
+    },
+    "frequencies-of-shortest-supersequences": {
+      "Rating": 3027.89612787,
+      "ContestSlug": "weekly-contest-434",
+      "ProblemIndex": "Q4"
+    },
+    "frequency-tracker": {
+      "Rating": 1509.6237874441,
+      "ContestSlug": "weekly-contest-344",
+      "ProblemIndex": "Q2"
+    },
+    "fruit-into-baskets": {
+      "Rating": 1516.4104902196,
+      "ContestSlug": "weekly-contest-102",
+      "ProblemIndex": "Q2"
+    },
+    "fruits-into-baskets-ii": {
+      "Rating": 1295.5867643004,
+      "ContestSlug": "weekly-contest-440",
+      "ProblemIndex": "Q1"
+    },
+    "fruits-into-baskets-iii": {
+      "Rating": 2178.0485179115,
+      "ContestSlug": "weekly-contest-440",
+      "ProblemIndex": "Q3"
+    },
+    "gcd-sort-of-an-array": {
+      "Rating": 2429.0940568399,
+      "ContestSlug": "weekly-contest-257",
+      "ProblemIndex": "Q4"
+    },
+    "good-subsequence-queries": {
+      "Rating": 2544.8104481675,
+      "ContestSlug": "weekly-contest-497",
+      "ProblemIndex": "Q4"
+    },
+    "graph-connectivity-with-threshold": {
+      "Rating": 2221.3538766773,
+      "ContestSlug": "weekly-contest-211",
+      "ProblemIndex": "Q4"
+    },
+    "greatest-common-divisor-of-strings": {
+      "Rating": 1397.8875115008,
+      "ContestSlug": "weekly-contest-139",
+      "ProblemIndex": "Q1"
+    },
+    "greatest-common-divisor-traversal": {
+      "Rating": 2171.9645269732,
+      "ContestSlug": "biweekly-contest-105",
+      "ProblemIndex": "Q4"
+    },
+    "groups-of-strings": {
+      "Rating": 2499.3282271507,
+      "ContestSlug": "weekly-contest-278",
+      "ProblemIndex": "Q4"
+    },
+    "guess-the-word": {
+      "Rating": 2077.5054883516,
+      "ContestSlug": "weekly-contest-86",
+      "ProblemIndex": "Q4"
+    },
+    "hand-of-straights": {
+      "Rating": 1565.2483424929,
+      "ContestSlug": "weekly-contest-87",
+      "ProblemIndex": "Q3"
+    },
+    "handling-sum-queries-after-update": {
+      "Rating": 2397.8728428256,
+      "ContestSlug": "biweekly-contest-98",
+      "ProblemIndex": "Q4"
+    },
+    "height-checker": {
+      "Rating": 1303.0179795942,
+      "ContestSlug": "weekly-contest-138",
+      "ProblemIndex": "Q1"
+    },
+    "house-robber-iv": {
+      "Rating": 2081.1880297942,
+      "ContestSlug": "weekly-contest-331",
+      "ProblemIndex": "Q3"
+    },
+    "house-robber-v": {
+      "Rating": 1618.9800584534,
+      "ContestSlug": "biweekly-contest-176",
+      "ProblemIndex": "Q3"
+    },
+    "how-many-numbers-are-smaller-than-the-current-number": {
+      "Rating": 1152.1377893605,
+      "ContestSlug": "weekly-contest-178",
+      "ProblemIndex": "Q1"
+    },
+    "implement-router": {
+      "Rating": 1851.1720518145,
+      "ContestSlug": "weekly-contest-444",
+      "ProblemIndex": "Q2"
+    },
+    "increasing-order-search-tree": {
+      "Rating": 1473.2523136772,
+      "ContestSlug": "weekly-contest-100",
+      "ProblemIndex": "Q2"
+    },
+    "incremental-even-weighted-cycle-queries": {
+      "Rating": 2128.3128561163,
+      "ContestSlug": "weekly-contest-495",
+      "ProblemIndex": "Q4"
+    },
+    "incremental-memory-leak": {
+      "Rating": 1387.2941868867,
+      "ContestSlug": "biweekly-contest-52",
+      "ProblemIndex": "Q2"
+    },
+    "insert-greatest-common-divisors-in-linked-list": {
+      "Rating": 1279.0301521682,
+      "ContestSlug": "biweekly-contest-110",
+      "ProblemIndex": "Q2"
+    },
+    "inverse-coin-change": {
+      "Rating": 1700.5439073528,
+      "ContestSlug": "weekly-contest-455",
+      "ProblemIndex": "Q2"
+    },
+    "is-graph-bipartite": {
+      "Rating": 1624.9775945043,
+      "ContestSlug": "weekly-contest-72",
+      "ProblemIndex": "Q2"
+    },
+    "iterator-for-combination": {
+      "Rating": 1591.4725328821,
+      "ContestSlug": "biweekly-contest-15",
+      "ProblemIndex": "Q3"
+    },
+    "jump-game-iii": {
+      "Rating": 1396.5448074496,
+      "ContestSlug": "weekly-contest-169",
+      "ProblemIndex": "Q3"
+    },
+    "jump-game-iv": {
+      "Rating": 1809.8192888474,
+      "ContestSlug": "biweekly-contest-19",
+      "ProblemIndex": "Q4"
+    },
+    "jump-game-ix": {
+      "Rating": 2187.3539422195,
+      "ContestSlug": "weekly-contest-464",
+      "ProblemIndex": "Q3"
+    },
+    "jump-game-v": {
+      "Rating": 1866.3014601125,
+      "ContestSlug": "weekly-contest-174",
+      "ProblemIndex": "Q4"
+    },
+    "jump-game-vi": {
+      "Rating": 1954.2533254344,
+      "ContestSlug": "weekly-contest-220",
+      "ProblemIndex": "Q3"
+    },
+    "jump-game-vii": {
+      "Rating": 1896.1411567598,
+      "ContestSlug": "weekly-contest-242",
+      "ProblemIndex": "Q3"
+    },
+    "k-closest-points-to-origin": {
+      "Rating": 1213.8073621345,
+      "ContestSlug": "weekly-contest-119",
+      "ProblemIndex": "Q1"
+    },
+    "k-divisible-elements-subarrays": {
+      "Rating": 1724.394164934,
+      "ContestSlug": "weekly-contest-291",
+      "ProblemIndex": "Q3"
+    },
+    "k-th-symbol-in-grammar": {
+      "Rating": 1571.1721048101,
+      "ContestSlug": "weekly-contest-70",
+      "ProblemIndex": "Q1"
+    },
+    "koko-eating-bananas": {
+      "Rating": 1765.5654059263,
+      "ContestSlug": "weekly-contest-94",
+      "ProblemIndex": "Q3"
+    },
+    "kth-ancestor-of-a-tree-node": {
+      "Rating": 2115.0911494487,
+      "ContestSlug": "weekly-contest-193",
+      "ProblemIndex": "Q4"
+    },
+    "kth-smallest-amount-with-single-denomination-combination": {
+      "Rating": 2387.9289198649,
+      "ContestSlug": "weekly-contest-393",
+      "ProblemIndex": "Q3"
+    },
+    "kth-smallest-instructions": {
+      "Rating": 2079.9846866239,
+      "ContestSlug": "weekly-contest-213",
+      "ProblemIndex": "Q4"
+    },
+    "kth-smallest-path-xor-sum": {
+      "Rating": 2645.836955523,
+      "ContestSlug": "biweekly-contest-159",
+      "ProblemIndex": "Q4"
+    },
+    "largest-color-value-in-a-directed-graph": {
+      "Rating": 2312.9919953644,
+      "ContestSlug": "weekly-contest-240",
+      "ProblemIndex": "Q4"
+    },
+    "largest-component-size-by-common-factor": {
+      "Rating": 2272.1122260637,
+      "ContestSlug": "weekly-contest-113",
+      "ProblemIndex": "Q4"
+    },
+    "largest-perimeter-triangle": {
+      "Rating": 1340.5559417151,
+      "ContestSlug": "weekly-contest-119",
+      "ProblemIndex": "Q2"
+    },
+    "largest-triangle-area": {
+      "Rating": 1542.5630367445,
+      "ContestSlug": "weekly-contest-79",
+      "ProblemIndex": "Q1"
+    },
+    "last-day-where-you-can-still-cross": {
+      "Rating": 2123.5708982185,
+      "ContestSlug": "weekly-contest-254",
+      "ProblemIndex": "Q4"
+    },
+    "last-remaining-integer-after-alternating-deletion-operations": {
+      "Rating": 2074.3323025363,
+      "ContestSlug": "biweekly-contest-172",
+      "ProblemIndex": "Q4"
+    },
+    "last-stone-weight": {
+      "Rating": 1172.6819789183,
+      "ContestSlug": "weekly-contest-137",
+      "ProblemIndex": "Q1"
+    },
+    "last-stone-weight-ii": {
+      "Rating": 2092.4861692502,
+      "ContestSlug": "weekly-contest-137",
+      "ProblemIndex": "Q4"
+    },
+    "last-substring-in-lexicographical-order": {
+      "Rating": 1864.0948676111,
+      "ContestSlug": "weekly-contest-150",
+      "ProblemIndex": "Q4"
+    },
+    "least-operators-to-express-number": {
+      "Rating": 2594.135673452,
+      "ContestSlug": "weekly-contest-116",
+      "ProblemIndex": "Q4"
+    },
+    "length-of-longest-v-shaped-diagonal-segment": {
+      "Rating": 2530.6462600383,
+      "ContestSlug": "weekly-contest-437",
+      "ProblemIndex": "Q4"
+    },
+    "length-of-the-longest-increasing-path": {
+      "Rating": 2449.5767504741,
+      "ContestSlug": "biweekly-contest-139",
+      "ProblemIndex": "Q4"
+    },
+    "lexicographically-maximum-mex-array": {
+      "Rating": 2122.2230904777,
+      "ContestSlug": "weekly-contest-504",
+      "ProblemIndex": "Q4"
+    },
+    "lexicographically-smallest-generated-string": {
+      "Rating": 2605.3698165497,
+      "ContestSlug": "weekly-contest-439",
+      "ProblemIndex": "Q4"
+    },
+    "lexicographically-smallest-string-after-deleting-duplicate-characters": {
+      "Rating": 2376.616945774,
+      "ContestSlug": "weekly-contest-485",
+      "ProblemIndex": "Q4"
+    },
+    "linked-list-components": {
+      "Rating": 1428.712905903,
+      "ContestSlug": "weekly-contest-80",
+      "ProblemIndex": "Q2"
+    },
+    "linked-list-in-binary-tree": {
+      "Rating": 1649.9728054796,
+      "ContestSlug": "weekly-contest-178",
+      "ProblemIndex": "Q3"
+    },
+    "longest-balanced-subarray-i": {
+      "Rating": 1467.0171625203,
+      "ContestSlug": "weekly-contest-472",
+      "ProblemIndex": "Q2"
+    },
+    "longest-balanced-subarray-ii": {
+      "Rating": 2723.5212649775,
+      "ContestSlug": "weekly-contest-472",
+      "ProblemIndex": "Q4"
+    },
+    "longest-binary-subsequence-less-than-or-equal-to-k": {
+      "Rating": 1839.9203623221,
+      "ContestSlug": "weekly-contest-298",
+      "ProblemIndex": "Q3"
+    },
+    "longest-chunked-palindrome-decomposition": {
+      "Rating": 1912.0829958001,
+      "ContestSlug": "weekly-contest-148",
+      "ProblemIndex": "Q4"
+    },
+    "longest-common-prefix-of-k-strings-after-removal": {
+      "Rating": 2289.6436758228,
+      "ContestSlug": "biweekly-contest-152",
+      "ProblemIndex": "Q3"
+    },
+    "longest-common-subpath": {
+      "Rating": 2661.0670044656,
+      "ContestSlug": "weekly-contest-248",
+      "ProblemIndex": "Q4"
+    },
+    "longest-common-suffix-queries": {
+      "Rating": 2118.3732356694,
+      "ContestSlug": "weekly-contest-390",
+      "ProblemIndex": "Q4"
+    },
+    "longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit": {
+      "Rating": 1672.1678031263,
+      "ContestSlug": "weekly-contest-187",
+      "ProblemIndex": "Q3"
+    },
+    "longest-cycle-in-a-graph": {
+      "Rating": 1897.1863301576,
+      "ContestSlug": "weekly-contest-304",
+      "ProblemIndex": "Q4"
+    },
+    "longest-duplicate-substring": {
+      "Rating": 2428.7985254341,
+      "ContestSlug": "weekly-contest-136",
+      "ProblemIndex": "Q4"
+    },
+    "longest-happy-prefix": {
+      "Rating": 1876.146019008,
+      "ContestSlug": "weekly-contest-181",
+      "ProblemIndex": "Q4"
+    },
+    "longest-increasing-subsequence-ii": {
+      "Rating": 2280.3143643878,
+      "ContestSlug": "weekly-contest-310",
+      "ProblemIndex": "Q4"
+    },
+    "longest-nice-substring": {
+      "Rating": 1521.7133617698,
+      "ContestSlug": "biweekly-contest-46",
+      "ProblemIndex": "Q1"
+    },
+    "longest-palindromic-path-in-graph": {
+      "Rating": 2463.3702712563,
+      "ContestSlug": "weekly-contest-458",
+      "ProblemIndex": "Q4"
+    },
+    "longest-path-with-different-adjacent-characters": {
+      "Rating": 2126.3922279277,
+      "ContestSlug": "weekly-contest-289",
+      "ProblemIndex": "Q4"
+    },
+    "longest-substring-of-one-repeating-character": {
+      "Rating": 2628.7957821141,
+      "ContestSlug": "weekly-contest-285",
+      "ProblemIndex": "Q4"
+    },
+    "longest-uploaded-prefix": {
+      "Rating": 1604.1602280047,
+      "ContestSlug": "biweekly-contest-88",
+      "ProblemIndex": "Q2"
+    },
+    "longest-well-performing-interval": {
+      "Rating": 1908.3866125757,
+      "ContestSlug": "weekly-contest-145",
+      "ProblemIndex": "Q3"
+    },
+    "loud-and-rich": {
+      "Rating": 1783.2337340478,
+      "ContestSlug": "weekly-contest-88",
+      "ProblemIndex": "Q3"
+    },
+    "lowest-common-ancestor-of-deepest-leaves": {
+      "Rating": 1607.0005715974,
+      "ContestSlug": "weekly-contest-145",
+      "ProblemIndex": "Q2"
+    },
+    "make-array-elements-equal-to-zero": {
+      "Rating": 1397.2898626243,
+      "ContestSlug": "weekly-contest-424",
+      "ProblemIndex": "Q1"
+    },
+    "make-array-empty": {
+      "Rating": 2281.8816902545,
+      "ContestSlug": "biweekly-contest-103",
+      "ProblemIndex": "Q4"
+    },
+    "make-array-non-decreasing": {
+      "Rating": 1435.3952187057,
+      "ContestSlug": "weekly-contest-446",
+      "ProblemIndex": "Q2"
+    },
+    "make-lexicographically-smallest-array-by-swapping-elements": {
+      "Rating": 2047.3919190727,
+      "ContestSlug": "weekly-contest-373",
+      "ProblemIndex": "Q3"
+    },
+    "making-a-large-island": {
+      "Rating": 1933.9571917853,
+      "ContestSlug": "weekly-contest-82",
+      "ProblemIndex": "Q4"
+    },
+    "manhattan-distances-of-all-arrangements-of-pieces": {
+      "Rating": 2443.188673632,
+      "ContestSlug": "biweekly-contest-148",
+      "ProblemIndex": "Q4"
+    },
+    "match-substring-after-replacement": {
+      "Rating": 1860.5166780235,
+      "ContestSlug": "biweekly-contest-80",
+      "ProblemIndex": "Q3"
+    },
+    "matrix-cells-in-distance-order": {
+      "Rating": 1585.5793143983,
+      "ContestSlug": "weekly-contest-133",
+      "ProblemIndex": "Q2"
+    },
+    "max-chunks-to-make-sorted": {
+      "Rating": 1566.2526716951,
+      "ContestSlug": "weekly-contest-68",
+      "ProblemIndex": "Q3"
+    },
+    "max-chunks-to-make-sorted-ii": {
+      "Rating": 1787.6346864268,
+      "ContestSlug": "weekly-contest-68",
+      "ProblemIndex": "Q4"
+    },
+    "max-value-of-equation": {
+      "Rating": 2456.3900212097,
+      "ContestSlug": "weekly-contest-195",
+      "ProblemIndex": "Q4"
+    },
+    "maximize-active-section-with-trade-ii": {
+      "Rating": 2940.548809489,
+      "ContestSlug": "biweekly-contest-153",
+      "ProblemIndex": "Q4"
+    },
+    "maximize-alternating-sum-using-swaps": {
+      "Rating": 1984.157304677,
+      "ContestSlug": "biweekly-contest-166",
+      "ProblemIndex": "Q4"
+    },
+    "maximize-count-of-distinct-primes-after-split": {
+      "Rating": 2697.378123783,
+      "ContestSlug": "weekly-contest-452",
+      "ProblemIndex": "Q4"
+    },
+    "maximize-grid-happiness": {
+      "Rating": 2655.2178711909,
+      "ContestSlug": "weekly-contest-215",
+      "ProblemIndex": "Q4"
+    },
+    "maximize-number-of-nice-divisors": {
+      "Rating": 2070.2102619334,
+      "ContestSlug": "weekly-contest-234",
+      "ProblemIndex": "Q4"
+    },
+    "maximize-spanning-tree-stability-with-upgrades": {
+      "Rating": 2301.0381658933,
+      "ContestSlug": "weekly-contest-456",
+      "ProblemIndex": "Q4"
+    },
+    "maximize-subarray-gcd-score": {
+      "Rating": 2257.804093726,
+      "ContestSlug": "biweekly-contest-158",
+      "ProblemIndex": "Q3"
+    },
+    "maximize-subarrays-after-removing-one-conflicting-pair": {
+      "Rating": 2763.6510278508,
+      "ContestSlug": "weekly-contest-440",
+      "ProblemIndex": "Q4"
+    },
+    "maximize-the-distance-between-points-on-a-square": {
+      "Rating": 2805.990278358,
+      "ContestSlug": "weekly-contest-438",
+      "ProblemIndex": "Q4"
+    },
+    "maximize-the-minimum-powered-city": {
+      "Rating": 2235.5784618885,
+      "ContestSlug": "biweekly-contest-95",
+      "ProblemIndex": "Q4"
+    },
+    "maximize-the-number-of-partitions-after-operations": {
+      "Rating": 3039.3003256659,
+      "ContestSlug": "weekly-contest-379",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-and-minimum-sums-of-at-most-size-k-subarrays": {
+      "Rating": 2644.9681021386,
+      "ContestSlug": "weekly-contest-433",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-and-minimum-sums-of-at-most-size-k-subsequences": {
+      "Rating": 2028.4660734851,
+      "ContestSlug": "weekly-contest-433",
+      "ProblemIndex": "Q2"
+    },
+    "maximum-and-sum-of-array": {
+      "Rating": 2392.0799451298,
+      "ContestSlug": "weekly-contest-280",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-area-rectangle-with-point-constraints-i": {
+      "Rating": 1743.1262455202,
+      "ContestSlug": "weekly-contest-427",
+      "ProblemIndex": "Q2"
+    },
+    "maximum-area-rectangle-with-point-constraints-ii": {
+      "Rating": 2722.8634460016,
+      "ContestSlug": "weekly-contest-427",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-balanced-shipments": {
+      "Rating": 1463.2825992167,
+      "ContestSlug": "weekly-contest-461",
+      "ProblemIndex": "Q2"
+    },
+    "maximum-balanced-subsequence-sum": {
+      "Rating": 2448.4455464535,
+      "ContestSlug": "weekly-contest-370",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-compatibility-score-sum": {
+      "Rating": 1704.360891641,
+      "ContestSlug": "weekly-contest-251",
+      "ProblemIndex": "Q3"
+    },
+    "maximum-deletions-on-a-string": {
+      "Rating": 2101.867342004,
+      "ContestSlug": "weekly-contest-313",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-elegance-of-a-k-length-subsequence": {
+      "Rating": 2582.0814855506,
+      "ContestSlug": "weekly-contest-357",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-employees-to-be-invited-to-a-meeting": {
+      "Rating": 2449.1323757838,
+      "ContestSlug": "weekly-contest-274",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-frequency-stack": {
+      "Rating": 2027.8772739639,
+      "ContestSlug": "weekly-contest-99",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-genetic-difference-query": {
+      "Rating": 2502.5176603922,
+      "ContestSlug": "weekly-contest-250",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-good-subtree-score": {
+      "Rating": 2359.6837796886,
+      "ContestSlug": "biweekly-contest-158",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-ice-cream-bars": {
+      "Rating": 1252.7479413966,
+      "ContestSlug": "weekly-contest-237",
+      "ProblemIndex": "Q2"
+    },
+    "maximum-median-sum-of-subsequences-of-size-3": {
+      "Rating": 1262.1554079997,
+      "ContestSlug": "weekly-contest-460",
+      "ProblemIndex": "Q1"
+    },
+    "maximum-nesting-depth-of-the-parentheses": {
+      "Rating": 1322.8302750313,
+      "ContestSlug": "weekly-contest-210",
+      "ProblemIndex": "Q1"
+    },
+    "maximum-nesting-depth-of-two-valid-parentheses-strings": {
+      "Rating": 1749.4981778209,
+      "ContestSlug": "weekly-contest-144",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-number-of-coins-you-can-get": {
+      "Rating": 1405.5786892723,
+      "ContestSlug": "weekly-contest-203",
+      "ProblemIndex": "Q2"
+    },
+    "maximum-number-of-darts-inside-of-a-circular-dartboard": {
+      "Rating": 2201.8209584221,
+      "ContestSlug": "weekly-contest-189",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-number-of-fish-in-a-grid": {
+      "Rating": 1489.7210915287,
+      "ContestSlug": "biweekly-contest-103",
+      "ProblemIndex": "Q3"
+    },
+    "maximum-number-of-groups-getting-fresh-donuts": {
+      "Rating": 2559.4351004238,
+      "ContestSlug": "biweekly-contest-49",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-number-of-groups-with-increasing-length": {
+      "Rating": 2619.7016189999,
+      "ContestSlug": "weekly-contest-355",
+      "ProblemIndex": "Q3"
+    },
+    "maximum-number-of-moves-to-kill-all-pawns": {
+      "Rating": 2473.2589317118,
+      "ContestSlug": "weekly-contest-414",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-number-of-operations-with-the-same-score-ii": {
+      "Rating": 1708.7149486078,
+      "ContestSlug": "biweekly-contest-124",
+      "ProblemIndex": "Q3"
+    },
+    "maximum-number-of-points-from-grid-queries": {
+      "Rating": 2195.6540241654,
+      "ContestSlug": "weekly-contest-323",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-number-of-robots-within-budget": {
+      "Rating": 1917.2145829853,
+      "ContestSlug": "biweekly-contest-86",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-number-of-tasks-you-can-assign": {
+      "Rating": 2648.1748409542,
+      "ContestSlug": "biweekly-contest-65",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-number-of-visible-points": {
+      "Rating": 2147.1828941776,
+      "ContestSlug": "weekly-contest-209",
+      "ProblemIndex": "Q3"
+    },
+    "maximum-partition-factor": {
+      "Rating": 2135.1002785041,
+      "ContestSlug": "biweekly-contest-167",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-points-activated-with-one-addition": {
+      "Rating": 2198.1107944821,
+      "ContestSlug": "weekly-contest-493",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-points-after-collecting-coins-from-all-nodes": {
+      "Rating": 2350.7421492104,
+      "ContestSlug": "weekly-contest-369",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-prime-difference": {
+      "Rating": 1294.4633357092,
+      "ContestSlug": "weekly-contest-393",
+      "ProblemIndex": "Q2"
+    },
+    "maximum-product-difference-between-two-pairs": {
+      "Rating": 1144.6237559885,
+      "ContestSlug": "weekly-contest-247",
+      "ProblemIndex": "Q1"
+    },
+    "maximum-product-of-the-length-of-two-palindromic-subsequences": {
+      "Rating": 1869.402439128,
+      "ContestSlug": "weekly-contest-258",
+      "ProblemIndex": "Q3"
+    },
+    "maximum-product-of-the-length-of-two-palindromic-substrings": {
+      "Rating": 2690.5859406179,
+      "ContestSlug": "biweekly-contest-58",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-profit-from-valid-topological-order-in-dag": {
+      "Rating": 2352.795754512,
+      "ContestSlug": "biweekly-contest-155",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-repeating-substring": {
+      "Rating": 1395.5132479177,
+      "ContestSlug": "biweekly-contest-40",
+      "ProblemIndex": "Q1"
+    },
+    "maximum-score-of-a-good-subarray": {
+      "Rating": 1945.7515607928,
+      "ContestSlug": "weekly-contest-232",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-score-with-co-prime-element": {
+      "Rating": 2390.1956069603,
+      "ContestSlug": "biweekly-contest-184",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-score-words-formed-by-letters": {
+      "Rating": 1881.6810367589,
+      "ContestSlug": "weekly-contest-162",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-segment-sum-after-removals": {
+      "Rating": 2136.3013259524,
+      "ContestSlug": "biweekly-contest-85",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-strictly-increasing-cells-in-a-matrix": {
+      "Rating": 2387.3525635254,
+      "ContestSlug": "weekly-contest-347",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-strong-pair-xor-i": {
+      "Rating": 1246.3593898992,
+      "ContestSlug": "weekly-contest-371",
+      "ProblemIndex": "Q1"
+    },
+    "maximum-strong-pair-xor-ii": {
+      "Rating": 2348.7273357105,
+      "ContestSlug": "weekly-contest-371",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-students-taking-exam": {
+      "Rating": 2385.8072128533,
+      "ContestSlug": "weekly-contest-175",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-subarray-min-product": {
+      "Rating": 2051.0879431258,
+      "ContestSlug": "weekly-contest-240",
+      "ProblemIndex": "Q3"
+    },
+    "maximum-subarray-sum-after-at-most-k-swaps": {
+      "Rating": 2672.423145098,
+      "ContestSlug": "weekly-contest-506",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-subarray-xor-with-bounded-range": {
+      "Rating": 2347.4483641639,
+      "ContestSlug": "weekly-contest-489",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-sum-bst-in-binary-tree": {
+      "Rating": 1913.6704728453,
+      "ContestSlug": "biweekly-contest-21",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-sum-circular-subarray": {
+      "Rating": 1777.3786570233,
+      "ContestSlug": "weekly-contest-105",
+      "ProblemIndex": "Q2"
+    },
+    "maximum-sum-of-alternating-subsequence-with-distance-at-least-k": {
+      "Rating": 2288.0173330168,
+      "ContestSlug": "weekly-contest-499",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-sum-of-m-non-overlapping-subarrays-i": {
+      "Rating": 2060.7171353186,
+      "ContestSlug": "weekly-contest-505",
+      "ProblemIndex": "Q3"
+    },
+    "maximum-sum-of-m-non-overlapping-subarrays-ii": {
+      "Rating": 2611.407493072,
+      "ContestSlug": "weekly-contest-505",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-sum-of-subsequence-with-non-adjacent-elements": {
+      "Rating": 2697.6486586982,
+      "ContestSlug": "weekly-contest-399",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-sum-queries": {
+      "Rating": 2533.2830157959,
+      "ContestSlug": "weekly-contest-349",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-total-beauty-of-the-gardens": {
+      "Rating": 2561.508149216,
+      "ContestSlug": "weekly-contest-288",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-total-subarray-value-ii": {
+      "Rating": 2469.013888267,
+      "ContestSlug": "weekly-contest-468",
+      "ProblemIndex": "Q4"
+    },
+    "maximum-twin-sum-of-a-linked-list": {
+      "Rating": 1317.9207508583,
+      "ContestSlug": "biweekly-contest-69",
+      "ProblemIndex": "Q2"
+    },
+    "maximum-width-ramp": {
+      "Rating": 1607.80608595,
+      "ContestSlug": "weekly-contest-116",
+      "ProblemIndex": "Q2"
+    },
+    "maximum-xor-with-an-element-from-array": {
+      "Rating": 2358.9669560824,
+      "ContestSlug": "weekly-contest-221",
+      "ProblemIndex": "Q4"
+    },
+    "meeting-rooms-iii": {
+      "Rating": 2092.8943149547,
+      "ContestSlug": "weekly-contest-309",
+      "ProblemIndex": "Q4"
+    },
+    "merge-bsts-to-create-single-bst": {
+      "Rating": 2483.9435767299,
+      "ContestSlug": "weekly-contest-249",
+      "ProblemIndex": "Q4"
+    },
+    "merge-in-between-linked-lists": {
+      "Rating": 1428.1443796872,
+      "ContestSlug": "biweekly-contest-40",
+      "ProblemIndex": "Q2"
+    },
+    "merge-nodes-in-between-zeros": {
+      "Rating": 1333.192050397,
+      "ContestSlug": "weekly-contest-281",
+      "ProblemIndex": "Q2"
+    },
+    "merge-similar-items": {
+      "Rating": 1270.6712381632,
+      "ContestSlug": "biweekly-contest-84",
+      "ProblemIndex": "Q1"
+    },
+    "merge-triplets-to-form-target-triplet": {
+      "Rating": 1635.6879273926,
+      "ContestSlug": "weekly-contest-245",
+      "ProblemIndex": "Q3"
+    },
+    "middle-of-the-linked-list": {
+      "Rating": 1231.6157956848,
+      "ContestSlug": "weekly-contest-95",
+      "ProblemIndex": "Q1"
+    },
+    "min-cost-climbing-stairs": {
+      "Rating": 1358.3561730566,
+      "ContestSlug": "weekly-contest-63",
+      "ProblemIndex": "Q1"
+    },
+    "min-cost-to-connect-all-points": {
+      "Rating": 1857.6431822094,
+      "ContestSlug": "weekly-contest-206",
+      "ProblemIndex": "Q3"
+    },
+    "minimize-deviation-in-array": {
+      "Rating": 2533.3027905062,
+      "ContestSlug": "weekly-contest-217",
+      "ProblemIndex": "Q4"
+    },
+    "minimize-hamming-distance-after-swap-operations": {
+      "Rating": 1892.1600619469,
+      "ContestSlug": "weekly-contest-223",
+      "ProblemIndex": "Q3"
+    },
+    "minimize-malware-spread": {
+      "Rating": 1868.9146755896,
+      "ContestSlug": "weekly-contest-106",
+      "ProblemIndex": "Q4"
+    },
+    "minimize-malware-spread-ii": {
+      "Rating": 1985.2504512337,
+      "ContestSlug": "weekly-contest-107",
+      "ProblemIndex": "Q4"
+    },
+    "minimize-manhattan-distances": {
+      "Rating": 2215.7283064325,
+      "ContestSlug": "weekly-contest-391",
+      "ProblemIndex": "Q4"
+    },
+    "minimize-maximum-component-cost": {
+      "Rating": 1641.5473375118,
+      "ContestSlug": "weekly-contest-458",
+      "ProblemIndex": "Q2"
+    },
+    "minimize-the-maximum-edge-weight-of-graph": {
+      "Rating": 2243.2051062979,
+      "ContestSlug": "weekly-contest-432",
+      "ProblemIndex": "Q3"
+    },
+    "minimize-the-maximum-of-two-arrays": {
+      "Rating": 2302.4005640818,
+      "ContestSlug": "biweekly-contest-94",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-absolute-difference-between-elements-with-constraint": {
+      "Rating": 1889.4554322242,
+      "ContestSlug": "weekly-contest-358",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-absolute-sum-difference": {
+      "Rating": 1934.3556201811,
+      "ContestSlug": "weekly-contest-235",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-add-to-make-parentheses-valid": {
+      "Rating": 1242.4710735813,
+      "ContestSlug": "weekly-contest-106",
+      "ProblemIndex": "Q2"
+    },
+    "minimum-area-rectangle": {
+      "Rating": 1752.2621077596,
+      "ContestSlug": "weekly-contest-110",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-area-rectangle-ii": {
+      "Rating": 1990.7738526153,
+      "ContestSlug": "weekly-contest-116",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-cost-of-a-path-with-special-roads": {
+      "Rating": 2153.8943791656,
+      "ContestSlug": "weekly-contest-343",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-cost-path-with-alternating-directions-iii": {
+      "Rating": 2122.8602053579,
+      "ContestSlug": "weekly-contest-512",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-cost-path-with-edge-reversals": {
+      "Rating": 1853.6535583817,
+      "ContestSlug": "biweekly-contest-163",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-cost-to-buy-apples-ii": {
+      "Rating": 2186.6174607749,
+      "ContestSlug": "weekly-contest-501",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-cost-to-connect-two-groups-of-points": {
+      "Rating": 2537.7965575726,
+      "ContestSlug": "weekly-contest-207",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-cost-to-convert-string-i": {
+      "Rating": 1882.0842446557,
+      "ContestSlug": "weekly-contest-377",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-cost-to-convert-string-ii": {
+      "Rating": 2695.809667046,
+      "ContestSlug": "weekly-contest-377",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-cost-to-divide-array-into-subarrays": {
+      "Rating": 2569.4068901457,
+      "ContestSlug": "biweekly-contest-153",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-cost-to-make-at-least-one-valid-path-in-a-grid": {
+      "Rating": 2068.806637566,
+      "ContestSlug": "weekly-contest-178",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-cost-to-partition-a-binary-string": {
+      "Rating": 2032.4612250461,
+      "ContestSlug": "weekly-contest-492",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-cost-to-reach-destination-in-time": {
+      "Rating": 2413.3969129689,
+      "ContestSlug": "biweekly-contest-56",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-cost-tree-from-leaf-values": {
+      "Rating": 1919.1749818083,
+      "ContestSlug": "weekly-contest-146",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-cost-walk-in-weighted-graph": {
+      "Rating": 2108.5054318055,
+      "ContestSlug": "weekly-contest-392",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-cuts-to-divide-a-circle": {
+      "Rating": 1246.0341186297,
+      "ContestSlug": "biweekly-contest-92",
+      "ProblemIndex": "Q1"
+    },
+    "minimum-deletions-to-make-alternating-substring": {
+      "Rating": 2201.668658533,
+      "ContestSlug": "weekly-contest-480",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-deletions-to-make-array-divisible": {
+      "Rating": 1640.8976042503,
+      "ContestSlug": "weekly-contest-302",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-distance-between-bst-nodes": {
+      "Rating": 1303.3201984827,
+      "ContestSlug": "weekly-contest-71",
+      "ProblemIndex": "Q1"
+    },
+    "minimum-edge-toggles-on-a-tree": {
+      "Rating": 2178.6491499415,
+      "ContestSlug": "biweekly-contest-174",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-incompatibility": {
+      "Rating": 2389.9634276167,
+      "ContestSlug": "weekly-contest-218",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-increments-for-target-multiples-in-an-array": {
+      "Rating": 2336.5202025025,
+      "ContestSlug": "weekly-contest-435",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-insertions-to-balance-a-parentheses-string": {
+      "Rating": 1759.0197295594,
+      "ContestSlug": "biweekly-contest-32",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-interval-to-include-each-query": {
+      "Rating": 2286.1378742318,
+      "ContestSlug": "weekly-contest-239",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-inversion-count-in-subarrays-of-fixed-length": {
+      "Rating": 2157.7545069067,
+      "ContestSlug": "biweekly-contest-171",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-lines-to-represent-a-line-chart": {
+      "Rating": 1680.866917849,
+      "ContestSlug": "weekly-contest-294",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-moves-to-capture-the-queen": {
+      "Rating": 1796.5392133092,
+      "ContestSlug": "weekly-contest-379",
+      "ProblemIndex": "Q2"
+    },
+    "minimum-moves-to-reach-target-in-grid": {
+      "Rating": 2419.2738036027,
+      "ContestSlug": "weekly-contest-457",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-moves-to-spread-stones-over-grid": {
+      "Rating": 2001.4515854273,
+      "ContestSlug": "weekly-contest-362",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-non-zero-product-of-the-array-elements": {
+      "Rating": 1966.7067914206,
+      "ContestSlug": "weekly-contest-254",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-number-of-coins-for-fruits": {
+      "Rating": 1708.9663754668,
+      "ContestSlug": "biweekly-contest-118",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-number-of-days-to-disconnect-island": {
+      "Rating": 2208.5532172086,
+      "ContestSlug": "weekly-contest-204",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-number-of-days-to-eat-n-oranges": {
+      "Rating": 2048.0976546787,
+      "ContestSlug": "weekly-contest-202",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-number-of-increments-on-subarrays-to-form-a-target-array": {
+      "Rating": 1872.0350138774,
+      "ContestSlug": "biweekly-contest-31",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-number-of-k-consecutive-bit-flips": {
+      "Rating": 1835.4868365659,
+      "ContestSlug": "weekly-contest-124",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-number-of-moves-to-make-palindrome": {
+      "Rating": 2090.6800569319,
+      "ContestSlug": "biweekly-contest-73",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-number-of-moves-to-seat-everyone": {
+      "Rating": 1356.6925765299,
+      "ContestSlug": "biweekly-contest-63",
+      "ProblemIndex": "Q1"
+    },
+    "minimum-number-of-operations-to-make-all-array-elements-equal-to-1": {
+      "Rating": 1928.7961204946,
+      "ContestSlug": "weekly-contest-342",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-number-of-operations-to-make-string-sorted": {
+      "Rating": 2620.4181842249,
+      "ContestSlug": "biweekly-contest-50",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-number-of-operations-to-make-x-and-y-equal": {
+      "Rating": 1794.6129370985,
+      "ContestSlug": "biweekly-contest-121",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-number-of-swaps-to-make-the-string-balanced": {
+      "Rating": 1688.9209684568,
+      "ContestSlug": "weekly-contest-253",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-number-of-valid-strings-to-form-target-i": {
+      "Rating": 2081.7120215224,
+      "ContestSlug": "weekly-contest-415",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-number-of-valid-strings-to-form-target-ii": {
+      "Rating": 2661.736901362,
+      "ContestSlug": "weekly-contest-415",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-number-of-vertices-to-reach-all-nodes": {
+      "Rating": 1512.3323577063,
+      "ContestSlug": "biweekly-contest-33",
+      "ProblemIndex": "Q2"
+    },
+    "minimum-number-of-visited-cells-in-a-grid": {
+      "Rating": 2581.9961985753,
+      "ContestSlug": "weekly-contest-340",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-number-of-work-sessions-to-finish-the-tasks": {
+      "Rating": 1995.2937073376,
+      "ContestSlug": "weekly-contest-256",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-obstacle-removal-to-reach-corner": {
+      "Rating": 2137.5633267453,
+      "ContestSlug": "weekly-contest-295",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-one-bit-operations-to-make-integers-zero": {
+      "Rating": 2345.3418191684,
+      "ContestSlug": "weekly-contest-209",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-operations-to-convert-all-elements-to-zero": {
+      "Rating": 1889.8158281754,
+      "ContestSlug": "biweekly-contest-156",
+      "ProblemIndex": "Q2"
+    },
+    "minimum-operations-to-equalize-binary-string": {
+      "Rating": 2476.6133828534,
+      "ContestSlug": "biweekly-contest-164",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-operations-to-equalize-subarrays": {
+      "Rating": 2497.2253203914,
+      "ContestSlug": "weekly-contest-478",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-operations-to-make-array-equal-to-target": {
+      "Rating": 2066.5575759467,
+      "ContestSlug": "weekly-contest-407",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-operations-to-make-binary-array-elements-equal-to-one-i": {
+      "Rating": 1311.979717243,
+      "ContestSlug": "biweekly-contest-133",
+      "ProblemIndex": "Q2"
+    },
+    "minimum-pair-removal-to-sort-array-i": {
+      "Rating": 1348.7475033007,
+      "ContestSlug": "weekly-contest-444",
+      "ProblemIndex": "Q1"
+    },
+    "minimum-pair-removal-to-sort-array-ii": {
+      "Rating": 2608.014730401,
+      "ContestSlug": "weekly-contest-444",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-partition-score": {
+      "Rating": 2345.1150536403,
+      "ContestSlug": "biweekly-contest-175",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-possible-integer-after-at-most-k-adjacent-swaps-on-digits": {
+      "Rating": 2336.5210003185,
+      "ContestSlug": "weekly-contest-196",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-possible-maximum-waiting-time": {
+      "Rating": 2498.8824273287,
+      "ContestSlug": "biweekly-contest-188",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-reverse-operations": {
+      "Rating": 2824.4551372454,
+      "ContestSlug": "weekly-contest-339",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-score-of-a-path-between-two-cities": {
+      "Rating": 1679.5737760149,
+      "ContestSlug": "weekly-contest-322",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-score-triangulation-of-polygon": {
+      "Rating": 2130.1135718486,
+      "ContestSlug": "weekly-contest-135",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-stability-factor-of-array": {
+      "Rating": 2409.954556053,
+      "ContestSlug": "biweekly-contest-160",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-sum-of-values-by-dividing-array": {
+      "Rating": 2735.0909781144,
+      "ContestSlug": "weekly-contest-393",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-swaps-to-make-sequences-increasing": {
+      "Rating": 2066.0972575597,
+      "ContestSlug": "weekly-contest-76",
+      "ProblemIndex": "Q2"
+    },
+    "minimum-time-for-k-connected-components": {
+      "Rating": 1892.5363693543,
+      "ContestSlug": "weekly-contest-457",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-time-to-break-locks-i": {
+      "Rating": 1793.2112436729,
+      "ContestSlug": "biweekly-contest-145",
+      "ProblemIndex": "Q2"
+    },
+    "minimum-time-to-make-array-sum-at-most-x": {
+      "Rating": 2978.7961959355,
+      "ContestSlug": "biweekly-contest-110",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-time-to-reach-destination-in-directed-graph": {
+      "Rating": 1844.6347254612,
+      "ContestSlug": "biweekly-contest-160",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-time-to-reach-target-with-limited-power": {
+      "Rating": 2102.9932435222,
+      "ContestSlug": "weekly-contest-508",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-time-to-revert-word-to-initial-state-i": {
+      "Rating": 1659.6231386056,
+      "ContestSlug": "weekly-contest-383",
+      "ProblemIndex": "Q2"
+    },
+    "minimum-time-to-revert-word-to-initial-state-ii": {
+      "Rating": 2277.9557248587,
+      "ContestSlug": "weekly-contest-383",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-time-to-transport-all-individuals": {
+      "Rating": 2604.0450098035,
+      "ContestSlug": "weekly-contest-455",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-time-to-visit-a-cell-in-a-grid": {
+      "Rating": 2381.625583289,
+      "ContestSlug": "weekly-contest-334",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-time-to-visit-disappearing-nodes": {
+      "Rating": 1756.963553993,
+      "ContestSlug": "biweekly-contest-128",
+      "ProblemIndex": "Q3"
+    },
+    "minimum-time-visiting-all-points": {
+      "Rating": 1302.7005460171,
+      "ContestSlug": "weekly-contest-164",
+      "ProblemIndex": "Q1"
+    },
+    "minimum-weighted-subgraph-with-the-required-paths": {
+      "Rating": 2364.3455634374,
+      "ContestSlug": "weekly-contest-284",
+      "ProblemIndex": "Q4"
+    },
+    "minimum-xor-sum-of-two-arrays": {
+      "Rating": 2145.183995267,
+      "ContestSlug": "biweekly-contest-53",
+      "ProblemIndex": "Q4"
+    },
+    "mirror-reflection": {
+      "Rating": 1880.7433591583,
+      "ContestSlug": "weekly-contest-90",
+      "ProblemIndex": "Q3"
+    },
+    "modify-graph-edge-weights": {
+      "Rating": 2873.9745576413,
+      "ContestSlug": "weekly-contest-346",
+      "ProblemIndex": "Q4"
+    },
+    "most-common-word": {
+      "Rating": 1297.5338328524,
+      "ContestSlug": "weekly-contest-80",
+      "ProblemIndex": "Q1"
+    },
+    "most-frequent-ids": {
+      "Rating": 1793.1160019698,
+      "ContestSlug": "weekly-contest-390",
+      "ProblemIndex": "Q3"
+    },
+    "most-frequent-prime": {
+      "Rating": 1737.2065180671,
+      "ContestSlug": "weekly-contest-385",
+      "ProblemIndex": "Q3"
+    },
+    "most-stones-removed-with-same-row-or-column": {
+      "Rating": 2034.6759416871,
+      "ContestSlug": "weekly-contest-112",
+      "ProblemIndex": "Q3"
+    },
+    "n-repeated-element-in-size-2n-array": {
+      "Rating": 1161.6227767245,
+      "ContestSlug": "weekly-contest-116",
+      "ProblemIndex": "Q1"
+    },
+    "n-th-tribonacci-number": {
+      "Rating": 1142.8650731632,
+      "ContestSlug": "weekly-contest-147",
+      "ProblemIndex": "Q1"
+    },
+    "network-recovery-pathways": {
+      "Rating": 1998.0432529701,
+      "ContestSlug": "biweekly-contest-161",
+      "ProblemIndex": "Q3"
+    },
+    "new-21-game": {
+      "Rating": 2350.0380300939,
+      "ContestSlug": "weekly-contest-85",
+      "ProblemIndex": "Q3"
+    },
+    "next-greater-element-iv": {
+      "Rating": 2175.1190473433,
+      "ContestSlug": "biweekly-contest-90",
+      "ProblemIndex": "Q4"
+    },
+    "next-greater-node-in-linked-list": {
+      "Rating": 1570.8347522104,
+      "ContestSlug": "weekly-contest-130",
+      "ProblemIndex": "Q3"
+    },
+    "nth-magical-number": {
+      "Rating": 1896.7975214446,
+      "ContestSlug": "weekly-contest-95",
+      "ProblemIndex": "Q3"
+    },
+    "number-of-beautiful-integers-in-the-range": {
+      "Rating": 2324.1192580053,
+      "ContestSlug": "biweekly-contest-111",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-closed-islands": {
+      "Rating": 1658.7495899767,
+      "ContestSlug": "weekly-contest-162",
+      "ProblemIndex": "Q3"
+    },
+    "number-of-common-factors": {
+      "Rating": 1172.0548998046,
+      "ContestSlug": "weekly-contest-313",
+      "ProblemIndex": "Q1"
+    },
+    "number-of-different-subsequences-gcds": {
+      "Rating": 2539.863726397,
+      "ContestSlug": "weekly-contest-235",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-distinct-roll-sequences": {
+      "Rating": 2090.4183788498,
+      "ContestSlug": "biweekly-contest-81",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-effective-subsequences": {
+      "Rating": 2519.499932424,
+      "ContestSlug": "weekly-contest-477",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-enclaves": {
+      "Rating": 1615.4767730477,
+      "ContestSlug": "weekly-contest-130",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-flowers-in-full-bloom": {
+      "Rating": 2022.3137128296,
+      "ContestSlug": "weekly-contest-290",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-good-paths": {
+      "Rating": 2444.6660756903,
+      "ContestSlug": "weekly-contest-312",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-increasing-paths-in-a-grid": {
+      "Rating": 2001.2074132383,
+      "ContestSlug": "weekly-contest-300",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-integers-with-popcount-depth-equal-to-k-i": {
+      "Rating": 2330.6377193585,
+      "ContestSlug": "biweekly-contest-161",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-integers-with-popcount-depth-equal-to-k-ii": {
+      "Rating": 2085.9480963454,
+      "ContestSlug": "weekly-contest-459",
+      "ProblemIndex": "Q3"
+    },
+    "number-of-matching-subsequences": {
+      "Rating": 1695.3076664977,
+      "ContestSlug": "weekly-contest-74",
+      "ProblemIndex": "Q2"
+    },
+    "number-of-music-playlists": {
+      "Rating": 2399.5729141925,
+      "ContestSlug": "weekly-contest-105",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-operations-to-make-network-connected": {
+      "Rating": 1633.1372577433,
+      "ContestSlug": "weekly-contest-171",
+      "ProblemIndex": "Q3"
+    },
+    "number-of-pairs-after-increment": {
+      "Rating": 2409.9040742694,
+      "ContestSlug": "weekly-contest-503",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-pairs-satisfying-inequality": {
+      "Rating": 2030.1021023033,
+      "ContestSlug": "biweekly-contest-88",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-people-aware-of-a-secret": {
+      "Rating": 1893.5143805402,
+      "ContestSlug": "weekly-contest-300",
+      "ProblemIndex": "Q3"
+    },
+    "number-of-possible-sets-of-closing-branches": {
+      "Rating": 2077.4738459704,
+      "ContestSlug": "biweekly-contest-119",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-recent-calls": {
+      "Rating": 1337.8472367494,
+      "ContestSlug": "weekly-contest-109",
+      "ProblemIndex": "Q1"
+    },
+    "number-of-restricted-paths-from-first-to-last-node": {
+      "Rating": 2078.5417326415,
+      "ContestSlug": "weekly-contest-231",
+      "ProblemIndex": "Q3"
+    },
+    "number-of-sets-of-k-non-overlapping-line-segments": {
+      "Rating": 2198.3290662783,
+      "ContestSlug": "biweekly-contest-37",
+      "ProblemIndex": "Q3"
+    },
+    "number-of-squareful-arrays": {
+      "Rating": 1932.3730795204,
+      "ContestSlug": "weekly-contest-124",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-steps-to-reduce-a-number-in-binary-representation-to-one": {
+      "Rating": 1396.5990609759,
+      "ContestSlug": "weekly-contest-183",
+      "ProblemIndex": "Q2"
+    },
+    "number-of-strings-which-can-be-rearranged-to-contain-substring": {
+      "Rating": 2227.3896051956,
+      "ContestSlug": "biweekly-contest-117",
+      "ProblemIndex": "Q3"
+    },
+    "number-of-students-unable-to-eat-lunch": {
+      "Rating": 1404.1839222,
+      "ContestSlug": "biweekly-contest-42",
+      "ProblemIndex": "Q1"
+    },
+    "number-of-subarrays-that-match-a-pattern-i": {
+      "Rating": 1383.775103528,
+      "ContestSlug": "weekly-contest-384",
+      "ProblemIndex": "Q2"
+    },
+    "number-of-subarrays-that-match-a-pattern-ii": {
+      "Rating": 1894.5496928891,
+      "ContestSlug": "weekly-contest-384",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-subarrays-with-and-value-of-k": {
+      "Rating": 2050.4096030445,
+      "ContestSlug": "biweekly-contest-134",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-valid-move-combinations-on-chessboard": {
+      "Rating": 2610.9906730644,
+      "ContestSlug": "biweekly-contest-64",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-valid-words-for-each-puzzle": {
+      "Rating": 2233.963903408,
+      "ContestSlug": "weekly-contest-152",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-visible-people-in-a-queue": {
+      "Rating": 2104.9526046945,
+      "ContestSlug": "biweekly-contest-57",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-ways-of-cutting-a-pizza": {
+      "Rating": 2126.6864346508,
+      "ContestSlug": "weekly-contest-188",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-ways-to-arrive-at-destination": {
+      "Rating": 2094.592426537,
+      "ContestSlug": "biweekly-contest-59",
+      "ProblemIndex": "Q3"
+    },
+    "number-of-ways-to-paint-n-3-grid": {
+      "Rating": 1844.6289439644,
+      "ContestSlug": "weekly-contest-184",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-ways-to-reach-a-position-after-exactly-k-steps": {
+      "Rating": 1751.115625465,
+      "ContestSlug": "weekly-contest-309",
+      "ProblemIndex": "Q2"
+    },
+    "number-of-ways-to-rearrange-sticks-with-k-sticks-visible": {
+      "Rating": 2333.0621537307,
+      "ContestSlug": "weekly-contest-241",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-ways-to-reconstruct-a-tree": {
+      "Rating": 3018.4940165727,
+      "ContestSlug": "biweekly-contest-43",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-ways-to-reorder-array-to-get-same-bst": {
+      "Rating": 2288.2117442123,
+      "ContestSlug": "weekly-contest-204",
+      "ProblemIndex": "Q4"
+    },
+    "number-of-ways-to-wear-different-hats-to-each-other": {
+      "Rating": 2273.2215764545,
+      "ContestSlug": "biweekly-contest-25",
+      "ProblemIndex": "Q4"
+    },
+    "odd-even-jump": {
+      "Rating": 2079.1911227043,
+      "ContestSlug": "weekly-contest-119",
+      "ProblemIndex": "Q4"
+    },
+    "online-election": {
+      "Rating": 2000.8021428612,
+      "ContestSlug": "weekly-contest-103",
+      "ProblemIndex": "Q4"
+    },
+    "online-majority-element-in-subarray": {
+      "Rating": 2205.4304373587,
+      "ContestSlug": "weekly-contest-149",
+      "ProblemIndex": "Q4"
+    },
+    "online-stock-span": {
+      "Rating": 1708.8735585776,
+      "ContestSlug": "weekly-contest-101",
+      "ProblemIndex": "Q2"
+    },
+    "open-the-lock": {
+      "Rating": 1877.5624603804,
+      "ContestSlug": "weekly-contest-64",
+      "ProblemIndex": "Q3"
+    },
+    "operations-on-tree": {
+      "Rating": 1861.4906863586,
+      "ContestSlug": "biweekly-contest-60",
+      "ProblemIndex": "Q3"
+    },
+    "orderly-queue": {
+      "Rating": 2096.6098086765,
+      "ContestSlug": "weekly-contest-100",
+      "ProblemIndex": "Q4"
+    },
+    "painting-a-grid-with-three-different-colors": {
+      "Rating": 2170.0439693714,
+      "ContestSlug": "weekly-contest-249",
+      "ProblemIndex": "Q3"
+    },
+    "palindrome-partitioning-iii": {
+      "Rating": 1979.1323403633,
+      "ContestSlug": "weekly-contest-165",
+      "ProblemIndex": "Q4"
+    },
+    "palindrome-partitioning-iv": {
+      "Rating": 1924.964639491,
+      "ContestSlug": "weekly-contest-226",
+      "ProblemIndex": "Q4"
+    },
+    "palindromic-path-queries-in-a-tree": {
+      "Rating": 2384.3989621291,
+      "ContestSlug": "biweekly-contest-176",
+      "ProblemIndex": "Q4"
+    },
+    "palindromic-subarray-sum": {
+      "Rating": 2201.968109609,
+      "ContestSlug": "weekly-contest-509",
+      "ProblemIndex": "Q4"
+    },
+    "parallel-courses-ii": {
+      "Rating": 2081.8087755451,
+      "ContestSlug": "biweekly-contest-29",
+      "ProblemIndex": "Q4"
+    },
+    "parallel-courses-iii": {
+      "Rating": 2084.1404698713,
+      "ContestSlug": "weekly-contest-264",
+      "ProblemIndex": "Q4"
+    },
+    "parsing-a-boolean-expression": {
+      "Rating": 1880.4226853663,
+      "ContestSlug": "weekly-contest-143",
+      "ProblemIndex": "Q4"
+    },
+    "partition-array-for-maximum-xor-and-and": {
+      "Rating": 2743.9313067671,
+      "ContestSlug": "weekly-contest-460",
+      "ProblemIndex": "Q4"
+    },
+    "partition-array-into-two-arrays-to-minimize-sum-difference": {
+      "Rating": 2489.6652421066,
+      "ContestSlug": "weekly-contest-262",
+      "ProblemIndex": "Q4"
+    },
+    "partition-array-into-two-equal-product-subsets": {
+      "Rating": 1459.1307655664,
+      "ContestSlug": "weekly-contest-452",
+      "ProblemIndex": "Q1"
+    },
+    "partition-labels": {
+      "Rating": 1443.0697629277,
+      "ContestSlug": "weekly-contest-67",
+      "ProblemIndex": "Q2"
+    },
+    "partition-string": {
+      "Rating": 1347.3098248123,
+      "ContestSlug": "weekly-contest-456",
+      "ProblemIndex": "Q1"
+    },
+    "path-existence-queries-in-a-graph-i": {
+      "Rating": 1658.552255225,
+      "ContestSlug": "weekly-contest-447",
+      "ProblemIndex": "Q2"
+    },
+    "path-existence-queries-in-a-graph-ii": {
+      "Rating": 2507.1382215756,
+      "ContestSlug": "weekly-contest-447",
+      "ProblemIndex": "Q4"
+    },
+    "path-with-maximum-probability": {
+      "Rating": 1846.4077077642,
+      "ContestSlug": "weekly-contest-197",
+      "ProblemIndex": "Q3"
+    },
+    "path-with-minimum-effort": {
+      "Rating": 1947.5013967785,
+      "ContestSlug": "weekly-contest-212",
+      "ProblemIndex": "Q3"
+    },
+    "peak-index-in-a-mountain-array": {
+      "Rating": 1181.5839867359,
+      "ContestSlug": "weekly-contest-89",
+      "ProblemIndex": "Q1"
+    },
+    "peaks-in-array": {
+      "Rating": 2154.4458036869,
+      "ContestSlug": "weekly-contest-402",
+      "ProblemIndex": "Q4"
+    },
+    "peaks-in-array-ii": {
+      "Rating": 2515.773375505,
+      "ContestSlug": "weekly-contest-514",
+      "ProblemIndex": "Q4"
+    },
+    "permutations-iv": {
+      "Rating": 2473.7239890264,
+      "ContestSlug": "biweekly-contest-151",
+      "ProblemIndex": "Q4"
+    },
+    "possible-bipartition": {
+      "Rating": 1794.5827898448,
+      "ContestSlug": "weekly-contest-97",
+      "ProblemIndex": "Q3"
+    },
+    "power-grid-maintenance": {
+      "Rating": 1699.6848167364,
+      "ContestSlug": "weekly-contest-457",
+      "ProblemIndex": "Q2"
+    },
+    "prime-arrangements": {
+      "Rating": 1489.0102202162,
+      "ContestSlug": "weekly-contest-152",
+      "ProblemIndex": "Q1"
+    },
+    "prime-number-of-set-bits-in-binary-representation": {
+      "Rating": 1383.4424411643,
+      "ContestSlug": "weekly-contest-67",
+      "ProblemIndex": "Q1"
+    },
+    "prime-palindrome": {
+      "Rating": 1938.2224916289,
+      "ContestSlug": "weekly-contest-92",
+      "ProblemIndex": "Q3"
+    },
+    "print-words-vertically": {
+      "Rating": 1328.7281033317,
+      "ContestSlug": "weekly-contest-172",
+      "ProblemIndex": "Q2"
+    },
+    "prison-cells-after-n-days": {
+      "Rating": 1392.0853311911,
+      "ContestSlug": "weekly-contest-115",
+      "ProblemIndex": "Q1"
+    },
+    "probability-of-a-two-boxes-having-the-same-number-of-distinct-balls": {
+      "Rating": 2356.5811122453,
+      "ContestSlug": "weekly-contest-191",
+      "ProblemIndex": "Q4"
+    },
+    "process-restricted-friend-requests": {
+      "Rating": 2130.9348604091,
+      "ContestSlug": "weekly-contest-267",
+      "ProblemIndex": "Q4"
+    },
+    "product-of-the-last-k-numbers": {
+      "Rating": 1473.7057465272,
+      "ContestSlug": "weekly-contest-176",
+      "ProblemIndex": "Q2"
+    },
+    "projection-area-of-3d-shapes": {
+      "Rating": 1425.3981616639,
+      "ContestSlug": "weekly-contest-96",
+      "ProblemIndex": "Q1"
+    },
+    "properties-graph": {
+      "Rating": 1565.0047379604,
+      "ContestSlug": "weekly-contest-442",
+      "ProblemIndex": "Q2"
+    },
+    "queens-that-can-attack-the-king": {
+      "Rating": 1391.7243180131,
+      "ContestSlug": "weekly-contest-158",
+      "ProblemIndex": "Q2"
+    },
+    "queries-on-a-permutation-with-key": {
+      "Rating": 1334.5718985411,
+      "ContestSlug": "weekly-contest-184",
+      "ProblemIndex": "Q2"
+    },
+    "queries-on-number-of-points-inside-a-circle": {
+      "Rating": 1380.0192844155,
+      "ContestSlug": "biweekly-contest-50",
+      "ProblemIndex": "Q2"
+    },
+    "query-kth-smallest-trimmed-number": {
+      "Rating": 1651.569267834,
+      "ContestSlug": "weekly-contest-302",
+      "ProblemIndex": "Q3"
+    },
+    "race-car": {
+      "Rating": 2391.8086687918,
+      "ContestSlug": "weekly-contest-80",
+      "ProblemIndex": "Q4"
+    },
+    "range-frequency-queries": {
+      "Rating": 1702.4387527636,
+      "ContestSlug": "weekly-contest-268",
+      "ProblemIndex": "Q3"
+    },
+    "range-sum-of-bst": {
+      "Rating": 1335.0295688697,
+      "ContestSlug": "weekly-contest-110",
+      "ProblemIndex": "Q2"
+    },
+    "rank-transform-of-a-matrix": {
+      "Rating": 2529.5251086936,
+      "ContestSlug": "weekly-contest-212",
+      "ProblemIndex": "Q4"
+    },
+    "reachable-nodes-in-subdivided-graph": {
+      "Rating": 2328.4294689238,
+      "ContestSlug": "weekly-contest-96",
+      "ProblemIndex": "Q4"
+    },
+    "reachable-nodes-with-restrictions": {
+      "Rating": 1476.9118898539,
+      "ContestSlug": "weekly-contest-305",
+      "ProblemIndex": "Q2"
+    },
+    "reaching-points": {
+      "Rating": 1897.3309169423,
+      "ContestSlug": "weekly-contest-71",
+      "ProblemIndex": "Q3"
+    },
+    "rectangle-area-ii": {
+      "Rating": 2235.9672341699,
+      "ContestSlug": "weekly-contest-88",
+      "ProblemIndex": "Q4"
+    },
+    "rectangle-overlap": {
+      "Rating": 1442.9468304752,
+      "ContestSlug": "weekly-contest-85",
+      "ProblemIndex": "Q1"
+    },
+    "regions-cut-by-slashes": {
+      "Rating": 2135.5738659086,
+      "ContestSlug": "weekly-contest-115",
+      "ProblemIndex": "Q3"
+    },
+    "relative-sort-array": {
+      "Rating": 1188.6311093158,
+      "ContestSlug": "weekly-contest-145",
+      "ProblemIndex": "Q1"
+    },
+    "remove-colored-pieces-if-both-neighbors-are-the-same-color": {
+      "Rating": 1467.7383709213,
+      "ContestSlug": "biweekly-contest-63",
+      "ProblemIndex": "Q2"
+    },
+    "remove-max-number-of-edges-to-keep-graph-fully-traversable": {
+      "Rating": 2131.7917160422,
+      "ContestSlug": "weekly-contest-205",
+      "ProblemIndex": "Q4"
+    },
+    "remove-nodes-from-linked-list": {
+      "Rating": 1454.5942017003,
+      "ContestSlug": "weekly-contest-321",
+      "ProblemIndex": "Q3"
+    },
+    "remove-outermost-parentheses": {
+      "Rating": 1311.3495317884,
+      "ContestSlug": "weekly-contest-131",
+      "ProblemIndex": "Q1"
+    },
+    "remove-sub-folders-from-the-filesystem": {
+      "Rating": 1544.8261365027,
+      "ContestSlug": "weekly-contest-159",
+      "ProblemIndex": "Q2"
+    },
+    "remove-zero-sum-consecutive-nodes-from-linked-list": {
+      "Rating": 1782.3312212058,
+      "ContestSlug": "weekly-contest-151",
+      "ProblemIndex": "Q3"
+    },
+    "replace-non-coprime-numbers-in-array": {
+      "Rating": 2057.4788263111,
+      "ContestSlug": "weekly-contest-283",
+      "ProblemIndex": "Q4"
+    },
+    "reveal-cards-in-increasing-order": {
+      "Rating": 1686.4493679523,
+      "ContestSlug": "weekly-contest-113",
+      "ProblemIndex": "Q3"
+    },
+    "reverse-nodes-in-even-length-groups": {
+      "Rating": 1685.3599641299,
+      "ContestSlug": "weekly-contest-267",
+      "ProblemIndex": "Q2"
+    },
+    "reverse-substrings-between-each-pair-of-parentheses": {
+      "Rating": 1485.6550472186,
+      "ContestSlug": "weekly-contest-154",
+      "ProblemIndex": "Q2"
+    },
+    "right-triangles": {
+      "Rating": 1540.8447688369,
+      "ContestSlug": "biweekly-contest-129",
+      "ProblemIndex": "Q2"
+    },
+    "rle-iterator": {
+      "Rating": 1532.2539947529,
+      "ContestSlug": "weekly-contest-101",
+      "ProblemIndex": "Q1"
+    },
+    "robot-bounded-in-circle": {
+      "Rating": 1521.1768537583,
+      "ContestSlug": "weekly-contest-136",
+      "ProblemIndex": "Q1"
+    },
+    "robot-collisions": {
+      "Rating": 2091.6474629767,
+      "ContestSlug": "weekly-contest-351",
+      "ProblemIndex": "Q4"
+    },
+    "rotate-string": {
+      "Rating": 1167.0749837258,
+      "ContestSlug": "weekly-contest-75",
+      "ProblemIndex": "Q1"
+    },
+    "rotting-oranges": {
+      "Rating": 1432.9051050881,
+      "ContestSlug": "weekly-contest-124",
+      "ProblemIndex": "Q2"
+    },
+    "satisfiability-of-equality-equations": {
+      "Rating": 1638.0148920643,
+      "ContestSlug": "weekly-contest-123",
+      "ProblemIndex": "Q2"
+    },
+    "score-of-parentheses": {
+      "Rating": 1562.7212466716,
+      "ContestSlug": "weekly-contest-90",
+      "ProblemIndex": "Q2"
+    },
+    "search-suggestions-system": {
+      "Rating": 1573.4042963622,
+      "ContestSlug": "weekly-contest-164",
+      "ProblemIndex": "Q3"
+    },
+    "seat-reservation-manager": {
+      "Rating": 1428.6729861424,
+      "ContestSlug": "biweekly-contest-51",
+      "ProblemIndex": "Q2"
+    },
+    "second-minimum-time-to-reach-destination": {
+      "Rating": 2201.6219336792,
+      "ContestSlug": "weekly-contest-263",
+      "ProblemIndex": "Q4"
+    },
+    "select-cells-in-grid-with-maximum-score": {
+      "Rating": 2402.6213260468,
+      "ContestSlug": "weekly-contest-413",
+      "ProblemIndex": "Q3"
+    },
+    "selling-pieces-of-wood": {
+      "Rating": 2363.0240184484,
+      "ContestSlug": "weekly-contest-298",
+      "ProblemIndex": "Q4"
+    },
+    "separate-squares-ii": {
+      "Rating": 2671.1046123182,
+      "ContestSlug": "biweekly-contest-150",
+      "ProblemIndex": "Q3"
+    },
+    "sequentially-ordinal-rank-tracker": {
+      "Rating": 2158.7683843245,
+      "ContestSlug": "biweekly-contest-67",
+      "ProblemIndex": "Q4"
+    },
+    "shift-2d-grid": {
+      "Rating": 1337.3722299775,
+      "ContestSlug": "weekly-contest-163",
+      "ProblemIndex": "Q1"
+    },
+    "short-encoding-of-words": {
+      "Rating": 1632.0191837349,
+      "ContestSlug": "weekly-contest-81",
+      "ProblemIndex": "Q3"
+    },
+    "shortest-distance-after-road-addition-queries-ii": {
+      "Rating": 2270.2002503611,
+      "ContestSlug": "weekly-contest-409",
+      "ProblemIndex": "Q3"
+    },
+    "shortest-distance-to-target-string-in-a-circular-array": {
+      "Rating": 1367.0197235097,
+      "ContestSlug": "weekly-contest-325",
+      "ProblemIndex": "Q1"
+    },
+    "shortest-matching-substring": {
+      "Rating": 2303.1891955206,
+      "ContestSlug": "biweekly-contest-150",
+      "ProblemIndex": "Q4"
+    },
+    "shortest-path-in-a-weighted-tree": {
+      "Rating": 2312.2207190263,
+      "ContestSlug": "biweekly-contest-154",
+      "ProblemIndex": "Q4"
+    },
+    "shortest-path-in-binary-matrix": {
+      "Rating": 1658.3474650806,
+      "ContestSlug": "weekly-contest-141",
+      "ProblemIndex": "Q3"
+    },
+    "shortest-path-visiting-all-nodes": {
+      "Rating": 2200.6623666057,
+      "ContestSlug": "weekly-contest-87",
+      "ProblemIndex": "Q4"
+    },
+    "shortest-path-with-at-most-k-consecutive-identical-characters": {
+      "Rating": 1840.160645972,
+      "ContestSlug": "weekly-contest-507",
+      "ProblemIndex": "Q3"
+    },
+    "shortest-subarray-to-be-removed-to-make-array-sorted": {
+      "Rating": 1931.7335479582,
+      "ContestSlug": "biweekly-contest-34",
+      "ProblemIndex": "Q3"
+    },
+    "shortest-subarray-with-sum-at-least-k": {
+      "Rating": 2306.8472649456,
+      "ContestSlug": "weekly-contest-91",
+      "ProblemIndex": "Q4"
+    },
+    "shortest-uncommon-substring-in-an-array": {
+      "Rating": 1635.1802054842,
+      "ContestSlug": "weekly-contest-388",
+      "ProblemIndex": "Q3"
+    },
+    "similar-string-groups": {
+      "Rating": 2053.7468090497,
+      "ContestSlug": "weekly-contest-85",
+      "ProblemIndex": "Q4"
+    },
+    "simplified-fractions": {
+      "Rating": 1268.5768566953,
+      "ContestSlug": "biweekly-contest-26",
+      "ProblemIndex": "Q2"
+    },
+    "sliding-puzzle": {
+      "Rating": 1815.1286459024,
+      "ContestSlug": "weekly-contest-69",
+      "ProblemIndex": "Q3"
+    },
+    "smallest-integer-divisible-by-k": {
+      "Rating": 1874.6468976233,
+      "ContestSlug": "weekly-contest-129",
+      "ProblemIndex": "Q2"
+    },
+    "smallest-k-length-subsequence-with-occurrences-of-a-letter": {
+      "Rating": 2561.7794931859,
+      "ContestSlug": "weekly-contest-261",
+      "ProblemIndex": "Q4"
+    },
+    "smallest-missing-genetic-value-in-each-subtree": {
+      "Rating": 2415.0089731911,
+      "ContestSlug": "weekly-contest-258",
+      "ProblemIndex": "Q4"
+    },
+    "smallest-number-in-infinite-set": {
+      "Rating": 1375.0376362104,
+      "ContestSlug": "weekly-contest-301",
+      "ProblemIndex": "Q2"
+    },
+    "smallest-palindromic-rearrangement-i": {
+      "Rating": 1357.002392715,
+      "ContestSlug": "weekly-contest-445",
+      "ProblemIndex": "Q2"
+    },
+    "smallest-palindromic-rearrangement-ii": {
+      "Rating": 2375.0917527641,
+      "ContestSlug": "weekly-contest-445",
+      "ProblemIndex": "Q3"
+    },
+    "smallest-string-with-swaps": {
+      "Rating": 1855.4479039876,
+      "ContestSlug": "weekly-contest-155",
+      "ProblemIndex": "Q3"
+    },
+    "smallest-subsequence-of-distinct-characters": {
+      "Rating": 2184.5241011615,
+      "ContestSlug": "weekly-contest-140",
+      "ProblemIndex": "Q4"
+    },
+    "smallest-subtree-with-all-the-deepest-nodes": {
+      "Rating": 1534.325005151,
+      "ContestSlug": "weekly-contest-92",
+      "ProblemIndex": "Q2"
+    },
+    "smallest-sufficient-team": {
+      "Rating": 2250.9318291559,
+      "ContestSlug": "weekly-contest-145",
+      "ProblemIndex": "Q4"
+    },
+    "smallest-unique-subarray": {
+      "Rating": 2162.530467026,
+      "ContestSlug": "weekly-contest-502",
+      "ProblemIndex": "Q4"
+    },
+    "snapshot-array": {
+      "Rating": 1770.8924569497,
+      "ContestSlug": "weekly-contest-148",
+      "ProblemIndex": "Q3"
+    },
+    "sort-integers-by-the-power-value": {
+      "Rating": 1506.8958220609,
+      "ContestSlug": "biweekly-contest-22",
+      "ProblemIndex": "Q3"
+    },
+    "sort-items-by-groups-respecting-dependencies": {
+      "Rating": 2418.5742747632,
+      "ContestSlug": "weekly-contest-155",
+      "ProblemIndex": "Q4"
+    },
+    "sorted-gcd-pair-queries": {
+      "Rating": 2532.6258688719,
+      "ContestSlug": "weekly-contest-418",
+      "ProblemIndex": "Q4"
+    },
+    "sorting-the-sentence": {
+      "Rating": 1290.0361853035,
+      "ContestSlug": "biweekly-contest-52",
+      "ProblemIndex": "Q1"
+    },
+    "soup-servings": {
+      "Rating": 2396.6267778669,
+      "ContestSlug": "weekly-contest-78",
+      "ProblemIndex": "Q3"
+    },
+    "special-binary-string": {
+      "Rating": 2292.1434666805,
+      "ContestSlug": "weekly-contest-66",
+      "ProblemIndex": "Q4"
+    },
+    "special-permutations": {
+      "Rating": 2020.7095306378,
+      "ContestSlug": "weekly-contest-350",
+      "ProblemIndex": "Q3"
+    },
+    "spiral-matrix-iii": {
+      "Rating": 1678.3947690537,
+      "ContestSlug": "weekly-contest-97",
+      "ProblemIndex": "Q2"
+    },
+    "spiral-matrix-iv": {
+      "Rating": 1421.7251191403,
+      "ContestSlug": "weekly-contest-300",
+      "ProblemIndex": "Q2"
+    },
+    "split-array-with-same-average": {
+      "Rating": 1982.5085994817,
+      "ContestSlug": "weekly-contest-77",
+      "ProblemIndex": "Q4"
+    },
+    "split-the-array-to-make-coprime-products": {
+      "Rating": 2159.4844281244,
+      "ContestSlug": "weekly-contest-335",
+      "ProblemIndex": "Q3"
+    },
+    "stamping-the-sequence": {
+      "Rating": 2583.406911951,
+      "ContestSlug": "weekly-contest-109",
+      "ProblemIndex": "Q4"
+    },
+    "statistics-from-a-large-sample": {
+      "Rating": 1471.6221713607,
+      "ContestSlug": "weekly-contest-142",
+      "ProblemIndex": "Q1"
+    },
+    "step-by-step-directions-from-a-binary-tree-node-to-another": {
+      "Rating": 1804.5283324227,
+      "ContestSlug": "weekly-contest-270",
+      "ProblemIndex": "Q3"
+    },
+    "steps-to-make-array-non-decreasing": {
+      "Rating": 2481.8722909195,
+      "ContestSlug": "weekly-contest-295",
+      "ProblemIndex": "Q3"
+    },
+    "stock-price-fluctuation": {
+      "Rating": 1831.9395911303,
+      "ContestSlug": "weekly-contest-262",
+      "ProblemIndex": "Q3"
+    },
+    "stone-game": {
+      "Rating": 1590.0463215721,
+      "ContestSlug": "weekly-contest-95",
+      "ProblemIndex": "Q2"
+    },
+    "stone-game-ii": {
+      "Rating": 2034.9740902393,
+      "ContestSlug": "weekly-contest-147",
+      "ProblemIndex": "Q4"
+    },
+    "stone-game-iii": {
+      "Rating": 2026.8957817007,
+      "ContestSlug": "weekly-contest-183",
+      "ProblemIndex": "Q4"
+    },
+    "stone-game-iv": {
+      "Rating": 1786.9268132617,
+      "ContestSlug": "biweekly-contest-30",
+      "ProblemIndex": "Q4"
+    },
+    "stone-game-ix": {
+      "Rating": 2277.3595662538,
+      "ContestSlug": "weekly-contest-261",
+      "ProblemIndex": "Q3"
+    },
+    "stone-game-v": {
+      "Rating": 2087.2049275667,
+      "ContestSlug": "weekly-contest-203",
+      "ProblemIndex": "Q4"
+    },
+    "stone-game-vi": {
+      "Rating": 2000.8441804448,
+      "ContestSlug": "biweekly-contest-41",
+      "ProblemIndex": "Q3"
+    },
+    "stone-game-vii": {
+      "Rating": 1951.2096212775,
+      "ContestSlug": "weekly-contest-219",
+      "ProblemIndex": "Q3"
+    },
+    "stone-game-viii": {
+      "Rating": 2439.7337408636,
+      "ContestSlug": "weekly-contest-242",
+      "ProblemIndex": "Q4"
+    },
+    "strange-printer-ii": {
+      "Rating": 2290.9040038639,
+      "ContestSlug": "biweekly-contest-35",
+      "ProblemIndex": "Q4"
+    },
+    "stream-of-characters": {
+      "Rating": 1970.4608098164,
+      "ContestSlug": "weekly-contest-133",
+      "ProblemIndex": "Q4"
+    },
+    "string-matching-in-an-array": {
+      "Rating": 1223.3861903833,
+      "ContestSlug": "weekly-contest-184",
+      "ProblemIndex": "Q1"
+    },
+    "string-transformation": {
+      "Rating": 2857.6543956169,
+      "ContestSlug": "weekly-contest-362",
+      "ProblemIndex": "Q4"
+    },
+    "subarray-with-elements-greater-than-varying-threshold": {
+      "Rating": 2381.2160234811,
+      "ContestSlug": "biweekly-contest-82",
+      "ProblemIndex": "Q4"
+    },
+    "subarrays-distinct-element-sum-of-squares-i": {
+      "Rating": 1297.4179875409,
+      "ContestSlug": "biweekly-contest-116",
+      "ProblemIndex": "Q1"
+    },
+    "subarrays-distinct-element-sum-of-squares-ii": {
+      "Rating": 2816.0706257586,
+      "ContestSlug": "biweekly-contest-116",
+      "ProblemIndex": "Q4"
+    },
+    "subrectangle-queries": {
+      "Rating": 1326.4047670018,
+      "ContestSlug": "biweekly-contest-28",
+      "ProblemIndex": "Q2"
+    },
+    "subsequences-with-a-unique-middle-mode-i": {
+      "Rating": 2799.5363565342,
+      "ContestSlug": "biweekly-contest-146",
+      "ProblemIndex": "Q4"
+    },
+    "substring-matching-pattern": {
+      "Rating": 1472.7215747162,
+      "ContestSlug": "biweekly-contest-147",
+      "ProblemIndex": "Q1"
+    },
+    "sum-game": {
+      "Rating": 2004.5346526204,
+      "ContestSlug": "biweekly-contest-56",
+      "ProblemIndex": "Q3"
+    },
+    "sum-of-all-subset-xor-totals": {
+      "Rating": 1372.1152262488,
+      "ContestSlug": "weekly-contest-241",
+      "ProblemIndex": "Q1"
+    },
+    "sum-of-beautiful-subsequences": {
+      "Rating": 2647.1423924149,
+      "ContestSlug": "weekly-contest-465",
+      "ProblemIndex": "Q4"
+    },
+    "sum-of-even-numbers-after-queries": {
+      "Rating": 1198.4180401014,
+      "ContestSlug": "weekly-contest-122",
+      "ProblemIndex": "Q1"
+    },
+    "sum-of-k-digit-numbers-in-a-range": {
+      "Rating": 2085.3980002157,
+      "ContestSlug": "biweekly-contest-177",
+      "ProblemIndex": "Q4"
+    },
+    "sum-of-prefix-scores-of-strings": {
+      "Rating": 1725.1995150882,
+      "ContestSlug": "weekly-contest-311",
+      "ProblemIndex": "Q4"
+    },
+    "sum-of-scores-of-built-strings": {
+      "Rating": 2220.0903365738,
+      "ContestSlug": "biweekly-contest-75",
+      "ProblemIndex": "Q4"
+    },
+    "sum-of-subarray-minimums": {
+      "Rating": 1975.5726300727,
+      "ContestSlug": "weekly-contest-102",
+      "ProblemIndex": "Q3"
+    },
+    "sum-of-subarray-ranges": {
+      "Rating": 1504.2133321504,
+      "ContestSlug": "weekly-contest-271",
+      "ProblemIndex": "Q2"
+    },
+    "sum-of-total-strength-of-wizards": {
+      "Rating": 2621.1208072273,
+      "ContestSlug": "weekly-contest-294",
+      "ProblemIndex": "Q4"
+    },
+    "super-egg-drop": {
+      "Rating": 2376.8658923518,
+      "ContestSlug": "weekly-contest-97",
+      "ProblemIndex": "Q4"
+    },
+    "surface-area-of-3d-shapes": {
+      "Rating": 1507.8701119064,
+      "ContestSlug": "weekly-contest-99",
+      "ProblemIndex": "Q1"
+    },
+    "swapping-nodes-in-a-linked-list": {
+      "Rating": 1386.9203620297,
+      "ContestSlug": "weekly-contest-223",
+      "ProblemIndex": "Q2"
+    },
+    "swim-in-rising-water": {
+      "Rating": 2096.6201393558,
+      "ContestSlug": "weekly-contest-70",
+      "ProblemIndex": "Q4"
+    },
+    "tallest-billboard": {
+      "Rating": 2381.479024858,
+      "ContestSlug": "weekly-contest-114",
+      "ProblemIndex": "Q4"
+    },
+    "task-scheduler-ii": {
+      "Rating": 1622.7743864401,
+      "ContestSlug": "biweekly-contest-84",
+      "ProblemIndex": "Q3"
+    },
+    "the-earliest-and-latest-rounds-where-players-compete": {
+      "Rating": 2454.7653333657,
+      "ContestSlug": "weekly-contest-245",
+      "ProblemIndex": "Q4"
+    },
+    "the-kth-factor-of-n": {
+      "Rating": 1231.999241335,
+      "ContestSlug": "biweekly-contest-29",
+      "ProblemIndex": "Q2"
+    },
+    "the-number-of-beautiful-subsets": {
+      "Rating": 2023.4303440211,
+      "ContestSlug": "weekly-contest-337",
+      "ProblemIndex": "Q3"
+    },
+    "the-number-of-good-subsets": {
+      "Rating": 2464.5077611012,
+      "ContestSlug": "biweekly-contest-60",
+      "ProblemIndex": "Q4"
+    },
+    "the-number-of-weak-characters-in-the-game": {
+      "Rating": 1860.742934291,
+      "ContestSlug": "weekly-contest-257",
+      "ProblemIndex": "Q2"
+    },
+    "the-score-of-students-solving-math-expression": {
+      "Rating": 2583.9006314254,
+      "ContestSlug": "weekly-contest-260",
+      "ProblemIndex": "Q4"
+    },
+    "three-divisors": {
+      "Rating": 1203.7504950404,
+      "ContestSlug": "weekly-contest-252",
+      "ProblemIndex": "Q1"
+    },
+    "threshold-majority-queries": {
+      "Rating": 2451.042823679,
+      "ContestSlug": "biweekly-contest-162",
+      "ProblemIndex": "Q4"
+    },
+    "time-based-key-value-store": {
+      "Rating": 1574.7542247682,
+      "ContestSlug": "weekly-contest-121",
+      "ProblemIndex": "Q2"
+    },
+    "time-needed-to-buy-tickets": {
+      "Rating": 1325.3607218257,
+      "ContestSlug": "weekly-contest-267",
+      "ProblemIndex": "Q1"
+    },
+    "traffic-signal-color": {
+      "Rating": 1222.9538878773,
+      "ContestSlug": "biweekly-contest-180",
+      "ProblemIndex": "Q1"
+    },
+    "transformed-array": {
+      "Rating": 1256.5677464981,
+      "ContestSlug": "weekly-contest-427",
+      "ProblemIndex": "Q1"
+    },
+    "transpose-matrix": {
+      "Rating": 1258.8401788462,
+      "ContestSlug": "weekly-contest-92",
+      "ProblemIndex": "Q1"
+    },
+    "tweet-counts-per-frequency": {
+      "Rating": 2036.7206020719,
+      "ContestSlug": "weekly-contest-175",
+      "ProblemIndex": "Q3"
+    },
+    "two-city-scheduling": {
+      "Rating": 1348.0079390256,
+      "ContestSlug": "weekly-contest-133",
+      "ProblemIndex": "Q1"
+    },
+    "type-of-triangle": {
+      "Rating": 1134.7862697576,
+      "ContestSlug": "biweekly-contest-123",
+      "ProblemIndex": "Q1"
+    },
+    "ugly-number-iii": {
+      "Rating": 2039.110874689,
+      "ContestSlug": "weekly-contest-155",
+      "ProblemIndex": "Q2"
+    },
+    "unique-3-digit-even-numbers": {
+      "Rating": 1323.5902064671,
+      "ContestSlug": "biweekly-contest-152",
+      "ProblemIndex": "Q1"
+    },
+    "unique-paths-iii": {
+      "Rating": 1830.3165569278,
+      "ContestSlug": "weekly-contest-120",
+      "ProblemIndex": "Q4"
+    },
+    "valid-arrangement-of-pairs": {
+      "Rating": 2650.8996457642,
+      "ContestSlug": "weekly-contest-270",
+      "ProblemIndex": "Q4"
+    },
+    "valid-boomerang": {
+      "Rating": 1255.9002796024,
+      "ContestSlug": "weekly-contest-135",
+      "ProblemIndex": "Q1"
+    },
+    "validate-binary-tree-nodes": {
+      "Rating": 1464.6895034875,
+      "ContestSlug": "weekly-contest-177",
+      "ProblemIndex": "Q2"
+    },
+    "validate-stack-sequences": {
+      "Rating": 1461.9157715206,
+      "ContestSlug": "weekly-contest-112",
+      "ProblemIndex": "Q2"
+    },
+    "vowels-game-in-a-string": {
+      "Rating": 1451.8103068349,
+      "ContestSlug": "weekly-contest-407",
+      "ProblemIndex": "Q2"
+    },
+    "vowels-of-all-substrings": {
+      "Rating": 1663.3912882908,
+      "ContestSlug": "weekly-contest-266",
+      "ProblemIndex": "Q2"
+    },
+    "walking-robot-simulation": {
+      "Rating": 1846.3568350016,
+      "ContestSlug": "weekly-contest-94",
+      "ProblemIndex": "Q2"
+    },
+    "walking-robot-simulation-ii": {
+      "Rating": 1918.9960035055,
+      "ContestSlug": "biweekly-contest-65",
+      "ProblemIndex": "Q2"
+    },
+    "words-within-two-edits-of-dictionary": {
+      "Rating": 1459.7513584849,
+      "ContestSlug": "biweekly-contest-90",
+      "ProblemIndex": "Q2"
+    },
+    "x-of-a-kind-in-a-deck-of-cards": {
+      "Rating": 1370.6144908238,
+      "ContestSlug": "weekly-contest-104",
+      "ProblemIndex": "Q1"
+    },
+    "xor-after-range-multiplication-queries-i": {
+      "Rating": 1556.3092642778,
+      "ContestSlug": "weekly-contest-463",
+      "ProblemIndex": "Q2"
+    },
+    "xor-after-range-multiplication-queries-ii": {
+      "Rating": 2453.8851399002,
+      "ContestSlug": "weekly-contest-463",
+      "ProblemIndex": "Q4"
+    },
+    "zigzag-grid-traversal-with-skip": {
+      "Rating": 1290.1726293694,
+      "ContestSlug": "weekly-contest-432",
+      "ProblemIndex": "Q1"
+    }
+  }
+}

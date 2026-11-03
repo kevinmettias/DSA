@@ -6,10 +6,15 @@
 
   <!-- The architecture tests compile the repository's own source with Roslyn, so they can ask what
        a name binds to rather than how it is spelled. Benchmark classes need BenchmarkDotNet's
-       attributes to bind, and nothing else of it. -->
+       attributes to bind, and nothing else of it, and the LeetCode suite benchmarks need the
+       catalog they read their cases from. -->
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet.Annotations" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSAExperimentation.LeetCode.Catalog\DSAExperimentation.LeetCode.Catalog.csproj" />
   </ItemGroup>
 
   <ItemGroup>

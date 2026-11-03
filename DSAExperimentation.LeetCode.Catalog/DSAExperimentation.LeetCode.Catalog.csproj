@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- What LeetCode says about each covered problem, read from the JSON under Snapshot/: the
+       question, its statistics, its contest rating and every case the harnesses run. Nothing
+       here calls the network - DSAExperimentation.LeetCode.Catalog.Sync is the one writer of
+       Snapshot/, so a test or benchmark that reads the catalog reads a fixed, checked-in snapshot.
+       Every /// doc is compiled for the same reason as the core library's (see its csproj). -->
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Catalog.Sync" />
+    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Catalog.Tests" />
+    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Catalog.Sync.Tests" />
+  </ItemGroup>
+
+</Project>

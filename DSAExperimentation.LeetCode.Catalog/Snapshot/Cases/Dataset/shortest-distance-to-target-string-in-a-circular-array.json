@@ -1,0 +1,1954 @@
+[
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\"]",
+      "\"xyz\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\",\"date\"]",
+      "\"banana\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"dog\",\"bird\",\"fish\"]",
+      "\"cat\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"bat\"]",
+      "\"dog\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"a\",\"a\",\"a\"]",
+      "\"a\"",
+      "0"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\"]",
+      "\"a\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"bat\"]",
+      "\"rat\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\"]",
+      "\"one\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\"]",
+      "\"yellow\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\"]",
+      "\"five\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\"]",
+      "\"banana\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"z\",\"y\",\"x\",\"w\",\"v\"]",
+      "\"v\"",
+      "4"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\"]",
+      "\"five\"",
+      "0"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\"]",
+      "\"green\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\"]",
+      "\"def\"",
+      "1"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\"]",
+      "\"blue\"",
+      "1"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"a\",\"a\",\"a\"]",
+      "\"b\"",
+      "0"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"a\",\"a\",\"a\",\"a\"]",
+      "\"a\"",
+      "2"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"bird\"]",
+      "\"fish\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\"]",
+      "\"planet\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\"]",
+      "\"d\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\"]",
+      "\"b\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"rotate\",\"me\",\"around\",\"and\",\"around\",\"again\",\"rotate\"]",
+      "\"around\"",
+      "0"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"x\",\"y\",\"z\",\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\"]",
+      "\"d\"",
+      "0"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\",\"six\",\"seven\",\"eight\",\"nine\",\"ten\"]",
+      "\"five\"",
+      "0"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"yak\",\"xylophone\",\"wolf\",\"vulture\"]",
+      "\"wolf\"",
+      "1"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "\"mno\"",
+      "0"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\",\"h\",\"i\",\"j\"]",
+      "\"e\"",
+      "8"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"planet\",\"comet\",\"asteroid\",\"galaxy\"]",
+      "\"galaxy\"",
+      "3"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"same\",\"words\",\"here\",\"are\",\"same\",\"words\"]",
+      "\"words\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\",\"six\",\"seven\",\"eight\",\"nine\",\"ten\"]",
+      "\"seven\"",
+      "4"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"hello\",\"world\",\"hello\",\"world\"]",
+      "\"hello\"",
+      "4"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\",\"date\",\"elderberry\",\"fig\",\"grape\"]",
+      "\"date\"",
+      "0"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "\"mno\"",
+      "6"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"repeat\",\"this\",\"sentence\",\"repeat\",\"this\",\"sentence\"]",
+      "\"sentence\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"search\",\"for\",\"this\",\"word\",\"in\",\"this\",\"circular\",\"array\"]",
+      "\"this\"",
+      "4"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"single\"]",
+      "\"single\"",
+      "0"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"bus\",\"bike\",\"train\",\"truck\",\"van\"]",
+      "\"van\"",
+      "3"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\",\"yellow\",\"red\",\"blue\",\"green\",\"yellow\"]",
+      "\"yellow\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"unique\",\"words\",\"only\",\"here\"]",
+      "\"only\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\",\"yellow\",\"orange\",\"purple\",\"pink\"]",
+      "\"purple\"",
+      "1"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\",\"six\",\"seven\",\"eight\",\"nine\",\"ten\"]",
+      "\"one\"",
+      "9"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"water\",\"fire\",\"earth\",\"air\",\"ice\",\"steam\",\"cloud\"]",
+      "\"cloud\"",
+      "3"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"python\",\"code\",\"challenge\"]",
+      "\"python\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"data\",\"structures\",\"algorithm\",\"data\"]",
+      "\"structures\"",
+      "0"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\",\"six\",\"seven\",\"eight\",\"nine\",\"ten\"]",
+      "\"five\"",
+      "8"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"java\",\"c\",\"cpp\",\"ruby\",\"swift\",\"go\"]",
+      "\"cpp\"",
+      "5"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"x\",\"y\",\"z\",\"x\",\"y\",\"z\",\"x\",\"y\",\"z\"]",
+      "\"y\"",
+      "5"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"mouse\",\"rat\",\"elephant\",\"giraffe\",\"hippo\"]",
+      "\"elephant\"",
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"orange\",\"peach\",\"plum\",\"grape\",\"kiwi\"]",
+      "\"peach\"",
+      "3"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"last\",\"element\",\"is\",\"the\",\"target\"]",
+      "\"target\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"dog\",\"fish\",\"bird\",\"elephant\",\"antelope\",\"hippo\"]",
+      "\"hippo\"",
+      "2"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "\"vwx\"",
+      "4"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"loop\",\"around\",\"this\",\"circular\",\"array\"]",
+      "\"array\"",
+      "1"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"circular\",\"array\",\"test\",\"case\",\"example\",\"circular\"]",
+      "\"example\"",
+      "4"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\",\"h\",\"i\",\"j\",\"k\",\"l\",\"m\",\"n\",\"o\",\"p\",\"q\",\"r\",\"s\",\"t\"]",
+      "\"p\"",
+      "15"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\",\"six\",\"seven\",\"eight\",\"nine\",\"ten\"]",
+      "\"seven\"",
+      "7"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"quick\",\"brown\",\"fox\",\"jumps\",\"over\",\"the\",\"lazy\",\"dog\"]",
+      "\"lazy\"",
+      "3"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\"]",
+      "\"aaaaaa\"",
+      "1"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\",\"six\",\"seven\",\"eight\",\"nine\",\"ten\"]",
+      "\"ten\"",
+      "2"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"planet\",\"galaxy\",\"universe\",\"comet\"]",
+      "\"moon\"",
+      "4"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"java\",\"c\",\"c++\",\"javascript\",\"go\",\"ruby\"]",
+      "\"ruby\"",
+      "3"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"python\",\"programming\",\"hello\",\"world\"]",
+      "\"programming\"",
+      "4"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\",\"six\",\"seven\",\"eight\",\"nine\",\"ten\"]",
+      "\"two\"",
+      "8"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"python\",\"programming\",\"is\",\"fun\"]",
+      "\"programming\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"planet\",\"galaxy\",\"universe\",\"sun\",\"moon\"]",
+      "\"galaxy\"",
+      "6"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\",\"yellow\",\"purple\",\"orange\",\"pink\"]",
+      "\"pink\"",
+      "6"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"python\",\"programming\",\"hello\"]",
+      "\"programming\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"mango\",\"banana\",\"mango\",\"banana\",\"mango\"]",
+      "\"banana\"",
+      "0"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\",\"six\",\"seven\",\"eight\",\"nine\",\"ten\"]",
+      "\"four\"",
+      "7"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"this\",\"is\",\"a\",\"circular\",\"array\"]",
+      "\"is\"",
+      "5"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"ocean\",\"lake\",\"river\",\"pond\",\"creek\",\"stream\",\"flood\",\"bay\",\"harbor\",\"gulf\"]",
+      "\"stream\"",
+      "5"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"bird\",\"fish\",\"dog\",\"cat\",\"bird\",\"fish\"]",
+      "\"fish\"",
+      "7"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"apple\",\"orange\",\"grape\",\"banana\",\"apple\",\"orange\",\"grape\"]",
+      "\"orange\"",
+      "5"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"longwordthatwillnotmatch\",\"anotherlongword\",\"yetanotherlongword\",\"stillanotherlongword\"]",
+      "\"nonexistent\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"data\",\"structure\",\"algorithm\",\"data\",\"structure\"]",
+      "\"structure\"",
+      "2"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\",\"six\",\"seven\"]",
+      "\"four\"",
+      "6"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"planet\",\"galaxy\"]",
+      "\"galaxy\"",
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\",\"yellow\",\"purple\",\"orange\"]",
+      "\"blue\"",
+      "5"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"x\",\"y\",\"z\",\"a\",\"b\",\"c\",\"d\",\"e\"]",
+      "\"d\"",
+      "7"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"alpha\",\"beta\",\"gamma\",\"delta\",\"epsilon\",\"zeta\",\"eta\",\"theta\",\"iota\",\"kappa\"]",
+      "\"delta\"",
+      "8"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"x\",\"y\",\"z\",\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\"]",
+      "\"d\"",
+      "9"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"x\",\"y\",\"z\",\"x\",\"y\",\"z\",\"x\",\"y\",\"z\"]",
+      "\"y\"",
+      "4"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\",\"date\",\"elderberry\",\"fig\",\"grape\"]",
+      "\"date\"",
+      "5"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\",\"date\",\"elderberry\",\"fig\",\"grape\"]",
+      "\"banana\"",
+      "6"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"find\",\"the\",\"shortest\",\"distance\",\"in\",\"a\",\"circular\",\"array\"]",
+      "\"distance\"",
+      "5"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\",\"date\",\"elderberry\",\"fig\",\"grape\"]",
+      "\"banana\"",
+      "5"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "\"mno\"",
+      "5"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"python\",\"programming\",\"code\",\"hello\"]",
+      "\"code\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"foo\",\"bar\",\"baz\",\"qux\",\"quux\",\"corge\",\"grault\",\"garply\",\"waldo\",\"fred\",\"plugh\",\"xyzzy\",\"thud\"]",
+      "\"garply\"",
+      "10"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\",\"date\",\"elderberry\",\"fig\",\"grape\"]",
+      "\"banana\"",
+      "4"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "\"mno\"",
+      "7"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"aardvark\",\"anteater\",\"armadillo\",\"baboon\",\"badger\",\"bat\",\"bear\",\"beaver\",\"bison\",\"boar\"]",
+      "\"badger\"",
+      "9"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"dog\",\"fish\",\"bird\",\"ant\"]",
+      "\"ant\"",
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"repeat\",\"repeat\",\"repeat\",\"repeat\",\"repeat\",\"repeat\"]",
+      "\"repeat\"",
+      "5"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"green\",\"blue\",\"yellow\",\"orange\",\"purple\"]",
+      "\"green\"",
+      "5"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"data\",\"structures\",\"algorithm\",\"data\",\"structures\"]",
+      "\"data\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"x\",\"y\",\"z\",\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\",\"h\",\"i\",\"j\",\"k\",\"l\",\"m\",\"n\",\"o\",\"p\",\"q\",\"r\",\"s\",\"t\",\"u\",\"v\",\"w\"]",
+      "\"m\"",
+      "10"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"aaa\",\"bbb\",\"ccc\",\"ddd\",\"eee\",\"fff\",\"ggg\",\"hhh\",\"iii\",\"jjj\"]",
+      "\"jjj\"",
+      "9"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"longerword\",\"stringexample\",\"anotherexample\",\"yetanother\",\"finalword\"]",
+      "\"anotherexample\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"complex\",\"circular\",\"array\",\"problem\",\"solution\"]",
+      "\"complex\"",
+      "3"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "\"vwx\"",
+      "8"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"loop\",\"circle\",\"ring\",\"cycle\",\"wheel\",\"orbit\",\"oval\"]",
+      "\"oval\"",
+      "3"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\",\"date\",\"elderberry\",\"fig\",\"grape\"]",
+      "\"grape\"",
+      "1"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"repeated\",\"words\",\"are\",\"repeated\",\"here\",\"repeated\"]",
+      "\"repeated\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"hello\",\"python\",\"world\"]",
+      "\"python\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"leetcode\",\"problem\",\"solving\",\"leetcode\",\"problem\"]",
+      "\"solving\"",
+      "4"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\",\"h\",\"i\",\"j\",\"k\",\"l\",\"m\",\"n\",\"o\",\"p\",\"q\",\"r\",\"s\",\"t\",\"u\",\"v\",\"w\",\"x\",\"y\",\"z\"]",
+      "\"z\"",
+      "0"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"planet\",\"galaxy\",\"universe\"]",
+      "\"planet\"",
+      "0"
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"yak\",\"xylophone\",\"wolf\",\"unicorn\",\"tiger\",\"snake\"]",
+      "\"yak\"",
+      "6"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\",\"six\",\"seven\",\"eight\",\"nine\",\"ten\"]",
+      "\"seven\"",
+      "1"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"dog\",\"fish\",\"bird\",\"elephant\",\"tiger\",\"lion\",\"bear\"]",
+      "\"fish\"",
+      "6"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "[\"circular\",\"array\",\"example\",\"circular\"]",
+      "\"example\"",
+      "2"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"leetcode\",\"python\",\"hello\"]",
+      "\"python\"",
+      "0"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"bike\",\"truck\",\"motorcycle\",\"bus\",\"train\",\"boat\",\"plane\"]",
+      "\"plane\"",
+      "6"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"unique\",\"words\",\"here\",\"only\",\"once\"]",
+      "\"once\"",
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"coding\",\"is\",\"fun\",\"coding\",\"is\",\"great\"]",
+      "\"great\"",
+      "3"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"find\",\"me\",\"if\",\"you\",\"can\"]",
+      "\"can\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqr\",\"stu\",\"vwx\",\"yz\"]",
+      "\"vwx\"",
+      "5"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abcde\",\"abcdef\",\"abcdefg\",\"abcdefgh\",\"abcdefghi\",\"abcdefghij\"]",
+      "\"abcdefghij\"",
+      "5"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"repeat\",\"this\",\"is\",\"a\",\"test\",\"repeat\"]",
+      "\"test\"",
+      "4"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"planet\"]",
+      "\"planet\"",
+      "0"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\"]",
+      "\"planet\"",
+      "0"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"sky\"]",
+      "\"star\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"planet\"]",
+      "\"planet\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"find\",\"me\",\"in\",\"the\",\"list\"]",
+      "\"list\"",
+      "0"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"flower\",\"grass\",\"tree\",\"bush\"]",
+      "\"bush\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"xyz\",\"uvw\",\"rst\",\"qpo\"]",
+      "\"rst\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"unique\",\"words\",\"here\"]",
+      "\"words\"",
+      "1"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"aaa\",\"bbb\",\"ccc\"]",
+      "\"aaa\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"jkl\"]",
+      "\"def\"",
+      "3"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\"]",
+      "\"two\"",
+      "4"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"up\",\"down\",\"left\",\"right\"]",
+      "\"up\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"alpha\",\"beta\",\"gamma\",\"delta\",\"epsilon\"]",
+      "\"beta\"",
+      "3"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"mouse\"]",
+      "\"elephant\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"foo\",\"bar\",\"baz\"]",
+      "\"foo\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"bat\"]",
+      "\"mouse\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"sky\"]",
+      "\"moon\"",
+      "3"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"coding\",\"is\",\"fun\",\"coding\"]",
+      "\"fun\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"giraffe\",\"elephant\"]",
+      "\"hippo\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\",\"red\"]",
+      "\"red\"",
+      "3"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\"]",
+      "\"three\"",
+      "0"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"dog\",\"bird\"]",
+      "\"dog\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"cup\",\"bottle\",\"spoon\",\"knife\",\"cup\"]",
+      "\"spoon\"",
+      "4"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"bird\",\"fish\"]",
+      "\"elephant\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"unique\"]",
+      "\"unique\"",
+      "0"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"hello\"]",
+      "\"world\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"bike\",\"bus\",\"train\",\"boat\"]",
+      "\"plane\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"green\",\"blue\",\"yellow\"]",
+      "\"blue\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\",\"yellow\"]",
+      "\"blue\"",
+      "0"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\"]",
+      "\"four\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"java\",\"c\",\"c++\",\"ruby\"]",
+      "\"java\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\",\"yellow\"]",
+      "\"blue\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"xyz\",\"uvw\",\"rst\",\"qpo\"]",
+      "\"qpo\"",
+      "3"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"planet\"]",
+      "\"planet\"",
+      "1"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"java\",\"c++\",\"ruby\"]",
+      "\"python\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"fast\",\"slow\",\"quick\"]",
+      "\"quick\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"jkl\"]",
+      "\"abc\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"start\",\"middle\",\"end\"]",
+      "\"end\"",
+      "0"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\"]",
+      "\"planet\"",
+      "2"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"loop\",\"start\",\"end\",\"loop\"]",
+      "\"loop\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\",\"yellow\",\"purple\"]",
+      "\"green\"",
+      "4"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"bus\",\"train\",\"plane\"]",
+      "\"train\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"green\",\"blue\",\"yellow\",\"black\"]",
+      "\"red\"",
+      "4"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"house\",\"car\",\"tree\",\"road\",\"house\"]",
+      "\"road\"",
+      "0"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\"]",
+      "\"six\"",
+      "0"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"giraffe\",\"elephant\",\"lion\"]",
+      "\"elephant\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\"]",
+      "\"three\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"bus\",\"train\"]",
+      "\"train\"",
+      "2"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\"]",
+      "\"one\"",
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"bike\",\"train\",\"bus\"]",
+      "\"bike\"",
+      "3"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\"]",
+      "\"star\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"search\",\"this\",\"array\",\"for\",\"target\"]",
+      "\"target\"",
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"foo\",\"bar\",\"baz\"]",
+      "\"foo\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\",\"e\"]",
+      "\"a\"",
+      "4"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"start\",\"middle\",\"end\"]",
+      "\"start\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"house\",\"building\",\"apartment\"]",
+      "\"house\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\"]",
+      "\"one\"",
+      "3"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"up\",\"down\",\"left\",\"right\"]",
+      "\"left\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"bird\",\"fish\"]",
+      "\"dog\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"bat\",\"rat\"]",
+      "\"rat\"",
+      "3"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\"]",
+      "\"three\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"jkl\"]",
+      "\"def\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"bird\",\"fish\"]",
+      "\"fish\"",
+      "3"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"world\",\"hello\"]",
+      "\"world\"",
+      "0"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"coding\",\"is\",\"fun\"]",
+      "\"fun\"",
+      "2"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\"]",
+      "\"five\"",
+      "2"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\",\"six\"]",
+      "\"three\"",
+      "0"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\"]",
+      "\"four\"",
+      "0"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\"]",
+      "\"one\"",
+      "2"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"bat\",\"rat\"]",
+      "\"bat\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"planet\"]",
+      "\"moon\"",
+      "0"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"repeat\",\"repeat\",\"repeat\",\"repeat\"]",
+      "\"repeat\"",
+      "2"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"unique\",\"words\",\"only\",\"here\"]",
+      "\"only\"",
+      "0"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"bat\"]",
+      "\"bat\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"sky\"]",
+      "\"moon\"",
+      "0"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"java\",\"c++\"]",
+      "\"ruby\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"dog\",\"bird\",\"fish\"]",
+      "\"dog\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\"]",
+      "\"moon\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\",\"yellow\"]",
+      "\"green\"",
+      "0"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\",\"date\"]",
+      "\"banana\"",
+      "3"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"bike\",\"train\"]",
+      "\"bus\"",
+      "1"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"planet\",\"galaxy\"]",
+      "\"star\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\",\"red\"]",
+      "\"blue\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\",\"date\",\"elderberry\"]",
+      "\"banana\"",
+      "3"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\"]",
+      "\"five\"",
+      "0"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\"]",
+      "\"three\"",
+      "0"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\",\"date\",\"elderberry\"]",
+      "\"banana\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"test\",\"case\",\"test\"]",
+      "\"test\"",
+      "2"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"foo\",\"bar\",\"baz\",\"qux\",\"quux\",\"corge\"]",
+      "\"qux\"",
+      "5"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hello\",\"hello\"]",
+      "\"hello\"",
+      "1"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"a\",\"a\",\"a\"]",
+      "\"a\"",
+      "2"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\"]",
+      "\"blue\"",
+      "0"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"left\",\"right\",\"up\",\"down\"]",
+      "\"up\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"yak\",\"antelope\"]",
+      "\"antelope\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\",\"e\"]",
+      "\"d\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"dog\",\"elephant\",\"cat\"]",
+      "\"elephant\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"repeat\",\"repeat\",\"repeat\"]",
+      "\"repeat\"",
+      "2"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"north\",\"south\",\"east\",\"west\"]",
+      "\"north\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"elephant\",\"tiger\",\"lion\",\"giraffe\"]",
+      "\"tiger\"",
+      "4"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"loop\",\"around\",\"the\",\"circular\",\"array\"]",
+      "\"around\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\"]",
+      "\"six\"",
+      "2"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"planet\"]",
+      "\"planet\"",
+      "3"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\",\"five\"]",
+      "\"one\"",
+      "4"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"test\",\"case\",\"test\"]",
+      "\"test\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"up\",\"down\",\"left\",\"right\"]",
+      "\"up\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"unique\",\"words\",\"only\",\"here\"]",
+      "\"words\"",
+      "3"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"repeat\",\"repeat\",\"repeat\"]",
+      "\"repeat\"",
+      "1"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"alpha\",\"beta\",\"gamma\",\"delta\"]",
+      "\"gamma\"",
+      "2"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"moon\",\"star\",\"planet\"]",
+      "\"star\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"left\",\"right\",\"up\",\"down\"]",
+      "\"up\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"one\",\"two\",\"three\",\"four\"]",
+      "\"four\"",
+      "3"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"z\",\"y\",\"x\",\"w\",\"v\"]",
+      "\"x\"",
+      "4"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"a\",\"a\",\"a\",\"a\"]",
+      "\"b\"",
+      "0"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"green\",\"blue\"]",
+      "\"blue\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"search\",\"for\",\"the\",\"target\"]",
+      "\"search\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"bus\",\"train\"]",
+      "\"train\"",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"happy\",\"sad\",\"mad\"]",
+      "\"mad\"",
+      "0"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\",\"bird\",\"fish\",\"dog\"]",
+      "\"fish\"",
+      "0"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "[\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\"]",
+      "\"ghi\"",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"red\",\"blue\",\"green\"]",
+      "\"blue\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "[\"alpha\",\"beta\",\"gamma\",\"delta\",\"epsilon\"]",
+      "\"zeta\"",
+      "2"
+    ],
+    "ExpectedOutput": "-1"
+  },
+  {
+    "Inputs": [
+      "[\"repeat\",\"repeat\",\"repeat\"]",
+      "\"repeat\"",
+      "0"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"java\",\"c\",\"c++\"]",
+      "\"java\"",
+      "2"
+    ],
+    "ExpectedOutput": "1"
+  }
+]

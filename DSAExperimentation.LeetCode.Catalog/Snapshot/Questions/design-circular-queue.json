@@ -1,0 +1,107 @@
+{
+  "QuestionId": 860,
+  "FrontendId": 622,
+  "Title": "Design Circular Queue",
+  "TitleSlug": "design-circular-queue",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Linked List",
+      "Slug": "linked-list"
+    },
+    {
+      "Name": "Design",
+      "Slug": "design"
+    },
+    {
+      "Name": "Queue",
+      "Slug": "queue"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Design Circular Deque",
+      "TitleSlug": "design-circular-deque",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Design Front Middle Back Queue",
+      "TitleSlug": "design-front-middle-back-queue",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= k <= 1000",
+    "0 <= value <= 1000",
+    "At most 3000 calls will be made to enQueue, deQueue, Front, Rear, isEmpty, and isFull."
+  ],
+  "Signature": {
+    "FunctionName": null,
+    "Parameters": [],
+    "ReturnType": null,
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": "MyCircularQueue",
+    "ConstructorParameters": [
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "Methods": [
+      {
+        "Name": "enQueue",
+        "Parameters": [
+          {
+            "Name": "value",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "boolean"
+      },
+      {
+        "Name": "deQueue",
+        "Parameters": [],
+        "ReturnType": "boolean"
+      },
+      {
+        "Name": "Front",
+        "Parameters": [],
+        "ReturnType": "integer"
+      },
+      {
+        "Name": "Rear",
+        "Parameters": [],
+        "ReturnType": "integer"
+      },
+      {
+        "Name": "isEmpty",
+        "Parameters": [],
+        "ReturnType": "boolean"
+      },
+      {
+        "Name": "isFull",
+        "Parameters": [],
+        "ReturnType": "boolean"
+      }
+    ]
+  },
+  "CSharpStarterCode": "public class MyCircularQueue {\n\n    public MyCircularQueue(int k) {\n        \n    }\n    \n    public bool EnQueue(int value) {\n        \n    }\n    \n    public bool DeQueue() {\n        \n    }\n    \n    public int Front() {\n        \n    }\n    \n    public int Rear() {\n        \n    }\n    \n    public bool IsEmpty() {\n        \n    }\n    \n    public bool IsFull() {\n        \n    }\n}\n\n/**\n * Your MyCircularQueue object will be instantiated and called as such:\n * MyCircularQueue obj = new MyCircularQueue(k);\n * bool param_1 = obj.EnQueue(value);\n * bool param_2 = obj.DeQueue();\n * int param_3 = obj.Front();\n * int param_4 = obj.Rear();\n * bool param_5 = obj.IsEmpty();\n * bool param_6 = obj.IsFull();\n */",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"MyCircularQueue\",\"enQueue\",\"enQueue\",\"enQueue\",\"enQueue\",\"Rear\",\"isFull\",\"deQueue\",\"enQueue\",\"Rear\"]",
+        "[[3],[1],[2],[3],[4],[],[],[],[4],[]]"
+      ],
+      "ExpectedOutput": "[null, true, true, true, false, 3, true, true, true, 4]"
+    }
+  ],
+  "ContentHtml": "<p>Design your implementation of the circular queue. The circular queue is a linear data structure in which the operations are performed based on FIFO (First In First Out) principle, and the last position is connected back to the first position to make a circle. It is also called &quot;Ring Buffer&quot;.</p>\n\n<p>One of the benefits of the circular queue is that we can make use of the spaces in front of the queue. In a normal queue, once the queue becomes full, we cannot insert the next element even if there is a space in front of the queue. But using the circular queue, we can use the space to store new values.</p>\n\n<p>Implement the <code>MyCircularQueue</code> class:</p>\n\n<ul>\n\t<li><code>MyCircularQueue(k)</code> Initializes the object with the size of the queue to be <code>k</code>.</li>\n\t<li><code>int Front()</code> Gets the front item from the queue. If the queue is empty, return <code>-1</code>.</li>\n\t<li><code>int Rear()</code> Gets the last item from the queue. If the queue is empty, return <code>-1</code>.</li>\n\t<li><code>boolean enQueue(int value)</code> Inserts an element into the circular queue. Return <code>true</code> if the operation is successful.</li>\n\t<li><code>boolean deQueue()</code> Deletes an element from the circular queue. Return <code>true</code> if the operation is successful.</li>\n\t<li><code>boolean isEmpty()</code> Checks whether the circular queue is empty or not.</li>\n\t<li><code>boolean isFull()</code> Checks whether the circular queue is full or not.</li>\n</ul>\n\n<p>You must solve the problem without using the built-in queue data structure in your programming language.&nbsp;</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input</strong>\n[&quot;MyCircularQueue&quot;, &quot;enQueue&quot;, &quot;enQueue&quot;, &quot;enQueue&quot;, &quot;enQueue&quot;, &quot;Rear&quot;, &quot;isFull&quot;, &quot;deQueue&quot;, &quot;enQueue&quot;, &quot;Rear&quot;]\n[[3], [1], [2], [3], [4], [], [], [], [4], []]\n<strong>Output</strong>\n[null, true, true, true, false, 3, true, true, true, 4]\n\n<strong>Explanation</strong>\nMyCircularQueue myCircularQueue = new MyCircularQueue(3);\nmyCircularQueue.enQueue(1); // return True\nmyCircularQueue.enQueue(2); // return True\nmyCircularQueue.enQueue(3); // return True\nmyCircularQueue.enQueue(4); // return False\nmyCircularQueue.Rear();     // return 3\nmyCircularQueue.isFull();   // return True\nmyCircularQueue.deQueue();  // return True\nmyCircularQueue.enQueue(4); // return True\nmyCircularQueue.Rear();     // return 4\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= k &lt;= 1000</code></li>\n\t<li><code>0 &lt;= value &lt;= 1000</code></li>\n\t<li>At most <code>3000</code> calls will be made to&nbsp;<code>enQueue</code>, <code>deQueue</code>,&nbsp;<code>Front</code>,&nbsp;<code>Rear</code>,&nbsp;<code>isEmpty</code>, and&nbsp;<code>isFull</code>.</li>\n</ul>\n"
+}

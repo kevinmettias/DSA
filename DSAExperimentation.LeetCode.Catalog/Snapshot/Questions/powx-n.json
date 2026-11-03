@@ -1,0 +1,88 @@
+{
+  "QuestionId": 50,
+  "FrontendId": 50,
+  "Title": "Pow(x, n)",
+  "TitleSlug": "powx-n",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Recursion",
+      "Slug": "recursion"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Sqrt(x)",
+      "TitleSlug": "sqrtx",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Super Pow",
+      "TitleSlug": "super-pow",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Count Collisions of Monkeys on a Polygon",
+      "TitleSlug": "count-collisions-of-monkeys-on-a-polygon",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "-100.0 < x < 100.0",
+    "-2^31 <= n <= 2^31-1",
+    "n is an integer.",
+    "Either x is not zero or n > 0.",
+    "-10^4 <= x^n <= 10^4"
+  ],
+  "Signature": {
+    "FunctionName": "myPow",
+    "Parameters": [
+      {
+        "Name": "x",
+        "Type": "double"
+      },
+      {
+        "Name": "n",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "double",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public double MyPow(double x, int n) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "2.00000",
+        "10"
+      ],
+      "ExpectedOutput": "1024.00000"
+    },
+    {
+      "Inputs": [
+        "2.10000",
+        "3"
+      ],
+      "ExpectedOutput": "9.26100"
+    },
+    {
+      "Inputs": [
+        "2.00000",
+        "-2"
+      ],
+      "ExpectedOutput": "0.25000"
+    }
+  ],
+  "ContentHtml": "<p>Implement <a href=\"http://www.cplusplus.com/reference/valarray/pow/\" target=\"_blank\">pow(x, n)</a>, which calculates <code>x</code> raised to the power <code>n</code> (i.e., <code>x<sup>n</sup></code>).</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> x = 2.00000, n = 10\n<strong>Output:</strong> 1024.00000\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> x = 2.10000, n = 3\n<strong>Output:</strong> 9.26100\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> x = 2.00000, n = -2\n<strong>Output:</strong> 0.25000\n<strong>Explanation:</strong> 2<sup>-2</sup> = 1/2<sup>2</sup> = 1/4 = 0.25\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>-100.0 &lt; x &lt; 100.0</code></li>\n\t<li><code>-2<sup>31</sup> &lt;= n &lt;= 2<sup>31</sup>-1</code></li>\n\t<li><code>n</code> is an integer.</li>\n\t<li>Either <code>x</code> is not zero or <code>n &gt; 0</code>.</li>\n\t<li><code>-10<sup>4</sup> &lt;= x<sup>n</sup> &lt;= 10<sup>4</sup></code></li>\n</ul>\n"
+}

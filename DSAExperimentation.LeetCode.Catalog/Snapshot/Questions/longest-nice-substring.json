@@ -1,0 +1,82 @@
+{
+  "QuestionId": 1873,
+  "FrontendId": 1763,
+  "Title": "Longest Nice Substring",
+  "TitleSlug": "longest-nice-substring",
+  "Difficulty": "Easy",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Divide and Conquer",
+      "Slug": "divide-and-conquer"
+    },
+    {
+      "Name": "Bit Manipulation",
+      "Slug": "bit-manipulation"
+    },
+    {
+      "Name": "Sliding Window",
+      "Slug": "sliding-window"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Number of Good Paths",
+      "TitleSlug": "number-of-good-paths",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [
+    "Brute force and check each substring to see if it is nice."
+  ],
+  "Constraints": [
+    "1 <= s.length <= 100",
+    "s consists of uppercase and lowercase English letters."
+  ],
+  "Signature": {
+    "FunctionName": "longestNiceSubstring",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "string",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public string LongestNiceSubstring(string s) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"YazaAay\""
+      ],
+      "ExpectedOutput": "\"aAa\""
+    },
+    {
+      "Inputs": [
+        "\"Bb\""
+      ],
+      "ExpectedOutput": "\"Bb\""
+    },
+    {
+      "Inputs": [
+        "\"c\""
+      ],
+      "ExpectedOutput": "\"\""
+    }
+  ],
+  "ContentHtml": "<p>A string <code>s</code> is <strong>nice</strong> if, for every letter of the alphabet that <code>s</code> contains, it appears <strong>both</strong> in uppercase and lowercase. For example, <code>&quot;abABB&quot;</code> is nice because <code>&#39;A&#39;</code> and <code>&#39;a&#39;</code> appear, and <code>&#39;B&#39;</code> and <code>&#39;b&#39;</code> appear. However, <code>&quot;abA&quot;</code> is not because <code>&#39;b&#39;</code> appears, but <code>&#39;B&#39;</code> does not.</p>\n\n<p>Given a string <code>s</code>, return <em>the longest <strong>substring</strong> of <code>s</code> that is <strong>nice</strong>. If there are multiple, return the substring of the <strong>earliest</strong> occurrence. If there are none, return an empty string</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;YazaAay&quot;\n<strong>Output:</strong> &quot;aAa&quot;\n<strong>Explanation: </strong>&quot;aAa&quot; is a nice string because &#39;A/a&#39; is the only letter of the alphabet in s, and both &#39;A&#39; and &#39;a&#39; appear.\n&quot;aAa&quot; is the longest nice substring.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;Bb&quot;\n<strong>Output:</strong> &quot;Bb&quot;\n<strong>Explanation:</strong> &quot;Bb&quot; is a nice string because both &#39;B&#39; and &#39;b&#39; appear. The whole string is a substring.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;c&quot;\n<strong>Output:</strong> &quot;&quot;\n<strong>Explanation:</strong> There are no nice substrings.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length &lt;= 100</code></li>\n\t<li><code>s</code> consists of uppercase and lowercase English letters.</li>\n</ul>\n"
+}

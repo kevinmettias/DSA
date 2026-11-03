@@ -1,0 +1,1028 @@
+[
+  {
+    "Inputs": [
+      "\"mnoonmmon\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"mamadmim\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"abcdcba\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcdedcba\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"mamad\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"aaaaa\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghi\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abacdfgdcaba\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"noonnoon\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abcde\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"racecar\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcdeedcba\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"banana\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abc\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abcbabcbabcba\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"abcdefgh\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abcd\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijj\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"mnoonmnonoomnm\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeeffgg\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"abccbaabccbaabccbaabccba\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaabbaaaaa\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"nunrunrunrun\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"abaaacbaaaaba\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"racecarlevelnoonracecar\""
+    ],
+    "ExpectedOutput": "49"
+  },
+  {
+    "Inputs": [
+      "\"deeeeefedeeeed\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"rotorrotor\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abcbaacbabcba\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"abcbacbacbacb\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"tattarrattat\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"repaperrelevelrepeepr\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"babadabababa\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"madaminnadammadam\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"abccbaabcdcba\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"aabaaaabaaaabaa\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"abcdeffedcbaffedcba\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abccbaabccba\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"xyzabcbaedcbaxyz\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"levellevellevellevel\""
+    ],
+    "ExpectedOutput": "75"
+  },
+  {
+    "Inputs": [
+      "\"noonnoonnoonnoon\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"mississippimississippi\""
+    ],
+    "ExpectedOutput": "49"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyzxyz\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abacdfgdcabaxyzzyzyzyzyzx\""
+    ],
+    "ExpectedOutput": "27"
+  },
+  {
+    "Inputs": [
+      "\"aabbbaabbbaabbbaaa\""
+    ],
+    "ExpectedOutput": "49"
+  },
+  {
+    "Inputs": [
+      "\"abacadaeafagahagaha\""
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "\"noonracecarnoon\""
+    ],
+    "ExpectedOutput": "13"
+  },
+  {
+    "Inputs": [
+      "\"aabbbaaabbbaaabbbaaabbbaaabbba\""
+    ],
+    "ExpectedOutput": "221"
+  },
+  {
+    "Inputs": [
+      "\"ababababababababa\""
+    ],
+    "ExpectedOutput": "63"
+  },
+  {
+    "Inputs": [
+      "\"abacabaabacabaabacaba\""
+    ],
+    "ExpectedOutput": "49"
+  },
+  {
+    "Inputs": [
+      "\"repel\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"levelnoonlevel\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"rotorlevelmadamracecar\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"noonnoonnoonnoonnoonnoon\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"kayak\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"mnopqrstuvuvwxyzyx\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"madamlevelmadam\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"babcbabcbabcba\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"abacadaeafagaha\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"leveloneleveleleveldoneleveldot\""
+    ],
+    "ExpectedOutput": "55"
+  },
+  {
+    "Inputs": [
+      "\"xyzzzzyzyzyzx\""
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "\"madaminnadam\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"abababababababab\""
+    ],
+    "ExpectedOutput": "63"
+  },
+  {
+    "Inputs": [
+      "\"racecarabcdeedcbacar\""
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "\"noon\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abcbacbacb\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"ababababababababab\""
+    ],
+    "ExpectedOutput": "81"
+  },
+  {
+    "Inputs": [
+      "\"deeee\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"leveloneleveltwo\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"xyzbcbzxyxzyzyzyz\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"abcdefggfedcba\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbbaaaa\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"abcdeffedcba\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"ababcbaababcbaababcba\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"babcbabcbabcbabcbabcbabcbabcbabcbabcbabcba\""
+    ],
+    "ExpectedOutput": "399"
+  },
+  {
+    "Inputs": [
+      "\"ababaababaababa\""
+    ],
+    "ExpectedOutput": "27"
+  },
+  {
+    "Inputs": [
+      "\"abcbabcbaabcbabcba\""
+    ],
+    "ExpectedOutput": "81"
+  },
+  {
+    "Inputs": [
+      "\"mmabccbaakak\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"abcdefedcba\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"palindromeemordnilap\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"level\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"racecarlevelracecar\""
+    ],
+    "ExpectedOutput": "49"
+  },
+  {
+    "Inputs": [
+      "\"levellevellevel\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabaaaaabaaaaabaaaaab\""
+    ],
+    "ExpectedOutput": "143"
+  },
+  {
+    "Inputs": [
+      "\"xyxzyxzyxzyx\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"nunabannun\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"deeeeefeeeed\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "143"
+  },
+  {
+    "Inputs": [
+      "\"abababababababababab\""
+    ],
+    "ExpectedOutput": "99"
+  },
+  {
+    "Inputs": [
+      "\"madamimadamracecar\""
+    ],
+    "ExpectedOutput": "77"
+  },
+  {
+    "Inputs": [
+      "\"abbbbabbbaaaaaaaabbba\""
+    ],
+    "ExpectedOutput": "49"
+  },
+  {
+    "Inputs": [
+      "\"radar\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"abababa\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacaba\""
+    ],
+    "ExpectedOutput": "49"
+  },
+  {
+    "Inputs": [
+      "\"abacabadabacabada\""
+    ],
+    "ExpectedOutput": "63"
+  },
+  {
+    "Inputs": [
+      "\"bananaananab\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffggg\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"redivider\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "99"
+  },
+  {
+    "Inputs": [
+      "\"abcabccbaabcabccba\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"mnbvcxzlkjhgfdsapoiuytrewq\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"deedlevel\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"abcbabcba\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"deifiedrotatordeified\""
+    ],
+    "ExpectedOutput": "49"
+  },
+  {
+    "Inputs": [
+      "\"noonnoonnoonnoonnoon\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abcbadefgfe\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"anana\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"ababaabababababa\""
+    ],
+    "ExpectedOutput": "55"
+  },
+  {
+    "Inputs": [
+      "\"abracadabraabracadabra\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"detartrated\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"manamzzamanaplanacanalpanamazzamanaplanacanalpanamazzzzzz\""
+    ],
+    "ExpectedOutput": "529"
+  },
+  {
+    "Inputs": [
+      "\"xyxyxyxyxyxyxyxyx\""
+    ],
+    "ExpectedOutput": "63"
+  },
+  {
+    "Inputs": [
+      "\"madamimadam\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"levelonelevelonelevel\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"madamracecaramadam\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"aaabbaaabbaaa\""
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"xylophonepiponolyx\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"racecarandracecar\""
+    ],
+    "ExpectedOutput": "49"
+  },
+  {
+    "Inputs": [
+      "\"aabaaaabaaba\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"racecarannakayak\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"kayakkayakkayakkayak\""
+    ],
+    "ExpectedOutput": "75"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbaaaaa\""
+    ],
+    "ExpectedOutput": "27"
+  },
+  {
+    "Inputs": [
+      "\"mammadmooommom\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbaaaaaabbbbaaaaa\""
+    ],
+    "ExpectedOutput": "75"
+  },
+  {
+    "Inputs": [
+      "\"racecarracecar\""
+    ],
+    "ExpectedOutput": "49"
+  },
+  {
+    "Inputs": [
+      "\"noonnoonnoon\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"repaper\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"racecarlevelrotorkayak\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"rotorrotorrotor\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabaaabaaaabaaaaabaaaa\""
+    ],
+    "ExpectedOutput": "99"
+  },
+  {
+    "Inputs": [
+      "\"ababaababab\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"noonhighnoon\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"tacocattacocattaco\""
+    ],
+    "ExpectedOutput": "49"
+  },
+  {
+    "Inputs": [
+      "\"rotorrotorrotorrotor\""
+    ],
+    "ExpectedOutput": "75"
+  },
+  {
+    "Inputs": [
+      "\"bananaananananab\""
+    ],
+    "ExpectedOutput": "45"
+  },
+  {
+    "Inputs": [
+      "\"zzzyzyzyzyzyzyzyzyzyzyzyz\""
+    ],
+    "ExpectedOutput": "121"
+  },
+  {
+    "Inputs": [
+      "\"deeddeeddeed\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaabbbbbaaaa\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"rotorresistor\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"xylophonelevel\""
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "\"aaabaaaabaaaaabaaaaaaab\""
+    ],
+    "ExpectedOutput": "77"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffgggzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "99"
+  },
+  {
+    "Inputs": [
+      "\"abcdedcbaabcdedcbaabcdedcba\""
+    ],
+    "ExpectedOutput": "81"
+  },
+  {
+    "Inputs": [
+      "\"civic\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"rotor\""
+    ],
+    "ExpectedOutput": "3"
+  },
+  {
+    "Inputs": [
+      "\"qwertyuioplkjhgfdsazxcvbnmnbvcxzasdfghjklpoiuytrewq\""
+    ],
+    "ExpectedOutput": "49"
+  },
+  {
+    "Inputs": [
+      "\"abbaabbbaabba\""
+    ],
+    "ExpectedOutput": "11"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghihgfedcba\""
+    ],
+    "ExpectedOutput": "15"
+  },
+  {
+    "Inputs": [
+      "\"tacocattaco\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"repaperrepaperrepaper\""
+    ],
+    "ExpectedOutput": "49"
+  },
+  {
+    "Inputs": [
+      "\"aabaaaabaa\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"reviled\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"amoreroma\""
+    ],
+    "ExpectedOutput": "7"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffggghhhiiiijjjjkkkkllllmmmnnnooopppqqqqrrrrssssttttuuuuvvvvwwwwwxxxxxyyyyyzzzzzzyyyyyxxxwwvvuuttrrqqppoonnmlkkjjiihhggffeeddccbbaa\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"xyzyzyzyzyzyzyzyz\""
+    ],
+    "ExpectedOutput": "63"
+  },
+  {
+    "Inputs": [
+      "\"xyxzyzyzyzyzyzyx\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzyyyyyxxxwwvvuuttrrqqppoonnmlkkjjiihhggffeeddccbbaa\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"rotorabcdrotor\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeeffgghhiii\""
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "\"abcdedcbabcdedcbabcdedcb\""
+    ],
+    "ExpectedOutput": "135"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeefffggghhhiiiijjjjkkkkllllmmmnnnooopppqqqqrrrrssssttttuuuuvvvvwwwwwxxxxxyyyyyzzzzz\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"deed\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbbbaaaaa\""
+    ],
+    "ExpectedOutput": "25"
+  },
+  {
+    "Inputs": [
+      "\"levelwasracecar\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"racecarabcdeedcba\""
+    ],
+    "ExpectedOutput": "9"
+  }
+]

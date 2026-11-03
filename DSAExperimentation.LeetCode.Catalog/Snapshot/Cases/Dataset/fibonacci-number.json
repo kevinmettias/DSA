@@ -1,0 +1,86 @@
+[
+  {
+    "Inputs": [
+      "0"
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "30"
+    ],
+    "ExpectedOutput": "832040"
+  },
+  {
+    "Inputs": [
+      "20"
+    ],
+    "ExpectedOutput": "6765"
+  },
+  {
+    "Inputs": [
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "10"
+    ],
+    "ExpectedOutput": "55"
+  },
+  {
+    "Inputs": [
+      "5"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "8"
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "29"
+    ],
+    "ExpectedOutput": "514229"
+  },
+  {
+    "Inputs": [
+      "15"
+    ],
+    "ExpectedOutput": "610"
+  },
+  {
+    "Inputs": [
+      "12"
+    ],
+    "ExpectedOutput": "144"
+  },
+  {
+    "Inputs": [
+      "18"
+    ],
+    "ExpectedOutput": "2584"
+  },
+  {
+    "Inputs": [
+      "6"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "25"
+    ],
+    "ExpectedOutput": "75025"
+  },
+  {
+    "Inputs": [
+      "28"
+    ],
+    "ExpectedOutput": "317811"
+  }
+]

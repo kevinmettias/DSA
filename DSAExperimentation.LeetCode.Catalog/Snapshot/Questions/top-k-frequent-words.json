@@ -1,0 +1,114 @@
+{
+  "QuestionId": 692,
+  "FrontendId": 692,
+  "Title": "Top K Frequent Words",
+  "TitleSlug": "top-k-frequent-words",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Trie",
+      "Slug": "trie"
+    },
+    {
+      "Name": "Sorting",
+      "Slug": "sorting"
+    },
+    {
+      "Name": "Heap (Priority Queue)",
+      "Slug": "heap-priority-queue"
+    },
+    {
+      "Name": "Bucket Sort",
+      "Slug": "bucket-sort"
+    },
+    {
+      "Name": "Counting",
+      "Slug": "counting"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Top K Frequent Elements",
+      "TitleSlug": "top-k-frequent-elements",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "K Closest Points to Origin",
+      "TitleSlug": "k-closest-points-to-origin",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Sort Features by Popularity",
+      "TitleSlug": "sort-features-by-popularity",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Sender With Largest Word Count",
+      "TitleSlug": "sender-with-largest-word-count",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Number of Pairs in Array",
+      "TitleSlug": "maximum-number-of-pairs-in-array",
+      "Difficulty": "Easy"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= words.length <= 500",
+    "1 <= words[i].length <= 10",
+    "words[i] consists of lowercase English letters.",
+    "k is in the range [1, The number of unique words[i]]"
+  ],
+  "Signature": {
+    "FunctionName": "topKFrequent",
+    "Parameters": [
+      {
+        "Name": "words",
+        "Type": "string[]"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "list<string>",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public IList<string> TopKFrequent(string[] words, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"i\",\"love\",\"leetcode\",\"i\",\"love\",\"coding\"]",
+        "2"
+      ],
+      "ExpectedOutput": "[\"i\",\"love\"]"
+    },
+    {
+      "Inputs": [
+        "[\"the\",\"day\",\"is\",\"sunny\",\"the\",\"the\",\"the\",\"sunny\",\"is\",\"is\"]",
+        "4"
+      ],
+      "ExpectedOutput": "[\"the\",\"is\",\"sunny\",\"day\"]"
+    }
+  ],
+  "ContentHtml": "<p>Given an array of strings <code>words</code> and an integer <code>k</code>, return <em>the </em><code>k</code><em> most frequent strings</em>.</p>\n\n<p>Return the answer <strong>sorted</strong> by <strong>the frequency</strong> from highest to lowest. Sort the words with the same frequency by their <strong>lexicographical order</strong>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> words = [&quot;i&quot;,&quot;love&quot;,&quot;leetcode&quot;,&quot;i&quot;,&quot;love&quot;,&quot;coding&quot;], k = 2\n<strong>Output:</strong> [&quot;i&quot;,&quot;love&quot;]\n<strong>Explanation:</strong> &quot;i&quot; and &quot;love&quot; are the two most frequent words.\nNote that &quot;i&quot; comes before &quot;love&quot; due to a lower alphabetical order.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> words = [&quot;the&quot;,&quot;day&quot;,&quot;is&quot;,&quot;sunny&quot;,&quot;the&quot;,&quot;the&quot;,&quot;the&quot;,&quot;sunny&quot;,&quot;is&quot;,&quot;is&quot;], k = 4\n<strong>Output:</strong> [&quot;the&quot;,&quot;is&quot;,&quot;sunny&quot;,&quot;day&quot;]\n<strong>Explanation:</strong> &quot;the&quot;, &quot;is&quot;, &quot;sunny&quot; and &quot;day&quot; are the four most frequent words, with the number of occurrence being 4, 3, 2 and 1 respectively.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= words.length &lt;= 500</code></li>\n\t<li><code>1 &lt;= words[i].length &lt;= 10</code></li>\n\t<li><code>words[i]</code> consists of lowercase English letters.</li>\n\t<li><code>k</code> is in the range <code>[1, The number of <strong>unique</strong> words[i]]</code></li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Follow-up:</strong> Could you solve it in <code>O(n log(k))</code> time and <code>O(n)</code> extra space?</p>\n"
+}

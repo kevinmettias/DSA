@@ -1,0 +1,86 @@
+{
+  "QuestionId": 155,
+  "FrontendId": 155,
+  "Title": "Min Stack",
+  "TitleSlug": "min-stack",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Stack",
+      "Slug": "stack"
+    },
+    {
+      "Name": "Design",
+      "Slug": "design"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Sliding Window Maximum",
+      "TitleSlug": "sliding-window-maximum",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Max Stack",
+      "TitleSlug": "max-stack",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [
+    "Consider each node in the stack having a minimum value. (Credits to @aakarshmadhavan)"
+  ],
+  "Constraints": [
+    "-2^31 <= val <= 2^31 - 1",
+    "Methods pop, top and getMin operations will always be called on non-empty stacks.",
+    "At most 3 * 10^4 calls will be made to push, pop, top, and getMin."
+  ],
+  "Signature": {
+    "FunctionName": null,
+    "Parameters": [],
+    "ReturnType": null,
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": "MinStack",
+    "ConstructorParameters": [],
+    "Methods": [
+      {
+        "Name": "push",
+        "Parameters": [
+          {
+            "Name": "value",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "void"
+      },
+      {
+        "Name": "pop",
+        "Parameters": [],
+        "ReturnType": "void"
+      },
+      {
+        "Name": "top",
+        "Parameters": [],
+        "ReturnType": "integer"
+      },
+      {
+        "Name": "getMin",
+        "Parameters": [],
+        "ReturnType": "integer"
+      }
+    ]
+  },
+  "CSharpStarterCode": "public class MinStack {\n\n    public MinStack() {\n        \n    }\n    \n    public void Push(int value) {\n        \n    }\n    \n    public void Pop() {\n        \n    }\n    \n    public int Top() {\n        \n    }\n    \n    public int GetMin() {\n        \n    }\n}\n\n/**\n * Your MinStack object will be instantiated and called as such:\n * MinStack obj = new MinStack();\n * obj.Push(value);\n * obj.Pop();\n * int param_3 = obj.Top();\n * int param_4 = obj.GetMin();\n */",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"MinStack\",\"push\",\"push\",\"push\",\"getMin\",\"pop\",\"top\",\"getMin\"]",
+        "[[],[-2],[0],[-3],[],[],[],[]]"
+      ],
+      "ExpectedOutput": "[null,null,null,null,-3,null,0,-2]"
+    }
+  ],
+  "ContentHtml": "<p>Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.</p>\n\n<p>Implement the <code>MinStack</code> class:</p>\n\n<ul>\n\t<li><code>MinStack()</code> initializes the stack object.</li>\n\t<li><code>void push(int value)</code> pushes the element <code>value</code> onto the stack.</li>\n\t<li><code>void pop()</code> removes the element on the top of the stack.</li>\n\t<li><code>int top()</code> gets the top element of the stack.</li>\n\t<li><code>int getMin()</code> retrieves the minimum element in the stack.</li>\n</ul>\n\n<p>You must implement a solution with <code>O(1)</code> time complexity for each function.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input</strong>\n[&quot;MinStack&quot;,&quot;push&quot;,&quot;push&quot;,&quot;push&quot;,&quot;getMin&quot;,&quot;pop&quot;,&quot;top&quot;,&quot;getMin&quot;]\n[[],[-2],[0],[-3],[],[],[],[]]\n\n<strong>Output</strong>\n[null,null,null,null,-3,null,0,-2]\n\n<strong>Explanation</strong>\nMinStack minStack = new MinStack();\nminStack.push(-2);\nminStack.push(0);\nminStack.push(-3);\nminStack.getMin(); // return -3\nminStack.pop();\nminStack.top();    // return 0\nminStack.getMin(); // return -2\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>-2<sup>31</sup> &lt;= val &lt;= 2<sup>31</sup> - 1</code></li>\n\t<li>Methods <code>pop</code>, <code>top</code> and <code>getMin</code> operations will always be called on <strong>non-empty</strong> stacks.</li>\n\t<li>At most <code>3 * 10<sup>4</sup></code> calls will be made to <code>push</code>, <code>pop</code>, <code>top</code>, and <code>getMin</code>.</li>\n</ul>\n"
+}

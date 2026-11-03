@@ -1,0 +1,137 @@
+{
+  "QuestionId": 53,
+  "FrontendId": 53,
+  "Title": "Maximum Subarray",
+  "TitleSlug": "maximum-subarray",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Divide and Conquer",
+      "Slug": "divide-and-conquer"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Best Time to Buy and Sell Stock",
+      "TitleSlug": "best-time-to-buy-and-sell-stock",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Maximum Product Subarray",
+      "TitleSlug": "maximum-product-subarray",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Degree of an Array",
+      "TitleSlug": "degree-of-an-array",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Longest Turbulent Subarray",
+      "TitleSlug": "longest-turbulent-subarray",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Score Of Spliced Array",
+      "TitleSlug": "maximum-score-of-spliced-array",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Maximum Absolute Sum of Any Subarray",
+      "TitleSlug": "maximum-absolute-sum-of-any-subarray",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Subarray Sum After One Operation",
+      "TitleSlug": "maximum-subarray-sum-after-one-operation",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Substring With Largest Variance",
+      "TitleSlug": "substring-with-largest-variance",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Count Subarrays With Score Less Than K",
+      "TitleSlug": "count-subarrays-with-score-less-than-k",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Maximum Value of a String in an Array",
+      "TitleSlug": "maximum-value-of-a-string-in-an-array",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Find the Substring With Maximum Cost",
+      "TitleSlug": "find-the-substring-with-maximum-cost",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "K Items With the Maximum Sum",
+      "TitleSlug": "k-items-with-the-maximum-sum",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Maximum Good Subarray Sum",
+      "TitleSlug": "maximum-good-subarray-sum",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximize Subarray Sum After Removing All Occurrences of One Element",
+      "TitleSlug": "maximize-subarray-sum-after-removing-all-occurrences-of-one-element",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= nums.length <= 10^5",
+    "-10^4 <= nums[i] <= 10^4"
+  ],
+  "Signature": {
+    "FunctionName": "maxSubArray",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int MaxSubArray(int[] nums) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[-2,1,-3,4,-1,2,1,-5,4]"
+      ],
+      "ExpectedOutput": "6"
+    },
+    {
+      "Inputs": [
+        "[1]"
+      ],
+      "ExpectedOutput": "1"
+    },
+    {
+      "Inputs": [
+        "[5,4,-1,7,8]"
+      ],
+      "ExpectedOutput": "23"
+    }
+  ],
+  "ContentHtml": "<p>Given an integer array <code>nums</code>, find the <span data-keyword=\"subarray-nonempty\">subarray</span> with the largest sum, and return <em>its sum</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [-2,1,-3,4,-1,2,1,-5,4]\n<strong>Output:</strong> 6\n<strong>Explanation:</strong> The subarray [4,-1,2,1] has the largest sum 6.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1]\n<strong>Output:</strong> 1\n<strong>Explanation:</strong> The subarray [1] has the largest sum 1.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [5,4,-1,7,8]\n<strong>Output:</strong> 23\n<strong>Explanation:</strong> The subarray [5,4,-1,7,8] has the largest sum 23.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>-10<sup>4</sup> &lt;= nums[i] &lt;= 10<sup>4</sup></code></li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Follow up:</strong> If you have figured out the <code>O(n)</code> solution, try coding another solution using the <strong>divide and conquer</strong> approach, which is more subtle.</p>\n"
+}

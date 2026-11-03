@@ -1,0 +1,458 @@
+[
+  {
+    "Inputs": [
+      "\"e\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"aeiou\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"aeiaaioaaaaeiiiiouuuooaauuaeiuiauuuuaeioaaaaeaiaioieoieiieoioioieouieiiaiaeiieoieouuiooaoaaiiaeiieeiooieiei\""
+    ],
+    "ExpectedOutput": "209934"
+  },
+  {
+    "Inputs": [
+      "\"bcbcbcbcbc\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"aeiaaioaaaaeiiiiouuuooaauuaeiu\""
+    ],
+    "ExpectedOutput": "4960"
+  },
+  {
+    "Inputs": [
+      "\"aeiaaioaaaaeiiiiouuuooaauuaeiuiaoiuuaeiuuaieiiaaaeeiuuoiuuuuuuu\""
+    ],
+    "ExpectedOutput": "43680"
+  },
+  {
+    "Inputs": [
+      "\"u\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "604"
+  },
+  {
+    "Inputs": [
+      "\"a\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"o\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"b\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"i\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "\"bbaaeekkeeaabbaaeekkeeaabbaaeekkeeaabb\""
+    ],
+    "ExpectedOutput": "6576"
+  },
+  {
+    "Inputs": [
+      "\"uvijqet\""
+    ],
+    "ExpectedOutput": "34"
+  },
+  {
+    "Inputs": [
+      "\"aieouaeiouaeiouaeiouaeiouaeiouaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "16215"
+  },
+  {
+    "Inputs": [
+      "\"uuygqijetbvrcw\""
+    ],
+    "ExpectedOutput": "150"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\""
+    ],
+    "ExpectedOutput": "98"
+  },
+  {
+    "Inputs": [
+      "\"vowels\""
+    ],
+    "ExpectedOutput": "22"
+  },
+  {
+    "Inputs": [
+      "\"aeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "680"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghijabcdefghijabcdefghij\""
+    ],
+    "ExpectedOutput": "3412"
+  },
+  {
+    "Inputs": [
+      "\"cccccdcccc\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"aovnwqoeirqoweoirqoweoirquw\""
+    ],
+    "ExpectedOutput": "1949"
+  },
+  {
+    "Inputs": [
+      "\"congratulations\""
+    ],
+    "ExpectedOutput": "299"
+  },
+  {
+    "Inputs": [
+      "\"xyzaeiouxyzaeiouxyz\""
+    ],
+    "ExpectedOutput": "820"
+  },
+  {
+    "Inputs": [
+      "\"bcbcbcbcbcbcbcbcbcbc\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"vvvuuuooooiiiaaaaeeeee\""
+    ],
+    "ExpectedOutput": "1900"
+  },
+  {
+    "Inputs": [
+      "\"consonants\""
+    ],
+    "ExpectedOutput": "76"
+  },
+  {
+    "Inputs": [
+      "\"vowelvowelvowel\""
+    ],
+    "ExpectedOutput": "278"
+  },
+  {
+    "Inputs": [
+      "\"supercalifragilisticexpialidocious\""
+    ],
+    "ExpectedOutput": "3282"
+  },
+  {
+    "Inputs": [
+      "\"aquickbrownfoxjumpsoverthelazydog\""
+    ],
+    "ExpectedOutput": "2016"
+  },
+  {
+    "Inputs": [
+      "\"leetcode\""
+    ],
+    "ExpectedOutput": "58"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzzyxwvutsrqponmlkjihgfedcba\""
+    ],
+    "ExpectedOutput": "3860"
+  },
+  {
+    "Inputs": [
+      "\"sequence\""
+    ],
+    "ExpectedOutput": "62"
+  },
+  {
+    "Inputs": [
+      "\"aovvoaoaueuioeaueoaiouaoieaouioeaouioiea\""
+    ],
+    "ExpectedOutput": "11218"
+  },
+  {
+    "Inputs": [
+      "\"aeeee\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"aeioouaeiou\""
+    ],
+    "ExpectedOutput": "286"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"bbbbbbbbbbbbbbbbbbbbbbba\""
+    ],
+    "ExpectedOutput": "24"
+  },
+  {
+    "Inputs": [
+      "\"hello\""
+    ],
+    "ExpectedOutput": "13"
+  },
+  {
+    "Inputs": [
+      "\"uoiea\""
+    ],
+    "ExpectedOutput": "35"
+  },
+  {
+    "Inputs": [
+      "\"bcdfghjklmnpqrstvwxyz\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"ffaaabbbccc\""
+    ],
+    "ExpectedOutput": "94"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"aeiouaeiouaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "2925"
+  },
+  {
+    "Inputs": [
+      "\"qweoiauoieqweoiauoieqweoiauoie\""
+    ],
+    "ExpectedOutput": "4016"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+    ],
+    "ExpectedOutput": "4562"
+  },
+  {
+    "Inputs": [
+      "\"rhythms\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"bbbbbebbbb\""
+    ],
+    "ExpectedOutput": "30"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeeffgg\""
+    ],
+    "ExpectedOutput": "221"
+  },
+  {
+    "Inputs": [
+      "\"beautiful\""
+    ],
+    "ExpectedOutput": "101"
+  },
+  {
+    "Inputs": [
+      "\"aeiouaeiouaeiouaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "4960"
+  },
+  {
+    "Inputs": [
+      "\"dddddeoeddd\""
+    ],
+    "ExpectedOutput": "103"
+  },
+  {
+    "Inputs": [
+      "\"aeiouaeiouaeiouaeiou\""
+    ],
+    "ExpectedOutput": "1540"
+  },
+  {
+    "Inputs": [
+      "\"vowel\""
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "\"xylophone\""
+    ],
+    "ExpectedOutput": "54"
+  },
+  {
+    "Inputs": [
+      "\"repetitiveeeee\""
+    ],
+    "ExpectedOutput": "350"
+  },
+  {
+    "Inputs": [
+      "\"repetition\""
+    ],
+    "ExpectedOutput": "118"
+  },
+  {
+    "Inputs": [
+      "\"characters\""
+    ],
+    "ExpectedOutput": "78"
+  },
+  {
+    "Inputs": [
+      "\"uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu\""
+    ],
+    "ExpectedOutput": "13244"
+  },
+  {
+    "Inputs": [
+      "\"uvaeiouz\""
+    ],
+    "ExpectedOutput": "98"
+  },
+  {
+    "Inputs": [
+      "\"aovylqjwhepfuciphg\""
+    ],
+    "ExpectedOutput": "280"
+  },
+  {
+    "Inputs": [
+      "\"uoieaoueioauoiea\""
+    ],
+    "ExpectedOutput": "816"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"eeeeeaeeee\""
+    ],
+    "ExpectedOutput": "220"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabaaaaa\""
+    ],
+    "ExpectedOutput": "250"
+  },
+  {
+    "Inputs": [
+      "\"abacaxabayabac\""
+    ],
+    "ExpectedOutput": "280"
+  },
+  {
+    "Inputs": [
+      "\"aeiouaeiou\""
+    ],
+    "ExpectedOutput": "220"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "\"programming\""
+    ],
+    "ExpectedOutput": "90"
+  },
+  {
+    "Inputs": [
+      "\"aeiaoeiaoeiaoeiaoeiaoeiaoeiaoeiaoeiaoei\""
+    ],
+    "ExpectedOutput": "10660"
+  },
+  {
+    "Inputs": [
+      "\"ouqofyrcjgz\""
+    ],
+    "ExpectedOutput": "63"
+  },
+  {
+    "Inputs": [
+      "\"aeiaeaieaa\""
+    ],
+    "ExpectedOutput": "220"
+  },
+  {
+    "Inputs": [
+      "\"vowelsarefun\""
+    ],
+    "ExpectedOutput": "158"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "4718"
+  }
+]

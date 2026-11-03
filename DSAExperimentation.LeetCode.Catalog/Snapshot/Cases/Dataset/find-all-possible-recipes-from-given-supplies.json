@@ -1,0 +1,522 @@
+[
+  {
+    "Inputs": [
+      "[\"pasta\",\"salad\"]",
+      "[[\"noodles\",\"sauce\"],[\"lettuce\",\"tomato\"]]",
+      "[\"noodles\",\"sauce\",\"lettuce\"]"
+    ],
+    "ExpectedOutput": "[\"pasta\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"muffin\"]",
+      "[[\"flour\",\"sugar\"],[\"flour\",\"eggs\"]]",
+      "[\"flour\",\"sugar\"]"
+    ],
+    "ExpectedOutput": "[\"cake\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"muffin\",\"brownie\"]",
+      "[[\"flour\",\"sugar\",\"eggs\"],[\"flour\",\"sugar\",\"butter\"],[\"flour\",\"sugar\",\"chocolate\"]]",
+      "[\"flour\",\"sugar\",\"eggs\"]"
+    ],
+    "ExpectedOutput": "[\"cake\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"muffin\"]",
+      "[[\"flour\",\"sugar\",\"eggs\"],[\"flour\",\"sugar\",\"eggs\",\"butter\"]]",
+      "[\"flour\",\"sugar\",\"eggs\",\"butter\"]"
+    ],
+    "ExpectedOutput": "[\"cake\",\"muffin\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pizza\",\"pasta\"]",
+      "[[\"dough\",\"tomato\",\"cheese\"],[\"noodles\",\"sauce\"]]",
+      "[\"dough\",\"tomato\",\"cheese\",\"noodles\",\"sauce\"]"
+    ],
+    "ExpectedOutput": "[\"pizza\",\"pasta\"]"
+  },
+  {
+    "Inputs": [
+      "[\"soup\",\"stew\"]",
+      "[[\"water\",\"vegetables\",\"spices\"],[\"water\",\"meat\",\"vegetables\",\"spices\"]]",
+      "[\"water\",\"vegetables\",\"spices\"]"
+    ],
+    "ExpectedOutput": "[\"soup\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"ice_cream\",\"brownie\"]",
+      "[[\"flour\",\"sugar\",\"eggs\"],[\"milk\",\"sugar\",\"vanilla\"],[\"flour\",\"cocoa\",\"sugar\"]]",
+      "[\"flour\",\"sugar\",\"eggs\",\"milk\",\"vanilla\"]"
+    ],
+    "ExpectedOutput": "[\"cake\",\"ice_cream\"]"
+  },
+  {
+    "Inputs": [
+      "[\"sushi\",\"ramen\"]",
+      "[[\"rice\",\"seaweed\",\"salmon\"],[\"noodles\",\"water\",\"meat\",\"vegetables\"]]",
+      "[\"rice\",\"noodles\",\"water\",\"meat\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"pudding\",\"pie\"]",
+      "[[\"flour\",\"sugar\",\"eggs\"],[\"milk\",\"sugar\",\"flour\"],[\"crust\",\"fruit\",\"filling\"]]",
+      "[\"flour\",\"sugar\",\"eggs\",\"milk\",\"crust\",\"fruit\",\"filling\"]"
+    ],
+    "ExpectedOutput": "[\"cake\",\"pudding\",\"pie\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"brownie\"]",
+      "[[\"flour\",\"sugar\",\"eggs\"],[\"flour\",\"cocoa\",\"sugar\"]]",
+      "[\"flour\",\"sugar\",\"eggs\"]"
+    ],
+    "ExpectedOutput": "[\"cake\"]"
+  },
+  {
+    "Inputs": [
+      "[\"omelette\",\"pancake\",\"waffle\"]",
+      "[[\"eggs\",\"milk\"],[\"flour\",\"eggs\",\"milk\"],[\"flour\",\"eggs\",\"milk\",\"butter\"]]",
+      "[\"eggs\",\"milk\",\"flour\",\"butter\",\"sugar\"]"
+    ],
+    "ExpectedOutput": "[\"omelette\",\"pancake\",\"waffle\"]"
+  },
+  {
+    "Inputs": [
+      "[\"bread\",\"sandwich\",\"burger\",\"wrap\"]",
+      "[[\"yeast\",\"flour\"],[\"bread\",\"meat\"],[\"bread\",\"meat\",\"cheese\"],[\"bread\",\"cheese\",\"lettuce\"]]",
+      "[\"yeast\",\"flour\",\"meat\",\"cheese\",\"lettuce\"]"
+    ],
+    "ExpectedOutput": "[\"bread\",\"sandwich\",\"burger\",\"wrap\"]"
+  },
+  {
+    "Inputs": [
+      "[\"soup\",\"stew\"]",
+      "[[\"carrot\",\"onion\"],[\"carrot\",\"potato\",\"beef\"]]",
+      "[\"carrot\",\"onion\",\"beef\",\"potato\",\"pepper\"]"
+    ],
+    "ExpectedOutput": "[\"soup\",\"stew\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pizza\",\"pasta\",\"omelette\"]",
+      "[[\"dough\",\"tomato\",\"cheese\"],[\"noodles\",\"sauce\"],[\"eggs\",\"milk\"]]",
+      "[\"dough\",\"tomato\",\"cheese\",\"noodles\",\"sauce\",\"eggs\",\"milk\",\"flour\"]"
+    ],
+    "ExpectedOutput": "[\"pizza\",\"pasta\",\"omelette\"]"
+  },
+  {
+    "Inputs": [
+      "[\"juice\",\"smoothie\"]",
+      "[[\"fruit\",\"water\"],[\"fruit\",\"yogurt\",\"banana\"]]",
+      "[\"fruit\",\"water\",\"yogurt\",\"banana\",\"milk\"]"
+    ],
+    "ExpectedOutput": "[\"juice\",\"smoothie\"]"
+  },
+  {
+    "Inputs": [
+      "[\"steak\",\"chicken\",\"beef\"]",
+      "[[\"beef\",\"salt\"],[\"chicken\",\"pepper\"],[\"salt\",\"spice\"]]",
+      "[\"salt\",\"pepper\",\"spice\",\"chicken\"]"
+    ],
+    "ExpectedOutput": "[\"beef\",\"chicken\",\"steak\"]"
+  },
+  {
+    "Inputs": [
+      "[\"soup\",\"stew\"]",
+      "[[\"water\",\"vegetables\",\"meat\"],[\"water\",\"vegetables\",\"meat\",\"tomato\"]]",
+      "[\"water\",\"vegetables\",\"meat\",\"tomato\",\"salt\"]"
+    ],
+    "ExpectedOutput": "[\"soup\",\"stew\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pizza\",\"taco\",\"pasta\"]",
+      "[[\"dough\",\"tomato\",\"cheese\"],[\"tortilla\",\"meat\",\"cheese\"],[\"noodles\",\"sauce\",\"meat\"]]",
+      "[\"dough\",\"tomato\",\"cheese\",\"tortilla\",\"meat\",\"noodles\",\"sauce\"]"
+    ],
+    "ExpectedOutput": "[\"pizza\",\"taco\",\"pasta\"]"
+  },
+  {
+    "Inputs": [
+      "[\"smoothie\",\"juice\"]",
+      "[[\"banana\",\"orange\",\"milk\"],[\"apple\",\"orange\",\"water\"]]",
+      "[\"banana\",\"orange\",\"water\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[\"omelette\",\"frittata\"]",
+      "[[\"eggs\",\"cheese\"],[\"eggs\",\"cheese\",\"spinach\",\"tomato\"]]",
+      "[\"eggs\",\"cheese\",\"spinach\"]"
+    ],
+    "ExpectedOutput": "[\"omelette\"]"
+  },
+  {
+    "Inputs": [
+      "[\"taco\",\"burrito\",\"enchilada\"]",
+      "[[\"beef\",\"shell\"],[\"beef\",\"tortilla\"],[\"beef\",\"taco_shell\",\"sauce\"]]",
+      "[\"beef\",\"shell\",\"tortilla\",\"taco_shell\",\"sauce\"]"
+    ],
+    "ExpectedOutput": "[\"taco\",\"burrito\",\"enchilada\"]"
+  },
+  {
+    "Inputs": [
+      "[\"omelette\",\"pancakes\"]",
+      "[[\"eggs\",\"milk\"],[\"eggs\",\"flour\",\"milk\"]]",
+      "[\"eggs\",\"milk\",\"flour\",\"butter\"]"
+    ],
+    "ExpectedOutput": "[\"omelette\",\"pancakes\"]"
+  },
+  {
+    "Inputs": [
+      "[\"sandwich\",\"burger\",\"omelet\"]",
+      "[[\"bread\",\"meat\",\"cheese\"],[\"bread\",\"patty\",\"cheese\"],[\"eggs\",\"cheese\",\"spinach\"]]",
+      "[\"bread\",\"meat\",\"cheese\",\"patty\",\"eggs\",\"spinach\"]"
+    ],
+    "ExpectedOutput": "[\"sandwich\",\"burger\",\"omelet\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"brownie\"]",
+      "[[\"sugar\",\"flour\",\"eggs\"],[\"sugar\",\"chocolate\",\"eggs\"]]",
+      "[\"sugar\",\"eggs\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"pie\",\"tiramisu\"]",
+      "[[\"flour\",\"eggs\",\"sugar\"],[\"apple\",\"flour\",\"sugar\"],[\"cake\",\"coffee\",\"mascarpone\"]]",
+      "[\"flour\",\"eggs\",\"sugar\",\"apple\",\"coffee\",\"mascarpone\"]"
+    ],
+    "ExpectedOutput": "[\"cake\",\"pie\",\"tiramisu\"]"
+  },
+  {
+    "Inputs": [
+      "[\"soup\",\"stew\",\"salad\",\"sandwich\"]",
+      "[[\"carrot\",\"onion\"],[\"carrot\",\"potato\",\"beef\"],[\"lettuce\",\"cucumber\"],[\"bread\",\"cheese\"]]",
+      "[\"carrot\",\"onion\",\"beef\",\"potato\",\"pepper\",\"lettuce\",\"cucumber\",\"bread\",\"cheese\",\"eggs\"]"
+    ],
+    "ExpectedOutput": "[\"soup\",\"stew\",\"salad\",\"sandwich\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pancake\",\"waffle\",\"muffin\"]",
+      "[[\"flour\",\"eggs\",\"milk\"],[\"flour\",\"eggs\",\"milk\",\"butter\"],[\"flour\",\"sugar\",\"eggs\"]]",
+      "[\"flour\",\"eggs\",\"milk\",\"butter\",\"sugar\"]"
+    ],
+    "ExpectedOutput": "[\"pancake\",\"waffle\",\"muffin\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pizza\",\"pasta\",\"soup\"]",
+      "[[\"dough\",\"tomato\",\"cheese\"],[\"noodles\",\"sauce\"],[\"carrots\",\"onions\",\"water\"]]",
+      "[\"dough\",\"tomato\",\"noodles\",\"carrots\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\"]",
+      "[[\"e\",\"f\"],[\"a\",\"g\"],[\"b\",\"h\"],[\"c\",\"i\"]]",
+      "[\"e\",\"f\",\"g\",\"h\",\"i\"]"
+    ],
+    "ExpectedOutput": "[\"a\",\"b\",\"c\",\"d\"]"
+  },
+  {
+    "Inputs": [
+      "[\"beer\",\"wine\"]",
+      "[[\"grains\",\"water\",\"hops\"],[\"grapes\",\"yeast\",\"sugar\"]]",
+      "[\"grains\",\"water\",\"hops\",\"grapes\",\"yeast\",\"sugar\"]"
+    ],
+    "ExpectedOutput": "[\"beer\",\"wine\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pizza\",\"pasta\",\"salad\"]",
+      "[[\"dough\",\"sauce\",\"cheese\"],[\"noodles\",\"sauce\"],[\"lettuce\",\"tomato\"]]",
+      "[\"dough\",\"cheese\",\"noodles\",\"sauce\",\"lettuce\",\"tomato\",\"spinach\"]"
+    ],
+    "ExpectedOutput": "[\"pizza\",\"pasta\",\"salad\"]"
+  },
+  {
+    "Inputs": [
+      "[\"smoothie\",\"juice\"]",
+      "[[\"banana\",\"strawberry\",\"milk\"],[\"apple\",\"orange\",\"water\"]]",
+      "[\"banana\",\"strawberry\",\"milk\",\"apple\",\"orange\"]"
+    ],
+    "ExpectedOutput": "[\"smoothie\"]"
+  },
+  {
+    "Inputs": [
+      "[\"omelette\",\"pancake\"]",
+      "[[\"eggs\",\"milk\"],[\"flour\",\"eggs\",\"milk\"]]",
+      "[\"eggs\",\"milk\",\"flour\",\"butter\"]"
+    ],
+    "ExpectedOutput": "[\"omelette\",\"pancake\"]"
+  },
+  {
+    "Inputs": [
+      "[\"bread\",\"toast\",\"baguette\"]",
+      "[[\"flour\",\"yeast\"],[\"bread\"],[\"flour\",\"yeast\",\"oil\"]]",
+      "[\"flour\",\"yeast\",\"oil\",\"butter\"]"
+    ],
+    "ExpectedOutput": "[\"bread\",\"baguette\",\"toast\"]"
+  },
+  {
+    "Inputs": [
+      "[\"soup\",\"stew\",\"omelette\"]",
+      "[[\"water\",\"vegetables\",\"salt\"],[\"water\",\"meat\",\"vegetables\"],[\"eggs\",\"cheese\",\"pepper\"]]",
+      "[\"water\",\"vegetables\",\"meat\",\"eggs\",\"cheese\",\"pepper\"]"
+    ],
+    "ExpectedOutput": "[\"stew\",\"omelette\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pizza\",\"fries\",\"burger\"]",
+      "[[\"dough\",\"tomato\",\"cheese\"],[\"potato\",\"salt\"],[\"patty\",\"cheese\",\"bun\"]]",
+      "[\"dough\",\"tomato\",\"cheese\",\"potato\",\"salt\",\"patty\",\"bun\"]"
+    ],
+    "ExpectedOutput": "[\"pizza\",\"fries\",\"burger\"]"
+  },
+  {
+    "Inputs": [
+      "[\"sushi\",\"ramen\"]",
+      "[[\"rice\",\"fish\",\"seaweed\"],[\"noodles\",\"broth\",\"egg\"]]",
+      "[\"rice\",\"fish\",\"seaweed\",\"noodles\",\"broth\",\"egg\"]"
+    ],
+    "ExpectedOutput": "[\"sushi\",\"ramen\"]"
+  },
+  {
+    "Inputs": [
+      "[\"soup\",\"stew\",\"salad\"]",
+      "[[\"carrot\",\"onion\"],[\"carrot\",\"potato\",\"beef\"],[\"lettuce\",\"cucumber\"]]",
+      "[\"carrot\",\"onion\",\"beef\",\"potato\",\"pepper\",\"lettuce\",\"cucumber\"]"
+    ],
+    "ExpectedOutput": "[\"soup\",\"stew\",\"salad\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"pie\"]",
+      "[[\"flour\",\"eggs\",\"sugar\"],[\"apple\",\"flour\",\"sugar\"]]",
+      "[\"flour\",\"eggs\",\"sugar\",\"milk\"]"
+    ],
+    "ExpectedOutput": "[\"cake\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pasta\",\"pizza\",\"lasagna\"]",
+      "[[\"noodles\",\"sauce\"],[\"dough\",\"sauce\",\"cheese\"],[\"noodles\",\"sauce\",\"cheese\",\"milk\"]]",
+      "[\"noodles\",\"sauce\",\"cheese\",\"dough\",\"milk\"]"
+    ],
+    "ExpectedOutput": "[\"pasta\",\"pizza\",\"lasagna\"]"
+  },
+  {
+    "Inputs": [
+      "[\"omelette\",\"pancake\"]",
+      "[[\"eggs\",\"cheese\",\"bacon\"],[\"flour\",\"eggs\",\"milk\"]]",
+      "[\"eggs\",\"flour\",\"milk\"]"
+    ],
+    "ExpectedOutput": "[\"pancake\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pizza\",\"sandwich\",\"omelette\",\"burger\"]",
+      "[[\"dough\",\"tomato\",\"cheese\"],[\"bread\",\"cheese\",\"meat\"],[\"egg\",\"milk\",\"cheese\"],[\"patty\",\"cheese\",\"bun\"]]",
+      "[\"dough\",\"tomato\",\"cheese\",\"bread\",\"meat\",\"egg\",\"milk\",\"patty\",\"bun\"]"
+    ],
+    "ExpectedOutput": "[\"pizza\",\"sandwich\",\"omelette\",\"burger\"]"
+  },
+  {
+    "Inputs": [
+      "[\"recipe1\",\"recipe2\",\"recipe3\",\"recipe4\"]",
+      "[[\"ing1\",\"ing2\"],[\"recipe1\",\"ing3\"],[\"recipe2\",\"ing4\"],[\"recipe3\",\"ing5\"]]",
+      "[\"ing1\",\"ing2\",\"ing3\",\"ing4\",\"ing5\"]"
+    ],
+    "ExpectedOutput": "[\"recipe1\",\"recipe2\",\"recipe3\",\"recipe4\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"pudding\",\"pie\"]",
+      "[[\"flour\",\"eggs\",\"sugar\"],[\"milk\",\"cornstarch\"],[\"crust\",\"apple\",\"sugar\"]]",
+      "[\"flour\",\"eggs\",\"milk\",\"sugar\"]"
+    ],
+    "ExpectedOutput": "[\"cake\"]"
+  },
+  {
+    "Inputs": [
+      "[\"ice_cream\",\"pudding\"]",
+      "[[\"cream\",\"sugar\",\"vanilla\"],[\"milk\",\"sugar\",\"flour\"]]",
+      "[\"cream\",\"sugar\",\"vanilla\",\"milk\",\"flour\",\"chocolate\"]"
+    ],
+    "ExpectedOutput": "[\"ice_cream\",\"pudding\"]"
+  },
+  {
+    "Inputs": [
+      "[\"salad\",\"soup\",\"stew\"]",
+      "[[\"lettuce\",\"tomato\",\"onion\"],[\"carrot\",\"potato\",\"beef\"],[\"carrot\",\"potato\",\"beef\",\"tomato\"]]",
+      "[\"lettuce\",\"tomato\",\"onion\",\"carrot\",\"potato\"]"
+    ],
+    "ExpectedOutput": "[\"salad\"]"
+  },
+  {
+    "Inputs": [
+      "[\"omelette\",\"scramble\",\"frittata\"]",
+      "[[\"eggs\",\"cheese\"],[\"eggs\"],[\"eggs\",\"cheese\",\"spinach\"]]",
+      "[\"eggs\",\"cheese\",\"spinach\",\"milk\"]"
+    ],
+    "ExpectedOutput": "[\"scramble\",\"omelette\",\"frittata\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"brownie\",\"pudding\"]",
+      "[[\"flour\",\"sugar\",\"eggs\",\"milk\"],[\"flour\",\"sugar\",\"chocolate\"],[\"milk\",\"sugar\",\"gelatin\"]]",
+      "[\"flour\",\"sugar\",\"eggs\",\"milk\",\"chocolate\",\"gelatin\"]"
+    ],
+    "ExpectedOutput": "[\"cake\",\"brownie\",\"pudding\"]"
+  },
+  {
+    "Inputs": [
+      "[\"soup\",\"stew\",\"chili\"]",
+      "[[\"water\",\"carrot\",\"potato\"],[\"water\",\"tomato\",\"carrot\",\"potato\"],[\"water\",\"tomato\",\"beef\",\"potato\"]]",
+      "[\"water\",\"carrot\",\"potato\",\"tomato\",\"beef\"]"
+    ],
+    "ExpectedOutput": "[\"soup\",\"stew\",\"chili\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pizza\",\"lasagna\",\"taco\"]",
+      "[[\"dough\",\"tomato\",\"cheese\"],[\"pasta\",\"mozzarella\",\"sauce\"],[\"tortilla\",\"meat\",\"cheese\"]]",
+      "[\"dough\",\"tomato\",\"cheese\",\"pasta\",\"mozzarella\",\"sauce\",\"tortilla\",\"meat\"]"
+    ],
+    "ExpectedOutput": "[\"pizza\",\"lasagna\",\"taco\"]"
+  },
+  {
+    "Inputs": [
+      "[\"bread\",\"cake\",\"pudding\"]",
+      "[[\"flour\",\"yeast\",\"water\"],[\"flour\",\"eggs\",\"sugar\"],[\"milk\",\"cornstarch\",\"water\"]]",
+      "[\"flour\",\"yeast\",\"eggs\",\"sugar\",\"milk\"]"
+    ],
+    "ExpectedOutput": "[\"cake\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"brownie\",\"tiramisu\"]",
+      "[[\"flour\",\"sugar\",\"eggs\"],[\"flour\",\"sugar\",\"chocolate\"],[\"coffee\",\"brownie\",\"cream\"]]",
+      "[\"flour\",\"sugar\",\"eggs\",\"chocolate\",\"coffee\",\"cream\"]"
+    ],
+    "ExpectedOutput": "[\"cake\",\"brownie\",\"tiramisu\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pizza\",\"calzone\",\"taco\",\"burrito\"]",
+      "[[\"dough\",\"sauce\",\"cheese\"],[\"dough\",\"cheese\",\"meat\"],[\"tortilla\",\"meat\",\"lettuce\"],[\"tortilla\",\"meat\",\"beans\"]]",
+      "[\"dough\",\"sauce\",\"cheese\",\"meat\",\"tortilla\",\"lettuce\",\"beans\"]"
+    ],
+    "ExpectedOutput": "[\"pizza\",\"calzone\",\"taco\",\"burrito\"]"
+  },
+  {
+    "Inputs": [
+      "[\"steak\",\"chicken\",\"beef\"]",
+      "[[\"meat\",\"seasoning\"],[\"meat\",\"vegetables\"],[\"meat\",\"sauce\"]]",
+      "[\"meat\",\"seasoning\",\"vegetables\"]"
+    ],
+    "ExpectedOutput": "[\"steak\",\"chicken\"]"
+  },
+  {
+    "Inputs": [
+      "[\"taco\",\"burrito\"]",
+      "[[\"tortilla\",\"beef\",\"cheese\"],[\"tortilla\",\"chicken\",\"cheese\",\"lettuce\"]]",
+      "[\"tortilla\",\"cheese\",\"lettuce\"]"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "[\"muffin\",\"brownie\",\"cupcake\"]",
+      "[[\"flour\",\"eggs\",\"milk\",\"sugar\"],[\"flour\",\"eggs\",\"chocolate\",\"sugar\"],[\"muffin\",\"icing\"]]",
+      "[\"flour\",\"eggs\",\"milk\",\"sugar\",\"chocolate\",\"icing\"]"
+    ],
+    "ExpectedOutput": "[\"muffin\",\"brownie\",\"cupcake\"]"
+  },
+  {
+    "Inputs": [
+      "[\"soup\",\"stew\"]",
+      "[[\"water\",\"carrot\",\"potato\"],[\"water\",\"tomato\",\"carrot\",\"potato\"]]",
+      "[\"water\",\"carrot\",\"potato\",\"tomato\"]"
+    ],
+    "ExpectedOutput": "[\"soup\",\"stew\"]"
+  },
+  {
+    "Inputs": [
+      "[\"taco\",\"burrito\"]",
+      "[[\"shell\",\"meat\",\"cheese\"],[\"wrap\",\"meat\",\"cheese\",\"lettuce\"]]",
+      "[\"shell\",\"wrap\",\"meat\",\"cheese\",\"lettuce\",\"tomato\"]"
+    ],
+    "ExpectedOutput": "[\"taco\",\"burrito\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"brownie\"]",
+      "[[\"flour\",\"eggs\",\"sugar\"],[\"flour\",\"eggs\",\"chocolate\"]]",
+      "[\"flour\",\"eggs\",\"sugar\",\"chocolate\"]"
+    ],
+    "ExpectedOutput": "[\"cake\",\"brownie\"]"
+  },
+  {
+    "Inputs": [
+      "[\"cake\",\"muffin\",\"brownie\"]",
+      "[[\"flour\",\"sugar\",\"eggs\"],[\"flour\",\"sugar\",\"eggs\",\"butter\"],[\"flour\",\"sugar\",\"chocolate\"]]",
+      "[\"flour\",\"sugar\",\"eggs\",\"butter\",\"chocolate\"]"
+    ],
+    "ExpectedOutput": "[\"cake\",\"muffin\",\"brownie\"]"
+  },
+  {
+    "Inputs": [
+      "[\"muffin\",\"pancake\",\"scone\"]",
+      "[[\"flour\",\"sugar\",\"milk\"],[\"flour\",\"eggs\",\"milk\"],[\"flour\",\"butter\",\"milk\"]]",
+      "[\"flour\",\"eggs\",\"butter\",\"milk\"]"
+    ],
+    "ExpectedOutput": "[\"pancake\",\"scone\"]"
+  },
+  {
+    "Inputs": [
+      "[\"juice\",\"smoothie\"]",
+      "[[\"orange\",\"apple\"],[\"banana\",\"orange\",\"milk\"]]",
+      "[\"orange\",\"apple\",\"banana\",\"milk\",\"water\"]"
+    ],
+    "ExpectedOutput": "[\"juice\",\"smoothie\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pancake\",\"waffle\",\"omelette\"]",
+      "[[\"flour\",\"eggs\",\"milk\"],[\"flour\",\"eggs\",\"syrup\"],[\"eggs\",\"milk\",\"cheese\"]]",
+      "[\"flour\",\"eggs\",\"milk\",\"syrup\",\"cheese\"]"
+    ],
+    "ExpectedOutput": "[\"pancake\",\"waffle\",\"omelette\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pizza\",\"pasta\"]",
+      "[[\"dough\",\"sauce\",\"cheese\"],[\"noodles\",\"sauce\"]]",
+      "[\"dough\",\"sauce\",\"cheese\",\"noodles\",\"tomato\"]"
+    ],
+    "ExpectedOutput": "[\"pizza\",\"pasta\"]"
+  },
+  {
+    "Inputs": [
+      "[\"pizza\",\"spaghetti\"]",
+      "[[\"dough\",\"sauce\",\"cheese\"],[\"pasta\",\"sauce\",\"meat\"]]",
+      "[\"dough\",\"sauce\",\"pasta\"]"
+    ],
+    "ExpectedOutput": "[]"
+  }
+]

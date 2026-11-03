@@ -1,0 +1,67 @@
+{
+  "QuestionId": 371,
+  "FrontendId": 371,
+  "Title": "Sum of Two Integers",
+  "TitleSlug": "sum-of-two-integers",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Bit Manipulation",
+      "Slug": "bit-manipulation"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Add Two Numbers",
+      "TitleSlug": "add-two-numbers",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "-1000 <= a, b <= 1000"
+  ],
+  "Signature": {
+    "FunctionName": "getSum",
+    "Parameters": [
+      {
+        "Name": "a",
+        "Type": "integer"
+      },
+      {
+        "Name": "b",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int GetSum(int a, int b) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "1",
+        "2"
+      ],
+      "ExpectedOutput": "3"
+    },
+    {
+      "Inputs": [
+        "2",
+        "3"
+      ],
+      "ExpectedOutput": "5"
+    }
+  ],
+  "ContentHtml": "<p>Given two integers <code>a</code> and <code>b</code>, return <em>the sum of the two integers without using the operators</em> <code>+</code> <em>and</em> <code>-</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<pre><strong>Input:</strong> a = 1, b = 2\n<strong>Output:</strong> 3\n</pre><p><strong class=\"example\">Example 2:</strong></p>\n<pre><strong>Input:</strong> a = 2, b = 3\n<strong>Output:</strong> 5\n</pre>\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>-1000 &lt;= a, b &lt;= 1000</code></li>\n</ul>\n"
+}

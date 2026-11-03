@@ -1,0 +1,77 @@
+{
+  "QuestionId": 316,
+  "FrontendId": 316,
+  "Title": "Remove Duplicate Letters",
+  "TitleSlug": "remove-duplicate-letters",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Stack",
+      "Slug": "stack"
+    },
+    {
+      "Name": "Greedy",
+      "Slug": "greedy"
+    },
+    {
+      "Name": "Monotonic Stack",
+      "Slug": "monotonic-stack"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Smallest K-Length Subsequence With Occurrences of a Letter",
+      "TitleSlug": "smallest-k-length-subsequence-with-occurrences-of-a-letter",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Lexicographically Smallest String After Deleting Duplicate Characters",
+      "TitleSlug": "lexicographically-smallest-string-after-deleting-duplicate-characters",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [
+    "Greedily try to add one missing character. How to check if adding some character will not cause problems ? Use bit-masks to check whether you will be able to complete the sub-sequence if you add the character at some index i."
+  ],
+  "Constraints": [
+    "1 <= s.length <= 10^4",
+    "s consists of lowercase English letters."
+  ],
+  "Signature": {
+    "FunctionName": "removeDuplicateLetters",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "string",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public string RemoveDuplicateLetters(string s) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"bcabc\""
+      ],
+      "ExpectedOutput": "\"abc\""
+    },
+    {
+      "Inputs": [
+        "\"cbacdcbc\""
+      ],
+      "ExpectedOutput": "\"acdb\""
+    }
+  ],
+  "ContentHtml": "<p>Given a string <code>s</code>, remove duplicate letters so that every letter appears once and only once. The relative order of the letters that were not removed must be preserved. You must make sure your result is <span data-keyword=\"lexicographically-smaller-string\"><strong>the smallest in lexicographical order</strong></span> among all possible results.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;bcabc&quot;\n<strong>Output:</strong> &quot;abc&quot;\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;cbacdcbc&quot;\n<strong>Output:</strong> &quot;acdb&quot;\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length &lt;= 10<sup>4</sup></code></li>\n\t<li><code>s</code> consists of lowercase English letters.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Note:</strong> This question is the same as 1081: <a href=\"https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/\" target=\"_blank\">https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/</a></p>\n"
+}

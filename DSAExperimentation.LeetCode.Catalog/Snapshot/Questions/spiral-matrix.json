@@ -1,0 +1,82 @@
+{
+  "QuestionId": 54,
+  "FrontendId": 54,
+  "Title": "Spiral Matrix",
+  "TitleSlug": "spiral-matrix",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Matrix",
+      "Slug": "matrix"
+    },
+    {
+      "Name": "Simulation",
+      "Slug": "simulation"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Spiral Matrix II",
+      "TitleSlug": "spiral-matrix-ii",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Spiral Matrix III",
+      "TitleSlug": "spiral-matrix-iii",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Spiral Matrix IV",
+      "TitleSlug": "spiral-matrix-iv",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [
+    "Well for some problems, the best way really is to come up with some algorithms for simulation. Basically, you need to simulate what the problem asks us to do.",
+    "We go boundary by boundary and move inwards. That is the essential operation. First row, last column, last row, first column, and then we move inwards by 1 and repeat. That's all. That is all the simulation that we need.",
+    "Think about when you want to switch the progress on one of the indexes. If you progress on i out of [i, j], you'll shift in the same column. Similarly, by changing values for j, you'd be shifting in the same row.\r\nAlso, keep track of the end of a boundary so that you can move inwards and then keep repeating. It's always best to simulate edge cases like a single column or a single row to see if anything breaks or not."
+  ],
+  "Constraints": [
+    "m == matrix.length",
+    "n == matrix[i].length",
+    "1 <= m, n <= 10",
+    "-100 <= matrix[i][j] <= 100"
+  ],
+  "Signature": {
+    "FunctionName": "spiralOrder",
+    "Parameters": [
+      {
+        "Name": "matrix",
+        "Type": "integer[][]"
+      }
+    ],
+    "ReturnType": "list<integer>",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public IList<int> SpiralOrder(int[][] matrix) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[[1,2,3],[4,5,6],[7,8,9]]"
+      ],
+      "ExpectedOutput": "[1,2,3,6,9,8,7,4,5]"
+    },
+    {
+      "Inputs": [
+        "[[1,2,3,4],[5,6,7,8],[9,10,11,12]]"
+      ],
+      "ExpectedOutput": "[1,2,3,4,8,12,11,10,9,5,6,7]"
+    }
+  ],
+  "ContentHtml": "<p>Given an <code>m x n</code> <code>matrix</code>, return <em>all elements of the</em> <code>matrix</code> <em>in spiral order</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2020/11/13/spiral1.jpg\" style=\"width: 242px; height: 242px;\" />\n<pre>\n<strong>Input:</strong> matrix = [[1,2,3],[4,5,6],[7,8,9]]\n<strong>Output:</strong> [1,2,3,6,9,8,7,4,5]\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2020/11/13/spiral.jpg\" style=\"width: 322px; height: 242px;\" />\n<pre>\n<strong>Input:</strong> matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]\n<strong>Output:</strong> [1,2,3,4,8,12,11,10,9,5,6,7]\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>m == matrix.length</code></li>\n\t<li><code>n == matrix[i].length</code></li>\n\t<li><code>1 &lt;= m, n &lt;= 10</code></li>\n\t<li><code>-100 &lt;= matrix[i][j] &lt;= 100</code></li>\n</ul>\n"
+}

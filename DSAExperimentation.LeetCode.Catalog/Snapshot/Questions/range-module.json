@@ -1,0 +1,120 @@
+{
+  "QuestionId": 715,
+  "FrontendId": 715,
+  "Title": "Range Module",
+  "TitleSlug": "range-module",
+  "Difficulty": "Hard",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Design",
+      "Slug": "design"
+    },
+    {
+      "Name": "Segment Tree",
+      "Slug": "segment-tree"
+    },
+    {
+      "Name": "Ordered Set",
+      "Slug": "ordered-set"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Merge Intervals",
+      "TitleSlug": "merge-intervals",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Insert Interval",
+      "TitleSlug": "insert-interval",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Data Stream as Disjoint Intervals",
+      "TitleSlug": "data-stream-as-disjoint-intervals",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [
+    "Maintain a sorted set of disjoint intervals.  addRange and removeRange can be performed with time complexity linear to the size of this set; queryRange can be performed with time complexity logarithmic to the size of this set."
+  ],
+  "Constraints": [
+    "1 <= left < right <= 10^9",
+    "At most 10^4 calls will be made to addRange, queryRange, and removeRange."
+  ],
+  "Signature": {
+    "FunctionName": null,
+    "Parameters": [
+      {
+        "Name": "lefts",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "rights",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": null,
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": "RangeModule",
+    "ConstructorParameters": [],
+    "Methods": [
+      {
+        "Name": "addRange",
+        "Parameters": [
+          {
+            "Name": "left",
+            "Type": "integer"
+          },
+          {
+            "Name": "right",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "void"
+      },
+      {
+        "Name": "queryRange",
+        "Parameters": [
+          {
+            "Name": "left",
+            "Type": "integer"
+          },
+          {
+            "Name": "right",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "boolean"
+      },
+      {
+        "Name": "removeRange",
+        "Parameters": [
+          {
+            "Name": "left",
+            "Type": "integer"
+          },
+          {
+            "Name": "right",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "void"
+      }
+    ]
+  },
+  "CSharpStarterCode": "public class RangeModule {\n\n    public RangeModule() {\n        \n    }\n    \n    public void AddRange(int left, int right) {\n        \n    }\n    \n    public bool QueryRange(int left, int right) {\n        \n    }\n    \n    public void RemoveRange(int left, int right) {\n        \n    }\n}\n\n/**\n * Your RangeModule object will be instantiated and called as such:\n * RangeModule obj = new RangeModule();\n * obj.AddRange(left,right);\n * bool param_2 = obj.QueryRange(left,right);\n * obj.RemoveRange(left,right);\n */",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"RangeModule\",\"addRange\",\"removeRange\",\"queryRange\",\"queryRange\",\"queryRange\"]",
+        "[[],[10,20],[14,16],[10,14],[13,15],[16,17]]"
+      ],
+      "ExpectedOutput": "[null, null, null, true, false, true]"
+    }
+  ],
+  "ContentHtml": "<p>A Range Module is a module that tracks ranges of numbers. Design a data structure to track the ranges represented as <strong>half-open intervals</strong> and query about them.</p>\n\n<p>A <strong>half-open interval</strong> <code>[left, right)</code> denotes all the real numbers <code>x</code> where <code>left &lt;= x &lt; right</code>.</p>\n\n<p>Implement the <code>RangeModule</code> class:</p>\n\n<ul>\n\t<li><code>RangeModule()</code> Initializes the object of the data structure.</li>\n\t<li><code>void addRange(int left, int right)</code> Adds the <strong>half-open interval</strong> <code>[left, right)</code>, tracking every real number in that interval. Adding an interval that partially overlaps with currently tracked numbers should add any numbers in the interval <code>[left, right)</code> that are not already tracked.</li>\n\t<li><code>boolean queryRange(int left, int right)</code> Returns <code>true</code> if every real number in the interval <code>[left, right)</code> is currently being tracked, and <code>false</code> otherwise.</li>\n\t<li><code>void removeRange(int left, int right)</code> Stops tracking every real number currently being tracked in the <strong>half-open interval</strong> <code>[left, right)</code>.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input</strong>\n[&quot;RangeModule&quot;, &quot;addRange&quot;, &quot;removeRange&quot;, &quot;queryRange&quot;, &quot;queryRange&quot;, &quot;queryRange&quot;]\n[[], [10, 20], [14, 16], [10, 14], [13, 15], [16, 17]]\n<strong>Output</strong>\n[null, null, null, true, false, true]\n\n<strong>Explanation</strong>\nRangeModule rangeModule = new RangeModule();\nrangeModule.addRange(10, 20);\nrangeModule.removeRange(14, 16);\nrangeModule.queryRange(10, 14); // return True,(Every number in [10, 14) is being tracked)\nrangeModule.queryRange(13, 15); // return False,(Numbers like 14, 14.03, 14.17 in [13, 15) are not being tracked)\nrangeModule.queryRange(16, 17); // return True, (The number 16 in [16, 17) is still being tracked, despite the remove operation)\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= left &lt; right &lt;= 10<sup>9</sup></code></li>\n\t<li>At most <code>10<sup>4</sup></code> calls will be made to <code>addRange</code>, <code>queryRange</code>, and <code>removeRange</code>.</li>\n</ul>\n"
+}

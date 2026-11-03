@@ -1,0 +1,236 @@
+[
+  {
+    "Inputs": [
+      "5",
+      "\"apple\"",
+      "\"zebra\"",
+      "\"app\""
+    ],
+    "ExpectedOutput": "11220078"
+  },
+  {
+    "Inputs": [
+      "5",
+      "\"apple\"",
+      "\"appla\"",
+      "\"appl\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "3",
+      "\"aaa\"",
+      "\"zzz\"",
+      "\"abc\""
+    ],
+    "ExpectedOutput": "17575"
+  },
+  {
+    "Inputs": [
+      "5",
+      "\"aaaaa\"",
+      "\"zzzzz\"",
+      "\"abc\""
+    ],
+    "ExpectedOutput": "11879348"
+  },
+  {
+    "Inputs": [
+      "10",
+      "\"abcdefghij\"",
+      "\"abcdefghij\"",
+      "\"ghij\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "5",
+      "\"apple\"",
+      "\"zebra\"",
+      "\"dog\""
+    ],
+    "ExpectedOutput": "11219789"
+  },
+  {
+    "Inputs": [
+      "3",
+      "\"abc\"",
+      "\"xyz\"",
+      "\"def\""
+    ],
+    "ExpectedOutput": "16169"
+  },
+  {
+    "Inputs": [
+      "3",
+      "\"aaa\"",
+      "\"zzz\"",
+      "\"xyz\""
+    ],
+    "ExpectedOutput": "17575"
+  },
+  {
+    "Inputs": [
+      "3",
+      "\"abc\"",
+      "\"xyz\"",
+      "\"de\""
+    ],
+    "ExpectedOutput": "16120"
+  },
+  {
+    "Inputs": [
+      "10",
+      "\"aaaaaaaaaa\"",
+      "\"zzzzzzzzzz\"",
+      "\"mnop\""
+    ],
+    "ExpectedOutput": "932258852"
+  },
+  {
+    "Inputs": [
+      "10",
+      "\"abcdefghij\"",
+      "\"zzzzzzzzzz\"",
+      "\"mnop\""
+    ],
+    "ExpectedOutput": "67339166"
+  },
+  {
+    "Inputs": [
+      "25",
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "\"abcde\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "45",
+      "\"abcdefghijklmnopqrstuvwxyzabcdefghij\"",
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "\"mnopqr\""
+    ],
+    "ExpectedOutput": "720631236"
+  },
+  {
+    "Inputs": [
+      "6",
+      "\"aaaaaa\"",
+      "\"zzzzzz\"",
+      "\"ab\""
+    ],
+    "ExpectedOutput": "306634951"
+  },
+  {
+    "Inputs": [
+      "20",
+      "\"aaabaaabaaabaaabaa\"",
+      "\"zzzzzzzzzzzzzzzzzzzz\"",
+      "\"aaa\""
+    ],
+    "ExpectedOutput": "357553640"
+  },
+  {
+    "Inputs": [
+      "35",
+      "\"applepieapplepieapplepieapplepie\"",
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "\"apple\""
+    ],
+    "ExpectedOutput": "695022504"
+  },
+  {
+    "Inputs": [
+      "7",
+      "\"aaaaaaa\"",
+      "\"zzzzzzz\"",
+      "\"abc\""
+    ],
+    "ExpectedOutput": "29525318"
+  },
+  {
+    "Inputs": [
+      "20",
+      "\"abcdabcdabcdabcdabcd\"",
+      "\"zzzzzzzzzzzzzzzzzzzz\"",
+      "\"zabcd\""
+    ],
+    "ExpectedOutput": "426896930"
+  },
+  {
+    "Inputs": [
+      "10",
+      "\"abcdefghij\"",
+      "\"abcdefghiz\"",
+      "\"ghi\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "15",
+      "\"abcdefghijklnmop\"",
+      "\"abcdefghijklnmopqrstuvwxyz\"",
+      "\"mnop\""
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "30",
+      "\"abcdefghijklmnopqrstuvwxyzabcde\"",
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "\"vwxyz\""
+    ],
+    "ExpectedOutput": "858527385"
+  },
+  {
+    "Inputs": [
+      "50",
+      "\"leetcodeleetcodeleetcodeleetcodeleetcode\"",
+      "\"leetgoesleetgoesleetgoesleetgoesleetgoes\"",
+      "\"leet\""
+    ],
+    "ExpectedOutput": "0"
+  },
+  {
+    "Inputs": [
+      "40",
+      "\"aaabbbcccdddeeefffggghhhiiijjjkkklllmmmnnnooopppqqqrrrssstttuuuvvvwwwxxxxyyyzzz\"",
+      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
+      "\"mnopqr\""
+    ],
+    "ExpectedOutput": "438601268"
+  },
+  {
+    "Inputs": [
+      "10",
+      "\"abcdefghij\"",
+      "\"zjklmnopqr\"",
+      "\"mnop\""
+    ],
+    "ExpectedOutput": "922212598"
+  },
+  {
+    "Inputs": [
+      "40",
+      "\"abcdefghijabcdefghijabcdefghijabcdefghij\"",
+      "\"zjklmnopqrzjklmnopqrzjklmnopqrzjklmnopqr\"",
+      "\"mnopqr\""
+    ],
+    "ExpectedOutput": "54391096"
+  },
+  {
+    "Inputs": [
+      "5",
+      "\"aaaaa\"",
+      "\"zzzzz\"",
+      "\"b\""
+    ],
+    "ExpectedOutput": "9765625"
+  }
+]

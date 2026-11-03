@@ -447,73 +447,80 @@
     },
     {
       "check": "check-error-values",
-      "path": "DSAExperimentation.LeetCode.Tests/LeetCodeCatalog/LeetCodeCatalog.cs",
-      "reason": "Load is the throwing convenience beside LeetCodeQuestionCache.TryLoad's own recoverable form, the same 'internal-trusted caller's own bug, not external-input uncertainty' shape DynamicArray.Get/TryGet and DisjointSetForest.GetParent/TryGetParent already use in this repo - a missing fixture means a test asked for a slug nobody synced via LeetCodeCatalogSyncTests, not state a caller couldn't have known about in advance.",
+      "path": "DSAExperimentation.LeetCode.Catalog/LeetCodeCatalog.cs",
+      "reason": "Question and Problem throw KeyNotFoundException for a slug the catalog does not hold. Every caller is a harness naming the one problem it was written for, so a missing slug is that harness's bug, fixed by enrolling the problem - the message names the sync command that does it - not state a caller could recover from at run time. The recoverable question, whether a problem is enrolled, is TitleSlugs(), the same throwing-convenience-beside-a-query shape DynamicArray.Get/TryGet already uses in this repo.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
+    },
+    {
+      "check": "check-error-values",
+      "path": "DSAExperimentation.LeetCode.Catalog/LeetCodeNotation.cs",
+      "reason": "Parse throws FormatException for a bare null, beside the JsonException System.Text.Json already throws for text that is not the requested type. Both mean a harness asked a case for a value of the wrong type, a bug in that harness: LeetCode never passes a bare null, and LeetCodeCatalogTests checks that every stored generated case is notation throughout. An error value would make every typed read in every harness handle a failure only a wrong harness produces.",
+      "owner": "@kmettias",
+      "expires": "2027-04-30"
     },
     {
       "check": "check-folder-organization",
-      "path": "DSAExperimentation.LeetCode.Tests/LeetCodeCatalog/Fixtures",
-      "reason": "deliberately flat, one-JSON-file-per-cached-LeetCode-question layout - each fixture is an independent, checked-in snapshot keyed by the question's own titleSlug (see LeetCodeQuestionCache.cs), not a shared subsystem with a subsystem/role grouping that would apply; the flat list is itself the useful 'what's cached' index.",
+      "path": "DSAExperimentation.LeetCode.Catalog/Snapshot/**",
+      "reason": "Snapshot/Questions and Snapshot/Cases/<source> are data, deliberately flat: one JSON file per enrolled question, named by leetcode.com's titleSlug - 1,110 and 862 files when written. A question file's existence is what enrols the question (QuestionFiles.Slugs), and every reader finds a question's files by its slug, so subfolders would add a lookup rule without separating anything; the flat listing is the index of what is enrolled.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-naming-clarity",
-      "path": "DSAExperimentation.LeetCode.Tests/LeetCodeCatalog/Client/LeetCodeGraphQlDataDto.cs",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync/LeetCode/GraphQl/LeetCodeGraphQlDataDto.cs",
       "reason": "'Data' mirrors the GraphQL specification's own response envelope ({\"data\": ..., \"errors\": ...}, see spec.graphql.org) - this is the precise term the wire format itself uses for this exact field, not a vague placeholder name.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-naming-clarity",
-      "path": "DSAExperimentation.LeetCode.Tests/LeetCodeCatalog/Client/LeetCodeGraphQlResponseDto.cs",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync/LeetCode/GraphQl/LeetCodeGraphQlResponseDto.cs",
       "reason": "'Data' mirrors the GraphQL specification's own response envelope ({\"data\": ..., \"errors\": ...}, see spec.graphql.org) - this is the precise term the wire format itself uses for this exact field, not a vague placeholder name.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-naming-clarity",
-      "path": "DSAExperimentation.LeetCode.Tests/LeetCodeCatalog/Client/LeetCodeMetaDataDto.cs",
-      "reason": "'MetaData' mirrors leetcode.com's own GraphQL field name (metaData, see LeetCodeQuestionDto.cs and LeetCodeApiClient.cs's query text) verbatim - matching the source API's own vocabulary makes this easier to cross-reference against leetcode.com's schema, not vaguer.",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync/LeetCode/GraphQl/LeetCodeMetaDataDto.cs",
+      "reason": "'MetaData' mirrors leetcode.com's own GraphQL field name (metaData, see LeetCodeQuestionDto.cs and LeetCodeGraphQlApi.cs's query text) verbatim - matching the source API's own vocabulary makes this easier to cross-reference against leetcode.com's schema, not vaguer.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-naming-clarity",
-      "path": "DSAExperimentation.LeetCode.Tests/LeetCodeCatalog/Client/LeetCodeQuestionDto.cs",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync/LeetCode/GraphQl/LeetCodeQuestionDto.cs",
       "reason": "'MetaData' mirrors leetcode.com's own GraphQL field name (metaData) verbatim - matching the source API's own vocabulary makes this easier to cross-reference against leetcode.com's schema, not vaguer.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode.Tests/LeetCodeCatalog/Client/LeetCodeQuestionMapper.cs",
-      "reason": "each ! promises a JSON deserialization result is present - true because dto.Stats/dto.MetaData are always the nested JSON strings leetcode.com's own GraphQL response carries for a real question; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync/LeetCode/LeetCodeQuestionMapper.cs",
+      "reason": "Deserialize's ! promises a JSON deserialization result is present - true because stats, metaData and similarQuestions are always the nested JSON documents leetcode.com's own GraphQL response carries for a real question; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode.Tests/LeetCodeCatalog/LeetCodeQuestionCache.cs",
-      "reason": "each ! is one of: the standard TryGetValue/TryParse out-parameter contract (question in TryLoad), a JSON round-trip through this same class's own Save (DeserializeQuestion), a filename Directory.GetFiles itself just matched against *.json (FileNameWithoutExtension), or a [CallerFilePath]-supplied absolute path to this very file (ResolveFixturesDirectory) - each named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync/Dataset/LeetCodeDataset.cs",
+      "reason": "RowOf's ! promises a non-empty line of LeetCodeDataset's JSONL deserializes to a row - the dataset is one object per line, and only a corrupt download could hold a line reading null; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2027-04-30"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation.LeetCode.Catalog/Storage/CatalogJson.cs",
+      "reason": "each ! is one of: a deserialization of a file under Snapshot/ that this class's own TryWrite produced (Deserialize), the folder of a path built by Path.Combine under SnapshotDirectory (FolderOf), or the folder of the [CallerFilePath]-supplied absolute path to this very file (ResolveSnapshotDirectory) - each named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode.Tests/LeetCodeCatalog/Validation/TwoSumAdapter.cs",
-      "reason": "each ! promises a JSON deserialization result is present - true because rawInput/rawExpectedOutput always come from a LeetCodeQuestion cached for 'two-sum' specifically, whose example lines are always valid JSON by LeetCodeQuestionMapper's own construction; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "path": "DSAExperimentation.LeetCode.Catalog/Bounds/BoundSubject.cs",
+      "reason": "StringLengthOf's ! is GetString on an element LengthOf has just matched as JsonValueKind.String, for which System.Text.Json's GetString never returns null; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode.Tests/LeetCodeCatalog/Validation/MergeIntervalsAdapter.cs",
-      "reason": "each ! promises a JSON deserialization result is present - true because rawInput/rawExpectedOutput always come from a LeetCodeQuestion cached for 'merge-intervals' specifically, whose example lines are always a valid JSON 2D integer array by LeetCodeQuestionMapper's own construction; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
+      "expires": "2027-04-30"
     },
     {
       "check": "check-presumption",
@@ -1809,15 +1816,15 @@
     },
     {
       "check": "check-folder-organization",
-      "path": "DSAExperimentation.LeetCode.Tests/LeetCodeCatalog/Client",
-      "reason": "one type per file, and the 11 files are one client: the API surface, the GraphQL request/response plumbing, the mapper, and one DTO per node of LeetCode's own GraphQL schema (question, topic tag, stats, metadata, parameter). The set mirrors an external schema rather than a subsystem this repo owns the shape of, so a role grouping would cut across DTOs that are serialized together in the same response.",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync/LeetCode/GraphQl",
+      "reason": "one type per file, and the 14 files are one wire format: the request, the response envelope, and one record per node of leetcode.com's question response (question, topic tag, code snippet, stats, similar question, metaData and its parameter, return, output, constructor and method members). The set mirrors an external schema rather than a subsystem this repo owns the shape of, so a role grouping would cut across records that are deserialized together from the same response.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-abbreviations",
-      "path": "DSAExperimentation.LeetCode.Tests/LeetCodeCatalog/Fixtures/**",
-      "reason": "every file here is named with leetcode.com's own titleSlug for the question it caches, and the cache resolves a question by exactly that slug - LeetCodeQuestionCache.PathFor builds '{titleSlug}.json' and ListCachedTitleSlugs enumerates this folder's filenames - so these are external identifiers this repo does not choose and cannot rename without breaking the by-slug lookup. The findings that remain after 'kth'/'bst'/'gcd' and their siblings were added to words.approved_abbreviations are fragments of those slugs rather than abbreviations this repo wrote: 'th' out of LeetCode's own 'k-th' hyphenation (find-number-of-ways-to-reach-the-k-th-stair.json, k-th-symbol-in-grammar.json, n-th-tribonacci-number.json), 'mk' out of finding-mk-average.json (LeetCode 1825, 'Finding MK Average'), and 'sqrtx' out of sqrtx.json (LeetCode 69's own slug for 'Sqrt(x)').",
+      "path": "DSAExperimentation.LeetCode.Catalog/Snapshot/**",
+      "reason": "every file here is named with leetcode.com's own titleSlug for its question, and the catalog finds a question's files by exactly that slug - CatalogJson.PathOf builds '{titleSlug}.json' and QuestionFiles.Slugs enumerates the Questions folder - so these are external identifiers this repo does not choose and cannot rename without breaking the by-slug lookup. The findings that remain after 'kth'/'bst'/'gcd' and their siblings were added to words.approved_abbreviations are fragments of those slugs: 'th' out of LeetCode's own 'k-th' hyphenation (k-th-symbol-in-grammar.json, find-the-n-th-value-after-k-seconds.json), 'mk' out of finding-mk-average.json and 'sqrtx' out of sqrtx.json.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1958,11 +1965,81 @@
     },
     {
       "check": "check-naming-clarity",
-      "path": "DSAExperimentation.LeetCode.Tests/LeetCodeCatalog/Client/LeetCodeGraphQlApi.cs",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync/LeetCode/LeetCodeGraphQlApi.cs",
       "message": "contains vague word `data`",
-      "reason": "`data` in `QuestionDataOperationName` and `QuestionDataQuery` is leetcode.com's own GraphQL field name, not a vague word this repo chose: the operation name constant holds the literal string `\"questionData\"` and the query text selects that field. A constant whose whole job is to spell an external identifier has to spell it, and renaming it would leave two constants naming a field called `questionData` while themselves saying something else. Same argument as the fixtures waiver on `check-abbreviations`: these are external identifiers this repo does not choose.",
+      "reason": "`data` in `QuestionDataOperationName` and `QuestionDataQuery` is leetcode.com's own GraphQL field name, not a vague word this repo chose: the operation name constant holds the literal string `\"questionData\"` and the query text selects that field. A constant whose whole job is to spell an external identifier has to spell it. Same argument as the Snapshot waiver on `check-abbreviations`: these are external identifiers this repo does not choose.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.LeetCode.Catalog.Tests/**",
+      "reason": "Sibling of the DSAExperimentation.Tests/** and DSAExperimentation.LeetCode.Tests/** entries, written the same way - measured, not assumed. This test project held 69 check-literals findings when written, every one the test's own data: a constraint line under test (\"2 <= nums.length <= 10^4\"), a case's LeetCode notation, a fixture's fields, an expected value in an assertion, or a row of theory data. Naming them would make each test compare a constant with itself. The production project it tests, DSAExperimentation.LeetCode.Catalog, reports none.",
+      "owner": "@kmettias",
+      "expires": "2027-04-30"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync.Tests/**",
+      "reason": "Sibling of the DSAExperimentation.Tests/** and DSAExperimentation.LeetCode.Tests/** entries, written the same way - measured, not assumed. This test project held 152 check-literals findings when written, every one the test's own data: a Python literal or dataset input under test (\"[['abc', 'bca'], ['x']]\", \"nums = [3,3], target = 6\"), a GraphQL response fixture, a fixture's fields, an expected value in an assertion, or a row of theory data. Naming them would make each test compare a constant with itself. The production project it tests, DSAExperimentation.LeetCode.Catalog.Sync, reports none.",
+      "owner": "@kmettias",
+      "expires": "2027-04-30"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.LeetCode.Catalog.Tests/**",
+      "message": "which promises an answer, but returns a value",
+      "reason": "every finding this covers is an xUnit test method named by the repo's own `MemberUnderTest_Scenario_Expectation` convention: `IsInRange_InclusiveAndExclusiveLimits_...` says \"the member `IsInRange`, in this scenario, ...\". Its leading word is the name of the member under test, not a promise about what the test method returns, the same reading the sibling entries for DSAExperimentation.Tests/** give.",
+      "owner": "@kmettias",
+      "expires": "2027-04-30"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync.Tests/**",
+      "message": "which promises an answer, but returns a value",
+      "reason": "every finding this covers is an xUnit test method named by the repo's own `MemberUnderTest_Scenario_Expectation` convention: `IsAtTopLevel_AfterEachCharacter_...` says \"the member `IsAtTopLevel`, in this scenario, ...\". Its leading word is the name of the member under test, not a promise about what the test method returns, the same reading the sibling entries for DSAExperimentation.Tests/** give.",
+      "owner": "@kmettias",
+      "expires": "2027-04-30"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync/QuestionsCommand.cs",
+      "anchor": "`RunAsync`",
+      "reason": "QuestionsCommand.RunAsync fetches every enrolled question from leetcode.com and rewrites their files and Statistics.json. A test that called it would either reach a third party's server from `dotnet test`, which this repository keeps offline and deterministic, or rewrite the checked-in snapshot under DSAExperimentation.LeetCode.Catalog/Snapshot. It is run by hand and weekly by .github/workflows/leetcode-catalog-sync.yml, whose test step then runs the whole suite against what it wrote; everything it delegates to - the mapper, the tallies, the dataset converter and reader, the snapshot stores - is named by tests in DSAExperimentation.LeetCode.Catalog.Tests.",
+      "owner": "@kmettias",
+      "expires": "2027-04-30"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync/RatingsCommand.cs",
+      "anchor": "`RunAsync`",
+      "reason": "RatingsCommand.RunAsync fetches zerotrac's ratings and rewrites ContestRatings.json. A test that called it would either reach a third party's server from `dotnet test`, which this repository keeps offline and deterministic, or rewrite the checked-in snapshot under DSAExperimentation.LeetCode.Catalog/Snapshot. It is run by hand and weekly by .github/workflows/leetcode-catalog-sync.yml, whose test step then runs the whole suite against what it wrote; everything it delegates to - the mapper, the tallies, the dataset converter and reader, the snapshot stores - is named by tests in DSAExperimentation.LeetCode.Catalog.Tests.",
+      "owner": "@kmettias",
+      "expires": "2027-04-30"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync/DatasetCommand.cs",
+      "anchor": "`RunAsync`",
+      "reason": "DatasetCommand.RunAsync downloads LeetCodeDataset and rewrites every question's Cases/Dataset file. A test that called it would either reach a third party's server from `dotnet test`, which this repository keeps offline and deterministic, or rewrite the checked-in snapshot under DSAExperimentation.LeetCode.Catalog/Snapshot. It is run by hand and weekly by .github/workflows/leetcode-catalog-sync.yml, whose test step then runs the whole suite against what it wrote; everything it delegates to - the mapper, the tallies, the dataset converter and reader, the snapshot stores - is named by tests in DSAExperimentation.LeetCode.Catalog.Tests.",
+      "owner": "@kmettias",
+      "expires": "2027-04-30"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync/LeetCode/LeetCodeApiClient.cs",
+      "anchor": "`FetchQuestionAsync`",
+      "reason": "LeetCodeApiClient.FetchQuestionAsync posts a GraphQL query to leetcode.com. A test that called it would either reach a third party's server from `dotnet test`, which this repository keeps offline and deterministic, or rewrite the checked-in snapshot under DSAExperimentation.LeetCode.Catalog/Snapshot. It is run by hand and weekly by .github/workflows/leetcode-catalog-sync.yml, whose test step then runs the whole suite against what it wrote; everything it delegates to - the mapper, the tallies, the dataset converter and reader, the snapshot stores - is named by tests in DSAExperimentation.LeetCode.Catalog.Tests.",
+      "owner": "@kmettias",
+      "expires": "2027-04-30"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation.LeetCode.Catalog.Sync/Ratings/ZerotracRatings.cs",
+      "anchor": "`FetchAsync`",
+      "reason": "ZerotracRatings.FetchAsync downloads zerotrac's data.json from GitHub. A test that called it would either reach a third party's server from `dotnet test`, which this repository keeps offline and deterministic, or rewrite the checked-in snapshot under DSAExperimentation.LeetCode.Catalog/Snapshot. It is run by hand and weekly by .github/workflows/leetcode-catalog-sync.yml, whose test step then runs the whole suite against what it wrote; everything it delegates to - the mapper, the tallies, the dataset converter and reader, the snapshot stores - is named by tests in DSAExperimentation.LeetCode.Catalog.Tests.",
+      "owner": "@kmettias",
+      "expires": "2027-04-30"
     },
     {
       "check": "check-boolean-predicate",

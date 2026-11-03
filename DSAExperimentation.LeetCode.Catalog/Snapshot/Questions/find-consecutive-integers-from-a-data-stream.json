@@ -1,0 +1,88 @@
+{
+  "QuestionId": 2620,
+  "FrontendId": 2526,
+  "Title": "Find Consecutive Integers from a Data Stream",
+  "TitleSlug": "find-consecutive-integers-from-a-data-stream",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "Design",
+      "Slug": "design"
+    },
+    {
+      "Name": "Queue",
+      "Slug": "queue"
+    },
+    {
+      "Name": "Counting",
+      "Slug": "counting"
+    },
+    {
+      "Name": "Data Stream",
+      "Slug": "data-stream"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Number of Zero-Filled Subarrays",
+      "TitleSlug": "number-of-zero-filled-subarrays",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [
+    "Keep track of the last integer which is not equal to <code>value</code>.",
+    "Use a queue-type data structure to store the last <code>k</code> integers."
+  ],
+  "Constraints": [
+    "1 <= value, num <= 10^9",
+    "1 <= k <= 10^5",
+    "At most 10^5 calls will be made to consec."
+  ],
+  "Signature": {
+    "FunctionName": null,
+    "Parameters": [],
+    "ReturnType": null,
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": "DataStream",
+    "ConstructorParameters": [
+      {
+        "Name": "value",
+        "Type": "integer"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "Methods": [
+      {
+        "Name": "consec",
+        "Parameters": [
+          {
+            "Name": "num",
+            "Type": "integer"
+          }
+        ],
+        "ReturnType": "boolean"
+      }
+    ]
+  },
+  "CSharpStarterCode": "public class DataStream {\n\n    public DataStream(int value, int k) {\n        \n    }\n    \n    public bool Consec(int num) {\n        \n    }\n}\n\n/**\n * Your DataStream object will be instantiated and called as such:\n * DataStream obj = new DataStream(value, k);\n * bool param_1 = obj.Consec(num);\n */",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"DataStream\",\"consec\",\"consec\",\"consec\",\"consec\"]",
+        "[[4,3],[4],[4],[4],[3]]"
+      ],
+      "ExpectedOutput": "[null, false, false, true, false]"
+    }
+  ],
+  "ContentHtml": "<p>For a stream of integers, implement a data structure that checks if the last <code>k</code> integers parsed in the stream are <strong>equal</strong> to <code>value</code>.</p>\n\n<p>Implement the <strong>DataStream</strong> class:</p>\n\n<ul>\n\t<li><code>DataStream(int value, int k)</code> Initializes the object with an empty integer stream and the two integers <code>value</code> and <code>k</code>.</li>\n\t<li><code>boolean consec(int num)</code> Adds <code>num</code> to the stream of integers. Returns <code>true</code> if the last <code>k</code> integers are equal to <code>value</code>, and <code>false</code> otherwise. If there are less than <code>k</code> integers, the condition does not hold true, so returns <code>false</code>.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input</strong>\n[&quot;DataStream&quot;, &quot;consec&quot;, &quot;consec&quot;, &quot;consec&quot;, &quot;consec&quot;]\n[[4, 3], [4], [4], [4], [3]]\n<strong>Output</strong>\n[null, false, false, true, false]\n\n<strong>Explanation</strong>\nDataStream dataStream = new DataStream(4, 3); //value = 4, k = 3 \ndataStream.consec(4); // Only 1 integer is parsed, so returns False. \ndataStream.consec(4); // Only 2 integers are parsed.\n                      // Since 2 is less than k, returns False. \ndataStream.consec(4); // The 3 integers parsed are all equal to value, so returns True. \ndataStream.consec(3); // The last k integers parsed in the stream are [4,4,3].\n                      // Since 3 is not equal to value, it returns False.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= value, num &lt;= 10<sup>9</sup></code></li>\n\t<li><code>1 &lt;= k &lt;= 10<sup>5</sup></code></li>\n\t<li>At most <code>10<sup>5</sup></code> calls will be made to <code>consec</code>.</li>\n</ul>\n"
+}

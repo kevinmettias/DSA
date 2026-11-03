@@ -1,0 +1,751 @@
+[
+  {
+    "Inputs": [
+      "[\"keyboard\",\"keypad\",\"keys\",\"kick\"]",
+      "\"key\""
+    ],
+    "ExpectedOutput": "[[\"keyboard\",\"keypad\",\"keys\"],[\"keyboard\",\"keypad\",\"keys\"],[\"keyboard\",\"keypad\",\"keys\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"keyboard\",\"keypad\",\"mousepad\"]",
+      "\"key\""
+    ],
+    "ExpectedOutput": "[[\"keyboard\",\"keypad\"],[\"keyboard\",\"keypad\"],[\"keyboard\",\"keypad\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"grape\",\"orange\"]",
+      "\"or\""
+    ],
+    "ExpectedOutput": "[[\"orange\"],[\"orange\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aaa\",\"aaab\",\"aaac\",\"aab\"]",
+      "\"aa\""
+    ],
+    "ExpectedOutput": "[[\"aaa\",\"aaab\",\"aaac\"],[\"aaa\",\"aaab\",\"aaac\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"charger\",\"cable\",\"case\"]",
+      "\"ca\""
+    ],
+    "ExpectedOutput": "[[\"cable\",\"case\",\"charger\"],[\"cable\",\"case\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"bag\",\"bags\",\"banner\",\"box\",\"car\"]",
+      "\"ba\""
+    ],
+    "ExpectedOutput": "[[\"bag\",\"bags\",\"banner\"],[\"bag\",\"bags\",\"banner\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aaa\",\"aab\",\"aac\",\"aad\",\"aae\"]",
+      "\"aa\""
+    ],
+    "ExpectedOutput": "[[\"aaa\",\"aab\",\"aac\"],[\"aaa\",\"aab\",\"aac\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aaa\",\"aab\",\"aac\",\"aad\"]",
+      "\"aa\""
+    ],
+    "ExpectedOutput": "[[\"aaa\",\"aab\",\"aac\"],[\"aaa\",\"aab\",\"aac\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apples\",\"application\"]",
+      "\"app\""
+    ],
+    "ExpectedOutput": "[[\"apple\",\"apples\",\"application\"],[\"apple\",\"apples\",\"application\"],[\"apple\",\"apples\",\"application\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"grape\",\"orange\"]",
+      "\"ba\""
+    ],
+    "ExpectedOutput": "[[\"banana\"],[\"banana\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"keyboard\",\"keypad\",\"keyboard\",\"keychain\"]",
+      "\"key\""
+    ],
+    "ExpectedOutput": "[[\"keyboard\",\"keyboard\",\"keychain\"],[\"keyboard\",\"keyboard\",\"keychain\"],[\"keyboard\",\"keyboard\",\"keychain\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"keyboard\",\"keypad\",\"kiosk\"]",
+      "\"key\""
+    ],
+    "ExpectedOutput": "[[\"keyboard\",\"keypad\",\"kiosk\"],[\"keyboard\",\"keypad\"],[\"keyboard\",\"keypad\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"grape\",\"orange\",\"peach\"]",
+      "\"app\""
+    ],
+    "ExpectedOutput": "[[\"apple\"],[\"apple\"],[\"apple\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apricot\",\"banana\",\"bat\",\"berry\"]",
+      "\"ba\""
+    ],
+    "ExpectedOutput": "[[\"banana\",\"bat\",\"berry\"],[\"banana\",\"bat\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"keyboard\",\"keypad\",\"keyboardpad\"]",
+      "\"key\""
+    ],
+    "ExpectedOutput": "[[\"keyboard\",\"keyboardpad\",\"keypad\"],[\"keyboard\",\"keyboardpad\",\"keypad\"],[\"keyboard\",\"keyboardpad\",\"keypad\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aardvark\",\"aardwolf\",\"albatross\",\"alligator\",\"alpaca\",\"antelope\",\"anteater\"]",
+      "\"aa\""
+    ],
+    "ExpectedOutput": "[[\"aardvark\",\"aardwolf\",\"albatross\"],[\"aardvark\",\"aardwolf\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"xylophone\",\"xylography\",\"xylem\",\"xenon\",\"xerox\",\"xerophyte\",\"xenodochial\"]",
+      "\"xero\""
+    ],
+    "ExpectedOutput": "[[\"xenodochial\",\"xenon\",\"xerophyte\"],[\"xenodochial\",\"xenon\",\"xerophyte\"],[\"xerophyte\",\"xerox\"],[\"xerophyte\",\"xerox\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"jacket\",\"jaguar\",\"jar\",\"jasmine\",\"jeep\"]",
+      "\"ja\""
+    ],
+    "ExpectedOutput": "[[\"jacket\",\"jaguar\",\"jar\"],[\"jacket\",\"jaguar\",\"jar\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"ant\",\"anteater\",\"antelope\",\"antenna\",\"antique\",\"antfarm\",\"antler\"]",
+      "\"ant\""
+    ],
+    "ExpectedOutput": "[[\"ant\",\"anteater\",\"antelope\"],[\"ant\",\"anteater\",\"antelope\"],[\"ant\",\"anteater\",\"antelope\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"television\",\"telescope\",\"temperature\",\"tennis\",\"tense\"]",
+      "\"te\""
+    ],
+    "ExpectedOutput": "[[\"telescope\",\"television\",\"temperature\"],[\"telescope\",\"television\",\"temperature\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apricot\",\"banana\",\"bat\",\"berry\",\"blackberry\",\"blueberry\"]",
+      "\"b\""
+    ],
+    "ExpectedOutput": "[[\"banana\",\"bat\",\"berry\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"grape\",\"grapefruit\",\"grapevine\",\"graph\",\"grapejuice\"]",
+      "\"gr\""
+    ],
+    "ExpectedOutput": "[[\"grape\",\"grapefruit\",\"grapejuice\"],[\"grape\",\"grapefruit\",\"grapejuice\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"dolphin\",\"dome\",\"domestic\",\"domino\"]",
+      "\"dom\""
+    ],
+    "ExpectedOutput": "[[\"dog\",\"dolphin\",\"dome\"],[\"dog\",\"dolphin\",\"dome\"],[\"dome\",\"domestic\",\"domino\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"magnifier\",\"magnificent\",\"magnet\",\"magnolia\",\"magnitude\"]",
+      "\"magn\""
+    ],
+    "ExpectedOutput": "[[\"magnet\",\"magnificent\",\"magnifier\"],[\"magnet\",\"magnificent\",\"magnifier\"],[\"magnet\",\"magnificent\",\"magnifier\"],[\"magnet\",\"magnificent\",\"magnifier\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"application\",\"appliance\",\"appropriate\",\"appetizer\"]",
+      "\"appl\""
+    ],
+    "ExpectedOutput": "[[\"appetizer\",\"apple\",\"appliance\"],[\"appetizer\",\"apple\",\"appliance\"],[\"appetizer\",\"apple\",\"appliance\"],[\"apple\",\"appliance\",\"application\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"grape\",\"grapefruit\",\"grapejuice\",\"graphite\",\"grapevine\",\"grapefruitjuice\"]",
+      "\"grape\""
+    ],
+    "ExpectedOutput": "[[\"grape\",\"grapefruit\",\"grapefruitjuice\"],[\"grape\",\"grapefruit\",\"grapefruitjuice\"],[\"grape\",\"grapefruit\",\"grapefruitjuice\"],[\"grape\",\"grapefruit\",\"grapefruitjuice\"],[\"grape\",\"grapefruit\",\"grapefruitjuice\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"array\",\"binary\",\"bit\",\"bitset\",\"bucket\",\"class\",\"collection\",\"datatype\",\"enumerate\",\"file\",\"float\",\"function\",\"garbage\",\"graph\",\"hash\",\"id\",\"implementation\",\"integer\",\"java\",\"keyword\",\"list\",\"map\",\"namespace\",\"null\",\"object\",\"operator\",\"pair\",\"pointer\",\"queue\",\"range\",\"reference\",\"set\",\"stack\",\"string\",\"struct\",\"template\",\"typedef\",\"union\",\"variable\",\"while\",\"xor\"]",
+      "\"algo\""
+    ],
+    "ExpectedOutput": "[[\"algorithm\",\"array\"],[\"algorithm\"],[\"algorithm\"],[\"algorithm\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"hamburger\",\"hammock\",\"hammer\",\"hammerhead\",\"handheld\"]",
+      "\"ham\""
+    ],
+    "ExpectedOutput": "[[\"hamburger\",\"hammer\",\"hammerhead\"],[\"hamburger\",\"hammer\",\"hammerhead\"],[\"hamburger\",\"hammer\",\"hammerhead\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"watermelon\",\"water\",\"wave\",\"wonder\",\"wonderland\"]",
+      "\"wat\""
+    ],
+    "ExpectedOutput": "[[\"water\",\"watermelon\",\"wave\"],[\"water\",\"watermelon\",\"wave\"],[\"water\",\"watermelon\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"amazon\",\"amazing\",\"ambassador\",\"ambient\",\"amplifier\"]",
+      "\"ambi\""
+    ],
+    "ExpectedOutput": "[[\"amazing\",\"amazon\",\"ambassador\"],[\"amazing\",\"amazon\",\"ambassador\"],[\"ambassador\",\"ambient\"],[\"ambient\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"xylophone\",\"xylography\",\"xylophone\",\"xylophone\",\"xylophone\"]",
+      "\"xylo\""
+    ],
+    "ExpectedOutput": "[[\"xylography\",\"xylophone\",\"xylophone\"],[\"xylography\",\"xylophone\",\"xylophone\"],[\"xylography\",\"xylophone\",\"xylophone\"],[\"xylography\",\"xylophone\",\"xylophone\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"card\",\"cardboard\",\"cargo\",\"cartoon\"]",
+      "\"car\""
+    ],
+    "ExpectedOutput": "[[\"car\",\"card\",\"cardboard\"],[\"car\",\"card\",\"cardboard\"],[\"car\",\"card\",\"cardboard\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abce\",\"abcf\",\"abcg\",\"abch\",\"abci\",\"abcj\",\"abck\",\"abcl\",\"abcm\"]",
+      "\"abc\""
+    ],
+    "ExpectedOutput": "[[\"abcd\",\"abce\",\"abcf\"],[\"abcd\",\"abce\",\"abcf\"],[\"abcd\",\"abce\",\"abcf\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zinc\",\"zoo\",\"zesty\",\"zoning\",\"zest\",\"zookeeper\"]",
+      "\"ze\""
+    ],
+    "ExpectedOutput": "[[\"zebra\",\"zest\",\"zesty\"],[\"zebra\",\"zest\",\"zesty\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aardvark\",\"aardwolf\",\"aardvark\",\"aardvark\",\"aardvark\"]",
+      "\"aard\""
+    ],
+    "ExpectedOutput": "[[\"aardvark\",\"aardvark\",\"aardvark\"],[\"aardvark\",\"aardvark\",\"aardvark\"],[\"aardvark\",\"aardvark\",\"aardvark\"],[\"aardvark\",\"aardvark\",\"aardvark\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"umbrella\",\"umber\",\"umbilical\",\"umbrella\",\"umbrella\"]",
+      "\"umb\""
+    ],
+    "ExpectedOutput": "[[\"umber\",\"umbilical\",\"umbrella\"],[\"umber\",\"umbilical\",\"umbrella\"],[\"umber\",\"umbilical\",\"umbrella\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\",\"abcdefg\",\"abcdefgh\",\"abcdefghi\",\"abcdefghij\"]",
+      "\"abcdefghijk\""
+    ],
+    "ExpectedOutput": "[[\"a\",\"ab\",\"abc\"],[\"ab\",\"abc\",\"abcd\"],[\"abc\",\"abcd\",\"abcde\"],[\"abcd\",\"abcde\",\"abcdef\"],[\"abcde\",\"abcdef\",\"abcdefg\"],[\"abcdef\",\"abcdefg\",\"abcdefgh\"],[\"abcdefg\",\"abcdefgh\",\"abcdefghi\"],[\"abcdefgh\",\"abcdefghi\",\"abcdefghij\"],[\"abcdefghi\",\"abcdefghij\"],[\"abcdefghij\"],[]]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apricot\",\"banana\",\"bat\",\"berry\",\"blueberry\",\"blackberry\"]",
+      "\"ba\""
+    ],
+    "ExpectedOutput": "[[\"banana\",\"bat\",\"berry\"],[\"banana\",\"bat\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zebrafish\",\"zebrafly\",\"zebratail\",\"zebralight\",\"zebrashoe\",\"zebragram\",\"zebratic\",\"zebrastriped\"]",
+      "\"zebra\""
+    ],
+    "ExpectedOutput": "[[\"zebra\",\"zebrafish\",\"zebrafly\"],[\"zebra\",\"zebrafish\",\"zebrafly\"],[\"zebra\",\"zebrafish\",\"zebrafly\"],[\"zebra\",\"zebrafish\",\"zebrafly\"],[\"zebra\",\"zebrafish\",\"zebrafly\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"infinite\",\"infinity\",\"infinitesimal\",\"infinity\",\"infinitary\"]",
+      "\"inf\""
+    ],
+    "ExpectedOutput": "[[\"infinitary\",\"infinite\",\"infinitesimal\"],[\"infinitary\",\"infinite\",\"infinitesimal\"],[\"infinitary\",\"infinite\",\"infinitesimal\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"orange\",\"oregano\",\"organ\",\"organize\",\"organism\"]",
+      "\"org\""
+    ],
+    "ExpectedOutput": "[[\"orange\",\"oregano\",\"organ\"],[\"orange\",\"oregano\",\"organ\"],[\"organ\",\"organism\",\"organize\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"xenon\",\"xerox\",\"xenophobe\",\"xenial\",\"xenolith\",\"xenoliths\",\"xenonarc\",\"xenonarcosis\",\"xenolithologist\"]",
+      "\"xen\""
+    ],
+    "ExpectedOutput": "[[\"xenial\",\"xenolith\",\"xenolithologist\"],[\"xenial\",\"xenolith\",\"xenolithologist\"],[\"xenial\",\"xenolith\",\"xenolithologist\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aab\",\"aac\",\"aad\",\"aaf\",\"aag\"]",
+      "\"aa\""
+    ],
+    "ExpectedOutput": "[[\"a\",\"aa\",\"aaa\"],[\"aa\",\"aaa\",\"aaaa\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"laptop\",\"laptopbag\",\"laser\",\"lateral\",\"latitude\"]",
+      "\"lap\""
+    ],
+    "ExpectedOutput": "[[\"laptop\",\"laptopbag\",\"laser\"],[\"laptop\",\"laptopbag\",\"laser\"],[\"laptop\",\"laptopbag\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"cherry\",\"cranberry\",\"cantaloupe\",\"carrot\",\"corn\",\"cucumber\"]",
+      "\"car\""
+    ],
+    "ExpectedOutput": "[[\"cantaloupe\",\"carrot\",\"cherry\"],[\"cantaloupe\",\"carrot\"],[\"carrot\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"umbrella\",\"umbrella\",\"umbrella\",\"umbrella\",\"umbrella\",\"umbrella\",\"umbrella\",\"umbrella\",\"umbrella\",\"umbrella\"]",
+      "\"umbrella\""
+    ],
+    "ExpectedOutput": "[[\"umbrella\",\"umbrella\",\"umbrella\"],[\"umbrella\",\"umbrella\",\"umbrella\"],[\"umbrella\",\"umbrella\",\"umbrella\"],[\"umbrella\",\"umbrella\",\"umbrella\"],[\"umbrella\",\"umbrella\",\"umbrella\"],[\"umbrella\",\"umbrella\",\"umbrella\"],[\"umbrella\",\"umbrella\",\"umbrella\"],[\"umbrella\",\"umbrella\",\"umbrella\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aardvark\",\"aardwolf\",\"albatross\",\"albino\",\"alligator\",\"alpaca\",\"almighty\"]",
+      "\"al\""
+    ],
+    "ExpectedOutput": "[[\"aardvark\",\"aardwolf\",\"albatross\"],[\"albatross\",\"albino\",\"alligator\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zealot\",\"zealous\",\"zebrafish\",\"zebra\",\"zebrahead\"]",
+      "\"ze\""
+    ],
+    "ExpectedOutput": "[[\"zealot\",\"zealous\",\"zebra\"],[\"zealot\",\"zealous\",\"zebra\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"navigate\",\"navigation\",\"navigator\",\"navy\",\"navel\"]",
+      "\"nav\""
+    ],
+    "ExpectedOutput": "[[\"navel\",\"navigate\",\"navigation\"],[\"navel\",\"navigate\",\"navigation\"],[\"navel\",\"navigate\",\"navigation\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"electronics\",\"electric\",\"elephant\",\"elbow\",\"eleven\"]",
+      "\"ele\""
+    ],
+    "ExpectedOutput": "[[\"elbow\",\"electric\",\"electronics\"],[\"elbow\",\"electric\",\"electronics\"],[\"electric\",\"electronics\",\"elephant\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apricot\",\"banana\",\"bat\",\"berry\",\"blackberry\",\"blueberry\",\"bluebird\",\"bluetooth\"]",
+      "\"bl\""
+    ],
+    "ExpectedOutput": "[[\"banana\",\"bat\",\"berry\"],[\"blackberry\",\"blueberry\",\"bluebird\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abacaxi\",\"abalone\",\"abana\",\"abanga\",\"abaperture\",\"abara\",\"abaraxas\",\"abarth\",\"abart\",\"abat\",\"abate\",\"abati\",\"abatis\",\"abator\",\"abatt\",\"abature\",\"abavure\",\"abaya\",\"abaze\",\"abba\",\"abbe\",\"abbe\",\"abbe\",\"abbe\",\"abbe\",\"abbe\",\"abbe\",\"abbe\",\"abbe\",\"abbe\"]",
+      "\"ab\""
+    ],
+    "ExpectedOutput": "[[\"abacaxi\",\"abalone\",\"abana\"],[\"abacaxi\",\"abalone\",\"abana\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"applepie\",\"applesauce\",\"appleskin\",\"apple\",\"applejack\"]",
+      "\"appl\""
+    ],
+    "ExpectedOutput": "[[\"apple\",\"applejack\",\"applepie\"],[\"apple\",\"applejack\",\"applepie\"],[\"apple\",\"applejack\",\"applepie\"],[\"apple\",\"applejack\",\"applepie\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"camera\",\"camcorder\",\"cameralens\",\"cameraman\",\"cameraobscura\",\"camouflage\",\"camcorder\",\"camera\",\"camcorder\"]",
+      "\"cam\""
+    ],
+    "ExpectedOutput": "[[\"camcorder\",\"camcorder\",\"camcorder\"],[\"camcorder\",\"camcorder\",\"camcorder\"],[\"camcorder\",\"camcorder\",\"camcorder\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"chocolate\",\"chocolatebar\",\"chocolatechip\",\"chocolate\",\"chocolatefudge\"]",
+      "\"chocolate\""
+    ],
+    "ExpectedOutput": "[[\"chocolate\",\"chocolate\",\"chocolatebar\"],[\"chocolate\",\"chocolate\",\"chocolatebar\"],[\"chocolate\",\"chocolate\",\"chocolatebar\"],[\"chocolate\",\"chocolate\",\"chocolatebar\"],[\"chocolate\",\"chocolate\",\"chocolatebar\"],[\"chocolate\",\"chocolate\",\"chocolatebar\"],[\"chocolate\",\"chocolate\",\"chocolatebar\"],[\"chocolate\",\"chocolate\",\"chocolatebar\"],[\"chocolate\",\"chocolate\",\"chocolatebar\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"queens\",\"queenship\",\"queer\",\"queue\"]",
+      "\"quee\""
+    ],
+    "ExpectedOutput": "[[\"queen\",\"queens\",\"queenship\"],[\"queen\",\"queens\",\"queenship\"],[\"queen\",\"queens\",\"queenship\"],[\"queen\",\"queens\",\"queenship\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apricot\",\"avocado\",\"banana\",\"bat\",\"berry\",\"blackberry\",\"blueberry\",\"cherry\",\"cantaloupe\",\"cranberry\"]",
+      "\"ap\""
+    ],
+    "ExpectedOutput": "[[\"apple\",\"apricot\",\"avocado\"],[\"apple\",\"apricot\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"applepie\",\"applesauce\",\"apple\",\"appletart\",\"apples\",\"apricot\"]",
+      "\"apple\""
+    ],
+    "ExpectedOutput": "[[\"apple\",\"applepie\",\"apples\"],[\"apple\",\"applepie\",\"apples\"],[\"apple\",\"applepie\",\"apples\"],[\"apple\",\"applepie\",\"apples\"],[\"apple\",\"applepie\",\"apples\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"guitar\",\"guitarcase\",\"guitarhero\",\"guitarpick\",\"guitarstand\",\"guitartuner\",\"guitarstring\"]",
+      "\"gu\""
+    ],
+    "ExpectedOutput": "[[\"guitar\",\"guitarcase\",\"guitarhero\"],[\"guitar\",\"guitarcase\",\"guitarhero\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"ocean\",\"ocelot\",\"octopus\",\"octagon\",\"octagonal\"]",
+      "\"oct\""
+    ],
+    "ExpectedOutput": "[[\"ocean\",\"ocelot\",\"octagon\"],[\"ocean\",\"ocelot\",\"octagon\"],[\"octagon\",\"octagonal\",\"octopus\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"elephant\",\"elephant\",\"elephant\",\"elephant\",\"elephant\",\"elephant\",\"elephant\",\"elephant\",\"elephant\",\"elephant\"]",
+      "\"elephant\""
+    ],
+    "ExpectedOutput": "[[\"elephant\",\"elephant\",\"elephant\"],[\"elephant\",\"elephant\",\"elephant\"],[\"elephant\",\"elephant\",\"elephant\"],[\"elephant\",\"elephant\",\"elephant\"],[\"elephant\",\"elephant\",\"elephant\"],[\"elephant\",\"elephant\",\"elephant\"],[\"elephant\",\"elephant\",\"elephant\"],[\"elephant\",\"elephant\",\"elephant\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"chocolate\",\"chips\",\"chipmunk\",\"cheese\",\"cherry\",\"chili\"]",
+      "\"ch\""
+    ],
+    "ExpectedOutput": "[[\"cheese\",\"cherry\",\"chili\"],[\"cheese\",\"cherry\",\"chili\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abce\",\"abcf\",\"abcg\",\"abch\"]",
+      "\"abc\""
+    ],
+    "ExpectedOutput": "[[\"abcd\",\"abce\",\"abcf\"],[\"abcd\",\"abce\",\"abcf\"],[\"abcd\",\"abce\",\"abcf\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zulu\",\"zymurgy\",\"zestful\",\"zestfully\",\"zestless\",\"zippy\",\"zoo\",\"zoology\",\"zucchini\"]",
+      "\"zoo\""
+    ],
+    "ExpectedOutput": "[[\"zebra\",\"zestful\",\"zestfully\"],[\"zoo\",\"zoology\"],[\"zoo\",\"zoology\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"fishing\",\"fishtank\",\"fish\",\"fishmonger\",\"fisherman\",\"fishhook\",\"fishnet\"]",
+      "\"fish\""
+    ],
+    "ExpectedOutput": "[[\"fish\",\"fisherman\",\"fishhook\"],[\"fish\",\"fisherman\",\"fishhook\"],[\"fish\",\"fisherman\",\"fishhook\"],[\"fish\",\"fisherman\",\"fishhook\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"watermelon\",\"water\",\"waterproof\",\"watering\",\"waterfall\",\"watermelon\",\"watercolor\",\"watergun\",\"watermelon\",\"watermark\"]",
+      "\"waterm\""
+    ],
+    "ExpectedOutput": "[[\"water\",\"watercolor\",\"waterfall\"],[\"water\",\"watercolor\",\"waterfall\"],[\"water\",\"watercolor\",\"waterfall\"],[\"water\",\"watercolor\",\"waterfall\"],[\"water\",\"watercolor\",\"waterfall\"],[\"watermark\",\"watermelon\",\"watermelon\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"band\",\"bangalore\",\"bank\",\"banner\"]",
+      "\"ban\""
+    ],
+    "ExpectedOutput": "[[\"banana\",\"band\",\"bangalore\"],[\"banana\",\"band\",\"bangalore\"],[\"banana\",\"band\",\"bangalore\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"paint\",\"painter\",\"painting\",\"paintball\",\"paintbrush\"]",
+      "\"pain\""
+    ],
+    "ExpectedOutput": "[[\"paint\",\"paintball\",\"paintbrush\"],[\"paint\",\"paintball\",\"paintbrush\"],[\"paint\",\"paintball\",\"paintbrush\"],[\"paint\",\"paintball\",\"paintbrush\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"xyz\",\"xylophone\",\"xylography\",\"xylograph\",\"xylography\",\"xylographer\",\"xylographs\",\"xylography\",\"xylography\"]",
+      "\"xylo\""
+    ],
+    "ExpectedOutput": "[[\"xylograph\",\"xylographer\",\"xylographs\"],[\"xylograph\",\"xylographer\",\"xylographs\"],[\"xylograph\",\"xylographer\",\"xylographs\"],[\"xylograph\",\"xylographer\",\"xylographs\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"microphone\",\"microwave\",\"microscope\",\"microphone\",\"micronutrient\"]",
+      "\"micr\""
+    ],
+    "ExpectedOutput": "[[\"micronutrient\",\"microphone\",\"microphone\"],[\"micronutrient\",\"microphone\",\"microphone\"],[\"micronutrient\",\"microphone\",\"microphone\"],[\"micronutrient\",\"microphone\",\"microphone\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"flower\",\"flour\",\"flow\",\"flourish\",\"flourmill\"]",
+      "\"flow\""
+    ],
+    "ExpectedOutput": "[[\"flour\",\"flourish\",\"flourmill\"],[\"flour\",\"flourish\",\"flourmill\"],[\"flour\",\"flourish\",\"flourmill\"],[\"flow\",\"flower\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"card\",\"care\",\"careful\",\"careless\"]",
+      "\"ca\""
+    ],
+    "ExpectedOutput": "[[\"car\",\"card\",\"care\"],[\"car\",\"card\",\"care\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"football\",\"footwear\",\"footbridge\",\"footnote\",\"footrest\",\"footlocker\",\"footrace\",\"footlight\"]",
+      "\"foot\""
+    ],
+    "ExpectedOutput": "[[\"football\",\"footbridge\",\"footlight\"],[\"football\",\"footbridge\",\"footlight\"],[\"football\",\"footbridge\",\"footlight\"],[\"football\",\"footbridge\",\"footlight\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"bicycle\",\"bicycling\",\"bicycle\",\"bicycle\",\"bicycle\"]",
+      "\"bicy\""
+    ],
+    "ExpectedOutput": "[[\"bicycle\",\"bicycle\",\"bicycle\"],[\"bicycle\",\"bicycle\",\"bicycle\"],[\"bicycle\",\"bicycle\",\"bicycle\"],[\"bicycle\",\"bicycle\",\"bicycle\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"giraffe\",\"giraffe\",\"giraffe\",\"giraffe\",\"giraffe\",\"giraffe\",\"giraffe\",\"giraffe\",\"giraffe\",\"giraffe\"]",
+      "\"giraff\""
+    ],
+    "ExpectedOutput": "[[\"giraffe\",\"giraffe\",\"giraffe\"],[\"giraffe\",\"giraffe\",\"giraffe\"],[\"giraffe\",\"giraffe\",\"giraffe\"],[\"giraffe\",\"giraffe\",\"giraffe\"],[\"giraffe\",\"giraffe\",\"giraffe\"],[\"giraffe\",\"giraffe\",\"giraffe\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"strawberry\",\"straw\",\"stratosphere\",\"stranger\",\"strategy\"]",
+      "\"stra\""
+    ],
+    "ExpectedOutput": "[[\"stranger\",\"strategy\",\"stratosphere\"],[\"stranger\",\"strategy\",\"stratosphere\"],[\"stranger\",\"strategy\",\"stratosphere\"],[\"stranger\",\"strategy\",\"stratosphere\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"apricot\",\"banana\",\"bat\",\"berry\",\"blackberry\",\"blueberry\"]",
+      "\"ba\""
+    ],
+    "ExpectedOutput": "[[\"banana\",\"bat\",\"berry\"],[\"banana\",\"bat\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"watermelon\",\"water\",\"waterfall\",\"watershed\",\"watercolor\"]",
+      "\"water\""
+    ],
+    "ExpectedOutput": "[[\"water\",\"watercolor\",\"waterfall\"],[\"water\",\"watercolor\",\"waterfall\"],[\"water\",\"watercolor\",\"waterfall\"],[\"water\",\"watercolor\",\"waterfall\"],[\"water\",\"watercolor\",\"waterfall\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"computer\",\"computational\",\"compute\",\"computing\",\"computerized\"]",
+      "\"compute\""
+    ],
+    "ExpectedOutput": "[[\"computational\",\"compute\",\"computer\"],[\"computational\",\"compute\",\"computer\"],[\"computational\",\"compute\",\"computer\"],[\"computational\",\"compute\",\"computer\"],[\"computational\",\"compute\",\"computer\"],[\"computational\",\"compute\",\"computer\"],[\"compute\",\"computer\",\"computerized\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"photography\",\"photoalbum\",\"photobook\",\"photoframe\",\"photograph\",\"photokino\",\"photocopy\",\"photography\"]",
+      "\"phot\""
+    ],
+    "ExpectedOutput": "[[\"photoalbum\",\"photobook\",\"photocopy\"],[\"photoalbum\",\"photobook\",\"photocopy\"],[\"photoalbum\",\"photobook\",\"photocopy\"],[\"photoalbum\",\"photobook\",\"photocopy\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"strawberry\",\"straw\",\"strange\",\"strategy\",\"stranger\"]",
+      "\"stra\""
+    ],
+    "ExpectedOutput": "[[\"strange\",\"stranger\",\"strategy\"],[\"strange\",\"stranger\",\"strategy\"],[\"strange\",\"stranger\",\"strategy\"],[\"strange\",\"stranger\",\"strategy\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"elephant\",\"elephantine\",\"elegant\",\"elevate\",\"elementary\"]",
+      "\"ele\""
+    ],
+    "ExpectedOutput": "[[\"elegant\",\"elementary\",\"elephant\"],[\"elegant\",\"elementary\",\"elephant\"],[\"elegant\",\"elementary\",\"elephant\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"orange\",\"ornament\",\"organ\",\"orchid\",\"orchard\",\"organize\"]",
+      "\"or\""
+    ],
+    "ExpectedOutput": "[[\"orange\",\"orchard\",\"orchid\"],[\"orange\",\"orchard\",\"orchid\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"aaab\",\"aaac\",\"aaad\",\"aaae\",\"aaaf\",\"aaag\",\"aaah\",\"aaai\",\"aaaj\",\"aaak\",\"aaal\",\"aaam\",\"aaan\",\"aaao\",\"aaap\",\"aaaq\",\"aaar\",\"aaas\",\"aaat\",\"aaau\",\"aaav\",\"aaaw\",\"aaax\",\"aaay\",\"aaaz\"]",
+      "\"aaa\""
+    ],
+    "ExpectedOutput": "[[\"aaab\",\"aaac\",\"aaad\"],[\"aaab\",\"aaac\",\"aaad\"],[\"aaab\",\"aaac\",\"aaad\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"piano\",\"piano\",\"piano\",\"piano\",\"piano\",\"piano\",\"piano\",\"piano\",\"piano\",\"piano\"]",
+      "\"piano\""
+    ],
+    "ExpectedOutput": "[[\"piano\",\"piano\",\"piano\"],[\"piano\",\"piano\",\"piano\"],[\"piano\",\"piano\",\"piano\"],[\"piano\",\"piano\",\"piano\"],[\"piano\",\"piano\",\"piano\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"firefly\",\"fireworks\",\"firefly\",\"firearm\",\"firetruck\",\"firewall\",\"firefly\",\"firefly\",\"firefly\",\"firefly\"]",
+      "\"fire\""
+    ],
+    "ExpectedOutput": "[[\"firearm\",\"firefly\",\"firefly\"],[\"firearm\",\"firefly\",\"firefly\"],[\"firearm\",\"firefly\",\"firefly\"],[\"firearm\",\"firefly\",\"firefly\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"internet\",\"interact\",\"interest\",\"interior\",\"interfere\"]",
+      "\"inte\""
+    ],
+    "ExpectedOutput": "[[\"interact\",\"interest\",\"interfere\"],[\"interact\",\"interest\",\"interfere\"],[\"interact\",\"interest\",\"interfere\"],[\"interact\",\"interest\",\"interfere\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"computer\",\"compute\",\"computation\",\"compositor\",\"composite\",\"compress\",\"compression\",\"compressor\",\"compressed\"]",
+      "\"compre\""
+    ],
+    "ExpectedOutput": "[[\"composite\",\"compositor\",\"compress\"],[\"composite\",\"compositor\",\"compress\"],[\"composite\",\"compositor\",\"compress\"],[\"composite\",\"compositor\",\"compress\"],[\"compress\",\"compressed\",\"compression\"],[\"compress\",\"compressed\",\"compression\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"banana\",\"cherry\",\"date\",\"elderberry\",\"fig\",\"grape\",\"honeydew\",\"kiwi\",\"lemon\",\"mango\",\"nectarine\",\"orange\",\"papaya\",\"quince\",\"raspberry\",\"strawberry\",\"tangerine\",\"ugli\",\"vanilla\",\"watermelon\",\"xigua\",\"yellow\",\"zucchini\"]",
+      "\"a\""
+    ],
+    "ExpectedOutput": "[[\"apple\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"doghouse\",\"dogwood\",\"dog\",\"doghouse\"]",
+      "\"dog\""
+    ],
+    "ExpectedOutput": "[[\"dog\",\"dog\",\"doghouse\"],[\"dog\",\"dog\",\"doghouse\"],[\"dog\",\"dog\",\"doghouse\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abce\",\"abcg\",\"abch\",\"abci\",\"abcj\",\"abck\",\"abcl\",\"abcm\",\"abcn\",\"abcd\",\"abce\",\"abcg\",\"abch\",\"abci\",\"abcj\",\"abck\",\"abcl\",\"abcm\",\"abcn\"]",
+      "\"abc\""
+    ],
+    "ExpectedOutput": "[[\"abcd\",\"abcd\",\"abce\"],[\"abcd\",\"abcd\",\"abce\"],[\"abcd\",\"abcd\",\"abce\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"radio\",\"radiance\",\"radiant\",\"radioactive\",\"radioactivity\"]",
+      "\"radi\""
+    ],
+    "ExpectedOutput": "[[\"radiance\",\"radiant\",\"radio\"],[\"radiance\",\"radiant\",\"radio\"],[\"radiance\",\"radiant\",\"radio\"],[\"radiance\",\"radiant\",\"radio\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"keyboard\",\"keychain\",\"keyhole\",\"keylogger\",\"keynote\"]",
+      "\"key\""
+    ],
+    "ExpectedOutput": "[[\"keyboard\",\"keychain\",\"keyhole\"],[\"keyboard\",\"keychain\",\"keyhole\"],[\"keyboard\",\"keychain\",\"keyhole\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"starship\",\"stars\",\"start\",\"star\",\"startrek\",\"starfish\"]",
+      "\"star\""
+    ],
+    "ExpectedOutput": "[[\"star\",\"starfish\",\"stars\"],[\"star\",\"starfish\",\"stars\"],[\"star\",\"starfish\",\"stars\"],[\"star\",\"starfish\",\"stars\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"ant\",\"antelope\",\"antibody\",\"antacid\",\"antaeus\",\"antarctica\",\"anteater\",\"antelope\",\"antelope\",\"antler\"]",
+      "\"ante\""
+    ],
+    "ExpectedOutput": "[[\"ant\",\"antacid\",\"antaeus\"],[\"ant\",\"antacid\",\"antaeus\"],[\"ant\",\"antacid\",\"antaeus\"],[\"anteater\",\"antelope\",\"antelope\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"dove\",\"donkey\",\"dragon\",\"drone\",\"drill\",\"door\"]",
+      "\"dr\""
+    ],
+    "ExpectedOutput": "[[\"dog\",\"donkey\",\"door\"],[\"dragon\",\"drill\",\"drone\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"guitar\",\"guitarist\",\"guilt\",\"guilty\",\"gully\"]",
+      "\"guil\""
+    ],
+    "ExpectedOutput": "[[\"guilt\",\"guilty\",\"guitar\"],[\"guilt\",\"guilty\",\"guitar\"],[\"guilt\",\"guilty\",\"guitar\"],[\"guilt\",\"guilty\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algebra\",\"alabama\",\"alaska\",\"alligator\"]",
+      "\"al\""
+    ],
+    "ExpectedOutput": "[[\"alabama\",\"alaska\",\"algebra\"],[\"alabama\",\"alaska\",\"algebra\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zebrafish\",\"zebra\",\"zebrahead\",\"zebra\"]",
+      "\"zebra\""
+    ],
+    "ExpectedOutput": "[[\"zebra\",\"zebra\",\"zebra\"],[\"zebra\",\"zebra\",\"zebra\"],[\"zebra\",\"zebra\",\"zebra\"],[\"zebra\",\"zebra\",\"zebra\"],[\"zebra\",\"zebra\",\"zebra\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abce\",\"abcf\",\"abcg\",\"abch\",\"abci\",\"abcj\",\"abck\",\"abcl\",\"abcm\",\"abcn\"]",
+      "\"abcd\""
+    ],
+    "ExpectedOutput": "[[\"abcd\",\"abce\",\"abcf\"],[\"abcd\",\"abce\",\"abcf\"],[\"abcd\",\"abce\",\"abcf\"],[\"abcd\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zeal\",\"zero\",\"zone\",\"zoo\",\"zap\",\"zest\"]",
+      "\"ze\""
+    ],
+    "ExpectedOutput": "[[\"zap\",\"zeal\",\"zebra\"],[\"zeal\",\"zebra\",\"zero\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zoo\",\"zoom\",\"zoning\",\"zone\",\"zany\",\"zap\",\"zest\",\"zigzag\",\"zither\"]",
+      "\"z\""
+    ],
+    "ExpectedOutput": "[[\"zany\",\"zap\",\"zebra\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"piano\",\"piccolo\",\"pipe\",\"pipeorgan\",\"pitchfork\"]",
+      "\"pi\""
+    ],
+    "ExpectedOutput": "[[\"piano\",\"piccolo\",\"pipe\"],[\"piano\",\"piccolo\",\"pipe\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"umbrella\",\"underwear\",\"universe\",\"unique\",\"unit\",\"unity\",\"university\",\"unicycle\",\"unicorn\",\"unzip\"]",
+      "\"uni\""
+    ],
+    "ExpectedOutput": "[[\"umbrella\",\"underwear\",\"unicorn\"],[\"underwear\",\"unicorn\",\"unicycle\"],[\"unicorn\",\"unicycle\",\"unique\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"product\",\"produces\",\"productivity\",\"productive\",\"productize\",\"production\",\"productivity\",\"productize\",\"productivity\",\"productize\"]",
+      "\"product\""
+    ],
+    "ExpectedOutput": "[[\"produces\",\"product\",\"production\"],[\"produces\",\"product\",\"production\"],[\"produces\",\"product\",\"production\"],[\"produces\",\"product\",\"production\"],[\"produces\",\"product\",\"production\"],[\"produces\",\"product\",\"production\"],[\"product\",\"production\",\"productive\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"umbrella\",\"umbilical\",\"umbrella\",\"umbrella\",\"umbrella\"]",
+      "\"umb\""
+    ],
+    "ExpectedOutput": "[[\"umbilical\",\"umbrella\",\"umbrella\"],[\"umbilical\",\"umbrella\",\"umbrella\"],[\"umbilical\",\"umbrella\",\"umbrella\"]]"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"bandanna\",\"bandage\",\"band\",\"bandwidth\"]",
+      "\"band\""
+    ],
+    "ExpectedOutput": "[[\"banana\",\"band\",\"bandage\"],[\"banana\",\"band\",\"bandage\"],[\"banana\",\"band\",\"bandage\"],[\"band\",\"bandage\",\"bandanna\"]]"
+  }
+]

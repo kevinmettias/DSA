@@ -1,0 +1,122 @@
+{
+  "QuestionId": 1808,
+  "FrontendId": 1690,
+  "Title": "Stone Game VII",
+  "TitleSlug": "stone-game-vii",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Math",
+      "Slug": "math"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Minimax",
+      "Slug": "minimax-algorithm"
+    },
+    {
+      "Name": "Game Theory",
+      "Slug": "game-theory"
+    },
+    {
+      "Name": "Zero-Sum Game",
+      "Slug": "zero-sum-game"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Stone Game",
+      "TitleSlug": "stone-game",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Stone Game II",
+      "TitleSlug": "stone-game-ii",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Stone Game III",
+      "TitleSlug": "stone-game-iii",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Stone Game IV",
+      "TitleSlug": "stone-game-iv",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Stone Game V",
+      "TitleSlug": "stone-game-v",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Stone Game VI",
+      "TitleSlug": "stone-game-vi",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Score from Performing Multiplication Operations",
+      "TitleSlug": "maximum-score-from-performing-multiplication-operations",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Stone Game VIII",
+      "TitleSlug": "stone-game-viii",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Stone Game IX",
+      "TitleSlug": "stone-game-ix",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [
+    "The constraints are small enough for an N^2 solution.",
+    "Try using dynamic programming."
+  ],
+  "Constraints": [
+    "n == stones.length",
+    "2 <= n <= 1000",
+    "1 <= stones[i] <= 1000"
+  ],
+  "Signature": {
+    "FunctionName": "stoneGameVII",
+    "Parameters": [
+      {
+        "Name": "stones",
+        "Type": "integer[]"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int StoneGameVII(int[] stones) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[5,3,1,4,2]"
+      ],
+      "ExpectedOutput": "6"
+    },
+    {
+      "Inputs": [
+        "[7,90,5,1,100,10,10,2]"
+      ],
+      "ExpectedOutput": "122"
+    }
+  ],
+  "ContentHtml": "<p>Alice and Bob take turns playing a game, with <strong>Alice starting first</strong>.</p>\n\n<p>There are <code>n</code> stones arranged in a row. On each player&#39;s turn, they can <strong>remove</strong> either the leftmost stone or the rightmost stone from the row and receive points equal to the <strong>sum</strong> of the remaining stones&#39; values in the row. The winner is the one with the higher score when there are no stones left to remove.</p>\n\n<p>Bob found that he will always lose this game (poor Bob, he always loses), so he decided to <strong>minimize the score&#39;s difference</strong>. Alice&#39;s goal is to <strong>maximize the difference</strong> in the score.</p>\n\n<p>Given an array of integers <code>stones</code> where <code>stones[i]</code> represents the value of the <code>i<sup>th</sup></code> stone <strong>from the left</strong>, return <em>the <strong>difference</strong> in Alice and Bob&#39;s score if they both play <strong>optimally</strong>.</em></p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> stones = [5,3,1,4,2]\n<strong>Output:</strong> 6\n<strong>Explanation:</strong> \n- Alice removes 2 and gets 5 + 3 + 1 + 4 = 13 points. Alice = 13, Bob = 0, stones = [5,3,1,4].\n- Bob removes 5 and gets 3 + 1 + 4 = 8 points. Alice = 13, Bob = 8, stones = [3,1,4].\n- Alice removes 3 and gets 1 + 4 = 5 points. Alice = 18, Bob = 8, stones = [1,4].\n- Bob removes 1 and gets 4 points. Alice = 18, Bob = 12, stones = [4].\n- Alice removes 4 and gets 0 points. Alice = 18, Bob = 12, stones = [].\nThe score difference is 18 - 12 = 6.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> stones = [7,90,5,1,100,10,10,2]\n<strong>Output:</strong> 122</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>n == stones.length</code></li>\n\t<li><code>2 &lt;= n &lt;= 1000</code></li>\n\t<li><code>1 &lt;= stones[i] &lt;= 1000</code></li>\n</ul>\n"
+}

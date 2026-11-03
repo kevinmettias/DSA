@@ -1,0 +1,1016 @@
+[
+  {
+    "Inputs": [
+      "\"aibcdie\""
+    ],
+    "ExpectedOutput": "\"dcbae\""
+  },
+  {
+    "Inputs": [
+      "\"noicanoati\""
+    ],
+    "ExpectedOutput": "\"taonacno\""
+  },
+  {
+    "Inputs": [
+      "\"abcide\""
+    ],
+    "ExpectedOutput": "\"cbade\""
+  },
+  {
+    "Inputs": [
+      "\"abcidifgh\""
+    ],
+    "ExpectedOutput": "\"dabcfgh\""
+  },
+  {
+    "Inputs": [
+      "\"a\""
+    ],
+    "ExpectedOutput": "\"a\""
+  },
+  {
+    "Inputs": [
+      "\"iabc\""
+    ],
+    "ExpectedOutput": "\"abc\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghi\""
+    ],
+    "ExpectedOutput": "\"hgfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"lowihello\""
+    ],
+    "ExpectedOutput": "\"wolhello\""
+  },
+  {
+    "Inputs": [
+      "\"abci\""
+    ],
+    "ExpectedOutput": "\"cba\""
+  },
+  {
+    "Inputs": [
+      "\"aibiciici\""
+    ],
+    "ExpectedOutput": "\"ccab\""
+  },
+  {
+    "Inputs": [
+      "\"iiii\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"abcidiefgh\""
+    ],
+    "ExpectedOutput": "\"dabcefgh\""
+  },
+  {
+    "Inputs": [
+      "\"icba\""
+    ],
+    "ExpectedOutput": "\"cba\""
+  },
+  {
+    "Inputs": [
+      "\"ii\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"exampleistring\""
+    ],
+    "ExpectedOutput": "\"rtsexampleng\""
+  },
+  {
+    "Inputs": [
+      "\"abc\""
+    ],
+    "ExpectedOutput": "\"abc\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefgh\""
+    ],
+    "ExpectedOutput": "\"abcdefgh\""
+  },
+  {
+    "Inputs": [
+      "\"aibici\""
+    ],
+    "ExpectedOutput": "\"cab\""
+  },
+  {
+    "Inputs": [
+      "\"abcidefghi\""
+    ],
+    "ExpectedOutput": "\"hgfedabc\""
+  },
+  {
+    "Inputs": [
+      "\"noiidea\""
+    ],
+    "ExpectedOutput": "\"nodea\""
+  },
+  {
+    "Inputs": [
+      "\"iaibic\""
+    ],
+    "ExpectedOutput": "\"bac\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghij\""
+    ],
+    "ExpectedOutput": "\"hgfedcbaj\""
+  },
+  {
+    "Inputs": [
+      "\"abcdei\""
+    ],
+    "ExpectedOutput": "\"edcba\""
+  },
+  {
+    "Inputs": [
+      "\"thisisateststringwithmanyireversals\""
+    ],
+    "ExpectedOutput": "\"ynamhtrtstsetashtsngwreversals\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghiihgfedcbaabcdeffedcba\""
+    ],
+    "ExpectedOutput": "\"abcdefghhgfedcbaabcdeffedcba\""
+  },
+  {
+    "Inputs": [
+      "\"complexityiincreasesiiwithiiireversals\""
+    ],
+    "ExpectedOutput": "\"htxelpmoctyncreaseswreversals\""
+  },
+  {
+    "Inputs": [
+      "\"floccinaucinihilipilification\""
+    ],
+    "ExpectedOutput": "\"tacllnccolfnauchpfon\""
+  },
+  {
+    "Inputs": [
+      "\"startwithiinthemiddle\""
+    ],
+    "ExpectedOutput": "\"mehtnhtstartwddle\""
+  },
+  {
+    "Inputs": [
+      "\"softwaredevelopmentiitheory\""
+    ],
+    "ExpectedOutput": "\"softwaredevelopmenttheory\""
+  },
+  {
+    "Inputs": [
+      "\"iinnoouuttffyycckkhhhgggeee\""
+    ],
+    "ExpectedOutput": "\"nnoouuttffyycckkhhhgggeee\""
+  },
+  {
+    "Inputs": [
+      "\"palindromelevel\""
+    ],
+    "ExpectedOutput": "\"lapndromelevel\""
+  },
+  {
+    "Inputs": [
+      "\"endwithiiiiiiiiiiiiiiiiii\""
+    ],
+    "ExpectedOutput": "\"wdneth\""
+  },
+  {
+    "Inputs": [
+      "\"nestedireversalsiiii\""
+    ],
+    "ExpectedOutput": "\"detsenreversals\""
+  },
+  {
+    "Inputs": [
+      "\"aquickbrownfoxjumpsoverthelazydogi\""
+    ],
+    "ExpectedOutput": "\"godyzalehtrevospmujxofnworbkcaqu\""
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\""
+    ],
+    "ExpectedOutput": "\"abracadabra\""
+  },
+  {
+    "Inputs": [
+      "\"pythonprogramming\""
+    ],
+    "ExpectedOutput": "\"mmargorpnohtypng\""
+  },
+  {
+    "Inputs": [
+      "\"programmingiisfun\""
+    ],
+    "ExpectedOutput": "\"mmargorpngsfun\""
+  },
+  {
+    "Inputs": [
+      "\"iiiiiii\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"xylophoneix\""
+    ],
+    "ExpectedOutput": "\"enohpolyxx\""
+  },
+  {
+    "Inputs": [
+      "\"iiireversalsnestedinsideiiiii\""
+    ],
+    "ExpectedOutput": "\"eddetsenslasreverns\""
+  },
+  {
+    "Inputs": [
+      "\"longstringwithseveralireversalsandmorecharacters\""
+    ],
+    "ExpectedOutput": "\"lareveshtrtsgnolngwreversalsandmorecharacters\""
+  },
+  {
+    "Inputs": [
+      "\"trickytongueiishere\""
+    ],
+    "ExpectedOutput": "\"rtckytongueshere\""
+  },
+  {
+    "Inputs": [
+      "\"randomcharacterswithiabcdefghijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "\"hgfedcbawsretcarahcmodnarthjklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"longstringwithnointerference\""
+    ],
+    "ExpectedOutput": "\"onhtrtsgnolngwnterference\""
+  },
+  {
+    "Inputs": [
+      "\"singleireversal\""
+    ],
+    "ExpectedOutput": "\"elgnsreversal\""
+  },
+  {
+    "Inputs": [
+      "\"datastructuresiiialgorithms\""
+    ],
+    "ExpectedOutput": "\"rogladatastructuresthms\""
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringthatneedstobechecked\""
+    ],
+    "ExpectedOutput": "\"rtsgnolyrevashtsngthatneedstobechecked\""
+  },
+  {
+    "Inputs": [
+      "\"algorithmisawesome\""
+    ],
+    "ExpectedOutput": "\"mhtalgorsawesome\""
+  },
+  {
+    "Inputs": [
+      "\"interview\""
+    ],
+    "ExpectedOutput": "\"vretnew\""
+  },
+  {
+    "Inputs": [
+      "\"almostdone\""
+    ],
+    "ExpectedOutput": "\"almostdone\""
+  },
+  {
+    "Inputs": [
+      "\"imississippi\""
+    ],
+    "ExpectedOutput": "\"ppssmss\""
+  },
+  {
+    "Inputs": [
+      "\"racecariispeedoomeokarttercecar\""
+    ],
+    "ExpectedOutput": "\"racecarspeedoomeokarttercecar\""
+  },
+  {
+    "Inputs": [
+      "\"reverseiiiandthencontinue\""
+    ],
+    "ExpectedOutput": "\"tnocnehtdnareversenue\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijiiiiiiiiiiiiiijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "\"hgfedcbajjklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"algorithmiiengineering\""
+    ],
+    "ExpectedOutput": "\"reenroglathmengng\""
+  },
+  {
+    "Inputs": [
+      "\"xylophoneiikeyboard\""
+    ],
+    "ExpectedOutput": "\"xylophonekeyboard\""
+  },
+  {
+    "Inputs": [
+      "\"almostmiintrandomiisequence\""
+    ],
+    "ExpectedOutput": "\"almostmntrandomsequence\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaaibbbbbbbbbaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "\"aaaaaaaaaabbbbbbbbbaaaaaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"algorithm\""
+    ],
+    "ExpectedOutput": "\"roglathm\""
+  },
+  {
+    "Inputs": [
+      "\"simpletestcase\""
+    ],
+    "ExpectedOutput": "\"smpletestcase\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbccccdddd\""
+    ],
+    "ExpectedOutput": "\"aaaaabbbbccccdddd\""
+  },
+  {
+    "Inputs": [
+      "\"redder\""
+    ],
+    "ExpectedOutput": "\"redder\""
+  },
+  {
+    "Inputs": [
+      "\"reverseeveryithirdcharacter\""
+    ],
+    "ExpectedOutput": "\"htreverseeveryrdcharacter\""
+  },
+  {
+    "Inputs": [
+      "\"intermittent\""
+    ],
+    "ExpectedOutput": "\"mretnttent\""
+  },
+  {
+    "Inputs": [
+      "\"supercalifragilisticexpialidocious\""
+    ],
+    "ExpectedOutput": "\"codpxecllacrepusfragstalous\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghiijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "\"abcdefghjklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"nestedreversalsiiinesting\""
+    ],
+    "ExpectedOutput": "\"tsennestedreversalsng\""
+  },
+  {
+    "Inputs": [
+      "\"iiiiiiiiiii\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"onetwothreefourfiveisixseveneightnine\""
+    ],
+    "ExpectedOutput": "\"nthgsfruofeerhtowtenovexsevenene\""
+  },
+  {
+    "Inputs": [
+      "\"withmultipleis\""
+    ],
+    "ExpectedOutput": "\"elpwthmults\""
+  },
+  {
+    "Inputs": [
+      "\"nestedintegers\""
+    ],
+    "ExpectedOutput": "\"detsenntegers\""
+  },
+  {
+    "Inputs": [
+      "\"reversal\""
+    ],
+    "ExpectedOutput": "\"reversal\""
+  },
+  {
+    "Inputs": [
+      "\"reversingireversibility\""
+    ],
+    "ExpectedOutput": "\"lsreversreverngbty\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghiiiiiiiiiijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "\"abcdefghjklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"iiiiiiiii\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"sequenceofireversalsii\""
+    ],
+    "ExpectedOutput": "\"foecneuqesreversals\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijiklmnopqrstuvwxyziiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiijklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "\"jabcdefghklmnopqrstuvwxyzjklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"thisstringhasiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiinside\""
+    ],
+    "ExpectedOutput": "\"snsahgnhtsstrde\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijiklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "\"jabcdefghklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"twofour\""
+    ],
+    "ExpectedOutput": "\"twofour\""
+  },
+  {
+    "Inputs": [
+      "\"aiaiaiaiaiaiaiai\""
+    ],
+    "ExpectedOutput": "\"aaaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"reverseeveryiinthisstring\""
+    ],
+    "ExpectedOutput": "\"rtssreverseeverynthng\""
+  },
+  {
+    "Inputs": [
+      "\"complexityincreaseswithmoreireversals\""
+    ],
+    "ExpectedOutput": "\"eromhtytcomplexncreaseswreversals\""
+  },
+  {
+    "Inputs": [
+      "\"thisisnotsoeasyasitis\""
+    ],
+    "ExpectedOutput": "\"tsthsnotsoeasyass\""
+  },
+  {
+    "Inputs": [
+      "\"nnnnmmmmlllkkkjjjiiihgfedcbaiiijjkkllmmnn\""
+    ],
+    "ExpectedOutput": "\"abcdefghnnnnmmmmlllkkkjjjjjkkllmmnn\""
+  },
+  {
+    "Inputs": [
+      "\"faultykeyboardstests\""
+    ],
+    "ExpectedOutput": "\"faultykeyboardstests\""
+  },
+  {
+    "Inputs": [
+      "\"onlyonei\""
+    ],
+    "ExpectedOutput": "\"enoylno\""
+  },
+  {
+    "Inputs": [
+      "\"specialcharactersarefun\""
+    ],
+    "ExpectedOutput": "\"cepsalcharactersarefun\""
+  },
+  {
+    "Inputs": [
+      "\"intermittentireversalsiiii\""
+    ],
+    "ExpectedOutput": "\"tnettntermreversals\""
+  },
+  {
+    "Inputs": [
+      "\"mississippiii\""
+    ],
+    "ExpectedOutput": "\"ppssmss\""
+  },
+  {
+    "Inputs": [
+      "\"aaabbbcccdddeeefffggghhhiiiiijjjjkkkkllllmmmmnnnnooooppppqqqqrrrrssssttttuuuuvvvvwwwwxxxxyyyyzzzz\""
+    ],
+    "ExpectedOutput": "\"hhhgggfffeeedddcccbbbaaajjjjkkkkllllmmmmnnnnooooppppqqqqrrrrssssttttuuuuvvvvwwwwxxxxyyyyzzzz\""
+  },
+  {
+    "Inputs": [
+      "\"icancodeinpython\""
+    ],
+    "ExpectedOutput": "\"edocnacnpython\""
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringthatwilltestthealgorithm\""
+    ],
+    "ExpectedOutput": "\"roglaehttsetllrtsgnolyrevashtsngthatwthm\""
+  },
+  {
+    "Inputs": [
+      "\"singleiiiiiiiiiii\""
+    ],
+    "ExpectedOutput": "\"elgns\""
+  },
+  {
+    "Inputs": [
+      "\"aibohphobia\""
+    ],
+    "ExpectedOutput": "\"bohphobaa\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaiiiiiii\""
+    ],
+    "ExpectedOutput": "\"aaaaaaaa\""
+  },
+  {
+    "Inputs": [
+      "\"debuggingiiibugs\""
+    ],
+    "ExpectedOutput": "\"gndebuggbugs\""
+  },
+  {
+    "Inputs": [
+      "\"complexstringwithmultipleiiiiinversions\""
+    ],
+    "ExpectedOutput": "\"srevntlumhtrtsxelpmocngwpleons\""
+  },
+  {
+    "Inputs": [
+      "\"level\""
+    ],
+    "ExpectedOutput": "\"level\""
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringwithmultipleireversals\""
+    ],
+    "ExpectedOutput": "\"elpwgnsthsaverylongstrthmultreversals\""
+  },
+  {
+    "Inputs": [
+      "\"interviewi\""
+    ],
+    "ExpectedOutput": "\"wenterv\""
+  },
+  {
+    "Inputs": [
+      "\"backtothebeginning\""
+    ],
+    "ExpectedOutput": "\"nnbacktothebegng\""
+  },
+  {
+    "Inputs": [
+      "\"mixedwithiandothercharacters\""
+    ],
+    "ExpectedOutput": "\"htmxedwandothercharacters\""
+  },
+  {
+    "Inputs": [
+      "\"aibohphobiai\""
+    ],
+    "ExpectedOutput": "\"aabohphob\""
+  },
+  {
+    "Inputs": [
+      "\"complexityiiis\""
+    ],
+    "ExpectedOutput": "\"ytcomplexs\""
+  },
+  {
+    "Inputs": [
+      "\"almostdoneii\""
+    ],
+    "ExpectedOutput": "\"almostdone\""
+  },
+  {
+    "Inputs": [
+      "\"mississippiiiiii\""
+    ],
+    "ExpectedOutput": "\"ssmsspp\""
+  },
+  {
+    "Inputs": [
+      "\"aaaaabbbbccccddddiiii\""
+    ],
+    "ExpectedOutput": "\"aaaaabbbbccccdddd\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghiihgfedcbaiiijjkkllmmnn\""
+    ],
+    "ExpectedOutput": "\"abcdefghhgfedcbajjkkllmmnn\""
+  },
+  {
+    "Inputs": [
+      "\"ireversalatthestart\""
+    ],
+    "ExpectedOutput": "\"reversalatthestart\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghiabcdefghi\""
+    ],
+    "ExpectedOutput": "\"hgfedcbaabcdefgh\""
+  },
+  {
+    "Inputs": [
+      "\"initialization\""
+    ],
+    "ExpectedOutput": "\"taztnalon\""
+  },
+  {
+    "Inputs": [
+      "\"bananaananab\""
+    ],
+    "ExpectedOutput": "\"bananaananab\""
+  },
+  {
+    "Inputs": [
+      "\"congratulations\""
+    ],
+    "ExpectedOutput": "\"talutargnocons\""
+  },
+  {
+    "Inputs": [
+      "\"nointerruptshere\""
+    ],
+    "ExpectedOutput": "\"onnterruptshere\""
+  },
+  {
+    "Inputs": [
+      "\"endwithiiiiireversal\""
+    ],
+    "ExpectedOutput": "\"htendwreversal\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijkilmnopqrstuvwtuvrqpomnlijkihgfedcba\""
+    ],
+    "ExpectedOutput": "\"kjkjabcdefghlmnopqrstuvwtuvrqpomnlhgfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"complexstringwithiiiiiiiiiii\""
+    ],
+    "ExpectedOutput": "\"htrtsxelpmocngw\""
+  },
+  {
+    "Inputs": [
+      "\"mammaiamamma\""
+    ],
+    "ExpectedOutput": "\"ammamamamma\""
+  },
+  {
+    "Inputs": [
+      "\"introductiontoalgorithm\""
+    ],
+    "ExpectedOutput": "\"roglaotnontroductthm\""
+  },
+  {
+    "Inputs": [
+      "\"reversethisplease\""
+    ],
+    "ExpectedOutput": "\"htesreversplease\""
+  },
+  {
+    "Inputs": [
+      "\"aquickbrownfoxjumpsoverthelazydogii\""
+    ],
+    "ExpectedOutput": "\"uqackbrownfoxjumpsoverthelazydog\""
+  },
+  {
+    "Inputs": [
+      "\"multipleiiireversalsinbetween\""
+    ],
+    "ExpectedOutput": "\"slasrevertlumplenbetween\""
+  },
+  {
+    "Inputs": [
+      "\"multipeiiiiiinsersions\""
+    ],
+    "ExpectedOutput": "\"sresnepmultons\""
+  },
+  {
+    "Inputs": [
+      "\"performanceiiioptimization\""
+    ],
+    "ExpectedOutput": "\"taztpoperformancemon\""
+  },
+  {
+    "Inputs": [
+      "\"endingwithi\""
+    ],
+    "ExpectedOutput": "\"htdnengw\""
+  },
+  {
+    "Inputs": [
+      "\"iinbetweeni\""
+    ],
+    "ExpectedOutput": "\"neewtebn\""
+  },
+  {
+    "Inputs": [
+      "\"noireversals\""
+    ],
+    "ExpectedOutput": "\"onreversals\""
+  },
+  {
+    "Inputs": [
+      "\"reversalsarefun\""
+    ],
+    "ExpectedOutput": "\"reversalsarefun\""
+  },
+  {
+    "Inputs": [
+      "\"sequenceiiwithiiiiiiiiiinterspersediiiis\""
+    ],
+    "ExpectedOutput": "\"wecneuqesthntersperseds\""
+  },
+  {
+    "Inputs": [
+      "\"mixandmatchi\""
+    ],
+    "ExpectedOutput": "\"hctamdnaxm\""
+  },
+  {
+    "Inputs": [
+      "\"programmingii\""
+    ],
+    "ExpectedOutput": "\"mmargorpng\""
+  },
+  {
+    "Inputs": [
+      "\"multipleiiiiireversals\""
+    ],
+    "ExpectedOutput": "\"elpmultreversals\""
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringwithoutianyireversals\""
+    ],
+    "ExpectedOutput": "\"ynawgnsthsaverylongstrthoutreversals\""
+  },
+  {
+    "Inputs": [
+      "\"xyzzzyxzyzyzyzzyxzyzyzyz\""
+    ],
+    "ExpectedOutput": "\"xyzzzyxzyzyzyzzyxzyzyzyz\""
+  },
+  {
+    "Inputs": [
+      "\"verylongstringwithrandomcharactersandiiiiiiiiiintersions\""
+    ],
+    "ExpectedOutput": "\"sretndnasretcarahcmodnarhtrtsgnolyrevngwons\""
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringwithmanyireversals\""
+    ],
+    "ExpectedOutput": "\"ynamhtrtsgnolyrevashtsngwreversals\""
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+    ],
+    "ExpectedOutput": "\"aabbccddeeffgghhjjkkllmmnnooppqqrrssttuuvvwwxxyyzz\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghiiihgfedcbaiiijjkkllmmnniiihgfedcba\""
+    ],
+    "ExpectedOutput": "\"nnmmllkkjjhgfedcbahgfedcbahgfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"interviewinterview\""
+    ],
+    "ExpectedOutput": "\"vretnvretnewew\""
+  },
+  {
+    "Inputs": [
+      "\"oneletter\""
+    ],
+    "ExpectedOutput": "\"oneletter\""
+  },
+  {
+    "Inputs": [
+      "\"nestedinversionexampleiiii\""
+    ],
+    "ExpectedOutput": "\"srevnnestedonexample\""
+  },
+  {
+    "Inputs": [
+      "\"deified\""
+    ],
+    "ExpectedOutput": "\"fdeed\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghiijiklmnopqrstuvwxyz\""
+    ],
+    "ExpectedOutput": "\"jhgfedcbaklmnopqrstuvwxyz\""
+  },
+  {
+    "Inputs": [
+      "\"iiiiiiiiiiiibbbbbbbbbbcccccccccceeeeeeeeee\""
+    ],
+    "ExpectedOutput": "\"bbbbbbbbbbcccccccccceeeeeeeeee\""
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringwithsomeireversalsintheend\""
+    ],
+    "ExpectedOutput": "\"slasreverwgnsthsaverylongstrthsomentheend\""
+  },
+  {
+    "Inputs": [
+      "\"programmingchallengesarefun\""
+    ],
+    "ExpectedOutput": "\"mmargorpngchallengesarefun\""
+  },
+  {
+    "Inputs": [
+      "\"nolemonnomelon\""
+    ],
+    "ExpectedOutput": "\"nolemonnomelon\""
+  },
+  {
+    "Inputs": [
+      "\"nestediinici\""
+    ],
+    "ExpectedOutput": "\"cnestedn\""
+  },
+  {
+    "Inputs": [
+      "\"continuousintegration\""
+    ],
+    "ExpectedOutput": "\"targetntnocnuouson\""
+  },
+  {
+    "Inputs": [
+      "\"iiiiiiii\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"intermixedcharacters\""
+    ],
+    "ExpectedOutput": "\"mretnxedcharacters\""
+  },
+  {
+    "Inputs": [
+      "\"racecar\""
+    ],
+    "ExpectedOutput": "\"racecar\""
+  },
+  {
+    "Inputs": [
+      "\"abracaicabracai\""
+    ],
+    "ExpectedOutput": "\"acarbacabraca\""
+  },
+  {
+    "Inputs": [
+      "\"quickbrownfoxjumpsovertheilazydog\""
+    ],
+    "ExpectedOutput": "\"ehtrevospmujxofnworbkcqulazydog\""
+  },
+  {
+    "Inputs": [
+      "\"iiiiiiiiii\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghiihgfedcba\""
+    ],
+    "ExpectedOutput": "\"abcdefghhgfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"abcdefghiihgfedcbaabcdefghiihgfedcba\""
+    ],
+    "ExpectedOutput": "\"abcdefghhgfedcbaabcdefghhgfedcba\""
+  },
+  {
+    "Inputs": [
+      "\"nestedinversionswithinstrings\""
+    ],
+    "ExpectedOutput": "\"rtsnwsnodetsennversthngs\""
+  },
+  {
+    "Inputs": [
+      "\"thisisatestoftheinputstring\""
+    ],
+    "ExpectedOutput": "\"rtstupnsthsatestoftheng\""
+  },
+  {
+    "Inputs": [
+      "\"intermittentinversionsareconfusing\""
+    ],
+    "ExpectedOutput": "\"sufnocerasnotnettntermnversng\""
+  },
+  {
+    "Inputs": [
+      "\"intermittentireversalsiiiiiintermittent\""
+    ],
+    "ExpectedOutput": "\"mretnslasrevermretnttentttent\""
+  },
+  {
+    "Inputs": [
+      "\"mississippi\""
+    ],
+    "ExpectedOutput": "\"ppssmss\""
+  },
+  {
+    "Inputs": [
+      "\"incomprehensibility\""
+    ],
+    "ExpectedOutput": "\"lsneherpmocnbty\""
+  },
+  {
+    "Inputs": [
+      "\"iiiii\""
+    ],
+    "ExpectedOutput": "\"\""
+  },
+  {
+    "Inputs": [
+      "\"shortiiilong\""
+    ],
+    "ExpectedOutput": "\"trohslong\""
+  },
+  {
+    "Inputs": [
+      "\"reversemeifoundyou\""
+    ],
+    "ExpectedOutput": "\"emesreverfoundyou\""
+  },
+  {
+    "Inputs": [
+      "\"reversethisstring\""
+    ],
+    "ExpectedOutput": "\"rtssreversethng\""
+  }
+]

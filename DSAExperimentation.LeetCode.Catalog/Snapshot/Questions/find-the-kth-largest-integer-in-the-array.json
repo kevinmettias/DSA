@@ -1,0 +1,98 @@
+{
+  "QuestionId": 2113,
+  "FrontendId": 1985,
+  "Title": "Find the Kth Largest Integer in the Array",
+  "TitleSlug": "find-the-kth-largest-integer-in-the-array",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Divide and Conquer",
+      "Slug": "divide-and-conquer"
+    },
+    {
+      "Name": "Sorting",
+      "Slug": "sorting"
+    },
+    {
+      "Name": "Heap (Priority Queue)",
+      "Slug": "heap-priority-queue"
+    },
+    {
+      "Name": "Quickselect",
+      "Slug": "quickselect"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Kth Largest Element in an Array",
+      "TitleSlug": "kth-largest-element-in-an-array",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [
+    "If two numbers have different lengths, which one will be larger?",
+    "The longer number is the larger number.",
+    "If two numbers have the same length, which one will be larger?",
+    "Compare the two numbers starting from the most significant digit. Once you have found the first digit that differs, the one with the larger digit is the larger number."
+  ],
+  "Constraints": [
+    "1 <= k <= nums.length <= 10^4",
+    "1 <= nums[i].length <= 100",
+    "nums[i] consists of only digits.",
+    "nums[i] will not have any leading zeros."
+  ],
+  "Signature": {
+    "FunctionName": "kthLargestNumber",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "string[]"
+      },
+      {
+        "Name": "k",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "string",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public string KthLargestNumber(string[] nums, int k) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[\"3\",\"6\",\"7\",\"10\"]",
+        "4"
+      ],
+      "ExpectedOutput": "\"3\""
+    },
+    {
+      "Inputs": [
+        "[\"2\",\"21\",\"12\",\"1\"]",
+        "3"
+      ],
+      "ExpectedOutput": "\"2\""
+    },
+    {
+      "Inputs": [
+        "[\"0\",\"0\"]",
+        "2"
+      ],
+      "ExpectedOutput": "\"0\""
+    }
+  ],
+  "ContentHtml": "<p>You are given an array of strings <code>nums</code> and an integer <code>k</code>. Each string in <code>nums</code> represents an integer without leading zeros.</p>\n\n<p>Return <em>the string that represents the </em><code>k<sup>th</sup></code><em><strong> largest integer</strong> in </em><code>nums</code>.</p>\n\n<p><strong>Note</strong>: Duplicate numbers should be counted distinctly. For example, if <code>nums</code> is <code>[&quot;1&quot;,&quot;2&quot;,&quot;2&quot;]</code>, <code>&quot;2&quot;</code> is the first largest integer, <code>&quot;2&quot;</code> is the second-largest integer, and <code>&quot;1&quot;</code> is the third-largest integer.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [&quot;3&quot;,&quot;6&quot;,&quot;7&quot;,&quot;10&quot;], k = 4\n<strong>Output:</strong> &quot;3&quot;\n<strong>Explanation:</strong>\nThe numbers in nums sorted in non-decreasing order are [&quot;3&quot;,&quot;6&quot;,&quot;7&quot;,&quot;10&quot;].\nThe 4<sup>th</sup> largest integer in nums is &quot;3&quot;.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [&quot;2&quot;,&quot;21&quot;,&quot;12&quot;,&quot;1&quot;], k = 3\n<strong>Output:</strong> &quot;2&quot;\n<strong>Explanation:</strong>\nThe numbers in nums sorted in non-decreasing order are [&quot;1&quot;,&quot;2&quot;,&quot;12&quot;,&quot;21&quot;].\nThe 3<sup>rd</sup> largest integer in nums is &quot;2&quot;.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [&quot;0&quot;,&quot;0&quot;], k = 2\n<strong>Output:</strong> &quot;0&quot;\n<strong>Explanation:</strong>\nThe numbers in nums sorted in non-decreasing order are [&quot;0&quot;,&quot;0&quot;].\nThe 2<sup>nd</sup> largest integer in nums is &quot;0&quot;.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= k &lt;= nums.length &lt;= 10<sup>4</sup></code></li>\n\t<li><code>1 &lt;= nums[i].length &lt;= 100</code></li>\n\t<li><code>nums[i]</code> consists of only digits.</li>\n\t<li><code>nums[i]</code> will not have any leading zeros.</li>\n</ul>\n"
+}

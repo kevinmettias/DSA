@@ -1,0 +1,1001 @@
+[
+  {
+    "Inputs": [
+      "\"beautifulbeautifulbeautiful\"",
+      "\"ful\"",
+      "\"aut\"",
+      "5"
+    ],
+    "ExpectedOutput": "[6,15,24]"
+  },
+  {
+    "Inputs": [
+      "\"hellobeautifulworld\"",
+      "\"be\"",
+      "\"autiful\"",
+      "5"
+    ],
+    "ExpectedOutput": "[5]"
+  },
+  {
+    "Inputs": [
+      "\"beautifulbeautifulbeautiful\"",
+      "\"ful\"",
+      "\"uti\"",
+      "5"
+    ],
+    "ExpectedOutput": "[6,15,24]"
+  },
+  {
+    "Inputs": [
+      "\"hellohellohello\"",
+      "\"he\"",
+      "\"lo\"",
+      "3"
+    ],
+    "ExpectedOutput": "[0,5,10]"
+  },
+  {
+    "Inputs": [
+      "\"beautifulday\"",
+      "\"day\"",
+      "\"beat\"",
+      "10"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abababab\"",
+      "\"ab\"",
+      "\"ba\"",
+      "2"
+    ],
+    "ExpectedOutput": "[0,2,4,6]"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\"",
+      "\"ab\"",
+      "\"bc\"",
+      "3"
+    ],
+    "ExpectedOutput": "[0,3,6,9]"
+  },
+  {
+    "Inputs": [
+      "\"hellohellohello\"",
+      "\"he\"",
+      "\"lo\"",
+      "2"
+    ],
+    "ExpectedOutput": "[5,10]"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaa\"",
+      "\"aa\"",
+      "\"aaa\"",
+      "2"
+    ],
+    "ExpectedOutput": "[0,1,2,3,4]"
+  },
+  {
+    "Inputs": [
+      "\"abababab\"",
+      "\"ab\"",
+      "\"ba\"",
+      "1"
+    ],
+    "ExpectedOutput": "[0,2,4,6]"
+  },
+  {
+    "Inputs": [
+      "\"hellotherehello\"",
+      "\"he\"",
+      "\"lo\"",
+      "5"
+    ],
+    "ExpectedOutput": "[0,6,10]"
+  },
+  {
+    "Inputs": [
+      "\"teststringteststring\"",
+      "\"test\"",
+      "\"ing\"",
+      "10"
+    ],
+    "ExpectedOutput": "[0,10]"
+  },
+  {
+    "Inputs": [
+      "\"abcabcabcabc\"",
+      "\"abc\"",
+      "\"cab\"",
+      "3"
+    ],
+    "ExpectedOutput": "[0,3,6,9]"
+  },
+  {
+    "Inputs": [
+      "\"beautifulbeautiful\"",
+      "\"ful\"",
+      "\"uti\"",
+      "5"
+    ],
+    "ExpectedOutput": "[6,15]"
+  },
+  {
+    "Inputs": [
+      "\"hellobeautifulworld\"",
+      "\"bea\"",
+      "\"ful\"",
+      "7"
+    ],
+    "ExpectedOutput": "[5]"
+  },
+  {
+    "Inputs": [
+      "\"overlappingoverlappingoverlapping\"",
+      "\"over\"",
+      "\"lapping\"",
+      "10"
+    ],
+    "ExpectedOutput": "[0,11,22]"
+  },
+  {
+    "Inputs": [
+      "\"overlappingoverlappingoverlapping\"",
+      "\"over\"",
+      "\"lap\"",
+      "5"
+    ],
+    "ExpectedOutput": "[0,11,22]"
+  },
+  {
+    "Inputs": [
+      "\"randomstringwithrandomstringinside\"",
+      "\"random\"",
+      "\"inside\"",
+      "25"
+    ],
+    "ExpectedOutput": "[16]"
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiopqwertyuiop\"",
+      "\"erty\"",
+      "\"rtyu\"",
+      "8"
+    ],
+    "ExpectedOutput": "[2,12]"
+  },
+  {
+    "Inputs": [
+      "\"abababababab\"",
+      "\"aba\"",
+      "\"bab\"",
+      "2"
+    ],
+    "ExpectedOutput": "[0,2,4,6,8]"
+  },
+  {
+    "Inputs": [
+      "\"repeatedwordrepeatedwordrepeated\"",
+      "\"word\"",
+      "\"repeated\"",
+      "10"
+    ],
+    "ExpectedOutput": "[8,20]"
+  },
+  {
+    "Inputs": [
+      "\"xyxxyxyxyxyxxyxyxyxy\"",
+      "\"xy\"",
+      "\"yx\"",
+      "4"
+    ],
+    "ExpectedOutput": "[0,3,5,7,9,12,14,16,18]"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"iss\"",
+      "\"sis\"",
+      "3"
+    ],
+    "ExpectedOutput": "[1,4]"
+  },
+  {
+    "Inputs": [
+      "\"uniquestringswithvariouslengthsandcharacters\"",
+      "\"strings\"",
+      "\"length\"",
+      "25"
+    ],
+    "ExpectedOutput": "[6]"
+  },
+  {
+    "Inputs": [
+      "\"longestsubstringhereandthere\"",
+      "\"long\"",
+      "\"here\"",
+      "12"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"bananaananabanana\"",
+      "\"ana\"",
+      "\"nan\"",
+      "4"
+    ],
+    "ExpectedOutput": "[1,3,6,8,12,14]"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"issi\"",
+      "\"sip\"",
+      "4"
+    ],
+    "ExpectedOutput": "[4]"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaabaaaaaabaaaaaabaaaaaabaaaaaabaaaaaabaaaaaab\"",
+      "\"aa\"",
+      "\"bb\"",
+      "5"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"xylophonexylophonexylophone\"",
+      "\"xylo\"",
+      "\"phone\"",
+      "7"
+    ],
+    "ExpectedOutput": "[0,9,18]"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"issi\"",
+      "\"issi\"",
+      "3"
+    ],
+    "ExpectedOutput": "[1,4]"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"issi\"",
+      "\"issi\"",
+      "2"
+    ],
+    "ExpectedOutput": "[1,4]"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyzxyzxyzxyzxyzxyz\"",
+      "\"xyz\"",
+      "\"zyx\"",
+      "2"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"racecaracecaracecar\"",
+      "\"ace\"",
+      "\"cec\"",
+      "7"
+    ],
+    "ExpectedOutput": "[1,7,13]"
+  },
+  {
+    "Inputs": [
+      "\"abababababababa\"",
+      "\"aba\"",
+      "\"bab\"",
+      "3"
+    ],
+    "ExpectedOutput": "[0,2,4,6,8,10,12]"
+  },
+  {
+    "Inputs": [
+      "\"overlappingoverlappingoverlapping\"",
+      "\"lapping\"",
+      "\"over\"",
+      "10"
+    ],
+    "ExpectedOutput": "[4,15,26]"
+  },
+  {
+    "Inputs": [
+      "\"thelongestwordinenglishdictionary\"",
+      "\"word\"",
+      "\"english\"",
+      "15"
+    ],
+    "ExpectedOutput": "[10]"
+  },
+  {
+    "Inputs": [
+      "\"repeatthisstringmanytimesrepeatthisstringmanytimes\"",
+      "\"this\"",
+      "\"many\"",
+      "25"
+    ],
+    "ExpectedOutput": "[6,31]"
+  },
+  {
+    "Inputs": [
+      "\"bananaananabanana\"",
+      "\"ana\"",
+      "\"nana\"",
+      "6"
+    ],
+    "ExpectedOutput": "[1,3,6,8,12,14]"
+  },
+  {
+    "Inputs": [
+      "\"alibabaibabaibaba\"",
+      "\"ali\"",
+      "\"iba\"",
+      "5"
+    ],
+    "ExpectedOutput": "[0]"
+  },
+  {
+    "Inputs": [
+      "\"bananaananabananananabanana\"",
+      "\"ana\"",
+      "\"nana\"",
+      "5"
+    ],
+    "ExpectedOutput": "[1,3,6,8,12,14,16,18,22,24]"
+  },
+  {
+    "Inputs": [
+      "\"overlappingstringsoverlapping\"",
+      "\"lap\"",
+      "\"ing\"",
+      "10"
+    ],
+    "ExpectedOutput": "[4,22]"
+  },
+  {
+    "Inputs": [
+      "\"squirrelmysquirrelhouseohmysquirrel\"",
+      "\"squirrel\"",
+      "\"house\"",
+      "20"
+    ],
+    "ExpectedOutput": "[0,10,27]"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringthatcontainsmultipleinstancesofthesamepattern\"",
+      "\"this\"",
+      "\"that\"",
+      "25"
+    ],
+    "ExpectedOutput": "[0]"
+  },
+  {
+    "Inputs": [
+      "\"abcdefgabcdefgabcdefg\"",
+      "\"abc\"",
+      "\"defg\"",
+      "15"
+    ],
+    "ExpectedOutput": "[0,7,14]"
+  },
+  {
+    "Inputs": [
+      "\"abababababababababab\"",
+      "\"aba\"",
+      "\"bab\"",
+      "5"
+    ],
+    "ExpectedOutput": "[0,2,4,6,8,10,12,14,16]"
+  },
+  {
+    "Inputs": [
+      "\"xyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxy\"",
+      "\"xy\"",
+      "\"yx\"",
+      "2"
+    ],
+    "ExpectedOutput": "[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32]"
+  },
+  {
+    "Inputs": [
+      "\"abababababababababababababababababab\"",
+      "\"aba\"",
+      "\"bab\"",
+      "2"
+    ],
+    "ExpectedOutput": "[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32]"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "\"abc\"",
+      "\"xyz\"",
+      "20"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"complexexamplecomplexexample\"",
+      "\"complex\"",
+      "\"exam\"",
+      "15"
+    ],
+    "ExpectedOutput": "[0,14]"
+  },
+  {
+    "Inputs": [
+      "\"fuzzywuzzy\"",
+      "\"fuz\"",
+      "\"uzz\"",
+      "3"
+    ],
+    "ExpectedOutput": "[0]"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzz\"",
+      "\"zzz\"",
+      "\"zzz\"",
+      "2"
+    ],
+    "ExpectedOutput": "[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]"
+  },
+  {
+    "Inputs": [
+      "\"findingbeautifulindices\"",
+      "\"find\"",
+      "\"ind\"",
+      "7"
+    ],
+    "ExpectedOutput": "[0]"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaabaaaaaa\"",
+      "\"aa\"",
+      "\"aaa\"",
+      "5"
+    ],
+    "ExpectedOutput": "[0,1,2,3,4,5,8,9,10,11,12]"
+  },
+  {
+    "Inputs": [
+      "\"repeatedsubstringsarecool\"",
+      "\"are\"",
+      "\"cool\"",
+      "10"
+    ],
+    "ExpectedOutput": "[18]"
+  },
+  {
+    "Inputs": [
+      "\"overlappingoverlapping\"",
+      "\"over\"",
+      "\"lap\"",
+      "8"
+    ],
+    "ExpectedOutput": "[0,11]"
+  },
+  {
+    "Inputs": [
+      "\"repeatedpatternsrepeatedpatternsrepeatedpatterns\"",
+      "\"repeated\"",
+      "\"patterns\"",
+      "20"
+    ],
+    "ExpectedOutput": "[0,16,32]"
+  },
+  {
+    "Inputs": [
+      "\"mississippiissiisipiissipississippi\"",
+      "\"issi\"",
+      "\"ippi\"",
+      "10"
+    ],
+    "ExpectedOutput": "[1,4,11,25,28]"
+  },
+  {
+    "Inputs": [
+      "\"ababababababababababababababababa\"",
+      "\"aba\"",
+      "\"bab\"",
+      "4"
+    ],
+    "ExpectedOutput": "[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30]"
+  },
+  {
+    "Inputs": [
+      "\"mississippiississippiississippi\"",
+      "\"issi\"",
+      "\"miss\"",
+      "12"
+    ],
+    "ExpectedOutput": "[1,4,11]"
+  },
+  {
+    "Inputs": [
+      "\"xyxyxyxyxyxy\"",
+      "\"xyx\"",
+      "\"yxy\"",
+      "4"
+    ],
+    "ExpectedOutput": "[0,2,4,6,8]"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghij\"",
+      "\"def\"",
+      "\"ghi\"",
+      "10"
+    ],
+    "ExpectedOutput": "[3,13]"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"iss\"",
+      "\"issi\"",
+      "4"
+    ],
+    "ExpectedOutput": "[1,4]"
+  },
+  {
+    "Inputs": [
+      "\"onetwothreefourfivesixseveneightnine\"",
+      "\"one\"",
+      "\"two\"",
+      "5"
+    ],
+    "ExpectedOutput": "[0]"
+  },
+  {
+    "Inputs": [
+      "\"aaaaaaaaaabaaaaaaaaaabaaaaaaaaaab\"",
+      "\"aaaaaa\"",
+      "\"aaab\"",
+      "15"
+    ],
+    "ExpectedOutput": "[0,1,2,3,4,11,12,13,14,15,22,23,24,25,26]"
+  },
+  {
+    "Inputs": [
+      "\"programmingisfun\"",
+      "\"fun\"",
+      "\"ing\"",
+      "10"
+    ],
+    "ExpectedOutput": "[13]"
+  },
+  {
+    "Inputs": [
+      "\"abracadabra\"",
+      "\"abr\"",
+      "\"cad\"",
+      "8"
+    ],
+    "ExpectedOutput": "[0,7]"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghijabcdefghij\"",
+      "\"cdef\"",
+      "\"ghij\"",
+      "5"
+    ],
+    "ExpectedOutput": "[2,12,22]"
+  },
+  {
+    "Inputs": [
+      "\"repeatedrepeatedrepeated\"",
+      "\"peat\"",
+      "\"peat\"",
+      "3"
+    ],
+    "ExpectedOutput": "[2,10,18]"
+  },
+  {
+    "Inputs": [
+      "\"abcdefabcdefabcdefabcdefabcdef\"",
+      "\"cdef\"",
+      "\"ab\"",
+      "8"
+    ],
+    "ExpectedOutput": "[2,8,14,20,26]"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzz\"",
+      "\"zzz\"",
+      "\"zz\"",
+      "1"
+    ],
+    "ExpectedOutput": "[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghijabcdefghij\"",
+      "\"abc\"",
+      "\"efg\"",
+      "15"
+    ],
+    "ExpectedOutput": "[0,10,20]"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghij\"",
+      "\"abc\"",
+      "\"efg\"",
+      "12"
+    ],
+    "ExpectedOutput": "[0,10]"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringwithaverylongsubstring\"",
+      "\"very\"",
+      "\"long\"",
+      "20"
+    ],
+    "ExpectedOutput": "[7,26]"
+  },
+  {
+    "Inputs": [
+      "\"squirrelmysquirrelhouse\"",
+      "\"my\"",
+      "\"squirrel\"",
+      "10"
+    ],
+    "ExpectedOutput": "[8]"
+  },
+  {
+    "Inputs": [
+      "\"bananaananabananananana\"",
+      "\"ana\"",
+      "\"nan\"",
+      "5"
+    ],
+    "ExpectedOutput": "[1,3,6,8,12,14,16,18,20]"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"iss\"",
+      "\"sip\"",
+      "4"
+    ],
+    "ExpectedOutput": "[4]"
+  },
+  {
+    "Inputs": [
+      "\"abababababab\"",
+      "\"aba\"",
+      "\"bab\"",
+      "3"
+    ],
+    "ExpectedOutput": "[0,2,4,6,8]"
+  },
+  {
+    "Inputs": [
+      "\"beautifulbeautifulbeautifulbeautiful\"",
+      "\"bea\"",
+      "\"ful\"",
+      "15"
+    ],
+    "ExpectedOutput": "[0,9,18,27]"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringwithrepeatedsubstringsandlongoccurrencesofpatterns\"",
+      "\"long\"",
+      "\"pattern\"",
+      "30"
+    ],
+    "ExpectedOutput": "[46]"
+  },
+  {
+    "Inputs": [
+      "\"beautifuldaybeautifulday\"",
+      "\"day\"",
+      "\"beau\"",
+      "12"
+    ],
+    "ExpectedOutput": "[9,21]"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyzxyzxyzxyzxyzxyzxyzxyzxyz\"",
+      "\"xyz\"",
+      "\"yzx\"",
+      "2"
+    ],
+    "ExpectedOutput": "[0,3,6,9,12,15,18,21,24,27]"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringwithmultiplesubstrings\"",
+      "\"very\"",
+      "\"string\"",
+      "20"
+    ],
+    "ExpectedOutput": "[7]"
+  },
+  {
+    "Inputs": [
+      "\"zzzzzzzzzzzzzzzzzzzz\"",
+      "\"zz\"",
+      "\"zzz\"",
+      "5"
+    ],
+    "ExpectedOutput": "[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]"
+  },
+  {
+    "Inputs": [
+      "\"xyxyxyxyxyxyxyxyxyxy\"",
+      "\"xy\"",
+      "\"yx\"",
+      "3"
+    ],
+    "ExpectedOutput": "[0,2,4,6,8,10,12,14,16,18]"
+  },
+  {
+    "Inputs": [
+      "\"aaaaabaaaabaaaaaaaba\"",
+      "\"aa\"",
+      "\"aaa\"",
+      "5"
+    ],
+    "ExpectedOutput": "[0,1,2,3,6,7,8,11,12,13,14,15,16]"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghijabcdefghij\"",
+      "\"abc\"",
+      "\"efg\"",
+      "8"
+    ],
+    "ExpectedOutput": "[0,10,20]"
+  },
+  {
+    "Inputs": [
+      "\"repeatedrepeatedrepeated\"",
+      "\"repe\"",
+      "\"ated\"",
+      "6"
+    ],
+    "ExpectedOutput": "[0,8,16]"
+  },
+  {
+    "Inputs": [
+      "\"racecar\"",
+      "\"race\"",
+      "\"car\"",
+      "5"
+    ],
+    "ExpectedOutput": "[0]"
+  },
+  {
+    "Inputs": [
+      "\"thisissomereallylongstringwithsomerepetitions\"",
+      "\"some\"",
+      "\"long\"",
+      "15"
+    ],
+    "ExpectedOutput": "[6,30]"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz\"",
+      "\"abc\"",
+      "\"xyz\"",
+      "10"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghijabcdefghijabcdefghij\"",
+      "\"ghi\"",
+      "\"def\"",
+      "8"
+    ],
+    "ExpectedOutput": "[6,16,26,36]"
+  },
+  {
+    "Inputs": [
+      "\"quickbrownfoxjumpsoverthelazydog\"",
+      "\"quick\"",
+      "\"lazy\"",
+      "20"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+      "\"mnop\"",
+      "\"qrst\"",
+      "10"
+    ],
+    "ExpectedOutput": "[12]"
+  },
+  {
+    "Inputs": [
+      "\"onetwothreefourfivesixseveneightnine\"",
+      "\"two\"",
+      "\"nine\"",
+      "20"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringwithmultiplesubstrings\"",
+      "\"very\"",
+      "\"string\"",
+      "10"
+    ],
+    "ExpectedOutput": "[7]"
+  },
+  {
+    "Inputs": [
+      "\"patternmatchingexamplepatternmatchingexamplepatternmatchingexample\"",
+      "\"example\"",
+      "\"pattern\"",
+      "50"
+    ],
+    "ExpectedOutput": "[15,37,59]"
+  },
+  {
+    "Inputs": [
+      "\"aaabbbcccaaa\"",
+      "\"aaa\"",
+      "\"bbb\"",
+      "5"
+    ],
+    "ExpectedOutput": "[0]"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringfortesting\"",
+      "\"very\"",
+      "\"long\"",
+      "12"
+    ],
+    "ExpectedOutput": "[7]"
+  },
+  {
+    "Inputs": [
+      "\"bananaananabay\"",
+      "\"ana\"",
+      "\"nana\"",
+      "4"
+    ],
+    "ExpectedOutput": "[1,3,6,8]"
+  },
+  {
+    "Inputs": [
+      "\"abababababababababab\"",
+      "\"aba\"",
+      "\"bab\"",
+      "2"
+    ],
+    "ExpectedOutput": "[0,2,4,6,8,10,12,14,16]"
+  },
+  {
+    "Inputs": [
+      "\"bananaananabananananabanana\"",
+      "\"ana\"",
+      "\"nan\"",
+      "5"
+    ],
+    "ExpectedOutput": "[1,3,6,8,12,14,16,18,22,24]"
+  },
+  {
+    "Inputs": [
+      "\"thisissomethingreallylongthatshouldtestthelimits\"",
+      "\"test\"",
+      "\"limits\"",
+      "25"
+    ],
+    "ExpectedOutput": "[35]"
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiopasdfghjklzxcvbnmqwertyuiop\"",
+      "\"qwerty\"",
+      "\"poi\"",
+      "15"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"bananaananabanana\"",
+      "\"ana\"",
+      "\"na\"",
+      "5"
+    ],
+    "ExpectedOutput": "[1,3,6,8,12,14]"
+  },
+  {
+    "Inputs": [
+      "\"abcdefghijabcdefghijabcdefghij\"",
+      "\"def\"",
+      "\"ghi\"",
+      "10"
+    ],
+    "ExpectedOutput": "[3,13,23]"
+  },
+  {
+    "Inputs": [
+      "\"thisisaverylongstringwithmultiplesubstrings\"",
+      "\"long\"",
+      "\"string\"",
+      "10"
+    ],
+    "ExpectedOutput": "[11]"
+  },
+  {
+    "Inputs": [
+      "\"qwertyuiopqwertyuiopqwertyuiop\"",
+      "\"qwerty\"",
+      "\"uiop\"",
+      "6"
+    ],
+    "ExpectedOutput": "[0,10,20]"
+  },
+  {
+    "Inputs": [
+      "\"mississippi\"",
+      "\"issi\"",
+      "\"iss\"",
+      "5"
+    ],
+    "ExpectedOutput": "[1,4]"
+  },
+  {
+    "Inputs": [
+      "\"aabbccddeeffgghhiijjkk\"",
+      "\"abc\"",
+      "\"def\"",
+      "10"
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abababababababababab\"",
+      "\"aba\"",
+      "\"bab\"",
+      "4"
+    ],
+    "ExpectedOutput": "[0,2,4,6,8,10,12,14,16]"
+  },
+  {
+    "Inputs": [
+      "\"pneumonoultramicroscopicsilicovolcanoconiosis\"",
+      "\"micro\"",
+      "\"scopic\"",
+      "30"
+    ],
+    "ExpectedOutput": "[13]"
+  }
+]

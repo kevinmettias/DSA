@@ -1,0 +1,1276 @@
+[
+  {
+    "Inputs": [
+      "[\"a\",\"aa\",\"aaa\"]",
+      "\"aaaa aaa aa a\""
+    ],
+    "ExpectedOutput": "\"a a a a\""
+  },
+  {
+    "Inputs": [
+      "[\"base\",\"bat\",\"ba\"]",
+      "\"baseball batman bat\""
+    ],
+    "ExpectedOutput": "\"ba ba ba\""
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\"]",
+      "\"dog cat\""
+    ],
+    "ExpectedOutput": "\"dog cat\""
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"he\",\"h\"]",
+      "\"hello hello hello\""
+    ],
+    "ExpectedOutput": "\"h h h\""
+  },
+  {
+    "Inputs": [
+      "[\"base\",\"bat\"]",
+      "\"baseball bat\""
+    ],
+    "ExpectedOutput": "\"base bat\""
+  },
+  {
+    "Inputs": [
+      "[\"appl\",\"app\",\"ap\"]",
+      "\"apple apples applying apply\""
+    ],
+    "ExpectedOutput": "\"ap ap ap ap\""
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\"]",
+      "\"cattledog\""
+    ],
+    "ExpectedOutput": "\"cat\""
+  },
+  {
+    "Inputs": [
+      "[\"hello\"]",
+      "\"hellonow\""
+    ],
+    "ExpectedOutput": "\"hello\""
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\"]",
+      "\"thecatwasadog\""
+    ],
+    "ExpectedOutput": "\"thecatwasadog\""
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"card\",\"care\",\"cared\"]",
+      "\"car card care cared carding careds\""
+    ],
+    "ExpectedOutput": "\"car car car car car car\""
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"he\"]",
+      "\"hello there helpful helper\""
+    ],
+    "ExpectedOutput": "\"he there he he\""
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"dog\"]",
+      "\"dog zebra zoo\""
+    ],
+    "ExpectedOutput": "\"dog zebra zoo\""
+  },
+  {
+    "Inputs": [
+      "[\"base\",\"bas\",\"ba\"]",
+      "\"baseball basebasket baskeyball\""
+    ],
+    "ExpectedOutput": "\"ba ba ba\""
+  },
+  {
+    "Inputs": [
+      "[\"dog\",\"cat\"]",
+      "\"caterpillar catalog dogmatic\""
+    ],
+    "ExpectedOutput": "\"cat cat dog\""
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"app\",\"ap\"]",
+      "\"apple app ap appleapp appapple\""
+    ],
+    "ExpectedOutput": "\"ap ap ap ap ap\""
+  },
+  {
+    "Inputs": [
+      "[\"hi\",\"him\",\"himself\"]",
+      "\"himself\""
+    ],
+    "ExpectedOutput": "\"hi\""
+  },
+  {
+    "Inputs": [
+      "[\"go\",\"gone\"]",
+      "\"go going gone\""
+    ],
+    "ExpectedOutput": "\"go go go\""
+  },
+  {
+    "Inputs": [
+      "[\"quick\",\"qui\",\"q\"]",
+      "\"quick quietly quicking quiquick\""
+    ],
+    "ExpectedOutput": "\"q q q q\""
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"sungod\"]",
+      "\"sunshine sungod solar system\""
+    ],
+    "ExpectedOutput": "\"sun sun solar system\""
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"he\"]",
+      "\"hello world hellish heaven\""
+    ],
+    "ExpectedOutput": "\"he world he he\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"aa\",\"aaa\"]",
+      "\"aa aaa\""
+    ],
+    "ExpectedOutput": "\"a a\""
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"he\"]",
+      "\"hello hell\""
+    ],
+    "ExpectedOutput": "\"he he\""
+  },
+  {
+    "Inputs": [
+      "[\"c\",\"cc\"]",
+      "\"c cc ccc cccc\""
+    ],
+    "ExpectedOutput": "\"c c c c\""
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"cat\"]",
+      "\"carmodel carshow cat\""
+    ],
+    "ExpectedOutput": "\"car car cat\""
+  },
+  {
+    "Inputs": [
+      "[\"baseball\",\"bat\",\"ba\"]",
+      "\"baseball bat ball baseball bat\""
+    ],
+    "ExpectedOutput": "\"ba ba ba ba ba\""
+  },
+  {
+    "Inputs": [
+      "[\"do\",\"don\",\"donate\",\"donation\"]",
+      "\"donation do donate don\""
+    ],
+    "ExpectedOutput": "\"do do do do\""
+  },
+  {
+    "Inputs": [
+      "[\"tree\",\"trie\",\"tr\"]",
+      "\"the tree is an evergreen tree\""
+    ],
+    "ExpectedOutput": "\"the tr is an evergreen tr\""
+  },
+  {
+    "Inputs": [
+      "[\"a\"]",
+      "\"a aa aaa aaaa aaaaa\""
+    ],
+    "ExpectedOutput": "\"a a a a a\""
+  },
+  {
+    "Inputs": [
+      "[\"him\",\"himm\"]",
+      "\"him\""
+    ],
+    "ExpectedOutput": "\"him\""
+  },
+  {
+    "Inputs": [
+      "[\"rat\",\"cat\",\"bat\"]",
+      "\"rat cat bat ratcatbat\""
+    ],
+    "ExpectedOutput": "\"rat cat bat rat\""
+  },
+  {
+    "Inputs": [
+      "[\"go\",\"gone\",\"going\"]",
+      "\"go going gone\""
+    ],
+    "ExpectedOutput": "\"go go go\""
+  },
+  {
+    "Inputs": [
+      "[\"go\",\"gone\",\"going\"]",
+      "\"going gone go\""
+    ],
+    "ExpectedOutput": "\"go go go\""
+  },
+  {
+    "Inputs": [
+      "[\"hi\",\"him\",\"hii\"]",
+      "\"him hii\""
+    ],
+    "ExpectedOutput": "\"hi hi\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"aa\",\"aaa\"]",
+      "\"aa aaa aaaa\""
+    ],
+    "ExpectedOutput": "\"a a a\""
+  },
+  {
+    "Inputs": [
+      "[\"quest\",\"questi\",\"questio\",\"questioo\"]",
+      "\"question questioo quest questio\""
+    ],
+    "ExpectedOutput": "\"quest quest quest quest\""
+  },
+  {
+    "Inputs": [
+      "[\"auto\",\"automotive\",\"automatic\",\"autograph\",\"automobile\"]",
+      "\"automobile automatic auto autograph automotive\""
+    ],
+    "ExpectedOutput": "\"auto auto auto auto auto\""
+  },
+  {
+    "Inputs": [
+      "[\"micro\",\"mic\",\"mi\",\"m\"]",
+      "\"microscopic microscopic microscopy micro\""
+    ],
+    "ExpectedOutput": "\"m m m m\""
+  },
+  {
+    "Inputs": [
+      "[\"ab\",\"abc\",\"abcd\",\"abcde\"]",
+      "\"ab abc abcd abcde abcdef\""
+    ],
+    "ExpectedOutput": "\"ab ab ab ab ab\""
+  },
+  {
+    "Inputs": [
+      "[\"in\",\"int\",\"inte\",\"inter\",\"intera\",\"interac\",\"interact\",\"interactiv\",\"interactive\",\"interactivit\"]",
+      "\"interactive interact interactivit interactiv interac inter inte int in\""
+    ],
+    "ExpectedOutput": "\"in in in in in in in in in\""
+  },
+  {
+    "Inputs": [
+      "[\"eco\",\"ec\",\"e\"]",
+      "\"ecological ecofriendly ecosphere eco\""
+    ],
+    "ExpectedOutput": "\"e e e e\""
+  },
+  {
+    "Inputs": [
+      "[\"test\",\"testing\",\"tested\"]",
+      "\"testing tested test testable\""
+    ],
+    "ExpectedOutput": "\"test test test test\""
+  },
+  {
+    "Inputs": [
+      "[\"tech\",\"techi\",\"techno\",\"technol\",\"technolog\"]",
+      "\"technology technological technologist technologic\""
+    ],
+    "ExpectedOutput": "\"tech tech tech tech\""
+  },
+  {
+    "Inputs": [
+      "[\"trans\",\"tran\",\"tr\",\"t\"]",
+      "\"transmission transfer transmigration transmit\""
+    ],
+    "ExpectedOutput": "\"t t t t\""
+  },
+  {
+    "Inputs": [
+      "[\"quick\",\"qui\",\"qu\",\"q\"]",
+      "\"quickly quitting qu quack quest\""
+    ],
+    "ExpectedOutput": "\"q q q q q\""
+  },
+  {
+    "Inputs": [
+      "[\"pro\",\"progr\",\"progra\",\"progran\",\"program\",\"programm\",\"programmi\",\"programmin\",\"programming\"]",
+      "\"programming programmatic programmer\""
+    ],
+    "ExpectedOutput": "\"pro pro pro\""
+  },
+  {
+    "Inputs": [
+      "[\"complex\",\"comple\",\"complx\",\"compl\",\"com\"]",
+      "\"complex comple complx compl com\""
+    ],
+    "ExpectedOutput": "\"com com com com com\""
+  },
+  {
+    "Inputs": [
+      "[\"hyper\",\"hyp\",\"hy\",\"h\"]",
+      "\"hyperactive hyperbole hypercritical hyper\""
+    ],
+    "ExpectedOutput": "\"h h h h\""
+  },
+  {
+    "Inputs": [
+      "[\"app\",\"appl\",\"apple\",\"applet\"]",
+      "\"apples apple applet application apparatus\""
+    ],
+    "ExpectedOutput": "\"app app app app app\""
+  },
+  {
+    "Inputs": [
+      "[\"micro\",\"microwave\",\"microchip\",\"microphone\",\"microscope\"]",
+      "\"microchip microphone microscope microwave\""
+    ],
+    "ExpectedOutput": "\"micro micro micro micro\""
+  },
+  {
+    "Inputs": [
+      "[\"pre\",\"pres\",\"presi\",\"presid\",\"preside\"]",
+      "\"presidential presidency preside presides president\""
+    ],
+    "ExpectedOutput": "\"pre pre pre pre pre\""
+  },
+  {
+    "Inputs": [
+      "[\"aardvark\",\"aard\",\"aardva\",\"aardvar\"]",
+      "\"aardvark aard aardva aardvar aardvarcoal\""
+    ],
+    "ExpectedOutput": "\"aard aard aard aard aard\""
+  },
+  {
+    "Inputs": [
+      "[\"con\",\"cons\",\"consc\",\"consci\",\"conscio\",\"consciou\",\"conscious\"]",
+      "\"conscious conscience consciousless consciously\""
+    ],
+    "ExpectedOutput": "\"con con con con\""
+  },
+  {
+    "Inputs": [
+      "[\"tech\",\"te\",\"techno\",\"television\",\"techology\"]",
+      "\"technology television tech techology\""
+    ],
+    "ExpectedOutput": "\"te te te te\""
+  },
+  {
+    "Inputs": [
+      "[\"micro\",\"microb\",\"microbi\",\"microbia\",\"microbian\",\"microbiana\"]",
+      "\"microbial microbials microbially\""
+    ],
+    "ExpectedOutput": "\"micro micro micro\""
+  },
+  {
+    "Inputs": [
+      "[\"fast\",\"faster\",\"fastest\"]",
+      "\"he runs fast but his friend runs faster and is the fastest\""
+    ],
+    "ExpectedOutput": "\"he runs fast but his friend runs fast and is the fast\""
+  },
+  {
+    "Inputs": [
+      "[\"pre\",\"pres\",\"presi\",\"presid\"]",
+      "\"presidency president preside preside\""
+    ],
+    "ExpectedOutput": "\"pre pre pre pre\""
+  },
+  {
+    "Inputs": [
+      "[\"re\",\"replay\",\"rewrite\",\"remark\",\"remarkable\"]",
+      "\"after rewriting the script he gave a remarkable replay of his remarkable performance\""
+    ],
+    "ExpectedOutput": "\"after re the script he gave a re re of his re performance\""
+  },
+  {
+    "Inputs": [
+      "[\"macro\",\"mac\",\"ma\",\"m\"]",
+      "\"macroeconomic macroeconomics macroscopic macro\""
+    ],
+    "ExpectedOutput": "\"m m m m\""
+  },
+  {
+    "Inputs": [
+      "[\"multi\",\"mult\",\"mul\",\"mu\"]",
+      "\"multi mult mul mu\""
+    ],
+    "ExpectedOutput": "\"mu mu mu mu\""
+  },
+  {
+    "Inputs": [
+      "[\"qu\",\"qui\",\"quic\",\"quick\",\"quicks\",\"quickly\"]",
+      "\"quick quicks quickness quickly quicker quickening\""
+    ],
+    "ExpectedOutput": "\"qu qu qu qu qu qu\""
+  },
+  {
+    "Inputs": [
+      "[\"photo\",\"phot\",\"photog\",\"photogr\"]",
+      "\"photography photographer photograph photogenic\""
+    ],
+    "ExpectedOutput": "\"phot phot phot phot\""
+  },
+  {
+    "Inputs": [
+      "[\"tiny\",\"tin\",\"tinny\"]",
+      "\"tin tinny tiny tinnytin\""
+    ],
+    "ExpectedOutput": "\"tin tin tin tin\""
+  },
+  {
+    "Inputs": [
+      "[\"th\",\"the\",\"ther\",\"therm\",\"thermal\"]",
+      "\"thermal the thermals thermalize thermalization\""
+    ],
+    "ExpectedOutput": "\"th th th th th\""
+  },
+  {
+    "Inputs": [
+      "[\"un\",\"un\",\"un\",\"un\",\"un\"]",
+      "\"united unification uncomfortable underway undone\""
+    ],
+    "ExpectedOutput": "\"un un un un un\""
+  },
+  {
+    "Inputs": [
+      "[\"incredible\",\"inc\",\"incr\",\"incredi\",\"incredi\",\"incredib\"]",
+      "\"incredible incr incredible incredi incredi incredib\""
+    ],
+    "ExpectedOutput": "\"inc inc inc inc inc inc\""
+  },
+  {
+    "Inputs": [
+      "[\"auto\",\"autom\",\"automobi\",\"automobil\",\"automobile\",\"automobiles\"]",
+      "\"automobile automobile's\""
+    ],
+    "ExpectedOutput": "\"auto auto\""
+  },
+  {
+    "Inputs": [
+      "[\"pre\",\"prefix\",\"preprocessing\",\"preprocessor\"]",
+      "\"preprocessing the prefix of a string using a preprocessor\""
+    ],
+    "ExpectedOutput": "\"pre the pre of a string using a pre\""
+  },
+  {
+    "Inputs": [
+      "[\"fast\",\"faster\",\"fastest\"]",
+      "\"fastest fast fasterr fastestest\""
+    ],
+    "ExpectedOutput": "\"fast fast fast fast\""
+  },
+  {
+    "Inputs": [
+      "[\"co\",\"con\",\"cons\",\"const\",\"consti\",\"constit\",\"constitu\",\"constitue\"]",
+      "\"constituent constituents constitution constitutionalize constitutional\""
+    ],
+    "ExpectedOutput": "\"co co co co co\""
+  },
+  {
+    "Inputs": [
+      "[\"quick\",\"qui\",\"quit\"]",
+      "\"the quick brown fox quit quietly\""
+    ],
+    "ExpectedOutput": "\"the qui brown fox qui qui\""
+  },
+  {
+    "Inputs": [
+      "[\"inter\",\"in\",\"interac\",\"interact\"]",
+      "\"interaction interactive intercept intercepting\""
+    ],
+    "ExpectedOutput": "\"in in in in\""
+  },
+  {
+    "Inputs": [
+      "[\"pre\",\"prel\",\"preli\",\"prelim\",\"prelimi\",\"prelimin\",\"prelimina\",\"preliminar\",\"preliminary\"]",
+      "\"preliminary preliminarys\""
+    ],
+    "ExpectedOutput": "\"pre pre\""
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"he\",\"h\"]",
+      "\"hello helpful hercules\""
+    ],
+    "ExpectedOutput": "\"h h h\""
+  },
+  {
+    "Inputs": [
+      "[\"base\",\"basic\",\"basics\",\"basis\"]",
+      "\"baseline base basic basics basis basket\""
+    ],
+    "ExpectedOutput": "\"base base basic basic basis basket\""
+  },
+  {
+    "Inputs": [
+      "[\"micro\",\"microscope\",\"microprocessor\",\"microphone\"]",
+      "\"microscopy microprocessor microphone microscopic micro\""
+    ],
+    "ExpectedOutput": "\"micro micro micro micro micro\""
+  },
+  {
+    "Inputs": [
+      "[\"auto\",\"autom\",\"automat\",\"automate\",\"automation\"]",
+      "\"automotive automation automated automobile automatic\""
+    ],
+    "ExpectedOutput": "\"auto auto auto auto auto\""
+  },
+  {
+    "Inputs": [
+      "[\"graph\",\"graphic\",\"graphite\",\"graphing\",\"graphology\"]",
+      "\"graphology graphite graph graphic graphing\""
+    ],
+    "ExpectedOutput": "\"graph graph graph graph graph\""
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"ca\",\"bat\",\"ba\",\"rat\"]",
+      "\"the cattle was rattled by the battery\""
+    ],
+    "ExpectedOutput": "\"the ca was rat by the ba\""
+  },
+  {
+    "Inputs": [
+      "[\"ca\",\"cat\",\"catt\",\"cattl\",\"cattle\"]",
+      "\"cattle cattleshed\""
+    ],
+    "ExpectedOutput": "\"ca ca\""
+  },
+  {
+    "Inputs": [
+      "[\"pro\",\"prom\",\"promo\"]",
+      "\"promotional promising programmer promote\""
+    ],
+    "ExpectedOutput": "\"pro pro pro pro\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\"]",
+      "\"aaaaaaaaa abababab abab aa\""
+    ],
+    "ExpectedOutput": "\"a a a a\""
+  },
+  {
+    "Inputs": [
+      "[\"throne\",\"thr\",\"th\"]",
+      "\"throne thrilled thrush thorn thieves\""
+    ],
+    "ExpectedOutput": "\"th th th th th\""
+  },
+  {
+    "Inputs": [
+      "[\"bat\",\"banana\",\"band\",\"bandana\",\"bandwidth\"]",
+      "\"bandanna batman band bandana bandwidth\""
+    ],
+    "ExpectedOutput": "\"band bat band band band\""
+  },
+  {
+    "Inputs": [
+      "[\"super\",\"superman\",\"superhero\",\"supervillain\"]",
+      "\"superman is a superhero but lex luthor is a supervillain\""
+    ],
+    "ExpectedOutput": "\"super is a super but lex luthor is a super\""
+  },
+  {
+    "Inputs": [
+      "[\"in\",\"inn\",\"inne\",\"inner\"]",
+      "\"inner inne inn in\""
+    ],
+    "ExpectedOutput": "\"in in in in\""
+  },
+  {
+    "Inputs": [
+      "[\"superduper\",\"super\",\"superdup\",\"superdu\",\"superdupera\"]",
+      "\"superduper super superdup superdu superdupera\""
+    ],
+    "ExpectedOutput": "\"super super super super super\""
+  },
+  {
+    "Inputs": [
+      "[\"tr\",\"tre\",\"tree\",\"treet\",\"treeto\"]",
+      "\"tree treehouse treelike treetops\""
+    ],
+    "ExpectedOutput": "\"tr tr tr tr\""
+  },
+  {
+    "Inputs": [
+      "[\"sun\",\"sunny\",\"sunshine\",\"sunbeam\"]",
+      "\"sunset sunny sunshine sunbeam\""
+    ],
+    "ExpectedOutput": "\"sun sun sun sun\""
+  },
+  {
+    "Inputs": [
+      "[\"nano\",\"nanop\",\"nanopo\",\"nanopol\",\"nanopoli\",\"nanopolym\",\"nanopolyme\",\"nanopolymers\"]",
+      "\"nanopolymers nanoparticle nanoparticle's nanoparticle\""
+    ],
+    "ExpectedOutput": "\"nano nano nano nano\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ab\",\"abc\",\"abcd\"]",
+      "\"abcd abc abc ab a\""
+    ],
+    "ExpectedOutput": "\"a a a a a\""
+  },
+  {
+    "Inputs": [
+      "[\"micro\",\"microwave\",\"microscope\"]",
+      "\"microscopy microwave microprocessor micro\""
+    ],
+    "ExpectedOutput": "\"micro micro micro micro\""
+  },
+  {
+    "Inputs": [
+      "[\"b\",\"be\",\"bee\",\"been\",\"beef\"]",
+      "\"beef bee been before being beefy\""
+    ],
+    "ExpectedOutput": "\"b b b b b b\""
+  },
+  {
+    "Inputs": [
+      "[\"rat\",\"ratt\",\"ratta\",\"rattle\"]",
+      "\"rattling rattlesnake rattan ratter\""
+    ],
+    "ExpectedOutput": "\"rat rat rat rat\""
+  },
+  {
+    "Inputs": [
+      "[\"inter\",\"inte\",\"int\",\"in\",\"i\"]",
+      "\"inter integration interim interfere interfere\""
+    ],
+    "ExpectedOutput": "\"i i i i i\""
+  },
+  {
+    "Inputs": [
+      "[\"pre\",\"prefix\",\"preference\",\"presume\",\"presumably\"]",
+      "\"prefer prefix presumption presumably\""
+    ],
+    "ExpectedOutput": "\"pre pre pre pre\""
+  },
+  {
+    "Inputs": [
+      "[\"small\",\"smal\",\"sma\",\"sm\"]",
+      "\"smaller small smallness sm\""
+    ],
+    "ExpectedOutput": "\"sm sm sm sm\""
+  },
+  {
+    "Inputs": [
+      "[\"nano\",\"nanob\",\"nanobo\",\"nanobio\",\"nanobiol\",\"nanobiolo\",\"nanobiolog\",\"nanobiologi\",\"nanobiologic\",\"nanobiological\"]",
+      "\"nanobiological nanobiologicals\""
+    ],
+    "ExpectedOutput": "\"nano nano\""
+  },
+  {
+    "Inputs": [
+      "[\"over\",\"overly\",\"overall\"]",
+      "\"he was overly critical of the overall performance\""
+    ],
+    "ExpectedOutput": "\"he was over critical of the over performance\""
+  },
+  {
+    "Inputs": [
+      "[\"auto\",\"autom\",\"automat\",\"automate\"]",
+      "\"automatic automobile automate automaton\""
+    ],
+    "ExpectedOutput": "\"auto auto auto auto\""
+  },
+  {
+    "Inputs": [
+      "[\"super\",\"supera\",\"superb\",\"superba\",\"superba\",\"superba\",\"superba\"]",
+      "\"superb superlative superabound superbest superbowl\""
+    ],
+    "ExpectedOutput": "\"super super super super super\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"an\",\"and\",\"ands\"]",
+      "\"and ands anding anderson\""
+    ],
+    "ExpectedOutput": "\"a a a a\""
+  },
+  {
+    "Inputs": [
+      "[\"elephant\",\"ele\",\"eleph\",\"elepha\",\"elephantastic\"]",
+      "\"elephant elephants eleph elepha elephantastic\""
+    ],
+    "ExpectedOutput": "\"ele ele ele ele ele\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\",\"abcdefg\"]",
+      "\"abcdefghi abcdefghij\""
+    ],
+    "ExpectedOutput": "\"a a\""
+  },
+  {
+    "Inputs": [
+      "[\"pro\",\"pre\",\"pros\",\"pres\",\"presi\",\"presid\"]",
+      "\"president proportional prefix pseudoprefix preprocess\""
+    ],
+    "ExpectedOutput": "\"pre pro pre pseudoprefix pre\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\"]",
+      "\"abcdefgh abcdefg abcdef abcde abcd abc ab a\""
+    ],
+    "ExpectedOutput": "\"a a a a a a a a\""
+  },
+  {
+    "Inputs": [
+      "[\"edu\",\"educ\",\"educc\",\"educat\",\"educati\",\"educatio\",\"education\"]",
+      "\"educational education educations\""
+    ],
+    "ExpectedOutput": "\"edu edu edu\""
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"cart\",\"card\",\"cartographer\"]",
+      "\"car cartography card catalog carter\""
+    ],
+    "ExpectedOutput": "\"car car car catalog car\""
+  },
+  {
+    "Inputs": [
+      "[\"inter\",\"in\",\"i\"]",
+      "\"international intergalactic interconnected inter\""
+    ],
+    "ExpectedOutput": "\"i i i i\""
+  },
+  {
+    "Inputs": [
+      "[\"big\",\"bigger\",\"biggest\"]",
+      "\"bigger biggerest big biggger\""
+    ],
+    "ExpectedOutput": "\"big big big big\""
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"he\",\"h\"]",
+      "\"hello hellish helper high heels\""
+    ],
+    "ExpectedOutput": "\"h h h h h\""
+  },
+  {
+    "Inputs": [
+      "[\"in\",\"inside\",\"into\",\"input\",\"insert\"]",
+      "\"he went inside the building and then into the room to insert an input\""
+    ],
+    "ExpectedOutput": "\"he went in the building and then in the room to in an in\""
+  },
+  {
+    "Inputs": [
+      "[\"bat\",\"ba\",\"batt\"]",
+      "\"battery batten batted\""
+    ],
+    "ExpectedOutput": "\"ba ba ba\""
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"prefixe\",\"prefixes\"]",
+      "\"prefix prefixer prefixest prefixes\""
+    ],
+    "ExpectedOutput": "\"prefix prefix prefix prefix\""
+  },
+  {
+    "Inputs": [
+      "[\"micro\",\"micr\",\"micros\",\"microso\",\"microsof\",\"microsoft\"]",
+      "\"microsoft microsofts microsof microso micros micr micro\""
+    ],
+    "ExpectedOutput": "\"micr micr micr micr micr micr micr\""
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"he\",\"h\"]",
+      "\"hello hell he h\""
+    ],
+    "ExpectedOutput": "\"h h h h\""
+  },
+  {
+    "Inputs": [
+      "[\"geo\",\"ge\",\"g\"]",
+      "\"geography geological geomorphology geo\""
+    ],
+    "ExpectedOutput": "\"g g g g\""
+  },
+  {
+    "Inputs": [
+      "[\"quick\",\"qui\",\"quic\"]",
+      "\"quick quicky quic quickness\""
+    ],
+    "ExpectedOutput": "\"qui qui qui qui\""
+  },
+  {
+    "Inputs": [
+      "[\"mi\",\"min\",\"mine\",\"minera\",\"mineral\",\"minerals\"]",
+      "\"minerals mineral mining mine\""
+    ],
+    "ExpectedOutput": "\"mi mi mi mi\""
+  },
+  {
+    "Inputs": [
+      "[\"re\",\"rep\",\"repl\",\"repla\"]",
+      "\"replace replacement replacer replacable\""
+    ],
+    "ExpectedOutput": "\"re re re re\""
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algo\",\"algori\",\"algorit\"]",
+      "\"algorithm algorithms algo algori algorit\""
+    ],
+    "ExpectedOutput": "\"algo algo algo algo algo\""
+  },
+  {
+    "Inputs": [
+      "[\"un\",\"unp\",\"unpr\",\"unpre\"]",
+      "\"unpredictable unpre un unpr\""
+    ],
+    "ExpectedOutput": "\"un un un un\""
+  },
+  {
+    "Inputs": [
+      "[\"hel\",\"help\",\"helpl\"]",
+      "\"helpful helpline helpless helper\""
+    ],
+    "ExpectedOutput": "\"hel hel hel hel\""
+  },
+  {
+    "Inputs": [
+      "[\"fast\",\"faster\",\"fastest\"]",
+      "\"fast fasters fastest\""
+    ],
+    "ExpectedOutput": "\"fast fast fast\""
+  },
+  {
+    "Inputs": [
+      "[\"sub\",\"suba\",\"subac\",\"subact\",\"subacti\",\"subacti\",\"subacti\"]",
+      "\"subact subact subact subactive subacted\""
+    ],
+    "ExpectedOutput": "\"sub sub sub sub sub\""
+  },
+  {
+    "Inputs": [
+      "[\"inter\",\"intera\",\"interac\",\"interact\",\"interacti\",\"interacti\",\"interacti\"]",
+      "\"interactive interact interaction intersect\""
+    ],
+    "ExpectedOutput": "\"inter inter inter inter\""
+  },
+  {
+    "Inputs": [
+      "[\"supercalifragilisticexpialidocious\",\"supercalifragilisticexpi\",\"supercali\",\"super\"]",
+      "\"supercalifragilisticexpialidocious supercalifragilisticexpi supercali super\""
+    ],
+    "ExpectedOutput": "\"super super super super\""
+  },
+  {
+    "Inputs": [
+      "[\"root\",\"rooting\",\"roots\",\"rooted\"]",
+      "\"rooting is a fundamental concept rooted in the roots of understanding\""
+    ],
+    "ExpectedOutput": "\"root is a fundamental concept root in the root of understanding\""
+  },
+  {
+    "Inputs": [
+      "[\"ba\",\"bat\",\"batt\",\"batte\",\"battea\"]",
+      "\"batman battled batted battle batt\""
+    ],
+    "ExpectedOutput": "\"ba ba ba ba ba\""
+  },
+  {
+    "Inputs": [
+      "[\"boundary\",\"bound\",\"bounda\",\"boundar\"]",
+      "\"boundary boundaries bound bounda boundar\""
+    ],
+    "ExpectedOutput": "\"bound bound bound bound bound\""
+  },
+  {
+    "Inputs": [
+      "[\"tele\",\"telev\",\"telec\",\"tel\"]",
+      "\"telephone telegraph telecommunication tele\""
+    ],
+    "ExpectedOutput": "\"tel tel tel tel\""
+  },
+  {
+    "Inputs": [
+      "[\"super\",\"su\",\"s\"]",
+      "\"superhero superpower supernatural super\""
+    ],
+    "ExpectedOutput": "\"s s s s\""
+  },
+  {
+    "Inputs": [
+      "[\"tr\",\"try\",\"trie\",\"tried\"]",
+      "\"trier tries trying triangle\""
+    ],
+    "ExpectedOutput": "\"tr tr tr tr\""
+  },
+  {
+    "Inputs": [
+      "[\"progr\",\"progra\",\"program\",\"programm\"]",
+      "\"program programm programing programmer\""
+    ],
+    "ExpectedOutput": "\"progr progr progr progr\""
+  },
+  {
+    "Inputs": [
+      "[\"uni\",\"univ\",\"unive\",\"univer\",\"univers\",\"universi\",\"universit\",\"universiti\",\"university\"]",
+      "\"university universities\""
+    ],
+    "ExpectedOutput": "\"uni uni\""
+  },
+  {
+    "Inputs": [
+      "[\"ex\",\"exa\",\"exac\",\"exact\",\"exactly\",\"exactly\",\"exactly\"]",
+      "\"exactly exactly exact exactitude exacter\""
+    ],
+    "ExpectedOutput": "\"ex ex ex ex ex\""
+  },
+  {
+    "Inputs": [
+      "[\"rat\",\"ratt\",\"ratta\",\"rattl\",\"rattled\"]",
+      "\"rattled rattler rattlesnake\""
+    ],
+    "ExpectedOutput": "\"rat rat rat\""
+  },
+  {
+    "Inputs": [
+      "[\"mo\",\"mon\",\"mond\",\"monde\",\"monday\"]",
+      "\"monday mondo mondaying mondane\""
+    ],
+    "ExpectedOutput": "\"mo mo mo mo\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ap\",\"app\",\"appl\",\"apple\"]",
+      "\"apple app application apples\""
+    ],
+    "ExpectedOutput": "\"a a a a\""
+  },
+  {
+    "Inputs": [
+      "[\"un\",\"uni\",\"university\",\"universe\"]",
+      "\"the university is in the universe\""
+    ],
+    "ExpectedOutput": "\"the un is in the un\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"an\",\"and\",\"andw\",\"anda\"]",
+      "\"and andw anda andanda and wander andwind\""
+    ],
+    "ExpectedOutput": "\"a a a a a wander a\""
+  },
+  {
+    "Inputs": [
+      "[\"transformation\",\"trans\",\"tran\",\"transfo\",\"transfo\",\"transformat\",\"transforma\",\"transfor\"]",
+      "\"transformation trans tran transfo transfo transformat transforma transfor\""
+    ],
+    "ExpectedOutput": "\"tran tran tran tran tran tran tran tran\""
+  },
+  {
+    "Inputs": [
+      "[\"dis\",\"disa\",\"disab\",\"disabl\"]",
+      "\"disable disabling disabled disablity\""
+    ],
+    "ExpectedOutput": "\"dis dis dis dis\""
+  },
+  {
+    "Inputs": [
+      "[\"hel\",\"help\",\"helpl\",\"helpf\",\"helpfu\",\"helpful\"]",
+      "\"helpful helpfulness\""
+    ],
+    "ExpectedOutput": "\"hel hel\""
+  },
+  {
+    "Inputs": [
+      "[\"fantastic\",\"fant\",\"fan\",\"fantasy\"]",
+      "\"fantastic fantasies fanta fantasticastic\""
+    ],
+    "ExpectedOutput": "\"fan fan fan fan\""
+  },
+  {
+    "Inputs": [
+      "[\"re\",\"rec\",\"rece\",\"recei\",\"receiv\",\"receiving\"]",
+      "\"receiving reception recipient receiver\""
+    ],
+    "ExpectedOutput": "\"re re re re\""
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"pre\",\"pref\",\"preference\"]",
+      "\"preference prefix prefixed prefixing\""
+    ],
+    "ExpectedOutput": "\"pre pre pre pre\""
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ab\",\"abc\",\"abcd\"]",
+      "\"abc abd ab ac abcd\""
+    ],
+    "ExpectedOutput": "\"a a a a a\""
+  },
+  {
+    "Inputs": [
+      "[\"hel\",\"help\",\"helpl\"]",
+      "\"helpful helpline helps help\""
+    ],
+    "ExpectedOutput": "\"hel hel hel hel\""
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"pre\",\"p\"]",
+      "\"prefix prediction preprint perimeter\""
+    ],
+    "ExpectedOutput": "\"p p p p\""
+  },
+  {
+    "Inputs": [
+      "[\"computer\",\"com\",\"co\",\"c\"]",
+      "\"computer computing compute coherence\""
+    ],
+    "ExpectedOutput": "\"c c c c\""
+  },
+  {
+    "Inputs": [
+      "[\"con\",\"cons\",\"const\",\"consti\",\"constit\"]",
+      "\"con constitution constant consistency construct\""
+    ],
+    "ExpectedOutput": "\"con con con con con\""
+  },
+  {
+    "Inputs": [
+      "[\"micro\",\"microscope\",\"microorganism\",\"micron\"]",
+      "\"microscopes are used to see microorganisms which are smaller than a micron\""
+    ],
+    "ExpectedOutput": "\"micro are used to see micro which are smaller than a micro\""
+  },
+  {
+    "Inputs": [
+      "[\"bio\",\"biol\",\"biolo\",\"biolog\",\"biologica\",\"biological\",\"biologically\"]",
+      "\"biological biologically biologicallys\""
+    ],
+    "ExpectedOutput": "\"bio bio bio\""
+  },
+  {
+    "Inputs": [
+      "[\"multi\",\"multimedia\",\"multiply\",\"multiplication\",\"multiplier\"]",
+      "\"multiply multiplication multimedia multiplier\""
+    ],
+    "ExpectedOutput": "\"multi multi multi multi\""
+  },
+  {
+    "Inputs": [
+      "[\"pro\",\"prov\",\"provi\",\"provii\",\"proviii\"]",
+      "\"providence provision providential\""
+    ],
+    "ExpectedOutput": "\"pro pro pro\""
+  },
+  {
+    "Inputs": [
+      "[\"re\",\"republic\",\"republican\",\"reproduce\",\"reproduction\"]",
+      "\"republic republican reproduce reproduction resentful\""
+    ],
+    "ExpectedOutput": "\"re re re re re\""
+  },
+  {
+    "Inputs": [
+      "[\"nano\",\"nan\",\"na\",\"n\"]",
+      "\"nanometer nanotechnology nanobot nan\""
+    ],
+    "ExpectedOutput": "\"n n n n\""
+  },
+  {
+    "Inputs": [
+      "[\"hel\",\"help\",\"hell\",\"helper\"]",
+      "\"helpful helpline helpfulness hellhole\""
+    ],
+    "ExpectedOutput": "\"hel hel hel hel\""
+  },
+  {
+    "Inputs": [
+      "[\"re\",\"ref\",\"refer\",\"referen\",\"referenc\"]",
+      "\"reference references referencing referential\""
+    ],
+    "ExpectedOutput": "\"re re re re\""
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algo\",\"alg\",\"a\"]",
+      "\"algorithm algorithms algorithmic algorithmically\""
+    ],
+    "ExpectedOutput": "\"a a a a\""
+  },
+  {
+    "Inputs": [
+      "[\"happy\",\"happiness\",\"hap\",\"happily\"]",
+      "\"happily living a happy life brings much happiness\""
+    ],
+    "ExpectedOutput": "\"hap living a hap life brings much hap\""
+  },
+  {
+    "Inputs": [
+      "[\"ba\",\"bat\",\"batt\",\"batta\",\"battery\"]",
+      "\"batteries battery batty batting battled\""
+    ],
+    "ExpectedOutput": "\"ba ba ba ba ba\""
+  },
+  {
+    "Inputs": [
+      "[\"auto\",\"automobile\",\"automotive\"]",
+      "\"automobile automotives automatic automation\""
+    ],
+    "ExpectedOutput": "\"auto auto auto auto\""
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"he\"]",
+      "\"hello hell h ello he\""
+    ],
+    "ExpectedOutput": "\"he he h ello he\""
+  },
+  {
+    "Inputs": [
+      "[\"un\",\"unp\",\"unpr\",\"unpre\",\"unprem\",\"unpreme\",\"unpremier\"]",
+      "\"unpremier unprepared unpremeditated unpreventable\""
+    ],
+    "ExpectedOutput": "\"un un un un\""
+  },
+  {
+    "Inputs": [
+      "[\"nano\",\"nanot\",\"nanoto\",\"nanoton\",\"nanotube\",\"nanotubes\"]",
+      "\"nanotube nanotubes\""
+    ],
+    "ExpectedOutput": "\"nano nano\""
+  },
+  {
+    "Inputs": [
+      "[\"inter\",\"inte\",\"int\",\"in\"]",
+      "\"international integrate inter inter\""
+    ],
+    "ExpectedOutput": "\"in in in in\""
+  },
+  {
+    "Inputs": [
+      "[\"television\",\"tele\",\"telegraph\",\"telecom\"]",
+      "\"telegraph telecommunication telescope television tele\""
+    ],
+    "ExpectedOutput": "\"tele tele tele tele tele\""
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"app\",\"bat\",\"ba\",\"batman\"]",
+      "\"apples are batman and batmen\""
+    ],
+    "ExpectedOutput": "\"app are ba and ba\""
+  },
+  {
+    "Inputs": [
+      "[\"un\",\"uno\",\"united\"]",
+      "\"united nations unification unstoppable\""
+    ],
+    "ExpectedOutput": "\"un nations un un\""
+  },
+  {
+    "Inputs": [
+      "[\"xylophone\",\"xylo\",\"xylop\",\"xylopho\"]",
+      "\"xylophone xylo xylop xylopho xylophonic\""
+    ],
+    "ExpectedOutput": "\"xylo xylo xylo xylo xylo\""
+  },
+  {
+    "Inputs": [
+      "[\"com\",\"comm\",\"comma\",\"commaa\"]",
+      "\"commas comma commaa communicate\""
+    ],
+    "ExpectedOutput": "\"com com com com\""
+  },
+  {
+    "Inputs": [
+      "[\"auto\",\"autom\",\"automat\",\"automati\",\"automati\",\"automatiz\",\"automatize\"]",
+      "\"automatically automatize automation automaton\""
+    ],
+    "ExpectedOutput": "\"auto auto auto auto\""
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"app\",\"application\"]",
+      "\"apples are appetizing and application development is fun\""
+    ],
+    "ExpectedOutput": "\"app are app and app development is fun\""
+  },
+  {
+    "Inputs": [
+      "[\"inter\",\"internal\",\"internet\",\"interface\"]",
+      "\"internet interface internals interaction\""
+    ],
+    "ExpectedOutput": "\"inter inter inter inter\""
+  },
+  {
+    "Inputs": [
+      "[\"int\",\"inte\",\"integ\",\"integri\",\"integr\",\"integrit\",\"integriti\",\"integrity\"]",
+      "\"integrity integritys\""
+    ],
+    "ExpectedOutput": "\"int int\""
+  },
+  {
+    "Inputs": [
+      "[\"ex\",\"exa\",\"exam\",\"examp\"]",
+      "\"example examine examination exam\""
+    ],
+    "ExpectedOutput": "\"ex ex ex ex\""
+  },
+  {
+    "Inputs": [
+      "[\"unbelievable\",\"un\",\"unbe\",\"unbeli\",\"unbeliev\"]",
+      "\"unbelievable unbelieve unbeliev un unbe\""
+    ],
+    "ExpectedOutput": "\"un un un un un\""
+  },
+  {
+    "Inputs": [
+      "[\"hel\",\"help\",\"helpl\"]",
+      "\"helpful helpfulness helpfulhelper\""
+    ],
+    "ExpectedOutput": "\"hel hel hel\""
+  },
+  {
+    "Inputs": [
+      "[\"bio\",\"bi\",\"b\"]",
+      "\"biological biotechnology biochemistry bio\""
+    ],
+    "ExpectedOutput": "\"b b b b\""
+  },
+  {
+    "Inputs": [
+      "[\"micro\",\"microc\",\"microce\",\"microcel\",\"microcell\",\"microcells\"]",
+      "\"microcell microcells microcellular microcellulars\""
+    ],
+    "ExpectedOutput": "\"micro micro micro micro\""
+  },
+  {
+    "Inputs": [
+      "[\"nano\",\"nanos\",\"nanoso\",\"nanosol\",\"nanosolu\",\"nanosolut\",\"nanosolute\",\"nanosolutes\"]",
+      "\"nanosolute nanosolutes\""
+    ],
+    "ExpectedOutput": "\"nano nano\""
+  }
+]

@@ -1,0 +1,681 @@
+[
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\"]",
+      "[[1,1],[2,2]]"
+    ],
+    "ExpectedOutput": "309"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\"]",
+      "[[1,1],[8,8]]"
+    ],
+    "ExpectedOutput": "223"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\"]",
+      "[[2,2],[5,5]]"
+    ],
+    "ExpectedOutput": "340"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"queen\",\"bishop\"]",
+      "[[1,1],[5,5],[8,8]]"
+    ],
+    "ExpectedOutput": "2907"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"queen\",\"bishop\"]",
+      "[[1,1],[2,2],[3,3]]"
+    ],
+    "ExpectedOutput": "3289"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\"]",
+      "[[1,1],[1,3]]"
+    ],
+    "ExpectedOutput": "189"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"bishop\"]",
+      "[[1,1],[4,3]]"
+    ],
+    "ExpectedOutput": "173"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\"]",
+      "[[2,2],[7,7]]"
+    ],
+    "ExpectedOutput": "80"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\"]",
+      "[[2,2],[6,6]]"
+    ],
+    "ExpectedOutput": "84"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"bishop\"]",
+      "[[1,1],[4,4]]"
+    ],
+    "ExpectedOutput": "280"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"rook\",\"bishop\"]",
+      "[[3,4],[5,5],[7,6]]"
+    ],
+    "ExpectedOutput": "1265"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"bishop\"]",
+      "[[1,1],[4,4]]"
+    ],
+    "ExpectedOutput": "205"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"queen\",\"bishop\"]",
+      "[[1,1],[5,5],[4,3]]"
+    ],
+    "ExpectedOutput": "4421"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"bishop\"]",
+      "[[1,1],[2,2],[4,3]]"
+    ],
+    "ExpectedOutput": "3161"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"bishop\",\"rook\",\"bishop\"]",
+      "[[1,1],[2,2],[3,3],[4,4]]"
+    ],
+    "ExpectedOutput": "16893"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\"]",
+      "[[1,1],[8,8]]"
+    ],
+    "ExpectedOutput": "327"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"rook\"]",
+      "[[1,1],[8,8],[1,8]]"
+    ],
+    "ExpectedOutput": "4163"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"queen\",\"bishop\"]",
+      "[[3,3],[5,5],[7,2]]"
+    ],
+    "ExpectedOutput": "3589"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"bishop\",\"bishop\"]",
+      "[[1,1],[8,8],[1,8]]"
+    ],
+    "ExpectedOutput": "1232"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"bishop\",\"rook\"]",
+      "[[1,1],[1,8],[8,1],[8,8]]"
+    ],
+    "ExpectedOutput": "32176"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"bishop\",\"rook\"]",
+      "[[1,1],[8,8],[3,3],[6,6]]"
+    ],
+    "ExpectedOutput": "44166"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"queen\"]",
+      "[[3,3],[6,6]]"
+    ],
+    "ExpectedOutput": "638"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\",\"rook\",\"rook\"]",
+      "[[1,1],[1,8],[8,1],[8,8]]"
+    ],
+    "ExpectedOutput": "33009"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\",\"rook\",\"rook\"]",
+      "[[1,1],[8,8],[4,4],[5,5]]"
+    ],
+    "ExpectedOutput": "7561"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"bishop\",\"rook\",\"bishop\"]",
+      "[[1,1],[8,8],[4,4],[4,1]]"
+    ],
+    "ExpectedOutput": "15440"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\",\"rook\"]",
+      "[[1,1],[1,8],[8,1]]"
+    ],
+    "ExpectedOutput": "2753"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"queen\",\"bishop\",\"rook\"]",
+      "[[1,1],[8,8],[4,4],[2,2]]"
+    ],
+    "ExpectedOutput": "51937"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"queen\",\"bishop\",\"rook\"]",
+      "[[1,1],[5,5],[8,8],[8,1]]"
+    ],
+    "ExpectedOutput": "38251"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"rook\",\"bishop\"]",
+      "[[1,1],[1,8],[8,1],[8,8]]"
+    ],
+    "ExpectedOutput": "29034"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"queen\",\"rook\"]",
+      "[[3,3],[4,4],[2,2]]"
+    ],
+    "ExpectedOutput": "8446"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"bishop\",\"rook\",\"rook\"]",
+      "[[1,1],[8,8],[1,8],[8,1]]"
+    ],
+    "ExpectedOutput": "29034"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\"]",
+      "[[4,4],[7,7]]"
+    ],
+    "ExpectedOutput": "400"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\",\"bishop\"]",
+      "[[1,1],[8,8],[4,4]]"
+    ],
+    "ExpectedOutput": "3034"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"bishop\"]",
+      "[[2,2],[7,7],[3,8]]"
+    ],
+    "ExpectedOutput": "2590"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\"]",
+      "[[4,4],[5,5]]"
+    ],
+    "ExpectedOutput": "193"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"queen\",\"bishop\"]",
+      "[[1,4],[4,4],[7,4]]"
+    ],
+    "ExpectedOutput": "3784"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"bishop\",\"queen\"]",
+      "[[1,1],[8,8],[4,4]]"
+    ],
+    "ExpectedOutput": "2681"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\",\"bishop\",\"bishop\"]",
+      "[[2,2],[2,7],[7,2],[7,7]]"
+    ],
+    "ExpectedOutput": "6400"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"bishop\",\"rook\"]",
+      "[[8,1],[1,8],[4,4]]"
+    ],
+    "ExpectedOutput": "2110"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"bishop\",\"rook\"]",
+      "[[2,2],[3,3],[5,5]]"
+    ],
+    "ExpectedOutput": "3484"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"rook\",\"queen\",\"rook\"]",
+      "[[3,3],[4,4],[5,5],[6,6]]"
+    ],
+    "ExpectedOutput": "44433"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"bishop\",\"bishop\"]",
+      "[[1,1],[3,3],[6,6]]"
+    ],
+    "ExpectedOutput": "2162"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"queen\",\"rook\",\"bishop\"]",
+      "[[1,1],[5,5],[8,1],[1,8]]"
+    ],
+    "ExpectedOutput": "41166"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\",\"queen\"]",
+      "[[1,1],[1,8],[8,8]]"
+    ],
+    "ExpectedOutput": "4163"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"rook\",\"queen\"]",
+      "[[3,3],[4,3],[3,4]]"
+    ],
+    "ExpectedOutput": "3142"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\",\"bishop\",\"bishop\"]",
+      "[[1,2],[1,7],[2,1],[2,8]]"
+    ],
+    "ExpectedOutput": "10952"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"rook\",\"rook\",\"bishop\"]",
+      "[[1,2],[3,3],[6,7],[8,6]]"
+    ],
+    "ExpectedOutput": "10473"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"bishop\",\"bishop\",\"queen\"]",
+      "[[1,1],[2,2],[3,3],[4,4]]"
+    ],
+    "ExpectedOutput": "26725"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"bishop\"]",
+      "[[1,1],[8,8],[4,4]]"
+    ],
+    "ExpectedOutput": "4145"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"rook\",\"queen\",\"rook\"]",
+      "[[1,8],[2,2],[5,5],[8,1]]"
+    ],
+    "ExpectedOutput": "42649"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"bishop\",\"rook\"]",
+      "[[1,1],[2,2],[3,3],[4,4]]"
+    ],
+    "ExpectedOutput": "35461"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\",\"rook\"]",
+      "[[1,1],[2,2],[3,3]]"
+    ],
+    "ExpectedOutput": "2709"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"bishop\"]",
+      "[[2,2],[3,6]]"
+    ],
+    "ExpectedOutput": "172"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"queen\"]",
+      "[[1,1],[8,8]]"
+    ],
+    "ExpectedOutput": "462"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"bishop\"]",
+      "[[1,1],[8,1]]"
+    ],
+    "ExpectedOutput": "118"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"bishop\"]",
+      "[[1,1],[2,2],[3,3]]"
+    ],
+    "ExpectedOutput": "2842"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\",\"rook\",\"rook\"]",
+      "[[2,2],[7,7],[1,1],[8,8]]"
+    ],
+    "ExpectedOutput": "13998"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"bishop\",\"bishop\",\"rook\"]",
+      "[[4,4],[3,3],[6,6],[1,1]]"
+    ],
+    "ExpectedOutput": "39585"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\",\"rook\"]",
+      "[[1,1],[8,8],[4,4]]"
+    ],
+    "ExpectedOutput": "3079"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"bishop\"]",
+      "[[1,1],[4,5],[8,2]]"
+    ],
+    "ExpectedOutput": "2308"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\"]",
+      "[[3,3],[6,6]]"
+    ],
+    "ExpectedOutput": "124"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"rook\",\"rook\"]",
+      "[[1,1],[8,1],[8,8]]"
+    ],
+    "ExpectedOutput": "1600"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\",\"bishop\",\"queen\"]",
+      "[[1,1],[8,8],[3,3],[6,6]]"
+    ],
+    "ExpectedOutput": "56730"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"bishop\",\"rook\"]",
+      "[[2,2],[3,3],[4,4]]"
+    ],
+    "ExpectedOutput": "2185"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"rook\"]",
+      "[[1,1],[5,5],[5,6]]"
+    ],
+    "ExpectedOutput": "4182"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\",\"bishop\",\"bishop\"]",
+      "[[1,1],[1,8],[8,1],[8,8]]"
+    ],
+    "ExpectedOutput": "12485"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"rook\"]",
+      "[[4,4],[1,1],[8,8]]"
+    ],
+    "ExpectedOutput": "5890"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\",\"rook\"]",
+      "[[2,2],[7,7],[1,8]]"
+    ],
+    "ExpectedOutput": "1112"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\",\"rook\",\"rook\"]",
+      "[[1,1],[1,8],[8,1],[8,8]]"
+    ],
+    "ExpectedOutput": "12485"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"rook\",\"rook\",\"queen\"]",
+      "[[4,4],[1,1],[1,8],[8,8]]"
+    ],
+    "ExpectedOutput": "49107"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"bishop\",\"rook\"]",
+      "[[3,3],[5,5],[2,2],[6,6]]"
+    ],
+    "ExpectedOutput": "37434"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"bishop\"]",
+      "[[2,2],[7,7]]"
+    ],
+    "ExpectedOutput": "220"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"queen\",\"queen\"]",
+      "[[2,2],[3,3],[4,4]]"
+    ],
+    "ExpectedOutput": "13103"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"bishop\"]",
+      "[[1,1],[8,8]]"
+    ],
+    "ExpectedOutput": "156"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"queen\"]",
+      "[[2,2],[7,7]]"
+    ],
+    "ExpectedOutput": "548"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\",\"rook\",\"rook\"]",
+      "[[2,2],[3,3],[6,6],[7,7]]"
+    ],
+    "ExpectedOutput": "18260"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"bishop\",\"queen\"]",
+      "[[3,3],[6,6],[5,5]]"
+    ],
+    "ExpectedOutput": "4230"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"bishop\",\"rook\",\"bishop\"]",
+      "[[1,1],[8,8],[2,2],[7,7]]"
+    ],
+    "ExpectedOutput": "10336"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"rook\"]",
+      "[[1,1],[1,8],[8,1]]"
+    ],
+    "ExpectedOutput": "4286"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\"]",
+      "[[4,4],[8,1]]"
+    ],
+    "ExpectedOutput": "412"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\",\"rook\",\"rook\",\"bishop\"]",
+      "[[1,1],[1,8],[8,1],[8,8],[4,4]]"
+    ],
+    "ExpectedOutput": "437408"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\",\"queen\",\"bishop\"]",
+      "[[1,1],[8,8],[4,4],[5,5]]"
+    ],
+    "ExpectedOutput": "74604"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"rook\"]",
+      "[[5,5],[1,1],[8,8]]"
+    ],
+    "ExpectedOutput": "5890"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\",\"rook\"]",
+      "[[2,2],[7,7],[4,4]]"
+    ],
+    "ExpectedOutput": "1150"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\",\"bishop\"]",
+      "[[4,4],[1,1],[8,8]]"
+    ],
+    "ExpectedOutput": "2681"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"bishop\",\"rook\"]",
+      "[[3,3],[6,6],[1,1]]"
+    ],
+    "ExpectedOutput": "4107"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"queen\"]",
+      "[[1,2],[8,7]]"
+    ],
+    "ExpectedOutput": "476"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"queen\"]",
+      "[[2,3],[3,2]]"
+    ],
+    "ExpectedOutput": "518"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\"]",
+      "[[1,1],[8,8]]"
+    ],
+    "ExpectedOutput": "44"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\",\"bishop\"]",
+      "[[2,2],[5,5],[8,8]]"
+    ],
+    "ExpectedOutput": "460"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\"]",
+      "[[1,1],[1,8]]"
+    ],
+    "ExpectedOutput": "205"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"rook\",\"bishop\"]",
+      "[[1,1],[8,1],[4,4]]"
+    ],
+    "ExpectedOutput": "2764"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"queen\",\"rook\"]",
+      "[[1,1],[8,8],[4,4]]"
+    ],
+    "ExpectedOutput": "6380"
+  },
+  {
+    "Inputs": [
+      "[\"rook\",\"queen\",\"bishop\",\"rook\"]",
+      "[[1,1],[2,2],[3,3],[4,4]]"
+    ],
+    "ExpectedOutput": "41894"
+  },
+  {
+    "Inputs": [
+      "[\"queen\",\"rook\"]",
+      "[[1,1],[8,1]]"
+    ],
+    "ExpectedOutput": "309"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\",\"bishop\"]",
+      "[[2,3],[4,5],[6,7]]"
+    ],
+    "ExpectedOutput": "728"
+  },
+  {
+    "Inputs": [
+      "[\"bishop\",\"bishop\",\"bishop\"]",
+      "[[2,2],[4,4],[6,6]]"
+    ],
+    "ExpectedOutput": "792"
+  }
+]

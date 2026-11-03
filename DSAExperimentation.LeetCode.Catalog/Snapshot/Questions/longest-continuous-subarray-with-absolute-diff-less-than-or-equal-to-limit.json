@@ -1,0 +1,100 @@
+{
+  "QuestionId": 1549,
+  "FrontendId": 1438,
+  "Title": "Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit",
+  "TitleSlug": "longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Array",
+      "Slug": "array"
+    },
+    {
+      "Name": "Queue",
+      "Slug": "queue"
+    },
+    {
+      "Name": "Sliding Window",
+      "Slug": "sliding-window"
+    },
+    {
+      "Name": "Heap (Priority Queue)",
+      "Slug": "heap-priority-queue"
+    },
+    {
+      "Name": "Ordered Set",
+      "Slug": "ordered-set"
+    },
+    {
+      "Name": "Monotonic Queue",
+      "Slug": "monotonic-queue"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Partition Array Such That Maximum Difference Is K",
+      "TitleSlug": "partition-array-such-that-maximum-difference-is-k",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Count Subarrays With Fixed Bounds",
+      "TitleSlug": "count-subarrays-with-fixed-bounds",
+      "Difficulty": "Hard"
+    }
+  ],
+  "Hints": [
+    "Use a sliding window approach keeping the maximum and minimum value using a data structure like a multiset from STL in C++.",
+    "More specifically, use the two pointer technique, moving the right pointer as far as possible to the right until the subarray is not valid (maxValue - minValue > limit), then moving the left pointer until the subarray is valid again (maxValue - minValue <= limit). Keep repeating this process."
+  ],
+  "Constraints": [
+    "1 <= nums.length <= 10^5",
+    "1 <= nums[i] <= 10^9",
+    "0 <= limit <= 10^9"
+  ],
+  "Signature": {
+    "FunctionName": "longestSubarray",
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      },
+      {
+        "Name": "limit",
+        "Type": "integer"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int LongestSubarray(int[] nums, int limit) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "[8,2,4,7]",
+        "4"
+      ],
+      "ExpectedOutput": "2"
+    },
+    {
+      "Inputs": [
+        "[10,1,2,4,7,2]",
+        "5"
+      ],
+      "ExpectedOutput": "4"
+    },
+    {
+      "Inputs": [
+        "[4,2,2,2,4,4,2,2]",
+        "0"
+      ],
+      "ExpectedOutput": "3"
+    }
+  ],
+  "ContentHtml": "<p>You are given an array of integers <code>nums</code> and an integer <code>limit</code>.</p>\n\n<p>Return the size of the <strong>longest non-empty subarray</strong> such that the <strong>absolute</strong> difference between <strong>every pair of elements</strong> in this <strong>subarray</strong> is <strong>less than or equal</strong> to <code>limit</code><em>.</em></p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">nums = [8,2,4,7], limit = 4</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">2</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<p>Checking every subarray, where the absolute difference is taken over all pairs of its elements:<br />\n<code>[8]</code> with maximum absolute diff <code>|8-8| = 0 &lt;= 4</code>.<br />\n<code>[8,2]</code> with maximum absolute diff <code>|8-2| = 6 &gt; 4</code>.<br />\n<code>[8,2,4]</code> with maximum absolute diff <code>|8-2| = 6 &gt; 4</code>.<br />\n<code>[8,2,4,7]</code> with maximum absolute diff <code>|8-2| = 6 &gt; 4</code>.<br />\n<code>[2]</code> with maximum absolute diff <code>|2-2| = 0 &lt;= 4</code>.<br />\n<code>[2,4]</code> with maximum absolute diff <code>|4-2| = 2 &lt;= 4</code>.<br />\n<code>[2,4,7]</code> with maximum absolute diff <code>|7-2| = 5 &gt; 4</code>. Note that the pair <code>(2, 7)</code> is not adjacent, but it is still compared.<br />\n<code>[4]</code> with maximum absolute diff <code>|4-4| = 0 &lt;= 4</code>.<br />\n<code>[4,7]</code> with maximum absolute diff <code>|7-4| = 3 &lt;= 4</code>.<br />\n<code>[7]</code> with maximum absolute diff <code>|7-7| = 0 &lt;= 4</code>.<br />\nTherefore, the size of the longest subarray is 2.</p>\n</div>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">nums = [10,1,2,4,7,2], limit = 5</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">4</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<p>The subarray <code>[2,4,7,2]</code> is valid because every pair of its elements differs by at most <code>5</code>, the largest being <code>|7-2| = 5</code>.</p>\n\n<p>It cannot be extended to the left, since <code>[1,2,4,7,2]</code> contains the pair <code>(1, 7)</code> with <code>|7-1| = 6 &gt; 5</code>. Therefore, the size of the longest subarray is 4.</p>\n</div>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<div class=\"example-block\">\n<p><strong>Input:</strong> <span class=\"example-io\">nums = [4,2,2,2,4,4,2,2], limit = 0</span></p>\n\n<p><strong>Output:</strong> <span class=\"example-io\">3</span></p>\n\n<p><strong>Explanation:</strong></p>\n\n<p>Since <code>limit = 0</code>, every pair of elements in the subarray must be equal, so only runs of identical values qualify.</p>\n\n<p>The longest such run is <code>[2,2,2]</code>, of size 3.</p>\n</div>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>1 &lt;= nums[i] &lt;= 10<sup>9</sup></code></li>\n\t<li><code>0 &lt;= limit &lt;= 10<sup>9</sup></code></li>\n</ul>\n"
+}

@@ -1,56 +1,72 @@
+using DSAExperimentation.LeetCode.Catalog;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.TwoSum;
 
 namespace DSAExperimentation.LeetCode.Tests.TwoSum;
 
-// Harness only: the algorithms live in TwoSumSolution. One test method per
-// strategy over one shared set of LeetCode's own examples, so a failure names the
-// strategy that broke.
+// Harness only: the algorithms live in TwoSumSolution. One test method per strategy over every case
+// the LeetCode catalog holds for LC 1 - its published examples, then LeetCodeDataset's - plus the
+// one case LeetCode never poses, a target no pair reaches, so a failure names the strategy that
+// broke. LeetCode accepts the pair in either order, so the pair is compared as a set.
+//
+// LC 1 promises that exactly one pair reaches the target, and LeetCodeDataset's generated inputs do
+// not always keep that promise: 30 of them have several pairs, where each strategy may name a
+// different and equally valid one. So a case is kept only when TwoSumPromise holds for it.
 public sealed partial class TwoSumSolutionTests
 {
-    public static TheoryData<TwoSumExample> Examples =>
-        new()
-        {
-            { new TwoSumExample(Nums: [2, 7, 11, 15], Target: 9, ExpectedFound: true, ExpectedFirst: 0, ExpectedSecond: 1) },
-            { new TwoSumExample(Nums: [3, 2, 4], Target: 6, ExpectedFound: true, ExpectedFirst: 1, ExpectedSecond: 2) },
-            { new TwoSumExample(Nums: [3, 3], Target: 6, ExpectedFound: true, ExpectedFirst: 0, ExpectedSecond: 1) },
-            { new TwoSumExample(Nums: [1, 2, 3], Target: 100, ExpectedFound: false, ExpectedFirst: 0, ExpectedSecond: 0) },
-        };
+    private const string TitleSlug = "two-sum";
+
+    public static TheoryData<TwoSumExample> Cases => [.. CatalogCases(), NoPairExample];
+
+    private static TwoSumExample NoPairExample => new(Nums: [1, 2, 3], Target: 100, ExpectedPair: []);
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void TryFindIndicesByBruteForce_LeetCodeExamples_ReturnsMatchingPairIndices(TwoSumExample example)
+    [MemberData(nameof(Cases))]
+    public void TryFindIndicesByBruteForce_LeetCodeCases_ReturnsMatchingPairIndices(TwoSumExample example)
     {
         var found = TwoSumSolution.TryFindIndicesByBruteForce(
             example.Nums, example.Target, out var first, out var second);
 
-        AssertResult((found, first, second), example);
+        AssertResult(PairOf(found, first, second), example);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void TryFindIndicesByHashMap_LeetCodeExamples_ReturnsMatchingPairIndices(TwoSumExample example)
+    [MemberData(nameof(Cases))]
+    public void TryFindIndicesByHashMap_LeetCodeCases_ReturnsMatchingPairIndices(TwoSumExample example)
     {
         var found = TwoSumSolution.TryFindIndicesByHashMap(
             example.Nums, example.Target, out var first, out var second);
 
-        AssertResult((found, first, second), example);
+        AssertResult(PairOf(found, first, second), example);
     }
 
-    private static void AssertResult((bool Found, int First, int Second) actual, TwoSumExample example)
+    private static IEnumerable<TwoSumExample> CatalogCases()
+        => LeetCodeCatalog.Cases(TitleSlug)
+            .Where(testCase => testCase.HasExpectedOutput)
+            .Select(ExampleOf)
+            .Where(example => TwoSumPromise.IsKeptBy(example.Nums, example.Target));
+
+    private static TwoSumExample ExampleOf(LeetCodeCase testCase)
+        => new(testCase.Input<int[]>(0), testCase.Input<int>(1), testCase.Expected<int[]>());
+
+    // A strategy that finds no pair answers with none, which is what LeetCode's answer would be
+    // for the one target its promise rules out.
+    private static int[] PairOf(bool found, int first, int second)
     {
-        Assert.Equal(example.ExpectedFound, actual.Found);
-        Assert.Equal(example.ExpectedFirst, actual.First);
-        Assert.Equal(example.ExpectedSecond, actual.Second);
+        if (!found)
+        {
+            return [];
+        }
+
+        return [first, second];
     }
 
-    // One LeetCode example: the array and target the strategy is given, and what it must
-    // answer - whether a pair exists, and the two indices when it does. The five travel
-    // together into every assertion, so each is named rather than left as a position in a
-    // row of five literals.
-    public readonly record struct TwoSumExample(
-        int[] Nums,
-        int Target,
-        bool ExpectedFound,
-        int ExpectedFirst,
-        int ExpectedSecond);
+    private static void AssertResult(int[] actual, TwoSumExample example)
+        => Assert.True(
+            LeetCodeAnswers.IsSetEqual(actual, example.ExpectedPair),
+            $"nums [{string.Join(',', example.Nums)}], target {example.Target}: expected [{string.Join(',', example.ExpectedPair)}], got [{string.Join(',', actual)}]");
+
+    // One case: the array and target the strategy is given, and the pair of indices it must answer
+    // with, empty when no pair reaches the target.
+    public readonly record struct TwoSumExample(int[] Nums, int Target, int[] ExpectedPair);
 }

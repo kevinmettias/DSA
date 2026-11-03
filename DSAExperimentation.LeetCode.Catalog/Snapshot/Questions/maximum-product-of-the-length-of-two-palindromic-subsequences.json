@@ -1,0 +1,98 @@
+{
+  "QuestionId": 2130,
+  "FrontendId": 2002,
+  "Title": "Maximum Product of the Length of Two Palindromic Subsequences",
+  "TitleSlug": "maximum-product-of-the-length-of-two-palindromic-subsequences",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Dynamic Programming",
+      "Slug": "dynamic-programming"
+    },
+    {
+      "Name": "Backtracking",
+      "Slug": "backtracking"
+    },
+    {
+      "Name": "Bit Manipulation",
+      "Slug": "bit-manipulation"
+    },
+    {
+      "Name": "Bitmask",
+      "Slug": "bitmask"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Valid Palindrome",
+      "TitleSlug": "valid-palindrome",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Longest Palindromic Subsequence",
+      "TitleSlug": "longest-palindromic-subsequence",
+      "Difficulty": "Medium"
+    },
+    {
+      "Title": "Maximum Product of the Length of Two Palindromic Substrings",
+      "TitleSlug": "maximum-product-of-the-length-of-two-palindromic-substrings",
+      "Difficulty": "Hard"
+    },
+    {
+      "Title": "Maximum Points in an Archery Competition",
+      "TitleSlug": "maximum-points-in-an-archery-competition",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [
+    "Could you generate all possible pairs of disjoint subsequences?",
+    "Could you find the maximum length palindrome in each subsequence for a pair of disjoint subsequences?"
+  ],
+  "Constraints": [
+    "2 <= s.length <= 12",
+    "s consists of lowercase English letters only."
+  ],
+  "Signature": {
+    "FunctionName": "maxProduct",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "integer",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public int MaxProduct(string s) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"leetcodecom\""
+      ],
+      "ExpectedOutput": "9"
+    },
+    {
+      "Inputs": [
+        "\"bb\""
+      ],
+      "ExpectedOutput": "1"
+    },
+    {
+      "Inputs": [
+        "\"accbcaxxcxx\""
+      ],
+      "ExpectedOutput": "25"
+    }
+  ],
+  "ContentHtml": "<p>Given a string <code>s</code>, find two <strong>disjoint palindromic subsequences</strong> of <code>s</code> such that the <strong>product</strong> of their lengths is <strong>maximized</strong>. The two subsequences are <strong>disjoint</strong> if they do not both pick a character at the same index.</p>\n\n<p>Return <em>the <strong>maximum</strong> possible <strong>product</strong> of the lengths of the two palindromic subsequences</em>.</p>\n\n<p>A <strong>subsequence</strong> is a string that can be derived from another string by deleting some or no characters without changing the order of the remaining characters. A string is <strong>palindromic</strong> if it reads the same forward and backward.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<img alt=\"example-1\" src=\"https://assets.leetcode.com/uploads/2021/08/24/two-palindromic-subsequences.png\" style=\"width: 550px; height: 124px;\" />\n<pre>\n<strong>Input:</strong> s = &quot;leetcodecom&quot;\n<strong>Output:</strong> 9\n<strong>Explanation</strong>: An optimal solution is to choose &quot;ete&quot; for the 1<sup>st</sup> subsequence and &quot;cdc&quot; for the 2<sup>nd</sup> subsequence.\nThe product of their lengths is: 3 * 3 = 9.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;bb&quot;\n<strong>Output:</strong> 1\n<strong>Explanation</strong>: An optimal solution is to choose &quot;b&quot; (the first character) for the 1<sup>st</sup> subsequence and &quot;b&quot; (the second character) for the 2<sup>nd</sup> subsequence.\nThe product of their lengths is: 1 * 1 = 1.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;accbcaxxcxx&quot;\n<strong>Output:</strong> 25\n<strong>Explanation</strong>: An optimal solution is to choose &quot;accca&quot; for the 1<sup>st</sup> subsequence and &quot;xxcxx&quot; for the 2<sup>nd</sup> subsequence.\nThe product of their lengths is: 5 * 5 = 25.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>2 &lt;= s.length &lt;= 12</code></li>\n\t<li><code>s</code> consists of lowercase English letters only.</li>\n</ul>\n"
+}

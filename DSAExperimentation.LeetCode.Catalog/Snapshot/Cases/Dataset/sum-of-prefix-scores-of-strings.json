@@ -1,0 +1,566 @@
+[
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"he\",\"h\"]"
+    ],
+    "ExpectedOutput": "[12,11,7,4]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\"]"
+    ],
+    "ExpectedOutput": "[1,1,1,1]"
+  },
+  {
+    "Inputs": [
+      "[\"aa\",\"aaa\",\"aaaa\",\"aaaaa\"]"
+    ],
+    "ExpectedOutput": "[8,11,13,14]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"ab\",\"abc\",\"abcd\"]"
+    ],
+    "ExpectedOutput": "[4,7,9,10]"
+  },
+  {
+    "Inputs": [
+      "[\"abcde\",\"abcd\",\"abc\",\"ab\",\"a\"]"
+    ],
+    "ExpectedOutput": "[15,14,12,9,5]"
+  },
+  {
+    "Inputs": [
+      "[\"b\",\"bb\",\"bbb\",\"bbbb\"]"
+    ],
+    "ExpectedOutput": "[4,7,9,10]"
+  },
+  {
+    "Inputs": [
+      "[\"xyz\",\"xy\",\"x\"]"
+    ],
+    "ExpectedOutput": "[6,5,3]"
+  },
+  {
+    "Inputs": [
+      "[\"xyz\",\"xy\",\"x\",\"xyzabc\"]"
+    ],
+    "ExpectedOutput": "[9,7,4,12]"
+  },
+  {
+    "Inputs": [
+      "[\"aa\",\"ab\",\"ac\",\"ba\",\"bb\",\"bc\",\"ca\",\"cb\",\"cc\"]"
+    ],
+    "ExpectedOutput": "[4,4,4,4,4,4,4,4,4]"
+  },
+  {
+    "Inputs": [
+      "[\"aaaa\",\"aa\",\"a\"]"
+    ],
+    "ExpectedOutput": "[7,5,3]"
+  },
+  {
+    "Inputs": [
+      "[\"dynamic\",\"dyn\",\"dynam\",\"dynamicp\",\"dynamicpr\",\"dynamicpro\",\"dynamicprogra\",\"dynamicprogram\",\"dynamicprogramming\"]"
+    ],
+    "ExpectedOutput": "[57,27,43,63,68,72,81,83,87]"
+  },
+  {
+    "Inputs": [
+      "[\"optimization\",\"optimize\",\"opt\",\"opti\",\"optim\",\"optimi\"]"
+    ],
+    "ExpectedOutput": "[37,33,18,23,27,30]"
+  },
+  {
+    "Inputs": [
+      "[\"xylophone\",\"xylo\",\"xylophon\",\"xy\",\"xyl\",\"xylophonist\",\"xylophoneplayer\",\"xylophoneplayerperformance\"]"
+    ],
+    "ExpectedOutput": "[52,29,49,16,23,52,64,75]"
+  },
+  {
+    "Inputs": [
+      "[\"xylophone\",\"xylography\",\"xylo\",\"xylophoneography\",\"xyl\",\"xylonate\"]"
+    ],
+    "ExpectedOutput": "[33,29,23,40,18,27]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"aabbc\",\"aabb\",\"aa\",\"a\",\"aabbbccc\",\"aabbbbcccc\",\"aabbbbccccd\"]"
+    ],
+    "ExpectedOutput": "[30,29,27,15,8,33,40,41]"
+  },
+  {
+    "Inputs": [
+      "[\"aaaa\",\"aaab\",\"aaac\",\"aabb\",\"aabc\",\"abaa\",\"abab\",\"abac\",\"abba\",\"abbb\",\"abbc\",\"abca\",\"abcb\",\"abcc\",\"acaa\",\"acab\",\"acac\",\"acba\",\"acbb\",\"acbc\",\"acca\",\"accc\"]"
+    ],
+    "ExpectedOutput": "[31,31,31,30,30,35,35,35,35,35,35,35,35,35,34,34,34,34,34,34,33,33]"
+  },
+  {
+    "Inputs": [
+      "[\"abacax\",\"abaca\",\"bacax\",\"abac\",\"ab\"]"
+    ],
+    "ExpectedOutput": "[17,16,5,14,8]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"app\",\"application\",\"applesauce\",\"appetizer\"]"
+    ],
+    "ExpectedOutput": "[20,15,25,25,21]"
+  },
+  {
+    "Inputs": [
+      "[\"pneumonoultramicroscopicsilicovolcanoconiosis\",\"pneumo\",\"pneumonoultra\",\"pneumonoultramicro\",\"pneumonoultramicroscopicsilico\",\"pneumonoultramicroscopicsilicovolcano\",\"pneumo\"]"
+    ],
+    "ExpectedOutput": "[155,42,77,97,133,147,42]"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"program\",\"pro\",\"prog\",\"progr\"]"
+    ],
+    "ExpectedOutput": "[30,26,15,19,22]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algo\",\"al\",\"alex\",\"ale\",\"all\"]"
+    ],
+    "ExpectedOutput": "[21,16,12,15,14,13]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdabcd\",\"abcabc\",\"ababab\",\"aaaaaa\",\"bbbbbb\",\"cccccc\",\"dddddd\"]"
+    ],
+    "ExpectedOutput": "[14,12,11,9,6,6,6]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algo\",\"alg\",\"algor\",\"algorith\",\"algori\"]"
+    ],
+    "ExpectedOutput": "[35,23,18,27,34,30]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"aabbc\",\"aabb\",\"aab\",\"aa\",\"a\",\"aabbbcc\",\"aabbb\",\"aabbbb\"]"
+    ],
+    "ExpectedOutput": "[33,32,30,24,17,9,35,33,34]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\",\"aaaaaaaaa\"]"
+    ],
+    "ExpectedOutput": "[9,17,24,30,35,39,42,44,45]"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"pre\",\"prefer\",\"preference\",\"presentation\",\"president\",\"presidency\"]"
+    ],
+    "ExpectedOutput": "[26,21,28,32,32,33,34]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"he\",\"h\",\"hero\",\"helium\",\"helper\"]"
+    ],
+    "ExpectedOutput": "[20,19,13,7,15,20,20]"
+  },
+  {
+    "Inputs": [
+      "[\"unique\",\"un\",\"uni\",\"unic\",\"uniqu\",\"uniquee\",\"uniqueee\",\"uniqueeee\"]"
+    ],
+    "ExpectedOutput": "[37,16,23,24,33,40,42,43]"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"pre\",\"pref\",\"prefi\",\"prefin\",\"prefixation\",\"prefixes\",\"prefixing\",\"prefixes\",\"preference\",\"prefer\"]"
+    ],
+    "ExpectedOutput": "[55,33,43,50,51,60,59,58,59,51,47]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"app\",\"ap\",\"application\",\"appetite\"]"
+    ],
+    "ExpectedOutput": "[17,14,10,23,19]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"aab\",\"abc\",\"aac\",\"acc\",\"aaa\",\"bbb\",\"ccc\",\"aabbc\",\"aabbbc\",\"aabbbcc\",\"aabbbccc\"]"
+    ],
+    "ExpectedOutput": "[32,24,12,19,12,19,3,3,31,35,37,38]"
+  },
+  {
+    "Inputs": [
+      "[\"complex\",\"com\",\"compl\",\"complexity\",\"composite\"]"
+    ],
+    "ExpectedOutput": "[26,15,22,29,24]"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"cater\",\"caterpillar\",\"catering\",\"caterer\",\"caterers\",\"catered\",\"catering\"]"
+    ],
+    "ExpectedOutput": "[24,38,44,44,43,44,42,44]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"aa\",\"aaa\",\"aaaa\",\"aaaaa\",\"aaaaaa\",\"aaaaaaa\",\"aaaaaaaa\",\"aaaaaaaaa\",\"aaaaaaaaaa\"]"
+    ],
+    "ExpectedOutput": "[10,19,27,34,40,45,49,52,54,55]"
+  },
+  {
+    "Inputs": [
+      "[\"optimization\",\"opt\",\"opti\",\"optim\",\"optimiz\",\"optimise\",\"optimized\"]"
+    ],
+    "ExpectedOutput": "[44,21,27,32,39,38,41]"
+  },
+  {
+    "Inputs": [
+      "[\"data\",\"dat\",\"database\",\"datascience\",\"datastructure\"]"
+    ],
+    "ExpectedOutput": "[19,15,23,27,29]"
+  },
+  {
+    "Inputs": [
+      "[\"car\",\"cat\",\"catch\",\"cart\",\"card\",\"carpet\"]"
+    ],
+    "ExpectedOutput": "[16,14,16,17,17,19]"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"band\",\"ball\",\"bat\",\"basketball\"]"
+    ],
+    "ExpectedOutput": "[15,13,12,11,18]"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"program\",\"pro\",\"pr\",\"p\",\"prefix\",\"pre\",\"preprocessing\"]"
+    ],
+    "ExpectedOutput": "[30,26,18,15,8,21,18,28]"
+  },
+  {
+    "Inputs": [
+      "[\"longword\",\"longworder\",\"longworderer\",\"longwordererest\",\"longwordereresterest\"]"
+    ],
+    "ExpectedOutput": "[40,48,54,60,65]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algo\",\"al\",\"alex\",\"algorithmic\",\"algorithms\"]"
+    ],
+    "ExpectedOutput": "[35,20,12,14,37,36]"
+  },
+  {
+    "Inputs": [
+      "[\"aaa\",\"aab\",\"aac\",\"aba\",\"abb\",\"abc\",\"aca\",\"acb\",\"acc\",\"baa\",\"bab\",\"bac\",\"bba\",\"bbb\",\"bbc\",\"bca\",\"bcb\",\"bcc\",\"caa\",\"cab\",\"cac\",\"cba\",\"cbb\",\"cbc\",\"cca\",\"ccb\",\"ccc\"]"
+    ],
+    "ExpectedOutput": "[13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13]"
+  },
+  {
+    "Inputs": [
+      "[\"backtracking\",\"back\",\"backt\",\"backtr\",\"backtra\",\"backtrac\",\"backtrack\",\"backtracki\",\"backtrackin\",\"backtrackin\",\"backtrackinga\",\"backtrackingal\",\"backtrackingalg\",\"backtrackingalgo\"]"
+    ],
+    "ExpectedOutput": "[131,56,69,81,92,102,111,119,126,126,135,138,140,141]"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"pre\",\"pres\",\"presum\",\"pressure\"]"
+    ],
+    "ExpectedOutput": "[18,15,18,20,22]"
+  },
+  {
+    "Inputs": [
+      "[\"interview\",\"inter\",\"inte\",\"interw\",\"interv\",\"intervi\",\"interviewe\"]"
+    ],
+    "ExpectedOutput": "[45,34,28,35,38,41,46]"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zoo\",\"zookeeper\",\"zoozoo\",\"ze\",\"zee\",\"z\"]"
+    ],
+    "ExpectedOutput": "[13,13,19,16,10,11,7]"
+  },
+  {
+    "Inputs": [
+      "[\"repeated\",\"repeat\",\"rep\",\"re\",\"r\",\"peated\",\"eat\",\"e\",\"t\",\"ted\",\"tedious\",\"tediousness\"]"
+    ],
+    "ExpectedOutput": "[20,18,12,9,5,6,4,2,4,10,18,22]"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"ban\",\"bananas\",\"band\",\"bandana\",\"bandwidth\"]"
+    ],
+    "ExpectedOutput": "[24,18,25,21,24,26]"
+  },
+  {
+    "Inputs": [
+      "[\"repeated\",\"repeats\",\"repeat\",\"repeating\",\"repeatedly\",\"repeatability\"]"
+    ],
+    "ExpectedOutput": "[40,37,36,39,42,43]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"al\",\"algo\",\"all\",\"algorithms\",\"application\",\"app\"]"
+    ],
+    "ExpectedOutput": "[28,12,18,13,29,19,11]"
+  },
+  {
+    "Inputs": [
+      "[\"flower\",\"flow\",\"flight\",\"flour\",\"flourish\",\"flourishingly\"]"
+    ],
+    "ExpectedOutput": "[21,19,16,23,29,34]"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"ban\",\"band\",\"bandana\",\"bandanna\",\"banda\"]"
+    ],
+    "ExpectedOutput": "[21,18,22,28,29,25]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"he\",\"h\",\"helicopter\",\"helium\",\"help\",\"hero\",\"her\",\"hemoglobin\"]"
+    ],
+    "ExpectedOutput": "[27,26,19,10,32,28,25,22,21,27]"
+  },
+  {
+    "Inputs": [
+      "[\"unique\",\"uniques\",\"unicorn\",\"unicycle\",\"universality\"]"
+    ],
+    "ExpectedOutput": "[21,22,20,21,24]"
+  },
+  {
+    "Inputs": [
+      "[\"optimization\",\"optimizer\",\"optimize\",\"optimal\",\"optimism\",\"optimist\",\"optimistic\",\"optimum\",\"opt\",\"optional\"]"
+    ],
+    "ExpectedOutput": "[61,59,58,49,57,58,60,49,30,43]"
+  },
+  {
+    "Inputs": [
+      "[\"complex\",\"complicated\",\"complicate\",\"complexity\",\"complexion\",\"complexing\",\"complexified\",\"complexify\",\"complexifies\",\"complexing\"]"
+    ],
+    "ExpectedOutput": "[66,61,60,75,75,77,81,77,81,77]"
+  },
+  {
+    "Inputs": [
+      "[\"abracadabra\",\"abra\",\"bracadabra\",\"bracada\",\"braca\",\"bracad\",\"bracadab\",\"bracadabr\",\"bracadabra\",\"bracadabram\",\"bracadabramm\"]"
+    ],
+    "ExpectedOutput": "[15,8,75,60,45,53,66,71,75,77,78]"
+  },
+  {
+    "Inputs": [
+      "[\"hello\",\"hell\",\"help\",\"hero\",\"her\",\"hers\",\"he\",\"hem\",\"hemoglobin\"]"
+    ],
+    "ExpectedOutput": "[24,23,22,22,21,22,18,20,27]"
+  },
+  {
+    "Inputs": [
+      "[\"trie\",\"tr\",\"tree\",\"tries\",\"trigger\",\"trig\"]"
+    ],
+    "ExpectedOutput": "[18,12,14,19,21,18]"
+  },
+  {
+    "Inputs": [
+      "[\"aabbcc\",\"aabbc\",\"aabb\",\"aab\",\"aa\",\"a\"]"
+    ],
+    "ExpectedOutput": "[21,20,18,15,11,6]"
+  },
+  {
+    "Inputs": [
+      "[\"abcdefghijklmnopqrstuvwxyz\",\"abcde\",\"abcdef\",\"abcdefghij\",\"a\"]"
+    ],
+    "ExpectedOutput": "[48,21,24,32,5]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algo\",\"algor\",\"algorit\",\"algorith\",\"algorithme\",\"algori\",\"algorithmically\"]"
+    ],
+    "ExpectedOutput": "[57,32,39,50,54,58,45,63]"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"ban\",\"band\",\"bandana\",\"bandwidth\"]"
+    ],
+    "ExpectedOutput": "[18,15,18,21,23]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algebra\",\"alien\",\"alliance\",\"alibi\",\"allocate\",\"allot\",\"allow\",\"allude\",\"allure\",\"alloy\",\"ally\"]"
+    ],
+    "ExpectedOutput": "[32,30,28,37,28,40,37,37,36,36,37,33]"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"pre\",\"pref\",\"prefer\",\"preference\",\"preferred\",\"preferring\"]"
+    ],
+    "ExpectedOutput": "[29,21,27,35,39,39,40]"
+  },
+  {
+    "Inputs": [
+      "[\"data\",\"database\",\"datastructure\",\"datamining\",\"dataviz\",\"datascience\",\"datamodel\"]"
+    ],
+    "ExpectedOutput": "[28,32,38,35,31,36,34]"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"program\",\"pro\",\"progress\",\"profound\",\"process\",\"progressive\"]"
+    ],
+    "ExpectedOutput": "[37,33,21,35,26,25,38]"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"program\",\"pro\",\"programminglanguage\",\"prolog\",\"protocol\"]"
+    ],
+    "ExpectedOutput": "[38,30,18,46,21,23]"
+  },
+  {
+    "Inputs": [
+      "[\"abacaxi\",\"abacax\",\"abac\",\"aba\",\"ab\",\"a\",\"abc\",\"abcd\",\"abcde\"]"
+    ],
+    "ExpectedOutput": "[29,28,24,21,17,9,20,22,23]"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"ze\",\"zoo\",\"zookeeper\",\"zest\",\"zippy\",\"zeta\",\"zone\"]"
+    ],
+    "ExpectedOutput": "[15,12,13,19,14,12,14,13]"
+  },
+  {
+    "Inputs": [
+      "[\"complexity\",\"comp\",\"compl\",\"comple\",\"complex\",\"complexe\",\"complexit\"]"
+    ],
+    "ExpectedOutput": "[48,28,34,39,43,44,47]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algebra\",\"al\",\"algorithmically\",\"algo\"]"
+    ],
+    "ExpectedOutput": "[27,18,10,33,17]"
+  },
+  {
+    "Inputs": [
+      "[\"unique\",\"un\",\"uni\",\"unic\",\"uniqu\",\"uniqueness\",\"uniquely\",\"uniques\"]"
+    ],
+    "ExpectedOutput": "[37,16,23,24,33,41,39,38]"
+  },
+  {
+    "Inputs": [
+      "[\"datastructure\",\"data\",\"datas\",\"datast\",\"datastr\",\"datastru\",\"datastruc\"]"
+    ],
+    "ExpectedOutput": "[52,28,34,39,43,46,48]"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"prefixes\",\"pref\",\"prefer\",\"prefixing\"]"
+    ],
+    "ExpectedOutput": "[26,28,20,22,29]"
+  },
+  {
+    "Inputs": [
+      "[\"apple\",\"app\",\"ap\",\"a\",\"application\"]"
+    ],
+    "ExpectedOutput": "[15,12,9,5,21]"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"bandana\",\"band\",\"bandwidth\",\"bandage\"]"
+    ],
+    "ExpectedOutput": "[18,23,19,24,23]"
+  },
+  {
+    "Inputs": [
+      "[\"abacaxi\",\"abac\",\"aba\",\"ab\",\"a\",\"abacax\",\"abacaxs\",\"abacaxus\"]"
+    ],
+    "ExpectedOutput": "[35,26,21,15,8,34,35,36]"
+  },
+  {
+    "Inputs": [
+      "[\"interview\",\"inter\",\"interac\",\"interactive\",\"interact\",\"interactivity\"]"
+    ],
+    "ExpectedOutput": "[34,30,38,46,41,48]"
+  },
+  {
+    "Inputs": [
+      "[\"prefix\",\"prefixing\",\"prefixation\",\"prefixer\",\"pref\",\"pre\",\"p\"]"
+    ],
+    "ExpectedOutput": "[32,35,37,34,24,19,7]"
+  },
+  {
+    "Inputs": [
+      "[\"zebra\",\"zebr\",\"zeb\",\"ze\",\"z\",\"zebraa\",\"zebrab\",\"zebrac\",\"zebrad\"]"
+    ],
+    "ExpectedOutput": "[35,30,24,17,9,36,36,36,36]"
+  },
+  {
+    "Inputs": [
+      "[\"cat\",\"cater\",\"category\",\"categories\",\"caterpillar\",\"catering\",\"catered\",\"caterer\",\"caterers\",\"catering\"]"
+    ],
+    "ExpectedOutput": "[30,46,46,48,52,52,50,51,52,52]"
+  },
+  {
+    "Inputs": [
+      "[\"abacaxi\",\"abacax\",\"abac\",\"aba\",\"ab\",\"a\",\"bacaxi\",\"bacax\",\"bac\",\"ba\",\"b\"]"
+    ],
+    "ExpectedOutput": "[23,22,18,15,11,6,17,16,12,9,5]"
+  },
+  {
+    "Inputs": [
+      "[\"abacax\",\"abaca\",\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\"]"
+    ],
+    "ExpectedOutput": "[21,20,14,18,21,23,24]"
+  },
+  {
+    "Inputs": [
+      "[\"xylophone\",\"xylo\",\"xylophon\",\"xylophone\",\"xylophones\",\"xylophonist\",\"xylophonists\",\"xylophonistic\",\"xylophonistically\",\"xylophonists\",\"xylophonist\"]"
+    ],
+    "ExpectedOutput": "[87,44,84,87,88,102,104,106,110,104,102]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"algo\",\"al\",\"alex\",\"alert\"]"
+    ],
+    "ExpectedOutput": "[19,14,10,13,14]"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"ban\",\"band\",\"bandana\",\"bandwidth\",\"bandage\"]"
+    ],
+    "ExpectedOutput": "[21,18,22,26,27,26]"
+  },
+  {
+    "Inputs": [
+      "[\"test\",\"testing\",\"tested\",\"testify\",\"testimony\",\"testimonial\",\"testament\",\"testamentary\",\"testator\",\"testatrix\"]"
+    ],
+    "ExpectedOutput": "[40,46,42,46,51,53,52,55,48,49]"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"band\",\"bandana\",\"bandanna\",\"bandage\",\"bandaid\"]"
+    ],
+    "ExpectedOutput": "[21,23,30,31,29,29]"
+  },
+  {
+    "Inputs": [
+      "[\"abcd\",\"abc\",\"ab\",\"a\",\"zyx\",\"zy\",\"z\",\"mnop\",\"mno\",\"mn\",\"m\"]"
+    ],
+    "ExpectedOutput": "[10,9,7,4,6,5,3,10,9,7,4]"
+  },
+  {
+    "Inputs": [
+      "[\"optimization\",\"optimizer\",\"optimize\",\"optimal\",\"optimism\",\"optimist\",\"optimum\",\"option\",\"optional\",\"opt\",\"optic\",\"optics\"]"
+    ],
+    "ExpectedOutput": "[67,65,64,56,62,62,56,51,53,36,49,50]"
+  },
+  {
+    "Inputs": [
+      "[\"banana\",\"ban\",\"band\",\"bandana\",\"bandanna\",\"banda\",\"bandanaaa\"]"
+    ],
+    "ExpectedOutput": "[24,21,26,35,35,30,37]"
+  },
+  {
+    "Inputs": [
+      "[\"supercalifragilisticexpialidocious\",\"super\",\"supercal\",\"supercalifrag\",\"supercalifragilistic\",\"supercalifragilisticex\",\"supercalifragilisticexp\",\"supercalifragilisticexpia\",\"supercalifragilisticexpiali\",\"supercalifragilisticexpialidoc\",\"supercalifragilisticexpialidociou\",\"supercalifragilisticexpialidociousness\"]"
+    ],
+    "ExpectedOutput": "[274,60,93,143,206,222,229,241,251,263,272,278]"
+  },
+  {
+    "Inputs": [
+      "[\"interspecies\",\"inter\",\"interstellar\",\"interact\",\"interaction\",\"interference\",\"internet\",\"interim\"]"
+    ],
+    "ExpectedOutput": "[48,40,48,46,49,47,43,42]"
+  }
+]

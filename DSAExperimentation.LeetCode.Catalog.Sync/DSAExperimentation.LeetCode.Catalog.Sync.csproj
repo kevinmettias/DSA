@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- The catalog's one writer, and the one project here that calls the network: it reads
+       leetcode.com, zerotrac's contest ratings and LeetCodeDataset, and rewrites
+       DSAExperimentation.LeetCode.Catalog/Snapshot/ from them. Nothing references it but its tests,
+       so `dotnet test` never reaches the network through it. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Catalog.Sync.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSAExperimentation.LeetCode.Catalog\DSAExperimentation.LeetCode.Catalog.csproj" />
+  </ItemGroup>
+
+</Project>

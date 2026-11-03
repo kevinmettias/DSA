@@ -1,0 +1,681 @@
+[
+  {
+    "Inputs": [
+      "7",
+      "13"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "500",
+      "500"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "42",
+      "56"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "999",
+      "1000"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "77",
+      "14"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "98",
+      "42"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "77",
+      "143"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "500",
+      "250"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "500",
+      "200"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "100",
+      "10"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "1",
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "60",
+      "120"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "7",
+      "14"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "49",
+      "7"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "1000",
+      "1000"
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "81",
+      "27"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "999",
+      "333"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "2",
+      "3"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "987",
+      "651"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "315",
+      "105"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "600",
+      "400"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "675",
+      "900"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "675",
+      "375"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "777",
+      "111"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "789",
+      "321"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "456",
+      "123"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "360",
+      "180"
+    ],
+    "ExpectedOutput": "18"
+  },
+  {
+    "Inputs": [
+      "221",
+      "143"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "840",
+      "420"
+    ],
+    "ExpectedOutput": "24"
+  },
+  {
+    "Inputs": [
+      "495",
+      "135"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "999",
+      "111"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "999",
+      "891"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "543",
+      "234"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "960",
+      "720"
+    ],
+    "ExpectedOutput": "20"
+  },
+  {
+    "Inputs": [
+      "777",
+      "222"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "500",
+      "1000"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "987",
+      "654"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "450",
+      "150"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "560",
+      "315"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "420",
+      "560"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "432",
+      "504"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "100",
+      "150"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "420",
+      "168"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "729",
+      "243"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "400",
+      "500"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "504",
+      "252"
+    ],
+    "ExpectedOutput": "18"
+  },
+  {
+    "Inputs": [
+      "500",
+      "100"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "495",
+      "363"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "84",
+      "105"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "315",
+      "135"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "48",
+      "180"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "333",
+      "111"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "121",
+      "220"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "560",
+      "240"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "143",
+      "169"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "440",
+      "88"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "441",
+      "147"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "675",
+      "225"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "560",
+      "840"
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "729",
+      "81"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "500",
+      "400"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "210",
+      "140"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "576",
+      "288"
+    ],
+    "ExpectedOutput": "18"
+  },
+  {
+    "Inputs": [
+      "777",
+      "555"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "220",
+      "88"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "720",
+      "540"
+    ],
+    "ExpectedOutput": "18"
+  },
+  {
+    "Inputs": [
+      "882",
+      "147"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "210",
+      "420"
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "987",
+      "329"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "882",
+      "630"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "890",
+      "345"
+    ],
+    "ExpectedOutput": "2"
+  },
+  {
+    "Inputs": [
+      "462",
+      "231"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "84",
+      "28"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "450",
+      "180"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "504",
+      "168"
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "100",
+      "200"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "400",
+      "160"
+    ],
+    "ExpectedOutput": "10"
+  },
+  {
+    "Inputs": [
+      "1000",
+      "750"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "840",
+      "700"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "456",
+      "342"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "650",
+      "260"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "101",
+      "103"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "128",
+      "256"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "987",
+      "323"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "729",
+      "486"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "987",
+      "567"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "600",
+      "750"
+    ],
+    "ExpectedOutput": "12"
+  },
+  {
+    "Inputs": [
+      "987",
+      "399"
+    ],
+    "ExpectedOutput": "4"
+  },
+  {
+    "Inputs": [
+      "360",
+      "720"
+    ],
+    "ExpectedOutput": "24"
+  },
+  {
+    "Inputs": [
+      "882",
+      "98"
+    ],
+    "ExpectedOutput": "6"
+  },
+  {
+    "Inputs": [
+      "612",
+      "468"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "360",
+      "240"
+    ],
+    "ExpectedOutput": "16"
+  },
+  {
+    "Inputs": [
+      "900",
+      "450"
+    ],
+    "ExpectedOutput": "18"
+  },
+  {
+    "Inputs": [
+      "960",
+      "480"
+    ],
+    "ExpectedOutput": "24"
+  },
+  {
+    "Inputs": [
+      "504",
+      "756"
+    ],
+    "ExpectedOutput": "18"
+  },
+  {
+    "Inputs": [
+      "1000",
+      "900"
+    ],
+    "ExpectedOutput": "9"
+  },
+  {
+    "Inputs": [
+      "678",
+      "456"
+    ],
+    "ExpectedOutput": "4"
+  }
+]

@@ -1,0 +1,86 @@
+[
+  {
+    "Inputs": [
+      "45"
+    ],
+    "ExpectedOutput": "1836311903"
+  },
+  {
+    "Inputs": [
+      "4"
+    ],
+    "ExpectedOutput": "5"
+  },
+  {
+    "Inputs": [
+      "20"
+    ],
+    "ExpectedOutput": "10946"
+  },
+  {
+    "Inputs": [
+      "1"
+    ],
+    "ExpectedOutput": "1"
+  },
+  {
+    "Inputs": [
+      "10"
+    ],
+    "ExpectedOutput": "89"
+  },
+  {
+    "Inputs": [
+      "5"
+    ],
+    "ExpectedOutput": "8"
+  },
+  {
+    "Inputs": [
+      "30"
+    ],
+    "ExpectedOutput": "1346269"
+  },
+  {
+    "Inputs": [
+      "15"
+    ],
+    "ExpectedOutput": "987"
+  },
+  {
+    "Inputs": [
+      "40"
+    ],
+    "ExpectedOutput": "165580141"
+  },
+  {
+    "Inputs": [
+      "12"
+    ],
+    "ExpectedOutput": "233"
+  },
+  {
+    "Inputs": [
+      "35"
+    ],
+    "ExpectedOutput": "14930352"
+  },
+  {
+    "Inputs": [
+      "18"
+    ],
+    "ExpectedOutput": "4181"
+  },
+  {
+    "Inputs": [
+      "7"
+    ],
+    "ExpectedOutput": "21"
+  },
+  {
+    "Inputs": [
+      "25"
+    ],
+    "ExpectedOutput": "121393"
+  }
+]

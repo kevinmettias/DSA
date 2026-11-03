@@ -1,0 +1,604 @@
+[
+  {
+    "Inputs": [
+      "\"world\"",
+      "\"worldworldworld\""
+    ],
+    "ExpectedOutput": "[9,8,7,6,4,3,2,1,10,5,0]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"abcababcbcababc\""
+    ],
+    "ExpectedOutput": "[11,9,8,6,4,2,1,10,7,3,12,5,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "\"abcdeabcde\""
+    ],
+    "ExpectedOutput": "[4,3,2,1,5,0]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"abc????\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"a\"",
+      "\"aaaaaaaa\""
+    ],
+    "ExpectedOutput": "[7,6,5,4,3,2,1,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "\"abcdeabcdeabcde\""
+    ],
+    "ExpectedOutput": "[9,8,7,6,4,3,2,1,10,5,0]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"????abc???\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"abcabc????????\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"?????\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"ab?bc\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"hello\"",
+      "\"hellohellohello\""
+    ],
+    "ExpectedOutput": "[9,8,7,6,4,3,2,1,10,5,0]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"abc????abc\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"ab\"",
+      "\"abababab\""
+    ],
+    "ExpectedOutput": "[5,3,1,6,4,2,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "\"abcdefabcdef\""
+    ],
+    "ExpectedOutput": "[5,4,3,2,1,6,0]"
+  },
+  {
+    "Inputs": [
+      "\"a\"",
+      "\"aaaaaaaaa\""
+    ],
+    "ExpectedOutput": "[8,7,6,5,4,3,2,1,0]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"abcabcabc\""
+    ],
+    "ExpectedOutput": "[5,4,2,1,6,3,0]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"abc????????abc\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"abcabc\""
+    ],
+    "ExpectedOutput": "[2,1,3,0]"
+  },
+  {
+    "Inputs": [
+      "\"a\"",
+      "\"aaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "[9,8,7,6,5,4,3,2,1,0]"
+  },
+  {
+    "Inputs": [
+      "\"test\"",
+      "\"testtesttest\""
+    ],
+    "ExpectedOutput": "[7,6,5,3,2,1,8,4,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "\"abcdabcd\""
+    ],
+    "ExpectedOutput": "[3,2,1,4,0]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"????abc\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"??abc??\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "\"xyzxyzxyz\""
+    ],
+    "ExpectedOutput": "[5,4,2,1,6,3,0]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"????????abcabc\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"abcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "[11,10,8,7,5,4,2,1,12,9,6,3,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "\"abcde\""
+    ],
+    "ExpectedOutput": "[0]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"ababcbababcbababc\""
+    ],
+    "ExpectedOutput": "[11,9,5,3,13,10,7,4,1,12,6,0,14,8,2]"
+  },
+  {
+    "Inputs": [
+      "\"mnopqr\"",
+      "\"mnopqrmnopqrmnopqrmnopqrmnopqr\""
+    ],
+    "ExpectedOutput": "[23,22,21,20,19,17,16,15,14,13,11,10,9,8,7,5,4,3,2,1,24,18,12,6,0]"
+  },
+  {
+    "Inputs": [
+      "\"efgh\"",
+      "\"efghefghefghefghefghefghefgh\""
+    ],
+    "ExpectedOutput": "[23,22,21,19,18,17,15,14,13,11,10,9,7,6,5,3,2,1,24,20,16,12,8,4,0]"
+  },
+  {
+    "Inputs": [
+      "\"aabbcc\"",
+      "\"aabbccaaabbccaaabbcc\""
+    ],
+    "ExpectedOutput": "[11,10,9,8,4,3,2,1,13,12,6,5,14,7,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "\"ddddddddddddddddddddddddddddabcd\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "\"xyxyxyxyxyxyxyxyxyxy\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"zzz\"",
+      "\"zzzzzzzzzzzzzzzzzzzz\""
+    ],
+    "ExpectedOutput": "[17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "\"abcdefabcdefabcdefabcdefabcdefabcdef\""
+    ],
+    "ExpectedOutput": "[29,28,27,26,25,23,22,21,20,19,17,16,15,14,13,11,10,9,8,7,5,4,3,2,1,30,24,18,12,6,0]"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "\"xyxyxyxyxyxyxyxyxyxyxyx\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abcabc\"",
+      "\"abcabcabcabcabcabcabcd\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"aabbcc\"",
+      "\"aabbccaaabbccaaabbccaaabbcc\""
+    ],
+    "ExpectedOutput": "[18,17,16,15,11,10,9,8,4,3,2,1,20,19,13,12,6,5,21,14,7,0]"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "\"xyzxyzxyzxyzxyz\""
+    ],
+    "ExpectedOutput": "[11,10,8,7,5,4,2,1,12,9,6,3,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "\"abcdabcdeabcdabcd\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"aaaa\"",
+      "\"aaaaaaaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "[12,11,10,9,8,7,6,5,4,3,2,1,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "\"abcdeabcdeabcdeabcdef\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"xyzabcxyzabcxyz\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "\"abcdabcdabcdabcd\""
+    ],
+    "ExpectedOutput": "[11,10,9,7,6,5,3,2,1,12,8,4,0]"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "\"xyzxyzxyzxyz\""
+    ],
+    "ExpectedOutput": "[8,7,5,4,2,1,9,6,3,0]"
+  },
+  {
+    "Inputs": [
+      "\"qrstuv\"",
+      "\"qrstuvqrstuvqrstuvqrstuvqrstuvqrstuvqrstuv\""
+    ],
+    "ExpectedOutput": "[35,34,33,32,31,29,28,27,26,25,23,22,21,20,19,17,16,15,14,13,11,10,9,8,7,5,4,3,2,1,36,30,24,18,12,6,0]"
+  },
+  {
+    "Inputs": [
+      "\"aaa\"",
+      "\"aaaaaaaaaaaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "[17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0]"
+  },
+  {
+    "Inputs": [
+      "\"a\"",
+      "\"aaaaaaaaaaaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "[19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0]"
+  },
+  {
+    "Inputs": [
+      "\"xyzabc\"",
+      "\"xyzabcxyzabcxyzabcxyzabc\""
+    ],
+    "ExpectedOutput": "[17,16,15,14,13,11,10,9,8,7,5,4,3,2,1,18,12,6,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcabc\"",
+      "\"abcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "[14,13,11,10,8,7,5,4,2,1,15,12,9,6,3,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "\"edcbaedcbaedcba\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abcabc\"",
+      "\"abcabcabcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "[17,16,14,13,11,10,8,7,5,4,2,1,18,15,12,9,6,3,0]"
+  },
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "\"xyzxyzxyzxyzxyzxyz\""
+    ],
+    "ExpectedOutput": "[14,13,11,10,8,7,5,4,2,1,15,12,9,6,3,0]"
+  },
+  {
+    "Inputs": [
+      "\"qrst\"",
+      "\"qrstqrstqrstqrstqrstqrstqrstqrst\""
+    ],
+    "ExpectedOutput": "[27,26,25,23,22,21,19,18,17,15,14,13,11,10,9,7,6,5,3,2,1,28,24,20,16,12,8,4,0]"
+  },
+  {
+    "Inputs": [
+      "\"mnop\"",
+      "\"mnopmnopmnopmnopmnopmnopmnopmnop\""
+    ],
+    "ExpectedOutput": "[27,26,25,23,22,21,19,18,17,15,14,13,11,10,9,7,6,5,3,2,1,28,24,20,16,12,8,4,0]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"abcabcabcabcabcabc\""
+    ],
+    "ExpectedOutput": "[14,13,11,10,8,7,5,4,2,1,15,12,9,6,3,0]"
+  },
+  {
+    "Inputs": [
+      "\"abac\"",
+      "\"abacabacabacabacabac\""
+    ],
+    "ExpectedOutput": "[15,14,13,11,10,9,7,6,5,3,2,1,16,12,8,4,0]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"aaaaaaaaaaabcabcaaaaaaaaaa\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"ab\"",
+      "\"abababababababababab\""
+    ],
+    "ExpectedOutput": "[17,15,13,11,9,7,5,3,1,18,16,14,12,10,8,6,4,2,0]"
+  },
+  {
+    "Inputs": [
+      "\"stamp\"",
+      "\"stampstampstamp\""
+    ],
+    "ExpectedOutput": "[9,8,7,6,4,3,2,1,10,5,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\"",
+      "\"abcdefgabcdefgabcdefgabcdefg\""
+    ],
+    "ExpectedOutput": "[20,19,18,17,16,15,13,12,11,10,9,8,6,5,4,3,2,1,21,14,7,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "\"abcdeabcdeabcdeabcdeabc\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abab\"",
+      "\"abababababababab\""
+    ],
+    "ExpectedOutput": "[11,9,7,5,3,1,12,10,8,6,4,2,0]"
+  },
+  {
+    "Inputs": [
+      "\"ab\"",
+      "\"abaabaabaab\""
+    ],
+    "ExpectedOutput": "[7,4,1,8,5,2,9,6,3,0]"
+  },
+  {
+    "Inputs": [
+      "\"hello\"",
+      "\"hellohellohellohello\""
+    ],
+    "ExpectedOutput": "[14,13,12,11,9,8,7,6,4,3,2,1,15,10,5,0]"
+  },
+  {
+    "Inputs": [
+      "\"mnopqr\"",
+      "\"mnopqrnopqrmonpqrnonqrmpnoqrmnoprqmnopqr\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abc\"",
+      "\"ababababababababc\""
+    ],
+    "ExpectedOutput": "[1,3,0,5,2,7,4,9,6,11,8,13,10,12,14]"
+  },
+  {
+    "Inputs": [
+      "\"xyzxyz\"",
+      "\"xyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyz\""
+    ],
+    "ExpectedOutput": "[29,28,26,25,23,22,20,19,17,16,14,13,11,10,8,7,5,4,2,1,30,27,24,21,18,15,12,9,6,3,0]"
+  },
+  {
+    "Inputs": [
+      "\"hello\"",
+      "\"hellohellohellohelloh\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "\"abcabcabcabc\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "\"abcdeabcd\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"mnopqr\"",
+      "\"mnopqrmnopqrmnopqr\""
+    ],
+    "ExpectedOutput": "[11,10,9,8,7,5,4,3,2,1,12,6,0]"
+  },
+  {
+    "Inputs": [
+      "\"aabbcc\"",
+      "\"aabbccaaabbccaaabbccabc\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "\"fedcbafedcbafedcba\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "\"abcdefabcdefabcdefabcdef\""
+    ],
+    "ExpectedOutput": "[17,16,15,14,13,11,10,9,8,7,5,4,3,2,1,18,12,6,0]"
+  },
+  {
+    "Inputs": [
+      "\"stamp\"",
+      "\"stampstampstampstam\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abcdefg\"",
+      "\"abcdefgabcdefgabcdefgabcdefgabcdefgabcdefg\""
+    ],
+    "ExpectedOutput": "[34,33,32,31,30,29,27,26,25,24,23,22,20,19,18,17,16,15,13,12,11,10,9,8,6,5,4,3,2,1,35,28,21,14,7,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "\"abcdabcdabcdabcdabcd\""
+    ],
+    "ExpectedOutput": "[15,14,13,11,10,9,7,6,5,3,2,1,16,12,8,4,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "\"abcdabcabcd\""
+    ],
+    "ExpectedOutput": "[6,5,3,2,1,4,7,0]"
+  },
+  {
+    "Inputs": [
+      "\"xyzyx\"",
+      "\"xyzyxyzyxyzyxyzyxyzyxyzyxyzyxyzyxyzyxyzyxyzyxyzyxyzyxyzyxyzyxyzyxyzyxyzyx\""
+    ],
+    "ExpectedOutput": "[67,66,65,63,62,61,59,58,57,55,54,53,51,50,49,47,46,45,43,42,41,39,38,37,35,34,33,31,30,29,27,26,25,23,22,21,19,18,17,15,14,13,11,10,9,7,6,5,3,2,1,68,64,60,56,52,48,44,40,36,32,28,24,20,16,12,8,4,0]"
+  },
+  {
+    "Inputs": [
+      "\"ab\"",
+      "\"ababababababababababh\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"abcde\"",
+      "\"abcdeabcdeabcdeabcde\""
+    ],
+    "ExpectedOutput": "[14,13,12,11,9,8,7,6,4,3,2,1,15,10,5,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcd\"",
+      "\"dabcdabc\""
+    ],
+    "ExpectedOutput": "[]"
+  },
+  {
+    "Inputs": [
+      "\"aabbcc\"",
+      "\"aabbccaabbccaaabbccaaabbccaaabbccaaabbcc\""
+    ],
+    "ExpectedOutput": "[31,30,29,28,24,23,22,21,17,16,15,14,10,9,8,7,33,32,26,25,19,18,12,11,5,4,3,2,1,34,27,20,13,6,0]"
+  },
+  {
+    "Inputs": [
+      "\"aabbcc\"",
+      "\"aabbccaabbccaabbcc\""
+    ],
+    "ExpectedOutput": "[11,10,9,8,7,5,4,3,2,1,12,6,0]"
+  },
+  {
+    "Inputs": [
+      "\"abcdef\"",
+      "\"fedcbafedcbafedcbafedcbafedcbafedcbafedcba\""
+    ],
+    "ExpectedOutput": "[]"
+  }
+]

@@ -1,0 +1,77 @@
+{
+  "QuestionId": 438,
+  "FrontendId": 438,
+  "Title": "Find All Anagrams in a String",
+  "TitleSlug": "find-all-anagrams-in-a-string",
+  "Difficulty": "Medium",
+  "Category": "Algorithms",
+  "IsPaidOnly": false,
+  "Topics": [
+    {
+      "Name": "Hash Table",
+      "Slug": "hash-table"
+    },
+    {
+      "Name": "String",
+      "Slug": "string"
+    },
+    {
+      "Name": "Sliding Window",
+      "Slug": "sliding-window"
+    }
+  ],
+  "SimilarQuestions": [
+    {
+      "Title": "Valid Anagram",
+      "TitleSlug": "valid-anagram",
+      "Difficulty": "Easy"
+    },
+    {
+      "Title": "Permutation in String",
+      "TitleSlug": "permutation-in-string",
+      "Difficulty": "Medium"
+    }
+  ],
+  "Hints": [],
+  "Constraints": [
+    "1 <= s.length, p.length <= 3 * 10^4",
+    "s and p consist of lowercase English letters."
+  ],
+  "Signature": {
+    "FunctionName": "findAnagrams",
+    "Parameters": [
+      {
+        "Name": "s",
+        "Type": "string"
+      },
+      {
+        "Name": "p",
+        "Type": "string"
+      }
+    ],
+    "ReturnType": "list<integer>",
+    "OutputParameterIndex": null,
+    "HasCustomJudge": false,
+    "ClassName": null,
+    "ConstructorParameters": [],
+    "Methods": []
+  },
+  "CSharpStarterCode": "public class Solution {\n    public IList<int> FindAnagrams(string s, string p) {\n        \n    }\n}",
+  "Examples": [
+    {
+      "Inputs": [
+        "\"cbaebabacd\"",
+        "\"abc\""
+      ],
+      "ExpectedOutput": "[0,6]"
+    },
+    {
+      "Inputs": [
+        "\"abab\"",
+        "\"ab\""
+      ],
+      "ExpectedOutput": "[0,1,2]"
+    }
+  ],
+  "ContentHtml": "<p>Given two strings <code>s</code> and <code>p</code>, return an array of all the start indices of <code>p</code>&#39;s <span data-keyword=\"anagram\">anagrams</span> in <code>s</code>. You may return the answer in <strong>any order</strong>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;cbaebabacd&quot;, p = &quot;abc&quot;\n<strong>Output:</strong> [0,6]\n<strong>Explanation:</strong>\nThe substring with start index = 0 is &quot;cba&quot;, which is an anagram of &quot;abc&quot;.\nThe substring with start index = 6 is &quot;bac&quot;, which is an anagram of &quot;abc&quot;.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;abab&quot;, p = &quot;ab&quot;\n<strong>Output:</strong> [0,1,2]\n<strong>Explanation:</strong>\nThe substring with start index = 0 is &quot;ab&quot;, which is an anagram of &quot;ab&quot;.\nThe substring with start index = 1 is &quot;ba&quot;, which is an anagram of &quot;ab&quot;.\nThe substring with start index = 2 is &quot;ab&quot;, which is an anagram of &quot;ab&quot;.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length, p.length &lt;= 3 * 10<sup>4</sup></code></li>\n\t<li><code>s</code> and <code>p</code> consist of lowercase English letters.</li>\n</ul>\n"
+}

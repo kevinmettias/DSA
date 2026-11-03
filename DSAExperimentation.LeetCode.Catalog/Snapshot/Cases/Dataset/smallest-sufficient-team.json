@@ -1,0 +1,436 @@
+[
+  {
+    "Inputs": [
+      "[\"python\",\"sql\"]",
+      "[[\"python\"],[\"sql\"],[\"python\",\"sql\"]]"
+    ],
+    "ExpectedOutput": "[2]"
+  },
+  {
+    "Inputs": [
+      "[\"programming\",\"testing\",\"design\"]",
+      "[[\"programming\"],[\"testing\"],[\"design\"],[\"programming\",\"testing\"],[\"testing\",\"design\"],[\"design\",\"programming\"]]"
+    ],
+    "ExpectedOutput": "[4,0]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\"]",
+      "[[\"a\",\"b\"],[\"b\",\"c\"],[\"c\"],[\"a\"]]"
+    ],
+    "ExpectedOutput": "[1,3]"
+  },
+  {
+    "Inputs": [
+      "[\"network\",\"database\"]",
+      "[[\"network\"],[\"database\"],[\"network\",\"database\"]]"
+    ],
+    "ExpectedOutput": "[2]"
+  },
+  {
+    "Inputs": [
+      "[\"skill1\",\"skill2\",\"skill3\",\"skill4\"]",
+      "[[\"skill1\"],[\"skill2\"],[\"skill3\"],[\"skill4\"],[\"skill1\",\"skill2\",\"skill3\",\"skill4\"]]"
+    ],
+    "ExpectedOutput": "[4]"
+  },
+  {
+    "Inputs": [
+      "[\"coding\",\"design\",\"writing\"]",
+      "[[\"coding\"],[\"design\"],[\"writing\"],[\"coding\",\"design\",\"writing\"]]"
+    ],
+    "ExpectedOutput": "[3]"
+  },
+  {
+    "Inputs": [
+      "[\"coding\",\"design\"]",
+      "[[\"coding\"],[\"design\"],[\"coding\",\"design\"]]"
+    ],
+    "ExpectedOutput": "[2]"
+  },
+  {
+    "Inputs": [
+      "[\"skill1\",\"skill2\",\"skill3\",\"skill4\"]",
+      "[[\"skill1\"],[\"skill2\"],[\"skill3\"],[\"skill4\"],[\"skill1\",\"skill2\"],[\"skill3\",\"skill4\"]]"
+    ],
+    "ExpectedOutput": "[5,4]"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"data\",\"ai\"]",
+      "[[\"python\"],[\"data\"],[\"ai\"],[\"python\",\"data\"],[\"data\",\"ai\"],[\"python\",\"ai\"]]"
+    ],
+    "ExpectedOutput": "[4,0]"
+  },
+  {
+    "Inputs": [
+      "[\"req1\",\"req2\"]",
+      "[[\"req1\"],[\"req2\"],[\"req1\",\"req2\"],[\"req1\"],[\"req2\"]]"
+    ],
+    "ExpectedOutput": "[2]"
+  },
+  {
+    "Inputs": [
+      "[\"sql\",\"noSql\"]",
+      "[[\"sql\"],[\"noSql\"],[\"sql\",\"noSql\"],[\"sql\"],[\"noSql\"]]"
+    ],
+    "ExpectedOutput": "[2]"
+  },
+  {
+    "Inputs": [
+      "[\"skill1\",\"skill2\",\"skill3\"]",
+      "[[\"skill1\",\"skill2\"],[\"skill2\",\"skill3\"],[\"skill3\",\"skill1\"]]"
+    ],
+    "ExpectedOutput": "[1,0]"
+  },
+  {
+    "Inputs": [
+      "[\"a\",\"b\",\"c\",\"d\"]",
+      "[[\"a\",\"b\"],[\"b\",\"c\"],[\"c\",\"d\"],[\"d\",\"a\"],[\"a\",\"b\",\"c\",\"d\"]]"
+    ],
+    "ExpectedOutput": "[4]"
+  },
+  {
+    "Inputs": [
+      "[\"devops\",\"data_analysis\",\"cloud_services\",\"ui_ux\"]",
+      "[[\"devops\"],[\"data_analysis\"],[\"cloud_services\"],[\"ui_ux\"],[\"devops\",\"data_analysis\"],[\"cloud_services\",\"ui_ux\"],[\"devops\",\"cloud_services\"],[\"data_analysis\",\"ui_ux\"]]"
+    ],
+    "ExpectedOutput": "[5,4]"
+  },
+  {
+    "Inputs": [
+      "[\"machinelearning\",\"deeplearning\",\"computer_vision\",\"nlp\"]",
+      "[[\"machinelearning\"],[\"deeplearning\"],[\"computer_vision\"],[\"nlp\"],[\"machinelearning\",\"deeplearning\"],[\"computer_vision\",\"nlp\"],[\"machinelearning\",\"nlp\"]]"
+    ],
+    "ExpectedOutput": "[5,4]"
+  },
+  {
+    "Inputs": [
+      "[\"frontend\",\"backend\",\"fullstack\",\"uiux\",\"devops\"]",
+      "[[\"frontend\"],[\"backend\"],[\"fullstack\"],[\"uiux\"],[\"devops\"],[\"frontend\",\"backend\"],[\"fullstack\",\"uiux\"],[\"backend\",\"devops\"],[\"fullstack\",\"devops\"],[\"frontend\",\"uiux\"],[\"frontend\",\"backend\",\"uiux\"]]"
+    ],
+    "ExpectedOutput": "[8,10]"
+  },
+  {
+    "Inputs": [
+      "[\"ui\",\"ux\",\"backend\",\"frontend\"]",
+      "[[\"ui\"],[\"ux\"],[\"backend\"],[\"frontend\"],[\"ui\",\"ux\"],[\"backend\",\"frontend\"],[\"ui\",\"backend\"],[\"ux\",\"frontend\"],[\"ui\",\"ux\",\"backend\",\"frontend\"]]"
+    ],
+    "ExpectedOutput": "[8]"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"javascript\",\"c++\",\"ruby\"]",
+      "[[\"python\",\"javascript\"],[\"c++\"],[\"ruby\"],[\"python\",\"c++\"],[\"javascript\",\"ruby\"]]"
+    ],
+    "ExpectedOutput": "[4,3]"
+  },
+  {
+    "Inputs": [
+      "[\"frontend\",\"backend\",\"devops\",\"qa\"]",
+      "[[\"frontend\"],[\"backend\"],[\"devops\"],[\"qa\"],[\"frontend\",\"backend\"],[\"backend\",\"devops\"],[\"devops\",\"qa\"],[\"frontend\",\"qa\"],[\"frontend\",\"backend\",\"devops\"],[\"backend\",\"devops\",\"qa\"],[\"frontend\",\"devops\",\"qa\"],[\"frontend\",\"backend\",\"qa\"],[\"frontend\",\"backend\",\"devops\",\"qa\"]]"
+    ],
+    "ExpectedOutput": "[12]"
+  },
+  {
+    "Inputs": [
+      "[\"sql\",\"nosql\",\"big_data\",\"data_warehouse\"]",
+      "[[\"sql\"],[\"nosql\"],[\"big_data\"],[\"data_warehouse\"],[\"sql\",\"nosql\"],[\"nosql\",\"big_data\"],[\"big_data\",\"data_warehouse\"],[\"sql\",\"data_warehouse\"],[\"sql\",\"nosql\",\"big_data\"],[\"nosql\",\"big_data\",\"data_warehouse\"],[\"sql\",\"big_data\",\"data_warehouse\"],[\"sql\",\"nosql\",\"data_warehouse\"],[\"sql\",\"nosql\",\"big_data\",\"data_warehouse\"]]"
+    ],
+    "ExpectedOutput": "[12]"
+  },
+  {
+    "Inputs": [
+      "[\"mobiledev\",\"webdev\",\"devops\",\"design\",\"testing\"]",
+      "[[\"mobiledev\"],[\"webdev\"],[\"devops\"],[\"design\"],[\"testing\"],[\"mobiledev\",\"webdev\"],[\"devops\",\"design\"],[\"webdev\",\"testing\"],[\"mobiledev\",\"devops\"],[\"design\",\"testing\"],[\"mobiledev\",\"webdev\",\"devops\"],[\"devops\",\"design\",\"testing\"]]"
+    ],
+    "ExpectedOutput": "[11,5]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"datastructure\",\"programming\",\"problem-solving\"]",
+      "[[\"algorithm\"],[\"datastructure\"],[\"programming\"],[\"problem-solving\"],[\"algorithm\",\"datastructure\"],[\"programming\",\"problem-solving\"],[\"algorithm\",\"problem-solving\"],[\"datastructure\",\"programming\"],[\"algorithm\",\"datastructure\",\"programming\",\"problem-solving\"]]"
+    ],
+    "ExpectedOutput": "[8]"
+  },
+  {
+    "Inputs": [
+      "[\"iot\",\"ml\",\"ai\",\"automation\",\"cloudcomputing\"]",
+      "[[\"iot\"],[\"ml\"],[\"ai\"],[\"automation\"],[\"cloudcomputing\"],[\"iot\",\"ml\"],[\"ai\",\"automation\"],[\"cloudcomputing\",\"ml\"],[\"iot\",\"automation\"],[\"ai\",\"cloudcomputing\"],[\"iot\",\"ml\",\"ai\"],[\"automation\",\"cloudcomputing\",\"ml\"]]"
+    ],
+    "ExpectedOutput": "[11,10]"
+  },
+  {
+    "Inputs": [
+      "[\"database\",\"frontend\",\"backend\",\"devops\",\"cloud\",\"security\"]",
+      "[[\"database\"],[\"frontend\"],[\"backend\"],[\"devops\"],[\"cloud\"],[\"security\"],[\"database\",\"frontend\"],[\"backend\",\"devops\"],[\"cloud\",\"security\"],[\"database\",\"backend\"],[\"frontend\",\"devops\"],[\"cloud\",\"frontend\"],[\"database\",\"cloud\"],[\"devops\",\"security\"],[\"database\",\"frontend\",\"backend\"],[\"devops\",\"cloud\",\"security\"]]"
+    ],
+    "ExpectedOutput": "[15,14]"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"javascript\",\"ruby\",\"cpp\"]",
+      "[[\"python\",\"cpp\"],[\"javascript\"],[\"ruby\"],[\"python\",\"javascript\"],[\"cpp\",\"ruby\"],[\"python\",\"ruby\"]]"
+    ],
+    "ExpectedOutput": "[4,3]"
+  },
+  {
+    "Inputs": [
+      "[\"sql\",\"nosql\",\"devops\",\"cloud\",\"agile\"]",
+      "[[\"sql\"],[\"nosql\"],[\"devops\"],[\"cloud\"],[\"agile\"],[\"sql\",\"nosql\"],[\"devops\",\"cloud\"],[\"cloud\",\"agile\"],[\"sql\",\"devops\"],[\"nosql\",\"agile\"]]"
+    ],
+    "ExpectedOutput": "[7,8,1]"
+  },
+  {
+    "Inputs": [
+      "[\"javascript\",\"typescript\",\"angular\",\"react\"]",
+      "[[\"javascript\"],[\"typescript\"],[\"angular\"],[\"react\"],[\"javascript\",\"typescript\"],[\"angular\",\"react\"],[\"javascript\",\"angular\"],[\"typescript\",\"react\"],[\"javascript\",\"typescript\",\"angular\",\"react\"]]"
+    ],
+    "ExpectedOutput": "[8]"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"javascript\",\"c++\",\"ruby\",\"go\"]",
+      "[[\"python\",\"javascript\"],[\"c++\",\"ruby\"],[\"go\"],[\"python\",\"c++\"],[\"javascript\",\"ruby\",\"go\"]]"
+    ],
+    "ExpectedOutput": "[4,3]"
+  },
+  {
+    "Inputs": [
+      "[\"linux\",\"windows\",\"macos\",\"docker\"]",
+      "[[\"linux\"],[\"windows\"],[\"macos\"],[\"docker\"],[\"linux\",\"windows\"],[\"macos\",\"docker\"],[\"linux\",\"macos\"],[\"windows\",\"docker\"],[\"linux\",\"macos\",\"docker\"],[\"windows\",\"macos\",\"docker\"],[\"linux\",\"windows\",\"docker\"],[\"linux\",\"windows\",\"macos\",\"docker\"]]"
+    ],
+    "ExpectedOutput": "[11]"
+  },
+  {
+    "Inputs": [
+      "[\"sql\",\"nosql\",\"bigdata\",\"machinelearning\",\"datascience\"]",
+      "[[\"sql\",\"nosql\"],[\"bigdata\",\"machinelearning\"],[\"datascience\"],[\"sql\",\"bigdata\"],[\"nosql\",\"machinelearning\"],[\"bigdata\",\"datascience\"],[\"machinelearning\",\"datascience\"],[\"sql\",\"nosql\",\"bigdata\",\"machinelearning\",\"datascience\"]]"
+    ],
+    "ExpectedOutput": "[7]"
+  },
+  {
+    "Inputs": [
+      "[\"git\",\"docker\",\"jenkins\",\"travis\",\"circleci\",\"aws\"]",
+      "[[\"git\",\"docker\"],[\"jenkins\",\"travis\"],[\"circleci\",\"aws\"],[\"git\",\"travis\"],[\"docker\",\"circleci\"],[\"jenkins\",\"aws\"],[\"git\",\"docker\",\"jenkins\",\"travis\",\"circleci\",\"aws\"]]"
+    ],
+    "ExpectedOutput": "[6]"
+  },
+  {
+    "Inputs": [
+      "[\"mongodb\",\"postgresql\",\"mysql\",\"oracle\"]",
+      "[[\"mongodb\"],[\"postgresql\"],[\"mysql\"],[\"oracle\"],[\"mongodb\",\"postgresql\"],[\"mysql\",\"oracle\"],[\"mongodb\",\"mysql\"],[\"postgresql\",\"oracle\"],[\"mongodb\",\"postgresql\",\"mysql\"],[\"postgresql\",\"mysql\",\"oracle\"],[\"mongodb\",\"mysql\",\"oracle\"],[\"mongodb\",\"postgresql\",\"oracle\"],[\"mongodb\",\"postgresql\",\"mysql\",\"oracle\"]]"
+    ],
+    "ExpectedOutput": "[12]"
+  },
+  {
+    "Inputs": [
+      "[\"java\",\"spring\",\"hibernate\",\"react\"]",
+      "[[\"java\"],[\"spring\"],[\"hibernate\"],[\"react\"],[\"java\",\"spring\"],[\"spring\",\"hibernate\"],[\"hibernate\",\"react\"],[\"java\",\"react\"],[\"java\",\"spring\",\"hibernate\"],[\"java\",\"spring\",\"react\"],[\"spring\",\"hibernate\",\"react\"],[\"java\",\"spring\",\"hibernate\",\"react\"]]"
+    ],
+    "ExpectedOutput": "[11]"
+  },
+  {
+    "Inputs": [
+      "[\"sql\",\"python\",\"frontend\",\"backend\"]",
+      "[[\"sql\"],[\"python\"],[\"frontend\"],[\"backend\"],[\"sql\",\"python\"],[\"frontend\",\"backend\"]]"
+    ],
+    "ExpectedOutput": "[5,4]"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"java\",\"c++\",\"ruby\"]",
+      "[[\"python\"],[\"java\"],[\"c++\"],[\"ruby\"],[\"python\",\"java\"],[\"c++\",\"ruby\"],[\"python\",\"c++\"],[\"java\",\"ruby\"]]"
+    ],
+    "ExpectedOutput": "[5,4]"
+  },
+  {
+    "Inputs": [
+      "[\"aws\",\"azure\",\"gcp\"]",
+      "[[\"aws\",\"azure\"],[\"gcp\"],[\"aws\"],[\"azure\",\"gcp\"],[\"aws\",\"gcp\"],[\"azure\"],[\"aws\",\"azure\",\"gcp\"]]"
+    ],
+    "ExpectedOutput": "[6]"
+  },
+  {
+    "Inputs": [
+      "[\"data_science\",\"data_engineering\",\"ai\",\"ml\"]",
+      "[[\"data_science\"],[\"data_engineering\"],[\"ai\"],[\"ml\"],[\"data_science\",\"data_engineering\"],[\"ai\",\"ml\"],[\"data_science\",\"ai\"],[\"data_engineering\",\"ml\"],[\"data_science\",\"data_engineering\",\"ai\"],[\"data_engineering\",\"ai\",\"ml\"],[\"data_science\",\"ai\",\"ml\"],[\"data_science\",\"data_engineering\",\"ai\",\"ml\"]]"
+    ],
+    "ExpectedOutput": "[11]"
+  },
+  {
+    "Inputs": [
+      "[\"coding\",\"debugging\",\"testing\",\"design\"]",
+      "[[\"coding\",\"debugging\"],[\"testing\"],[\"design\"],[\"coding\",\"testing\"],[\"debugging\",\"design\"]]"
+    ],
+    "ExpectedOutput": "[4,3]"
+  },
+  {
+    "Inputs": [
+      "[\"photoshop\",\"illustrator\",\"indesign\",\"lightroom\"]",
+      "[[\"photoshop\",\"illustrator\"],[\"indesign\"],[\"lightroom\"],[\"photoshop\",\"indesign\"],[\"illustrator\",\"lightroom\"],[\"photoshop\",\"lightroom\"],[\"indesign\",\"lightroom\"],[\"photoshop\",\"illustrator\",\"indesign\"],[\"illustrator\",\"indesign\",\"lightroom\"],[\"photoshop\",\"indesign\",\"lightroom\"],[\"photoshop\",\"illustrator\",\"lightroom\"],[\"photoshop\",\"illustrator\",\"indesign\",\"lightroom\"]]"
+    ],
+    "ExpectedOutput": "[11]"
+  },
+  {
+    "Inputs": [
+      "[\"algorithm\",\"data-structures\",\"database\",\"networking\",\"os\"]",
+      "[[\"algorithm\",\"data-structures\"],[\"database\"],[\"networking\"],[\"os\"],[\"algorithm\",\"os\"],[\"data-structures\",\"networking\"],[\"database\",\"os\"],[\"algorithm\",\"data-structures\",\"database\"],[\"networking\",\"os\"],[\"algorithm\",\"networking\",\"os\"]]"
+    ],
+    "ExpectedOutput": "[8,7]"
+  },
+  {
+    "Inputs": [
+      "[\"security\",\"analytics\",\"ml\",\"devops\"]",
+      "[[\"security\"],[\"analytics\"],[\"ml\"],[\"devops\"],[\"security\",\"analytics\"],[\"ml\",\"devops\"],[\"security\",\"ml\"],[\"analytics\",\"devops\"],[\"security\",\"analytics\",\"ml\"],[\"security\",\"analytics\",\"devops\"],[\"security\",\"ml\",\"devops\"],[\"analytics\",\"ml\",\"devops\"],[\"security\",\"analytics\",\"ml\",\"devops\"]]"
+    ],
+    "ExpectedOutput": "[12]"
+  },
+  {
+    "Inputs": [
+      "[\"sql\",\"no_sql\",\"big_data\",\"cloud_computing\"]",
+      "[[\"sql\"],[\"no_sql\"],[\"big_data\"],[\"cloud_computing\"],[\"sql\",\"no_sql\"],[\"big_data\",\"cloud_computing\"],[\"sql\",\"big_data\"],[\"no_sql\",\"cloud_computing\"],[\"sql\",\"no_sql\",\"big_data\"],[\"no_sql\",\"big_data\",\"cloud_computing\"],[\"sql\",\"big_data\",\"cloud_computing\"],[\"sql\",\"no_sql\",\"cloud_computing\"]]"
+    ],
+    "ExpectedOutput": "[9,0]"
+  },
+  {
+    "Inputs": [
+      "[\"coding\",\"debugging\",\"design\",\"deployment\"]",
+      "[[\"coding\",\"debugging\"],[\"design\"],[\"deployment\"],[\"coding\",\"deployment\"],[\"design\",\"debugging\"]]"
+    ],
+    "ExpectedOutput": "[3,4]"
+  },
+  {
+    "Inputs": [
+      "[\"sql\",\"nosql\",\"bigdata\",\"cloud\",\"devops\"]",
+      "[[\"sql\"],[\"nosql\"],[\"bigdata\"],[\"cloud\"],[\"devops\"],[\"sql\",\"nosql\"],[\"bigdata\",\"cloud\"],[\"devops\",\"sql\"],[\"nosql\",\"cloud\"],[\"bigdata\",\"devops\"],[\"sql\",\"cloud\"],[\"nosql\",\"devops\"],[\"bigdata\",\"sql\"],[\"cloud\",\"devops\"],[\"sql\",\"nosql\",\"cloud\"],[\"bigdata\",\"sql\",\"cloud\"],[\"nosql\",\"cloud\",\"devops\"]]"
+    ],
+    "ExpectedOutput": "[16,12]"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"cpp\",\"java\",\"javascript\"]",
+      "[[\"python\",\"cpp\"],[\"java\"],[\"javascript\",\"java\"],[\"cpp\",\"python\"],[\"cpp\",\"java\"],[\"javascript\"]]"
+    ],
+    "ExpectedOutput": "[2,0]"
+  },
+  {
+    "Inputs": [
+      "[\"coding\",\"debugging\",\"testing\",\"deployment\"]",
+      "[[\"coding\"],[\"debugging\"],[\"testing\"],[\"deployment\"],[\"coding\",\"debugging\"],[\"testing\",\"deployment\"],[\"coding\",\"testing\"],[\"debugging\",\"deployment\"],[\"coding\",\"debugging\",\"testing\"],[\"debugging\",\"testing\",\"deployment\"],[\"coding\",\"debugging\",\"deployment\"],[\"coding\",\"testing\",\"deployment\"],[\"coding\",\"debugging\",\"testing\",\"deployment\"]]"
+    ],
+    "ExpectedOutput": "[12]"
+  },
+  {
+    "Inputs": [
+      "[\"aws\",\"azure\",\"gcp\",\"docker\",\"kubernetes\"]",
+      "[[\"aws\",\"azure\"],[\"gcp\",\"docker\"],[\"kubernetes\"],[\"aws\",\"docker\"],[\"azure\",\"gcp\"],[\"aws\",\"gcp\",\"kubernetes\"]]"
+    ],
+    "ExpectedOutput": "[5,3,0]"
+  },
+  {
+    "Inputs": [
+      "[\"coding\",\"testing\",\"documentation\",\"deployment\"]",
+      "[[\"coding\",\"testing\"],[\"documentation\",\"deployment\"],[\"coding\",\"documentation\"],[\"testing\",\"deployment\"],[\"coding\",\"testing\",\"documentation\"],[\"testing\",\"documentation\",\"deployment\"],[\"coding\",\"documentation\",\"deployment\"],[\"coding\",\"testing\",\"deployment\"],[\"coding\",\"testing\",\"documentation\",\"deployment\"]]"
+    ],
+    "ExpectedOutput": "[8]"
+  },
+  {
+    "Inputs": [
+      "[\"html\",\"css\",\"javascript\",\"react\",\"nodejs\"]",
+      "[[\"html\",\"css\"],[\"javascript\"],[\"react\",\"nodejs\"],[\"html\",\"javascript\"],[\"css\",\"nodejs\"],[\"react\"],[\"html\",\"javascript\",\"react\"]]"
+    ],
+    "ExpectedOutput": "[4,6]"
+  },
+  {
+    "Inputs": [
+      "[\"product\",\"design\",\"backend\",\"frontend\",\"testing\"]",
+      "[[\"product\"],[\"design\"],[\"backend\"],[\"frontend\"],[\"testing\"],[\"product\",\"design\"],[\"backend\",\"frontend\"],[\"testing\",\"product\"],[\"design\",\"backend\"],[\"frontend\",\"testing\"],[\"product\",\"backend\",\"frontend\",\"testing\"],[\"design\",\"backend\",\"frontend\",\"testing\"]]"
+    ],
+    "ExpectedOutput": "[11,0]"
+  },
+  {
+    "Inputs": [
+      "[\"docker\",\"kubernetes\",\"aws\",\"gcp\"]",
+      "[[\"docker\"],[\"kubernetes\"],[\"aws\"],[\"gcp\"],[\"docker\",\"kubernetes\"],[\"aws\",\"gcp\"],[\"docker\",\"aws\"],[\"kubernetes\",\"gcp\"]]"
+    ],
+    "ExpectedOutput": "[5,4]"
+  },
+  {
+    "Inputs": [
+      "[\"linux\",\"windows\",\"macos\",\"unix\"]",
+      "[[\"linux\"],[\"windows\"],[\"macos\"],[\"unix\"],[\"linux\",\"windows\"],[\"macos\",\"unix\"],[\"linux\",\"macos\"],[\"windows\",\"unix\"],[\"linux\",\"unix\"],[\"windows\",\"macos\"],[\"linux\",\"macos\",\"unix\"],[\"linux\",\"windows\",\"unix\"],[\"windows\",\"macos\",\"unix\"],[\"linux\",\"windows\",\"macos\"],[\"linux\",\"windows\",\"macos\",\"unix\"]]"
+    ],
+    "ExpectedOutput": "[14]"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"javascript\",\"typescript\",\"react\",\"angular\",\"vue\"]",
+      "[[\"python\"],[\"javascript\"],[\"typescript\"],[\"react\"],[\"angular\"],[\"vue\"],[\"python\",\"javascript\"],[\"typescript\",\"react\"],[\"angular\",\"vue\"],[\"python\",\"react\"],[\"javascript\",\"vue\"]]"
+    ],
+    "ExpectedOutput": "[8,7,6]"
+  },
+  {
+    "Inputs": [
+      "[\"html\",\"css\",\"javascript\",\"react\"]",
+      "[[\"html\",\"css\"],[\"javascript\"],[\"react\"],[\"css\",\"javascript\"],[\"html\",\"react\"],[\"html\",\"css\",\"javascript\",\"react\"]]"
+    ],
+    "ExpectedOutput": "[5]"
+  },
+  {
+    "Inputs": [
+      "[\"frontend\",\"backend\",\"devops\",\"qa\"]",
+      "[[\"frontend\"],[\"backend\"],[\"devops\"],[\"qa\"],[\"frontend\",\"backend\"],[\"devops\",\"qa\"],[\"frontend\",\"devops\"],[\"backend\",\"qa\"],[\"frontend\",\"devops\",\"qa\"],[\"backend\",\"devops\",\"qa\"],[\"frontend\",\"backend\",\"devops\"],[\"frontend\",\"backend\",\"qa\"],[\"frontend\",\"backend\",\"devops\",\"qa\"]]"
+    ],
+    "ExpectedOutput": "[12]"
+  },
+  {
+    "Inputs": [
+      "[\"machine-learning\",\"deep-learning\",\"neural-networks\",\"cv\",\"nlp\"]",
+      "[[\"machine-learning\"],[\"deep-learning\"],[\"neural-networks\"],[\"cv\"],[\"nlp\"],[\"machine-learning\",\"deep-learning\"],[\"neural-networks\",\"cv\"],[\"nlp\",\"machine-learning\"],[\"deep-learning\",\"cv\"],[\"neural-networks\",\"nlp\"],[\"machine-learning\",\"cv\"],[\"deep-learning\",\"nlp\"],[\"machine-learning\",\"neural-networks\"],[\"deep-learning\",\"neural-networks\"],[\"cv\",\"nlp\"],[\"machine-learning\",\"deep-learning\",\"cv\"],[\"neural-networks\",\"cv\",\"nlp\"],[\"machine-learning\",\"deep-learning\",\"nlp\"],[\"neural-networks\",\"deep-learning\",\"cv\",\"nlp\"],[\"machine-learning\",\"neural-networks\",\"cv\",\"nlp\"]]"
+    ],
+    "ExpectedOutput": "[18,0]"
+  },
+  {
+    "Inputs": [
+      "[\"front_end\",\"back_end\",\"database\",\"cloud_services\"]",
+      "[[\"front_end\"],[\"back_end\"],[\"database\"],[\"cloud_services\"],[\"front_end\",\"back_end\"],[\"database\",\"cloud_services\"],[\"front_end\",\"database\"],[\"back_end\",\"cloud_services\"],[\"front_end\",\"back_end\",\"database\"],[\"front_end\",\"back_end\",\"cloud_services\"],[\"front_end\",\"database\",\"cloud_services\"],[\"back_end\",\"database\",\"cloud_services\"],[\"front_end\",\"back_end\",\"database\",\"cloud_services\"]]"
+    ],
+    "ExpectedOutput": "[12]"
+  },
+  {
+    "Inputs": [
+      "[\"data_science\",\"machine_learning\",\"deep_learning\",\"computer_vision\"]",
+      "[[\"data_science\"],[\"machine_learning\"],[\"deep_learning\"],[\"computer_vision\"],[\"machine_learning\",\"deep_learning\"],[\"data_science\",\"computer_vision\"],[\"data_science\",\"machine_learning\"],[\"data_science\",\"deep_learning\"],[\"machine_learning\",\"computer_vision\"],[\"deep_learning\",\"computer_vision\"]]"
+    ],
+    "ExpectedOutput": "[9,6]"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"javascript\",\"html\",\"css\",\"react\",\"nodejs\"]",
+      "[[\"python\"],[\"javascript\"],[\"html\"],[\"css\"],[\"react\"],[\"nodejs\"],[\"python\",\"javascript\"],[\"html\",\"css\"],[\"react\",\"nodejs\"],[\"python\",\"html\",\"css\"],[\"javascript\",\"react\",\"nodejs\"]]"
+    ],
+    "ExpectedOutput": "[10,9]"
+  },
+  {
+    "Inputs": [
+      "[\"machine_learning\",\"deep_learning\",\"cv\",\"nlp\"]",
+      "[[\"machine_learning\",\"deep_learning\"],[\"cv\"],[\"nlp\"],[\"deep_learning\",\"cv\"],[\"machine_learning\",\"nlp\"],[\"deep_learning\",\"nlp\",\"cv\"],[\"machine_learning\",\"deep_learning\",\"cv\",\"nlp\"]]"
+    ],
+    "ExpectedOutput": "[6]"
+  },
+  {
+    "Inputs": [
+      "[\"ux\",\"ui\",\"product\",\"design\",\"marketing\"]",
+      "[[\"ux\"],[\"ui\"],[\"product\"],[\"design\"],[\"marketing\"],[\"ux\",\"ui\"],[\"product\",\"design\"],[\"marketing\",\"ux\"],[\"ui\",\"product\"],[\"design\",\"marketing\"],[\"ux\",\"product\"],[\"ui\",\"marketing\"],[\"product\",\"design\",\"marketing\"],[\"ux\",\"ui\",\"design\"],[\"ui\",\"product\",\"design\"],[\"ux\",\"product\",\"marketing\"],[\"ux\",\"ui\",\"product\",\"design\",\"marketing\"]]"
+    ],
+    "ExpectedOutput": "[16]"
+  },
+  {
+    "Inputs": [
+      "[\"python\",\"javascript\",\"cpp\",\"go\"]",
+      "[[\"python\",\"cpp\"],[\"javascript\"],[\"go\"],[\"python\",\"javascript\",\"go\"],[\"cpp\",\"javascript\"]]"
+    ],
+    "ExpectedOutput": "[3,0]"
+  }
+]
