@@ -289,8 +289,8 @@ Three rules that every addition keeps:
 - **Library code uses this repository's own structure once one exists.** `ShortestPath`'s
   Dijkstra/A* frontier is `Heap<T,TOrder>`, ordered by `ByPriorityOrder`, not the BCL
   `PriorityQueue`; `KeyedDisjointSet` composes `HashMap`, not `Dictionary`. Two kinds of code are
-  exempt: scratch state local to one call (§16.5), and baselines, which are BCL by definition
-  (§17.5).
+  exempt: scratch state local to one call (§16.5), and baselines, which write the simple form by
+  hand and use no library implementation (§17.5).
 - **A contract states the strongest law its consumer relies on.** `IPathHeuristic` requires a
   *consistent* heuristic (`h(u) <= cost(u,v) + h(v)` on every edge), not merely an admissible one,
   because `ShortestPath.Traverse` settles a node on its first pop, and only consistency guarantees
@@ -1450,44 +1450,58 @@ labelled distance.
 
 ### 17.5 What a baseline arm may use
 
-A baseline exists to represent "what you would write without this repo." Its *internals* therefore
-stay BCL — `MinTurnsByMutationQueue` uses a BCL `Queue` and `HashSet` deliberately. Only the
-*input container* the harness hands it may be a repo type, because that is the caller's choice, not
-part of the algorithm's textbook character.
+A baseline is the problem's specialized strategy: the simple form, written by hand and no more general
+than the problem's constraints, the answer an interview asks for. It stays the benchmark's
+`Baseline = true` arm, so the ratio column reads what the library's generality costs on that problem.
+The owner set the rule this replaces aside on 2026-11-02, with the principle it now serves:
 
-Laying LeetCode's input out is not part of that character either. A tier-4 input-layout helper —
-`LeetCodeAdjacency`, which states once how an `(n, edges)` pair becomes one slot per node — may build
+> we dont want duplicate implementations or data structure, the while point of doing the trie as part
+> of the trie, is that you can explicitly see what property of the data structure distinguishes a trie
+> from other trees and what is the same [...] if we want a pure trie implementation with no fluf and
+> have it be hyperoptimized, then it can be used as a different strategy, but it must create a
+> interface or contract for exactly the layer it wants to swap in for and what invariantes that layer
+> guarantees, so that we can still satisfy that contract with the hyper modular design but also the
+> specialized design and compare the type for objective benchmarks to see exactly where and how the
+> specialized implementation beats the modularized one, even with static dispatch and monomorphization.
+
+So a baseline may read what the library *states*, and may not use what it *implements*:
+
+- **It may read facts.** Domain's named values, constants and the rules of a problem's world
+  (`EnglishLetters.Size`, `DecimalDigits`, `Sudoku<ClassicSudoku>.CanPlace`), any public constant or
+  enum of any tier (`AlgorithmConstants.HalvingFactor`), and LeetCode's own conventions at the tier root
+  (`LeetCodeAnswer.None`, `LeetCodeModulus.Value`). Every arm reads a fact from its one source.
+- **It may implement contracts.** An interface, a witness contract with static abstract members among
+  them, states what a layer guarantees. A baseline that writes a layer by hand implements that layer's
+  contract, so one contract test suite runs over it and the library's configuration alike, and a
+  strategy benchmark compares the two.
+- **It may not use an implementation.** A type or member of `DataStructures`, `Algorithms` or
+  `Mechanisms` that is neither a contract nor a constant or enum - a container, an engine, a
+  mechanism, a layout witness - is the library doing the work, and a baseline that used one would no
+  longer be the simple form.
+- **Its input is the caller's choice.** The container the harness hands it may be a repo type, and so
+  may LeetCode's own I/O shapes, as before.
+
+Laying LeetCode's input out is not part of the simple form either. A tier-4 input-layout helper -
+`LeetCodeAdjacency`, which states once how an `(n, edges)` pair becomes one slot per node - may build
 a baseline's input, provided every slot it fills is a BCL value: `NeighborIdSlots`' `List<int>`,
 `WeightedNeighborSlots`' `List<(int To, TWeight Weight)>`, a `HashSet<int>`. Those shared slot rules
 are struct witnesses (`IAdjacencySlots`), so a baseline that builds its lists inside the timed region
-pays no delegate call per edge. The helper decides only where each edge is written, writes
-what the hand-written loop would in the same order, and leaves the walk to the baseline;
-PossibleBipartition, DivideNodesIntoTheMaximumNumberOfGroups and MinimumEdgeTogglesOnATree built
-their baselines' neighbour lists this way before the rule was written down. Apart from the input
-container the harness hands it, no library type enters a baseline, from any of the library's tiers:
-not a repo container, a traversal engine, a mechanism, `GridSize` or `GridNeighbors` as a slot or a
-call, not a Domain model (a combination lock, a sliding puzzle, a modulus witness), and not even a
-compile-time constant read from one, such as `AlgorithmConstants.HalvingFactor`. A baseline states
-its own constants. `checks.json` declares this bar to `check-duplicate-constant` as `barred_reads`,
-so a private copy in `DSAExperimentation.LeetCode.Solutions` of a library value is not reported as a
-duplicate; a copy the problem exposes still is. LeetCode's own notation is not the library's, so a baseline reads it like any
-other arm: `LeetCodeAnswer.None`, and `LeetCodeModulus.Value`, the 10^9 + 7 counting answers are
-reported in, which the owner ruled a baseline may read (2026-11-01).
+pays no delegate call per edge.
 
-The bar has a composed side. A composed arm composes the library, so it reads a value the library
-states rather than keeping a copy. `barred_reads` cannot tell that copy from a baseline's, so
-`ComposedCopyTests` reports it instead. A copy is a constant declared in a problem's folder that
-repeats a public constant of the library or of the LeetCode tier's root, and that no baseline
-reaches. "No baseline reaches" means the trace below does not reach it, and neither does any other
-overload of a method the trace reaches, since a benchmark arm runs one overload of a strategy and
-LeetCode's shape is often another. `LibraryValueCopies` decides what counts as a copy:
+Until 2026-11-02 a baseline reached no library type at all, constants and Domain included, and kept a
+private copy of every fact it needed. That rule needed two carve-outs (the owner's rulings of
+2026-10-04 and 2026-11-01), copied Sudoku's and the lock's rules into their baselines, and kept a
+hand-written layer from naming the contract it stood in for. The copies it produced are being moved
+onto the facts they copy. Until that ends, `checks.json` declares the old bar to
+`check-duplicate-constant` as `barred_reads`, so a private copy in `DSAExperimentation.LeetCode.Solutions`
+of a library value is not yet reported, and `ComposedCopyTests` holds only the composed arms to one
+source per fact: it reports a constant declared in a problem's folder that repeats a public constant of
+the library or of the LeetCode tier's root and that no baseline reaches. `LibraryValueCopies` decides
+what counts as a copy:
 - A small integer or a single character means many things, so it counts only when its name shares
   a subject word with the shared constant's name or its type's. Role words such as Size, Count and
   Factor don't count as subjects.
 - An enum member's number is its encoding, not a value, so enums are skipped on both sides.
-
-When the test was added it found one match, `ValidSquare`'s `FourthSideIndex`: a place in a sorted
-list, not a polygon's side count. `AllowedCopies` excuses it.
 
 `BaselineIsolationTests` holds every `Baseline = true` arm of a `ProblemSolutions` benchmark to this.
 `BaselineTrace` follows each arm through the compiled code (`RepositoryCompilation`, §18.5), so a
@@ -1503,8 +1517,8 @@ name is read as what it binds to. The trace distinguishes the harness from the b
     `[GlobalSetup]` built, behind an interface or not, starts where that object was made.
   - `Fixtures/` only lays input out, and is not walked.
 - **The baseline is the solution code reached from an entry.** It is charged with every library
-  name it binds to:
-  - calls, constructions, method groups, and field, property and constant reads;
+  implementation it binds to, in the sense above, and with nothing it may read:
+  - calls, constructions, method groups, and field and property reads (a constant's read is a fact);
   - each expression's own type, so a `var` local counts like a named one;
   - type arguments, which is how a static witness is chosen;
   - a static field's initializer once the field is read, and a static constructor once its type is
@@ -1516,7 +1530,7 @@ name is read as what it binds to. The trace distinguishes the harness from the b
   Another problem's solution code is followed like this one's (§17.3). A strategy class gives up
   only what the baseline calls on it, never a sibling strategy's members.
 
-What a baseline may meet without offence is its input:
+Besides the facts and contracts above, what a baseline may meet without offence is its input:
 
 - every type its entries' parameters name, and whatever a member of that input hands back, since
   the container the harness chose holds it;
@@ -2196,10 +2210,11 @@ unbound name answers with an error symbol and hides the reference a rule asked a
   compilation. A symbol declared in another problem's namespace is a reference to that problem,
   whether the file reached it by a using, by a partly qualified name, which needs no using, or by a
   bare call a static using brought in.
-- **§17.5's "what you would write without this repo"** — `BaselineIsolationTests`. Every
+- **§17.5's simple form** — `BaselineIsolationTests`. Every
   `Baseline = true` arm of every `ProblemSolutions` benchmark is traced through the compiled code,
-  as §17.5 describes. The test fails on any library type the baseline binds to outside its input:
-  a Domain model or a mechanism as much as a container. It also fails if fewer than 1,000 arms are
+  as §17.5 describes. The test fails on any library implementation the baseline binds to outside its
+  input: a container, an engine or a mechanism, but not a Domain fact, a contract, a constant or an
+  enum. It also fails if fewer than 1,000 arms are
   found, or if any arm reaches no solution member. `BaselineTraceTests` compiles small probes
   against the real library and pins each thing the trace follows and each input it excuses.
 - **§17.5's composed side** — `ComposedCopyTests`. A constant in a problem's folder that repeats a

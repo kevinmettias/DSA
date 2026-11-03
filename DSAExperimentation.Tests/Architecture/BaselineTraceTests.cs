@@ -4,19 +4,58 @@ using Microsoft.CodeAnalysis.CSharp;
 namespace DSAExperimentation.Tests.Architecture;
 
 // The trace's reach, stated as probes: a benchmark and a solution compiled against the real
-// library, each planting one way a baseline can reach it, or one input section 17.5 excuses. A
-// sweep that charges nothing proves only that nothing the trace can see is wrong.
+// library, each planting one way a baseline can reach an implementation, or one thing section 17.5
+// lets it read - its input, a Domain fact, a contract, a constant. A sweep that charges nothing
+// proves only that nothing the trace can see is wrong.
 public sealed partial class BaselineTraceTests
 {
     private const string Stack = "DSAExperimentation.DataStructures.Stack.Stack<Element>";
 
+    // A constant is a value the library states, from Domain or from an implementation tier alike.
     [Fact]
-    public void From_ConstantTheBaselineReads_IsCharged()
-        => Assert.Contains(
-            "DSAExperimentation.Domain.Language.English.EnglishLetters.Size",
-            ReachedLibraryNames(
-                "public static int Baseline(int[] values) => values.Length % DSAExperimentation.Domain.Language.English.EnglishLetters.Size;",
-                ArmCalling("ProbeSolution.Baseline(_values)")));
+    public void From_ConstantTheBaselineReads_IsNotCharged()
+        => Assert.Empty(ReachedLibraryNames(
+            """
+            public static int Baseline(int[] values)
+                => (values.Length % DSAExperimentation.Domain.Language.English.EnglishLetters.Size)
+                    / DSAExperimentation.DataStructures.AlgorithmConstants.HalvingFactor;
+            """,
+            ArmCalling("ProbeSolution.Baseline(_values)")));
+
+    // A Domain model states a fact about a problem's world, which every arm reads alike.
+    [Fact]
+    public void From_DomainFactTheBaselineCalls_IsNotCharged()
+        => Assert.Empty(ReachedLibraryNames(
+            "public static int Baseline(int[] values) => values.Length + DSAExperimentation.Domain.Mathematics.Numerals.DecimalDigits.IndexOf('7');",
+            ArmCalling("ProbeSolution.Baseline(_values)")));
+
+    // A hand-written layer may implement the library's contract for that layer.
+    [Fact]
+    public void From_ContractTheBaselineImplements_IsNotCharged()
+        => Assert.Empty(ReachedLibraryNames(
+            """
+            public static int Baseline(int[] values) => Size<Digits>() + values.Length;
+
+            private static int Size<TAlphabet>()
+                where TAlphabet : struct, DSAExperimentation.DataStructures.Alphabets.IAlphabet
+                => TAlphabet.Size;
+
+            private readonly struct Digits : DSAExperimentation.DataStructures.Alphabets.IAlphabet
+            {
+                public static int Size => 10;
+
+                public static int IndexOf(char letter) => letter - '0';
+
+                public static bool TryIndexOf(char letter, out int index)
+                {
+                    index = letter - '0';
+                    return index is >= 0 and < 10;
+                }
+
+                public static char LetterAt(int index) => (char)('0' + index);
+            }
+            """,
+            ArmCalling("ProbeSolution.Baseline(_values)")));
 
     [Fact]
     public void From_LibraryTypeAHelperBuildsIntoAnInferredLocal_IsCharged()
@@ -45,22 +84,38 @@ public sealed partial class BaselineTraceTests
                 """,
                 ArmCalling("ProbeSolution.Baseline(_values)")));
 
-    // A static abstract member is read through the type argument that chooses it.
+    // A static abstract member is read through the type argument that chooses it, so a witness from
+    // an implementation tier is the library's implementation, chosen by name.
     [Fact]
     public void From_LibraryWitnessAsATypeArgument_IsCharged()
         => Assert.Contains(
-            "DSAExperimentation.Domain.Games.Dice.SixSidedDie",
+            "DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout",
             ReachedLibraryNames(
                 """
-                public static int Baseline(int[] values) => values.Length + Faces<DSAExperimentation.Domain.Games.Dice.SixSidedDie>.Count;
+                public static int Baseline(int[] values) => values.Length + Slots<DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout>.First;
 
-                private static class Faces<TDie>
-                    where TDie : struct, DSAExperimentation.Domain.Games.Dice.IDie
+                private static class Slots<TLayout>
+                    where TLayout : struct, DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.ITrieLayout
                 {
-                    public static int Count => TDie.Faces.Length;
+                    public static int First => TLayout.InitialCapacity(26);
                 }
                 """,
                 ArmCalling("ProbeSolution.Baseline(_values)")));
+
+    // The same shape with a Domain witness reads a fact: a die's faces.
+    [Fact]
+    public void From_DomainWitnessAsATypeArgument_IsNotCharged()
+        => Assert.Empty(ReachedLibraryNames(
+            """
+            public static int Baseline(int[] values) => values.Length + Faces<DSAExperimentation.Domain.Games.Dice.SixSidedDie>.Count;
+
+            private static class Faces<TDie>
+                where TDie : struct, DSAExperimentation.Domain.Games.Dice.IDie
+            {
+                public static int Count => TDie.Faces.Length;
+            }
+            """,
+            ArmCalling("ProbeSolution.Baseline(_values)")));
 
     // The arm calls through an interface, on an object a factory built in [GlobalSetup].
     [Fact]

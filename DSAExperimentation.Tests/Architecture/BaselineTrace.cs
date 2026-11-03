@@ -4,8 +4,11 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace DSAExperimentation.Tests.Architecture;
 
 // ARCHITECTURE.md section 17.5's baseline trace, read off the compiled code rather than its
-// spelling: everything a benchmark's Baseline = true arm runs, and every library name the solution
-// code among it binds to.
+// spelling: everything a benchmark's Baseline = true arm runs, and every library implementation the
+// solution code among it binds to. A baseline is the problem's specialized strategy, the simple form
+// written by hand, so it may not use the library's implementation of a layer it writes itself: a
+// type or member of the data-structure, algorithm or mechanism tiers. It may read what the library
+// states rather than implements: Domain's facts, an interface's contract, a constant or an enum.
 //
 // The arm and the benchmark helpers it calls are the harness, handing the baseline its input, so
 // the trace walks them only to find where the baseline starts:
@@ -32,13 +35,22 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
     private const string BenchmarkNamespace = "DSAExperimentation.Benchmarks";
     private const string FixtureNamespace = "DSAExperimentation.Benchmarks.Fixtures";
 
-    // The library a baseline may not name: every tier of the framework project.
+    // Every tier of the framework project: the library the trace knows not to walk into.
     private static readonly string[] LibraryNamespaces =
     [
         "DSAExperimentation.DataStructures",
         "DSAExperimentation.Algorithms",
         "DSAExperimentation.Mechanisms",
         "DSAExperimentation.Domain",
+    ];
+
+    // The tiers that implement data structures, algorithms and mechanisms, which a baseline writes
+    // for itself. Domain states facts about a problem's world, which every arm reads alike.
+    private static readonly string[] ImplementationNamespaces =
+    [
+        "DSAExperimentation.DataStructures",
+        "DSAExperimentation.Algorithms",
+        "DSAExperimentation.Mechanisms",
     ];
 
     // The library types that stand for LeetCode's own I/O shapes. A baseline that takes, returns or
@@ -160,7 +172,7 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
     // method's type arguments, each of which is a witness the code chose.
     private void TypesOfMemberBound(ISymbol member, ISymbol site, ReachMode mode)
     {
-        if (member.ContainingType is { } owner)
+        if (member.ContainingType is { } owner && !IsStatedValue(member))
         {
             TypeBound(owner, site, mode);
         }
@@ -343,11 +355,25 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
 
     private void Charge(ISymbol library, ISymbol site, ReachMode mode)
     {
-        if (mode == ReachMode.Baseline)
+        if (mode == ReachMode.Baseline && IsImplementation(library))
         {
             _charged.Add((library, site));
         }
     }
+
+    // A name a baseline may not use: a type or member of the implementation tiers that is neither a
+    // contract nor a stated value.
+    private static bool IsImplementation(ISymbol symbol)
+        => Array.Exists(ImplementationNamespaces, tier => IsIn(symbol, tier)) && !IsContract(symbol) && !IsStatedValue(symbol);
+
+    // An interface, or a member it declares: the contract a hand-written layer may implement.
+    private static bool IsContract(ISymbol symbol)
+        => symbol is INamedTypeSymbol { TypeKind: TypeKind.Interface } || symbol.ContainingType?.TypeKind == TypeKind.Interface;
+
+    // A constant or an enum: a value the library names, which a baseline reads rather than copies.
+    private static bool IsStatedValue(ISymbol symbol)
+        => symbol is IFieldSymbol { IsConst: true } or INamedTypeSymbol { TypeKind: TypeKind.Enum }
+            || symbol.ContainingType?.TypeKind == TypeKind.Enum;
 
     private static bool IsDispatched(IMethodSymbol method)
         => method.IsVirtual || method.IsAbstract || method.IsOverride || method.ContainingType?.TypeKind == TypeKind.Interface;
