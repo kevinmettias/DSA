@@ -7,11 +7,11 @@ public sealed partial class GridChildrenTests
     // The top-left corner of an open 3x3 grid. Its up and left neighbours are off-grid, so
     // only down and right are passable and they take the first two entries of the index
     // space.
-    private static GridChildren TopLeftCornerChildren()
+    private static GridChildren<NodePerStep> TopLeftCornerChildren()
     {
         var grid = new Grid(3, 3);
 
-        return new GridChildren(new GridNode(0, 0, grid));
+        return new GridChildren<NodePerStep>(new GridNode(0, 0, grid));
     }
 
     [Fact]
@@ -19,7 +19,7 @@ public sealed partial class GridChildrenTests
     {
         var grid = new Grid(3, 3);
 
-        Assert.Equal(4, new GridChildren(new GridNode(1, 1, grid)).Count);
+        Assert.Equal(4, new GridChildren<NodePerStep>(new GridNode(1, 1, grid)).Count);
     }
 
     [Fact]
@@ -38,19 +38,46 @@ public sealed partial class GridChildrenTests
         passable[0, 1] = true;
         // (0,2) is a wall.
 
-        Assert.Equal(1, new GridChildren(new GridNode(0, 1, new Grid(passable))).Count);
+        Assert.Equal(1, new GridChildren<NodePerStep>(new GridNode(0, 1, new Grid(passable))).Count);
     }
 
     [Fact]
     public void Get_YieldsNeighboursInUpDownLeftRightOrder()
     {
         var grid = new Grid(3, 3);
-        var children = new GridChildren(new GridNode(1, 1, grid));
+        var children = new GridChildren<NodePerStep>(new GridNode(1, 1, grid));
 
         var coordinates = Enumerable.Range(0, children.Count)
             .Select(i => (children.Get(i).Row, children.Get(i).Col));
 
         Assert.Equal([(0, 1), (2, 1), (1, 0), (1, 2)], coordinates);
+    }
+
+    // A neighbour reached from two cells is the board's one node for it, not a copy per step.
+    [Fact]
+    public void Get_NodePerCell_IsTheBoardsOwnNodeForTheNeighbour()
+    {
+        var grid = new Grid(3, 3);
+        var (fromLeft, fromAbove) = CentreReachedTwoWays<NodePerCell>(grid);
+
+        Assert.Same(grid.NodeAt(1, 1), fromLeft);
+        Assert.Same(fromLeft, fromAbove);
+    }
+
+    // The centre of a 3 x 3 board reached two ways: as (1, 0)'s third open neighbour (up, down,
+    // right) and as (0, 1)'s first (down).
+    private static (GridNode FromLeft, GridNode FromAbove) CentreReachedTwoWays<TNodes>(Grid grid)
+        where TNodes : struct, IGridNodeSource
+        => (new GridChildren<TNodes>(grid.NodeAt(1, 0)).Get(2), new GridChildren<TNodes>(grid.NodeAt(0, 1)).Get(0));
+
+    // Each step makes its own node for the centre: equal to the other step's, and a different object.
+    [Fact]
+    public void Get_NodePerStep_IsANewEqualNodeEachStep()
+    {
+        var (fromLeft, fromAbove) = CentreReachedTwoWays<NodePerStep>(new Grid(3, 3));
+
+        Assert.Equal(fromLeft, fromAbove);
+        Assert.NotSame(fromLeft, fromAbove);
     }
 
     [Fact]
@@ -78,6 +105,6 @@ public sealed partial class GridChildrenTests
         var passable = new bool[1, 1];
         passable[0, 0] = true;
 
-        Assert.Equal(0, new GridChildren(new GridNode(0, 0, new Grid(passable))).Count);
+        Assert.Equal(0, new GridChildren<NodePerStep>(new GridNode(0, 0, new Grid(passable))).Count);
     }
 }

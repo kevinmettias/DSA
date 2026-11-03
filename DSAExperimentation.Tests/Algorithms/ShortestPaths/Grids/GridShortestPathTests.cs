@@ -27,7 +27,7 @@ public sealed partial class GridShortestPathTests
         // and every shortest unobstructed path happens to cross it, so the open
         // route has to detour via row 0 or row 2 - proving GridChildren is actually
         // filtering on Grid.IsPassable, not just computing raw neighbors.
-        var distance = GridShortestPath.Distance(start, target);
+        var distance = GridShortestPath.Distance<NodePerStep>(start, target);
 
         Assert.Equal(4, distance);
     }
@@ -40,7 +40,7 @@ public sealed partial class GridShortestPathTests
         var start = new GridNode(0, 0, grid);
         var unreachable = new GridNode(5, 5, grid);
 
-        var distance = GridShortestPath.Distance(start, unreachable);
+        var distance = GridShortestPath.Distance<NodePerStep>(start, unreachable);
 
         Assert.Null(distance);
     }
@@ -51,7 +51,7 @@ public sealed partial class GridShortestPathTests
         var grid = GridWithCenterWall();
         var start = new GridNode(1, 0, grid);
 
-        var distance = GridShortestPath.Distance(start, start);
+        var distance = GridShortestPath.Distance<NodePerStep>(start, start);
 
         Assert.Equal(0, distance);
     }

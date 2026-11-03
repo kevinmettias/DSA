@@ -101,9 +101,9 @@ internal static class NumberOfIslandsSolution
     // starting a second island once an earlier walk has reached it.
     public static int CountIslandsByConnectedComponents(char[][] grid)
     {
-        var land = Grid.Where(GridSize.Of(grid), new LandCell(grid)).PassableNodes();
+        var land = Grid.Where(GridSize.Of(grid), new LandCell(grid)).PassableNodes<NodePerCell>();
 
-        return ConnectedComponents.Count<GridNode, GridTopology, GridChildren, DepthFirstReduceOrder<GridNode>>(land);
+        return ConnectedComponents.Count<GridNode, GridTopology<NodePerCell>, GridChildren<NodePerCell>, DepthFirstReduceOrder<GridNode>>(land);
     }
 
     // The cells an island is made of.

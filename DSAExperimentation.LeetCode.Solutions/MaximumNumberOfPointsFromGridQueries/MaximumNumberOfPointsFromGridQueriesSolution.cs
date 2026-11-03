@@ -149,7 +149,7 @@ internal static class MaximumNumberOfPointsFromGridQueriesSolution
             walk.Frontier.TryPop(out var current);
             points++;
 
-            var children = GridTopology.GetChildren(current.Node);
+            var children = GridTopology<NodePerCell>.GetChildren(current.Node);
 
             for (var i = 0; i < children.Count; i++)
             {

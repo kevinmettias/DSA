@@ -283,7 +283,7 @@ internal static class FindTheSafestPathInAGridSolution
         Dictionary<GridNode, int> bestBottleneck,
         Heap<(GridNode Node, int Priority), ByPriorityOrder<GridNode, int>> frontier)
     {
-        var children = GridTopology.GetChildren(settled.Node);
+        var children = GridTopology<NodePerCell>.GetChildren(settled.Node);
 
         for (var i = 0; i < children.Count; i++)
         {

@@ -5,12 +5,14 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // Computed on demand from geometry, the same way SparseArrayChildren scans slots
 // instead of storing a materialized list - up to 4 orthogonal neighbors, filtered to
 // the ones the node's Grid says are in bounds and passable, in GridDirections.Orthogonal's
-// order.
+// order. TNodes says which node a neighbour is: the board's one node for its cell, or a new one.
 /// <summary>
 /// A cell's open orthogonal neighbours, computed from its board on each access in up, down, left, right order.
 /// </summary>
+/// <typeparam name="TNodes">Which node each neighbour is handed as.</typeparam>
 /// <param name="node">The cell whose neighbours to list.</param>
-public readonly struct GridChildren(GridNode node) : IChildren<GridNode>
+public readonly struct GridChildren<TNodes>(GridNode node) : IChildren<GridNode>
+    where TNodes : struct, IGridNodeSource
 {
     public int Count
     {
@@ -39,7 +41,7 @@ public readonly struct GridChildren(GridNode node) : IChildren<GridNode>
                 if (index == 0)
                 {
                     var (dRow, dCol) = GridDirections.Orthogonal[i];
-                    return new GridNode(node.Row + dRow, node.Col + dCol, node.Grid);
+                    return TNodes.NodeAt(node.Grid, node.Row + dRow, node.Col + dCol);
                 }
 
                 index--;

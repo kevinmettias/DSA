@@ -165,7 +165,7 @@ internal static class SurroundedRegionsSolution
         {
             if (_open.IsPassable(row, col))
             {
-                DepthFirstTraversal.WalkGraph<GridNode, GridTopology, GridChildren, BorderConnectedMarker>(
+                DepthFirstTraversal.WalkGraph<GridNode, GridTopology<NodePerStep>, GridChildren<NodePerStep>, BorderConnectedMarker>(
                     new GridNode(row, col, _open), _marker, _visited);
             }
         }

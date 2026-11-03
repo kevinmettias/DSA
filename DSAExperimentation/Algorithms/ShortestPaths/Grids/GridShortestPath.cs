@@ -8,14 +8,14 @@ namespace DSAExperimentation.Algorithms.ShortestPaths.Grids;
 public static class GridShortestPath
 {
     /// <summary>Counts the fewest orthogonal moves, each onto a passable cell, from one cell to another.</summary>
+    /// <typeparam name="TNodes">Which node the search is handed for each cell it reaches.</typeparam>
     /// <param name="start">The cell the path begins on.</param>
     /// <param name="target">The cell the path ends on, in the same grid as <paramref name="start"/>.</param>
     /// <returns>
     /// The number of moves, 0 when the two cells are the same, or <c>null</c> when no path reaches <paramref
     /// name="target"/>.
     /// </returns>
-    public static int? Distance(GridNode start, GridNode target)
-    {
-        return BreadthFirstDistances.To<GridNode, GridTopology, GridChildren>(start, target);
-    }
+    public static int? Distance<TNodes>(GridNode start, GridNode target)
+        where TNodes : struct, IGridNodeSource
+        => BreadthFirstDistances.To<GridNode, GridTopology<TNodes>, GridChildren<TNodes>>(start, target);
 }

@@ -9,7 +9,9 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 /// <summary>
 /// The graph topology witness for <see cref="GridNode"/>, whose children are its open orthogonal neighbours.
 /// </summary>
-public readonly struct GridTopology : IGraphTopology<GridNode, GridChildren>
+/// <typeparam name="TNodes">Which node each neighbour is handed as.</typeparam>
+public readonly struct GridTopology<TNodes> : IGraphTopology<GridNode, GridChildren<TNodes>>
+    where TNodes : struct, IGridNodeSource
 {
-    public static GridChildren GetChildren(GridNode node) => new(node);
+    public static GridChildren<TNodes> GetChildren(GridNode node) => new(node);
 }

@@ -48,7 +48,7 @@ internal static class MatrixCellsInDistanceOrderSolution
     {
         var start = new GridNode(rCenter, cCenter, grid);
 
-        var distances = BreadthFirstDistances.From<GridNode, GridTopology, GridChildren>(start);
+        var distances = BreadthFirstDistances.From<GridNode, GridTopology<NodePerCell>, GridChildren<NodePerCell>>(start);
 
         var cells = distances.Select(entry => (entry.Key.Row, entry.Key.Col, Distance: entry.Value)).ToArray();
 

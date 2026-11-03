@@ -800,7 +800,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `Graph/Engines/Dags/` | `IDagTopology` (§3.2) |
 | `Graph/Engines/Dags/Trees/` | `ITreeTopology`; the binary tree (`BinaryTreeNode`, `BinaryTreeChildren`, `BinaryTreeTopology`, `ChildSide`, `BinarySearchTree`, `InOrderTraversal`, `IInOrderHooks`, `FindClosest`); the bit trie with its real witness (`BitTrie*`, §13.9); the rooted tree (`RootedTreeNode`, `RootedTreeTopology`, `ParentArrayTree`, `EdgeListTree`, `PreOrderTour`, `PreOrderLowestCommonAncestor`); the quad tree (`QuadTreeNode`, `QuadTreeGrid`). `EdgeListTree` roots LeetCode's undirected edge list with a breadth-first walk, returning the parent array `ParentArrayTree` reads and, for each node, the index of the edge that joins it to its parent - the one thing a parent array cannot recover. `PreOrderTour` lays a `RootedTreeNode` tree out in pre-order, so every subtree is one contiguous range of positions; `PreOrderLowestCommonAncestor` reads ancestors off that layout with one range minimum, O(log n) per query after O(n) preparation. It is hardwired to the tour, so it lives here rather than beside `Algorithms/Ancestry/LowestCommonAncestor`, which is generic over `ITreeTopology` (§13.5) |
 | `Graph/Engines/Dags/Trees/Tries/` | `AlphabetTrie`, `AlphabetTrieNode`, `AlphabetTrieChildren`, `AlphabetTrieChildEnumerator`, `AlphabetTrieTopology` — a trie over any `IAlphabet` of up to 64 letters, with a real witness (§13.8); `ITrieLayout`, `DenseTrieLayout`, `PackedTrieLayout` — where a node stores its children, a type argument each trie names |
-| `Graph/Grids/` | `Grid`, `GridNode`, `GridChildren`, `GridStep`, `GridDirections`, `GridSize`, `GridNeighbors`, `IGridCellFilter`, `GridTopology`, and the weighted `WeightedGrid*` (§17.6). `GridSize` is a board's extent and its one bounds rule; `GridNeighbors` is a cell's on-board neighbours in a direction table's order, filtered by an `IGridCellFilter`, for a `DepthFirstSearch.Traverse` successor whose "open" is decided by the problem's cells rather than a fixed map like `Grid`'s |
+| `Graph/Grids/` | `Grid`, `GridNode`, `GridChildren`, `GridStep`, `GridDirections`, `GridSize`, `GridNeighbors`, `IGridCellFilter`, `GridTopology`, `IGridNodeSource` with `NodePerCell` and `NodePerStep`, and the weighted `WeightedGrid*` (§17.6). `GridSize` is a board's extent and its one bounds rule; a walk's `IGridNodeSource` says whether a cell's node is the board's one node for it or a new one per step; `GridNeighbors` is a cell's on-board neighbours in a direction table's order, filtered by an `IGridCellFilter`, for a `DepthFirstSearch.Traverse` successor whose "open" is decided by the problem's cells rather than a fixed map like `Grid`'s |
 | `Graph/Hamming/` | `HammingNode`, `HammingTopology`, `HammingGraph`, `HammingSearch`, `MutationStart`, `MutationTarget` (§17.6); the letters a mutation writes are an `IAlphabet` type argument (§19.6) |
 | `Graph/ShortestPaths/` | `ByPriorityOrder` (§13.2) |
 | `Graph/States/` | `IStateSpace`, `IStateFilter`, `EveryState`, `StateNode`, `StateTopology`, `StateGraph`. A state space numbers its states and writes a state's successors into a buffer; `StateGraph` makes the explicit graph of the states a filter keeps, which a breadth-first walk then searches. The spaces are Domain models' to state: a combination lock's turns (`LockTurns`), a sliding puzzle's slides (`PuzzleSlides`) |
@@ -2593,8 +2593,8 @@ hand-written. The measurements sorted the arms by what they replaced:
 - **Unit-weight Dijkstra was a breadth-first search.** JumpGameII and JumpGameIV ran
   `ShortestPath.Dijkstra` over graphs whose every edge weighs 1. `BreadthFirstDistances` answers
   the same distances 30 to 50% faster.
-- **Large grid components pay per edge.** `GridChildren` builds a new `GridNode` for every neighbour
-  it lists, reached or not, and the visited set hashes each one. That outweighs the lambda's cost on
+- **Large grid components pay per edge.** `GridChildren` built a new `GridNode` for every neighbour
+  it listed, reached or not, and the visited set hashes each one. That outweighs the lambda's cost on
   big components: CountSubIslands at 120 x 120, NumberOfClosedIslands at 100 x 100 and
   MakingALargeIsland at 60 x 60 measured 22 to 98% slower, and stay hand-written. So do
   MinimumNumberOfDaysToDisconnectIsland, which builds a `Grid` for each of its n^2 queries, and
@@ -2607,10 +2607,17 @@ Three pieces came out of it. `ConnectedComponents.ReduceEach` reduces each compo
 the multi-root walk `Count` rides, returning every component's state. `NodeCountReduceAlgebra`
 counts the nodes a walk enters, which is a component's size. `Grid.Where` builds a board from an
 `IGridCellFilter`, and `Grid.PassableNodes` lists its open cells as the roots a whole-board scan
-needs; NumberOfIslands and SurroundedRegions read them. `ReduceEach` has no solution reading it
-yet: its three grid adopters wait on a grid that hands out one node per cell instead of a new one
-per neighbour, and are retried then. A reduce algebra is static, so a value it reads, such as a
-cell's fish or grid1's land, travels in the state it threads.
+needs; NumberOfIslands and SurroundedRegions read them. LastDayWhereYouCanStillCross reads
+`ReduceEach`. Its three other grid adopters waited on a grid that hands out one node per cell
+instead of a new one per neighbour, and are still to be retried on it. The grid now takes that
+choice as a type argument, an `IGridNodeSource`. `NodePerCell` hands out the board's one node for each cell, made the
+first time it is asked for, and `NodePerStep` a new node each time. The whole-board flood fills
+take `NodePerCell`: NumberOfIslands, LastDayWhereYouCanStillCross, MatrixCellsInDistanceOrder,
+FindTheSafestPathInAGrid, MaximumNumberOfPointsFromGridQueries and ConnectedComponentsOrder. They
+allocate 16 to 44% less, and none runs slower. The largest boards run up to 60% faster
+(ConnectedComponentsOrder's depth-first arm at 400 x 400). SurroundedRegions walks only the regions
+touching the border, so it takes `NodePerStep` and allocates no table. A reduce algebra is static, so a value it reads, such as a cell's fish or
+grid1's land, travels in the state it threads.
 
 ### 19.10 Stopping early, several roots, in-order, and a fold without an array per node
 

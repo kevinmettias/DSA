@@ -89,18 +89,62 @@ public sealed partial class GridTests
 
     [Fact]
     public void PassableNodes_ListsTheOpenCellsRowByRow()
-        => Assert.Equal([(0, 0), (0, 1), (0, 2), (1, 0), (1, 1)], TwoByThree().PassableNodes().Select(node => (node.Row, node.Col)));
+        => Assert.Equal([(0, 0), (0, 1), (0, 2), (1, 0), (1, 1)], TwoByThree().PassableNodes<NodePerStep>().Select(node => (node.Row, node.Col)));
 
     [Fact]
     public void PassableNodes_EachNodeIsOfThisGrid()
     {
         var grid = TwoByThree();
 
-        Assert.All(grid.PassableNodes(), node => Assert.Same(grid, node.Grid));
+        Assert.All(grid.PassableNodes<NodePerStep>(), node => Assert.Same(grid, node.Grid));
     }
 
     [Fact]
-    public void PassableNodes_NoOpenCell_IsEmpty() => Assert.Empty(new Grid(new bool[2, 3]).PassableNodes());
+    public void PassableNodes_NoOpenCell_IsEmpty() => Assert.Empty(new Grid(new bool[2, 3]).PassableNodes<NodePerStep>());
+
+    [Fact]
+    public void PassableNodes_NodePerCell_AreTheBoardsOwnNodes()
+    {
+        var grid = TwoByThree();
+
+        Assert.All(grid.PassableNodes<NodePerCell>(), node => Assert.Same(grid.NodeAt(node.Row, node.Col), node));
+    }
+
+    [Fact]
+    public void PassableNodes_NodePerStep_AreNotTheBoardsOwnNodes()
+    {
+        var grid = TwoByThree();
+
+        Assert.All(grid.PassableNodes<NodePerStep>(), node => Assert.NotSame(grid.NodeAt(node.Row, node.Col), node));
+    }
+
+    [Fact]
+    public void NodeAt_SameCellTwice_IsTheSameNode()
+    {
+        var grid = TwoByThree();
+
+        Assert.Same(grid.NodeAt(1, 2), grid.NodeAt(1, 2));
+    }
+
+    // Every cell of one board asked for in turn, so a table slot shared by two cells would hand the
+    // second cell the first one's node.
+    [Fact]
+    public void NodeAt_EveryCellOfOneBoard_IsThatCellsNodeOnThisBoard()
+    {
+        var grid = new Grid(2, 3);
+        var cells = Enumerable.Range(0, grid.Rows * grid.Cols).Select(i => (Row: i / grid.Cols, Col: i % grid.Cols)).ToList();
+
+        Assert.Equal(cells.Select(cell => new GridNode(cell.Row, cell.Col, grid)), cells.Select(cell => grid.NodeAt(cell.Row, cell.Col)));
+    }
+
+    [Theory]
+    [MemberData(nameof(OutOfBoundsCells))]
+    public void NodeAt_OffTheBoard_Throws(int row, int col)
+    {
+        var grid = TwoByThree();
+
+        Assert.Throws<ArgumentOutOfRangeException>(() => grid.NodeAt(row, col));
+    }
 
     private readonly struct EvenColumns : IGridCellFilter
     {

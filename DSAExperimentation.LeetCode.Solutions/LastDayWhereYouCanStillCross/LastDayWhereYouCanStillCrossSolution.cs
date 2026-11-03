@@ -134,9 +134,9 @@ internal static class LastDayWhereYouCanStillCrossSolution
     private static bool CanCross(FloodSchedule flooding, int day)
     {
         var dry = Grid.Where(new GridSize(flooding.Rows, flooding.Cols), new DryOnDay(flooding, day));
-        var topRow = dry.PassableNodes().TakeWhile(cell => cell.Row == 0);
+        var topRow = dry.PassableNodes<NodePerCell>().TakeWhile(cell => cell.Row == 0);
         var walks = ConnectedComponents.ReduceEach<
-            GridNode, GridTopology, GridChildren, DepthFirstReduceOrder<GridNode>, ReachesLastRow, Crossing>(
+            GridNode, GridTopology<NodePerCell>, GridChildren<NodePerCell>, DepthFirstReduceOrder<GridNode>, ReachesLastRow, Crossing>(
             topRow, Crossing.Blocked);
 
         return walks.Contains(Crossing.Crossed);

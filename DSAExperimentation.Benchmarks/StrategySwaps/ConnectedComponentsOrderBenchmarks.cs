@@ -28,13 +28,13 @@ public class ConnectedComponentsOrderBenchmarks
     [Benchmark(Baseline = true)]
     public int DepthFirst()
         => ConnectedComponents.Count<
-            GridNode, GridTopology, GridChildren,
+            GridNode, GridTopology<NodePerCell>, GridChildren<NodePerCell>,
             DepthFirstReduceOrder<GridNode>>(_land);
 
     [Benchmark]
     public int BreadthFirst()
         => ConnectedComponents.Count<
-            GridNode, GridTopology, GridChildren,
+            GridNode, GridTopology<NodePerCell>, GridChildren<NodePerCell>,
             BreadthFirstReduceOrder<GridNode>>(_land);
 
     private static List<GridNode> IslandCells(int side) => LandCells(new Grid(IslandMap(side)));
