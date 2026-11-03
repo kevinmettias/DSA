@@ -7,7 +7,7 @@ namespace DSAExperimentation.Domain.Devices.Compass;
 // problems' *what* (ARCHITECTURE §17.6). A step is given as how far it goes east and north, not
 // as (x, y) or (row, col), because the problems disagree on which axis is which: each maps the two
 // onto its own coordinates. How a solution reads its commands and tests a square stay with each
-// strategy; the baselines keep their own copies (§17.5). GridDirections' tables are not headings:
+// strategy; every arm, baselines among them, reads the headings, turns and steps here (§17.5). GridDirections' tables are not headings:
 // a heading's order is a turning cycle, not a neighbour set.
 //
 // The heading count is a power of two, so a turn wraps with a mask rather than a %, whose signed

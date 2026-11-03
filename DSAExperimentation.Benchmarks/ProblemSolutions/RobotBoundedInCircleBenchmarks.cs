@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RobotBoundedInCircleSolution's, the same methods
 // RobotBoundedInCircleSolutionTests proves correct - a hand-written switch per facing
-// against this repo's own HashMap<RobotDirection,(int,int)> step-delta lookup table, the same
+// against this repo's own HashMap<CompassHeading, CompassStep> step-delta lookup table, the same
 // contrast RobotReturnToOriginBenchmarks draws for its simpler fixed-per-character
 // delta case. Instruction-string construction is charged to [GlobalSetup].
 public class RobotBoundedInCircleBenchmarks

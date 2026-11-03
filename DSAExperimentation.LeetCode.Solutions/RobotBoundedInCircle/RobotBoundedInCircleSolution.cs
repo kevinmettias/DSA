@@ -18,18 +18,18 @@ namespace DSAExperimentation.LeetCode.Solutions.RobotBoundedInCircle;
 // move character because going forward needs the *current* facing rather than a
 // fixed per-character delta.
 //
-// The facings, turns and steps are the compass's (Domain/Devices/Compass): the lookup-table
-// arm reads CompassRules and fills its map from CompassRules.StepOf, and the switch
-// baseline keeps its own copies, RobotDirection and RobotMotion (ARCHITECTURE
-// §17.5). The 'G', 'L' and 'R' of RobotInstruction are LeetCode's.
+// The headings and turns are the compass's (Domain/Devices/Compass), and both arms read them
+// from CompassRules (ARCHITECTURE §17.5). How a heading becomes a step is what the arms differ
+// in: the baseline switches over the four headings, and the lookup-table arm fills its map from
+// CompassRules.StepOf. The 'G', 'L' and 'R' of RobotInstruction are LeetCode's.
 internal static class RobotBoundedInCircleSolution
 {
     // The textbook answer: a switch per instruction, and a second switch over the
-    // facing to move. Deliberately written with nothing but BCL locals - it is the
-    // arm the lookup-table strategy below has to justify itself against.
+    // facing to move. Deliberately written with no container - it is the arm the
+    // lookup-table strategy below has to justify itself against.
     public static bool IsRobotBoundedByDirectionSwitch(string instructions)
     {
-        var state = new RobotState();
+        var state = new CompassWalk();
 
         foreach (var symbol in instructions)
         {
@@ -40,7 +40,7 @@ internal static class RobotBoundedInCircleSolution
         return state.IsBounded;
     }
 
-    private static void ApplyBySwitch(ref RobotState state, RobotInstruction instruction)
+    private static void ApplyBySwitch(ref CompassWalk state, RobotInstruction instruction)
     {
         switch (instruction)
         {
@@ -48,29 +48,29 @@ internal static class RobotBoundedInCircleSolution
                 MoveForward(ref state);
                 break;
             case RobotInstruction.Left:
-                state.Turn(RobotMotion.LeftTurnOffset);
+                state.Heading = CompassRules.TurnLeft(state.Heading);
                 break;
             case RobotInstruction.Right:
-                state.Turn(RobotMotion.RightTurnOffset);
+                state.Heading = CompassRules.TurnRight(state.Heading);
                 break;
         }
     }
 
-    private static void MoveForward(ref RobotState state)
+    private static void MoveForward(ref CompassWalk state)
     {
-        switch (state.Direction)
+        switch (state.Heading)
         {
-            case RobotDirection.North:
-                state.RowPosition++;
+            case CompassHeading.North:
+                state.North++;
                 break;
-            case RobotDirection.East:
-                state.ColumnPosition++;
+            case CompassHeading.East:
+                state.East++;
                 break;
-            case RobotDirection.South:
-                state.RowPosition--;
+            case CompassHeading.South:
+                state.North--;
                 break;
-            case RobotDirection.West:
-                state.ColumnPosition--;
+            case CompassHeading.West:
+                state.East--;
                 break;
         }
     }
@@ -131,26 +131,9 @@ internal static class RobotBoundedInCircleSolution
         state.North += step.North;
     }
 
-    // Facing plus position after one pass of the instruction string - everything
-    // the boundedness test needs, and the only thing either strategy mutates.
-    private sealed class RobotState
-    {
-        public RobotDirection Direction { get; set; }
-        public int ColumnPosition { get; set; }
-        public int RowPosition { get; set; }
-
-        public bool IsBounded => (ColumnPosition == 0 && RowPosition == 0) || Direction != RobotDirection.North;
-
-        // A facing is read as its index for the arithmetic and written back as a
-        // RobotDirection: a right turn is one step along the enum's own order and a
-        // left turn is three, so both stay inside one modular step and neither can
-        // land outside the four facings.
-        public void Turn(int offset) =>
-            Direction = (RobotDirection)(((int)Direction + offset) % RobotMotion.DirectionCount);
-    }
-
-    // The lookup-table arm's heading and how far it has gone east and north, after one
-    // pass - the same test as RobotState's, over the compass's own types.
+    // A robot's heading and how far it has gone east and north after one pass of the
+    // instruction string - everything the boundedness test needs, and the only thing either
+    // strategy mutates.
     private sealed class CompassWalk
     {
         public CompassHeading Heading { get; set; }

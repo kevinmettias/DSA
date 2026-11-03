@@ -17,36 +17,36 @@ namespace DSAExperimentation.LeetCode.Solutions.WalkingRobotSimulation;
 // TwoSum uses for complement lookups.
 //
 // The robot's headings, turns and steps are the compass's (Domain/Devices/Compass): the
-// obstacle-set arm reads CompassRules, with east as +X and north as +Y, and the
-// baseline keeps its own copies below (ARCHITECTURE §17.5). The -2 and -1 commands
-// are LeetCode's.
+// two arms read CompassRules alike, with east as +X and north as +Y (ARCHITECTURE §17.5), and
+// differ only in how they find an obstacle. The -2 and -1 commands are LeetCode's.
 internal static class WalkingRobotSimulationSolution
 {
     private const int TurnLeftCommand = -2;
     private const int TurnRightCommand = -1;
 
-    // The baseline's own copy of the compass: directions in clockwise order starting
-    // at north, so a right turn is +1 and a left turn is -1 modulo four.
-    private const int DirectionCount = 4;
-    private static readonly int[] DeltaX = [0, 1, 0, -1];
-    private static readonly int[] DeltaY = [1, 0, -1, 0];
-
     // The textbook answer: keep the obstacles exactly as LeetCode hands them over and
     // scan them linearly for every cell the robot tries to enter. Deliberately
-    // BCL-only - it is the arm the hashed strategy below has to justify itself
+    // container-free - it is the arm the hashed strategy below has to justify itself
     // against.
     public static int MaxDistanceSquaredByLinearScan(int[] commands, int[][] obstacles)
+        => MaxDistanceSquared(commands, new ObstacleList(obstacles));
+
+    // The walk both arms share: a turn changes the heading, a walk steps until an obstacle stops
+    // it, and the farthest square distance reached is the answer. TObstacles is how the arm keeps
+    // and finds its obstacles, the one thing the two differ in.
+    private static int MaxDistanceSquared<TObstacles>(int[] commands, TObstacles obstacles)
+        where TObstacles : struct, IObstacles
     {
-        var state = new RobotState(0, 0, 0);
+        var state = new HeadingState(CompassHeading.North, 0, 0);
         var maxDistanceSquared = 0;
 
         foreach (var command in commands)
         {
             state = command switch
             {
-                TurnLeftCommand => TurnLeft(state),
-                TurnRightCommand => TurnRight(state),
-                _ => MoveForwardByLinearScan(state, command, obstacles),
+                TurnLeftCommand => state with { Heading = CompassRules.TurnLeft(state.Heading) },
+                TurnRightCommand => state with { Heading = CompassRules.TurnRight(state.Heading) },
+                _ => MoveForward(state, command, obstacles),
             };
 
             maxDistanceSquared = Math.Max(maxDistanceSquared, state.DistanceSquared);
@@ -55,15 +55,16 @@ internal static class WalkingRobotSimulationSolution
         return maxDistanceSquared;
     }
 
-    private static RobotState MoveForwardByLinearScan(RobotState state, int steps, int[][] obstacles)
+    private static HeadingState MoveForward<TObstacles>(HeadingState state, int steps, TObstacles obstacles)
+        where TObstacles : struct, IObstacles
     {
         var position = (X: state.X, Y: state.Y);
 
         for (var step = 0; step < steps; step++)
         {
-            var next = NextCell(position, state.Direction);
+            var next = NextCellFacing(position, state.Heading);
 
-            if (IsBlocked(obstacles, next))
+            if (obstacles.IsBlocked(next))
             {
                 break;
             }
@@ -74,17 +75,10 @@ internal static class WalkingRobotSimulationSolution
         return state with { X = position.X, Y = position.Y };
     }
 
-    private static bool IsBlocked(int[][] obstacles, (int X, int Y) cell)
+    private static (int X, int Y) NextCellFacing((int X, int Y) position, CompassHeading heading)
     {
-        foreach (var obstacle in obstacles)
-        {
-            if (obstacle[0] == cell.X && obstacle[1] == cell.Y)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        var (east, north) = CompassRules.StepOf(heading);
+        return (position.X + east, position.Y + north);
     }
 
     // This repo's own Set<(int, int)>: the obstacle cells are hashed once and every
@@ -102,62 +96,38 @@ internal static class WalkingRobotSimulationSolution
     }
 
     public static int MaxDistanceSquaredByObstacleSet(int[] commands, Set<(int X, int Y)> blocked)
+        => MaxDistanceSquared(commands, new ObstacleSet(blocked));
+
+    // How an arm keeps its obstacles and finds whether a cell holds one: the layer the two
+    // strategies swap. Each is a struct the walk is instantiated over, so its test is a direct call;
+    // a type parameter for the obstacles themselves would be a reference type, whose shared generic
+    // code reaches the test through a runtime lookup on every step.
+    private interface IObstacles
     {
-        var state = new HeadingState(CompassHeading.North, 0, 0);
-        var maxDistanceSquared = 0;
-
-        foreach (var command in commands)
-        {
-            state = command switch
-            {
-                TurnLeftCommand => state with { Heading = CompassRules.TurnLeft(state.Heading) },
-                TurnRightCommand => state with { Heading = CompassRules.TurnRight(state.Heading) },
-                _ => MoveForwardByObstacleSet(state, command, blocked),
-            };
-
-            maxDistanceSquared = Math.Max(maxDistanceSquared, state.DistanceSquared);
-        }
-
-        return maxDistanceSquared;
+        bool IsBlocked((int X, int Y) cell);
     }
 
-    private static HeadingState MoveForwardByObstacleSet(HeadingState state, int steps, Set<(int X, int Y)> blocked)
+    // LeetCode's own obstacle list, scanned whole for every cell.
+    private readonly struct ObstacleList(int[][] obstacles) : IObstacles
     {
-        var position = (X: state.X, Y: state.Y);
-
-        for (var step = 0; step < steps; step++)
+        public bool IsBlocked((int X, int Y) cell)
         {
-            var next = NextCellFacing(position, state.Heading);
-
-            if (blocked.Has(next))
+            foreach (var obstacle in obstacles)
             {
-                break;
+                if (obstacle[0] == cell.X && obstacle[1] == cell.Y)
+                {
+                    return true;
+                }
             }
 
-            position = next;
+            return false;
         }
-
-        return state with { X = position.X, Y = position.Y };
     }
 
-    private static (int X, int Y) NextCellFacing((int X, int Y) position, CompassHeading heading)
+    // The obstacles hashed once, each cell one membership check.
+    private readonly struct ObstacleSet(Set<(int X, int Y)> blocked) : IObstacles
     {
-        var (east, north) = CompassRules.StepOf(heading);
-        return (position.X + east, position.Y + north);
-    }
-
-    private static (int X, int Y) NextCell((int X, int Y) position, int direction) =>
-        (position.X + DeltaX[direction], position.Y + DeltaY[direction]);
-
-    private static RobotState TurnLeft(RobotState state) =>
-        state with { Direction = (state.Direction + DirectionCount - 1) % DirectionCount };
-
-    private static RobotState TurnRight(RobotState state) =>
-        state with { Direction = (state.Direction + 1) % DirectionCount };
-
-    private readonly record struct RobotState(int Direction, int X, int Y)
-    {
-        public int DistanceSquared => (X * X) + (Y * Y);
+        public bool IsBlocked((int X, int Y) cell) => blocked.Has(cell);
     }
 
     private readonly record struct HeadingState(CompassHeading Heading, int X, int Y)
