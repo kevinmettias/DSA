@@ -2300,6 +2300,11 @@ Open items:
 
 - **The sized workloads.** It is not yet decided whether the 1,026 hand-written `[Params]` classes
   stay as they are or become per-problem workload declarations the generator also consumes.
+  Measured 2026-11-03 over the 615 enrolled solutions, 509 of which also have a sized class: for
+  the 510 whose constraints state a length bound the measure could read, the catalog's largest input
+  is under 1% of that bound for 327 and at least half of it for 57, with a median of 0.15%. The
+  catalog's cases are LeetCode's examples and the dataset's generated inputs, mostly small, so the
+  sized classes remain the only timing at the sizes the constraints allow.
 - **Enrolling the rest.** About 500 solutions are left, each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
