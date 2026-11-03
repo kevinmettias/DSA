@@ -2076,8 +2076,12 @@ so a refresh's diff shows only what LeetCode changed:
 here is one of its hidden tests. Each case carries its source:
 
 - **Examples** are the published examples. Their outputs are read from the statement's prose and
-  paired with inputs only when the statement states exactly one output per example. An output the
-  statement writes in prose, such as "tail connects to node index 1", is not recorded.
+  paired with inputs only when the statement states exactly one output per example, and each stored
+  example's inputs are the ones the statement shows at its position. For 14 questions LeetCode's
+  example list holds inputs the statement never shows, such as Check if There is a Valid Path in a
+  Grid's three grids, and pairing by position had recorded other inputs' answers for them until
+  2026-11-03. An output the statement writes in prose, such as "tail connects to node index 1", is
+  not recorded.
 - **Dataset** cases come from LeetCodeDataset (Apache-2.0). Their inputs were generated and their
   outputs printed by a reference Python solution. The importer drops a case:
   - whose reference failed;

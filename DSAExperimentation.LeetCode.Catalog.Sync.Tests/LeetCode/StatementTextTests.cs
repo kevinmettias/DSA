@@ -73,6 +73,19 @@ public sealed partial class StatementTextTests
         => Assert.Equal(["\"cba\""], StatementText.Outputs(BlockExamples));
 
     [Fact]
+    public void Inputs_PreformattedExamples_ReadsEachInputLine()
+        => Assert.Equal(["nums = [2,7,11,15], target = 9", "nums = [3,3], target = 6"], StatementText.Inputs(PreformattedExamples));
+
+    // Find the Largest Area of Square Inside Two Rectangles writes one label "Input:&nbsp;".
+    [Fact]
+    public void Inputs_LabelEndingInANoBreakSpace_ReadsTheInput()
+        => Assert.Equal(["n = 3"], StatementText.Inputs("<p><strong>Input:&nbsp;</strong>n = 3</p>"));
+
+    [Fact]
+    public void Inputs_ExampleBlocks_ReadsTheDecodedValue()
+        => Assert.Equal(["s = \"abc\""], StatementText.Inputs(BlockExamples));
+
+    [Fact]
     public void Outputs_ExplanationWithoutALabel_EndsTheOutputBeforeIt()
         => Assert.Equal(["[2,-1,2]"], StatementText.Outputs(UnlabeledExplanation));
 

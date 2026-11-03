@@ -6,6 +6,9 @@ namespace DSAExperimentation.LeetCode.Catalog.Sync.Tests.LeetCode;
 
 public sealed partial class LeetCodeQuestionMapperTests
 {
+    // Two Sum's two examples as its statement writes them.
+    private static readonly string[] TwoSumStatedInputs = ["nums = [2,7,11,15], target = 9", "nums = [3,3], target = 6"];
+
     private const string FunctionSignatureJson = """
         {"name": "hasCycle", "params": [{"name": "head", "type": "ListNode"}, {"name": "pos", "type": "integer"}],
          "return": {"type": "boolean"}, "manual": true}
@@ -61,7 +64,7 @@ public sealed partial class LeetCodeQuestionMapperTests
     [Fact]
     public void ExamplesOf_OneOutputPerExample_PairsThemByPosition()
     {
-        var examples = LeetCodeQuestionMapper.ExamplesOf(["[2,7,11,15]\n9", "[3,3]\n6"], ["[0,1]", "[1,0]"]);
+        var examples = LeetCodeQuestionMapper.ExamplesOf(["[2,7,11,15]\n9", "[3,3]\n6"], TwoSumStatedInputs, ["[0,1]", "[1,0]"]);
 
         Assert.Equal(["[2,7,11,15]", "9"], examples[0].Inputs);
         Assert.Equal(["[0,1]", "[1,0]"], examples.Select(example => example.ExpectedOutput));
@@ -70,7 +73,17 @@ public sealed partial class LeetCodeQuestionMapperTests
     [Fact]
     public void ExamplesOf_OutputCountDiffersFromExampleCount_PairsNone()
     {
-        var examples = LeetCodeQuestionMapper.ExamplesOf(["[2,7,11,15]\n9", "[3,3]\n6"], ["[0,1]"]);
+        var examples = LeetCodeQuestionMapper.ExamplesOf(["[2,7,11,15]\n9", "[3,3]\n6"], TwoSumStatedInputs, ["[0,1]"]);
+
+        Assert.All(examples, example => Assert.Null(example.ExpectedOutput));
+    }
+
+    // Check if There is a Valid Path in a Grid's list holds a grid its statement never shows, so the
+    // statement's answer at that position is another grid's.
+    [Fact]
+    public void ExamplesOf_StoredInputsTheStatementDoesNotShow_PairsNone()
+    {
+        var examples = LeetCodeQuestionMapper.ExamplesOf(["[[3],[2]]", "[[1,2,1]]"], ["grid = [[2,4,3],[6,5,2]]", "grid = [[1,2,1]]"], ["true", "false"]);
 
         Assert.All(examples, example => Assert.Null(example.ExpectedOutput));
     }
@@ -78,7 +91,10 @@ public sealed partial class LeetCodeQuestionMapperTests
     [Fact]
     public void ExamplesOf_OutputStatedInProse_KeepsThatExampleWithNoOutput()
     {
-        var examples = LeetCodeQuestionMapper.ExamplesOf(["[3,2,0,-4]\n1", "[1]\n-1"], ["tail connects to node index 1", "false"]);
+        var examples = LeetCodeQuestionMapper.ExamplesOf(
+            ["[3,2,0,-4]\n1", "[1]\n-1"],
+            ["head = [3,2,0,-4], pos = 1", "head = [1], pos = -1"],
+            ["tail connects to node index 1", "false"]);
 
         Assert.Equal([null, "false"], examples.Select(example => example.ExpectedOutput));
     }

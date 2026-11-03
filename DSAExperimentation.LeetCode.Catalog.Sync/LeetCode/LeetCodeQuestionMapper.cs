@@ -10,9 +10,11 @@ namespace DSAExperimentation.LeetCode.Catalog.Sync.LeetCode;
 // The uncertain step is pairing each example with its output. The API gives the example INPUTS
 // (exampleTestcaseList) but no output at all; the only place one exists is the statement's prose,
 // read by StatementText.Outputs. They are paired by position only when the statement states
-// exactly one output per example: any other count means some example has no stated output (or the
-// statement shows one the list lacks), and position no longer says which output belongs to which
-// input, so every example then keeps a null output rather than possibly the wrong one. An output
+// exactly one output per example, and each example's inputs are the ones the statement shows at
+// that position (StatedExample): any other count means some example has no stated output (or the
+// statement shows one the list lacks), and the statement never answered inputs it does not show.
+// Either way position no longer says which output belongs to which input, so
+// every example then keeps a null output rather than possibly the wrong one. An output
 // stated in prose rather than in LeetCode's notation - Linked List Cycle II's "tail connects to
 // node index 1", Remove Duplicates' "2, nums = [1,2,_]" - is no answer a harness can compare, so
 // that example keeps a null output too.
@@ -35,7 +37,7 @@ internal static class LeetCodeQuestionMapper
             Constraints = StatementText.Constraints(dto.Content),
             Signature = SignatureOf(dto.MetaData),
             CSharpStarterCode = CSharpStarterCodeOf(dto.CodeSnippets),
-            Examples = ExamplesOf(dto.ExampleTestcaseList, StatementText.Outputs(dto.Content)),
+            Examples = ExamplesOf(dto.ExampleTestcaseList, StatementText.Inputs(dto.Content), StatementText.Outputs(dto.Content)),
             ContentHtml = dto.Content,
         };
 
@@ -74,9 +76,12 @@ internal static class LeetCodeQuestionMapper
         };
     }
 
-    public static IReadOnlyList<LeetCodeCase> ExamplesOf(IReadOnlyList<string> exampleTestcases, IReadOnlyList<string> outputs)
+    public static IReadOnlyList<LeetCodeCase> ExamplesOf(
+        IReadOnlyList<string> exampleTestcases,
+        IReadOnlyList<string> statedInputs,
+        IReadOnlyList<string> outputs)
     {
-        var paired = outputs.Count == exampleTestcases.Count ? outputs : null;
+        var paired = IsPairedByPosition(exampleTestcases, statedInputs, outputs) ? outputs : null;
 
         return exampleTestcases
             .Select((inputs, index) => new LeetCodeCase
@@ -86,6 +91,20 @@ internal static class LeetCodeQuestionMapper
                 Source = LeetCodeCaseSource.Example,
             })
             .ToList();
+    }
+
+    // One output per example, and every example the one the statement shows at its position.
+    private static bool IsPairedByPosition(
+        IReadOnlyList<string> exampleTestcases,
+        IReadOnlyList<string> statedInputs,
+        IReadOnlyList<string> outputs)
+    {
+        if (outputs.Count != exampleTestcases.Count || statedInputs.Count != exampleTestcases.Count)
+        {
+            return false;
+        }
+
+        return exampleTestcases.Zip(statedInputs).All(example => StatedExample.HasInputs(example.Second, example.First));
     }
 
     private static string? NotationOrNone(string? output)
