@@ -2588,30 +2588,38 @@ hand-written. The measurements sorted the arms by what they replaced:
   DetonateTheMaximumBombs ran 33 to 50% faster, and NumberOfIslands 22 to 28%.
 - **Direct recursion does not.** `DepthFirstTraversal`'s hooks cost 15 to 40% over a hand-written
   recursion on a tree (SerializeAndDeserializeBST and CheckIfDfsStringsArePalindromes, both
-  reverted). `TreeFold` costs four to five times the recursion it stands for on HouseRobberIII,
-  because the recursive evaluation allocates a child-results array per node.
+  reverted). `TreeFold` cost four to five times the recursion it stands for on HouseRobberIII, and
+  the recursive evaluation allocated a child-results array per node. §19.10's span fold removed the
+  array (65 KB a run down to 328 bytes), and the fold still costs three to four times the recursion.
+  BalancedBinaryTree and BinaryTreeMaximumPathSum, the conversions it held back, were not retried.
 - **Unit-weight Dijkstra was a breadth-first search.** JumpGameII and JumpGameIV ran
   `ShortestPath.Dijkstra` over graphs whose every edge weighs 1. `BreadthFirstDistances` answers
   the same distances 30 to 50% faster.
 - **Large grid components pay per edge.** `GridChildren` built a new `GridNode` for every neighbour
-  it listed, reached or not, and the visited set hashes each one. That outweighs the lambda's cost on
-  big components: CountSubIslands at 120 x 120, NumberOfClosedIslands at 100 x 100 and
-  MakingALargeIsland at 60 x 60 measured 22 to 98% slower, and stay hand-written. So do
-  MinimumNumberOfDaysToDisconnectIsland, which builds a `Grid` for each of its n^2 queries, and
-  JumpGameIII, whose hop graph cost far more to build than the few nodes its walk needs.
-  MaxAreaOfIsland, MaximumNumberOfFishInAGrid and CountIslandsWithTotalValueDivisibleByK moved
-  onto `ConnectedComponents.ReduceEach` and went back: a pass on a quiet machine read them 7 to 54%
+  it listed, reached or not, and the visited set hashes each one. That outweighed the lambda's cost
+  on big components: CountSubIslands at 120 x 120, NumberOfClosedIslands at 100 x 100 and
+  MakingALargeIsland at 60 x 60 measured 22 to 98% slower. MaxAreaOfIsland,
+  MaximumNumberOfFishInAGrid and CountIslandsWithTotalValueDivisibleByK moved onto
+  `ConnectedComponents.ReduceEach` and went back: a pass on a quiet machine read them 7 to 54%
   slower at one size or both, where the first pass had overlapped a peer's unlocked benchmark job.
+  All six were retried on `NodePerCell` (below), in two passes against 222694e2 (2026-11-03). They
+  allocate 42 to 72% less, but only CountIslandsWithTotalValueDivisibleByK got faster, by 1 to 10%,
+  and it now reads `ReduceEach`. The other five stay on `DepthFirstSearch.Traverse`'s lambda over
+  value-tuple cells, since both passes read them slower at their larger board: CountSubIslands 36
+  to 41%, MakingALargeIsland and NumberOfClosedIslands about 20 to 25%, MaxAreaOfIsland 15 to 20%
+  and MaximumNumberOfFishInAGrid 9 to 10%. MinimumNumberOfDaysToDisconnectIsland, which builds a
+  `Grid` for each of its n^2 queries, and JumpGameIII, whose hop graph cost far more to build than
+  the few nodes its walk needs, stay hand-written.
 
 Three pieces came out of it. `ConnectedComponents.ReduceEach` reduces each component on its own:
 the multi-root walk `Count` rides, returning every component's state. `NodeCountReduceAlgebra`
 counts the nodes a walk enters, which is a component's size. `Grid.Where` builds a board from an
 `IGridCellFilter`, and `Grid.PassableNodes` lists its open cells as the roots a whole-board scan
-needs; NumberOfIslands and SurroundedRegions read them. LastDayWhereYouCanStillCross reads
-`ReduceEach`. Its three other grid adopters waited on a grid that hands out one node per cell
-instead of a new one per neighbour, and are still to be retried on it. The grid now takes that
-choice as a type argument, an `IGridNodeSource`. `NodePerCell` hands out the board's one node for each cell, made the
-first time it is asked for, and `NodePerStep` a new node each time. The whole-board flood fills
+needs; NumberOfIslands and SurroundedRegions read them. LastDayWhereYouCanStillCross and
+CountIslandsWithTotalValueDivisibleByK read `ReduceEach`. The grid takes the choice between one node
+per cell and a new one per neighbour as a type argument, an `IGridNodeSource`. `NodePerCell` hands
+out the board's one node for each cell, made the first time it is asked for, and `NodePerStep` a
+new node each time. The whole-board flood fills
 take `NodePerCell`: NumberOfIslands, LastDayWhereYouCanStillCross, MatrixCellsInDistanceOrder,
 FindTheSafestPathInAGrid, MaximumNumberOfPointsFromGridQueries and ConnectedComponentsOrder. They
 allocate 16 to 44% less, and none runs slower. The largest boards run up to 60% faster
@@ -2647,7 +2655,10 @@ already knew the answer:
   the lookup at every node, so `To` wins only when the target is reached well before the search would
   end. JumpGameII's target is the last index the search reaches. MinimumNumberOfVisitedCellsInAGrid
   and MinimumOperationsToEqualizeBinaryString measured slower at one size in two passes. All three
-  keep `From`.
+  keep `From`. `FromAll` has no adopter. RottingOranges and ZeroOneMatrix measured 9 to 10 and 16 to
+  18 times slower through it on a `NodePerCell` grid, at 5 to 25 cells a side in two passes, and
+  allocated 8 to 13 times as much: their arms index an `int` array, where `FromAll` fills a
+  `Dictionary` keyed by `GridNode`. Both keep their hand-written multi-source search.
 - **In-order is a third order.** `InOrderReduceOrder<TValue>` walks a `BinaryTreeNode`'s left
   subtree, the node, then the right subtree, and fires `Enter` between them, the way breadth-first
   fires `Enter` alone. It reads `Left` and `Right` directly, since a compacted `IChildren` view cannot
