@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfEnclaves;
+using DSAExperimentation.LeetCode.Solutions.NumberOfEnclaves;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.InsertGreatestCommonDivisorsInLinkedList;
+using DSAExperimentation.LeetCode.Solutions.InsertGreatestCommonDivisorsInLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

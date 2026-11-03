@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.WalkingRobotSimulationII;
+using DSAExperimentation.LeetCode.Solutions.WalkingRobotSimulationII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

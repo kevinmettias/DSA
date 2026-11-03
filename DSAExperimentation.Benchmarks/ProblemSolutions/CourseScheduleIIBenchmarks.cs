@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CourseScheduleII;
+using DSAExperimentation.LeetCode.Solutions.CourseScheduleII;
 using CourseNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumCutsToDivideACircle;
+using DSAExperimentation.LeetCode.Solutions.MinimumCutsToDivideACircle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

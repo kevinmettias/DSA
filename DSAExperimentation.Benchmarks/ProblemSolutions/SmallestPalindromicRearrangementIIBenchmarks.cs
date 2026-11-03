@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SmallestPalindromicRearrangementII;
+using DSAExperimentation.LeetCode.Solutions.SmallestPalindromicRearrangementII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

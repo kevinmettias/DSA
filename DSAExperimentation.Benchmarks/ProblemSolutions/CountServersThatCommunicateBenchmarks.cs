@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountServersThatCommunicate;
+using DSAExperimentation.LeetCode.Solutions.CountServersThatCommunicate;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

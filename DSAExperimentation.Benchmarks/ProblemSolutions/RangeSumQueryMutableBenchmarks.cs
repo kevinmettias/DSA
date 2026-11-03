@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.RangeSumQueryMutable;
+using DSAExperimentation.LeetCode.Solutions.RangeSumQueryMutable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

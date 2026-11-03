@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LastSubstringInLexicographicalOrder;
+using DSAExperimentation.LeetCode.Solutions.LastSubstringInLexicographicalOrder;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

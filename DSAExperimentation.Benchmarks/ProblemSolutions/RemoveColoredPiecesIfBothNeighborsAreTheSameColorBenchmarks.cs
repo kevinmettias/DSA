@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RemoveColoredPiecesIfBothNeighborsAreTheSameColor;
+using DSAExperimentation.LeetCode.Solutions.RemoveColoredPiecesIfBothNeighborsAreTheSameColor;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

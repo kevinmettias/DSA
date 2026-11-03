@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountSubarraysWithMajorityElementI;
+using DSAExperimentation.LeetCode.Solutions.CountSubarraysWithMajorityElementI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

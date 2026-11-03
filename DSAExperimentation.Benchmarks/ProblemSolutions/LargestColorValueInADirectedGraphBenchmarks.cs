@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LargestColorValueInADirectedGraph;
+using DSAExperimentation.LeetCode.Solutions.LargestColorValueInADirectedGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ProductOfArrayExceptSelf;
+using DSAExperimentation.LeetCode.Solutions.ProductOfArrayExceptSelf;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

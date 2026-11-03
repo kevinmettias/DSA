@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfCommonFactors;
+using DSAExperimentation.LeetCode.Solutions.NumberOfCommonFactors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

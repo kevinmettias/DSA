@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindPolygonWithTheLargestPerimeter;
+using DSAExperimentation.LeetCode.Solutions.FindPolygonWithTheLargestPerimeter;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

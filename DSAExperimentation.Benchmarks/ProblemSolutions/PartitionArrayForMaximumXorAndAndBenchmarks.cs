@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.PartitionArrayForMaximumXorAndAnd;
+using DSAExperimentation.LeetCode.Solutions.PartitionArrayForMaximumXorAndAnd;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

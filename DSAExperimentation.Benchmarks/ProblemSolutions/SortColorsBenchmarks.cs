@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SortColors;
+using DSAExperimentation.LeetCode.Solutions.SortColors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

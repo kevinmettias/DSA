@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.PeakIndexInAMountainArray;
+using DSAExperimentation.LeetCode.Solutions.PeakIndexInAMountainArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

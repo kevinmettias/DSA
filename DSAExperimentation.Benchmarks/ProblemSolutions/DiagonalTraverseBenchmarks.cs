@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DiagonalTraverse;
+using DSAExperimentation.LeetCode.Solutions.DiagonalTraverse;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

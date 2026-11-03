@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumNumberOfVisiblePoints;
+using DSAExperimentation.LeetCode.Solutions.MaximumNumberOfVisiblePoints;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

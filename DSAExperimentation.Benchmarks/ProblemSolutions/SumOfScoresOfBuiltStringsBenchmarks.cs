@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SumOfScoresOfBuiltStrings;
+using DSAExperimentation.LeetCode.Solutions.SumOfScoresOfBuiltStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

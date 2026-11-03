@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RandomPickWithBlacklist;
+using DSAExperimentation.LeetCode.Solutions.RandomPickWithBlacklist;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

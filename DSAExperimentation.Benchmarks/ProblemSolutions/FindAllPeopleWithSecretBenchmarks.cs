@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindAllPeopleWithSecret;
+using DSAExperimentation.LeetCode.Solutions.FindAllPeopleWithSecret;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

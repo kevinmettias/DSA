@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.BinaryTreeRightSideView;
+using DSAExperimentation.LeetCode.Solutions.BinaryTreeRightSideView;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.PacificAtlanticWaterFlow;
+using DSAExperimentation.LeetCode.Solutions.PacificAtlanticWaterFlow;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

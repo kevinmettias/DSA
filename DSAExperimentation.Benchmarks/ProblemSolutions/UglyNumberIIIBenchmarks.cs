@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.UglyNumberIII;
+using DSAExperimentation.LeetCode.Solutions.UglyNumberIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

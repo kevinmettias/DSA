@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountVisitedNodesInADirectedGraph;
+using DSAExperimentation.LeetCode.Solutions.CountVisitedNodesInADirectedGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

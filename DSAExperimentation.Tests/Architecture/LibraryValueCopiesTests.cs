@@ -14,13 +14,13 @@ public sealed partial class LibraryValueCopiesTests
     public void In_DistinctiveValueTheLibraryStates_IsACopy()
         => Assert.Contains(
             new LibraryValueCopies.Copy(
-                "DSAExperimentation.LeetCode.Probe.ProbeSolution.Revolution", "DSAExperimentation.Domain.Mathematics.Geometry.AngleUnits.FullTurnDegrees"),
+                "DSAExperimentation.LeetCode.Solutions.Probe.ProbeSolution.Revolution", "DSAExperimentation.Domain.Mathematics.Geometry.AngleUnits.FullTurnDegrees"),
             CopiesIn(RevolutionCopy));
 
     [Fact]
     public void In_IntegerOfAnotherWidth_IsACopy()
         => Assert.Contains(
-            new LibraryValueCopies.Copy("DSAExperimentation.LeetCode.Probe.ProbeSolution.Modulus", "DSAExperimentation.LeetCode.ProbeRoot.Prime"),
+            new LibraryValueCopies.Copy("DSAExperimentation.LeetCode.Solutions.Probe.ProbeSolution.Modulus", "DSAExperimentation.LeetCode.Solutions.ProbeRoot.Prime"),
             CopiesIn("private const int Modulus = 1_000_000_007;"));
 
     // Small numbers mean many things, so a 3 with no word in common with a library 3 is not a copy.
@@ -31,7 +31,7 @@ public sealed partial class LibraryValueCopiesTests
     [Fact]
     public void In_SmallValueSharingASubjectWord_IsACopy()
         => Assert.Contains(
-            new LibraryValueCopies.Copy("DSAExperimentation.LeetCode.Probe.ProbeSolution.ChessBoardWidth", "DSAExperimentation.Domain.Games.Chess.ChessRules.BoardSize"),
+            new LibraryValueCopies.Copy("DSAExperimentation.LeetCode.Solutions.Probe.ProbeSolution.ChessBoardWidth", "DSAExperimentation.Domain.Games.Chess.ChessRules.BoardSize"),
             CopiesIn("private const int ChessBoardWidth = 8;"));
 
     // Size names a role, not a subject: a GridSize of 9 shares no subject with a sudoku board's 9.
@@ -55,7 +55,7 @@ public sealed partial class LibraryValueCopiesTests
 
     [Fact]
     public void In_ConstantOfTheTierRoot_IsNoCopy()
-        => Assert.DoesNotContain(CopiesIn(string.Empty), copy => copy.Name.StartsWith("DSAExperimentation.LeetCode.ProbeRoot", StringComparison.Ordinal));
+        => Assert.DoesNotContain(CopiesIn(string.Empty), copy => copy.Name.StartsWith("DSAExperimentation.LeetCode.Solutions.ProbeRoot", StringComparison.Ordinal));
 
     private static IReadOnlyList<LibraryValueCopies.Copy> CopiesIn(string solutionMembers, string spared = "")
     {
@@ -90,7 +90,7 @@ public sealed partial class LibraryValueCopiesTests
     // A problem's solution class, and a public constant at the tier's root as LeetCodeModulus is.
     private static string ProbeSource(string solutionMembers)
         => $$"""
-            namespace DSAExperimentation.LeetCode
+            namespace DSAExperimentation.LeetCode.Solutions
             {
                 public static class ProbeRoot
                 {
@@ -98,7 +98,7 @@ public sealed partial class LibraryValueCopiesTests
                 }
             }
 
-            namespace DSAExperimentation.LeetCode.Probe
+            namespace DSAExperimentation.LeetCode.Solutions.Probe
             {
                 internal static class ProbeSolution
                 {

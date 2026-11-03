@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SmallestSufficientTeam;
+using DSAExperimentation.LeetCode.Solutions.SmallestSufficientTeam;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

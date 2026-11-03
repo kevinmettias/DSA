@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DesignGraphWithShortestPathCalculator;
+using DSAExperimentation.LeetCode.Solutions.DesignGraphWithShortestPathCalculator;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CheckIfDigitsAreEqualInStringAfterOperationsI;
+using DSAExperimentation.LeetCode.Solutions.CheckIfDigitsAreEqualInStringAfterOperationsI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

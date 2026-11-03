@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfWaysOfCuttingAPizza;
+using DSAExperimentation.LeetCode.Solutions.NumberOfWaysOfCuttingAPizza;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

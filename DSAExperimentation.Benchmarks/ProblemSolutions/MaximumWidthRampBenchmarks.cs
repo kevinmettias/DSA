@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumWidthRamp;
+using DSAExperimentation.LeetCode.Solutions.MaximumWidthRamp;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

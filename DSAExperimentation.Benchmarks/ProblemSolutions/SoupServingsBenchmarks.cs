@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SoupServings;
+using DSAExperimentation.LeetCode.Solutions.SoupServings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

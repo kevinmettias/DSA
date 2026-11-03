@@ -18,11 +18,11 @@ namespace DSAExperimentation.Tests.Architecture;
 // that needs no using, or a bare call a static using brought in.
 public sealed partial class ProblemImportTests
 {
-    private const string SolutionProject = "DSAExperimentation.LeetCode";
+    private const string SolutionProject = "DSAExperimentation.LeetCode.Solutions";
     private const string RootImporter = "(root)";
     private const string EdgeArrow = " -> ";
     private const string SolutionSuffix = "Solution.cs";
-    private const string TierNamespacePrefix = "DSAExperimentation.LeetCode.";
+    private const string TierNamespacePrefix = "DSAExperimentation.LeetCode.Solutions.";
 
     // Where checks.json declares check-duplicate-constant's problem units, and the folders they share.
     private const string ChecksFile = "checks.json";
@@ -153,10 +153,10 @@ public sealed partial class ProblemImportTests
     public void ProblemReferencesIn_SelfAliasConventionsAndTheTierItself_FindsNone() =>
         Assert.Empty(ProbeReferences(
             """
-            using DSAExperimentation.LeetCode.Conventions;
-            using Self = DSAExperimentation.LeetCode.Alpha.AlphaSolution;
+            using DSAExperimentation.LeetCode.Solutions.Conventions;
+            using Self = DSAExperimentation.LeetCode.Solutions.Alpha.AlphaSolution;
 
-            namespace DSAExperimentation.LeetCode.Alpha;
+            namespace DSAExperimentation.LeetCode.Solutions.Alpha;
 
             internal static class AlphaSolution
             {
@@ -172,7 +172,7 @@ public sealed partial class ProblemImportTests
             ["AlphaII"],
             ProbeReferences(
                 """
-                namespace DSAExperimentation.LeetCode.Alpha;
+                namespace DSAExperimentation.LeetCode.Solutions.Alpha;
 
                 internal static class AlphaSolution
                 {
@@ -184,7 +184,7 @@ public sealed partial class ProblemImportTests
     public void ProblemReferencesIn_SiblingNamedInACommentOrString_FindsNone() =>
         Assert.Empty(ProbeReferences(
             """
-            namespace DSAExperimentation.LeetCode.Alpha;
+            namespace DSAExperimentation.LeetCode.Solutions.Alpha;
 
             // AlphaII.AlphaIISolution does the work
             internal static class AlphaSolution
@@ -200,9 +200,9 @@ public sealed partial class ProblemImportTests
             ["AlphaII"],
             ProbeReferences(
                 """
-                using static DSAExperimentation.LeetCode.AlphaII.AlphaIISolution;
+                using static DSAExperimentation.LeetCode.Solutions.AlphaII.AlphaIISolution;
 
-                namespace DSAExperimentation.LeetCode.Alpha;
+                namespace DSAExperimentation.LeetCode.Solutions.Alpha;
 
                 internal static class AlphaSolution
                 {
@@ -216,9 +216,9 @@ public sealed partial class ProblemImportTests
             ["AlphaII"],
             ProbeReferences(
                 """
-                using Owner = DSAExperimentation.LeetCode.AlphaII.AlphaIISolution;
+                using Owner = DSAExperimentation.LeetCode.Solutions.AlphaII.AlphaIISolution;
 
-                namespace DSAExperimentation.LeetCode.Alpha;
+                namespace DSAExperimentation.LeetCode.Solutions.Alpha;
 
                 internal static class AlphaSolution
                 {
@@ -295,7 +295,7 @@ public sealed partial class ProblemImportTests
     // What a probe's Alpha folder can name: a sibling AlphaII, a Conventions folder and a tier-root
     // rule.
     private const string Neighbours = """
-            namespace DSAExperimentation.LeetCode.AlphaII
+            namespace DSAExperimentation.LeetCode.Solutions.AlphaII
             {
                 internal static class AlphaIISolution
                 {
@@ -303,7 +303,7 @@ public sealed partial class ProblemImportTests
                 }
             }
 
-            namespace DSAExperimentation.LeetCode.Conventions
+            namespace DSAExperimentation.LeetCode.Solutions.Conventions
             {
                 internal static class LeetCodeAnswer
                 {
@@ -311,7 +311,7 @@ public sealed partial class ProblemImportTests
                 }
             }
 
-            namespace DSAExperimentation.LeetCode
+            namespace DSAExperimentation.LeetCode.Solutions
             {
                 internal static class RootRule
                 {

@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.ConstructQuadTree;
-using DSAExperimentation.LeetCode.LogicalOrOfTwoBinaryGridsRepresentedAsQuadTrees;
+using DSAExperimentation.LeetCode.Solutions.ConstructQuadTree;
+using DSAExperimentation.LeetCode.Solutions.LogicalOrOfTwoBinaryGridsRepresentedAsQuadTrees;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

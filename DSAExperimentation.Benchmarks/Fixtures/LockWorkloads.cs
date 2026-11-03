@@ -1,5 +1,5 @@
 using DSAExperimentation.Domain.Devices.Locks;
-using DSAExperimentation.LeetCode.OpenTheLock;
+using DSAExperimentation.LeetCode.Solutions.OpenTheLock;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
 

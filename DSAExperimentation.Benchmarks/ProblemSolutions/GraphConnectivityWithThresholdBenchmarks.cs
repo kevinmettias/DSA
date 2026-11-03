@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.GraphConnectivityWithThreshold;
+using DSAExperimentation.LeetCode.Solutions.GraphConnectivityWithThreshold;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

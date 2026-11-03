@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.BuildAMatrixWithConditions;
+using DSAExperimentation.LeetCode.Solutions.BuildAMatrixWithConditions;
 using ValueNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

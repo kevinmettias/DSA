@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.KokoEatingBananas;
+using DSAExperimentation.LeetCode.Solutions.KokoEatingBananas;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

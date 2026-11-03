@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
-using DSAExperimentation.LeetCode.FindTheNumberOfWaysToPlacePeopleII;
+using DSAExperimentation.LeetCode.Solutions.FindTheNumberOfWaysToPlacePeopleII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

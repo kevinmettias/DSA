@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.BeautifulArrangement;
+using DSAExperimentation.LeetCode.Solutions.BeautifulArrangement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

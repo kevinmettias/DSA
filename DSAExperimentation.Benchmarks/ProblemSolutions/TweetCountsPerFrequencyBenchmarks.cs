@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.TweetCountsPerFrequency;
+using DSAExperimentation.LeetCode.Solutions.TweetCountsPerFrequency;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

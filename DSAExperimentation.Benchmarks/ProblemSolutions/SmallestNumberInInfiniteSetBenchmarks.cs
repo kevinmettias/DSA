@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SmallestNumberInInfiniteSet;
+using DSAExperimentation.LeetCode.Solutions.SmallestNumberInInfiniteSet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

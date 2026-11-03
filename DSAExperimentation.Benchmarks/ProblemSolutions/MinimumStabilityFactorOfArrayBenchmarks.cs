@@ -1,7 +1,7 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SegmentTree;
-using DSAExperimentation.LeetCode.MinimumStabilityFactorOfArray;
+using DSAExperimentation.LeetCode.Solutions.MinimumStabilityFactorOfArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

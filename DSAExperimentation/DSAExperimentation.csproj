@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="DSAExperimentation.Tests" />
-    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Tests" />
+    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Solutions.Tests" />
     <InternalsVisibleTo Include="DSAExperimentation.Benchmarks.Tests" />
   </ItemGroup>
 

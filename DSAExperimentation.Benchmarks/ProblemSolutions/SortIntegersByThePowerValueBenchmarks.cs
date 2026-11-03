@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SortIntegersByThePowerValue;
+using DSAExperimentation.LeetCode.Solutions.SortIntegersByThePowerValue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

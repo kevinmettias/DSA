@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.IncrementalMemoryLeak;
+using DSAExperimentation.LeetCode.Solutions.IncrementalMemoryLeak;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.IncreasingOrderSearchTree;
+using DSAExperimentation.LeetCode.Solutions.IncreasingOrderSearchTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

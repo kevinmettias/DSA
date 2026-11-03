@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.LastStoneWeightII;
+using DSAExperimentation.LeetCode.Solutions.LastStoneWeightII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

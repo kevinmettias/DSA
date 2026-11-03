@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistance;
+using DSAExperimentation.LeetCode.Solutions.FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistance;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

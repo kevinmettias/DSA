@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumEmployeesToBeInvitedToAMeeting;
+using DSAExperimentation.LeetCode.Solutions.MaximumEmployeesToBeInvitedToAMeeting;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FillASpecialGrid;
+using DSAExperimentation.LeetCode.Solutions.FillASpecialGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

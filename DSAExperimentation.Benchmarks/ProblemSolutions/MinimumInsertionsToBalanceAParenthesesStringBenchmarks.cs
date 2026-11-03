@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumInsertionsToBalanceAParenthesesString;
+using DSAExperimentation.LeetCode.Solutions.MinimumInsertionsToBalanceAParenthesesString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

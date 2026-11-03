@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfIslands;
+using DSAExperimentation.LeetCode.Solutions.NumberOfIslands;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

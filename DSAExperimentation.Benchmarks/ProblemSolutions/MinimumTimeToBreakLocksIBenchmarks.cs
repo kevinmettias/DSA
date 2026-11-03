@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumTimeToBreakLocksI;
+using DSAExperimentation.LeetCode.Solutions.MinimumTimeToBreakLocksI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

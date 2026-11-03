@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DetectSquares;
+using DSAExperimentation.LeetCode.Solutions.DetectSquares;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

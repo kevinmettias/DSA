@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.SpiralMatrixIV;
+using DSAExperimentation.LeetCode.Solutions.SpiralMatrixIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

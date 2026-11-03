@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindKthBitInNthBinaryString;
+using DSAExperimentation.LeetCode.Solutions.FindKthBitInNthBinaryString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

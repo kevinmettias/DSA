@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.TheNumberOfWeakCharactersInTheGame;
+using DSAExperimentation.LeetCode.Solutions.TheNumberOfWeakCharactersInTheGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

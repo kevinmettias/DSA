@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfBeautifulIntegersInTheRange;
+using DSAExperimentation.LeetCode.Solutions.NumberOfBeautifulIntegersInTheRange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

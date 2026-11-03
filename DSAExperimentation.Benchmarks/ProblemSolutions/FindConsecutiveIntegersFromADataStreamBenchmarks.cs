@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindConsecutiveIntegersFromADataStream;
+using DSAExperimentation.LeetCode.Solutions.FindConsecutiveIntegersFromADataStream;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

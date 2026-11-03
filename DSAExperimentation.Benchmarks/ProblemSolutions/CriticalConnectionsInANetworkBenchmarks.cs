@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CriticalConnectionsInANetwork;
+using DSAExperimentation.LeetCode.Solutions.CriticalConnectionsInANetwork;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

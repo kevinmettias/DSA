@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.InsertInterval;
+using DSAExperimentation.LeetCode.Solutions.InsertInterval;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

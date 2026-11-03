@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumTimeToMakeArraySumAtMostX;
+using DSAExperimentation.LeetCode.Solutions.MinimumTimeToMakeArraySumAtMostX;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

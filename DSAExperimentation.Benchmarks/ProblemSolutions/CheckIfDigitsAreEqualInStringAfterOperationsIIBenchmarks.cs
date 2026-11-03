@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CheckIfDigitsAreEqualInStringAfterOperationsII;
+using DSAExperimentation.LeetCode.Solutions.CheckIfDigitsAreEqualInStringAfterOperationsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

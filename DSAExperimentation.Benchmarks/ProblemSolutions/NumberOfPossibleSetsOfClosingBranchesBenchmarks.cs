@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfPossibleSetsOfClosingBranches;
+using DSAExperimentation.LeetCode.Solutions.NumberOfPossibleSetsOfClosingBranches;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

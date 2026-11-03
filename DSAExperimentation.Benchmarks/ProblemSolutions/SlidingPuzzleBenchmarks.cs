@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.States;
-using DSAExperimentation.LeetCode.SlidingPuzzle;
+using DSAExperimentation.LeetCode.Solutions.SlidingPuzzle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

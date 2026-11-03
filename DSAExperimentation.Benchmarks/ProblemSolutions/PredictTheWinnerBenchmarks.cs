@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.PredictTheWinner;
+using DSAExperimentation.LeetCode.Solutions.PredictTheWinner;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

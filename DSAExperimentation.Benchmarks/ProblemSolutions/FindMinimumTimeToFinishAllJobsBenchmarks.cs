@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindMinimumTimeToFinishAllJobs;
+using DSAExperimentation.LeetCode.Solutions.FindMinimumTimeToFinishAllJobs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

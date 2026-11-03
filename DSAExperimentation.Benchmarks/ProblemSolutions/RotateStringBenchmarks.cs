@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RotateString;
+using DSAExperimentation.LeetCode.Solutions.RotateString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

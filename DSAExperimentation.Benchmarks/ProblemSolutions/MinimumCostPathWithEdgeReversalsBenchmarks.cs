@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumCostPathWithEdgeReversals;
+using DSAExperimentation.LeetCode.Solutions.MinimumCostPathWithEdgeReversals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

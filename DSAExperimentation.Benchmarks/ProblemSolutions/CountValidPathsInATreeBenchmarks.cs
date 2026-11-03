@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountValidPathsInATree;
+using DSAExperimentation.LeetCode.Solutions.CountValidPathsInATree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

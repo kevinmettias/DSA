@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SingleNumberII;
+using DSAExperimentation.LeetCode.Solutions.SingleNumberII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountPartitionsWithMaxMinDifferenceAtMostK;
+using DSAExperimentation.LeetCode.Solutions.CountPartitionsWithMaxMinDifferenceAtMostK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

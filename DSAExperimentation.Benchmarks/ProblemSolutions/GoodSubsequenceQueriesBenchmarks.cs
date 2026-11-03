@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.GoodSubsequenceQueries;
+using DSAExperimentation.LeetCode.Solutions.GoodSubsequenceQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

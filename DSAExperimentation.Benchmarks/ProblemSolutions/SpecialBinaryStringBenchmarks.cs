@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SpecialBinaryString;
+using DSAExperimentation.LeetCode.Solutions.SpecialBinaryString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountLatticePointsInsideACircle;
+using DSAExperimentation.LeetCode.Solutions.CountLatticePointsInsideACircle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

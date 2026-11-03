@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CheckKnightTourConfiguration;
+using DSAExperimentation.LeetCode.Solutions.CheckKnightTourConfiguration;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

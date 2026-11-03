@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.Architecture;
 // The solutions and benchmarks compose the library through its public types (ARCHITECTURE
 // section 17.6a), and the compiler holds them to that only while the library grants its
 // internals to test assemblies alone. One InternalsVisibleTo line naming
-// DSAExperimentation.LeetCode or DSAExperimentation.Benchmarks would quietly make every storage
+// DSAExperimentation.LeetCode.Solutions or DSAExperimentation.Benchmarks would quietly make every storage
 // class, walk engine and visit guard reachable from a solution again, so a reach-in has to become
 // a library feature or a type made public on purpose instead.
 public sealed partial class InternalsVisibilityTests

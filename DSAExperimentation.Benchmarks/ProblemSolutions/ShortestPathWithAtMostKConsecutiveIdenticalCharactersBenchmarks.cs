@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ShortestPathWithAtMostKConsecutiveIdenticalCharacters;
+using DSAExperimentation.LeetCode.Solutions.ShortestPathWithAtMostKConsecutiveIdenticalCharacters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.VowelsGameInAString;
+using DSAExperimentation.LeetCode.Solutions.VowelsGameInAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

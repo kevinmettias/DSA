@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LongestRepeatingCharacterReplacement;
+using DSAExperimentation.LeetCode.Solutions.LongestRepeatingCharacterReplacement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

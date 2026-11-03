@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ValidArrangementOfPairs;
+using DSAExperimentation.LeetCode.Solutions.ValidArrangementOfPairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

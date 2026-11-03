@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.IsomorphicStrings;
+using DSAExperimentation.LeetCode.Solutions.IsomorphicStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

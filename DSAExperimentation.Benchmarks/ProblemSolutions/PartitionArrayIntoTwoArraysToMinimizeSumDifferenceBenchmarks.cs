@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.PartitionArrayIntoTwoArraysToMinimizeSumDifference;
+using DSAExperimentation.LeetCode.Solutions.PartitionArrayIntoTwoArraysToMinimizeSumDifference;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

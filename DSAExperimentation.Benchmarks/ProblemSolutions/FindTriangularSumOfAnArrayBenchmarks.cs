@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindTriangularSumOfAnArray;
+using DSAExperimentation.LeetCode.Solutions.FindTriangularSumOfAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountOfSmallerNumbersAfterSelf;
+using DSAExperimentation.LeetCode.Solutions.CountOfSmallerNumbersAfterSelf;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

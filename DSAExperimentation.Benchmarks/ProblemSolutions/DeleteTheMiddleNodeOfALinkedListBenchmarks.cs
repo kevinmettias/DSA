@@ -1,7 +1,7 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
-using DSAExperimentation.LeetCode.DeleteTheMiddleNodeOfALinkedList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode.Solutions.DeleteTheMiddleNodeOfALinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LongestWellPerformingInterval;
+using DSAExperimentation.LeetCode.Solutions.LongestWellPerformingInterval;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

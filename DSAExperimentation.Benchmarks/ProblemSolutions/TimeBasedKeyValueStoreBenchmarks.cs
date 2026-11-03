@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.TimeBasedKeyValueStore;
+using DSAExperimentation.LeetCode.Solutions.TimeBasedKeyValueStore;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

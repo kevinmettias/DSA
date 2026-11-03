@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ZeroOneMatrix;
+using DSAExperimentation.LeetCode.Solutions.ZeroOneMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

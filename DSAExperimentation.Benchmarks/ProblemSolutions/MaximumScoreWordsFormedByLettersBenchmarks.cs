@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumScoreWordsFormedByLetters;
+using DSAExperimentation.LeetCode.Solutions.MaximumScoreWordsFormedByLetters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

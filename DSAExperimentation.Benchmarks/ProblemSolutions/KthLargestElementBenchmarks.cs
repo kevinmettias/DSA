@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.KthLargestElement;
+using DSAExperimentation.LeetCode.Solutions.KthLargestElement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

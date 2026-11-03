@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.LinkedListRandomNode;
+using DSAExperimentation.LeetCode.Solutions.LinkedListRandomNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

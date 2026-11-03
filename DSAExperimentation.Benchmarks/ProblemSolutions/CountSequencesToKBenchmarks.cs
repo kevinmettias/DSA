@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountSequencesToK;
+using DSAExperimentation.LeetCode.Solutions.CountSequencesToK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

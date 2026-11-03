@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ParallelCoursesIII;
+using DSAExperimentation.LeetCode.Solutions.ParallelCoursesIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

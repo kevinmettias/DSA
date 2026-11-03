@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumTimeToReachTargetWithLimitedPower;
+using DSAExperimentation.LeetCode.Solutions.MinimumTimeToReachTargetWithLimitedPower;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

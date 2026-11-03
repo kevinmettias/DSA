@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumTimeToVisitDisappearingNodes;
+using DSAExperimentation.LeetCode.Solutions.MinimumTimeToVisitDisappearingNodes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

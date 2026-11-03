@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LongestUploadedPrefix;
+using DSAExperimentation.LeetCode.Solutions.LongestUploadedPrefix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

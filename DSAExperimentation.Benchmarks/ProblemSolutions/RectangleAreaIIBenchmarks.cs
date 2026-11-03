@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RectangleAreaII;
+using DSAExperimentation.LeetCode.Solutions.RectangleAreaII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

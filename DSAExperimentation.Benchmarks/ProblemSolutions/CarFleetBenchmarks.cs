@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.LeetCode.CarFleet;
+using DSAExperimentation.LeetCode.Solutions.CarFleet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

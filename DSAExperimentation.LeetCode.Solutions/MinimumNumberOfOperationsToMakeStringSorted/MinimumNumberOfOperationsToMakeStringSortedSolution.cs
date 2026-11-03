@@ -1,0 +1,173 @@
+using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.DataStructures.FenwickTree;
+
+namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeStringSorted;
+
+// LeetCode 1830. Minimum Number of Operations to Make String Sorted: the operation
+// the problem describes is exactly the "previous permutation" step, so the number of
+// operations is the string's 0-indexed rank among the distinct permutations of its
+// own multiset of characters, sorted ascending, reported modulo 1e9+7.
+//
+// Both strategies sweep the string left to right accumulating the same rank sum: at
+// each position, every not-yet-placed letter smaller than the current one could have
+// led the remaining suffix, and each such choice contributes (remaining-1)! divided by
+// the factorial of every letter's remaining count - folded here as a running
+// inverse-factorial product that costs one multiplication per step instead of a
+// recomputation. LeetCodeModulus supplies the modulus, and the Fermat's-little-theorem
+// inverse the factorial table needs is written out below rather than read from
+// ModularInverse, since the baseline builds the same table.
+//
+// The only thing the two strategies differ in is how they answer "how many
+// remaining letters are smaller than this one": a linear scan of the 26-slot
+// frequency array, or a PrefixQuery on this repo's own Binary Indexed Tree over
+// that same array.
+internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
+{
+    private const int AlphabetSize = 26;
+
+    // The textbook answer without this repo: scan the frequency array for the
+    // smaller-letter count at every position. Nothing but BCL arrays inside - only
+    // the modulus itself is shared, because 1e9+7 is LeetCode's reporting
+    // convention rather than part of the algorithm's character.
+    public static int MakeStringSortedByFrequencyScan(string text)
+    {
+        var (factorial, inverseFactorial) = BuildFactorialTables(text.Length);
+        var remaining = BuildFrequencyTable(text);
+        var state = new RankState(0L, InverseFactorialProduct(remaining, inverseFactorial), text.Length);
+
+        foreach (var letter in text)
+        {
+            var index = letter - 'a';
+            var smaller = 0;
+
+            for (var candidate = 0; candidate < index; candidate++)
+            {
+                smaller += remaining[candidate];
+            }
+
+            state = Place(state, smaller, remaining[index], factorial);
+            remaining[index]--;
+        }
+
+        return (int)state.Rank;
+    }
+
+    // This repo's FenwickTree<int, SumOperation<int>>, seeded from the same 26-slot
+    // frequency array, answers the smaller-letter count as one PrefixQuery and
+    // absorbs each placement as one Add - the same value-indexed-Fenwick shape
+    // MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigits uses for digits.
+    public static int MakeStringSortedByFenwickSweep(string text)
+    {
+        var (factorial, inverseFactorial) = BuildFactorialTables(text.Length);
+        var remaining = BuildFrequencyTable(text);
+        var counts = new FenwickTree<int, SumOperation<int>>(remaining);
+        var state = new RankState(0L, InverseFactorialProduct(remaining, inverseFactorial), text.Length);
+
+        foreach (var letter in text)
+        {
+            var index = letter - 'a';
+            var smaller = index == 0 ? 0 : counts.PrefixQuery(index - 1);
+
+            state = Place(state, smaller, remaining[index], factorial);
+            remaining[index]--;
+            counts.Add(index, -1);
+        }
+
+        return (int)state.Rank;
+    }
+
+    // One placement step, shared so the two strategies differ only in how `smaller`
+    // was obtained: credit the ranks skipped by every smaller leading letter, then
+    // fold this letter's own remaining count back into the inverse-factorial
+    // product (it drops from k! to (k-1)! once the letter is consumed).
+    private static RankState Place(RankState state, int smaller, int remainingOfLetter, long[] factorial)
+    {
+        var rank = smaller > 0
+            ? RankAfterSmallerLeadingLetters(state, smaller, factorial)
+            : state.Rank;
+
+        return new RankState(
+            rank,
+            state.InverseFactorialProduct * remainingOfLetter % LeetCodeModulus.Value,
+            state.Remaining - 1);
+    }
+
+    // The ranks this position skips: every smaller leading letter could head the
+    // remaining suffix, each contributing (remaining-1)! over the current
+    // inverse-factorial product.
+    private static long RankAfterSmallerLeadingLetters(RankState state, int smaller, long[] factorial)
+        => (state.Rank + ((long)smaller * factorial[state.Remaining - 1] % LeetCodeModulus.Value
+            * state.InverseFactorialProduct)) % LeetCodeModulus.Value;
+
+    private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTables(int length)
+    {
+        var factorial = new long[length + 1];
+        var inverseFactorial = new long[length + 1];
+        factorial[0] = 1;
+
+        for (var i = 1; i <= length; i++)
+        {
+            factorial[i] = factorial[i - 1] * i % LeetCodeModulus.Value;
+        }
+
+        inverseFactorial[length] = ModInverse(factorial[length]);
+
+        for (var i = length; i > 0; i--)
+        {
+            inverseFactorial[i - 1] = inverseFactorial[i] * i % LeetCodeModulus.Value;
+        }
+
+        return (factorial, inverseFactorial);
+    }
+
+    private static int[] BuildFrequencyTable(string text)
+    {
+        var frequency = new int[AlphabetSize];
+
+        foreach (var letter in text)
+        {
+            frequency[letter - 'a']++;
+        }
+
+        return frequency;
+    }
+
+    private static long InverseFactorialProduct(int[] frequency, long[] inverseFactorial)
+    {
+        var product = 1L;
+
+        foreach (var count in frequency)
+        {
+            product = product * inverseFactorial[count] % LeetCodeModulus.Value;
+        }
+
+        return product;
+    }
+
+    private readonly record struct RankState(long Rank, long InverseFactorialProduct, int Remaining);
+
+    // value^exponent mod LeetCodeModulus.Value by repeated squaring, restated rather than called on
+    // ModularPower: a baseline may read LeetCode's modulus, but it runs no library algorithm
+    // (ARCHITECTURE 17.5).
+    private static long ModPower(long value, long exponent)
+    {
+        var result = 1L;
+        value %= LeetCodeModulus.Value;
+
+        while (exponent > 0)
+        {
+            if ((exponent & 1) == 1)
+            {
+                result = result * value % LeetCodeModulus.Value;
+            }
+
+            value = value * value % LeetCodeModulus.Value;
+            exponent >>= 1;
+        }
+
+        return result;
+    }
+
+    // Fermat's little theorem: for the prime LeetCodeModulus.Value, value^(LeetCodeModulus.Value - 2) is value's inverse.
+    private static long ModInverse(long value) => ModPower(value, LeetCodeModulus.Value - 2);
+}

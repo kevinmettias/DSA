@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NimGame;
+using DSAExperimentation.LeetCode.Solutions.NimGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

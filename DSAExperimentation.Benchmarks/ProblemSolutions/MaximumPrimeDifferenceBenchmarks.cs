@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumPrimeDifference;
+using DSAExperimentation.LeetCode.Solutions.MaximumPrimeDifference;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

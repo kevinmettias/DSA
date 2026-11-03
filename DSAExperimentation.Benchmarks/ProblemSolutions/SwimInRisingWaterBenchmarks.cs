@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SwimInRisingWater;
+using DSAExperimentation.LeetCode.Solutions.SwimInRisingWater;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CheapestFlightsWithinKStops;
+using DSAExperimentation.LeetCode.Solutions.CheapestFlightsWithinKStops;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

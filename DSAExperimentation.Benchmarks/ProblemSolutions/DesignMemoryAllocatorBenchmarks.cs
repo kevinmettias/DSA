@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DesignMemoryAllocator;
+using DSAExperimentation.LeetCode.Solutions.DesignMemoryAllocator;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

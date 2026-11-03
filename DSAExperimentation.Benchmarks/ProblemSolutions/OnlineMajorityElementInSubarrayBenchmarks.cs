@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.OnlineMajorityElementInSubarray;
+using DSAExperimentation.LeetCode.Solutions.OnlineMajorityElementInSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

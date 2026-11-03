@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DataStreamAsDisjointIntervals;
+using DSAExperimentation.LeetCode.Solutions.DataStreamAsDisjointIntervals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

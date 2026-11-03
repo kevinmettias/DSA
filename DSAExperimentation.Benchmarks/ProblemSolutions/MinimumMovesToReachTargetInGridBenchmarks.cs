@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumMovesToReachTargetInGrid;
+using DSAExperimentation.LeetCode.Solutions.MinimumMovesToReachTargetInGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.SplitLinkedListInParts;
+using DSAExperimentation.LeetCode.Solutions.SplitLinkedListInParts;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

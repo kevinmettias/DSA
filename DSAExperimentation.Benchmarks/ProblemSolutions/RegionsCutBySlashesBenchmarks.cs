@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.RegionsCutBySlashes;
+using DSAExperimentation.LeetCode.Solutions.RegionsCutBySlashes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

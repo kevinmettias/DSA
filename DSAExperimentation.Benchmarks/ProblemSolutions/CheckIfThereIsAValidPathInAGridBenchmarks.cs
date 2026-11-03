@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CheckIfThereIsAValidPathInAGrid;
+using DSAExperimentation.LeetCode.Solutions.CheckIfThereIsAValidPathInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

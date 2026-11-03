@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.LeetCode.PrefixAndSuffixSearch;
+using DSAExperimentation.LeetCode.Solutions.PrefixAndSuffixSearch;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

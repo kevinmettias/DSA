@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumAreaRectangleII;
+using DSAExperimentation.LeetCode.Solutions.MinimumAreaRectangleII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ShortestUncommonSubstringInAnArray;
+using DSAExperimentation.LeetCode.Solutions.ShortestUncommonSubstringInAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

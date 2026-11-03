@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.WordsWithinTwoEditsOfDictionary;
+using DSAExperimentation.LeetCode.Solutions.WordsWithinTwoEditsOfDictionary;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1331,8 +1331,8 @@ Bottom to top. The first three are peers, and every tier above them reads only t
 | 2. Operations | `DSAExperimentation/Algorithms/**` | §2's third axis |
 | 3. Domain | `DSAExperimentation/Domain/**` | What a problem says about its world, pulled out of the problems that say it: models, rules, constants (§17.6) |
 | Mechanisms | `DSAExperimentation/Mechanisms/**` | State run by a rule of its own that the caller observes — dropping what no caller named, or handing out what the caller never stored: the LRU and LFU caches, keys that expire, and an allocator of the smallest free number (§17.6b) |
-| 4. LeetCode solutions | `DSAExperimentation.LeetCode/**` (own project) | One folder per problem, every strategy for it; at the root, LeetCode's own notation and answer rules |
-| 5. Harnesses | `DSAExperimentation.Tests/**` (the library's tiers), `DSAExperimentation.LeetCode.Tests/**` (tier 4), `DSAExperimentation.Benchmarks/**` | Assertions and measurement, nothing else |
+| 4. LeetCode solutions | `DSAExperimentation.LeetCode.Solutions/**` (own project) | One folder per problem, every strategy for it; at the root, LeetCode's own notation and answer rules |
+| 5. Harnesses | `DSAExperimentation.Tests/**` (the library's tiers), `DSAExperimentation.LeetCode.Solutions.Tests/**` (tier 4), `DSAExperimentation.Benchmarks/**` | Assertions and measurement, nothing else |
 | LeetCode catalog | `DSAExperimentation.LeetCode.Catalog/**` (own project), written only by `DSAExperimentation.LeetCode.Catalog.Sync` | What LeetCode says about each covered problem, and every case a harness runs on it, as a checked-in snapshot (§17.12). It reads no tier, and only harnesses read it |
 
 Domain is a peer of DataStructures and Algorithms, not a tier above them. The owner ruled it as
@@ -1352,12 +1352,12 @@ by number, so it sits between tiers 3 and 4 without renumbering either, and "tie
 "tier 5" keep their meaning. ARCHITECTURE-HISTORY.md §17.6 records why tier 3 was retired once and
 then restored with a wider remit.
 
-Namespaces continue to mirror the physical path exactly (§13.1): insert `LeetCode.` immediately
+Namespaces continue to mirror the physical path exactly (§13.1): insert `LeetCode.Solutions.` immediately
 after `DSAExperimentation.` for the LeetCode project, then follow the rest of the path.
 
 ### 17.3 Tier 4: a solution class holds *every* strategy, not just the good one
 
-`DSAExperimentation.LeetCode/<Problem>/<Problem>Solution.cs` is a static class whose methods are
+`DSAExperimentation.LeetCode.Solutions/<Problem>/<Problem>Solution.cs` is a static class whose methods are
 the strategies, named `<Operation>By<Strategy>` — `AddByBitStack`, `TryFindIndicesByBruteForce`,
 `MinTurnsByReduceGraph`. The naive baseline is a first-class method there, not scaffolding hidden
 in a benchmark, because:
@@ -1453,7 +1453,7 @@ not a repo container, a traversal engine, a mechanism, `GridSize` or `GridNeighb
 call, not a Domain model (a combination lock, a sliding puzzle, a modulus witness), and not even a
 compile-time constant read from one, such as `AlgorithmConstants.HalvingFactor`. A baseline states
 its own constants. `checks.json` declares this bar to `check-duplicate-constant` as `barred_reads`,
-so a private copy in `DSAExperimentation.LeetCode` of a library value is not reported as a
+so a private copy in `DSAExperimentation.LeetCode.Solutions` of a library value is not reported as a
 duplicate; a copy the problem exposes still is. LeetCode's own notation is not the library's, so a baseline reads it like any
 other arm: `LeetCodeAnswer.None`, and `LeetCodeModulus.Value`, the 10^9 + 7 counting answers are
 reported in, which the owner ruled a baseline may read (2026-11-01).
@@ -1623,7 +1623,7 @@ lives in Domain, whichever peer reads it.
 
 Enforcement comes from the following, chosen deliberately over a project-per-tier split:
 
-- **`LeetCode` is its own project** (`DSAExperimentation.LeetCode`, referencing
+- **`LeetCode` is its own project** (`DSAExperimentation.LeetCode.Solutions`, referencing
   `DSAExperimentation`). Nothing below it can depend on a solution, because it cannot see one.
   This seam is worth a project because it is strictly one-way and keeps 1,105 problem classes out
   of the framework assembly.
@@ -1639,9 +1639,9 @@ Enforcement comes from the following, chosen deliberately over a project-per-tie
   `Tests/Architecture/InternalsVisibilityTests.cs` fails if the library grants its internals to
   anything but a test assembly.
 - **The test projects split the same way.** `DSAExperimentation.Tests` tests the library's tiers
-  and does not reference `DSAExperimentation.LeetCode`; every solution-facing test — the per-problem
-  `<Problem>SolutionTests` at `DSAExperimentation.LeetCode.Tests/<Problem>/`, the seam tests beside
-  them, the LeetCode catalog — lives in `DSAExperimentation.LeetCode.Tests`. A core test that
+  and does not reference `DSAExperimentation.LeetCode.Solutions`; every solution-facing test — the per-problem
+  `<Problem>SolutionTests` at `DSAExperimentation.LeetCode.Solutions.Tests/<Problem>/`, the seam tests beside
+  them, the LeetCode catalog — lives in `DSAExperimentation.LeetCode.Solutions.Tests`. A core test that
   reached for a solution would not compile.
 - **`Tests/Architecture/LayeringTests.cs` polices the rest.** DataStructures, Algorithms,
   Mechanisms and Domain stay in one assembly and one project, and the test fails on any file of that
@@ -1741,14 +1741,14 @@ The two places that do touch the machine are harness tools, and each keeps its I
 logic: the benchmark baseline tool (`BaselineCommand`'s files, clock and exit code around a pure
 comparison) and the LeetCode catalog (`LeetCodeApiClient`'s network and `LeetCodeQuestionCache`'s
 disk around pure records, mapping and validation). `Tests/Architecture/MachineAccessTests.cs` scans
-`DSAExperimentation` and `DSAExperimentation.LeetCode`, with comments and strings blanked, and fails
+`DSAExperimentation` and `DSAExperimentation.LeetCode.Solutions`, with comments and strings blanked, and fails
 on any of those accesses.
 
 ### 17.7 Tier 5: what stays in a harness
 
 Two things, and only two:
 
-- **Assertions.** A test file — `DSAExperimentation.LeetCode.Tests/<Problem>/<Problem>SolutionTests.cs`,
+- **Assertions.** A test file — `DSAExperimentation.LeetCode.Solutions.Tests/<Problem>/<Problem>SolutionTests.cs`,
   named for the solution class it tests, at the path that mirrors it — states its cases once as a
   `public static TheoryData<...>`: read from the LeetCode catalog (§17.12) where the harness has
   moved onto it, LeetCode's published examples written inline where it has not. It then carries one
@@ -1806,7 +1806,7 @@ judge reads back from it: there, each level along its next pointers with `#` bet
 
 §6 records the repo's standing gate notes; these are the ones §17's own conventions create.
 
-- **`check-responsibility-extraction` is waived tier-wide over `DSAExperimentation.LeetCode/*/*Solution.cs`.**
+- **`check-responsibility-extraction` is waived tier-wide over `DSAExperimentation.LeetCode.Solutions/*/*Solution.cs`.**
   The check reads three or more public declarations sharing a name prefix as a hidden module
   boundary. §17.3's `<Operation>By<Strategy>` naming produces that prefix wherever a problem has
   enough strategies or overloads — `MinTurnsByMutationQueue`/`MinTurnsByReduceGraph`, each with a
@@ -1873,7 +1873,7 @@ judge reads back from it: there, each level along its next pointers with `#` bet
 ### 17.10 Migration status
 
 Complete: every covered problem has its `<Problem>Solution` in
-`DSAExperimentation.LeetCode/<Problem>/`, and its test and benchmark are harnesses over it. Count
+`DSAExperimentation.LeetCode.Solutions/<Problem>/`, and its test and benchmark are harnesses over it. Count
 this by solution-file existence, not by the coverage manifest's tier tag, which under-reports.
 
 In progress: moving the domain knowledge problem folders still hold into `Domain/` (§17.6). A pilot
@@ -2001,7 +2001,7 @@ Open items:
 
 There is one harness shape: a hand-written test and a hand-written benchmark per problem, over its
 solution class. What they share is LeetCode's own conventions, in
-`DSAExperimentation.LeetCode/Conventions/`: `LeetCodeWireFormat` (LeetCode's array notation for
+`DSAExperimentation.LeetCode.Solutions/Conventions/`: `LeetCodeWireFormat` (LeetCode's array notation for
 trees and lists, both directions) and `LeetCodeAnswers` (its answer-equality rules — exact,
 sequence, any-order, rows-in-any-order, within tolerance). A test or benchmark that needs either
 calls these rather than writing its own `BuildList` or order-insensitive comparison. Sizing a
@@ -2160,19 +2160,19 @@ unbound name answers with an error symbol and hides the reference a rule asked a
   underscore-separated word is the member's name, and so does every other non-private static
   method - the input-preparation helpers §17.4 makes public so a benchmark can hoist them, each
   asserted on what it builds. This is the check the `check-test-coverage` waiver over
-  `DSAExperimentation.LeetCode/**` rests on.
+  `DSAExperimentation.LeetCode.Solutions/**` rests on.
 - **§12.4's "per-call state belongs to the call"** — `AmbientStateTests`. No file in
-  `DSAExperimentation` or `DSAExperimentation.LeetCode` may declare
+  `DSAExperimentation` or `DSAExperimentation.LeetCode.Solutions` may declare
   an `AsyncLocal`, `ThreadLocal` or `[ThreadStatic]` slot; a hook or algebra that needs a runtime
   value carries it as a field. Comments and strings are blanked through the same
   `RepositoryFiles.CodeOf` the witness rule reads base lists with.
 - **§17.6c's "nothing below the harness touches the machine"** — `MachineAccessTests`. No file in
-  `DSAExperimentation` or `DSAExperimentation.LeetCode` may reach the file system, the network, the
+  `DSAExperimentation` or `DSAExperimentation.LeetCode.Solutions` may reach the file system, the network, the
   clock, a thread, the console, ambient randomness or the process; a seeded `Random` a caller passes
   in is the only randomness. Each kind of access has its own pattern and finding, and theory cases
   pin both what each pattern catches and the look-alikes it leaves alone.
 - **§17.3's "a problem folder reaches into another only along a named edge"** —
-  `ProblemImportTests`. Inside `DSAExperimentation.LeetCode`, a folder may name another problem's
+  `ProblemImportTests`. Inside `DSAExperimentation.LeetCode.Solutions`, a folder may name another problem's
   folder only along an allow-listed edge whose reason opens `Delegation:` or `Subroutine:`. An
   imported folder imports none, and the tier's root and `Conventions/` import no problem. Every
   entry fails once its edge disappears. The scan binds every name in the solution project's

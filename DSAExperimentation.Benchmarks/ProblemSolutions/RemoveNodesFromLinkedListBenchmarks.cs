@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
-using DSAExperimentation.LeetCode.RemoveNodesFromLinkedList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode.Solutions.RemoveNodesFromLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

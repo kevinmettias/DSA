@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimizeMaximumComponentCost;
+using DSAExperimentation.LeetCode.Solutions.MinimizeMaximumComponentCost;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

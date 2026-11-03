@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountNumberOfTrapezoidsII;
+using DSAExperimentation.LeetCode.Solutions.CountNumberOfTrapezoidsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

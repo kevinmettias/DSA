@@ -21,7 +21,7 @@ public sealed partial class RepositoryCompilationTests
         new()
         {
             "DSAExperimentation.DataStructures.AlgorithmConstants",
-            "DSAExperimentation.LeetCode.TwoSum.TwoSumSolution",
+            "DSAExperimentation.LeetCode.Solutions.TwoSum.TwoSumSolution",
             "DSAExperimentation.Benchmarks.ProblemSolutions.TwoSumBenchmarks",
             "DSAExperimentation.Benchmarks.Fixtures.PolygonWorkloads",
         };

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SubarraysDistinctElementSumOfSquaresII;
+using DSAExperimentation.LeetCode.Solutions.SubarraysDistinctElementSumOfSquaresII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

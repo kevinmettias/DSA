@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumAndMinimumSumsOfAtMostSizeKSubsequences;
+using DSAExperimentation.LeetCode.Solutions.MaximumAndMinimumSumsOfAtMostSizeKSubsequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumPossibleMaximumWaitingTime;
+using DSAExperimentation.LeetCode.Solutions.MinimumPossibleMaximumWaitingTime;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

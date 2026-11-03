@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MakeArrayNonDecreasing;
+using DSAExperimentation.LeetCode.Solutions.MakeArrayNonDecreasing;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

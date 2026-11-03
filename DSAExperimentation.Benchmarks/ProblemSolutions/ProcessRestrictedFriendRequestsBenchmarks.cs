@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ProcessRestrictedFriendRequests;
+using DSAExperimentation.LeetCode.Solutions.ProcessRestrictedFriendRequests;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

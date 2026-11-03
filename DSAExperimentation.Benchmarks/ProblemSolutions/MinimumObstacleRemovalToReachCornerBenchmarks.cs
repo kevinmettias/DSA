@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Grids;
-using DSAExperimentation.LeetCode.MinimumObstacleRemovalToReachCorner;
+using DSAExperimentation.LeetCode.Solutions.MinimumObstacleRemovalToReachCorner;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.PopulatingNextRightPointersInEachNodeII;
+using DSAExperimentation.LeetCode.Solutions.PopulatingNextRightPointersInEachNodeII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

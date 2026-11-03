@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MirrorReflection;
+using DSAExperimentation.LeetCode.Solutions.MirrorReflection;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

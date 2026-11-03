@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfValidMoveCombinationsOnChessboard;
+using DSAExperimentation.LeetCode.Solutions.NumberOfValidMoveCombinationsOnChessboard;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

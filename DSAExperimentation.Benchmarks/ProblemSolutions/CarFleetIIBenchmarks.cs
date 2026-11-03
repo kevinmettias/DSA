@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CarFleetII;
+using DSAExperimentation.LeetCode.Solutions.CarFleetII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

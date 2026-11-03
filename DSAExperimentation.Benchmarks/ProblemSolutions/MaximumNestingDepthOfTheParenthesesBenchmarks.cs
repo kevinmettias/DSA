@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumNestingDepthOfTheParentheses;
+using DSAExperimentation.LeetCode.Solutions.MaximumNestingDepthOfTheParentheses;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.SegmentTree;
-using DSAExperimentation.LeetCode.MinimumOperationsToEqualizeSubarrays;
+using DSAExperimentation.LeetCode.Solutions.MinimumOperationsToEqualizeSubarrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

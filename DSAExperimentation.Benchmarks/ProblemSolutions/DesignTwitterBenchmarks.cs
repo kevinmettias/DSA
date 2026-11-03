@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DesignTwitter;
+using DSAExperimentation.LeetCode.Solutions.DesignTwitter;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

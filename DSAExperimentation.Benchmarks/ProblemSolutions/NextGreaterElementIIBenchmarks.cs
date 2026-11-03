@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NextGreaterElementII;
+using DSAExperimentation.LeetCode.Solutions.NextGreaterElementII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.TransposeMatrix;
+using DSAExperimentation.LeetCode.Solutions.TransposeMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

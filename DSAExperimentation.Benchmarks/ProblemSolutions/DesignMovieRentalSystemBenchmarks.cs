@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DesignMovieRentalSystem;
+using DSAExperimentation.LeetCode.Solutions.DesignMovieRentalSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

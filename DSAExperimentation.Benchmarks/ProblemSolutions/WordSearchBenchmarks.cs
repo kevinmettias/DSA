@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.WordSearch;
+using DSAExperimentation.LeetCode.Solutions.WordSearch;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

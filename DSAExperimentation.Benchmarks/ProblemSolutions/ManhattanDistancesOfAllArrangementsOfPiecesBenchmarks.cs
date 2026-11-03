@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ManhattanDistancesOfAllArrangementsOfPieces;
+using DSAExperimentation.LeetCode.Solutions.ManhattanDistancesOfAllArrangementsOfPieces;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

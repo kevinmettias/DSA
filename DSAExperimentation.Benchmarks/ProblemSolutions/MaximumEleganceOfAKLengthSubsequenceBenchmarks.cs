@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumEleganceOfAKLengthSubsequence;
+using DSAExperimentation.LeetCode.Solutions.MaximumEleganceOfAKLengthSubsequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

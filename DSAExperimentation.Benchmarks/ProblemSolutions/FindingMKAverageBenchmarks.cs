@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindingMKAverage;
+using DSAExperimentation.LeetCode.Solutions.FindingMKAverage;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

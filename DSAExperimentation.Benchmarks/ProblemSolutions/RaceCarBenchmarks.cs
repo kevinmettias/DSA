@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.States;
-using DSAExperimentation.LeetCode.RaceCar;
+using DSAExperimentation.LeetCode.Solutions.RaceCar;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

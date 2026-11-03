@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumNumberOfVisitedCellsInAGrid;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfVisitedCellsInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

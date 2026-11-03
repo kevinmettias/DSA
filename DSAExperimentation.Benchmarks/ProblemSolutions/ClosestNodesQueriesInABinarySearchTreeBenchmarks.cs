@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.ClosestNodesQueriesInABinarySearchTree;
+using DSAExperimentation.LeetCode.Solutions.ClosestNodesQueriesInABinarySearchTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

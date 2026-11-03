@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountTheNumberOfCompleteComponents;
+using DSAExperimentation.LeetCode.Solutions.CountTheNumberOfCompleteComponents;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

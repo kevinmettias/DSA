@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.KthSmallestPathXORSum;
+using DSAExperimentation.LeetCode.Solutions.KthSmallestPathXORSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

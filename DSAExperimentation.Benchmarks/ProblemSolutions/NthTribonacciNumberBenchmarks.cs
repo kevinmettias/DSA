@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NthTribonacciNumber;
+using DSAExperimentation.LeetCode.Solutions.NthTribonacciNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

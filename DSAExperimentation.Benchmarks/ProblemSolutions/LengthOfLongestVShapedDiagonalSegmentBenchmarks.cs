@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.LengthOfLongestVShapedDiagonalSegment;
+using DSAExperimentation.LeetCode.Solutions.LengthOfLongestVShapedDiagonalSegment;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

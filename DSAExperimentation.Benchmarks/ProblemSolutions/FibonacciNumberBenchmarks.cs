@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FibonacciNumber;
+using DSAExperimentation.LeetCode.Solutions.FibonacciNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

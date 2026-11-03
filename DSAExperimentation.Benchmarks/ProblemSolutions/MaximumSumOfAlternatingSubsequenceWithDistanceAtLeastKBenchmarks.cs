@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastK;
+using DSAExperimentation.LeetCode.Solutions.MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

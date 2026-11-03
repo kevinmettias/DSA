@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SimilarStringGroups;
+using DSAExperimentation.LeetCode.Solutions.SimilarStringGroups;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

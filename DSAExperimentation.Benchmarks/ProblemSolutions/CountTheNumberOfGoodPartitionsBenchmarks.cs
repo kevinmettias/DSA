@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountTheNumberOfGoodPartitions;
+using DSAExperimentation.LeetCode.Solutions.CountTheNumberOfGoodPartitions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

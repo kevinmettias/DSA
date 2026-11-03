@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfWaysToArriveAtDestination;
+using DSAExperimentation.LeetCode.Solutions.NumberOfWaysToArriveAtDestination;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

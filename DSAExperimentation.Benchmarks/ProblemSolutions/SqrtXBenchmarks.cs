@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SqrtX;
+using DSAExperimentation.LeetCode.Solutions.SqrtX;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

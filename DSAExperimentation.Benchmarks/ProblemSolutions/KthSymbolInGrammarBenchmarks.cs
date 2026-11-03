@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.KthSymbolInGrammar;
+using DSAExperimentation.LeetCode.Solutions.KthSymbolInGrammar;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumProductOfTheLengthOfTwoPalindromicSubsequences;
+using DSAExperimentation.LeetCode.Solutions.MaximumProductOfTheLengthOfTwoPalindromicSubsequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.LeetCode.WalkingRobotSimulation;
+using DSAExperimentation.LeetCode.Solutions.WalkingRobotSimulation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

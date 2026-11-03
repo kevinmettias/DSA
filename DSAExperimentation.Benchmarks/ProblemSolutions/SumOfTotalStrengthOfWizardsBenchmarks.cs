@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SumOfTotalStrengthOfWizards;
+using DSAExperimentation.LeetCode.Solutions.SumOfTotalStrengthOfWizards;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

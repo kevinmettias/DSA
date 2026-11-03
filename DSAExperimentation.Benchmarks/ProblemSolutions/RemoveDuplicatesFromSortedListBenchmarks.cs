@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
-using DSAExperimentation.LeetCode.RemoveDuplicatesFromSortedList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode.Solutions.RemoveDuplicatesFromSortedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

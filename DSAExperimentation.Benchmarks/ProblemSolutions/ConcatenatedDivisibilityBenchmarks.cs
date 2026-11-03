@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ConcatenatedDivisibility;
+using DSAExperimentation.LeetCode.Solutions.ConcatenatedDivisibility;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

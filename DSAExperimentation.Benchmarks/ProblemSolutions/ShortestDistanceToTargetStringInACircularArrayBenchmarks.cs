@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ShortestDistanceToTargetStringInACircularArray;
+using DSAExperimentation.LeetCode.Solutions.ShortestDistanceToTargetStringInACircularArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

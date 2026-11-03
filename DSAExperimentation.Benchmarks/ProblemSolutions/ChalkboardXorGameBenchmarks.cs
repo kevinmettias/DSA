@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ChalkboardXorGame;
+using DSAExperimentation.LeetCode.Solutions.ChalkboardXorGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.AhoCorasick;
-using DSAExperimentation.LeetCode.ConstructStringWithMinimumCost;
+using DSAExperimentation.LeetCode.Solutions.ConstructStringWithMinimumCost;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

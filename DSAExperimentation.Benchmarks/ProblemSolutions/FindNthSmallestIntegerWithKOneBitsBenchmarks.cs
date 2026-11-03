@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindNthSmallestIntegerWithKOneBits;
+using DSAExperimentation.LeetCode.Solutions.FindNthSmallestIntegerWithKOneBits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

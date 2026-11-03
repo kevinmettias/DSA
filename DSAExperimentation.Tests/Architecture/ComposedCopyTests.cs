@@ -14,7 +14,7 @@ public sealed partial class ComposedCopyTests
     // Keyed by the copy's full name: a constant that repeats a shared value but means something else.
     private static readonly Dictionary<string, string> AllowedCopies = new(StringComparer.Ordinal)
     {
-        ["DSAExperimentation.LeetCode.ValidSquare.ValidSquareSolution.FourthSideIndex"] =
+        ["DSAExperimentation.LeetCode.Solutions.ValidSquare.ValidSquareSolution.FourthSideIndex"] =
             "The fourth side's place among the sorted distances, not how many sides a polygon needs.",
     };
 

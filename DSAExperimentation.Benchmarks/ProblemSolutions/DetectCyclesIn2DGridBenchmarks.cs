@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DetectCyclesIn2DGrid;
+using DSAExperimentation.LeetCode.Solutions.DetectCyclesIn2DGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

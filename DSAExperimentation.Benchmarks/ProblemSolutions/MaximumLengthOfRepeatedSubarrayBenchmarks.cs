@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumLengthOfRepeatedSubarray;
+using DSAExperimentation.LeetCode.Solutions.MaximumLengthOfRepeatedSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

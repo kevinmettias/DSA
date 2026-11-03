@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximizeActiveSectionWithTradeII;
+using DSAExperimentation.LeetCode.Solutions.MaximizeActiveSectionWithTradeII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

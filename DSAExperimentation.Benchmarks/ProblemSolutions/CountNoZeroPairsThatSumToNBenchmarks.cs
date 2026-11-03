@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountNoZeroPairsThatSumToN;
+using DSAExperimentation.LeetCode.Solutions.CountNoZeroPairsThatSumToN;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

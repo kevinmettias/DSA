@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NextGreaterElementI;
+using DSAExperimentation.LeetCode.Solutions.NextGreaterElementI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

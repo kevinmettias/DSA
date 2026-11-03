@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumSubarraySumAfterAtMostKSwaps;
+using DSAExperimentation.LeetCode.Solutions.MaximumSubarraySumAfterAtMostKSwaps;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

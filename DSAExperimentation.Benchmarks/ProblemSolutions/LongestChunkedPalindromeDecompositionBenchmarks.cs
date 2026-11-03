@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LongestChunkedPalindromeDecomposition;
+using DSAExperimentation.LeetCode.Solutions.LongestChunkedPalindromeDecomposition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

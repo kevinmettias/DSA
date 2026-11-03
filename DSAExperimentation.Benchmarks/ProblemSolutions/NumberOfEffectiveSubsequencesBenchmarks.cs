@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfEffectiveSubsequences;
+using DSAExperimentation.LeetCode.Solutions.NumberOfEffectiveSubsequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

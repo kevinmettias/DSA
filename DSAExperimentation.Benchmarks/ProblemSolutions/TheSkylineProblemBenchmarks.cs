@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.TheSkylineProblem;
+using DSAExperimentation.LeetCode.Solutions.TheSkylineProblem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.LeetCode.EscapeALargeMaze;
+using DSAExperimentation.LeetCode.Solutions.EscapeALargeMaze;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

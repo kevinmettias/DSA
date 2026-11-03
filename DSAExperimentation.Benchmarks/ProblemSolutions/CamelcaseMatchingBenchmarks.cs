@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CamelcaseMatching;
+using DSAExperimentation.LeetCode.Solutions.CamelcaseMatching;
 using System.Text.RegularExpressions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

@@ -1,0 +1,162 @@
+using DSAExperimentation.Algorithms.Backtracking;
+
+namespace DSAExperimentation.LeetCode.Solutions.NumberOfSquarefulArrays;
+
+// LeetCode 996. Number of Squareful Arrays: how many distinct permutations of nums
+// have every adjacent pair summing to a perfect square.
+//
+// Both strategies sort a copy first so equal values sit together, which lets them
+// share PermutationsII's duplicate rule: at a given depth, skip a candidate equal
+// to its predecessor unless that predecessor is already placed. They differ in when
+// the squareful property is checked - the baseline builds every distinct
+// permutation and only then tests it, while the composed strategy folds the test
+// into Backtrack.Search's candidate enumeration, abandoning a partial arrangement
+// the moment its last placed pair fails instead of after every remaining position
+// has been filled in.
+internal static class NumberOfSquarefulArraysSolution
+{
+    // The textbook answer: plain recursion over a BCL used[] flag array, generating
+    // every distinct permutation in full and filtering at the leaves. Deliberately
+    // without this repo's backtracking engine - it is the arm the pruned strategy
+    // is measured against.
+    public static int CountSquarefulPermsByFullPermutationFilter(int[] nums)
+    {
+        var sorted = SortedCopy(nums);
+        var state = new PermutationState(sorted);
+
+        return Permute(state, depth: 0);
+    }
+
+    // This repo's Backtrack.Search drives the identical choose/explore/unchoose
+    // shape declaratively, with both the duplicate skip and the perfect-square
+    // adjacency folded into the candidate enumeration so illegal prefixes are never
+    // extended.
+    public static int CountSquarefulPermsByPrunedBacktracking(int[] nums)
+    {
+        var sorted = SortedCopy(nums);
+        var count = 0;
+        var state = new State(sorted.Length);
+
+        Backtrack.Search<State, int>(
+            state,
+            s => s.Values.Count == sorted.Length,
+            s => s.Values.Count == sorted.Length ? Array.Empty<int>() : NextCandidates(sorted, s),
+            (s, i) => { s.Used[i] = true; s.Values.Add(sorted[i]); },
+            (s, i) => { s.Used[i] = false; s.Values.RemoveAt(s.Values.Count - 1); },
+            _ => count++);
+
+        return count;
+    }
+
+    private static IEnumerable<int> NextCandidates(int[] sorted, State state)
+    {
+        for (var i = 0; i < sorted.Length; i++)
+        {
+            if (IsNextCandidate(sorted, state, i))
+            {
+                yield return i;
+            }
+        }
+    }
+
+    // A position may extend the arrangement when its value is still free, survives
+    // PermutationsII's duplicate rule - a value equal to its predecessor is skipped
+    // unless that predecessor is already placed - and sums to a perfect square with
+    // the value already placed; the first placement has no neighbour to match.
+    private static bool IsNextCandidate(int[] sorted, State state, int index)
+        => !state.Used[index] &&
+            (index == 0 || sorted[index] != sorted[index - 1] || state.Used[index - 1]) &&
+            (state.Values.Count == 0 || IsPerfectSquare(sorted[index] + state.Values[^1]));
+
+    private static int Permute(PermutationState state, int depth)
+    {
+        if (depth == state.Nums.Length)
+        {
+            return IsSquareful(state.Current) ? 1 : 0;
+        }
+
+        var count = 0;
+
+        for (var i = 0; i < state.Nums.Length; i++)
+        {
+            count += TryPlace(state, depth, i);
+        }
+
+        return count;
+    }
+
+    private static int TryPlace(PermutationState state, int depth, int index)
+    {
+        var used = state.Used;
+        var nums = state.Nums;
+
+        if (IsPlacementBlocked(index, nums, used))
+        {
+            return 0;
+        }
+
+        used[index] = true;
+        state.Current[depth] = nums[index];
+        var count = Permute(state, depth + 1);
+        used[index] = false;
+
+        return count;
+    }
+
+    // A value cannot be placed at this depth if its position is already taken, or if
+    // it repeats the value before it while that one is still free - the same
+    // duplicate rule the pruned strategy's candidate enumeration applies.
+    private static bool IsPlacementBlocked(int index, int[] nums, bool[] used)
+        => used[index] || (index > 0 && nums[index] == nums[index - 1] && !used[index - 1]);
+
+    private static bool IsSquareful(int[] arrangement)
+    {
+        for (var i = 1; i < arrangement.Length; i++)
+        {
+            if (!IsPerfectSquare(arrangement[i] + arrangement[i - 1]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static bool IsPerfectSquare(int value)
+    {
+        var root = (int)Math.Sqrt(value);
+        return root * root == value || (root + 1) * (root + 1) == value;
+    }
+
+    private static int[] SortedCopy(int[] nums)
+    {
+        var sorted = (int[])nums.Clone();
+        Array.Sort(sorted);
+        return sorted;
+    }
+
+    private sealed record State
+    {
+        public bool[] Used { get; }
+
+        public List<int> Values { get; } = [];
+
+        public State(int length) => Used = new bool[length];
+    }
+
+    private sealed record PermutationState
+    {
+        public int[] Nums { get; }
+
+        public bool[] Used { get; }
+
+        public int[] Current { get; }
+
+        public PermutationState(int[] nums)
+        {
+            Nums = nums;
+            Used = new bool[nums.Length];
+            Current = new int[nums.Length];
+        }
+    }
+}

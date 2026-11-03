@@ -1,8 +1,8 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
-using DSAExperimentation.LeetCode.DeleteNodesFromLinkedListPresentInArray;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode.Solutions.DeleteNodesFromLinkedListPresentInArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

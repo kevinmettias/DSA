@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ReachableNodesInSubdividedGraph;
+using DSAExperimentation.LeetCode.Solutions.ReachableNodesInSubdividedGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

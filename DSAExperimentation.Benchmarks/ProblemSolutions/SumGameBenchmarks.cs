@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SumGame;
+using DSAExperimentation.LeetCode.Solutions.SumGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

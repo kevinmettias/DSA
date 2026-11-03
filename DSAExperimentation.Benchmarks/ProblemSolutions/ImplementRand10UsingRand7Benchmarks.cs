@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ImplementRand10UsingRand7;
+using DSAExperimentation.LeetCode.Solutions.ImplementRand10UsingRand7;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

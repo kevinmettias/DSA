@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LetterCombinationsOfAPhoneNumber;
+using DSAExperimentation.LeetCode.Solutions.LetterCombinationsOfAPhoneNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

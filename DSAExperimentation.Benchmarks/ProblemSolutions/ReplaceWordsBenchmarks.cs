@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.ReplaceWords;
+using DSAExperimentation.LeetCode.Solutions.ReplaceWords;
 using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

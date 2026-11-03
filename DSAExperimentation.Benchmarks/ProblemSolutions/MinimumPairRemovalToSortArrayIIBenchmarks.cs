@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumPairRemovalToSortArrayII;
+using DSAExperimentation.LeetCode.Solutions.MinimumPairRemovalToSortArrayII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

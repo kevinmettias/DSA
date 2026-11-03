@@ -1,0 +1,191 @@
+using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Set;
+
+namespace DSAExperimentation.LeetCode.Solutions.EscapeALargeMaze;
+
+// LeetCode 1036. Escape a Large Maze: on a 10^6 x 10^6 board with at most 200
+// blocked cells, can a walk from source reach target?
+//
+// The board is never materialized. DepthFirstSearch.Traverse already models an
+// implicit graph through a bare Func<TNode, IEnumerable<TNode>> (its own doc
+// comment names exactly this "board too large to store" shape), and
+// Set<(int, int)> holds the blocked cells for O(1) membership. The successor
+// closure caps itself at the standard blocked.Count * (blocked.Count - 1) / 2
+// bound - the largest area that many blocked cells can wall off against a corner -
+// by counting its own invocations (Traverse calls successors exactly once per
+// newly visited node, so the closure's counter tracks the visited count without
+// needing access to Traverse's internals) and returning no further neighbors past
+// that bound. Reaching the bound means the start cell escaped into open space
+// rather than a sealed pocket; running that capped search from both source and
+// target, and checking whether either reaches the other, is the accepted
+// algorithm.
+//
+// Flood-filling a materialized board allocates the board itself, and LeetCode's board
+// has 10^12 cells, so it cannot answer the problem as posed and is not kept as a
+// strategy. The textbook answer is the same capped search written out as a BCL
+// breadth-first walk over a HashSet of seen cells. Each hoisted overload takes the
+// board's side length only as the coordinate clamp; the LeetCode-shaped ones pass
+// the real 10^6.
+internal static class EscapeALargeMazeSolution
+{
+    private const int PairCountDivisor = 2; // n choose 2: n * (n - 1) / PairCountDivisor
+    private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
+
+    // The textbook answer: the capped search from each end as a BCL breadth-first walk,
+    // the arm the composed traversal below is measured against (ARCHITECTURE 17.5).
+    public static bool CanEscapeByCappedBreadthFirstSearch(int[][] blockedCells, int[] source, int[] target) =>
+        CanEscapeByCappedBreadthFirstSearch(
+            BlockedHashSetOf(blockedCells), ToCell(source), ToCell(target), EscapeALargeMazeBoard.Size);
+
+    public static bool CanEscapeByCappedBreadthFirstSearch(
+        HashSet<(int Row, int Col)> blocked, (int Row, int Col) source, (int Row, int Col) target, int boardSize)
+    {
+        var board = (Blocked: blocked, Size: boardSize);
+
+        return CanEscapeOrReachByBreadthFirst(source, target, board) && CanEscapeOrReachByBreadthFirst(target, source, board);
+    }
+
+    private static HashSet<(int Row, int Col)> BlockedHashSetOf(int[][] blockedCells)
+    {
+        var blocked = new HashSet<(int Row, int Col)>();
+
+        foreach (var cell in blockedCells)
+        {
+            blocked.Add(ToCell(cell));
+        }
+
+        return blocked;
+    }
+
+    // Whether a walk from `start` reaches `other`, or sees more cells than the blocked
+    // cells could ever wall off - which means it escaped into open board.
+    private static bool CanEscapeOrReachByBreadthFirst(
+        (int Row, int Col) start, (int Row, int Col) other, (HashSet<(int Row, int Col)> Blocked, int Size) board)
+    {
+        var threshold = board.Blocked.Count * (board.Blocked.Count - 1) / PairCountDivisor;
+        var seen = new HashSet<(int Row, int Col)> { start };
+        var frontier = new Queue<(int Row, int Col)>([start]);
+
+        while (frontier.TryDequeue(out var cell))
+        {
+            if (cell == other || seen.Count > threshold)
+            {
+                return true;
+            }
+
+            EnqueueOpenNeighbors(cell, board, seen, frontier);
+        }
+
+        return false;
+    }
+
+    private static void EnqueueOpenNeighbors(
+        (int Row, int Col) cell,
+        (HashSet<(int Row, int Col)> Blocked, int Size) board,
+        HashSet<(int Row, int Col)> seen,
+        Queue<(int Row, int Col)> frontier)
+    {
+        foreach (var direction in Directions)
+        {
+            var next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
+
+            if (IsOpenCell(next, board) && seen.Add(next))
+            {
+                frontier.Enqueue(next);
+            }
+        }
+    }
+
+    private static bool IsOpenCell((int Row, int Col) cell, (HashSet<(int Row, int Col)> Blocked, int Size) board) =>
+        IsInBounds(cell.Row, cell.Col, board.Size) && !board.Blocked.Contains(cell);
+
+    // This repo's own implicit-graph search, capped at the pocket bound so its cost
+    // depends on the blocked-cell count alone and not on the board size at all.
+    public static bool CanEscapeByCappedTraversal(int[][] blockedCells, int[] source, int[] target) =>
+        CanEscapeByCappedTraversal(BuildBlocked(blockedCells), ToCell(source), ToCell(target), EscapeALargeMazeBoard.Size);
+
+    public static bool CanEscapeByCappedTraversal(
+        Set<(int Row, int Col)> blocked, (int Row, int Col) source, (int Row, int Col) target, int boardSize)
+    {
+        // Every helper below reads the blocked cells and the board's side length
+        // together - they are the board, so they travel as one argument.
+        var board = (Blocked: blocked, Size: boardSize);
+
+        return CanEscapeOrReach(source, target, board)
+            && CanEscapeOrReach(target, source, board);
+    }
+
+    private static bool CanEscapeOrReach(
+        (int Row, int Col) start,
+        (int Row, int Col) other,
+        (Set<(int Row, int Col)> Blocked, int Size) board)
+    {
+        // The pocket bound is a property of the blocked set alone, so the search
+        // derives it here instead of being handed a value computed from the same set.
+        var threshold = board.Blocked.Count * (board.Blocked.Count - 1) / PairCountDivisor;
+        var budget = new VisitBudget();
+
+        var reached = DepthFirstSearch.Traverse(start, cell => Successors(cell, board, threshold, budget));
+
+        return reached.Count > threshold || reached.Contains(other);
+    }
+
+    // Mutable per-search counter: Traverse calls the successors func exactly once
+    // per newly visited node, so this tracks the visited count across calls without
+    // needing access to Traverse's own internals. A captured local cannot do this
+    // once Successors is a real method rather than a closure, hence the holder.
+    private sealed class VisitBudget
+    {
+        public int VisitedCount { get; set; }
+    }
+
+    private static IEnumerable<(int Row, int Col)> Successors(
+        (int Row, int Col) cell,
+        (Set<(int Row, int Col)> Blocked, int Size) board,
+        int threshold,
+        VisitBudget budget)
+    {
+        budget.VisitedCount++;
+
+        if (budget.VisitedCount > threshold)
+        {
+            yield break;
+        }
+
+        foreach (var direction in Directions)
+        {
+            if (TryGetOpenNeighbor(cell, direction, board, out var next))
+            {
+                yield return next;
+            }
+        }
+    }
+
+    private static bool TryGetOpenNeighbor(
+        (int Row, int Col) cell,
+        (int DRow, int DCol) direction,
+        (Set<(int Row, int Col)> Blocked, int Size) board,
+        out (int Row, int Col) next)
+    {
+        next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
+
+        return IsInBounds(next.Row, next.Col, board.Size) && !board.Blocked.Has(next);
+    }
+
+    private static bool IsInBounds(int row, int col, int boardSize) =>
+        row >= 0 && row < boardSize && col >= 0 && col < boardSize;
+
+    private static Set<(int Row, int Col)> BuildBlocked(int[][] blockedCells)
+    {
+        var blocked = new Set<(int Row, int Col)>();
+
+        foreach (var cell in blockedCells)
+        {
+            blocked.TryAdd(ToCell(cell));
+        }
+
+        return blocked;
+    }
+
+    private static (int Row, int Col) ToCell(int[] cell) => (cell[0], cell[1]);
+}

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ImplementTrie;
+using DSAExperimentation.LeetCode.Solutions.ImplementTrie;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

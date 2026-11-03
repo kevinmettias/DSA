@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.RobotCollisions;
+using DSAExperimentation.LeetCode.Solutions.RobotCollisions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

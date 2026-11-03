@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBalls;
+using DSAExperimentation.LeetCode.Solutions.ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBalls;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

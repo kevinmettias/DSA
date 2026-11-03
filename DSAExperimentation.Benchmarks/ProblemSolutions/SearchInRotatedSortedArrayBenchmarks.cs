@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SearchInRotatedSortedArray;
+using DSAExperimentation.LeetCode.Solutions.SearchInRotatedSortedArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

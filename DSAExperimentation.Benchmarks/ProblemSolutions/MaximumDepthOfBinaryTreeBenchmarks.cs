@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.MaximumDepthOfBinaryTree;
+using DSAExperimentation.LeetCode.Solutions.MaximumDepthOfBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

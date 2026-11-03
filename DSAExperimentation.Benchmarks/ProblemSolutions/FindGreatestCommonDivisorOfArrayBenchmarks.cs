@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindGreatestCommonDivisorOfArray;
+using DSAExperimentation.LeetCode.Solutions.FindGreatestCommonDivisorOfArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

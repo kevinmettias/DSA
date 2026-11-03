@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Sequence;
-using DSAExperimentation.LeetCode.GroupsOfStrings;
+using DSAExperimentation.LeetCode.Solutions.GroupsOfStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.Dota2Senate;
+using DSAExperimentation.LeetCode.Solutions.Dota2Senate;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

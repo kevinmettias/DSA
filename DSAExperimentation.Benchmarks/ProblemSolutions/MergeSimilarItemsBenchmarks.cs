@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MergeSimilarItems;
+using DSAExperimentation.LeetCode.Solutions.MergeSimilarItems;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

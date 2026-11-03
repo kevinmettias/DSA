@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheDuplicateNumber;
+using DSAExperimentation.LeetCode.Solutions.FindTheDuplicateNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

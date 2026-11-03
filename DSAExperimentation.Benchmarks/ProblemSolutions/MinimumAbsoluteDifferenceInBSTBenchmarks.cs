@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.MinimumAbsoluteDifferenceInBST;
+using DSAExperimentation.LeetCode.Solutions.MinimumAbsoluteDifferenceInBST;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

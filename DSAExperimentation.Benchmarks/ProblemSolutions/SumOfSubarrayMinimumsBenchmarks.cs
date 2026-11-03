@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SumOfSubarrayMinimums;
+using DSAExperimentation.LeetCode.Solutions.SumOfSubarrayMinimums;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

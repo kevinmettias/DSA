@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Sequence;
-using DSAExperimentation.LeetCode.MaximizeTheDistanceBetweenPointsOnASquare;
+using DSAExperimentation.LeetCode.Solutions.MaximizeTheDistanceBetweenPointsOnASquare;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ReachingPoints;
+using DSAExperimentation.LeetCode.Solutions.ReachingPoints;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumProductDifferenceBetweenTwoPairs;
+using DSAExperimentation.LeetCode.Solutions.MaximumProductDifferenceBetweenTwoPairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

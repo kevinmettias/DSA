@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumProfitFromValidTopologicalOrderInDag;
+using DSAExperimentation.LeetCode.Solutions.MaximumProfitFromValidTopologicalOrderInDag;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

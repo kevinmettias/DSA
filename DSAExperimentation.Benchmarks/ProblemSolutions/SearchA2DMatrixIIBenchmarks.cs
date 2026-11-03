@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SearchA2DMatrixII;
+using DSAExperimentation.LeetCode.Solutions.SearchA2DMatrixII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.StepsToMakeArrayNonDecreasing;
+using DSAExperimentation.LeetCode.Solutions.StepsToMakeArrayNonDecreasing;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

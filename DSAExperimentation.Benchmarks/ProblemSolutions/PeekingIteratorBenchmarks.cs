@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PeekingIterator;
+using DSAExperimentation.LeetCode.Solutions.PeekingIterator;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

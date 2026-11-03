@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumCostOfAPathWithSpecialRoads;
+using DSAExperimentation.LeetCode.Solutions.MinimumCostOfAPathWithSpecialRoads;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

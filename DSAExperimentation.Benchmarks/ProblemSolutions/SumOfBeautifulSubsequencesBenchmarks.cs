@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SumOfBeautifulSubsequences;
+using DSAExperimentation.LeetCode.Solutions.SumOfBeautifulSubsequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

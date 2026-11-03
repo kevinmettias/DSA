@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaxValueOfEquation;
+using DSAExperimentation.LeetCode.Solutions.MaxValueOfEquation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

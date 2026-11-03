@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ClosestDivisors;
+using DSAExperimentation.LeetCode.Solutions.ClosestDivisors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.AmbiguousCoordinates;
+using DSAExperimentation.LeetCode.Solutions.AmbiguousCoordinates;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

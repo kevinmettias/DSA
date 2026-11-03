@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfDifferentSubsequencesGCDs;
+using DSAExperimentation.LeetCode.Solutions.NumberOfDifferentSubsequencesGCDs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

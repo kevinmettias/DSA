@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FrequencyTracker;
+using DSAExperimentation.LeetCode.Solutions.FrequencyTracker;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

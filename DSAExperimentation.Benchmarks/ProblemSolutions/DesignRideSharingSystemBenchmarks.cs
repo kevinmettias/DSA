@@ -1,5 +1,5 @@
-using DSAExperimentation.LeetCode;
-using DSAExperimentation.LeetCode.DesignRideSharingSystem;
+using DSAExperimentation.LeetCode.Solutions;
+using DSAExperimentation.LeetCode.Solutions.DesignRideSharingSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

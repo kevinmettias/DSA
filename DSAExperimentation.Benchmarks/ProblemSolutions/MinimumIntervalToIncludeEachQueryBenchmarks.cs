@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumIntervalToIncludeEachQuery;
+using DSAExperimentation.LeetCode.Solutions.MinimumIntervalToIncludeEachQuery;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

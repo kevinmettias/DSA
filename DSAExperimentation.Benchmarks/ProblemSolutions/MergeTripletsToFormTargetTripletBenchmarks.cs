@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MergeTripletsToFormTargetTriplet;
+using DSAExperimentation.LeetCode.Solutions.MergeTripletsToFormTargetTriplet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ContainsDuplicateIII;
+using DSAExperimentation.LeetCode.Solutions.ContainsDuplicateIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

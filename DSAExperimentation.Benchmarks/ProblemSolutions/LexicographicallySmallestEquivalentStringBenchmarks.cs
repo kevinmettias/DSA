@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LexicographicallySmallestEquivalentString;
+using DSAExperimentation.LeetCode.Solutions.LexicographicallySmallestEquivalentString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

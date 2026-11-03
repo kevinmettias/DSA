@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumXORWithAnElementFromArray;
+using DSAExperimentation.LeetCode.Solutions.MaximumXORWithAnElementFromArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

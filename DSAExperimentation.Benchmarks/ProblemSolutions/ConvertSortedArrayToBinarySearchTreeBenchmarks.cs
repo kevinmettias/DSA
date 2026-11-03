@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.ConvertSortedArrayToBinarySearchTree;
+using DSAExperimentation.LeetCode.Solutions.ConvertSortedArrayToBinarySearchTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

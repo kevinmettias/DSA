@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Trie;
-using DSAExperimentation.LeetCode.LongestCommonSuffixQueries;
+using DSAExperimentation.LeetCode.Solutions.LongestCommonSuffixQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

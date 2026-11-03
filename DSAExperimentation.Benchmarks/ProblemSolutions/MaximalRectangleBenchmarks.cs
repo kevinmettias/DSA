@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximalRectangle;
+using DSAExperimentation.LeetCode.Solutions.MaximalRectangle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

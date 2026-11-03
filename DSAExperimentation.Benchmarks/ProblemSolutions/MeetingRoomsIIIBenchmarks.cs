@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MeetingRoomsIII;
+using DSAExperimentation.LeetCode.Solutions.MeetingRoomsIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

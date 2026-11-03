@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.DisjointSet;
-using DSAExperimentation.LeetCode.PathExistenceQueriesInAGraphI;
+using DSAExperimentation.LeetCode.Solutions.PathExistenceQueriesInAGraphI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

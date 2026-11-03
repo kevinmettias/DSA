@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.EliminationGame;
+using DSAExperimentation.LeetCode.Solutions.EliminationGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

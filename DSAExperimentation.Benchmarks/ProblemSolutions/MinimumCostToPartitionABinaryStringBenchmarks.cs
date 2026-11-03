@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.LeetCode.MinimumCostToPartitionABinaryString;
+using DSAExperimentation.LeetCode.Solutions.MinimumCostToPartitionABinaryString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

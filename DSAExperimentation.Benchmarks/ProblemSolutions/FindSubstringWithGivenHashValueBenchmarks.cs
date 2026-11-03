@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.RollingHash;
 using DSAExperimentation.Domain.Language.English;
-using DSAExperimentation.LeetCode.FindSubstringWithGivenHashValue;
+using DSAExperimentation.LeetCode.Solutions.FindSubstringWithGivenHashValue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

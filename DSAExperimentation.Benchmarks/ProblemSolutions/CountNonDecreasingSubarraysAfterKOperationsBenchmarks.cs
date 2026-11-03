@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountNonDecreasingSubarraysAfterKOperations;
+using DSAExperimentation.LeetCode.Solutions.CountNonDecreasingSubarraysAfterKOperations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

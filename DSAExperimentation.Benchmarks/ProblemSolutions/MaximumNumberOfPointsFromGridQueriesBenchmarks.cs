@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumNumberOfPointsFromGridQueries;
+using DSAExperimentation.LeetCode.Solutions.MaximumNumberOfPointsFromGridQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

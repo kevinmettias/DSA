@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountPrimeGapBalancedSubarrays;
+using DSAExperimentation.LeetCode.Solutions.CountPrimeGapBalancedSubarrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

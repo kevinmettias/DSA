@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumNumberOfDartsInsideOfACircularDartboard;
+using DSAExperimentation.LeetCode.Solutions.MaximumNumberOfDartsInsideOfACircularDartboard;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumPointsActivatedWithOneAddition;
+using DSAExperimentation.LeetCode.Solutions.MaximumPointsActivatedWithOneAddition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

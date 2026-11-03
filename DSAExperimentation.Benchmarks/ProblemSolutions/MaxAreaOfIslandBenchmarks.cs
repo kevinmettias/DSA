@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaxAreaOfIsland;
+using DSAExperimentation.LeetCode.Solutions.MaxAreaOfIsland;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

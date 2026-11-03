@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinCostToConnectAllPoints;
+using DSAExperimentation.LeetCode.Solutions.MinCostToConnectAllPoints;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

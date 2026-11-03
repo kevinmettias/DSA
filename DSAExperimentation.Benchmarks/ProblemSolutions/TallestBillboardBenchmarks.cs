@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.TallestBillboard;
+using DSAExperimentation.LeetCode.Solutions.TallestBillboard;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.SmallestKLengthSubsequenceWithOccurrencesOfALetter;
+using DSAExperimentation.LeetCode.Solutions.SmallestKLengthSubsequenceWithOccurrencesOfALetter;
 using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

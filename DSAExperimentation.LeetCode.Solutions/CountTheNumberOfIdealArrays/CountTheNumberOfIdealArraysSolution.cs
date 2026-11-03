@@ -1,0 +1,143 @@
+using DSAExperimentation.Algorithms.NumberTheory;
+using System.Numerics;
+using DSAExperimentation.DataStructures.DynamicArray;
+
+namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfIdealArrays;
+
+// LeetCode 2338. Count the Number of Ideal Arrays: count the arrays of length
+// arrayLength whose every value is in [1, maxValue] and where each element divides
+// the next, modulo 1e9+7.
+//
+// arr[i] | arr[i+1] forces arr to be non-decreasing, so an ideal array is pinned down
+// by its LAST value V (<= maxValue) plus, independently per prime factor of V, a
+// non-decreasing sequence of exponents across the arrayLength slots ending at that
+// prime's exponent in V - the classic stars-and-bars count C(n - 1 + e, e) per prime,
+// multiplied across V's distinct primes and summed over every V from 1 to maxValue.
+// That is the same per-prime stars-and-bars product
+// CountWaysToMakeArrayWithProductSolution computes for LC 1735, reshaped from "per
+// query k" to "summed over every value 1..maxValue", and the binomial coefficient is
+// computed exactly the same way: BigInteger exact division, since e is at most ~13 for
+// maxValue <= 10^4 so the running product never grows enough to need a
+// modular-inverse primitive.
+//
+// What separates the arms is the cost of factoring: trial division re-pays
+// O(sqrt(value)) for every one of the maxValue values, while one smallest-prime-factor
+// sieve pays O(maxValue log log maxValue) once and then factors each value in
+// O(log value).
+internal static class CountTheNumberOfIdealArraysSolution
+{
+    // Smallest prime, and the starting point for both trial division and the sieve.
+    private const int SmallestPrime = 2;
+
+    // 1! == 1, so a factorial product only needs to start accumulating from 2.
+    private const int FactorialStartMultiplier = 2;
+
+    // A prime factor larger than sqrt(value) can only survive to exponent one.
+    private const int LeftoverPrimeExponent = 1;
+
+    // The textbook answer: factor each value from scratch by trial division, sharing
+    // nothing between values. Deliberately written over BCL scalars only - it is the
+    // arm the sieve below has to justify itself against.
+    public static int IdealArraysByTrialDivision(int arrayLength, int maxValue)
+    {
+        var total = 0L;
+
+        for (var value = 1; value <= maxValue; value++)
+        {
+            total = (total + CountEndingAtByTrialDivision(value, arrayLength)) % LeetCodeModulus.Value;
+        }
+
+        return (int)total;
+    }
+
+    private static long CountEndingAtByTrialDivision(int value, int arrayLength)
+    {
+        var remaining = value;
+        var product = 1L;
+
+        for (var factor = SmallestPrime; (long)factor * factor <= remaining; factor++)
+        {
+            product = ApplyTrialDivisionFactor(factor, arrayLength, ref remaining, product);
+        }
+
+        if (remaining > 1)
+        {
+            product = product * BinomialMod(arrayLength, LeftoverPrimeExponent) % LeetCodeModulus.Value;
+        }
+
+        return product;
+    }
+
+    private static long ApplyTrialDivisionFactor(int factor, int arrayLength, ref int remaining, long product)
+    {
+        if (remaining % factor != 0)
+        {
+            return product;
+        }
+
+        var exponent = 0;
+        while (remaining % factor == 0)
+        {
+            remaining /= factor;
+            exponent++;
+        }
+
+        return product * BinomialMod(exponent + arrayLength - 1, exponent) % LeetCodeModulus.Value;
+    }
+
+    // Build one smallest-prime-factor table over maxValue with this repo's own
+    // PrimeSieve - the same table CountWaysToMakeArrayWithProduct builds for LC 1735 -
+    // so every value afterwards factors in O(log value).
+    public static int IdealArraysBySmallestPrimeFactorSieve(int arrayLength, int maxValue)
+    {
+        var smallestPrimeFactor = PrimeSieve.BuildSmallestPrimeFactors(maxValue);
+        var total = 0L;
+
+        for (var value = 1; value <= maxValue; value++)
+        {
+            total = (total + CountEndingAtBySieve(value, arrayLength, smallestPrimeFactor))
+                % LeetCodeModulus.Value;
+        }
+
+        return (int)total;
+    }
+
+    private static long CountEndingAtBySieve(int value, int arrayLength, int[] smallestPrimeFactor)
+    {
+        var remaining = value;
+        var product = 1L;
+
+        while (remaining > 1)
+        {
+            var factor = smallestPrimeFactor[remaining];
+            var exponent = 0;
+
+            while (remaining % factor == 0)
+            {
+                remaining /= factor;
+                exponent++;
+            }
+
+            product = product * BinomialMod(exponent + arrayLength - 1, exponent) % LeetCodeModulus.Value;
+        }
+
+        return product;
+    }
+
+    private static long BinomialMod(int total, int chooseCount)
+    {
+        BigInteger numerator = 1;
+        for (var i = 0; i < chooseCount; i++)
+        {
+            numerator *= total - i;
+        }
+
+        BigInteger denominator = 1;
+        for (var i = FactorialStartMultiplier; i <= chooseCount; i++)
+        {
+            denominator *= i;
+        }
+
+        return (long)(numerator / denominator % LeetCodeModulus.Value);
+    }
+}

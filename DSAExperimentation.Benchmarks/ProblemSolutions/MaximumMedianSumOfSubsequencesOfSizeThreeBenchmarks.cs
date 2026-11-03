@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumMedianSumOfSubsequencesOfSizeThree;
+using DSAExperimentation.LeetCode.Solutions.MaximumMedianSumOfSubsequencesOfSizeThree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

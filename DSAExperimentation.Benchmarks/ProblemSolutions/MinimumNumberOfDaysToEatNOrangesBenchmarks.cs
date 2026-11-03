@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumNumberOfDaysToEatNOranges;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfDaysToEatNOranges;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

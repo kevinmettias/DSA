@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ComplexNumberMultiplication;
+using DSAExperimentation.LeetCode.Solutions.ComplexNumberMultiplication;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

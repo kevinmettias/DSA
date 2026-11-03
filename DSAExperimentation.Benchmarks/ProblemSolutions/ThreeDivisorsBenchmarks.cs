@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ThreeDivisors;
+using DSAExperimentation.LeetCode.Solutions.ThreeDivisors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

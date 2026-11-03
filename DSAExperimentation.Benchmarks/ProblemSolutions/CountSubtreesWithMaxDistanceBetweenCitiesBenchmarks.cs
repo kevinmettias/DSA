@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountSubtreesWithMaxDistanceBetweenCities;
+using DSAExperimentation.LeetCode.Solutions.CountSubtreesWithMaxDistanceBetweenCities;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.GreatestCommonDivisorOfStrings;
+using DSAExperimentation.LeetCode.Solutions.GreatestCommonDivisorOfStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

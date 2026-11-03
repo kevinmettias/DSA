@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ModifyGraphEdgeWeights;
+using DSAExperimentation.LeetCode.Solutions.ModifyGraphEdgeWeights;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

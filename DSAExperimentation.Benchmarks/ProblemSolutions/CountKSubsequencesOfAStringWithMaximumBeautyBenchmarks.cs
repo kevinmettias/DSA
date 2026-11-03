@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountKSubsequencesOfAStringWithMaximumBeauty;
+using DSAExperimentation.LeetCode.Solutions.CountKSubsequencesOfAStringWithMaximumBeauty;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

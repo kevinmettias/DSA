@@ -1,0 +1,125 @@
+using DSAExperimentation.Algorithms.Sorting;
+
+namespace DSAExperimentation.LeetCode.Solutions.BoatsToSavePeople;
+
+// LeetCode 881. Boats to Save People: every boat carries at most two people and at
+// most `limit` total weight; report the fewest boats that carry everyone.
+//
+// The heaviest remaining person always needs a boat of their own, so pairing them
+// with the lightest person who still fits is never worse than sending them alone -
+// that greedy rule is the whole problem. NumberOfRescueBoatsByRepeatedScan applies
+// it literally, rescanning for the current heaviest and lightest on every boat
+// (O(n^2)). NumberOfRescueBoatsBySortThenTwoPointer sorts the weights ascending with
+// this repo's own MergeSort.Sort<Element,TSequence> over an ArrayIndexedSequence
+// (AssignCookies' shape, applied to a single array instead of two) so the same
+// greedy rule becomes one O(n) two-pointer pass.
+internal static class BoatsToSavePeopleSolution
+{
+    // The problem's own cap, and the reason the greedy rule is optimal: a boat holds
+    // at most two people, so seating the heaviest beside the lightest who still fits
+    // is never worse than sending the heaviest alone.
+    private const int PeoplePerBoat = 2;
+
+    // Deliberately written without this repo's primitives - the baseline the sorted
+    // two-pointer pass below has to justify itself against.
+    public static int NumberOfRescueBoatsByRepeatedScan(int[] people, int limit)
+    {
+        var used = new bool[people.Length];
+        var remaining = people.Length;
+        var boats = 0;
+
+        while (remaining > 0)
+        {
+            remaining -= FillOneBoat(people, used, limit);
+            boats++;
+        }
+
+        return boats;
+    }
+
+    // Seats the heaviest unseated person, then the lightest who still fits beside
+    // them, and reports how many people that boat took.
+    private static int FillOneBoat(int[] weights, bool[] used, int limit)
+    {
+        var heaviestIndex = FindHeaviestUnused(weights, used);
+        used[heaviestIndex] = true;
+
+        var lightestIndex = FindLightestUnusedFitting(weights, used, limit, heaviestIndex);
+
+        if (lightestIndex < 0)
+        {
+            return 1;
+        }
+
+        used[lightestIndex] = true;
+        return PeoplePerBoat;
+    }
+
+    private static int FindHeaviestUnused(int[] weights, bool[] used)
+    {
+        var heaviestIndex = -1;
+
+        for (var i = 0; i < weights.Length; i++)
+        {
+            if (IsHeaviestCandidate(weights, used, i, heaviestIndex))
+            {
+                heaviestIndex = i;
+            }
+        }
+
+        return heaviestIndex;
+    }
+
+    // Still unseated, and heavier than the heaviest candidate found so far - nobody
+    // beats an empty seat.
+    private static bool IsHeaviestCandidate(int[] weights, bool[] used, int index, int bestIndex)
+        => !used[index] && (bestIndex < 0 || weights[index] > weights[bestIndex]);
+
+    private static int FindLightestUnusedFitting(
+        int[] weights, bool[] used, int limit, int heaviestIndex)
+    {
+        var lightestIndex = -1;
+
+        for (var i = 0; i < weights.Length; i++)
+        {
+            if (IsLightestCandidate(weights, used, i, lightestIndex)
+                && CanFitBesideHeaviest(weights, i, heaviestIndex, limit))
+            {
+                lightestIndex = i;
+            }
+        }
+
+        return lightestIndex;
+    }
+
+    // Still unseated, and lighter than the lightest candidate found so far - nobody
+    // beats an empty seat.
+    private static bool IsLightestCandidate(int[] weights, bool[] used, int index, int bestIndex)
+        => !used[index] && (bestIndex < 0 || weights[index] < weights[bestIndex]);
+
+    // Light enough to ride in the same boat as its heaviest passenger.
+    private static bool CanFitBesideHeaviest(int[] weights, int index, int heaviestIndex, int limit)
+        => weights[index] + weights[heaviestIndex] <= limit;
+
+    public static int NumberOfRescueBoatsBySortThenTwoPointer(int[] people, int limit)
+    {
+        var sorted = MergeSort.SortedCopy(people);
+
+        var light = 0;
+        var heavy = sorted.Length - 1;
+        var boats = 0;
+
+        while (light <= heavy)
+        {
+            if (sorted[light] + sorted[heavy] <= limit)
+            {
+                light++;
+            }
+
+            heavy--;
+            boats++;
+        }
+
+        return boats;
+    }
+}

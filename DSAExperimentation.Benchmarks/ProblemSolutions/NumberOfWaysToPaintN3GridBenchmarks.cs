@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfWaysToPaintN3Grid;
+using DSAExperimentation.LeetCode.Solutions.NumberOfWaysToPaintN3Grid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

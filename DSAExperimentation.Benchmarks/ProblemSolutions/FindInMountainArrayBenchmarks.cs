@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.FindInMountainArray;
+using DSAExperimentation.LeetCode.Solutions.FindInMountainArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.OneThreeTwoPattern;
+using DSAExperimentation.LeetCode.Solutions.OneThreeTwoPattern;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

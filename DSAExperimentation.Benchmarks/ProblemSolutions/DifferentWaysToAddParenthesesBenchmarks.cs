@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DifferentWaysToAddParentheses;
+using DSAExperimentation.LeetCode.Solutions.DifferentWaysToAddParentheses;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

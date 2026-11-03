@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SimplifiedFractions;
+using DSAExperimentation.LeetCode.Solutions.SimplifiedFractions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

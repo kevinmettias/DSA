@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Sequence;
-using DSAExperimentation.LeetCode.StoneGameVIII;
+using DSAExperimentation.LeetCode.Solutions.StoneGameVIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

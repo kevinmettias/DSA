@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumCostPathWithAlternatingDirectionsIII;
+using DSAExperimentation.LeetCode.Solutions.MinimumCostPathWithAlternatingDirectionsIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

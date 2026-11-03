@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ImplementStackUsingQueues;
+using DSAExperimentation.LeetCode.Solutions.ImplementStackUsingQueues;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

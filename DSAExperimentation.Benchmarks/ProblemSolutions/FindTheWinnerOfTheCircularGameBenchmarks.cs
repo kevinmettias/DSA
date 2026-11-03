@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheWinnerOfTheCircularGame;
+using DSAExperimentation.LeetCode.Solutions.FindTheWinnerOfTheCircularGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

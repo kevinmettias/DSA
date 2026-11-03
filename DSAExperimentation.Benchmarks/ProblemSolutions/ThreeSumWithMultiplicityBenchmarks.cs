@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ThreeSumWithMultiplicity;
+using DSAExperimentation.LeetCode.Solutions.ThreeSumWithMultiplicity;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

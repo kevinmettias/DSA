@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumSumOfMNonOverlappingSubarraysII;
+using DSAExperimentation.LeetCode.Solutions.MaximumSumOfMNonOverlappingSubarraysII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

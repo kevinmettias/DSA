@@ -16,8 +16,8 @@ arm is asserted by nothing.
 After (ARCHITECTURE.md §17):
 
 ```
-DSAExperimentation.LeetCode/<Name>/<Name>Solution.cs   every strategy, <Operation>By<Strategy>
-DSAExperimentation.LeetCode.Tests/<Name>/<Name>SolutionTests.cs  harness: TheoryData Examples + 1 method per strategy
+DSAExperimentation.LeetCode.Solutions/<Name>/<Name>Solution.cs   every strategy, <Operation>By<Strategy>
+DSAExperimentation.LeetCode.Solutions.Tests/<Name>/<Name>SolutionTests.cs  harness: TheoryData Examples + 1 method per strategy
 DSAExperimentation.Benchmarks/.../<Name>Benchmarks.cs  harness: 1 one-line [Benchmark] per strategy
 ```
 
@@ -83,7 +83,7 @@ Remaining = every entry with `status == "done"` and `architectureTier != "sectio
   keeps failing, read its note — a genuine missing primitive is a design
   decision for you, not something to force through.
 - **The Nomos gate is skipped per-item** for throughput, as in the coverage job.
-  Run it periodically over `DSAExperimentation.LeetCode/` and fix findings in a
+  Run it periodically over `DSAExperimentation.LeetCode.Solutions/` and fix findings in a
   batch.
 - **Commit deliberately.** `git status` / `git diff`, then ask before committing.
   Other sessions have untracked work in this repo; never `git checkout --`,

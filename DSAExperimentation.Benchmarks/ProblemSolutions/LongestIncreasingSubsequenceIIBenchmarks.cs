@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.LongestIncreasingSubsequenceII;
+using DSAExperimentation.LeetCode.Solutions.LongestIncreasingSubsequenceII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

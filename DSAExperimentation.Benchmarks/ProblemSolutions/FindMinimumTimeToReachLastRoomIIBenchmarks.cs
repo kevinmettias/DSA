@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindMinimumTimeToReachLastRoomII;
+using DSAExperimentation.LeetCode.Solutions.FindMinimumTimeToReachLastRoomII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DesignAnATMMachine;
+using DSAExperimentation.LeetCode.Solutions.DesignAnATMMachine;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheLargestPalindromeDivisibleByK;
+using DSAExperimentation.LeetCode.Solutions.FindTheLargestPalindromeDivisibleByK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

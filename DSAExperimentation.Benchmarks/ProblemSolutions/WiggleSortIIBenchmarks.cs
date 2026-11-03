@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.WiggleSortII;
+using DSAExperimentation.LeetCode.Solutions.WiggleSortII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

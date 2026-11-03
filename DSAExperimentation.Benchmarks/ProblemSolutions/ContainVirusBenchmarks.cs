@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ContainVirus;
+using DSAExperimentation.LeetCode.Solutions.ContainVirus;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

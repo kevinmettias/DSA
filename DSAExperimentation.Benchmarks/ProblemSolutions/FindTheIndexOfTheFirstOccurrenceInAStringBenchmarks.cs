@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheIndexOfTheFirstOccurrenceInAString;
+using DSAExperimentation.LeetCode.Solutions.FindTheIndexOfTheFirstOccurrenceInAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

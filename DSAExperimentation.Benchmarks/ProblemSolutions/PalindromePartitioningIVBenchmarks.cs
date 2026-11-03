@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PalindromePartitioningIV;
+using DSAExperimentation.LeetCode.Solutions.PalindromePartitioningIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.RandomPickIndex;
+using DSAExperimentation.LeetCode.Solutions.RandomPickIndex;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

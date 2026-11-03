@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumNumberOfGroupsWithIncreasingLength;
+using DSAExperimentation.LeetCode.Solutions.MaximumNumberOfGroupsWithIncreasingLength;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

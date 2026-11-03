@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ConstructBinarySearchTreeFromPreorderTraversal;
+using DSAExperimentation.LeetCode.Solutions.ConstructBinarySearchTreeFromPreorderTraversal;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

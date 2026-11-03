@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CherryPickup;
+using DSAExperimentation.LeetCode.Solutions.CherryPickup;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

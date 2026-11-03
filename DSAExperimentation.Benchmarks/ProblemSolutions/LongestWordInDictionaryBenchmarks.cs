@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LongestWordInDictionary;
+using DSAExperimentation.LeetCode.Solutions.LongestWordInDictionary;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

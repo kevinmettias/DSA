@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockWithTransactionFee;
+using DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockWithTransactionFee;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

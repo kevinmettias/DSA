@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindBeautifulIndicesInTheGivenArrayII;
+using DSAExperimentation.LeetCode.Solutions.FindBeautifulIndicesInTheGivenArrayII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

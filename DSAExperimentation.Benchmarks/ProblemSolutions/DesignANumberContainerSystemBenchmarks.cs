@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DesignANumberContainerSystem;
+using DSAExperimentation.LeetCode.Solutions.DesignANumberContainerSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

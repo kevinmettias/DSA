@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.TargetSum;
+using DSAExperimentation.LeetCode.Solutions.TargetSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.SpiralMatrixIII;
+using DSAExperimentation.LeetCode.Solutions.SpiralMatrixIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

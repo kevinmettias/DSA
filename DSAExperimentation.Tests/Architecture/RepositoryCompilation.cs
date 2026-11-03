@@ -16,7 +16,7 @@ namespace DSAExperimentation.Tests.Architecture;
 internal static class RepositoryCompilation
 {
     public const string FrameworkProject = "DSAExperimentation";
-    public const string SolutionProject = "DSAExperimentation.LeetCode";
+    public const string SolutionProject = "DSAExperimentation.LeetCode.Solutions";
     public const string BenchmarkProject = "DSAExperimentation.Benchmarks";
 
     // The implicit usings Microsoft.NET.Sdk adds to a project that enables them, as every project

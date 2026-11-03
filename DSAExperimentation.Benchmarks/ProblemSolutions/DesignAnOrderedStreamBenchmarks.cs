@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DesignAnOrderedStream;
+using DSAExperimentation.LeetCode.Solutions.DesignAnOrderedStream;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

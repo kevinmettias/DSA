@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SortedGcdPairQueries;
+using DSAExperimentation.LeetCode.Solutions.SortedGcdPairQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

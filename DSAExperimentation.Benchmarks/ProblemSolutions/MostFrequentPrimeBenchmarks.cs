@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MostFrequentPrime;
+using DSAExperimentation.LeetCode.Solutions.MostFrequentPrime;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

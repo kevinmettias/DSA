@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindTheMinimumCostArrayPermutation;
+using DSAExperimentation.LeetCode.Solutions.FindTheMinimumCostArrayPermutation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

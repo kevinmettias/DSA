@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ValidPalindromeII;
+using DSAExperimentation.LeetCode.Solutions.ValidPalindromeII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

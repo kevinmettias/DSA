@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumOperationsToConvertAllElementsToZero;
+using DSAExperimentation.LeetCode.Solutions.MinimumOperationsToConvertAllElementsToZero;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

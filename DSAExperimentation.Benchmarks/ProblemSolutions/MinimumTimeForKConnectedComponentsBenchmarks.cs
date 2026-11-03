@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumTimeForKConnectedComponents;
+using DSAExperimentation.LeetCode.Solutions.MinimumTimeForKConnectedComponents;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

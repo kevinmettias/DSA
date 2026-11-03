@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.RemoveBoxes;
+using DSAExperimentation.LeetCode.Solutions.RemoveBoxes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

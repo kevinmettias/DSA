@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.BackspaceStringCompare;
+using DSAExperimentation.LeetCode.Solutions.BackspaceStringCompare;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

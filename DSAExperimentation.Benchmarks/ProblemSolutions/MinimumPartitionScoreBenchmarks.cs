@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumPartitionScore;
+using DSAExperimentation.LeetCode.Solutions.MinimumPartitionScore;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

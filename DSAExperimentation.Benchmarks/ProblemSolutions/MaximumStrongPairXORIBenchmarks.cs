@@ -1,7 +1,7 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Sequence;
-using DSAExperimentation.LeetCode.MaximumStrongPairXORI;
+using DSAExperimentation.LeetCode.Solutions.MaximumStrongPairXORI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

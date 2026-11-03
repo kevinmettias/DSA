@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LastDayWhereYouCanStillCross;
+using DSAExperimentation.LeetCode.Solutions.LastDayWhereYouCanStillCross;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

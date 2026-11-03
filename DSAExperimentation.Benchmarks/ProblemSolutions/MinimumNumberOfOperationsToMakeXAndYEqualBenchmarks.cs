@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeXAndYEqual;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeXAndYEqual;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

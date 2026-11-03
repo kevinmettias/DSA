@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ReplaceNonCoprimeNumbersInArray;
+using DSAExperimentation.LeetCode.Solutions.ReplaceNonCoprimeNumbersInArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

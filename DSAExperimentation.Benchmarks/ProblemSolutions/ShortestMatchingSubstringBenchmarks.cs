@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ShortestMatchingSubstring;
+using DSAExperimentation.LeetCode.Solutions.ShortestMatchingSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

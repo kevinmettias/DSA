@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimizeHammingDistanceAfterSwapOperations;
+using DSAExperimentation.LeetCode.Solutions.MinimizeHammingDistanceAfterSwapOperations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

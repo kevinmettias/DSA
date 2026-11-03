@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MatchsticksToSquare;
+using DSAExperimentation.LeetCode.Solutions.MatchsticksToSquare;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

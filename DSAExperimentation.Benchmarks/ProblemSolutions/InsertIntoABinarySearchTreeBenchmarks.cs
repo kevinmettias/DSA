@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.InsertIntoABinarySearchTree;
+using DSAExperimentation.LeetCode.Solutions.InsertIntoABinarySearchTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

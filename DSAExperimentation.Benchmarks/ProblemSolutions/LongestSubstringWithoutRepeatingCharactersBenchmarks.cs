@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LongestSubstringWithoutRepeatingCharacters;
+using DSAExperimentation.LeetCode.Solutions.LongestSubstringWithoutRepeatingCharacters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

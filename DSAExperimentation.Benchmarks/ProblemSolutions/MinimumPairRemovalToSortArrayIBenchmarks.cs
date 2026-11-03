@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumPairRemovalToSortArrayI;
+using DSAExperimentation.LeetCode.Solutions.MinimumPairRemovalToSortArrayI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

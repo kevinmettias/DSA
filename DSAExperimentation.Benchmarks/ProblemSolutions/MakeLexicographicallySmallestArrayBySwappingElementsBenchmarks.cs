@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MakeLexicographicallySmallestArrayBySwappingElements;
+using DSAExperimentation.LeetCode.Solutions.MakeLexicographicallySmallestArrayBySwappingElements;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

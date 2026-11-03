@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PartitionArrayIntoTwoEqualProductSubsets;
+using DSAExperimentation.LeetCode.Solutions.PartitionArrayIntoTwoEqualProductSubsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

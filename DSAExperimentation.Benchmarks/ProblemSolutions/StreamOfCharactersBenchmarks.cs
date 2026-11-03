@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.StreamOfCharacters;
+using DSAExperimentation.LeetCode.Solutions.StreamOfCharacters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

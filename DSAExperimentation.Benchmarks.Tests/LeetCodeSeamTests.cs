@@ -1,8 +1,8 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.BasicCalculator;
-using DSAExperimentation.LeetCode.CheckIfAStringContainsAllBinaryCodesOfSizeK;
-using DSAExperimentation.LeetCode.DecodeString;
+using DSAExperimentation.LeetCode.Solutions.BasicCalculator;
+using DSAExperimentation.LeetCode.Solutions.CheckIfAStringContainsAllBinaryCodesOfSizeK;
+using DSAExperimentation.LeetCode.Solutions.DecodeString;
 
 namespace DSAExperimentation.Benchmarks.Tests;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountAllValidPickupAndDeliveryOptions;
+using DSAExperimentation.LeetCode.Solutions.CountAllValidPickupAndDeliveryOptions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaxChunksToMakeSortedII;
+using DSAExperimentation.LeetCode.Solutions.MaxChunksToMakeSortedII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

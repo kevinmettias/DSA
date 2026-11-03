@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.Subsets;
+using DSAExperimentation.LeetCode.Solutions.Subsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

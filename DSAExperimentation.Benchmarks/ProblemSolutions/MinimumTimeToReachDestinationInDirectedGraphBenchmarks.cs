@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumTimeToReachDestinationInDirectedGraph;
+using DSAExperimentation.LeetCode.Solutions.MinimumTimeToReachDestinationInDirectedGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

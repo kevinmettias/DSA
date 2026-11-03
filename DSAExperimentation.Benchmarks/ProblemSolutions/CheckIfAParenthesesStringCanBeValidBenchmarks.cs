@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CheckIfAParenthesesStringCanBeValid;
+using DSAExperimentation.LeetCode.Solutions.CheckIfAParenthesesStringCanBeValid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

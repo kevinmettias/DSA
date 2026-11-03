@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheSafestPathInAGrid;
+using DSAExperimentation.LeetCode.Solutions.FindTheSafestPathInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

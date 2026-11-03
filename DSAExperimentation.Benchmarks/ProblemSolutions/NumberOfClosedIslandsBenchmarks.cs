@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfClosedIslands;
+using DSAExperimentation.LeetCode.Solutions.NumberOfClosedIslands;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SumOfAllSubsetXORTotals;
+using DSAExperimentation.LeetCode.Solutions.SumOfAllSubsetXORTotals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

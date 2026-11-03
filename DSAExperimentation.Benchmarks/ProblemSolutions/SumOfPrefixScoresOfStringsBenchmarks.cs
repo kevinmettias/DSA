@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SumOfPrefixScoresOfStrings;
+using DSAExperimentation.LeetCode.Solutions.SumOfPrefixScoresOfStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

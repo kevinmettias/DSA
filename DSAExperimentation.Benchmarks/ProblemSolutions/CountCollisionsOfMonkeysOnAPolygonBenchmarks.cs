@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountCollisionsOfMonkeysOnAPolygon;
+using DSAExperimentation.LeetCode.Solutions.CountCollisionsOfMonkeysOnAPolygon;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumBalancedShipments;
+using DSAExperimentation.LeetCode.Solutions.MaximumBalancedShipments;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

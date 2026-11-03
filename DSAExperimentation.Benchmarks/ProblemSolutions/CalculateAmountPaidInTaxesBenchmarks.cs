@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Sequence;
-using DSAExperimentation.LeetCode.CalculateAmountPaidInTaxes;
+using DSAExperimentation.LeetCode.Solutions.CalculateAmountPaidInTaxes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

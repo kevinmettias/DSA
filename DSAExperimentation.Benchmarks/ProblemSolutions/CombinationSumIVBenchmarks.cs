@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CombinationSumIV;
+using DSAExperimentation.LeetCode.Solutions.CombinationSumIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

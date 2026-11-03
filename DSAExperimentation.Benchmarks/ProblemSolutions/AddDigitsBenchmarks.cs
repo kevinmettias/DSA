@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.AddDigits;
+using DSAExperimentation.LeetCode.Solutions.AddDigits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheStringWithLCP;
+using DSAExperimentation.LeetCode.Solutions.FindTheStringWithLCP;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

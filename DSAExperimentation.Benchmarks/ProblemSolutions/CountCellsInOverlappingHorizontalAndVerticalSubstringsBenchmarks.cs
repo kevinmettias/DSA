@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountCellsInOverlappingHorizontalAndVerticalSubstrings;
+using DSAExperimentation.LeetCode.Solutions.CountCellsInOverlappingHorizontalAndVerticalSubstrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

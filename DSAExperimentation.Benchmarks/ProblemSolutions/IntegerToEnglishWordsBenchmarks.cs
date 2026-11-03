@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.IntegerToEnglishWords;
+using DSAExperimentation.LeetCode.Solutions.IntegerToEnglishWords;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

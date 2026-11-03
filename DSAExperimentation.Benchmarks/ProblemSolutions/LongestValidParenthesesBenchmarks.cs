@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LongestValidParentheses;
+using DSAExperimentation.LeetCode.Solutions.LongestValidParentheses;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

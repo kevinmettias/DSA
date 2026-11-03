@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DirectionAssignmentsWithExactlyKVisiblePeople;
+using DSAExperimentation.LeetCode.Solutions.DirectionAssignmentsWithExactlyKVisiblePeople;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

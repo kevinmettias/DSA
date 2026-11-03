@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DistinctPrimeFactorsOfProductOfArray;
+using DSAExperimentation.LeetCode.Solutions.DistinctPrimeFactorsOfProductOfArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

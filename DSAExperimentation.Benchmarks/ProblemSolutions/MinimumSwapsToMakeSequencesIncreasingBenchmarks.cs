@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumSwapsToMakeSequencesIncreasing;
+using DSAExperimentation.LeetCode.Solutions.MinimumSwapsToMakeSequencesIncreasing;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

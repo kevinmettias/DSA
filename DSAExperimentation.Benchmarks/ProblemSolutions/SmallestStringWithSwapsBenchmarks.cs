@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SmallestStringWithSwaps;
+using DSAExperimentation.LeetCode.Solutions.SmallestStringWithSwaps;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

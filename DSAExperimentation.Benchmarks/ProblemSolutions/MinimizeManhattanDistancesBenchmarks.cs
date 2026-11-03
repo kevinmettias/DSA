@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimizeManhattanDistances;
+using DSAExperimentation.LeetCode.Solutions.MinimizeManhattanDistances;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

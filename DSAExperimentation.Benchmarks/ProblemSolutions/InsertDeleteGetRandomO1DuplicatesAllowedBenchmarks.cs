@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.InsertDeleteGetRandomO1DuplicatesAllowed;
+using DSAExperimentation.LeetCode.Solutions.InsertDeleteGetRandomO1DuplicatesAllowed;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

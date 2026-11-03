@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindMinimumInRotatedSortedArrayII;
+using DSAExperimentation.LeetCode.Solutions.FindMinimumInRotatedSortedArrayII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

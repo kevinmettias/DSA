@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DesignHashMap;
+using DSAExperimentation.LeetCode.Solutions.DesignHashMap;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

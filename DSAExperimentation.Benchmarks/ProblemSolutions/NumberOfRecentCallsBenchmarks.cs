@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfRecentCalls;
+using DSAExperimentation.LeetCode.Solutions.NumberOfRecentCalls;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

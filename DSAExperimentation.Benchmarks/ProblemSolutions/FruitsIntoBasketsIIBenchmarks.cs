@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FruitsIntoBasketsII;
+using DSAExperimentation.LeetCode.Solutions.FruitsIntoBasketsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

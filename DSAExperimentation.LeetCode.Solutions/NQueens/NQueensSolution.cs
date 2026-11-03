@@ -1,0 +1,141 @@
+using DSAExperimentation.Algorithms.Backtracking;
+
+namespace DSAExperimentation.LeetCode.Solutions.NQueens;
+
+// LeetCode 51. N-Queens: every distinct placement of non-attacking queens on an
+// n x n board, reported as row strings ('Q'/'.').
+//
+// Two strategies over the same column/diagonal occupancy state: a hand-rolled
+// recursive DFS (the textbook baseline) and this repo's own Backtrack.Search engine
+// driving row-by-row placement.
+internal static class NQueensSolution
+{
+    private const int DiagonalArrayMultiplier = 2;
+
+    // The textbook baseline: plain recursion over three occupancy arrays, choosing
+    // and unchoosing a column by hand. Deliberately written without this repo's
+    // primitives - it is the arm the composed solution below has to justify itself
+    // against.
+    public static List<List<string>> SolveByRecursiveDfs(int boardSize)
+    {
+        var results = new List<List<string>>();
+        var placed = new int[boardSize];
+        var cols = new bool[boardSize];
+        var diag = new bool[(DiagonalArrayMultiplier * boardSize) - 1];
+        var anti = new bool[(DiagonalArrayMultiplier * boardSize) - 1];
+
+        SearchRows(0, placed, (cols, diag, anti), results);
+
+        return results;
+    }
+
+    // This repo's own backtracking engine: row-by-row queen placement with
+    // column/diagonal occupancy state is exactly Backtrack.Search's
+    // choose/explore/unchoose shape over one shared mutable board.
+    public static List<List<string>> SolveByBacktrackEngine(int boardSize)
+    {
+        var results = new List<List<string>>();
+        var state = new QueensState(boardSize);
+
+        Backtrack.Search<QueensState, int>(
+            state,
+            s => s.Row == boardSize,
+            s => s.Row == boardSize ? NoCandidates() : CandidateColumns(s, boardSize),
+            (s, col) => s.Place(col),
+            (s, col) => s.Remove(col),
+            s => results.Add(s.Board()));
+
+        return results;
+    }
+
+    // The candidate columns a state with every row already placed still offers: none.
+    // That empty answer is how Backtrack.Search learns the board is complete, not a
+    // failure, so it is a value the selector must be able to answer with.
+    private static IEnumerable<int> NoCandidates() => [];
+
+    // The columns a row can still take: every column no already-placed queen attacks.
+    private static IEnumerable<int> CandidateColumns(QueensState state, int boardSize) =>
+        Enumerable.Range(0, boardSize).Where(state.CanPlace);
+
+    // One row of the recursion: `row` is the row being decided, `placed` holds the
+    // column every earlier row chose (so its length is the board's own size),
+    // `occupancy` is what those queens already attack, and `results` collects whole
+    // boards as they complete. Its own recursive call is a second caller of it, so
+    // call order puts it with the file's other shared helpers rather than directly
+    // beneath SolveByRecursiveDfs.
+    private static void SearchRows(
+        int row, int[] placed, (bool[] Cols, bool[] Diag, bool[] Anti) occupancy, List<List<string>> results)
+    {
+        var (cols, diag, anti) = occupancy;
+        var boardSize = placed.Length;
+
+        if (row == boardSize)
+        {
+            var board = Board(boardSize, placed);
+            results.Add(board);
+            return;
+        }
+
+        for (var col = 0; col < boardSize; col++)
+        {
+            if (IsAttacked(occupancy, row, col, boardSize))
+            {
+                continue;
+            }
+
+            placed[row] = col;
+            cols[col] = diag[row - col + boardSize - 1] = anti[row + col] = true;
+            SearchRows(row + 1, placed, occupancy, results);
+            cols[col] = diag[row - col + boardSize - 1] = anti[row + col] = false;
+        }
+    }
+
+    // The three occupancy arrays are one idea - what the queens already placed
+    // attack - so the baseline's column/diagonal/anti-diagonal test reads as one
+    // question instead of three index expressions.
+    private static bool IsAttacked(
+        (bool[] Cols, bool[] Diag, bool[] Anti) occupancy, int row, int col, int boardSize)
+        => occupancy.Cols[col]
+            || occupancy.Diag[row - col + boardSize - 1]
+            || occupancy.Anti[row + col];
+
+    private static List<string> Board(int boardSize, int[] placed) =>
+        Enumerable.Range(0, boardSize)
+            .Select(row => BoardRow(boardSize, placed[row]))
+            .ToList();
+
+    // One row as the puzzle prints it, given the column that row's queen holds.
+    private static string BoardRow(int boardSize, int queenColumn) =>
+        new string(Enumerable.Range(0, boardSize).Select(col => col == queenColumn ? 'Q' : '.').ToArray());
+
+    private sealed class QueensState(int boardSize)
+    {
+        private readonly bool[] _cols = new bool[boardSize];
+        private readonly bool[] _diag = new bool[(DiagonalArrayMultiplier * boardSize) - 1];
+        private readonly bool[] _anti = new bool[(DiagonalArrayMultiplier * boardSize) - 1];
+        private readonly int[] _placed = new int[boardSize];
+
+        public int Row { get; private set; }
+
+        public bool CanPlace(int col) =>
+            !_cols[col] && !_diag[Row - col + boardSize - 1] && !_anti[Row + col];
+
+        public void Place(int col)
+        {
+            _placed[Row] = col;
+            _cols[col] = _diag[Row - col + boardSize - 1] = _anti[Row + col] = true;
+            Row++;
+        }
+
+        public void Remove(int col)
+        {
+            Row--;
+            _cols[col] = _diag[Row - col + boardSize - 1] = _anti[Row + col] = false;
+        }
+
+        public List<string> Board() =>
+            Enumerable.Range(0, boardSize)
+                .Select(row => BoardRow(boardSize, _placed[row]))
+                .ToList();
+    }
+}

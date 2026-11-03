@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.PartitionEqualSubsetSum;
+using DSAExperimentation.LeetCode.Solutions.PartitionEqualSubsetSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

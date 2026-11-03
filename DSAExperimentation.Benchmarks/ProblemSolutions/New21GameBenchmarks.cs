@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.New21Game;
+using DSAExperimentation.LeetCode.Solutions.New21Game;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

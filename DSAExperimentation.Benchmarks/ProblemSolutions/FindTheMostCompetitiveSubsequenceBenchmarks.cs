@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindTheMostCompetitiveSubsequence;
+using DSAExperimentation.LeetCode.Solutions.FindTheMostCompetitiveSubsequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

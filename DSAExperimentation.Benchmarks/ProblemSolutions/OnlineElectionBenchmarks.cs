@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.OnlineElection;
+using DSAExperimentation.LeetCode.Solutions.OnlineElection;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

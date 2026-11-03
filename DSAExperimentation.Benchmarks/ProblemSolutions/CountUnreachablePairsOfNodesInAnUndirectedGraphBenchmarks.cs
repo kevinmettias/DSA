@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountUnreachablePairsOfNodesInAnUndirectedGraph;
+using DSAExperimentation.LeetCode.Solutions.CountUnreachablePairsOfNodesInAnUndirectedGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

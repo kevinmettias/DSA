@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MakeArrayElementsEqualToZero;
+using DSAExperimentation.LeetCode.Solutions.MakeArrayElementsEqualToZero;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

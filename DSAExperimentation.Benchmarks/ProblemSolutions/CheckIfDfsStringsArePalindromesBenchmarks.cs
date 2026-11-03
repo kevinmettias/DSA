@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.CheckIfDfsStringsArePalindromes;
+using DSAExperimentation.LeetCode.Solutions.CheckIfDfsStringsArePalindromes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountPairsWithXorInARange;
+using DSAExperimentation.LeetCode.Solutions.CountPairsWithXorInARange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.AddBinary;
+using DSAExperimentation.LeetCode.Solutions.AddBinary;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.LongestSubstringWithAtLeastKRepeatingCharacters;
+using DSAExperimentation.LeetCode.Solutions.LongestSubstringWithAtLeastKRepeatingCharacters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

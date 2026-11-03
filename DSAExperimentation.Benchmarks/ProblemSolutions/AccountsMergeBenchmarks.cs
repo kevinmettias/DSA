@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.AccountsMerge;
+using DSAExperimentation.LeetCode.Solutions.AccountsMerge;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

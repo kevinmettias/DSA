@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumEdgeTogglesOnATree;
+using DSAExperimentation.LeetCode.Solutions.MinimumEdgeTogglesOnATree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

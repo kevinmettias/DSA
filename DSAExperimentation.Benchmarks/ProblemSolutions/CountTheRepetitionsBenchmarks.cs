@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountTheRepetitions;
+using DSAExperimentation.LeetCode.Solutions.CountTheRepetitions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

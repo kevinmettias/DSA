@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FaultyKeyboard;
+using DSAExperimentation.LeetCode.Solutions.FaultyKeyboard;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

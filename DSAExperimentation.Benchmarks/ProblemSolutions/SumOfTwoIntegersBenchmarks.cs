@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SumOfTwoIntegers;
+using DSAExperimentation.LeetCode.Solutions.SumOfTwoIntegers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

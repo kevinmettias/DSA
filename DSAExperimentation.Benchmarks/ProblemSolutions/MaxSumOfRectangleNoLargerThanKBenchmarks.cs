@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaxSumOfRectangleNoLargerThanK;
+using DSAExperimentation.LeetCode.Solutions.MaxSumOfRectangleNoLargerThanK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

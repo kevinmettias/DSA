@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.PathWithMaximumProbability;
+using DSAExperimentation.LeetCode.Solutions.PathWithMaximumProbability;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

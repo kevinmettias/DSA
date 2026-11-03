@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumCostTreeFromLeafValues;
+using DSAExperimentation.LeetCode.Solutions.MinimumCostTreeFromLeafValues;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

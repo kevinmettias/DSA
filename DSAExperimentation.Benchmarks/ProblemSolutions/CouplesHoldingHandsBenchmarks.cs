@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CouplesHoldingHands;
+using DSAExperimentation.LeetCode.Solutions.CouplesHoldingHands;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

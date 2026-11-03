@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumPartitionFactor;
+using DSAExperimentation.LeetCode.Solutions.MaximumPartitionFactor;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

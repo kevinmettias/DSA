@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumNumberOfOperationsWithTheSameScoreII;
+using DSAExperimentation.LeetCode.Solutions.MaximumNumberOfOperationsWithTheSameScoreII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

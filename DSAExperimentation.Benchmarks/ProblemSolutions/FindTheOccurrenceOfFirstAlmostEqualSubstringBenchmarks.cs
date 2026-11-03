@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheOccurrenceOfFirstAlmostEqualSubstring;
+using DSAExperimentation.LeetCode.Solutions.FindTheOccurrenceOfFirstAlmostEqualSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

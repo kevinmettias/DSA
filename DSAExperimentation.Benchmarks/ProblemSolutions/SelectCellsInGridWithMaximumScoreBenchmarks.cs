@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SelectCellsInGridWithMaximumScore;
+using DSAExperimentation.LeetCode.Solutions.SelectCellsInGridWithMaximumScore;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

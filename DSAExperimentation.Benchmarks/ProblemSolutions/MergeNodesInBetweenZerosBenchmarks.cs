@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.MergeNodesInBetweenZeros;
+using DSAExperimentation.LeetCode.Solutions.MergeNodesInBetweenZeros;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ZumaGame;
+using DSAExperimentation.LeetCode.Solutions.ZumaGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

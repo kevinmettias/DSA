@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfPairsSatisfyingInequality;
+using DSAExperimentation.LeetCode.Solutions.NumberOfPairsSatisfyingInequality;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

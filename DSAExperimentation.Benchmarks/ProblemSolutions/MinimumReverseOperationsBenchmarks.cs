@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.LeetCode.MinimumReverseOperations;
+using DSAExperimentation.LeetCode.Solutions.MinimumReverseOperations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

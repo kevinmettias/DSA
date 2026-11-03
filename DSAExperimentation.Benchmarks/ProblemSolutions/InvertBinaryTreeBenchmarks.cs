@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.InvertBinaryTree;
+using DSAExperimentation.LeetCode.Solutions.InvertBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

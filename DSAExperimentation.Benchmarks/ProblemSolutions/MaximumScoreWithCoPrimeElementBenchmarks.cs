@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumScoreWithCoPrimeElement;
+using DSAExperimentation.LeetCode.Solutions.MaximumScoreWithCoPrimeElement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

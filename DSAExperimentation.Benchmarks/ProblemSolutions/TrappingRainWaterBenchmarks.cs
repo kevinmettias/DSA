@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.TrappingRainWater;
+using DSAExperimentation.LeetCode.Solutions.TrappingRainWater;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

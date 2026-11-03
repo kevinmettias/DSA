@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumNumberOfWorkSessionsToFinishTheTasks;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfWorkSessionsToFinishTheTasks;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

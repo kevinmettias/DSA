@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PartitionToKEqualSumSubsets;
+using DSAExperimentation.LeetCode.Solutions.PartitionToKEqualSumSubsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

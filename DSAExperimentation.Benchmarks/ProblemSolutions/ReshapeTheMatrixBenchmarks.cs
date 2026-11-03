@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ReshapeTheMatrix;
+using DSAExperimentation.LeetCode.Solutions.ReshapeTheMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

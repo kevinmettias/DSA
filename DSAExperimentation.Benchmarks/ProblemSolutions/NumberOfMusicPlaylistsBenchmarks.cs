@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfMusicPlaylists;
+using DSAExperimentation.LeetCode.Solutions.NumberOfMusicPlaylists;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

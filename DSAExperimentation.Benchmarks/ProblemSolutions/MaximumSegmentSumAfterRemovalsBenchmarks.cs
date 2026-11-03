@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumSegmentSumAfterRemovals;
+using DSAExperimentation.LeetCode.Solutions.MaximumSegmentSumAfterRemovals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

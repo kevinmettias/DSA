@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MyCalendarII;
+using DSAExperimentation.LeetCode.Solutions.MyCalendarII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

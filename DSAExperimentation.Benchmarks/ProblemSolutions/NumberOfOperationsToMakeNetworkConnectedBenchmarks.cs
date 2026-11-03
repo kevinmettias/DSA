@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfOperationsToMakeNetworkConnected;
+using DSAExperimentation.LeetCode.Solutions.NumberOfOperationsToMakeNetworkConnected;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

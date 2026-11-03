@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.BricksFallingWhenHit;
+using DSAExperimentation.LeetCode.Solutions.BricksFallingWhenHit;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

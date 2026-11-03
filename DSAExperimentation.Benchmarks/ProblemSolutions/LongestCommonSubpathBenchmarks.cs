@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.LongestCommonSubpath;
+using DSAExperimentation.LeetCode.Solutions.LongestCommonSubpath;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

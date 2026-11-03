@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CycleLengthQueriesInATree;
+using DSAExperimentation.LeetCode.Solutions.CycleLengthQueriesInATree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

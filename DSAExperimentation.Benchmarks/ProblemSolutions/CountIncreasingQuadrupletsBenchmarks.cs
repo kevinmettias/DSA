@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountIncreasingQuadruplets;
+using DSAExperimentation.LeetCode.Solutions.CountIncreasingQuadruplets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

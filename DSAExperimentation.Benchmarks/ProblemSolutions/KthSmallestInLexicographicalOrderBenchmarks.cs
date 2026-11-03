@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.KthSmallestInLexicographicalOrder;
+using DSAExperimentation.LeetCode.Solutions.KthSmallestInLexicographicalOrder;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

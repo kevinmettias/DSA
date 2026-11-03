@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumNumberOfValidStringsToFormTargetI;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfValidStringsToFormTargetI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

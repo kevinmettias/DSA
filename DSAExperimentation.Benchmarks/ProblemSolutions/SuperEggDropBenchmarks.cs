@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SuperEggDrop;
+using DSAExperimentation.LeetCode.Solutions.SuperEggDrop;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

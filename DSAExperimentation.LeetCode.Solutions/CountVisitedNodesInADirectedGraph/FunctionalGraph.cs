@@ -1,0 +1,41 @@
+
+// One node of LC 2876's graph, holding the single successor edges[i] names. Neighbors is a list
+// rather than a dedicated exactly-one-child contract because ListChildren already reads a
+// List<T>, and the out-degree bound is a caller discipline FunctionalGraph.Build enforces
+// rather than something the type states.
+//
+// Unlike LC 2360's node of the same name, there is no "no outgoing edge" case here: LC 2876
+// guarantees every node has exactly one successor, and forbids a self-loop.
+using FunctionalGraphNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+
+namespace DSAExperimentation.LeetCode.Solutions.CountVisitedNodesInADirectedGraph;
+
+// LC 2876's edges[] reshaped once into the node form the Tarjan strategy walks,
+// keeping the original array alongside it because the reverse-BFS half of that
+// strategy reads successors backwards and an int[] is the cheapest way to invert
+// them.
+//
+// Being a named type rather than a bare List<FunctionalGraphNode> is what keeps the
+// hoisted overload unambiguous against LeetCode's own int[] shape
+// (ARCHITECTURE.md #17.4) - it is not an IEnumerable, so the two overloads can
+// never both bind - and it lets a benchmark charge construction to [GlobalSetup]
+// instead of to the search being measured.
+internal readonly record struct FunctionalGraph(int[] Edges, List<FunctionalGraphNode> Nodes)
+{
+    public static FunctionalGraph Build(int[] edges)
+    {
+        var nodes = new List<FunctionalGraphNode>(edges.Length);
+
+        for (var id = 0; id < edges.Length; id++)
+        {
+            nodes.Add(new FunctionalGraphNode(id));
+        }
+
+        for (var id = 0; id < edges.Length; id++)
+        {
+            nodes[id].Neighbors.Add(nodes[edges[id]]);
+        }
+
+        return new FunctionalGraph(edges, nodes);
+    }
+}

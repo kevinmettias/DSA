@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.StickersToSpellWord;
+using DSAExperimentation.LeetCode.Solutions.StickersToSpellWord;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

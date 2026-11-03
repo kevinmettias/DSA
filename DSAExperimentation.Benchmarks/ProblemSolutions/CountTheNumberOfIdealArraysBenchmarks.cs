@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountTheNumberOfIdealArrays;
+using DSAExperimentation.LeetCode.Solutions.CountTheNumberOfIdealArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

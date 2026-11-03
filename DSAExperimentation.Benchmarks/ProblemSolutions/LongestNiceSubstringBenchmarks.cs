@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LongestNiceSubstring;
+using DSAExperimentation.LeetCode.Solutions.LongestNiceSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

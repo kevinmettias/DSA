@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumIncrementsForTargetMultiplesInAnArray;
+using DSAExperimentation.LeetCode.Solutions.MinimumIncrementsForTargetMultiplesInAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumAddToMakeParenthesesValid;
+using DSAExperimentation.LeetCode.Solutions.MinimumAddToMakeParenthesesValid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

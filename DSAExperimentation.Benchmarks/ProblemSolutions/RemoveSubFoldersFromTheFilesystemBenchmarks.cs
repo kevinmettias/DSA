@@ -1,6 +1,6 @@
 using System.Text;
 using DSAExperimentation.Domain.Computing.Filesystem;
-using DSAExperimentation.LeetCode.RemoveSubFoldersFromTheFilesystem;
+using DSAExperimentation.LeetCode.Solutions.RemoveSubFoldersFromTheFilesystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

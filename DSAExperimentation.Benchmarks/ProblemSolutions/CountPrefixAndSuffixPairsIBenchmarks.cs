@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.RollingHash;
-using DSAExperimentation.LeetCode.CountPrefixAndSuffixPairsI;
+using DSAExperimentation.LeetCode.Solutions.CountPrefixAndSuffixPairsI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

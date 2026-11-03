@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.IsGraphBipartite;
+using DSAExperimentation.LeetCode.Solutions.IsGraphBipartite;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

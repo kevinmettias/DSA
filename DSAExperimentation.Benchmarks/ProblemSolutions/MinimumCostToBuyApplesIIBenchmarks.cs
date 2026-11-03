@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumCostToBuyApplesII;
+using DSAExperimentation.LeetCode.Solutions.MinimumCostToBuyApplesII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

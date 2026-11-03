@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ValidPalindrome;
+using DSAExperimentation.LeetCode.Solutions.ValidPalindrome;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

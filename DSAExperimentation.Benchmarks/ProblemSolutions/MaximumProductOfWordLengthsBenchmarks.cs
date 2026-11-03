@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumProductOfWordLengths;
+using DSAExperimentation.LeetCode.Solutions.MaximumProductOfWordLengths;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

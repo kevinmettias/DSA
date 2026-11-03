@@ -1,5 +1,5 @@
 using System.Text;
-using DSAExperimentation.LeetCode.ParseLispExpression;
+using DSAExperimentation.LeetCode.Solutions.ParseLispExpression;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ShortestPalindrome;
+using DSAExperimentation.LeetCode.Solutions.ShortestPalindrome;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

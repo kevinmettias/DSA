@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPoints;
+using DSAExperimentation.LeetCode.Solutions.FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPoints;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

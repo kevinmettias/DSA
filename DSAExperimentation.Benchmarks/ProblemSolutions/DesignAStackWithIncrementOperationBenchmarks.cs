@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DesignAStackWithIncrementOperation;
+using DSAExperimentation.LeetCode.Solutions.DesignAStackWithIncrementOperation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

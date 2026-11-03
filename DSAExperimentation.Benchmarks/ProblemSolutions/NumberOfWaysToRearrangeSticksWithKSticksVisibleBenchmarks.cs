@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfWaysToRearrangeSticksWithKSticksVisible;
+using DSAExperimentation.LeetCode.Solutions.NumberOfWaysToRearrangeSticksWithKSticksVisible;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

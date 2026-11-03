@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DesignBitset;
+using DSAExperimentation.LeetCode.Solutions.DesignBitset;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

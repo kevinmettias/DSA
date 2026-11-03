@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DesignAuthenticationManager;
+using DSAExperimentation.LeetCode.Solutions.DesignAuthenticationManager;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

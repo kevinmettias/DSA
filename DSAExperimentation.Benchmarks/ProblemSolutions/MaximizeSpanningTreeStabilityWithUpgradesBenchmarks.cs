@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximizeSpanningTreeStabilityWithUpgrades;
+using DSAExperimentation.LeetCode.Solutions.MaximizeSpanningTreeStabilityWithUpgrades;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

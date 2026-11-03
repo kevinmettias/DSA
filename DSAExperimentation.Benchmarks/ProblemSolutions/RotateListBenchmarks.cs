@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
-using DSAExperimentation.LeetCode.RotateList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode.Solutions.RotateList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

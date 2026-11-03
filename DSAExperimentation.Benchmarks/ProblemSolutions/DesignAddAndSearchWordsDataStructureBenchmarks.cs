@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DesignAddAndSearchWordsDataStructure;
+using DSAExperimentation.LeetCode.Solutions.DesignAddAndSearchWordsDataStructure;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

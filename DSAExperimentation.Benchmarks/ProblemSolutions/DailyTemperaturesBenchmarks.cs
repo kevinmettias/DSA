@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DailyTemperatures;
+using DSAExperimentation.LeetCode.Solutions.DailyTemperatures;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

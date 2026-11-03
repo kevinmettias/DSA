@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountAnagrams;
+using DSAExperimentation.LeetCode.Solutions.CountAnagrams;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

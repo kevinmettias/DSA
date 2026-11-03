@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfWaysToReorderArrayToGetSameBST;
+using DSAExperimentation.LeetCode.Solutions.NumberOfWaysToReorderArrayToGetSameBST;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

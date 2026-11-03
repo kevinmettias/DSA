@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfStringsWhichCanBeRearrangedToContainSubstring;
+using DSAExperimentation.LeetCode.Solutions.NumberOfStringsWhichCanBeRearrangedToContainSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

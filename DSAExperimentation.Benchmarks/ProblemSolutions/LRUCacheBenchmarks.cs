@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Mechanisms.Cache;
-using DSAExperimentation.LeetCode.LRUCache;
+using DSAExperimentation.LeetCode.Solutions.LRUCache;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.LongestPalindromicPathInGraph;
+using DSAExperimentation.LeetCode.Solutions.LongestPalindromicPathInGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

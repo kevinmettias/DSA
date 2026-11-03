@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.LinkedListCycle;
+using DSAExperimentation.LeetCode.Solutions.LinkedListCycle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

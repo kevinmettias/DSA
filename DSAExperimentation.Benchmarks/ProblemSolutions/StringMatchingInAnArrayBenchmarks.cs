@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.StringMatchingInAnArray;
+using DSAExperimentation.LeetCode.Solutions.StringMatchingInAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

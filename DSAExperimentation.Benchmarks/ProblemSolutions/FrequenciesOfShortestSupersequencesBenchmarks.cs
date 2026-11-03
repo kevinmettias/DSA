@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FrequenciesOfShortestSupersequences;
+using DSAExperimentation.LeetCode.Solutions.FrequenciesOfShortestSupersequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

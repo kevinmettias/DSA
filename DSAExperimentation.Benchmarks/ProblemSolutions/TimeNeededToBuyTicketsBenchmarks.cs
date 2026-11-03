@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.TimeNeededToBuyTickets;
+using DSAExperimentation.LeetCode.Solutions.TimeNeededToBuyTickets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.HowManyNumbersAreSmallerThanTheCurrentNumber;
+using DSAExperimentation.LeetCode.Solutions.HowManyNumbersAreSmallerThanTheCurrentNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

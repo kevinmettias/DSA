@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SmallestIntegerDivisibleByK;
+using DSAExperimentation.LeetCode.Solutions.SmallestIntegerDivisibleByK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

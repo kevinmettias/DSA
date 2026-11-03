@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.JumpGameII;
+using DSAExperimentation.LeetCode.Solutions.JumpGameII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

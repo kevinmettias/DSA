@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.EvaluateReversePolishNotation;
+using DSAExperimentation.LeetCode.Solutions.EvaluateReversePolishNotation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

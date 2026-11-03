@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfDigitOne;
+using DSAExperimentation.LeetCode.Solutions.NumberOfDigitOne;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LengthOfTheLongestIncreasingPath;
+using DSAExperimentation.LeetCode.Solutions.LengthOfTheLongestIncreasingPath;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.StoneGameVI;
+using DSAExperimentation.LeetCode.Solutions.StoneGameVI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

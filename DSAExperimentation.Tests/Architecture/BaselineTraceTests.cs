@@ -283,7 +283,7 @@ public sealed partial class BaselineTraceTests
     [Fact]
     public void From_EveryArm_FindsTheSolutionMemberItCalls()
         => Assert.Equal(
-            ["DSAExperimentation.LeetCode.Probe.ProbeSolution.Baseline(int[])"],
+            ["DSAExperimentation.LeetCode.Solutions.Probe.ProbeSolution.Baseline(int[])"],
             TraceOf("public static int Baseline(int[] values) => values.Length;", ArmCalling("ProbeSolution.Baseline(_values)")).Entries);
 
     private static string ArmCalling(string call)
@@ -333,10 +333,10 @@ public sealed partial class BaselineTraceTests
         => $$"""
             using BenchmarkDotNet.Attributes;
             using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-            using DSAExperimentation.LeetCode.Probe;
+            using DSAExperimentation.LeetCode.Solutions.Probe;
             using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
-            namespace DSAExperimentation.LeetCode.Probe
+            namespace DSAExperimentation.LeetCode.Solutions.Probe
             {
                 internal static class ProbeSolution
                 {

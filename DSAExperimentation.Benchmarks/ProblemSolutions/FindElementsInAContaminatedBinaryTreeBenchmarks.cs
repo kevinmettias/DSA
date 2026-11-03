@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.FindElementsInAContaminatedBinaryTree;
+using DSAExperimentation.LeetCode.Solutions.FindElementsInAContaminatedBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

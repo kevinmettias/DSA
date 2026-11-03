@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CheckIfItIsAStraightLine;
+using DSAExperimentation.LeetCode.Solutions.CheckIfItIsAStraightLine;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

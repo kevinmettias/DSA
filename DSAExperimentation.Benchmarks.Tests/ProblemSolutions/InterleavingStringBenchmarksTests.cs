@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.InterleavingString;
+using DSAExperimentation.LeetCode.Solutions.InterleavingString;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 

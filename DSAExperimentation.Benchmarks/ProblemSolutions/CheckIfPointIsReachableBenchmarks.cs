@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CheckIfPointIsReachable;
+using DSAExperimentation.LeetCode.Solutions.CheckIfPointIsReachable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

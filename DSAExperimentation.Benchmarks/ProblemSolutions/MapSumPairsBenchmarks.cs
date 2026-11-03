@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MapSumPairs;
+using DSAExperimentation.LeetCode.Solutions.MapSumPairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

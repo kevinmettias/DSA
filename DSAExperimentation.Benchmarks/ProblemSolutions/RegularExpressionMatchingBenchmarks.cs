@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RegularExpressionMatching;
+using DSAExperimentation.LeetCode.Solutions.RegularExpressionMatching;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

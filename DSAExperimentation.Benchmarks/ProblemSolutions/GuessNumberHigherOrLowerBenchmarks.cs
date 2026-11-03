@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.GuessNumberHigherOrLower;
+using DSAExperimentation.LeetCode.Solutions.GuessNumberHigherOrLower;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

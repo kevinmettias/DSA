@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DecodeWays;
+using DSAExperimentation.LeetCode.Solutions.DecodeWays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

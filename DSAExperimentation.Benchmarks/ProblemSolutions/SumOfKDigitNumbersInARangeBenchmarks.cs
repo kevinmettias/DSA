@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SumOfKDigitNumbersInARange;
+using DSAExperimentation.LeetCode.Solutions.SumOfKDigitNumbersInARange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

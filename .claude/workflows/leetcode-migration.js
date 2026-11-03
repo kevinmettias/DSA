@@ -1,7 +1,7 @@
 export const meta = {
   name: 'leetcode-migration',
   description:
-    'Migrates already-covered LeetCode problems from the pre-section-17 shape (algorithm inlined separately in the test and the benchmark) into the tiered architecture: one solution class in DSAExperimentation.LeetCode holding every strategy, with the test and benchmark reduced to harnesses',
+    'Migrates already-covered LeetCode problems from the pre-section-17 shape (algorithm inlined separately in the test and the benchmark) into the tiered architecture: one solution class in DSAExperimentation.LeetCode.Solutions holding every strategy, with the test and benchmark reduced to harnesses',
   phases: [
     { title: 'Select', detail: 'read manifest, pick the next batch still in the pre-section-17 shape' },
     { title: 'Migrate', detail: 'one agent per cluster: extract solution class, reduce both harnesses, relocate fixtures' },
@@ -106,7 +106,7 @@ function buildProcedure() {
 function buildProcedureIntake() {
   return (
     `FOR EACH PROBLEM, in order:\n` +
-    `1. If DSAExperimentation.LeetCode/<Name>/<Name>Solution.cs ALREADY EXISTS, this problem is already ` +
+    `1. If DSAExperimentation.LeetCode.Solutions/<Name>/<Name>Solution.cs ALREADY EXISTS, this problem is already ` +
     `migrated (another session may have done it). Report status "already" and move on - do NOT rewrite it.\n` +
     `2. Read the existing test and benchmark named in the problem list. Inventory EVERY distinct strategy ` +
     `across BOTH files - the test's private solve helper, and each [Benchmark] method including the ` +
@@ -119,8 +119,8 @@ function buildProcedureIntake() {
 // construction out of the measured method.
 function buildProcedureAuthoring() {
   return (
-    `3. Write DSAExperimentation.LeetCode/<Name>/<Name>Solution.cs - \`internal static class <Name>Solution\` ` +
-    `in namespace \`DSAExperimentation.LeetCode.<Name>\`, one public static method per strategy named ` +
+    `3. Write DSAExperimentation.LeetCode.Solutions/<Name>/<Name>Solution.cs - \`internal static class <Name>Solution\` ` +
+    `in namespace \`DSAExperimentation.LeetCode.Solutions.<Name>\`, one public static method per strategy named ` +
     `<Operation>By<Strategy> (AddByBitStack, TryFindIndicesByBruteForce, MinTurnsByReduceGraph). The naive ` +
     `baseline is a first-class method here, NOT a private helper left behind in the benchmark - putting it ` +
     `here is what finally gets it under test. Its INTERNALS stay BCL (a baseline represents "what you would ` +
@@ -174,10 +174,10 @@ function buildProcedureHarnesses() {
 function buildReferencesAndLimits() {
   return (
     `REFERENCE PAIRS - already migrated and correct, read one before writing anything:\n` +
-    `- DSAExperimentation.LeetCode/OpenTheLock/OpenTheLockSolution.cs (two strategies, hoisted overloads, ` +
+    `- DSAExperimentation.LeetCode.Solutions/OpenTheLock/OpenTheLockSolution.cs (two strategies, hoisted overloads, ` +
     `domain graph) + its LeetCode.Tests/OpenTheLock + Benchmarks/ProblemSolutions pair;\n` +
-    `- DSAExperimentation.LeetCode/AddBinary/AddBinarySolution.cs (simplest possible shape);\n` +
-    `- DSAExperimentation.LeetCode/CountWaysToBuildRoomsInAnAntColony/ (problem-specific algebras kept ` +
+    `- DSAExperimentation.LeetCode.Solutions/AddBinary/AddBinarySolution.cs (simplest possible shape);\n` +
+    `- DSAExperimentation.LeetCode.Solutions/CountWaysToBuildRoomsInAnAntColony/ (problem-specific algebras kept ` +
     `beside the solution).\n\n` +
     `BEHAVIOUR MUST NOT CHANGE. The migrated strategies must return what the originals returned on the ` +
     `original inputs. Where the test arm and the benchmark arm disagreed, LeetCode's real answer wins, and ` +
@@ -209,7 +209,7 @@ function buildOutputContract() {
   return (
     `Return one result object per problem id: status "migrated" (with solutionPath/testPath/benchmarkPath as ` +
     `REPO-ROOT-RELATIVE forward-slash paths, e.g. ` +
-    `"DSAExperimentation.LeetCode/TwoSum/TwoSumSolution.cs"; \`strategies\` naming the methods you produced; ` +
+    `"DSAExperimentation.LeetCode.Solutions/TwoSum/TwoSumSolution.cs"; \`strategies\` naming the methods you produced; ` +
     `\`relocatedTypes\` naming any fixture types you moved and where, or null), or "already" (nothing to do), ` +
     `or "blocked" (with the reason in notes).`
   )
@@ -244,7 +244,7 @@ const selection = await agent(
   `"\n\n` +
   `The first line is the total remaining; the JSON that follows is the batch. For each batch entry derive ` +
   `\`name\`, the PascalCase problem folder, from testPath - it is the second-to-last path segment (e.g. ` +
-  `"DSAExperimentation.LeetCode.Tests/TwoSum/TwoSumSolutionTests.cs" -> "TwoSum"). If testPath is null, ` +
+  `"DSAExperimentation.LeetCode.Solutions.Tests/TwoSum/TwoSumSolutionTests.cs" -> "TwoSum"). If testPath is null, ` +
   `derive it from the title the way ARCHITECTURE.md and existing folders do. Report the batch and the total. ` +
   `Do not modify any file.`,
   { phase: 'Select', schema: SELECT_SCHEMA },
@@ -281,7 +281,7 @@ phase('Verify')
 const verifyReport = await agent(
   `In the repo at the current working directory (no .sln - build per project). Run, from the repo root:\n` +
   `  dotnet build DSAExperimentation/DSAExperimentation.csproj -c Release\n` +
-  `  dotnet build DSAExperimentation.LeetCode/DSAExperimentation.LeetCode.csproj -c Release\n` +
+  `  dotnet build DSAExperimentation.LeetCode.Solutions/DSAExperimentation.LeetCode.Solutions.csproj -c Release\n` +
   `  dotnet build DSAExperimentation.Benchmarks/DSAExperimentation.Benchmarks.csproj -c Release\n` +
   `  dotnet test DSA.slnx -c Release\n` +
   `(the benchmarks build only confirms the harnesses compile - do NOT run BenchmarkDotNet jobs, far too ` +

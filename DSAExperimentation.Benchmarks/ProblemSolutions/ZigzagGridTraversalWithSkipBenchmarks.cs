@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ZigzagGridTraversalWithSkip;
+using DSAExperimentation.LeetCode.Solutions.ZigzagGridTraversalWithSkip;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

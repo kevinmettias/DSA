@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaxChunksToMakeSorted;
+using DSAExperimentation.LeetCode.Solutions.MaxChunksToMakeSorted;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

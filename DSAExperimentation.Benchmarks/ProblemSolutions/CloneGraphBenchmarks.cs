@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CloneGraph;
+using DSAExperimentation.LeetCode.Solutions.CloneGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // clone. Both arms are now CloneGraphSolution's, over a ring graph (each node
 // connected to its next and previous neighbor) sized by NodeCount. Each arm
 // returns the cloned root itself as object? - Node is internal to
-// DSAExperimentation.LeetCode, so a public [Benchmark] method cannot name it
+// DSAExperimentation.LeetCode.Solutions, so a public [Benchmark] method cannot name it
 // (CS0050).
 public class CloneGraphBenchmarks
 {

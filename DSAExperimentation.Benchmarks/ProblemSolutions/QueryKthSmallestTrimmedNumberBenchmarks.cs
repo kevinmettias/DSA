@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.QueryKthSmallestTrimmedNumber;
+using DSAExperimentation.LeetCode.Solutions.QueryKthSmallestTrimmedNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

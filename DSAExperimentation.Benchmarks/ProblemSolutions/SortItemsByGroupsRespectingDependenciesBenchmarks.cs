@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SortItemsByGroupsRespectingDependencies;
+using DSAExperimentation.LeetCode.Solutions.SortItemsByGroupsRespectingDependencies;
 using GroupNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountTheNumberOfSquareFreeSubsets;
+using DSAExperimentation.LeetCode.Solutions.CountTheNumberOfSquareFreeSubsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

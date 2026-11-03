@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CheckIfItIsAGoodArray;
+using DSAExperimentation.LeetCode.Solutions.CheckIfItIsAGoodArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

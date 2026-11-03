@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DivisorGame;
+using DSAExperimentation.LeetCode.Solutions.DivisorGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

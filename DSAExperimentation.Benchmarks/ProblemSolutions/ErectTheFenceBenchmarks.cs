@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ErectTheFence;
+using DSAExperimentation.LeetCode.Solutions.ErectTheFence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

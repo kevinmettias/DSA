@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.StatisticsFromALargeSample;
+using DSAExperimentation.LeetCode.Solutions.StatisticsFromALargeSample;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

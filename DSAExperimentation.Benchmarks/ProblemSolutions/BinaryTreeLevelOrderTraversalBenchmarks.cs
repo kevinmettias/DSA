@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.BinaryTreeLevelOrderTraversal;
+using DSAExperimentation.LeetCode.Solutions.BinaryTreeLevelOrderTraversal;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

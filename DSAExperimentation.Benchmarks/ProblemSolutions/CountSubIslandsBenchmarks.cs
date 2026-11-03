@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountSubIslands;
+using DSAExperimentation.LeetCode.Solutions.CountSubIslands;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

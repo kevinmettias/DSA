@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimizeTheMaximumEdgeWeightOfGraph;
+using DSAExperimentation.LeetCode.Solutions.MinimizeTheMaximumEdgeWeightOfGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

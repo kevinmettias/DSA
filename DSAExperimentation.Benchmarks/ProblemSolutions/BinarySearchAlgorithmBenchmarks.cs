@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.BinarySearchAlgorithm;
+using DSAExperimentation.LeetCode.Solutions.BinarySearchAlgorithm;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

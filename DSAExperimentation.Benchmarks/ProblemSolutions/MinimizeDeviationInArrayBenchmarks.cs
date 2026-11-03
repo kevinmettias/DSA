@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimizeDeviationInArray;
+using DSAExperimentation.LeetCode.Solutions.MinimizeDeviationInArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

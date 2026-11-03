@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.StockPriceFluctuation;
+using DSAExperimentation.LeetCode.Solutions.StockPriceFluctuation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

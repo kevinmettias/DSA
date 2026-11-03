@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.MedianOfTwoSortedArrays;
+using DSAExperimentation.LeetCode.Solutions.MedianOfTwoSortedArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

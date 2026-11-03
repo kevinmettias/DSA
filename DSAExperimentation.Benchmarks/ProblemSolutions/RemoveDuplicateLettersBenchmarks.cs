@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RemoveDuplicateLetters;
+using DSAExperimentation.LeetCode.Solutions.RemoveDuplicateLetters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOf1Bits;
+using DSAExperimentation.LeetCode.Solutions.NumberOf1Bits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

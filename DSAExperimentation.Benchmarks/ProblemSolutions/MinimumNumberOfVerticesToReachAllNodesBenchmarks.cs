@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumNumberOfVerticesToReachAllNodes;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfVerticesToReachAllNodes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

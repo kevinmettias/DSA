@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DesignAuctionSystem;
+using DSAExperimentation.LeetCode.Solutions.DesignAuctionSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

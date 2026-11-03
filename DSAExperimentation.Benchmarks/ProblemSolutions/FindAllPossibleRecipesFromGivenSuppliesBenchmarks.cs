@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindAllPossibleRecipesFromGivenSupplies;
+using DSAExperimentation.LeetCode.Solutions.FindAllPossibleRecipesFromGivenSupplies;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

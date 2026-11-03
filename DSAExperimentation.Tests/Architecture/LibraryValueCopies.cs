@@ -17,7 +17,7 @@ namespace DSAExperimentation.Tests.Architecture;
 // encoded, not a value anyone reads for itself.
 internal static class LibraryValueCopies
 {
-    private const string SolutionNamespace = "DSAExperimentation.LeetCode";
+    private const string SolutionNamespace = "DSAExperimentation.LeetCode.Solutions";
 
     // Integers this far from zero are taken to mean one thing; nearer ones need a shared word too.
     private const decimal LargestCommonMagnitude = 10;

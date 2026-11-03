@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumSumOfSubsequenceWithNonAdjacentElements;
+using DSAExperimentation.LeetCode.Solutions.MaximumSumOfSubsequenceWithNonAdjacentElements;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

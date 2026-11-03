@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumTotalBeautyOfTheGardens;
+using DSAExperimentation.LeetCode.Solutions.MaximumTotalBeautyOfTheGardens;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

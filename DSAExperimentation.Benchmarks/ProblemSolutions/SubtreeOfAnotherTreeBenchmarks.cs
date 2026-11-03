@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.SubtreeOfAnotherTree;
+using DSAExperimentation.LeetCode.Solutions.SubtreeOfAnotherTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

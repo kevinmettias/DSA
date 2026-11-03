@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfFlowersInFullBloom;
+using DSAExperimentation.LeetCode.Solutions.NumberOfFlowersInFullBloom;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

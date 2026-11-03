@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RedundantConnection;
+using DSAExperimentation.LeetCode.Solutions.RedundantConnection;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

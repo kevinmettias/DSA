@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinCostClimbingStairs;
+using DSAExperimentation.LeetCode.Solutions.MinCostClimbingStairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

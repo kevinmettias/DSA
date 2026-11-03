@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ValidSquare;
+using DSAExperimentation.LeetCode.Solutions.ValidSquare;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

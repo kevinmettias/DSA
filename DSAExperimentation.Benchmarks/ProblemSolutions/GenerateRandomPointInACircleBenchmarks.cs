@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.GenerateRandomPointInACircle;
+using DSAExperimentation.LeetCode.Solutions.GenerateRandomPointInACircle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

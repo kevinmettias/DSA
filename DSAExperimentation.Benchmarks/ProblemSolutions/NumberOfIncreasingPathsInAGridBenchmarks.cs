@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfIncreasingPathsInAGrid;
+using DSAExperimentation.LeetCode.Solutions.NumberOfIncreasingPathsInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

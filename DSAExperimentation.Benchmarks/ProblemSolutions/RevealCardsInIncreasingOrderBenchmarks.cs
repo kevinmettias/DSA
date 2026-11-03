@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RevealCardsInIncreasingOrder;
+using DSAExperimentation.LeetCode.Solutions.RevealCardsInIncreasingOrder;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

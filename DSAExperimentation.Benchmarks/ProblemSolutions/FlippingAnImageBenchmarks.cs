@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FlippingAnImage;
+using DSAExperimentation.LeetCode.Solutions.FlippingAnImage;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

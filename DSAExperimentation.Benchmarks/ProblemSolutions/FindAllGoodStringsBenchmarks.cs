@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindAllGoodStrings;
+using DSAExperimentation.LeetCode.Solutions.FindAllGoodStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

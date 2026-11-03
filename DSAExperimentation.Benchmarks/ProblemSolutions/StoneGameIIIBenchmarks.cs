@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.StoneGameIII;
+using DSAExperimentation.LeetCode.Solutions.StoneGameIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

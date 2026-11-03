@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.GreatestCommonDivisorTraversal;
+using DSAExperimentation.LeetCode.Solutions.GreatestCommonDivisorTraversal;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

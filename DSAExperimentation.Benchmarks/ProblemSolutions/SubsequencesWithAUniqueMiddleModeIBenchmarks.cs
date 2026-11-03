@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SubsequencesWithAUniqueMiddleModeI;
+using DSAExperimentation.LeetCode.Solutions.SubsequencesWithAUniqueMiddleModeI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

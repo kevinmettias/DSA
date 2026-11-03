@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FrogJump;
+using DSAExperimentation.LeetCode.Solutions.FrogJump;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

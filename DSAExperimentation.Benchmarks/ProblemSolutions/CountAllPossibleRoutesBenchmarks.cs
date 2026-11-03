@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountAllPossibleRoutes;
+using DSAExperimentation.LeetCode.Solutions.CountAllPossibleRoutes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

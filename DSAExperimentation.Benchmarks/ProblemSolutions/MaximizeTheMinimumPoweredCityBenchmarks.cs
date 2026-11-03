@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximizeTheMinimumPoweredCity;
+using DSAExperimentation.LeetCode.Solutions.MaximizeTheMinimumPoweredCity;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

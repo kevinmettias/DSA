@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.Architecture;
 // first, so prose that names an API is not mistaken for code that calls it.
 public sealed partial class MachineAccessTests
 {
-    private static readonly string[] ScannedProjects = ["DSAExperimentation", "DSAExperimentation.LeetCode"];
+    private static readonly string[] ScannedProjects = ["DSAExperimentation", "DSAExperimentation.LeetCode.Solutions"];
 
     // What each kind of machine access looks like in code, named for the finding it produces.
     private static readonly MachineAccess[] Accesses =

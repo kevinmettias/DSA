@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfSquarefulArrays;
+using DSAExperimentation.LeetCode.Solutions.NumberOfSquarefulArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

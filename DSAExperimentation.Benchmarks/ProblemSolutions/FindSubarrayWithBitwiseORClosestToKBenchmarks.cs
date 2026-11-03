@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindSubarrayWithBitwiseORClosestToK;
+using DSAExperimentation.LeetCode.Solutions.FindSubarrayWithBitwiseORClosestToK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

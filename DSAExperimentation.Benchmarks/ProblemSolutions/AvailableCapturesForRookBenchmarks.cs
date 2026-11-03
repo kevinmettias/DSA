@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.AvailableCapturesForRook;
+using DSAExperimentation.LeetCode.Solutions.AvailableCapturesForRook;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

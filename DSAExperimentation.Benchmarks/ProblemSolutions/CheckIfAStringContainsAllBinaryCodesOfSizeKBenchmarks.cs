@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CheckIfAStringContainsAllBinaryCodesOfSizeK;
+using DSAExperimentation.LeetCode.Solutions.CheckIfAStringContainsAllBinaryCodesOfSizeK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

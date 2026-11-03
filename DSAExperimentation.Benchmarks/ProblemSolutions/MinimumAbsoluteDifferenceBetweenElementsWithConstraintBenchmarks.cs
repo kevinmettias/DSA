@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumAbsoluteDifferenceBetweenElementsWithConstraint;
+using DSAExperimentation.LeetCode.Solutions.MinimumAbsoluteDifferenceBetweenElementsWithConstraint;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfProvinces;
+using DSAExperimentation.LeetCode.Solutions.NumberOfProvinces;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

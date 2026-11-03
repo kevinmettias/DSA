@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SpecialPermutations;
+using DSAExperimentation.LeetCode.Solutions.SpecialPermutations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

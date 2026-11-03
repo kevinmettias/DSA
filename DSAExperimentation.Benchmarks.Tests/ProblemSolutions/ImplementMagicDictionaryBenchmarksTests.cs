@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.ImplementMagicDictionary;
+using DSAExperimentation.LeetCode.Solutions.ImplementMagicDictionary;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 

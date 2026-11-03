@@ -1,5 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
-using DSAExperimentation.LeetCode.FindFirstAndLastPositionOfElementInSortedArray;
+using DSAExperimentation.LeetCode.Solutions.FindFirstAndLastPositionOfElementInSortedArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

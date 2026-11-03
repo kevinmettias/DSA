@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.LowestCommonAncestorOfABinaryTree;
+using DSAExperimentation.LeetCode.Solutions.LowestCommonAncestorOfABinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

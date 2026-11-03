@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumIceCreamBars;
+using DSAExperimentation.LeetCode.Solutions.MaximumIceCreamBars;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

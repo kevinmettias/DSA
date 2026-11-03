@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FormArrayByConcatenatingSubarraysOfAnotherArray;
+using DSAExperimentation.LeetCode.Solutions.FormArrayByConcatenatingSubarraysOfAnotherArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

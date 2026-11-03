@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SumOfEvenNumbersAfterQueries;
+using DSAExperimentation.LeetCode.Solutions.SumOfEvenNumbersAfterQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

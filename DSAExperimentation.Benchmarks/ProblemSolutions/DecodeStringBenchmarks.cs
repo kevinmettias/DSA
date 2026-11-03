@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DecodeString;
+using DSAExperimentation.LeetCode.Solutions.DecodeString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

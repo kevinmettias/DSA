@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.QueueReconstructionByHeight;
+using DSAExperimentation.LeetCode.Solutions.QueueReconstructionByHeight;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

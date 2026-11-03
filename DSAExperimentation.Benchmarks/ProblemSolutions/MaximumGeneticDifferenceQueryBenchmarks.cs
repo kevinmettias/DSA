@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.MaximumGeneticDifferenceQuery;
+using DSAExperimentation.LeetCode.Solutions.MaximumGeneticDifferenceQuery;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

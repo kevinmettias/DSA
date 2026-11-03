@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumScoreTriangulationOfPolygon;
+using DSAExperimentation.LeetCode.Solutions.MinimumScoreTriangulationOfPolygon;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

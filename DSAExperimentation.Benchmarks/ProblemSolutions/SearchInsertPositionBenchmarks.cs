@@ -1,5 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
-using DSAExperimentation.LeetCode.SearchInsertPosition;
+using DSAExperimentation.LeetCode.Solutions.SearchInsertPosition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RemoveDuplicatesFromSortedArrayII;
+using DSAExperimentation.LeetCode.Solutions.RemoveDuplicatesFromSortedArrayII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

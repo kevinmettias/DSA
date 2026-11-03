@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ConstrainedSubsequenceSum;
+using DSAExperimentation.LeetCode.Solutions.ConstrainedSubsequenceSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

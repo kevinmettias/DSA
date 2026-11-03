@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumCompatibilityScoreSum;
+using DSAExperimentation.LeetCode.Solutions.MaximumCompatibilityScoreSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

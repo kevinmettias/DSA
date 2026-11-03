@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ProductOfTheLastKNumbers;
+using DSAExperimentation.LeetCode.Solutions.ProductOfTheLastKNumbers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

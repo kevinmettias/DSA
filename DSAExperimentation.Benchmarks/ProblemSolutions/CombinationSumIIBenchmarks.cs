@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CombinationSumII;
+using DSAExperimentation.LeetCode.Solutions.CombinationSumII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

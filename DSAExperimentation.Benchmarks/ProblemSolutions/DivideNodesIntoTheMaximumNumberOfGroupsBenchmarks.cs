@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DivideNodesIntoTheMaximumNumberOfGroups;
+using DSAExperimentation.LeetCode.Solutions.DivideNodesIntoTheMaximumNumberOfGroups;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.Shift2DGrid;
+using DSAExperimentation.LeetCode.Solutions.Shift2DGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

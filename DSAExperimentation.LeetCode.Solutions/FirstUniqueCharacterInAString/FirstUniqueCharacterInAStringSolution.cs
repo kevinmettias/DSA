@@ -1,0 +1,63 @@
+using DSAExperimentation.DataStructures.HashMap;
+
+namespace DSAExperimentation.LeetCode.Solutions.FirstUniqueCharacterInAString;
+
+// LeetCode 387. First Unique Character in a String: the index of the first
+// character that occurs exactly once, or -1 if every character repeats.
+//
+// The composed strategy is a HashMap<char,int> frequency count pass followed by a
+// second pass returning the first index whose count is 1 - the same
+// character-bookkeeping shape LongestSubstringWithoutRepeatingCharacters already
+// uses this repo's own HashMap<TKey,TValue> for.
+internal static class FirstUniqueCharacterInAStringSolution
+{
+    // The textbook answer: for every index, rescan the whole string counting
+    // occurrences, with no early break on the first duplicate found - the O(n^2)
+    // arm the HashMap pass below has to justify itself against. Deliberately
+    // written without this repo's primitives.
+    public static int FirstUniqCharByBruteForce(string text)
+    {
+        for (var i = 0; i < text.Length; i++)
+        {
+            var occurrences = 0;
+
+            for (var j = 0; j < text.Length; j++)
+            {
+                if (text[j] == text[i])
+                {
+                    occurrences++;
+                }
+            }
+
+            if (occurrences == 1)
+            {
+                return i;
+            }
+        }
+
+        return LeetCodeAnswer.None;
+    }
+
+    public static int FirstUniqCharByHashMapTwoPass(string text)
+    {
+        var counts = new HashMap<char, int>();
+
+        foreach (var c in text)
+        {
+            counts.TryGetValue(c, out var count);
+            counts.Set(c, count + 1);
+        }
+
+        for (var i = 0; i < text.Length; i++)
+        {
+            counts.TryGetValue(text[i], out var count);
+
+            if (count == 1)
+            {
+                return i;
+            }
+        }
+
+        return LeetCodeAnswer.None;
+    }
+}

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.TrafficSignalColor;
+using DSAExperimentation.LeetCode.Solutions.TrafficSignalColor;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

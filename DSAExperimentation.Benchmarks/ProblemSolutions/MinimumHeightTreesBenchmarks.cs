@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumHeightTrees;
+using DSAExperimentation.LeetCode.Solutions.MinimumHeightTrees;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

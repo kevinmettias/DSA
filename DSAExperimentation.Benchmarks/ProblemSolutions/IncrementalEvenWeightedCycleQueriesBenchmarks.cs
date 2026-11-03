@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.IncrementalEvenWeightedCycleQueries;
+using DSAExperimentation.LeetCode.Solutions.IncrementalEvenWeightedCycleQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

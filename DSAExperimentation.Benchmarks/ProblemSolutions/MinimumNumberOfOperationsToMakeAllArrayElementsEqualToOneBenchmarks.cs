@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOne;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOne;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

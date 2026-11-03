@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.LeetCode.ReachableNodesWithRestrictions;
+using DSAExperimentation.LeetCode.Solutions.ReachableNodesWithRestrictions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.WordSearchII;
+using DSAExperimentation.LeetCode.Solutions.WordSearchII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

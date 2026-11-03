@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheNumberOfPossibleWaysForAnEvent;
+using DSAExperimentation.LeetCode.Solutions.FindTheNumberOfPossibleWaysForAnEvent;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

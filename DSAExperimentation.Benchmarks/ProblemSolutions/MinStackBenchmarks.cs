@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinStack;
+using DSAExperimentation.LeetCode.Solutions.MinStack;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

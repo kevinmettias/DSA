@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountGoodNumbers;
+using DSAExperimentation.LeetCode.Solutions.CountGoodNumbers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

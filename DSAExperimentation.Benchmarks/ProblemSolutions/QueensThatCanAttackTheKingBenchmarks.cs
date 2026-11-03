@@ -1,5 +1,5 @@
 using DSAExperimentation.Domain.Games.Chess;
-using DSAExperimentation.LeetCode.QueensThatCanAttackTheKing;
+using DSAExperimentation.LeetCode.Solutions.QueensThatCanAttackTheKing;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,0 +1,232 @@
+using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.DataStructures.Set;
+
+namespace DSAExperimentation.LeetCode.Solutions.MakingALargeIsland;
+
+// LeetCode 827. Making A Large Island: change at most one 0 to a 1 and report the
+// largest 4-directionally connected island the result can contain.
+//
+// Both strategies visit cells by writing into the grid, so each clones the grid it
+// is handed first - the same clone-before-mutating shape MaxAreaOfIslandSolution
+// uses for LC 695, so a caller's own grid (or a benchmark fixture reused across
+// iterations) is never left labeled.
+internal static class MakingALargeIslandSolution
+{
+    private const int FirstIslandId = 2;
+
+    // The textbook answer: flip each water cell in turn and run a fresh recursive
+    // flood fill from scratch, BCL only. Deliberately written without this repo's
+    // traversal primitive - it is the arm the composed strategy below has to
+    // justify itself against.
+    //
+    // "At most one" flip means a grid that is already entirely land has no water
+    // cell to try, and its answer is the whole grid; every other grid has some
+    // water cell adjacent to its largest island, so the best flip dominates.
+    public static int LargestIslandByNaiveFloodFill(int[][] grid)
+    {
+        var working = CloneGrid(grid);
+        var rows = working.Length;
+        var cols = working[0].Length;
+        var best = 0;
+        var sawWater = false;
+
+        for (var r = 0; r < rows; r++)
+        {
+            for (var c = 0; c < cols; c++)
+            {
+                if (working[r][c] != 0)
+                {
+                    continue;
+                }
+
+                sawWater = true;
+                var flooded = FloodedAreaIfLand(working, r, c);
+                best = Math.Max(best, flooded);
+            }
+        }
+
+        return sawWater ? best : TotalCells(rows, cols);
+    }
+
+    private static int FloodedAreaIfLand(int[][] grid, int row, int col)
+    {
+        var rows = grid.Length;
+        var cols = grid[0].Length;
+        grid[row][col] = 1;
+        var visited = new bool[rows, cols];
+        var floodedArea = FloodCount(new FloodFillGrid(grid, visited, rows, cols), row, col);
+        grid[row][col] = 0;
+        return floodedArea;
+    }
+
+    // The whole board, which is the answer when no water cell was there to flip.
+    private static int TotalCells(int rows, int cols) => rows * cols;
+
+    // This repo's own DFS: DepthFirstSearch.Traverse labels each island exactly
+    // once - writing a distinct id >= 2 back into the grid in place of the
+    // traversed 1s - while a HashMap<int,int> records that island's area by id.
+    // For every water cell, its up-to-4 neighboring ids are deduped through this
+    // repo's own Set<int> and their areas summed with the flipped cell itself.
+    // Scanning the recorded areas directly covers the "already all land" case with
+    // no separate branch.
+    public static int LargestIslandByLabeledFloodFill(int[][] grid)
+    {
+        var working = CloneGrid(grid);
+        var context = new IslandGrid(working, new HashMap<int, int>(), GridSize.Of(working));
+
+        LabelAllIslands(context);
+
+        return MaxMergedWaterArea(context, MaxLabeledArea(context.AreaById));
+    }
+
+    private static void LabelAllIslands(IslandGrid context)
+    {
+        var nextId = FirstIslandId;
+
+        for (var r = 0; r < context.Size.Rows; r++)
+        {
+            for (var c = 0; c < context.Size.Cols; c++)
+            {
+                nextId = LabelIslandIfLand(context, (r, c), nextId);
+            }
+        }
+    }
+
+    private static int LabelIslandIfLand(IslandGrid context, (int Row, int Col) cell, int nextId)
+    {
+        if (context.Grid[cell.Row][cell.Col] != 1)
+        {
+            return nextId;
+        }
+
+        var land = new UnlabeledLand(context.Grid);
+        var island = DepthFirstSearch.Traverse(cell, p => GridNeighbors.Of(p, context.Size, GridDirections.Orthogonal, land));
+        context.AreaById.Set(nextId, island.Count);
+
+        foreach (var (row, col) in island)
+        {
+            context.Grid[row][col] = nextId;
+        }
+
+        return nextId + 1;
+    }
+
+    private static int MaxMergedWaterArea(IslandGrid context, int currentBest)
+    {
+        var best = currentBest;
+
+        for (var r = 0; r < context.Size.Rows; r++)
+        {
+            for (var c = 0; c < context.Size.Cols; c++)
+            {
+                var merged = MergedAreaForWaterCell(context, (r, c));
+                best = Math.Max(best, merged);
+            }
+        }
+
+        return best;
+    }
+
+    private static int MergedAreaForWaterCell(IslandGrid context, (int Row, int Col) cell)
+    {
+        if (context.Grid[cell.Row][cell.Col] != 0)
+        {
+            return 0;
+        }
+
+        var seenIslandIds = new Set<int>();
+        var merged = 1;
+
+        foreach (var (dRow, dCol) in GridDirections.Orthogonal)
+        {
+            merged += NeighborIslandArea(context, cell, (dRow, dCol), seenIslandIds);
+        }
+
+        return merged;
+    }
+
+    private static int NeighborIslandArea(IslandGrid context, (int Row, int Col) cell, (int DRow, int DCol) direction, Set<int> seenIslandIds)
+    {
+        var nextRow = cell.Row + direction.DRow;
+        var nextCol = cell.Col + direction.DCol;
+
+        if (!context.Size.HasCell(nextRow, nextCol))
+        {
+            return 0;
+        }
+
+        var neighborId = context.Grid[nextRow][nextCol];
+
+        if (neighborId < FirstIslandId || !seenIslandIds.TryAdd(neighborId))
+        {
+            return 0;
+        }
+
+        return context.AreaById.TryGetValue(neighborId, out var area) ? area : 0;
+    }
+
+    private static int MaxLabeledArea(HashMap<int, int> areaById)
+    {
+        var best = 0;
+
+        foreach (var area in areaById.Values)
+        {
+            best = Math.Max(best, area);
+        }
+
+        return best;
+    }
+
+    // Both coordinates within the board is one idea, and three scans here ask it.
+    private static bool IsInside(int row, int col, int rows, int cols)
+        => row >= 0 && row < rows && col >= 0 && col < cols;
+
+    // Land this flood still has to account for: on the grid, not yet counted, and
+    // still a 1 in the working grid.
+    private static bool IsFloodableLand(FloodFillGrid state, int row, int col)
+        => IsInside(row, col, state.Rows, state.Cols)
+            && !state.Visited[row, col]
+            && state.Cells[row][col] == 1;
+
+    private static int FloodCount(FloodFillGrid state, int row, int col)
+    {
+        if (!IsFloodableLand(state, row, col))
+        {
+            return 0;
+        }
+
+        state.Visited[row, col] = true;
+
+        return 1
+            + FloodCount(state, row + 1, col)
+            + FloodCount(state, row - 1, col)
+            + FloodCount(state, row, col + 1)
+            + FloodCount(state, row, col - 1);
+    }
+
+    private static int[][] CloneGrid(int[][] grid)
+    {
+        var clone = new int[grid.Length][];
+
+        for (var r = 0; r < grid.Length; r++)
+        {
+            clone[r] = (int[])grid[r].Clone();
+        }
+
+        return clone;
+    }
+
+    // The baseline's flood state. The board is called Cells, not Grid, because that name
+    // would read as this repo's Grid type, which a baseline never touches (ARCHITECTURE 17.5).
+    private readonly record struct FloodFillGrid(int[][] Cells, bool[,] Visited, int Rows, int Cols);
+
+    private readonly record struct IslandGrid(int[][] Grid, HashMap<int, int> AreaById, GridSize Size);
+
+    // The cells a labelling walk may step into: land no island id has been written over yet.
+    private readonly struct UnlabeledLand(int[][] grid) : IGridCellFilter
+    {
+        public bool CanEnter(int row, int col) => grid[row][col] == 1;
+    }
+}

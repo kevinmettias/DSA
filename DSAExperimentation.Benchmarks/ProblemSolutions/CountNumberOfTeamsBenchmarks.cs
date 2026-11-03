@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountNumberOfTeams;
+using DSAExperimentation.LeetCode.Solutions.CountNumberOfTeams;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

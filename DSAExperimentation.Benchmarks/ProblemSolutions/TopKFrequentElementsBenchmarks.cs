@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.TopKFrequentElements;
+using DSAExperimentation.LeetCode.Solutions.TopKFrequentElements;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

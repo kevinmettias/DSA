@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.AllAncestorsOfANodeInADirectedAcyclicGraph;
+using DSAExperimentation.LeetCode.Solutions.AllAncestorsOfANodeInADirectedAcyclicGraph;
 using AncestorNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

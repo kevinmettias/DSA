@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfDistinctRollSequences;
+using DSAExperimentation.LeetCode.Solutions.NumberOfDistinctRollSequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

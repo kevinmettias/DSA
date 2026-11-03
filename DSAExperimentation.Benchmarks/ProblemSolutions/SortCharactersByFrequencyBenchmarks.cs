@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SortCharactersByFrequency;
+using DSAExperimentation.LeetCode.Solutions.SortCharactersByFrequency;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

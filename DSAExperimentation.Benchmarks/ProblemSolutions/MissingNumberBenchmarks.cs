@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MissingNumber;
+using DSAExperimentation.LeetCode.Solutions.MissingNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

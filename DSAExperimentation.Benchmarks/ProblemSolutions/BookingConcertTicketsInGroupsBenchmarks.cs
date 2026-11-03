@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.BookingConcertTicketsInGroups;
+using DSAExperimentation.LeetCode.Solutions.BookingConcertTicketsInGroups;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

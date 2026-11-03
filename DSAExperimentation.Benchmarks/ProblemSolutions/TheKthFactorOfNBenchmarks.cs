@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.TheKthFactorOfN;
+using DSAExperimentation.LeetCode.Solutions.TheKthFactorOfN;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

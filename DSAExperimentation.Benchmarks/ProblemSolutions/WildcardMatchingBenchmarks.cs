@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.WildcardMatching;
+using DSAExperimentation.LeetCode.Solutions.WildcardMatching;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

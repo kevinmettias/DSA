@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.PossibleBipartition;
+using DSAExperimentation.LeetCode.Solutions.PossibleBipartition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

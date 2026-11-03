@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.DiameterOfBinaryTree;
+using DSAExperimentation.LeetCode.Solutions.DiameterOfBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

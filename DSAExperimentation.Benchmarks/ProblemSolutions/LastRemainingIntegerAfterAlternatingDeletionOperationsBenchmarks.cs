@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LastRemainingIntegerAfterAlternatingDeletionOperations;
+using DSAExperimentation.LeetCode.Solutions.LastRemainingIntegerAfterAlternatingDeletionOperations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

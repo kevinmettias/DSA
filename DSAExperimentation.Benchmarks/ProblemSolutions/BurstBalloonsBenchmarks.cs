@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.BurstBalloons;
+using DSAExperimentation.LeetCode.Solutions.BurstBalloons;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

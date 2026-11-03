@@ -1,5 +1,5 @@
 using DSAExperimentation.Domain.Games.TicTacToe;
-using DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame;
+using DSAExperimentation.LeetCode.Solutions.FindWinnerOnATicTacToeGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

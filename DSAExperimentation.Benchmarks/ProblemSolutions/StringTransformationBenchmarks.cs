@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.StringTransformation;
+using DSAExperimentation.LeetCode.Solutions.StringTransformation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

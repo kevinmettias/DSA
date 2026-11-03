@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SurfaceAreaOf3DShapes;
+using DSAExperimentation.LeetCode.Solutions.SurfaceAreaOf3DShapes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

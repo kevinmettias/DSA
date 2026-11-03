@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountSubmatricesWithAllOnes;
+using DSAExperimentation.LeetCode.Solutions.CountSubmatricesWithAllOnes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

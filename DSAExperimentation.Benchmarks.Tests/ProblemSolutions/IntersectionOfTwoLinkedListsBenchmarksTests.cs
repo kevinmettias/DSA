@@ -1,7 +1,7 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.IntersectionOfTwoLinkedLists;
+using DSAExperimentation.LeetCode.Solutions.IntersectionOfTwoLinkedLists;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 

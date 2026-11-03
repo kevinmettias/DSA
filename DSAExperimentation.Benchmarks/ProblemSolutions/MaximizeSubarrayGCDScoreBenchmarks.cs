@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximizeSubarrayGCDScore;
+using DSAExperimentation.LeetCode.Solutions.MaximizeSubarrayGCDScore;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

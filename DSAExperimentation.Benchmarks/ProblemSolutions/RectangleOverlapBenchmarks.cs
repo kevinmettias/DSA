@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RectangleOverlap;
+using DSAExperimentation.LeetCode.Solutions.RectangleOverlap;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

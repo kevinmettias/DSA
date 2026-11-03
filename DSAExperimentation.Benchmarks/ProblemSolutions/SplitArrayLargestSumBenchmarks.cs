@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SplitArrayLargestSum;
+using DSAExperimentation.LeetCode.Solutions.SplitArrayLargestSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

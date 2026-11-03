@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheKthCharacterInStringGameI;
+using DSAExperimentation.LeetCode.Solutions.FindTheKthCharacterInStringGameI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

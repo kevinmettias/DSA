@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.MaximumTwinSumOfALinkedList;
+using DSAExperimentation.LeetCode.Solutions.MaximumTwinSumOfALinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

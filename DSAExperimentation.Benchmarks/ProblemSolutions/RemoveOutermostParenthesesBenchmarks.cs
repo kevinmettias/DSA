@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.RemoveOutermostParentheses;
+using DSAExperimentation.LeetCode.Solutions.RemoveOutermostParentheses;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

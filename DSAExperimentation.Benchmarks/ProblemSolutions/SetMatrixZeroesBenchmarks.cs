@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SetMatrixZeroes;
+using DSAExperimentation.LeetCode.Solutions.SetMatrixZeroes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

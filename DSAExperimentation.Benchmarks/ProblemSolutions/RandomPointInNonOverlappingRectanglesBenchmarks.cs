@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RandomPointInNonOverlappingRectangles;
+using DSAExperimentation.LeetCode.Solutions.RandomPointInNonOverlappingRectangles;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

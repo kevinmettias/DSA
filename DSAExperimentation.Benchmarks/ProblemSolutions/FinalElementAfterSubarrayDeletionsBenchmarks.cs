@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FinalElementAfterSubarrayDeletions;
+using DSAExperimentation.LeetCode.Solutions.FinalElementAfterSubarrayDeletions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

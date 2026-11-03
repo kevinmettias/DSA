@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumLinesToRepresentALineChart;
+using DSAExperimentation.LeetCode.Solutions.MinimumLinesToRepresentALineChart;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

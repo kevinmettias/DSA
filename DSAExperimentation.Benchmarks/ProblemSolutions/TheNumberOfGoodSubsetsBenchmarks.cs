@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.TheNumberOfGoodSubsets;
+using DSAExperimentation.LeetCode.Solutions.TheNumberOfGoodSubsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

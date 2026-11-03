@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.KthAncestorOfATreeNode;
+using DSAExperimentation.LeetCode.Solutions.KthAncestorOfATreeNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

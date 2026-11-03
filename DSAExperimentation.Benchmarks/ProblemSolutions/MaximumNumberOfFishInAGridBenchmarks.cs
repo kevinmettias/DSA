@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumNumberOfFishInAGrid;
+using DSAExperimentation.LeetCode.Solutions.MaximumNumberOfFishInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

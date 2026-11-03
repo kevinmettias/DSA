@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ShortestPathInAWeightedTree;
+using DSAExperimentation.LeetCode.Solutions.ShortestPathInAWeightedTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

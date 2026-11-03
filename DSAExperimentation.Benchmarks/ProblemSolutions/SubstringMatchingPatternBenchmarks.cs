@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SubstringMatchingPattern;
+using DSAExperimentation.LeetCode.Solutions.SubstringMatchingPattern;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

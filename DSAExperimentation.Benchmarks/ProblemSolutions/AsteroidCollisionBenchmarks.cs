@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.AsteroidCollision;
+using DSAExperimentation.LeetCode.Solutions.AsteroidCollision;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

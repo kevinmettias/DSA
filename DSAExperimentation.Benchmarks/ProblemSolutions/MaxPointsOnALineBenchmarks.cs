@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaxPointsOnALine;
+using DSAExperimentation.LeetCode.Solutions.MaxPointsOnALine;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

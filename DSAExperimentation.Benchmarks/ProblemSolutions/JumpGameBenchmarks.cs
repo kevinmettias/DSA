@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.JumpGame;
+using DSAExperimentation.LeetCode.Solutions.JumpGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

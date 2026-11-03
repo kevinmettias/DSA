@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CourseScheduleIV;
+using DSAExperimentation.LeetCode.Solutions.CourseScheduleIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

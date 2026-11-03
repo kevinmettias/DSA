@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RemoveKDigits;
+using DSAExperimentation.LeetCode.Solutions.RemoveKDigits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

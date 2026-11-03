@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindPositiveIntegerSolutionForAGivenEquation;
+using DSAExperimentation.LeetCode.Solutions.FindPositiveIntegerSolutionForAGivenEquation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountSubarraysWithCostLessThanOrEqualToK;
+using DSAExperimentation.LeetCode.Solutions.CountSubarraysWithCostLessThanOrEqualToK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

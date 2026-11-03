@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.RangeFrequencyQueries;
+using DSAExperimentation.LeetCode.Solutions.RangeFrequencyQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

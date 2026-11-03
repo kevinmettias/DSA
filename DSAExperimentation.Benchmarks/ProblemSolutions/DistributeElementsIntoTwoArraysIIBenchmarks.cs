@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DistributeElementsIntoTwoArraysII;
+using DSAExperimentation.LeetCode.Solutions.DistributeElementsIntoTwoArraysII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.ConvertSortedListToBinarySearchTree;
+using DSAExperimentation.LeetCode.Solutions.ConvertSortedListToBinarySearchTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

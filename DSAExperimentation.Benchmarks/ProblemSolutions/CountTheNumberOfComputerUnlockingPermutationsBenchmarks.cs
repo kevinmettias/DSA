@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountTheNumberOfComputerUnlockingPermutations;
+using DSAExperimentation.LeetCode.Solutions.CountTheNumberOfComputerUnlockingPermutations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

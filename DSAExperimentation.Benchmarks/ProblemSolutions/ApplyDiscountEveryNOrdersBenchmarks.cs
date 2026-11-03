@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ApplyDiscountEveryNOrders;
+using DSAExperimentation.LeetCode.Solutions.ApplyDiscountEveryNOrders;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

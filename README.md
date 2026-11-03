@@ -135,9 +135,9 @@ reading an old file rather than something checked.
 | Project | Contents |
 |---|---|
 | `DSAExperimentation` | The library: `DataStructures/`, `Algorithms/`, `Mechanisms/` (the LRU and LFU caches) and `Domain/` (what problems say about their world, such as arithmetic modulo LeetCode's 1e9+7) |
-| `DSAExperimentation.LeetCode` | One folder per problem, plus `Conventions/`: LeetCode's array notation for trees and lists, and its answer-equality rules |
+| `DSAExperimentation.LeetCode.Solutions` | One folder per problem, plus `Conventions/`: LeetCode's array notation for trees and lists, and its answer-equality rules |
 | `DSAExperimentation.Tests` | Library and architecture tests; no reference to the solution tier |
-| `DSAExperimentation.LeetCode.Tests` | Per-problem `<Problem>SolutionTests` and the seams between problems and the library |
+| `DSAExperimentation.LeetCode.Solutions.Tests` | Per-problem `<Problem>SolutionTests` and the seams between problems and the library |
 | `DSAExperimentation.LeetCode.Catalog` | What LeetCode says about every covered problem - difficulty, contest rating, acceptance rate, topics, link, signature, constraints - and every case the harnesses run, read from the checked-in `Snapshot/` |
 | `DSAExperimentation.LeetCode.Catalog.Sync` | The command-line tool that refreshes `Snapshot/` from leetcode.com, zerotrac's contest ratings and LeetCodeDataset; run weekly by `.github/workflows/leetcode-catalog-sync.yml` |
 | `DSAExperimentation.LeetCode.Catalog.Tests`, `DSAExperimentation.LeetCode.Catalog.Sync.Tests` | The catalog's and the sync tool's own tests, offline, and checks over the whole snapshot |

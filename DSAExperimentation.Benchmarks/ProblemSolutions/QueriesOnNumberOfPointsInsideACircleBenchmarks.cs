@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.QueriesOnNumberOfPointsInsideACircle;
+using DSAExperimentation.LeetCode.Solutions.QueriesOnNumberOfPointsInsideACircle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

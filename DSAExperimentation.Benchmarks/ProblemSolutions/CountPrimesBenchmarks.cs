@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountPrimes;
+using DSAExperimentation.LeetCode.Solutions.CountPrimes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

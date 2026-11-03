@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.AllPossibleFullBinaryTrees;
+using DSAExperimentation.LeetCode.Solutions.AllPossibleFullBinaryTrees;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

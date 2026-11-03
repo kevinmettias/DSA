@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.MergeBSTsToCreateSingleBST;
+using DSAExperimentation.LeetCode.Solutions.MergeBSTsToCreateSingleBST;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

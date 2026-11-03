@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfVisiblePeopleInAQueue;
+using DSAExperimentation.LeetCode.Solutions.NumberOfVisiblePeopleInAQueue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

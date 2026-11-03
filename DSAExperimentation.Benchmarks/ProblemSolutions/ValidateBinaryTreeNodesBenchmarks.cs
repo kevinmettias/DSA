@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ValidateBinaryTreeNodes;
+using DSAExperimentation.LeetCode.Solutions.ValidateBinaryTreeNodes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

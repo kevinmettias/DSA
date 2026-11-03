@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.IteratorForCombination;
+using DSAExperimentation.LeetCode.Solutions.IteratorForCombination;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

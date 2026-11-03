@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.OnlineStockSpan;
+using DSAExperimentation.LeetCode.Solutions.OnlineStockSpan;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

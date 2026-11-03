@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfValidWordsForEachPuzzle;
+using DSAExperimentation.LeetCode.Solutions.NumberOfValidWordsForEachPuzzle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

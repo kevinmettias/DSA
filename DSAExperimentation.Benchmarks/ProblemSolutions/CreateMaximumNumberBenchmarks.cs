@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CreateMaximumNumber;
+using DSAExperimentation.LeetCode.Solutions.CreateMaximumNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

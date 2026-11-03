@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ValidBoomerang;
+using DSAExperimentation.LeetCode.Solutions.ValidBoomerang;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

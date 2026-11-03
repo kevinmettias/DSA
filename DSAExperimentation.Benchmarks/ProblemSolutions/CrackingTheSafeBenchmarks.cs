@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CrackingTheSafe;
+using DSAExperimentation.LeetCode.Solutions.CrackingTheSafe;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

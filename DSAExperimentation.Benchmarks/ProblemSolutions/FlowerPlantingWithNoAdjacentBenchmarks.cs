@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FlowerPlantingWithNoAdjacent;
+using DSAExperimentation.LeetCode.Solutions.FlowerPlantingWithNoAdjacent;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.KthLargestElementInAStream;
+using DSAExperimentation.LeetCode.Solutions.KthLargestElementInAStream;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

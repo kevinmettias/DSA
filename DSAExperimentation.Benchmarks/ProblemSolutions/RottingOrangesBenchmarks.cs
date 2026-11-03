@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.RottingOranges;
+using DSAExperimentation.LeetCode.Solutions.RottingOranges;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

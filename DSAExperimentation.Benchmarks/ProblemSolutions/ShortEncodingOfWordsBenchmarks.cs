@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ShortEncodingOfWords;
+using DSAExperimentation.LeetCode.Solutions.ShortEncodingOfWords;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

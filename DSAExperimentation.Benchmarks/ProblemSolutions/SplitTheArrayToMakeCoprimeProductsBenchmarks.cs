@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SplitTheArrayToMakeCoprimeProducts;
+using DSAExperimentation.LeetCode.Solutions.SplitTheArrayToMakeCoprimeProducts;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

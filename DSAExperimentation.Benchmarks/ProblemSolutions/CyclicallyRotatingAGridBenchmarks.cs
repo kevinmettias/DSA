@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CyclicallyRotatingAGrid;
+using DSAExperimentation.LeetCode.Solutions.CyclicallyRotatingAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -58,7 +58,7 @@ public sealed partial class LayeringTests
     private static readonly Regex UsingItem = new(@"<Using\b[^>]*\bInclude\s*=\s*""(?<name>[^""]*)""");
     private static readonly Regex XmlComment = new("<!--.*?-->", RegexOptions.Singleline);
 
-    // The one project laid out in tier folders. DSAExperimentation.LeetCode is the top
+    // The one project laid out in tier folders. DSAExperimentation.LeetCode.Solutions is the top
     // tier in a project of its own, so nothing it could reference sits above it - a row
     // for it here could never fail, and the boundary it does have is the compiler's.
     private const string FrameworkProject = "DSAExperimentation";
@@ -331,7 +331,7 @@ public sealed partial class LayeringTests
 
         Assert.False(
             Directory.Exists(frameworkLeetCode),
-            "LeetCode solutions belong in DSAExperimentation.LeetCode, not the framework project.");
+            "LeetCode solutions belong in DSAExperimentation.LeetCode.Solutions, not the framework project.");
     }
 
     // The tier folder a framework file's path names directly, or null when it names none.

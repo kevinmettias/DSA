@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumNumberOfCoinsYouCanGet;
+using DSAExperimentation.LeetCode.Solutions.MaximumNumberOfCoinsYouCanGet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

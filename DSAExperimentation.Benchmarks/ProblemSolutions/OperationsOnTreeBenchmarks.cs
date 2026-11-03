@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.OperationsOnTree;
+using DSAExperimentation.LeetCode.Solutions.OperationsOnTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

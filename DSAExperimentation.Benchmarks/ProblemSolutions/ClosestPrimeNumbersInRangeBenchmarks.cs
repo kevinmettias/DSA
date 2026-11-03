@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ClosestPrimeNumbersInRange;
+using DSAExperimentation.LeetCode.Solutions.ClosestPrimeNumbersInRange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

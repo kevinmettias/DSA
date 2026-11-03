@@ -1,0 +1,228 @@
+using DSAExperimentation.Algorithms.Searching;
+using RepoRangeFenwickTree = DSAExperimentation.DataStructures.RangeFenwickTree.RangeFenwickTree<
+    long, DSAExperimentation.DataStructures.ElementAlgebra.SumOperation<long>>;
+
+namespace DSAExperimentation.LeetCode.Solutions.MaximizeTheMinimumPoweredCity;
+
+// LeetCode 2528. Maximize the Minimum Powered City: a city's power is the number of
+// stations within `radius` of it, at most `extraStations` further stations may be built
+// anywhere, and the answer is the largest value the weakest city's power can be raised
+// to.
+//
+// "Can every city reach at least `target`?" is monotone non-increasing in target -
+// once a target is infeasible every larger target stays infeasible - so the answer is
+// the last feasible target in [0, sum(stations) + `extraStations`]. Both strategies
+// decide one target the same way, with the classic left-to-right greedy sweep: top up
+// any city short of target by building the shortfall as far right as still covers that
+// city, which is the placement that helps the most cities still ahead. They differ in
+// how they search for the target, and in what they sweep with - the baseline walks the
+// targets down one at a time over a plain difference array, the composed strategy
+// bisects them with this repo's own MonotonePredicateSearch.LastTrue and sweeps with
+// RangeFenwickTree, the same search-on-the-answer shape
+// MaximumNumberOfTasksYouCanAssignSolution uses. The bisection runs in long because
+// the range does: 10^5 stations of up to 10^5 each plus a budget of up to 10^9 put
+// the top target past int.MaxValue.
+internal static class MaximizeTheMinimumPoweredCitySolution
+{
+    // The prepared input both hoisted overloads take (ARCHITECTURE.md section 17.4):
+    // every strategy needs the stations, the radius, the station budget and the
+    // highest target worth asking about, so a benchmark can total the stations once in
+    // [GlobalSetup] instead of paying for it inside the measured call. A record struct,
+    // so it can never be confused with the raw LeetCode-shaped overload.
+    internal readonly record struct PoweredCityPlan(int[] Stations, int Range, int ExtraStations, long UpperBound)
+    {
+        // Every station in the array plus every station still to build, all landing on
+        // one city, is as high as the weakest city's power could conceivably go.
+        public static PoweredCityPlan From(int[] stations, int radius, int extraStations) =>
+            new(stations, radius, extraStations, stations.Sum(station => (long)station) + extraStations);
+    }
+
+    // The textbook answer: try target = upperBound, upperBound - 1, ... and stop at the
+    // first one that works, with a BCL long[] difference array carrying the running
+    // power as the sweep walks right. Deliberately without this repo's primitives - it
+    // is the arm the composed strategy below has to justify itself against.
+    public static long MaxPowerByDescendingLinearScan(int[] stations, int radius, int extraStations)
+    {
+        var plan = PoweredCityPlan.From(stations, radius, extraStations);
+        return MaxPowerByDescendingLinearScan(plan);
+    }
+
+    public static long MaxPowerByDescendingLinearScan(PoweredCityPlan plan)
+    {
+        for (var target = plan.UpperBound; target >= 0; target--)
+        {
+            if (IsFeasibleByDifferenceArray(plan, target))
+            {
+                return target;
+            }
+        }
+
+        return 0;
+    }
+
+    // This repo's own MonotonePredicateSearch over the target range: the candidate
+    // targets are never materialized, each probe just reruns the greedy sweep, and the
+    // last target every city can reach is the answer.
+    public static long MaxPowerByPredicateSearch(int[] stations, int radius, int extraStations)
+    {
+        var plan = PoweredCityPlan.From(stations, radius, extraStations);
+        return MaxPowerByPredicateSearch(plan);
+    }
+
+    public static long MaxPowerByPredicateSearch(PoweredCityPlan plan) =>
+        MonotonePredicateSearch.LastTrue(0L, plan.UpperBound, new EveryCityReachesTarget(plan));
+
+    // The composed sweep: RangeFenwickTree<long, SumOperation<long>> absorbs both
+    // the initial coverage (one RangeAdd per existing station) and every greedy top-up
+    // (another RangeAdd), and each city's running power is read back with Query(i, i) -
+    // exactly the point read RangeFenwickTree's own doc comment prescribes.
+    private static bool IsFeasibleByRangeFenwickTree(PoweredCityPlan plan, long target)
+    {
+        var tree = BuildCoverageTree(plan);
+        var n = plan.Stations.Length;
+        var remaining = (long)plan.ExtraStations;
+
+        for (var i = 0; i < n; i++)
+        {
+            (var feasible, remaining) = TopUpCity((plan, i), target, remaining, tree);
+
+            if (!feasible)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // The tree the sweep reads: every existing station's coverage posted as one RangeAdd
+    // over the window it reaches, so Query(i, i) is city i's starting power.
+    private static RepoRangeFenwickTree BuildCoverageTree(PoweredCityPlan plan)
+    {
+        var stations = plan.Stations;
+        var n = stations.Length;
+        var tree = new RepoRangeFenwickTree(n);
+
+        for (var i = 0; i < n; i++)
+        {
+            var left = Math.Max(0, i - plan.Range);
+            var right = Math.Min(n - 1, i + plan.Range);
+            tree.RangeAdd(left, right, stations[i]);
+        }
+
+        return tree;
+    }
+
+    // One city of the sweep. A city already at `target` is a no-op that hands the budget
+    // straight back; a city short of it has the shortfall built as far right as still
+    // covers that city - the placement that helps the most cities still ahead - and charged
+    // to the budget. `feasible` is false when the budget cannot cover the shortfall.
+    private static (bool Feasible, long Remaining) TopUpCity(
+        (PoweredCityPlan Plan, int Index) city, long target, long remaining, RepoRangeFenwickTree tree)
+    {
+        var plan = city.Plan;
+        var index = city.Index;
+        var current = tree.Query(index, index);
+
+        if (current >= target)
+        {
+            return (true, remaining);
+        }
+
+        var need = target - current;
+
+        if (need > remaining)
+        {
+            return (false, remaining);
+        }
+
+        var pos = Math.Min(plan.Stations.Length - 1, index + plan.Range);
+        var left = Math.Max(0, pos - plan.Range);
+        var right = Math.Min(plan.Stations.Length - 1, pos + plan.Range);
+        tree.RangeAdd(left, right, need);
+
+        return (true, remaining - need);
+    }
+
+    // The baseline's sweep, deciding the identical question over a BCL long[]
+    // difference array - the range-update structure you reach for without this repo's
+    // RangeFenwickTree. Every range this sweep opens starts at or before the city being
+    // topped up, so a single left-to-right running total is enough: add the shortfall
+    // now and post its removal one past where the new stations stop reaching.
+    private static bool IsFeasibleByDifferenceArray(PoweredCityPlan plan, long target)
+    {
+        var deltas = BuildCoverageDeltas(plan);
+        var n = plan.Stations.Length;
+        var remaining = (long)plan.ExtraStations;
+        var current = 0L;
+
+        for (var i = 0; i < n; i++)
+        {
+            (var feasible, current, remaining) = TopUpCityByDifferenceArray(plan, deltas, (target, current, remaining), i);
+
+            if (!feasible)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // The baseline's coverage structure: a BCL long[] difference array, where the running
+    // total of `deltas` up to city i is that city's power. Each station's coverage opens at
+    // or before the city it is read for, so adding it now and posting its removal one past
+    // where it stops reaching is enough to keep a single left-to-right total exact.
+    private static long[] BuildCoverageDeltas(PoweredCityPlan plan)
+    {
+        var stations = plan.Stations;
+        var n = stations.Length;
+        var deltas = new long[n + 1];
+
+        for (var i = 0; i < n; i++)
+        {
+            deltas[Math.Max(0, i - plan.Range)] += stations[i];
+            deltas[Math.Min(n - 1, i + plan.Range) + 1] -= stations[i];
+        }
+
+        return deltas;
+    }
+
+    // One city of the baseline sweep: fold the difference array's next step into the running
+    // total, then apply the same top-up rule as the tree sweep - charge the shortfall to the
+    // budget and post its removal one past where the new stations stop reaching. A city
+    // already at `target` is a no-op; `feasible` is false once the budget cannot cover it.
+    private static (bool Feasible, long Current, long Remaining) TopUpCityByDifferenceArray(
+        PoweredCityPlan plan, long[] deltas, (long Target, long Current, long Remaining) sweep, int index)
+    {
+        var (target, current, remaining) = sweep;
+        current += deltas[index];
+
+        if (current >= target)
+        {
+            return (true, current, remaining);
+        }
+
+        var need = target - current;
+
+        if (need > remaining)
+        {
+            return (false, current, remaining);
+        }
+
+        remaining -= need;
+        var pos = Math.Min(plan.Stations.Length - 1, index + plan.Range);
+        deltas[Math.Min(plan.Stations.Length - 1, pos + plan.Range) + 1] -= need;
+
+        return (true, target, remaining);
+    }
+
+    // IsSatisfiedBy(target) is "every city can be raised to at least target within the budget"
+    // - true up to the answer and false from there on, the monotonicity LastTrue
+    // assumes but never checks. A rule for this problem alone: the feasibility rule is
+    // LC 2528's own content.
+    private readonly struct EveryCityReachesTarget(PoweredCityPlan plan) : IMonotonePredicate<long>
+    {
+        public bool IsSatisfiedBy(long target) => IsFeasibleByRangeFenwickTree(plan, target);
+    }
+}

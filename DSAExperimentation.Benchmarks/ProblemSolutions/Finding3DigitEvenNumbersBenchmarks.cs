@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.Finding3DigitEvenNumbers;
+using DSAExperimentation.LeetCode.Solutions.Finding3DigitEvenNumbers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

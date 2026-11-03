@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountArrayPairsDivisibleByK;
+using DSAExperimentation.LeetCode.Solutions.CountArrayPairsDivisibleByK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

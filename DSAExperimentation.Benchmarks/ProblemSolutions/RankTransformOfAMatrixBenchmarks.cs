@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RankTransformOfAMatrix;
+using DSAExperimentation.LeetCode.Solutions.RankTransformOfAMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumWeightedSubgraphWithTheRequiredPaths;
+using DSAExperimentation.LeetCode.Solutions.MinimumWeightedSubgraphWithTheRequiredPaths;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.CopyListWithRandomPointer;
+using DSAExperimentation.LeetCode.Solutions.CopyListWithRandomPointer;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

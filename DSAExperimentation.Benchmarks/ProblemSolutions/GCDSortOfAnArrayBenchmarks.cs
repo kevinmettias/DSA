@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.GCDSortOfAnArray;
+using DSAExperimentation.LeetCode.Solutions.GCDSortOfAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

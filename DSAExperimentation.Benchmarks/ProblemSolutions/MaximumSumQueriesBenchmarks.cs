@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumSumQueries;
+using DSAExperimentation.LeetCode.Solutions.MaximumSumQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

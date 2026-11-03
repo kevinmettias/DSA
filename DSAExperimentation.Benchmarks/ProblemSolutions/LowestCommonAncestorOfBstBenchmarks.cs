@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.LowestCommonAncestorOfBst;
+using DSAExperimentation.LeetCode.Solutions.LowestCommonAncestorOfBst;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

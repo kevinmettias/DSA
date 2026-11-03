@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PrisonCellsAfterNDays;
+using DSAExperimentation.LeetCode.Solutions.PrisonCellsAfterNDays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

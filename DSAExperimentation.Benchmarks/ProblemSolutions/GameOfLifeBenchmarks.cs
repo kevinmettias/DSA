@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.GameOfLife;
+using DSAExperimentation.LeetCode.Solutions.GameOfLife;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

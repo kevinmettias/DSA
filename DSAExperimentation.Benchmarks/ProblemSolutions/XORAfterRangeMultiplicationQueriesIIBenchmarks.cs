@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.XORAfterRangeMultiplicationQueriesII;
+using DSAExperimentation.LeetCode.Solutions.XORAfterRangeMultiplicationQueriesII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

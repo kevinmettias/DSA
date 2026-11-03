@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.PathSumII;
+using DSAExperimentation.LeetCode.Solutions.PathSumII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

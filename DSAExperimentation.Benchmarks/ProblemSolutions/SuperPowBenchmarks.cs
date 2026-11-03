@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SuperPow;
+using DSAExperimentation.LeetCode.Solutions.SuperPow;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

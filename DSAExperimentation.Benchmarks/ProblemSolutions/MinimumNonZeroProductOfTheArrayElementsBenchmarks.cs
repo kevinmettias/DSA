@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumNonZeroProductOfTheArrayElements;
+using DSAExperimentation.LeetCode.Solutions.MinimumNonZeroProductOfTheArrayElements;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

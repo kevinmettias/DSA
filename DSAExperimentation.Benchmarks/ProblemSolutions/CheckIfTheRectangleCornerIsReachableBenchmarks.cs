@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CheckIfTheRectangleCornerIsReachable;
+using DSAExperimentation.LeetCode.Solutions.CheckIfTheRectangleCornerIsReachable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

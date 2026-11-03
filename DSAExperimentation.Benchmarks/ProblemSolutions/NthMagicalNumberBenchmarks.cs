@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NthMagicalNumber;
+using DSAExperimentation.LeetCode.Solutions.NthMagicalNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

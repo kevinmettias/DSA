@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CollectCoinsInATree;
+using DSAExperimentation.LeetCode.Solutions.CollectCoinsInATree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

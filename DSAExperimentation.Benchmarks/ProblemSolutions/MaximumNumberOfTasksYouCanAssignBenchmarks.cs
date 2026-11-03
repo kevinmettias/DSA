@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumNumberOfTasksYouCanAssign;
+using DSAExperimentation.LeetCode.Solutions.MaximumNumberOfTasksYouCanAssign;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

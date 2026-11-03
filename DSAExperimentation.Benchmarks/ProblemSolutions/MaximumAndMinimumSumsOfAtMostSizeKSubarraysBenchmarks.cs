@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumAndMinimumSumsOfAtMostSizeKSubarrays;
+using DSAExperimentation.LeetCode.Solutions.MaximumAndMinimumSumsOfAtMostSizeKSubarrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

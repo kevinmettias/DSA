@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.AllPathsFromSourceToTarget;
+using DSAExperimentation.LeetCode.Solutions.AllPathsFromSourceToTarget;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

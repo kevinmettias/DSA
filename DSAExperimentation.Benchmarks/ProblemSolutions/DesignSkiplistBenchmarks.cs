@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DesignSkiplist;
+using DSAExperimentation.LeetCode.Solutions.DesignSkiplist;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

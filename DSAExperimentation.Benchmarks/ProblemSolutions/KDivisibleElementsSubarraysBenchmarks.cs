@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.KDivisibleElementsSubarrays;
+using DSAExperimentation.LeetCode.Solutions.KDivisibleElementsSubarrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ProjectionAreaOf3DShapes;
+using DSAExperimentation.LeetCode.Solutions.ProjectionAreaOf3DShapes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindSumOfArrayProductOfMagicalSequences;
+using DSAExperimentation.LeetCode.Solutions.FindSumOfArrayProductOfMagicalSequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

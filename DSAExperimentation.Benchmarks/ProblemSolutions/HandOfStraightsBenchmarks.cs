@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.HandOfStraights;
+using DSAExperimentation.LeetCode.Solutions.HandOfStraights;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

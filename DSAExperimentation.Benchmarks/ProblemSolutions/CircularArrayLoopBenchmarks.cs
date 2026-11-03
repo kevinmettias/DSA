@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CircularArrayLoop;
+using DSAExperimentation.LeetCode.Solutions.CircularArrayLoop;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

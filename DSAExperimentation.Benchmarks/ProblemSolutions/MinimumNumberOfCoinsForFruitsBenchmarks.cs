@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumNumberOfCoinsForFruits;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfCoinsForFruits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

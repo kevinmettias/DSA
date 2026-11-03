@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindXValueOfArrayII;
+using DSAExperimentation.LeetCode.Solutions.FindXValueOfArrayII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

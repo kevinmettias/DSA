@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="DSAExperimentation.Benchmarks" />
+    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Solutions.Tests" />
+    <InternalsVisibleTo Include="DSAExperimentation.Benchmarks.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSAExperimentation\DSAExperimentation.csproj" />
+  </ItemGroup>
+
+</Project>

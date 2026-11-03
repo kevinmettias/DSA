@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfRestrictedPathsFromFirstToLastNode;
+using DSAExperimentation.LeetCode.Solutions.NumberOfRestrictedPathsFromFirstToLastNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

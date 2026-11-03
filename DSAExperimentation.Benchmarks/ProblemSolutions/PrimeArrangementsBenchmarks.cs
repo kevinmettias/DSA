@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PrimeArrangements;
+using DSAExperimentation.LeetCode.Solutions.PrimeArrangements;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

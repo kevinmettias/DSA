@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumOperationsToEqualizeBinaryString;
+using DSAExperimentation.LeetCode.Solutions.MinimumOperationsToEqualizeBinaryString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

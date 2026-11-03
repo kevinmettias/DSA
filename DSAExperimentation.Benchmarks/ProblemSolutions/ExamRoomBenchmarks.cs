@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ExamRoom;
+using DSAExperimentation.LeetCode.Solutions.ExamRoom;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

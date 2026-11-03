@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfWaysToWearDifferentHatsToEachOther;
+using DSAExperimentation.LeetCode.Solutions.NumberOfWaysToWearDifferentHatsToEachOther;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

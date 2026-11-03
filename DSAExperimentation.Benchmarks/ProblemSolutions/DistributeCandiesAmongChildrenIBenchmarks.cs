@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DistributeCandiesAmongChildrenI;
+using DSAExperimentation.LeetCode.Solutions.DistributeCandiesAmongChildrenI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

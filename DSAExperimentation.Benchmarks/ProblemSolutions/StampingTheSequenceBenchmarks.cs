@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.StampingTheSequence;
+using DSAExperimentation.LeetCode.Solutions.StampingTheSequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountNumberOfBalancedPermutations;
+using DSAExperimentation.LeetCode.Solutions.CountNumberOfBalancedPermutations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

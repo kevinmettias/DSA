@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumStrictlyIncreasingCellsInAMatrix;
+using DSAExperimentation.LeetCode.Solutions.MaximumStrictlyIncreasingCellsInAMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

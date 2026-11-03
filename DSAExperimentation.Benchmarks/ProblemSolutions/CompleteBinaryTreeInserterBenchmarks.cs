@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CompleteBinaryTreeInserter;
+using DSAExperimentation.LeetCode.Solutions.CompleteBinaryTreeInserter;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

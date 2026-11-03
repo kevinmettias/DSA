@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Grids;
-using DSAExperimentation.LeetCode.FindASafeWalkThroughAGrid;
+using DSAExperimentation.LeetCode.Solutions.FindASafeWalkThroughAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

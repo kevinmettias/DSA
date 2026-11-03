@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RepeatedStringMatch;
+using DSAExperimentation.LeetCode.Solutions.RepeatedStringMatch;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

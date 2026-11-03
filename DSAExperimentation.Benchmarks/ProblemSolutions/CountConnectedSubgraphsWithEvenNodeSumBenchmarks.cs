@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountConnectedSubgraphsWithEvenNodeSum;
+using DSAExperimentation.LeetCode.Solutions.CountConnectedSubgraphsWithEvenNodeSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

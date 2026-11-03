@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ShortestPathInBinaryMatrix;
+using DSAExperimentation.LeetCode.Solutions.ShortestPathInBinaryMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

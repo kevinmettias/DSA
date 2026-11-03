@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.AlternatingGroupsIII;
+using DSAExperimentation.LeetCode.Solutions.AlternatingGroupsIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

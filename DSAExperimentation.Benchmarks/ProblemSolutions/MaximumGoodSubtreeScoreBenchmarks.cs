@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.MaximumGoodSubtreeScore;
+using DSAExperimentation.LeetCode.Solutions.MaximumGoodSubtreeScore;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

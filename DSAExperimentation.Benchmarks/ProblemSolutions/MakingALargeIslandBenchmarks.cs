@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MakingALargeIsland;
+using DSAExperimentation.LeetCode.Solutions.MakingALargeIsland;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.RepeatedDNASequences;
+using DSAExperimentation.LeetCode.Solutions.RepeatedDNASequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

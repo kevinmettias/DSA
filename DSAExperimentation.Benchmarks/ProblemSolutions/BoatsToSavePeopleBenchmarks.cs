@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.BoatsToSavePeople;
+using DSAExperimentation.LeetCode.Solutions.BoatsToSavePeople;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

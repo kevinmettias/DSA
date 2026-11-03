@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumStudentsTakingExam;
+using DSAExperimentation.LeetCode.Solutions.MaximumStudentsTakingExam;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

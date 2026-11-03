@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DesignAFoodRatingSystem;
+using DSAExperimentation.LeetCode.Solutions.DesignAFoodRatingSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

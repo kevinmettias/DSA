@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumScoreOfAPathBetweenTwoCities;
+using DSAExperimentation.LeetCode.Solutions.MinimumScoreOfAPathBetweenTwoCities;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

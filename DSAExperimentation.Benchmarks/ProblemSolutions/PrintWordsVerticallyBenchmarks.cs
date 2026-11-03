@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.LeetCode.PrintWordsVertically;
+using DSAExperimentation.LeetCode.Solutions.PrintWordsVertically;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

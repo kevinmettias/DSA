@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.TaskScheduler;
+using DSAExperimentation.LeetCode.Solutions.TaskScheduler;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

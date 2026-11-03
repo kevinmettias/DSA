@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.HandlingSumQueriesAfterUpdate;
+using DSAExperimentation.LeetCode.Solutions.HandlingSumQueriesAfterUpdate;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

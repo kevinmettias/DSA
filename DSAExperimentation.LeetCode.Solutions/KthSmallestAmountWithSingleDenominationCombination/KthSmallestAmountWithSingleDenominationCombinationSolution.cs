@@ -1,0 +1,136 @@
+using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.Algorithms.Searching;
+
+namespace DSAExperimentation.LeetCode.Solutions.KthSmallestAmountWithSingleDenominationCombination;
+
+// LeetCode 3116. Kth Smallest Amount With Single Denomination Combination:
+// coins are never combined - an achievable amount is any positive multiple of
+// exactly one denomination - so the answer is the k-th smallest value in the
+// union of coins.Length arithmetic progressions.
+//
+// Both strategies enumerate that union correctly; they differ in whether they
+// walk it value-by-value (cost bounded by rank) or ask "how many achievable
+// amounts are <= limit?" directly via inclusion-exclusion and binary search on
+// limit - the only shape that stays fast once rank reaches LeetCode's full
+// 2*10^9, since the achievable amount itself can then exceed Int32 range.
+internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
+{
+    // The textbook k-way merge: a BCL PriorityQueue of coin indices keyed by
+    // each coin's pending multiple, always popping the smallest pending
+    // multiple and pushing that coin's next one. Duplicate amounts
+    // (two coins landing on the same multiple) are collapsed by only
+    // counting a popped amount once. O(rank log coins.Length) - correct for
+    // every input, but the arm the search strategy below has to beat once
+    // rank grows large.
+    public static long KthSmallestAmountByHeapMerge(int[] coins, long rank)
+    {
+        var frontier = SeedFrontier(coins);
+
+        return PopUntilKth(frontier, coins, rank);
+    }
+
+    // Every denomination's own first multiple: the frontier the k-way merge starts from.
+    private static PriorityQueue<int, long> SeedFrontier(int[] coins)
+    {
+        var frontier = new PriorityQueue<int, long>();
+
+        for (var i = 0; i < coins.Length; i++)
+        {
+            frontier.Enqueue(i, coins[i]);
+        }
+
+        return frontier;
+    }
+
+    // The merge itself: always pop the frontier's smallest pending multiple, counting an
+    // amount only the first time it is popped (two coins landing on the same multiple
+    // are one achievable amount), and push that coin's next multiple back. The rank-th
+    // distinct amount popped is the answer.
+    private static long PopUntilKth(PriorityQueue<int, long> frontier, int[] coins, long rank)
+    {
+        var lastAmount = 0L;
+        var count = 0L;
+
+        while (frontier.TryDequeue(out var coinIndex, out var amount))
+        {
+            if (amount != lastAmount)
+            {
+                count++;
+                lastAmount = amount;
+
+                if (count == rank)
+                {
+                    return amount;
+                }
+            }
+
+            frontier.Enqueue(coinIndex, amount + coins[coinIndex]);
+        }
+
+        return LeetCodeAnswer.None;
+    }
+
+    // "How many achievable amounts are <= limit?" is monotone in limit, and is
+    // exactly inclusion-exclusion over every non-empty subset of coins: a subset's
+    // multiples of ALL its coins are exactly its multiples of lcm(subset), added
+    // back for an odd-sized subset and subtracted for an even one so every amount is
+    // counted exactly once regardless of how many coins divide it. This repo's own
+    // MonotonePredicateSearch.FirstTrue finds that predicate's smallest true - the k-th
+    // smallest achievable amount - directly in O(log(rank * min(coins)) * 2^coins.Length),
+    // independent of rank itself; coins.Length <= 15 keeps that subset walk small. The
+    // range is searched in long because rank * min(coins) reaches 5 * 10^10, and its top
+    // always holds: the smallest coin alone already has rank multiples up to it.
+    public static long KthSmallestAmountByInclusionExclusionSearch(int[] coins, long rank) =>
+        MonotonePredicateSearch.FirstTrue(1L, rank * coins.Min(), new ReachesRank(coins, rank));
+
+    private static long CountAchievableAtMost(long limit, int[] coins)
+    {
+        var subsetCount = 1 << coins.Length;
+        var total = 0L;
+
+        for (var mask = 1; mask < subsetCount; mask++)
+        {
+            total += SubsetContribution(mask, coins, limit);
+        }
+
+        return total;
+    }
+
+    // IsSatisfiedBy(limit) is "at least rank achievable amounts are <= limit" - false below the
+    // answer and true from there on, since raising the limit only admits more amounts. A
+    // rule for this problem alone: the inclusion-exclusion count is LC 3116's own content.
+    private readonly struct ReachesRank(int[] coins, long rank) : IMonotonePredicate<long>
+    {
+        public bool IsSatisfiedBy(long limit) => CountAchievableAtMost(limit, coins) >= rank;
+    }
+
+    // One non-empty subset of coins, named by its bit mask: it covers exactly its
+    // multiples of lcm(subset), added back for an odd-sized subset and subtracted for an
+    // even one so no amount is counted twice. The walk stops as soon as the running lcm
+    // passes the limit, because such a subset covers no amount <= limit at all.
+    private static long SubsetContribution(int mask, int[] coins, long limit)
+    {
+        var lcm = 1L;
+        var coinsInSubset = 0;
+
+        for (var i = 0; i < coins.Length; i++)
+        {
+            if ((mask & (1 << i)) == 0)
+            {
+                continue;
+            }
+
+            coinsInSubset++;
+            lcm = LeastCommonMultiple.Of(lcm, (long)coins[i]);
+
+            if (lcm > limit)
+            {
+                return 0;
+            }
+        }
+        var multiplesOfLcm = limit / lcm;
+        var subsetSizeIsOdd = coinsInSubset % 2 == 1;
+
+        return subsetSizeIsOdd ? multiplesOfLcm : -multiplesOfLcm;
+    }
+}

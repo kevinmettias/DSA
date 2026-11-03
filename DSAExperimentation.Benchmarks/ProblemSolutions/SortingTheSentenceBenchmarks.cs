@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SortingTheSentence;
+using DSAExperimentation.LeetCode.Solutions.SortingTheSentence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LongestCommonSubsequence;
+using DSAExperimentation.LeetCode.Solutions.LongestCommonSubsequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

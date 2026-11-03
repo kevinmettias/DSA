@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ShoppingOffers;
+using DSAExperimentation.LeetCode.Solutions.ShoppingOffers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

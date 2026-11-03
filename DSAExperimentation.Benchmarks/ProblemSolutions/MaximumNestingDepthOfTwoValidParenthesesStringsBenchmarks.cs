@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.MaximumNestingDepthOfTwoValidParenthesesStrings;
+using DSAExperimentation.LeetCode.Solutions.MaximumNestingDepthOfTwoValidParenthesesStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

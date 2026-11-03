@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.AirplaneSeatAssignmentProbability;
+using DSAExperimentation.LeetCode.Solutions.AirplaneSeatAssignmentProbability;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

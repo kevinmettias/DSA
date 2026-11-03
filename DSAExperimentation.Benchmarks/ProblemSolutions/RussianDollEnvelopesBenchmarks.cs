@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RussianDollEnvelopes;
+using DSAExperimentation.LeetCode.Solutions.RussianDollEnvelopes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

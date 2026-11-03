@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.GuessTheWord;
+using DSAExperimentation.LeetCode.Solutions.GuessTheWord;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

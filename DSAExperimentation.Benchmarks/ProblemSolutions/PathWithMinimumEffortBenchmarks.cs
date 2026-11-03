@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PathWithMinimumEffort;
+using DSAExperimentation.LeetCode.Solutions.PathWithMinimumEffort;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

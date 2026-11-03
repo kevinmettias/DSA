@@ -22,7 +22,7 @@ namespace DSAExperimentation.Tests.Architecture;
 public sealed partial class Tier5WitnessTests
 {
     private const string BenchmarksProject = "DSAExperimentation.Benchmarks";
-    private const string SolutionTestsProject = "DSAExperimentation.LeetCode.Tests";
+    private const string SolutionTestsProject = "DSAExperimentation.LeetCode.Solutions.Tests";
     private const string BenchmarkSuffix = "Benchmarks.cs";
     private const string FixturesFolder = "Fixtures";
 

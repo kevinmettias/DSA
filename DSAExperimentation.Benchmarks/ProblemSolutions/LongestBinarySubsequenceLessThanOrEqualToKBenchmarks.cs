@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LongestBinarySubsequenceLessThanOrEqualToK;
+using DSAExperimentation.LeetCode.Solutions.LongestBinarySubsequenceLessThanOrEqualToK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

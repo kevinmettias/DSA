@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SlidingWindowMaximum;
+using DSAExperimentation.LeetCode.Solutions.SlidingWindowMaximum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

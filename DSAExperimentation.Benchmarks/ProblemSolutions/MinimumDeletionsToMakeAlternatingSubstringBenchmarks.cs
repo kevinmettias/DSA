@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumDeletionsToMakeAlternatingSubstring;
+using DSAExperimentation.LeetCode.Solutions.MinimumDeletionsToMakeAlternatingSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

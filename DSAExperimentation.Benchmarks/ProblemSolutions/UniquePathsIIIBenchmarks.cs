@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.UniquePathsIII;
+using DSAExperimentation.LeetCode.Solutions.UniquePathsIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

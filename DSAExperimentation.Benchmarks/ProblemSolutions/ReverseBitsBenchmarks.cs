@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ReverseBits;
+using DSAExperimentation.LeetCode.Solutions.ReverseBits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ShortestDistanceAfterRoadAdditionQueriesII;
+using DSAExperimentation.LeetCode.Solutions.ShortestDistanceAfterRoadAdditionQueriesII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

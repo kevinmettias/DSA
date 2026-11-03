@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.LargestComponentSizeByCommonFactor;
+using DSAExperimentation.LeetCode.Solutions.LargestComponentSizeByCommonFactor;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

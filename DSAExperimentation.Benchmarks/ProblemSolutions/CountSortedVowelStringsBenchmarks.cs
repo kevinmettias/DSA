@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountSortedVowelStrings;
+using DSAExperimentation.LeetCode.Solutions.CountSortedVowelStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

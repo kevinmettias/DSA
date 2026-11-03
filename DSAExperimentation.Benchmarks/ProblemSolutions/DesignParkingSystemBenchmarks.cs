@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DesignParkingSystem;
+using DSAExperimentation.LeetCode.Solutions.DesignParkingSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ShortestUnsortedContinuousSubarray;
+using DSAExperimentation.LeetCode.Solutions.ShortestUnsortedContinuousSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

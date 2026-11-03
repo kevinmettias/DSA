@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindTheScoreDifferenceInAGame;
+using DSAExperimentation.LeetCode.Solutions.FindTheScoreDifferenceInAGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

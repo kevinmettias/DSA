@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountWaysToChooseCoprimeIntegersFromRows;
+using DSAExperimentation.LeetCode.Solutions.CountWaysToChooseCoprimeIntegersFromRows;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

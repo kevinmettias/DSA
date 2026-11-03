@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountKReducibleNumbersLessThanN;
+using DSAExperimentation.LeetCode.Solutions.CountKReducibleNumbersLessThanN;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

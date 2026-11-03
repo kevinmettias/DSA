@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.EncryptAndDecryptStrings;
+using DSAExperimentation.LeetCode.Solutions.EncryptAndDecryptStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

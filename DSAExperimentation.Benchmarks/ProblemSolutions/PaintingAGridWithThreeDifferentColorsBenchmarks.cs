@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PaintingAGridWithThreeDifferentColors;
+using DSAExperimentation.LeetCode.Solutions.PaintingAGridWithThreeDifferentColors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

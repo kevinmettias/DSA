@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.PalindromeLinkedList;
+using DSAExperimentation.LeetCode.Solutions.PalindromeLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

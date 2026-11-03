@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.AllOneDataStructure;
+using DSAExperimentation.LeetCode.Solutions.AllOneDataStructure;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

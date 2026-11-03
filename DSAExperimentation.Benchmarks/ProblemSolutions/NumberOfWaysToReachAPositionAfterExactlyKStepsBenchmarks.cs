@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfWaysToReachAPositionAfterExactlyKSteps;
+using DSAExperimentation.LeetCode.Solutions.NumberOfWaysToReachAPositionAfterExactlyKSteps;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.LongestPathWithDifferentAdjacentCharacters;
+using DSAExperimentation.LeetCode.Solutions.LongestPathWithDifferentAdjacentCharacters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

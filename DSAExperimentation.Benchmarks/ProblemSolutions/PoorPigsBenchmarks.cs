@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PoorPigs;
+using DSAExperimentation.LeetCode.Solutions.PoorPigs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

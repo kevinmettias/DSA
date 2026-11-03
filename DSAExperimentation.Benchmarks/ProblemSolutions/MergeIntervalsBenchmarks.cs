@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MergeIntervals;
+using DSAExperimentation.LeetCode.Solutions.MergeIntervals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

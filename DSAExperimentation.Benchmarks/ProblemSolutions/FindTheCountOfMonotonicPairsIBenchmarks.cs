@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindTheCountOfMonotonicPairsI;
+using DSAExperimentation.LeetCode.Solutions.FindTheCountOfMonotonicPairsI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

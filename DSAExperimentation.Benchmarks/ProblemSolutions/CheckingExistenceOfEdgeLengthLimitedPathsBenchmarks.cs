@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CheckingExistenceOfEdgeLengthLimitedPaths;
+using DSAExperimentation.LeetCode.Solutions.CheckingExistenceOfEdgeLengthLimitedPaths;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

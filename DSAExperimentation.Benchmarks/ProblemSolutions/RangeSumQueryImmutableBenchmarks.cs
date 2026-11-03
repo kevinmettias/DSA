@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.PrefixSums;
-using DSAExperimentation.LeetCode.RangeSumQueryImmutable;
+using DSAExperimentation.LeetCode.Solutions.RangeSumQueryImmutable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

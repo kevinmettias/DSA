@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DesignBrowserHistory;
+using DSAExperimentation.LeetCode.Solutions.DesignBrowserHistory;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

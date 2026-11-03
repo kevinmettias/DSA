@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumNumberOfMovesToMakePalindrome;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfMovesToMakePalindrome;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

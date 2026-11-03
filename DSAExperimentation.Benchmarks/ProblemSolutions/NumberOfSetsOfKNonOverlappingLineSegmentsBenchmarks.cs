@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfSetsOfKNonOverlappingLineSegments;
+using DSAExperimentation.LeetCode.Solutions.NumberOfSetsOfKNonOverlappingLineSegments;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

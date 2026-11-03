@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.StrangePrinterII;
+using DSAExperimentation.LeetCode.Solutions.StrangePrinterII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

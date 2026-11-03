@@ -11,7 +11,7 @@ Items are closed by the commits they name; what is still open says so.
 
 ### The solution-tier waiver hid real gaps — FIXED
 
-The review's claim, confirmed: `check-test-coverage` was waived over `DSAExperimentation.LeetCode/**`
+The review's claim, confirmed: `check-test-coverage` was waived over `DSAExperimentation.LeetCode.Solutions/**`
 as "complete by construction", but strategy coverage was enforced only for the ten registered
 problems. Measured over all 1,105 solutions: 2 tests never named their solution
 (`KthSmallestElementInABST`, `ConstructBinaryTreeFromInorderAndPostorderTraversal`), 18 of 2,204
@@ -26,7 +26,7 @@ strategy members had no test method named for them, and four tests asserted priv
   closed; the serialize/deserialize tests, whose value-only preorder could not tell two shapes
   apart, now compare LeetCode's level-order output.
 - `b1939cc8` — the rename the review proposed: `<P>Tests` → `<P>SolutionTests` at the mirrored path
-  in `DSAExperimentation.LeetCode.Tests`. The glob narrows to `DSAExperimentation.LeetCode/*/**`
+  in `DSAExperimentation.LeetCode.Solutions.Tests`. The glob narrows to `DSAExperimentation.LeetCode.Solutions/*/**`
   and its reason is now the measured truth: 2,197 findings, every one on a nested witness, a
   design problem's per-strategy class or an input-preparation helper (before the rename it
   absorbed about 4,590).
@@ -53,7 +53,7 @@ through `Reduce`. No `check-test-coverage` waiver on a core file remains.
 
 ### The two test projects — DONE (`b1939cc8`)
 
-All solution-facing tests (1,159 files) moved to `DSAExperimentation.LeetCode.Tests`;
+All solution-facing tests (1,159 files) moved to `DSAExperimentation.LeetCode.Solutions.Tests`;
 `DSAExperimentation.Tests` no longer references the solution tier, so the compiler enforces it.
 
 ### Answer equality — DONE
@@ -432,7 +432,7 @@ using) removed from 1,111 files.
 - **P4, scope gaps — DONE.** Its follow-on (registrations for six newly armed problems) is moot:
   the registry is gone and `LeetCodeStrategyCoverageTests` covers every solution.
 - **P5, hygiene — DONE.** Neither `BenchmarkDotNet.Artifacts/` is tracked (both are ignored), and
-  `LeetCodeCatalog` lives in `DSAExperimentation.LeetCode.Tests` (§17.6a). The `InternalsVisibleTo`
+  `LeetCodeCatalog` lives in `DSAExperimentation.LeetCode.Solutions.Tests` (§17.6a). The `InternalsVisibleTo`
   lists (3, 3 and 1 entries) stay hand-written, by decision. The core's three are its test projects
   alone, since `149fa5db` (§17.6a).
   - Each entry names a project that really consumes the declaring one's internals.

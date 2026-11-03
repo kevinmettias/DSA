@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.OrderlyQueue;
+using DSAExperimentation.LeetCode.Solutions.OrderlyQueue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

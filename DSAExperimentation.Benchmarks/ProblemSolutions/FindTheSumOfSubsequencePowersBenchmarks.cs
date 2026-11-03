@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindTheSumOfSubsequencePowers;
+using DSAExperimentation.LeetCode.Solutions.FindTheSumOfSubsequencePowers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

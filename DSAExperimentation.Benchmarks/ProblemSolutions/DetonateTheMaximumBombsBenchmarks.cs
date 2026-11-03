@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DetonateTheMaximumBombs;
+using DSAExperimentation.LeetCode.Solutions.DetonateTheMaximumBombs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

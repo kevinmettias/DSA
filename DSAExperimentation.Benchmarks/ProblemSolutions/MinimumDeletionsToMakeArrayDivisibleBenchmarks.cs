@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumDeletionsToMakeArrayDivisible;
+using DSAExperimentation.LeetCode.Solutions.MinimumDeletionsToMakeArrayDivisible;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.MaximumSumBSTInBinaryTree;
+using DSAExperimentation.LeetCode.Solutions.MaximumSumBSTInBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

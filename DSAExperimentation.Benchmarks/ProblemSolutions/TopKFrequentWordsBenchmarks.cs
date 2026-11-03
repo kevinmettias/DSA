@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.TopKFrequentWords;
+using DSAExperimentation.LeetCode.Solutions.TopKFrequentWords;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

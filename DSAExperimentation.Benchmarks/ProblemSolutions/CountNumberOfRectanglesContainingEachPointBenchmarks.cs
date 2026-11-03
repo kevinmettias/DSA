@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountNumberOfRectanglesContainingEachPoint;
+using DSAExperimentation.LeetCode.Solutions.CountNumberOfRectanglesContainingEachPoint;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

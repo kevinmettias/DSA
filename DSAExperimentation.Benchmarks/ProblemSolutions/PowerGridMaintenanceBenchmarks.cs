@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.DisjointSet;
-using DSAExperimentation.LeetCode.PowerGridMaintenance;
+using DSAExperimentation.LeetCode.Solutions.PowerGridMaintenance;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

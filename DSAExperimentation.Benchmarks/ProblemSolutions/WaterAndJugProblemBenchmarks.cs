@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.WaterAndJugProblem;
+using DSAExperimentation.LeetCode.Solutions.WaterAndJugProblem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

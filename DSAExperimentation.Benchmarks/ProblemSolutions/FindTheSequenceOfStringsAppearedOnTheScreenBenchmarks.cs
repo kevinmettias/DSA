@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheSequenceOfStringsAppearedOnTheScreen;
+using DSAExperimentation.LeetCode.Solutions.FindTheSequenceOfStringsAppearedOnTheScreen;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

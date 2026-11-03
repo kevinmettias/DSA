@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ClosestRoom;
+using DSAExperimentation.LeetCode.Solutions.ClosestRoom;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

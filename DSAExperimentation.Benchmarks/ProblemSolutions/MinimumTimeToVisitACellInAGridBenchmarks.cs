@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumTimeToVisitACellInAGrid;
+using DSAExperimentation.LeetCode.Solutions.MinimumTimeToVisitACellInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

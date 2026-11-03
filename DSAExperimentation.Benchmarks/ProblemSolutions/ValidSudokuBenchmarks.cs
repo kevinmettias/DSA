@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ValidSudoku;
+using DSAExperimentation.LeetCode.Solutions.ValidSudoku;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

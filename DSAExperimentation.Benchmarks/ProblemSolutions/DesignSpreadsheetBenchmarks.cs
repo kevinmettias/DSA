@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DesignSpreadsheet;
+using DSAExperimentation.LeetCode.Solutions.DesignSpreadsheet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

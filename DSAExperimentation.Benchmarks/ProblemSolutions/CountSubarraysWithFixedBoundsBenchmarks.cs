@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountSubarraysWithFixedBounds;
+using DSAExperimentation.LeetCode.Solutions.CountSubarraysWithFixedBounds;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

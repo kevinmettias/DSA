@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SpiralMatrixII;
+using DSAExperimentation.LeetCode.Solutions.SpiralMatrixII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.OddEvenJump;
+using DSAExperimentation.LeetCode.Solutions.OddEvenJump;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

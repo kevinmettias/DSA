@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumNumberOfKConsecutiveBitFlips;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfKConsecutiveBitFlips;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

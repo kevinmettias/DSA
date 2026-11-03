@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DigitOperationsToMakeTwoIntegersEqual;
+using DSAExperimentation.LeetCode.Solutions.DigitOperationsToMakeTwoIntegersEqual;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

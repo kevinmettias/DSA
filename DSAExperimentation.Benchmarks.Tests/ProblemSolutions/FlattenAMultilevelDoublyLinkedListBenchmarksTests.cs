@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.FlattenAMultilevelDoublyLinkedList;
+using DSAExperimentation.LeetCode.Solutions.FlattenAMultilevelDoublyLinkedList;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 

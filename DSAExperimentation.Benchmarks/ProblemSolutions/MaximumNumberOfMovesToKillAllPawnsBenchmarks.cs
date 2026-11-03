@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumNumberOfMovesToKillAllPawns;
+using DSAExperimentation.LeetCode.Solutions.MaximumNumberOfMovesToKillAllPawns;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

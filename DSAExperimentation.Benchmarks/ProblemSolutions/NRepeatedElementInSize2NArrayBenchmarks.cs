@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NRepeatedElementInSize2NArray;
+using DSAExperimentation.LeetCode.Solutions.NRepeatedElementInSize2NArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

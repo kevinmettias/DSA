@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PowerOfTwo;
+using DSAExperimentation.LeetCode.Solutions.PowerOfTwo;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

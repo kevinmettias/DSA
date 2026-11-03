@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.VowelsOfAllSubstrings;
+using DSAExperimentation.LeetCode.Solutions.VowelsOfAllSubstrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

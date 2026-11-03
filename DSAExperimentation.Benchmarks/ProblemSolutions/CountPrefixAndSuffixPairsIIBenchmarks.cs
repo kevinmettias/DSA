@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountPrefixAndSuffixPairsII;
+using DSAExperimentation.LeetCode.Solutions.CountPrefixAndSuffixPairsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

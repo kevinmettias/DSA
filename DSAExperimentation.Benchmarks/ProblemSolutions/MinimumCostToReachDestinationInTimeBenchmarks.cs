@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumCostToReachDestinationInTime;
+using DSAExperimentation.LeetCode.Solutions.MinimumCostToReachDestinationInTime;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

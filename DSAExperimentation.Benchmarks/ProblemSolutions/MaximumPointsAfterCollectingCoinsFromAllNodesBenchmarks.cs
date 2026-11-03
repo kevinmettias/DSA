@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumPointsAfterCollectingCoinsFromAllNodes;
+using DSAExperimentation.LeetCode.Solutions.MaximumPointsAfterCollectingCoinsFromAllNodes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

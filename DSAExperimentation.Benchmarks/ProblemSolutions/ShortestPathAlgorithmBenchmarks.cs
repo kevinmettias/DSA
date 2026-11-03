@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Adjacency;
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NetworkDelayTime;
+using DSAExperimentation.LeetCode.Solutions.NetworkDelayTime;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

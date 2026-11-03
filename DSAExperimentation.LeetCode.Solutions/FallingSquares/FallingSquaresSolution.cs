@@ -1,0 +1,105 @@
+using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.DataStructures.LazySegmentTree;
+
+namespace DSAExperimentation.LeetCode.Solutions.FallingSquares;
+
+// LeetCode 699. Falling Squares: each square in turn lands on top of whatever is
+// already stacked under its [left, left+size) footprint; report the running max
+// stack height after each square lands.
+internal static class FallingSquaresSolution
+{
+    private const int CoordinatesPerPosition = 2;
+
+    // The textbook O(n^2) approach: for each square, scan every earlier square and
+    // take the max height of the ones whose footprint overlaps it. Deliberately
+    // written without this repo's primitives - it is the arm the composed solution
+    // below has to justify itself against.
+    public static List<int> HeightsByBruteForceOverlapScan(int[][] positions)
+    {
+        var heights = new int[positions.Length];
+        var result = new List<int>(positions.Length);
+        var overallMax = 0;
+
+        for (var i = 0; i < positions.Length; i++)
+        {
+            overallMax = StackSquareAndTrackMax(positions, i, heights, overallMax);
+            result.Add(overallMax);
+        }
+
+        return result;
+    }
+
+    private static int StackSquareAndTrackMax(int[][] positions, int squareIndex, int[] heights, int overallMax)
+    {
+        var left = positions[squareIndex][0];
+        var right = left + positions[squareIndex][1];
+        var heightBelow = 0;
+
+        for (var j = 0; j < squareIndex; j++)
+        {
+            var otherLeft = positions[j][0];
+            var otherRight = otherLeft + positions[j][1];
+
+            if (HasFootprintOverlap(left, right, otherLeft, otherRight) && heights[j] > heightBelow)
+            {
+                heightBelow = heights[j];
+            }
+        }
+
+        heights[squareIndex] = heightBelow + positions[squareIndex][1];
+        return Math.Max(overallMax, heights[squareIndex]);
+    }
+
+    // Two half-open footprints [left, right) share ground when each one starts before the
+    // other ends.
+    private static bool HasFootprintOverlap(int left, int right, int otherLeft, int otherRight) =>
+        left < otherRight && otherLeft < right;
+
+    // Coordinate-compresses every square's footprint onto a dense leaf-index range
+    // with CompressedCoordinates, then tracks the current stack height over that
+    // range with this repo's own
+    // LazySegmentTree<int,int?,RangeAssignMaxOperation<int>> - range-max Query
+    // answers "what's already stacked directly under this square" and range-assign
+    // UpdateRange plants the new height across that same footprint, exactly the
+    // algebra RangeAssignMaxOperation.cs already provides (a newer assignment
+    // always overwrites - see its own doc comment).
+    public static List<int> HeightsByLazySegmentTree(int[][] positions)
+    {
+        var coordinates = new CompressedCoordinates<int>(FootprintEdges(positions));
+        var tree = new LazySegmentTree<int, int?, RangeAssignMaxOperation<int>>(new int[coordinates.Count - 1]);
+
+        var result = new List<int>(positions.Length);
+        var overallMax = 0;
+
+        foreach (var position in positions)
+        {
+            var left = coordinates.RankOf(position[0]);
+            var right = coordinates.RankOf(position[0] + position[1]) - 1;
+
+            var heightBelow = tree.Query(left, right);
+            var newHeight = heightBelow + position[1];
+
+            tree.UpdateRange(left, right, newHeight);
+            overallMax = Math.Max(overallMax, newHeight);
+            result.Add(overallMax);
+        }
+
+        return result;
+    }
+
+    // Every square's left/right edge goes into the compressed coordinates, so each
+    // edge the sweep above ranks is a member - RankOf is exact, with no insertion
+    // point to reason about.
+    private static int[] FootprintEdges(int[][] positions)
+    {
+        var edges = new List<int>(positions.Length * CoordinatesPerPosition);
+
+        foreach (var position in positions)
+        {
+            edges.Add(position[0]);
+            edges.Add(position[0] + position[1]);
+        }
+
+        return edges.ToArray();
+    }
+}

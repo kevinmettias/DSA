@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumSubarray;
+using DSAExperimentation.LeetCode.Solutions.MaximumSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

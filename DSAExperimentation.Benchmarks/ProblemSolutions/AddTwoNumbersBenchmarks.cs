@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.AddTwoNumbers;
+using DSAExperimentation.LeetCode.Solutions.AddTwoNumbers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

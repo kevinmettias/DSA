@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PowXn;
+using DSAExperimentation.LeetCode.Solutions.PowXn;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfWaysToReconstructATree;
+using DSAExperimentation.LeetCode.Solutions.NumberOfWaysToReconstructATree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

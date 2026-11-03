@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindMinimumInRotatedSortedArray;
+using DSAExperimentation.LeetCode.Solutions.FindMinimumInRotatedSortedArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

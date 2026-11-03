@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MoveZeroes;
+using DSAExperimentation.LeetCode.Solutions.MoveZeroes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NonOverlappingIntervals;
+using DSAExperimentation.LeetCode.Solutions.NonOverlappingIntervals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

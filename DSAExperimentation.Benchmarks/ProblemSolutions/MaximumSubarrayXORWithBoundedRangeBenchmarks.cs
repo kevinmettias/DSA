@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumSubarrayXORWithBoundedRange;
+using DSAExperimentation.LeetCode.Solutions.MaximumSubarrayXORWithBoundedRange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

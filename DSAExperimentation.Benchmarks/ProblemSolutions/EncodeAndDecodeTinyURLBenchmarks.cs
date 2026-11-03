@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.EncodeAndDecodeTinyURL;
+using DSAExperimentation.LeetCode.Solutions.EncodeAndDecodeTinyURL;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

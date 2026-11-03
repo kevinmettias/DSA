@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfStudentsUnableToEatLunch;
+using DSAExperimentation.LeetCode.Solutions.NumberOfStudentsUnableToEatLunch;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

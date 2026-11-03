@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ScoreOfParentheses;
+using DSAExperimentation.LeetCode.Solutions.ScoreOfParentheses;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

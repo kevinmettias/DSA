@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.DistinctEchoSubstrings;
+using DSAExperimentation.LeetCode.Solutions.DistinctEchoSubstrings;
 using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

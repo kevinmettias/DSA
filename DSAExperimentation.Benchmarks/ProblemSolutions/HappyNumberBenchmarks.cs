@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.HappyNumber;
+using DSAExperimentation.LeetCode.Solutions.HappyNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

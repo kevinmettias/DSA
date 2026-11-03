@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FirstUniqueCharacterInAString;
+using DSAExperimentation.LeetCode.Solutions.FirstUniqueCharacterInAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

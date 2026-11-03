@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SeatReservationManager;
+using DSAExperimentation.LeetCode.Solutions.SeatReservationManager;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

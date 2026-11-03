@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SecondMinimumTimeToReachDestination;
+using DSAExperimentation.LeetCode.Solutions.SecondMinimumTimeToReachDestination;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

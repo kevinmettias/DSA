@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NetworkRecoveryPathways;
+using DSAExperimentation.LeetCode.Solutions.NetworkRecoveryPathways;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

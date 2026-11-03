@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumGap;
+using DSAExperimentation.LeetCode.Solutions.MaximumGap;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

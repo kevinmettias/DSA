@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindKthLargestXorCoordinateValue;
+using DSAExperimentation.LeetCode.Solutions.FindKthLargestXorCoordinateValue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

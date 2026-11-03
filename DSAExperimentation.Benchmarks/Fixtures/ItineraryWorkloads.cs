@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ReconstructItinerary;
+using DSAExperimentation.LeetCode.Solutions.ReconstructItinerary;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
 

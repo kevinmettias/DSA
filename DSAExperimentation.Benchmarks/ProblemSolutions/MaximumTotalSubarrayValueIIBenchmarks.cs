@@ -1,7 +1,7 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.SegmentTree;
-using DSAExperimentation.LeetCode.MaximumTotalSubarrayValueII;
+using DSAExperimentation.LeetCode.Solutions.MaximumTotalSubarrayValueII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

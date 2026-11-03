@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountConnectedComponentsInLCMGraph;
+using DSAExperimentation.LeetCode.Solutions.CountConnectedComponentsInLCMGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

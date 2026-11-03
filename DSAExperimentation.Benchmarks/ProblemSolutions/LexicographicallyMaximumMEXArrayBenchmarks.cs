@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LexicographicallyMaximumMEXArray;
+using DSAExperimentation.LeetCode.Solutions.LexicographicallyMaximumMEXArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

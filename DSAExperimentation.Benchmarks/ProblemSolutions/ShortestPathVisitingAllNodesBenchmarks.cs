@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ShortestPathVisitingAllNodes;
+using DSAExperimentation.LeetCode.Solutions.ShortestPathVisitingAllNodes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

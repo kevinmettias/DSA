@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumCostWalkInWeightedGraph;
+using DSAExperimentation.LeetCode.Solutions.MinimumCostWalkInWeightedGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

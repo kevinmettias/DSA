@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumXorSumOfTwoArrays;
+using DSAExperimentation.LeetCode.Solutions.MinimumXorSumOfTwoArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

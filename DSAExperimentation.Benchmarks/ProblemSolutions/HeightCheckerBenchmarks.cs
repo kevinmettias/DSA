@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.HeightChecker;
+using DSAExperimentation.LeetCode.Solutions.HeightChecker;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

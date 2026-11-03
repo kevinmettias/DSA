@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindEdgesInShortestPaths;
+using DSAExperimentation.LeetCode.Solutions.FindEdgesInShortestPaths;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

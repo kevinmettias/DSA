@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.StepByStepDirectionsFromABinaryTreeNodeToAnother;
+using DSAExperimentation.LeetCode.Solutions.StepByStepDirectionsFromABinaryTreeNodeToAnother;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

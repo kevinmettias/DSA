@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SearchInRotatedSortedArrayII;
+using DSAExperimentation.LeetCode.Solutions.SearchInRotatedSortedArrayII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

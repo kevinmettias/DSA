@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfSubarraysWithANDValueOfK;
+using DSAExperimentation.LeetCode.Solutions.NumberOfSubarraysWithANDValueOfK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfIntegersWithPopcountDepthEqualToKI;
+using DSAExperimentation.LeetCode.Solutions.NumberOfIntegersWithPopcountDepthEqualToKI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LexicographicallySmallestStringAfterDeletingDuplicateCharacters;
+using DSAExperimentation.LeetCode.Solutions.LexicographicallySmallestStringAfterDeletingDuplicateCharacters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

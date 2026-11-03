@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumOneBitOperationsToMakeIntegersZero;
+using DSAExperimentation.LeetCode.Solutions.MinimumOneBitOperationsToMakeIntegersZero;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

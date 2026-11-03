@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ParsingABooleanExpression;
+using DSAExperimentation.LeetCode.Solutions.ParsingABooleanExpression;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

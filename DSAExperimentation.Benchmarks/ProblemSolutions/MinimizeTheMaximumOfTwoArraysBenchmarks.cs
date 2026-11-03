@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimizeTheMaximumOfTwoArrays;
+using DSAExperimentation.LeetCode.Solutions.MinimizeTheMaximumOfTwoArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountGoodTripletsInAnArray;
+using DSAExperimentation.LeetCode.Solutions.CountGoodTripletsInAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

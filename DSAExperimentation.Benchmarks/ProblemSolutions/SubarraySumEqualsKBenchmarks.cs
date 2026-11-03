@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SubarraySumEqualsK;
+using DSAExperimentation.LeetCode.Solutions.SubarraySumEqualsK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

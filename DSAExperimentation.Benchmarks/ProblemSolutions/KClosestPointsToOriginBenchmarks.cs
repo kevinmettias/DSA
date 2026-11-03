@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.KClosestPointsToOrigin;
+using DSAExperimentation.LeetCode.Solutions.KClosestPointsToOrigin;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

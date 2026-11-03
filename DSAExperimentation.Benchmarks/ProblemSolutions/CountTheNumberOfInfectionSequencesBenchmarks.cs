@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountTheNumberOfInfectionSequences;
+using DSAExperimentation.LeetCode.Solutions.CountTheNumberOfInfectionSequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

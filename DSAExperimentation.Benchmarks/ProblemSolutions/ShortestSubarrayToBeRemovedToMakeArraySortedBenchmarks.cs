@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ShortestSubarrayToBeRemovedToMakeArraySorted;
+using DSAExperimentation.LeetCode.Solutions.ShortestSubarrayToBeRemovedToMakeArraySorted;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ElevatorRequestsI;
+using DSAExperimentation.LeetCode.Solutions.ElevatorRequestsI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

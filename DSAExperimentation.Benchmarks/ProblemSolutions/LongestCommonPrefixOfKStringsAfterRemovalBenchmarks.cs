@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.LongestCommonPrefixOfKStringsAfterRemoval;
+using DSAExperimentation.LeetCode.Solutions.LongestCommonPrefixOfKStringsAfterRemoval;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

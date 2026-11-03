@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Trie;
-using DSAExperimentation.LeetCode.FindTheLengthOfTheLongestCommonPrefix;
+using DSAExperimentation.LeetCode.Solutions.FindTheLengthOfTheLongestCommonPrefix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

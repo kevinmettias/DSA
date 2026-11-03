@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.PalindromePartitioning;
+using DSAExperimentation.LeetCode.Solutions.PalindromePartitioning;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

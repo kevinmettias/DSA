@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DivideTwoIntegers;
+using DSAExperimentation.LeetCode.Solutions.DivideTwoIntegers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

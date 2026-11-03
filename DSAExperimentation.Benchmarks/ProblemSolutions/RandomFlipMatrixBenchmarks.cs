@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RandomFlipMatrix;
+using DSAExperimentation.LeetCode.Solutions.RandomFlipMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

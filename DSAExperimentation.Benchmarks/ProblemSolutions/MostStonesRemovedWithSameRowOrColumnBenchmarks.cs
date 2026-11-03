@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MostStonesRemovedWithSameRowOrColumn;
+using DSAExperimentation.LeetCode.Solutions.MostStonesRemovedWithSameRowOrColumn;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

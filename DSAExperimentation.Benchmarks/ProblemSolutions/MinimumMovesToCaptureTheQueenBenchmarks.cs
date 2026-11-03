@@ -1,5 +1,5 @@
 using DSAExperimentation.Domain.Games.Chess;
-using DSAExperimentation.LeetCode.MinimumMovesToCaptureTheQueen;
+using DSAExperimentation.LeetCode.Solutions.MinimumMovesToCaptureTheQueen;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DeliveringBoxesFromStorageToPorts;
+using DSAExperimentation.LeetCode.Solutions.DeliveringBoxesFromStorageToPorts;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

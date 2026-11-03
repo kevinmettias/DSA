@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumTimeToRevertWordToInitialStateI;
+using DSAExperimentation.LeetCode.Solutions.MinimumTimeToRevertWordToInitialStateI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

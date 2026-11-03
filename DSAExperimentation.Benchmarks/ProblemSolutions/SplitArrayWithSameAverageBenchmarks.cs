@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SplitArrayWithSameAverage;
+using DSAExperimentation.LeetCode.Solutions.SplitArrayWithSameAverage;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

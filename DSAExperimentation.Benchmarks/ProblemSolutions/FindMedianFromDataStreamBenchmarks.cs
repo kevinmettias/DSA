@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindMedianFromDataStream;
+using DSAExperimentation.LeetCode.Solutions.FindMedianFromDataStream;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

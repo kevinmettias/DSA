@@ -1,7 +1,7 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.DeleteNodeInABST;
+using DSAExperimentation.LeetCode.Solutions.DeleteNodeInABST;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

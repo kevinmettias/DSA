@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RotateImage;
+using DSAExperimentation.LeetCode.Solutions.RotateImage;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.LeetCode.SellingPiecesOfWood;
+using DSAExperimentation.LeetCode.Solutions.SellingPiecesOfWood;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.KthSmallestAmountWithSingleDenominationCombination;
+using DSAExperimentation.LeetCode.Solutions.KthSmallestAmountWithSingleDenominationCombination;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.EditDistance;
+using DSAExperimentation.LeetCode.Solutions.EditDistance;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

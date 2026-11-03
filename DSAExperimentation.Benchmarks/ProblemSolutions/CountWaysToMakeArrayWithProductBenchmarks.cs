@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountWaysToMakeArrayWithProduct;
+using DSAExperimentation.LeetCode.Solutions.CountWaysToMakeArrayWithProduct;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

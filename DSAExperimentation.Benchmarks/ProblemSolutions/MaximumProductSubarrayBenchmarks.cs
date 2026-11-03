@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumProductSubarray;
+using DSAExperimentation.LeetCode.Solutions.MaximumProductSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

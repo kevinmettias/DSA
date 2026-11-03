@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FlattenNestedListIterator;
+using DSAExperimentation.LeetCode.Solutions.FlattenNestedListIterator;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

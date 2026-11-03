@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ShuffleAnArray;
+using DSAExperimentation.LeetCode.Solutions.ShuffleAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

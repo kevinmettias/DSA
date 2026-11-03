@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FourDivisors;
+using DSAExperimentation.LeetCode.Solutions.FourDivisors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

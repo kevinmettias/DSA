@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximizeCountOfDistinctPrimesAfterSplit;
+using DSAExperimentation.LeetCode.Solutions.MaximizeCountOfDistinctPrimesAfterSplit;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

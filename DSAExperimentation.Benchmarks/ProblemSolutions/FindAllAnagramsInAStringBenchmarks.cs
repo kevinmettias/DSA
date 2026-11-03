@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindAllAnagramsInAString;
+using DSAExperimentation.LeetCode.Solutions.FindAllAnagramsInAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

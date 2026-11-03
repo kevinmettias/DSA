@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RobotReturnToOrigin;
+using DSAExperimentation.LeetCode.Solutions.RobotReturnToOrigin;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

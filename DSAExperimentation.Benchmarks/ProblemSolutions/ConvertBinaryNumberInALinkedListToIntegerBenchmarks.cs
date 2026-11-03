@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.ConvertBinaryNumberInALinkedListToInteger;
+using DSAExperimentation.LeetCode.Solutions.ConvertBinaryNumberInALinkedListToInteger;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

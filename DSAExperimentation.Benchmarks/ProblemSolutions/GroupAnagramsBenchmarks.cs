@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.GroupAnagrams;
+using DSAExperimentation.LeetCode.Solutions.GroupAnagrams;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

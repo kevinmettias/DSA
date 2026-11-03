@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumCostToMakeAtLeastOneValidPathInAGrid;
+using DSAExperimentation.LeetCode.Solutions.MinimumCostToMakeAtLeastOneValidPathInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumNumberOfDaysToDisconnectIsland;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfDaysToDisconnectIsland;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

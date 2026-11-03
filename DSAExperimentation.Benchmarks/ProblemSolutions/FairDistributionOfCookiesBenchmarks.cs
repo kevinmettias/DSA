@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FairDistributionOfCookies;
+using DSAExperimentation.LeetCode.Solutions.FairDistributionOfCookies;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

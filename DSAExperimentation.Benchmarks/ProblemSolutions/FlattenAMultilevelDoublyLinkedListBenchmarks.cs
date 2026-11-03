@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FlattenAMultilevelDoublyLinkedList;
+using DSAExperimentation.LeetCode.Solutions.FlattenAMultilevelDoublyLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindTheLargestAreaOfSquareInsideTwoRectangles;
+using DSAExperimentation.LeetCode.Solutions.FindTheLargestAreaOfSquareInsideTwoRectangles;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

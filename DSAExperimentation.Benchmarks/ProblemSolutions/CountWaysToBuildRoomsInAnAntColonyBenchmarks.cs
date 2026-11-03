@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
+using DSAExperimentation.LeetCode.Solutions.CountWaysToBuildRoomsInAnAntColony;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

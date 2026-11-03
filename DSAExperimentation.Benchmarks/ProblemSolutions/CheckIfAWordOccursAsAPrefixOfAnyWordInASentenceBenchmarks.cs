@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.LeetCode.CheckIfAWordOccursAsAPrefixOfAnyWordInASentence;
+using DSAExperimentation.LeetCode.Solutions.CheckIfAWordOccursAsAPrefixOfAnyWordInASentence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

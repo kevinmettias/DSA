@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CountAlmostEqualPairsII;
+using DSAExperimentation.LeetCode.Solutions.CountAlmostEqualPairsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

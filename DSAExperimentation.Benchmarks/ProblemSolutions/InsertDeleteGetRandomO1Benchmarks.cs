@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.InsertDeleteGetRandomO1;
+using DSAExperimentation.LeetCode.Solutions.InsertDeleteGetRandomO1;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

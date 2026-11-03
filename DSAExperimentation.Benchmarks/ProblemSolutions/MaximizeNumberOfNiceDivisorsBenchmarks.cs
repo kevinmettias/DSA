@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximizeNumberOfNiceDivisors;
+using DSAExperimentation.LeetCode.Solutions.MaximizeNumberOfNiceDivisors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

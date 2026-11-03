@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.HouseRobber;
+using DSAExperimentation.LeetCode.Solutions.HouseRobber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

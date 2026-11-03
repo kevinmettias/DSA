@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumAndSumOfArray;
+using DSAExperimentation.LeetCode.Solutions.MaximumAndSumOfArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

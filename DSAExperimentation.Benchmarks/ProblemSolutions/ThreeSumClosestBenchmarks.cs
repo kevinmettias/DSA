@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ThreeSumClosest;
+using DSAExperimentation.LeetCode.Solutions.ThreeSumClosest;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

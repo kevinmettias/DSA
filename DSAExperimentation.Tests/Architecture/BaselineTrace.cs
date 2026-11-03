@@ -28,7 +28,7 @@ namespace DSAExperimentation.Tests.Architecture;
 // LeetCode's own I/O shapes (ContractTypes) are input wherever they appear.
 internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownInput)
 {
-    private const string SolutionNamespace = "DSAExperimentation.LeetCode";
+    private const string SolutionNamespace = "DSAExperimentation.LeetCode.Solutions";
     private const string BenchmarkNamespace = "DSAExperimentation.Benchmarks";
     private const string FixtureNamespace = "DSAExperimentation.Benchmarks.Fixtures";
 

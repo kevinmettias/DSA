@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeStringSorted;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeStringSorted;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

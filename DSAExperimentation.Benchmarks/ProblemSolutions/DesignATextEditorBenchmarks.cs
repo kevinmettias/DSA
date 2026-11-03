@@ -1,5 +1,5 @@
 using DSAExperimentation.Domain.Language.English;
-using DSAExperimentation.LeetCode.DesignATextEditor;
+using DSAExperimentation.LeetCode.Solutions.DesignATextEditor;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

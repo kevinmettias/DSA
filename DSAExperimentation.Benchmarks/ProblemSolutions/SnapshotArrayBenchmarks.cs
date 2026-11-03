@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SnapshotArray;
+using DSAExperimentation.LeetCode.Solutions.SnapshotArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

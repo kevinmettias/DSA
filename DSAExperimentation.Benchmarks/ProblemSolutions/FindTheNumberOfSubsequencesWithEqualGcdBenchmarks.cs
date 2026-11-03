@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindTheNumberOfSubsequencesWithEqualGcd;
+using DSAExperimentation.LeetCode.Solutions.FindTheNumberOfSubsequencesWithEqualGcd;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LongestBalancedSubarrayI;
+using DSAExperimentation.LeetCode.Solutions.LongestBalancedSubarrayI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

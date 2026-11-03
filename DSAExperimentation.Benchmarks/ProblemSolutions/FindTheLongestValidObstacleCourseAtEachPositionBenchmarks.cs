@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindTheLongestValidObstacleCourseAtEachPosition;
+using DSAExperimentation.LeetCode.Solutions.FindTheLongestValidObstacleCourseAtEachPosition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

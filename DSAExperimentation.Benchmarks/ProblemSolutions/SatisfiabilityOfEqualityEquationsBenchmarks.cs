@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SatisfiabilityOfEqualityEquations;
+using DSAExperimentation.LeetCode.Solutions.SatisfiabilityOfEqualityEquations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

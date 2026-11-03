@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.TwoCityScheduling;
+using DSAExperimentation.LeetCode.Solutions.TwoCityScheduling;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

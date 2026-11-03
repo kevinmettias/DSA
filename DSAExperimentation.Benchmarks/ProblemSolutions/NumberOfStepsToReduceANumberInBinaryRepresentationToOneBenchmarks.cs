@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfStepsToReduceANumberInBinaryRepresentationToOne;
+using DSAExperimentation.LeetCode.Solutions.NumberOfStepsToReduceANumberInBinaryRepresentationToOne;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

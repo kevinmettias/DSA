@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheNthValueAfterKSeconds;
+using DSAExperimentation.LeetCode.Solutions.FindTheNthValueAfterKSeconds;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

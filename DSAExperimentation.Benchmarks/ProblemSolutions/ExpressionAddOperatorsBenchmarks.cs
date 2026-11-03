@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ExpressionAddOperators;
+using DSAExperimentation.LeetCode.Solutions.ExpressionAddOperators;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

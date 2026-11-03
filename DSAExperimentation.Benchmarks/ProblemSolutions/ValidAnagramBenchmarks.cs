@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ValidAnagram;
+using DSAExperimentation.LeetCode.Solutions.ValidAnagram;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

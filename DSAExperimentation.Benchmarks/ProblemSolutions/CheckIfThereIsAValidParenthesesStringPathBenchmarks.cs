@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CheckIfThereIsAValidParenthesesStringPath;
+using DSAExperimentation.LeetCode.Solutions.CheckIfThereIsAValidParenthesesStringPath;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

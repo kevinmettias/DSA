@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ImplementMagicDictionary;
+using DSAExperimentation.LeetCode.Solutions.ImplementMagicDictionary;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

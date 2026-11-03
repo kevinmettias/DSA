@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountTheNumberOfArraysWithKMatchingAdjacentElements;
+using DSAExperimentation.LeetCode.Solutions.CountTheNumberOfArraysWithKMatchingAdjacentElements;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

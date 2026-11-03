@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.LargestPerimeterTriangle;
+using DSAExperimentation.LeetCode.Solutions.LargestPerimeterTriangle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

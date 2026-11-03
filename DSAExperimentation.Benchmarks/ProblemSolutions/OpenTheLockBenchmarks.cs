@@ -1,7 +1,7 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.States;
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.LeetCode.OpenTheLock;
+using DSAExperimentation.LeetCode.Solutions.OpenTheLock;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

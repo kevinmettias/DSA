@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DeleteGreatestValueInEachRow;
+using DSAExperimentation.LeetCode.Solutions.DeleteGreatestValueInEachRow;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

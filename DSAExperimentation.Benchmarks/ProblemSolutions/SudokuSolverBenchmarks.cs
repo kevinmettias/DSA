@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SudokuSolver;
+using DSAExperimentation.LeetCode.Solutions.SudokuSolver;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

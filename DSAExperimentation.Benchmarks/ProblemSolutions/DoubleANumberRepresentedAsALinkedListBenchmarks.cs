@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
-using DSAExperimentation.LeetCode.DoubleANumberRepresentedAsALinkedList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode.Solutions.DoubleANumberRepresentedAsALinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

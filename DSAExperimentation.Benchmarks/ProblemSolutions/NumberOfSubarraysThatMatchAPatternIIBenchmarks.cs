@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfSubarraysThatMatchAPatternII;
+using DSAExperimentation.LeetCode.Solutions.NumberOfSubarraysThatMatchAPatternII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

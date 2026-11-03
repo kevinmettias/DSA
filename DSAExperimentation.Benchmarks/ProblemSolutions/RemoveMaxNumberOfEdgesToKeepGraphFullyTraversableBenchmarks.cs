@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RemoveMaxNumberOfEdgesToKeepGraphFullyTraversable;
+using DSAExperimentation.LeetCode.Solutions.RemoveMaxNumberOfEdgesToKeepGraphFullyTraversable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

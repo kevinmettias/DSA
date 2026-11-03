@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.ImplementRouter;
+using DSAExperimentation.LeetCode.Solutions.ImplementRouter;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

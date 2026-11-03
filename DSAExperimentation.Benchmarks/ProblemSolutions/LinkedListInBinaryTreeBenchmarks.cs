@@ -1,7 +1,7 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.LinkedListInBinaryTree;
+using DSAExperimentation.LeetCode.Solutions.LinkedListInBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

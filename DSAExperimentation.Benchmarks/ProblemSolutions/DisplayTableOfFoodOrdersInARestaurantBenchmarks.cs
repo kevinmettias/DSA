@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DisplayTableOfFoodOrdersInARestaurant;
+using DSAExperimentation.LeetCode.Solutions.DisplayTableOfFoodOrdersInARestaurant;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

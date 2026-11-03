@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.MaximumDeletionsOnAString;
+using DSAExperimentation.LeetCode.Solutions.MaximumDeletionsOnAString;
 using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

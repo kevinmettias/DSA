@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.IntegerReplacement;
+using DSAExperimentation.LeetCode.Solutions.IntegerReplacement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RobotBoundedInCircle;
+using DSAExperimentation.LeetCode.Solutions.RobotBoundedInCircle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindServersThatHandledMostNumberOfRequests;
+using DSAExperimentation.LeetCode.Solutions.FindServersThatHandledMostNumberOfRequests;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

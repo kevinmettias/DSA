@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MostFrequentIds;
+using DSAExperimentation.LeetCode.Solutions.MostFrequentIds;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

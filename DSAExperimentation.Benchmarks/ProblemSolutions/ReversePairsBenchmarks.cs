@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ReversePairs;
+using DSAExperimentation.LeetCode.Solutions.ReversePairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

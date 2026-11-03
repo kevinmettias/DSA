@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CoinChangeII;
+using DSAExperimentation.LeetCode.Solutions.CoinChangeII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

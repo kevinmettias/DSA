@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindMaximumNonDecreasingArrayLength;
+using DSAExperimentation.LeetCode.Solutions.FindMaximumNonDecreasingArrayLength;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

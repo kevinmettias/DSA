@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SubarrayWithElementsGreaterThanVaryingThreshold;
+using DSAExperimentation.LeetCode.Solutions.SubarrayWithElementsGreaterThanVaryingThreshold;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

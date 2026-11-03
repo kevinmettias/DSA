@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SlidingWindowMedian;
+using DSAExperimentation.LeetCode.Solutions.SlidingWindowMedian;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

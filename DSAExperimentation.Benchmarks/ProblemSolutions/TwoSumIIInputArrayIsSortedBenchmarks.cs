@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.TwoSumIIInputArrayIsSorted;
+using DSAExperimentation.LeetCode.Solutions.TwoSumIIInputArrayIsSorted;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

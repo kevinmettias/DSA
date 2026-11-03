@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountIntegersInIntervals;
+using DSAExperimentation.LeetCode.Solutions.CountIntegersInIntervals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximizeGridHappiness;
+using DSAExperimentation.LeetCode.Solutions.MaximizeGridHappiness;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

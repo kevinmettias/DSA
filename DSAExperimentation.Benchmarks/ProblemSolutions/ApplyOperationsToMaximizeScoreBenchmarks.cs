@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ApplyOperationsToMaximizeScore;
+using DSAExperimentation.LeetCode.Solutions.ApplyOperationsToMaximizeScore;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

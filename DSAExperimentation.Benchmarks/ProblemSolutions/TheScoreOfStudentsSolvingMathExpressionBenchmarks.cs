@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.TheScoreOfStudentsSolvingMathExpression;
+using DSAExperimentation.LeetCode.Solutions.TheScoreOfStudentsSolvingMathExpression;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

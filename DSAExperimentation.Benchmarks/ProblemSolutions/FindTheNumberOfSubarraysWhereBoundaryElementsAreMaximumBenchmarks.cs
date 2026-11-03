@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximum;
+using DSAExperimentation.LeetCode.Solutions.FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

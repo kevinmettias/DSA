@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.RangeSumOfBST;
+using DSAExperimentation.LeetCode.Solutions.RangeSumOfBST;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

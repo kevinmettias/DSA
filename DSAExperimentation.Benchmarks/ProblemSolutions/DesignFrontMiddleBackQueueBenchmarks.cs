@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DesignFrontMiddleBackQueue;
+using DSAExperimentation.LeetCode.Solutions.DesignFrontMiddleBackQueue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

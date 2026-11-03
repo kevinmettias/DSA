@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PartitionLabels;
+using DSAExperimentation.LeetCode.Solutions.PartitionLabels;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

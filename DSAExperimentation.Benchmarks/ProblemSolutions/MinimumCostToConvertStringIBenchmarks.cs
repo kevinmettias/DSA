@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumCostToConvertStringI;
+using DSAExperimentation.LeetCode.Solutions.MinimumCostToConvertStringI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

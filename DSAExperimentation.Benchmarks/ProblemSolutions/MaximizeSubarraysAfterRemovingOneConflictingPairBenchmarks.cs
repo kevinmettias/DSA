@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximizeSubarraysAfterRemovingOneConflictingPair;
+using DSAExperimentation.LeetCode.Solutions.MaximizeSubarraysAfterRemovingOneConflictingPair;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

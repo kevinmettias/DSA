@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PalindromicSubstrings;
+using DSAExperimentation.LeetCode.Solutions.PalindromicSubstrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

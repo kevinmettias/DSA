@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MultiplyStrings;
+using DSAExperimentation.LeetCode.Solutions.MultiplyStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

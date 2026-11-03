@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.LongestCycleInAGraph;
+using DSAExperimentation.LeetCode.Solutions.LongestCycleInAGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

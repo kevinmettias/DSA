@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigits;
+using DSAExperimentation.LeetCode.Solutions.MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

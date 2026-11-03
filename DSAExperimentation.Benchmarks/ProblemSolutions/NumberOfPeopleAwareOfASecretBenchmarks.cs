@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.NumberOfPeopleAwareOfASecret;
+using DSAExperimentation.LeetCode.Solutions.NumberOfPeopleAwareOfASecret;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

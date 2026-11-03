@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.BeautifulTowersI;
+using DSAExperimentation.LeetCode.Solutions.BeautifulTowersI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

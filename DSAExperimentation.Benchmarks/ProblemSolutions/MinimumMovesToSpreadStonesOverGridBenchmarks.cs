@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumMovesToSpreadStonesOverGrid;
+using DSAExperimentation.LeetCode.Solutions.MinimumMovesToSpreadStonesOverGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

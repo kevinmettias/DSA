@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ValidateStackSequences;
+using DSAExperimentation.LeetCode.Solutions.ValidateStackSequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

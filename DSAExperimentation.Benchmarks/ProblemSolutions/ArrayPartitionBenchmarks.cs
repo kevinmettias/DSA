@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.ArrayPartition;
+using DSAExperimentation.LeetCode.Solutions.ArrayPartition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

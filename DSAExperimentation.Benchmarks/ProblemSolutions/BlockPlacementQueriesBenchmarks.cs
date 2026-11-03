@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.BlockPlacementQueries;
+using DSAExperimentation.LeetCode.Solutions.BlockPlacementQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

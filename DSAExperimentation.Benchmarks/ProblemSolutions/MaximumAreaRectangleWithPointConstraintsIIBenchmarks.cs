@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumAreaRectangleWithPointConstraintsII;
+using DSAExperimentation.LeetCode.Solutions.MaximumAreaRectangleWithPointConstraintsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

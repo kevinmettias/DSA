@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumTimeToTransportAllIndividuals;
+using DSAExperimentation.LeetCode.Solutions.MinimumTimeToTransportAllIndividuals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

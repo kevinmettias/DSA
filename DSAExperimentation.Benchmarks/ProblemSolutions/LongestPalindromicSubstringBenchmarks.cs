@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LongestPalindromicSubstring;
+using DSAExperimentation.LeetCode.Solutions.LongestPalindromicSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

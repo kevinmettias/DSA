@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindMaximumAreaOfATriangle;
+using DSAExperimentation.LeetCode.Solutions.FindMaximumAreaOfATriangle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

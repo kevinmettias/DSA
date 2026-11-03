@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindNumberOfWaysToReachTheKthStair;
+using DSAExperimentation.LeetCode.Solutions.FindNumberOfWaysToReachTheKthStair;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

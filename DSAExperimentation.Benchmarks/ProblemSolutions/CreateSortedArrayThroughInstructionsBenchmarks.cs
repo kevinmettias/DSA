@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.CreateSortedArrayThroughInstructions;
+using DSAExperimentation.LeetCode.Solutions.CreateSortedArrayThroughInstructions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

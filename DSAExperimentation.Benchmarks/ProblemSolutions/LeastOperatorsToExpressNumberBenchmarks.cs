@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LeastOperatorsToExpressNumber;
+using DSAExperimentation.LeetCode.Solutions.LeastOperatorsToExpressNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

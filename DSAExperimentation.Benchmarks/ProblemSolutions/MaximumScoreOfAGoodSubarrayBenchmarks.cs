@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.MaximumScoreOfAGoodSubarray;
+using DSAExperimentation.LeetCode.Solutions.MaximumScoreOfAGoodSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

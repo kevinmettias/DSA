@@ -2,7 +2,7 @@ using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Hamming;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Language.English;
-using DSAExperimentation.LeetCode.WordLadder;
+using DSAExperimentation.LeetCode.Solutions.WordLadder;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.RightTriangles;
+using DSAExperimentation.LeetCode.Solutions.RightTriangles;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

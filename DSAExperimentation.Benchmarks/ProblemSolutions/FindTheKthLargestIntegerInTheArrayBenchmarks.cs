@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheKthLargestIntegerInTheArray;
+using DSAExperimentation.LeetCode.Solutions.FindTheKthLargestIntegerInTheArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

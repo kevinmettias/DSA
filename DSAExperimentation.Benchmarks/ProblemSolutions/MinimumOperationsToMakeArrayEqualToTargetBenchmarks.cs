@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumOperationsToMakeArrayEqualToTarget;
+using DSAExperimentation.LeetCode.Solutions.MinimumOperationsToMakeArrayEqualToTarget;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

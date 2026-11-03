@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumFrequencyStack;
+using DSAExperimentation.LeetCode.Solutions.MaximumFrequencyStack;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.RemoveInvalidParentheses;
+using DSAExperimentation.LeetCode.Solutions.RemoveInvalidParentheses;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

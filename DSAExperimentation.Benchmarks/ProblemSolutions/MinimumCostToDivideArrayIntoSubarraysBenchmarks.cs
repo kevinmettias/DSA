@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumCostToDivideArrayIntoSubarrays;
+using DSAExperimentation.LeetCode.Solutions.MinimumCostToDivideArrayIntoSubarrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

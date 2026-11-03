@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SubarrayProductLessThanK;
+using DSAExperimentation.LeetCode.Solutions.SubarrayProductLessThanK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

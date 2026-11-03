@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.QueriesOnAPermutationWithKey;
+using DSAExperimentation.LeetCode.Solutions.QueriesOnAPermutationWithKey;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

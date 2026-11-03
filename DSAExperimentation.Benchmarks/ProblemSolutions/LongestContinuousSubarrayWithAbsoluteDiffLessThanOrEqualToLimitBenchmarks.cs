@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit;
+using DSAExperimentation.LeetCode.Solutions.LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

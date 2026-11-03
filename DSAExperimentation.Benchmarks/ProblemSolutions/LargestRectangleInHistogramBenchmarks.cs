@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.LargestRectangleInHistogram;
+using DSAExperimentation.LeetCode.Solutions.LargestRectangleInHistogram;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

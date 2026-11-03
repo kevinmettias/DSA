@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DesignCircularDeque;
+using DSAExperimentation.LeetCode.Solutions.DesignCircularDeque;
 using ChurnStep = (bool? DeletedFront, bool InsertedLast, bool? DeletedLast, bool InsertedFront, int Front, int Rear);
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

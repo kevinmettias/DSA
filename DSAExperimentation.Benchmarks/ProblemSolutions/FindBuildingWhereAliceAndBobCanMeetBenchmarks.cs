@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindBuildingWhereAliceAndBobCanMeet;
+using DSAExperimentation.LeetCode.Solutions.FindBuildingWhereAliceAndBobCanMeet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumCostToConnectTwoGroupsOfPoints;
+using DSAExperimentation.LeetCode.Solutions.MinimumCostToConnectTwoGroupsOfPoints;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.UniqueBinarySearchTrees;
+using DSAExperimentation.LeetCode.Solutions.UniqueBinarySearchTrees;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

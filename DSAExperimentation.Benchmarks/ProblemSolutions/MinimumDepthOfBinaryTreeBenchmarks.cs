@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.MinimumDepthOfBinaryTree;
+using DSAExperimentation.LeetCode.Solutions.MinimumDepthOfBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

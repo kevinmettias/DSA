@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumNumberOfIncrementsOnSubarraysToFormTargetArray;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfIncrementsOnSubarraysToFormTargetArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

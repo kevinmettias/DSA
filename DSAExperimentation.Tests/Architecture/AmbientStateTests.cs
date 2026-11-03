@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.Architecture;
 // not scanned.
 public sealed partial class AmbientStateTests
 {
-    private static readonly string[] ScannedProjects = ["DSAExperimentation", "DSAExperimentation.LeetCode"];
+    private static readonly string[] ScannedProjects = ["DSAExperimentation", "DSAExperimentation.LeetCode.Solutions"];
 
     private static readonly Regex AmbientSlot = new(@"\b(?:AsyncLocal|ThreadLocal)\s*<|\[\s*ThreadStatic\s*\]");
 

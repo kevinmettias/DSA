@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.SmallestMissingGeneticValueInEachSubtree;
+using DSAExperimentation.LeetCode.Solutions.SmallestMissingGeneticValueInEachSubtree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

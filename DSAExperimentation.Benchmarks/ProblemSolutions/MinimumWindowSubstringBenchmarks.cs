@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumWindowSubstring;
+using DSAExperimentation.LeetCode.Solutions.MinimumWindowSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

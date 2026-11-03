@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FinalPricesWithASpecialDiscountInAShop;
+using DSAExperimentation.LeetCode.Solutions.FinalPricesWithASpecialDiscountInAShop;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

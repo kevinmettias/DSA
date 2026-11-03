@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.LeetCode.MaximumAreaRectangleWithPointConstraintsI;
+using DSAExperimentation.LeetCode.Solutions.MaximumAreaRectangleWithPointConstraintsI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

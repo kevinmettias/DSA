@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.FindValueOfMysteriousFunctionClosestToTarget;
+using DSAExperimentation.LeetCode.Solutions.FindValueOfMysteriousFunctionClosestToTarget;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,7 +1,7 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Sequence;
-using DSAExperimentation.LeetCode.CountElementsWithAtLeastKGreaterValues;
+using DSAExperimentation.LeetCode.Solutions.CountElementsWithAtLeastKGreaterValues;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

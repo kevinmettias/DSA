@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumXOROfTwoNumbersInAnArray;
+using DSAExperimentation.LeetCode.Solutions.MaximumXOROfTwoNumbersInAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

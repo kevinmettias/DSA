@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.SequentiallyOrdinalRankTracker;
+using DSAExperimentation.LeetCode.Solutions.SequentiallyOrdinalRankTracker;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

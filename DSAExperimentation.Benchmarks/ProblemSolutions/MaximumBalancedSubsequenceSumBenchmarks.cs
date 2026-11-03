@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumBalancedSubsequenceSum;
+using DSAExperimentation.LeetCode.Solutions.MaximumBalancedSubsequenceSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

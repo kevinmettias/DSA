@@ -25,9 +25,9 @@ public sealed partial class SectionCitationTests
     private static readonly string[] ScannedProjects =
     [
         "DSAExperimentation",
-        "DSAExperimentation.LeetCode",
+        "DSAExperimentation.LeetCode.Solutions",
         "DSAExperimentation.Tests",
-        "DSAExperimentation.LeetCode.Tests",
+        "DSAExperimentation.LeetCode.Solutions.Tests",
         "DSAExperimentation.Benchmarks",
         "DSAExperimentation.Benchmarks.Tests",
     ];

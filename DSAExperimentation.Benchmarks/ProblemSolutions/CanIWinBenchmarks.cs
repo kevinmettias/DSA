@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CanIWin;
+using DSAExperimentation.LeetCode.Solutions.CanIWin;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

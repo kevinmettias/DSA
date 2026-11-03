@@ -100,8 +100,8 @@ function buildConventions() {
 // Item 1: the solution class and its own project.
 function buildConventionSolutionPlacement() {
   return (
-    `1. DSAExperimentation.LeetCode/<Name>/<Name>Solution.cs (its OWN project, referencing DSAExperimentation) - an \`internal static class ` +
-    `<Name>Solution\` in namespace \`DSAExperimentation.LeetCode.<Name>\`, holding EVERY strategy for ` +
+    `1. DSAExperimentation.LeetCode.Solutions/<Name>/<Name>Solution.cs (its OWN project, referencing DSAExperimentation) - an \`internal static class ` +
+    `<Name>Solution\` in namespace \`DSAExperimentation.LeetCode.Solutions.<Name>\`, holding EVERY strategy for ` +
     `the problem as a public static method named \`<Operation>By<Strategy>\` (e.g. AddByBitStack, ` +
     `TryFindIndicesByBruteForce, MinTurnsByReduceGraph). The naive/brute-force baseline is a first-class ` +
     `method here too, NOT a private helper hidden in the benchmark - that is what gets it under test. If a ` +
@@ -126,7 +126,7 @@ function buildConventionSharedTiers() {
     `a model, a rule, a constant such as the 1e9+7 modulus, an output format - goes in ` +
     `DSAExperimentation/Domain/, filed by subject (section 17.6). A witness that serves only this problem's ` +
     `strategies stays in the problem's folder, and LeetCode's own notation and answer conventions sit at the ` +
-    `root of DSAExperimentation.LeetCode (Conventions/, LeetCodeAnswer).\n` +
+    `root of DSAExperimentation.LeetCode.Solutions (Conventions/, LeetCodeAnswer).\n` +
     `   BROWSE THESE FIRST, they very often already cover the problem you are given: ` +
     `DataStructures/Graph/Hamming (one-character-mutation graphs over any Alphabet, plus HammingSearch), ` +
     `DataStructures/Graph/Grids (Grid and WeightedGrid), ` +
@@ -141,15 +141,15 @@ function buildConventionSharedTiers() {
 // Items 3-4: the test and benchmark harnesses.
 function buildConventionHarnesses() {
   return (
-    `3. DSAExperimentation.LeetCode.Tests/<Name>/<Name>SolutionTests.cs (namespace ` +
-    `DSAExperimentation.LeetCode.Tests.<Name>) - HARNESS ONLY, no algorithm whatsoever. A ` +
+    `3. DSAExperimentation.LeetCode.Solutions.Tests/<Name>/<Name>SolutionTests.cs (namespace ` +
+    `DSAExperimentation.LeetCode.Solutions.Tests.<Name>) - HARNESS ONLY, no algorithm whatsoever. A ` +
     `\`public sealed partial class <Name>SolutionTests\` with LeetCode's published examples stated ONCE as ` +
     `\`public static TheoryData<...> Examples\`, then ONE \`[Theory] [MemberData(nameof(Examples))]\` ` +
     `method PER STRATEGY whose name STARTS with the strategy member's name ` +
     `(\`<Operation>By<Strategy>_LeetCodeExamples_...\`) - LeetCodeStrategyCoverageTests fails otherwise. ` +
     `Never re-implement the algorithm privately in the test, and never add a theory that only checks the ` +
     `strategies agree - each one is already asserted against the expected value. Build trees and lists with ` +
-    `LeetCodeWireFormat (DSAExperimentation.LeetCode.Conventions) and compare order-free answers with ` +
+    `LeetCodeWireFormat (DSAExperimentation.LeetCode.Solutions.Conventions) and compare order-free answers with ` +
     `LeetCodeAnswers - do not write a private BuildList/BuildTree/order-insensitive comparer. No Fixtures/ ` +
     `subfolder - if you were about to create one, that type belongs in Domain/, the LeetCode/ problem ` +
     `folder or at the LeetCode root instead.\n` +
@@ -169,8 +169,8 @@ function buildConventionHarnesses() {
 function buildConventionReferenceShape() {
   return (
     `Read these as the reference shape before writing anything - they are migrated and correct:\n` +
-    `- DSAExperimentation.LeetCode/OpenTheLock/OpenTheLockSolution.cs (two strategies, hoisted overloads)\n` +
-    `- DSAExperimentation.LeetCode.Tests/OpenTheLock/OpenTheLockSolutionTests.cs\n` +
+    `- DSAExperimentation.LeetCode.Solutions/OpenTheLock/OpenTheLockSolution.cs (two strategies, hoisted overloads)\n` +
+    `- DSAExperimentation.LeetCode.Solutions.Tests/OpenTheLock/OpenTheLockSolutionTests.cs\n` +
     `- DSAExperimentation.Benchmarks/ProblemSolutions/OpenTheLockBenchmarks.cs\n\n`
   )
 }
@@ -180,7 +180,7 @@ function buildNamingGuidance() {
     `Naming: PascalCase derived from the problem title (e.g. "House Robber II" -> HouseRobberII, keep roman ` +
     `numerals as-is). If the title starts with a digit (e.g. "3Sum", "132 Pattern"), spell out a natural C# ` +
     `identifier instead (ThreeSum, OneThreeTwoPattern) - use judgment, it just needs to be a valid, readable C# ` +
-    `identifier. Check DSAExperimentation.LeetCode/ and DSAExperimentation.LeetCode.Tests/ first for a ` +
+    `identifier. Check DSAExperimentation.LeetCode.Solutions/ and DSAExperimentation.LeetCode.Solutions.Tests/ first for a ` +
     `folder that already covers this exact problem BY CONTENT (not just by name) and report it as already done ` +
     `if so, without duplicating it.\n\n` +
     `TESTING POLICY (ARCHITECTURE.md section 18): every data structure and algorithm carries its OWN direct ` +
@@ -213,7 +213,7 @@ function buildOutputContract() {
   return (
     `After writing all files for this cluster, return one result object per problem id: status "done" (with the ` +
     `real solutionPath/testPath/benchmarkPath - as REPO-ROOT-RELATIVE paths using forward slashes, e.g. ` +
-    `"DSAExperimentation.LeetCode/TwoSum/TwoSumSolution.cs", matching the existing manifest entries' ` +
+    `"DSAExperimentation.LeetCode.Solutions/TwoSum/TwoSumSolution.cs", matching the existing manifest entries' ` +
     `style, NOT an absolute Windows path - and a short primitivesUsed note naming any shared types you reused ` +
     `or added) or "blocked" (with a note on exactly what's missing and why it's a genuine primitive gap, not ` +
     `just effort).`
@@ -277,9 +277,9 @@ const verifyReport = await agent(
   `In the repo at the current working directory (no top-level .sln - build/test per-project). Run, from the ` +
   `repo root:\n` +
   `  dotnet build DSAExperimentation/DSAExperimentation.csproj -c Release\n` +
-  `  dotnet build DSAExperimentation.LeetCode/DSAExperimentation.LeetCode.csproj -c Release\n` +
-  `  dotnet build DSAExperimentation.LeetCode.Tests/DSAExperimentation.LeetCode.Tests.csproj -c Release\n` +
-  `  dotnet test DSAExperimentation.LeetCode.Tests/DSAExperimentation.LeetCode.Tests.csproj -c Release --no-build\n` +
+  `  dotnet build DSAExperimentation.LeetCode.Solutions/DSAExperimentation.LeetCode.Solutions.csproj -c Release\n` +
+  `  dotnet build DSAExperimentation.LeetCode.Solutions.Tests/DSAExperimentation.LeetCode.Solutions.Tests.csproj -c Release\n` +
+  `  dotnet test DSAExperimentation.LeetCode.Solutions.Tests/DSAExperimentation.LeetCode.Solutions.Tests.csproj -c Release --no-build\n` +
   `  dotnet build DSAExperimentation.Benchmarks/DSAExperimentation.Benchmarks.csproj -c Release\n` +
   `(the last one just confirms the new benchmark classes compile - do NOT actually run BenchmarkDotNet jobs, ` +
   `that's too slow for this pass). Report whether the test-project build succeeded, whether the ` +

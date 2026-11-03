@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.DesignCircularQueue;
+using DSAExperimentation.LeetCode.Solutions.DesignCircularQueue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

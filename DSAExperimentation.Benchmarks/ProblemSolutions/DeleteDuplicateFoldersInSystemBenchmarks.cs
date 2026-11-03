@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.DeleteDuplicateFoldersInSystem;
+using DSAExperimentation.LeetCode.Solutions.DeleteDuplicateFoldersInSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

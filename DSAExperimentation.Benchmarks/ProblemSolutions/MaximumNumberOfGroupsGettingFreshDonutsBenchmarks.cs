@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MaximumNumberOfGroupsGettingFreshDonuts;
+using DSAExperimentation.LeetCode.Solutions.MaximumNumberOfGroupsGettingFreshDonuts;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

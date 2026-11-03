@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumTimeVisitingAllPoints;
+using DSAExperimentation.LeetCode.Solutions.MinimumTimeVisitingAllPoints;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

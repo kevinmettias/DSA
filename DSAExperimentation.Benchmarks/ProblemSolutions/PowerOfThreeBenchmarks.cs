@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Sequence;
-using DSAExperimentation.LeetCode.PowerOfThree;
+using DSAExperimentation.LeetCode.Solutions.PowerOfThree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

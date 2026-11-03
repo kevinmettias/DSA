@@ -1,5 +1,5 @@
 using System.Text;
-using DSAExperimentation.LeetCode.ReverseSubstringsBetweenEachPairOfParentheses;
+using DSAExperimentation.LeetCode.Solutions.ReverseSubstringsBetweenEachPairOfParentheses;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

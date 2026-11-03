@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.InverseCoinChange;
+using DSAExperimentation.LeetCode.Solutions.InverseCoinChange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

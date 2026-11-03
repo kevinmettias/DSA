@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FirstBadVersion;
+using DSAExperimentation.LeetCode.Solutions.FirstBadVersion;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

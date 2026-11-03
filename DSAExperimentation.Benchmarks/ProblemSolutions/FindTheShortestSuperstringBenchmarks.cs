@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheShortestSuperstring;
+using DSAExperimentation.LeetCode.Solutions.FindTheShortestSuperstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

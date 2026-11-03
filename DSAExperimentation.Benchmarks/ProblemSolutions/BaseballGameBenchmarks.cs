@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.BaseballGame;
+using DSAExperimentation.LeetCode.Solutions.BaseballGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

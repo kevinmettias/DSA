@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CatAndMouseII;
+using DSAExperimentation.LeetCode.Solutions.CatAndMouseII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

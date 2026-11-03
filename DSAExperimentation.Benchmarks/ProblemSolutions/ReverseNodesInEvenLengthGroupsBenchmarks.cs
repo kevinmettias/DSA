@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Conventions;
-using DSAExperimentation.LeetCode.ReverseNodesInEvenLengthGroups;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode.Solutions.ReverseNodesInEvenLengthGroups;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

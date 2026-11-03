@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTree;
+using DSAExperimentation.LeetCode.Solutions.FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

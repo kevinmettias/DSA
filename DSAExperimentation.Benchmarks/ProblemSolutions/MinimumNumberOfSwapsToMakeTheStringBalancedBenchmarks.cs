@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumNumberOfSwapsToMakeTheStringBalanced;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfSwapsToMakeTheStringBalanced;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

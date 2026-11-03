@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.XOfAKindInADeckOfCards;
+using DSAExperimentation.LeetCode.Solutions.XOfAKindInADeckOfCards;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

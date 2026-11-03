@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockIII;
+using DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

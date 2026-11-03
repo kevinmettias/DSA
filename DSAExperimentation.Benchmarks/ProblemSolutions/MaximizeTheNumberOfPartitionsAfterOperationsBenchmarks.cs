@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximizeTheNumberOfPartitionsAfterOperations;
+using DSAExperimentation.LeetCode.Solutions.MaximizeTheNumberOfPartitionsAfterOperations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.DataStructures.Trie;
-using DSAExperimentation.LeetCode.ConcatenatedWords;
+using DSAExperimentation.LeetCode.Solutions.ConcatenatedWords;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

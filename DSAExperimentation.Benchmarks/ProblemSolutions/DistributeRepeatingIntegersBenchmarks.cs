@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.LeetCode.DistributeRepeatingIntegers;
+using DSAExperimentation.LeetCode.Solutions.DistributeRepeatingIntegers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

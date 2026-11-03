@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.RangeModule;
+using DSAExperimentation.LeetCode.Solutions.RangeModule;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

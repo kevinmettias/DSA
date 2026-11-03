@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.TheEarliestAndLatestRoundsWherePlayersCompete;
+using DSAExperimentation.LeetCode.Solutions.TheEarliestAndLatestRoundsWherePlayersCompete;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

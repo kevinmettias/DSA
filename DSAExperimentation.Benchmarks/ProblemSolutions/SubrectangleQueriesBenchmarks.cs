@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.SubrectangleQueries;
+using DSAExperimentation.LeetCode.Solutions.SubrectangleQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

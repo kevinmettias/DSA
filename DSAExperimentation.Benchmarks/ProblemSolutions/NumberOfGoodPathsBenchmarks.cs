@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.NumberOfGoodPaths;
+using DSAExperimentation.LeetCode.Solutions.NumberOfGoodPaths;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

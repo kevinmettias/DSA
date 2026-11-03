@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.LeetCode.FindIfPathExistsInGraph;
+using DSAExperimentation.LeetCode.Solutions.FindIfPathExistsInGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

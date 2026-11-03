@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Grids;
-using DSAExperimentation.LeetCode.MatrixCellsInDistanceOrder;
+using DSAExperimentation.LeetCode.Solutions.MatrixCellsInDistanceOrder;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

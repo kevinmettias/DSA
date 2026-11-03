@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FindTheWinningPlayerInCoinGame;
+using DSAExperimentation.LeetCode.Solutions.FindTheWinningPlayerInCoinGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

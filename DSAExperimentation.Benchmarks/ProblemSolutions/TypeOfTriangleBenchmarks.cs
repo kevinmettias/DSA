@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.TypeOfTriangle;
+using DSAExperimentation.LeetCode.Solutions.TypeOfTriangle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

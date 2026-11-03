@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CountingWordsWithAGivenPrefix;
+using DSAExperimentation.LeetCode.Solutions.CountingWordsWithAGivenPrefix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.LeetCode.MostCommonWord;
+using DSAExperimentation.LeetCode.Solutions.MostCommonWord;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

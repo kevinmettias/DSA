@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.ConvertBSTToGreaterTree;
+using DSAExperimentation.LeetCode.Solutions.ConvertBSTToGreaterTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

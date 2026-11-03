@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumSumOfValuesByDividingArray;
+using DSAExperimentation.LeetCode.Solutions.MinimumSumOfValuesByDividingArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

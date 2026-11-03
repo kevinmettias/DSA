@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumNumberOfArrowsToBurstBalloons;
+using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfArrowsToBurstBalloons;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

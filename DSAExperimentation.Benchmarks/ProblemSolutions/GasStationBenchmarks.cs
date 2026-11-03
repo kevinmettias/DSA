@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.GasStation;
+using DSAExperimentation.LeetCode.Solutions.GasStation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

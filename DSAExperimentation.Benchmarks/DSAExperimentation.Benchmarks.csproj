@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DSAExperimentation\DSAExperimentation.csproj" />
-    <ProjectReference Include="..\DSAExperimentation.LeetCode\DSAExperimentation.LeetCode.csproj" />
+    <ProjectReference Include="..\DSAExperimentation.LeetCode.Solutions\DSAExperimentation.LeetCode.Solutions.csproj" />
     <ProjectReference Include="..\DSAExperimentation.LeetCode.Catalog\DSAExperimentation.LeetCode.Catalog.csproj" />
   </ItemGroup>
 

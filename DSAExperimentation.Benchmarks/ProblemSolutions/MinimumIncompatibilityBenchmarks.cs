@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MinimumIncompatibility;
+using DSAExperimentation.LeetCode.Solutions.MinimumIncompatibility;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

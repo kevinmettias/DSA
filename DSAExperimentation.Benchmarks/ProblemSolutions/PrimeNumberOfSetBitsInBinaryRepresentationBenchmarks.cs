@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.PrimeNumberOfSetBitsInBinaryRepresentation;
+using DSAExperimentation.LeetCode.Solutions.PrimeNumberOfSetBitsInBinaryRepresentation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.FruitIntoBaskets;
+using DSAExperimentation.LeetCode.Solutions.FruitIntoBaskets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

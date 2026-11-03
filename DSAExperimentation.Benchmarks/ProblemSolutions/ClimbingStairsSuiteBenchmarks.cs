@@ -1,5 +1,5 @@
 using DSAExperimentation.LeetCode.Catalog;
-using DSAExperimentation.LeetCode.ClimbingStairs;
+using DSAExperimentation.LeetCode.Solutions.ClimbingStairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

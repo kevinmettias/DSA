@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LargestTriangleArea;
+using DSAExperimentation.LeetCode.Solutions.LargestTriangleArea;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

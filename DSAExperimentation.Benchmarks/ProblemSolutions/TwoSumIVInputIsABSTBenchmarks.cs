@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.TwoSumIVInputIsABST;
+using DSAExperimentation.LeetCode.Solutions.TwoSumIVInputIsABST;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

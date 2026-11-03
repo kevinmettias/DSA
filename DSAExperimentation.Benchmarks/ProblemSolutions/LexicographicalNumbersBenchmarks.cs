@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.LexicographicalNumbers;
+using DSAExperimentation.LeetCode.Solutions.LexicographicalNumbers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

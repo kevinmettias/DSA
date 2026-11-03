@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.MinimumOperationsToMakeBinaryArrayElementsEqualToOneI;
+using DSAExperimentation.LeetCode.Solutions.MinimumOperationsToMakeBinaryArrayElementsEqualToOneI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

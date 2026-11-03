@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.CreateGridWithExactlyKPathsI;
+using DSAExperimentation.LeetCode.Solutions.CreateGridWithExactlyKPathsI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

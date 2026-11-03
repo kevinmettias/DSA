@@ -1,5 +1,5 @@
 using DSAExperimentation.Domain.Language.English;
-using DSAExperimentation.LeetCode.PalindromicPathQueriesInATree;
+using DSAExperimentation.LeetCode.Solutions.PalindromicPathQueriesInATree;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
 

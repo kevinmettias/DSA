@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.PathExistenceQueriesInAGraphII;
+using DSAExperimentation.LeetCode.Solutions.PathExistenceQueriesInAGraphII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
