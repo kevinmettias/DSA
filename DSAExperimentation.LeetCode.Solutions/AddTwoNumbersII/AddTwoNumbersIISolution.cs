@@ -1,6 +1,7 @@
 using System.Numerics;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using NumberStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.AddTwoNumbersII;
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AddTwoNumbersII;
 // lockstep with a running carry, prepending each result digit onto the front of the
 // output list as it's produced - O(n), with neither input list ever reversed or
 // mutated.
+[LeetCodeQuestion("add-two-numbers-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class AddTwoNumbersIISolution
 {
     public static SinglyLinkedListNode<int>? AddByBigInteger(

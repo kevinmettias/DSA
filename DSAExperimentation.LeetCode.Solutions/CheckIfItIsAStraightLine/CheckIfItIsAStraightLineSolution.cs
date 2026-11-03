@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.CheckIfItIsAStraightLine;
 
 // LeetCode 1232. Check If It Is a Straight Line: decide whether every point in
@@ -12,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfItIsAStraightLine;
 // scan - the baseline, previously untested because it lived only in a benchmark -
 // while IsStraightLineByAnchoredCrossProductScan uses the fact that collinearity
 // is transitive through a fixed anchor pair to settle it in one O(n) pass.
+[LeetCodeQuestion("check-if-it-is-a-straight-line", LeetCodeAnswerOrder.AsWritten)]
 internal static class CheckIfItIsAStraightLineSolution
 {
     // Index of the third point onward, once the first two points have anchored the

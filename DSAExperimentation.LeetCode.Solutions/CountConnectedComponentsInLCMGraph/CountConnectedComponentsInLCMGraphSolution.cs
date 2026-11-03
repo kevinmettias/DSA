@@ -1,10 +1,12 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountConnectedComponentsInLCMGraph;
 
 // LeetCode 3378. Count Connected Components in LCM Graph: nums is a set of
 // distinct values; an (undirected) edge joins nums[i] and nums[j] whenever
 // lcm(nums[i], nums[j]) <= threshold. Count connected components.
+[LeetCodeQuestion("count-connected-components-in-lcm-graph", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountConnectedComponentsInLCMGraphSolution
 {
     // Baseline: the graph exactly as LeetCode defines it. Every pair gets a real

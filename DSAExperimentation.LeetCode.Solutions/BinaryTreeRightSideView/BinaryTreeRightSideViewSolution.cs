@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BinaryTreeRightSideView;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BinaryTreeRightSideView;
 // RightSideViewByDepthFirstRightFirst takes the opposite tack: a depth-first walk
 // that visits each right child before its left, so the first node it reaches at any
 // depth is that level's rightmost.
+[LeetCodeQuestion("binary-tree-right-side-view", LeetCodeAnswerOrder.AsWritten)]
 internal static class BinaryTreeRightSideViewSolution
 {
     // The textbook arm the buffered-level traversal is measured against: a

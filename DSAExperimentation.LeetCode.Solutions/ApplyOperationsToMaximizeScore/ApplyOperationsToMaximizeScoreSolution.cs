@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.Domain.Mathematics.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ApplyOperationsToMaximizeScore;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ApplyOperationsToMaximizeScore;
 // Both strategies compute the same prime scores and run the same greedy; they differ
 // only in how each index finds its two boundaries, which is the whole performance
 // question here.
+[LeetCodeQuestion("apply-operations-to-maximize-score", LeetCodeAnswerOrder.AsWritten)]
 internal static class ApplyOperationsToMaximizeScoreSolution
 {
 

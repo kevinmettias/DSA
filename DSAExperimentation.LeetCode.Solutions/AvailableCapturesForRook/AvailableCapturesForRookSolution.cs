@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.Domain.Games.Chess;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.AvailableCapturesForRook;
 
@@ -21,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AvailableCapturesForRook;
 // shares the rook's row or column and then path-check it (O(rows*cols)), versus
 // four rays out of the rook that only ever touch squares it could reach
 // (O(rows+cols)).
+[LeetCodeQuestion("available-captures-for-rook", LeetCodeAnswerOrder.AsWritten)]
 internal static class AvailableCapturesForRookSolution
 {
     private const char Empty = '.';

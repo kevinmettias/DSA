@@ -2,10 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests;
 
-// What BenchmarkArmsTests cannot learn by reflection: the benchmarks whose arms answer correctly yet
-// differently. Everything not listed here is held to exact agreement, so this list is the whole of
-// the per-problem knowledge the generic check needs, and an entry is a claim about the problem
-// statement or the harness that a reader can check against it.
+// What BenchmarkArmsTests cannot learn by reflection: the hand-written benchmarks whose arms answer
+// correctly yet differently. Everything not listed here is held to exact agreement, so this list is
+// the whole of the per-problem knowledge the generic check needs, and an entry is a claim about the
+// problem statement or the harness that a reader can check against it. A generated catalog class
+// needs no entry: its arms are held to one another in LeetCode's notation, by the order rule its
+// solution's LeetCodeQuestion attribute states (CatalogArmAnswers).
 internal static class ArmAgreement
 {
     // LeetCode leaves the order of these answers unspecified, so arms agree when they return the same

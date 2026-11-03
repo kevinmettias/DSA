@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountCollisionsOfMonkeysOnAPolygon;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountCollisionsOfMonkeysOnAPolyg
 // The modulus is LeetCodeModulus, because 1e9+7 is LeetCode's reporting
 // convention rather than this problem's own value, and the squaring loop is the
 // general ModularPower from Algorithms.NumberTheory.
+[LeetCodeQuestion("count-collisions-of-monkeys-on-a-polygon", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountCollisionsOfMonkeysOnAPolygonSolution
 {
     // Every monkey picks one of its two neighbouring vertices.

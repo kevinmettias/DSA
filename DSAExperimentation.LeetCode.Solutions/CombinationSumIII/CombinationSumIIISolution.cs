@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CombinationSumIII;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CombinationSumIII;
 // Backtrack.Search engine to stop descending the moment a partial sum can no longer
 // reach targetSum, so it never finishes exploring a branch it already knows is too
 // large.
+[LeetCodeQuestion("combination-sum-iii", LeetCodeAnswerOrder.AnyOrder)]
 internal static class CombinationSumIIISolution
 {
     private const int MinDigit = 1;

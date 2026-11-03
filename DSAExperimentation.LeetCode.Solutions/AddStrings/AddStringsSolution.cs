@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DigitStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.AddStrings;
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AddStrings;
 // The two strategies differ only in how they undo that reversal - a List<char> the
 // caller reverses at the end, or this repo's own Stack<char>, whose LIFO order
 // unwinds the digits already in the right order.
+[LeetCodeQuestion("add-strings", LeetCodeAnswerOrder.AsWritten)]
 internal static class AddStringsSolution
 {
     // Accumulate digits least-significant first, then reverse the buffer in place.

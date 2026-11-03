@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CheckIfAStringContainsAllBinaryCodesOfSizeK;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfAStringContainsAllBinaryC
 // The two strategies come at it from opposite ends: enumerate the codes and search
 // the text for each, or make one pass over the text and record which codes it
 // happened to produce.
+[LeetCodeQuestion("check-if-a-string-contains-all-binary-codes-of-size-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class CheckIfAStringContainsAllBinaryCodesOfSizeKSolution
 {
     private const char Zero = '0';

@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Domain.Mathematics.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ClosestPrimeNumbersInRange;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ClosestPrimeNumbersInRange;
 // or the shared PrimeSieve over [0, right] and an O(1) lookup per candidate
 // afterwards. That is the same "share the walk, contrast the primality test" split
 // MostFrequentPrime uses for LC 3044.
+[LeetCodeQuestion("closest-prime-numbers-in-range", LeetCodeAnswerOrder.AsWritten)]
 internal static class ClosestPrimeNumbersInRangeSolution
 {
 

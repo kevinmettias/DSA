@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockV;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockV;
 // classic stock-DP fold), so a transaction's profit is just the sum of its two
 // half-steps and neither strategy has to remember an entry price - state is
 // only (day, transactions started, position: flat/long/short).
+[LeetCodeQuestion("best-time-to-buy-and-sell-stock-v", LeetCodeAnswerOrder.AsWritten)]
 internal static class BestTimeToBuyAndSellStockVSolution
 {
     private const int Flat = 0;

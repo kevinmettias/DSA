@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BeautifulTowersI;
 
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BeautifulTowersI;
 //
 // Both strategies take LeetCode's own int[], so neither needs a hoisted
 // prepared-input overload - there is no input structure to build.
+[LeetCodeQuestion("beautiful-towers-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class BeautifulTowersISolution
 {
     // Sweep directions for ClampedRunSums: forward builds the non-decreasing run

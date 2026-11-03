@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.ComplexNumberMultiplication;
 
 // LeetCode 537. Complex Number Multiplication: parse "a+bi" into (real, imaginary)
@@ -11,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ComplexNumberMultiplication;
 // heap-allocated array plus two substrings per operand); MultiplyBySpanParse instead
 // slices with ReadOnlySpan<char> and int.Parse over spans, allocating nothing per
 // operand.
+[LeetCodeQuestion("complex-number-multiplication", LeetCodeAnswerOrder.AsWritten)]
 internal static class ComplexNumberMultiplicationSolution
 {
     // The textbook baseline: string.Split allocates an array plus one substring per

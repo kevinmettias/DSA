@@ -1,5 +1,6 @@
 using System.Text;
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.AmbiguousCoordinates;
 
@@ -25,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AmbiguousCoordinates;
 // build them, to keep the measured return value cheap. LeetCode's actual answer is
 // the list of coordinate strings, so both are promoted to return it here - the same
 // deliberate change ARCHITECTURE.md 17.8 records for WordLadderII.
+[LeetCodeQuestion("ambiguous-coordinates", LeetCodeAnswerOrder.AnyOrder)]
 internal static class AmbiguousCoordinatesSolution
 {
     // The string form of the number zero - the only integer part allowed to start

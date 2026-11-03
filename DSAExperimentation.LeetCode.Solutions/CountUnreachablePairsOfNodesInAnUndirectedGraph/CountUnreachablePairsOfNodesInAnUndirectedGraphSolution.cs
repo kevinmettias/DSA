@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountUnreachablePairsOfNodesInAnUndirectedGraph;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountUnreachablePairsOfNodesInAn
 // once each component's SIZE is known the answer is C(n,2) minus the reachable
 // pairs summed component-by-component. The two strategies differ only in how they
 // discover those sizes: a flood fill over an adjacency list, or union-find.
+[LeetCodeQuestion("count-unreachable-pairs-of-nodes-in-an-undirected-graph", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountUnreachablePairsOfNodesInAnUndirectedGraphSolution
 {
     // The textbook answer: build an adjacency list, flood fill each unvisited node

@@ -47,6 +47,18 @@ public sealed partial class CatalogJudgeTests
     public void WrongAnswers_CaseWithNoRecordedOutput_IsNotJudged() =>
         Assert.Empty(CatalogJudge.WrongAnswers(Arm, LeetCodeAnswerOrder.AsWritten, [new() { Inputs = ["[1]"] }], _ => JsonValue.Create(-1)));
 
+    [Fact]
+    public void AgreementTextOf_AnyOrderSequenceReordered_WritesTheSameText() =>
+        Assert.Equal(
+            CatalogJudge.AgreementTextOf(NodeOf("[[0,1],[2]]"), LeetCodeAnswerOrder.AnyOrder),
+            CatalogJudge.AgreementTextOf(NodeOf("[[2],[0,1]]"), LeetCodeAnswerOrder.AnyOrder));
+
+    [Fact]
+    public void AgreementTextOf_AsWrittenSequenceReordered_WritesDifferentText() =>
+        Assert.NotEqual(
+            CatalogJudge.AgreementTextOf(NodeOf("[0,1]"), LeetCodeAnswerOrder.AsWritten),
+            CatalogJudge.AgreementTextOf(NodeOf("[1,0]"), LeetCodeAnswerOrder.AsWritten));
+
     // Every text a test writes is a JSON value, never a bare null.
     private static JsonNode NodeOf(string text) => JsonNode.Parse(text) ?? throw new InvalidOperationException($"{text} is a bare null.");
 }

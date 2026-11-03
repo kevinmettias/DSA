@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CapacityToShipPackagesWithinDDays;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CapacityToShipPackagesWithinDDay
 // MonotonePredicateSearch.FirstTrue - the same "binary search on the answer" shape
 // KokoEatingBananas and SplitArrayLargestSum use, where this problem's
 // "capacity"/"days" are that problem's "limit"/"k" under a different name.
+[LeetCodeQuestion("capacity-to-ship-packages-within-d-days", LeetCodeAnswerOrder.AsWritten)]
 internal static class CapacityToShipPackagesWithinDDaysSolution
 {
     // The textbook answer: a hand-written bisection over the capacity range, BCL-only.

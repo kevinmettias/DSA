@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfArraysWithKMatchingAdjacentElements;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfArraysWithKMatch
 // coefficient needs: the same factorial/inverse-factorial table
 // CountAnagramsByModularFactorial and RoomWaysPrecomputedFactorialAlgebra
 // already build for other counting problems.
+[LeetCodeQuestion("count-the-number-of-arrays-with-k-matching-adjacent-elements", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountTheNumberOfArraysWithKMatchingAdjacentElementsSolution
 {
     // Textbook baseline: build every one of the m^n arrays directly and count

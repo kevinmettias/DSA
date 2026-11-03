@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BinaryTreeLevelOrderTraversalII;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BinaryTreeLevelOrderTraversalII;
 // Both strategies walk the tree level by level and reverse the buffered result;
 // they differ only in how the level grouping itself is produced - a hand-rolled
 // BCL Queue loop, or this repo's own LevelGroupedBreadthFirstTraversal engine.
+[LeetCodeQuestion("binary-tree-level-order-traversal-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class BinaryTreeLevelOrderTraversalIISolution
 {
     // The textbook answer: a BCL Queue, draining exactly one level per iteration

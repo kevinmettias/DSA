@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CombinationSumII;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CombinationSumII;
 // Sorting groups equal values together so both strategies can skip a repeated
 // candidate at the same recursion depth - the standard way to avoid the same
 // combination being emitted twice without needing a results set.
+[LeetCodeQuestion("combination-sum-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class CombinationSumIISolution
 {
     // The textbook answer: plain recursion over a BCL List<int> path buffer,

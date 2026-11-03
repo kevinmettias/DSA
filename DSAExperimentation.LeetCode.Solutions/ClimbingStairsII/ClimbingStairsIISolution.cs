@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ClimbingStairsII;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ClimbingStairsII;
 // strategy dogfoods this repo's own Memoizer over the identical recurrence, the
 // same "natural-looking recursion, no hand-rolled cache" shape ClimbingStairsSolution
 // (LC 70) and MinCostClimbingStairsSolutionTests (LC 746) already use.
+[LeetCodeQuestion("climbing-stairs-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class ClimbingStairsIISolution
 {
     private const int MaxJump = 3;

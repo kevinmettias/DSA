@@ -1,5 +1,6 @@
 using System.Numerics;
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountConnectedSubgraphsWithEvenNodeSum;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountConnectedSubgraphsWithEvenN
 // (the textbook approach, ARCHITECTURE.md 17.5), or this repo's own
 // DisjointSet, unioning only the edges whose two endpoints both lie in the mask
 // and then checking every set bit lands in the same component as the first.
+[LeetCodeQuestion("count-connected-subgraphs-with-even-node-sum", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountConnectedSubgraphsWithEvenNodeSumSolution
 {
     public static int CountEvenSumSubgraphsByBruteForceBfs(int[] nums, int[][] edges)

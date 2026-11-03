@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CheckingExistenceOfEdgeLengthLimitedPaths;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckingExistenceOfEdgeLengthLim
 // differ in whether each query is answered from scratch or all of them are
 // answered by one sweep. The edge list is undirected and may hold parallel edges
 // of different weights, so a heavier duplicate never invalidates a lighter one.
+[LeetCodeQuestion("checking-existence-of-edge-length-limited-paths", LeetCodeAnswerOrder.AsWritten)]
 internal static class CheckingExistenceOfEdgeLengthLimitedPathsSolution
 {
     // The textbook baseline this composition has to justify itself against:

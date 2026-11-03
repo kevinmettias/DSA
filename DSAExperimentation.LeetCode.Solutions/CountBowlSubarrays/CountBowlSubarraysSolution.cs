@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountBowlSubarrays;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountBowlSubarrays;
 // (nums[l] < nums[r]) or l is r's previous strictly-greater index (nums[r] <
 // nums[l]) - two boundary arrays NearestBoundary's one-pass sweep produces, the same
 // sweep ApplyOperationsToMaximizeScore's stack arm reads its boundaries from.
+[LeetCodeQuestion("count-bowl-subarrays", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountBowlSubarraysSolution
 {
     private const int NoGreaterElement = -1;

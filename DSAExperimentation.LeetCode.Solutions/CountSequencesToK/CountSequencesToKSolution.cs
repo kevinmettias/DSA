@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountSequencesToK;
 
@@ -25,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountSequencesToK;
 // contributes at most one factor to at most one of numerator/denominator, so
 // their product across any sequence never exceeds 6^19, comfortably inside
 // long range.
+[LeetCodeQuestion("count-sequences-to-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountSequencesToKSolution
 {
     public static long CountSequencesByBruteForceSearch(int[] nums, long target) =>

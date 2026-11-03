@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using PairNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
     DSAExperimentation.Domain.Language.English.EnglishLowercase,
     DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
@@ -29,6 +30,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountPrefixAndSuffixPairsII;
 // node visited along the way (each counter = how many earlier words ended
 // exactly there) counts every earlier word that is a prefix-and-suffix of
 // word j in O(len(j)) total, no re-walk from the root per position.
+[LeetCodeQuestion("count-prefix-and-suffix-pairs-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountPrefixAndSuffixPairsIISolution
 {
     // The textbook O(n^2 * L) scan, LC 3042's baseline too, which calls this and

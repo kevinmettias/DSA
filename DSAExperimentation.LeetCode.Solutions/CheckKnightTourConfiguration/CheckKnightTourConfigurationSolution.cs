@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.CheckKnightTourConfiguration;
 
 // LeetCode 2596. Check Knight Tour Configuration: grid[row][col] is the move on
@@ -16,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckKnightTourConfiguration;
 // arithmetic - the same call AvailableCapturesForRook and TransposeMatrix make.
 // The knight's own offsets stay beside this solution for the same reason
 // MaximumNumberOfMovesToKillAllPawns keeps its KnightChildren witness beside its.
+[LeetCodeQuestion("check-knight-tour-configuration", LeetCodeAnswerOrder.AsWritten)]
 internal static class CheckKnightTourConfigurationSolution
 {
     // A valid configuration starts at the top-left cell, so the cell holding move

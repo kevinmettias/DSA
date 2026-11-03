@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ConstructBinaryTreeFromPreorderAndPostorderTraversal;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConstructBinaryTreeFromPreorderA
 // postorder position is found - rescanning the postorder range linearly (O(n) per
 // node, O(n^2) overall on a skewed input) or looking it up in a value->index map
 // built once (O(1) per node, O(n) overall).
+[LeetCodeQuestion("construct-binary-tree-from-preorder-and-postorder-traversal", LeetCodeAnswerOrder.AsWritten)]
 internal static class ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution
 {
     // The textbook answer: scan the live postorder range for the left child's root

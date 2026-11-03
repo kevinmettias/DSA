@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountGoodTripletsInAnArray;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountGoodTripletsInAnArray;
 // FenwickTree<int, SumOperation<int>> sweeps (this repo's own Binary Indexed
 // Tree), the same coordinate-free counting shape
 // CountOfSmallerNumbersAfterSelfSolution uses for LC 315.
+[LeetCodeQuestion("count-good-triplets-in-an-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountGoodTripletsInAnArraySolution
 {
     // The textbook answer: for each middle position, scan every earlier index and

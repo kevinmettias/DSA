@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountValidSequences;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountValidSequences;
 // itself is produced - recomputed on the spot, or read from a table prepared once
 // (the same recomputed-vs-precomputed-factorials split CountWaysToBuildRoomsIn
 // AnAntColony uses, here without a tree to fold over).
+[LeetCodeQuestion("count-valid-sequences", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountValidSequencesSolution
 {
     // The textbook arm: no precomputed table, each nCr(n, r) multiplies out its

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountSubmatricesWithAllOnes;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountSubmatricesWithAllOnes;
 // minimums" applied to that row's height array, so every all-ones submatrix is counted
 // exactly once as (bottom row, column range). The strategies differ only in how that per-row
 // sum is obtained.
+[LeetCodeQuestion("count-submatrices-with-all-ones", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountSubmatricesWithAllOnesSolution
 {
     private const int One = 1;

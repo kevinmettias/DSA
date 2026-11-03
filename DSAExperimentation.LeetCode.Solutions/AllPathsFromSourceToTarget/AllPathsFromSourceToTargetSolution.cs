@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.AllPathsFromSourceToTarget;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AllPathsFromSourceToTarget;
 // visited-set is needed in either: the problem guarantees the input is acyclic, so
 // a path can never revisit a node on its own. They differ only in who owns the
 // recursion - a hand-written local function, or this repo's Backtrack engine.
+[LeetCodeQuestion("all-paths-from-source-to-target", LeetCodeAnswerOrder.AnyOrder)]
 internal static class AllPathsFromSourceToTargetSolution
 {
     // The textbook answer: plain recursion over a BCL List<int> path buffer,

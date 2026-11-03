@@ -1,12 +1,14 @@
 using DSAExperimentation.Algorithms.Connectivity;
 using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountIslandsWithTotalValueDivisibleByK;
 
 // LeetCode 3619. Count Islands With Total Value Divisible by K: flood-fill every
 // 4-directionally connected group of positive cells, sum its values, and count
 // the groups whose sum is a multiple of divisor.
+[LeetCodeQuestion("count-islands-with-total-value-divisible-by-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountIslandsWithTotalValueDivisibleByKSolution
 {
     private static readonly (int DeltaRow, int DeltaCol)[] Orthogonal = [(-1, 0), (1, 0), (0, -1), (0, 1)];

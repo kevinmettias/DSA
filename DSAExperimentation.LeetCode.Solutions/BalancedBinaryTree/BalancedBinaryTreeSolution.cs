@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BalancedBinaryTree;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BalancedBinaryTree;
 // balanced tree. The old test's private helper and both of the old benchmark's
 // [Benchmark] arms called the bottom-up recursion under different names, so only the
 // top-down arm is genuinely new.
+[LeetCodeQuestion("balanced-binary-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class BalancedBinaryTreeSolution
 {
     private const int UnbalancedHeightMarker = -1;

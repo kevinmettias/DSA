@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountSubIslands;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountSubIslands;
 // work on a private copy of grid2 rather than the caller's array - the harnesses
 // hand the same rows to every strategy, and LeetCode's own contract does not say
 // the input survives.
+[LeetCodeQuestion("count-sub-islands", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountSubIslandsSolution
 {
     private const int Land = 1;

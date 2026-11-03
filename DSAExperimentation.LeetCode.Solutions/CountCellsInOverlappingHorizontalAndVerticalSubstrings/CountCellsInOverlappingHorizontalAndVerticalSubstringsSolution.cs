@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountCellsInOverlappingHorizontalAndVerticalSubstrings;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountCellsInOverlappingHorizonta
 // pattern in either flattened string is a run of covered cells; a cell counts
 // once it is covered by at least one horizontal occurrence AND at least one
 // vertical occurrence.
+[LeetCodeQuestion("count-cells-in-overlapping-horizontal-and-vertical-substrings", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountCellsInOverlappingHorizontalAndVerticalSubstringsSolution
 {
     // Baseline: the textbook O(text.Length * pattern.Length) sliding-window

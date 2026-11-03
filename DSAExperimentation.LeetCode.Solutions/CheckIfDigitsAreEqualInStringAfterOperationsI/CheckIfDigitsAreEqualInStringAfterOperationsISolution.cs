@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CheckIfDigitsAreEqualInStringAfterOperationsI;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfDigitsAreEqualInStringAft
 // table keeps every row above the one wanted, O(n^2) memory where this needs
 // O(n) - 43 KB against 848 bytes at s.Length 100 - which is the case the table's
 // own complexity law sends to a rolling row.
+[LeetCodeQuestion("check-if-digits-are-equal-in-string-after-operations-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
 {
     public static bool IsEqualByAdjacentSumReduction(string digitString)

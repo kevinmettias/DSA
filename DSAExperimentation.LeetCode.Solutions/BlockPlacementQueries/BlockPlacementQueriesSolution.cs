@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BlockPlacementQueries;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BlockPlacementQueries;
 // [2, x, sz] asks whether a size-sz block fits anywhere inside [0, x] without
 // crossing an obstacle (touching is fine), against only the obstacles placed
 // by *earlier* queries.
+[LeetCodeQuestion("block-placement-queries", LeetCodeAnswerOrder.AsWritten)]
 internal static class BlockPlacementQueriesSolution
 {
     private const int PlaceObstacle = 1;

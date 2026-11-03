@@ -2,6 +2,7 @@ using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithMajorityElementII;
 
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithMajorityElemen
 // SumOperation<int>> counts, for each j, how many earlier prefix[i] are strictly
 // smaller - the same one-sided coordinate-compression-plus-Fenwick-sweep
 // CountOfSmallerNumbersAfterSelfSolutionTests already uses for LC 315, in O(n log n).
+[LeetCodeQuestion("count-subarrays-with-majority-element-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountSubarraysWithMajorityElementIISolution
 {
     // The textbook O(n^2) scan, and LC 3737's baseline too, which calls this and

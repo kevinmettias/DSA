@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.CountSubarraysWithMajorityElementII;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithMajorityElementI;
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithMajorityElemen
 // coordinate-compression-plus-Fenwick-sweep shape
 // CountOfRangeSumSolutionTests/CountOfSmallerNumbersAfterSelfSolutionTests already use for LC
 // 327/315, just one-sided instead of two-sided.
+[LeetCodeQuestion("count-subarrays-with-majority-element-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountSubarraysWithMajorityElementISolution
 {
     // Textbook O(n^2): fix the start, extend the end one element at a time, and

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ContainsDuplicate;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ContainsDuplicate;
 // answered: brute force compares every pair directly; the set-probe strategy
 // records each value in this repo's own Set<int> and short-circuits the moment a
 // value fails to be newly added.
+[LeetCodeQuestion("contains-duplicate", LeetCodeAnswerOrder.AsWritten)]
 internal static class ContainsDuplicateSolution
 {
     public static bool HasDuplicateByBruteForce(int[] nums)

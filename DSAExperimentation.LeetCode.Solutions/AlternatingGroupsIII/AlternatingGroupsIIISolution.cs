@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.AlternatingGroupsIII;
 
 // LeetCode 3245. Alternating Groups III: tiles are colored 0/1 around a circle.
@@ -9,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AlternatingGroupsIII;
 // Every strategy here answers the same "process every query in order, report the
 // type-1 answers" shape - the difference is entirely in how a size query is
 // answered.
+[LeetCodeQuestion("alternating-groups-iii", LeetCodeAnswerOrder.AsWritten)]
 internal static class AlternatingGroupsIIISolution
 {
     private const int CountQuery = 1;

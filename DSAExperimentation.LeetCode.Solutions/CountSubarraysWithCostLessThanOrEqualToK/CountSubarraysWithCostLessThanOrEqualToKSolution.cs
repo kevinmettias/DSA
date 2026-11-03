@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.MonotonicDeque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithCostLessThanOrEqualToK;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithCostLessThanOr
 // fixed r, the smallest valid l only ever moves forward as r grows, and once
 // [l, r] satisfies the cost bound, every [l'..r] with l' >= l does too, so all
 // (r - l + 1) of them count at once.
+[LeetCodeQuestion("count-subarrays-with-cost-less-than-or-equal-to-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountSubarraysWithCostLessThanOrEqualToKSolution
 {
     // The textbook O(n^2) scan: for every start index, extend the end one

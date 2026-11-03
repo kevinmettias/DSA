@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountOfRangeSum;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountOfRangeSum;
 // CompressedCoordinates.LowerBound/UpperBound. Same coordinate-compression-plus-Fenwick-sweep
 // shape CountOfSmallerNumbersAfterSelfSolution uses for LC 315, generalized from a
 // single one-sided query to a two-sided [lower, upper] range.
+[LeetCodeQuestion("count-of-range-sum", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountOfRangeSumSolution
 {
     // The textbook baseline: build the prefix-sum array once, then compare every

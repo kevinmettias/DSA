@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CircularArrayLoop;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CircularArrayLoop;
 // both disqualify a LeetCode cycle), then reuses this repo's own Floyd's
 // tortoise-and-hare CycleDetection.HasCycle to look for a cycle from every
 // index.
+[LeetCodeQuestion("circular-array-loop", LeetCodeAnswerOrder.AsWritten)]
 internal static class CircularArrayLoopSolution
 {
     // The textbook per-start walk, deliberately written without this repo's

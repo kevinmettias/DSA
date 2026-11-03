@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithFixedBounds;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithFixedBounds;
 //
 // The count is a long: with n up to 1e5 the number of qualifying subarrays can exceed
 // int.MaxValue even though neither strategy here is fast enough to reach that size.
+[LeetCodeQuestion("count-subarrays-with-fixed-bounds", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountSubarraysWithFixedBoundsSolution
 {
     // The textbook answer: for each (start, end) pair, rescan the subarray from

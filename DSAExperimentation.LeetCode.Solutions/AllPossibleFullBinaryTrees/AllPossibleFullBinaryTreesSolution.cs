@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.AllPossibleFullBinaryTrees;
 
@@ -16,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AllPossibleFullBinaryTrees;
 // from scratch each time or solved once and shared via Memoizer. The state is a
 // single node count rather than LC 95's (start,end) range, since a full binary tree's
 // shape never depends on the values it carries (every node is 0).
+[LeetCodeQuestion("all-possible-full-binary-trees", LeetCodeAnswerOrder.AnyOrder)]
 internal static class AllPossibleFullBinaryTreesSolution
 {
     // A full binary tree only exists for odd node counts, so evenness is checked with

@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountGoodSubarrays;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountGoodSubarrays;
 // OR(l, r) is always >= max(nums[l..r]) as a bit-superset (OR-ing more values
 // only adds bits), so OR(l, r) can equal an element only by equalling the
 // maximum element - i.e. a subarray is good iff OR(l, r) == max(nums[l..r]).
+[LeetCodeQuestion("count-good-subarrays", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountGoodSubarraysSolution
 {
     // The textbook O(n^2) scan: for every start, extend right while tracking

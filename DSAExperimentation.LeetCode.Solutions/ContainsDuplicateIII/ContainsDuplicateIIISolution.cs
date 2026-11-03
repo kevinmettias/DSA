@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ContainsDuplicateIII;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ContainsDuplicateIII;
 // own examples exercise). At most one value can occupy a given bucket while a match
 // is still possible, so checking the same bucket plus its two immediate neighbors is
 // enough to prove |nums[i]-nums[j]| <= valueDiff without a sorted structure.
+[LeetCodeQuestion("contains-duplicate-iii", LeetCodeAnswerOrder.AsWritten)]
 internal static class ContainsDuplicateIIISolution
 {
     public static bool HasNearbyAlmostDuplicateByBucketedHashMap(int[] nums, int indexDiff, int valueDiff)

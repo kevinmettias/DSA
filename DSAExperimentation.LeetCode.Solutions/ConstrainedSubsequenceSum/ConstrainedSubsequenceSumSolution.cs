@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.MonotonicDeque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ConstrainedSubsequenceSum;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConstrainedSubsequenceSum;
 // best value in the trailing window [i - maxGap, i - 1]), answer = max best - and
 // differ only in how that trailing window maximum is obtained: rescanning the window
 // at every position, or maintaining it in a monotonic deque.
+[LeetCodeQuestion("constrained-subsequence-sum", LeetCodeAnswerOrder.AsWritten)]
 internal static class ConstrainedSubsequenceSumSolution
 {
     // The textbook answer: at each position, walk the maxGap preceding best values

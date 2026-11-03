@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountKSubsequencesOfAStringWithMaximumBeauty;
 
@@ -37,6 +38,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountKSubsequencesOfAStringWithM
 // FactorialTable<LeetCodeModulus> since n <= 26 here (one distinct-letter alphabet),
 // the same "answers one LeetCode problem, lives beside the solution" scope
 // RoomWaysAlgebra's own doc comment already states.
+[LeetCodeQuestion("count-k-subsequences-of-a-string-with-maximum-beauty", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
 {
     public static long CountByBruteForceCombinations(string text, int subsequenceLength)

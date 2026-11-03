@@ -1,6 +1,7 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BalanceABinarySearchTree;
 
@@ -26,6 +27,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BalanceABinarySearchTree;
 // repo. Before this migration it lived as untested scaffolding inside
 // BalanceABinarySearchTreeBenchmarks, so nothing asserted the arm the composed
 // strategy is measured against.
+[LeetCodeQuestion("balance-a-binary-search-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class BalanceABinarySearchTreeSolution
 {
     public static BinaryTreeNode<int>? BalanceByInOrderTraversal(BinaryTreeNode<int>? root)

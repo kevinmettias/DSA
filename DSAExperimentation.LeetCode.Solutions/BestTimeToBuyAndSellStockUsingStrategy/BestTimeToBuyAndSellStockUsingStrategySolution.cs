@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockUsingStrategy;
 
 // LeetCode 3652. Best Time to Buy and Sell Stock using Strategy: profit is
@@ -13,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockUsingSt
 // whether each window's two sums are recomputed from scratch or carried forward as
 // the window slides one step, which is the same "recompute vs. maintain a running
 // total" split as any other fixed-size sliding window.
+[LeetCodeQuestion("best-time-to-buy-and-sell-stock-using-strategy", LeetCodeAnswerOrder.AsWritten)]
 internal static class BestTimeToBuyAndSellStockUsingStrategySolution
 {
     // Textbook baseline: for every one of the n - k + 1 candidate windows, sum both

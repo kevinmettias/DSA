@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ConstructBinaryTreeFromInorderAndPostorderTraversal;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConstructBinaryTreeFromInorderAn
 // left-to-right preorder walk. A value->index map over inorder turns that split
 // into an O(1) lookup instead of a linear scan, so the whole tree is rebuilt in
 // O(n).
+[LeetCodeQuestion("construct-binary-tree-from-inorder-and-postorder-traversal", LeetCodeAnswerOrder.AsWritten)]
 internal static class ConstructBinaryTreeFromInorderAndPostorderTraversalSolution
 {
     public static BinaryTreeNode<int>? BuildByPostorderIndexMap(int[] inorder, int[] postorder)

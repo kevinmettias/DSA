@@ -2,6 +2,7 @@ using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ClosestRoom;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ClosestRoom;
 // scan re-reads every room for every query; the sweep sorts both sides descending
 // by size once, so a room becomes eligible exactly once and never leaves - which
 // turns the per-query work into an insertion-point probe over the eligible ids.
+[LeetCodeQuestion("closest-room", LeetCodeAnswerOrder.AsWritten)]
 internal static class ClosestRoomSolution
 {
     // The textbook baseline this composition has to justify itself against: for

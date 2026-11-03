@@ -2,6 +2,7 @@ using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithEvenOddRatioII;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithEvenOddRatioII
 // shape CountOfRangeSumSolutionTests already uses for LC 327, and the one sweep both
 // this problem and LC 4011 count through: 4011's own arm calls this one and
 // narrows the total to the int its much smaller bound keeps it inside.
+[LeetCodeQuestion("count-subarrays-with-even-odd-ratio-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountSubarraysWithEvenOddRatioIISolution
 {
     // Every subarray scanned directly, extending y one element at a time -

@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountElementsWithAtLeastKGreaterValues;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountElementsWithAtLeastKGreater
 // bisection: once nums is sorted, every index at or past v's own run
 // (BinarySearch.UpperBound) holds a strictly greater value, so the count is
 // just n minus that insertion point.
+[LeetCodeQuestion("count-elements-with-at-least-k-greater-values", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountElementsWithAtLeastKGreaterValuesSolution
 {
     // The textbook answer: compare every element against every other one.

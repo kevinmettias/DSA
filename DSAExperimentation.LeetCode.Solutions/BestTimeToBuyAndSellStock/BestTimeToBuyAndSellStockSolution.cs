@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStock;
 
 // LeetCode 121. Best Time to Buy and Sell Stock: one buy, one later sell, maximize
@@ -7,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStock;
 // Both strategies scan the same n prices; they differ only in whether every
 // (buy day, sell day) pair is checked explicitly or the best profit is tracked in
 // one pass against the lowest price seen so far.
+[LeetCodeQuestion("best-time-to-buy-and-sell-stock", LeetCodeAnswerOrder.AsWritten)]
 internal static class BestTimeToBuyAndSellStockSolution
 {
     // Textbook baseline: every buy-day/sell-day pair, O(n^2). The arm

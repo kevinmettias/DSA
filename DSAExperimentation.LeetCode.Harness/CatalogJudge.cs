@@ -13,6 +13,9 @@ internal static class CatalogJudge
     private const string InputSeparator = " | ";
     private const string BareNullOutput = "A recorded output is never a bare null.";
     private const string NullText = "null";
+    private const string SequenceStart = "[";
+    private const string SequenceEnd = "]";
+    private const string ElementSeparator = ",";
 
     // One line per case answered wrongly, naming the arm, the case's inputs, the recorded output and the
     // answer; empty when every case with a recorded output was answered as recorded.
@@ -62,6 +65,19 @@ internal static class CatalogJudge
         }
 
         return SortedTextOf(answered).SequenceEqual(SortedTextOf(wanted), StringComparer.Ordinal);
+    }
+
+    // The text two strategies' answers share exactly when each is the other's answer by the question's
+    // order rule, for holding arms to one another where no recorded output stands between them: an
+    // any-order sequence is written with its top-level elements sorted, anything else as it is.
+    public static string AgreementTextOf(JsonNode answer, LeetCodeAnswerOrder order)
+    {
+        if (order != LeetCodeAnswerOrder.AnyOrder || answer is not JsonArray items)
+        {
+            return answer.ToJsonString();
+        }
+
+        return $"{SequenceStart}{string.Join(ElementSeparator, SortedTextOf(items))}{SequenceEnd}";
     }
 
     private static IEnumerable<string> SortedTextOf(JsonArray items) =>

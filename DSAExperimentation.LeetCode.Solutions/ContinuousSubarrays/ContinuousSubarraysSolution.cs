@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.MonotonicDeque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ContinuousSubarrays;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ContinuousSubarrays;
 // window learns its max and min. Every window ending at right that satisfies the
 // limit contributes (right - left + 1) subarrays, one per admissible starting point,
 // so summing that across every right is the whole answer.
+[LeetCodeQuestion("continuous-subarrays", LeetCodeAnswerOrder.AsWritten)]
 internal static class ContinuousSubarraysSolution
 {
     // The problem fixes the admissible spread; unlike LC 1438 it is not an argument.

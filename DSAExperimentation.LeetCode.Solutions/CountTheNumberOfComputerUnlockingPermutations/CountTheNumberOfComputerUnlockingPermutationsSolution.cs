@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 
 namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfComputerUnlockingPermutations;
 
@@ -5,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfComputerUnlockin
 // starts unlocked; computer i (i > 0) can only be unlocked once some already-
 // unlocked j < i has complexity[j] < complexity[i]. Count the permutations of
 // [0, n-1] that are legal unlock orders, modulo 1e9+7.
+[LeetCodeQuestion("count-the-number-of-computer-unlocking-permutations", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountTheNumberOfComputerUnlockingPermutationsSolution
 {
     // Enumerate every legal unlock order by DFS: at each step, only a computer with

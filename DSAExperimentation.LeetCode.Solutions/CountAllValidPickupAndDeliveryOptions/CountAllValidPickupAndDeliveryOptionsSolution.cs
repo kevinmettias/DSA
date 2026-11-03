@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountAllValidPickupAndDeliveryOptions;
 
@@ -15,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountAllValidPickupAndDeliveryOp
 // a single accumulator, or top-down through this repo's own Memoizer, the same
 // tabulation-vs-Memoizer contrast UniqueBinarySearchTreesSolution draws on its own
 // single-int-state DP.
+[LeetCodeQuestion("count-all-valid-pickup-and-delivery-options", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountAllValidPickupAndDeliveryOptionsSolution
 {
     // Coefficient in f(i) = f(i-1) * i * (2i - 1): order i's delivery can be inserted

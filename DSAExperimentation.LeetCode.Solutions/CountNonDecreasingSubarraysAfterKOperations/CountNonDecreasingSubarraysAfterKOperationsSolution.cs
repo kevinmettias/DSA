@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Deque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountNonDecreasingSubarraysAfterKOperations;
 
@@ -20,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountNonDecreasingSubarraysAfter
 // leftmost element can only ever replace a SMALLER prefix of what's already
 // there) and shrinks by dropping `right` instead, keeping every window update
 // O(1) amortized.
+[LeetCodeQuestion("count-non-decreasing-subarrays-after-k-operations", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountNonDecreasingSubarraysAfterKOperationsSolution
 {
     // The textbook approach: for every left endpoint, walk right recomputing the

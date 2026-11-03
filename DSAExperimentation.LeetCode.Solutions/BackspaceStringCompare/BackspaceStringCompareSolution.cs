@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoCharStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.BackspaceStringCompare;
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BackspaceStringCompare;
 // survives - so the only thing they differ in is which stack does the replaying:
 // the BCL's Stack<char>, or this repo's own DynamicArray-backed Stack<char>, the
 // same push-on-open/pop-on-close shape ValidParentheses uses for LC 20.
+[LeetCodeQuestion("backspace-string-compare", LeetCodeAnswerOrder.AsWritten)]
 internal static class BackspaceStringCompareSolution
 {
     // LeetCode's backspace character.

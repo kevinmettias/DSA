@@ -1,4 +1,5 @@
 using System.Reflection;
+using DSAExperimentation.Benchmarks.Tests.Catalog;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests;
@@ -96,13 +97,21 @@ public sealed partial class BenchmarkArmsTests
             .Select(benchmark => benchmark.Name));
 
     private static string AnswerOf(BenchmarkClass benchmark, MethodInfo arm) =>
-        TextOf(benchmark, benchmark.Run(benchmark.Prepare(arm), arm));
+        TextOf(benchmark, arm, benchmark.Run(benchmark.Prepare(arm), arm));
 
-    // Rendered the moment it is returned: an answer may be state the harness goes on to rewrite.
-    private static string TextOf(BenchmarkClass benchmark, object? answer) =>
-        ArmAgreement.UnorderedAnswers.Contains(benchmark.Type)
+    // Rendered the moment it is returned: an answer may be state the harness goes on to rewrite. A generated
+    // catalog class's buffer is read as LeetCode reads its answers (CatalogArmAnswers).
+    private static string TextOf(BenchmarkClass benchmark, MethodInfo arm, object? answer)
+    {
+        if (CatalogArmAnswers.IsCatalogClass(benchmark.Type))
+        {
+            return CatalogArmAnswers.AgreementTextOf(benchmark.Type, arm, answer);
+        }
+
+        return ArmAgreement.UnorderedAnswers.Contains(benchmark.Type)
             ? AnswerGraphText.OfUnordered(answer)
             : AnswerGraphText.Of(answer);
+    }
 
     private static string? DisagreementOf(BenchmarkClass benchmark, MethodInfo arm, string expected)
     {
@@ -145,10 +154,10 @@ public sealed partial class BenchmarkArmsTests
     private static string? DriftOf(BenchmarkClass benchmark, MethodInfo arm)
     {
         var harness = benchmark.Prepare(arm);
-        var first = TextOf(benchmark, benchmark.Run(harness, arm));
+        var first = TextOf(benchmark, arm, benchmark.Run(harness, arm));
 
         benchmark.PrepareNextCall(harness, arm);
-        var again = TextOf(benchmark, benchmark.Run(harness, arm));
+        var again = TextOf(benchmark, arm, benchmark.Run(harness, arm));
         var at = FirstDifference(first, again);
 
         return at < 0

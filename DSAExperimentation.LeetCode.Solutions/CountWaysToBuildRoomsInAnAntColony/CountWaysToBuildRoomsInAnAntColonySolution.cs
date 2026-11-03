@@ -2,6 +2,7 @@ using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountWaysToBuildRoomsInAnAntColony;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountWaysToBuildRoomsInAnAntColo
 // precomputing them once. The baseline is the plain post-order recursion that fold
 // stands for, with the per-node algebra written inline, so comparing it with the
 // per-node fold measures what the fold itself costs.
+[LeetCodeQuestion("count-ways-to-build-rooms-in-an-ant-colony", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountWaysToBuildRoomsInAnAntColonySolution
 {
     public static int WaysToBuildOrderByPostOrderRecursion(int[] prevRoom)

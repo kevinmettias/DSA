@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountGoodNumbers;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountGoodNumbers;
 // Pow. The modulus is LeetCodeModulus, because 1e9+7 is LeetCode's reporting
 // convention rather than this problem's own value, and the squaring loop is the
 // general ModularPower from Algorithms.NumberTheory.
+[LeetCodeQuestion("count-good-numbers", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountGoodNumbersSolution
 {
     // LC 1922: even-index digits must be one of {0,2,4,6,8}, odd-index digits must

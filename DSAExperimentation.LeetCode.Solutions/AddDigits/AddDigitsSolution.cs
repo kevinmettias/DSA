@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Mathematics.Numerals;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DigitStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.AddDigits;
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AddDigits;
 // The two strategies differ only in how each summation pass holds the digits it is
 // about to add: plain arithmetic with no intermediate storage, or pushing them onto
 // this repo's own LIFO Stack<T> and popping them all back off to sum.
+[LeetCodeQuestion("add-digits", LeetCodeAnswerOrder.AsWritten)]
 internal static class AddDigitsSolution
 {
     // The textbook answer: modulo/divide straight into a running total, no

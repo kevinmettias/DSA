@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfGoodPartitions;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfGoodPartitions;
 // closes are the only places every good partition may cut, and they are
 // independent of each other, so the count is 2^(forced closes - 1): every
 // non-final forced close is either cut or merged into the next span.
+[LeetCodeQuestion("count-the-number-of-good-partitions", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountTheNumberOfGoodPartitionsSolution
 {
     // Textbook baseline: enumerate all 2^(n-1) ways to place a cut between each

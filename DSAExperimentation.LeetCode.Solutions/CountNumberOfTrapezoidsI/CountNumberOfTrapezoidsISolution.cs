@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountNumberOfTrapezoidsI;
 
@@ -7,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountNumberOfTrapezoidsI;
 // points that split into two pairs each sharing a y-coordinate, the two
 // y-coordinates themselves distinct. Both strategies answer the same question
 // with the same signature (TwoSumSolution precedent).
+[LeetCodeQuestion("count-number-of-trapezoids-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountNumberOfTrapezoidsISolution
 {
     // The textbook C(n, 4) scan of every 4-point combination, checking all

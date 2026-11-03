@@ -2108,8 +2108,8 @@ folder holds it so both harnesses share one statement, as `TwoSumPromise` does.
   so it shows what a strategy costs on the inputs LeetCode poses, and the sized workloads (§17.7)
   still show how it grows.
 
-Two Sum, Climbing Stairs and Merge Intervals have moved onto the catalog, enrolled as §17.13
-describes. The other harnesses still write their examples inline.
+The solutions enrolled as §17.13 describes have moved onto the catalog, and §17.13 records how far
+that has gone. The other harnesses still write their examples inline.
 
 ### 17.13 The catalog harness: generated benchmarks and one test, not a class per problem
 
@@ -2207,14 +2207,18 @@ The tests split by whose correctness each one is about:
 
 **Checked.**
 
-- Every strategy of the three enrolled solutions answers every catalog case as recorded.
+- Every strategy of every enrolled solution answers every catalog case as recorded.
 - Mutations, each run on an isolated copy, fail the check that owns them, naming the strategy, the
   input and both answers:
   - a Climbing Stairs strategy off by one fails `CatalogCaseTests`, and only it;
   - Two Sum enrolled without its promise failed the judge on the cases with several pairs, checked
     in the pilot, when `CatalogBenchmarksTests` still judged every arm;
   - Climbing Stairs un-enrolled fails `LeetCodeStrategyCoverageTests`, since nothing else names its
-    strategies any longer.
+    strategies any longer;
+  - an Add Digits strategy off by one fails its `CatalogCaseTests` row and its generated class's arm
+    agreement in `BenchmarkArmsTests`, which reads both arms in LeetCode's notation.
+- Enrolling the first 100 added 201 `CatalogCaseTests` rows and 600 benchmark-test rows. The
+  solutions' tests still ran in 4 s, and the benchmarks' tests went from 14 s to 17 to 19 s.
 - Measured against the hand-written suite classes it replaced, in one BenchmarkDotNet run of both, two
   passes (2026-11-02):
   - every arm allocated the same bytes;
@@ -2224,31 +2228,66 @@ The tests split by whose correctness each one is about:
 
   No difference showed beyond that spread. The hand-written classes were deleted.
 
-**Reach.** Of 1,105 solutions, 885 could enroll as they stand: every strategy has one overload a
-case can feed. That count is by shape only. Whether their answers match the catalog is what
-enrolling would show. The rest:
+**Reach, measured.** Every strategy of every solution was run over every catalog case before any
+enrolled (2026-11-03, a Release build, 15 s per solution). The 1,105 solutions came out this way:
 
-| Blocker | Solutions |
+| Outcome | Solutions |
 | --- | --- |
+| Every strategy answers every case as recorded | 630 |
+| The same, with an answer's elements in another order | 21 |
+| Some answer differs from the recorded one | 110 |
+| A strategy throws on some case | 38 |
+| Runs past 15 s over the catalog | 81 |
+| Overflows the stack on the catalog's largest case (Coin Change, Super Egg Drop, Nim Game) | 3 |
 | Design questions (a call script, not one function) | 92 |
-| A domain-typed parameter such as `SourceText` or `Haystack`, which the reader does not know | 51 |
-| A folder that differs from LeetCode's title (an explicit slug resolves it) | 35 |
-| Answers in place | 16 |
+| No overload a case can feed, or several: a domain-typed parameter, an in-place answer | 85 |
 | A judge-only input, such as Linked List Cycle's `pos` | 13 |
-| Several overloads that each bind | 12 |
+| A case the reader cannot read | 6 |
+| A folder whose name is not the title's (an explicit slug resolves it) | 15 |
+| A recorded output in prose (the importer no longer records one) | 10 |
+| No strategy at all | 1 |
+
+The differing answers are mostly not wrong strategies:
+
+- Most are generated cases that break a constraint the importer cannot parse: an odd-length array
+  where the statement says `2n`, a tree that is no binary search tree, repeated values where they
+  must be distinct, an answer past the 32 bits LeetCode promises.
+- Some are judges LeetCode runs that the catalog's comparison does not: answers within a
+  tolerance (Pow(x, n)), any valid answer (Convert Sorted Array to Binary Search Tree, Cracking the
+  Safe), and any order at every depth (Group Anagrams).
+
+A solution is enrolled only when every strategy answers every case. Its answer order is read from
+its statement, never from which order passed. A sequence answer the statement says may come back
+in any order is `AnyOrder`, and every other answer is `AsWritten`. Two statements are read
+differently from their wording:
+
+- Reveal Cards In Increasing Order's "any order" is about the deck it is given, so its answer is
+  `AsWritten`.
+- Matrix Cells in Distance Order frees the order only among cells at one distance, which an
+  any-order comparison cannot see, so it is not enrolled.
+
+**Enrolled.** 103 solutions: the three of the pilot, and the first 100, by name, of the 619 that
+every case passes in under 250 ms each.
 
 Open items:
 
 - **The sized workloads.** It is not yet decided whether the 1,026 hand-written `[Params]` classes
   stay as they are or become per-problem workload declarations the generator also consumes.
-- **Enrolling the rest** is a campaign of its own. Each problem needs its answer order and any
-  promise read from its statement. An exponential baseline may also need a case limit before the
-  dataset's largest inputs run through it.
+- **Enrolling the rest.** The other 519 that pass are left to enroll. A solution whose answers
+  differ needs its statement read: a promise type for each constraint its failing cases break
+  (§17.12), or a judge rule below. An exponential baseline needs a case limit, or stays out, before
+  the dataset's largest inputs run through it.
 - **Shapes the generator refuses.** Design problems, in-place answers, judge-only inputs,
   tolerance-compared answers and any-valid-answer judges each need a rule before their problems can
   enroll.
-- **`ArmAgreement`** does not yet read `LeetCodeAnswerOrder`. An any-order class whose arms answer
-  in different orders would need an entry there, which repeats a fact the attribute already states.
+
+**How arms agree.** A generated class's arms are held to one another in LeetCode's notation, by the
+attribute's order rule, as `CatalogJudge` holds a baseline to the catalog (`CatalogArmAnswers`). So
+`ArmAgreement` needs no entry for one. An any-order answer may come back in another order. A tree
+is its wire-format array, so All Possible Full Binary Trees' memoized arm, which shares subtrees
+between the trees it returns, agrees with the arm that builds each tree afresh, as LeetCode reads
+them. Its hand-written class is still listed as incomparable, because there `AnswerGraphText`
+tells a shared subtree from a copy.
 
 ## 18. Testing policy: every tier tests itself
 

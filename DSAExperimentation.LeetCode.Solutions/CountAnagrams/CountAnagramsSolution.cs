@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountAnagrams;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountAnagrams;
 // strategies answer the same question with the same signature so the test harness
 // can assert they agree and the benchmark harness can time them against each other
 // without either restating the algorithm (TwoSumSolution precedent).
+[LeetCodeQuestion("count-anagrams", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountAnagramsSolution
 {
     // Textbook baseline: recursively enumerates every permutation of each word into

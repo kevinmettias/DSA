@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CheckIfTheRectangleCornerIsReachable;
 
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfTheRectangleCornerIsReach
 // (composed). Distances are compared as squares in long arithmetic throughout - up to
 // 1e9 coordinates make (2e9)^2 overflow int but not long - so no circle-touches-edge
 // check ever calls Math.Sqrt and risks a precision-driven wrong answer at the boundary.
+[LeetCodeQuestion("check-if-the-rectangle-corner-is-reachable", LeetCodeAnswerOrder.AsWritten)]
 internal static class CheckIfTheRectangleCornerIsReachableSolution
 {
     // Baseline: build the same overlap/boundary information the composed strategy does,

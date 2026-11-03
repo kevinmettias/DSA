@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.AssignCookies;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AssignCookies;
 // array, applied here twice), then makes a single O(n+m) greedy two-pointer pass -
 // giving a child the smallest cookie that still satisfies them is never worse than
 // giving a larger one, so sorting once is enough.
+[LeetCodeQuestion("assign-cookies", LeetCodeAnswerOrder.AsWritten)]
 internal static class AssignCookiesSolution
 {
     // Deliberately written without this repo's primitives - the baseline the sorted

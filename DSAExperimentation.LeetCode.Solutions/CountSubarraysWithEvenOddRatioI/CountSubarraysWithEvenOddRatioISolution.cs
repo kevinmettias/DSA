@@ -1,3 +1,4 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.CountSubarraysWithEvenOddRatioII;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithEvenOddRatioI;
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithEvenOddRatioI;
 // 1e5) owns both arms (ARCHITECTURE 17.3), since its bound is the one whose count
 // needs a 64-bit accumulator; this class reads its own totals off them, narrowed to
 // the int its bound keeps them inside.
+[LeetCodeQuestion("count-subarrays-with-even-odd-ratio-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountSubarraysWithEvenOddRatioISolution
 {
     // Every subarray scanned directly, extending y one element at a time -

@@ -1,4 +1,5 @@
 using DSAExperimentation.LeetCode.Solutions.BeautifulTowersI;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BeautifulTowersII;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BeautifulTowersII;
 // transcription of one mountain-clamp sweep is the drift section 17.1 exists to
 // remove. What is genuinely this problem's own is the scale its harnesses measure
 // and assert at, and that lives in the harnesses.
+[LeetCodeQuestion("beautiful-towers-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class BeautifulTowersIISolution
 {
     // The O(n^2) per-peak clamped walk. Kept as a named strategy here even though

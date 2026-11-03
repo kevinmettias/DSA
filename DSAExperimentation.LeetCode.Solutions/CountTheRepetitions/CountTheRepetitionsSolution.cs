@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountTheRepetitions;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountTheRepetitions;
 // guaranteed within |s2| + 1 copies of s1 (pigeonhole) - once the HashMap reports
 // one, the remaining copies of s1 are fast-forwarded by whole cycles instead of
 // being walked one character at a time.
+[LeetCodeQuestion("count-the-repetitions", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountTheRepetitionsSolution
 {
     public static int GetMaxRepetitionsByNaiveSimulation(string s1, int n1, string s2, int n2)

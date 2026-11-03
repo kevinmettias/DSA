@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 
 namespace DSAExperimentation.LeetCode.Solutions.CountWaysToChooseCoprimeIntegersFromRows;
 
@@ -8,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountWaysToChooseCoprimeIntegers
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("count-ways-to-choose-coprime-integers-from-rows", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountWaysToChooseCoprimeIntegersFromRowsSolution
 {
     // Textbook DFS: pick one value per row, thread the running GCD of every pick

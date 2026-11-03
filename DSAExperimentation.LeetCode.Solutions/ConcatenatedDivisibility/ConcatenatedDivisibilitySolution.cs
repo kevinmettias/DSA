@@ -1,5 +1,6 @@
 using System.Numerics;
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ConcatenatedDivisibility;
 
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConcatenatedDivisibility;
 // instead answers it as a bitmask-over-remainder DP (n <= 13 is exactly a "fits in an
 // int mask" bound), memoized once via Algorithms.DynamicProgramming.Memoizer so every
 // (usedMask, remainder) state is solved at most once for the whole search tree.
+[LeetCodeQuestion("concatenated-divisibility", LeetCodeAnswerOrder.AsWritten)]
 internal static class ConcatenatedDivisibilitySolution
 {
     // The textbook answer: real depth-first search over permutations, each

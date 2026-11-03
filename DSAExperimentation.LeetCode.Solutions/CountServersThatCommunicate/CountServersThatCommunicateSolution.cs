@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountServersThatCommunicate;
 
@@ -9,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountServersThatCommunicate;
 // Both strategies ask the same question of every server - "is there a second server
 // on my row, or on my column?" - and differ only in whether the row and column
 // tallies are recomputed per server or counted once up front.
+[LeetCodeQuestion("count-servers-that-communicate", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountServersThatCommunicateSolution
 {
     private const int Server = 1;

@@ -2,6 +2,7 @@ using System.Numerics;
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.Domain.Mathematics.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfIdealArrays;
 
@@ -25,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfIdealArrays;
 // O(sqrt(value)) for every one of the maxValue values, while one smallest-prime-factor
 // sieve pays O(maxValue log log maxValue) once and then factors each value in
 // O(log value).
+[LeetCodeQuestion("count-the-number-of-ideal-arrays", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountTheNumberOfIdealArraysSolution
 {
 

@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ContainVirus;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ContainVirus;
 // round since quarantining and spreading both mutate the grid. Both strategies
 // clone the grid they are handed first, so a caller's own grid (or a benchmark
 // fixture reused across iterations) is never left half-quarantined.
+[LeetCodeQuestion("contain-virus", LeetCodeAnswerOrder.AsWritten)]
 internal static class ContainVirusSolution
 {
     private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];

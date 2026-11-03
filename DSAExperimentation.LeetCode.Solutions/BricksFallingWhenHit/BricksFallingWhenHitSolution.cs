@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BricksFallingWhenHit;
 
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BricksFallingWhenHit;
 // composed primitive" shape TopologicalSort.cs's in-degree dictionary and
 // ShortestPath.cs's Distances dictionary already establish - so no new production
 // primitive is needed, only a size[] array local to this solution.
+[LeetCodeQuestion("bricks-falling-when-hit", LeetCodeAnswerOrder.AsWritten)]
 internal static class BricksFallingWhenHitSolution
 {
     // The textbook answer: keep a presence grid, drop one brick at a time and

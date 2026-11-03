@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountNoZeroPairsThatSumToN;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountNoZeroPairsThatSumToN;
 // early and is padded with forced zero digits above that position - the same
 // "arbitrary bespoke recurrence, memoized on a value-tuple state" shape Memoizer
 // already serves for ClimbingStairsII and MinCostClimbingStairs.
+[LeetCodeQuestion("count-no-zero-pairs-that-sum-to-n", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountNoZeroPairsThatSumToNSolution
 {
     // A digit paired with whether the number it belongs to keeps going afterwards: a

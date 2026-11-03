@@ -1,9 +1,11 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ContinuousSubarraySum;
 
 // LeetCode 523. Continuous Subarray Sum: does nums contain a subarray of length >= 2
 // whose elements sum to a multiple of divisor?
+[LeetCodeQuestion("continuous-subarray-sum", LeetCodeAnswerOrder.AsWritten)]
 internal static class ContinuousSubarraySumSolution
 {
     // LeetCode requires the subarray's start and end indices to differ, i.e. at least

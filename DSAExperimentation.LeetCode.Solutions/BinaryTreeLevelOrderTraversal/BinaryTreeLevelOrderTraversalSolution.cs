@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BinaryTreeLevelOrderTraversal;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BinaryTreeLevelOrderTraversal;
 // hand-rolled BCL Queue that snapshots Count before draining a level, or this
 // repo's own LevelGroupedBreadthFirstTraversal, which already buffers exactly
 // one level before firing its hook.
+[LeetCodeQuestion("binary-tree-level-order-traversal", LeetCodeAnswerOrder.AsWritten)]
 internal static class BinaryTreeLevelOrderTraversalSolution
 {
     // Textbook baseline: BCL Queue, snapshotting Count at the top of each

@@ -1,4 +1,5 @@
 using DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockIV;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockIII;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockIII;
 // (day, holding, transactions completed) state machine they run (ARCHITECTURE
 // 17.3); each arm here calls through with the cap. This problem's own test and
 // benchmark still run them.
+[LeetCodeQuestion("best-time-to-buy-and-sell-stock-iii", LeetCodeAnswerOrder.AsWritten)]
 internal static class BestTimeToBuyAndSellStockIIISolution
 {
     // "At most two transactions" is the whole of what this problem adds to LC 188.

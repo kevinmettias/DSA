@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.MonotonicDeque;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountPartitionsWithMaxMinDifferenceAtMostK;
 
@@ -12,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountPartitionsWithMaxMinDiffere
 // rescans the window from scratch; SlidingWindowDeque tracks it with a MinMaxWindow,
 // two of the MonotonicDeques SlidingWindowMaximum (LC 239) already uses for a single
 // running maximum, one of them under MinWindowOrder for a running minimum too.
+[LeetCodeQuestion("count-partitions-with-max-min-difference-at-most-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
 {
     // dp[r] = sum of dp[l-1] over every l in [1, r] whose segment [l, r] has

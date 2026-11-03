@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfInfectionSequences;
 
@@ -17,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfInfectionSequenc
 // (edge runs included) by a multinomial coefficient - the same
 // "(size-1)! / product(part sizes!)" shape RoomWaysAlgebra folds bottom-up over a
 // tree, computed here directly over the runs of a line instead.
+[LeetCodeQuestion("count-the-number-of-infection-sequences", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountTheNumberOfInfectionSequencesSolution
 {
     // Textbook baseline: explicitly enumerate every legal infection order by

@@ -1,8 +1,5 @@
-using System.Reflection;
-using System.Text.Json.Nodes;
 using DSAExperimentation.Benchmarks.Catalog;
 using DSAExperimentation.LeetCode.Harness;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Catalog;
 
@@ -51,20 +48,16 @@ public sealed partial class CatalogBenchmarksTests
             ?? throw new InvalidOperationException($"{benchmark.Baseline.Name} returned no buffer of answers.");
         var catalog = (ICatalogBenchmarks)harness;
         var cases = catalog.CasesOf(benchmark.Baseline.Name);
-        Func<object?, JsonNode> notationOf = IsTryShaped(catalog.Solution, benchmark.Baseline) ? AnswerNotation.OfFoundOutputs : AnswerNotation.Of;
         var order = CatalogColumns.QuestionOf(catalog.Solution).AnswerOrder;
-        var wrong = CatalogJudge.WrongAnswers(benchmark.Baseline.Name, order, cases, index => notationOf(answers.GetValue(index)));
+        var notationOf = CatalogArmAnswers.NotationOf(catalog.Solution, benchmark.Baseline, answers);
+        var wrong = CatalogJudge.WrongAnswers(benchmark.Baseline.Name, order, cases, notationOf);
 
         Assert.Equal(cases.Count, answers.Length);
         Assert.True(wrong.Count == 0, string.Join(Environment.NewLine, wrong.Take(MostListed)));
     }
 
     private static IEnumerable<BenchmarkClass> CatalogBenchmarks() =>
-        BenchmarkClass.All.Where(benchmark => typeof(ICatalogBenchmarks).IsAssignableFrom(benchmark.Type));
+        BenchmarkClass.All.Where(benchmark => CatalogArmAnswers.IsCatalogClass(benchmark.Type));
 
-    private static Type SolutionOf(BenchmarkClass benchmark) => ((ICatalogBenchmarks)benchmark.Prepare(benchmark.Baseline)).Solution;
-
-    // A strategy with out parameters answers (found, outputs...), which an arm stores as one tuple.
-    private static bool IsTryShaped(Type solution, MethodInfo arm) =>
-        solution.GetMethods().Any(method => method.Name == arm.Name && method.GetParameters().Any(parameter => parameter.IsOut));
+    private static Type SolutionOf(BenchmarkClass benchmark) => CatalogArmAnswers.SolutionOf(benchmark.Type);
 }

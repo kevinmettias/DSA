@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BoatsToSavePeople;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BoatsToSavePeople;
 // this repo's own MergeSort.Sort<Element,TSequence> over an ArrayIndexedSequence
 // (AssignCookies' shape, applied to a single array instead of two) so the same
 // greedy rule becomes one O(n) two-pointer pass.
+[LeetCodeQuestion("boats-to-save-people", LeetCodeAnswerOrder.AsWritten)]
 internal static class BoatsToSavePeopleSolution
 {
     // The problem's own cap, and the reason the greedy rule is optimal: a boat holds

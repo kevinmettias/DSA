@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Traversal.TopDown;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountGoodNodesInBinaryTree;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountGoodNodesInBinaryTree;
 // call stack's own parameters, or this repo's own ITopDownHooks, whose Descend is
 // the inherited-attribute contract this shape exists for (the same composition
 // FindElementsInAContaminatedBinaryTree, LC 1261, uses for its recovered values).
+[LeetCodeQuestion("count-good-nodes-in-binary-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountGoodNodesInBinaryTreeSolution
 {
     // The textbook answer: a plain recursive DFS passing the running maximum through

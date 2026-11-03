@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.LeetCode.Solutions.CheckIfDigitsAreEqualInStringAfterOperationsI;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CheckIfDigitsAreEqualInStringAfterOperationsII;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfDigitsAreEqualInStringAft
 // this splits mod 10 = mod 2 * mod 5 (coprime) via Lucas' theorem on each small
 // prime and recombines with the Chinese remainder theorem, which prices every
 // coefficient at O(log n) instead of O(n).
+[LeetCodeQuestion("check-if-digits-are-equal-in-string-after-operations-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class CheckIfDigitsAreEqualInStringAfterOperationsIISolution
 {
     private const int Modulo = 10;

@@ -1,12 +1,14 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.MonotonicDeque;
 using DSAExperimentation.DataStructures.PrefixSums;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountPrimeGapBalancedSubarrays;
 
 // LeetCode 3589. Count Prime-Gap Balanced Subarrays: count contiguous subarrays
 // of nums that contain at least two primes, where the gap between the largest
 // and smallest prime inside the subarray is at most maxGap.
+[LeetCodeQuestion("count-prime-gap-balanced-subarrays", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountPrimeGapBalancedSubarraysSolution
 {
     // Textbook O(n^2): fix the left end, extend the right end one element at a

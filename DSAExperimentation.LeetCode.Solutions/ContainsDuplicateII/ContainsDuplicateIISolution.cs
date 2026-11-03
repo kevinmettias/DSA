@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ContainsDuplicateII;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ContainsDuplicateII;
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert them against one example set and the benchmark harness can
 // time them against each other without either restating the algorithm.
+[LeetCodeQuestion("contains-duplicate-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class ContainsDuplicateIISolution
 {
     // The textbook O(n^2) scan of every pair. Correct, and the arm the HashMap

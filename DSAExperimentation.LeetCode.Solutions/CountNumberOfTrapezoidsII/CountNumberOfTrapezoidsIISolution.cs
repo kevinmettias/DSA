@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountNumberOfTrapezoidsII;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountNumberOfTrapezoidsII;
 // qualifies, so grouping points by y no longer captures the geometry. Both
 // strategies answer the same question with the same signature (TwoSumSolution
 // precedent).
+[LeetCodeQuestion("count-number-of-trapezoids-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountNumberOfTrapezoidsIISolution
 {
     // The C(n, 4) scan of every 4-point combination, checking the three ways

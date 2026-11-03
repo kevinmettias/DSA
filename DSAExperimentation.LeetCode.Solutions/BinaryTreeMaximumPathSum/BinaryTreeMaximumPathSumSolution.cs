@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.BinaryTreeMaximumPathSum;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BinaryTreeMaximumPathSum;
 // (clamped to zero, since a negative branch is worth skipping), while a
 // running best total is updated with the path that bends through both
 // children at once - a path no parent could ever extend upward.
+[LeetCodeQuestion("binary-tree-maximum-path-sum", LeetCodeAnswerOrder.AsWritten)]
 internal static class BinaryTreeMaximumPathSumSolution
 {
     public static int MaxPathSumByGainRecursion(BinaryTreeNode<int>? root)

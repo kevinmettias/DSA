@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.RollingHash;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.CountPrefixAndSuffixPairsII;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountPrefixAndSuffixPairsI;
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountPrefixAndSuffixPairsI;
 // each other without either restating the algorithm. The pairwise baseline is LC
 // 3045's, the same question at a bound whose count needs a long (ARCHITECTURE 17.3);
 // the rolling-hash arm is this class's own, as LC 3045's is a trie.
+[LeetCodeQuestion("count-prefix-and-suffix-pairs-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountPrefixAndSuffixPairsISolution
 {
     // The textbook O(n^2 * L) scan: every earlier word's characters compared

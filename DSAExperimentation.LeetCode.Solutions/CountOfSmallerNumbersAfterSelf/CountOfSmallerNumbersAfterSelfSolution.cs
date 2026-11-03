@@ -1,11 +1,13 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountOfSmallerNumbersAfterSelf;
 
 // LeetCode 315. Count of Smaller Numbers After Self: for every index, how many
 // later values are strictly smaller than it.
+[LeetCodeQuestion("count-of-smaller-numbers-after-self", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountOfSmallerNumbersAfterSelfSolution
 {
     // The textbook answer: for every index, scan every later index and count.

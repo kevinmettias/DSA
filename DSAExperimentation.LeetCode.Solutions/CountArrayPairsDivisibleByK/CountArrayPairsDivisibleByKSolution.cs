@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountArrayPairsDivisibleByK;
 
@@ -11,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountArrayPairsDivisibleByK;
 // differ in whether they ask the question of every ELEMENT pair or of every GROUP pair:
 // the distinct gcds are all divisors of `divisor`, so there are at most d of them however
 // long the array is, and d is tiny beside n.
+[LeetCodeQuestion("count-array-pairs-divisible-by-k", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountArrayPairsDivisibleByKSolution
 {
     // n choose 2 = n * (n - 1) / 2 - the count of unordered pairs inside one group.

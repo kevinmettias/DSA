@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.CountedBitTrie;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountPairsWithXorInARange;
 
@@ -8,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountPairsWithXorInARange;
 // Both strategies answer the same counting question and differ only in how they
 // find the pairs: rescanning every earlier value, or this repo's own
 // CountedBitTrie, which counts a whole same-bit subtree in one step.
+[LeetCodeQuestion("count-pairs-with-xor-in-a-range", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountPairsWithXorInARangeSolution
 {
     // The textbook answer: XOR every pair and test the range. Deliberately written

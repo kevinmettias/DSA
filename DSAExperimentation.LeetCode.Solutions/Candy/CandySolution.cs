@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.Solutions.Conventions;
+
 namespace DSAExperimentation.LeetCode.Solutions.Candy;
 
 // LeetCode 135. Candy: give each child in a line at least one candy so that any
@@ -9,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.Candy;
 // a single forward pass enforcing "rises" followed by a single backward pass
 // enforcing "falls." No repo primitive applies - a pure O(n) scan over the
 // ratings array, the same shape already established for GasStation/JumpGame.
+[LeetCodeQuestion("candy", LeetCodeAnswerOrder.AsWritten)]
 internal static class CandySolution
 {
     // How many positions back from the end the backward pass starts (the last
