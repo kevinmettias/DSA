@@ -29,6 +29,9 @@ public sealed partial class WordLadderSolutionTests
                 new LadderExample(
                     BeginWord: "a", EndWord: "c", WordList: ["a", "b", "c"], Expected: 2)
             },
+
+            // The one step is to the alphabet's last letter, so every letter must be tried.
+            { new LadderExample(BeginWord: "a", EndWord: "z", WordList: ["z"], Expected: 2) },
         };
 
     [Theory]

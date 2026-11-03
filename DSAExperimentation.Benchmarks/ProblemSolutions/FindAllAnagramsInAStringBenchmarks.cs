@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.FindAllAnagramsInAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FindAllAnagramsInAStringBenchmarks
 {
     private const string Pattern = "aeiou";
-    private const string Alphabet = "abcdefghijklmnopqrstuvwxyz";
 
     // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
     private const int RandomSeed = 438;
@@ -27,7 +27,7 @@ public class FindAllAnagramsInAStringBenchmarks
         var chars = new char[Length];
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = Alphabet[random.Next(Alphabet.Length)];
+            chars[i] = EnglishLowercase.Letters[random.Next(EnglishLetters.Size)];
         }
 
         _scannedText = new string(chars);

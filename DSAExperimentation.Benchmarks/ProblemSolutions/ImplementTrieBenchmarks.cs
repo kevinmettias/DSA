@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.ImplementTrie;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +14,6 @@ public class ImplementTrieBenchmarks
 {
     private const int RandomSeed = 208; // LC problem number
     private const int WordLength = 8;
-    private const string Alphabet = "abcdefghijklmnopqrstuvwxyz";
 
     // Each query asks search and then startsWith.
     private const int VerdictsPerQuery = 2;
@@ -85,7 +85,7 @@ public class ImplementTrieBenchmarks
 
         for (var index = 0; index < WordLength; index++)
         {
-            letters[index] = Alphabet[random.Next(Alphabet.Length)];
+            letters[index] = EnglishLowercase.Letters[random.Next(EnglishLetters.Size)];
         }
 
         return new string(letters);

@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using System.Text;
 using DSAExperimentation.DataStructures.DynamicArray;
 
@@ -16,8 +17,6 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheSequenceOfStringsAppeared
 // DynamicArraySequence already reuses unmodified for an unrelated domain.
 internal static class FindTheSequenceOfStringsAppearedOnTheScreenSolution
 {
-    private const char FirstLetter = 'a';
-    private const char LastLetter = 'z';
 
     // A textbook walk over System.Text.StringBuilder.
     public static List<string> StringSequenceByStringBuilder(string target)
@@ -27,7 +26,7 @@ internal static class FindTheSequenceOfStringsAppearedOnTheScreenSolution
 
         foreach (var targetChar in target)
         {
-            onScreen.Append(FirstLetter);
+            onScreen.Append(EnglishLowercase.FirstLetter);
             screen.Add(onScreen.ToString());
 
             while (onScreen[^1] != targetChar)
@@ -50,7 +49,7 @@ internal static class FindTheSequenceOfStringsAppearedOnTheScreenSolution
 
         foreach (var targetChar in target)
         {
-            onScreen.Add(FirstLetter);
+            onScreen.Add(EnglishLowercase.FirstLetter);
             screen.Add(Materialize(onScreen));
 
             while (onScreen.Get(onScreen.Count - 1) != targetChar)
@@ -75,7 +74,7 @@ internal static class FindTheSequenceOfStringsAppearedOnTheScreenSolution
         return new string(chars);
     }
 
-    private static char NextLetter(char letter) => letter == LastLetter ? FirstLetter : ShiftedLetter(letter);
+    private static char NextLetter(char letter) => letter == EnglishLowercase.LastLetter ? EnglishLowercase.FirstLetter : ShiftedLetter(letter);
 
     private static char ShiftedLetter(char letter) => (char)(letter + 1);
 }

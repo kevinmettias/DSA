@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using DSAExperimentation.DataStructures.Alphabets;
 
 namespace DSAExperimentation.Domain.Language.English;
@@ -5,15 +6,24 @@ namespace DSAExperimentation.Domain.Language.English;
 // The 26 lowercase English letters as slots 0 to 25, the alphabet most LeetCode strings are written
 // in: count tables, bitmasks and tries index letters by it. They are one run of character codes, so
 // a slot is the letter's distance from 'a'. How many there are is EnglishLetters.Size: the count is
-// the alphabet's, and each case has as many letters because English pairs them one for one.
+// the alphabet's, and each case has as many letters because English pairs them one for one. The run's
+// two ends are constants, so a loop from FirstLetter to LastLetter or a slot taken as letter -
+// FirstLetter folds to the literals; Letters spells the run out once, for a walk that wants a list.
 /// <summary>The 26 lowercase English letters, 'a' in slot 0 through 'z' in slot 25.</summary>
 public readonly struct EnglishLowercase : IAlphabet
 {
-    private const char FirstLetter = 'a';
+    /// <summary>The first letter, 'a', in slot 0.</summary>
+    public const char FirstLetter = 'a';
+
+    /// <summary>The last letter, 'z', in slot 25.</summary>
+    public const char LastLetter = (char)(FirstLetter + EnglishLetters.Size - 1);
 
     private static LetterRun Run => new(FirstLetter, EnglishLetters.Size);
 
     static int IAlphabet.Size => EnglishLetters.Size;
+
+    /// <summary>The letters in slot order, 'a' through 'z'.</summary>
+    public static ImmutableArray<char> Letters { get; } = [.. Enumerable.Range(0, EnglishLetters.Size).Select(LetterAt)];
 
     /// <summary>Finds the slot a lowercase letter takes.</summary>
     /// <param name="letter">A lowercase English letter, 'a' through 'z'.</param>

@@ -3,6 +3,7 @@ using DSAExperimentation.Algorithms.ShortestPaths.Hamming;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Hamming;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.Solutions.WordLadder;
 
@@ -15,11 +16,6 @@ namespace DSAExperimentation.LeetCode.Solutions.WordLadder;
 internal static class WordLadderSolution
 {
     private const int NoLadder = 0;
-
-    // The letters a ladder word is spelled in, restated rather than read from
-    // EnglishLowercase: a baseline reaches no library type, not even a constant
-    // (ARCHITECTURE 17.5).
-    private const string LadderLetters = "abcdefghijklmnopqrstuvwxyz";
 
     // The textbook answer: BCL Queue + HashSet, generating each of the 25 * L
     // candidate mutations on the fly and keeping the ones the dictionary contains,
@@ -90,7 +86,7 @@ internal static class WordLadderSolution
         }
     }
 
-    // Every word that differs from word in exactly one position, spelled over LadderLetters.
+    // Every word that differs from word in exactly one position, spelled over the lowercase English letters.
     private static IEnumerable<string> OneLetterMutations(string word)
     {
         var buffer = word.ToCharArray();
@@ -99,7 +95,7 @@ internal static class WordLadderSolution
         {
             var original = buffer[position];
 
-            foreach (var replacement in LadderLetters)
+            foreach (var replacement in EnglishLowercase.Letters)
             {
                 if (replacement != original)
                 {

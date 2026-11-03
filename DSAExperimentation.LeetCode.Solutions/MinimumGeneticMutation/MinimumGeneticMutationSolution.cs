@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.ShortestPaths.Hamming;
 using DSAExperimentation.DataStructures.Graph.Hamming;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Science.Dna;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumGeneticMutation;
 
@@ -14,11 +15,6 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumGeneticMutation;
 // mutate over.
 internal static class MinimumGeneticMutationSolution
 {
-    // The four letters a gene is spelled in, restated rather than read from
-    // Domain/Science/Dna's DnaBases: a baseline reaches no library type, not even a constant
-    // (ARCHITECTURE 17.5).
-    private const string GeneLetters = "ACGT";
-
     // The textbook answer: BCL Queue + HashSet over candidates generated on the
     // fly, never materializing the graph.
     public static int MinMutationByMutationQueue(StartGene startGene, EndGene endGene, IEnumerable<string> bank)
@@ -81,7 +77,7 @@ internal static class MinimumGeneticMutationSolution
         }
     }
 
-    // Every gene that differs from gene in exactly one position, spelled over GeneLetters.
+    // Every gene that differs from gene in exactly one position, spelled over DNA's four bases.
     private static IEnumerable<string> OneLetterMutations(string gene)
     {
         var buffer = gene.ToCharArray();
@@ -90,7 +86,7 @@ internal static class MinimumGeneticMutationSolution
         {
             var original = buffer[position];
 
-            foreach (var replacement in GeneLetters)
+            foreach (var replacement in DnaBases.Letters)
             {
                 if (replacement != original)
                 {

@@ -9,7 +9,7 @@ namespace DSAExperimentation.Domain.Language.English;
 // The letters are an array, the one source the count and the spelled-out string are read from; they
 // are lowercase, the form LetterAt gives, so a set built from them holds five. These are the
 // problems' *what* (ARCHITECTURE §17.6); how a solution counts or finds them stays with each
-// strategy, and the baselines keep their own copies (§17.5).
+// strategy, and every arm, baselines among them, reads them here (§17.5).
 /// <summary>The five English vowels, a, e, i, o and u, in either case.</summary>
 public readonly struct EnglishVowels : ILetterSet<EnglishLetters>
 {

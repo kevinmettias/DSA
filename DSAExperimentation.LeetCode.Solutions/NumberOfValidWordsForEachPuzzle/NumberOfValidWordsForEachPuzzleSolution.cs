@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfValidWordsForEachPuzzle;
 
@@ -13,7 +14,6 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfValidWordsForEachPuzzle;
 // puzzle mask's 2^7 submasks instead of the word list.
 internal static class NumberOfValidWordsForEachPuzzleSolution
 {
-    private const char AlphabetStart = 'a';
 
     // The textbook answer: for each puzzle, walk every word and test the two
     // conditions directly. Deliberately BCL-only - it is the arm the composed
@@ -97,7 +97,7 @@ internal static class NumberOfValidWordsForEachPuzzleSolution
         return total;
     }
 
-    private static int FirstLetterBit(string puzzle) => 1 << (puzzle[0] - AlphabetStart);
+    private static int FirstLetterBit(string puzzle) => 1 << (puzzle[0] - EnglishLowercase.FirstLetter);
 
     private static int LetterMask(string value)
     {
@@ -105,7 +105,7 @@ internal static class NumberOfValidWordsForEachPuzzleSolution
 
         foreach (var ch in value)
         {
-            mask |= 1 << (ch - AlphabetStart);
+            mask |= 1 << (ch - EnglishLowercase.FirstLetter);
         }
 
         return mask;

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheStringWithLCP;
 
@@ -14,8 +15,6 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheStringWithLCP;
 // given one - the only way to catch an lcp input no real string could ever produce.
 internal static class FindTheStringWithLCPSolution
 {
-    private const char FirstLetter = 'a';
-    private const char LastLetter = 'z';
 
     // Baseline: the textbook direct sweep - for each not-yet-assigned position i, walk
     // j from i forward and stamp every lcp[i][j] > 0 position with i's own letter. No
@@ -26,7 +25,7 @@ internal static class FindTheStringWithLCPSolution
         var word = new char[n];
         var assigned = new bool[n];
         var state = (Lcp: lcp, Word: word, Assigned: assigned);
-        var nextLetter = FirstLetter;
+        var nextLetter = EnglishLowercase.FirstLetter;
 
         for (var i = 0; i < n; i++)
         {
@@ -52,7 +51,7 @@ internal static class FindTheStringWithLCPSolution
     private static bool TryStampClassWithLetter(
         (int[][] Lcp, char[] Word, bool[] Assigned) state, int positionIndex, char letter)
     {
-        if (letter > LastLetter)
+        if (letter > EnglishLowercase.LastLetter)
         {
             return false;
         }
@@ -109,7 +108,7 @@ internal static class FindTheStringWithLCPSolution
     private static bool TryFillLettersByClass(DisjointSet positions, char[] word)
     {
         var letterForRoot = new Dictionary<int, char>();
-        var nextLetter = FirstLetter;
+        var nextLetter = EnglishLowercase.FirstLetter;
 
         for (var i = 0; i < word.Length; i++)
         {
@@ -117,7 +116,7 @@ internal static class FindTheStringWithLCPSolution
 
             if (!letterForRoot.TryGetValue(root, out var letter))
             {
-                if (nextLetter > LastLetter)
+                if (nextLetter > EnglishLowercase.LastLetter)
                 {
                     return false;
                 }

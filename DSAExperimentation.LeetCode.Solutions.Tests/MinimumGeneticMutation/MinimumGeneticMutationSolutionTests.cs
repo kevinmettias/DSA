@@ -26,6 +26,9 @@ public sealed partial class MinimumGeneticMutationSolutionTests
                     Expected: -1)
             },
             { new MutationExample(StartGene: "AACCGGTT", EndGene: "AACCGGTT", Bank: ["AACCGGTT"], Expected: 0) },
+
+            // The one mutation is to thymine, the last of the four bases, so every base must be tried.
+            { new MutationExample(StartGene: "AACCGGTA", EndGene: "AACCGGTT", Bank: ["AACCGGTT"], Expected: 1) },
         };
 
     [Theory]

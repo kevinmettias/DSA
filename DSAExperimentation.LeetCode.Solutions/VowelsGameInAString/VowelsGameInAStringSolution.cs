@@ -18,13 +18,9 @@ namespace DSAExperimentation.LeetCode.Solutions.VowelsGameInAString;
 // he cannot legally touch. With zero vowels she has no legal first move.
 //
 // The vowels are English's (Domain/Language/English): the closed form's set is built from
-// EnglishVowels.Letters, and the game-tree baseline keeps its own copy (ARCHITECTURE
-// §17.5).
+// EnglishVowels.Letters, and the game-tree baseline asks EnglishVowels (ARCHITECTURE §17.5).
 internal static class VowelsGameInAStringSolution
 {
-    // The baseline's own copy of English's vowels.
-    private const string Vowels = "aeiou";
-
     private static readonly Set<char> VowelSet = new(EnglishVowels.Letters);
 
     // The textbook answer: play out the actual game tree. Alice's and Bob's
@@ -118,7 +114,7 @@ internal static class VowelsGameInAStringSolution
 
         for (var end = start; end < text.Length; end++)
         {
-            if (Vowels.Contains(text[end]))
+            if (EnglishVowels.Has(text[end]))
             {
                 vowels++;
             }

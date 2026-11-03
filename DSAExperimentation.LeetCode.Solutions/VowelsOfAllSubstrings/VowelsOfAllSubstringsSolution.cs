@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.VowelsOfAllSubstrings;
 // LeetCode's own 10^5 constraint.
 //
 // Which letters are vowels is English's (Domain/Language/English): the contribution arm asks
-// EnglishVowels, and the baseline keeps its own IsVowel (ARCHITECTURE §17.5).
+// EnglishVowels, and so does the baseline (ARCHITECTURE §17.5).
 internal static class VowelsOfAllSubstringsSolution
 {
     // The textbook baseline: fix a start index, extend the substring one character
@@ -30,7 +30,7 @@ internal static class VowelsOfAllSubstringsSolution
 
             for (var end = start; end < word.Length; end++)
             {
-                if (IsVowel(word[end]))
+                if (EnglishVowels.Has(word[end]))
                 {
                     vowelsInRun++;
                 }
@@ -41,9 +41,6 @@ internal static class VowelsOfAllSubstringsSolution
 
         return total;
     }
-
-    // The baseline's own copy of English's vowels.
-    private static bool IsVowel(char character) => character is 'a' or 'e' or 'i' or 'o' or 'u';
 
     // The vowel at index i is counted once by every substring that contains it, and
     // a substring contains it exactly when its start is one of the (i + 1) indices

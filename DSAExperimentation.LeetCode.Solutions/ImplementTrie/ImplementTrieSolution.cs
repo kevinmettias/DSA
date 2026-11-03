@@ -22,8 +22,6 @@ internal static class ImplementTrieSolution
 
     internal sealed class ArrayNodeTrie
     {
-        // LC 208's words are lowercase English, one child slot per letter.
-        private const char FirstLetter = 'a';
 
         private readonly Node _root = new();
 
@@ -33,7 +31,7 @@ internal static class ImplementTrieSolution
 
             foreach (var letter in word)
             {
-                node = node.Children[letter - FirstLetter] ??= new Node();
+                node = node.Children[letter - EnglishLowercase.FirstLetter] ??= new Node();
             }
 
             node.IsWord = true;
@@ -55,7 +53,7 @@ internal static class ImplementTrieSolution
 
             foreach (var letter in text)
             {
-                node = node.Children[letter - FirstLetter];
+                node = node.Children[letter - EnglishLowercase.FirstLetter];
 
                 if (node is null)
                 {

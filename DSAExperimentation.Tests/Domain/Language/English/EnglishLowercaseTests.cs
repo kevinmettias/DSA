@@ -47,4 +47,8 @@ public sealed partial class EnglishLowercaseTests
     public void LetterAt_IndexOf_RoundTripsEverySlot() =>
         Assert.All(Enumerable.Range(0, EnglishLetters.Size), index =>
             Assert.Equal(index, EnglishLowercase.IndexOf(EnglishLowercase.LetterAt(index))));
+
+    [Fact]
+    public void Letters_AreTheAlphabetInOrder() =>
+        Assert.Equal("abcdefghijklmnopqrstuvwxyz", new string(EnglishLowercase.Letters.AsSpan()));
 }
