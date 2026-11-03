@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.DataStructures.Graph.Grids;
 

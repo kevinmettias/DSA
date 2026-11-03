@@ -1,6 +1,6 @@
-using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
-namespace DSAExperimentation.Tests.DataStructures.Graph.Grids;
+namespace DSAExperimentation.Tests.Domain.Mathematics.Lattices;
 
 // Order is part of GridDirections' contract - callers whose answers list cells in visit order rely
 // on it - so each table's exact sequence is pinned, and each is also checked against the geometry

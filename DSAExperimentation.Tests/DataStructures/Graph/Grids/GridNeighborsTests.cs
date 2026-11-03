@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Grids;
 

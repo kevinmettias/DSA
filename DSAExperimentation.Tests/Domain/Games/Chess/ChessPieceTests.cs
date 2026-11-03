@@ -1,5 +1,5 @@
-using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.Domain.Games.Chess;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.Tests.Domain.Games.Chess;
 

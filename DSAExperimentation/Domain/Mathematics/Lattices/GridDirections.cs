@@ -1,8 +1,10 @@
 using System.Collections.Immutable;
 
-namespace DSAExperimentation.DataStructures.Graph.Grids;
+namespace DSAExperimentation.Domain.Mathematics.Lattices;
 
-// The neighbour offsets a grid move set is made of, each a named GridStep. Order is part of the
+// The neighbour offsets a grid move set is made of, each a named GridStep: facts about the square
+// lattice, read by DataStructures' grid engines, Domain's chess pieces and the solutions alike (the
+// owner's ruling, 2026-11-03). Order is part of the
 // contract: Orthogonal is up, down, left, right - the order GridChildren yields neighbours in - and
 // the other three are row-major, so an answer that lists cells in the order they were reached comes
 // out the same from every caller. GridNeighbors yields in the order of whichever table it is given. A table whose order means something else - a turning cycle for a

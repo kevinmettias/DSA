@@ -1,7 +1,7 @@
 using System.Collections.Immutable;
 using DSAExperimentation.Algorithms.Backtracking;
-using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.Domain.Games.Chess;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfValidMoveCombinationsOnChessboard;
 

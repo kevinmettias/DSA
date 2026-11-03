@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Mathematics.Lattices;
+
 namespace DSAExperimentation.DataStructures.Graph.Grids;
 
 // A unit-weight, 4-directionally connected rectangular grid of WeightedGridNodes,

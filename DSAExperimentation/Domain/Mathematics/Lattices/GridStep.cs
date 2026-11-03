@@ -1,6 +1,9 @@
-namespace DSAExperimentation.DataStructures.Graph.Grids;
+namespace DSAExperimentation.Domain.Mathematics.Lattices;
 
-// One move on a grid of rows and columns, as how far it goes down the rows and across the columns.
+// One move on a grid of rows and columns, as how far it goes down the rows and across the columns:
+// a step of the square lattice the grid's cells sit on. It is a fact about the grid, general to no
+// one game or domain (the owner's ruling, 2026-11-03), so chess's pieces, a flood fill and a
+// baseline all read it here.
 // The moves the grid tables are made of are named, so a reader sees Up rather than decoding (-1, 0):
 // row numbers grow downward, so Up is -1 row. The L-shaped jumps are named for the two squares of
 // their long leg and the one of their short leg: UpUpLeft is two rows up and one column left.

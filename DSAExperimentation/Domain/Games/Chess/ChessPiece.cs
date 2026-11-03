@@ -1,5 +1,5 @@
 using System.Collections.Immutable;
-using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.Domain.Games.Chess;
 

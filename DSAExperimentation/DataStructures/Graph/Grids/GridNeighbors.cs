@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Immutable;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.DataStructures.Graph.Grids;
 
