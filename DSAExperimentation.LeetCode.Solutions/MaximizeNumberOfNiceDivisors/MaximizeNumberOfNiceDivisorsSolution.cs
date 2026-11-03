@@ -72,7 +72,7 @@ internal static class MaximizeNumberOfNiceDivisorsSolution
     // factor of 3 and keep whichever split yields the larger product, against leaving
     // the budget whole, each peeled budget answered by calling straight back in. It is
     // written out here rather than through Memoizer's IRecurrence contract, because a
-    // baseline reaches no library type (ARCHITECTURE 17.5).
+    // baseline uses no library implementation (ARCHITECTURE 17.5).
     private static BigInteger MaxProductNaive(int remaining)
     {
         if (remaining == 0)

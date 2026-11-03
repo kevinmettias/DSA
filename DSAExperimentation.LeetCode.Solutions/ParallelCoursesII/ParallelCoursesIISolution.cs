@@ -25,7 +25,7 @@ internal static class ParallelCoursesIISolution
     // The textbook answer: the same recurrence with no memoization at all, so a
     // state reachable by many different semester orders is re-solved once per
     // order. It is written out as plain recursion rather than through Memoizer's
-    // IRecurrence contract, because a baseline reaches no library type
+    // IRecurrence contract, because a baseline uses no library implementation
     // (ARCHITECTURE 17.5). It is the arm the memoized strategy below has to
     // justify itself against.
     public static int MinNumberOfSemestersByBruteForceRecursion(

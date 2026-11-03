@@ -25,7 +25,7 @@ internal sealed class SkillMasks(int[] personSkillMask, int fullMask)
 
     // reqSkills.Length <= 16, so each required skill gets its own bit position. A BCL
     // Dictionary rather than this repo's HashMap: the baseline builds its masks here
-    // too, and a baseline reaches no library type (ARCHITECTURE 17.5).
+    // too, and a baseline uses no library implementation (ARCHITECTURE 17.5).
     private static Dictionary<string, int> BuildSkillBitIndex(string[] reqSkills)
     {
         var skillBit = new Dictionary<string, int>();

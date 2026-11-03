@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeCountOfDistinctPrimesAft
 // clear" is the primality test, for every value up to the bound at once.
 //
 // Only the composed arm reaches it: the baseline arm restates the same sieve over a BCL bool[] in
-// the solution file, since a baseline reaches no library type (ARCHITECTURE section 17.5).
+// the solution file, since a baseline uses no library implementation (ARCHITECTURE section 17.5).
 internal static class PrimeSieve
 {
     // The whole tracker for [0, bound], one flag per value - what CountPrimes names a

@@ -26,7 +26,7 @@ internal static class MinimumPossibleMaximumWaitingTimeSolution
     // Plain recursive search over every dispenser choice for every car,
     // recomputed from scratch on each call - no memoization, BCL only: the
     // recursion is written out directly rather than through Memoizer's
-    // IRecurrence contract, because a baseline reaches no library type
+    // IRecurrence contract, because a baseline uses no library implementation
     // (ARCHITECTURE 17.5). The arm the Memoizer-backed strategy below has to
     // beat; only safe on the modest input sizes the benchmark actually
     // exercises, since revisiting the same (index, consumed0, gap0, gap1)

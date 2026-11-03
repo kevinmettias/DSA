@@ -17,7 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumSumOfValuesByDividingArra
 // Memoizer.Memoize<TState, TResult>" contrast
 // MaximumNumberOfOperationsWithTheSameScoreIISolution already draws. The
 // baseline writes its recursion out directly rather than through Memoizer's
-// IRecurrence contract, because a baseline reaches no library type
+// IRecurrence contract, because a baseline uses no library implementation
 // (ARCHITECTURE 17.5).
 internal static class MinimumSumOfValuesByDividingArraySolution
 {

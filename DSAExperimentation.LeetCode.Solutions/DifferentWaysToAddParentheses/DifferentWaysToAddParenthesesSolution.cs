@@ -16,7 +16,7 @@ internal static class DifferentWaysToAddParenthesesSolution
     // Textbook baseline: plain split/recurse/combine, re-deriving any substring
     // reached from more than one parent call. Deliberately written without this
     // repo's primitives - the recursion is written out directly rather than through
-    // Memoizer's IRecurrence contract, because a baseline reaches no library type
+    // Memoizer's IRecurrence contract, because a baseline uses no library implementation
     // (ARCHITECTURE 17.5). It is the arm the memoized strategy below has to justify
     // itself against.
     public static List<int> DiffWaysToComputeByPlainRecursion(string expression) =>

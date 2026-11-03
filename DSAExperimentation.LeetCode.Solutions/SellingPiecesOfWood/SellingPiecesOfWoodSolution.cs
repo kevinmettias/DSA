@@ -25,8 +25,8 @@ internal static class SellingPiecesOfWoodSolution
     // The textbook answer: plain recursion with no cache at all, which is exponential
     // here because the same (height, width) sub-piece recurs across many different
     // earlier cut sequences that land on it. The recursion is written out directly
-    // rather than through Memoizer's IRecurrence contract, because a baseline reaches
-    // no library type (ARCHITECTURE 17.5); the price index it reads is the prepared
+    // rather than through Memoizer's IRecurrence contract, because a baseline uses
+    // no library implementation (ARCHITECTURE 17.5); the price index it reads is the prepared
     // input its own signature is handed. It is the arm the memoized strategy below
     // has to justify itself against.
     public static long SellingWoodByUnmemoizedRecursion(

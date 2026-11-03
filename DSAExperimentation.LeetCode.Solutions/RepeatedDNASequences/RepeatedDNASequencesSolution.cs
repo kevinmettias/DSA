@@ -93,8 +93,8 @@ internal static class RepeatedDNASequencesSolution
     // The fixed-window arm: a fixed 10-character window slid across the string in
     // two passes (the first collects which windows repeat, the second walks the
     // string again reporting each repeated window the first time it is met) backed
-    // by BCL HashSet<string>s. It is the benchmark's baseline, so it reaches no
-    // library type (ARCHITECTURE 17.5).
+    // by BCL HashSet<string>s. It is the benchmark's baseline, so it uses no
+    // library implementation (ARCHITECTURE 17.5).
     public static List<string> FindByFixedWindowSet(string sequence)
     {
         var seen = new HashSet<string>();

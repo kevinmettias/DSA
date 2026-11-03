@@ -22,7 +22,7 @@ internal static class NumberOfWaysToWearDifferentHatsToEachOtherSolution
     // The textbook answer: the same recurrence as plain recursion with no cache
     // behind it - written out as a method that calls itself, rather than handed to
     // this repo's Memoizer through its IRecurrence contract, because a baseline
-    // reaches no library type (ARCHITECTURE 17.5). It is the arm the memoized
+    // uses no library implementation (ARCHITECTURE 17.5). It is the arm the memoized
     // strategy beneath has to justify itself against, and putting it here is what
     // finally gets it asserted.
     public static int NumberWaysByBruteForceRecursion(int[][] hats) =>

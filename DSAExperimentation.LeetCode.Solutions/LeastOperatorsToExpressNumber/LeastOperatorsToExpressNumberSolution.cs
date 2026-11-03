@@ -18,7 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LeastOperatorsToExpressNumber;
 //
 // Both arms run the same digit recurrence. The unmemoized baseline writes it out as
 // plain recursion - rather than through Memoizer's IRecurrence contract, because a
-// baseline reaches no library type (ARCHITECTURE 17.5) - so every (remaining, level)
+// baseline uses no library implementation (ARCHITECTURE 17.5) - so every (remaining, level)
 // pair reachable by two different digit paths is re-explored from scratch and the
 // recursion tree stays fully binary. LeastOpsExpressTargetByMemoizedRecursion runs
 // it as the named recurrence DigitExpressionCost and caches on exactly that pair via

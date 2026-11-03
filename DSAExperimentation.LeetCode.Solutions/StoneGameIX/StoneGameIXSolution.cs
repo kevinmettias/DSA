@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StoneGameIX;
 //
 //   - a full negamax over the remaining (count0, count1, count2, runningSumMod3)
 //     state - O(n^3) states, so it needs a cache to be feasible at all and gets one
-//     from a hand-rolled Dictionary memo, since a baseline reaches no library type
+//     from a hand-rolled Dictionary memo, since a baseline uses no library implementation
 //     (ARCHITECTURE 17.5); and
 //   - the closed-form parity rule, read straight off the bucket counts in O(n).
 //

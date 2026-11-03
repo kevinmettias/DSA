@@ -13,8 +13,8 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysOfCuttingAPizza;
 // recurrence over exactly that table; they differ only in whether repeated states
 // are cached, the same un-memoized-vs-Memoizer split CherryPickupSolution and
 // BurstBalloonsSolution already use. The baseline writes the recursion out plainly
-// rather than through Memoizer's IRecurrence contract, because a baseline reaches
-// no library type (ARCHITECTURE 17.5).
+// rather than through Memoizer's IRecurrence contract, because a baseline uses
+// no library implementation (ARCHITECTURE 17.5).
 //
 // The induced state graph is well-founded for Memoizer's own precondition:
 // RemainingCuts strictly decreases on every recursive call, so no state can recur

@@ -23,7 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToDivideArrayIntoSuba
 // repeated states get cached - the same "Dictionary memo vs. this repo's Memoizer"
 // contrast MinimumSumOfValuesByDividingArraySolution draws. The baseline writes the
 // recursion and its Dictionary memo out by hand rather than through Memoizer's
-// IRecurrence contract, because a baseline reaches no library type (ARCHITECTURE 17.5).
+// IRecurrence contract, because a baseline uses no library implementation (ARCHITECTURE 17.5).
 internal static class MinimumCostToDivideArrayIntoSubarraysSolution
 {
     // The textbook form: recursion over a hand-rolled Dictionary memo table, its

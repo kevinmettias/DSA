@@ -16,7 +16,7 @@ internal static class StickersToSpellWordSolution
     // The textbook answer: plain recursion with no cache, recomputing every choice
     // path from scratch even when two paths land on the identical remaining-letters
     // state. Deliberately hand-rolled without this repo's Memoizer or its
-    // IRecurrence contract, because a baseline reaches no library type
+    // IRecurrence contract, because a baseline uses no library implementation
     // (ARCHITECTURE 17.5) - it is the arm MinStickersByMemoizedRecursion is
     // measured against.
     public static int MinStickersByNaiveRecursion(string[] stickers, string target)

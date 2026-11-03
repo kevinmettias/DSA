@@ -74,7 +74,7 @@ internal static class PalindromePartitioningSolution
     }
 
     // The textbook choose/explore/unchoose walk, written as plain recursion rather than run
-    // on this repo's Backtrack engine: a baseline reaches no library type (ARCHITECTURE 17.5).
+    // on this repo's Backtrack engine: a baseline uses no library implementation (ARCHITECTURE 17.5).
     public static List<List<string>> PartitionByBacktracking(string text)
     {
         var results = new List<List<string>>();

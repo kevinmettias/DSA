@@ -15,7 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysToReorderArrayToGetS
 // count - and differ only in how the tree is obtained: re-filtering a fresh pair of
 // lists at every recursive call, or building the tree once and folding it. Both
 // take each binomial from the same memoized Pascal's triangle - the baseline through
-// a hand-rolled Dictionary memo, since a baseline reaches no library type
+// a hand-rolled Dictionary memo, since a baseline uses no library implementation
 // (ARCHITECTURE 17.5), the composed arm through this repo's Memoizer - so the
 // comparison isolates list-splitting-and-filtering against build-once-then-fold. The
 // answer excludes the original array itself, hence the subtracted 1.

@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.KthSmallestPathXORSum;
 // distinct sums exist there.
 //
 // Both strategies walk the same ParentArrayTree.Build tree iteratively (a BCL
-// Stack<T> here, since a baseline reaches no library type (ARCHITECTURE 17.5), and
+// Stack<T> here, since a baseline uses no library implementation (ARCHITECTURE 17.5), and
 // PreOrderTour's own stack in the composed arm - never recursion: LC's own worst
 // case is a straight-line chain of up to 5e4 nodes, deep enough to risk
 // overflowing the call stack) and differ only in how much of that walk is shared

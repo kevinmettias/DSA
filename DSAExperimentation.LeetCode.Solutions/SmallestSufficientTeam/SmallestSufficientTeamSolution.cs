@@ -18,7 +18,7 @@ internal static class SmallestSufficientTeamSolution
     // identical "still missing" subtree is re-explored once per person who could
     // have reached it. Deliberately plain recursion over BCL arrays, written out
     // directly rather than through Memoizer's IRecurrence contract, because a
-    // baseline reaches no library type (ARCHITECTURE 17.5) - the arm the memoized
+    // baseline uses no library implementation (ARCHITECTURE 17.5) - the arm the memoized
     // strategy below has to justify itself against.
     public static int[] SmallestTeamByBruteForceRecursion(string[] reqSkills, string[][] people)
     {

@@ -17,8 +17,8 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumPartitionScore;
 // repeated states get cached - a Dictionary hand-threaded through a plain
 // recursion, or this repo's own Memoizer - the same contrast that file
 // draws. The baseline writes its recursion out directly rather than through
-// Memoizer's IRecurrence contract, because a baseline reaches no library
-// type (ARCHITECTURE 17.5).
+// Memoizer's IRecurrence contract, because a baseline uses no library
+// implementation (ARCHITECTURE 17.5).
 internal static class MinimumPartitionScoreSolution
 {
     // The textbook form: recursion over a hand-rolled Dictionary memo table,

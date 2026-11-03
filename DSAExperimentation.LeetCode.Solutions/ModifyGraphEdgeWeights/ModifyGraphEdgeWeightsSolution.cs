@@ -18,7 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ModifyGraphEdgeWeights;
 // half-distances gives the exact weight in O(1) extra passes no matter how far the
 // stretch has to go.
 //
-// The baseline asks its own oracle, because a baseline reaches no library type
+// The baseline asks its own oracle, because a baseline uses no library implementation
 // (ARCHITECTURE 17.5): a hand-written PriorityQueue Dijkstra over plain adjacency and
 // weight arrays, where the composed arm asks ShortestPath.Dijkstra over
 // AssignableEdgeGraph. Shortest distances are the same whichever oracle computes

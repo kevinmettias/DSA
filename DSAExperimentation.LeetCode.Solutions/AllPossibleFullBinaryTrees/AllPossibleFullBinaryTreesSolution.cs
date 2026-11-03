@@ -25,7 +25,7 @@ internal static class AllPossibleFullBinaryTreesSolution
     // Textbook baseline: plain split-based recursion, re-deriving any node count
     // reached from more than one parent call, so every sub-count is regenerated from
     // scratch. It writes the recursion out directly rather than through Memoizer's
-    // IRecurrence contract, because a baseline reaches no library type
+    // IRecurrence contract, because a baseline uses no library implementation
     // (ARCHITECTURE 17.5).
     public static List<BinaryTreeNode<int>?> AllPossibleFullBinaryTreesByPlainRecursion(int nodeCount) =>
         PlainFullBinaryTrees(nodeCount);

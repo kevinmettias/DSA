@@ -71,7 +71,7 @@ internal static class FinalElementAfterSubarrayDeletionsSolution
 
     // The hand-rolled arm: plain recursion over the caller's own Dictionary, the cache the
     // memoized arm hands to Memoizer instead - written out rather than through IRecurrence,
-    // since a baseline reaches no library type (ARCHITECTURE 17.5).
+    // since a baseline uses no library implementation (ARCHITECTURE 17.5).
     private static int DictionaryMinimax(
         (int Mask, bool AliceTurn) state, int[] nums, Dictionary<(int Mask, bool AliceTurn), int> memo)
     {

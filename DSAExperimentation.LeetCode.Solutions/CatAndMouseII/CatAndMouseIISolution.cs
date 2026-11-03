@@ -38,7 +38,7 @@ internal static class CatAndMouseIISolution
     // repeated board position is re-derived. Deliberately written without this
     // repo's Memoizer - it is the arm the composed strategy below has to justify
     // itself against - and over a plain passability array rather than this repo's
-    // Grid: a baseline reaches no library type (ARCHITECTURE 17.5).
+    // Grid: a baseline uses no library implementation (ARCHITECTURE 17.5).
     public static bool CanMouseWinByExhaustiveRecursion(string[] grid, int catJump, int mouseJump)
     {
         var (context, start) = ParsePlainGrid(grid, catJump, mouseJump);
