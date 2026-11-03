@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LetterCombinationsOfAPhoneNumber
 // expansion carried by hand, or this repo's generic Backtrack.Search walking one
 // decision level per digit position.
 //
-// The keypad is the telephone's (Domain/Devices/Telephone): the backtracking arm reads PhoneKeypad, and
+// The keypad is the telephone's (Domain/Devices/Telephone): the backtracking arm reads Keypad<E161Keypad>, and
 // the expansion baseline keeps its own copy below (ARCHITECTURE §17.5).
 internal static class LetterCombinationsOfAPhoneNumberSolution
 {
@@ -99,7 +99,7 @@ internal static class LetterCombinationsOfAPhoneNumberSolution
         Backtrack.Search<CombinationState, char>(
             state,
             isSolution: s => s.Index == digits.Length,
-            candidates: s => s.Index == digits.Length ? Array.Empty<char>() : PhoneKeypad.LowercaseLettersOf(digits[s.Index]),
+            candidates: s => s.Index == digits.Length ? Array.Empty<char>() : Keypad<E161Keypad>.KeyFor(digits[s.Index]).Spelling,
             choose: (s, letter) =>
             {
                 s.Chosen.Add(letter);
