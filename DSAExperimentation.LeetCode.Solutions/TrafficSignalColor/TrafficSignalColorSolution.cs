@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
 namespace DSAExperimentation.LeetCode.Solutions.TrafficSignalColor;
 
 // LeetCode 3894. Traffic Signal Color: map the remaining timer value to the

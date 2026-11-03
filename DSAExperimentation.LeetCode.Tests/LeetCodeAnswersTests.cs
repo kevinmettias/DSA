@@ -1,6 +1,4 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
-namespace DSAExperimentation.LeetCode.Solutions.Tests.Conventions;
+namespace DSAExperimentation.LeetCode.Tests;
 
 // These comparers decide whether answers are right, so what they REJECT matters
 // more than what they accept: a comparer that says yes to everything makes every

@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
 namespace DSAExperimentation.LeetCode.Solutions.CheckIfItIsAStraightLine;
 
 // LeetCode 1232. Check If It Is a Straight Line: decide whether every point in

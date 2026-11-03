@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -9,8 +8,8 @@ namespace DSAExperimentation.Tests.Architecture;
 // into another only along a named edge, a Delegation (two problems ask the same question under
 // different constraints, and one owns the arms both run) or a Subroutine (one problem's answer runs
 // another's algorithm as a step). Each edge is an entry below saying which it is and why. An owner
-// imports no problem, so delegation never chains and never runs both ways, and the tier's root and
-// Conventions/ import no problem at all.
+// imports no problem, so delegation never chains and never runs both ways. LeetCode's conventions, at
+// the tier's root, are a project below the solutions, so they cannot name a problem at all.
 //
 // The scan reads the solution project's compilation (RepositoryCompilation): every name in a file is
 // bound, and a symbol in another problem's namespace is a reference to that problem, however the file
@@ -23,20 +22,6 @@ public sealed partial class ProblemImportTests
     private const string EdgeArrow = " -> ";
     private const string SolutionSuffix = "Solution.cs";
     private const string TierNamespacePrefix = "DSAExperimentation.LeetCode.Solutions.";
-
-    // Where checks.json declares check-duplicate-constant's problem units, and the folders they share.
-    private const string ChecksFile = "checks.json";
-    private const string ChecksProperty = "checks";
-    private const string DuplicateConstantCheck = "check-duplicate-constant";
-    private const string OptionsProperty = "options";
-    private const string IndependentUnitsOption = "independent_units";
-    private const string SharedField = "shared";
-    private const string ProjectFolderPrefix = $"{SolutionProject}/";
-
-    // Folders at the tier's root that hold what LeetCode fixes for every problem, not a problem: its
-    // notation and answer rules. The 1e9+7 it reports answers in is LeetCodeModulus, a file at the
-    // root beside LeetCodeAnswer rather than a folder.
-    private static readonly string[] TierRootFolders = ["Conventions"];
 
     private static readonly string[] EdgeKinds = ["Delegation: ", "Subroutine: "];
 
@@ -133,27 +118,21 @@ public sealed partial class ProblemImportTests
             AllowedProblemImports.Values,
             reason => Assert.Contains(EdgeKinds, kind => reason.StartsWith(kind, StringComparison.Ordinal)));
 
-    // A new shared folder at the tier's root must be declared, not silently scanned as a problem.
+    // What every problem shares is LeetCode's conventions, a project below this one, so a folder here
+    // that holds no solution would be scanned as a problem that is not one.
     [Fact]
-    public void SolutionProjectFolders_AreProblemsOrDeclaredRootFolders()
+    public void SolutionProjectFolders_AreAllProblems()
     {
         var project = Path.Combine(RepositoryFiles.Root(), SolutionProject);
 
         Assert.DoesNotContain(ProblemFolders(), folder => !File.Exists(Path.Combine(project, folder, folder + SolutionSuffix)));
     }
 
-    // checks.json makes every folder under the project a problem unit for check-duplicate-constant unless it
-    // lists the folder as shared. A root folder missing there would be read as one more problem, and the
-    // copies the problems take of its constants would be set aside as coincidences between units.
-    [Fact]
-    public void TierRootFolders_AreSharedByTheDuplicateConstantUnits() =>
-        Assert.Equal(TierRootFolders.Order(StringComparer.Ordinal), DuplicateConstantSharedFolders().Order(StringComparer.Ordinal));
-
     [Fact]
     public void ProblemReferencesIn_SelfAliasConventionsAndTheTierItself_FindsNone() =>
         Assert.Empty(ProbeReferences(
             """
-            using DSAExperimentation.LeetCode.Solutions.Conventions;
+            using DSAExperimentation.LeetCode;
             using Self = DSAExperimentation.LeetCode.Solutions.Alpha.AlphaSolution;
 
             namespace DSAExperimentation.LeetCode.Solutions.Alpha;
@@ -292,8 +271,8 @@ public sealed partial class ProblemImportTests
         return probe;
     }
 
-    // What a probe's Alpha folder can name: a sibling AlphaII, a Conventions folder and a tier-root
-    // rule.
+    // What a probe's Alpha folder can name: a sibling AlphaII, LeetCode's conventions and a rule declared
+    // in the tier's own namespace.
     private const string Neighbours = """
             namespace DSAExperimentation.LeetCode.Solutions.AlphaII
             {
@@ -303,7 +282,7 @@ public sealed partial class ProblemImportTests
                 }
             }
 
-            namespace DSAExperimentation.LeetCode.Solutions.Conventions
+            namespace DSAExperimentation.LeetCode
             {
                 internal static class LeetCodeAnswer
                 {
@@ -324,29 +303,10 @@ public sealed partial class ProblemImportTests
         Directory.EnumerateDirectories(Path.Combine(RepositoryFiles.Root(), SolutionProject))
             .Select(Path.GetFileName)
             .OfType<string>()
-            .Where(folder => folder is not ("bin" or "obj") && !TierRootFolders.Contains(folder));
+            .Where(folder => folder is not ("bin" or "obj"));
 
-    // The folders of this project that checks.json lists as shared among check-duplicate-constant's units.
-    private static List<string> DuplicateConstantSharedFolders()
-    {
-        var path = Path.Combine(RepositoryFiles.Root(), ChecksFile);
-        using var document = JsonDocument.Parse(File.ReadAllText(path));
-        var rows = document.RootElement
-            .GetProperty(ChecksProperty)
-            .GetProperty(DuplicateConstantCheck)
-            .GetProperty(OptionsProperty)
-            .GetProperty(IndependentUnitsOption)
-            .EnumerateArray();
-
-        return [.. rows
-            .Where(row => row.TryGetProperty(SharedField, out _))
-            .SelectMany(row => row.GetProperty(SharedField).EnumerateArray())
-            .Select(glob => glob.GetString() ?? string.Empty)
-            .Where(glob => glob.StartsWith(ProjectFolderPrefix, StringComparison.Ordinal))
-            .Select(glob => glob[ProjectFolderPrefix.Length..])];
-    }
-
-    // A file directly under the project belongs to the tier's root; anything else to its folder.
+    // A file directly under the project, which holds none now, imports as the project; anything else as
+    // its folder.
     private static string ImporterOf(string relativePath)
     {
         var slash = relativePath.IndexOf('/');

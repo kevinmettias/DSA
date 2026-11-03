@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
 namespace DSAExperimentation.LeetCode.Solutions.FruitsIntoBasketsII;
 
 // LeetCode 3477. Fruits Into Baskets II: place each fruit type, left to right,

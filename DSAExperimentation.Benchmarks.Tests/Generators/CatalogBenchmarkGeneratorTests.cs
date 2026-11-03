@@ -4,8 +4,11 @@ namespace DSAExperimentation.Benchmarks.Tests.Generators;
 
 public sealed partial class CatalogBenchmarkGeneratorTests
 {
+    // The file the generator writes for the probe's ProbeSolution.
+    private const string ProbeClassFile = "ProbeCatalogBenchmarks.g.cs";
+
     private const string EnrolledProbe = """
-        using DSAExperimentation.LeetCode.Solutions.Conventions;
+        using DSAExperimentation.LeetCode;
 
         namespace DSAExperimentation.LeetCode.Solutions.Probe
         {
@@ -22,7 +25,7 @@ public sealed partial class CatalogBenchmarkGeneratorTests
         """;
 
     private const string InPlaceProbe = """
-        using DSAExperimentation.LeetCode.Solutions.Conventions;
+        using DSAExperimentation.LeetCode;
 
         [LeetCodeQuestion("probe", LeetCodeAnswerOrder.AsWritten)]
         internal static class ProbeSolution
@@ -33,7 +36,14 @@ public sealed partial class CatalogBenchmarkGeneratorTests
 
     [Fact]
     public void Initialize_EnrolledSolution_WritesOneClassNamedForItsProblem() =>
-        Assert.Equal(["ProbeCatalogBenchmarks.g.cs"], GeneratorProbe.Generate(EnrolledProbe).GeneratedTrees.Select(tree => Path.GetFileName(tree.FilePath)));
+        Assert.Equal([ProbeClassFile], GeneratorProbe.Generate(EnrolledProbe).GeneratedTrees.Select(tree => Path.GetFileName(tree.FilePath)));
+
+    // The real solutions sit in an assembly above the conventions that declare the attribute.
+    [Fact]
+    public void Initialize_SolutionInAnAssemblyAboveTheConventions_WritesItsClass() =>
+        Assert.Equal(
+            [ProbeClassFile],
+            GeneratorProbe.GenerateFromReferences(EnrolledProbe).GeneratedTrees.Select(tree => Path.GetFileName(tree.FilePath)));
 
     [Fact]
     public void Initialize_EnrolledSolution_MakesTheFirstStrategyTheBaseline() =>

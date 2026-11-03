@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.Domain.Computing.Filesystem;
 using DSAExperimentation.Domain.Computing.Paths;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RemoveSubFoldersFromTheFilesystem;
 

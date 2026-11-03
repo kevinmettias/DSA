@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoRangeFenwickTree = DSAExperimentation.DataStructures.RangeFenwickTree.RangeFenwickTree<
     long, DSAExperimentation.DataStructures.ElementAlgebra.SumOperation<long>>;
 

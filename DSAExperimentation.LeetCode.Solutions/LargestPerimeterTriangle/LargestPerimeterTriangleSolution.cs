@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.Domain.Mathematics.Geometry;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.LargestPerimeterTriangle;
 

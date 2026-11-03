@@ -2,7 +2,6 @@ using DSAExperimentation.Algorithms.Bipartiteness;
 using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.KeyedDisjointSet;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 using GroupNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 using GroupTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
-using DSAExperimentation.LeetCode.Solutions;
+using DSAExperimentation.LeetCode;
 using DSAExperimentation.LeetCode.Solutions.CountValidSequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

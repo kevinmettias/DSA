@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
 namespace DSAExperimentation.LeetCode.Solutions.MakeArrayElementsEqualToZero;
 
 // LeetCode 3354. Make Array Elements Equal to Zero: pick a zero index and a

@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode.Harness;
 using DSAExperimentation.LeetCode.Solutions.SurroundedRegions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;

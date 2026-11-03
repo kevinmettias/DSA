@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
 namespace DSAExperimentation.LeetCode.Solutions.SimplifiedFractions;
 
 // LeetCode 1447. Simplified Fractions: list every fraction strictly between 0 and 1

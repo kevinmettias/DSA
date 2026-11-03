@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Tests LeetCode's conventions, one test file per source file of DSAExperimentation.LeetCode. -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSAExperimentation.LeetCode\DSAExperimentation.LeetCode.csproj" />
+    <ProjectReference Include="..\DSAExperimentation\DSAExperimentation.csproj" />
+  </ItemGroup>
+
+</Project>

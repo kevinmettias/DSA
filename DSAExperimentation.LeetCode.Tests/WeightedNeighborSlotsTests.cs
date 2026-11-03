@@ -1,4 +1,4 @@
-namespace DSAExperimentation.LeetCode.Solutions.Tests;
+namespace DSAExperimentation.LeetCode.Tests;
 
 public sealed partial class WeightedNeighborSlotsTests
 {

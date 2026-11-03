@@ -1,4 +1,4 @@
-namespace DSAExperimentation.LeetCode.Solutions.Conventions;
+namespace DSAExperimentation.LeetCode;
 
 // Names the LeetCode question a solution class answers, which enrolls the class in the catalog harness
 // (ARCHITECTURE 17.13): a benchmark class is generated for it at build time that times every strategy

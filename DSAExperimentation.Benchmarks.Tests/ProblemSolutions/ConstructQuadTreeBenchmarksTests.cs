@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 

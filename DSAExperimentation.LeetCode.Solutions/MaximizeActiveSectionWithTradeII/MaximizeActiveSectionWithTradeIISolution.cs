@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
 namespace DSAExperimentation.LeetCode.Solutions.MaximizeActiveSectionWithTradeII;
 
 // LeetCode 3501. Maximize Active Section with Trade II: for each query

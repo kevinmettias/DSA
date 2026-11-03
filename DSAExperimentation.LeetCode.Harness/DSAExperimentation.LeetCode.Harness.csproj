@@ -2,9 +2,11 @@
 
   <!-- What both LeetCode harnesses share when they run the catalog's cases (ARCHITECTURE 17.13): reading
        LeetCode's notation into a strategy's parameter types, laying the cases out by column, calling an
-       enrolled solution's strategies, and judging their answers against the catalog's. It reads the
-       catalog from disk, which 17.6c keeps out of the solutions project, so it is a harness of its own
-       that the benchmarks and the solutions' tests both reference. -->
+       enrolled solution's strategies, and judging their answers against the catalog's, and the rendering
+       that holds untyped answers to one another (AnswerGraphText). It reads the catalog from disk, which
+       17.6c keeps out of the solutions project, so it is a harness of its own that the benchmarks and the
+       solutions' tests both reference. It compiles against LeetCode's conventions and the catalog only:
+       the solutions it runs it finds by reflection, so a change to a solution never rebuilds it. -->
   <ItemGroup>
     <InternalsVisibleTo Include="DSAExperimentation.Benchmarks" />
     <InternalsVisibleTo Include="DSAExperimentation.Benchmarks.Tests" />
@@ -13,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DSAExperimentation.LeetCode.Solutions\DSAExperimentation.LeetCode.Solutions.csproj" />
+    <ProjectReference Include="..\DSAExperimentation.LeetCode\DSAExperimentation.LeetCode.csproj" />
     <ProjectReference Include="..\DSAExperimentation.LeetCode.Catalog\DSAExperimentation.LeetCode.Catalog.csproj" />
   </ItemGroup>
 

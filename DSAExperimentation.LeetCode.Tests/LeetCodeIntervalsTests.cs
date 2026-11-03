@@ -1,4 +1,4 @@
-namespace DSAExperimentation.LeetCode.Solutions.Tests;
+namespace DSAExperimentation.LeetCode.Tests;
 
 // LeetCode's [start, end] rows, read once for every interval problem. Swapping the two
 // coordinates would still type-check everywhere they are used.

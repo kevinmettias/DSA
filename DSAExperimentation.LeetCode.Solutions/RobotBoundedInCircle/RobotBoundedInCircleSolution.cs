@@ -1,6 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.Domain.Devices.Compass;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RobotBoundedInCircle;
 

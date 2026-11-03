@@ -1,7 +1,7 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
 
-namespace DSAExperimentation.LeetCode.Solutions;
+namespace DSAExperimentation.LeetCode;
 
 // LeetCode states an interval as a two-element int[] read as [start, end] - the same
 // shape whether the problem calls them intervals, balloons or ranges - and every

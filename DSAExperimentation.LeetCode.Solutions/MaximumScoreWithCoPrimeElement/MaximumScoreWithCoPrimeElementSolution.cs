@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.NumberTheory;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 namespace DSAExperimentation.LeetCode.Solutions.MaximumScoreWithCoPrimeElement;
 
 // LeetCode 3953. Maximum Score with Co-Prime Element: pick a final value v for

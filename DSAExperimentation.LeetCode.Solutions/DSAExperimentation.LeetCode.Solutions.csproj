@@ -4,12 +4,12 @@
     <InternalsVisibleTo Include="DSAExperimentation.Benchmarks" />
     <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Solutions.Tests" />
     <InternalsVisibleTo Include="DSAExperimentation.Benchmarks.Tests" />
-    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Harness" />
     <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Harness.Tests" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DSAExperimentation\DSAExperimentation.csproj" />
+    <ProjectReference Include="..\DSAExperimentation.LeetCode\DSAExperimentation.LeetCode.csproj" />
   </ItemGroup>
 
 </Project>

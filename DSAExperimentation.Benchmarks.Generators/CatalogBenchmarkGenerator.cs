@@ -21,7 +21,7 @@ namespace DSAExperimentation.Benchmarks.Generators;
 [Generator(LanguageNames.CSharp)]
 public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
 {
-    private const string QuestionAttribute = "DSAExperimentation.LeetCode.Solutions.Conventions.LeetCodeQuestionAttribute";
+    private const string QuestionAttribute = "DSAExperimentation.LeetCode.LeetCodeQuestionAttribute";
     private const string SolutionSuffix = "Solution";
     private const string ClassSuffix = "CatalogBenchmarks";
     private const string StrategyInfix = "By";
@@ -53,13 +53,27 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
             return generated;
         }
 
-        foreach (var solution in TypesIn(attribute.ContainingAssembly.GlobalNamespace).Where(type => IsEnrolled(type, attribute)))
+        var solutions = AssembliesThatCanEnroll(compilation, attribute.ContainingAssembly)
+            .SelectMany(assembly => TypesIn(assembly.GlobalNamespace))
+            .Where(type => IsEnrolled(type, attribute));
+
+        foreach (var solution in solutions)
         {
             AddClassFor(solution, generated);
         }
 
         return generated;
     }
+
+    // The assembly declaring the attribute, and every referenced assembly that compiles against it, as the
+    // solutions project does. LeetCode's conventions declare it, below the solutions that carry it.
+    private static IEnumerable<IAssemblySymbol> AssembliesThatCanEnroll(Compilation compilation, IAssemblySymbol declaring) =>
+        compilation.SourceModule.ReferencedAssemblySymbols
+            .Where(assembly => IsCompiledAgainst(assembly, declaring))
+            .Prepend(declaring);
+
+    private static bool IsCompiledAgainst(IAssemblySymbol assembly, IAssemblySymbol declaring) =>
+        assembly.Modules.Any(module => module.ReferencedAssemblies.Any(identity => identity.Name == declaring.Identity.Name));
 
     private static IEnumerable<INamedTypeSymbol> TypesIn(INamespaceSymbol space) =>
         space.GetTypeMembers().Concat(space.GetNamespaceMembers().SelectMany(TypesIn));

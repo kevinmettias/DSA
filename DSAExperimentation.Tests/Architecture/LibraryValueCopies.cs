@@ -5,8 +5,8 @@ namespace DSAExperimentation.Tests.Architecture;
 
 // ARCHITECTURE.md section 17.5's one source per fact: every arm, the baseline among them, reads a value
 // the library already states rather than copying it. The shared values are the public constants of the
-// library and of the LeetCode tier's root (LeetCodeModulus.Value). A copy is a constant declared in a
-// problem's folder whose value equals one.
+// library and of the LeetCode tier's root, the conventions project (LeetCodeModulus.Value). A copy is a
+// constant declared in a problem's folder whose value equals one.
 //
 // Small numbers and single characters mean many things - a 2 is a halving factor in one file and a
 // pair in the next - so for those the copy's name must also share a word with the shared constant's
@@ -17,6 +17,7 @@ namespace DSAExperimentation.Tests.Architecture;
 internal static class LibraryValueCopies
 {
     private const string SolutionNamespace = "DSAExperimentation.LeetCode.Solutions";
+    private const string ConventionsNamespace = "DSAExperimentation.LeetCode";
 
     // Integers this far from zero are taken to mean one thing; nearer ones need a shared word too.
     private const decimal LargestCommonMagnitude = 10;
@@ -27,10 +28,10 @@ internal static class LibraryValueCopies
         new(["value", "size", "count", "factor", "max", "min", "limit", "default", "first", "last", "index", "length", "number", "no", "smallest", "largest"], StringComparer.Ordinal);
 
     // Each copy of a shared value, with the shared constant it copies, both by their full names.
-    public static IReadOnlyList<Copy> In(Compilation framework, Compilation solutions)
+    public static IReadOnlyList<Copy> In(Compilation framework, Compilation conventions, Compilation solutions)
     {
         var shared = ConstantsIn(framework).Where(RepositoryTiers.IsLibrary)
-            .Concat(ConstantsIn(solutions).Where(IsTierRoot))
+            .Concat(ConstantsIn(conventions).Where(IsTierRoot))
             .Where(IsVisibleEverywhere)
             .ToList();
 
@@ -56,7 +57,7 @@ internal static class LibraryValueCopies
             _ => Enumerable.Empty<INamedTypeSymbol>(),
         };
 
-    private static bool IsTierRoot(IFieldSymbol field) => NamespaceOf(field) == SolutionNamespace;
+    private static bool IsTierRoot(IFieldSymbol field) => NamespaceOf(field) == ConventionsNamespace;
 
     private static bool IsProblemLocal(IFieldSymbol field) => NamespaceOf(field).StartsWith($"{SolutionNamespace}.", StringComparison.Ordinal);
 

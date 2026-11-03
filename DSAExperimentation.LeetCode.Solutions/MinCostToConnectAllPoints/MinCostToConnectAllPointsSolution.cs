@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.MinimumSpanningTrees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 // LC 1584's own vertex in the complete graph over the given points: one node per input index,
 // carrying the undirected Manhattan-distance edges to every other point as a symmetric

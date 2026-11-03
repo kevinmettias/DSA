@@ -149,7 +149,7 @@ function buildConventionHarnesses() {
     `(\`<Operation>By<Strategy>_LeetCodeExamples_...\`) - LeetCodeStrategyCoverageTests fails otherwise. ` +
     `Never re-implement the algorithm privately in the test, and never add a theory that only checks the ` +
     `strategies agree - each one is already asserted against the expected value. Build trees and lists with ` +
-    `LeetCodeWireFormat (DSAExperimentation.LeetCode.Solutions.Conventions) and compare order-free answers with ` +
+    `LeetCodeWireFormat (DSAExperimentation.LeetCode) and compare order-free answers with ` +
     `LeetCodeAnswers - do not write a private BuildList/BuildTree/order-insensitive comparer. No Fixtures/ ` +
     `subfolder - if you were about to create one, that type belongs in Domain/, the LeetCode/ problem ` +
     `folder or at the LeetCode root instead.\n` +

@@ -1,6 +1,6 @@
 using DSAExperimentation.Domain.Mathematics.Modular;
 
-namespace DSAExperimentation.LeetCode.Solutions;
+namespace DSAExperimentation.LeetCode;
 
 // LeetCode's own convention: a counting answer too large for an int is reported modulo the prime
 // 10^9 + 7. The prime is LeetCode's choice, not a fact of the problems, so it sits at the LeetCode

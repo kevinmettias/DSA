@@ -357,7 +357,7 @@ public sealed partial class BaselineTraceTests
         var probe = ProbeCompilation(solutionMembers, benchmarkMembers, fixtureMembers);
         var arm = Assert.Single(BaselineTrace.ArmsIn(probe));
 
-        return BaselineTrace.From(arm, new SourceModels([probe, RepositoryCompilation.Solutions, RepositoryCompilation.Framework]));
+        return BaselineTrace.From(arm, new SourceModels([probe, RepositoryCompilation.Solutions, RepositoryCompilation.Conventions, RepositoryCompilation.Framework]));
     }
 
     // The probe compiled against what the benchmark project compiles against. A probe that does not

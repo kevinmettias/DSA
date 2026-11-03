@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Adjacency;
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 

@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
 namespace DSAExperimentation.LeetCode.Solutions.FindTheScoreDifferenceInAGame;
 
 // LeetCode 3847. Find the Score Difference in a Game: two players, the first one

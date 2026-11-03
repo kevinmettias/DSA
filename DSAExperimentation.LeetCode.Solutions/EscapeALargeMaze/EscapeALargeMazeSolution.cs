@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Mathematics.Lattices;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.EscapeALargeMaze;
 

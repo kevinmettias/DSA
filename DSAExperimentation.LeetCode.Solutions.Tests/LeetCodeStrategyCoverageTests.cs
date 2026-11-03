@@ -1,6 +1,5 @@
 using System.Reflection;
 using DSAExperimentation.LeetCode.Harness;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests;
 
@@ -173,7 +172,7 @@ public sealed partial class LeetCodeStrategyCoverageTests
         => string.Join(", ", names.Order(StringComparer.Ordinal));
 
     private static IEnumerable<Type> LeetCodeTypes()
-        => typeof(LeetCodeWireFormat).Assembly.GetTypes().Where(type => type.Namespace is not null);
+        => CatalogStrategy.SolutionsAssembly.GetTypes().Where(type => type.Namespace is not null);
 
     // The compiler cannot narrow a Type property through the lambda in LeetCodeTypes(),
     // so the two invariants it already established are stated here. Assembly.GetTypes()

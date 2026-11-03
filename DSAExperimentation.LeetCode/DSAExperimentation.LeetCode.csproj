@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- The root of the LeetCode tier (ARCHITECTURE 17.11): what LeetCode fixes for every problem rather
+       than any problem's answer - its notation for trees, lists, graphs and intervals, its answer rules
+       and its 10^9 + 7 - and the attribute that enrolls a solution in the catalog harness. It sits below
+       the solutions, which compile against it, and the harness library reads it without compiling
+       against the solutions at all. Every type here is internal, granted to the projects that read it,
+       as the rest of the tier's are. -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Solutions" />
+    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Harness" />
+    <InternalsVisibleTo Include="DSAExperimentation.Benchmarks" />
+    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Tests" />
+    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Solutions.Tests" />
+    <InternalsVisibleTo Include="DSAExperimentation.LeetCode.Harness.Tests" />
+    <InternalsVisibleTo Include="DSAExperimentation.Benchmarks.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSAExperimentation\DSAExperimentation.csproj" />
+  </ItemGroup>
+
+</Project>

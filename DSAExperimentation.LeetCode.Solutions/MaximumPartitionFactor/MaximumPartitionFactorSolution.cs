@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Bipartiteness;
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumPartitionFactor;
 

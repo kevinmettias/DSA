@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace DSAExperimentation.LeetCode.Solutions;
+namespace DSAExperimentation.LeetCode;
 
 // LeetCode states an undirected graph as a node count plus a list of edges, and every
 // problem taking that pair does the same two things with it: give each node a slot,

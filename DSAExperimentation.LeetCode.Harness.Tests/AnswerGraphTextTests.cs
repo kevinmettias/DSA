@@ -1,7 +1,6 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
-namespace DSAExperimentation.LeetCode.Solutions.Tests.Conventions;
+namespace DSAExperimentation.LeetCode.Harness.Tests;
 
 // Every benchmark's arms are compared through these renderings, so what they tell apart - and what
 // they deliberately do not - decides whether "the arms agree" means anything. Each test below
@@ -79,5 +78,25 @@ public sealed partial class AnswerGraphTextTests
         }
 
         return node;
+    }
+
+    // Walk is private to AnswerGraphText: each Step renders one pending item from a stack of its own
+    // rather than recursing. So Step is driven through Of, its only caller.
+    public sealed partial class WalkTests
+    {
+        // Each node of a list renders one level deeper than the last, so a walk that recursed per level
+        // would overflow the thread's stack long before the deepest.
+        private const int DeeperThanAThreadsStack = 100_000;
+
+        [Fact]
+        public void Step_ListDeeperThanAThreadsStack_RendersItsDeepestNode()
+        {
+            var values = Enumerable.Range(0, DeeperThanAThreadsStack).ToArray();
+            int[] lastChanged = [.. values[..^1], -1];
+            var rendered = AnswerGraphText.Of(LeetCodeWireFormat.ToLinkedList(values));
+            var renderedWithLastChanged = AnswerGraphText.Of(LeetCodeWireFormat.ToLinkedList(lastChanged));
+
+            Assert.NotEqual(rendered, renderedWithLastChanged);
+        }
     }
 }

@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
 namespace DSAExperimentation.LeetCode.Solutions.ValidBoomerang;
 
 // LeetCode 1037. Valid Boomerang: three points form a boomerang exactly when they

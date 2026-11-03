@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 
-namespace DSAExperimentation.LeetCode.Solutions.Conventions;
+namespace DSAExperimentation.LeetCode;
 
 // LeetCode states a tree or a list as a flat array, and every problem taking one
 // used to re-implement that translation in its own test file. It is the same

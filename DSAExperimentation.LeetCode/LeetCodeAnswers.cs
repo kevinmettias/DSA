@@ -1,4 +1,4 @@
-namespace DSAExperimentation.LeetCode.Solutions.Conventions;
+namespace DSAExperimentation.LeetCode;
 
 // The handful of answer-equality rules LeetCode problems actually use, written
 // once, for any caller that has to decide whether an answer is right - the catalog

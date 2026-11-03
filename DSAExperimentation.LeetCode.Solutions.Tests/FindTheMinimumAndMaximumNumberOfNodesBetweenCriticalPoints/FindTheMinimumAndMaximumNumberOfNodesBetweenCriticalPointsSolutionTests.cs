@@ -1,4 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPoints;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPoints;

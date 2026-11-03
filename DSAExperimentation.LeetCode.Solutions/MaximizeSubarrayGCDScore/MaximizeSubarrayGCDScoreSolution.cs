@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
 namespace DSAExperimentation.LeetCode.Solutions.MaximizeSubarrayGCDScore;
 
 // LeetCode 3574. Maximize Subarray GCD Score: pick a contiguous subarray and

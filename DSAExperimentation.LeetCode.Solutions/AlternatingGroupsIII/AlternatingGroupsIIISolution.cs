@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
 namespace DSAExperimentation.LeetCode.Solutions.AlternatingGroupsIII;
 
 // LeetCode 3245. Alternating Groups III: tiles are colored 0/1 around a circle.

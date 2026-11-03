@@ -1,8 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
-namespace DSAExperimentation.LeetCode.Solutions.Tests.Conventions;
+namespace DSAExperimentation.LeetCode.Tests;
 
 // Every tree- and list-shaped problem's cases are stated in LeetCode's array
 // notation and pass through here, so a bug in this translation would show up as a

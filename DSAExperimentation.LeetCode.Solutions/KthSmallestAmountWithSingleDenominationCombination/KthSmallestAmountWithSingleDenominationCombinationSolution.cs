@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.KthSmallestAmountWithSingleDenominationCombination;
 

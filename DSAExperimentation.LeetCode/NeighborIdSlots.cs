@@ -1,4 +1,4 @@
-namespace DSAExperimentation.LeetCode.Solutions;
+namespace DSAExperimentation.LeetCode;
 
 // Each node's neighbour ids, in edge order - the adjacency list a textbook graph walk takes.
 internal readonly struct NeighborIdSlots : IAdjacencySlots<List<int>>

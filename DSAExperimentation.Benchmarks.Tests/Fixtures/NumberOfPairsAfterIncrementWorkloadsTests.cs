@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode.Harness;
 using DSAExperimentation.LeetCode.Solutions.NumberOfPairsAfterIncrement;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;

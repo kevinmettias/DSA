@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode;
 using DSAExperimentation.LeetCode.Solutions.RemoveNthNodeFromEndOfList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

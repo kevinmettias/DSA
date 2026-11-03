@@ -1,6 +1,5 @@
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.Domain.Mathematics.Numerals;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTriangularSumOfAnArray;
 

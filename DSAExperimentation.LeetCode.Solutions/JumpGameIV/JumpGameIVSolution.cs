@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 // One index of LC 1345's implicit reachability graph: wired with an edge to i+1, to i-1, and
 // to every other index holding the same value. Every hop is one step, so the edges carry no weight.

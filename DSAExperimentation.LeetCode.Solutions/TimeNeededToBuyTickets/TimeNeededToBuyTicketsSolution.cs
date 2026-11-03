@@ -1,4 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Index, int Remaining)>;
 
 namespace DSAExperimentation.LeetCode.Solutions.TimeNeededToBuyTickets;

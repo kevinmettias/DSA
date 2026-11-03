@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace DSAExperimentation.LeetCode.Solutions;
+namespace DSAExperimentation.LeetCode;
 
 // Each node's neighbours beside the weight LeetCode puts in an edge's third column, in edge order,
 // read as TWeight - int as given, or long where a path's summed weight can pass int's range. TWeight

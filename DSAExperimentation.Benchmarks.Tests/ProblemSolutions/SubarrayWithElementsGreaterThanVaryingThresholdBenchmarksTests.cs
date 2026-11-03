@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Solutions;
+using DSAExperimentation.LeetCode;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 

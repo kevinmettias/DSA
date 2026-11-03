@@ -1,7 +1,6 @@
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Games.Sudoku;
 using DSAExperimentation.Domain.Mathematics.Numerals;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ValidSudoku;
 

@@ -1,7 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.Domain.Mathematics.Geometry;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfVisiblePoints;
 

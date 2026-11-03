@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
 namespace DSAExperimentation.LeetCode.Solutions.XORAfterRangeMultiplicationQueriesI;
 
 // LeetCode 3653. XOR After Range Multiplication Queries I: for each query

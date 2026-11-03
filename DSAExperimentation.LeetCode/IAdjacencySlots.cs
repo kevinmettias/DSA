@@ -1,4 +1,4 @@
-namespace DSAExperimentation.LeetCode.Solutions;
+namespace DSAExperimentation.LeetCode;
 
 // What LeetCodeAdjacency asks of a slot shape: a fresh slot for node `id`, and how one endpoint of
 // an edge records it - its own slot, the far endpoint's id and slot, and the edge's index in the

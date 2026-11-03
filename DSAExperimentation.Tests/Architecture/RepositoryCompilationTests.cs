@@ -11,6 +11,9 @@ public sealed partial class RepositoryCompilationTests
     public void Framework_CompilesWithoutErrors() => AssertNoErrors(RepositoryCompilation.Framework);
 
     [Fact]
+    public void Conventions_CompileWithoutErrors() => AssertNoErrors(RepositoryCompilation.Conventions);
+
+    [Fact]
     public void Solutions_CompileWithoutErrors() => AssertNoErrors(RepositoryCompilation.Solutions);
 
     [Fact]
@@ -21,6 +24,7 @@ public sealed partial class RepositoryCompilationTests
         new()
         {
             "DSAExperimentation.DataStructures.AlgorithmConstants",
+            "DSAExperimentation.LeetCode.LeetCodeWireFormat",
             "DSAExperimentation.LeetCode.Solutions.TwoSum.TwoSumSolution",
             "DSAExperimentation.Benchmarks.ProblemSolutions.TwoSumBenchmarks",
             "DSAExperimentation.Benchmarks.Fixtures.PolygonWorkloads",
@@ -30,7 +34,8 @@ public sealed partial class RepositoryCompilationTests
     [MemberData(nameof(TypesEachCompilationDeclares))]
     public void Compilations_DeclareTheirProjectsTypes(string metadataName)
     {
-        Compilation[] compilations = [RepositoryCompilation.Framework, RepositoryCompilation.Solutions, RepositoryCompilation.Benchmarks];
+        Compilation[] compilations =
+            [RepositoryCompilation.Framework, RepositoryCompilation.Conventions, RepositoryCompilation.Solutions, RepositoryCompilation.Benchmarks];
         var declaring = compilations.Where(compilation => compilation.Assembly.GetTypeByMetadataName(metadataName) is not null);
 
         Assert.Single(declaring);

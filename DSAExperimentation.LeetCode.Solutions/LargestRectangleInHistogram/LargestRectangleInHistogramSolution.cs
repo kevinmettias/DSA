@@ -1,4 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 using HistogramStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.LargestRectangleInHistogram;

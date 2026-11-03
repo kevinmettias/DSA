@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode;
 using DSAExperimentation.LeetCode.Solutions.MergeTwoSortedLists;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

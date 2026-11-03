@@ -1,5 +1,4 @@
 using DSAExperimentation.DataStructures.Buffers;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.RemoveColoredPiecesIfBothNeighborsAreTheSameColor;
 

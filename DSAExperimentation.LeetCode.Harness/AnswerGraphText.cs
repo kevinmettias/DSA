@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text;
 
-namespace DSAExperimentation.LeetCode.Solutions.Conventions;
+namespace DSAExperimentation.LeetCode.Harness;
 
 // The one rendering every untyped answer comparison goes through: the generic benchmark arm check
 // and the companion tests beside it. LeetCodeAnswers holds the typed rules a caller picks when it

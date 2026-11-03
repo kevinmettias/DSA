@@ -1,7 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.Domain.Mathematics.Numerals;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 using RepoIntQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigits;

@@ -6,6 +6,10 @@ namespace DSAExperimentation.LeetCode.Harness.Tests;
 public sealed partial class CatalogStrategyTests
 {
     [Fact]
+    public void SolutionsAssembly_ByName_IsTheAssemblyDeclaringTheSolutions() =>
+        Assert.Same(typeof(TwoSumSolution).Assembly, CatalogStrategy.SolutionsAssembly);
+
+    [Fact]
     public void EnrolledSolutions_AfterDiscovery_IncludeEverySolutionThatNamesItsQuestion() =>
         Assert.Contains(typeof(TwoSumSolution), CatalogStrategy.EnrolledSolutions());
 

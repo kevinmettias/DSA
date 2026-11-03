@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
 namespace DSAExperimentation.LeetCode.Solutions.PartitionArrayForMaximumXorAndAnd;
 
 // LeetCode 3630. Partition Array for Maximum XOR and AND: split nums into three

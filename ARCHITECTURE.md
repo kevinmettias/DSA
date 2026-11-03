@@ -1350,8 +1350,8 @@ Bottom to top. The first three are peers, and every tier above them reads only t
 | 2. Operations | `DSAExperimentation/Algorithms/**` | §2's third axis |
 | 3. Domain | `DSAExperimentation/Domain/**` | What a problem says about its world, pulled out of the problems that say it: models, rules, constants (§17.6) |
 | Mechanisms | `DSAExperimentation/Mechanisms/**` | State run by a rule of its own that the caller observes — dropping what no caller named, or handing out what the caller never stored: the LRU and LFU caches, keys that expire, and an allocator of the smallest free number (§17.6b) |
-| 4. LeetCode solutions | `DSAExperimentation.LeetCode.Solutions/**` (own project) | One folder per problem, every strategy for it; at the root, LeetCode's own notation and answer rules |
-| 5. Harnesses | `DSAExperimentation.Tests/**` (the library's tiers), `DSAExperimentation.LeetCode.Solutions.Tests/**` (tier 4), `DSAExperimentation.Benchmarks/**`, `DSAExperimentation.Benchmarks.Generators/**`, which writes the catalog benchmark classes at build time, and `DSAExperimentation.LeetCode.Harness/**`, what both harnesses share to run and judge the catalog's cases (§17.13) | Assertions and measurement, nothing else |
+| 4. LeetCode solutions | `DSAExperimentation.LeetCode.Solutions/**`, and at its root `DSAExperimentation.LeetCode/**` (own projects) | One folder per problem, every strategy for it; at the root, LeetCode's own notation and answer rules (§17.11) |
+| 5. Harnesses | `DSAExperimentation.Tests/**` (the library's tiers), `DSAExperimentation.LeetCode.Solutions.Tests/**` and `DSAExperimentation.LeetCode.Tests/**` (tier 4), `DSAExperimentation.Benchmarks/**`, `DSAExperimentation.Benchmarks.Generators/**`, which writes the catalog benchmark classes at build time, and `DSAExperimentation.LeetCode.Harness/**`, what both harnesses share to run and judge the catalog's cases and to compare answers (§17.13) | Assertions and measurement, nothing else |
 | LeetCode catalog | `DSAExperimentation.LeetCode.Catalog/**` (own project), written only by `DSAExperimentation.LeetCode.Catalog.Sync` | What LeetCode says about each covered problem, and every case a harness runs on it, as a checked-in snapshot (§17.12). It reads no tier, and only harnesses read it |
 
 Domain is a peer of DataStructures and Algorithms, not a tier above them. The owner ruled it as
@@ -1398,8 +1398,9 @@ configuration stays beside `OpenTheLockSolution`: `LockStart`, the combination i
 its baseline both begin from, and `DeadendFilter`, the combinations it refuses.
 
 **A problem folder reaches into another only along a named edge.** It may use anything in the
-library — tiers 1–3 and Mechanisms — and anything at the root of this tier (`LeetCodeAnswer`,
-`LeetCodeIntervals`, `LeetCodeAdjacency`, `Conventions/`). Another problem's folder is open to it in two cases only, each an entry in
+library — tiers 1–3 and Mechanisms — and anything at the root of this tier, the
+`DSAExperimentation.LeetCode` project (`LeetCodeAnswer`, `LeetCodeIntervals`, `LeetCodeAdjacency`,
+`LeetCodeWireFormat`). Another problem's folder is open to it in two cases only, each an entry in
 `ProblemImportTests`' allow-list that says which case it is and why:
 
 - **Delegation.** The two problems ask the same question under different constraints: Part I and
@@ -2038,18 +2039,42 @@ Open items:
   with the problem's own non-generic topology recovered part of the gap. What remains is no larger
   than the spread on identical code, and its cause is not settled.
 
-### 17.11 What every harness shares: `Conventions/`
+### 17.11 What every harness shares: LeetCode's conventions, a project of their own
 
 A problem's harness is a hand-written test and a hand-written benchmark over its solution class, with
 one exception: its benchmark of the catalog's cases is generated from its solution's
-`LeetCodeQuestionAttribute` (§17.13). What they share is LeetCode's own conventions, in
-`DSAExperimentation.LeetCode.Solutions/Conventions/`: `LeetCodeWireFormat` (LeetCode's array notation for
-trees and lists, both directions) and `LeetCodeAnswers` (its answer-equality rules — exact,
-sequence, any-order, rows-in-any-order, within tolerance). A test or benchmark that needs either
-calls these rather than writing its own `BuildList` or order-insensitive comparison. Sizing a
-workload stays in tier 5 (§17.7), and that every strategy is asserted is
-`LeetCodeStrategyCoverageTests`' to enforce (§18.5); a harness generated from a per-problem
-registration would move the first into tier 4 and duplicate the second.
+`LeetCodeQuestionAttribute` (§17.13). Sizing a workload stays in tier 5 (§17.7), and that every
+strategy is asserted is `LeetCodeStrategyCoverageTests`' to enforce (§18.5); a harness generated from
+a per-problem registration would move the first into tier 4 and duplicate the second.
+
+What the solutions and their harnesses share is LeetCode's own conventions, the root of this tier.
+**Since 2026-11-03, at the owner's request, they are a project of their own,
+`DSAExperimentation.LeetCode`,** below the solutions, which compile against it. It holds what
+LeetCode fixes for every problem rather than any problem's answer:
+
+- Its notation: `LeetCodeWireFormat` (its array notation for trees and lists, both directions),
+  `LeetCodeAdjacency` with the slot shapes it fills (`IAdjacencySlots`, `NeighborIdSlots`,
+  `WeightedNeighborSlots`), and `LeetCodeIntervals`.
+- Its answer rules: `LeetCodeAnswers` (exact, sequence, any-order, rows-in-any-order, within
+  tolerance), `LeetCodeAnswer`'s `-1`, and `LeetCodeModulus`'s 10^9 + 7.
+- `LeetCodeQuestionAttribute` and `LeetCodeAnswerOrder`, with which a solution enrolls in the catalog
+  harness (§17.13).
+
+A test or benchmark that needs one of these calls it rather than writing its own `BuildList` or
+order-insensitive comparison. Their namespace is `DSAExperimentation.LeetCode`, which encloses every
+solution's, so a solution names them with no using. Every type stays internal, granted to the
+projects that read it, as the rest of the tier's are.
+
+What the project boundary gives over the folder it replaced:
+
+- The harness library compiles against the conventions and the catalog, not the solutions. It finds
+  the solutions it runs by reflection, so changing a solution does not rebuild it.
+- The conventions cannot name a problem, since their project does not reference the solutions. That
+  half of §17.3's import rule is now the compiler's.
+
+`AnswerGraphText`, which renders an answer of any shape so two arms can be compared, is not a
+convention of LeetCode's. It is a harness's way of comparing answers, so it moved to the harness
+library (§17.13).
 
 ### 17.12 The LeetCode catalog: what LeetCode says, and the cases a harness runs
 
@@ -2176,13 +2201,17 @@ static-dispatch rule this repo measures by, and it would lose everything the run
 A generated class is ordinary C#, so all of them apply unchanged.
 
 **What is tested, and where.** The two harnesses share `DSAExperimentation.LeetCode.Harness`, a project
-above the solutions. It reads the catalog from disk, which §17.6c keeps out of tier 4. It holds:
+above the solutions. It compiles against LeetCode's conventions (§17.11) and the catalog, and it
+finds the solutions themselves by reflection. It reads the catalog from disk, which §17.6c keeps out
+of tier 4. It holds:
 
 - `NotationReader` and `CatalogColumns`, the reading described above;
 - `CatalogStrategy`, which finds an enrolled solution's strategies by the generator's own rule and
   calls one on one case;
 - `AnswerNotation` and `CatalogJudge`, which write an answer back in LeetCode's notation and judge it
-  against the recorded output by the question's order rule.
+  against the recorded output by the question's order rule;
+- `AnswerGraphText`, which renders an answer of any shape, so the benchmarks' tests can compare a
+  hand-written class's arms.
 
 The tests split by whose correctness each one is about:
 
@@ -2461,7 +2490,8 @@ unbound name answers with an error symbol and hides the reference a rule asked a
 - **§17.3's "a problem folder reaches into another only along a named edge"** —
   `ProblemImportTests`. Inside `DSAExperimentation.LeetCode.Solutions`, a folder may name another problem's
   folder only along an allow-listed edge whose reason opens `Delegation:` or `Subroutine:`. An
-  imported folder imports none, and the tier's root and `Conventions/` import no problem. Every
+  imported folder imports none. The tier's root, the `DSAExperimentation.LeetCode` project, cannot
+  name a problem, since it does not reference the solutions. Every
   entry fails once its edge disappears. The scan binds every name in the solution project's
   compilation. A symbol declared in another problem's namespace is a reference to that problem,
   whether the file reached it by a using, by a partly qualified name, which needs no using, or by a

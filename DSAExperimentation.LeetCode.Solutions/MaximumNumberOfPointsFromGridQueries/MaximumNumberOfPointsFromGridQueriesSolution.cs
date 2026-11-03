@@ -1,6 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.Domain.Mathematics.Lattices;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 using CellFrontier = DSAExperimentation.DataStructures.Heap.Heap<
     (DSAExperimentation.DataStructures.Graph.Grids.GridNode Node, int Priority),

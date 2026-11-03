@@ -4,8 +4,8 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace DSAExperimentation.Tests.Architecture;
 
-// The framework, solution and benchmark projects compiled from their source with Roslyn, each
-// against the one below it, so an architecture test can ask what a name binds to rather than how it
+// The framework, LeetCode's conventions, and the solution and benchmark projects compiled from their
+// source with Roslyn, each against the ones below it, so an architecture test can ask what a name binds to rather than how it
 // is spelled. Each compilation is handed what MSBuild hands the compiler: the shared framework, the
 // SDK's implicit usings and the project's own <Using> items, its InternalsVisibleTo grants, and
 // nullable on. The benchmark project is compiled only where problems are measured, ProblemSolutions
@@ -16,6 +16,7 @@ namespace DSAExperimentation.Tests.Architecture;
 internal static class RepositoryCompilation
 {
     public const string FrameworkProject = "DSAExperimentation";
+    public const string ConventionsProject = "DSAExperimentation.LeetCode";
     public const string SolutionProject = "DSAExperimentation.LeetCode.Solutions";
     public const string BenchmarkProject = "DSAExperimentation.Benchmarks";
 
@@ -32,6 +33,8 @@ internal static class RepositoryCompilation
 
     public static CSharpCompilation Framework => Compiled.Value.Framework;
 
+    public static CSharpCompilation Conventions => Compiled.Value.Conventions;
+
     public static CSharpCompilation Solutions => Compiled.Value.Solutions;
 
     public static CSharpCompilation Benchmarks => Compiled.Value.Benchmarks;
@@ -41,7 +44,9 @@ internal static class RepositoryCompilation
         var root = RepositoryFiles.Root();
         var shared = SharedFrameworkReferences();
         var framework = CompileProject(root, FrameworkProject, [FrameworkProject], shared);
-        var solutions = CompileProject(root, SolutionProject, [SolutionProject], [.. shared, framework.ToMetadataReference()]);
+        var conventions = CompileProject(root, ConventionsProject, [ConventionsProject], [.. shared, framework.ToMetadataReference()]);
+        var solutions = CompileProject(
+            root, SolutionProject, [SolutionProject], [.. shared, framework.ToMetadataReference(), conventions.ToMetadataReference()]);
         var benchmarks = CompileProject(
             root,
             BenchmarkProject,
@@ -49,12 +54,13 @@ internal static class RepositoryCompilation
             [
                 .. shared,
                 framework.ToMetadataReference(),
+                conventions.ToMetadataReference(),
                 solutions.ToMetadataReference(),
                 MetadataReference.CreateFromFile(typeof(BenchmarkDotNet.Attributes.BenchmarkAttribute).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(DSAExperimentation.LeetCode.Catalog.LeetCodeCatalog).Assembly.Location),
             ]);
 
-        return new CompiledProjects(framework, solutions, benchmarks);
+        return new CompiledProjects(framework, conventions, solutions, benchmarks);
     }
 
     // The runtime's own assemblies: those the host trusts from the folder System.Object loads from.
@@ -103,5 +109,6 @@ internal static class RepositoryCompilation
     private static IEnumerable<string> ItemsOf(XDocument projectFile, string itemName)
         => projectFile.Descendants(itemName).Select(item => (string?)item.Attribute("Include")).OfType<string>();
 
-    private sealed record CompiledProjects(CSharpCompilation Framework, CSharpCompilation Solutions, CSharpCompilation Benchmarks);
+    private sealed record CompiledProjects(
+        CSharpCompilation Framework, CSharpCompilation Conventions, CSharpCompilation Solutions, CSharpCompilation Benchmarks);
 }

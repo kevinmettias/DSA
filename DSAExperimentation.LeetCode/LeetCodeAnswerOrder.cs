@@ -1,4 +1,4 @@
-namespace DSAExperimentation.LeetCode.Solutions.Conventions;
+namespace DSAExperimentation.LeetCode;
 
 // Whether LeetCode accepts an answer's elements in any order, which only a question's statement says.
 // A question states it once, on LeetCodeQuestionAttribute, and every harness that judges an answer

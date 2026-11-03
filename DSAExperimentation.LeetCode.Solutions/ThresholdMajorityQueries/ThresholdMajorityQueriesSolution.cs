@@ -1,5 +1,3 @@
-using DSAExperimentation.LeetCode.Solutions.Conventions;
-
 namespace DSAExperimentation.LeetCode.Solutions.ThresholdMajorityQueries;
 
 // LeetCode 3636. Threshold Majority Queries: for each [l, r, threshold] query,

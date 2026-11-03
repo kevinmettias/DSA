@@ -1,6 +1,5 @@
 using System.Reflection;
 using System.Text.Json.Nodes;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Harness;
 
@@ -13,6 +12,10 @@ internal sealed class CatalogStrategy
 {
     private const string StrategyInfix = "By";
 
+    // The harness compiles against LeetCode's conventions, never against the solutions it runs, so it
+    // loads their assembly by name. Every harness that runs one references the solutions project.
+    private const string SolutionsAssemblyName = "DSAExperimentation.LeetCode.Solutions";
+
     private const BindingFlags DeclaredStatics =
         BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly;
 
@@ -23,6 +26,9 @@ internal sealed class CatalogStrategy
 
     public string Name => _method.Name;
 
+    // The solutions project: every solution class, enrolled or not.
+    public static Assembly SolutionsAssembly { get; } = Assembly.Load(SolutionsAssemblyName);
+
     private CatalogStrategy(Type solution, MethodInfo method)
     {
         Solution = solution;
@@ -32,7 +38,7 @@ internal sealed class CatalogStrategy
 
     // Every solution class in the solutions project that names its LeetCode question, by full name.
     public static IReadOnlyList<Type> EnrolledSolutions() =>
-        [.. typeof(LeetCodeQuestionAttribute).Assembly.GetTypes()
+        [.. SolutionsAssembly.GetTypes()
             .Where(type => type.IsDefined(typeof(LeetCodeQuestionAttribute)))
             .OrderBy(type => type.FullName, StringComparer.Ordinal)];
 

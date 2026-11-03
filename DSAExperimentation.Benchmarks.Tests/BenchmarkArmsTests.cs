@@ -1,6 +1,6 @@
 using System.Reflection;
 using DSAExperimentation.Benchmarks.Tests.Catalog;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Benchmarks.Tests;
 

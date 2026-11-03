@@ -1,8 +1,7 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Domain.Mathematics.Modular;
-using DSAExperimentation.LeetCode.Solutions;
 
-namespace DSAExperimentation.LeetCode.Solutions.Tests;
+namespace DSAExperimentation.LeetCode.Tests;
 
 // LeetCode's modulus is a witness for IPrimeModulus, so the facts that interface states must hold of
 // it: it is prime, and two of its residues multiply inside a long.

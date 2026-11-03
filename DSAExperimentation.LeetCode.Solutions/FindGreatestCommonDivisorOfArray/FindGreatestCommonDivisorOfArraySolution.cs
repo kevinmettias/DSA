@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.NumberTheory;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 namespace DSAExperimentation.LeetCode.Solutions.FindGreatestCommonDivisorOfArray;
 
 // LeetCode 1979. Find Greatest Common Divisor of Array: the greatest common

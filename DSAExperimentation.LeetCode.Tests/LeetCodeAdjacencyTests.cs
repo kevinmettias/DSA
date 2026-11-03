@@ -1,4 +1,4 @@
-namespace DSAExperimentation.LeetCode.Solutions.Tests;
+namespace DSAExperimentation.LeetCode.Tests;
 
 // Every undirected-graph problem builds its adjacency through these two entry points, so a
 // slot built at the wrong index or an edge recorded at one endpoint only would surface as a
@@ -53,4 +53,28 @@ public sealed partial class LeetCodeAdjacencyTests
 
     private static void Wire(List<string> slot, int farId, List<string> farSlot, int edgeIndex)
         => slot.Add($"{farId}@{edgeIndex}");
+
+    // CallbackSlots is private to LeetCodeAdjacency: it carries the callback forms' two lambdas as the
+    // slot rule the layout takes. So its members are driven through ZeroBased, their only caller.
+    public sealed partial class CallbackSlotsTests
+    {
+        [Fact]
+        public void SlotFor_EveryNode_BuildsItsSlotByTheSlotRule()
+        {
+            var slots = LeetCodeAdjacency.ZeroBased(3, [], id => new List<string> { $"node {id}" }, Wire);
+            var labels = slots.SelectMany(slot => slot);
+
+            Assert.Equal(["node 0", "node 1", "node 2"], labels);
+        }
+
+        [Fact]
+        public void Wire_OneEdge_TellsEachEndpointTheFarIdAndTheEdgesIndex()
+        {
+            var slots = LeetCodeAdjacency.ZeroBased(3, [[0, 2]], _ => new List<string>(), Wire);
+
+            Assert.Equal(["2@0"], slots[0]);
+            Assert.Empty(slots[1]);
+            Assert.Equal(["0@0"], slots[2]);
+        }
+    }
 }

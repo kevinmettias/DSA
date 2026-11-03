@@ -23,7 +23,7 @@ public sealed partial class SharedValueCopyTests
     };
 
     private static readonly Lazy<IReadOnlyList<LibraryValueCopies.Copy>> Copies =
-        new(() => LibraryValueCopies.In(RepositoryCompilation.Framework, RepositoryCompilation.Solutions));
+        new(() => LibraryValueCopies.In(RepositoryCompilation.Framework, RepositoryCompilation.Conventions, RepositoryCompilation.Solutions));
 
     [Fact]
     public void SolutionConstants_CopyNoSharedValue()

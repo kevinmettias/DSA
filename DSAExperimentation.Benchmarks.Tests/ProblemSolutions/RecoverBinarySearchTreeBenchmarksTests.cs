@@ -1,7 +1,7 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
+using DSAExperimentation.LeetCode.Harness;
 using DSAExperimentation.LeetCode.Solutions.RecoverBinarySearchTree;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;

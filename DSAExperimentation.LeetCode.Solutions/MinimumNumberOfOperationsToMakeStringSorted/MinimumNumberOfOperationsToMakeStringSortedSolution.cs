@@ -1,7 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.Domain.Language.English;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeStringSorted;
 

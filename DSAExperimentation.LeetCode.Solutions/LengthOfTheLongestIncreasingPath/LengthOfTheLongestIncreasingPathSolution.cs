@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<int, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<int>>;
 

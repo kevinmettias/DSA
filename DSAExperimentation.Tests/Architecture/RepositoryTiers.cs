@@ -2,13 +2,15 @@ using Microsoft.CodeAnalysis;
 
 namespace DSAExperimentation.Tests.Architecture;
 
-// Which tier of the repository a symbol is declared in, read off its namespace: the solutions, the
-// benchmark harnesses and the fixtures that lay their input out, and the framework library. Within the
+// Which tier of the repository a symbol is declared in, read off its namespace: the solutions and the
+// LeetCode conventions at their tier's root, the benchmark harnesses and the fixtures that lay their
+// input out, and the framework library. Within the
 // library, ARCHITECTURE.md section 17.5 tells what a tier implements apart from what it only states:
 // a baseline writes the first for itself and reads the second like every other arm.
 internal static class RepositoryTiers
 {
     private const string SolutionNamespace = "DSAExperimentation.LeetCode.Solutions";
+    private const string ConventionsNamespace = "DSAExperimentation.LeetCode";
     private const string BenchmarkNamespace = "DSAExperimentation.Benchmarks";
     private const string FixtureNamespace = "DSAExperimentation.Benchmarks.Fixtures";
 
@@ -32,7 +34,9 @@ internal static class RepositoryTiers
 
     public static bool IsBenchmark(ISymbol symbol) => IsIn(symbol, BenchmarkNamespace);
 
-    public static bool IsSolution(ISymbol symbol) => IsIn(symbol, SolutionNamespace);
+    // The LeetCode tier: its problems, and the conventions at its root that they share. The root is that
+    // namespace alone, not the catalog's or the harness library's beneath it.
+    public static bool IsSolution(ISymbol symbol) => IsIn(symbol, SolutionNamespace) || NamespaceOf(symbol) == ConventionsNamespace;
 
     public static bool IsSource(ISymbol symbol) => IsSolution(symbol) || IsBenchmark(symbol);
 
@@ -59,8 +63,10 @@ internal static class RepositoryTiers
 
     private static bool IsIn(ISymbol symbol, string container)
     {
-        var name = (symbol as INamespaceSymbol ?? symbol.ContainingNamespace)?.ToDisplayString() ?? string.Empty;
+        var name = NamespaceOf(symbol);
 
         return name == container || name.StartsWith($"{container}.", StringComparison.Ordinal);
     }
+
+    private static string NamespaceOf(ISymbol symbol) => (symbol as INamespaceSymbol ?? symbol.ContainingNamespace)?.ToDisplayString() ?? string.Empty;
 }

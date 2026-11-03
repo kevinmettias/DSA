@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!-- Tests the catalog harness's shared runtime: the notation reader, the case columns, the strategy
-       binding and the judge, over the enrolled solutions and the checked-in snapshot. -->
+       binding, the judge and the answer rendering, over the enrolled solutions and the checked-in
+       snapshot. The harness finds the solutions by reflection, so these tests reference them directly. -->
   <PropertyGroup>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -19,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DSAExperimentation.LeetCode.Harness\DSAExperimentation.LeetCode.Harness.csproj" />
+    <ProjectReference Include="..\DSAExperimentation.LeetCode.Solutions\DSAExperimentation.LeetCode.Solutions.csproj" />
   </ItemGroup>
 
 </Project>

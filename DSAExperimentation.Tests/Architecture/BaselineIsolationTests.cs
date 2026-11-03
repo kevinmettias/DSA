@@ -58,7 +58,8 @@ public sealed partial class BaselineIsolationTests
 
     private static List<TracedArm> TraceEveryArm()
     {
-        var models = new SourceModels([RepositoryCompilation.Benchmarks, RepositoryCompilation.Solutions, RepositoryCompilation.Framework]);
+        var models = new SourceModels(
+            [RepositoryCompilation.Benchmarks, RepositoryCompilation.Solutions, RepositoryCompilation.Conventions, RepositoryCompilation.Framework]);
 
         return [.. BaselineTrace.ArmsIn(RepositoryCompilation.Benchmarks).Select(arm => new TracedArm(arm, BaselineTrace.From(arm, models)))];
     }

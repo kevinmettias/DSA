@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.Domain.Mathematics.Lattices;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CheckIfThereIsAValidPathInAGrid;
 

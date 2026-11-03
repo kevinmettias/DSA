@@ -3,7 +3,6 @@ using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.PrefixSums;
 using DSAExperimentation.DataStructures.Sequence;
-using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumSubarraySumAfterAtMostKSwaps;
 
