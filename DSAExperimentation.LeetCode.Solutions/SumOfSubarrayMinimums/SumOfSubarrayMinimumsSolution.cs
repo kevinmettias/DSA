@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.SumOfSubarrayMinimums;
 
@@ -18,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SumOfSubarrayMinimums;
 // or-equal asymmetry between the two sweeps is what stops a run of equal minimums
 // being counted twice: a tie is only ever owned by its leftmost occurrence. Every
 // index enters and leaves each sweep's stack once, so the whole thing is O(n).
+[LeetCodeQuestion("sum-of-subarray-minimums", LeetCodeAnswerOrder.AsWritten)]
 internal static class SumOfSubarrayMinimumsSolution
 {
     private const int NoSmallerElementToTheLeft = -1;

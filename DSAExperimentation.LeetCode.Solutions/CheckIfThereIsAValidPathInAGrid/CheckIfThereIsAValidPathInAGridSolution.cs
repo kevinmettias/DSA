@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.CheckIfThereIsAValidPathInAGrid;
 
@@ -13,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfThereIsAValidPathInAGrid;
 // walk the identical street-compatibility rule, so the comparison isolates the
 // traversal machinery (recursion + a bool[,] visited array vs. an explicit stack
 // and a hash set) rather than the per-cell logic.
+[LeetCodeQuestion("check-if-there-is-a-valid-path-in-a-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class CheckIfThereIsAValidPathInAGridSolution
 {
     // The problem's whole content: which two of the four directions each street

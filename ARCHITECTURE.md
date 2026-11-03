@@ -2290,9 +2290,11 @@ Two kinds of solution that pass every case still stay out:
   none, and the Populating Next Right Pointers questions have only the empty tree. A check over
   those would pass whatever the strategy did.
 
-**Enrolled.** 610 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 14 more found once the importer's two fixes landed or their folder was matched to
-its slug by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
+**Enrolled.** 615 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 19 more. Of those, 14 were found once the importer's first two fixes landed or
+their folder was matched to its slug by hand (`3sum`, `01-matrix`, `132-pattern`, ...). The other 5
+were found once examples stopped being paired with inputs their statement never shows, among them
+Check if There is a Valid Path in a Grid, whose strategies had been right all along.
 
 Open items:
 

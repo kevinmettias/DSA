@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.ShortestSubarrayToBeRemovedToMakeArraySorted;
 
@@ -10,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortestSubarrayToBeRemovedToMak
 // The two strategies answer the same question at opposite ends of the cost curve:
 // test every (start, end) removal range by re-scanning the merged remainder, or find
 // the longest already-sorted prefix and suffix once and stitch them.
+[LeetCodeQuestion("shortest-subarray-to-be-removed-to-make-array-sorted", LeetCodeAnswerOrder.AsWritten)]
 internal static class ShortestSubarrayToBeRemovedToMakeArraySortedSolution
 {
     // The textbook answer: every removal range, each validated by a full rescan of

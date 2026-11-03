@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 using CourseNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
 using CourseTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<int>;
 
@@ -14,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CourseScheduleIV;
 // all-pairs matrix built up front after which every query is a lookup. Distance
 // is never compared to anything - u reaches v exactly when the pair has any
 // finite distance at all.
+[LeetCodeQuestion("course-schedule-iv", LeetCodeAnswerOrder.AsWritten)]
 internal static class CourseScheduleIVSolution
 {
     // The textbook answer, and the arm the all-pairs strategy has to justify

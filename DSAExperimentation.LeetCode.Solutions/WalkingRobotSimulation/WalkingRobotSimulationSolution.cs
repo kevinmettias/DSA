@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Devices.Compass;
+using DSAExperimentation.LeetCode.Solutions.Conventions;
 
 namespace DSAExperimentation.LeetCode.Solutions.WalkingRobotSimulation;
 
@@ -19,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WalkingRobotSimulation;
 // The robot's headings, turns and steps are the compass's (Domain/Devices/Compass): the
 // two arms read CompassRules alike, with east as +X and north as +Y (ARCHITECTURE §17.5), and
 // differ only in how they find an obstacle. The -2 and -1 commands are LeetCode's.
+[LeetCodeQuestion("walking-robot-simulation", LeetCodeAnswerOrder.AsWritten)]
 internal static class WalkingRobotSimulationSolution
 {
     private const int TurnLeftCommand = -2;
