@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.LeetCode.Solutions.DetectCyclesIn2DGrid;
 
@@ -16,8 +17,6 @@ namespace DSAExperimentation.LeetCode.Solutions.DetectCyclesIn2DGrid;
 // separately. It is satisfied by the shape of the input.
 internal static class DetectCyclesIn2DGridSolution
 {
-    // Sentinel row/column for the root of a traversal, which has no parent cell.
-    private const int NoParent = -1;
 
     private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
@@ -49,7 +48,7 @@ internal static class DetectCyclesIn2DGridSolution
     private static bool HasCycleFrom(char[][] grid, int startRow, int startCol, bool[,] visited)
     {
         var walk = new CycleWalk(grid, visited, new Stack<Step>());
-        walk.Stack.Push(new Step(startRow, startCol, NoParent, NoParent));
+        walk.Stack.Push(new Step(startRow, startCol, ParentArrayTree.NoParent, ParentArrayTree.NoParent));
         visited[startRow, startCol] = true;
 
         while (walk.Stack.Count > 0)

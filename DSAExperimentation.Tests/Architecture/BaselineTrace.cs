@@ -103,26 +103,7 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
         }
         while (foundNewInput);
 
-        return new ArmTrace(
-            [.. trace._entries.Select(Describe).Order(StringComparer.Ordinal)],
-            trace.Reaches(),
-            trace._reachedFrom.Keys.Where(IsSolution).ToHashSet(SymbolEqualityComparer.Default));
-    }
-
-    // Every solution member reachable from the given ones, each read as baseline code: what a
-    // baseline's own copies are, when a caller wants more of the baseline than one arm runs.
-    public static IReadOnlySet<ISymbol> SolutionMembersReachedFrom(IEnumerable<ISymbol> starts, SourceModels models)
-    {
-        var trace = new BaselineTrace(models, new HashSet<ISymbol>(SymbolEqualityComparer.Default));
-
-        foreach (var start in starts)
-        {
-            trace.Reach(start.OriginalDefinition, from: null);
-        }
-
-        trace.Drain();
-
-        return trace._reachedFrom.Keys.Where(IsSolution).ToHashSet(SymbolEqualityComparer.Default);
+        return new ArmTrace([.. trace._entries.Select(Describe).Order(StringComparer.Ordinal)], trace.Reaches());
     }
 
     private static bool IsBaselineArm(IMethodSymbol method)
@@ -520,9 +501,9 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
         return name == container || name.StartsWith($"{container}.", StringComparison.Ordinal);
     }
 
-    // What one arm's trace found: the solution members its harness reaches, the library names its
-    // baseline reaches, and every solution member the baseline runs or reads, its constants among them.
-    public sealed record ArmTrace(IReadOnlyList<string> Entries, IReadOnlyList<LibraryReach> Reaches, IReadOnlySet<ISymbol> SolutionMembers);
+    // What one arm's trace found: the solution members its harness reaches, and the library
+    // implementations its baseline reaches.
+    public sealed record ArmTrace(IReadOnlyList<string> Entries, IReadOnlyList<LibraryReach> Reaches);
 
     // One library name a baseline reaches, and the members that led there, arm first.
     public sealed record LibraryReach(string Name, IReadOnlyList<string> Chain);

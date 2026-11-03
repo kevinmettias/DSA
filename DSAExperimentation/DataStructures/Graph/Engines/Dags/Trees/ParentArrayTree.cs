@@ -7,7 +7,8 @@ public static class ParentArrayTree
 {
     // The root's entry in a parent array. Build accepts any negative entry; this is the one the
     // library's own writers of the encoding (EdgeListTree, PreOrderTour) put there.
-    internal const int NoParent = -1;
+    /// <summary>The entry a parent array holds for the root, which has no parent.</summary>
+    public const int NoParent = -1;
 
     /// <summary>Creates one node per entry of a parent array and links each node under its parent.</summary>
     /// <param name="parent">Each node's parent id, indexed by node id, with a negative entry for the root.</param>

@@ -16,8 +16,6 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestRepeatingCharacterReplace
 // Domain's EnglishUppercase, since LeetCode's strings are uppercase letters only.
 internal static class LongestRepeatingCharacterReplacementSolution
 {
-    private const int AlphabetSize = 26;
-
     // The textbook answer: re-scan from every start index with a plain int[26]
     // count table (LC's alphabet is uppercase A-Z), extending right until more
     // than maxReplacements characters would need replacing. Deliberately written
@@ -41,7 +39,7 @@ internal static class LongestRepeatingCharacterReplacementSolution
     // start index" half of the brute-force arm.
     private static int LongestRunFromStart(string text, int start, int maxReplacements)
     {
-        var counts = new int[AlphabetSize];
+        var counts = new int[EnglishLetters.Size];
         var mostFrequentCount = 0;
         var longest = 0;
 

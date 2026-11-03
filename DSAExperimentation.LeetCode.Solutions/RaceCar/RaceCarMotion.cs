@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 namespace DSAExperimentation.LeetCode.Solutions.RaceCar;
 
 // The fixed facts about LC 818's car that every arm of the search agrees on: a run
@@ -11,5 +12,4 @@ internal static class RaceCarMotion
 {
     public const int StartPosition = 0;
     public const int StartSpeed = 1;
-    public const int SpeedDoublingFactor = 2;
 }

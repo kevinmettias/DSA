@@ -13,15 +13,7 @@
       "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/WordSearchIIBenchmarks.cs",
       "anchor": "`BoardSize = 8`",
-      "reason": "`BoardSize = 8` is declared four times, and three of them mean chess's board. Domain/Games/Chess's ChessRules.BoardSize is the 8x8 board that LC 1222's and LC 2056's composed arms and LC 1222's and LC 3001's benchmarks read. LC 2056's cartesian-product baseline and LC 3001's destination-enumeration baseline state that board themselves: ARCHITECTURE.md §17.5 bars a baseline from reading even a compile-time constant from a library type, and the owner ruled (2026-11-01) that when a rule moves to Domain the baseline keeps its own copy. The board is fixed by the game, so neither copy can drift without its problem's own examples failing. The fourth, WordSearchIIBenchmarks' BoardSize, sizes the letter grid LC 212's workload searches, 8 by choice rather than because it is a chess board, so it shares the value and not the meaning, and reading ChessRules there would be wrong.",
-      "owner": "@kmettias",
-      "expires": "2027-04-01"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.LeetCode.Solutions/FindWinnerOnATicTacToeGame/TicTacToeVocabulary.cs",
-      "anchor": "`BoardSize = 3`",
-      "reason": "LC 1275's board-rescan baseline states the 3 x 3 board itself. ARCHITECTURE.md §17.5 bars a baseline from reading even a compile-time constant from a library type, so it cannot read Domain/Games/TicTacToe's TicTacToeRules.BoardSize, which the running-counts arm uses, and the owner ruled (2026-11-01) that when a rule moves to Domain the baseline keeps its own copy. The board is fixed by the game itself, so the copy cannot drift without the problem's own examples failing.",
+      "reason": "`BoardSize = 8` is declared twice: Domain/Games/Chess's ChessRules.BoardSize, chess's 8x8 board, which LC 999, LC 1222, LC 2056 and LC 3001 read, their baselines among them (ARCHITECTURE.md §17.5), and WordSearchIIBenchmarks' BoardSize, which sizes the letter grid LC 212's workload searches, 8 by choice rather than because it is a chess board, so it shares the value and not the meaning, and reading ChessRules there would be wrong.",
       "owner": "@kmettias",
       "expires": "2027-04-01"
     },
@@ -2872,14 +2864,6 @@
       "path": "DSAExperimentation.Benchmarks/Fixtures/InterleavingStringWorkloads.cs",
       "anchor": "`Alphabet = ",
       "reason": "`Alphabet = \"ab\"` is declared in 3 independent units (Fixtures/InterleavingStringWorkloads.cs, Fixtures/LongestCommonSuffixQueriesWorkloads.cs, Fixtures/OverlappingSubstringGridWorkloads.cs), each a workload generator for one problem that narrows its own alphabet to two letters for its own reason - here, so the two sources often agree with the target's next letter and a wrong choice survives a while before failing. None is a shared type and the repository has no home to hoist it to - creating one would give 3 unrelated generators a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2027-01-01"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation/DataStructures/CountedBitTrie/CountedBitTrie.cs",
-      "anchor": "`BitWidth = ",
-      "reason": "`BitWidth = 32` is declared by the core BitTrie and CountedBitTrie, each the depth of its own walk down an int's bits - two structures kept apart on purpose, so neither leans on the other for its height. The three solutions that also declare it (NumberOf1Bits, ReverseBits, SingleNumberII), each the width of the 32-bit word its own problem hands it, are private copies the baselines may not read from the library, so checks.json's barred_reads row sets them aside. The same name is also declared as 30 elsewhere in the corpus, so this is each file's own value rather than one shared fact - the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2027-01-01"
     },

@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DigitStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfDigitOne;
@@ -15,9 +16,6 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfDigitOne;
 // seen (higherDigits), the digit itself, and the remainder still to come.
 internal static class NumberOfDigitOneSolution
 {
-    // Base of the positional numeral system both strategies decompose upperBound into.
-    private const int DecimalBase = 10;
-
     // The textbook baseline this composition has to justify itself against:
     // a plain nested loop, nothing from this repo.
     public static long CountDigitOneByBruteForceScan(int upperBound)
@@ -26,9 +24,9 @@ internal static class NumberOfDigitOneSolution
 
         for (var number = 1; number <= upperBound; number++)
         {
-            for (var remaining = number; remaining > 0; remaining /= DecimalBase)
+            for (var remaining = number; remaining > 0; remaining /= DecimalDigits.Size)
             {
-                if (remaining % DecimalBase == 1)
+                if (remaining % DecimalDigits.Size == 1)
                 {
                     count++;
                 }
@@ -64,23 +62,23 @@ internal static class NumberOfDigitOneSolution
     {
         var digits = new DigitStack();
 
-        for (var remaining = upperBound; remaining > 0; remaining /= DecimalBase)
+        for (var remaining = upperBound; remaining > 0; remaining /= DecimalDigits.Size)
         {
-            digits.Push(remaining % DecimalBase);
+            digits.Push(remaining % DecimalDigits.Size);
         }
 
         return digits;
     }
 
     // The place value of the digit that pops first (the most significant one):
-    // DecimalBase raised to one less than the digit count.
+    // DecimalDigits.Size raised to one less than the digit count.
     private static long HighestPlaceValue(int digitCount)
     {
         var placeValue = 1L;
 
         for (var i = 1; i < digitCount; i++)
         {
-            placeValue *= DecimalBase;
+            placeValue *= DecimalDigits.Size;
         }
 
         return placeValue;
@@ -100,8 +98,8 @@ internal static class NumberOfDigitOneSolution
             _ => (higherDigits + 1) * placeValue,
         };
 
-        higherDigits = (higherDigits * DecimalBase) + digit;
-        placeValue /= DecimalBase;
+        higherDigits = (higherDigits * DecimalDigits.Size) + digit;
+        placeValue /= DecimalDigits.Size;
         return delta;
     }
 }

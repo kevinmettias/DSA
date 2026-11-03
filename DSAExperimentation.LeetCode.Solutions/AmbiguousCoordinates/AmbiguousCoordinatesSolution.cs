@@ -1,4 +1,5 @@
 using System.Text;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.AmbiguousCoordinates;
 
@@ -30,7 +31,6 @@ internal static class AmbiguousCoordinatesSolution
     // with a zero digit.
     private const string Zero = "0";
 
-    private const char ZeroDigit = '0';
     private const char DecimalPoint = '.';
 
     // Both arms are stateless and hold nothing between calls, so one instance each
@@ -58,7 +58,7 @@ internal static class AmbiguousCoordinatesSolution
         return Combine(digits, SlicedAndChecked);
     }
 
-    private static bool IsValidWhole(string digits) => digits == Zero || digits[0] != ZeroDigit;
+    private static bool IsValidWhole(string digits) => digits == Zero || digits[0] != DecimalDigits.Zero;
 
     // Everything between the parentheses LeetCode wraps the input in.
     private static string DigitRun(string wrappedDigits) => wrappedDigits[1..^1];
@@ -123,7 +123,7 @@ internal static class AmbiguousCoordinatesSolution
             var intPart = candidate[..dotIndex];
             var fracPart = candidate[(dotIndex + 1)..];
 
-            return IsValidWhole(intPart) && fracPart[^1] != ZeroDigit;
+            return IsValidWhole(intPart) && fracPart[^1] != DecimalDigits.Zero;
         }
     }
 
@@ -144,7 +144,7 @@ internal static class AmbiguousCoordinatesSolution
                 var intPart = digits[..dot];
                 var fracPart = digits[dot..];
 
-                if (IsValidWhole(intPart) && fracPart[^1] != ZeroDigit)
+                if (IsValidWhole(intPart) && fracPart[^1] != DecimalDigits.Zero)
                 {
                     yield return $"{intPart}{DecimalPoint}{fracPart}";
                 }

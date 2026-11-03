@@ -39,6 +39,11 @@ public sealed partial class LibraryValueCopiesTests
     public void In_SmallValueSharingOnlyARoleWord_IsNoCopy()
         => Assert.Empty(CopiesIn("private const int GridSize = 9;"));
 
+    // No names a role too: a -1 that marks a missing greater element is not a parent array's root.
+    [Fact]
+    public void In_SmallIntegerSharingOnlyTheWordNo_IsNoCopy()
+        => Assert.Empty(CopiesIn("private const int NoGreaterElement = -1;"));
+
     // Factor names a role too: a scale of 2 is not AlgorithmConstants' halving factor.
     [Fact]
     public void In_SmallValueSharingOnlyFactor_IsNoCopy()
@@ -50,20 +55,11 @@ public sealed partial class LibraryValueCopiesTests
         => Assert.Empty(CopiesIn("private enum Heading { North, East, South, West }"));
 
     [Fact]
-    public void In_ConstantABaselineReaches_IsNoCopy()
-        => Assert.Empty(CopiesIn(RevolutionCopy, spared: "Revolution"));
-
-    [Fact]
     public void In_ConstantOfTheTierRoot_IsNoCopy()
         => Assert.DoesNotContain(CopiesIn(string.Empty), copy => copy.Name.StartsWith("DSAExperimentation.LeetCode.Solutions.ProbeRoot", StringComparison.Ordinal));
 
-    private static IReadOnlyList<LibraryValueCopies.Copy> CopiesIn(string solutionMembers, string spared = "")
-    {
-        var probe = ProbeCompilation(solutionMembers);
-        var baselineReached = probe.GetSymbolsWithName(name => name == spared, SymbolFilter.Member).ToHashSet(SymbolEqualityComparer.Default);
-
-        return LibraryValueCopies.In(RepositoryCompilation.Framework, probe, baselineReached);
-    }
+    private static IReadOnlyList<LibraryValueCopies.Copy> CopiesIn(string solutionMembers)
+        => LibraryValueCopies.In(RepositoryCompilation.Framework, ProbeCompilation(solutionMembers));
 
     // The probe compiled against what the solution project compiles against. A probe that does not
     // compile would find nothing, so it fails here instead.

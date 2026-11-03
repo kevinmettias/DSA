@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DSAExperimentation.LeetCode.Solutions.AddTwoNumbersII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -29,12 +30,12 @@ public class AddTwoNumbersIIBenchmarks
 
     private static SinglyLinkedListNode<int> BuildRandomDigitList(Random random, int length)
     {
-        var head = new SinglyLinkedListNode<int>(random.Next(1, AddTwoNumbersIIConstants.DecimalBase));
+        var head = new SinglyLinkedListNode<int>(random.Next(1, DecimalDigits.Size));
         var tail = head;
 
         for (var i = 1; i < length; i++)
         {
-            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, AddTwoNumbersIIConstants.DecimalBase));
+            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, DecimalDigits.Size));
             tail = tail.Next;
         }
 

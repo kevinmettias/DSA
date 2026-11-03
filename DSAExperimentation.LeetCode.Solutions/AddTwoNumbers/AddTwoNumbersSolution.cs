@@ -1,5 +1,6 @@
 using System.Numerics;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.AddTwoNumbers;
 
@@ -24,9 +25,9 @@ internal static class AddTwoNumbersSolution
         while (HasMoreDigitsToAdd(first, second, carry))
         {
             var digitSum = carry + (first?.Value ?? 0) + (second?.Value ?? 0);
-            carry = digitSum / AddTwoNumbersConstants.DecimalBase;
+            carry = digitSum / DecimalDigits.Size;
 
-            tail.Next = new SinglyLinkedListNode<int>(digitSum % AddTwoNumbersConstants.DecimalBase);
+            tail.Next = new SinglyLinkedListNode<int>(digitSum % DecimalDigits.Size);
             tail = tail.Next;
 
             first = first?.Next;
@@ -56,9 +57,9 @@ internal static class AddTwoNumbersSolution
 
         do
         {
-            tail.Next = new SinglyLinkedListNode<int>((int)(sum % AddTwoNumbersConstants.DecimalBase));
+            tail.Next = new SinglyLinkedListNode<int>((int)(sum % DecimalDigits.Size));
             tail = tail.Next;
-            sum /= AddTwoNumbersConstants.DecimalBase;
+            sum /= DecimalDigits.Size;
         }
         while (sum > 0);
 
@@ -73,7 +74,7 @@ internal static class AddTwoNumbersSolution
         for (var node = head; node is not null; node = node.Next)
         {
             value += node.Value * placeValue;
-            placeValue *= AddTwoNumbersConstants.DecimalBase;
+            placeValue *= DecimalDigits.Size;
         }
 
         return value;

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumScoreWordsFormedByLetters;
 
@@ -18,8 +19,6 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumScoreWordsFormedByLetters
 // closed over this repo's Backtrack primitive.
 internal static class MaximumScoreWordsFormedByLettersSolution
 {
-    private const int AlphabetSize = 26;
-
     // The textbook recursion: a hand-written include/skip DFS that undoes its own
     // letter spend on the way back up. Deliberately written without this repo's
     // Backtrack primitive - it is the arm the composed solution below has to
@@ -109,7 +108,7 @@ internal static class MaximumScoreWordsFormedByLettersSolution
     // Whether one word's own letter counts all fit inside what the shared pool has left.
     private static bool CanFit(int[] counts, int[] remaining)
     {
-        for (var c = 0; c < AlphabetSize; c++)
+        for (var c = 0; c < EnglishLetters.Size; c++)
         {
             if (counts[c] > remaining[c])
             {
@@ -124,7 +123,7 @@ internal static class MaximumScoreWordsFormedByLettersSolution
     {
         var sign = change == LetterBudget.Spend ? -1 : 1;
 
-        for (var c = 0; c < AlphabetSize; c++)
+        for (var c = 0; c < EnglishLetters.Size; c++)
         {
             remaining[c] += sign * counts[c];
         }
@@ -132,7 +131,7 @@ internal static class MaximumScoreWordsFormedByLettersSolution
 
     private static int[] LetterCounts(IEnumerable<char> chars)
     {
-        var counts = new int[AlphabetSize];
+        var counts = new int[EnglishLetters.Size];
 
         foreach (var c in chars)
         {

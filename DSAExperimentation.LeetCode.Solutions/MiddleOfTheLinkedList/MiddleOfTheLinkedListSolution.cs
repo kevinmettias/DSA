@@ -11,11 +11,6 @@ namespace DSAExperimentation.LeetCode.Solutions.MiddleOfTheLinkedList;
 // caller's business.
 internal static class MiddleOfTheLinkedListSolution
 {
-    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const int HalvingFactor = 2;
-
-
     // Floyd's slow/fast two-pointer walk over this repo's own
     // SinglyLinkedListNode<TValue>.Next - the same node representation
     // CycleDetection.FindMeetingPoint advances two-steps-per-one, applied here to
@@ -48,7 +43,7 @@ internal static class MiddleOfTheLinkedListSolution
             count++;
         }
 
-        var target = count / HalvingFactor;
+        var target = count / AlgorithmConstants.HalvingFactor;
         var current = head;
 
         for (var step = 0; step < target; step++)

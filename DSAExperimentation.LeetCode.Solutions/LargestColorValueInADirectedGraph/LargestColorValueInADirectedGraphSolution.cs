@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.TopologicalSort;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.Solutions.LargestColorValueInADirectedGraph;
 
@@ -22,10 +23,6 @@ namespace DSAExperimentation.LeetCode.Solutions.LargestColorValueInADirectedGrap
 // ends a prefix with the same count, so nothing is missed.
 internal static class LargestColorValueInADirectedGraphSolution
 {
-    // Colors are the 26 lowercase letters, so a per-node count vector is a fixed
-    // 26-slot array rather than a map.
-    private const int AlphabetSize = 26;
-
     // Depth-first cycle-detection marks for the baseline's own walk.
     private const int Unvisited = 0;
     private const int InProgress = 1;
@@ -51,7 +48,7 @@ internal static class LargestColorValueInADirectedGraphSolution
             return LeetCodeAnswer.None;
         }
 
-        var counts = nodes.ToDictionary(node => node, _ => new int[AlphabetSize]);
+        var counts = nodes.ToDictionary(node => node, _ => new int[EnglishLetters.Size]);
         var best = 0;
 
         foreach (var node in ordering)
@@ -79,7 +76,7 @@ internal static class LargestColorValueInADirectedGraphSolution
         {
             var childCounts = counts[children.Get(i)];
 
-            for (var c = 0; c < AlphabetSize; c++)
+            for (var c = 0; c < EnglishLetters.Size; c++)
             {
                 childCounts[c] = Math.Max(childCounts[c], nodeCounts[c]);
             }
@@ -116,7 +113,7 @@ internal static class LargestColorValueInADirectedGraphSolution
     private static Dictionary<ColorGraphNode, int[]> BuildInitialCounts(List<ColorGraphNode> nodes)
         => nodes.ToDictionary(node => node, node =>
         {
-            var counts = new int[AlphabetSize];
+            var counts = new int[EnglishLetters.Size];
             counts[node.Color] = 1;
             return counts;
         });
@@ -140,7 +137,7 @@ internal static class LargestColorValueInADirectedGraphSolution
         {
             var childCounts = counts[child];
 
-            for (var c = 0; c < AlphabetSize; c++)
+            for (var c = 0; c < EnglishLetters.Size; c++)
             {
                 var candidate = nodeCounts[c] + (c == child.Color ? 1 : 0);
 

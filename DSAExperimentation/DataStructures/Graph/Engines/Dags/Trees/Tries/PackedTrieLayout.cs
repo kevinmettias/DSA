@@ -12,7 +12,6 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 public readonly struct PackedTrieLayout : ITrieLayout
 {
     private const int FirstCapacity = 1;
-    private const int GrowthFactor = 2;
 
     /// <summary>False: only the letters present have slots.</summary>
     public static bool HasSlotPerLetter => false;
@@ -28,7 +27,7 @@ public readonly struct PackedTrieLayout : ITrieLayout
     /// <returns>1 for an empty node; otherwise twice <paramref name="childCount"/>, capped at <paramref name="alphabetSize"/>.</returns>
     public static int GrownCapacity(int childCount, int alphabetSize)
     {
-        var doubled = Math.Max(FirstCapacity, childCount * GrowthFactor);
+        var doubled = Math.Max(FirstCapacity, childCount * ArrayGrowth.GrowthFactor);
 
         return Math.Min(doubled, alphabetSize);
     }

@@ -18,11 +18,6 @@ namespace DSAExperimentation.LeetCode.Solutions.CapacityToShipPackagesWithinDDay
 // "capacity"/"days" are that problem's "limit"/"k" under a different name.
 internal static class CapacityToShipPackagesWithinDDaysSolution
 {
-    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const int HalvingFactor = 2;
-
-
     // The textbook answer: a hand-written bisection over the capacity range, BCL-only.
     public static int ShipWithinDaysByManualBisection(int[] weights, int days)
     {
@@ -31,7 +26,7 @@ internal static class CapacityToShipPackagesWithinDDaysSolution
 
         while (low < high)
         {
-            var mid = low + ((high - low) / HalvingFactor);
+            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
             if (CanShipWithinDays(weights, days, mid))
             {

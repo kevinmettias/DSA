@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
+
 namespace DSAExperimentation.LeetCode.Solutions.IntegerToEnglishWords;
 
 // LC 273's fixed English words and the bases that index them - data both
@@ -21,7 +23,6 @@ internal static class IntegerToEnglishWordsVocabulary
     internal const int GroupSize = 1000;
     internal const int HundredsDivisor = 100;
     internal const int TensThreshold = 20;
-    internal const int DigitBase = 10;
 
     internal static readonly string[] Below20 =
     [

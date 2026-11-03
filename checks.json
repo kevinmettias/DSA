@@ -12,13 +12,6 @@
             "shared": ["DSAExperimentation.LeetCode.Solutions/Conventions"],
             "reason": "A problem is one unit: its folder in DSAExperimentation.LeetCode.Solutions (ARCHITECTURE §17.3) together with its <Problem>Benchmarks.cs harness (§17.7). Problems are solved independently, so a value two problems both declare, such as a board size, a digit base, a sentinel or a workload bound, is each problem's own choice and must stay free to differ. A value a problem's harness and its solution both declare is a fact about that problem, so it is still reported. Copies of the shared helpers are still reported too: the tier-root folders (`shared` lists the same folders as ProblemImportTests' TierRootFolders, and the two must change together), the files beside the problem folders and the helpers beside the harnesses. Benchmarks/Fixtures is left out on purpose: a fixture can serve several problems, so its copies are still compared and argued in suppressions.json."
           }
-        ],
-        "barred_reads": [
-          {
-            "readers": ["DSAExperimentation.LeetCode.Solutions/**"],
-            "barred": ["DSAExperimentation"],
-            "reason": "A baseline may not read the library (ARCHITECTURE §17.5): nothing in DataStructures, Algorithms, Mechanisms or Domain, not even a compile-time constant. Only the LeetCode tier root, such as LeetCodeAnswer and LeetCodeModulus, is open to it. A baseline that needs a library value, such as a halving factor or Sudoku's box size, therefore states it in a private constant, and that copy is the rule obeyed, not a value that escaped. The readers are the whole LeetCode project because the check cannot tell a baseline's constant from a composed arm's. A composed arm must read the library, so a private copy in one would be set aside here too, and review has to catch it. A copy the problem exposes (internal or public) and a copy in a benchmark harness are still reported. `DSAExperimentation.LeetCode.Solutions/**` needs its `/**`: in the glob dialect a last segment holding a dot names a file, so the bare folder name would cover nothing."
-          }
         ]
       }
     }

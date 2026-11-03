@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.ClosestPrimeNumbersInRange;
 
@@ -14,7 +15,6 @@ namespace DSAExperimentation.LeetCode.Solutions.ClosestPrimeNumbersInRange;
 // MostFrequentPrime uses for LC 3044.
 internal static class ClosestPrimeNumbersInRangeSolution
 {
-    private const int SmallestPrime = 2;
 
     // The textbook answer: test each candidate on its own by dividing it by every
     // odd divisor up to its square root. BCL-only, and it redoes that work for
@@ -23,7 +23,7 @@ internal static class ClosestPrimeNumbersInRangeSolution
     {
         var scan = new ClosestPairScan();
 
-        for (var candidate = Math.Max(left, SmallestPrime); candidate <= right; candidate++)
+        for (var candidate = Math.Max(left, Primes.Smallest); candidate <= right; candidate++)
         {
             if (IsPrimeByTrialDivision(candidate))
             {
@@ -36,14 +36,14 @@ internal static class ClosestPrimeNumbersInRangeSolution
 
     private static bool IsPrimeByTrialDivision(int value)
     {
-        if (value < SmallestPrime)
+        if (value < Primes.Smallest)
         {
             return false;
         }
 
-        if (value % SmallestPrime == 0)
+        if (value % Primes.Smallest == 0)
         {
-            return value == SmallestPrime;
+            return value == Primes.Smallest;
         }
 
         // Evens are already settled above, so only odd divisors remain.
@@ -66,7 +66,7 @@ internal static class ClosestPrimeNumbersInRangeSolution
         var isComposite = PrimeSieve.BuildCompositeTracker(right);
         var scan = new ClosestPairScan();
 
-        for (var candidate = Math.Max(left, SmallestPrime); candidate <= right; candidate++)
+        for (var candidate = Math.Max(left, Primes.Smallest); candidate <= right; candidate++)
         {
             if (!isComposite[candidate])
             {

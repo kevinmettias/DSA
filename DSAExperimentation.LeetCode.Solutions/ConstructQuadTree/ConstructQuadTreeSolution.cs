@@ -24,11 +24,6 @@ namespace DSAExperimentation.LeetCode.Solutions.ConstructQuadTree;
 // its own forest-build cost is charged into the same measured call.
 internal static class ConstructQuadTreeSolution
 {
-    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const int HalvingFactor = 2;
-
-
     public static QuadTreeNode BuildByBruteForceCellScan(int[][] grid) =>
         BuildRegionByCellScan(grid, 0, 0, grid.Length);
 
@@ -49,7 +44,7 @@ internal static class ConstructQuadTreeSolution
             return new QuadTreeNode(Val: grid[row][col] == 1, IsLeaf: true);
         }
 
-        var half = size / HalvingFactor;
+        var half = size / AlgorithmConstants.HalvingFactor;
         return new QuadTreeNode(Val: true, IsLeaf: false)
         {
             TopLeft = BuildRegionByCellScan(grid, row, col, half),

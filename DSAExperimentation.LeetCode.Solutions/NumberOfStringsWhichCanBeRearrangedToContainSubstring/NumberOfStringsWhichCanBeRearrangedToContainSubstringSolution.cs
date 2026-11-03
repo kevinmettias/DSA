@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfStringsWhichCanBeRearrangedToContainSubstring;
 
@@ -10,11 +11,10 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfStringsWhichCanBeRearran
 // as "leet" followed by the rest in any order.
 internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution
 {
-    private const int AlphabetSize = 26;
     private const int RequiredLCount = 1;
     private const int RequiredECount = 2;
     private const int RequiredTCount = 1;
-    private const int OtherLetterCount = AlphabetSize - 3; // every letter but l, e, t
+    private const int OtherLetterCount = EnglishLetters.Size - 3; // every letter but l, e, t
 
     // dp[cappedLCount, cappedECount, cappedTCount] = number of strings of length i
     // whose progress toward the requirement is capped at (min(count('l'), 1),
@@ -90,17 +90,17 @@ internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolut
     // exponentiation (ModularPower).
     public static int CountRearrangeableStringsByInclusionExclusion(int stringLength)
     {
-        var total = ModularPower.Of(AlphabetSize, stringLength, LeetCodeModulus.Value);
+        var total = ModularPower.Of(EnglishLetters.Size, stringLength, LeetCodeModulus.Value);
 
-        var noL = ModularPower.Of(AlphabetSize - 1, stringLength, LeetCodeModulus.Value);
-        var noT = ModularPower.Of(AlphabetSize - 1, stringLength, LeetCodeModulus.Value);
-        var shortOnE = AtMostOneMarked(AlphabetSize - 1, stringLength);
+        var noL = ModularPower.Of(EnglishLetters.Size - 1, stringLength, LeetCodeModulus.Value);
+        var noT = ModularPower.Of(EnglishLetters.Size - 1, stringLength, LeetCodeModulus.Value);
+        var shortOnE = AtMostOneMarked(EnglishLetters.Size - 1, stringLength);
 
-        var noLAndNoT = ModularPower.Of(AlphabetSize - 2, stringLength, LeetCodeModulus.Value);
-        var noLAndShortOnE = AtMostOneMarked(AlphabetSize - 2, stringLength);
-        var noTAndShortOnE = AtMostOneMarked(AlphabetSize - 2, stringLength);
+        var noLAndNoT = ModularPower.Of(EnglishLetters.Size - 2, stringLength, LeetCodeModulus.Value);
+        var noLAndShortOnE = AtMostOneMarked(EnglishLetters.Size - 2, stringLength);
+        var noTAndShortOnE = AtMostOneMarked(EnglishLetters.Size - 2, stringLength);
 
-        var noLAndNoTAndShortOnE = AtMostOneMarked(AlphabetSize - 3, stringLength);
+        var noLAndNoTAndShortOnE = AtMostOneMarked(EnglishLetters.Size - 3, stringLength);
 
         var missingSomeRequirement =
             (noL + noT + shortOnE - noLAndNoT - noLAndShortOnE - noTAndShortOnE + noLAndNoTAndShortOnE)

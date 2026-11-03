@@ -1,4 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.DecodeWaysII;
 
@@ -59,8 +61,8 @@ internal static class DecodeWaysIISolution
             return SecondIsStarWays(first);
         }
 
-        var value = ((first - '0') * DecodeWaysIIRecurrence.DecimalBase) + (second - '0');
-        return value is >= DecodeWaysIIRecurrence.DecimalBase and <= DecodeWaysIIRecurrence.MaxLetterCode ? 1 : 0;
+        var value = ((first - '0') * DecimalDigits.Size) + (second - '0');
+        return value is >= DecimalDigits.Size and <= EnglishLetters.Size ? 1 : 0;
     }
 
     // '*' in the second position completes a two-digit code only behind a leading

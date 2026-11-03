@@ -13,13 +13,16 @@ namespace DSAExperimentation.DataStructures;
 // Lives in DataStructures/, the LOWEST tier that needs it, even though the name says "algorithm":
 // HeapArrayIndex and SegmentTree read these, and a tier may only depend downward (ARCHITECTURE.md
 // section 17.2, enforced by LayeringTests). Filing it under Algorithms/ made three data structures
-// reach up a tier for two integers. HalvingFactor and BranchingFactor
-// happen to share a value (2) but not a meaning - one is the divisor a range is split by, the
-// other is how many children a node has - so they stay two named constants, not one reused under
-// two names.
+// reach up a tier for two integers. HalvingFactor, BranchingFactor and DoublingFactor
+// happen to share a value (2) but not a meaning - one is the divisor a range is split by, one is
+// how many children a node has, and one is what a quantity is multiplied by at each step - so they
+// stay three named constants, not one reused under three names.
 /// <summary>Numeric constants shared by code that halves a range or branches a complete binary tree.</summary>
 public static class AlgorithmConstants
 {
     public const int HalvingFactor = 2;
     public const int BranchingFactor = 2;
+
+    /// <summary>The factor a quantity grows by when it doubles at each step, as a suffix array's sorted prefix length does.</summary>
+    public const int DoublingFactor = 2;
 }

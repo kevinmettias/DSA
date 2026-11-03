@@ -25,13 +25,12 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfValidMoveCombinationsOnC
 // mutable State live here beside the solution (ARCHITECTURE.md #17.3).
 //
 // The board and each piece's lines are chess's (Domain/Games/Chess): the backtracking arm
-// reads them from ChessRules, and the cartesian-product baseline keeps its own
-// copies below (ARCHITECTURE §17.5). The piece names and the 1-based squares are
-// LeetCode's.
+// reads both, and the cartesian-product baseline reads the board's size and keeps its
+// own copies of the lines below (ARCHITECTURE §17.5). The piece names and the 1-based
+// squares are LeetCode's.
 internal static class NumberOfValidMoveCombinationsOnChessboardSolution
 {
-    // The baseline's own copies of chess's board and lines.
-    private const int BoardSize = 8;
+    // LeetCode's names for the pieces.
     private const string RookPieceType = "rook";
     private const string BishopPieceType = "bishop";
     private const string QueenPieceType = "queen";
@@ -81,7 +80,7 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
         _ => throw new ArgumentOutOfRangeException(nameof(pieceType), pieceType, UnknownPieceTypeMessage),
     };
 
-    private static bool IsOnBoard(int row, int col) => row is >= 1 and <= BoardSize && col is >= 1 and <= BoardSize;
+    private static bool IsOnBoard(int row, int col) => row is >= 1 and <= ChessRules.BoardSize && col is >= 1 and <= ChessRules.BoardSize;
 
     // This repo's own backtracking engine: Candidates for the next piece only offers
     // (direction, distance) moves whose full simultaneous-movement trajectory never

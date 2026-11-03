@@ -1,6 +1,7 @@
-using DSAExperimentation.Algorithms.NumberTheory;
 using System.Numerics;
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfIdealArrays;
 
@@ -26,8 +27,6 @@ namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfIdealArrays;
 // O(log value).
 internal static class CountTheNumberOfIdealArraysSolution
 {
-    // Smallest prime, and the starting point for both trial division and the sieve.
-    private const int SmallestPrime = 2;
 
     // 1! == 1, so a factorial product only needs to start accumulating from 2.
     private const int FactorialStartMultiplier = 2;
@@ -55,7 +54,7 @@ internal static class CountTheNumberOfIdealArraysSolution
         var remaining = value;
         var product = 1L;
 
-        for (var factor = SmallestPrime; (long)factor * factor <= remaining; factor++)
+        for (var factor = Primes.Smallest; (long)factor * factor <= remaining; factor++)
         {
             product = ApplyTrialDivisionFactor(factor, arrayLength, ref remaining, product);
         }

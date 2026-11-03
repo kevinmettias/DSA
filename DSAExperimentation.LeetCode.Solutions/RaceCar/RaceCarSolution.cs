@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.States;
 using CarState = (int Position, int Speed);
@@ -50,7 +51,7 @@ internal static class RaceCarSolution
     private static void EnqueueCommands((int Position, int Speed, int Commands) state, CommandWalk walk)
     {
         var acceleratePosition = state.Position + state.Speed;
-        var accelerateSpeed = state.Speed * RaceCarMotion.SpeedDoublingFactor;
+        var accelerateSpeed = state.Speed * AlgorithmConstants.DoublingFactor;
 
         if (walk.Space.IsWithinBounds(acceleratePosition, accelerateSpeed) &&
             walk.Visited.Add((acceleratePosition, accelerateSpeed)))
@@ -104,7 +105,7 @@ internal static class RaceCarSolution
 
         for (var magnitude = RaceCarMotion.StartSpeed;
             magnitude <= box.MaxSpeedMagnitude;
-            magnitude *= RaceCarMotion.SpeedDoublingFactor)
+            magnitude *= AlgorithmConstants.DoublingFactor)
         {
             var forward = ArrivalDistance(graph, distances, (target, magnitude));
             var backward = ArrivalDistance(graph, distances, (target, -magnitude));

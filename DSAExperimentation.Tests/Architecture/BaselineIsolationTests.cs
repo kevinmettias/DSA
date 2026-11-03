@@ -20,8 +20,8 @@ public sealed partial class BaselineIsolationTests
     {
     };
 
-    // Every baseline arm's trace, shared with ComposedCopyTests, which spares what a baseline reaches.
-    internal static readonly Lazy<List<TracedArm>> Sweep = new(TraceEveryArm);
+    // Every baseline arm's trace, made once for the tests below.
+    private static readonly Lazy<List<TracedArm>> Sweep = new(TraceEveryArm);
 
     [Fact]
     public void EveryBaseline_UsesNoLibraryImplementation()

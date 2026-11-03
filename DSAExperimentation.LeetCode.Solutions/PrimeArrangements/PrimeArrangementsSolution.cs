@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.PrimeArrangements;
 
@@ -13,8 +14,6 @@ namespace DSAExperimentation.LeetCode.Solutions.PrimeArrangements;
 // where n is upperBound.
 internal static class PrimeArrangementsSolution
 {
-    // 2 is the smallest prime; every prime-related loop or threshold starts here.
-    private const int SmallestPrime = 2;
 
     // Factorial multiplication only needs to start at 2 - 0! and 1! are both 1.
     private const int FactorialLoopStart = 2;
@@ -29,11 +28,11 @@ internal static class PrimeArrangementsSolution
     {
         var count = 0;
 
-        for (var candidate = SmallestPrime; candidate <= upperBound; candidate++)
+        for (var candidate = Primes.Smallest; candidate <= upperBound; candidate++)
         {
             var isPrime = true;
 
-            for (var divisor = SmallestPrime; divisor * divisor <= candidate; divisor++)
+            for (var divisor = Primes.Smallest; divisor * divisor <= candidate; divisor++)
             {
                 if (candidate % divisor == 0)
                 {
@@ -59,7 +58,7 @@ internal static class PrimeArrangementsSolution
 
     private static int CountPrimesUpToBySieve(int upperBound)
     {
-        if (upperBound < SmallestPrime)
+        if (upperBound < Primes.Smallest)
         {
             return 0;
         }
@@ -83,7 +82,7 @@ internal static class PrimeArrangementsSolution
 
     private static void SieveComposites(DynamicArray<bool> isComposite, int upperBound)
     {
-        for (var i = SmallestPrime; i * i <= upperBound; i++)
+        for (var i = Primes.Smallest; i * i <= upperBound; i++)
         {
             if (isComposite.Get(i))
             {
@@ -101,7 +100,7 @@ internal static class PrimeArrangementsSolution
     {
         var count = 0;
 
-        for (var i = SmallestPrime; i <= upperBound; i++)
+        for (var i = Primes.Smallest; i <= upperBound; i++)
         {
             if (!isComposite.Get(i))
             {

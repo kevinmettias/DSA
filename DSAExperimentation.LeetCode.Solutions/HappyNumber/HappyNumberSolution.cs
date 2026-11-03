@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
+
 namespace DSAExperimentation.LeetCode.Solutions.HappyNumber;
 
 // LeetCode 202. Happy Number: repeatedly replace number by the sum of the squares
@@ -11,8 +13,6 @@ namespace DSAExperimentation.LeetCode.Solutions.HappyNumber;
 // a linked list's Next pointers, so it needs none.
 internal static class HappyNumberSolution
 {
-    private const int FirstDigitBase = 10;
-
     // Textbook baseline: record every digit-square sum produced so far in a BCL
     // HashSet and stop the first time one repeats. O(cycle length) extra space,
     // written without this repo's primitives - the arm the composed strategy has
@@ -52,9 +52,9 @@ internal static class HappyNumberSolution
 
         while (number > 0)
         {
-            var digit = number % FirstDigitBase;
+            var digit = number % DecimalDigits.Size;
             sum += digit * digit;
-            number /= FirstDigitBase;
+            number /= DecimalDigits.Size;
         }
 
         return sum;

@@ -15,10 +15,6 @@ namespace DSAExperimentation.LeetCode.Solutions.KokoEatingBananas;
 // SplitArrayLargestSum uses.
 internal static class KokoEatingBananasSolution
 {
-    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const int HalvingFactor = 2;
-
     // Koko eats at least one banana an hour, so the speed range starts at 1.
     private const int SlowestSpeed = 1;
 
@@ -30,7 +26,7 @@ internal static class KokoEatingBananasSolution
 
         while (low < high)
         {
-            var mid = low + ((high - low) / HalvingFactor);
+            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
             if (CanClearEveryPile(piles, mid, hourBudget))
             {

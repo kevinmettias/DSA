@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Computing.Binary;
 namespace DSAExperimentation.LeetCode.Solutions.ReverseBits;
 
 // LeetCode 190. Reverse Bits: reverse the 32 bits of an unsigned integer.
@@ -8,7 +9,6 @@ namespace DSAExperimentation.LeetCode.Solutions.ReverseBits;
 // that does no per-bit looping.
 internal static class ReverseBitsSolution
 {
-    private const int BitWidth = 32;
     private const int BitsPerByte = 8;
     private const int ByteCount = 256;
     private const uint ByteMask = 0xFF;
@@ -34,7 +34,7 @@ internal static class ReverseBitsSolution
     {
         var reversed = 0u;
 
-        for (var i = 0; i < BitWidth; i++)
+        for (var i = 0; i < BitWidths.Int32; i++)
         {
             reversed = (reversed << 1) | (value & 1);
             value >>= 1;

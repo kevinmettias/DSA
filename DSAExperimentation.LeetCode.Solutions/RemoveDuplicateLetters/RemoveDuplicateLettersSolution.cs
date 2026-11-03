@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using RepoCharSet = DSAExperimentation.DataStructures.Set.Set<char>;
 using RepoCharStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
@@ -14,8 +15,6 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveDuplicateLetters;
 // own Stack<char>) and a set of which letters are already on it (Set<char>).
 internal static class RemoveDuplicateLettersSolution
 {
-    private const int AlphabetSize = 26;
-
     // The textbook recursive alternative: at each of up to 26 levels, finds the
     // earliest letter whose remaining suffix still contains every distinct
     // letter of the current string, then recurses on that suffix with the
@@ -31,7 +30,7 @@ internal static class RemoveDuplicateLettersSolution
 
         var distinctInLetters = DistinctLetters(letters);
 
-        for (var candidate = 0; candidate < AlphabetSize; candidate++)
+        for (var candidate = 0; candidate < EnglishLetters.Size; candidate++)
         {
             var placed = TryPlaceCandidate(letters, distinctInLetters, candidate);
 
@@ -66,7 +65,7 @@ internal static class RemoveDuplicateLettersSolution
 
     private static bool HasSameDistinctLetters(bool[] left, bool[] right)
     {
-        for (var i = 0; i < AlphabetSize; i++)
+        for (var i = 0; i < EnglishLetters.Size; i++)
         {
             if (left[i] != right[i])
             {
@@ -83,7 +82,7 @@ internal static class RemoveDuplicateLettersSolution
     // the candidate answer lexicographically smallest without ever rescanning.
     public static string SmallestSubsequenceByStackAndSet(string letters)
     {
-        var lastOccurrence = new int[AlphabetSize];
+        var lastOccurrence = new int[EnglishLetters.Size];
         for (var i = 0; i < letters.Length; i++)
         {
             lastOccurrence[letters[i] - 'a'] = i;
@@ -136,7 +135,7 @@ internal static class RemoveDuplicateLettersSolution
 
     private static bool[] DistinctLetters(string letters)
     {
-        var seen = new bool[AlphabetSize];
+        var seen = new bool[EnglishLetters.Size];
         foreach (var c in letters)
         {
             seen[c - 'a'] = true;

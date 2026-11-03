@@ -18,11 +18,6 @@ namespace DSAExperimentation.LeetCode.Solutions.SplitArrayLargestSum;
 // O(nums.Length * log(sum - max)).
 internal static class SplitArrayLargestSumSolution
 {
-    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const int HalvingFactor = 2;
-
-
     public static int MinimizedLargestSumByManualBinarySearch(int[] nums, int subarrayCount)
     {
         var low = nums.Max();
@@ -30,7 +25,7 @@ internal static class SplitArrayLargestSumSolution
 
         while (low < high)
         {
-            var mid = low + ((high - low) / HalvingFactor);
+            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
             if (CanSplitWithinLimit(nums, subarrayCount, mid))
             {
                 high = mid;

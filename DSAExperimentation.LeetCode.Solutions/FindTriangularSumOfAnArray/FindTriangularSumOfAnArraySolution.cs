@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTriangularSumOfAnArray;
 
@@ -13,10 +14,6 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTriangularSumOfAnArray;
 // this repo's own DynamicArray<int> rebuilt one row at a time.
 internal static class FindTriangularSumOfAnArraySolution
 {
-    // Each element of every row is a single decimal digit, so every pairwise sum is
-    // reduced mod 10.
-    private const int DigitModulus = 10;
-
     // The textbook answer: one int[] buffer, each round overwriting the first
     // size - 1 slots in place and shrinking the live prefix by one. Deliberately
     // BCL-only - it is the arm the DynamicArray strategy below is measured against.
@@ -30,7 +27,7 @@ internal static class FindTriangularSumOfAnArraySolution
         {
             for (var i = 0; i < size - 1; i++)
             {
-                current[i] = (current[i] + current[i + 1]) % DigitModulus;
+                current[i] = (current[i] + current[i + 1]) % DecimalDigits.Size;
             }
 
             size--;
@@ -72,7 +69,7 @@ internal static class FindTriangularSumOfAnArraySolution
 
         for (var i = 0; i < row.Count - 1; i++)
         {
-            next.Add((row.Get(i) + row.Get(i + 1)) % DigitModulus);
+            next.Add((row.Get(i) + row.Get(i + 1)) % DecimalDigits.Size);
         }
 
         return next;

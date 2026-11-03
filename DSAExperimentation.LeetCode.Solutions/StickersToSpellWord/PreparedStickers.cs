@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Language.English;
+
 namespace DSAExperimentation.LeetCode.Solutions.StickersToSpellWord;
 
 // Precomputed per-sticker letter counts and the canonically sorted target letters -
@@ -8,8 +10,6 @@ namespace DSAExperimentation.LeetCode.Solutions.StickersToSpellWord;
 // strategies so a benchmark can build it once in [GlobalSetup].
 internal readonly record struct PreparedStickers(int[][] StickerCounts, string SortedTarget)
 {
-    private const int AlphabetSize = 26;
-
     public static PreparedStickers Build(string[] stickers, string target)
     {
         var stickerCounts = stickers.Select(BuildCounts).ToArray();
@@ -20,7 +20,7 @@ internal readonly record struct PreparedStickers(int[][] StickerCounts, string S
 
     private static int[] BuildCounts(string sticker)
     {
-        var counts = new int[AlphabetSize];
+        var counts = new int[EnglishLetters.Size];
 
         foreach (var c in sticker)
         {

@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Computing.Binary;
 namespace DSAExperimentation.DataStructures.CountedBitTrie;
 
 // A binary trie over int's 32-bit two's-complement pattern (bit 31 down to bit 0) holding a
@@ -50,7 +51,6 @@ namespace DSAExperimentation.DataStructures.CountedBitTrie;
 /// </summary>
 public sealed class CountedBitTrie
 {
-    private const int BitWidth = 32;
     private const int ChildSlotsPerNode = 2;
 
     // The sentinel's slot, and the value an empty child slot holds - the root is slot 1, so no
@@ -59,7 +59,7 @@ public sealed class CountedBitTrie
     private const int Root = 1;
 
     // The sentinel, the root and one node per bit level: exactly what the first Insert lays down.
-    private const int InitialNodeCapacity = BitWidth + 2;
+    private const int InitialNodeCapacity = BitWidths.Int32 + 2;
 
     private int[] _children = new int[InitialNodeCapacity * ChildSlotsPerNode];
     private int[] _counts = new int[InitialNodeCapacity];
@@ -77,7 +77,7 @@ public sealed class CountedBitTrie
         var node = Root;
         _counts[Root]++;
 
-        for (var level = BitWidth - 1; level >= 0; level--)
+        for (var level = BitWidths.Int32 - 1; level >= 0; level--)
         {
             var bit = BitAt(bits, level);
             node = ChildOrNew(node, bit);
@@ -141,7 +141,7 @@ public sealed class CountedBitTrie
         var node = Root;
         _counts[Root]--;
 
-        for (var level = BitWidth - 1; level >= 0; level--)
+        for (var level = BitWidths.Int32 - 1; level >= 0; level--)
         {
             var bit = BitAt(bits, level);
             node = _children[SlotOf(node, bit)];
@@ -158,7 +158,7 @@ public sealed class CountedBitTrie
         var bits = unchecked((uint)value);
         var node = Root;
 
-        for (var level = BitWidth - 1; level >= 0; level--)
+        for (var level = BitWidths.Int32 - 1; level >= 0; level--)
         {
             var bit = BitAt(bits, level);
             node = _children[SlotOf(node, bit)];
@@ -197,7 +197,7 @@ public sealed class CountedBitTrie
         var node = Root;
         var xor = 0u;
 
-        for (var level = BitWidth - 1; level >= 0; level--)
+        for (var level = BitWidths.Int32 - 1; level >= 0; level--)
         {
             var bit = BitAt(bits, level);
             var oppositeBit = bit ^ 1u;
@@ -233,7 +233,7 @@ public sealed class CountedBitTrie
         var node = Root;
         var count = 0;
 
-        for (var level = BitWidth - 1; level >= 0; level--)
+        for (var level = BitWidths.Int32 - 1; level >= 0; level--)
         {
             var bit = BitAt(valueBits, level);
             var limitBit = BitAt(limitBits, level);

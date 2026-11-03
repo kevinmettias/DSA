@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Computing.Binary;
 namespace DSAExperimentation.LeetCode.Solutions.SingleNumberII;
 
 // LeetCode 137. Single Number II: every element in the array appears exactly
@@ -10,7 +11,6 @@ namespace DSAExperimentation.LeetCode.Solutions.SingleNumberII;
 // total.
 internal static class SingleNumberIISolution
 {
-    private const int BitWidth = 32;
     private const int TripleModulus = 3;
 
     // The ones/twos state machine: two bitmasks hold, for every position, whether
@@ -44,7 +44,7 @@ internal static class SingleNumberIISolution
     {
         var result = 0;
 
-        for (var bit = 0; bit < BitWidth; bit++)
+        for (var bit = 0; bit < BitWidths.Int32; bit++)
         {
             var count = nums.Count(n => ((n >> bit) & 1) == 1);
 

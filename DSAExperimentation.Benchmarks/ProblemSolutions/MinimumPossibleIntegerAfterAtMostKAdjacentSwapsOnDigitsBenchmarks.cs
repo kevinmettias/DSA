@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DSAExperimentation.LeetCode.Solutions.MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,7 +27,7 @@ public class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _digits = new string(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsConstants.DigitCount))).ToArray());
+        _digits = new string(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(DecimalDigits.Size))).ToArray());
     }
 
     [Benchmark(Baseline = true)]

@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DigitStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.PlusOne;
@@ -11,8 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PlusOne;
 // stack's LIFO order rebuild the array in the original order.
 internal static class PlusOneSolution
 {
-    private const int DecimalBase = 10;
-    private const int MaxDigitValue = DecimalBase - 1;
+    private const int MaxDigitValue = DecimalDigits.Size - 1;
 
     // Walk from the least-significant digit; the moment one absorbs the carry
     // without overflowing, every digit to its left is unaffected and the walk can
@@ -66,8 +66,8 @@ internal static class PlusOneSolution
         for (var i = digits.Length - 1; i >= 0; i--)
         {
             var sum = digits[i] + carry;
-            stack.Push(sum % DecimalBase);
-            carry = sum / DecimalBase;
+            stack.Push(sum % DecimalDigits.Size);
+            carry = sum / DecimalDigits.Size;
         }
 
         if (carry > 0)

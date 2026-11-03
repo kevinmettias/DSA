@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
+
 namespace DSAExperimentation.LeetCode.Solutions.SuperPow;
 
 // LeetCode 372. Super Pow: a^b mod 1337 where b is an arbitrarily long exponent given
@@ -8,7 +10,6 @@ namespace DSAExperimentation.LeetCode.Solutions.SuperPow;
 internal static class SuperPowSolution
 {
     private const int Modulus = 1337;
-    private const int HornerDigitBase = 10;
 
     // The textbook baseline: reconstruct the exponent from its digits (Horner's rule),
     // then multiply by baseValue once per unit of exponent - O(exponent). Deliberately
@@ -21,7 +22,7 @@ internal static class SuperPowSolution
 
         foreach (var digit in exponentDigits)
         {
-            exponent = exponent * HornerDigitBase + digit;
+            exponent = exponent * DecimalDigits.Size + digit;
         }
 
         var result = 1L;
@@ -46,7 +47,7 @@ internal static class SuperPowSolution
 
         foreach (var digit in exponentDigits)
         {
-            result = ModPow(result, HornerDigitBase) * ModPow(baseTerm, digit) % Modulus;
+            result = ModPow(result, DecimalDigits.Size) * ModPow(baseTerm, digit) % Modulus;
         }
 
         return (int)result;

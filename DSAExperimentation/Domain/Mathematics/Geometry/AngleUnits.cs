@@ -11,6 +11,9 @@ public static class AngleUnits
     /// <summary>The degrees in one full turn, which defines the degree.</summary>
     public const double FullTurnDegrees = 360.0;
 
+    /// <summary>The degrees in a half turn, a straight angle.</summary>
+    public const double HalfTurnDegrees = FullTurnDegrees / 2;
+
     /// <summary>The degrees in one radian: a half turn is pi radians.</summary>
-    public const double DegreesPerRadian = FullTurnDegrees / 2 / Math.PI;
+    public const double DegreesPerRadian = HalfTurnDegrees / Math.PI;
 }

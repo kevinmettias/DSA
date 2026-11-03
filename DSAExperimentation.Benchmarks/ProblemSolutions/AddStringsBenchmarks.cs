@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DSAExperimentation.LeetCode.Solutions.AddStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -28,10 +29,10 @@ public class AddStringsBenchmarks
     private static string DrawOperand(Random random, int length)
     {
         var digits = new char[length];
-        digits[0] = (char)('1' + random.Next(AddStringsConstants.DecimalBase - 1));
+        digits[0] = (char)('1' + random.Next(DecimalDigits.Size - 1));
         for (var i = 1; i < length; i++)
         {
-            digits[i] = (char)('0' + random.Next(AddStringsConstants.DecimalBase));
+            digits[i] = (char)('0' + random.Next(DecimalDigits.Size));
         }
 
         return new string(digits);

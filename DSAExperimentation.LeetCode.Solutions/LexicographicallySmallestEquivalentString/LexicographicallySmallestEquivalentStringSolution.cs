@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.Solutions.LexicographicallySmallestEquivalentString;
 
@@ -12,8 +13,6 @@ namespace DSAExperimentation.LeetCode.Solutions.LexicographicallySmallestEquival
 // in how the classes are discovered.
 internal static class LexicographicallySmallestEquivalentStringSolution
 {
-    private const int AlphabetSize = 26;
-
     // The textbook answer: materialize an adjacency list over the 26 letters and BFS
     // out of each unvisited letter to collect its component, tracking the smallest
     // member seen. Deliberately BCL-only - it is the arm the DisjointSet composition
@@ -28,9 +27,9 @@ internal static class LexicographicallySmallestEquivalentStringSolution
 
     private static List<int>[] BuildAdjacencyList(string s1, string s2)
     {
-        var adjacency = new List<int>[AlphabetSize];
+        var adjacency = new List<int>[EnglishLetters.Size];
 
-        for (var letter = 0; letter < AlphabetSize; letter++)
+        for (var letter = 0; letter < EnglishLetters.Size; letter++)
         {
             adjacency[letter] = [];
         }
@@ -51,10 +50,10 @@ internal static class LexicographicallySmallestEquivalentStringSolution
 
     private static char[] ComputeSmallestPerComponent(List<int>[] adjacency)
     {
-        var smallestInGroup = new char[AlphabetSize];
-        var visited = new bool[AlphabetSize];
+        var smallestInGroup = new char[EnglishLetters.Size];
+        var visited = new bool[EnglishLetters.Size];
 
-        for (var letter = 0; letter < AlphabetSize; letter++)
+        for (var letter = 0; letter < EnglishLetters.Size; letter++)
         {
             AssignComponentSmallest(letter, adjacency, visited, smallestInGroup);
         }
@@ -146,7 +145,7 @@ internal static class LexicographicallySmallestEquivalentStringSolution
 
     private static DisjointSet BuildEquivalences(string s1, string s2)
     {
-        var equivalences = new DisjointSet(AlphabetSize);
+        var equivalences = new DisjointSet(EnglishLetters.Size);
 
         for (var i = 0; i < s1.Length; i++)
         {
@@ -158,9 +157,9 @@ internal static class LexicographicallySmallestEquivalentStringSolution
 
     private static char[] ComputeSmallestPerRoot(DisjointSet equivalences)
     {
-        var smallestInGroup = new char[AlphabetSize];
+        var smallestInGroup = new char[EnglishLetters.Size];
 
-        for (var letter = 0; letter < AlphabetSize; letter++)
+        for (var letter = 0; letter < EnglishLetters.Size; letter++)
         {
             var root = equivalences.Find(letter);
             var candidate = (char)('a' + letter);

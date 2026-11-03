@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DSAExperimentation.LeetCode.Solutions.Conventions;
 using DSAExperimentation.LeetCode.Solutions.DoubleANumberRepresentedAsALinkedList;
 
@@ -27,11 +28,11 @@ public class DoubleANumberRepresentedAsALinkedListBenchmarks
     {
         var random = new Random(RandomSeed);
         var digits = new int[Length];
-        digits[0] = random.Next(1, DoubleANumberRepresentedAsALinkedListConstants.DecimalBase);
+        digits[0] = random.Next(1, DecimalDigits.Size);
 
         for (var index = 1; index < Length; index++)
         {
-            digits[index] = random.Next(0, DoubleANumberRepresentedAsALinkedListConstants.DecimalBase);
+            digits[index] = random.Next(0, DecimalDigits.Size);
         }
 
         _head = LeetCodeWireFormat.ToLinkedList(digits);

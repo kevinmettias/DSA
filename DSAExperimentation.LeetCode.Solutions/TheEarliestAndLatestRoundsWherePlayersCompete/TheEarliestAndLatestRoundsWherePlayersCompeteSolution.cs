@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.DataStructures;
 
 namespace DSAExperimentation.LeetCode.Solutions.TheEarliestAndLatestRoundsWherePlayersCompete;
 
@@ -36,10 +37,6 @@ namespace DSAExperimentation.LeetCode.Solutions.TheEarliestAndLatestRoundsWhereP
 // coverage tests state.
 internal static class TheEarliestAndLatestRoundsWherePlayersCompeteSolution
 {
-    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const int HalvingFactor = 2;
-
     // Next round's low is 1 + x; its high starts from low itself plus the
     // 1-indexed rank offset, before any of the searched-over survivors are added.
     private const int HighSeedBaseOffset = 2;
@@ -92,7 +89,7 @@ internal static class TheEarliestAndLatestRoundsWherePlayersCompeteSolution
             return (1, 1);
         }
 
-        var zones = Transition(state) with { NextRoundSize = (roundSize + 1) / HalvingFactor };
+        var zones = Transition(state) with { NextRoundSize = (roundSize + 1) / AlgorithmConstants.HalvingFactor };
 
         return ExploreRound(zones, rest);
     }
@@ -140,7 +137,7 @@ internal static class TheEarliestAndLatestRoundsWherePlayersCompeteSolution
             return (1, 1);
         }
 
-        var zones = Transition(state) with { NextRoundSize = (roundSize + 1) / HalvingFactor };
+        var zones = Transition(state) with { NextRoundSize = (roundSize + 1) / AlgorithmConstants.HalvingFactor };
 
         return UncachedExploreRound(zones);
     }
@@ -182,11 +179,11 @@ internal static class TheEarliestAndLatestRoundsWherePlayersCompeteSolution
     {
         var (roundSize, low, high) = state;
 
-        if (state.HasByeMiddle && high == (roundSize + 1) / HalvingFactor)
+        if (state.HasByeMiddle && high == (roundSize + 1) / AlgorithmConstants.HalvingFactor)
         {
             // high is the automatic-bye middle player: every other position up to
             // half is "other" and pairs outward into the Right zone.
-            return ((roundSize / HalvingFactor) - low, 0);
+            return ((roundSize / AlgorithmConstants.HalvingFactor) - low, 0);
         }
 
         var partner = Math.Min(high, roundSize + 1 - high);
@@ -207,7 +204,7 @@ internal static class TheEarliestAndLatestRoundsWherePlayersCompeteSolution
     {
         var bye = state.HasByeMiddle ? 1 : 0;
         var pairableInnerRegion = state.High - 1 - partner - bye;
-        var midFixed = (pairableInnerRegion / HalvingFactor) + bye;
+        var midFixed = (pairableInnerRegion / AlgorithmConstants.HalvingFactor) + bye;
 
         return (partner - state.Low - 1, midFixed);
     }
@@ -234,7 +231,7 @@ internal static class TheEarliestAndLatestRoundsWherePlayersCompeteSolution
     private readonly record struct BracketState(int RoundSize, int Low, int High)
     {
         // An odd round leaves one player unpaired, who advances automatically.
-        public bool HasByeMiddle => RoundSize % HalvingFactor == 1;
+        public bool HasByeMiddle => RoundSize % AlgorithmConstants.HalvingFactor == 1;
     }
 
     private readonly record struct NextRoundZones(int LeftFree, int MidFree, int MidFixed, int NextRoundSize);

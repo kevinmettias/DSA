@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DigitStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ReverseInteger;
@@ -16,14 +17,12 @@ namespace DSAExperimentation.LeetCode.Solutions.ReverseInteger;
 // LIFO digit-reversal primitive - and agree on the same overflow guard.
 internal static class ReverseIntegerSolution
 {
-    private const int DecimalBase = 10;
-
     // The largest and smallest values an int can still be multiplied by ten from
     // without overflowing; at exactly these, the appended digit decides.
-    private const int PositiveHeadroom = int.MaxValue / DecimalBase;
-    private const int NegativeHeadroom = int.MinValue / DecimalBase;
-    private const int LargestFinalPositiveDigit = int.MaxValue % DecimalBase;
-    private const int SmallestFinalNegativeDigit = int.MinValue % DecimalBase;
+    private const int PositiveHeadroom = int.MaxValue / DecimalDigits.Size;
+    private const int NegativeHeadroom = int.MinValue / DecimalDigits.Size;
+    private const int LargestFinalPositiveDigit = int.MaxValue % DecimalDigits.Size;
+    private const int SmallestFinalNegativeDigit = int.MinValue % DecimalDigits.Size;
 
     // Baseline: peel digits off with mod/div and fold them into the reversed
     // value directly, entirely BCL arithmetic. C#'s % keeps the dividend's sign,
@@ -36,15 +35,15 @@ internal static class ReverseIntegerSolution
 
         while (remaining != 0)
         {
-            var digit = remaining % DecimalBase;
+            var digit = remaining % DecimalDigits.Size;
 
             if (!CanAppendDigit(reversed, digit))
             {
                 return 0;
             }
 
-            reversed = (reversed * DecimalBase) + digit;
-            remaining /= DecimalBase;
+            reversed = (reversed * DecimalDigits.Size) + digit;
+            remaining /= DecimalDigits.Size;
         }
 
         return reversed;
@@ -69,7 +68,7 @@ internal static class ReverseIntegerSolution
                 return 0;
             }
 
-            reversed = (reversed * DecimalBase) + digit;
+            reversed = (reversed * DecimalDigits.Size) + digit;
         }
 
         return reversed;

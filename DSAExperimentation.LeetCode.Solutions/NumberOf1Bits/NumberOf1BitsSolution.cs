@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Computing.Binary;
 namespace DSAExperimentation.LeetCode.Solutions.NumberOf1Bits;
 
 // LeetCode 191. Number of 1 Bits: count the set bits in a 32-bit unsigned integer.
@@ -7,7 +8,6 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOf1Bits;
 // always runs all 32 positions. Which wins depends on how dense the operand is.
 internal static class NumberOf1BitsSolution
 {
-    private const int BitWidth = 32;
 
     // Shifts right and tests the low bit one position at a time: always 32
     // iterations, against the bit-clear arm's popcount(n). On a dense operand the
@@ -17,7 +17,7 @@ internal static class NumberOf1BitsSolution
     {
         var count = 0;
 
-        for (var bit = 0; bit < BitWidth; bit++)
+        for (var bit = 0; bit < BitWidths.Int32; bit++)
         {
             count += (int)(value & 1);
             value >>= 1;

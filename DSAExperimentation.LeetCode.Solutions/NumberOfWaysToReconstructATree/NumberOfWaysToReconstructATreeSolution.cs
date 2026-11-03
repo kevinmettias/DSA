@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.HashMap;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysToReconstructATree;
@@ -28,9 +29,6 @@ internal static class NumberOfWaysToReconstructATreeSolution
     private const int NoTree = 0;
     private const int ExactlyOneTree = 1;
     private const int MoreThanOneTree = 2;
-
-    // No candidate parent exists for this node, which rules out every tree.
-    private const int NoParent = -1;
 
     // The textbook answer: a BCL Dictionary of HashSets for the adjacency and
     // LINQ's OrderBy for the degree ordering. Deliberately written without this
@@ -105,7 +103,7 @@ internal static class NumberOfWaysToReconstructATreeSolution
         var ownDegree = adjacency[node].Count;
         var (parent, minQualifyingDegree, countAtMinDegree) = FindDictionaryCandidateParent(adjacency, node, ownDegree);
 
-        if (parent == NoParent)
+        if (parent == ParentArrayTree.NoParent)
         {
             return null;
         }
@@ -121,7 +119,7 @@ internal static class NumberOfWaysToReconstructATreeSolution
     private static (int Parent, int MinQualifyingDegree, int CountAtMinDegree) FindDictionaryCandidateParent(
         Dictionary<int, HashSet<int>> adjacency, int node, int ownDegree)
     {
-        var candidate = (Parent: NoParent, MinQualifyingDegree: int.MaxValue, CountAtMinDegree: 0);
+        var candidate = (Parent: ParentArrayTree.NoParent, MinQualifyingDegree: int.MaxValue, CountAtMinDegree: 0);
 
         foreach (var neighbor in adjacency[node])
         {
@@ -229,7 +227,7 @@ internal static class NumberOfWaysToReconstructATreeSolution
         adjacency.TryGetValue(node, out var neighbors);
         var (parent, minQualifyingDegree, countAtMinDegree) = FindCandidateParent(adjacency, neighbors!, ownDegree);
 
-        if (parent == NoParent)
+        if (parent == ParentArrayTree.NoParent)
         {
             return null;
         }
@@ -245,7 +243,7 @@ internal static class NumberOfWaysToReconstructATreeSolution
     private static (int Parent, int MinQualifyingDegree, int CountAtMinDegree) FindCandidateParent(
         HashMap<int, HashMap<int, bool>> adjacency, HashMap<int, bool> neighbors, int ownDegree)
     {
-        var candidate = (Parent: NoParent, MinQualifyingDegree: int.MaxValue, CountAtMinDegree: 0);
+        var candidate = (Parent: ParentArrayTree.NoParent, MinQualifyingDegree: int.MaxValue, CountAtMinDegree: 0);
 
         foreach (var neighbor in neighbors.Keys)
         {

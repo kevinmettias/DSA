@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumPrimeDifference;
 
@@ -15,9 +16,6 @@ internal static class MaximumPrimeDifferenceSolution
     // nums[i] is bounded by this LeetCode constraint, so a sieve only ever
     // needs to cover this many values regardless of how long nums itself is.
     private const int MaxValue = 100;
-
-    // The smallest prime, and so the first divisor trial division ever tests.
-    private const int SmallestPrime = 2;
 
     // The textbook scan: every pair of prime-valued indices, trial-division
     // tested on the fly. Correct, and the arm the sieve strategy below has to
@@ -47,12 +45,12 @@ internal static class MaximumPrimeDifferenceSolution
 
     private static bool IsPrimeByTrialDivision(int value)
     {
-        if (value < SmallestPrime)
+        if (value < Primes.Smallest)
         {
             return false;
         }
 
-        for (var divisor = SmallestPrime; divisor * divisor <= value; divisor++)
+        for (var divisor = Primes.Smallest; divisor * divisor <= value; divisor++)
         {
             if (value % divisor == 0)
             {

@@ -15,8 +15,6 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumGeneticDifferenceQuery;
 // they re-walk per query.
 internal static class MaximumGeneticDifferenceQuerySolution
 {
-    // Marks the root in LeetCode's parent-array encoding.
-    private const int NoParent = -1;
 
     // The textbook answer: for each query, walk the parent pointers from the queried
     // node all the way to the root and XOR against every id on the way. Deliberately
@@ -39,7 +37,7 @@ internal static class MaximumGeneticDifferenceQuerySolution
     {
         var best = 0;
 
-        for (var current = node; current != NoParent; current = parents[current])
+        for (var current = node; current != ParentArrayTree.NoParent; current = parents[current])
         {
             best = Math.Max(best, current ^ value);
         }

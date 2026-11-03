@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximizeCountOfDistinctPrimesAfterSplit;
 
@@ -10,7 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeCountOfDistinctPrimesAft
 //
 // Both strategies run the same Sieve of Eratosthenes over every value
 // nums/queries can ever hold - this folder's own PrimeSieve for the composed arm,
-// a BCL bool[] restatement of it for the baseline, which reaches no library type
+// a BCL bool[] restatement of it for the baseline, which writes its sieve by hand
 // (ARCHITECTURE 17.5) - and differ only in how they answer "best split" per query:
 // the brute-force arm re-scans both sides from scratch with a fresh HashSet<int>
 // for every candidate k, while the composed arm precomputes one prefix pass and
@@ -20,10 +21,6 @@ internal static class MaximizeCountOfDistinctPrimesAfterSplitSolution
 {
     // nums[i] and queries[i][1] are both bounded by this LeetCode constraint.
     private const int MaxValue = 100_000;
-
-    // The smallest prime: every value below it counts as composite in the baseline's
-    // sieve, so "is the slot clear" is the whole primality test, 0 and 1 included.
-    private const int SmallestPrime = 2;
 
     // O(n) work per candidate split, O(n) candidate splits, O(q) queries - the
     // literal reading of the problem, and the arm the prefix/suffix scan below
@@ -51,10 +48,10 @@ internal static class MaximizeCountOfDistinctPrimesAfterSplitSolution
 
         for (var i = 0; i <= bound; i++)
         {
-            isComposite[i] = i < SmallestPrime;
+            isComposite[i] = i < Primes.Smallest;
         }
 
-        for (var i = SmallestPrime; (long)i * i <= bound; i++)
+        for (var i = Primes.Smallest; (long)i * i <= bound; i++)
         {
             if (isComposite[i])
             {

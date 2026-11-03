@@ -1,6 +1,7 @@
-using DSAExperimentation.Algorithms.NumberTheory;
 using System.Numerics;
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountWaysToMakeArrayWithProduct;
 
@@ -23,8 +24,6 @@ namespace DSAExperimentation.LeetCode.Solutions.CountWaysToMakeArrayWithProduct;
 // pays O(maxK log log maxK) once and then factors each k in O(log k).
 internal static class CountWaysToMakeArrayWithProductSolution
 {
-    // Smallest prime, and the starting point for both trial division and the sieve.
-    private const int SmallestPrime = 2;
 
     // 1! == 1, so a factorial product only needs to start accumulating from 2.
     private const int FactorialStartMultiplier = 2;
@@ -52,7 +51,7 @@ internal static class CountWaysToMakeArrayWithProductSolution
         var remaining = targetProduct;
         var result = 1L;
 
-        for (var factor = SmallestPrime; (long)factor * factor <= remaining; factor++)
+        for (var factor = Primes.Smallest; (long)factor * factor <= remaining; factor++)
         {
             result = ApplyTrialDivisionFactor(factor, arrayLength, ref remaining, result);
         }

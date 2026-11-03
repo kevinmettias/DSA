@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using System.Collections.Immutable;
 using DSAExperimentation.DataStructures.Graph.States;
 using CarState = (int Position, int Speed);
@@ -30,7 +31,7 @@ internal readonly struct RaceCarCommands(RaceCarStateSpace box) : IStateSpace<Ca
 
     public int WriteSuccessors(CarState state, Span<CarState> successors)
     {
-        successors[0] = (state.Position + state.Speed, state.Speed * RaceCarMotion.SpeedDoublingFactor);
+        successors[0] = (state.Position + state.Speed, state.Speed * AlgorithmConstants.DoublingFactor);
         successors[1] = (state.Position, ReversedSpeed(state.Speed));
 
         return CommandCount;

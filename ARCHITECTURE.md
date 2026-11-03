@@ -863,6 +863,7 @@ specifically:
 
 | Folder | Holds |
 | --- | --- |
+| `Computing/Binary/` | `BitWidths` — how many bits a machine integer holds, read by the bit tries and by LC 191, LC 190 and LC 137 |
 | `Computing/Filesystem/` | `FolderPaths`, `WindowsPaths` — the folder-path notation, `/` between names with the root first, read by LC 1233's sort-then-scan arm through `NamePath<FolderPaths>`, and Windows', `\` with the drive first |
 | `Computing/Networking/` | `DomainNames` — labels joined by `.` with the root last, the root-last notation `NamePath` reads at the back |
 | `Computing/Paths/` | `IPathNotation`, `NamePath` — a path through a tree of names in a notation, and whether another path lies inside it, one rule for root-first notations (folder paths) and root-last ones (domain names) |
@@ -881,6 +882,7 @@ specifically:
 | `Mathematics/Geometry/` | `EuclideanPolygons`, `EuclideanPlane`, `ConstantCurvatureSurface`, `AngleUnits` — when sides close into a polygon and a triangle's angle sum on the flat plane, read by the composed arms of LC 2971, LC 976, LC 3024 and LC 3899; a triangle's angle sum on any surface of constant curvature; and a turn's degrees, read by LC 1610 |
 | `Mathematics/Modular/` | `IModulus`, `IPrimeModulus` — a modulus as a struct witness, and a prime one, under which every nonzero residue has a Fermat inverse; the algorithms over them are `Algorithms/NumberTheory`'s, and LeetCode's 10^9 + 7 is `LeetCodeModulus` at the LeetCode tier's root |
 | `Mathematics/Numerals/` | `DecimalDigits` — the ten digits as an alphabet whose slot is a digit's value, carried by `FourDigitLock`'s wheels and read by `LifeLike`'s rulestrings |
+| `Mathematics/NumberTheory/` | `Primes` — the smallest prime, which every sieve and factorization starts from, read by `PrimeSieve` and eleven problems |
 | `Science/Dna/` | `DnaBase`, `DnaBases` — DNA's four bases as named values and as an alphabet, the one LC 433's benchmark mutates its genes over and the letters LC 187's workload strings are spelled in. LC 187's 2-bit code per base is its strategy and stays in its folder, so no solution reads it |
 
 `DSAExperimentation.Tests/` mirrors every tree one level deeper (§7, §18.1). Fixture files go to the
@@ -1491,17 +1493,17 @@ pays no delegate call per edge.
 Until 2026-11-02 a baseline reached no library type at all, constants and Domain included, and kept a
 private copy of every fact it needed. That rule needed two carve-outs (the owner's rulings of
 2026-10-04 and 2026-11-01), copied Sudoku's and the lock's rules into their baselines, and kept a
-hand-written layer from naming the contract it stood in for. The copies it produced are being moved
-onto the facts they copy. Until that ends, `checks.json` declares the old bar to
-`check-duplicate-constant` as `barred_reads`, so a private copy in `DSAExperimentation.LeetCode.Solutions`
-of a library value is not yet reported, and `ComposedCopyTests` holds only the composed arms to one
-source per fact: it reports a constant declared in a problem's folder that repeats a public constant of
-the library or of the LeetCode tier's root and that no baseline reaches. `LibraryValueCopies` decides
-what counts as a copy:
+hand-written layer from naming the contract it stood in for. Its 96 private copies in the solutions now read the
+facts they copied, and `checks.json` no longer sets them aside from `check-duplicate-constant`.
+`SharedValueCopyTests` holds every arm to one source per fact: it reports a constant declared in a
+problem's folder that repeats a public constant of the library or of the LeetCode tier's root, unless
+`AllowedCopies` says why it means something else. `LibraryValueCopies` decides what counts as a copy:
 - A small integer or a single character means many things, so it counts only when its name shares
   a subject word with the shared constant's name or its type's. Role words such as Size, Count and
   Factor don't count as subjects.
 - An enum member's number is its encoding, not a value, so enums are skipped on both sides.
+- Role words such as No, Smallest and Largest don't count as subjects either: a -1 that marks a
+  missing greater element is not a parent array's root.
 
 `BaselineIsolationTests` holds every `Baseline = true` arm of a `ProblemSolutions` benchmark to this.
 `BaselineTrace` follows each arm through the compiled code (`RepositoryCompilation`, §18.5), so a
@@ -1547,8 +1549,7 @@ BCL sort and a plain recursion, `EscapeALargeMaze` beside a BCL breadth-first wa
 compares library algorithms with one another keeps every one and adds the textbook arm beside them:
 `ShortestPathAlgorithmBenchmarks` (LC 743's own priority-queue Dijkstra), LC 1334 (Floyd-Warshall
 over a plain matrix) and LC 1916 (the post-order recursion its tree fold stands for), so the
-library-against-library comparison each was written for still stands. Each local copy of the halving
-or branching factor this rule produces is one of a waived group in `suppressions.json`.
+library-against-library comparison each was written for still stands.
 
 ### 17.6 Tier 3: what a problem says about its world
 
@@ -1621,6 +1622,7 @@ about LeetCode rather than about any problem's world, and one problem's own spel
 
 | Folder | Holds | What it fixes |
 | --- | --- | --- |
+| `Domain/Computing/Binary/` | `BitWidths` | The bits in a 32-bit integer, `int` or `uint`: the depth of a bit trie's walk and the places a bit count or a bit reversal runs over. |
 | `Domain/Computing/Filesystem/` | `FolderPaths`, `WindowsPaths` | The folder-path notation, `/` between folder names, written before each, the root first; and Windows', `\` between names with the drive first. What lying inside a folder means is `NamePath`'s rule, configured by the notation. |
 | `Domain/Computing/Networking/` | `DomainNames` | Domain names: labels joined by `.`, the root written last, so `mail.example.com` lies inside `example.com` and `notexample.com` does not. |
 | `Domain/Computing/Paths/` | `IPathNotation`, `NamePath` | A path through a tree of names, in a notation that fixes the separator and which end the root is written at: a filesystem writes it first ("/a/b/c"), a domain name last ("c.b.a"). One structure written in opposite directions, so one rule says what lies inside what: the path, then the separator, then more, so `/a/bc` is not inside `/a/b`. That is a name's descendants in the tree a trie of names holds. The test reads the separator in place rather than building "<folder>/", and the path is its own type, so the two paths cannot be handed over the wrong way round. Folder paths, Windows paths and domain names ship as presets (§17.10's most general exact form). |
@@ -1638,10 +1640,11 @@ about LeetCode rather than about any problem's world, and one problem's own spel
 | `Domain/Language/English/` | `EnglishLowercase`, `EnglishUppercase`, `EnglishLetters`, `EnglishVowels` | The 26 letters in each case as presets of tier 1's `IAlphabet` (§19.6), each a run of character codes, and the two folded into `EnglishLetters`. English numbers its letters from one, A as 1 through Z as 26: a notation people use, and English's rather than every alphabet's, since Greek and Hebrew numerals give kappa and kaf the value 20, so `NumberOf` is `EnglishLetters`' and not the contract's. The five written vowels are a letter set over the folded letters, so 'A' is a vowel as 'a' is; y, a vowel only in some words, is not one of them. How a strategy counts or finds them stays with it. |
 | `Domain/Mathematics/Geometry/` | `EuclideanPolygons`, `EuclideanPlane`, `ConstantCurvatureSurface`, `AngleUnits` | Mathematical facts no data structure or algorithm represents, which the owner ruled are Domain's, each named for the geometry it holds in. On the flat plane, sides close into a polygon when the longest is shorter than the rest together, which for three sides is the triangle inequality, and a polygon has at least three sides; a sphere has two-sided lunes. A triangle's angles make 180 degrees on the flat plane, a constant a caller pays nothing for, and on a surface of constant curvature K, Gauss–Bonnet's π + K·Area, which is exact. A turn is 360 degrees by the degree's definition. Sorting, scanning and the law of cosines stay with the strategies, and `Algorithms/Geometry` keeps operations such as the convex hull. |
 | `Domain/Mathematics/Modular/` | `IModulus`, `IPrimeModulus` | What a modulus is, as mathematics rather than LeetCode's convention: the residues 0 to m - 1, the bound that keeps the product of two residues inside a long, and for a prime, Fermat's inverse a^(p - 2). An algorithm over them is swappable, so `ModularInverse.ByFermat` and `FactorialTable<TModulus>` are `Algorithms/NumberTheory`'s, beside `ModularPower`. A modulus that is a compile-time constant is a struct witness the JIT folds. LeetCode's own prime, 10^9 + 7, is `LeetCodeModulus` at the LeetCode tier's root, since it is LeetCode's choice; its tests check it is prime and within the bound. |
-| `Domain/Mathematics/Numerals/` | `DecimalDigits` | The ten decimal digits, '0' to '9', as an alphabet (§19.6): a digit's slot is its value, since the digits are one run of character codes. A lock's wheels carry them and a numeral is written in them. |
+| `Domain/Mathematics/Numerals/` | `DecimalDigits` | The ten decimal digits, '0' to '9', as an alphabet (§19.6): a digit's slot is its value, since the digits are one run of character codes. A lock's wheels carry them and a numeral is written in them.`Zero` and `Nine` name the two digits a wheel turns between. |
+| `Domain/Mathematics/NumberTheory/` | `Primes` | The smallest prime, 2, and the only even one: where a search for primes begins and a sieve's first crossing-out. |
 | `Domain/Science/Dna/` | `DnaBase`, `DnaBases` | The four bases, adenine A, cytosine C, guanine G and thymine T, each a named value carrying its name and letter. `DnaBases.All` lists them once, and its letters, names, spelled-out string and alphabet slots are all read from that one list. As an alphabet they are A to T with gaps, so their slots come from a `LetterTable` (§19.6). They were tier 1's `StandardAlphabets.Dna`, a fact about DNA in a graph's folder. A number for each base is not DNA's: LC 187's 2-bit order is its own strategy. |
 
-Their tests mirror them in `DSAExperimentation.Tests/Domain/{Computing/Filesystem,Computing/Paths,Devices/Compass,Devices/Locks,Devices/Telephone,Games/Chess,Games/Dice,Games/Life,Games/SlidingPuzzle,Games/Sudoku,Games/TicTacToe,Games/Zuma,Language,Language/English,Mathematics/Geometry,Mathematics/Numerals,Science/Dna}/`. The
+Their tests mirror them in `DSAExperimentation.Tests/Domain/{Computing/Binary,Computing/Filesystem,Computing/Paths,Devices/Compass,Devices/Locks,Devices/Telephone,Games/Chess,Games/Dice,Games/Life,Games/SlidingPuzzle,Games/Sudoku,Games/TicTacToe,Games/Zuma,Language,Language/English,Mathematics/Geometry,Mathematics/NumberTheory,Mathematics/Numerals,Science/Dna}/`. The
 domain knowledge still written inside individual problem folders moves here problem by problem
 (§17.10).
 
@@ -2330,9 +2333,9 @@ unbound name answers with an error symbol and hides the reference a rule asked a
   enum. It also fails if fewer than 1,000 arms are
   found, or if any arm reaches no solution member. `BaselineTraceTests` compiles small probes
   against the real library and pins each thing the trace follows and each input it excuses.
-- **§17.5's composed side** — `ComposedCopyTests`. A constant in a problem's folder that repeats a
-  public constant of the library or of the LeetCode tier's root, and that no baseline reaches, fails
-  the test unless `AllowedCopies` says why it means something else. `LibraryValueCopiesTests`
+- **§17.5's one source per fact** — `SharedValueCopyTests`. A constant in a problem's folder that
+  repeats a public constant of the library or of the LeetCode tier's root fails the test unless
+  `AllowedCopies` says why it means something else. `LibraryValueCopiesTests`
   compiles small probes and pins what a copy is.
 - **§17.6a's "solutions see only the library's public types"** — `InternalsVisibilityTests`:
   `DSAExperimentation` grants its internals to its test assemblies and to nothing else.

@@ -11,11 +11,6 @@ namespace DSAExperimentation.LeetCode.Solutions.DeleteNodeInABST;
 // InOrderTraversal, the composition KthSmallestElementInABSTSolutionTests already uses.
 internal static class DeleteNodeInABSTSolution
 {
-    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const int HalvingFactor = 2;
-
-
     // The naive approach many first solutions reach for: walk the whole tree
     // in-order, drop the key from the resulting sorted values, and insert what
     // remains into a fresh tree - root-first so height stays O(log n) instead of
@@ -67,7 +62,7 @@ internal static class DeleteNodeInABSTSolution
             return;
         }
 
-        var mid = low + ((high - low) / HalvingFactor);
+        var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
         tree.Insert(values[mid]);
         InsertBalanced(tree, values, low, mid - 1);
         InsertBalanced(tree, values, mid + 1, high);

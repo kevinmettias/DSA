@@ -1,5 +1,6 @@
 using System.Numerics;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using NumberStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.AddTwoNumbersII;
@@ -30,8 +31,8 @@ internal static class AddTwoNumbersIISolution
 
         do
         {
-            head = new SinglyLinkedListNode<int>((int)(sum % AddTwoNumbersIIConstants.DecimalBase)) { Next = head };
-            sum /= AddTwoNumbersIIConstants.DecimalBase;
+            head = new SinglyLinkedListNode<int>((int)(sum % DecimalDigits.Size)) { Next = head };
+            sum /= DecimalDigits.Size;
         }
         while (sum > 0);
 
@@ -44,7 +45,7 @@ internal static class AddTwoNumbersIISolution
 
         for (; node is not null; node = node.Next)
         {
-            value = (value * AddTwoNumbersIIConstants.DecimalBase) + node.Value;
+            value = (value * DecimalDigits.Size) + node.Value;
         }
 
         return value;
@@ -67,9 +68,9 @@ internal static class AddTwoNumbersIISolution
             var a = firstDigits.TryPop(out var firstDigit) ? firstDigit : 0;
             var b = secondDigits.TryPop(out var secondDigit) ? secondDigit : 0;
             var digitSum = carry + a + b;
-            carry = digitSum / AddTwoNumbersIIConstants.DecimalBase;
+            carry = digitSum / DecimalDigits.Size;
 
-            head = new SinglyLinkedListNode<int>(digitSum % AddTwoNumbersIIConstants.DecimalBase) { Next = head };
+            head = new SinglyLinkedListNode<int>(digitSum % DecimalDigits.Size) { Next = head };
         }
 
         return head;

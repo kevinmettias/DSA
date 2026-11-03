@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
 using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.PrimePalindrome;
@@ -19,7 +20,6 @@ namespace DSAExperimentation.LeetCode.Solutions.PrimePalindrome;
 //   ever trial-divided, so the long palindrome-sparse stretches cost nothing.
 internal static class PrimePalindromeSolution
 {
-    private const int SmallestPrime = 2;
     private const int OddDivisorStep = 2;
     private const long FirstOddDivisor = 3L;
     private const int MirrorStartOffset = 2;
@@ -146,14 +146,14 @@ internal static class PrimePalindromeSolution
 
     private static bool IsPrime(long value)
     {
-        if (value < SmallestPrime)
+        if (value < Primes.Smallest)
         {
             return false;
         }
 
-        if (value % SmallestPrime == 0)
+        if (value % Primes.Smallest == 0)
         {
-            return value == SmallestPrime;
+            return value == Primes.Smallest;
         }
 
         for (var divisor = FirstOddDivisor; divisor * divisor <= value; divisor += OddDivisorStep)

@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using RepoIntQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigits;
@@ -77,9 +78,9 @@ internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSol
 
     private static RepoIntQueue[] BuildPositionsByDigit(string num)
     {
-        var positionsByDigit = new RepoIntQueue[MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsConstants.DigitCount];
+        var positionsByDigit = new RepoIntQueue[DecimalDigits.Size];
 
-        for (var digit = 0; digit < MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsConstants.DigitCount; digit++)
+        for (var digit = 0; digit < DecimalDigits.Size; digit++)
         {
             positionsByDigit[digit] = new RepoIntQueue();
         }
@@ -94,7 +95,7 @@ internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSol
 
     private static int PlaceNextDigit(PlacementContext context, int slot, int remainingSwaps)
     {
-        for (var digit = 0; digit < MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsConstants.DigitCount; digit++)
+        for (var digit = 0; digit < DecimalDigits.Size; digit++)
         {
             var updatedSwaps = TryPlaceDigit(context, digit, slot, remainingSwaps);
 

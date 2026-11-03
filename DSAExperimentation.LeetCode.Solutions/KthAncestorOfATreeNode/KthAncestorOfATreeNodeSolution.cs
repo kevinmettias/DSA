@@ -1,4 +1,5 @@
 using System.Numerics;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.LeetCode.Solutions.KthAncestorOfATreeNode;
 
@@ -13,9 +14,6 @@ namespace DSAExperimentation.LeetCode.Solutions.KthAncestorOfATreeNode;
 // live off a topology and precomputes them from the parent array instead.
 internal static class KthAncestorOfATreeNodeSolution
 {
-    // Marks the root in LeetCode's parent-array encoding, and the answer once a
-    // walk steps off the top of the tree.
-    private const int NoParent = LeetCodeAnswer.None;
 
     // The textbook baseline this precompute has to justify itself against: step
     // up the raw parent array one step at a time, O(k) per query and no precompute
@@ -26,7 +24,7 @@ internal static class KthAncestorOfATreeNodeSolution
 
         for (var step = 0; step < ancestorSteps; step++)
         {
-            if (current == NoParent)
+            if (current == ParentArrayTree.NoParent)
             {
                 return LeetCodeAnswer.None;
             }
@@ -57,7 +55,7 @@ internal static class KthAncestorOfATreeNodeSolution
         var current = node;
         var remainingSteps = ancestorSteps;
 
-        for (var level = 0; remainingSteps > 0 && current != NoParent; level++)
+        for (var level = 0; remainingSteps > 0 && current != ParentArrayTree.NoParent; level++)
         {
             if ((remainingSteps & 1) == 1)
             {
@@ -116,9 +114,9 @@ internal static class KthAncestorOfATreeNodeSolution
     {
         var midway = jumps[node];
 
-        if (midway == NoParent)
+        if (midway == ParentArrayTree.NoParent)
         {
-            return NoParent;
+            return ParentArrayTree.NoParent;
         }
 
         return jumps[midway];

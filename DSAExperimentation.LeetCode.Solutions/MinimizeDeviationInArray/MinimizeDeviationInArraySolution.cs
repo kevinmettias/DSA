@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Heap;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimizeDeviationInArray;
@@ -22,7 +23,6 @@ internal static class MinimizeDeviationInArraySolution
 {
     private const int ParityDivisor = 2;
     private const int EvenizingMultiplier = 2;
-    private const int HalvingDivisor = 2;
 
     // Baseline: an O(n) scan for the largest value on every halving step.
     // Deliberately plain BCL - this is what you would write without this repo.
@@ -59,7 +59,7 @@ internal static class MinimizeDeviationInArraySolution
                 return deviation;
             }
 
-            var half = max / HalvingDivisor;
+            var half = max / AlgorithmConstants.HalvingFactor;
             min = Math.Min(min, half);
             values[maxIndex] = half;
         }
@@ -114,7 +114,7 @@ internal static class MinimizeDeviationInArraySolution
                 return deviation;
             }
 
-            var half = max / HalvingDivisor;
+            var half = max / AlgorithmConstants.HalvingFactor;
             min = Math.Min(min, half);
             heap.Push(half);
         }

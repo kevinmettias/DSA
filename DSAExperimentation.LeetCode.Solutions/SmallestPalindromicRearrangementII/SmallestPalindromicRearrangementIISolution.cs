@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using PalindromeStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.SmallestPalindromicRearrangementII;
@@ -12,16 +13,14 @@ namespace DSAExperimentation.LeetCode.Solutions.SmallestPalindromicRearrangement
 // mirror it.
 internal static class SmallestPalindromicRearrangementIISolution
 {
-    private const int AlphabetSize = 26;
-
     // The textbook approach: plain depth-first backtracking over the half's letters
     // that stops early at the rank-th complete arrangement. Candidates yields letters
     // ascending, so depth-first visits complete arrangements in lexicographic order
     // and the rank-th TryCaptureKthArrangement call IS the answer. Deliberately the
     // slow arm: it walks every arrangement before the rank-th one node by node,
     // exactly what the counting strategy below exists to avoid. Written as plain
-    // recursion rather than through Backtracking.Backtrack, since a baseline reaches
-    // no library type (ARCHITECTURE 17.5).
+    // recursion rather than through Backtracking.Backtrack, since a baseline uses no
+    // library implementation (ARCHITECTURE 17.5).
     public static string RearrangeByBacktrackingRank(string palindrome, int rank)
     {
         var (halfCounts, middle) = SplitCounts(palindrome);
@@ -91,7 +90,7 @@ internal static class SmallestPalindromicRearrangementIISolution
     // position, which is unchanged when the letter covers the whole of it.
     private static long PlaceRankedLetter(int[] halfCounts, char[] left, int position, long remainingRank)
     {
-        for (var c = 0; c < AlphabetSize; c++)
+        for (var c = 0; c < EnglishLetters.Size; c++)
         {
             if (halfCounts[c] == 0)
             {
@@ -164,7 +163,7 @@ internal static class SmallestPalindromicRearrangementIISolution
 
     private static IEnumerable<int> Candidates(RankState state)
     {
-        for (var c = 0; c < AlphabetSize; c++)
+        for (var c = 0; c < EnglishLetters.Size; c++)
         {
             if (state.Counts[c] > 0)
             {
@@ -236,17 +235,17 @@ internal static class SmallestPalindromicRearrangementIISolution
 
     private static (int[] HalfCounts, char? Middle) SplitCounts(string palindrome)
     {
-        var counts = new int[AlphabetSize];
+        var counts = new int[EnglishLetters.Size];
 
         foreach (var c in palindrome)
         {
             counts[c - 'a']++;
         }
 
-        var halfCounts = new int[AlphabetSize];
+        var halfCounts = new int[EnglishLetters.Size];
         char? middle = null;
 
-        for (var c = 0; c < AlphabetSize; c++)
+        for (var c = 0; c < EnglishLetters.Size; c++)
         {
             halfCounts[c] = counts[c] / 2;
 

@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Computing.Binary;
 namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 // A fixed-32-level binary trie over int's two's-complement bit pattern (bit 31,
@@ -62,7 +63,6 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 /// </summary>
 public sealed class BitTrie
 {
-    private const int BitWidth = 32;
 
     private readonly BitTrieNode _root = new();
 
@@ -84,7 +84,7 @@ public sealed class BitTrie
         var current = _root;
         var bits = unchecked((uint)value);
 
-        for (var i = BitWidth - 1; i >= 0; i--)
+        for (var i = BitWidths.Int32 - 1; i >= 0; i--)
         {
             var bit = (bits >> i) & 1u;
             current = bit == 0 ? GetOrCreateZero(current) : GetOrCreateOne(current);
@@ -118,20 +118,20 @@ public sealed class BitTrie
     }
 
     // Precondition: Count > 0, guaranteed by TryMaxXor's own check above. Every
-    // Insert walks all BitWidth levels before returning, so once the trie is
+    // Insert walks all BitWidths.Int32 levels before returning, so once the trie is
     // non-empty, every node reached mid-walk here already has >=1 non-null child -
     // "opposite absent" plus ">=1 exists" forces "same-bit present" by
     // elimination between exactly two possible children, with no null branch left
     // to defend against the way Trie.FindNode's caller-supplied-key walk must (a
     // BitTrie walk is never handed a key that might not have been inserted; it
-    // always completes all BitWidth levels for the query value itself).
+    // always completes all BitWidths.Int32 levels for the query value itself).
     private uint Walk(int value)
     {
         var current = _root;
         var bits = unchecked((uint)value);
         var xor = 0u;
 
-        for (var i = BitWidth - 1; i >= 0; i--)
+        for (var i = BitWidths.Int32 - 1; i >= 0; i--)
         {
             var bit = (bits >> i) & 1u;
             var (next, matchedOpposite) = DescendOneLevel(current, bit);

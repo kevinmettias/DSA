@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.BaseballGame;
@@ -15,7 +16,6 @@ internal static class BaseballGameSolution
     private const string CancelOp = "C";
     private const string DoubleOp = "D";
     private const string SumOp = "+";
-    private const int DoublingMultiplier = 2;
     private const int SecondToLastOffset = 2;
 
     public static int CalPointsByManualArrayCursor(string[] ops)
@@ -42,7 +42,7 @@ internal static class BaseballGameSolution
                 top--;
                 break;
             case DoubleOp:
-                record[top] = record[top - 1] * DoublingMultiplier;
+                record[top] = record[top - 1] * AlgorithmConstants.DoublingFactor;
                 top++;
                 break;
             case SumOp:
@@ -91,7 +91,7 @@ internal static class BaseballGameSolution
                 break;
             case DoubleOp:
                 record.TryPeek(out var last);
-                record.Push(last * DoublingMultiplier);
+                record.Push(last * AlgorithmConstants.DoublingFactor);
                 break;
             case SumOp:
                 PushSumOfLastTwoScores(record);

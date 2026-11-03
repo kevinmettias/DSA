@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<(int Result, int Sign)>;
 
 namespace DSAExperimentation.LeetCode.Solutions.BasicCalculator;
@@ -23,8 +24,6 @@ namespace DSAExperimentation.LeetCode.Solutions.BasicCalculator;
 // CalculateByStackScan already did via its switch's implicit default case.
 internal static class BasicCalculatorSolution
 {
-    private const int DecimalBase = 10;
-
     public static int CalculateByRecursiveDescent(string expression)
     {
         var position = 0;
@@ -156,7 +155,7 @@ internal static class BasicCalculatorSolution
 
         while (position < expression.Length && char.IsDigit(expression[position]))
         {
-            number = number * DecimalBase + (expression[position] - '0');
+            number = number * DecimalDigits.Size + (expression[position] - '0');
             position++;
         }
 

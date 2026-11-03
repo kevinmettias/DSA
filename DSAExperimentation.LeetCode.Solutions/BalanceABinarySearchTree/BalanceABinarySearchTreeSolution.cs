@@ -28,11 +28,6 @@ namespace DSAExperimentation.LeetCode.Solutions.BalanceABinarySearchTree;
 // strategy is measured against.
 internal static class BalanceABinarySearchTreeSolution
 {
-    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const int HalvingFactor = 2;
-
-
     public static BinaryTreeNode<int>? BalanceByInOrderTraversal(BinaryTreeNode<int>? root)
     {
         var sorted = new DynamicArray<int>();
@@ -102,7 +97,7 @@ internal static class BalanceABinarySearchTreeSolution
             return null;
         }
 
-        var mid = low + ((high - low) / HalvingFactor);
+        var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
         return new BinaryTreeNode<int>(sorted[mid])
         {

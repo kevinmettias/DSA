@@ -15,10 +15,6 @@ namespace DSAExperimentation.LeetCode.Solutions.TaskScheduler;
 // reads the answer off the most frequent task's count.
 internal static class TaskSchedulerSolution
 {
-    // Fixed A-Z array width the baseline uses for direct-index frequency/last-used
-    // tracking - LC's tasks are always uppercase letters.
-    private const int EnglishAlphabetSize = 26;
-
     // A safely-in-the-past "never used" sentinel, halved to avoid overflow when
     // computing `time - lastUsed[candidateIndex]`.
     private const int NeverUsedSentinel = int.MinValue / 2;
@@ -129,7 +125,7 @@ internal static class TaskSchedulerSolution
 
     private static int[] BuildFrequencyCounts(char[] tasks)
     {
-        var counts = new int[EnglishAlphabetSize];
+        var counts = new int[EnglishLetters.Size];
 
         foreach (var task in tasks)
         {
@@ -141,7 +137,7 @@ internal static class TaskSchedulerSolution
 
     private static int SimulateTickByTick(int[] counts, int taskCount, int cooldownTicks)
     {
-        var lastUsed = new int[EnglishAlphabetSize];
+        var lastUsed = new int[EnglishLetters.Size];
         Array.Fill(lastUsed, NeverUsedSentinel);
 
         var remaining = taskCount;
@@ -168,7 +164,7 @@ internal static class TaskSchedulerSolution
     {
         var best = -1;
 
-        for (var candidateIndex = 0; candidateIndex < EnglishAlphabetSize; candidateIndex++)
+        for (var candidateIndex = 0; candidateIndex < EnglishLetters.Size; candidateIndex++)
         {
             if (IsReadyToRun(counts[candidateIndex], time - lastUsed[candidateIndex], cooldownTicks)
                 && IsBetterCandidate(counts, candidateIndex, best))

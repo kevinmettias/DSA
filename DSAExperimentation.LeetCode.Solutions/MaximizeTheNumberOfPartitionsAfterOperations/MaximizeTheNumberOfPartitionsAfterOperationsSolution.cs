@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximizeTheNumberOfPartitionsAfterOperations;
 
@@ -12,8 +13,6 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeTheNumberOfPartitionsAft
 // each other without either restating the algorithm.
 internal static class MaximizeTheNumberOfPartitionsAfterOperationsSolution
 {
-    private const int AlphabetSize = 26;
-
     // Whether the one permitted character change is still available is a state the
     // recursion is defined over, not a flag: naming the two cases keeps every seed
     // and every step of the memo walk self-describing.
@@ -51,7 +50,7 @@ internal static class MaximizeTheNumberOfPartitionsAfterOperationsSolution
     {
         var best = 0;
 
-        for (var letter = 0; letter < AlphabetSize; letter++)
+        for (var letter = 0; letter < EnglishLetters.Size; letter++)
         {
             var candidate = (char)('a' + letter);
 
@@ -121,7 +120,7 @@ internal static class MaximizeTheNumberOfPartitionsAfterOperationsSolution
         var spent = (Position: state.Position, Mask: state.Mask, Change: ChangeAvailability.Spent);
         var best = 0;
 
-        for (var letter = 0; letter < AlphabetSize; letter++)
+        for (var letter = 0; letter < EnglishLetters.Size; letter++)
         {
             if (letter == originalLetter)
             {

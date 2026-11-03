@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToConvertStringI;
 
@@ -10,7 +11,6 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToConvertStringI;
 // whole problem reduces to "sum one all-pairs lookup per position".
 internal static class MinimumCostToConvertStringISolution
 {
-    private const int Alphabet = 26;
     private const long Unreachable = long.MaxValue / 4;
 
     // Textbook baseline: a plain BCL long[26,26] distance matrix and a
@@ -64,11 +64,11 @@ internal static class MinimumCostToConvertStringISolution
     // letter not at all, until a stated rule or a chain of them proves otherwise.
     private static long[,] BuildIdentityMatrix()
     {
-        var distances = new long[Alphabet, Alphabet];
+        var distances = new long[EnglishLetters.Size, EnglishLetters.Size];
 
-        for (var i = 0; i < Alphabet; i++)
+        for (var i = 0; i < EnglishLetters.Size; i++)
         {
-            for (var j = 0; j < Alphabet; j++)
+            for (var j = 0; j < EnglishLetters.Size; j++)
             {
                 distances[i, j] = i == j ? 0 : Unreachable;
             }
@@ -93,9 +93,9 @@ internal static class MinimumCostToConvertStringISolution
     // pass no i -> j entry is worse than routing that one letter.
     private static void CloseUnderTransitiveChains(long[,] distances)
     {
-        for (var through = 0; through < Alphabet; through++)
+        for (var through = 0; through < EnglishLetters.Size; through++)
         {
-            for (var from = 0; from < Alphabet; from++)
+            for (var from = 0; from < EnglishLetters.Size; from++)
             {
                 RelaxThrough(distances, from, through);
             }
@@ -105,7 +105,7 @@ internal static class MinimumCostToConvertStringISolution
     // One row of a pass: does going from -> through -> j beat the best from -> j so far?
     private static void RelaxThrough(long[,] distances, int from, int through)
     {
-        for (var to = 0; to < Alphabet; to++)
+        for (var to = 0; to < EnglishLetters.Size; to++)
         {
             var viaIntermediate = distances[from, through] + distances[through, to];
 

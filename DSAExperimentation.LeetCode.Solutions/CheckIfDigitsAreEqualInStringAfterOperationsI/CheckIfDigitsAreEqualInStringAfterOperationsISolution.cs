@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
+
 namespace DSAExperimentation.LeetCode.Solutions.CheckIfDigitsAreEqualInStringAfterOperationsI;
 
 // LeetCode 3461. Check If Digits Are Equal in String After Operations I: repeatedly
@@ -14,10 +16,6 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfDigitsAreEqualInStringAft
 // own complexity law sends to a rolling row.
 internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
 {
-    // Both strategies reduce modulo the same thing - a single decimal digit - and the
-    // file states that base in two places, so it is named once.
-    private const int DecimalDigitModulus = 10;
-
     public static bool IsEqualByAdjacentSumReduction(string digitString)
     {
         var digits = ToDigits(digitString);
@@ -28,7 +26,7 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
 
             for (var i = 0; i < next.Length; i++)
             {
-                next[i] = (digits[i] + digits[i + 1]) % DecimalDigitModulus;
+                next[i] = (digits[i] + digits[i + 1]) % DecimalDigits.Size;
             }
 
             digits = next;
@@ -64,7 +62,7 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
         {
             for (var j = i; j > 0; j--)
             {
-                coefficients[j] = (coefficients[j] + coefficients[j - 1]) % DecimalDigitModulus;
+                coefficients[j] = (coefficients[j] + coefficients[j - 1]) % DecimalDigits.Size;
             }
         }
 
@@ -80,7 +78,7 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
             sum += coefficients[i] * digits[offset + i];
         }
 
-        return sum % DecimalDigitModulus;
+        return sum % DecimalDigits.Size;
     }
 
     private static int[] ToDigits(string digitString)

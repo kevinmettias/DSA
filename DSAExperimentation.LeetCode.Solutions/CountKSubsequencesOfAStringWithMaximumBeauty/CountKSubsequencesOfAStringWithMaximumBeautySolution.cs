@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountKSubsequencesOfAStringWithMaximumBeauty;
 
@@ -38,8 +39,6 @@ namespace DSAExperimentation.LeetCode.Solutions.CountKSubsequencesOfAStringWithM
 // RoomWaysAlgebra's own doc comment already states.
 internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
 {
-    private const int AlphabetSize = 26;
-
     public static long CountByBruteForceCombinations(string text, int subsequenceLength)
     {
         var frequency = BuildFrequency(text);
@@ -185,7 +184,7 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
 
     private static int[] BuildFrequency(string text)
     {
-        var frequency = new int[AlphabetSize];
+        var frequency = new int[EnglishLetters.Size];
 
         foreach (var c in text)
         {
@@ -199,7 +198,7 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
     {
         var chars = new List<int>();
 
-        for (var c = 0; c < AlphabetSize; c++)
+        for (var c = 0; c < EnglishLetters.Size; c++)
         {
             if (frequency[c] > 0)
             {

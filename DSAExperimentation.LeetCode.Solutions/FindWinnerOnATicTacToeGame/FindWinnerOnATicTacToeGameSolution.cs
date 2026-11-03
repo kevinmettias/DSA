@@ -13,7 +13,8 @@ namespace DSAExperimentation.LeetCode.Solutions.FindWinnerOnATicTacToeGame;
 // column and diagonal, or keep running +/-1 tallies and touch only the lines the
 // new move actually falls on. Both play LC 1275's fixed 3 x 3 board. The game's
 // rules are Domain/Games/TicTacToe's, which the running-counts arm reads; the
-// board-rescan baseline keeps its own copy of them (ARCHITECTURE §17.5).
+// board-rescan baseline reads the board's size there and writes its own rescan
+// (ARCHITECTURE §17.5).
 internal static class FindWinnerOnATicTacToeGameSolution
 {
     // The textbook baseline: keep the board itself and, after each move, rescan
@@ -21,13 +22,13 @@ internal static class FindWinnerOnATicTacToeGameSolution
     // and loops - this is what you would write without any bookkeeping insight.
     public static string FindWinnerByBoardRescan(int[][] moves)
     {
-        var board = new int[Vocabulary.BoardSize, Vocabulary.BoardSize];
+        var board = new int[TicTacToeRules.BoardSize, TicTacToeRules.BoardSize];
 
         for (var i = 0; i < moves.Length; i++)
         {
             board[moves[i][0], moves[i][1]] = MarkFor(i);
 
-            var winner = ScanAllLines(board, Vocabulary.BoardSize);
+            var winner = ScanAllLines(board, TicTacToeRules.BoardSize);
 
             if (winner != Vocabulary.Empty)
             {
@@ -35,7 +36,7 @@ internal static class FindWinnerOnATicTacToeGameSolution
             }
         }
 
-        return Outcome(moves.Length, Vocabulary.BoardSize);
+        return Outcome(moves.Length, TicTacToeRules.BoardSize);
     }
 
     private static int ScanAllLines(int[,] board, int boardSize)

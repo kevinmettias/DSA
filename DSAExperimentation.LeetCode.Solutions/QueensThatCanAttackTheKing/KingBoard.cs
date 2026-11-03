@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Games.Chess;
+
 namespace DSAExperimentation.LeetCode.Solutions.QueensThatCanAttackTheKing;
 
 // Where the king stands and how far the board extends around it - the origin and
@@ -11,11 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.QueensThatCanAttackTheKing;
 // origin.
 internal readonly record struct KingBoard(int KingRow, int KingCol, int BoardSize)
 {
-    // The baseline's own copy of chess's 8x8 board (ChessRules.BoardSize; ARCHITECTURE
-    // §17.5): only the baseline's LeetCode-shaped overload builds its board here.
-    private const int StandardBoardSize = 8;
-
-    public static KingBoard Standard(int[] king) => new(king[0], king[1], StandardBoardSize);
+    public static KingBoard Standard(int[] king) => new(king[0], king[1], ChessRules.BoardSize);
 
     public bool IsInBounds(int row, int col) =>
         row >= 0 && row < BoardSize && col >= 0 && col < BoardSize;

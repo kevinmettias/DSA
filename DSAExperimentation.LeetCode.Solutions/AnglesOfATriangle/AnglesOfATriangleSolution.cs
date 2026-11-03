@@ -13,12 +13,10 @@ namespace DSAExperimentation.LeetCode.Solutions.AnglesOfATriangle;
 // triangle's angle sum already guarantees, saving one transcendental call.
 //
 // That angle sum is the flat plane's (Domain/Mathematics/Geometry): the angle-sum arm reads
-// EuclideanPlane. The shared validity check, law of cosines and DegreesPerRadian stay here, as
-// the baseline reads them too (ARCHITECTURE §17.5).
+// EuclideanPlane. The shared validity check and law of cosines stay here, as the baseline reads
+// them too, and both arms convert radians by AngleUnits (ARCHITECTURE §17.5).
 internal static class AnglesOfATriangleSolution
 {
-    private const double DegreesPerRadian = 180.0 / Math.PI;
-
     // The textbook answer: every angle from its own Acos of the law of cosines.
     public static double[] InternalAnglesByLawOfCosines(int[] sides)
     {
@@ -77,7 +75,7 @@ internal static class AnglesOfATriangleSolution
         var cosine = ((adjacentOne * adjacentOne) + (adjacentTwo * adjacentTwo) - (opposite * opposite))
             / (2 * adjacentOne * adjacentTwo);
 
-        return Math.Acos(cosine) * DegreesPerRadian;
+        return Math.Acos(cosine) * AngleUnits.DegreesPerRadian;
     }
 
     private static double[] Sort(double first, double second, double third)

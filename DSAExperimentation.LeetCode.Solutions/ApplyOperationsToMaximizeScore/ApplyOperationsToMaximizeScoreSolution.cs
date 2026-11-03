@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.ApplyOperationsToMaximizeScore;
 
@@ -22,7 +23,6 @@ namespace DSAExperimentation.LeetCode.Solutions.ApplyOperationsToMaximizeScore;
 // question here.
 internal static class ApplyOperationsToMaximizeScoreSolution
 {
-    private const int SmallestPrime = 2;
 
     // Where a subarray's count comes from, both sentinels are one step outside the array
     // so the two factors need no special case at either end: (i - left[i]) counts the
@@ -138,7 +138,7 @@ internal static class ApplyOperationsToMaximizeScoreSolution
     {
         var score = 0;
 
-        for (var factor = SmallestPrime; (long)factor * factor <= value; factor++)
+        for (var factor = Primes.Smallest; (long)factor * factor <= value; factor++)
         {
             if (value % factor != 0)
             {

@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeStringSorted;
 
@@ -23,8 +24,6 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeS
 // that same array.
 internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
 {
-    private const int AlphabetSize = 26;
-
     // The textbook answer without this repo: scan the frequency array for the
     // smaller-letter count at every position. Nothing but BCL arrays inside - only
     // the modulus itself is shared, because 1e9+7 is LeetCode's reporting
@@ -122,7 +121,7 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
 
     private static int[] BuildFrequencyTable(string text)
     {
-        var frequency = new int[AlphabetSize];
+        var frequency = new int[EnglishLetters.Size];
 
         foreach (var letter in text)
         {

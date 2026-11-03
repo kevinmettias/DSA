@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DupStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.LexicographicallySmallestStringAfterDeletingDuplicateCharacters;
@@ -16,8 +17,6 @@ namespace DSAExperimentation.LeetCode.Solutions.LexicographicallySmallestStringA
 // a string is always lexicographically smaller than the string itself.
 internal static class LexicographicallySmallestStringAfterDeletingDuplicateCharactersSolution
 {
-    private const int AlphabetSize = 26;
-
     // The textbook answer: repeatedly bubble through the buffer for the leftmost
     // removable character - one with a spare copy left over that either precedes
     // something smaller (a removable inversion) or has nothing after it at all
@@ -118,7 +117,7 @@ internal static class LexicographicallySmallestStringAfterDeletingDuplicateChara
 
     private static int[] CountLetters(string text)
     {
-        var counts = new int[AlphabetSize];
+        var counts = new int[EnglishLetters.Size];
 
         foreach (var c in text)
         {

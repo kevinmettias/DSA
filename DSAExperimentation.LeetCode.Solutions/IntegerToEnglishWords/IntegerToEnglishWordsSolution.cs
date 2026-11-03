@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using Vocabulary = DSAExperimentation.LeetCode.Solutions.IntegerToEnglishWords.IntegerToEnglishWordsVocabulary;
 using WordStack = DSAExperimentation.DataStructures.Stack.Stack<string>;
 
@@ -126,10 +127,10 @@ internal static class IntegerToEnglishWordsSolution
     {
         if (remainder >= Vocabulary.TensThreshold)
         {
-            parts.Add(Vocabulary.Tens[remainder / Vocabulary.DigitBase]);
-            if (remainder % Vocabulary.DigitBase > 0)
+            parts.Add(Vocabulary.Tens[remainder / DecimalDigits.Size]);
+            if (remainder % DecimalDigits.Size > 0)
             {
-                parts.Add(Vocabulary.Below20[remainder % Vocabulary.DigitBase]);
+                parts.Add(Vocabulary.Below20[remainder % DecimalDigits.Size]);
             }
         }
         else if (remainder > 0)

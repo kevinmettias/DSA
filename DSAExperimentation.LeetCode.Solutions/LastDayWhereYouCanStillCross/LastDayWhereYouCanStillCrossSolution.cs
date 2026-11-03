@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Connectivity;
 using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.Solutions.LastDayWhereYouCanStillCross;
@@ -17,10 +18,6 @@ namespace DSAExperimentation.LeetCode.Solutions.LastDayWhereYouCanStillCross;
 // GridTopology.
 internal static class LastDayWhereYouCanStillCrossSolution
 {
-    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const int HalvingFactor = 2;
-
     private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
     // The textbook baseline: a hand-rolled lo/hi bisection over the same predicate,
@@ -41,7 +38,7 @@ internal static class LastDayWhereYouCanStillCrossSolution
 
         while (low < high)
         {
-            var mid = low + ((high - low) / HalvingFactor);
+            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
             if (CanCrossByStackWalk(flooding, mid))
             {

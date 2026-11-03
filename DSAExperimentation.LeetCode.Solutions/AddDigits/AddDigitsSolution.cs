@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DigitStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.AddDigits;
@@ -10,22 +11,20 @@ namespace DSAExperimentation.LeetCode.Solutions.AddDigits;
 // this repo's own LIFO Stack<T> and popping them all back off to sum.
 internal static class AddDigitsSolution
 {
-    private const int DecimalBase = 10;
-
     // The textbook answer: modulo/divide straight into a running total, no
     // intermediate storage. Deliberately written without this repo's primitives -
     // it is the arm the Stack-based strategy has to justify itself against.
     public static int AddDigitsByArithmetic(int num)
     {
-        while (num >= DecimalBase)
+        while (num >= DecimalDigits.Size)
         {
             var sum = 0;
             var remaining = num;
 
             while (remaining > 0)
             {
-                sum += remaining % DecimalBase;
-                remaining /= DecimalBase;
+                sum += remaining % DecimalDigits.Size;
+                remaining /= DecimalDigits.Size;
             }
 
             num = sum;
@@ -39,15 +38,15 @@ internal static class AddDigitsSolution
     // use their DigitStack for.
     public static int AddDigitsByStack(int num)
     {
-        while (num >= DecimalBase)
+        while (num >= DecimalDigits.Size)
         {
             var digits = new DigitStack();
             var remaining = num;
 
             while (remaining > 0)
             {
-                digits.Push(remaining % DecimalBase);
-                remaining /= DecimalBase;
+                digits.Push(remaining % DecimalDigits.Size);
+                remaining /= DecimalDigits.Size;
             }
 
             num = 0;

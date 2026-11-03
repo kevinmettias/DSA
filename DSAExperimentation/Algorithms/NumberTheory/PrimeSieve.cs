@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
 namespace DSAExperimentation.Algorithms.NumberTheory;
 
 // The sieve of Eratosthenes over a value bound, in two forms: which values in [0, bound] are
@@ -13,7 +14,6 @@ namespace DSAExperimentation.Algorithms.NumberTheory;
 /// <summary>The sieve of Eratosthenes, deciding every value in [0, bound] at once.</summary>
 public static class PrimeSieve
 {
-    private const int SmallestPrime = 2;
 
     // Slot i is true when i is composite. 0 and 1 count as composite, so "is the slot clear" is the
     // whole primality test, 0 and 1 included.
@@ -27,12 +27,12 @@ public static class PrimeSieve
     {
         var isComposite = new bool[SlotCount(bound)];
 
-        for (var value = 0; value < Math.Min(SmallestPrime, isComposite.Length); value++)
+        for (var value = 0; value < Math.Min(Primes.Smallest, isComposite.Length); value++)
         {
             isComposite[value] = true;
         }
 
-        for (var prime = SmallestPrime; (long)prime * prime <= bound; prime++)
+        for (var prime = Primes.Smallest; (long)prime * prime <= bound; prime++)
         {
             if (!isComposite[prime])
             {
@@ -63,7 +63,7 @@ public static class PrimeSieve
             smallestFactor[value] = value;
         }
 
-        for (var prime = SmallestPrime; (long)prime * prime <= bound; prime++)
+        for (var prime = Primes.Smallest; (long)prime * prime <= bound; prime++)
         {
             if (smallestFactor[prime] == prime)
             {

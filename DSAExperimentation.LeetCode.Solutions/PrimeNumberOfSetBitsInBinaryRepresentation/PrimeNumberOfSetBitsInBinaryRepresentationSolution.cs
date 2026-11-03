@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.PrimeNumberOfSetBitsInBinaryRepresentation;
 
@@ -11,7 +12,6 @@ namespace DSAExperimentation.LeetCode.Solutions.PrimeNumberOfSetBitsInBinaryRepr
 // is re-derived (trial division) per value or looked up in a set built once.
 internal static class PrimeNumberOfSetBitsInBinaryRepresentationSolution
 {
-    private const int SmallestPrime = 2;
     private static readonly int[] PrimesUpToTwenty = { 2, 3, 5, 7, 11, 13, 17, 19 };
     private static readonly Set<int> PrimeBitCounts = BuildPrimeBitCounts();
 
@@ -35,12 +35,12 @@ internal static class PrimeNumberOfSetBitsInBinaryRepresentationSolution
 
     private static bool IsPrime(int value)
     {
-        if (value < SmallestPrime)
+        if (value < Primes.Smallest)
         {
             return false;
         }
 
-        for (var divisor = SmallestPrime; divisor * divisor <= value; divisor++)
+        for (var divisor = Primes.Smallest; divisor * divisor <= value; divisor++)
         {
             if (value % divisor == 0)
             {

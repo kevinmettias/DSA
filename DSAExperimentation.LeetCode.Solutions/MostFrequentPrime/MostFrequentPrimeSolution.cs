@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.MostFrequentPrime;
 
@@ -17,12 +18,6 @@ internal static class MostFrequentPrimeSolution
     // A generated number only qualifies once it exceeds this LeetCode-defined
     // threshold - single- and some two-digit numbers never count, even if prime.
     private const int MinimumQualifyingValue = 10;
-
-    // The base of the numbers this problem builds: a straight-line path's digits are
-    // read as a decimal numeral, so the running value is shifted one place and the
-    // cell appended, and the "longest possible value" bound is the same base raised
-    // to the path length. One home for the radix instead of two places to change.
-    private const int DecimalRadix = 10;
 
     private static readonly (int RowDelta, int ColDelta)[] Directions =
     [
@@ -89,7 +84,7 @@ internal static class MostFrequentPrimeSolution
 
         for (var i = 0; i < maxLength; i++)
         {
-            bound *= DecimalRadix;
+            bound *= DecimalDigits.Size;
         }
 
         return bound - 1;
@@ -146,7 +141,7 @@ internal static class MostFrequentPrimeSolution
 
         while (IsInsideGrid(row, col, rows, cols))
         {
-            value = (value * DecimalRadix) + mat[row][col];
+            value = (value * DecimalDigits.Size) + mat[row][col];
 
             if (value > MinimumQualifyingValue)
             {

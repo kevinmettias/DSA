@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountValidPathsInATree;
 
@@ -29,9 +30,6 @@ internal static class CountValidPathsInATreeSolution
 {
     // The validity rule itself: one prime on the path, no more and no fewer.
     private const int ExactlyOnePrime = 1;
-
-    // The smallest prime, and therefore the first label a sieve can mark.
-    private const int FirstPrime = 2;
 
     // Labels run 1..n, so this can never collide with a real parent.
     private const int Unvisited = -1;
@@ -66,12 +64,12 @@ internal static class CountValidPathsInATreeSolution
     {
         var isPrime = new bool[nodeCount + 1];
 
-        for (var value = FirstPrime; value <= nodeCount; value++)
+        for (var value = Primes.Smallest; value <= nodeCount; value++)
         {
             isPrime[value] = true;
         }
 
-        for (var factor = FirstPrime; (long)factor * factor <= nodeCount; factor++)
+        for (var factor = Primes.Smallest; (long)factor * factor <= nodeCount; factor++)
         {
             if (!isPrime[factor])
             {
@@ -178,10 +176,10 @@ internal static class CountValidPathsInATreeSolution
 
         for (var value = 0; value <= nodeCount; value++)
         {
-            isPrime.Add(value >= FirstPrime);
+            isPrime.Add(value >= Primes.Smallest);
         }
 
-        for (var factor = FirstPrime; (long)factor * factor <= nodeCount; factor++)
+        for (var factor = Primes.Smallest; (long)factor * factor <= nodeCount; factor++)
         {
             if (!isPrime.Get(factor))
             {

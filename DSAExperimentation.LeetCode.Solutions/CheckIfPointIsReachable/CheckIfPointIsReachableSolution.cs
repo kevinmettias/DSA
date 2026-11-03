@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
+using DSAExperimentation.DataStructures;
 namespace DSAExperimentation.LeetCode.Solutions.CheckIfPointIsReachable;
 
 // LeetCode 2543. Check if Point Is Reachable: starting from (1, 1), the allowed
@@ -20,9 +21,6 @@ internal static class CheckIfPointIsReachableSolution
 {
     // Both coordinates of the start point (1, 1).
     private const long Origin = 1;
-
-    // The multiplier the (2x, y) and (x, 2y) moves apply.
-    private const long DoublingFactor = 2;
 
     // The textbook answer: breadth-first search over every intermediate point
     // reachable from (1, 1), pruned by the target because no move ever shrinks a
@@ -72,8 +70,8 @@ internal static class CheckIfPointIsReachableSolution
     {
         yield return (coordinateX + coordinateY, coordinateY);
         yield return (coordinateX, coordinateX + coordinateY);
-        yield return (DoublingFactor * coordinateX, coordinateY);
-        yield return (coordinateX, DoublingFactor * coordinateY);
+        yield return (AlgorithmConstants.DoublingFactor * coordinateX, coordinateY);
+        yield return (coordinateX, AlgorithmConstants.DoublingFactor * coordinateY);
     }
 
     // A successor is worth queueing only when it stays inside the target's box -

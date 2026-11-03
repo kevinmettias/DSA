@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.DataStructures;
 
 namespace DSAExperimentation.LeetCode.Solutions.TheNumberOfGoodSubsets;
 
@@ -21,8 +22,6 @@ namespace DSAExperimentation.LeetCode.Solutions.TheNumberOfGoodSubsets;
 // prime factors, so each occurrence independently doubles whatever the recursion counted.
 internal static class TheNumberOfGoodSubsetsSolution
 {
-    // Each 1 in nums may be in or out of any good subset independently.
-    private const int OnesDoublingBase = 2;
 
     private const int NoPrimesUsed = 0;
     private const int FirstCandidate = 0;
@@ -108,7 +107,7 @@ internal static class TheNumberOfGoodSubsetsSolution
     // - shared by both arms, since the choice being measured is the recursion, not this.
     private static int WithOnesDoubling(long waysWithNonEmptyMask, int onesCount) =>
         (int)(waysWithNonEmptyMask
-            * ModPower(OnesDoublingBase, onesCount)
+            * ModPower(AlgorithmConstants.DoublingFactor, onesCount)
             % LeetCodeModulus.Value);
 
     // value^exponent mod LeetCodeModulus.Value by repeated squaring, restated rather than called on

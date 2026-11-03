@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Trie;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.LeetCode.Solutions.ImplementTrie;
 
@@ -22,7 +23,6 @@ internal static class ImplementTrieSolution
     internal sealed class ArrayNodeTrie
     {
         // LC 208's words are lowercase English, one child slot per letter.
-        private const int AlphabetSize = 26;
         private const char FirstLetter = 'a';
 
         private readonly Node _root = new();
@@ -68,7 +68,7 @@ internal static class ImplementTrieSolution
 
         private sealed class Node
         {
-            public Node?[] Children { get; } = new Node?[AlphabetSize];
+            public Node?[] Children { get; } = new Node?[EnglishLetters.Size];
 
             public bool IsWord { get; set; }
         }

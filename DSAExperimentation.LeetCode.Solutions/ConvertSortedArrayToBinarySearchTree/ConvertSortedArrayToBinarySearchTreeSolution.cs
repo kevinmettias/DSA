@@ -14,11 +14,6 @@ namespace DSAExperimentation.LeetCode.Solutions.ConvertSortedArrayToBinarySearch
 // benchmark's [Benchmark] arms all constructed the tree exactly this way.
 internal static class ConvertSortedArrayToBinarySearchTreeSolution
 {
-    // The divisor a range is split by, restated rather than read from AlgorithmConstants: a baseline
-    // reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const int HalvingFactor = 2;
-
-
     public static BinaryTreeNode<int>? BuildByMidpointRecursion(int[] nums) =>
         BuildByMidpointRecursion(nums, 0, nums.Length - 1);
 
@@ -29,7 +24,7 @@ internal static class ConvertSortedArrayToBinarySearchTreeSolution
             return null;
         }
 
-        var mid = low + ((high - low) / HalvingFactor);
+        var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
         return new BinaryTreeNode<int>(nums[mid])
         {

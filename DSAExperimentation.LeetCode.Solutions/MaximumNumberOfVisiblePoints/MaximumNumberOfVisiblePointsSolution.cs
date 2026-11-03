@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.Domain.Mathematics.Geometry;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfVisiblePoints;
@@ -13,16 +14,11 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfVisiblePoints;
 // by trying every point's angle as the window's leading edge, or by sorting once and
 // sliding.
 //
-// A full turn's degrees are geometry's (Domain/Mathematics/Geometry): the sliding arm's wrap reads
-// AngleUnits, and the brute-force baseline keeps its own FullCircleDegrees (ARCHITECTURE §17.5).
+// A turn's degrees are geometry's (Domain/Mathematics/Geometry): both arms read AngleUnits for the
+// full turn a bearing wraps at and the half turn Atan2's radians convert by (ARCHITECTURE §17.5).
 internal static class MaximumNumberOfVisiblePointsSolution
 {
-    private const double FullCircleDegrees = 360.0;
-
-    // Degrees in half a turn, which is pi radians: Atan2's radians times this, over pi, are degrees.
-    private const double HalfTurnDegrees = 180.0;
     private const double AngleEpsilon = 1e-9;
-    private const int AngleDoublingFactor = 2;
 
     // The textbook answer: every point's angle tried as the window's leading edge,
     // each scored by a full pass counting the points within `angle` degrees clockwise
@@ -54,7 +50,7 @@ internal static class MaximumNumberOfVisiblePointsSolution
 
             if (clockwise < -AngleEpsilon)
             {
-                clockwise += FullCircleDegrees;
+                clockwise += AngleUnits.FullTurnDegrees;
             }
 
             if (clockwise <= angle + AngleEpsilon)
@@ -86,7 +82,7 @@ internal static class MaximumNumberOfVisiblePointsSolution
 
     private static double[] DuplicateWithWrap(double[] sorted)
     {
-        var doubled = new double[sorted.Length * AngleDoublingFactor];
+        var doubled = new double[sorted.Length * AlgorithmConstants.DoublingFactor];
 
         for (var i = 0; i < sorted.Length; i++)
         {
@@ -134,7 +130,7 @@ internal static class MaximumNumberOfVisiblePointsSolution
                 continue;
             }
 
-            angles.Add(Math.Atan2(dy, dx) * HalfTurnDegrees / Math.PI);
+            angles.Add(Math.Atan2(dy, dx) * AngleUnits.HalfTurnDegrees / Math.PI);
         }
 
         return ([.. angles], atLocation);

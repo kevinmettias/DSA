@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DSAExperimentation.LeetCode.Solutions.MultiplyStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -37,7 +38,7 @@ public class MultiplyStringsBenchmarks
 
         for (var i = 1; i < digits; i++)
         {
-            chars[i] = (char)('0' + random.Next(MultiplyStringsConstants.DecimalBase));
+            chars[i] = (char)('0' + random.Next(DecimalDigits.Size));
         }
 
         return new string(chars);

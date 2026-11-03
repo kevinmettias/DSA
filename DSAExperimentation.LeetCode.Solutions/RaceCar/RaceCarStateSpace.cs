@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 namespace DSAExperimentation.LeetCode.Solutions.RaceCar;
 
 // The bound that makes LC 818 finite. The car's (position, speed) states are
@@ -26,7 +27,7 @@ internal readonly record struct RaceCarStateSpace(int PositionBound, int MaxSpee
 
         while (magnitude < bound)
         {
-            magnitude *= RaceCarMotion.SpeedDoublingFactor;
+            magnitude *= AlgorithmConstants.DoublingFactor;
         }
 
         return magnitude;
@@ -43,7 +44,7 @@ internal readonly record struct RaceCarStateSpace(int PositionBound, int MaxSpee
 
         for (var magnitude = RaceCarMotion.StartSpeed;
             magnitude <= MaxSpeedMagnitude;
-            magnitude *= RaceCarMotion.SpeedDoublingFactor)
+            magnitude *= AlgorithmConstants.DoublingFactor)
         {
             speeds.Add(magnitude);
             speeds.Add(-magnitude);

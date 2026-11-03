@@ -3,11 +3,10 @@ using Microsoft.CodeAnalysis;
 
 namespace DSAExperimentation.Tests.Architecture;
 
-// ARCHITECTURE.md section 17.5's other half: a composed arm composes the library, so a value the
-// library already states is read from it rather than copied. A baseline must keep its own copy, so
-// only a solution constant no baseline reaches is a candidate; the caller says which ones a baseline
-// reaches. The shared values are the public constants of the library and of the LeetCode tier's root
-// (LeetCodeModulus.Value). A copy is a constant declared in a problem's folder whose value equals one.
+// ARCHITECTURE.md section 17.5's one source per fact: every arm, the baseline among them, reads a value
+// the library already states rather than copying it. The shared values are the public constants of the
+// library and of the LeetCode tier's root (LeetCodeModulus.Value). A copy is a constant declared in a
+// problem's folder whose value equals one.
 //
 // Small numbers and single characters mean many things - a 2 is a halving factor in one file and a
 // pair in the next - so for those the copy's name must also share a word with the shared constant's
@@ -25,10 +24,10 @@ internal static class LibraryValueCopies
     private static readonly Regex WordPattern = new("[A-Z]+(?![a-z])|[A-Z]?[a-z]+|[0-9]+");
 
     private static readonly HashSet<string> RoleWords =
-        new(["value", "size", "count", "factor", "max", "min", "limit", "default", "first", "last", "index", "length", "number"], StringComparer.Ordinal);
+        new(["value", "size", "count", "factor", "max", "min", "limit", "default", "first", "last", "index", "length", "number", "no", "smallest", "largest"], StringComparer.Ordinal);
 
     // Each copy of a shared value, with the shared constant it copies, both by their full names.
-    public static IReadOnlyList<Copy> In(Compilation framework, Compilation solutions, IReadOnlySet<ISymbol> baselineReached)
+    public static IReadOnlyList<Copy> In(Compilation framework, Compilation solutions)
     {
         var shared = ConstantsIn(framework).Where(BaselineTrace.IsLibrary)
             .Concat(ConstantsIn(solutions).Where(IsTierRoot))
@@ -36,7 +35,7 @@ internal static class LibraryValueCopies
             .ToList();
 
         return [.. ConstantsIn(solutions)
-            .Where(constant => IsProblemLocal(constant) && !baselineReached.Contains(constant))
+            .Where(IsProblemLocal)
             .SelectMany(copy => shared.Where(source => IsCopy(copy, source)).Select(source => new Copy(Describe(copy), Describe(source))))
             .OrderBy(copy => copy.Name, StringComparer.Ordinal)];
     }
@@ -63,7 +62,7 @@ internal static class LibraryValueCopies
 
     private static string NamespaceOf(ISymbol symbol) => symbol.ContainingNamespace?.ToDisplayString() ?? string.Empty;
 
-    // A composed arm can read only what is public all the way out.
+    // An arm can read only what is public all the way out.
     private static bool IsVisibleEverywhere(IFieldSymbol field)
     {
         for (ISymbol? at = field; at is not null and not INamespaceSymbol; at = at.ContainingSymbol)

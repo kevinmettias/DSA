@@ -11,9 +11,13 @@ public readonly struct DecimalDigits : IAlphabet
     /// <summary>The number of digits, 10.</summary>
     public const int Size = 10;
 
-    private const char FirstDigit = '0';
+    /// <summary>The digit zero, in slot 0.</summary>
+    public const char Zero = '0';
 
-    private static LetterRun Run => new(FirstDigit, Size);
+    /// <summary>The digit nine, in the last slot.</summary>
+    public const char Nine = '9';
+
+    private static LetterRun Run => new(Zero, Size);
 
     static int IAlphabet.Size => Size;
 

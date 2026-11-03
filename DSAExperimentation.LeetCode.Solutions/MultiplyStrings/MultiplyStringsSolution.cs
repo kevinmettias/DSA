@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DecimalStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MultiplyStrings;
@@ -53,8 +54,8 @@ internal static class MultiplyStringsSolution
         for (var column = columns.Length - 1; column >= 0; column--)
         {
             var total = columns[column] + carry;
-            columns[column] = total % MultiplyStringsConstants.DecimalBase;
-            carry = total / MultiplyStringsConstants.DecimalBase;
+            columns[column] = total % DecimalDigits.Size;
+            carry = total / DecimalDigits.Size;
         }
     }
 
@@ -103,14 +104,14 @@ internal static class MultiplyStringsSolution
         for (var i = num.Length - 1; i >= 0; i--)
         {
             var product = (num[i] - '0') * digit + carry;
-            stack.Push((char)('0' + product % MultiplyStringsConstants.DecimalBase));
-            carry = product / MultiplyStringsConstants.DecimalBase;
+            stack.Push((char)('0' + product % DecimalDigits.Size));
+            carry = product / DecimalDigits.Size;
         }
 
         while (carry > 0)
         {
-            stack.Push((char)('0' + carry % MultiplyStringsConstants.DecimalBase));
-            carry /= MultiplyStringsConstants.DecimalBase;
+            stack.Push((char)('0' + carry % DecimalDigits.Size));
+            carry /= DecimalDigits.Size;
         }
 
         return PopAllIntoString(stack);
@@ -151,8 +152,8 @@ internal static class MultiplyStringsSolution
     private static int AccumulateDigit(DecimalStack stack, int digitA, int digitB, int carry)
     {
         var sum = carry + digitA + digitB;
-        stack.Push((char)('0' + sum % MultiplyStringsConstants.DecimalBase));
-        return sum / MultiplyStringsConstants.DecimalBase;
+        stack.Push((char)('0' + sum % DecimalDigits.Size));
+        return sum / DecimalDigits.Size;
     }
 
     private static string TrimLeadingZeros(string digits)

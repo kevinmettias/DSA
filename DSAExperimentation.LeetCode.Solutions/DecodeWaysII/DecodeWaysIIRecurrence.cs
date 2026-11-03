@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.DecodeWaysII;
 
@@ -13,10 +15,6 @@ internal static class DecodeWaysIIRecurrence
 {
     // A pair is two characters, read in base ten.
     public const int PairLength = 2;
-    public const int DecimalBase = 10;
-
-    // The largest two-digit code that still names a letter (Z is 26).
-    public const int MaxLetterCode = 26;
 
     // How many codes each wildcard shape stands for: '*' alone is any digit 1-9,
     // "**" is the 15 valid pairs, "*x" is 2 while x <= '6', and "*x" behind a

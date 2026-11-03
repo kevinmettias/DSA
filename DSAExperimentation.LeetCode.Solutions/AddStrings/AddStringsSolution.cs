@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DigitStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.AddStrings;
@@ -74,8 +75,8 @@ internal static class AddStringsSolution
                 sum += _secondOperand[_secondIndex--] - '0';
             }
 
-            _carry = sum / AddStringsConstants.DecimalBase;
-            return (char)('0' + sum % AddStringsConstants.DecimalBase);
+            _carry = sum / DecimalDigits.Size;
+            return (char)('0' + sum % DecimalDigits.Size);
         }
     }
 }

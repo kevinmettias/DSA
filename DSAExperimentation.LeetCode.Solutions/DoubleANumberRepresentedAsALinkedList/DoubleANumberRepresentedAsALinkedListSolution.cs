@@ -1,5 +1,6 @@
 using System.Numerics;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using NumberStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.DoubleANumberRepresentedAsALinkedList;
@@ -34,8 +35,8 @@ internal static class DoubleANumberRepresentedAsALinkedListSolution
         // one digit to report.
         do
         {
-            result = new SinglyLinkedListNode<int>((int)(doubled % DoubleANumberRepresentedAsALinkedListConstants.DecimalBase)) { Next = result };
-            doubled /= DoubleANumberRepresentedAsALinkedListConstants.DecimalBase;
+            result = new SinglyLinkedListNode<int>((int)(doubled % DecimalDigits.Size)) { Next = result };
+            doubled /= DecimalDigits.Size;
         }
         while (doubled > 0);
 
@@ -48,7 +49,7 @@ internal static class DoubleANumberRepresentedAsALinkedListSolution
 
         for (var node = head; node is not null; node = node.Next)
         {
-            value = (value * DoubleANumberRepresentedAsALinkedListConstants.DecimalBase) + node.Value;
+            value = (value * DecimalDigits.Size) + node.Value;
         }
 
         return value;
@@ -70,9 +71,9 @@ internal static class DoubleANumberRepresentedAsALinkedListSolution
         {
             var digit = digits.TryPop(out var value) ? value : 0;
             var doubled = (digit * Factor) + carry;
-            carry = doubled / DoubleANumberRepresentedAsALinkedListConstants.DecimalBase;
+            carry = doubled / DecimalDigits.Size;
 
-            result = new SinglyLinkedListNode<int>(doubled % DoubleANumberRepresentedAsALinkedListConstants.DecimalBase) { Next = result };
+            result = new SinglyLinkedListNode<int>(doubled % DecimalDigits.Size) { Next = result };
         }
 
         return result;

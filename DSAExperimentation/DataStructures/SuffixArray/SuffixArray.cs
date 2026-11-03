@@ -37,7 +37,6 @@ namespace DSAExperimentation.DataStructures.SuffixArray;
 public sealed class SuffixArray
 {
     private const int NoRankSentinel = -1;
-    private const int DoublingFactor = 2;
 
     /// <summary>
     /// Every suffix's start index, in ascending order of the suffixes under the character comparer.
@@ -73,7 +72,7 @@ public sealed class SuffixArray
         var suffixes = InitialOrder(n);
         var rank = BootstrapRank(buffer, suffixes, comparer);
 
-        for (var k = 1; k < n; k *= DoublingFactor)
+        for (var k = 1; k < n; k *= AlgorithmConstants.DoublingFactor)
         {
             var context = new DoublingContext(rank, k, n);
             Array.Sort(suffixes, (a, b) => CompareByDoubledKey(a, b, context));

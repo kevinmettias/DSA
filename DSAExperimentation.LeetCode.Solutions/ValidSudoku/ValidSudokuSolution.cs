@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Games.Sudoku;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.ValidSudoku;
 
@@ -11,14 +12,10 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidSudoku;
 // box) unit a digit already occupies; they differ only in what tracks
 // "already seen" - three dense bool grids sized to the fixed 9-cell axes, or
 // this repo's own Set<string> keyed by a composed row/col/box tag. The board's
-// dimensions and notation are Domain/Games/Sudoku's; the baseline keeps its own copy of
-// them, since it may use no library type (ARCHITECTURE §17.5).
+// dimensions and notation are Domain/Games/Sudoku's, and both arms read them there
+// (ARCHITECTURE §17.5).
 internal static class ValidSudokuSolution
 {
-    private const int BoardSize = 9;
-    private const int DigitRange = 10;
-    private const int BoxSize = 3;
-
     // The textbook answer: three dense bool[,] grids, one per constraint
     // axis, indexed by [unit, digit]. Deliberately written without this
     // repo's primitives - it is the arm the Set-keyed strategy has to
@@ -26,13 +23,13 @@ internal static class ValidSudokuSolution
     public static bool IsValidByBooleanGrid(char[][] board)
     {
         var units = (
-            Rows: new bool[BoardSize, DigitRange],
-            Cols: new bool[BoardSize, DigitRange],
-            Boxes: new bool[BoardSize, DigitRange]);
+            Rows: new bool[ClassicSudoku.Size, DecimalDigits.Size],
+            Cols: new bool[ClassicSudoku.Size, DecimalDigits.Size],
+            Boxes: new bool[ClassicSudoku.Size, DecimalDigits.Size]);
 
-        for (var row = 0; row < BoardSize; row++)
+        for (var row = 0; row < ClassicSudoku.Size; row++)
         {
-            for (var col = 0; col < BoardSize; col++)
+            for (var col = 0; col < ClassicSudoku.Size; col++)
             {
                 if (!TryRecordCell(board, units, row, col))
                 {
@@ -62,7 +59,7 @@ internal static class ValidSudokuSolution
         }
 
         var value = digit - '0';
-        var box = (row / BoxSize * BoxSize) + (col / BoxSize);
+        var box = (row / ClassicSudoku.BoxSize * ClassicSudoku.BoxSize) + (col / ClassicSudoku.BoxSize);
 
         if (IsDigitAlreadyPlaced(units, (row, col, box, value)))
         {

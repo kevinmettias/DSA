@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Games.Chess;
+
 namespace DSAExperimentation.LeetCode.Solutions.MinimumMovesToCaptureTheQueen;
 
 // LeetCode 3001. Minimum Moves to Capture The Queen: a 1-indexed 8x8 board holds a
@@ -13,14 +15,11 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumMovesToCaptureTheQueen;
 // the way RookSquare already does for LC 999.
 //
 // Only the baseline walks the board, so it alone needs the board's size and the
-// pieces' lines; they are chess's (Domain/Games/Chess), and it keeps its own copies
-// (ARCHITECTURE §17.5). The line-of-sight arm's same-line tests are grid geometry
-// with no second user, so they stay below.
+// pieces' lines; they are chess's (Domain/Games/Chess): it reads the board's size there
+// and keeps its own copies of the lines (ARCHITECTURE §17.5). The line-of-sight arm's
+// same-line tests are grid geometry with no second user, so they stay below.
 internal static class MinimumMovesToCaptureTheQueenSolution
 {
-    // The baseline's own copy of chess's 8x8 board, whose squares LeetCode numbers from 1.
-    private const int BoardSize = 8;
-
     private static readonly (int DeltaRow, int DeltaCol)[] RookDirections = [(1, 0), (-1, 0), (0, 1), (0, -1)];
     private static readonly (int DeltaRow, int DeltaCol)[] BishopDirections = [(1, 1), (1, -1), (-1, 1), (-1, -1)];
 
@@ -65,7 +64,7 @@ internal static class MinimumMovesToCaptureTheQueenSolution
         var row = from.Row + direction.DeltaRow;
         var col = from.Col + direction.DeltaCol;
 
-        while (row is >= 1 and <= BoardSize && col is >= 1 and <= BoardSize)
+        while (row is >= 1 and <= ChessRules.BoardSize && col is >= 1 and <= ChessRules.BoardSize)
         {
             if (row == target.Row && col == target.Col)
             {

@@ -1,4 +1,5 @@
 using System.Text;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using RepoCountStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 using RepoBuilderStack = DSAExperimentation.DataStructures.Stack.Stack<System.Text.StringBuilder>;
 
@@ -16,8 +17,6 @@ namespace DSAExperimentation.LeetCode.Solutions.DecodeString;
 // re-copying the whole enclosing scope every time.
 internal static class DecodeStringSolution
 {
-    private const int DecimalBase = 10;
-
     // The textbook answer: recursion depth tracks nesting depth, not input
     // length, so it is written without this repo's Stack<T> - the arm the
     // composed solution below has to justify itself against.
@@ -49,7 +48,7 @@ internal static class DecodeStringSolution
     {
         if (char.IsDigit(character))
         {
-            state.Number = (state.Number * DecimalBase) + (character - '0');
+            state.Number = (state.Number * DecimalDigits.Size) + (character - '0');
         }
         else if (character == '[')
         {
@@ -115,7 +114,7 @@ internal static class DecodeStringSolution
 
         while (char.IsDigit(encoded[position]))
         {
-            number = (number * DecimalBase) + (encoded[position] - '0');
+            number = (number * DecimalDigits.Size) + (encoded[position] - '0');
             position++;
         }
 

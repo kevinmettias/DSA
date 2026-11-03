@@ -1,6 +1,7 @@
-using DSAExperimentation.Algorithms.NumberTheory;
 using System.Numerics;
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.DistinctPrimeFactorsOfProductOfArray;
 
@@ -13,7 +14,6 @@ namespace DSAExperimentation.LeetCode.Solutions.DistinctPrimeFactorsOfProductOfA
 // factor each element and union the results.
 internal static class DistinctPrimeFactorsOfProductOfArraySolution
 {
-    private const int SmallestPrime = 2;
 
     // The textbook answer: multiply everything out into a BigInteger, then trial
     // divide the product by every candidate up to the largest element - no prime
@@ -26,7 +26,7 @@ internal static class DistinctPrimeFactorsOfProductOfArraySolution
         var largest = LargestElement(nums);
         var count = 0;
 
-        for (var divisor = SmallestPrime; divisor <= largest; divisor++)
+        for (var divisor = Primes.Smallest; divisor <= largest; divisor++)
         {
             if (product % divisor != 0)
             {

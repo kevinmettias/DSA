@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.TheScoreOfStudentsSolvingMathExpression;
 
@@ -35,7 +36,6 @@ internal static class TheScoreOfStudentsSolvingMathExpressionSolution
 
     private const char Addition = '+';
     private const char Multiplication = '*';
-    private const char ZeroDigit = '0';
 
     // The textbook answer: split the interval at every operator, recurse into both
     // halves and combine each (left, right) pair, re-deriving any sub-interval that
@@ -139,7 +139,7 @@ internal static class TheScoreOfStudentsSolvingMathExpressionSolution
         {
             if (char.IsDigit(c))
             {
-                numbers.Add(c - ZeroDigit);
+                numbers.Add(c - DecimalDigits.Zero);
             }
             else
             {

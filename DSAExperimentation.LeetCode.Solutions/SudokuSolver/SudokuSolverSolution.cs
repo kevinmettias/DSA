@@ -25,14 +25,11 @@ namespace DSAExperimentation.LeetCode.Solutions.SudokuSolver;
 //
 // The engine arm reads the board's rules from Domain/Games/Sudoku: which digits a cell
 // may take, when a placement is legal and when the board is solved. Which cell
-// to branch on next (FindEmptyCell) is the search's own choice and stays here,
-// and the specialized recursion keeps its own copy of the rules, since a
-// baseline may use no library type (ARCHITECTURE §17.5).
+// to branch on next (FindEmptyCell) is the search's own choice and stays here.
+// The specialized recursion reads the board's size there too, and keeps its own
+// placement check, the simple form (ARCHITECTURE §17.5).
 internal static class SudokuSolverSolution
 {
-    private const int BoardSize = 9;
-    private const int BoxSize = 3;
-
     // The textbook answer: a hand-specialized recursion that places a digit,
     // recurses, and only undoes the placement on a failing branch, so a
     // successful path leaves the board mutated with the solution and no
@@ -136,9 +133,9 @@ internal static class SudokuSolverSolution
 
     private static (int Row, int Col)? FindEmptyCell(char[][] board)
     {
-        for (var row = 0; row < BoardSize; row++)
+        for (var row = 0; row < ClassicSudoku.Size; row++)
         {
-            for (var col = 0; col < BoardSize; col++)
+            for (var col = 0; col < ClassicSudoku.Size; col++)
             {
                 if (board[row][col] == '.')
                 {
@@ -155,7 +152,7 @@ internal static class SudokuSolverSolution
 
     private static bool HasRowOrColumnConflict(char[][] board, int row, int col, char digit)
     {
-        for (var i = 0; i < BoardSize; i++)
+        for (var i = 0; i < ClassicSudoku.Size; i++)
         {
             if (board[row][i] == digit || board[i][col] == digit)
             {
@@ -168,12 +165,12 @@ internal static class SudokuSolverSolution
 
     private static bool HasBoxConflict(char[][] board, int row, int col, char digit)
     {
-        var boxRow = row / BoxSize * BoxSize;
-        var boxCol = col / BoxSize * BoxSize;
+        var boxRow = row / ClassicSudoku.BoxSize * ClassicSudoku.BoxSize;
+        var boxCol = col / ClassicSudoku.BoxSize * ClassicSudoku.BoxSize;
 
-        for (var r = boxRow; r < boxRow + BoxSize; r++)
+        for (var r = boxRow; r < boxRow + ClassicSudoku.BoxSize; r++)
         {
-            for (var c = boxCol; c < boxCol + BoxSize; c++)
+            for (var c = boxCol; c < boxCol + ClassicSudoku.BoxSize; c++)
             {
                 if (board[r][c] == digit)
                 {

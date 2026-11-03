@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using PalindromeStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.SmallestPalindromicRearrangementI;
@@ -14,8 +15,6 @@ namespace DSAExperimentation.LeetCode.Solutions.SmallestPalindromicRearrangement
 // same "LIFO order undoes the reversal" trick AddBinarySolution uses.
 internal static class SmallestPalindromicRearrangementISolution
 {
-    private const int AlphabetSize = 26;
-
     public static string RearrangeByCharArrayReverse(string text)
     {
         var counts = CountLowercaseLetters(text);
@@ -57,7 +56,7 @@ internal static class SmallestPalindromicRearrangementISolution
 
     private static int[] CountLowercaseLetters(string text)
     {
-        var counts = new int[AlphabetSize];
+        var counts = new int[EnglishLetters.Size];
 
         foreach (var c in text)
         {
@@ -74,7 +73,7 @@ internal static class SmallestPalindromicRearrangementISolution
     {
         var chars = new List<char>();
 
-        for (var c = 0; c < AlphabetSize; c++)
+        for (var c = 0; c < EnglishLetters.Size; c++)
         {
             for (var copies = 0; copies < counts[c] / 2; copies++)
             {
@@ -87,7 +86,7 @@ internal static class SmallestPalindromicRearrangementISolution
 
     private static string MiddleLetter(int[] counts)
     {
-        for (var c = 0; c < AlphabetSize; c++)
+        for (var c = 0; c < EnglishLetters.Size; c++)
         {
             if (counts[c] % 2 == 1)
             {

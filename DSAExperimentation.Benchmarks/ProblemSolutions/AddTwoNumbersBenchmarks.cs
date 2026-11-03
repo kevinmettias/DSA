@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DSAExperimentation.LeetCode.Solutions.AddTwoNumbers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -35,8 +36,8 @@ public class AddTwoNumbersBenchmarks
     // significant - from 1-9.
     private static SinglyLinkedListNode<int> BuildRandomDigitList(Random random, int length)
     {
-        var lowerDigits = SeededDraws.Values(length - 1, 0, AddTwoNumbersConstants.DecimalBase, random);
-        var head = new SinglyLinkedListNode<int>(random.Next(1, AddTwoNumbersConstants.DecimalBase));
+        var lowerDigits = SeededDraws.Values(length - 1, 0, DecimalDigits.Size, random);
+        var head = new SinglyLinkedListNode<int>(random.Next(1, DecimalDigits.Size));
 
         for (var i = lowerDigits.Length - 1; i >= 0; i--)
         {
