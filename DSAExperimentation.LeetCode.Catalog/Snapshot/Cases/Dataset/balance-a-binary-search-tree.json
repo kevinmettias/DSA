@@ -259,12 +259,6 @@
   },
   {
     "Inputs": [
-      "[5,3,8,2,4,6,9,1,null,3.5,4.5,5.5,6.5]"
-    ],
-    "ExpectedOutput": "[4.5,3,6,1,3.5,5,8,null,2,null,4,null,5.5,6.5,9]"
-  },
-  {
-    "Inputs": [
       "[1,null,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9,null,10,null,11,null,12,null,13,null,14,null,15]"
     ],
     "ExpectedOutput": "[8,4,12,2,6,10,14,1,3,5,7,9,11,13,15]"
@@ -328,12 +322,6 @@
       "[1,null,2,null,3,null,4,null,5,null,6,null,7,null,8]"
     ],
     "ExpectedOutput": "[4,2,6,1,3,5,7,null,null,null,null,null,null,null,8]"
-  },
-  {
-    "Inputs": [
-      "[4,2,6,1,3,5,7,0,1.5,2.5,3.5,4.5,5.5,6.5,7.5]"
-    ],
-    "ExpectedOutput": "[4,2,6,1,3,5,7,0,1.5,2.5,3.5,4.5,5.5,6.5,7.5]"
   },
   {
     "Inputs": [
@@ -406,11 +394,5 @@
       "[100,50,150,25,75,125,175,10,40,60,80,110,140,160,190,5,15,35,45,55,65,70,85,90,105,115,135,145,155,165,185,195,1,9,20,30,41,49,51,59,61,69,71,79,81,89,91,99,101,109,111,119,121,129,131,139,141,149,151,159,161,169,171,179,181,189,191,199,200]"
     ],
     "ExpectedOutput": "[89,41,135,10,60,109,151,5,15,51,75,99,119,145,161,195,1,9,25,49,59,65,70,91,101,111,121,150,160,159,169,179,181,189,191,199,200,20,30,40,45,50,55,69,71,79,81,85,100,90,110,105,125,115,140,131,139,141,149,175,165,190,185,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,35,null,null,null,null,null,null,null,61,null,null,null,null,null,null,null,80,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,129,null,null,null,null,null,null,null,155,null,null,null,null,null,null,null,171]"
-  },
-  {
-    "Inputs": [
-      "[10,5,15,null,7,12,18,null,6,9,11,13,16,null,8,14,null,null,10.5,14.5,16.5,17.5]"
-    ],
-    "ExpectedOutput": "[11,8,13,7,14,15,18,5,6,10,9,10.5,14.5,16.5,17.5,null,null,null,null,null,null,null,12,null,null,null,null,null,null,null,16]"
   }
 ]

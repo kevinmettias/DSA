@@ -99,13 +99,6 @@
   },
   {
     "Inputs": [
-      "[2,1,3,null,null,2.5,3.5]",
-      "2.75"
-    ],
-    "ExpectedOutput": "[2,1,3,null,null,2.5,3.5,null,2.75]"
-  },
-  {
-    "Inputs": [
       "[10,null,15,12,20,null,null,13,14,null,null,null,null]",
       "11"
     ],
@@ -274,13 +267,6 @@
   },
   {
     "Inputs": [
-      "[2,1,3,null,null,2.5]",
-      "2.2"
-    ],
-    "ExpectedOutput": "[2,1,3,null,null,2.5,null,2.2]"
-  },
-  {
-    "Inputs": [
       "[50,25,75,10,35,60,85,null,27,30,55,65,80,90]",
       "70"
     ],
@@ -320,13 +306,6 @@
       "95"
     ],
     "ExpectedOutput": "[100,50,150,25,75,125,175,10,30,60,90,110,140,160,180,5,null,null,28,40,null,85,100,115,130,null,null,145,155,165,175,null,185,null,null,null,null,null,null,95]"
-  },
-  {
-    "Inputs": [
-      "[2,1,3,null,null,2.5,null]",
-      "2.3"
-    ],
-    "ExpectedOutput": "[2,1,3,null,null,2.5,null,2.3]"
   },
   {
     "Inputs": [
@@ -376,13 +355,6 @@
       "9"
     ],
     "ExpectedOutput": "[5,3,7,2,4,6,8,null,null,null,null,null,null,null,9]"
-  },
-  {
-    "Inputs": [
-      "[12,7,19,5,9,13,20,3,6,8,10,11,14,18,null,null,null,null,null,null,null,null,16,null,null,null,17]",
-      "12.5"
-    ],
-    "ExpectedOutput": "[12,7,19,5,9,13,20,3,6,8,10,11,14,18,null,null,null,null,null,null,null,null,16,null,12.5,null,17]"
   },
   {
     "Inputs": [
@@ -460,13 +432,6 @@
       "0"
     ],
     "ExpectedOutput": "[5,3,8,2,4,null,null,1,null,null,null,0]"
-  },
-  {
-    "Inputs": [
-      "[3,1,4,null,2,null,null,1.5]",
-      "1.7"
-    ],
-    "ExpectedOutput": "[3,1,4,null,2,null,null,1.5,null,null,1.7]"
   },
   {
     "Inputs": [

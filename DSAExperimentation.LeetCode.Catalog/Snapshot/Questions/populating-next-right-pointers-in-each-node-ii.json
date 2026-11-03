@@ -61,7 +61,7 @@
       "Inputs": [
         "[1,2,3,4,5,null,7]"
       ],
-      "ExpectedOutput": "[1,#,2,3,#,4,5,7,#]"
+      "ExpectedOutput": null
     },
     {
       "Inputs": [

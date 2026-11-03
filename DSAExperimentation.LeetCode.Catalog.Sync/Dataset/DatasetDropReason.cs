@@ -21,6 +21,9 @@ internal enum DatasetDropReason
     // the end, which means the input broke one of the question's promises.
     NoAnswer,
 
+    // An input is not of the type its parameter declares, such as a 1.5 in an integer tree.
+    NotOfDeclaredType,
+
     // An input lies outside one of the question's stated bounds.
     OutOfBounds,
 

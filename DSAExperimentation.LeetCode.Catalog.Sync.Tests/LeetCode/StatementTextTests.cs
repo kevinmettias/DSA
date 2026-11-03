@@ -25,6 +25,36 @@ public sealed partial class StatementTextTests
         </div>
         """;
 
+    // Next Greater Element II's layout: the explanation opens a line with no label of its own.
+    private const string UnlabeledExplanation = """
+        <pre>
+        <strong>Input:</strong> nums = [1,2,1]
+        <strong>Output:</strong> [2,-1,2]
+        Explanation: The first 1's next greater number is 2;
+        The number 2 can't find next greater number.
+        </pre>
+        """;
+
+    // Combination Sum II's layout: a list of lists written over several lines.
+    private const string MultilineOutput = """
+        <pre>
+        <strong>Input:</strong> candidates = [2,5,2,1,2], target = 5
+        <strong>Output:</strong>
+        [
+        [1,2,2],
+        [5]
+        ]
+        </pre>
+        """;
+
+    // Greatest Common Divisor of Strings' layout: zero-width spaces trail the empty string.
+    private const string ZeroWidthSpaces = """
+        <pre>
+        <strong>Input:</strong> str1 = "LEET", str2 = "CODE"
+        <strong>Output:</strong> ""&#8203;&#8203;&#8203;
+        </pre>
+        """;
+
     private const string ConstraintsList = """
         <p><strong>Constraints:</strong></p>
         <ul>
@@ -41,6 +71,18 @@ public sealed partial class StatementTextTests
     [Fact]
     public void Outputs_ExampleBlocks_ReadsTheDecodedValue()
         => Assert.Equal(["\"cba\""], StatementText.Outputs(BlockExamples));
+
+    [Fact]
+    public void Outputs_ExplanationWithoutALabel_EndsTheOutputBeforeIt()
+        => Assert.Equal(["[2,-1,2]"], StatementText.Outputs(UnlabeledExplanation));
+
+    [Fact]
+    public void Outputs_OutputOverSeveralLines_ReadsItWhole()
+        => Assert.Equal(["[ [1,2,2], [5] ]"], StatementText.Outputs(MultilineOutput));
+
+    [Fact]
+    public void Outputs_ZeroWidthSpaces_RemovesThem()
+        => Assert.Equal(["\"\""], StatementText.Outputs(ZeroWidthSpaces));
 
     [Fact]
     public void Constraints_ListWithSuperscripts_WritesPowersWithACaret()

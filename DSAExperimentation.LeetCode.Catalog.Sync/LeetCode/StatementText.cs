@@ -9,7 +9,9 @@ namespace DSAExperimentation.LeetCode.Catalog.Sync.LeetCode;
 // LeetCode writes examples in two layouts. Older questions use a <pre> block ("<strong>Output:</strong>
 // [0,1]\n<strong>Explanation:</strong>..."), newer ones a <div class="example-block"> with each
 // value in a <span class="example-io">. OutputLabel matches the label in either, and the value runs
-// to whatever closes it - the next label, </pre>, </p> or </div> - then loses its tags.
+// to whatever closes it - the next label, a line that opens an explanation without one, </pre>,
+// </p> or </div> - then loses its tags. A value can span lines, as a list of lists often does, so
+// a bare line break does not end it.
 internal static partial class StatementText
 {
     private const string Superscript = "^$1";
@@ -18,13 +20,14 @@ internal static partial class StatementText
     private const string ItemGroup = "item";
     private const string SingleSpace = " ";
     private const char NoBreakSpace = '\u00a0';
+    private const string ZeroWidthSpace = "\u200b";
 
     public static IReadOnlyList<string> Outputs(string contentHtml)
         => OutputLabel().Matches(contentHtml)
             .Select(match => PlainText(match.Groups[OutputGroup].Value))
             .ToList();
 
-    [GeneratedRegex(@"Output:?\s*</(?:strong|b)>\s*(?<output>.*?)\s*(?=\n\s*<(?:strong|b)>|</pre>|</p>|</div>)", RegexOptions.Singleline)]
+    [GeneratedRegex(@"Output:?\s*</(?:strong|b)>\s*(?<output>.*?)\s*(?=\n\s*(?:<(?:strong|b)>|Explanation)|</pre>|</p>|</div>)", RegexOptions.Singleline)]
     private static partial Regex OutputLabel();
 
     public static IReadOnlyList<string> Constraints(string contentHtml)
@@ -58,11 +61,12 @@ internal static partial class StatementText
     [GeneratedRegex(@"<sup>(.*?)</sup>", RegexOptions.Singleline)]
     private static partial Regex Superscripts();
 
-    // Tags dropped, entities decoded, every run of whitespace (no-break spaces included) one space.
+    // Tags dropped, entities decoded, zero-width spaces removed, every run of whitespace (no-break
+    // spaces included) one space.
     private static string PlainText(string html)
     {
         var untagged = Tag().Replace(html, string.Empty);
-        var decoded = WebUtility.HtmlDecode(untagged).Replace(NoBreakSpace, ' ');
+        var decoded = WebUtility.HtmlDecode(untagged).Replace(NoBreakSpace, ' ').Replace(ZeroWidthSpace, string.Empty);
         return Whitespace().Replace(decoded, SingleSpace).Trim();
     }
 

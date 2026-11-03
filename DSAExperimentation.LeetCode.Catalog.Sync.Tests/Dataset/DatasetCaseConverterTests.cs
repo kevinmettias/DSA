@@ -21,6 +21,7 @@ public sealed partial class DatasetCaseConverterTests
             { "values = [3,3], target = 6", "[0, 1]", nameof(DatasetDropReason.NamesDiffer) },
             { "nums = {3, 3}, target = 6", "[0, 1]", nameof(DatasetDropReason.NotTranslatable) },
             { "nums = [-1,-2], target = 5", "None", nameof(DatasetDropReason.NoAnswer) },
+            { "nums = [3, 1.5], target = 6", "[0, 1]", nameof(DatasetDropReason.NotOfDeclaredType) },
             { "nums = [3], target = 6", "[0, 0]", nameof(DatasetDropReason.OutOfBounds) },
             { "nums = [2, 7, 11, 15], target = 9", "[0, 1]", nameof(DatasetDropReason.Duplicate) },
         };

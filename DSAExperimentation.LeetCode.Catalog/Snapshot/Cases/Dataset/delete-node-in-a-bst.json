@@ -414,13 +414,6 @@
   },
   {
     "Inputs": [
-      "[5,3,6,2,4,null,7,null,null,3.5,4.5]",
-      "3"
-    ],
-    "ExpectedOutput": "[5,4,6,3.5,4.5,null,7,2]"
-  },
-  {
-    "Inputs": [
       "[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]",
       "4"
     ],
@@ -901,13 +894,6 @@
       "50"
     ],
     "ExpectedOutput": "[70,60,80,55,65,75,90,30,null,null,null,null,null,null,null,20,40,10,25,35,45]"
-  },
-  {
-    "Inputs": [
-      "[5,3,6,2,4,null,7,null,null,3.5,null,null,6.5]",
-      "3"
-    ],
-    "ExpectedOutput": "[5,4,6,3.5,null,null,7,2,null,null,6.5]"
   },
   {
     "Inputs": [

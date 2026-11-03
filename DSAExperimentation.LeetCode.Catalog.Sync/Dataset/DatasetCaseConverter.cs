@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Catalog.Sync.Dataset;
 //
 // - the reference solution failed on it, so the "output" is an error message;
 // - its inputs cannot be matched to the signature's by name, or read as literals;
+// - an input is not of the type its parameter declares (DeclaredType);
 // - the reference returned None where the question's answer cannot be empty - it fell off the end,
 //   which happens when the input breaks a promise (Two Sum's "exactly one solution") that no
 //   parsed constraint states;
@@ -192,6 +193,11 @@ internal sealed class DatasetCaseConverter
 
     private bool IsAdmitted(LeetCodeCase testCase)
     {
+        if (!IsOfDeclaredTypes(testCase))
+        {
+            return Dropped<bool>(DatasetDropReason.NotOfDeclaredType);
+        }
+
         if (IsOutOfBounds(testCase))
         {
             return Dropped<bool>(DatasetDropReason.OutOfBounds);
@@ -205,8 +211,11 @@ internal sealed class DatasetCaseConverter
         return true;
     }
 
+    private bool IsOfDeclaredTypes(LeetCodeCase testCase)
+        => testCase.Inputs.Zip(_signature.Parameters).All(input => DeclaredType.IsOf(JsonNode.Parse(input.First), input.Second.Type));
+
     private bool IsOutOfBounds(LeetCodeCase testCase)
-        => _bounds.Any(bound => bound.Check(testCase, _signature.Parameters) == LeetCodeBoundCheck.Violated);
+        =>_bounds.Any(bound => bound.Check(testCase, _signature.Parameters) == LeetCodeBoundCheck.Violated);
 
     // Two cases are the same case when their inputs are the same values, however each source
     // spaced or escaped them; null when an input is not JSON at all, which only an example can be.

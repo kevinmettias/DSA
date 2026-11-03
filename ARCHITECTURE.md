@@ -2076,12 +2076,15 @@ so a refresh's diff shows only what LeetCode changed:
 here is one of its hidden tests. Each case carries its source:
 
 - **Examples** are the published examples. Their outputs are read from the statement's prose and
-  paired with inputs only when the statement states exactly one output per example.
+  paired with inputs only when the statement states exactly one output per example. An output the
+  statement writes in prose, such as "tail connects to node index 1", is not recorded.
 - **Dataset** cases come from LeetCodeDataset (Apache-2.0). Their inputs were generated and their
   outputs printed by a reference Python solution. The importer drops a case:
   - whose reference failed;
   - that it cannot translate;
   - where the reference returned None for an answer that cannot be empty;
+  - with an input not of its declared type, such as a 1.5 in an integer tree (80 such cases, in 33
+    questions, were in the snapshot until 2026-11-03);
   - that breaks a parsed bound;
   - that repeats another case.
 - **LeetCodeRun** cases, outputs from LeetCode's own Run button, have a folder reserved and no

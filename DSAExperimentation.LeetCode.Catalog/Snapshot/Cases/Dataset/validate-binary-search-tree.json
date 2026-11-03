@@ -103,12 +103,6 @@
   },
   {
     "Inputs": [
-      "[1,0,2,null,null,1.5,2.5]"
-    ],
-    "ExpectedOutput": "true"
-  },
-  {
-    "Inputs": [
       "[5,3,7,1,4,6,9,null,null,null,null,null,10]"
     ],
     "ExpectedOutput": "false"
@@ -176,12 +170,6 @@
   {
     "Inputs": [
       "[10,5,15,1,7,null,20,null,null,6,8]"
-    ],
-    "ExpectedOutput": "true"
-  },
-  {
-    "Inputs": [
-      "[1,0,2,null,null,1.5]"
     ],
     "ExpectedOutput": "true"
   },

@@ -12,7 +12,10 @@ namespace DSAExperimentation.LeetCode.Catalog.Sync.LeetCode;
 // read by StatementText.Outputs. They are paired by position only when the statement states
 // exactly one output per example: any other count means some example has no stated output (or the
 // statement shows one the list lacks), and position no longer says which output belongs to which
-// input, so every example then keeps a null output rather than possibly the wrong one.
+// input, so every example then keeps a null output rather than possibly the wrong one. An output
+// stated in prose rather than in LeetCode's notation - Linked List Cycle II's "tail connects to
+// node index 1", Remove Duplicates' "2, nums = [1,2,_]" - is no answer a harness can compare, so
+// that example keeps a null output too.
 internal static class LeetCodeQuestionMapper
 {
 
@@ -79,10 +82,28 @@ internal static class LeetCodeQuestionMapper
             .Select((inputs, index) => new LeetCodeCase
             {
                 Inputs = inputs.Split(LeetCodeNotation.InputSeparator),
-                ExpectedOutput = paired?[index],
+                ExpectedOutput = NotationOrNone(paired?[index]),
                 Source = LeetCodeCaseSource.Example,
             })
             .ToList();
+    }
+
+    private static string? NotationOrNone(string? output)
+    {
+        if (output is null)
+        {
+            return null;
+        }
+
+        try
+        {
+            using var _ = JsonDocument.Parse(output);
+            return output;
+        }
+        catch (JsonException)
+        {
+            return null;
+        }
     }
 
     // presumption: allow -- each of these strings is a nested JSON document leetcode.com's own

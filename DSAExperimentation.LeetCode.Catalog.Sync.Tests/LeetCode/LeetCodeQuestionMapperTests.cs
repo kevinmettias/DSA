@@ -76,6 +76,14 @@ public sealed partial class LeetCodeQuestionMapperTests
     }
 
     [Fact]
+    public void ExamplesOf_OutputStatedInProse_KeepsThatExampleWithNoOutput()
+    {
+        var examples = LeetCodeQuestionMapper.ExamplesOf(["[3,2,0,-4]\n1", "[1]\n-1"], ["tail connects to node index 1", "false"]);
+
+        Assert.Equal([null, "false"], examples.Select(example => example.ExpectedOutput));
+    }
+
+    [Fact]
     public void ToQuestion_ResponseForTwoSum_ReadsIdentityFilingAndStatement()
     {
         var question = LeetCodeQuestionMapper.ToQuestion(TwoSumResponse());
