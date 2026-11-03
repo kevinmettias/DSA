@@ -404,6 +404,13 @@
       "expires": "2026-11-22"
     },
     {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/Algorithms/Sampling/PrefixSumSampler.cs",
+      "reason": "IndexFor's AsArray(...)! is named inline as a `presumption: allow` comment stating the invariant that makes it true (the constructor always builds the running totals, so they are never the default ImmutableArray, whose array is null) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-parameter-count",
       "path": "DSAExperimentation/Algorithms/Backtracking/Backtrack.cs",
       "reason": "the 6-parameter Search overload (state plus 5 delegates) is a deliberate ergonomic surface, not an accidental one - its own doc comment explains why: it exists specifically so exhaustive-enumeration callers (Subsets, Permutations, N-Queens counting) get a void onSolution and can't accidentally truncate their own search by returning the wrong bool, the exact footgun the canonical BacktrackingSteps\u003cTState,TChoice\u003e-based overload's bool-returning OnSolution invites. Collapsing this overload's parameters into a record struct, as the mechanical fix suggests, would just move that same footgun back onto every caller of this overload - the same 'this broad surface is the type's actual minimum complete API' shape CircularBuffer.cs's own check-responsibility-extraction waiver already establishes for a structurally-necessary parameter/member count.",

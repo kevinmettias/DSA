@@ -1,4 +1,4 @@
-using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.Algorithms.Sampling;
 
 namespace DSAExperimentation.LeetCode.RandomPickWithWeight;
 
@@ -6,15 +6,14 @@ namespace DSAExperimentation.LeetCode.RandomPickWithWeight;
 // index chosen with probability proportional to its weight.
 //
 // A Design problem's whole point is a sequence of calls against one instance, so
-// "every strategy for the problem" (§17.3) takes the form of two classes
-// implementing a shared IRandomPickWithWeight surface, the same shape
-// RandomPickIndexSolution already uses for its own Design-category problem. Both
-// build a cumulative-sum array of the weights once at construction and draw one
-// uniform integer over the total on every PickIndex call; they differ only in how
-// that draw is turned into an index - a linear scan of the prefix sums, or this
-// repo's own BinarySearch.UpperBound over an ArraySequence<int> view of the same
-// array, the same prefix-sum-plus-BinarySearch pairing
-// RandomPointInNonOverlappingRectanglesSolution uses for area-weighted sampling.
+// "every strategy for the problem" (§17.3) takes the form of classes implementing a
+// shared IRandomPickWithWeight surface, the same shape RandomPickIndexSolution
+// already uses for its own Design-category problem. The weights are a weighted
+// die (Domain/Games/Dice), and turning a uniform draw into a face is a sampler, an
+// algorithm with interchangeable implementations: a linear scan of the prefix
+// sums, the library's PrefixSumSampler (BinarySearch.UpperBound over them, the
+// pairing RandomPointInNonOverlappingRectanglesSolution uses for area-weighted
+// sampling), or its AliasSampler, Vose's O(1) alias table.
 internal static class RandomPickWithWeightSolution
 {
     internal interface IRandomPickWithWeight
@@ -52,25 +51,36 @@ internal static class RandomPickWithWeightSolution
         }
     }
 
-    // This repo's own BinarySearch.UpperBound over an ArraySequence<int> of the
-    // same prefix sums finds the same index in O(log n) per PickIndex.
+    // The library's PrefixSumSampler: BinarySearch.UpperBound over the same prefix sums finds the
+    // same index in O(log n) per PickIndex, from the same single draw.
     internal sealed class RandomPickWithWeightByBinarySearchUpperBound : IRandomPickWithWeight
     {
-        private readonly int[] _prefixSums;
+        private readonly PrefixSumSampler _sampler;
         private readonly Random _random;
 
         public RandomPickWithWeightByBinarySearchUpperBound(int[] weights, Random random)
         {
             _random = random;
-            _prefixSums = BuildPrefixSums(weights);
+            _sampler = new PrefixSumSampler(weights);
         }
 
-        public int PickIndex()
+        public int PickIndex() => _sampler.IndexFor(_random.Next(_sampler.Total));
+    }
+
+    // Vose's alias table, the library's AliasSampler: a column drawn uniformly, then a ticket within
+    // it, decide the index in O(1) per pick after O(n) to build, where the prefix sums take O(log n).
+    internal sealed class RandomPickWithWeightByAliasTable : IRandomPickWithWeight
+    {
+        private readonly AliasSampler _sampler;
+        private readonly Random _random;
+
+        public RandomPickWithWeightByAliasTable(int[] weights, Random random)
         {
-            var draw = _random.Next(_prefixSums[^1]);
-
-            return BinarySearch.UpperBound(_prefixSums, draw);
+            _random = random;
+            _sampler = new AliasSampler(weights);
         }
+
+        public int PickIndex() => _sampler.IndexFor(_random.Next(_sampler.Columns), _random.Next(_sampler.Total));
     }
 
     private static int[] BuildPrefixSums(int[] weights)

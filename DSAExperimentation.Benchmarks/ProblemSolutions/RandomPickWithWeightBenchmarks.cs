@@ -41,6 +41,9 @@ public class RandomPickWithWeightBenchmarks
     public int[] BinarySearchUpperBound()
         => Replay(new RandomPickWithWeightSolution.RandomPickWithWeightByBinarySearchUpperBound(_weights, new Random(1)));
 
+    [Benchmark]
+    public int[] AliasTable() => Replay(new RandomPickWithWeightSolution.RandomPickWithWeightByAliasTable(_weights, new Random(1)));
+
     private int[] Replay(RandomPickWithWeightSolution.IRandomPickWithWeight solution)
     {
         for (var call = 0; call < PickCalls; call++)

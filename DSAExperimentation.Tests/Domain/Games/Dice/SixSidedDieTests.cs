@@ -2,12 +2,10 @@ using DSAExperimentation.Domain.Games.Dice;
 
 namespace DSAExperimentation.Tests.Domain.Games.Dice;
 
-// The faces are the fact itself, so the tests state them.
+// The faces are the fact itself, so the test states them.
 public sealed partial class SixSidedDieTests
 {
     [Fact]
-    public void LowestFace_IsOne() => Assert.Equal(1, SixSidedDie.LowestFace);
-
-    [Fact]
-    public void FaceCount_IsSix() => Assert.Equal(6, SixSidedDie.FaceCount);
+    public void Faces_AreOneThroughSixFair() =>
+        Assert.Equal<DieFace>(DieFace.FairFaces(1, 2, 3, 4, 5, 6), SixSidedDie.Faces);
 }

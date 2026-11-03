@@ -52,12 +52,12 @@ public sealed partial class BaselineTraceTests
             "DSAExperimentation.Domain.Games.Dice.SixSidedDie",
             ReachedLibraryNames(
                 """
-                public static int Baseline(int[] values) => values.Length + Faces<DSAExperimentation.Domain.Games.Dice.SixSidedDie>.Highest;
+                public static int Baseline(int[] values) => values.Length + Faces<DSAExperimentation.Domain.Games.Dice.SixSidedDie>.Count;
 
                 private static class Faces<TDie>
                     where TDie : struct, DSAExperimentation.Domain.Games.Dice.IDie
                 {
-                    public static int Highest => TDie.LowestFace + TDie.FaceCount - 1;
+                    public static int Count => TDie.Faces.Length;
                 }
                 """,
                 ArmCalling("ProbeSolution.Baseline(_values)")));

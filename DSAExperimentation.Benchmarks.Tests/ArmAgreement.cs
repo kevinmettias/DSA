@@ -40,6 +40,8 @@ internal static class ArmAgreement
             "The problem asks for a random draw, and the arms map the same seeded draws onto the unflipped cells differently.",
         [typeof(RandomPickIndexBenchmarks)] = RandomDraw,
         [typeof(RandomPickWithBlacklistBenchmarks)] = RandomDraw,
+        [typeof(RandomPickWithWeightBenchmarks)] =
+            "The problem asks for a weighted random draw, and the alias-table arm draws a column and a ticket for each pick where the prefix-sum arms draw one ticket.",
         [typeof(ShuffleAnArrayBenchmarks)] = RandomDraw,
         [typeof(AllOneDataStructureBenchmarks)] =
             "GetMaxKey and GetMinKey may return any key at the extreme count, and the arms pick different keys from a tie.",

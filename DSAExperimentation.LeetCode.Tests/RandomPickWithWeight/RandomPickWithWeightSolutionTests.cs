@@ -79,6 +79,28 @@ public sealed partial class RandomPickWithWeightSolutionTests
             new RandomPickWithWeightSolution.RandomPickWithWeightByBinarySearchUpperBound(weights, new Random(seed)),
             share);
 
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RandomPickWithWeightByAliasTable_LeetCodeExamples_AlwaysReturnsAValidIndex(
+        int[] weights, int seed, int[] validIndices, int trials)
+        => AssertPicksAreValid(
+            new RandomPickWithWeightSolution.RandomPickWithWeightByAliasTable(weights, new Random(seed)),
+            validIndices,
+            trials);
+
+    [Fact]
+    public void RandomPickWithWeightByAliasTable_OneWeightFarLarger_LandsThereFarMoreOften()
+        => AssertHeavilyWeightedIndexDominates(
+            new RandomPickWithWeightSolution.RandomPickWithWeightByAliasTable([1, 999], new Random(3)));
+
+    [Theory]
+    [MemberData(nameof(Shares))]
+    public void RandomPickWithWeightByAliasTable_LeetCodeExample2Weights_PicksEachIndexInProportion(
+        int[] weights, int seed, PickShare share)
+        => AssertHitsWithinShare(
+            new RandomPickWithWeightSolution.RandomPickWithWeightByAliasTable(weights, new Random(seed)),
+            share);
+
     private static void AssertPicksAreValid(
         RandomPickWithWeightSolution.IRandomPickWithWeight solution, int[] validIndices, int trials)
     {
