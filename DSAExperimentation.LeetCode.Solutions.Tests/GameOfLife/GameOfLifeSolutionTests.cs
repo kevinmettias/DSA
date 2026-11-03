@@ -23,6 +23,10 @@ public sealed partial class GameOfLifeSolutionTests
             // A plus: its centre has exactly four live neighbours and dies, each arm has three
             // and survives, and each empty corner has three and is born.
             { [[0, 1, 0], [1, 1, 1], [0, 1, 0]], [[1, 1, 1], [1, 0, 1], [1, 1, 1]] },
+
+            // The empty centre has six live neighbours and stays empty: Conway's rule is born on
+            // three alone, where a Life-like rule such as HighLife (B36/S23) would bring it to life.
+            { [[1, 1, 1], [1, 0, 1], [1, 0, 0]], [[1, 0, 1], [1, 0, 1], [0, 1, 0]] },
         };
 
     [Theory]

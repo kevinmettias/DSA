@@ -14,14 +14,10 @@ namespace DSAExperimentation.LeetCode.Solutions.GameOfLife;
 // live (row*cols+col encoded) instead of paying for every cell. The same "sparse Set
 // instead of a full copy" move SetMatrixZeroes makes.
 //
-// Conway's B3/S23 rule is the game's (Domain/Games/Life): the Set arm asks LifeLike<ConwayLife>, and the
-// board-copy baseline keeps its own copy below (ARCHITECTURE §17.5).
+// Conway's B3/S23 rule is the game's (Domain/Games/Life), and both arms ask LifeLike<ConwayLife>
+// (ARCHITECTURE §17.5): what they differ in is how they remember the generation they are replacing.
 internal static class GameOfLifeSolution
 {
-    // The baseline's own copy of Conway's B3/S23 counts.
-    private const int BirthNeighborCount = 3;
-    private const int SurvivalNeighborCount = 2;
-
     // The textbook answer: clone the board into a snapshot up front and read only the
     // snapshot while writing the next generation into the original - O(rows*cols)
     // extra space. Deliberately written without this repo's primitives - the arm the
@@ -37,7 +33,11 @@ internal static class GameOfLifeSolution
             for (var c = 0; c < cols; c++)
             {
                 var liveNeighbors = CountLiveNeighborsFromSnapshot(snapshot, (r, c));
-                board[r][c] = IsAliveNextGeneration(liveNeighbors, snapshot[r][c]) ? 1 : 0;
+                var wasLive = snapshot[r][c] == 1;
+                var isLiveNext = wasLive
+                    ? LifeLike<ConwayLife>.IsSurvivalCount(liveNeighbors)
+                    : LifeLike<ConwayLife>.IsBirthCount(liveNeighbors);
+                board[r][c] = isLiveNext ? 1 : 0;
             }
         }
     }
@@ -69,13 +69,6 @@ internal static class GameOfLifeSolution
 
         return count;
     }
-
-    // The baseline's own copy of Conway's rule, named so the loop body reads as "write the
-    // next state" instead of applying && before || in its head. The current state is an int
-    // because it is the board's own 0/1.
-    private static bool IsAliveNextGeneration(int liveNeighbors, int currentState)
-        => liveNeighbors == BirthNeighborCount
-           || (liveNeighbors == SurvivalNeighborCount && currentState == 1);
 
     // This repo's own Set<int> snapshots which cells were live in the ORIGINAL board
     // before any in-place mutation - O(live cells) extra space instead of
