@@ -29,7 +29,7 @@ internal static class LibraryValueCopies
     // Each copy of a shared value, with the shared constant it copies, both by their full names.
     public static IReadOnlyList<Copy> In(Compilation framework, Compilation solutions)
     {
-        var shared = ConstantsIn(framework).Where(BaselineTrace.IsLibrary)
+        var shared = ConstantsIn(framework).Where(RepositoryTiers.IsLibrary)
             .Concat(ConstantsIn(solutions).Where(IsTierRoot))
             .Where(IsVisibleEverywhere)
             .ToList();

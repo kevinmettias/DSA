@@ -107,7 +107,7 @@ internal sealed class ReachWalker(BaselineTrace trace, ISymbol site, ReachMode m
     // compute its value too, so it is also traced as a member.
     private void MemberRead(ISymbol member)
     {
-        if (BaselineTrace.IsBenchmark(member.OriginalDefinition))
+        if (RepositoryTiers.IsBenchmark(member.OriginalDefinition))
         {
             trace.BenchmarkMemberRead(member, site);
 

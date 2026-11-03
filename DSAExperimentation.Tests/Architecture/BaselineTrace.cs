@@ -31,28 +31,6 @@ namespace DSAExperimentation.Tests.Architecture;
 // LeetCode's own I/O shapes (ContractTypes) are input wherever they appear.
 internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownInput)
 {
-    private const string SolutionNamespace = "DSAExperimentation.LeetCode.Solutions";
-    private const string BenchmarkNamespace = "DSAExperimentation.Benchmarks";
-    private const string FixtureNamespace = "DSAExperimentation.Benchmarks.Fixtures";
-
-    // Every tier of the framework project: the library the trace knows not to walk into.
-    private static readonly string[] LibraryNamespaces =
-    [
-        "DSAExperimentation.DataStructures",
-        "DSAExperimentation.Algorithms",
-        "DSAExperimentation.Mechanisms",
-        "DSAExperimentation.Domain",
-    ];
-
-    // The tiers that implement data structures, algorithms and mechanisms, which a baseline writes
-    // for itself. Domain states facts about a problem's world, which every arm reads alike.
-    private static readonly string[] ImplementationNamespaces =
-    [
-        "DSAExperimentation.DataStructures",
-        "DSAExperimentation.Algorithms",
-        "DSAExperimentation.Mechanisms",
-    ];
-
     // The library types that stand for LeetCode's own I/O shapes. A baseline that takes, returns or
     // builds one answers in LeetCode's terms rather than composing the library.
     private static readonly HashSet<string> ContractTypes =
@@ -135,15 +113,15 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
         {
             InputMemberRead(member);
         }
-        else if (IsLibrary(definition))
+        else if (RepositoryTiers.IsLibrary(definition))
         {
             Charge(definition, site, mode);
         }
-        else if (IsSolution(definition))
+        else if (RepositoryTiers.IsSolution(definition))
         {
             SolutionMemberReached(member, site, mode);
         }
-        else if (IsHarnessCode(definition) && mode == ReachMode.Harness)
+        else if (RepositoryTiers.IsHarnessCode(definition) && mode == ReachMode.Harness)
         {
             Reach(definition, site);
         }
@@ -153,7 +131,7 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
     // method's type arguments, each of which is a witness the code chose.
     private void TypesOfMemberBound(ISymbol member, ISymbol site, ReachMode mode)
     {
-        if (member.ContainingType is { } owner && !IsStatedValue(member))
+        if (member.ContainingType is { } owner && !RepositoryTiers.IsStatedValue(member))
         {
             TypeBound(owner, site, mode);
         }
@@ -197,12 +175,13 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
     // argument of a solution type is a witness the code chose, and counts as created.
     public void TypeBound(ITypeSymbol type, ISymbol site, ReachMode mode)
     {
-        foreach (var library in TypesIn(type).Where(IsLibrary))
+        foreach (var library in TypesIn(type).Where(RepositoryTiers.IsLibrary))
         {
             Charge(library, site, mode);
         }
 
-        if (type is INamedTypeSymbol { TypeArguments.Length: > 0 } constructed && IsSolution(constructed.OriginalDefinition))
+        if (type is INamedTypeSymbol { TypeArguments.Length: > 0 } constructed
+            && RepositoryTiers.IsSolution(constructed.OriginalDefinition))
         {
             foreach (var argument in constructed.TypeArguments)
             {
@@ -212,7 +191,7 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
 
         if (mode == ReachMode.Baseline)
         {
-            foreach (var solutionType in TypesIn(type).Where(IsSolution))
+            foreach (var solutionType in TypesIn(type).Where(RepositoryTiers.IsSolution))
             {
                 RunStaticConstructors(solutionType, site);
             }
@@ -233,7 +212,7 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
             ImplementationIn(named, target, site);
         }
 
-        if (IsSolution(named.OriginalDefinition) && !IsInput(named))
+        if (RepositoryTiers.IsSolution(named.OriginalDefinition) && !IsInput(named))
         {
             SolutionTypeCreated(named, site);
         }
@@ -295,7 +274,8 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
     }
 
     private bool IsInput(INamedTypeSymbol? type)
-        => type is not null && (_knownInput.Contains(type.OriginalDefinition) || (ContractTypes.Contains(type.Name) && IsLibrary(type)));
+        => type is not null
+            && (_knownInput.Contains(type.OriginalDefinition) || (ContractTypes.Contains(type.Name) && RepositoryTiers.IsLibrary(type)));
 
     private void Reach(ISymbol member, ISymbol? from)
     {
@@ -310,7 +290,7 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
     {
         while (_pending.TryDequeue(out var member))
         {
-            var mode = IsBenchmark(member) ? ReachMode.Harness : ReachMode.Baseline;
+            var mode = RepositoryTiers.IsBenchmark(member) ? ReachMode.Harness : ReachMode.Baseline;
 
             foreach (var body in models.BodiesOf(member))
             {
@@ -336,25 +316,11 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
 
     private void Charge(ISymbol library, ISymbol site, ReachMode mode)
     {
-        if (mode == ReachMode.Baseline && IsImplementation(library))
+        if (mode == ReachMode.Baseline && RepositoryTiers.IsImplementation(library))
         {
             _charged.Add((library, site));
         }
     }
-
-    // A name a baseline may not use: a type or member of the implementation tiers that is neither a
-    // contract nor a stated value.
-    private static bool IsImplementation(ISymbol symbol)
-        => Array.Exists(ImplementationNamespaces, tier => IsIn(symbol, tier)) && !IsContract(symbol) && !IsStatedValue(symbol);
-
-    // An interface, or a member it declares: the contract a hand-written layer may implement.
-    private static bool IsContract(ISymbol symbol)
-        => symbol is INamedTypeSymbol { TypeKind: TypeKind.Interface } || symbol.ContainingType?.TypeKind == TypeKind.Interface;
-
-    // A constant or an enum: a value the library names, which a baseline reads rather than copies.
-    private static bool IsStatedValue(ISymbol symbol)
-        => symbol is IFieldSymbol { IsConst: true } or INamedTypeSymbol { TypeKind: TypeKind.Enum }
-            || symbol.ContainingType?.TypeKind == TypeKind.Enum;
 
     private static bool IsDispatched(IMethodSymbol method)
         => method.IsVirtual || method.IsAbstract || method.IsOverride || method.ContainingType?.TypeKind == TypeKind.Interface;
@@ -368,11 +334,11 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
             return;
         }
 
-        if (IsLibrary(definition) && IsDeclaredInRepository(target.OriginalDefinition))
+        if (RepositoryTiers.IsLibrary(definition) && RepositoryTiers.IsDeclaredInRepository(target.OriginalDefinition))
         {
             Charge(definition, site, ReachMode.Baseline);
         }
-        else if (IsSolution(definition) && !IsInput(definition.ContainingType))
+        else if (RepositoryTiers.IsSolution(definition) && !IsInput(definition.ContainingType))
         {
             Reach(definition, site);
         }
@@ -423,14 +389,16 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
     private static IEnumerable<IMethodSymbol> CallbacksOf(INamedTypeSymbol type)
     {
         var implementations = type.AllInterfaces
-            .Where(contract => !IsSource(contract.OriginalDefinition))
+            .Where(contract => !RepositoryTiers.IsSource(contract.OriginalDefinition))
             .SelectMany(contract => contract.GetMembers().OfType<IMethodSymbol>())
             .Select(member => type.FindImplementationForInterfaceMember(member))
             .OfType<IMethodSymbol>();
         var overrides = type.GetMembers().OfType<IMethodSymbol>()
-            .Where(method => method.IsOverride && method.OverriddenMethod is { } overridden && !IsSource(overridden.OriginalDefinition));
+            .Where(method => method.IsOverride
+                && method.OverriddenMethod is { } overridden
+                && !RepositoryTiers.IsSource(overridden.OriginalDefinition));
 
-        return implementations.Concat(overrides).Where(method => IsSource(method.OriginalDefinition));
+        return implementations.Concat(overrides).Where(method => RepositoryTiers.IsSource(method.OriginalDefinition));
     }
 
     private List<LibraryReach> Reaches()
@@ -479,26 +447,6 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
             default:
                 return [];
         }
-    }
-
-    public static bool IsBenchmark(ISymbol symbol) => IsIn(symbol, BenchmarkNamespace);
-
-    private static bool IsSolution(ISymbol symbol) => IsIn(symbol, SolutionNamespace);
-
-    private static bool IsSource(ISymbol symbol) => IsSolution(symbol) || IsBenchmark(symbol);
-
-    private static bool IsDeclaredInRepository(ISymbol symbol) => IsSource(symbol) || IsLibrary(symbol);
-
-    // Benchmark code that runs with the arm, as opposed to Fixtures/, which only lays input out.
-    private static bool IsHarnessCode(ISymbol symbol) => IsBenchmark(symbol) && !IsIn(symbol, FixtureNamespace);
-
-    public static bool IsLibrary(ISymbol symbol) => Array.Exists(LibraryNamespaces, library => IsIn(symbol, library));
-
-    private static bool IsIn(ISymbol symbol, string container)
-    {
-        var name = (symbol as INamespaceSymbol ?? symbol.ContainingNamespace)?.ToDisplayString() ?? string.Empty;
-
-        return name == container || name.StartsWith($"{container}.", StringComparison.Ordinal);
     }
 
     // What one arm's trace found: the solution members its harness reaches, and the library
