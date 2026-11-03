@@ -17,7 +17,7 @@ public class CarFleetBenchmarks
 
     private const int MaxRandomSpeedDivisorExclusive = 100;
 
-    private DynamicArray<double> _arrivalTimesByPositionDescending = new();
+    private DynamicArray<double> _arrivalTimesNearestTargetFirst = new();
 
     [Params(200, 5_000)]
     public int Length { get; set; }
@@ -33,15 +33,15 @@ public class CarFleetBenchmarks
 
         var speeds = positions.Select(_ => random.Next(1, MaxRandomSpeedDivisorExclusive)).ToArray();
 
-        _arrivalTimesByPositionDescending =
-            CarFleetSolution.ArrivalTimesByPositionDescending(Target, positions, speeds);
+        _arrivalTimesNearestTargetFirst =
+            CarFleetSolution.ArrivalTimesNearestTargetFirst(Target, positions, speeds);
     }
 
     [Benchmark(Baseline = true)]
     public int RecomputeMaxEachCar()
-        => CarFleetSolution.CountFleetsByRecomputeMaxEachCar(_arrivalTimesByPositionDescending);
+        => CarFleetSolution.CountFleetsByRecomputeMaxEachCar(_arrivalTimesNearestTargetFirst);
 
     [Benchmark]
     public int MonotonicStackSweep()
-        => CarFleetSolution.CountFleetsByMonotonicStackSweep(_arrivalTimesByPositionDescending);
+        => CarFleetSolution.CountFleetsByMonotonicStackSweep(_arrivalTimesNearestTargetFirst);
 }

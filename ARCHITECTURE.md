@@ -2319,11 +2319,18 @@ Two kinds of solution that pass every case still stay out:
   none, and the Populating Next Right Pointers questions have only the empty tree. A check over
   those would pass whatever the strategy did.
 
-**Enrolled.** 615 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 19 more. Of those, 14 were found once the importer's first two fixes landed or
-their folder was matched to its slug by hand (`3sum`, `01-matrix`, `132-pattern`, ...). The other 5
-were found once examples stopped being paired with inputs their statement never shows, among them
-Check if There is a Valid Path in a Grid, whose strategies had been right all along.
+**Enrolled.** 618 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 22 more:
+
+- 14 were found once the importer's first two fixes landed or their folder was matched to its slug
+  by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
+- 5 were found once examples stopped being paired with inputs their statement never shows, among
+  them Check if There is a Valid Path in a Grid, whose strategies had been right all along.
+- Minimum Operations to Equalize Subarrays and Number of Possible Sets of Closing Branches took
+  their inputs in another order than LeetCode's. Their parameters now follow LeetCode's order.
+- Car Fleet had a public helper named like a strategy, which the harness ran as one, and a generated
+  case with a car already at the target. The helper is `ArrivalTimesNearestTargetFirst` now, and
+  `CarFleetPromise` states the promise that case breaks.
 
 Open items:
 
@@ -2344,8 +2351,9 @@ Open items:
   - A statement that leaves the order free without saying so (Word Search II, Majority Element
     II) needs the order rule LeetCode's judge applies, checked against its own submission rather
     than read from the wording.
-  - A folder whose strategy takes its inputs in another order than LeetCode's, such as Best Time
-    to Buy and Sell Stock IV's `(prices, k)`, needs its parameters reordered.
+  - Best Time to Buy and Sell Stock IV takes `(prices, k)` where LeetCode takes `(k, prices)`.
+    Reordering alone would not enroll it: its baseline is exponential, and LeetCode allows 1,000
+    prices, so it needs a case limit as well.
 - **Trimming the enrolled solutions' own tests, the rest.** A theory row restates a catalog case when
   a case has the same inputs, read into the strategy's types, and the catalog's judge accepts the
   row's answer for it. That row is the check `CatalogCaseTests` already makes. Measured over the 608

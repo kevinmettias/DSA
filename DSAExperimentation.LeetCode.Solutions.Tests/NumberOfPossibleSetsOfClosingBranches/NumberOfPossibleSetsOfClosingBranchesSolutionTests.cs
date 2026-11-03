@@ -24,7 +24,7 @@ public sealed partial class NumberOfPossibleSetsOfClosingBranchesSolutionTests
         int branchCount, int[][] roads, int maxDistance, long expected)
     {
         var actual =
-            NumberOfPossibleSetsOfClosingBranchesSolution.CountClosingSetsByBruteForceFloydWarshall(branchCount, roads, maxDistance);
+            NumberOfPossibleSetsOfClosingBranchesSolution.CountClosingSetsByBruteForceFloydWarshall(branchCount, maxDistance, roads);
 
         Assert.Equal(expected, actual);
     }
@@ -35,7 +35,7 @@ public sealed partial class NumberOfPossibleSetsOfClosingBranchesSolutionTests
         int branchCount, int[][] roads, int maxDistance, long expected)
     {
         var actual =
-            NumberOfPossibleSetsOfClosingBranchesSolution.CountClosingSetsByAllPairsShortestPaths(branchCount, roads, maxDistance);
+            NumberOfPossibleSetsOfClosingBranchesSolution.CountClosingSetsByAllPairsShortestPaths(branchCount, maxDistance, roads);
 
         Assert.Equal(expected, actual);
     }

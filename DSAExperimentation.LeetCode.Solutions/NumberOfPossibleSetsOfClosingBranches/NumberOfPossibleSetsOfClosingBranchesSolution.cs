@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfPossibleSetsOfClosingBra
 // subset of the branchCount branches is tried directly as "the open set".
 // branchCount <= 10 makes both the 2^n subset enumeration and an O(n^3) all-pairs
 // distance pass per subset cheap.
+[LeetCodeQuestion("number-of-possible-sets-of-closing-branches", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfPossibleSetsOfClosingBranchesSolution
 {
     // The sentinel for a pair with no road between them, scaled below
@@ -26,7 +27,7 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
     // Floyd-Warshall per subset - deliberately without this repo's own
     // AllPairsShortestPaths, the arm the composed strategy below has to justify
     // itself against.
-    public static long CountClosingSetsByBruteForceFloydWarshall(int branchCount, int[][] roads, int maxDistance)
+    public static long CountClosingSetsByBruteForceFloydWarshall(int branchCount, int maxDistance, int[][] roads)
     {
         var baseDistances = BuildDistanceMatrix(branchCount, roads);
         return CountClosingSetsByBruteForceFloydWarshall(baseDistances, maxDistance);
@@ -161,7 +162,7 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
     // both drops the closed branches as endpoints and - because Refine only ever
     // uses vertices from that same list as an intermediate - as a routing hop,
     // which is exactly "may only route through other open branches".
-    public static long CountClosingSetsByAllPairsShortestPaths(int branchCount, int[][] roads, int maxDistance)
+    public static long CountClosingSetsByAllPairsShortestPaths(int branchCount, int maxDistance, int[][] roads)
     {
         var network = BranchNetwork.Build(branchCount, roads);
         return CountClosingSetsByAllPairsShortestPaths(network, maxDistance);

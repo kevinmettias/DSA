@@ -49,9 +49,9 @@ public class MinimumOperationsToEqualizeSubarraysBenchmarks
 
     [Benchmark(Baseline = true)]
     public long[] BruteForce() =>
-        MinimumOperationsToEqualizeSubarraysSolution.MinOperationsByBruteForce(_nums, _queries, K);
+        MinimumOperationsToEqualizeSubarraysSolution.MinOperationsByBruteForce(_nums, K, _queries);
 
     [Benchmark]
     public long[] MergeSortTree() =>
-        MinimumOperationsToEqualizeSubarraysSolution.MinOperationsByMergeSortTree(_tree, _runId, _queries, K);
+        MinimumOperationsToEqualizeSubarraysSolution.MinOperationsByMergeSortTree(_tree, _runId, K, _queries);
 }

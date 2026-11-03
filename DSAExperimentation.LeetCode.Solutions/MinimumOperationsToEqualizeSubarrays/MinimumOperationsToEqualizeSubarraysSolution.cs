@@ -19,13 +19,14 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumOperationsToEqualizeSubar
 // SortedMergeOperation (this folder's own ICombineOperation<int[]> witness),
 // so Query(l, r) returns the queried range already sorted and the median /
 // deviation sum falls out directly.
+[LeetCodeQuestion("minimum-operations-to-equalize-subarrays", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumOperationsToEqualizeSubarraysSolution
 {
     // The textbook answer: for each query, rescan the range for a shared
     // remainder, then BCL Array.Sort the copied window directly - no repo
     // primitive, O(q * range log range). Deliberately written this way; it is
     // the arm the composed solution below has to justify itself against.
-    public static long[] MinOperationsByBruteForce(int[] nums, int[][] queries, int stepSize)
+    public static long[] MinOperationsByBruteForce(int[] nums, int stepSize, int[][] queries)
     {
         var answers = new long[queries.Length];
 
@@ -60,15 +61,15 @@ internal static class MinimumOperationsToEqualizeSubarraysSolution
     // every query against them - the same "hoist construction, keep the
     // search measured" split OpenTheLockSolution.MinTurnsByReduceGraph uses
     // for BuildLockGraph.
-    public static long[] MinOperationsByMergeSortTree(int[] nums, int[][] queries, int stepSize)
+    public static long[] MinOperationsByMergeSortTree(int[] nums, int stepSize, int[][] queries)
     {
         var (tree, runId) = BuildIndex(nums, stepSize);
 
-        return MinOperationsByMergeSortTree(tree, runId, queries, stepSize);
+        return MinOperationsByMergeSortTree(tree, runId, stepSize, queries);
     }
 
     public static long[] MinOperationsByMergeSortTree(
-        SegmentTree<int[], SortedMergeOperation> tree, int[] runId, int[][] queries, int stepSize)
+        SegmentTree<int[], SortedMergeOperation> tree, int[] runId, int stepSize, int[][] queries)
     {
         var answers = new long[queries.Length];
 

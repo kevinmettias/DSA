@@ -21,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CarFleet;
 // caught by - and merges into - the slowest fleet already in front. So the whole
 // problem is "count the running strict maxima", and the two strategies differ only
 // in how they maintain that running maximum.
+[LeetCodeQuestion("car-fleet", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CarFleetPromise))]
 internal static class CarFleetSolution
 {
     // The textbook answer: re-derive the "slowest fleet ahead" from scratch for every
@@ -29,13 +30,13 @@ internal static class CarFleetSolution
     // to justify itself against.
     public static int CountFleetsByRecomputeMaxEachCar(int target, int[] position, int[] speed)
     {
-        var arrivalTimes = ArrivalTimesByPositionDescending(target, position, speed);
+        var arrivalTimes = ArrivalTimesNearestTargetFirst(target, position, speed);
         return CountFleetsByRecomputeMaxEachCar(arrivalTimes);
     }
 
-    public static int CountFleetsByRecomputeMaxEachCar(DynamicArray<double> arrivalTimesByPositionDescending)
+    public static int CountFleetsByRecomputeMaxEachCar(DynamicArray<double> arrivalTimesNearestTargetFirst)
     {
-        var times = arrivalTimesByPositionDescending;
+        var times = arrivalTimesNearestTargetFirst;
         var fleets = 0;
 
         for (var i = 0; i < times.Count; i++)
@@ -67,13 +68,13 @@ internal static class CarFleetSolution
     // height is the fleet count, in one O(n) pass with no pop ever needed.
     public static int CountFleetsByMonotonicStackSweep(int target, int[] position, int[] speed)
     {
-        var arrivalTimes = ArrivalTimesByPositionDescending(target, position, speed);
+        var arrivalTimes = ArrivalTimesNearestTargetFirst(target, position, speed);
         return CountFleetsByMonotonicStackSweep(arrivalTimes);
     }
 
-    public static int CountFleetsByMonotonicStackSweep(DynamicArray<double> arrivalTimesByPositionDescending)
+    public static int CountFleetsByMonotonicStackSweep(DynamicArray<double> arrivalTimesNearestTargetFirst)
     {
-        var times = arrivalTimesByPositionDescending;
+        var times = arrivalTimesNearestTargetFirst;
         var fleetArrivalTimes = new RepoTimeStack();
 
         for (var i = 0; i < times.Count; i++)
@@ -92,7 +93,7 @@ internal static class CarFleetSolution
     // Input preparation shared by both strategies: LeetCode's (target, position, speed)
     // triple reduced to the only thing either strategy reads, in the only order either
     // strategy can read it in.
-    public static DynamicArray<double> ArrivalTimesByPositionDescending(
+    public static DynamicArray<double> ArrivalTimesNearestTargetFirst(
         int target, int[] position, int[] speed)
     {
         var times = new DynamicArray<double>();
