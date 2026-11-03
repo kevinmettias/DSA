@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.NQueensII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NQueensIISolution's, the same methods
-// NQueensIISolutionTests proves correct.
+// CatalogCaseTests proves correct.
 public class NQueensIIBenchmarks
 {
     // Counting only, with no board ever materialised, but still super-exponential in Size.

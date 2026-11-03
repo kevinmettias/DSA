@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // CountPartitionsWithMaxMinDifferenceAtMostKSolution's, the same methods
-// CountPartitionsWithMaxMinDifferenceAtMostKSolutionTests proves correct.
+// CatalogCaseTests proves correct.
 public class CountPartitionsWithMaxMinDifferenceAtMostKBenchmarks
 {
     private const int NumsSeed = 3578;

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.ValidPalindrome;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ValidPalindromeSolution's, the same methods
-// ValidPalindromeSolutionTests proves correct. Pre-migration this class was an untested
+// CatalogCaseTests proves correct. Pre-migration this class was an untested
 // compile-smoke placeholder (`Baseline() => 1`, `PrimitiveComposed() => 1`)
 // rather than a second strategy to reconcile. The operand comes from
 // ValidPalindromeWorkloads: punctuation and casing noise around a seeded true

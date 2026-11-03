@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.KthLargestElement;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are KthLargestElementSolution's, the same methods
-// KthLargestElementSolutionTests proves correct. Values are drawn from LC 215's
+// CatalogCaseTests proves correct. Values are drawn from LC 215's
 // [-10^4, 10^4].
 public class KthLargestElementBenchmarks
 {

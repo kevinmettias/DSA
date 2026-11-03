@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.CountSubarraysWithEvenOddRatioII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountSubarraysWithEvenOddRatioIISolution's, the
-// same methods CountSubarraysWithEvenOddRatioIISolutionTests proves correct. Length
+// same methods CatalogCaseTests proves correct. Length
 // is deliberately kept well under LC 4013's own 1e5 ceiling - BruteForce is
 // O(n^2) and exists only as a correctness baseline, so a size that already
 // makes the quadratic cost visible is enough; the point of this benchmark is

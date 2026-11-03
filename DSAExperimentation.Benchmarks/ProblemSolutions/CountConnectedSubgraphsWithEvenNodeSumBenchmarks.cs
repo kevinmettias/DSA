@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.CountConnectedSubgraphsWithEvenNodeS
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountConnectedSubgraphsWithEvenNodeSumSolution's,
-// the same methods CountConnectedSubgraphsWithEvenNodeSumSolutionTests proves correct.
+// the same methods CatalogCaseTests proves correct.
 // Neither arm mutates nums/edges, so a single [GlobalSetup] build is enough -
 // unlike GoodSubsequenceQueriesBenchmarks, there is no per-query state to reset
 // between iterations.

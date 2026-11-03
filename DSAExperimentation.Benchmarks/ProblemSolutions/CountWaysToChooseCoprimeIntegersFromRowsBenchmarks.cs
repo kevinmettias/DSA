@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.CountWaysToChooseCoprimeIntegersFrom
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountWaysToChooseCoprimeIntegersFromRowsSolution's,
-// the same methods CountWaysToChooseCoprimeIntegersFromRowsSolutionTests proves correct.
+// the same methods CatalogCaseTests proves correct.
 //
 // Sizes are per arm, each a square matrix. The brute-force DFS enumerates size^size
 // leaf combinations and would not finish past 7 x 7, so it stops there; the

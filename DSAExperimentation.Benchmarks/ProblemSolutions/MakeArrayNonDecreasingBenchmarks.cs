@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.MakeArrayNonDecreasing;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MakeArrayNonDecreasingSolution's, the same methods
-// MakeArrayNonDecreasingSolutionTests proves correct. Sized well below LeetCode's own
+// CatalogCaseTests proves correct. Sized well below LeetCode's own
 // 2*10^5 bound: the DP arm is real recursion (Memoizer, not an explicit stack),
 // so its call depth tracks n directly, and its O(n^2) trial of every split point
 // would dominate the benchmark at LeetCode's own scale.

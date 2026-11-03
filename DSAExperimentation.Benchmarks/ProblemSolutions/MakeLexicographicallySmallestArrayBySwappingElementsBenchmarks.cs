@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MakeLexicographicallySmallestArrayBySwappingElementsSolution's, the same
-// methods MakeLexicographicallySmallestArrayBySwappingElementsSolutionTests proves
+// methods CatalogCaseTests proves
 // correct. A small limit relative to the value range keeps most sorted-adjacent
 // gaps above it, so both strategies see a realistic mix of small and large
 // swappable groups rather than one group spanning the whole array.

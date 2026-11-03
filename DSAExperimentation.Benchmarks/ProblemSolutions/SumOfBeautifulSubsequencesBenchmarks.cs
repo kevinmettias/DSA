@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.SumOfBeautifulSubsequences;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SumOfBeautifulSubsequencesSolution's, the same
-// methods SumOfBeautifulSubsequencesSolutionTests proves correct. Neither strategy needs
+// methods CatalogCaseTests proves correct. Neither strategy needs
 // anything prepared beyond the array itself, so [GlobalSetup] only charges
 // workload construction.
 //

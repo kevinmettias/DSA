@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.CountNoZeroPairsThatSumToN;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountNoZeroPairsThatSumToNSolution's, the same
-// methods CountNoZeroPairsThatSumToNSolutionTests proves correct. TargetSum stays small
+// methods CatalogCaseTests proves correct. TargetSum stays small
 // enough for BruteForceSplit's O(n) scan to finish quickly - MemoizedDigitDp's
 // whole point is that its own cost barely moves as TargetSum grows toward LC
 // 3704's real 10^15 bound.

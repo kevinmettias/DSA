@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.CountAllValidPickupAndDeliveryOption
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountAllValidPickupAndDeliveryOptionsSolution's, the
-// same strategies CountAllValidPickupAndDeliveryOptionsSolutionTests proves correct.
+// same strategies CatalogCaseTests proves correct.
 public class CountAllValidPickupAndDeliveryOptionsBenchmarks
 {
     // LC 1359 asks about at most 500 orders.

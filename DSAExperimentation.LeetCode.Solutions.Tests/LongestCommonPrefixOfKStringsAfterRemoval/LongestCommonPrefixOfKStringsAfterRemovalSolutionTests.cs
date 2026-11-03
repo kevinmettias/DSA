@@ -7,22 +7,13 @@ using PrefixTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tr
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.LongestCommonPrefixOfKStringsAfterRemoval;
 
-// Harness only. Both strategies are
-// LongestCommonPrefixOfKStringsAfterRemovalSolution's - this file just pins them
-// to LeetCode's published examples, including the duplicate-heavy first example
-// that exercises per-word multiplicity rather than mere prefix presence, and to one
-// prefix that branches, whose count is right only if every child's words are summed
-// (no LeetCode example decides on such a node). The counting trie the reduce strategy
-// is handed is asserted on its own.
+// Harness only. Both strategies are LongestCommonPrefixOfKStringsAfterRemovalSolution's.
+// CatalogCaseTests holds them to LeetCode's published examples (ARCHITECTURE 17.13), the
+// duplicate-heavy first one among them. This file pins them to one prefix that branches,
+// whose count is right only if every child's words are summed (no LeetCode example decides
+// on such a node), and asserts the counting trie the reduce strategy is handed on its own.
 public sealed partial class LongestCommonPrefixOfKStringsAfterRemovalSolutionTests
 {
-    public static TheoryData<string[], int, int[]> Examples =>
-        new()
-        {
-            { ["jump", "run", "run", "jump", "run"], 2, [3, 4, 4, 3, 4] },
-            { ["dog", "racer", "car"], 2, [0, 0, 0] },
-        };
-
     // "a" opens three words through two children, b with one word and c with two, so its count
     // is the sum over both children: it reaches 3, and qualifies, only while "b" is the word removed.
     public static TheoryData<string[], int, int[]> BranchingPrefixCases =>
@@ -30,26 +21,6 @@ public sealed partial class LongestCommonPrefixOfKStringsAfterRemovalSolutionTes
         {
             { ["ab", "ac", "ac", "b"], 3, [0, 0, 0, 1] },
         };
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void AnswerByBruteForce_LeetCodeExamples_ReturnsLongestSharedPrefixPerRemoval(
-        string[] words, int requiredShareCount, int[] expected)
-    {
-        var actual = LongestCommonPrefixOfKStringsAfterRemovalSolution.AnswerByBruteForce(words, requiredShareCount);
-
-        Assert.Equal(expected, actual);
-    }
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void AnswerByReduceTrie_LeetCodeExamples_ReturnsLongestSharedPrefixPerRemoval(
-        string[] words, int requiredShareCount, int[] expected)
-    {
-        var actual = LongestCommonPrefixOfKStringsAfterRemovalSolution.AnswerByReduceTrie(words, requiredShareCount);
-
-        Assert.Equal(expected, actual);
-    }
 
     [Theory]
     [MemberData(nameof(BranchingPrefixCases))]

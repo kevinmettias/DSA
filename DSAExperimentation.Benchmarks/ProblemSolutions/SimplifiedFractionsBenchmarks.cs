@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.SimplifiedFractions;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SimplifiedFractionsSolution's, the same methods
-// SimplifiedFractionsSolutionTests proves correct. The naive/optimized split is within the
+// CatalogCaseTests proves correct. The naive/optimized split is within the
 // one real algorithmic choice the problem has - trial division
 // (O(min(numerator, denominator)) per pair) vs. the Euclidean algorithm
 // (O(log min(numerator, denominator))). DenominatorLimit stops at LC 1447's n = 100.

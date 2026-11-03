@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.FirstUniqueCharacterInAString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FirstUniqueCharacterInAStringSolution's, the same
-// methods FirstUniqueCharacterInAStringSolutionTests proves correct. Length is kept well
+// methods CatalogCaseTests proves correct. Length is kept well
 // past the 26-letter alphabet so no character ever occurs exactly once, forcing
 // both strategies through their full worst-case scan - the same "force the real
 // worst case" convention TwoSumBenchmarks/LongestSubstringWithoutRepeatingCharactersBenchmarks

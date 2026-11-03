@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.Solutions.KthSmallestInLexicographicalOrde
 
 // LeetCode 440. K-th Smallest in Lexicographical Order: the lexicographical order of
 // 1..upperBound is exactly the pre-order DFS of the implicit 10-ary "next digit" tree
-// LexicographicalNumbersSolutionTests (LC 386) already walks via this repo's own
+// LexicographicalNumbersSolution (LC 386) already walks via this repo's own
 // successor-function DepthFirstSearch.Traverse - the rank-th smallest is simply the
 // (rank-1)-th element of that same order, one root-seeded Traverse call per digit 1-9
 // since each root's subtree is a disjoint range.

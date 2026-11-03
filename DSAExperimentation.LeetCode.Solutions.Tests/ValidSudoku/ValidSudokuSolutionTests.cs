@@ -2,29 +2,11 @@ using DSAExperimentation.LeetCode.Solutions.ValidSudoku;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ValidSudoku;
 
-// Harness only. Both strategies are ValidSudokuSolution's; this file just
-// pins them to LeetCode's published examples.
+// Harness only. Both strategies are ValidSudokuSolution's. CatalogCaseTests holds them to
+// LeetCode's published examples (ARCHITECTURE 17.13); this file adds boards that break exactly
+// one unit, which no published example does.
 public sealed partial class ValidSudokuSolutionTests
 {
-    public static TheoryData<SudokuBoardExample> Examples =>
-        new()
-        {
-            new SudokuBoardExample(ExampleOneBoard(), IsValid: true),
-            new SudokuBoardExample(
-                [
-                    ['8', '3', '.', '.', '7', '.', '.', '.', '.'],
-                    ['6', '.', '.', '1', '9', '5', '.', '.', '.'],
-                    ['.', '9', '8', '.', '.', '.', '.', '6', '.'],
-                    ['8', '.', '.', '.', '6', '.', '.', '.', '3'],
-                    ['4', '.', '.', '8', '.', '3', '.', '.', '1'],
-                    ['7', '.', '.', '.', '2', '.', '.', '.', '6'],
-                    ['.', '6', '.', '.', '.', '.', '2', '8', '.'],
-                    ['.', '.', '.', '4', '1', '9', '.', '.', '5'],
-                    ['.', '.', '.', '.', '8', '.', '.', '7', '9'],
-                ],
-                IsValid: false),
-        };
-
     // Example 1 with one digit added that repeats in exactly one unit - a row, a column, a box -
     // so each case fails if that one unit's check is dropped. LeetCode's own invalid example
     // repeats its 8 in a column and a box at once, which leaves any single check unguarded.
@@ -35,16 +17,6 @@ public sealed partial class ValidSudokuSolutionTests
             new SudokuBoardExample(ExampleOneWith(6, 0, '5'), IsValid: false),
             new SudokuBoardExample(ExampleOneWith(1, 2, '3'), IsValid: false),
         };
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsValidByBooleanGrid_LeetCodeExamples_ReturnsExpectedValidity(SudokuBoardExample example) =>
-        Assert.Equal(example.IsValid, ValidSudokuSolution.IsValidByBooleanGrid(example.Board));
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsValidBySetKeys_LeetCodeExamples_ReturnsExpectedValidity(SudokuBoardExample example) =>
-        Assert.Equal(example.IsValid, ValidSudokuSolution.IsValidBySetKeys(example.Board));
 
     [Theory]
     [MemberData(nameof(ConflictsInExactlyOneUnit))]
@@ -77,7 +49,7 @@ public sealed partial class ValidSudokuSolutionTests
     }
 
     // Nested because it is only ever used inside this test class and has no
-    // independent identity: this harness's own vocabulary for one LeetCode example.
+    // independent identity: this harness's own vocabulary for one board and its verdict.
     // The expected answer is a named field of the case rather than a bare `true` or
     // `false` sitting in the signature where only its position says what it means.
     public readonly record struct SudokuBoardExample(char[][] Board, bool IsValid);

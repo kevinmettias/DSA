@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.SubarraySumEqualsK;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SubarraySumEqualsKSolution's, the same methods
-// SubarraySumEqualsKSolutionTests proves correct - the canonical O(n^2) brute-force double
+// CatalogCaseTests proves correct - the canonical O(n^2) brute-force double
 // loop vs. the O(n) single pass tracking prefix-sum frequency in this repo's own
 // HashMap<int,int>. Target is deliberately unreachable (values are small and
 // bounded, target is far outside any possible running sum) so both strategies are

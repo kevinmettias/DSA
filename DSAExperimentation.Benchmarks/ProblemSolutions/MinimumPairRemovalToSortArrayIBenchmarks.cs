@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimumPairRemovalToSortArrayI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumPairRemovalToSortArrayISolution's, the
-// same methods MinimumPairRemovalToSortArrayISolutionTests proves correct. Sizes stay
+// same methods CatalogCaseTests proves correct. Sizes stay
 // within LC 3507 "I"'s own n <= 50 bound (unlike its "II" sibling), so this
 // times the two strategies' constant factors rather than a regime "I" never
 // actually runs in.

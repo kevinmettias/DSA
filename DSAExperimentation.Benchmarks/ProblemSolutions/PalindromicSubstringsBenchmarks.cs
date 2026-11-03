@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.PalindromicSubstrings;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PalindromicSubstringsSolution's, the same methods
-// PalindromicSubstringsSolutionTests proves correct. Text is drawn from a tiny 4-letter
+// CatalogCaseTests proves correct. Text is drawn from a tiny 4-letter
 // alphabet rather than a full character range, so repeated runs are common and
 // ExpandAroundCenter actually pays its quadratic worst case instead of exiting most
 // expansions after one comparison.

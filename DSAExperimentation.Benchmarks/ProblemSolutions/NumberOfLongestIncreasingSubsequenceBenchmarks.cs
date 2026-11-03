@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.NumberOfLongestIncreasingSubsequence
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfLongestIncreasingSubsequenceSolution's,
-// the same methods NumberOfLongestIncreasingSubsequenceSolutionTests proves correct.
+// the same methods CatalogCaseTests proves correct.
 // The textbook O(n^2) DP vs. this repo's own SegmentTree<Element,
 // ICombineOperation<Element>> keyed by a CompressedCoordinates rank -
 // O(n log n). Length stops at LC 673's own bound of 2,000, where this seed's

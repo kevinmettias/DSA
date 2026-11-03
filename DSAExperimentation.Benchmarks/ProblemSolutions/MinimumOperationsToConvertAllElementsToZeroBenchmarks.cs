@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimumOperationsToConvertAllElement
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumOperationsToConvertAllElementsToZeroSolution's,
-// the same methods MinimumOperationsToConvertAllElementsToZeroSolutionTests proves correct.
+// the same methods CatalogCaseTests proves correct.
 //
 // The workload is strictly increasing (1, 2, ..., Length), the divide-and-conquer
 // strategy's worst case: the range minimum sits at the very start of every

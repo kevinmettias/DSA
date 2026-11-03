@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MaxChunksToMakeSorted;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaxChunksToMakeSortedSolution's, the same methods
-// MaxChunksToMakeSortedSolutionTests proves correct, run over a random permutation of
+// CatalogCaseTests proves correct, run over a random permutation of
 // 0..Length-1 so neither strategy gets to special-case an already-sorted input. Length
 // stops at LC 769's 10-element cap.
 public class MaxChunksToMakeSortedBenchmarks

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimumCostWalkInWeightedGraph;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCostWalkInWeightedGraphSolution's, the same
-// methods MinimumCostWalkInWeightedGraphSolutionTests proves correct. The composed arm is
+// methods CatalogCaseTests proves correct. The composed arm is
 // handed a prebuilt WalkCostComponents - one Union-Find pass over every edge - so
 // that one-time cost is charged to [GlobalSetup], not to the queries being
 // measured.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimumEdgeTogglesOnATree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumEdgeTogglesOnATreeSolution's, the same
-// methods MinimumEdgeTogglesOnATreeSolutionTests proves correct. Each node i > 0 attaches
+// methods CatalogCaseTests proves correct. Each node i > 0 attaches
 // to a uniformly random earlier node - the same randomized-parent shape
 // ShortestPathInAWeightedTreeBenchmarks builds inline. start is random and target
 // starts as a copy of it, then every edge independently gets toggled into target

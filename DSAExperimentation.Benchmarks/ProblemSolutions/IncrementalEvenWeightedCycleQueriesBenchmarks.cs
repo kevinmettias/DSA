@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.IncrementalEvenWeightedCycleQueries;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are IncrementalEvenWeightedCycleQueriesSolution's, the
-// same methods IncrementalEvenWeightedCycleQueriesSolutionTests proves correct.
+// same methods CatalogCaseTests proves correct.
 // [GlobalSetup] builds one fixed, random edge stream over EdgeCount nodes so
 // stream construction is charged to setup rather than to the pass each
 // [Benchmark] arm measures.

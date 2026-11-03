@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.ClimbingStairsII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ClimbingStairsIISolution's, the same methods
-// ClimbingStairsIISolutionTests proves correct.
+// CatalogCaseTests proves correct.
 //
 // Sizes are per arm. BruteForceRecursion's branching factor is up to 3 per step
 // (jumps of 1, 2 or 3), so its cost grows like the Tribonacci constant (~1.84^n) and

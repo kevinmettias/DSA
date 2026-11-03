@@ -3,47 +3,12 @@ using DSAExperimentation.LeetCode.Solutions.LongestCommonSuffixQueries;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.LongestCommonSuffixQueries;
 
-// Harness only. The suffix trie itself is LongestCommonSuffixQueriesSolution's -
-// this file pins both strategies to LeetCode's published examples, including the
-// "xyz"/all-tie-at-empty-suffix case that exercises the trie's root value, and the
+// Harness only. The suffix trie itself is LongestCommonSuffixQueriesSolution's.
+// CatalogCaseTests holds both strategies to LeetCode's published examples (ARCHITECTURE
+// 17.13), the "xyz" case that reaches the trie's root value among them; this file pins the
 // trie to the best word it should record under every reversed suffix.
 public sealed partial class LongestCommonSuffixQueriesSolutionTests
 {
-    public static TheoryData<string[], string[], int[]> Examples =>
-        new()
-        {
-            {
-                ["abcd", "bcd", "xbcd"],
-                ["cd", "bcd", "xyz"],
-                [1, 1, 1]
-            },
-            {
-                ["abcdefgh", "poiuygh", "ghghgh"],
-                ["gh", "acbfgh", "acbfegh"],
-                [2, 0, 2]
-            },
-        };
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindIndicesByBruteForce_LeetCodeExamples_ReturnsLongestCommonSuffixIndices(
-        string[] wordsContainer, string[] wordsQuery, int[] expected)
-    {
-        var actual = LongestCommonSuffixQueriesSolution.FindIndicesByBruteForce(wordsContainer, wordsQuery);
-
-        Assert.Equal(expected, actual);
-    }
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindIndicesByTrie_LeetCodeExamples_ReturnsLongestCommonSuffixIndices(
-        string[] wordsContainer, string[] wordsQuery, int[] expected)
-    {
-        var actual = LongestCommonSuffixQueriesSolution.FindIndicesByTrie(wordsContainer, wordsQuery);
-
-        Assert.Equal(expected, actual);
-    }
-
     // LeetCode's first container, words reversed: "dcba" (0), "dcb" (1), "dcbx" (2). The
     // empty key holds the shortest word, 1. "abcd" claims d, dc, dcb and dcba first; the
     // strictly shorter "bcd" takes d, dc and dcb over; "xbcd" is longer than "bcd", so it

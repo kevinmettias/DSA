@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimumCostToDivideArrayIntoSubarray
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCostToDivideArrayIntoSubarraysSolution's,
-// the same methods MinimumCostToDivideArrayIntoSubarraysSolutionTests proves correct.
+// the same methods CatalogCaseTests proves correct.
 // Both strategies are O(n^2) states x O(n) transition either way - the DP itself,
 // not the search space, is quadratic - so this is measuring cache overhead
 // (hand-rolled Dictionary vs. this repo's Memoizer), not a complexity gap.

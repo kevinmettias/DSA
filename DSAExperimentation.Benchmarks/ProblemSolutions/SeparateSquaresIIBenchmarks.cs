@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.SeparateSquaresII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SeparateSquaresIISolution's, the same methods
-// SeparateSquaresIISolutionTests proves correct. Each arm takes the already-parsed
+// CatalogCaseTests proves correct. Each arm takes the already-parsed
 // IReadOnlyList<Square>, so building Square records from LC's raw int[][] shape is
 // charged to [GlobalSetup] rather than the sweep being measured. Coordinates are
 // drawn from a small range relative to SquareCount so squares actually overlap -

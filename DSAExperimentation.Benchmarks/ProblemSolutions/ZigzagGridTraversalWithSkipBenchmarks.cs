@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.ZigzagGridTraversalWithSkip;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ZigzagGridTraversalWithSkipSolution's, the same
-// methods ZigzagGridTraversalWithSkipSolutionTests proves correct. The grid needs no
+// methods CatalogCaseTests proves correct. The grid needs no
 // preprocessing beyond building it, so [GlobalSetup] only charges workload
 // construction, not any part of either traversal.
 public class ZigzagGridTraversalWithSkipBenchmarks

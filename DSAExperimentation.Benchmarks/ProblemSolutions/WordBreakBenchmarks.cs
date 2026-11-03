@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.WordBreak;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are WordBreakSolution's, the same methods
-// WordBreakSolutionTests proves correct. _source tiles a single short dictionary word, so the
+// CatalogCaseTests proves correct. _source tiles a single short dictionary word, so the
 // scan has to walk the whole string confirming segmentability rather than
 // bailing out early on a dead prefix. Length stops at LC 139's 300 letters.
 public class WordBreakBenchmarks

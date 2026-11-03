@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // FindTheLargestAreaOfSquareInsideTwoRectanglesSolution's, the same methods
-// FindTheLargestAreaOfSquareInsideTwoRectanglesSolutionTests proves correct.
+// CatalogCaseTests proves correct.
 // Rectangle construction is charged to [GlobalSetup]; the sort the pruned
 // arm performs is part of the strategy being measured, not preparation for
 // it.

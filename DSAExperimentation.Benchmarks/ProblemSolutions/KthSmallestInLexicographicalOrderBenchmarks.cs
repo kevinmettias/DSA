@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // number 1..n as a string and sorting it (O(n log n)) vs. this repo's own
 // successor-function DepthFirstSearch.Traverse walking the implicit 10-ary tree
 // directly in lexicographical order (O(n), no sort needed) - the same primitive
-// LexicographicalNumbersSolutionTests (LC 386) already uses, just indexed to the rank-th
+// CatalogCaseTests (LC 386) already uses, just indexed to the rank-th
 // element instead of returning the whole order. Traverse's per-node Stack/HashSet
 // bookkeeping carries a real constant-factor cost - a dry run showed it losing to
 // the sort-based baseline by 2-5x at UpperBound=2_000/20_000 - but O(n) overtakes

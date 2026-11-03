@@ -6,7 +6,7 @@ using DSAExperimentation.LeetCode.Solutions.CountElementsWithAtLeastKGreaterValu
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountElementsWithAtLeastKGreaterValuesSolution's,
-// the same methods CountElementsWithAtLeastKGreaterValuesSolutionTests proves correct.
+// the same methods CatalogCaseTests proves correct.
 // Sorting is charged to [GlobalSetup] via the SortedUpperBound arm's hoisted
 // overload, so only the per-element bisection loop is measured - the same
 // "hoist construction, keep the search measured" split OpenTheLockBenchmarks

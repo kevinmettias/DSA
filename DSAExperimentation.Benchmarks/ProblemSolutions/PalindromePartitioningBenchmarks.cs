@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.PalindromePartitioning;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PalindromePartitioningSolution's, the same methods
-// PalindromePartitioningSolutionTests proves correct. The original benchmark's two [Benchmark]
+// CatalogCaseTests proves correct. The original benchmark's two [Benchmark]
 // arms (Baseline, PrimitiveComposed) were both compile-smoke placeholders (`=> 1`) -
 // one real strategy, not two - so the pair here is the backtracking walk against the
 // precomputed-table walk. The string's letters are drawn from a seeded Random over

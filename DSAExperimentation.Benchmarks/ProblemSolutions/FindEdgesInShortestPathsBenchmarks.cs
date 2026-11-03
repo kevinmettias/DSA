@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.FindEdgesInShortestPaths;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindEdgesInShortestPathsSolution's, the same methods
-// FindEdgesInShortestPathsSolutionTests proves correct. BruteForceDijkstra still takes
+// CatalogCaseTests proves correct. BruteForceDijkstra still takes
 // LeetCode's own (n, edges) shape and builds its own BCL adjacency lists inside the
 // measured call, deliberately without this repo's graph engine; ShortestPathDijkstra
 // is handed the prepared EdgeGraph its hoisted overload takes, so graph construction

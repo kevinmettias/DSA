@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MaximumBalancedShipments;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumBalancedShipmentsSolution's, the same methods
-// MaximumBalancedShipmentsSolutionTests proves correct. Neither strategy has a separable
+// CatalogCaseTests proves correct. Neither strategy has a separable
 // construction step - weight itself is the whole input - so there is nothing to
 // hoist into [GlobalSetup] beyond building the array.
 public class MaximumBalancedShipmentsBenchmarks

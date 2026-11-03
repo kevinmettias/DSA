@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.MaximumAndMinimumSumsOfAtMostSizeKSu
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution's,
-// the same methods MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolutionTests proves
+// the same methods CatalogCaseTests proves
 // correct.
 public class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesBenchmarks
 {

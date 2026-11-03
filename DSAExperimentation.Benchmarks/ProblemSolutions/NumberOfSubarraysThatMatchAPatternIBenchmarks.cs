@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.NumberOfSubarraysThatMatchAPatternI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfSubarraysThatMatchAPatternISolution's,
-// the same methods NumberOfSubarraysThatMatchAPatternISolutionTests proves correct.
+// the same methods CatalogCaseTests proves correct.
 // NumsLength matches LC 3034's own bound (n <= 100). nums is a strictly
 // increasing run and pattern is all 1s, so every window matches - the worst
 // case for BruteForce, since no candidate start can bail out on an early

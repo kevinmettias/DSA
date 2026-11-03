@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.CountSubarraysWithEvenOddRatioI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountSubarraysWithEvenOddRatioISolution's, the
-// same methods CountSubarraysWithEvenOddRatioISolutionTests proves correct. a and b
+// same methods CatalogCaseTests proves correct. a and b
 // are fixed at 1/1 so roughly half of all subarrays qualify (x <= y),
 // keeping neither arm's inner loop short-circuited into a near-empty scan.
 public class CountSubarraysWithEvenOddRatioIBenchmarks

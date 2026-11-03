@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.SubsetsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are SubsetsIISolution's, the same methods SubsetsIISolutionTests
+// Harness only: both arms are SubsetsIISolution's, the same methods CatalogCaseTests
 // proves correct - the sort-then-skip walk as plain recursion, and on this repo's
 // backtracking combinator. The [Benchmark(Baseline = true)] "IterativeDedup" arm this
 // migrated out of never implemented an independent algorithm - its body built an

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.GuessNumberHigherOrLower;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GuessNumberHigherOrLowerSolution's, the same methods
-// GuessNumberHigherOrLowerSolutionTests proves correct. Pick sits at 70% of NumberCount so the
+// CatalogCaseTests proves correct. Pick sits at 70% of NumberCount so the
 // linear scan pays close to its full O(n) worst case every call.
 public class GuessNumberHigherOrLowerBenchmarks
 {

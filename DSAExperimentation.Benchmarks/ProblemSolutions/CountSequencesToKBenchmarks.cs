@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.CountSequencesToK;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountSequencesToKSolution's, the same methods
-// CountSequencesToKSolutionTests proves correct. k is fixed at 1, always
+// CatalogCaseTests proves correct. k is fixed at 1, always
 // reachable (every "leave unchanged" sequence lands on it), so both arms do
 // real search work rather than short-circuiting on an unreachable target.
 //

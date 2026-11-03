@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimumOperationsToEqualizeBinaryStr
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumOperationsToEqualizeBinaryStringSolution's,
-// the same methods MinimumOperationsToEqualizeBinaryStringSolutionTests proves correct.
+// the same methods CatalogCaseTests proves correct.
 // ReduceGraph takes the prepared overload - an EqualizeStateGraph built once in
 // [GlobalSetup] - so graph construction is charged to setup rather than to the
 // search being measured, the same split OpenTheLockBenchmarks uses for its lock graph.

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockV;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BestTimeToBuyAndSellStockVSolution's, the same
-// methods BestTimeToBuyAndSellStockVSolutionTests proves correct.
+// methods CatalogCaseTests proves correct.
 //
 // Sizes are per arm. Brute force is a genuine, unmemoized 3-way choice tree per day,
 // so it stops at 14 days (FindTheNumberOfSubsequencesWithEqualGcdBenchmarks' own

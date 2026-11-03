@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.GoodSubsequenceQueries;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GoodSubsequenceQueriesSolution's, the same methods
-// GoodSubsequenceQueriesSolutionTests proves correct. Both strategies mutate the state
+// CatalogCaseTests proves correct. Both strategies mutate the state
 // [GlobalSetup] would otherwise hand them once (the composed arm's
 // GoodSubsequenceIndex point-updates its SegmentTrees on every query; the
 // baseline mutates its own working copy of nums), so [IterationSetup] rebuilds

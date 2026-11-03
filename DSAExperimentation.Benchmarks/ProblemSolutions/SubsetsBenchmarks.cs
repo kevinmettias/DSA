@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.Subsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are SubsetsSolution's, the same methods SubsetsSolutionTests proves correct.
+// Harness only: both arms are SubsetsSolution's, the same methods CatalogCaseTests proves correct.
 // Both arms materialize all 2^n subsets - the parameter counts exponents, not raw input size - and
 // ElementCount stops at LC 78's 10 elements, 1,024 lists. Values are 1..ElementCount, distinct and
 // inside its [-10, 10], so every subset is distinct, which keeps the two arms' outputs comparable

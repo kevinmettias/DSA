@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimumIncrementsForTargetMultiplesI
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
-// MinimumIncrementsForTargetMultiplesInAnArraySolution's, the same methods MinimumIncrementsForTargetMultiplesInAnArraySolutionTests
+// MinimumIncrementsForTargetMultiplesInAnArraySolution's, the same methods CatalogCaseTests
 // proves correct. Each arm takes the hoisted TargetLcmTable so the (tiny, but still
 // per-query) LCM precomputation is charged to [GlobalSetup] rather than the search
 // being measured. NumsCount is kept in the low thousands, not LC's own 5*10^4 cap:

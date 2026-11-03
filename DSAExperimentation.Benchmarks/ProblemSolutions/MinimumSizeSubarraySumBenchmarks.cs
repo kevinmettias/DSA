@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimumSizeSubarraySum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumSizeSubarraySumSolution's, the same methods
-// MinimumSizeSubarraySumSolutionTests proves correct - the brute-force O(n^2)
+// CatalogCaseTests proves correct - the brute-force O(n^2)
 // every-subarray scan against the O(n log n) prefix-sum + BinarySearch.LowerBound
 // approach, genuinely composing this repo's own BinarySearch.LowerBound over
 // PrefixSums' Totals view. Target is set one above the array's own total sum so

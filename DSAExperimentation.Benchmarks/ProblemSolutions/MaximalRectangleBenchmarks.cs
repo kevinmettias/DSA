@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.MaximalRectangle;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximalRectangleSolution's, the same methods
-// MaximalRectangleSolutionTests proves correct - the O(rows^2 * cols) row-pair-window
+// CatalogCaseTests proves correct - the O(rows^2 * cols) row-pair-window
 // baseline vs. the O(rows * cols) reduction to LC 84, one histogram-max-
 // rectangle sweep per row using this repo's own Stack<int>. Size stops at LC 85's
 // 200 x 200 cap.

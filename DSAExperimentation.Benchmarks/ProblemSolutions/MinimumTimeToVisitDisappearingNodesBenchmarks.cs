@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimumTimeToVisitDisappearingNodes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumTimeToVisitDisappearingNodesSolution's, the
-// same methods MinimumTimeToVisitDisappearingNodesSolutionTests proves correct. Each arm
+// same methods CatalogCaseTests proves correct. Each arm
 // is handed a prebuilt TimedAdjacency, so adjacency-list construction is charged
 // to [GlobalSetup] rather than to the search being measured.
 public class MinimumTimeToVisitDisappearingNodesBenchmarks

@@ -2185,8 +2185,8 @@ The tests split by whose correctness each one is about:
   own.
 - A solution's own `<Problem>SolutionTests` keeps only what the catalog cannot state. Two Sum's keeps
   a target no pair reaches, which LC 1's promise rules out. Climbing Stairs and Merge Intervals had
-  nothing else, and theirs are gone. The 607 solutions enrolled after the pilot still carry their
-  example theories beside `CatalogCaseTests`, until the open item below trims them.
+  nothing else, and theirs are gone. Of the 607 enrolled after the pilot, the trim below removed what
+  `CatalogCaseTests` restates where it could do so whole.
 - `CatalogBenchmarksTests` checks what belongs to the generated classes:
   - each baseline's buffer lines up with its cases and answers them as recorded, the pinning §17.9
     asks of a harness test;
@@ -2302,10 +2302,31 @@ Open items:
     than read from the wording.
   - A folder whose strategy takes its inputs in another order than LeetCode's, such as Best Time
     to Buy and Sell Stock IV's `(prices, k)`, needs its parameters reordered.
-- **Trimming the enrolled solutions' own tests.** Each theory row that restates a catalog case, its
-  inputs and its answer, is the check `CatalogCaseTests` now makes. What the catalog cannot state
-  stays: an input outside the question's promise, an order property an any-order comparison cannot
-  see, a helper's own behaviour.
+- **Trimming the enrolled solutions' own tests, the rest.** A theory row restates a catalog case when
+  a case has the same inputs, read into the strategy's types, and the catalog's judge accepts the
+  row's answer for it. That row is the check `CatalogCaseTests` already makes. Measured over the 608
+  test classes of enrolled solutions (2026-11-03):
+
+  | Rows | Count |
+  | --- | --- |
+  | Restated by a catalog case | 1,671 |
+  | Inputs no catalog case has, such as Contains Duplicate's empty array | 1,091 |
+  | A shape the measure cannot read | 23 |
+  | An answer the catalog does not accept | 6 |
+
+  The six are trees the test writes in another form than LeetCode's array: All Possible Full Binary
+  Trees, Maximum Binary Tree, and Construct Binary Tree from Preorder and Inorder Traversal. Their
+  strategies pass `CatalogCaseTests`.
+
+  Where every row of a data property was restated, the property and the theories reading it are
+  gone: 223 test files whole, and the example theories of 10 more whose other tests stay. Each
+  comment that named a deleted test class now names `CatalogCaseTests`, or the solution that holds
+  the approach.
+
+  Left for later: the 336 files where only some rows are restated. Dropping those rows mechanically
+  would leave theories named `_LeetCodeExamples_`, and comments describing the published examples,
+  over rows that are no longer either, so each file needs its names and comments rewritten as its
+  rows go.
 - **Shapes the generator refuses.** Design problems, in-place answers, judge-only inputs,
   tolerance-compared answers and any-valid-answer judges each need a rule before their problems can
   enroll.

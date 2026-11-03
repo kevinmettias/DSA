@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.CourseSchedule;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are CourseScheduleSolution's, the same methods CourseScheduleSolutionTests
+// Harness only: both arms are CourseScheduleSolution's, the same methods CatalogCaseTests
 // proves correct. The workload is acyclic by construction - every prerequisite names an
 // earlier-numbered course - so both arms make a complete pass instead of bailing out at the
 // first cycle, and the ratio compares two full traversals of the same graph.

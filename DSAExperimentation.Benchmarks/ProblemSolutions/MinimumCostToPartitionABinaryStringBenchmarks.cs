@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimumCostToPartitionABinaryString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCostToPartitionABinaryStringSolution's,
-// the same methods MinimumCostToPartitionABinaryStringSolutionTests proves correct.
+// the same methods CatalogCaseTests proves correct.
 // The Fenwick arm is handed the prepared FenwickTree its hoisted overload
 // takes, so building it is charged to [GlobalSetup] rather than to the
 // recursion being measured - the same split OpenTheLockBenchmarks uses for

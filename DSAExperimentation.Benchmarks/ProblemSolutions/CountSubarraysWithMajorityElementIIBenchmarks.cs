@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.CountSubarraysWithMajorityElementII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountSubarraysWithMajorityElementIISolution's, the
-// same methods CountSubarraysWithMajorityElementIISolutionTests proves correct.
+// same methods CatalogCaseTests proves correct.
 //
 // Length stays well below LC's own 1e5 upper bound - the O(n^2) brute force
 // enumerates every subarray directly and would not finish otherwise; the Fenwick

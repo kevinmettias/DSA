@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.ShortestUnsortedContinuousSubarray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShortestUnsortedContinuousSubarraySolution's, the
-// same methods ShortestUnsortedContinuousSubarraySolutionTests proves correct. _values is
+// same methods CatalogCaseTests proves correct. _values is
 // random across LC 581's whole [-10^5, 10^5], so a genuinely already-sorted array is
 // astronomically unlikely and both strategies do real work.
 public class ShortestUnsortedContinuousSubarrayBenchmarks

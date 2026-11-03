@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.MaximumAndMinimumSumsOfAtMostSizeKSu
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution's,
-// the same methods MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolutionTests proves
+// the same methods CatalogCaseTests proves
 // correct. K is pinned to the full array length, the constraint's own upper
 // bound, so SumByBruteForceWindow pays its worst-case O(n*k) = O(n^2) while
 // SumByMonotonicStackContribution stays O(n) - the gap the closed-form

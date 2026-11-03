@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.Solutions.MaximumGoodSubtreeScore;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumGoodSubtreeScoreSolution's, the same methods
-// MaximumGoodSubtreeScoreSolutionTests proves correct.
+// CatalogCaseTests proves correct.
 //
 // Sizes are per arm. BruteForce is exponential in subtree size (2^n dominated by the
 // root), so it stops at 20 nodes; BitmaskTreeFold reuses each child's 1,024-mask

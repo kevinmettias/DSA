@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.FindTheWinningPlayerInCoinGame;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheWinningPlayerInCoinGameSolution's, the same
-// methods FindTheWinningPlayerInCoinGameSolutionTests proves correct. No [GlobalSetup]
+// methods CatalogCaseTests proves correct. No [GlobalSetup]
 // is needed - the two coin counts are the entire input and each lies in LC's own
 // 1..100 range, and BenchmarkDotNet feeds them straight to each [Benchmark] call.
 public class FindTheWinningPlayerInCoinGameBenchmarks

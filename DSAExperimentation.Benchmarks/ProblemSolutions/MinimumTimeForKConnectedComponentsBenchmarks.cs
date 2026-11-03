@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimumTimeForKConnectedComponents;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumTimeForKConnectedComponentsSolution's, the same
-// methods MinimumTimeForKConnectedComponentsSolutionTests proves correct.
+// methods CatalogCaseTests proves correct.
 public class MinimumTimeForKConnectedComponentsBenchmarks
 {
     private const int Seed = 3608;

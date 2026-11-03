@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimumPossibleMaximumWaitingTime;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumPossibleMaximumWaitingTimeSolution's,
-// the same methods MinimumPossibleMaximumWaitingTimeSolutionTests proves correct.
+// the same methods CatalogCaseTests proves correct.
 // Fuel is fixed at the LC 4009 maximum (50, 50) so most cars find both
 // dispensers still eligible, keeping the unmemoized search's branching
 // factor close to 2 per car instead of collapsing into forced single

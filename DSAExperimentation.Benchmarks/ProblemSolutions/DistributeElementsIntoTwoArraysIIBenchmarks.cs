@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.DistributeElementsIntoTwoArraysII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DistributeElementsIntoTwoArraysIISolution's, the
-// same methods DistributeElementsIntoTwoArraysIISolutionTests proves correct.
+// same methods CatalogCaseTests proves correct.
 public class DistributeElementsIntoTwoArraysIIBenchmarks
 {
     private const int MaxValueExclusive = 1_000_000_000;

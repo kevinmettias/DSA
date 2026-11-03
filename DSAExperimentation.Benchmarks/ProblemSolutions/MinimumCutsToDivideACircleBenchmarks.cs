@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimumCutsToDivideACircle;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCutsToDivideACircleSolution's, the same
-// methods MinimumCutsToDivideACircleSolutionTests proves correct. SimulateOneCutAtATime
+// methods CatalogCaseTests proves correct. SimulateOneCutAtATime
 // places one cut at a time, O(n); ClosedFormParityCheck reads the same count off
 // n's parity, O(1). Slices stops at LeetCode's own n <= 100 bound, where the linear
 // arm's growth barely shows.

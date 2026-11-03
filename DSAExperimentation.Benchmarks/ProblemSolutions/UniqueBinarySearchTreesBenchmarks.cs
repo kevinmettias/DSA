@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.UniqueBinarySearchTrees;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are UniqueBinarySearchTreesSolution's, the same
-// methods UniqueBinarySearchTreesSolutionTests proves correct.
+// methods CatalogCaseTests proves correct.
 public class UniqueBinarySearchTreesBenchmarks
 {
     [Params(10, 16)]

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.CountPrefixAndSuffixPairsII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountPrefixAndSuffixPairsIISolution's, the
-// same methods CountPrefixAndSuffixPairsIISolutionTests proves correct. Reuses
+// same methods CatalogCaseTests proves correct. Reuses
 // CountPrefixAndSuffixPairsIBenchmarks' own PrefixSuffixPairWorkloads - the
 // words themselves are the only shared input either strategy needs, so
 // there is nothing further to hoist into [GlobalSetup] for the trie arm

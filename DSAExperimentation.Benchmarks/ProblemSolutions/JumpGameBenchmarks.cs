@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.JumpGame;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are JumpGameSolution's, the same methods
-// JumpGameSolutionTests proves correct. _values is built so every jump length
+// CatalogCaseTests proves correct. _values is built so every jump length
 // reaches deep into the rest of the array, forcing the DP baseline through
 // its full O(n^2) inner scan instead of short-circuiting on an early
 // reachable index.

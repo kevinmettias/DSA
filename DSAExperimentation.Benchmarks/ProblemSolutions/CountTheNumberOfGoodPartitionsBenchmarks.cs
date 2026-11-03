@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.CountTheNumberOfGoodPartitions;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountTheNumberOfGoodPartitionsSolution's, the same
-// methods CountTheNumberOfGoodPartitionsSolutionTests proves agree.
+// methods CatalogCaseTests proves agree.
 //
 // A small 4-value alphabet (1-4, since LC 2963's values start at 1) forces repeat
 // values often enough that most cut masks are invalid, exercising the brute-force

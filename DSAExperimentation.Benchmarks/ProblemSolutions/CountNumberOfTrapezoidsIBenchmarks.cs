@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.CountNumberOfTrapezoidsI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountNumberOfTrapezoidsISolution's, the same
-// methods CountNumberOfTrapezoidsISolutionTests proves correct
+// methods CatalogCaseTests proves correct
 // (MaximizeSubarrayGCDScoreBenchmarks precedent). PointCount stays small for
 // the brute-force arm - C(n, 4) already reaches into the millions past a few
 // dozen points - while the grouped-by-y arm scales to the real problem's n up

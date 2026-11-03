@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.LexicographicalNumbers;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LexicographicalNumbersSolution's, the same methods
-// LexicographicalNumbersSolutionTests proves correct. UpperBound stops at LC 386's
+// CatalogCaseTests proves correct. UpperBound stops at LC 386's
 // 5 * 10^4 cap.
 public class LexicographicalNumbersBenchmarks
 {

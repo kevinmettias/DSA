@@ -10,7 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumStrongPairXORI;
 // scan is already fast enough on its own - but the BitTrie-bucket strategy LC
 // 2935 actually needs to clear ITS bound is exactly as correct at this smaller
 // one, so this class still offers both arms, and both are proven at LC 2932's
-// own scale by MaximumStrongPairXORISolutionTests. Both arms are
+// own scale by CatalogCaseTests, over LC 2932's catalog cases. Both arms are
 // MaximumStrongPairXORIISolution's (ARCHITECTURE 17.3) - the two-lemma argument
 // for the buckets is stated at LC 2935's bound because that is the bound that
 // needs it - so this class calls through rather than restating either at a second

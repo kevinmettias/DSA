@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // CountTheNumberOfComputerUnlockingPermutationsSolution's, the same methods
-// CountTheNumberOfComputerUnlockingPermutationsSolutionTests proves correct. The workload is
+// CatalogCaseTests proves correct. The workload is
 // always solvable (complexity[0] is the global minimum), so Backtracking explores its
 // full, uncollapsed (n-1)! search tree - the case FactorialFormula's O(n) closed form
 // exists to replace.

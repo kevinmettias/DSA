@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MaximizeSubarrayGCDScore;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeSubarrayGCDScoreSolution's, the same
-// methods MaximizeSubarrayGCDScoreSolutionTests proves correct.
+// methods CatalogCaseTests proves correct.
 //
 // Sizes are per arm. Brute force tries every doubling subset of every subarray -
 // genuinely exponential in subarray length - so it stops at 12

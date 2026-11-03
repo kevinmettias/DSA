@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: every arm is
 // MaximumProfitFromValidTopologicalOrderInDagSolution's, the same methods
-// MaximumProfitFromValidTopologicalOrderInDagSolutionTests proves correct. The composed
+// CatalogCaseTests proves correct. The composed
 // arms are handed a prebuilt PrecedenceMasks so that one-time cost is charged to
 // [GlobalSetup], not to the search being measured. Sizes are per arm: the baseline's
 // backtracking degrades toward O(n!) as edges thin out and stops at 8 nodes, the same

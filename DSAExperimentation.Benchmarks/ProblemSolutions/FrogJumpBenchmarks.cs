@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.FrogJump;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FrogJumpSolution's, the same methods
-// FrogJumpSolutionTests proves correct. The stones are built as consecutive integers
+// CatalogCaseTests proves correct. The stones are built as consecutive integers
 // (every jump delta from every reachable stone lands on another real stone)
 // with an unreachable final stone appended far away, so the answer is false and
 // CanCrossByRecursiveBruteForce is forced through its full exponential search

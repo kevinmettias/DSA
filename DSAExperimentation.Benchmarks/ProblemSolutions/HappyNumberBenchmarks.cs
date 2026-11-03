@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.HappyNumber;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are HappyNumberSolution's, the same methods
-// HappyNumberSolutionTests proves correct. The pre-migration arms here ("Baseline",
+// CatalogCaseTests proves correct. The pre-migration arms here ("Baseline",
 // "PrimitiveComposed") were compile-smoke placeholders that returned a constant
 // and never invoked any algorithm; these replace them with the problem's actual
 // two textbook approaches, both walking the canonical non-happy cycle so

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.PowerOfTwo;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PowerOfTwoSolution's, the same methods
-// PowerOfTwoSolutionTests proves correct. No workload to hoist into [GlobalSetup] - the
+// CatalogCaseTests proves correct. No workload to hoist into [GlobalSetup] - the
 // input is a single int, and Value is fixed to the same non-power-of-two operand
 // for both arms so neither gets to stop after one iteration/comparison.
 public class PowerOfTwoBenchmarks

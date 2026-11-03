@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.CountIslandsWithTotalValueDivisibleB
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountIslandsWithTotalValueDivisibleByKSolution's,
-// the same methods CountIslandsWithTotalValueDivisibleByKSolutionTests proves correct.
+// the same methods CatalogCaseTests proves correct.
 // Neither strategy has meaningful construction to hoist beyond the grid itself,
 // so [GlobalSetup] only builds the workload, not a prepared domain object.
 public class CountIslandsWithTotalValueDivisibleByKBenchmarks

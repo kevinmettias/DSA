@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.NumberOfSubarraysWithANDValueOfK;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfSubarraysWithANDValueOfKSolution's, the
-// same methods NumberOfSubarraysWithANDValueOfKSolutionTests proves correct. Neither
+// same methods CatalogCaseTests proves correct. Neither
 // arm ever exits early on a match, so K's value doesn't bias the comparison -
 // it's fixed only so the workload is deterministic.
 public class NumberOfSubarraysWithANDValueOfKBenchmarks

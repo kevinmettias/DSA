@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MinimizeMaximumComponentCost;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimizeMaximumComponentCostSolution's, the same
-// methods MinimizeMaximumComponentCostSolutionTests proves correct. The Kruskal arm is
+// methods CatalogCaseTests proves correct. The Kruskal arm is
 // handed a pre-built ComponentGraph so node/adjacency construction is charged to
 // [GlobalSetup] rather than to the merge walk being measured; the union-find
 // baseline gets LeetCode's own (nodeCount, edges, maxComponents) shape directly since

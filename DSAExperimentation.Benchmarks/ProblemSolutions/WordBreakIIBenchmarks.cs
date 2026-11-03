@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.WordBreakII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are WordBreakIISolution's, the same methods
-// WordBreakIISolutionTests proves correct. _source tiles a single short dictionary word so
+// CatalogCaseTests proves correct. _source tiles a single short dictionary word so
 // both strategies reach the identical unique sentence, isolating the
 // segmentation-scan cost itself rather than sentence-construction cost. Length stops
 // at 18 letters, the most whole copies of the word LC 140's 20-letter string holds.

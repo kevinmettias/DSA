@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.CountPrimeGapBalancedSubarrays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountPrimeGapBalancedSubarraysSolution's, the same
-// methods CountPrimeGapBalancedSubarraysSolutionTests proves correct.
+// methods CatalogCaseTests proves correct.
 public class CountPrimeGapBalancedSubarraysBenchmarks
 {
     private const int Seed = 3589;

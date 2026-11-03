@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.FindTheNthValueAfterKSeconds;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheNthValueAfterKSecondsSolution's, the same
-// methods FindTheNthValueAfterKSecondsSolutionTests proves correct - literal O(n*k)
+// methods CatalogCaseTests proves correct - literal O(n*k)
 // simulation vs. the closed-form modular binomial coefficient. n and k grow
 // together via the same [Params] axis so the O(n*k) arm's quadratic-ish blowup
 // against the closed form's near-linear one shows up in the ratio.

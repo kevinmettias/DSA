@@ -6,7 +6,7 @@ using DSAExperimentation.LeetCode.Solutions.MaximumStrongPairXORI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumStrongPairXORISolution's, the same methods
-// MaximumStrongPairXORISolutionTests proves correct. Length and value range match LC
+// CatalogCaseTests proves correct. Length and value range match LC
 // 2932's own bound (nums.Length <= 50, nums[i] <= 100), where the pairwise scan
 // is already fast - see MaximumStrongPairXORIIBenchmarks for the same
 // comparison at the scale that actually favors the trie strategy. BitTrieBuckets

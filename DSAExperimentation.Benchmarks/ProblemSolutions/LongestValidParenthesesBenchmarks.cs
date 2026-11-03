@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.LongestValidParentheses;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestValidParenthesesSolution's, the same
-// methods LongestValidParenthesesSolutionTests proves correct.
+// methods CatalogCaseTests proves correct.
 public class LongestValidParenthesesBenchmarks
 {
     private const string RepeatingPattern = "(()())";

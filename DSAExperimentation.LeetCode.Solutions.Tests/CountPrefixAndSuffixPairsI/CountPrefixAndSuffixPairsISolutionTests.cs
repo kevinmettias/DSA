@@ -2,33 +2,13 @@ using DSAExperimentation.LeetCode.Solutions.CountPrefixAndSuffixPairsI;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.CountPrefixAndSuffixPairsI;
 
-// Harness only: both counting strategies live in
-// CountPrefixAndSuffixPairsISolution - this file pins them to LeetCode's published
-// examples. The per-word hashes the rolling-hash strategy is handed are asserted on
-// their own: their values sit on ~10^9-scale default lanes no hand can follow, so the
-// test pins each hash's length and which of its spans must agree.
+// Harness only: both counting strategies live in CountPrefixAndSuffixPairsISolution, and
+// CatalogCaseTests holds them to LeetCode's published examples (ARCHITECTURE 17.13). The
+// per-word hashes the rolling-hash strategy is handed are asserted here on their own: their
+// values sit on ~10^9-scale default lanes no hand can follow, so the test pins each hash's
+// length and which of its spans must agree.
 public sealed partial class CountPrefixAndSuffixPairsISolutionTests
 {
-    public static TheoryData<string[], int> Examples =>
-        new()
-        {
-            { ["a", "aba", "ababa", "aa"], 4 },
-            { ["pa", "papa", "ma", "mama"], 2 },
-            { ["abab", "ab"], 0 },
-        };
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountPairsByBruteForce_LeetCodeExamples_ReturnsPrefixAndSuffixPairCount(
-        string[] words, int expected) =>
-        Assert.Equal(expected, CountPrefixAndSuffixPairsISolution.CountPairsByBruteForce(words));
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountPairsByRollingHash_LeetCodeExamples_ReturnsPrefixAndSuffixPairCount(
-        string[] words, int expected) =>
-        Assert.Equal(expected, CountPrefixAndSuffixPairsISolution.CountPairsByRollingHash(words));
-
     // LeetCode's first example: one hash per word, in word order, as long as its word -
     // 1, 3, 5 and 2. "aba" opens "ababa" and closes it (at 5 - 3 = 2), and "a" opens
     // "aba", so those spans hash alike; "ab", the head of "aba", is not "aa", so those

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.CountingBits;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountingBitsSolution's, the same methods
-// CountingBitsSolutionTests proves correct. The maximum value is a scalar [Params] value
+// CatalogCaseTests proves correct. The maximum value is a scalar [Params] value
 // with nothing to hoist into [GlobalSetup] - there is no input container to prepare
 // ahead of the measured call.
 public class CountingBitsBenchmarks
