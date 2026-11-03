@@ -65,19 +65,32 @@ internal static class LatticeTableCopies
     private static IReadOnlyList<(int DeltaRow, int DeltaCol)> StepsWritten(SyntaxNode node)
     {
         var elements = ElementsOf(node);
-        var pairs = elements.Select(PairWritten).ToList();
+        var pairs = new List<(int DeltaRow, int DeltaCol)>(elements.Count);
 
-        if (pairs.Count > 0 && pairs.All(pair => pair is not null))
+        foreach (var element in elements)
         {
-            return [.. pairs.Select(pair => pair!.Value)];
+            if (!TryReadPair(element, out var pair))
+            {
+                return OrthogonalRunIn(elements);
+            }
+
+            pairs.Add(pair);
         }
 
-        var numbers = elements.Select(NumberWritten).ToList();
-        var isOrthogonalRun = numbers.Count == OrthogonalRunLength && numbers.All(number => number is not null);
+        return pairs;
+    }
 
-        return isOrthogonalRun
-            ? [.. Enumerable.Range(0, FewestSteps).Select(start => (numbers[start]!.Value, numbers[start + 1]!.Value))]
-            : [];
+    // The five-number run's neighbouring numbers paired, or none when the elements are not such a run.
+    private static IReadOnlyList<(int DeltaRow, int DeltaCol)> OrthogonalRunIn(IReadOnlyList<ExpressionSyntax> elements)
+    {
+        var numbers = NumbersIn(elements);
+
+        if (numbers.Count != OrthogonalRunLength)
+        {
+            return [];
+        }
+
+        return [.. numbers.Zip(numbers.Skip(1))];
     }
 
     private static IReadOnlyList<ExpressionSyntax> ElementsOf(SyntaxNode node) => node switch
@@ -88,26 +101,62 @@ internal static class LatticeTableCopies
     };
 
     // A pair written as (row, column), [row, column] or new[] { row, column }.
-    private static (int DeltaRow, int DeltaCol)? PairWritten(ExpressionSyntax element)
+    private static bool TryReadPair(ExpressionSyntax element, out (int DeltaRow, int DeltaCol) pair)
     {
-        List<int?> numbers = element switch
-        {
-            TupleExpressionSyntax tuple => [.. tuple.Arguments.Select(argument => NumberWritten(argument.Expression))],
-            ImplicitArrayCreationExpressionSyntax array => [.. array.Initializer.Expressions.Select(NumberWritten)],
-            ArrayCreationExpressionSyntax { Initializer: { } initializer } => [.. initializer.Expressions.Select(NumberWritten)],
-            _ => ElementsOf(element).Select(NumberWritten).ToList(),
-        };
-        var isPair = numbers.Count == PairLength && numbers.All(number => number is not null);
+        var numbers = NumbersIn(PairElementsOf(element));
+        pair = default;
 
-        return isPair ? (numbers[0]!.Value, numbers[1]!.Value) : null;
+        if (numbers.Count != PairLength)
+        {
+            return false;
+        }
+
+        pair = (numbers[0], numbers[1]);
+        return true;
     }
 
-    private static int? NumberWritten(ExpressionSyntax expression) => expression switch
+    private static IReadOnlyList<ExpressionSyntax> PairElementsOf(ExpressionSyntax element) => element switch
     {
-        LiteralExpressionSyntax { Token.Value: int number } => number,
-        PrefixUnaryExpressionSyntax { RawKind: (int)SyntaxKind.UnaryMinusExpression, Operand: LiteralExpressionSyntax { Token.Value: int number } } => -number,
-        _ => null,
+        TupleExpressionSyntax tuple => [.. tuple.Arguments.Select(argument => argument.Expression)],
+        ImplicitArrayCreationExpressionSyntax array => array.Initializer.Expressions,
+        ArrayCreationExpressionSyntax { Initializer: { } initializer } => initializer.Expressions,
+        _ => ElementsOf(element),
     };
+
+    // Every element's number, or none when any element is not a literal whole number.
+    private static List<int> NumbersIn(IReadOnlyList<ExpressionSyntax> elements)
+    {
+        var numbers = new List<int>(elements.Count);
+
+        foreach (var element in elements)
+        {
+            if (!TryReadNumber(element, out var number))
+            {
+                return [];
+            }
+
+            numbers.Add(number);
+        }
+
+        return numbers;
+    }
+
+    // A whole number written as a literal, negated or not.
+    private static bool TryReadNumber(ExpressionSyntax expression, out int number)
+    {
+        switch (expression)
+        {
+            case LiteralExpressionSyntax { Token.Value: int value }:
+                number = value;
+                return true;
+            case PrefixUnaryExpressionSyntax { RawKind: (int)SyntaxKind.UnaryMinusExpression, Operand: LiteralExpressionSyntax { Token.Value: int value } }:
+                number = -value;
+                return true;
+            default:
+                number = 0;
+                return false;
+        }
+    }
 
     // A literal copy of a table: where it is written, and which table it repeats.
     internal readonly record struct Copy(string Location, string Table);

@@ -20,13 +20,16 @@ public sealed partial class CatAndMouseIISolutionTests
             // jump of 4 clears the cat to the food, a jump of 1 must stop beside it and is
             // caught; with the cat between them Mouse can only stay or step onto it; a wall
             // keeps the cat from the food Mouse reaches in two moves; the cat sits one step
-            // from the food Mouse needs four moves to reach round a wall.
+            // from the food Mouse needs four moves to reach round a wall; and walls shut both
+            // animals in their corners with the food a diagonal step from each, which neither
+            // may take, since moves run along rows and columns only.
             { new CanMouseWinExample(Grid: ["C..", "...", ".MF"], CatJump: 1, MouseJump: 1, Expected: true) },
             { new CanMouseWinExample(Grid: ["F.C.M"], CatJump: 1, MouseJump: 4, Expected: true) },
             { new CanMouseWinExample(Grid: ["F.C.M"], CatJump: 1, MouseJump: 1, Expected: false) },
             { new CanMouseWinExample(Grid: ["MCF"], CatJump: 1, MouseJump: 1, Expected: false) },
             { new CanMouseWinExample(Grid: ["M.F", "###", "C.."], CatJump: 1, MouseJump: 1, Expected: true) },
             { new CanMouseWinExample(Grid: ["M#F", "..C"], CatJump: 1, MouseJump: 1, Expected: false) },
+            { new CanMouseWinExample(Grid: ["M#C", "#F#"], CatJump: 1, MouseJump: 1, Expected: false) },
         };
 
     // LeetCode example 1, asserted on the memoized arm alone. Its 3x5 board caps the
