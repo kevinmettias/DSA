@@ -5,11 +5,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MaximumNumberOfFishInAGridSolution's, the same
 // methods MaximumNumberOfFishInAGridSolutionTests proves correct - a hand-specialized
 // recursive flood fill (the textbook approach) vs. this repo's own
-// ConnectedComponents.ReduceEach totalling each water component's fish over
-// GridTopology, the same contrast MaxAreaOfIslandBenchmarks draws for LC 695. The
-// baseline clones the shared grid fixture internally before sinking cells, and the
-// composed arm never writes to it, so repeated benchmark invocations each start from
-// the true input. Side stops at LC 2658's 10 x 10 cap.
+// DepthFirstSearch.Traverse walking each water component's reachable cells, the
+// same contrast MaxAreaOfIslandBenchmarks draws for LC 695. Each strategy clones
+// the shared grid fixture internally before sinking cells, so repeated benchmark
+// invocations each start from the true input. Side stops at LC 2658's 10 x 10 cap.
 public class MaximumNumberOfFishInAGridBenchmarks
 {
     private const int RandomSeed = 2658; // LC problem number
@@ -44,6 +43,6 @@ public class MaximumNumberOfFishInAGridBenchmarks
         MaximumNumberOfFishInAGridSolution.MaxFishByNaiveFloodFill(_grid);
 
     [Benchmark]
-    public int ConnectedComponents() =>
-        MaximumNumberOfFishInAGridSolution.MaxFishByConnectedComponents(_grid);
+    public int DepthFirstSearchTraversal() =>
+        MaximumNumberOfFishInAGridSolution.MaxFishByDepthFirstSearch(_grid);
 }

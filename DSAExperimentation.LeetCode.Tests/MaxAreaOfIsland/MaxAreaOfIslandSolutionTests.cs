@@ -32,6 +32,6 @@ public sealed partial class MaxAreaOfIslandSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxAreaByConnectedComponents_LeetCodeExamples_ReturnsLargestIslandArea(int[][] grid, int expected) =>
-        Assert.Equal(expected, MaxAreaOfIslandSolution.MaxAreaByConnectedComponents(grid));
+    public void MaxAreaByDepthFirstSearch_LeetCodeExamples_ReturnsLargestIslandArea(int[][] grid, int expected) =>
+        Assert.Equal(expected, MaxAreaOfIslandSolution.MaxAreaByDepthFirstSearch(grid));
 }

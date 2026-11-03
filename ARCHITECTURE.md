@@ -2433,8 +2433,7 @@ hand-written. The measurements sorted the arms by what they replaced:
 - **Lambda and iterator traversals win.** Arms on `DepthFirstSearch.Traverse`'s successor lambda,
   or on LINQ over the nodes a traversal returned, got faster on the engines. They lost an
   allocation per node and a delegate call per edge. OperationsOnTree went from 204 to 6.2 us,
-  DetonateTheMaximumBombs ran 40% faster, MaxAreaOfIsland's ratio fell from 37 to 19, and
-  NumberOfIslands' from 2.24 to 1.55.
+  DetonateTheMaximumBombs ran 33 to 50% faster, and NumberOfIslands 22 to 28%.
 - **Direct recursion does not.** `DepthFirstTraversal`'s hooks cost 15 to 40% over a hand-written
   recursion on a tree (SerializeAndDeserializeBST and CheckIfDfsStringsArePalindromes, both
   reverted). `TreeFold` costs four to five times the recursion it stands for on HouseRobberIII,
@@ -2448,13 +2447,18 @@ hand-written. The measurements sorted the arms by what they replaced:
   MakingALargeIsland at 60 x 60 measured 22 to 98% slower, and stay hand-written. So do
   MinimumNumberOfDaysToDisconnectIsland, which builds a `Grid` for each of its n^2 queries, and
   JumpGameIII, whose hop graph cost far more to build than the few nodes its walk needs.
+  MaxAreaOfIsland, MaximumNumberOfFishInAGrid and CountIslandsWithTotalValueDivisibleByK moved
+  onto `ConnectedComponents.ReduceEach` and went back: a pass on a quiet machine read them 7 to 54%
+  slower at one size or both, where the first pass had overlapped a peer's unlocked benchmark job.
 
 Three pieces came out of it. `ConnectedComponents.ReduceEach` reduces each component on its own:
 the multi-root walk `Count` rides, returning every component's state. `NodeCountReduceAlgebra`
 counts the nodes a walk enters, which is a component's size. `Grid.Where` builds a board from an
 `IGridCellFilter`, and `Grid.PassableNodes` lists its open cells as the roots a whole-board scan
-needs. A reduce algebra is static, so a value it reads, such as a cell's fish or grid1's land, travels
-in the state it threads, as `MaximumNumberOfFishInAGrid`'s `FishCatch` does.
+needs; NumberOfIslands and SurroundedRegions read them. `ReduceEach` has no solution reading it
+yet: its three grid adopters wait on a grid that hands out one node per cell instead of a new one
+per neighbour, and are retried then. A reduce algebra is static, so a value it reads, such as a
+cell's fish or grid1's land, travels in the state it threads.
 
 ## 20. Worked example: the queue family, configurations of one buffer
 

@@ -1,5 +1,4 @@
-using DSAExperimentation.Algorithms.Connectivity;
-using DSAExperimentation.Algorithms.Reducing;
+using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.LeetCode.MaximumNumberOfFishInAGrid;
@@ -12,10 +11,9 @@ namespace DSAExperimentation.LeetCode.MaximumNumberOfFishInAGrid;
 // That is the same border-agnostic flood fill MaxAreaOfIslandSolution runs for
 // LC 695, over a value grid instead of a binary one: the component is found the
 // same way, but the score is the sum of each visited cell's own fish count rather
-// than the cell count. The baseline visits cells by zeroing them in place, so it
-// clones the grid it is handed first, and a caller's own grid (or a benchmark
-// fixture reused across iterations) is never left half-zeroed. The composed arm
-// never writes to the grid: its walks share one visited set instead.
+// than the cell count. Both strategies visit cells by zeroing them in place, so
+// each clones the grid it is handed first - a caller's own grid (or a benchmark
+// fixture reused across iterations) is never left half-zeroed.
 internal static class MaximumNumberOfFishInAGridSolution
 {
     // The textbook answer: a hand-specialized recursive flood fill that adds each
@@ -43,6 +41,51 @@ internal static class MaximumNumberOfFishInAGridSolution
         return best;
     }
 
+    // This repo's own DFS: DepthFirstSearch.Traverse returns one water component's
+    // reachable cells from each unvisited water cell, and summing their fish counts
+    // is the component's score. Sinking the component afterwards is what keeps the
+    // outer sweep from re-walking it - the same visit-by-zeroing shape
+    // MaxAreaOfIslandSolution already uses for LC 695.
+    public static int MaxFishByDepthFirstSearch(int[][] grid)
+    {
+        var working = CloneGrid(grid);
+        var rows = working.Length;
+        var cols = working[0].Length;
+        var best = 0;
+
+        for (var r = 0; r < rows; r++)
+        {
+            for (var c = 0; c < cols; c++)
+            {
+                if (working[r][c] == 0)
+                {
+                    continue;
+                }
+
+                var componentTotal = SinkComponentFishTotal(working, r, c);
+                best = Math.Max(best, componentTotal);
+            }
+        }
+
+        return best;
+    }
+
+    private static int SinkComponentFishTotal(int[][] grid, int row, int col)
+    {
+        var size = GridSize.Of(grid);
+        var water = new WaterCell(grid);
+        var component = DepthFirstSearch.Traverse(
+            (Row: row, Col: col), cell => GridNeighbors.Of(cell, size, GridDirections.Orthogonal, water));
+        var total = component.Sum(cell => grid[cell.Row][cell.Col]);
+
+        foreach (var (componentRow, componentCol) in component)
+        {
+            grid[componentRow][componentCol] = 0;
+        }
+
+        return total;
+    }
+
     // The naive arm's recursive fill: sink the cell, bank its fish, recurse into
     // the four neighbours.
     private static int Flood(int[][] grid, int row, int col, GridBounds bounds)
@@ -64,18 +107,6 @@ internal static class MaximumNumberOfFishInAGridSolution
             + Flood(grid, row, col - 1, bounds);
     }
 
-    // This repo's ConnectedComponents.ReduceEach over GridTopology: each water
-    // component's walk adds up its own cells' fish with FishTotal, the component's score.
-    public static int MaxFishByConnectedComponents(int[][] grid)
-    {
-        var water = Grid.Where(GridSize.Of(grid), new WaterCell(grid)).PassableNodes();
-        var catches = ConnectedComponents.ReduceEach<
-            GridNode, GridTopology, GridChildren, DepthFirstReduceOrder<GridNode>, FishTotal, FishCatch>(
-            water, new FishCatch(grid, 0));
-
-        return catches.Select(fishCatch => fishCatch.Total).DefaultIfEmpty(0).Max();
-    }
-
     private static int[][] CloneGrid(int[][] grid)
     {
         var clone = new int[grid.Length][];
@@ -92,24 +123,9 @@ internal static class MaximumNumberOfFishInAGridSolution
     // they ride as one parameter rather than two.
     private readonly record struct GridBounds(int Rows, int Cols);
 
-    // The cells a component is made of: water, which holds at least one fish.
+    // The cells a component's walk may step into: water, which holds at least one fish.
     private readonly struct WaterCell(int[][] grid) : IGridCellFilter
     {
-        private readonly int[][] _grid = grid;
-
-        public bool CanEnter(int row, int col) => _grid[row][col] > 0;
-    }
-
-    // One component's catch so far, with the grid its fish are read from: a reduce algebra
-    // is static, so what it reads has to travel in the state it threads.
-    private readonly record struct FishCatch(int[][] Grid, int Total);
-
-    // Adds each cell's fish as the walk enters it.
-    private readonly struct FishTotal : IReduceAlgebra<GridNode, FishCatch>
-    {
-        public static FishCatch Seed => default;
-
-        public static FishCatch Enter(FishCatch state, GridNode node, int depth)
-            => state with { Total = state.Total + state.Grid[node.Row][node.Col] };
+        public bool CanEnter(int row, int col) => grid[row][col] > 0;
     }
 }

@@ -61,7 +61,7 @@ public sealed partial class MaximumNumberOfFishInAGridSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxFishByConnectedComponents_LeetCodeExamples_ReturnsLargestComponentFishTotal(
+    public void MaxFishByDepthFirstSearch_LeetCodeExamples_ReturnsLargestComponentFishTotal(
         int[][] grid, int expected) =>
-        Assert.Equal(expected, MaximumNumberOfFishInAGridSolution.MaxFishByConnectedComponents(grid));
+        Assert.Equal(expected, MaximumNumberOfFishInAGridSolution.MaxFishByDepthFirstSearch(grid));
 }
