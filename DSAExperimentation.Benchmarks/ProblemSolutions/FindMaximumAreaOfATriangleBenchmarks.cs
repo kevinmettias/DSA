@@ -21,14 +21,24 @@ public class FindMaximumAreaOfATriangleBenchmarks
     {
         var random = new Random(Seed);
         var bound = Math.Max(10, PointCount / 3);
+        // Kept in the order drawn, the set only checking membership: a HashSet's order follows the
+        // points' hashes, which .NET seeds afresh in every process, so taking its order would give each
+        // benchmark process a different workload from the same seed.
         var seen = new HashSet<(int X, int Y)>();
+        var drawn = new List<int[]>(PointCount);
 
-        while (seen.Count < PointCount)
+        while (drawn.Count < PointCount)
         {
-            seen.Add((random.Next(1, bound), random.Next(1, bound)));
+            var point = (X: random.Next(1, bound), Y: random.Next(1, bound));
+            var isNewPoint = seen.Add(point);
+
+            if (isNewPoint)
+            {
+                drawn.Add([point.X, point.Y]);
+            }
         }
 
-        _coords = seen.Select(point => new[] { point.X, point.Y }).ToArray();
+        _coords = [.. drawn];
     }
 
     [Benchmark(Baseline = true)]

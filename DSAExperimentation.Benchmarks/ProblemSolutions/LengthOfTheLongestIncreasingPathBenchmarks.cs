@@ -21,14 +21,24 @@ public class LengthOfTheLongestIncreasingPathBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
+        // Kept in the order drawn, the set only checking membership: a HashSet's order follows the
+        // points' hashes, which .NET seeds afresh in every process, so taking its order would give each
+        // benchmark process a different workload from the same seed.
         var seen = new HashSet<(int X, int Y)>();
+        var drawn = new List<int[]>(PointCount);
 
-        while (seen.Count < PointCount)
+        while (drawn.Count < PointCount)
         {
-            seen.Add((random.Next(CoordinateBound), random.Next(CoordinateBound)));
+            var point = (X: random.Next(CoordinateBound), Y: random.Next(CoordinateBound));
+            var isNewPoint = seen.Add(point);
+
+            if (isNewPoint)
+            {
+                drawn.Add([point.X, point.Y]);
+            }
         }
 
-        _coordinates = seen.Select(p => new[] { p.X, p.Y }).ToArray();
+        _coordinates = [.. drawn];
         _requiredIndex = PointCount / 2;
     }
 

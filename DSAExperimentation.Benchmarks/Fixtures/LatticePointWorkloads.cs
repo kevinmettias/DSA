@@ -14,13 +14,23 @@ internal static class LatticePointWorkloads
     {
         var random = new Random(seed);
         var grid = (int)Math.Ceiling(Math.Sqrt(count)) + gridPadding;
-        var coordinates = new HashSet<(int X, int Y)>();
+        // Kept in the order drawn, the set only checking membership: a HashSet's order follows the
+        // points' hashes, which .NET seeds afresh in every process, so taking its order would give each
+        // benchmark process a different workload from the same seed.
+        var seen = new HashSet<(int X, int Y)>();
+        var drawn = new List<int[]>(count);
 
-        while (coordinates.Count < count)
+        while (drawn.Count < count)
         {
-            coordinates.Add((random.Next(grid), random.Next(grid)));
+            var point = (X: random.Next(grid), Y: random.Next(grid));
+            var isNewPoint = seen.Add(point);
+
+            if (isNewPoint)
+            {
+                drawn.Add([point.X, point.Y]);
+            }
         }
 
-        return coordinates.Select(c => new[] { c.X, c.Y }).ToArray();
+        return [.. drawn];
     }
 }
