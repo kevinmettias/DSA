@@ -1,4 +1,12 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Domain.Language.English;
+using PrefixNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
+using PrefixTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.SumOfPrefixScoresOfStrings;
 
@@ -47,17 +55,19 @@ internal static class SumOfPrefixScoresOfStringsSolution
         return score;
     }
 
-    // This repo's own LowercaseTrie<int>, the bounded-alphabet trie MapSumPairs and
-    // CountingWordsWithAGivenPrefix already use. Instead of storing a value only at
-    // each word's end node the way Set does, every word is walked in through the
-    // already-public Root/Children and every node on its path has its Value
+    // This repo's own AlphabetTrie over the lowercase letters, the bounded-alphabet trie
+    // MapSumPairs and CountingWordsWithAGivenPrefix already use. Instead of storing a value
+    // only at each word's end node the way Set does, every word is walked in through the
+    // already-public Root/GetOrAddChild and every node on its path has its Value
     // incremented - so a node's Value ends up being exactly the score of the prefix
     // that reaches it. Scoring a word is then one more walk, summing the counts
     // already sitting along its own root-to-leaf path: O(wordCount * wordLength) to
-    // build plus O(wordCount * wordLength) to score.
+    // build plus O(wordCount * wordLength) to score. The packed layout: the trie is built
+    // once per call and walked once per word, which packed nodes measured faster for
+    // (IMPROVEMENT-WORKLIST, 2026-11-02).
     public static int[] SumPrefixScoresByPrefixCountingTrie(string[] words)
     {
-        var trie = new LowercaseTrie<int>();
+        var trie = new PrefixTrie();
 
         foreach (var word in words)
         {
@@ -74,25 +84,25 @@ internal static class SumOfPrefixScoresOfStringsSolution
         return scores;
     }
 
-    private static void CountPrefixesOf(LowercaseTrieNode<int> root, string word)
+    private static void CountPrefixesOf(PrefixNode root, string word)
     {
         var current = root;
 
         foreach (var ch in word)
         {
-            current = current.Children[ch - 'a'] ??= new LowercaseTrieNode<int>();
+            current = current.GetOrAddChild(EnglishLowercase.IndexOf(ch));
             current.Value++;
         }
     }
 
-    private static int ScoreAlong(LowercaseTrieNode<int> root, string word)
+    private static int ScoreAlong(PrefixNode root, string word)
     {
         var current = root;
         var score = 0;
 
         foreach (var ch in word)
         {
-            current = current.Children[ch - 'a']!;
+            current = current.ChildAt(EnglishLowercase.IndexOf(ch))!;
             score += current.Value;
         }
 

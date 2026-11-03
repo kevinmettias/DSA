@@ -1,6 +1,13 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Domain.Language.English;
+using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    bool>;
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestWordInDictionary;
 
@@ -11,7 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestWordInDictionary;
 //
 // The two strategies differ in how "is this prefix a complete word" is answered -
 // a linear scan of the whole word list per prefix, or a single O(1) HasValue check
-// per step of one root-to-leaf walk over this repo's own LowercaseTrie<bool>.
+// per step of one root-to-leaf walk over this repo's own AlphabetTrie.
 internal static class LongestWordInDictionarySolution
 {
     private const string NoQualifyingWord = "";
@@ -64,11 +71,13 @@ internal static class LongestWordInDictionarySolution
         return true;
     }
 
-    // This repo's own LowercaseTrie<bool>: build one trie from the whole word list,
+    // This repo's own AlphabetTrie over the lowercase letters: build one trie from the whole word list,
     // then walk it from the root descending only through nodes whose HasValue is
     // already true - a step is legal exactly when the prefix reached so far is
     // itself a complete dictionary word, which is this problem's own "built one
-    // character at a time" rule.
+    // character at a time" rule. The walk visits only the letters each node has a child
+    // for, in letter order, and the packed layout: once no node is asked for an absent
+    // letter, packed nodes measured faster than dense ones, with a third of the allocation.
     public static string LongestWordByLowercaseTrieWalk(string[] words)
     {
         var trie = BuildTrie(words);
@@ -76,9 +85,9 @@ internal static class LongestWordInDictionarySolution
         return FindLongestWord(trie.Root, new CandidateWord(LongestWordInDictionaryConstants.EmptyPrefix), new BestWord(NoQualifyingWord)).Text;
     }
 
-    private static LowercaseTrie<bool> BuildTrie(string[] words)
+    private static WordTrie BuildTrie(string[] words)
     {
-        var trie = new LowercaseTrie<bool>();
+        var trie = new WordTrie();
 
         foreach (var word in words)
         {
@@ -92,29 +101,26 @@ internal static class LongestWordInDictionarySolution
         candidate.Text.Length > best.Text.Length
         || (candidate.Text.Length == best.Text.Length && string.CompareOrdinal(candidate.Text, best.Text) < 0);
 
-    private static BestWord FindLongestWord(LowercaseTrieNode<bool> node, CandidateWord prefix, BestWord best)
+    private static BestWord FindLongestWord(WordNode node, CandidateWord prefix, BestWord best)
     {
         best = BetterOf(prefix, best);
 
-        for (var i = 0; i < EnglishLetters.Size; i++)
+        foreach (var (letter, child) in node.Children)
         {
-            best = VisitChild(node, i, prefix, best);
+            best = VisitChild(child, letter, prefix, best);
         }
 
         return best;
     }
 
-    private static BestWord VisitChild(
-        LowercaseTrieNode<bool> node, int childIndex, CandidateWord prefix, BestWord best)
+    private static BestWord VisitChild(WordNode child, int letter, CandidateWord prefix, BestWord best)
     {
-        var child = node.Children[childIndex];
-
-        if (child is null || !child.HasValue)
+        if (!child.HasValue)
         {
             return best;
         }
 
-        return FindLongestWord(child, new CandidateWord(prefix.Text + (char)('a' + childIndex)), best);
+        return FindLongestWord(child, new CandidateWord(prefix.Text + EnglishLowercase.LetterAt(letter)), best);
     }
 
     private static BestWord BetterOf(CandidateWord prefix, BestWord best)

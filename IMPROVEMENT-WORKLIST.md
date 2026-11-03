@@ -394,7 +394,9 @@ using) removed from 1,111 files.
   Owner ruling, 2026-11-02: the children layout becomes a witness on the generalized alphabet
   trie, with a dense preset (today's slot array) and a packed preset, and each adopter picks one
   by measurement. A packed node cannot take `Children[i] ??= child`, so the four production sites
-  that do this move to a get-or-add call. Open until that lands.
+  that do this move to a get-or-add call. Done: `AlphabetTrie<TAlphabet, TLayout, TValue>` replaces
+  `LowercaseTrie`, with `DenseTrieLayout` and `PackedTrieLayout`; LC 1032 names dense and the other
+  twelve adopters packed (ARCHITECTURE §13.8).
 
   The benchmark stops at 400 words, inside LeetCode's 5,000. Open: per-arm sizes would let the
   trie run past the O(n²) brute force.

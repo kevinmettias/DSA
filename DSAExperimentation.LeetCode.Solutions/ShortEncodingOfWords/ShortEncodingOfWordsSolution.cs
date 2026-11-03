@@ -1,5 +1,13 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Language.English;
+using ReversedWordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    bool>;
+using ReversedWordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ShortEncodingOfWords;
 
@@ -11,7 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortEncodingOfWords;
 //
 // Three ways to answer "is this word a proper suffix of another": check every pair
 // with EndsWith, evict every proper suffix from a Set as each word is scanned, or
-// insert every REVERSED word into a LowercaseTrie and keep only the words whose
+// insert every REVERSED word into an AlphabetTrie and keep only the words whose
 // reversed node is a leaf.
 internal static class ShortEncodingOfWordsSolution
 {
@@ -111,10 +119,12 @@ internal static class ShortEncodingOfWordsSolution
         return remaining;
     }
 
-    // This repo's own bounded-alphabet LowercaseTrie<bool>, fed every word
-    // REVERSED: a word needs its own encoding exactly when no other reversed word
+    // This repo's own bounded-alphabet AlphabetTrie over the lowercase letters, fed every
+    // word REVERSED: a word needs its own encoding exactly when no other reversed word
     // extends past it, i.e. when its reversed node is a trie leaf. O(total
-    // characters) instead of the pairwise scan's O(n^2 * L).
+    // characters) instead of the pairwise scan's O(n^2 * L). The packed layout: the trie
+    // is built once per call and walked once per word, which packed nodes measured faster
+    // for (IMPROVEMENT-WORKLIST, 2026-11-02).
     public static int MinimumLengthByReversedTrieLeaves(string[] words)
     {
         var distinctWords = Deduplicate(words);
@@ -134,9 +144,9 @@ internal static class ShortEncodingOfWordsSolution
         return length;
     }
 
-    private static LowercaseTrie<bool> BuildReversedTrie(List<string> distinctWords)
+    private static ReversedWordTrie BuildReversedTrie(List<string> distinctWords)
     {
-        var trie = new LowercaseTrie<bool>();
+        var trie = new ReversedWordTrie();
 
         foreach (var word in distinctWords)
         {
@@ -147,30 +157,19 @@ internal static class ShortEncodingOfWordsSolution
         return trie;
     }
 
-    private static LowercaseTrieNode<bool> WalkReversed(LowercaseTrieNode<bool> root, string word)
+    private static ReversedWordNode WalkReversed(ReversedWordNode root, string word)
     {
         var node = root;
 
         for (var i = word.Length - 1; i >= 0; i--)
         {
-            node = node.Children[word[i] - 'a']!;
+            node = node.ChildAt(EnglishLowercase.IndexOf(word[i]))!;
         }
 
         return node;
     }
 
-    private static bool IsLeaf(LowercaseTrieNode<bool> node)
-    {
-        foreach (var child in node.Children)
-        {
-            if (child is not null)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    private static bool IsLeaf(ReversedWordNode node) => node.ChildCount == 0;
 
     private static string Reverse(string word)
     {

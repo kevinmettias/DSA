@@ -1,6 +1,13 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Domain.Language.English;
+using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    bool>;
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.WordsWithinTwoEditsOfDictionary;
 
@@ -51,17 +58,20 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
         return differences <= WordsWithinTwoEditsOfDictionaryConstants.MaxEdits;
     }
 
-    // This repo's own LowercaseTrie<bool>, the bounded-alphabet trie that stores the
-    // whole dictionary once with its common prefixes shared, walked per query by a
-    // budgeted DFS over the already-public Root/Children - ImplementMagicDictionary's
+    // This repo's own AlphabetTrie over the lowercase letters, the bounded-alphabet trie
+    // that stores the whole dictionary once with its common prefixes shared, walked per
+    // query by a budgeted DFS over the already-public Root/ChildAt - ImplementMagicDictionary's
     // one-substitution walk generalized from a budget of exactly 1 to "at most 2".
     // Descending into the child that matches the query's character is free; any other
     // child spends an edit, and the walk succeeds as soon as it consumes the whole
     // query with budget left over and lands on a stored word. O(dictionarySize *
-    // wordLength) to build the trie once, plus one bounded walk per query.
+    // wordLength) to build the trie once, plus one bounded walk per query. The walk
+    // visits only the letters each node has a child for, and the packed layout: once no
+    // node is asked for an absent letter, packed nodes measured as fast as dense ones
+    // with a quarter of the allocation.
     public static string[] FindMatchingQueriesByEditBudgetTrie(string[] queries, string[] dictionary)
     {
-        var trie = new LowercaseTrie<bool>();
+        var trie = new WordTrie();
 
         foreach (var word in dictionary)
         {
@@ -83,7 +93,7 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
 
     private readonly record struct SearchState(string Query, int Index, int RemainingEdits);
 
-    private static bool HasMatch(LowercaseTrieNode<bool> node, SearchState state)
+    private static bool HasMatch(WordNode node, SearchState state)
     {
         if (state.Index == state.Query.Length)
         {
@@ -93,16 +103,15 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
         return HasMatchInChildren(node, state);
     }
 
-    private static bool HasMatchInChildren(LowercaseTrieNode<bool> node, SearchState state)
+    private static bool HasMatchInChildren(WordNode node, SearchState state)
     {
-        var target = state.Query[state.Index] - 'a';
+        var target = EnglishLowercase.IndexOf(state.Query[state.Index]);
 
-        for (var candidate = 0; candidate < EnglishLetters.Size; candidate++)
+        foreach (var (candidate, next) in node.Children)
         {
-            var next = node.Children[candidate];
             var match = candidate == target ? ChildMatch.Target : ChildMatch.Substitution;
 
-            if (next is not null && TryMatchCandidate(next, state, match))
+            if (TryMatchCandidate(next, state, match))
             {
                 return true;
             }
@@ -111,7 +120,7 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
         return false;
     }
 
-    private static bool TryMatchCandidate(LowercaseTrieNode<bool> next, SearchState state, ChildMatch match)
+    private static bool TryMatchCandidate(WordNode next, SearchState state, ChildMatch match)
     {
         var nextBudget = match == ChildMatch.Target ? state.RemainingEdits : ReducedEditBudget(state);
 

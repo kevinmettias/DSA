@@ -1,6 +1,9 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.Solutions.LongestCommonPrefixOfKStringsAfterRemoval;
+using PrefixTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -18,7 +21,7 @@ public class LongestCommonPrefixOfKStringsAfterRemovalBenchmarks
 
     private string[] _words = [];
 
-    private LowercaseTrie<int> _trie = new();
+    private PrefixTrie _trie = new();
     [Params(20, 100)]
     public int WordCount { get; set; }
 

@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Re-scanning the whole word list with string.StartsWith for each of a word's own
 // prefixes is O(wordCount^2 * wordLength); building the prefix-counting
-// LowercaseTrie<int> once and reading each word's score off its root-to-leaf path
+// AlphabetTrie once and reading each word's score off its root-to-leaf path
 // is O(wordCount * wordLength) twice over. WordCount stops at LC 2416's 1,000 words.
 public class SumOfPrefixScoresOfStringsBenchmarks
 {

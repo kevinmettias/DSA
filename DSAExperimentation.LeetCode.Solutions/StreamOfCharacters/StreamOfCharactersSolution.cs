@@ -1,5 +1,9 @@
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Domain.Language.English;
+using ReversedWordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.DenseTrieLayout,
+    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.StreamOfCharacters;
 
@@ -54,17 +58,19 @@ internal static class StreamOfCharactersSolution
         }
     }
 
-    // The standard LC 1032 technique on this repo's own LowercaseTrie<TValue>: words
+    // The standard LC 1032 technique on this repo's own AlphabetTrie: words
     // are inserted reversed, so walking the trie backward from the most recently
     // streamed character - through DynamicArray<char>'s O(1) indexed Get, itself
     // standing in for the running stream buffer - tests every suffix of the stream in
     // a single O(longest word) walk instead of re-testing each suffix from scratch.
-    // LowercaseTrieNode's Children/HasValue are already public (LowercaseTrie<TValue>.Root
-    // exposes the entry point), so this composes the existing trie node-walk directly
-    // rather than reimplementing it.
+    // A node's ChildAt/HasValue are already public (AlphabetTrie.Root exposes the entry
+    // point), so this composes the existing trie node-walk directly rather than
+    // reimplementing it. The dense layout: the trie is built once and then only read, a
+    // letter per step of every query, and a slot per letter read directly measured 52-70%
+    // faster than packed nodes' popcount (IMPROVEMENT-WORKLIST, 2026-11-02).
     internal sealed class StreamCheckerByReversedTrie : IStreamCheckerStrategy
     {
-        private readonly LowercaseTrie<bool> _reversedWords = new();
+        private readonly ReversedWordTrie _reversedWords = new();
         private readonly DynamicArray<char> _stream = new();
 
         public StreamCheckerByReversedTrie(IEnumerable<string> words)
@@ -83,7 +89,7 @@ internal static class StreamOfCharactersSolution
 
             for (var i = _stream.Count - 1; i >= 0 && node is not null; i--)
             {
-                node = node.Children[_stream.Get(i) - 'a'];
+                node = node.ChildAt(EnglishLowercase.IndexOf(_stream.Get(i)));
 
                 if (node is not null && node.HasValue)
                 {

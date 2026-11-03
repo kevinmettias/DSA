@@ -1,18 +1,21 @@
 using DSAExperimentation.Algorithms.Folding;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using SumNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MapSumPairs;
 
-// Folds a LowercaseTrie<int> subtree into the sum of every node's own value plus
+// Folds an alphabet-trie subtree into the sum of every node's own value plus
 // its children's already-folded sums - a node with no value contributes 0 of its
 // own, exactly SizeAlgebra's "1 + children.Sum()" shape with the constant traded
 // for the node's stored value. This answers LC677's sum(prefix) and nothing else,
 // which is why it lives beside the solution rather than in Algorithms/Folding.
-internal readonly struct SumValuesAlgebra : IFoldAlgebra<LowercaseTrieNode<int>, int>
+internal readonly struct SumValuesAlgebra : IFoldAlgebra<SumNode, int>
 {
     public int Empty => 0;
 
-    public int Combine(LowercaseTrieNode<int> node, ReadOnlySpan<int> children)
+    public int Combine(SumNode node, ReadOnlySpan<int> children)
     {
         var total = node.HasValue ? node.Value : 0;
 

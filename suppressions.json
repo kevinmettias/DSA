@@ -545,15 +545,29 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/LowercaseTrie.cs",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetTrie.cs",
       "reason": "TryGetValue's value = default! is named inline as a `presumption: allow` comment stating the invariant that makes it true (value is only meaningful when the method returns true, the standard TryGetValue/TryParse out-parameter contract Trie\u003cTValue\u003e.TryGetValue already uses) - recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetTrieChildEnumerator.cs",
+      "reason": "An enumerator exists to be advanced: foreach calls MoveNext on it, which moves the unvisited-letters mask on and sets Current. It is a struct so that walking a node's children allocates nothing, the reason List<T>.Enumerator is a mutable struct too; a class would cost an allocation per node a walk visits.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/LowercaseTrieNode.cs",
-      "reason": "Value's default! is named inline as a `presumption: allow` comment stating the invariant that makes it true (Value is only meaningful once HasValue is true, checked by every reader before use) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetTrieChildEnumerator.cs",
+      "reason": "MoveNext's ChildAt(letter)! is named inline as a `presumption: allow` comment stating the invariant that makes it true (the letter was read from the node's child mask, so the node has a child for it) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetTrieNode.cs",
+      "reason": "Each ! is named inline as a `presumption: allow` comment stating the invariant that makes it true: Value's default! (Value is only meaningful once HasValue is true, checked by every reader before use), and the two slot reads in ChildOfRank and GetOrAddChild (the node's mask has the child's bit set, and every set bit has its child stored at the layout's position) - recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },

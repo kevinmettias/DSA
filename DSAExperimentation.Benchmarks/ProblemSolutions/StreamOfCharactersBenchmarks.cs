@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // StreamOfCharactersSolutionTests proves correct - re-testing every suffix of the whole
 // stream so far against a HashSet<string> on every query (O(stream length * max word
 // length) per query, since each candidate substring itself costs O(length) to
-// materialize and hash) against this repo's own LowercaseTrie<TValue> built from
+// materialize and hash) against this repo's own AlphabetTrie built from
 // reversed words and walked backward through DynamicArray<char>'s O(1) indexed Get
 // (O(max word length) per query). [GlobalSetup] generates the streamed characters,
 // so stream generation is charged to setup rather than to the replay each arm

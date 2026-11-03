@@ -12,15 +12,14 @@ namespace DSAExperimentation.DataStructures.Trie;
 // in a plain sequential 0..Count-1 sweep (DepthFirstWalk.cs/BreadthFirstWalk.cs/
 // TopDownWalk.cs), which the interface's own doc comment still states as an O(1)-per-
 // call obligation - and TrieNode<TValue>.Children is a HashMap<char,·>, which cannot
-// honestly promise indexed O(1) Get the way a fixed slot array can (see
-// SparseArrayChildren.cs, "e.g. a trie node's per-character children" - written for
-// exactly this case). Bound the alphabet to something a fixed slot array can size for
-// (26 lowercase letters) and that mismatch disappears: see
-// Graph/Engines/Dags/Trees/LowercaseTrie.cs, a real ITreeTopology witness that reuses
-// TreeMetrics/LowestCommonAncestor/every other generic Tree-tier engine for free. This
-// general, arbitrary-char-keyed Trie<TValue> stays witness-less because its whole
-// value is NOT being bounded to a small alphabet - narrowing it to gain a witness
-// would defeat the type's own purpose, not just cost something.
+// honestly promise indexed O(1) Get the way a node that knows its letters can. Bound
+// the alphabet to at most 64 letters, so a node can keep a bit per letter, and that
+// mismatch disappears: see Graph/Engines/Dags/Trees/Tries/AlphabetTrie.cs, a real
+// ITreeTopology witness that reuses TreeMetrics/LowestCommonAncestor/every other generic
+// Tree-tier engine for free. This general, arbitrary-char-keyed Trie<TValue> stays
+// witness-less because its whole value is NOT being bounded to a small alphabet -
+// narrowing it to gain a witness would defeat the type's own purpose, not just cost
+// something.
 //
 // A hypothetical compressed/radix trie would still only ever be a second
 // Representation (identical answers, different node layout/constants), never a second

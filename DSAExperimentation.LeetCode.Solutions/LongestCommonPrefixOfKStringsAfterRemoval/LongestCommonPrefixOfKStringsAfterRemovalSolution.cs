@@ -1,6 +1,21 @@
 using DSAExperimentation.Algorithms.Reducing;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Domain.Language.English;
+using PrefixNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
+using PrefixTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
+using PrefixTopology = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieTopology<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
+using PrefixChildren = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieChildren<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestCommonPrefixOfKStringsAfterRemoval;
 
@@ -108,7 +123,7 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     }
 
     // Composed: build the counting trie once, reduce it twice over the SAME
-    // generic Tree engine LowercaseTrieTests already proves out (once with this
+    // generic Tree engine AlphabetTrieTests already proves out (once with this
     // problem's own SubtreeWordCountAlgebra for per-node prefix multiplicity,
     // once with the repo's existing DistanceMapReduceAlgebra for per-node depth),
     // then answer every index with an O(word length) walk. O(total input length)
@@ -120,7 +135,7 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
         return AnswerByReduceTrie(trie, words, requiredShareCount);
     }
 
-    public static int[] AnswerByReduceTrie(LowercaseTrie<int> trie, string[] words, int requiredShareCount)
+    public static int[] AnswerByReduceTrie(PrefixTrie trie, string[] words, int requiredShareCount)
     {
         var counts = ReduceSubtreeWordCounts(trie);
         var depths = ReduceNodeDepths(trie);
@@ -130,25 +145,25 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     }
 
     // Each node's own subtree word count, from this problem's SubtreeWordCountAlgebra.
-    private static Dictionary<LowercaseTrieNode<int>, int> ReduceSubtreeWordCounts(LowercaseTrie<int> trie) =>
+    private static Dictionary<PrefixNode, int> ReduceSubtreeWordCounts(PrefixTrie trie) =>
         Reduce.Tree<
-            LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
-            DepthFirstReduceOrder<LowercaseTrieNode<int>>,
-            SubtreeWordCountAlgebra, Dictionary<LowercaseTrieNode<int>, int>>(trie.Root);
+            PrefixNode, PrefixTopology, PrefixChildren,
+            DepthFirstReduceOrder<PrefixNode>,
+            SubtreeWordCountAlgebra, Dictionary<PrefixNode, int>>(trie.Root);
 
     // Each node's depth from the root, from the repo's existing DistanceMapReduceAlgebra.
-    private static Dictionary<LowercaseTrieNode<int>, int> ReduceNodeDepths(LowercaseTrie<int> trie) =>
+    private static Dictionary<PrefixNode, int> ReduceNodeDepths(PrefixTrie trie) =>
         Reduce.Tree<
-            LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
-            DepthFirstReduceOrder<LowercaseTrieNode<int>>,
-            DistanceMapReduceAlgebra<LowercaseTrieNode<int>>, Dictionary<LowercaseTrieNode<int>, int>>(trie.Root);
+            PrefixNode, PrefixTopology, PrefixChildren,
+            DepthFirstReduceOrder<PrefixNode>,
+            DistanceMapReduceAlgebra<PrefixNode>, Dictionary<PrefixNode, int>>(trie.Root);
 
     // The reduce pass folded down to the three facts AnswerFor needs, and stopped
     // there: the per-node counts themselves (AnswerFor indexes them by node), how
     // many depth-d nodes clear requiredShareCount at all, and the deepest depth that does.
     private static QualificationSummary BuildQualificationSummary(
-        Dictionary<LowercaseTrieNode<int>, int> counts,
-        Dictionary<LowercaseTrieNode<int>, int> depths,
+        Dictionary<PrefixNode, int> counts,
+        Dictionary<PrefixNode, int> depths,
         string[] words,
         int requiredShareCount)
     {
@@ -176,8 +191,8 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     // qualifyingNodeCount[d] = how many depth-d trie nodes have a prefix
     // count >= requiredShareCount, BEFORE any removal.
     private static int[] CountQualifyingNodes(
-        Dictionary<LowercaseTrieNode<int>, int> counts,
-        Dictionary<LowercaseTrieNode<int>, int> depths,
+        Dictionary<PrefixNode, int> counts,
+        Dictionary<PrefixNode, int> depths,
         int maxLength,
         int requiredShareCount)
     {
@@ -211,7 +226,7 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
 
     // Every index answered in turn, each in O(word length), all from the one summary.
     private static int[] AnswerEveryWord(
-        LowercaseTrie<int> trie, string[] words, QualificationSummary summary, int requiredShareCount)
+        PrefixTrie trie, string[] words, QualificationSummary summary, int requiredShareCount)
     {
         var answer = new int[words.Length];
 
@@ -227,7 +242,7 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     // loop: each node's own subtree word count, how many depth-d nodes clear
     // requiredShareCount at all, and the deepest depth that does.
     private readonly record struct QualificationSummary(
-        Dictionary<LowercaseTrieNode<int>, int> Counts,
+        Dictionary<PrefixNode, int> Counts,
         int[] QualifyingNodeCount,
         int DeepestQualifyingDepth);
 
@@ -239,7 +254,7 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     // this word's removal can disqualify (its count dropping to exactly
     // requiredShareCount - 1) was the only thing keeping that depth qualified.
     private static int AnswerFor(
-        string word, LowercaseTrie<int> trie, QualificationSummary summary, int requiredShareCount)
+        string word, PrefixTrie trie, QualificationSummary summary, int requiredShareCount)
     {
         if (summary.DeepestQualifyingDepth > word.Length)
         {
@@ -264,15 +279,15 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
 
     // path[d] is the trie node reached after word's first d characters -
     // path[0] is the root, path[word.Length] is word's own end node.
-    private static LowercaseTrieNode<int>[] WalkPath(LowercaseTrie<int> trie, string word)
+    private static PrefixNode[] WalkPath(PrefixTrie trie, string word)
     {
-        var path = new LowercaseTrieNode<int>[word.Length + 1];
+        var path = new PrefixNode[word.Length + 1];
         var current = trie.Root;
         path[0] = current;
 
         for (var i = 0; i < word.Length; i++)
         {
-            current = current.Children[word[i] - 'a']!;
+            current = current.ChildAt(EnglishLowercase.IndexOf(word[i]))!;
             path[i + 1] = current;
         }
 
@@ -283,12 +298,13 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     // that EXACT string occurs in words) plus SubtreeWordCountAlgebra's summed
     // descendants, so duplicate words (LC's own "run","run","run" example) must
     // be tracked as a running count at the end node, not the plain
-    // LowercaseTrie<bool> "is this a word" flag every other trie-backed solution
+    // AlphabetTrie<..., bool> "is this a word" flag every other trie-backed solution
     // in this catalogue uses - that flag would silently collapse three "run"s
-    // into one.
-    public static LowercaseTrie<int> BuildTrie(string[] words)
+    // into one. The packed layout: the trie is built once per call and walked a few
+    // times, which packed nodes measured faster for (IMPROVEMENT-WORKLIST, 2026-11-02).
+    public static PrefixTrie BuildTrie(string[] words)
     {
-        var trie = new LowercaseTrie<int>();
+        var trie = new PrefixTrie();
 
         foreach (var word in words)
         {

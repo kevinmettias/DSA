@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // measure only the matching.
 //
 // Scanning the whole dictionary and counting mismatched characters for every query
-// is O(queries * dictionarySize * wordLength); building the LowercaseTrie<bool>
+// is O(queries * dictionarySize * wordLength); building the AlphabetTrie
 // once is O(dictionarySize * wordLength) plus a budgeted walk per query. Each query
 // is exactly one dictionary word with 0, 1, or 2 characters changed (so every query
 // really does match), and neither strategy short-circuits on an early "definitely

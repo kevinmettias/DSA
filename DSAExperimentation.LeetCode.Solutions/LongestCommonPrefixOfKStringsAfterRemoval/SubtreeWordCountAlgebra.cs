@@ -1,10 +1,13 @@
 using DSAExperimentation.Algorithms.Reducing;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using PrefixNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestCommonPrefixOfKStringsAfterRemoval;
 
 // LC 3485 alone: "how many words share this exact prefix" is a post-order subtree
-// sum over a trie of every word's own multiplicity (LowercaseTrieNode<int>.Value,
+// sum over a trie of every word's own multiplicity (the node's Value,
 // set to how many times that exact string occurs - see
 // LongestCommonPrefixOfKStringsAfterRemovalSolution.BuildTrie) plus every child's
 // already-computed sum. Exit fires after all children (DepthFirstWalk.cs), so by
@@ -13,21 +16,18 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestCommonPrefixOfKStringsAft
 // DistanceMapReduceAlgebra uses for depth, just combining children instead of only
 // recording the node itself.
 internal readonly struct SubtreeWordCountAlgebra
-    : IReduceAlgebra<LowercaseTrieNode<int>, Dictionary<LowercaseTrieNode<int>, int>>
+    : IReduceAlgebra<PrefixNode, Dictionary<PrefixNode, int>>
 {
-    public static Dictionary<LowercaseTrieNode<int>, int> Seed => [];
+    public static Dictionary<PrefixNode, int> Seed => [];
 
-    public static Dictionary<LowercaseTrieNode<int>, int> Exit(
-        Dictionary<LowercaseTrieNode<int>, int> state, LowercaseTrieNode<int> node, int depth)
+    public static Dictionary<PrefixNode, int> Exit(
+        Dictionary<PrefixNode, int> state, PrefixNode node, int depth)
     {
         var count = node.HasValue ? node.Value : 0;
 
-        foreach (var child in node.Children)
+        for (var rank = 0; rank < node.ChildCount; rank++)
         {
-            if (child is not null)
-            {
-                count += state[child];
-            }
+            count += state[node.ChildOfRank(rank)];
         }
 
         state[node] = count;

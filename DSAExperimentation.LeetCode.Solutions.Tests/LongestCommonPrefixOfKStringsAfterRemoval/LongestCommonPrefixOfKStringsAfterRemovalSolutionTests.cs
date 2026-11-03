@@ -1,13 +1,19 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.LongestCommonPrefixOfKStringsAfterRemoval;
+using PrefixTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.LongestCommonPrefixOfKStringsAfterRemoval;
 
 // Harness only. Both strategies are
 // LongestCommonPrefixOfKStringsAfterRemovalSolution's - this file just pins them
 // to LeetCode's published examples, including the duplicate-heavy first example
-// that exercises per-word multiplicity rather than mere prefix presence. The counting
-// trie the reduce strategy is handed is asserted on its own.
+// that exercises per-word multiplicity rather than mere prefix presence, and to one
+// prefix that branches, whose count is right only if every child's words are summed
+// (no LeetCode example decides on such a node). The counting trie the reduce strategy
+// is handed is asserted on its own.
 public sealed partial class LongestCommonPrefixOfKStringsAfterRemovalSolutionTests
 {
     public static TheoryData<string[], int, int[]> Examples =>
@@ -15,6 +21,14 @@ public sealed partial class LongestCommonPrefixOfKStringsAfterRemovalSolutionTes
         {
             { ["jump", "run", "run", "jump", "run"], 2, [3, 4, 4, 3, 4] },
             { ["dog", "racer", "car"], 2, [0, 0, 0] },
+        };
+
+    // "a" opens three words through two children, b with one word and c with two, so its count
+    // is the sum over both children: it reaches 3, and qualifies, only while "b" is the word removed.
+    public static TheoryData<string[], int, int[]> BranchingPrefixCases =>
+        new()
+        {
+            { ["ab", "ac", "ac", "b"], 3, [0, 0, 0, 1] },
         };
 
     [Theory]
@@ -37,6 +51,26 @@ public sealed partial class LongestCommonPrefixOfKStringsAfterRemovalSolutionTes
         Assert.Equal(expected, actual);
     }
 
+    [Theory]
+    [MemberData(nameof(BranchingPrefixCases))]
+    public void AnswerByBruteForce_BranchingPrefix_CountsTheWordsUnderEveryChild(
+        string[] words, int requiredShareCount, int[] expected)
+    {
+        var actual = LongestCommonPrefixOfKStringsAfterRemovalSolution.AnswerByBruteForce(words, requiredShareCount);
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [MemberData(nameof(BranchingPrefixCases))]
+    public void AnswerByReduceTrie_BranchingPrefix_CountsTheWordsUnderEveryChild(
+        string[] words, int requiredShareCount, int[] expected)
+    {
+        var actual = LongestCommonPrefixOfKStringsAfterRemovalSolution.AnswerByReduceTrie(words, requiredShareCount);
+
+        Assert.Equal(expected, actual);
+    }
+
     // LeetCode's first example holds "jump" twice and "run" three times: two distinct
     // keys, each valued with its own copy count, 2 and 3. A prefix such as "ru" is a path
     // through the trie but no key, and the root branches on 'j' and 'r' alone.
@@ -45,10 +79,9 @@ public sealed partial class LongestCommonPrefixOfKStringsAfterRemovalSolutionTes
     {
         var trie = LongestCommonPrefixOfKStringsAfterRemovalSolution.BuildTrie(["jump", "run", "run", "jump", "run"]);
         var copies = new[] { "jump", "run" }.Select(word => CopiesOf(trie, word));
-        var rootLetters = trie.Root.Children
-            .Index()
-            .Where(slot => slot.Item is not null)
-            .Select(slot => (char)('a' + slot.Index));
+        var rootLetters = Enumerable.Range(0, EnglishLetters.Size)
+            .Where(slot => trie.Root.ChildAt(slot) is not null)
+            .Select(EnglishLowercase.LetterAt);
 
         Assert.Equal(2, trie.Count);
         Assert.Equal([2, 3], copies);
@@ -57,7 +90,7 @@ public sealed partial class LongestCommonPrefixOfKStringsAfterRemovalSolutionTes
         Assert.Equal(['j', 'r'], rootLetters);
     }
 
-    private static int CopiesOf(LowercaseTrie<int> trie, string word)
+    private static int CopiesOf(PrefixTrie trie, string word)
     {
         var found = trie.TryGetValue(word, out var copies);
 

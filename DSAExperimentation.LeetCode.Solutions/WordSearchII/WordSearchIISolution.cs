@@ -1,5 +1,13 @@
 using DSAExperimentation.Algorithms.Backtracking;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Domain.Language.English;
+using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    string>;
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    string>;
 
 namespace DSAExperimentation.LeetCode.Solutions.WordSearchII;
 
@@ -8,7 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WordSearchII;
 // word. WordSearchSolutionTests (LC 79) already proves Backtrack.Search's choose/explore/
 // unchoose walk finds one word on a board; finding every word from a whole
 // dictionary at once composes exactly one more existing primitive -
-// LowercaseTrie<TValue>, walked node-by-node alongside the board so a branch with
+// AlphabetTrie, walked node-by-node alongside the board so a branch with
 // no matching trie child is pruned before Candidates() ever yields it, instead of
 // re-running a fresh single-word search per candidate word.
 internal static class WordSearchIISolution
@@ -16,7 +24,7 @@ internal static class WordSearchIISolution
     // The textbook answer: WordSearchSolution's own per-word recursive DFS (LC 79),
     // re-run once per dictionary word from scratch over a BCL bool[,] visited grid -
     // O(words * cells * 4^L). Deliberately written without this repo's Backtracking
-    // primitive or LowercaseTrie - the arm FindWordsByTrieBacktrack has to justify
+    // primitive or AlphabetTrie - the arm FindWordsByTrieBacktrack has to justify
     // itself against.
     public static HashSet<string> FindWordsByBruteForceDfs(char[][] board, string[] words)
     {
@@ -51,13 +59,15 @@ internal static class WordSearchIISolution
         return false;
     }
 
-    // This repo's own choose/explore/unchoose engine, pruned by a LowercaseTrie
+    // This repo's own choose/explore/unchoose engine, pruned by an AlphabetTrie
     // built from the whole dictionary: a branch with no matching trie child is
     // pruned before Candidates() ever yields it, so shared prefixes across the
-    // dictionary are explored once instead of once per word.
+    // dictionary are explored once instead of once per word. The packed layout: the
+    // trie is built once per call, which packed nodes measured faster for
+    // (IMPROVEMENT-WORKLIST, 2026-11-02).
     public static HashSet<string> FindWordsByTrieBacktrack(char[][] board, string[] words)
     {
-        var trie = new LowercaseTrie<string>();
+        var trie = new WordTrie();
 
         foreach (var word in words)
         {
@@ -77,7 +87,7 @@ internal static class WordSearchIISolution
         return found;
     }
 
-    private static void SearchFrom(char[][] board, LowercaseTrieNode<string> root, (int Row, int Col) cell, HashSet<string> found)
+    private static void SearchFrom(char[][] board, WordNode root, (int Row, int Col) cell, HashSet<string> found)
     {
         var state = new State(board, root, cell.Row, cell.Col);
         Backtrack.Search(state,
@@ -125,15 +135,15 @@ internal static class WordSearchIISolution
     private static bool IsLetterUnavailable((int Row, int Col) cell, bool[,] used, char[][] board, char expected)
         => used[cell.Row, cell.Col] || board[cell.Row][cell.Col] != expected;
 
-    // Bespoke to LC 212: walks the board and a LowercaseTrieNode in lockstep, so a
+    // Bespoke to LC 212: walks the board and a trie node in lockstep, so a
     // cell whose letter has no corresponding trie child is never offered as a
     // candidate. LC 79's own State (WordSearchSolution) tracks an index into a
     // single target word instead and cannot be reused here.
-    private sealed class State(char[][] board, LowercaseTrieNode<string> root, int startRow, int startCol)
+    private sealed class State(char[][] board, WordNode root, int startRow, int startCol)
     {
         private readonly bool[,] _used = new bool[board.Length, board[0].Length];
-        private readonly Stack<(int Row, int Col, LowercaseTrieNode<string> Node)> _parents = new();
-        private LowercaseTrieNode<string> _node = root;
+        private readonly Stack<(int Row, int Col, WordNode Node)> _parents = new();
+        private WordNode _node = root;
         private bool _started;
         private int Row { get; set; } = startRow;
         private int Col { get; set; } = startCol;
@@ -172,7 +182,7 @@ internal static class WordSearchIISolution
         // A neighbour can extend the walk when the walk has not used it yet and the
         // trie has a child for its letter.
         private bool CanExtendWalk((int Row, int Col) cell) =>
-            !_used[cell.Row, cell.Col] && _node.Children[board[cell.Row][cell.Col] - 'a'] is not null;
+            !_used[cell.Row, cell.Col] && _node.ChildAt(EnglishLowercase.IndexOf(board[cell.Row][cell.Col])) is not null;
 
         public void Choose((int Row, int Col) cell)
         {
@@ -180,7 +190,7 @@ internal static class WordSearchIISolution
             Row = cell.Row;
             Col = cell.Col;
             _used[Row, Col] = true;
-            _node = _node.Children[board[Row][Col] - 'a']!;
+            _node = _node.ChildAt(EnglishLowercase.IndexOf(board[Row][Col]))!;
             _started = true;
         }
 

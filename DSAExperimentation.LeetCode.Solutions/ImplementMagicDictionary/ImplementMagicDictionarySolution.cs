@@ -1,6 +1,13 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Domain.Language.English;
+using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    bool>;
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ImplementMagicDictionary;
 
@@ -13,14 +20,17 @@ namespace DSAExperimentation.LeetCode.Solutions.ImplementMagicDictionary;
 // use for their own design problems.
 //
 // CreateByTrieSearch buildDict's every dictionary word into this repo's own
-// LowercaseTrie<bool> (all-lowercase alphabet is exactly LowercaseTrie's
-// committed domain). Search isn't a prefix/lookup query Trie<TValue>'s own
+// AlphabetTrie over the lowercase letters (all-lowercase alphabet is exactly what
+// LeetCode promises here). Search isn't a prefix/lookup query Trie<TValue>'s own
 // Set/HasKey/TryGetValue/HasPrefix surface already provides, so it's a manual
-// DFS walking the trie's already-public Root/Children directly (the same
-// navigation LowercaseTrieTests.WalkTo/ReplaceWordsBenchmarks.ShortestRootPrefix
+// DFS walking the trie's already-public Root/ChildAt directly (the same
+// navigation AlphabetTrieTests.WalkTo/ReplaceWordsSolution.ShortestRootPrefix
 // already rehearse), trying every one-character substitution at exactly one
 // position and matching exactly everywhere else - composed here rather than
-// built as a new production primitive.
+// built as a new production primitive. The search visits only the letters each
+// node has a child for, in letter order, and the packed layout: once no node is
+// asked for an absent letter, packed nodes measured as fast as dense ones with a
+// quarter of the allocation.
 //
 // CreateByBruteForce is the textbook baseline this composition has to justify
 // itself against: buildDict just remembers the word list, and search scans it
@@ -78,7 +88,7 @@ internal static class ImplementMagicDictionarySolution
 
     private sealed class TrieSearchMagicDictionary : IMagicDictionary
     {
-        private readonly LowercaseTrie<bool> _trie = new();
+        private readonly WordTrie _trie = new();
 
         public void BuildDict(IEnumerable<string> dictionary)
         {
@@ -91,21 +101,18 @@ internal static class ImplementMagicDictionarySolution
         public bool Search(string searchWord) => Search(_trie.Root, searchWord, 0, SubstitutionBudget.Available);
 
         private static bool Search(
-            LowercaseTrieNode<bool> node, string searchWord, int index, SubstitutionBudget budget)
+            WordNode node, string searchWord, int index, SubstitutionBudget budget)
         {
             if (index == searchWord.Length)
             {
                 return budget == SubstitutionBudget.Spent && node.HasValue;
             }
 
-            var target = searchWord[index] - 'a';
+            var target = EnglishLowercase.IndexOf(searchWord[index]);
 
-            for (var candidate = 0; candidate < EnglishLetters.Size; candidate++)
+            foreach (var (candidate, next) in node.Children)
             {
-                var next = node.Children[candidate];
-
-                if (next is not null
-                    && TryDescend(next, searchWord, new SearchState(index, budget), candidate == target
+                if (TryDescend(next, searchWord, new SearchState(index, budget), candidate == target
                         ? LetterMatch.Exact
                         : LetterMatch.Substituted))
                 {
@@ -119,7 +126,7 @@ internal static class ImplementMagicDictionarySolution
         private readonly record struct SearchState(int Index, SubstitutionBudget Budget);
 
         private static bool TryDescend(
-            LowercaseTrieNode<bool> next, string searchWord, SearchState state, LetterMatch match)
+            WordNode next, string searchWord, SearchState state, LetterMatch match)
         {
             if (match == LetterMatch.Exact)
             {

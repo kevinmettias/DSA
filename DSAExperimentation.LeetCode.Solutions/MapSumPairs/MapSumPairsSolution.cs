@@ -1,6 +1,21 @@
 using DSAExperimentation.Algorithms.Folding.Dags.Trees;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Domain.Language.English;
+using SumNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
+using SumTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
+using SumTopology = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieTopology<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
+using SumChildren = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieChildren<
+    DSAExperimentation.Domain.Language.English.EnglishLowercase,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+    int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MapSumPairs;
 
@@ -48,7 +63,7 @@ internal static class MapSumPairsSolution
         }
     }
 
-    // This repo's own LowercaseTrie<int> (bounded-alphabet Trie, a real
+    // This repo's own AlphabetTrie over the lowercase letters (bounded-alphabet Trie, a real
     // ITreeTopology witness per ARCHITECTURE.md 13.8) stores each key's value at
     // its end-of-word node - insert reuses Set's own overwrite-on-existing-key
     // semantics directly, exactly LC677's own "override to the new pair" rule.
@@ -58,10 +73,12 @@ internal static class MapSumPairsSolution
     // TreeMetrics.Size - over its subtree via TreeFold.Fold, with no
     // prefix-sum-specific trie code needed. A missing prefix's WalkTo returns
     // null, and TreeFold.Fold(null) already resolves to TAlgebra.Empty = 0, so
-    // "no key shares this prefix" needs no special-casing either.
+    // "no key shares this prefix" needs no special-casing either. The packed layout: keys
+    // are inserted between sums, which packed nodes measured faster for (IMPROVEMENT-WORKLIST,
+    // 2026-11-02).
     internal sealed class MapSumByTrieFold : IMapSumStrategy
     {
-        private readonly LowercaseTrie<int> _trie = new();
+        private readonly SumTrie _trie = new();
 
         public void Insert(string key, int val) => _trie.Set(key, val);
 
@@ -70,17 +87,17 @@ internal static class MapSumPairsSolution
             var node = WalkTo(_trie.Root, prefix);
 
             return TreeFold.Fold<
-                LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
+                SumNode, SumTopology, SumChildren,
                 SumValuesAlgebra, int>(node);
         }
 
-        private static LowercaseTrieNode<int>? WalkTo(LowercaseTrieNode<int> root, string prefix)
+        private static SumNode? WalkTo(SumNode root, string prefix)
         {
             var current = root;
 
             foreach (var ch in prefix)
             {
-                current = current.Children[ch - 'a'];
+                current = current.ChildAt(EnglishLowercase.IndexOf(ch));
 
                 if (current is null)
                 {

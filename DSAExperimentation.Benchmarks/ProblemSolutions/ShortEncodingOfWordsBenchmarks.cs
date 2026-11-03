@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: all three arms are ShortEncodingOfWordsSolution's, the same methods
 // ShortEncodingOfWordsSolutionTests proves correct - the textbook O(n^2 * L) pairwise
 // EndsWith scan vs. this repo's own Set<string> (evict every proper suffix of each
-// word as it is scanned) and its bounded-alphabet LowercaseTrie<TValue> (insert
+// word as it is scanned) and its bounded-alphabet AlphabetTrie (insert
 // every REVERSED word; a word only needs its own encoding when its reversed node is
 // a trie leaf). Words are generated from a small shared-suffix pool so real suffix
 // redundancy exists for all three strategies to exploit, not just coincidental
