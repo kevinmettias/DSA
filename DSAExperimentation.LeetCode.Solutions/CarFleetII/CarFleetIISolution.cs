@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CarFleetII;
 // ahead is usable only if i is strictly faster than j and i's naive catch-up time
 // with j happens no later than j's own already-known collision. They differ only in
 // how many candidates each car has to look at.
+[LeetCodeQuestion("car-fleet-ii", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CarFleetIIPromise), Tolerance = 1e-5)]
 internal static class CarFleetIISolution
 {
     // Position and speed's slots in LeetCode's own two-element car array.

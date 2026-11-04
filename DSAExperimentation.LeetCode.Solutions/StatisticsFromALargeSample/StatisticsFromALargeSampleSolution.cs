@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StatisticsFromALargeSample;
 // whole sorted sample and indexing straight into it, or one BinarySearch.LowerBound
 // over the buckets' running cumulative sum, which is "first index whose value is
 // >= target" and therefore never materializes the sample at all.
+[LeetCodeQuestion("statistics-from-a-large-sample", LeetCodeAnswerOrder.AsWritten, Tolerance = 1e-5)]
 internal static class StatisticsFromALargeSampleSolution
 {
     // total % MedianParityDivisor distinguishes an odd total (one middle element)

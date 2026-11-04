@@ -24,4 +24,8 @@ internal sealed class LeetCodeQuestionAttribute(string titleSlug, LeetCodeAnswer
     // an array in place does. A harness then hands every call inputs of its own, which the generated
     // benchmark does by copying them before each iteration.
     public bool RewritesInput { get; set; }
+
+    // How far a real-valued answer may stand from LeetCode's and still be accepted, as the statement says
+    // ("Answers within 10^-5 of the actual answer will be accepted"); 0 when it is compared as written.
+    public double Tolerance { get; set; }
 }

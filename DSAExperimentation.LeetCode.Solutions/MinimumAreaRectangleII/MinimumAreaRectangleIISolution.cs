@@ -26,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumAreaRectangleII;
 // the same "hash the derived key instead of rechecking the geometry" move
 // MinimumAreaRectangleSolution's set lookup and TwoSumSolution's complement lookup
 // both make.
+[LeetCodeQuestion("minimum-area-rectangle-ii", LeetCodeAnswerOrder.AsWritten, Tolerance = 1e-5)]
 internal static class MinimumAreaRectangleIISolution
 {
     private const double NoRectangle = 0.0;

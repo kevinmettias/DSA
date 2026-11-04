@@ -48,9 +48,9 @@ public sealed partial class CatalogBenchmarksTests
             ?? throw new InvalidOperationException($"{benchmark.Baseline.Name} returned no buffer of answers.");
         var catalog = (ICatalogBenchmarks)harness;
         var cases = catalog.CasesOf(benchmark.Baseline.Name);
-        var order = CatalogColumns.QuestionOf(catalog.Solution).AnswerOrder;
+        var question = CatalogColumns.QuestionOf(catalog.Solution);
         var notationOf = CatalogArmAnswers.NotationOf(catalog.Solution, benchmark.Baseline, answers);
-        var wrong = CatalogJudge.WrongAnswers(benchmark.Baseline.Name, order, cases, notationOf);
+        var wrong = CatalogJudge.WrongAnswers(benchmark.Baseline.Name, question, cases, notationOf);
 
         Assert.Equal(cases.Count, answers.Length);
         Assert.True(wrong.Count == 0, string.Join(Environment.NewLine, wrong.Take(MostListed)));

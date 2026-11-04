@@ -40,9 +40,10 @@ internal static class CatalogArmAnswers
         }
 
         var solution = SolutionOf(benchmark);
-        var order = CatalogColumns.QuestionOf(solution).AnswerOrder;
+        var question = CatalogColumns.QuestionOf(solution);
         var notationOf = NotationOf(solution, arm, buffer);
-        var lines = Enumerable.Range(0, buffer.Length).Select(index => CatalogJudge.AgreementTextOf(notationOf(index), order));
+        var lines = Enumerable.Range(0, buffer.Length)
+            .Select(index => CatalogJudge.AgreementTextOf(notationOf(index), question.AnswerOrder, question.Tolerance));
 
         return string.Join(CaseSeparator, lines);
     }

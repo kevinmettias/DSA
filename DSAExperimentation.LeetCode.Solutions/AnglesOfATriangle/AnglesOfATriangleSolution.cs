@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AnglesOfATriangle;
 // That angle sum is the flat plane's (Domain/Mathematics/Geometry): the angle-sum arm reads
 // EuclideanPlane. The shared validity check and law of cosines stay here, as the baseline reads
 // them too, and both arms convert radians by AngleUnits (ARCHITECTURE §17.5).
+[LeetCodeQuestion("angles-of-a-triangle", LeetCodeAnswerOrder.AsWritten, Tolerance = 1e-5)]
 internal static class AnglesOfATriangleSolution
 {
     // The textbook answer: every angle from its own Acos of the law of cosines.

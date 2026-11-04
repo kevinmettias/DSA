@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CalculateAmountPaidInTaxes;
 // already-sorted, indexable sequence" contract BinarySearch's own sequence argument
 // takes. The measurement is therefore the "Representation swap should cost nothing"
 // comparison DesignBrowserHistory makes for List<string> vs. DynamicArray<string>.
+[LeetCodeQuestion("calculate-amount-paid-in-taxes", LeetCodeAnswerOrder.AsWritten, Tolerance = 1e-5)]
 internal static class CalculateAmountPaidInTaxesSolution
 {
     // brackets[i] is [upper_i, percent_i]; percentages are whole numbers out of 100.

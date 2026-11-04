@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using DSAExperimentation.LeetCode.Catalog;
 
@@ -15,12 +17,13 @@ internal static class CatalogJudge
     private const string SequenceStart = "[";
     private const string SequenceEnd = "]";
     private const string ElementSeparator = ",";
+    private const string SignificantDigits = "G12";
 
     // One line per case answered wrongly, naming the arm, the case's inputs, the recorded output and the
     // answer; empty when every case with a recorded output was answered as recorded.
     public static IReadOnlyList<string> WrongAnswers(
         string arm,
-        LeetCodeAnswerOrder order,
+        LeetCodeQuestionAttribute question,
         IReadOnlyList<LeetCodeCase> cases,
         Func<int, JsonNode> answerTo)
     {
@@ -36,7 +39,7 @@ internal static class CatalogJudge
             var expected = JsonNode.Parse(recorded) ?? throw new InvalidOperationException(BareNullOutput);
             var actual = answerTo(index);
 
-            if (!IsAccepted(actual, expected, order))
+            if (!IsAccepted(actual, expected, question.AnswerOrder, question.Tolerance))
             {
                 wrong.Add($"{arm} on {string.Join(InputSeparator, cases[index].Inputs)}: the catalog records {expected.ToJsonString()}, and it answered {actual.ToJsonString()}.");
             }
@@ -46,10 +49,16 @@ internal static class CatalogJudge
     }
 
     // Exactly as LeetCode compares, or with the answer's top-level elements in any order; each element is
-    // compared as written either way.
-    public static bool IsAccepted(JsonNode actual, JsonNode expected, LeetCodeAnswerOrder order)
+    // compared as written either way. Under a tolerance, each number may stand that far from LeetCode's, in
+    // the order written.
+    public static bool IsAccepted(JsonNode actual, JsonNode expected, LeetCodeAnswerOrder order, double tolerance = 0)
     {
         var written = JsonNode.Parse(actual.ToJsonString());
+
+        if (tolerance > 0)
+        {
+            return IsWithin(written, expected, tolerance);
+        }
 
         if (order != LeetCodeAnswerOrder.AnyOrder)
         {
@@ -69,14 +78,63 @@ internal static class CatalogJudge
     // The text two strategies' answers share exactly when each is the other's answer by the question's
     // order rule, for holding arms to one another where no recorded output stands between them: an
     // any-order sequence is written with its top-level elements sorted, anything else as it is.
-    public static string AgreementTextOf(JsonNode answer, LeetCodeAnswerOrder order)
+    // Under a tolerance, numbers are written to twelve significant digits, as AnswerGraphText writes a double:
+    // two arms that order the same operations differently part only in the last few bits.
+    public static string AgreementTextOf(JsonNode answer, LeetCodeAnswerOrder order, double tolerance = 0)
     {
-        if (order != LeetCodeAnswerOrder.AnyOrder || answer is not JsonArray items)
+        var compared = answer;
+
+        if (tolerance > 0)
         {
-            return answer.ToJsonString();
+            compared = RoundedOf(answer) ?? answer;
+        }
+
+        if (order != LeetCodeAnswerOrder.AnyOrder || compared is not JsonArray items)
+        {
+            return compared.ToJsonString();
         }
 
         return $"{SequenceStart}{string.Join(ElementSeparator, SortedTextOf(items))}{SequenceEnd}";
+    }
+
+    private static JsonNode? RoundedOf(JsonNode? node) => node switch
+    {
+        JsonArray items => new JsonArray([.. items.Select(RoundedOf)]),
+        _ when NumberOf(node) is { } number => JsonValue.Create(Rounded(number)),
+        _ => node?.DeepClone(),
+    };
+
+    private static double Rounded(double number)
+    {
+        var significant = number.ToString(SignificantDigits, CultureInfo.InvariantCulture);
+
+        return double.Parse(significant, CultureInfo.InvariantCulture);
+    }
+
+    // Each number at most the tolerance from LeetCode's, arrays element for element, anything else as written.
+    private static bool IsWithin(JsonNode? actual, JsonNode? expected, double tolerance)
+    {
+        if (actual is JsonArray answered && expected is JsonArray wanted)
+        {
+            return answered.Count == wanted.Count && answered.Zip(wanted).All(pair => IsWithin(pair.First, pair.Second, tolerance));
+        }
+
+        if (NumberOf(actual) is { } answer && NumberOf(expected) is { } recorded)
+        {
+            return Math.Abs(answer - recorded) <= tolerance;
+        }
+
+        return JsonNode.DeepEquals(actual, expected);
+    }
+
+    private static double? NumberOf(JsonNode? node)
+    {
+        if (node is not JsonValue value || value.GetValueKind() != JsonValueKind.Number)
+        {
+            return null;
+        }
+
+        return value.GetValue<double>();
     }
 
     private static IEnumerable<string> SortedTextOf(JsonArray items) =>

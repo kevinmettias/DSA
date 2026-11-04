@@ -2165,8 +2165,14 @@ internal static class TwoSumSolution
 - Whether LeetCode accepts the answer's elements in any order. This is the explicit choice
   `LeetCodeAnswers` asks for (§17.11), and it is never a default.
 - The type that states a prose promise a generated case can break (§17.12), when there is one.
+- Whether the strategies may rewrite the inputs they are handed (`RewritesInput`), as relinking a
+  list does, so the generated benchmark hands each call inputs of its own (below).
+- How far a real-valued answer may stand from LeetCode's (`Tolerance`), when the statement says so:
+  "Answers within 10^-5 of the actual answer will be accepted". `CatalogJudge` then accepts each
+  number that close, and holds arms to one another at twelve significant digits, as
+  `AnswerGraphText` holds a double.
 
-All three are facts about the problem. The attribute names no size and no workload: the catalog's
+All five are facts about the problem. The attribute names no size and no workload: the catalog's
 cases are the inputs LeetCode poses, and choosing sizes stays a tier-5 decision (§17.7). Being data,
 the attribute keeps tier 4 off the machine (§17.6c). Nothing in the solutions project reads the
 catalog.
@@ -2326,8 +2332,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 734 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 138 more:
+**Enrolled.** 739 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 143 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2374,6 +2380,9 @@ have only the empty tree. A check over those would pass whatever the strategy di
   Frequent Elements, in any order; Two Sum II, counting pairs in one pass), and answers that fit 32
   bits, checked with exact arithmetic (Product of Array Except Self, Unique Paths). Remove
   Duplicates from Sorted List II relinks its list, so it also says `RewritesInput = true`.
+- 5 whose statements accept an answer within 10^-5, once the judge honoured that: Angles of a
+  Triangle, Calculate Amount Paid in Taxes, Minimum Area Rectangle II, Statistics from a Large Sample
+  and Car Fleet II. Car Fleet II's promise also drops a case listing its cars backwards.
 
 Open items:
 
@@ -2392,7 +2401,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 371 solutions are left (2026-11-04), each blocked for a reason the table and
+- **Enrolling the rest.** 366 solutions are left (2026-11-04), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
@@ -2430,7 +2439,7 @@ Open items:
   over rows that are no longer either, so each file needs its names and comments rewritten as its
   rows go.
 - **Shapes the generator refuses.** Design problems, in-place answers, judge-only inputs,
-  tolerance-compared answers and any-valid-answer judges each need a rule before their problems can
+  and any-valid-answer judges each need a rule before their problems can
   enroll.
 
 **How arms agree.** A generated class's arms are held to one another in LeetCode's notation, by the

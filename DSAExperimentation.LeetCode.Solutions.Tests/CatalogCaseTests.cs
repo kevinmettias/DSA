@@ -43,8 +43,8 @@ public sealed partial class CatalogCaseTests
         var solution = CatalogStrategy.EnrolledSolutions().Single(type => type.Name == solutionName);
         var strategy = CatalogStrategy.Of(solution).Single(candidate => candidate.Name == strategyName);
         var columns = strategy.Columns();
-        var order = CatalogColumns.QuestionOf(solution).AnswerOrder;
-        var wrong = CatalogJudge.WrongAnswers(strategy.Name, order, columns.Cases, index => strategy.AnswerTo(columns, index));
+        var question = CatalogColumns.QuestionOf(solution);
+        var wrong = CatalogJudge.WrongAnswers(strategy.Name, question, columns.Cases, index => strategy.AnswerTo(columns, index));
 
         Assert.True(wrong.Count == 0, string.Join(Environment.NewLine, wrong.Take(MostListed)));
     }
