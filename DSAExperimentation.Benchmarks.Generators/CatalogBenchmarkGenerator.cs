@@ -26,6 +26,7 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
     private const string ClassSuffix = "CatalogBenchmarks";
     private const string StrategyInfix = "By";
     private const string NoOverloadBinds = "no overload takes a case's inputs";
+    private const string RewritesInputArgument = "RewritesInput";
 
     private static readonly DiagnosticDescriptor UnboundStrategy = new(
         id: "DSACAT001",
@@ -59,7 +60,7 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
 
         foreach (var solution in solutions)
         {
-            AddClassFor(solution, generated);
+            AddClassFor(solution, attribute, generated);
         }
 
         return generated;
@@ -81,7 +82,7 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
     private static bool IsEnrolled(INamedTypeSymbol type, INamedTypeSymbol attribute) =>
         type.GetAttributes().Any(applied => SymbolEqualityComparer.Default.Equals(applied.AttributeClass, attribute));
 
-    private static void AddClassFor(INamedTypeSymbol solution, GeneratedClasses generated)
+    private static void AddClassFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, GeneratedClasses generated)
     {
         var arms = new List<StrategyShape>();
 
@@ -100,7 +101,8 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
         }
 
         var name = NameFor(solution);
-        var writer = new CatalogBenchmarkWriter(NotationTypes.Render(solution), name, arms);
+        var rewritesInput = IsRewritingInput(solution, attribute);
+        var writer = new CatalogBenchmarkWriter(NotationTypes.Render(solution), name, arms, rewritesInput);
         generated.Sources.Add((name, writer.Write()));
     }
 
@@ -123,6 +125,13 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
 
         return solution.Name.Substring(0, solution.Name.Length - SolutionSuffix.Length) + ClassSuffix;
     }
+
+    // Whether the solution says its strategies may rewrite the inputs they are handed.
+    private static bool IsRewritingInput(INamedTypeSymbol solution, INamedTypeSymbol attribute) =>
+        solution.GetAttributes()
+            .Where(applied => SymbolEqualityComparer.Default.Equals(applied.AttributeClass, attribute))
+            .SelectMany(applied => applied.NamedArguments)
+            .Any(argument => argument.Key == RewritesInputArgument && argument.Value.Value is true);
 
     private static void Emit(SourceProductionContext output, GeneratedClasses generated)
     {

@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveNodesFromLinkedList;
 // Both splice .Next in place, reusing the original nodes rather than allocating a
 // second list, which is what LeetCode's own signature invites; a caller that needs
 // the input list afterwards has to build it per call.
+[LeetCodeQuestion("remove-nodes-from-linked-list", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class RemoveNodesFromLinkedListSolution
 {
     // The textbook answer: for every node, walk the rest of the list looking for a

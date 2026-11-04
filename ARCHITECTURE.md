@@ -2183,6 +2183,12 @@ run of that category times both, and `--filter '*CatalogBenchmarks*'` selects th
   and lists through `LeetCodeWireFormat`.
 - Each arm copies its columns into locals and calls the strategy directly in a `for` loop, writing
   each answer into a buffer (§17.8).
+- A solution whose strategies may rewrite their inputs, as relinking a list does, says so with
+  `RewritesInput = true`. Its class fixes every iteration at 16 calls with `[InvocationCount]`.
+  Before each iteration, untimed, an `[IterationSetup]` per arm reads 16 fresh copies of the cases,
+  and each call spends the next copy. A 17th call would index past them and fail rather than time an
+  input an earlier call consumed. The benchmarks' tests call such an arm twice within one iteration,
+  as BenchmarkDotNet does, so an arm that reused its copy would answer differently the second time.
 - A `Try` strategy's answer is its return value gathered with its out parameters, as Two Sum's
   `(found, first, second)`.
 - A strategy no arm can call fails the build with `DSACAT001`, naming why. It may be generic, answer
@@ -2307,20 +2313,19 @@ differently from their wording:
 - Matrix Cells in Distance Order frees the order only among cells at one distance, which an
   any-order comparison cannot see, so it is not enrolled.
 
-Two kinds of solution that pass every case still stay out:
+A strategy that rewrites its input kept 27 solutions out, nearly all relinking a linked list, until
+the generator copied inputs for them (above). A generated arm read its columns once in
+`[GlobalSetup]`, and BenchmarkDotNet called it again and again on them, so from the second call on it
+would have timed a different workload. Merge k Sorted Lists' second call merged lists its first had
+already spliced together, and never returned. The probe renders every input before and after each
+call to find these, and each of the 27 now says `RewritesInput = true`.
 
-- **A strategy that rewrites its input** (27 solutions, nearly all relinking a linked list). A
-  generated arm reads its columns once in `[GlobalSetup]`, and BenchmarkDotNet calls it again and
-  again on them, so from the second call on it would time a different workload. Merge k Sorted
-  Lists' second call merged lists its first had already spliced together, and never returned. The
-  probe now renders every input before and after each call to find these. A hand-written class
-  rebuilds such an input in `[IterationSetup]`, and the generator has no rule for that yet.
-- **A question with no recorded output to judge.** Kth Smallest Path XOR Sum's two examples state
-  none, and the Populating Next Right Pointers questions have only the empty tree. A check over
-  those would pass whatever the strategy did.
+A solution that passes every case still stays out when its question has no recorded output to judge.
+Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
+have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 618 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 22 more:
+**Enrolled.** 647 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 51 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2331,6 +2336,12 @@ Two kinds of solution that pass every case still stay out:
 - Car Fleet had a public helper named like a strategy, which the harness ran as one, and a generated
   case with a car already at the target. The helper is `ArrivalTimesNearestTargetFirst` now, and
   `CarFleetPromise` states the promise that case breaks.
+- The 27 whose strategies rewrite their input, once the generator copied inputs for them.
+- GCD Sort of an Array, whose recorded outputs had been prose until the importer stopped recording
+  those. The first probe ran before that fix, and a second probe of every unenrolled solution, on
+  2026-11-04, found it passing.
+- All Elements in Two Binary Search Trees, whose collect-and-sort strategy parted from the catalog on
+  46 generated cases holding trees that are no binary search trees. Its promise drops them.
 
 Open items:
 
@@ -2341,11 +2352,14 @@ Open items:
   is under 1% of that bound for 327 and at least half of it for 57, with a median of 0.15%. The
   catalog's cases are LeetCode's examples and the dataset's generated inputs, mostly small, so the
   sized classes remain the only timing at the sizes the constraints allow.
-- **Enrolling the rest.** About 500 solutions are left, each blocked for a reason the table and
+- **Copying inputs, measured.** Whether 16 calls an iteration time a rewriting arm as steadily as a
+  class that reads its columns once times the others is not yet measured. The first runs of the 27
+  classes should be repeated on identical code, and the spread between the two runs read before any
+  arm's time is trusted.
+- **Enrolling the rest.** 458 solutions are left (2026-11-04), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
-  - A strategy that rewrites its input needs a generated `[IterationSetup]` that rebuilds it.
   - An exponential baseline, or one that overflows the stack, needs a case limit before the
     dataset's largest inputs run through it.
   - A statement that leaves the order free without saying so (Word Search II, Majority Element

@@ -1430,6 +1430,22 @@
     },
     {
       "check": "check-instance-free-members",
+      "path": "DSAExperimentation.Benchmarks.Generators/CatalogBenchmarkWriter.cs",
+      "message": "`InputFieldTypeOf` declares a receiver it never uses",
+      "reason": "`InputFieldTypeOf` DOES use its receiver: it reads `rewritesInput`, a parameter of the primary constructor `internal sealed class CatalogBenchmarkWriter(string solution, string className, IReadOnlyList<StrategyShape> arms, bool rewritesInput)`, which the compiler captures into a field the checker cannot see. Marking it `static` does not compile. The same reading as this ledger's entries for DeliveringBoxesFromStorageToPortsSolution.cs and WalkCostComponents.cs.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-instance-free-members",
+      "path": "DSAExperimentation.Benchmarks.Generators/CatalogBenchmarkWriter.cs",
+      "message": "`InputFieldOf` declares a receiver it never uses",
+      "reason": "`InputFieldOf` DOES use its receiver: it reads `rewritesInput`, a parameter of the primary constructor `internal sealed class CatalogBenchmarkWriter(string solution, string className, IReadOnlyList<StrategyShape> arms, bool rewritesInput)`, which the compiler captures into a field the checker cannot see. Marking it `static` does not compile. The same reading as this ledger's entries for DeliveringBoxesFromStorageToPortsSolution.cs and WalkCostComponents.cs.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-instance-free-members",
       "path": "DSAExperimentation.LeetCode.Solutions/ThresholdMajorityQueries/ThresholdMajorityBlockIndex.cs",
       "reason": "`FrequencyInRange` DOES use its receiver: `if (!positions.TryGetValue(value, out var positionList))` reads `positions`, a captured parameter of the enclosing `internal sealed class ThresholdMajorityBlockIndex(..., HashMap\u003cint, DynamicArray\u003cint\u003e\u003e positions, ...)`. The rule reports only private members, and for a primary-constructor type it has no way to see the receiver -- the parameter is captured into a hidden field that never enters the instance set csharp_Instance_Member_Names assembles from field/property/method declarations, so every private member of such a type is judged to depend on nothing but its arguments. Reproduced directly in a probe outside this repo: the private shape is flagged, the public shape is not, and the same body reading a declared field is not. The rule's own doc concedes C# declines this question for a syntax-only front end. The `static` remedy is a compile error, not a style change, and the compiling alternatives are worse: `FrequencyInRange` currently takes three parameters, and threading `positions` in would make it four -- the check-parameter-count maximum -- while asserting an independence from instance state that the method does not have. Left as written; the receiver is genuinely used.",
       "owner": "@kmettias",

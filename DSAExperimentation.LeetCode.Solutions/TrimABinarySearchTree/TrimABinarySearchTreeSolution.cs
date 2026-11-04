@@ -21,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TrimABinarySearchTree;
 // tree used to sit here as the baseline. It kept the right values but not the
 // structure LC 669 requires - reinserting sorted values builds a chain - and its
 // tests compared only in-order values, which every BST with those values shares.
+[LeetCodeQuestion("trim-a-binary-search-tree", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class TrimABinarySearchTreeSolution
 {
     public static BinaryTreeNode<int>? TrimByInPlaceMutation(BinaryTreeNode<int>? node, int low, int high)

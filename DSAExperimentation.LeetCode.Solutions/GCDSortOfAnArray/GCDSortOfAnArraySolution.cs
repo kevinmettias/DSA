@@ -29,6 +29,7 @@ namespace DSAExperimentation.LeetCode.Solutions.GCDSortOfAnArray;
 // Both arms ask the same final question, so they agree position by position; the ids in
 // play are the values (and, for the second arm, their factors), which is why the forest
 // is sized to max(nums) + 1 rather than to nums.Length.
+[LeetCodeQuestion("gcd-sort-of-an-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class GCDSortOfAnArraySolution
 {
 

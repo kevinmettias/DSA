@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AllElementsInTwoBinarySearchTree
 // An in-order walk of a BST already visits values in ascending order, so the only
 // real question is whether that ordering is exploited or thrown away and
 // recovered with a sort.
+[LeetCodeQuestion("all-elements-in-two-binary-search-trees", LeetCodeAnswerOrder.AsWritten, Promise = typeof(AllElementsInTwoBinarySearchTreesPromise))]
 internal static class AllElementsInTwoBinarySearchTreesSolution
 {
     // The textbook baseline: dump every node from both trees into one list and sort

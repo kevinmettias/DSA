@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MergeBSTsToCreateSingleBST;
 // cannot guarantee global ordering - two individually valid subtrees can still
 // interleave badly - the merged tree is only accepted when its in-order walk is
 // strictly ascending.
+[LeetCodeQuestion("merge-bsts-to-create-single-bst", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class MergeBSTsToCreateSingleBSTSolution
 {
     // The textbook answer: rescan the tree list for every leaf. Deliberately plain

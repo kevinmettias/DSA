@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReverseNodesInEvenLengthGroups;
 // to honour: the group size grows by one after every group instead of staying
 // fixed, and it is the truncated final group's real length - not the size it was
 // reaching for - that decides whether it reverses.
+[LeetCodeQuestion("reverse-nodes-in-even-length-groups", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class ReverseNodesInEvenLengthGroupsSolution
 {
     // The first group is a single node. Length 1 is odd, so the head never moves,

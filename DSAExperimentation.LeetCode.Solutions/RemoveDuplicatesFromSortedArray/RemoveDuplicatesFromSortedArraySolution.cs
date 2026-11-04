@@ -7,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveDuplicatesFromSortedArray;
 //
 // The two strategies differ only in what walks the compaction - LINQ's own
 // Distinct, or a read/write cursor pair over this repo's ArrayIndexedSequence.
+[LeetCodeQuestion("remove-duplicates-from-sorted-array", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class RemoveDuplicatesFromSortedArraySolution
 {
     // The textbook answer: LINQ's Distinct() keeps first-seen order, which on an

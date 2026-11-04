@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MergeInBetweenLinkedLists;
 // two cut nodes directly on the existing chain and rewires two Next pointers,
 // touching nothing outside the removed range. The same "traverse-then-rewire-.Next"
 // shape RotateList uses for LC 61, just two cut points instead of one.
+[LeetCodeQuestion("merge-in-between-linked-lists", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class MergeInBetweenLinkedListsSolution
 {
     // The node just after `before` is index fromIndex, so the walk to `before` is

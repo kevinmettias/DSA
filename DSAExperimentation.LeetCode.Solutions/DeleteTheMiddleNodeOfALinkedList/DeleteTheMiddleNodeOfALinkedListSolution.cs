@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DeleteTheMiddleNodeOfALinkedList
 // Both strategies answer the same question; they differ only in how many passes
 // it takes to reach that index, and whether the answer is spliced out of the
 // list handed in or copied into a fresh one.
+[LeetCodeQuestion("delete-the-middle-node-of-a-linked-list", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class DeleteTheMiddleNodeOfALinkedListSolution
 {
     // LeetCode's middle for an even-length list is the second of the two centre

@@ -74,9 +74,19 @@ internal sealed class BenchmarkClass
     }
 
     // Between two calls on one harness BenchmarkDotNet re-runs only the [IterationSetup] that targets
-    // the arm - before every call, since an iteration setup forces one invocation per iteration - so a
+    // the arm, and only once an iteration's calls are spent. An iteration setup forces one call per
+    // iteration unless the class fixes more with [InvocationCount], as a generated class that copies its
+    // inputs does; its next call comes within the same iteration, with no setup between. Either way a
     // second call starts from whatever the first left behind that no iteration setup rebuilds.
-    public void PrepareNextCall(object harness, MethodInfo arm) => RunSetups<IterationSetupAttribute>(harness, arm);
+    public void PrepareNextCall(object harness, MethodInfo arm)
+    {
+        if (Type.IsDefined(typeof(InvocationCountAttribute)))
+        {
+            return;
+        }
+
+        RunSetups<IterationSetupAttribute>(harness, arm);
+    }
 
     public object? Run(object harness, MethodInfo arm)
     {

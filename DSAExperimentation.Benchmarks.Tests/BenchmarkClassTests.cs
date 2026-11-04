@@ -44,6 +44,19 @@ public sealed partial class BenchmarkClassTests
         Assert.Equal(RefilledAllowance.Granted, benchmark.Run(harness, arm));
     }
 
+    [Fact]
+    public void PrepareNextCall_ClassFixingSeveralCallsPerIteration_RunsNoSetupBetweenThem()
+    {
+        var benchmark = BenchmarkClass.Of(typeof(SharedAllowance));
+        var arm = benchmark.Arms[0];
+        var harness = benchmark.Prepare(arm);
+        benchmark.Run(harness, arm);
+
+        benchmark.PrepareNextCall(harness, arm);
+
+        Assert.Equal(0, benchmark.Run(harness, arm));
+    }
+
     public sealed class PerArmSizes
     {
         public static IEnumerable<int> FastSizes => [5, 9, 200];
@@ -67,6 +80,25 @@ public sealed partial class BenchmarkClassTests
         [Benchmark]
         [Arguments(9)]
         public int Fast(int size) => size;
+    }
+
+    // Four calls an iteration, so the second call still finds what the first left.
+    [InvocationCount(4, 1)]
+    public sealed class SharedAllowance
+    {
+        private int _remaining;
+
+        [IterationSetup]
+        public void Refill() => _remaining = RefilledAllowance.Granted;
+
+        [Benchmark]
+        public int TakeAll()
+        {
+            var taken = _remaining;
+            _remaining = 0;
+
+            return taken;
+        }
     }
 
     public sealed class RefilledAllowance

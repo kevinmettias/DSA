@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MergeKSortedLists;
 // The two strategies differ in how they find "the next smallest node": a min-heap
 // kept over each list's current head, or flatten every value into a BCL array,
 // let Array.Sort do the ordering, and rebuild a fresh list from the result.
+[LeetCodeQuestion("merge-k-sorted-lists", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class MergeKSortedListsSolution
 {
     // The composed solution: a k-way merge over a min-heap of each list's current

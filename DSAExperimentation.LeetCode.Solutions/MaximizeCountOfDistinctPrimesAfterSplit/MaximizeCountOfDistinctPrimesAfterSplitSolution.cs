@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeCountOfDistinctPrimesAft
 // for every candidate k, while the composed arm precomputes one prefix pass and
 // folds a single suffix pass into it, each side counted through this repo's own
 // Set<int>.
+[LeetCodeQuestion("maximize-count-of-distinct-primes-after-split", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class MaximizeCountOfDistinctPrimesAfterSplitSolution
 {
     // nums[i] and queries[i][1] are both bounded by this LeetCode constraint.

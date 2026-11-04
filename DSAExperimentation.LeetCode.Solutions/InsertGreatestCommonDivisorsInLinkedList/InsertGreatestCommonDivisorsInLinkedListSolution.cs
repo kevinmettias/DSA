@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.InsertGreatestCommonDivisorsInLi
 // What differs is where the answer is assembled: a separate value buffer that the
 // whole sequence is rebuilt from, or the original nodes with one fresh node
 // spliced between each pair, so nothing but the inserted nodes is allocated.
+[LeetCodeQuestion("insert-greatest-common-divisors-in-linked-list", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class InsertGreatestCommonDivisorsInLinkedListSolution
 {
     // The textbook answer: copy the values out into a List<int>, interleave the

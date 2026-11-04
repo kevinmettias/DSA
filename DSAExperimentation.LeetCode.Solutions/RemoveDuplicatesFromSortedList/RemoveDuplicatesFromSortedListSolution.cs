@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveDuplicatesFromSortedList;
 // Both strategies land on the same distinct-value sequence; they differ in
 // whether the collapse is BCL LINQ's Distinct() over the list's values, or a
 // single pass that splices repeated nodes out of the existing list in place.
+[LeetCodeQuestion("remove-duplicates-from-sorted-list", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class RemoveDuplicatesFromSortedListSolution
 {
     // The textbook baseline: copy the list's values into an array and let BCL

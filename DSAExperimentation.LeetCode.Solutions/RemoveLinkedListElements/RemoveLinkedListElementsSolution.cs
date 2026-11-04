@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveLinkedListElements;
 // each match out in place as it is visited - the sentinel node in front of head
 // is what lets the walk remove the head itself with the same code path as any
 // other match.
+[LeetCodeQuestion("remove-linked-list-elements", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class RemoveLinkedListElementsSolution
 {
     // Textbook baseline: copy the list's values into an array, filter out val with

@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DeleteNodesFromLinkedListPresent
 // Both strategies are the same dummy-head single pass; they differ only in how
 // membership in nums is answered, exactly the TwoSum shape (nested-scan
 // baseline vs. one repo container carrying the O(1) lookup).
+[LeetCodeQuestion("delete-nodes-from-linked-list-present-in-array", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class DeleteNodesFromLinkedListPresentInArraySolution
 {
     // The textbook answer: no auxiliary structure at all, just a linear scan of

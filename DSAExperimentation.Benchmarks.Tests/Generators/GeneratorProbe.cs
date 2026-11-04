@@ -20,6 +20,8 @@ internal static class GeneratorProbe
             internal sealed class LeetCodeQuestionAttribute : System.Attribute
             {
                 public LeetCodeQuestionAttribute(string titleSlug, LeetCodeAnswerOrder answerOrder) { }
+
+                public bool RewritesInput { get; set; }
             }
         }
 

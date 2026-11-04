@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.InvertBinaryTree;
 // recursive swap, and the benchmark's two [Benchmark] arms were unwired stubs
 // that each just returned the literal 1, never calling into any algorithm at
 // all - so nothing needed reconciling beyond naming this walk once.
+[LeetCodeQuestion("invert-binary-tree", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class InvertBinaryTreeSolution
 {
     public static BinaryTreeNode<int>? InvertByRecursiveSwap(BinaryTreeNode<int>? root)

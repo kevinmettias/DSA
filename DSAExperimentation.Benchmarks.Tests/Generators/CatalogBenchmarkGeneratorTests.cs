@@ -24,6 +24,19 @@ public sealed partial class CatalogBenchmarkGeneratorTests
         }
         """;
 
+    private const string RewritingProbe = """
+        using DSAExperimentation.LeetCode;
+
+        namespace DSAExperimentation.LeetCode.Solutions.Probe
+        {
+            [LeetCodeQuestion("probe", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
+            internal static class ProbeSolution
+            {
+                public static int CountByLoop(int[] values) => values.Length;
+            }
+        }
+        """;
+
     private const string InPlaceProbe = """
         using DSAExperimentation.LeetCode;
 
@@ -63,6 +76,32 @@ public sealed partial class CatalogBenchmarkGeneratorTests
     [Fact]
     public void Initialize_EnrolledSolution_WritesNoArmForAHelper() =>
         Assert.DoesNotContain("Halve", SourceOf(EnrolledProbe), StringComparison.Ordinal);
+
+    // Its strategies may rewrite their inputs, so each call spends a copy read before its iteration.
+    [Fact]
+    public void Initialize_SolutionThatRewritesInput_FixesAnIterationsCallsToItsCopies() =>
+        Assert.Contains(
+            "[global::BenchmarkDotNet.Attributes.InvocationCount(ProbeCatalogBenchmarks.CopiesPerIteration, 1)]\npublic class ProbeCatalogBenchmarks",
+            SourceOf(RewritingProbe),
+            StringComparison.Ordinal);
+
+    [Fact]
+    public void Initialize_SolutionThatRewritesInput_CopiesEachArmsInputsBeforeEachIteration() =>
+        Assert.Contains(
+            "[global::BenchmarkDotNet.Attributes.IterationSetup(Target = nameof(CountByLoop))]\n    public void CopyCountByLoopInputs()",
+            SourceOf(RewritingProbe),
+            StringComparison.Ordinal);
+
+    [Fact]
+    public void Initialize_SolutionThatRewritesInput_SpendsOneCopyPerCall() =>
+        Assert.Contains(
+            "var copy = _countByLoopCopy++;\n        var input0 = _countByLoopInput0Copies[copy];",
+            SourceOf(RewritingProbe),
+            StringComparison.Ordinal);
+
+    [Fact]
+    public void Initialize_SolutionThatKeepsItsInput_ReadsItsCasesOnce() =>
+        Assert.DoesNotContain("IterationSetup", SourceOf(EnrolledProbe), StringComparison.Ordinal);
 
     [Fact]
     public void Initialize_StrategyAnsweringInPlace_ReportsItRatherThanLeavingItOut() =>

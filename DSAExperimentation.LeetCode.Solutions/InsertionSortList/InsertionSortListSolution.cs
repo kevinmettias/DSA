@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.InsertionSortList;
 // so this is the actual algorithm - a dummy-headed sorted prefix that each
 // incoming node walks forward into and splices behind, exactly what LC 147
 // asks for by name.
+[LeetCodeQuestion("insertion-sort-list", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class InsertionSortListSolution
 {
     public static SinglyLinkedListNode<int>? SortByDummyHeadInsertion(SinglyLinkedListNode<int>? head)

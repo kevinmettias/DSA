@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SwappingNodesInALinkedList;
 // O(n) extra space; a fast/slow pair of node references finds it with no extra space
 // at all, because a runner started kthPosition - 1 nodes ahead runs out exactly when
 // the trailing reference is standing on it.
+[LeetCodeQuestion("swapping-nodes-in-a-linked-list", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class SwappingNodesInALinkedListSolution
 {
     // The textbook answer: copy every value out to a BCL list, where the kth node

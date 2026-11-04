@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveZeroSumConsecutiveNodesFro
 // running sum bracket a run that cancels, so one pass to record the LAST node at
 // each running sum and one pass to jump each node past everything that cancels
 // after it does the whole job in O(n).
+[LeetCodeQuestion("remove-zero-sum-consecutive-nodes-from-linked-list", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class RemoveZeroSumConsecutiveNodesFromLinkedListSolution
 {
     // Textbook baseline: for every start node, walk forward re-summing, and every

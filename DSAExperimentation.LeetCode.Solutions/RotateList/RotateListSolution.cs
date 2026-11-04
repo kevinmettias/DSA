@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RotateList;
 // materializes the list into an array, rotates that array by slicing, and rebuilds
 // a fresh list from the result; the pointer walk finds the same cut point directly
 // on the existing nodes and rewires three pointers, with no extra storage.
+[LeetCodeQuestion("rotate-list", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class RotateListSolution
 {
     // Textbook baseline: copy the list's values into an array, rotate the array by

@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReverseLinkedList;
 // yet; the benchmark this problem previously carried was a compile-smoke
 // placeholder that measured nothing (see the manifest note this migration
 // replaces), not a second algorithm.
+[LeetCodeQuestion("reverse-linked-list", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class ReverseLinkedListSolution
 {
     public static SinglyLinkedListNode<int>? ReverseListByIterativeRewire(SinglyLinkedListNode<int>? head)

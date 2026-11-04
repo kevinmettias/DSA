@@ -5,6 +5,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MergeTwoSortedLists;
 // LeetCode 21. Merge Two Sorted Lists: merge two already-sorted singly linked lists
 // into one sorted list by splicing their existing nodes together, never allocating a
 // new node for a value that already has one.
+[LeetCodeQuestion("merge-two-sorted-lists", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class MergeTwoSortedListsSolution
 {
     // The textbook arm the iterative splice is measured against: merge the first two nodes and

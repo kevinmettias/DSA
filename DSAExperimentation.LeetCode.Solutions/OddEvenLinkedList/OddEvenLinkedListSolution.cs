@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.OddEvenLinkedList;
 //
 // The two strategies differ only in how they get there: materialize each half's
 // values into a fresh chain, or rewire the existing nodes' Next pointers in place.
+[LeetCodeQuestion("odd-even-linked-list", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class OddEvenLinkedListSolution
 {
     private const int ParityDivisor = 2;

@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveDuplicatesFromSortedArrayI
 // The two strategies differ only in what walks the compaction - LINQ's own
 // GroupBy capped per group, or a read/write cursor pair over this repo's
 // ArrayIndexedSequence.
+[LeetCodeQuestion("remove-duplicates-from-sorted-array-ii", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class RemoveDuplicatesFromSortedArrayIISolution
 {
     private const int MaxAllowedDuplicates = 2;

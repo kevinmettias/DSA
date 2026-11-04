@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReverseLinkedListII;
 // result; the head-insertion walk finds the same sub-range on the existing nodes
 // and rewires them in place, with no extra storage. Mirrors RotateListSolution's
 // array-rebuild-vs-pointer-walk shape exactly.
+[LeetCodeQuestion("reverse-linked-list-ii", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class ReverseLinkedListIISolution
 {
     // Textbook baseline: copy the list's values into an array, reverse the

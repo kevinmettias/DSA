@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveNthNodeFromEndOfList;
 // same spot in a single pass with no extra storage, by running a fast pointer
 // `positionsFromEnd` nodes ahead of a slow one so the slow pointer stops just before
 // the target the instant the fast pointer runs off the end.
+[LeetCodeQuestion("remove-nth-node-from-end-of-list", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class RemoveNthNodeFromEndOfListSolution
 {
     // Textbook baseline: copy the list's values into an array, drop the target

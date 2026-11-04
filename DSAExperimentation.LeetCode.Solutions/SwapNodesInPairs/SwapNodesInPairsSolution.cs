@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SwapNodesInPairs;
 // The two strategies differ in how they get the swapped order: rewire each pair's
 // Next pointers in place behind a dummy head, or copy every value out to a BCL
 // array, swap adjacent entries there, and build a fresh list from the result.
+[LeetCodeQuestion("swap-nodes-in-pairs", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class SwapNodesInPairsSolution
 {
     private const int PairStride = 2;

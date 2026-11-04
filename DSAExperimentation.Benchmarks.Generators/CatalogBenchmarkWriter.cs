@@ -7,8 +7,18 @@ namespace DSAExperimentation.Benchmarks.Generators;
 // which tells the tests which cases an arm's answers belong to without showing BenchmarkDotNet another
 // member. It is filed in ProblemSolutions beside the hand-written problem benchmarks, so a run of that
 // folder's category times a problem's catalog cases with its sized workloads.
-internal sealed class CatalogBenchmarkWriter(string solution, string className, IReadOnlyList<StrategyShape> arms)
+//
+// A solution whose strategies rewrite the inputs they are handed - relinking a list, compacting an array -
+// would time a different workload on every call after the first, so its class hands each call inputs of
+// its own. Before every iteration, untimed, an [IterationSetup] per arm reads CopiesPerIteration fresh
+// copies of the cases, and the iteration's fixed invocation count spends one copy per call. A call past
+// the last copy indexes past them and fails, rather than timing a consumed input.
+internal sealed class CatalogBenchmarkWriter(string solution, string className, IReadOnlyList<StrategyShape> arms, bool rewritesInput)
 {
+    // Calls per iteration for a class that copies its inputs: enough that the timer's resolution is small
+    // beside an iteration, few enough that the copies stay a small multiple of the cases.
+    private const int CopiesPerIteration = 16;
+
     private const string Columns = "global::DSAExperimentation.LeetCode.Harness.CatalogColumns";
     private const string Contract = "global::DSAExperimentation.Benchmarks.Catalog.ICatalogBenchmarks";
     private const string CaseList = "global::System.Collections.Generic.IReadOnlyList<global::DSAExperimentation.LeetCode.Catalog.LeetCodeCase>";
@@ -31,9 +41,9 @@ internal sealed class CatalogBenchmarkWriter(string solution, string className, 
 
         namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-        public class {{className}} : {{Contract}}
+        {{InvocationCountMark()}}public class {{className}} : {{Contract}}
         {
-        {{Joined(arms.Select(FieldsOf))}}
+        {{CopyCountField()}}{{Joined(arms.Select(FieldsOf))}}
             global::System.Type {{Contract}}.Solution => typeof({{solution}});
 
             [global::BenchmarkDotNet.Attributes.GlobalSetup]
@@ -41,7 +51,7 @@ internal sealed class CatalogBenchmarkWriter(string solution, string className, 
             {
         {{Joined(arms.Select(SetupOf))}}
             }
-        {{Joined(arms.Select(ArmOf))}}
+        {{CopySetups()}}{{Joined(arms.Select(ArmOf))}}
 
             {{CaseList}} {{Contract}}.CasesOf(string arm) => arm switch
             {
@@ -52,35 +62,55 @@ internal sealed class CatalogBenchmarkWriter(string solution, string className, 
 
         """;
 
-    private static string FieldsOf(StrategyShape arm) =>
-        $$"""
-            private {{Columns}} {{FieldOf(arm)}}Columns;
-        {{Joined(arm.Inputs.Select((input, index) => $"    private {input}[] {FieldOf(arm)}Input{index};"))}}
-            private {{arm.AnswerType}}[] {{FieldOf(arm)}}Answers;
-
-        """;
-
-    private string SetupOf(StrategyShape arm) =>
-        $$"""
-                {{FieldOf(arm)}}Columns = {{Columns}}.For(typeof({{solution}}){{string.Concat(arm.Inputs.Select(input => $", typeof({input})"))}});
-        {{Joined(arm.Inputs.Select((input, index) => $"        {FieldOf(arm)}Input{index} = {FieldOf(arm)}Columns.Column<{input}>({index});"))}}
-                {{FieldOf(arm)}}Answers = new {{AnswerArrayOf(arm)}};
-        """;
-
-    // new T[n] for an answer type that may itself be an array: C# writes the count before the answer's own
-    // trailing brackets, so int[] becomes new int[n][]. Brackets inside a tuple or a type argument are not
-    // trailing, and stay where they are.
-    private static string AnswerArrayOf(StrategyShape arm)
+    // The class-level mark that fixes an iteration's calls to its copies, for a class that copies its inputs.
+    private string InvocationCountMark()
     {
-        var element = arm.AnswerType;
-
-        while (element.EndsWith(ArrayClose, StringComparison.Ordinal))
+        if (!rewritesInput)
         {
-            element = element.Substring(0, element.LastIndexOf(ArrayOpen));
+            return string.Empty;
         }
 
-        return $"{element}[{FieldOf(arm)}Columns.Count]{arm.AnswerType.Substring(element.Length)}";
+        return $"[global::BenchmarkDotNet.Attributes.InvocationCount({className}.CopiesPerIteration, 1)]{NewLine}";
     }
+
+    private string CopyCountField()
+    {
+        if (!rewritesInput)
+        {
+            return string.Empty;
+        }
+
+        return $"    internal const int CopiesPerIteration = {CopiesPerIteration};{NewLine}{NewLine}";
+    }
+
+    // Each arm's [IterationSetup], for a class that copies its inputs; nothing for any other class.
+    private string CopySetups()
+    {
+        if (!rewritesInput)
+        {
+            return string.Empty;
+        }
+
+        return Joined(arms.Select(CopySetupOf));
+    }
+
+    private string CopySetupOf(StrategyShape arm) =>
+        $$"""
+
+            [global::BenchmarkDotNet.Attributes.IterationSetup(Target = nameof({{arm.Name}}))]
+            public void Copy{{arm.Name}}Inputs()
+            {
+                var copies = new {{Columns}}[CopiesPerIteration];
+
+                for (var copy = 0; copy < copies.Length; copy++)
+                {
+                    copies[copy] = {{ColumnsFor(arm)}};
+                }
+
+        {{Joined(arm.Inputs.Select((input, index) => $"        {InputFieldOf(arm, index)} = global::System.Array.ConvertAll(copies, columns => columns.Column<{input}>({index}));"))}}
+                {{FieldOf(arm)}}Copy = 0;
+            }
+        """;
 
     private string ArmOf(StrategyShape arm) =>
         $$"""
@@ -89,7 +119,7 @@ internal sealed class CatalogBenchmarkWriter(string solution, string className, 
             public {{arm.AnswerType}}[] {{arm.Name}}()
             {
                 var answers = {{FieldOf(arm)}}Answers;
-        {{Joined(arm.Inputs.Select((_, index) => $"        var input{index} = {FieldOf(arm)}Input{index};"))}}
+        {{InputLocalsOf(arm)}}
 
                 for (var index = 0; index < answers.Length; index++)
                 {
@@ -109,6 +139,19 @@ internal sealed class CatalogBenchmarkWriter(string solution, string className, 
         }
 
         return BaselineMark;
+    }
+
+    // The arm's inputs as locals: its columns, or the next copy of them for a class that copies its inputs.
+    private string InputLocalsOf(StrategyShape arm)
+    {
+        if (!rewritesInput)
+        {
+            return Joined(arm.Inputs.Select((_, index) => $"        var input{index} = {FieldOf(arm)}Input{index};"));
+        }
+
+        var copy = $"        var copy = {FieldOf(arm)}Copy++;";
+
+        return Joined(arm.Inputs.Select((_, index) => $"        var input{index} = {InputFieldOf(arm, index)}[copy];").Prepend(copy));
     }
 
     // A strategy with out parameters answers with its return value and its outputs gathered into one tuple.
@@ -149,7 +192,82 @@ internal sealed class CatalogBenchmarkWriter(string solution, string className, 
         }
     }
 
+    private string FieldsOf(StrategyShape arm) =>
+        $$"""
+            private {{Columns}} {{FieldOf(arm)}}Columns;
+        {{Joined(arm.Inputs.Select((input, index) => $"    private {InputFieldTypeOf(input)} {InputFieldOf(arm, index)};"))}}
+        {{CopyIndexFieldOf(arm)}}    private {{arm.AnswerType}}[] {{FieldOf(arm)}}Answers;
+
+        """;
+
+    // One column of inputs, or, for a class that copies its inputs, one column per copy.
+    private string InputFieldTypeOf(string input)
+    {
+        if (!rewritesInput)
+        {
+            return $"{input}[]";
+        }
+
+        return $"{input}[][]";
+    }
+
+    // Which copy the arm's next call spends.
+    private string CopyIndexFieldOf(StrategyShape arm)
+    {
+        if (!rewritesInput)
+        {
+            return string.Empty;
+        }
+
+        return $"    private int {FieldOf(arm)}Copy;{NewLine}";
+    }
+
+    private string SetupOf(StrategyShape arm) =>
+        $$"""
+                {{FieldOf(arm)}}Columns = {{ColumnsFor(arm)}};
+        {{InputSetupOf(arm)}}        {{FieldOf(arm)}}Answers = new {{AnswerArrayOf(arm)}};
+        """;
+
+    // The inputs [GlobalSetup] reads once. A class that copies its inputs reads them before every iteration.
+    private string InputSetupOf(StrategyShape arm)
+    {
+        if (rewritesInput)
+        {
+            return string.Empty;
+        }
+
+        return Joined(arm.Inputs.Select((input, index) => $"        {FieldOf(arm)}Input{index} = {FieldOf(arm)}Columns.Column<{input}>({index});")) + NewLine;
+    }
+
+    // new T[n] for an answer type that may itself be an array: C# writes the count before the answer's own
+    // trailing brackets, so int[] becomes new int[n][]. Brackets inside a tuple or a type argument are not
+    // trailing, and stay where they are.
+    private static string AnswerArrayOf(StrategyShape arm)
+    {
+        var element = arm.AnswerType;
+
+        while (element.EndsWith(ArrayClose, StringComparison.Ordinal))
+        {
+            element = element.Substring(0, element.LastIndexOf(ArrayOpen));
+        }
+
+        return $"{element}[{FieldOf(arm)}Columns.Count]{arm.AnswerType.Substring(element.Length)}";
+    }
+
     private static string CaseOf(StrategyShape arm) => $"        \"{arm.Name}\" => {FieldOf(arm)}Columns.Cases,";
+
+    private string InputFieldOf(StrategyShape arm, int index)
+    {
+        if (!rewritesInput)
+        {
+            return $"{FieldOf(arm)}Input{index}";
+        }
+
+        return $"{FieldOf(arm)}Input{index}Copies";
+    }
+
+    private string ColumnsFor(StrategyShape arm) =>
+        $"{Columns}.For(typeof({solution}){string.Concat(arm.Inputs.Select(input => $", typeof({input})"))})";
 
     private static string Joined(IEnumerable<string> blocks) => string.Join(NewLine, blocks);
 

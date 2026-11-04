@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReverseNodesInKGroup;
 // The two strategies differ in where the reversal happens - in place on the
 // linked list's own pointers, or by copying every value out to a plain array,
 // reversing each complete group there, and writing the values back.
+[LeetCodeQuestion("reverse-nodes-in-k-group", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class ReverseNodesInKGroupSolution
 {
     // The composed solution: a dummy head lets the very first group be spliced

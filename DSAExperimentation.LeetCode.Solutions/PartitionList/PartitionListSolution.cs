@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PartitionList;
 // rebuilds a fresh list from the result; the splice walk reuses the existing nodes,
 // threading each one onto a "before" or "after" chain as it is visited, with no
 // extra storage beyond the two chain heads.
+[LeetCodeQuestion("partition-list", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class PartitionListSolution
 {
     // Textbook baseline: copy the list's values into an array, stably partition the
