@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SearchA2DMatrixII;
 // beats per-row binary search asymptotically, the same lesson FloydWarshall
 // teaches in the shortest-path cluster: a general primitive is not always
 // the asymptotically optimal tool.
+[LeetCodeQuestion("search-a-2d-matrix-ii", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SearchA2DMatrixIIPromise))]
 internal static class SearchA2DMatrixIISolution
 {
     // The textbook baseline: check every cell. Deliberately written without

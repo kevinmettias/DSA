@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveDuplicatesFromSortedListII
 // Both strategies land on the same surviving values; they differ in whether the
 // duplicate check is a BCL LINQ grouping over the list's values, or a single pass
 // with a dummy head that splices duplicate runs out of the existing nodes.
+[LeetCodeQuestion("remove-duplicates-from-sorted-list-ii", LeetCodeAnswerOrder.AsWritten, Promise = typeof(RemoveDuplicatesFromSortedListIIPromise), RewritesInput = true)]
 internal static class RemoveDuplicatesFromSortedListIISolution
 {
     // The textbook baseline: copy the list's values into an array and let BCL

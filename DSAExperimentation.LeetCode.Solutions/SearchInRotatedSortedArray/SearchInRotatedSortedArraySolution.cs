@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SearchInRotatedSortedArray;
 // [pivot, length) - could actually contain target, decided by comparing target
 // against the array's own last element. SearchByLinearScan is the O(n) arm it has
 // to beat.
+[LeetCodeQuestion("search-in-rotated-sorted-array", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SearchInRotatedSortedArrayPromise))]
 internal static class SearchInRotatedSortedArraySolution
 {
     // The textbook O(n) scan. Written without this repo's own BinarySearch -

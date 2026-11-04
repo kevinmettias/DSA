@@ -5,6 +5,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveKDigits;
 // LeetCode 402. Remove K Digits: drop removalCount of the digits from a non-negative
 // integer string so the digits left behind, in their original order, form the smallest
 // possible number.
+[LeetCodeQuestion("remove-k-digits", LeetCodeAnswerOrder.AsWritten, Promise = typeof(RemoveKDigitsPromise))]
 internal static class RemoveKDigitsSolution
 {
     private const string ZeroResult = "0";

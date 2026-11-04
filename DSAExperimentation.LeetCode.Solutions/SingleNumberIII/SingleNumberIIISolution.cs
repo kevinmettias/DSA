@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SingleNumberIII;
 // Both strategies isolate the two singletons by counting occurrences; they
 // differ only in how the count is kept. The composed strategy's whole point
 // is to avoid the brute force's repeated inner scan.
+[LeetCodeQuestion("single-number-iii", LeetCodeAnswerOrder.AnyOrder, Promise = typeof(SingleNumberIIIPromise))]
 internal static class SingleNumberIIISolution
 {
     // LC260 guarantees exactly two numbers appear exactly once.

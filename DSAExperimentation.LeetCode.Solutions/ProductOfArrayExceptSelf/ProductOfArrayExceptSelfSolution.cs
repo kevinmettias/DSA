@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ProductOfArrayExceptSelf;
 // element before it; one right-to-left pass then multiplies in the running
 // product of every element after it. Every index is touched twice, no
 // division, and the result buffer doubles as the only extra memory used.
+[LeetCodeQuestion("product-of-array-except-self", LeetCodeAnswerOrder.AsWritten, Promise = typeof(ProductOfArrayExceptSelfPromise))]
 internal static class ProductOfArrayExceptSelfSolution
 {
     public static int[] ProductExceptSelfByPrefixSuffixPass(int[] nums)

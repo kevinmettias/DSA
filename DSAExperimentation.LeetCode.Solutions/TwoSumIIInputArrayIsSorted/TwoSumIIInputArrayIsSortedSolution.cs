@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TwoSumIIInputArrayIsSorted;
 // Two strategies exploit the sort differently: a per-index binary search for the
 // complement, or a single two-pointer squeeze that moves the low or high pointer
 // according to whether the running sum is under or over target.
+[LeetCodeQuestion("two-sum-ii-input-array-is-sorted", LeetCodeAnswerOrder.AsWritten, Promise = typeof(TwoSumIIInputArrayIsSortedPromise))]
 internal static class TwoSumIIInputArrayIsSortedSolution
 {
     // Squeeze from both ends: while the sum is too small advance the low pointer,

@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SimilarStringGroups;
 // Both strategies run the identical O(n^2 * L) pairwise similarity scan: deciding
 // WHICH pairs to compare has no faster general strategy here, so the only axis left
 // is how "which group is this word already in?" gets answered.
+[LeetCodeQuestion("similar-string-groups", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SimilarStringGroupsPromise))]
 internal static class SimilarStringGroupsSolution
 {
     // A similar-but-unequal pair differs in exactly two positions, and those two

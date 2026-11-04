@@ -2326,8 +2326,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 704 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 108 more:
+**Enrolled.** 734 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 138 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2369,6 +2369,11 @@ have only the empty tree. A check over those would pass whatever the strategy di
   16 cases with k = 1 found it, where the published examples have none.
 - Split Linked List in Parts, once a missing part was written `[]` as LeetCode writes it. It rewires
   its list in place, so it says `RewritesInput = true`.
+- 30 more promises, among them search trees of unique values (Range Sum of BST, Search in a Binary
+  Search Tree), square grids, balanced parentheses, a special binary string, unique answers (Top K
+  Frequent Elements, in any order; Two Sum II, counting pairs in one pass), and answers that fit 32
+  bits, checked with exact arithmetic (Product of Array Except Self, Unique Paths). Remove
+  Duplicates from Sorted List II relinks its list, so it also says `RewritesInput = true`.
 
 Open items:
 
@@ -2387,7 +2392,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 401 solutions are left (2026-11-04), each blocked for a reason the table and
+- **Enrolling the rest.** 371 solutions are left (2026-11-04), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.

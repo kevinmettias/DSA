@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.UniquePaths;
 // each cell, the paths from its right and down neighbors to the destination,
 // caching each cell's result so it is computed once rather than exponentially
 // many times.
+[LeetCodeQuestion("unique-paths", LeetCodeAnswerOrder.AsWritten, Promise = typeof(UniquePathsPromise))]
 internal static class UniquePathsSolution
 {
     // Textbook baseline: the closed-form binomial coefficient

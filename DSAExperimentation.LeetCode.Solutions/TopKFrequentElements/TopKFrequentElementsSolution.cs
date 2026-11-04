@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TopKFrequentElements;
 // (node, distance) - O(d log k), discarding its lowest-frequency root whenever
 // the heap grows past topCount, the same size-k-heap shape
 // KthLargestElementSolution uses for LeetCode 215.
+[LeetCodeQuestion("top-k-frequent-elements", LeetCodeAnswerOrder.AnyOrder, Promise = typeof(TopKFrequentElementsPromise))]
 internal static class TopKFrequentElementsSolution
 {
     // The textbook approach: count with a BCL Dictionary, then sort every

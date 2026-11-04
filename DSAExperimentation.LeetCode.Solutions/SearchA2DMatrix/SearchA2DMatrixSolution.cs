@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SearchA2DMatrix;
 // The two strategies differ only in whether they exploit that: a per-row
 // linear scan, or wrapping the matrix in this repo's own MatrixSequence and
 // handing it to BinarySearch.Find.
+[LeetCodeQuestion("search-a-2d-matrix", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SearchA2DMatrixPromise))]
 internal static class SearchA2DMatrixSolution
 {
     // The textbook baseline: scan every row for target. Deliberately written

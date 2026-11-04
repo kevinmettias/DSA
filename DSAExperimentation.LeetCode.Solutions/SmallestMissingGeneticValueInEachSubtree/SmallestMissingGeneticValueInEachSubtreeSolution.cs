@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SmallestMissingGeneticValueInEac
 //
 // Both strategies answer exactly that; they differ in how many times a node's value
 // is looked at.
+[LeetCodeQuestion("smallest-missing-genetic-value-in-each-subtree", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SmallestMissingGeneticValueInEachSubtreePromise))]
 internal static class SmallestMissingGeneticValueInEachSubtreeSolution
 {
     // LeetCode's genetic values start at 1, so 1 is both the smallest possible answer

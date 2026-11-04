@@ -28,6 +28,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountVisitedNodesInADirectedGrap
 // "peel a Queue<int> frontier layer by layer" idiom Minimum Height Trees and
 // TopologicalSort already establish, just seeded from known answers rather than
 // from zero-in-degree leaves.
+[LeetCodeQuestion("count-visited-nodes-in-a-directed-graph", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CountVisitedNodesInADirectedGraphPromise))]
 internal static class CountVisitedNodesInADirectedGraphSolution
 {
     // A component of one node is a node on no cycle: LC 2876 guarantees

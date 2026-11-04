@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SortedGcdPairQueries;
 // has to beat. GcdPairCountIndex turns "sort every pair's gcd" into "count pairs
 // by gcd value instead of enumerating them," which this repo's own
 // BinarySearch.LowerBound then answers in O(log maxValue) per query.
+[LeetCodeQuestion("sorted-gcd-pair-queries", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SortedGcdPairQueriesPromise))]
 internal static class SortedGcdPairQueriesSolution
 {
     public static int[] AnswerQueriesByBruteForce(int[] nums, int[] queries)

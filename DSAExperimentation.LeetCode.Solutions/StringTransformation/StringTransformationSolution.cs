@@ -29,6 +29,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StringTransformation;
 // character by character, O(n^2). NumberOfWaysByZFunction calls this repo's
 // ZFunction.FindAll, a cross-referential Z-search for a pattern inside a text that
 // needs no concatenation or sentinel, O(n).
+[LeetCodeQuestion("string-transformation", LeetCodeAnswerOrder.AsWritten, Promise = typeof(StringTransformationPromise))]
 internal static class StringTransformationSolution
 {
     // (-1)^k reduced mod 1e9+7 so the closed form stays in nonnegative residues:

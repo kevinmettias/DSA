@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RangeSumOfBST;
 // high only in its left - the same "return the recursive result from one side" shape
 // TrimABinarySearchTreeSolution.TrimByInPlaceMutation uses for the same problem
 // family, summing survivors instead of re-parenting them.
+[LeetCodeQuestion("range-sum-of-bst", LeetCodeAnswerOrder.AsWritten, Promise = typeof(RangeSumOfBSTPromise))]
 internal static class RangeSumOfBSTSolution
 {
     // The textbook full-tree walk: every node visited, ordering never consulted.

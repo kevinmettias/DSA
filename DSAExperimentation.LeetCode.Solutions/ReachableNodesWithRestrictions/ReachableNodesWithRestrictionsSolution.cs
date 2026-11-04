@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReachableNodesWithRestrictions;
 // the surviving edges and asking which nodes share node 0's component. That is the
 // same walk-versus-partition pair FindIfPathExistsInGraph draws for LC 1971, counting
 // a component here instead of testing one pair.
+[LeetCodeQuestion("reachable-nodes-with-restrictions", LeetCodeAnswerOrder.AsWritten, Promise = typeof(ReachableNodesWithRestrictionsPromise))]
 internal static class ReachableNodesWithRestrictionsSolution
 {
     // The endpoints' slots in LeetCode's own two-element edge array.

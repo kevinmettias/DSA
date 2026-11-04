@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SingleNumberII;
 // count on the fly in two bitmasks (the ones/twos state machine). Both are O(n)
 // and constant space; the first scans the array once per bit, the second once in
 // total.
+[LeetCodeQuestion("single-number-ii", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SingleNumberIIPromise))]
 internal static class SingleNumberIISolution
 {
     private const int TripleModulus = 3;

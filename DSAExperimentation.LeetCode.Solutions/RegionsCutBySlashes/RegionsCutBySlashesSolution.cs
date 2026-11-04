@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RegionsCutBySlashes;
 // DisjointSet-plus-Set "union everything connected, count distinct roots" shape
 // NumberOfProvincesSolution uses for LC 547, over 4n^2 triangle ids instead of
 // one id per vertex.
+[LeetCodeQuestion("regions-cut-by-slashes", LeetCodeAnswerOrder.AsWritten, Promise = typeof(RegionsCutBySlashesPromise))]
 internal static class RegionsCutBySlashesSolution
 {
     private const int North = 0;

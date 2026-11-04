@@ -6,6 +6,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SingleNumber;
 // Two strategies: an XOR fold cancels every pair in O(1) space, or a set toggles
 // each value in and out as it is met a second time, leaving the survivor - O(n)
 // space, but the cancelling is explicit rather than relying on XOR's algebra.
+[LeetCodeQuestion("single-number", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SingleNumberPromise))]
 internal static class SingleNumberSolution
 {
     // Toggle membership: add a value the first time it is seen, remove it the

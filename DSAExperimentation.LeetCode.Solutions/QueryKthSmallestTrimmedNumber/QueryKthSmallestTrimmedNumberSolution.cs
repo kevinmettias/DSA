@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.QueryKthSmallestTrimmedNumber;
 //
 // Both strategies answer every query independently and share one allocation-free trimmed
 // comparison; they differ only in how they locate position k.
+[LeetCodeQuestion("query-kth-smallest-trimmed-number", LeetCodeAnswerOrder.AsWritten, Promise = typeof(QueryKthSmallestTrimmedNumberPromise))]
 internal static class QueryKthSmallestTrimmedNumberSolution
 {
     // Layout of a single LeetCode query: [k, trim].

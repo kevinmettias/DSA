@@ -22,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheNumberOfWaysToPlacePeople
 // so far (maxY) is therefore enough: j is visible from i precisely when
 // points[j].y <= points[i].y and points[j].y > maxY, and counting it updates
 // maxY to points[j].y - no removal, no auxiliary structure, just the sort.
+[LeetCodeQuestion("find-the-number-of-ways-to-place-people-ii", LeetCodeAnswerOrder.AsWritten, Promise = typeof(FindTheNumberOfWaysToPlacePeopleIIPromise))]
 internal static class FindTheNumberOfWaysToPlacePeopleIISolution
 {
     // The textbook O(n^3) scan: every ordered pair, checked against every

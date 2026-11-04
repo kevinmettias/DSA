@@ -5,6 +5,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SearchInABinarySearchTree;
 // LeetCode 700. Search in a Binary Search Tree: given a BST root and a value,
 // return the subtree rooted at the node holding that value (its own children
 // come along for free), or null if the value is absent.
+[LeetCodeQuestion("search-in-a-binary-search-tree", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SearchInABinarySearchTreePromise))]
 internal static class SearchInABinarySearchTreeSolution
 {
     // The naive baseline: visit every node with no BST ordering exploited - a

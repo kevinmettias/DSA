@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SwimInRisingWater;
 // the max elevation crossed so far instead of a flood-fill water level.
 // MinTimeByBinarySearchFloodFill is the textbook alternative: binary search the
 // answer, re-scanning the whole grid with a fresh BFS per candidate time.
+[LeetCodeQuestion("swim-in-rising-water", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SwimInRisingWaterPromise))]
 internal static class SwimInRisingWaterSolution
 {
     // Deliberately written without this repo's primitives - a plain BCL

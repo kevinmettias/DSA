@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SmallestKLengthSubsequenceWithOc
 // taking (or dropping) a `letter` occurrence must never leave fewer than `repetition`
 // of them reachable - which is why both arms precompute the same suffix count of
 // `letter`.
+[LeetCodeQuestion("smallest-k-length-subsequence-with-occurrences-of-a-letter", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SmallestKLengthSubsequenceWithOccurrencesOfALetterPromise))]
 internal static class SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution
 {
     // Marks "no admissible position found yet" while scanning a window.

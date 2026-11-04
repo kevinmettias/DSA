@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SpecialBinaryString;
 // non-differentiating scaffolding, the same role FindEmptyCell/IsValidPlacement play
 // across SudokuSolverBenchmarks' strategies) and differ only in how each level's
 // sibling pieces get sorted descending.
+[LeetCodeQuestion("special-binary-string", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SpecialBinaryStringPromise))]
 internal static class SpecialBinaryStringSolution
 {
     private const int MinimalSpecialStringLength = 2;

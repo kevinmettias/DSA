@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheNumberOfWaysToPlacePeople
 // this smaller one. Each arm here calls through; both problems answer an int, so
 // nothing narrows, and this problem's own test and benchmark still run them at its
 // bound.
+[LeetCodeQuestion("find-the-number-of-ways-to-place-people-i", LeetCodeAnswerOrder.AsWritten, Promise = typeof(FindTheNumberOfWaysToPlacePeopleIPromise))]
 internal static class FindTheNumberOfWaysToPlacePeopleISolution
 {
     // The textbook O(n^3) scan: every ordered pair, checked against every third point

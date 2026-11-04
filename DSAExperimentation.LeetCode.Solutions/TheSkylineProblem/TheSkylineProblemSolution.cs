@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TheSkylineProblem;
 // recomputed: the naive scan below re-derives it from every building at each
 // critical x-coordinate, while the sweep-line strategy maintains it
 // incrementally in a max-heap.
+[LeetCodeQuestion("the-skyline-problem", LeetCodeAnswerOrder.AsWritten, Promise = typeof(TheSkylineProblemPromise))]
 internal static class TheSkylineProblemSolution
 {
     private const int HeightIndex = 2;

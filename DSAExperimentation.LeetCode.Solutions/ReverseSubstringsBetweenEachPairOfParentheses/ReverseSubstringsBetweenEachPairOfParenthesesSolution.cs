@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReverseSubstringsBetweenEachPair
 // keeps rebuilding the whole string once per pair, while the composed arm keeps one
 // in-progress character buffer per open paren on this repo's own Stack<List<char>>,
 // so a character is re-reversed only once per level that encloses it.
+[LeetCodeQuestion("reverse-substrings-between-each-pair-of-parentheses", LeetCodeAnswerOrder.AsWritten, Promise = typeof(ReverseSubstringsBetweenEachPairOfParenthesesPromise))]
 internal static class ReverseSubstringsBetweenEachPairOfParenthesesSolution
 {
     // The textbook answer: find the first ')', scan back to its matching '(',

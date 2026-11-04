@@ -21,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SurfaceAreaOf3DShapes;
 // height-difference sum, so routing this through Grid/** would not be a genuine fit -
 // the same reasoning TransposeMatrix and SpiralMatrixII already state for their index
 // arithmetic.
+[LeetCodeQuestion("surface-area-of-3d-shapes", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SurfaceAreaOf3DShapesPromise))]
 internal static class SurfaceAreaOf3DShapesSolution
 {
     // Top face + bottom face contributed by every non-zero-height cell.
