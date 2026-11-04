@@ -2324,8 +2324,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 647 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 51 more:
+**Enrolled.** 667 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 71 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2342,6 +2342,18 @@ have only the empty tree. A check over those would pass whatever the strategy di
   2026-11-04, found it passing.
 - All Elements in Two Binary Search Trees, whose collect-and-sort strategy parted from the catalog on
   46 generated cases holding trees that are no binary search trees. Its promise drops them.
+- 20 whose failing cases each broke a constraint the statement states in prose, now stated by a
+  promise type each: an even count (Array Partition), no zero-sized asteroid, only `+`, `-` and
+  balanced parentheses (Basic Calculator), letters only (Camelcase Matching), a string as long as the
+  tree (Check if DFS Strings Are Palindromes), a search tree (Closest Nodes Queries) or a search
+  tree's preorder, at most 30 bits, circles inside the first quadrant, heights up to 100, unique
+  ratings, a rotated increasing array, one repeated value from 1 to n, edges to nodes of the graph,
+  a bit inside the string, k up to the value count, a square image, no self-loop or repeated edge
+  (Count the Number of Complete Components), one valid postfix expression, and numbers without
+  leading zeros (Add Two Numbers). Every promise keeps judged cases, at least 14 of them. Basic
+  Calculator's two strategies had parted on expressions with a parenthesis left open, where the
+  catalog records one strategy's answer. Flipping an Image flips in place, as LeetCode lets it, so
+  it also says `RewritesInput = true`.
 
 Open items:
 
@@ -2356,7 +2368,7 @@ Open items:
   class that reads its columns once times the others is not yet measured. The first runs of the 27
   classes should be repeated on identical code, and the spread between the two runs read before any
   arm's time is trusted.
-- **Enrolling the rest.** 458 solutions are left (2026-11-04), each blocked for a reason the table and
+- **Enrolling the rest.** 438 solutions are left (2026-11-04), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.

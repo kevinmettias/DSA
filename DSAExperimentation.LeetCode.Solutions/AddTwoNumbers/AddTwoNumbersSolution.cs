@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AddTwoNumbers;
 // The two strategies differ only in how they get the digit sum: walk both lists
 // once with a running carry, or convert each list to a single big number, add,
 // and convert back.
+[LeetCodeQuestion("add-two-numbers", LeetCodeAnswerOrder.AsWritten, Promise = typeof(AddTwoNumbersPromise))]
 internal static class AddTwoNumbersSolution
 {
     // The composed solution: walk both lists exactly once with a running carry,

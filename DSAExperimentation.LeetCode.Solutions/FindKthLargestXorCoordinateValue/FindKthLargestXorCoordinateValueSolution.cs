@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindKthLargestXorCoordinateValue
 // pick the kth largest value out of it afterwards: a full O(nm log nm) sort, or an
 // O(nm log k) size-k min-heap whose log factor is on k rather than on the
 // coordinate count.
+[LeetCodeQuestion("find-kth-largest-xor-coordinate-value", LeetCodeAnswerOrder.AsWritten, Promise = typeof(FindKthLargestXorCoordinateValuePromise))]
 internal static class FindKthLargestXorCoordinateValueSolution
 {
     // The textbook answer: materialize every coordinate value, sort the lot, and

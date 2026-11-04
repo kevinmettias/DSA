@@ -24,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindEventualSafeStates;
 // whether every node was safe, i.e. the graph was acyclic) - the leftover,
 // never-peeled nodes are exactly the unsafe ones, the same "cycle announces itself
 // as leftover in-degree" property TrySort's own doc comment already names.
+[LeetCodeQuestion("find-eventual-safe-states", LeetCodeAnswerOrder.AsWritten, Promise = typeof(FindEventualSafeStatesPromise))]
 internal static class FindEventualSafeStatesSolution
 {
     private const int ColorUnvisited = 0;

@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindKthBitInNthBinaryString;
 // Each bisection call makes exactly one recursive call, never two, so there are no
 // overlapping subproblems for this repo's own Memoizer to help with - the same
 // "lighter repo-primitive fit" case as PowXn.
+[LeetCodeQuestion("find-kth-bit-in-nth-binary-string", LeetCodeAnswerOrder.AsWritten, Promise = typeof(FindKthBitInNthBinaryStringPromise))]
 internal static class FindKthBitInNthBinaryStringSolution
 {
     private const string BaseCaseBit = "0"; // S(1)

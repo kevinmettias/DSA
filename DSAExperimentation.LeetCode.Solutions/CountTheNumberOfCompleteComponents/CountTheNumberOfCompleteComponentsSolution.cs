@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfCompleteComponen
 // complete exactly when it holds k*(k-1)/2 edges - and differ only in how they
 // decide which nodes share a component, and therefore in whether "complete" costs
 // a pairwise membership test or a counter increment.
+[LeetCodeQuestion("count-the-number-of-complete-components", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CountTheNumberOfCompleteComponentsPromise))]
 internal static class CountTheNumberOfCompleteComponentsSolution
 {
     // The textbook answer, and the arm the composed solution has to justify

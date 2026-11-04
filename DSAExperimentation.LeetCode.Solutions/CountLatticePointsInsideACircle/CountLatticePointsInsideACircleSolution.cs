@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountLatticePointsInsideACircle;
 // local bounding box and lets this repo's Set<Element> (HashMap<Element,bool>-backed)
 // collapse the overlaps - O(sum of each circle's own area), which wins whenever the
 // circles are scattered far more widely than their radii.
+[LeetCodeQuestion("count-lattice-points-inside-a-circle", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CountLatticePointsInsideACirclePromise))]
 internal static class CountLatticePointsInsideACircleSolution
 {
     private const int CenterXIndex = 0;

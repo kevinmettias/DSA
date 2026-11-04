@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CamelcaseMatching;
 // the whole query", so the two strategies are the regex engine's backtracking state
 // machine against a direct two-pointer scan. No repo data structure is involved
 // either way - the same "nothing to compose" shape ValidPalindrome has.
+[LeetCodeQuestion("camelcase-matching", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CamelcaseMatchingPromise))]
 internal static class CamelcaseMatchingSolution
 {
     // Any run of lowercase letters, spliced between and around the pattern's characters.

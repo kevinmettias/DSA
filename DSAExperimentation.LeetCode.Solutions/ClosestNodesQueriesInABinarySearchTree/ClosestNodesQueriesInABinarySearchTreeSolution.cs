@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ClosestNodesQueriesInABinarySear
 // for every query and never looks at the ordering; the composed strategy spends
 // one in-order walk turning the tree into an ascending buffer and then bisects it.
 // O(n * queries) against O(n + queries * log n).
+[LeetCodeQuestion("closest-nodes-queries-in-a-binary-search-tree", LeetCodeAnswerOrder.AsWritten, Promise = typeof(ClosestNodesQueriesInABinarySearchTreePromise))]
 internal static class ClosestNodesQueriesInABinarySearchTreeSolution
 {
     // The textbook answer: for each query walk the whole tree, keeping the best

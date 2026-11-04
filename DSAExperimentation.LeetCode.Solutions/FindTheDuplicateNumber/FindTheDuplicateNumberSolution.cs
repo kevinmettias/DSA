@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheDuplicateNumber;
 // implicit linked list whose cycle entry is exactly the duplicate value - the same
 // Floyd's-algorithm CycleDetection.FindCycleStart LinkedListCycleII already proves
 // out, here driven by materializing real SinglyLinkedListNode<int> nodes.
+[LeetCodeQuestion("find-the-duplicate-number", LeetCodeAnswerOrder.AsWritten, Promise = typeof(FindTheDuplicateNumberPromise))]
 internal static class FindTheDuplicateNumberSolution
 {
     // The textbook answer: an O(n^2) all-pairs scan, deliberately written without

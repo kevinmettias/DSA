@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConvertBinaryNumberInALinkedList
 // the node representation itself - the same "just the representation" shape
 // MiddleOfTheLinkedListSolution walks - so the comparison is purely how the bits
 // are folded: one pass with no buffer, or two passes through an intermediate list.
+[LeetCodeQuestion("convert-binary-number-in-a-linked-list-to-integer", LeetCodeAnswerOrder.AsWritten, Promise = typeof(ConvertBinaryNumberInALinkedListToIntegerPromise))]
 internal static class ConvertBinaryNumberInALinkedListToIntegerSolution
 {
     // A single left-to-right walk over SinglyLinkedListNode<int>.Next, folding

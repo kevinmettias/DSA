@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.EvaluateReversePolishNotation;
 // they are read; each operator pops its two operands, applies itself, and pushes the
 // result back, so the final stack holds exactly the expression's value. They differ
 // only in the stack: the BCL's Stack<int>, or this repo's own.
+[LeetCodeQuestion("evaluate-reverse-polish-notation", LeetCodeAnswerOrder.AsWritten, Promise = typeof(EvaluateReversePolishNotationPromise))]
 internal static class EvaluateReversePolishNotationSolution
 {
     // The textbook answer: the operand stack on the BCL's Stack<int>, the arm this repo's

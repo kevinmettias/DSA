@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FlippingAnImage;
 // The two strategies differ only in how the row gets reversed: the textbook
 // two-pointer swap, or this repo's own LIFO Stack<int>, whose pop order undoes
 // the row so flip-and-invert happen in a single pass.
+[LeetCodeQuestion("flipping-an-image", LeetCodeAnswerOrder.AsWritten, Promise = typeof(FlippingAnImagePromise), RewritesInput = true)]
 internal static class FlippingAnImageSolution
 {
     // The textbook answer, BCL only: walk each row from both ends, swapping the

@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConstructBinarySearchTreeFromPre
 // - The classic upper-bound recursion reads preorder once, left to right, giving
 //   each recursive call the exclusive upper bound its subtree may contain, and
 //   builds the nodes directly - O(n) with no repeated descent.
+[LeetCodeQuestion("construct-binary-search-tree-from-preorder-traversal", LeetCodeAnswerOrder.AsWritten, Promise = typeof(ConstructBinarySearchTreeFromPreorderTraversalPromise))]
 internal static class ConstructBinarySearchTreeFromPreorderTraversalSolution
 {
     // Compose this repo's BinarySearchTree and hand back the tree it built.

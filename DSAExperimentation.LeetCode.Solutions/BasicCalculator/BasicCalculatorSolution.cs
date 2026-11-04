@@ -22,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BasicCalculator;
 // Bringing the baseline under test (ARCHITECTURE.md 17.3) surfaced it;
 // fixed here by skipping whitespace explicitly, which is what
 // CalculateByStackScan already did via its switch's implicit default case.
+[LeetCodeQuestion("basic-calculator", LeetCodeAnswerOrder.AsWritten, Promise = typeof(BasicCalculatorPromise))]
 internal static class BasicCalculatorSolution
 {
     public static int CalculateByRecursiveDescent(string expression)

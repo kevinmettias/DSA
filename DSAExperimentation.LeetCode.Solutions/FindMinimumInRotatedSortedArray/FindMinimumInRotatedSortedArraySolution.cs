@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindMinimumInRotatedSortedArray;
 // and this repo's own MonotonePredicateSearch.FirstTrue lands exactly on the
 // pivot, which is the minimum. Same index-rule idiom PeakIndexInAMountainArray
 // uses for its own unimodal search.
+[LeetCodeQuestion("find-minimum-in-rotated-sorted-array", LeetCodeAnswerOrder.AsWritten, Promise = typeof(FindMinimumInRotatedSortedArrayPromise))]
 internal static class FindMinimumInRotatedSortedArraySolution
 {
     // The textbook answer: walk the whole array. O(n), no repo primitive.

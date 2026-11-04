@@ -7,10 +7,11 @@ namespace DSAExperimentation.LeetCode.Solutions.ArrayPartition;
 // element always achieves this - pairing each element with its immediate
 // neighbor once sorted never wastes more than the unavoidable one element per
 // pair.
+[LeetCodeQuestion("array-partition", LeetCodeAnswerOrder.AsWritten, Promise = typeof(ArrayPartitionPromise))]
 internal static class ArrayPartitionSolution
 {
     // Every pair contributes its smaller half; fixed by the problem itself.
-    private const int PairSize = 2;
+    internal const int PairSize = 2;
 
     // The textbook O(n^2) approach: repeatedly scan for the two smallest
     // remaining elements and take the smaller of each pair. Pure BCL - the

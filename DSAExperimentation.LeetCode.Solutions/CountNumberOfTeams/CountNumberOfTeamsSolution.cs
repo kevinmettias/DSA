@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountNumberOfTeams;
 // For every soldier j taken as the middle of a team the count is
 // leftLess[j]*rightGreater[j] + leftGreater[j]*rightLess[j], so the whole problem
 // is four rank counts per index.
+[LeetCodeQuestion("count-number-of-teams", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CountNumberOfTeamsPromise))]
 internal static class CountNumberOfTeamsSolution
 {
     // A team needs a middle and a right soldier after the leftmost one.

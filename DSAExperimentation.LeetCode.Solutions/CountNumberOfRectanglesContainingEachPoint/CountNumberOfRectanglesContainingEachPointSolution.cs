@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountNumberOfRectanglesContainin
 // Both strategies return that same int[]; they differ only in how a point's count
 // is obtained - checking it against every rectangle, or exploiting the problem's
 // tiny height range by grouping lengths per height and bisecting twice.
+[LeetCodeQuestion("count-number-of-rectangles-containing-each-point", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CountNumberOfRectanglesContainingEachPointPromise))]
 internal static class CountNumberOfRectanglesContainingEachPointSolution
 {
     // The textbook O(n*m) answer: for every point, walk every rectangle and tally

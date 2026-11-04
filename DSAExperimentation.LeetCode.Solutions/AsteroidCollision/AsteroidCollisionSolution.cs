@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AsteroidCollision;
 // The two strategies differ only in what tracks "still alive ahead of it":
 // a List<int> rescanned from the start after every collision, or this repo's
 // own Stack<int> doing the textbook single sweep.
+[LeetCodeQuestion("asteroid-collision", LeetCodeAnswerOrder.AsWritten, Promise = typeof(AsteroidCollisionPromise))]
 internal static class AsteroidCollisionSolution
 {
     // The naive baseline: after resolving one collision, rescan the whole list

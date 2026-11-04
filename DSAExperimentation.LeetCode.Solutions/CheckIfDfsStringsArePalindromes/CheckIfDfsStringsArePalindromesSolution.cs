@@ -22,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfDfsStringsArePalindromes;
 // built over the reversed string - RollingHashSearch's own "screen with an O(1)
 // hash comparison" use of the primitive, aimed at a palindrome check instead of a
 // pattern match.
+[LeetCodeQuestion("check-if-dfs-strings-are-palindromes", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CheckIfDfsStringsArePalindromesPromise))]
 internal static class CheckIfDfsStringsArePalindromesSolution
 {
     // Textbook baseline: dfs(i) rebuilt from scratch for every node, checked with a
