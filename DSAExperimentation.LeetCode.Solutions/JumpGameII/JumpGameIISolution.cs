@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.JumpGameII;
 // two-pointer scan, and modeling reachability as an implicit unweighted-hop graph
 // (index i has an edge to every index reachable in one jump) answered with this
 // repo's own BreadthFirstDistances - not the greedy scan.
+[LeetCodeQuestion("jump-game-ii", LeetCodeAnswerOrder.AsWritten, Promise = typeof(JumpGameIIPromise))]
 internal static class JumpGameIISolution
 {
     // The textbook answer: extend the farthest index reachable within the current

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 
 namespace DSAExperimentation.LeetCode.Harness.Tests;
 
@@ -16,6 +17,19 @@ public sealed partial class AnswerNotationTests
 
     [Fact]
     public void Of_NoTreeAtAll_WritesTheEmptyArray() => Assert.Equal("[]", AnswerNotation.Of((BinaryTreeNode<int>?)null).ToJsonString());
+
+    // A sequence of lists writes a missing one as the empty list, as LeetCode prints LC 725's empty parts.
+    [Fact]
+    public void Of_ListsWithAMissingOne_WritesItAsTheEmptyArray()
+    {
+        SinglyLinkedListNode<int>?[] parts = [LeetCodeWireFormat.ToLinkedList([1]), null];
+
+        Assert.Equal("[[1],[]]", AnswerNotation.Of(parts).ToJsonString());
+    }
+
+    // A level-order array's null stays LeetCode's null: a missing child, not a missing tree.
+    [Fact]
+    public void Of_LevelOrderWithAMissingChild_WritesNull() => Assert.Equal("[1,null,2]", AnswerNotation.Of(new int?[] { 1, null, 2 }).ToJsonString());
 
     [Fact]
     public void Of_ListOfPairs_WritesEachPairAsARow() =>

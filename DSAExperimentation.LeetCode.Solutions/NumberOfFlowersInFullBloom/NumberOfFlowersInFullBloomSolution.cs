@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfFlowersInFullBloom;
 // Both strategies return the same int[] LeetCode asks for; they differ only in
 // whether every flower is re-examined per person, or the two endpoint arrays are
 // sorted once and each person answered by two bisections.
+[LeetCodeQuestion("number-of-flowers-in-full-bloom", LeetCodeAnswerOrder.AsWritten, Promise = typeof(NumberOfFlowersInFullBloomPromise))]
 internal static class NumberOfFlowersInFullBloomSolution
 {
     // The textbook O(n*m) answer: for every person, walk every flower and tally the

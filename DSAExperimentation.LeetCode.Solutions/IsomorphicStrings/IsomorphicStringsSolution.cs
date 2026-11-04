@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.IsomorphicStrings;
 // target-character - so both strategies keep a forward map (source -> target) and
 // a backward map (target -> source) and reject the first position where either
 // direction disagrees.
+[LeetCodeQuestion("isomorphic-strings", LeetCodeAnswerOrder.AsWritten, Promise = typeof(IsomorphicStringsPromise))]
 internal static class IsomorphicStringsSolution
 {
     // The textbook answer: two BCL Dictionary<char, char> maps. Deliberately

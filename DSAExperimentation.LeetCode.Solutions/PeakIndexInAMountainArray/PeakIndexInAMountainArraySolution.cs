@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PeakIndexInAMountainArray;
 // MonotonePredicateSearch.FirstTrue lands on the peak directly, O(log n). Same
 // index-rule idiom FindMinimumInRotatedSortedArray uses for its own pivot
 // search.
+[LeetCodeQuestion("peak-index-in-a-mountain-array", LeetCodeAnswerOrder.AsWritten, Promise = typeof(PeakIndexInAMountainArrayPromise))]
 internal static class PeakIndexInAMountainArraySolution
 {
     // The textbook answer: scan for the first index whose successor is smaller.

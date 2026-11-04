@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaxPointsOnALine;
 // slope bucket at any anchor, plus the anchor itself and any point that
 // coincides with it (which lies on every line through the anchor, not just
 // one slope's bucket), is that anchor's best line.
+[LeetCodeQuestion("max-points-on-a-line", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MaxPointsOnALinePromise))]
 internal static class MaxPointsOnALineSolution
 {
     private const int TrivialPointCount = 2;

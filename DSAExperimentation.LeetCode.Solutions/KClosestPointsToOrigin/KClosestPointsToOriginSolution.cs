@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.KClosestPointsToOrigin;
 //   size nearestCount (the KthLargestElement precedent), evicting its farthest root
 //   as soon as a (nearestCount + 1)-th candidate arrives, so only nearestCount points
 //   are ever ordered. O(n log k).
+[LeetCodeQuestion("k-closest-points-to-origin", LeetCodeAnswerOrder.AnyOrder, Promise = typeof(KClosestPointsToOriginPromise))]
 internal static class KClosestPointsToOriginSolution
 {
     // LeetCode hands each point in as a two-element array.

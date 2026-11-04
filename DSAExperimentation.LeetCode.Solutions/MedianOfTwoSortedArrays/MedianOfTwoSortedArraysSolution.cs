@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MedianOfTwoSortedArrays;
 // repo's own MonotonePredicateSearch.LastTrue, reused unmodified against
 // PartitionLeftFits - a monotone true..true,false..false rule over the partition
 // index, exactly the shape LastTrue assumes.
+[LeetCodeQuestion("median-of-two-sorted-arrays", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MedianOfTwoSortedArraysPromise))]
 internal static class MedianOfTwoSortedArraysSolution
 {
     private const int ParityModulus = 2;

@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumSegmentSumAfterRemovals;
 // and because a merge can only grow a segment the best sum seen so far never
 // shrinks - so one running maximum, recorded as the pass unwinds, reconstructs the
 // whole answer array in forward order.
+[LeetCodeQuestion("maximum-segment-sum-after-removals", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MaximumSegmentSumAfterRemovalsPromise))]
 internal static class MaximumSegmentSumAfterRemovalsSolution
 {
     // The textbook answer: mark the queried index removed, then rescan the whole

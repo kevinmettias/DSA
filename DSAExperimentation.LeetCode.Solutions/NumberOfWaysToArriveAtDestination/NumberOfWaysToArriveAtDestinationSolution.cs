@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysToArriveAtDestinatio
 // construction (Dist strictly decreases across every such road), which is what lets
 // the composed arm use DagFold's memoized fold instead of CheckedFold's runtime
 // cycle defense.
+[LeetCodeQuestion("number-of-ways-to-arrive-at-destination", LeetCodeAnswerOrder.AsWritten, Promise = typeof(NumberOfWaysToArriveAtDestinationPromise))]
 internal static class NumberOfWaysToArriveAtDestinationSolution
 {
     // The textbook answer: recurse into every neighbor exactly one shortest-path

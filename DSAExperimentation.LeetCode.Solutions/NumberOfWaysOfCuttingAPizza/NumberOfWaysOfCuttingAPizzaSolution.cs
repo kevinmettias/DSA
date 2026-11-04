@@ -19,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysOfCuttingAPizza;
 // The induced state graph is well-founded for Memoizer's own precondition:
 // RemainingCuts strictly decreases on every recursive call, so no state can recur
 // on its own path.
+[LeetCodeQuestion("number-of-ways-of-cutting-a-pizza", LeetCodeAnswerOrder.AsWritten, Promise = typeof(NumberOfWaysOfCuttingAPizzaPromise))]
 internal static class NumberOfWaysOfCuttingAPizzaSolution
 {
     // A pizza with no apple left in it cannot be cut into apple-bearing pieces.

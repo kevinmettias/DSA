@@ -29,6 +29,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumEmployeesToBeInvitedToAMe
 // while still listing every off-cycle node in dependency order through its
 // `ordering` out-parameter, exactly the traversal
 // LargestColorValueInADirectedGraphSolution relies on for its own DP.
+[LeetCodeQuestion("maximum-employees-to-be-invited-to-a-meeting", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MaximumEmployeesToBeInvitedToAMeetingPromise))]
 internal static class MaximumEmployeesToBeInvitedToAMeetingSolution
 {
     // A 2-cycle is a mutual-favorite pair, scored differently from longer cycles:

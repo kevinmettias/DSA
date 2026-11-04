@@ -16,10 +16,11 @@ namespace DSAExperimentation.LeetCode.Solutions.PerfectRectangle;
 // corner of a genuine tiling is shared by an even number of rectangles and so
 // toggles back out, leaving only the bounding box's own four corners standing - an
 // O(n) check that catches overlaps the area check alone would miss.
+[LeetCodeQuestion("perfect-rectangle", LeetCodeAnswerOrder.AsWritten, Promise = typeof(PerfectRectanglePromise))]
 internal static class PerfectRectangleSolution
 {
-    private const int X2Index = 2;
-    private const int Y2Index = 3;
+    internal const int X2Index = 2;
+    internal const int Y2Index = 3;
 
     public static bool IsRectangleCoverByPairwiseOverlap(int[][] rectangles)
     {

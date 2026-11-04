@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumAreaRectangleWithPointCon
 // over x-columns, using this repo's own SegmentTree<Element, MaxOperation<Element>>
 // as a point-update/range-max index over compressed y so each column does
 // O(log n) work instead of an O(n) border scan.
+[LeetCodeQuestion("maximum-area-rectangle-with-point-constraints-ii", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MaximumAreaRectangleWithPointConstraintsIIPromise))]
 internal static class MaximumAreaRectangleWithPointConstraintsIISolution
 {
     private const long None = -1;

@@ -19,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysToReorderArrayToGetS
 // (ARCHITECTURE 17.5), the composed arm through this repo's Memoizer - so the
 // comparison isolates list-splitting-and-filtering against build-once-then-fold. The
 // answer excludes the original array itself, hence the subtracted 1.
+[LeetCodeQuestion("number-of-ways-to-reorder-array-to-get-same-bst", LeetCodeAnswerOrder.AsWritten, Promise = typeof(NumberOfWaysToReorderArrayToGetSameBSTPromise))]
 internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
 {
     private const int BinaryChildCount = 2;

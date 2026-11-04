@@ -6,6 +6,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MissingNumber;
 // missing. Both strategies scan [0, n] for the first candidate not present in
 // nums - the textbook O(n^2) "scan the array for each candidate" brute force, or
 // this repo's own Set<int> for a one-pass O(n) membership check.
+[LeetCodeQuestion("missing-number", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MissingNumberPromise))]
 internal static class MissingNumberSolution
 {
     // The textbook answer: for each candidate in [0, n], scan the whole array for

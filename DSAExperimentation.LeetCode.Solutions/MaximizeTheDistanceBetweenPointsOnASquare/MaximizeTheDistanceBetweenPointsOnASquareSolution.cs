@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeTheDistanceBetweenPoints
 // minimum circular gap" on the sorted offsets: a textbook binary search on the
 // answer, trying every point as the unwrapped start of the walk so the closing
 // wrap-around gap is checked without ever doubling the array.
+[LeetCodeQuestion("maximize-the-distance-between-points-on-a-square", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MaximizeTheDistanceBetweenPointsOnASquarePromise))]
 internal static class MaximizeTheDistanceBetweenPointsOnASquareSolution
 {
     private const int MinimumGap = 1;

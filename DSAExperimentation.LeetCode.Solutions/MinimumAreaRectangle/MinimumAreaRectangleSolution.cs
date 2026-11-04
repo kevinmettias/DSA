@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumAreaRectangle;
 // (the same membership primitive PerfectRectangleSolution uses for corner
 // bookkeeping) and confirms each corner in O(1), the same "swap a linear rescan for
 // a hash lookup" move TwoSumSolution makes for its own pair.
+[LeetCodeQuestion("minimum-area-rectangle", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MinimumAreaRectanglePromise))]
 internal static class MinimumAreaRectangleSolution
 {
     private const int NoRectangle = 0;

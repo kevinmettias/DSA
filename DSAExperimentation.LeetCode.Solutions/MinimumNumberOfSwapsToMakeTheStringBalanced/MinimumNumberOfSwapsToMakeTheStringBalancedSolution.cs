@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfSwapsToMakeTheStr
 //
 // Matching greedily nearest-first never changes how many closers end up unmatched,
 // only how expensively "nearest" gets found - which is exactly what separates the two.
+[LeetCodeQuestion("minimum-number-of-swaps-to-make-the-string-balanced", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MinimumNumberOfSwapsToMakeTheStringBalancedPromise))]
 internal static class MinimumNumberOfSwapsToMakeTheStringBalancedSolution
 {
     private const int ClosersFixedPerSwap = 2; // each swap resolves two unmatched closing brackets

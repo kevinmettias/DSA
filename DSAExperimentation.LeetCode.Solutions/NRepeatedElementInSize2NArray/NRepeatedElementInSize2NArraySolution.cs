@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NRepeatedElementInSize2NArray;
 // Both strategies answer the same question with the same signature: the O(n^2)
 // pairwise scan that needs nothing but the array, and the single O(n) pass over this
 // repo's own Set<int> whose first refused TryAdd is the repeat.
+[LeetCodeQuestion("n-repeated-element-in-size-2n-array", LeetCodeAnswerOrder.AsWritten, Promise = typeof(NRepeatedElementInSize2NArrayPromise))]
 internal static class NRepeatedElementInSize2NArraySolution
 {
     private const string NoRepeatedElementFoundMessage =

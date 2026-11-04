@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumSwapsToMakeSequencesIncre
 // Precondition (guaranteed by LC 801's own constraints): at least one valid
 // keep/swap assignment exists, so Cost below always finds a valid transition and
 // never has to reason about an all-invalid state.
+[LeetCodeQuestion("minimum-swaps-to-make-sequences-increasing", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MinimumSwapsToMakeSequencesIncreasingPromise))]
 internal static class MinimumSwapsToMakeSequencesIncreasingSolution
 {
     // Swapping one index costs one swap; keeping it costs none.

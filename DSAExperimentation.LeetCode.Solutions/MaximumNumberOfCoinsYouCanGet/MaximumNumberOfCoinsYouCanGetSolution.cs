@@ -16,10 +16,11 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfCoinsYouCanGet;
 //
 // Both work on a copy, so the caller's array - and a benchmark re-invoking an arm -
 // always starts from the same unsorted input.
+[LeetCodeQuestion("maximum-number-of-coins-you-can-get", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MaximumNumberOfCoinsYouCanGetPromise))]
 internal static class MaximumNumberOfCoinsYouCanGetSolution
 {
     // Three piles are consumed per round: Alice's, yours, Bob's.
-    private const int GroupSize = 3;
+    internal const int GroupSize = 3;
 
     // Sorted ascending, your piles are every second one from index n upward.
     private const int PickStride = 2;

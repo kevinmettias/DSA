@@ -2215,7 +2215,9 @@ of tier 4. It holds:
 - `CatalogStrategy`, which finds an enrolled solution's strategies by the generator's own rule and
   calls one on one case;
 - `AnswerNotation` and `CatalogJudge`, which write an answer back in LeetCode's notation and judge it
-  against the recorded output by the question's order rule;
+  against the recorded output by the question's order rule. A missing tree or list in a sequence of
+  them is LeetCode's `[]`, as a whole answer that is null is, the way LeetCode prints LC 725's empty
+  parts;
 - `AnswerGraphText`, which renders an answer of any shape, so the benchmarks' tests can compare a
   hand-written class's arms.
 
@@ -2324,8 +2326,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 667 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 71 more:
+**Enrolled.** 704 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 108 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2354,6 +2356,19 @@ have only the empty tree. A check over those would pass whatever the strategy di
   Calculator's two strategies had parted on expressions with a parenthesis left open, where the
   catalog records one strategy's answer. Flipping an Image flips in place, as LeetCode lets it, so
   it also says `RewritesInput = true`.
+- 35 more on the same footing, among them a self-loop (Longest Cycle in a Graph, Maximum Employees to
+  Be Invited to a Meeting), repeated points (Max Points on a Line, Minimum Area Rectangle), piles not
+  in threes, an unreachable end (Jump Game II), unsorted arrays (Median of Two Sorted Arrays) and
+  inconsistent observations (Loud and Rich). K Closest Points to Origin answers in any order, and
+  its promise rules out a tie at the kth distance. Three promises read the constant their solution
+  already states (Maximum Number of Coins' `GroupSize`, Minimum Moves to Spread Stones' `GridSize`,
+  Perfect Rectangle's corner indices) rather than state it again.
+- Longest Substring with At Least K Repeating Characters, once its brute force stopped answering 0
+  for k = 1. A character's first occurrence put it below k and its kth lifted it out, in an
+  `else if`, so with k = 1, where the two are one occurrence, only the first happened. The catalog's
+  16 cases with k = 1 found it, where the published examples have none.
+- Split Linked List in Parts, once a missing part was written `[]` as LeetCode writes it. It rewires
+  its list in place, so it says `RewritesInput = true`.
 
 Open items:
 
@@ -2364,11 +2379,15 @@ Open items:
   is under 1% of that bound for 327 and at least half of it for 57, with a median of 0.15%. The
   catalog's cases are LeetCode's examples and the dataset's generated inputs, mostly small, so the
   sized classes remain the only timing at the sizes the constraints allow.
-- **Copying inputs, measured.** Whether 16 calls an iteration time a rewriting arm as steadily as a
-  class that reads its columns once times the others is not yet measured. The first runs of the 27
-  classes should be repeated on identical code, and the spread between the two runs read before any
-  arm's time is trusted.
-- **Enrolling the rest.** 438 solutions are left (2026-11-04), each blocked for a reason the table and
+- **Copying inputs, measured** (2026-11-04). An A/A of the 28 classes that copy their inputs, beside
+  four that read theirs once, on identical code: a copying arm's mean moved a median 3.2% between the
+  two runs, against 5.2% for the four, so the means reproduce as well. Within one run, though,
+  BenchmarkDotNet's error interval was a median 5.9% of the mean, against 1.9%: 16 calls an iteration
+  average over fewer calls than the pilot gives a class that reads its inputs once. The widest were
+  arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
+  past 25%. A difference under about 10% in one of these classes needs a second run before it means
+  anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
+- **Enrolling the rest.** 401 solutions are left (2026-11-04), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.

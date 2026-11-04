@@ -21,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestCycleInAGraph;
 // LongestCycleByTarjanComponents hands the graph to this repo's own
 // Algorithms.Connectivity.StronglyConnectedComponents.Tarjan and reads the answer
 // off the component sizes in one O(V+E) pass.
+[LeetCodeQuestion("longest-cycle-in-a-graph", LeetCodeAnswerOrder.AsWritten, Promise = typeof(LongestCycleInAGraphPromise))]
 internal static class LongestCycleInAGraphSolution
 {
     // A component of one node is a node on no cycle: edges[i] != i is guaranteed,

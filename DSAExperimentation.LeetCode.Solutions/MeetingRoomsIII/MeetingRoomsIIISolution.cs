@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MeetingRoomsIII;
 // End times are tracked as `long` throughout: a room that is delayed repeatedly
 // accumulates every wait, so the running end time can carry past int range even
 // though each individual input end time fits in an int.
+[LeetCodeQuestion("meeting-rooms-iii", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MeetingRoomsIIIPromise))]
 internal static class MeetingRoomsIIISolution
 {
     // No room is free at this meeting's start time - the meeting has to wait.

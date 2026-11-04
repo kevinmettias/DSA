@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MostFrequentIds;
 // with the same signature, so the test harness can assert they agree and the
 // benchmark harness can time them against each other without either restating
 // the algorithm.
+[LeetCodeQuestion("most-frequent-ids", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MostFrequentIdsPromise))]
 internal static class MostFrequentIdsSolution
 {
     // Textbook: track every id's live count in a BCL Dictionary and rescan

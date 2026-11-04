@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MakeArrayEmpty;
 // FenwickTree<int, SumOperation<int>> (Binary Indexed Tree) holding 1 for present
 // and 0 for removed - the same coordinate-free range-count contrast
 // CountGoodTripletsInAnArraySolution draws for LC 2179.
+[LeetCodeQuestion("make-array-empty", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MakeArrayEmptyPromise))]
 internal static class MakeArrayEmptySolution
 {
     // The textbook answer: re-scan the present flags between the previous removal

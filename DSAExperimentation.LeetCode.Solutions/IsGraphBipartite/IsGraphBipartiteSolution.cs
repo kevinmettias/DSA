@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.IsGraphBipartite;
 // The question is 2-colorability, so both strategies are a greedy coloring walk
 // that fails the moment an edge joins two same-colored vertices. The graph may be
 // disconnected, so both restart from every still-uncolored vertex.
+[LeetCodeQuestion("is-graph-bipartite", LeetCodeAnswerOrder.AsWritten, Promise = typeof(IsGraphBipartitePromise))]
 internal static class IsGraphBipartiteSolution
 {
     // Uncolored; the two colors are +1 and -1 so flipping is a negation.

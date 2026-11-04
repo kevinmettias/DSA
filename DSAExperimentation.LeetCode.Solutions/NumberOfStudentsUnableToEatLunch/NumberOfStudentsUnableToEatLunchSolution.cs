@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfStudentsUnableToEatLunch
 // preferences can change again. They differ only in the containers the line and
 // the stack of sandwiches are kept in, which is what decides whether sending a
 // student to the back costs O(1) or O(n).
+[LeetCodeQuestion("number-of-students-unable-to-eat-lunch", LeetCodeAnswerOrder.AsWritten, Promise = typeof(NumberOfStudentsUnableToEatLunchPromise))]
 internal static class NumberOfStudentsUnableToEatLunchSolution
 {
     // The textbook baseline this composition has to justify itself against: a

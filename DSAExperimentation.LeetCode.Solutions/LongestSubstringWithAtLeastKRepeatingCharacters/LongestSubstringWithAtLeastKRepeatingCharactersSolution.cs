@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestSubstringWithAtLeastKRepe
 // character is itself a valid answer. It counts with this repo's own
 // HashMap<char,int> - the same frequency-count primitive
 // MinimumWindowSubstringSolution uses for its own sliding window.
+[LeetCodeQuestion("longest-substring-with-at-least-k-repeating-characters", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestSubstringWithAtLeastKRepeatingCharactersSolution
 {
     public static int LongestByBruteForce(string text, int minimumRepeats)
@@ -48,11 +49,13 @@ internal static class LongestSubstringWithAtLeastKRepeatingCharactersSolution
         var newCount = counts.GetValueOrDefault(ch) + 1;
         counts[ch] = newCount;
 
-        if (newCount == 1)
+        // A character's first occurrence puts it below k, and its kth lifts it out again. With k = 1 they
+        // are one occurrence, which does both and leaves the count as it was.
+        if (newCount == 1 && minimumRepeats > 1)
         {
             belowK++;
         }
-        else if (newCount == minimumRepeats)
+        else if (newCount == minimumRepeats && minimumRepeats > 1)
         {
             belowK--;
         }

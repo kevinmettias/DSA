@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfVisiblePeopleInAQueue;
 // taller-or-equal blocker left on top afterwards, and heights tied with the current
 // person are popped before it is pushed so a later, taller person can never see past
 // more than one of a run of equal heights.
+[LeetCodeQuestion("number-of-visible-people-in-a-queue", LeetCodeAnswerOrder.AsWritten, Promise = typeof(NumberOfVisiblePeopleInAQueuePromise))]
 internal static class NumberOfVisiblePeopleInAQueueSolution
 {
     // The textbook answer: for each person, walk right tracking the tallest person

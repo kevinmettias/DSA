@@ -30,9 +30,10 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumMovesToSpreadStonesOverGr
 // coverage already proves out - threading the running Manhattan-distance sum
 // through AssignmentState.Cost so Choose/Unchoose stay each other's exact
 // inverse (Backtrack.cs's own precondition).
+[LeetCodeQuestion("minimum-moves-to-spread-stones-over-grid", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MinimumMovesToSpreadStonesOverGridPromise))]
 internal static class MinimumMovesToSpreadStonesOverGridSolution
 {
-    private const int GridSize = 3;
+    internal const int GridSize = 3;
 
     public static int MinimumMovesByBruteForcePermutation(int[][] grid)
     {

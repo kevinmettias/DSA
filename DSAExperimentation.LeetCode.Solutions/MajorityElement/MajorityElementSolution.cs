@@ -5,6 +5,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MajorityElement;
 // LeetCode 169. Majority Element: the array is guaranteed to have an element
 // appearing more than n/2 times, so a running count can return as soon as one
 // candidate crosses that threshold instead of scanning to the end.
+[LeetCodeQuestion("majority-element", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MajorityElementPromise))]
 internal static class MajorityElementSolution
 {
     // The textbook arm the HashMap count is measured against: one candidate held

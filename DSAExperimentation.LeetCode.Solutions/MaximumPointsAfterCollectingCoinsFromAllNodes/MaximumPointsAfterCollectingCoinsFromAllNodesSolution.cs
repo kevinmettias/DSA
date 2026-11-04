@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumPointsAfterCollectingCoin
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
+[LeetCodeQuestion("maximum-points-after-collecting-coins-from-all-nodes", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MaximumPointsAfterCollectingCoinsFromAllNodesPromise))]
 internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
 {
     // Plain recursive memoized DP over a BCL adjacency list -

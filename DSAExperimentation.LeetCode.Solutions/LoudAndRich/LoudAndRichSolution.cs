@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LoudAndRich;
 // the composed solution orders everyone richest-first with this repo's own
 // Kahn's-algorithm TopologicalSort.TrySort and threads the best answer so far
 // down each edge in one linear pass.
+[LeetCodeQuestion("loud-and-rich", LeetCodeAnswerOrder.AsWritten, Promise = typeof(LoudAndRichPromise))]
 internal static class LoudAndRichSolution
 {
     // This repo's own topological sort: TrySort orders every person richest-first

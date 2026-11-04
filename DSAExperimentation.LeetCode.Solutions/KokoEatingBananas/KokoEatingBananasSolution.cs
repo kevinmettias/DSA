@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.KokoEatingBananas;
 // same predicate as an IMonotonePredicate<int> and hands it, with the speed range, to
 // this repo's own MonotonePredicateSearch.FirstTrue, the same search-on-answer shape
 // SplitArrayLargestSum uses.
+[LeetCodeQuestion("koko-eating-bananas", LeetCodeAnswerOrder.AsWritten, Promise = typeof(KokoEatingBananasPromise))]
 internal static class KokoEatingBananasSolution
 {
     // Koko eats at least one banana an hour, so the speed range starts at 1.

@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SplitLinkedListInParts;
 // The two strategies differ only in whether they reuse the input list's own
 // nodes or rebuild each part from scratch; both derive per-part sizes from the
 // same PartSizing shape.
+[LeetCodeQuestion("split-linked-list-in-parts", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class SplitLinkedListInPartsSolution
 {
     // Baseline: walk the list once to materialize every value into a BCL

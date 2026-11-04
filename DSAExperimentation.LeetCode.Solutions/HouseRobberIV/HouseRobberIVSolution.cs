@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.HouseRobberIV;
 // so this repo's own MonotonePredicateSearch.FirstTrue can bisect the cap range,
 // turning O(range * n) into O(n * log range) - the same search-on-the-answer
 // shape LC 410 and LC 875 use.
+[LeetCodeQuestion("house-robber-iv", LeetCodeAnswerOrder.AsWritten, Promise = typeof(HouseRobberIVPromise))]
 internal static class HouseRobberIVSolution
 {
     // The textbook answer: sweep every candidate capability upward from the

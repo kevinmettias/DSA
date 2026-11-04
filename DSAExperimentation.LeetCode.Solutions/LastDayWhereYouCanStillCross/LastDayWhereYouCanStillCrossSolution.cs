@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LastDayWhereYouCanStillCross;
 // its own explicit-stack flood fill; the composed arm hands the bisection to
 // MonotonePredicateSearch and probes with ConnectedComponents.ReduceEach over
 // GridTopology.
+[LeetCodeQuestion("last-day-where-you-can-still-cross", LeetCodeAnswerOrder.AsWritten, Promise = typeof(LastDayWhereYouCanStillCrossPromise))]
 internal static class LastDayWhereYouCanStillCrossSolution
 {
     // The textbook baseline: a hand-rolled lo/hi bisection over the same predicate,
