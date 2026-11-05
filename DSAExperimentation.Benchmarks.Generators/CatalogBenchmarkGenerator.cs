@@ -147,7 +147,8 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
         }
 
         var name = NameFor(solution);
-        var writer = new CatalogScriptWriter(NotationTypes.Render(solution), name, arms);
+        var copiesInputs = IsSet(solution, attribute, RewritesInputArgument);
+        var writer = new CatalogScriptWriter(NotationTypes.Render(solution), name, arms, copiesInputs);
         generated.Sources.Add((name, writer.Write()));
     }
 

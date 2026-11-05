@@ -87,6 +87,15 @@ public sealed partial class CatalogBenchmarkGeneratorTests
     // The refusal for a get no method answers.
     private const string NoGetCall = "no get call";
 
+    // What a design class that copies its inputs writes: an [IterationSetup] per arm, and each call's
+    // constructor input read from the copy it spends.
+    private const string DesignCopySetup = "[global::BenchmarkDotNet.Attributes.IterationSetup(Target = nameof(CreateByMap))]";
+    private const string DesignCopySpent = "var input0 = _createByMapInput0Copies[copy];";
+
+    // DesignProbe whose instances may rewrite the inputs they are handed.
+    private static readonly string RewritingDesignProbe =
+        DesignProbe.Replace("Calls = typeof(ProbeCalls))]", "Calls = typeof(ProbeCalls), RewritesInput = true)]", StringComparison.Ordinal);
+
     // A design question's probe: one factory makes a map that answers put and get itself, the other a cache
     // whose get the question's Calls type states, since the cache answers only TryGet.
     private const string DesignProbe = """
@@ -292,6 +301,14 @@ public sealed partial class CatalogBenchmarkGeneratorTests
     [Fact]
     public void Initialize_DesignSolution_HandsItsAnswerBuffersAsOneListByMethod() =>
         Assert.Contains(BuffersByMethod, DesignSourceOf(DesignProbe));
+
+    [Fact]
+    public void Initialize_DesignSolutionThatRewritesInput_CopiesEachArmsInputsBeforeEachIteration() =>
+        Assert.Contains(DesignCopySetup, DesignSourceOf(RewritingDesignProbe));
+
+    [Fact]
+    public void Initialize_DesignSolutionThatRewritesInput_SpendsOneCopyPerCall() =>
+        Assert.Contains(DesignCopySpent, DesignSourceOf(RewritingDesignProbe));
 
     [Fact]
     public void Initialize_DesignInstanceAnsweringNoCall_ReportsTheCallItCannotMake() =>

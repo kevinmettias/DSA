@@ -7,8 +7,21 @@ namespace DSAExperimentation.Benchmarks.Generators;
 // through a switch on the method, writing each answer into a buffer of the method's return type, with no
 // delegate or reflection between the loop and the call. It returns the buffers together as one
 // CatalogCallAnswers, which the tests read back as LeetCode writes a script's answer.
-internal sealed class CatalogScriptWriter(string solution, string className, IReadOnlyList<ScriptShape> arms)
+//
+// A question whose instance rewrites an input it is handed - Complete Binary Tree Inserter grows the tree its
+// constructor takes - would start every call after the first from what the last one left. Its class hands
+// each call inputs of its own, as CatalogBenchmarkWriter does for a function question: an iteration is
+// fixed at CopiesPerIteration calls, and an [IterationSetup] per arm lays the scripts out that many times,
+// untimed, so each call spends the next copy of the constructor's and the calls' arguments.
+internal sealed class CatalogScriptWriter(string solution, string className, IReadOnlyList<ScriptShape> arms, bool rewritesInput)
 {
+    // Calls per iteration for a class that copies its inputs, as CatalogBenchmarkWriter fixes them.
+    private const int CopiesPerIteration = 16;
+
+    // The ranks of an input's column: a constructor's input by case, a call's argument by case and by call.
+    private const int ConstructorInputRanks = 1;
+    private const int CallInputRanks = 2;
+
     private const string Columns = "global::DSAExperimentation.LeetCode.Harness.CatalogColumns";
     private const string Scripts = "global::DSAExperimentation.LeetCode.Harness.CatalogScripts";
     private const string Answers = "global::DSAExperimentation.LeetCode.Harness.CatalogCallAnswers";
@@ -17,8 +30,12 @@ internal sealed class CatalogScriptWriter(string solution, string className, IRe
     private const string BaselineMark = "(Baseline = true)";
     private const string ArgumentSeparator = ", ";
     private const string NoBuffer = "null";
+    private const string RankSuffix = "[]";
+    private const string CopyIndex = "[copy]";
     private const string NewLine = "\n";
     private const string WindowsNewLine = "\r\n";
+
+    private readonly bool _rewritesInput = rewritesInput;
 
     // A template's lines end as this file's do, which a Windows checkout makes \r\n; the class is written
     // with \n throughout either way.
@@ -32,9 +49,9 @@ internal sealed class CatalogScriptWriter(string solution, string className, IRe
 
         namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-        public class {{className}} : {{Contract}}
+        {{InvocationCountMark()}}public class {{className}} : {{Contract}}
         {
-        {{Joined(arms.Select(FieldsOf))}}
+        {{CopyCountField()}}{{Joined(arms.Select(FieldsOf))}}
             global::System.Type {{Contract}}.Solution => typeof({{solution}});
 
             [global::BenchmarkDotNet.Attributes.GlobalSetup]
@@ -42,7 +59,7 @@ internal sealed class CatalogScriptWriter(string solution, string className, IRe
             {
         {{Joined(arms.Select(SetupOf))}}
             }
-        {{Joined(arms.Select(ArmOf))}}
+        {{Joined(arms.Select(CopySetupOf))}}{{Joined(arms.Select(ArmOf))}}
 
             {{CaseList}} {{Contract}}.CasesOf(string arm) => arm switch
             {
@@ -53,19 +70,43 @@ internal sealed class CatalogScriptWriter(string solution, string className, IRe
 
         """;
 
-    private static string FieldsOf(ScriptShape arm) =>
+    // The class-level mark that fixes an iteration's calls to its copies, for a class that copies its inputs.
+    private string InvocationCountMark()
+    {
+        if (!_rewritesInput)
+        {
+            return string.Empty;
+        }
+
+        return $"[global::BenchmarkDotNet.Attributes.InvocationCount({className}.CopiesPerIteration, 1)]{NewLine}";
+    }
+
+    private string CopyCountField()
+    {
+        if (!_rewritesInput)
+        {
+            return string.Empty;
+        }
+
+        return $"    internal const int CopiesPerIteration = {CopiesPerIteration};{NewLine}{NewLine}";
+    }
+
+    private string FieldsOf(ScriptShape arm) =>
         $$"""
             private {{Columns}} {{FieldOf(arm)}}Columns;
             private int[][] {{FieldOf(arm)}}Calls;
-        {{Joined(arm.Inputs.Select((input, index) => $"    private {input}[] {FieldOf(arm)}Input{index};"))}}
+        {{Joined(arm.Inputs.Select((input, index) => InputFieldDeclarationOf(arm, input, index)))}}
         {{Joined(arm.Calls.Select((call, method) => CallFieldsOf(arm, call, method)))}}
-            private {{Answers}} {{FieldOf(arm)}}Answers;
+        {{CopyIndexFieldOf(arm)}}    private {{Answers}} {{FieldOf(arm)}}Answers;
 
         """;
 
-    private static string CallFieldsOf(ScriptShape arm, ScriptCall call, int method)
+    private string InputFieldDeclarationOf(ScriptShape arm, string input, int index) =>
+        $"    private {InputFieldTypeOf(input, ConstructorInputRanks)} {InputFieldOf(arm, index)};";
+
+    private string CallFieldsOf(ScriptShape arm, ScriptCall call, int method)
     {
-        var inputs = call.Inputs.Select((input, index) => $"    private {input}[][] {CallFieldOf(arm, method)}Input{index};");
+        var inputs = call.Inputs.Select((input, index) => $"    private {InputFieldTypeOf(input, CallInputRanks)} {CallInputFieldOf(arm, method, index)};");
 
         if (call.AnswerType is null)
         {
@@ -75,19 +116,44 @@ internal sealed class CatalogScriptWriter(string solution, string className, IRe
         return Joined(inputs.Append($"    private {call.AnswerType}[][] {CallFieldOf(arm, method)}Answers;"));
     }
 
+    // Which copy the arm's next call spends.
+    private string CopyIndexFieldOf(ScriptShape arm)
+    {
+        if (!_rewritesInput)
+        {
+            return string.Empty;
+        }
+
+        return $"    private int {FieldOf(arm)}Copy;{NewLine}";
+    }
+
     private string SetupOf(ScriptShape arm) =>
         $$"""
                 {{FieldOf(arm)}}Columns = {{Columns}}.ForScripts(typeof({{solution}}));
-                var {{LocalOf(arm)}}Scripts = new {{Scripts}}({{FieldOf(arm)}}Columns, [{{string.Join(ArgumentSeparator, arm.Calls.Select(call => $"\"{call.Name}\""))}}]);
+                var {{LocalOf(arm)}}Scripts = new {{Scripts}}({{FieldOf(arm)}}Columns, {{MethodsOf(arm)}});
                 {{FieldOf(arm)}}Calls = {{LocalOf(arm)}}Scripts.Calls;
-        {{Joined(arm.Inputs.Select((input, index) => $"        {FieldOf(arm)}Input{index} = {LocalOf(arm)}Scripts.ConstructorColumn<{input}>({index});"))}}
+        {{InputSetupOf(arm)}}
         {{Joined(arm.Calls.Select((call, method) => CallSetupOf(arm, call, method)))}}
                 {{FieldOf(arm)}}Answers = {{LocalOf(arm)}}Scripts.AnswersFrom([{{string.Join(ArgumentSeparator, arm.Calls.Select((call, method) => BufferOf(arm, call, method)))}}]);
         """;
 
-    private static string CallSetupOf(ScriptShape arm, ScriptCall call, int method)
+    // The constructor's inputs [GlobalSetup] reads once; a class that copies its inputs reads them before every
+    // iteration instead.
+    private string InputSetupOf(ScriptShape arm)
     {
-        var inputs = call.Inputs.Select((input, index) => $"        {CallFieldOf(arm, method)}Input{index} = {LocalOf(arm)}Scripts.ArgumentColumn<{input}>({method}, {index});");
+        if (_rewritesInput)
+        {
+            return string.Empty;
+        }
+
+        return Joined(arm.Inputs.Select((input, index) => $"        {FieldOf(arm)}Input{index} = {LocalOf(arm)}Scripts.ConstructorColumn<{input}>({index});"));
+    }
+
+    // A call's argument columns [GlobalSetup] reads once, unless the class copies its inputs, and the buffer for
+    // its answers.
+    private string CallSetupOf(ScriptShape arm, ScriptCall call, int method)
+    {
+        var inputs = ArgumentSetupOf(arm, call, method);
 
         if (call.AnswerType is null)
         {
@@ -95,6 +161,16 @@ internal sealed class CatalogScriptWriter(string solution, string className, IRe
         }
 
         return Joined(inputs.Append($"        {CallFieldOf(arm, method)}Answers = {LocalOf(arm)}Scripts.AnswerBuffer<{call.AnswerType}>();"));
+    }
+
+    private IEnumerable<string> ArgumentSetupOf(ScriptShape arm, ScriptCall call, int method)
+    {
+        if (_rewritesInput)
+        {
+            return [];
+        }
+
+        return call.Inputs.Select((input, index) => $"        {CallFieldOf(arm, method)}Input{index} = {LocalOf(arm)}Scripts.ArgumentColumn<{input}>({method}, {index});");
     }
 
     // The buffer holding a method's answers, or null for a method that returns nothing.
@@ -108,6 +184,38 @@ internal sealed class CatalogScriptWriter(string solution, string className, IRe
         return $"{CallFieldOf(arm, method)}Answers";
     }
 
+    // Each arm's [IterationSetup], for a class that copies its inputs: the scripts laid out CopiesPerIteration
+    // times, so each call of the iteration reads arguments no earlier call has rewritten.
+    private string CopySetupOf(ScriptShape arm)
+    {
+        if (!_rewritesInput)
+        {
+            return string.Empty;
+        }
+
+        var inputs = arm.Inputs.Select((input, index) =>
+            $"        {InputFieldOf(arm, index)} = global::System.Array.ConvertAll(copies, scripts => scripts.ConstructorColumn<{input}>({index}));");
+        var arguments = arm.Calls.SelectMany((call, method) => call.Inputs.Select((input, index) =>
+            $"        {CallInputFieldOf(arm, method, index)} = global::System.Array.ConvertAll(copies, scripts => scripts.ArgumentColumn<{input}>({method}, {index}));"));
+
+        return $$"""
+
+            [global::BenchmarkDotNet.Attributes.IterationSetup(Target = nameof({{arm.Name}}))]
+            public void Copy{{arm.Name}}Inputs()
+            {
+                var copies = new {{Scripts}}[CopiesPerIteration];
+
+                for (var copy = 0; copy < copies.Length; copy++)
+                {
+                    copies[copy] = new {{Scripts}}({{FieldOf(arm)}}Columns, {{MethodsOf(arm)}});
+                }
+
+        {{Joined(inputs.Concat(arguments))}}
+                {{FieldOf(arm)}}Copy = 0;
+            }
+        """;
+    }
+
     private string ArmOf(ScriptShape arm) =>
         $$"""
 
@@ -115,7 +223,7 @@ internal sealed class CatalogScriptWriter(string solution, string className, IRe
             public {{Answers}} {{arm.Name}}()
             {
                 var calls = {{FieldOf(arm)}}Calls;
-        {{Joined(arm.Inputs.Select((_, index) => $"        var input{index} = {FieldOf(arm)}Input{index};"))}}
+        {{InputLocalsOf(arm)}}
         {{Joined(arm.Calls.Select((call, method) => CallLocalsOf(arm, call, method)))}}
 
                 for (var index = 0; index < calls.Length; index++)
@@ -147,9 +255,22 @@ internal sealed class CatalogScriptWriter(string solution, string className, IRe
         return BaselineMark;
     }
 
-    private static string CallLocalsOf(ScriptShape arm, ScriptCall call, int method)
+    // The arm's inputs as locals: its columns, or the next copy of them for a class that copies its inputs.
+    private string InputLocalsOf(ScriptShape arm)
     {
-        var inputs = call.Inputs.Select((_, index) => $"        var call{method}Input{index} = {CallFieldOf(arm, method)}Input{index};");
+        var locals = arm.Inputs.Select((_, index) => $"        var input{index} = {InputFieldOf(arm, index)}{CopyIndexOf()};");
+
+        if (!_rewritesInput)
+        {
+            return Joined(locals);
+        }
+
+        return Joined(locals.Prepend($"        var copy = {FieldOf(arm)}Copy++;"));
+    }
+
+    private string CallLocalsOf(ScriptShape arm, ScriptCall call, int method)
+    {
+        var inputs = call.Inputs.Select((_, index) => $"        var call{method}Input{index} = {CallInputFieldOf(arm, method, index)}{CopyIndexOf()};");
 
         if (call.AnswerType is null)
         {
@@ -175,6 +296,55 @@ internal sealed class CatalogScriptWriter(string solution, string className, IRe
     }
 
     private static string CaseOf(ScriptShape arm) => $"        \"{arm.Name}\" => {FieldOf(arm)}Columns.Cases,";
+
+    // An input's column - by case, and by call for a call's argument - with one more rank for the copies of a
+    // class that copies its inputs.
+    private string InputFieldTypeOf(string input, int ranks)
+    {
+        var copyRanks = 0;
+
+        if (_rewritesInput)
+        {
+            copyRanks = 1;
+        }
+
+        var suffixes = Enumerable.Repeat(RankSuffix, ranks + copyRanks);
+
+        return input + string.Concat(suffixes);
+    }
+
+    private string InputFieldOf(ScriptShape arm, int index)
+    {
+        if (!_rewritesInput)
+        {
+            return $"{FieldOf(arm)}Input{index}";
+        }
+
+        return $"{FieldOf(arm)}Input{index}Copies";
+    }
+
+    private string CallInputFieldOf(ScriptShape arm, int method, int index)
+    {
+        if (!_rewritesInput)
+        {
+            return $"{CallFieldOf(arm, method)}Input{index}";
+        }
+
+        return $"{CallFieldOf(arm, method)}Input{index}Copies";
+    }
+
+    private static string MethodsOf(ScriptShape arm) => $"[{string.Join(ArgumentSeparator, arm.Calls.Select(call => $"\"{call.Name}\""))}]";
+
+    // The index of the copy a call spends, for a class that copies its inputs.
+    private string CopyIndexOf()
+    {
+        if (!_rewritesInput)
+        {
+            return string.Empty;
+        }
+
+        return CopyIndex;
+    }
 
     private static string Joined(IEnumerable<string> blocks) => string.Join(NewLine, blocks.Where(block => block.Length > 0));
 

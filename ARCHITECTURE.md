@@ -2506,8 +2506,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,005 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 409 more:
+**Enrolled.** 1,006 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 410 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2632,6 +2632,13 @@ have only the empty tree. A check over those would pass whatever the strategy di
   Reservation Manager each have a strategy that needs no count, whose factory takes LeetCode's count
   all the same. 37 of the 72 first gained factories, their strategies having been nested classes
   only.
+- Complete Binary Tree Inserter, whose constructor takes the tree its insert calls grow, once a design
+  class could copy its inputs (`RewritesInput = true`, as for a function question). The tests replay
+  each script from inputs read fresh, but a benchmark that read its columns once would start every
+  iteration after the first from the tree the last one grew. Its class fixes an iteration at 16 calls,
+  and an `[IterationSetup]` per arm lays the scripts out 16 times, untimed, so each call spends a copy
+  of the constructor's and the calls' arguments of its own. Its `Calls` type answers get_root with the
+  inserter's `Root`.
 - Minimum Number of Moves to Make Palindrome, promising a string that can become a palindrome: at most
   one letter appears an odd number of times. Both strategies nudge an unmatched letter inward and
   retry, so on the 38 generated cases that break it they never finished.
@@ -2686,7 +2693,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 100 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 99 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
@@ -2694,9 +2701,6 @@ Open items:
     Find the Number of Possible Ways for an Event finish no case on every strategy in time; K-th Symbol
     in Grammar and Kth Smallest Instructions were not measured; and Find the Shortest Superstring lets
     any shortest superstring stand, so it needs an answer check first.
-  - A design question whose instance rewrites an input it is handed: Complete Binary Tree Inserter
-    grows the tree its constructor takes, so a second call on one harness starts from a bigger tree.
-    A design class does not yet hand each call inputs of its own, as `RewritesInput` does above.
   - A design question that lets several answers stand needs an answer check over a whole script: All
     One Data Structure's getMaxKey returns "one of the keys" with the largest count.
   - A design question whose answers are random (Shuffle an Array, Random Pick with Weight, Insert
