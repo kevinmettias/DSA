@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.Domain.Language.English.Orthography;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountSortedVowelStrings;
 

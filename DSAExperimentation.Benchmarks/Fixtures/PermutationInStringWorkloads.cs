@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.Domain.Language.English.Orthography;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
 

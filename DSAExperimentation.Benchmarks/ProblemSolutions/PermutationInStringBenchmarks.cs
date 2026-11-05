@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.Domain.Language.English.Orthography;
 using DSAExperimentation.LeetCode.Solutions.PermutationInString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

@@ -1,4 +1,4 @@
-using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.Domain.Language.English.Orthography;
 
 namespace DSAExperimentation.LeetCode.Solutions.VowelsOfAllSubstrings;
 

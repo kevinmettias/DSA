@@ -1,6 +1,6 @@
-using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.Domain.Language.English.Orthography;
 
-namespace DSAExperimentation.Tests.Domain.Language.English;
+namespace DSAExperimentation.Tests.Domain.Language.English.Orthography;
 
 public sealed partial class EnglishVowelsTests
 {

@@ -26,6 +26,13 @@
       "expires": "2027-05-01"
     },
     {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation/Domain/Language/English/Orthography/EnglishMultigraphs.cs",
+      "reason": "Each named value is a digraph or trigraph, and its name is its spelling: Ch, Sh, Th, Ph, Ng, Ck and Tch are the letters that spell one sound, as tic-tac-toe's X and O are its marks, not abbreviations of longer words. A multigraph has no other name to spell out, and naming one by an example word (Church for ch) would name the word, not the letters.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-class-size",
       "path": "DSAExperimentation/DataStructures/Heap/Heap.cs",
       "reason": "Push+SiftUp (the insert path) and Peek/Pop+SiftDown+HighestPriorityChild (the remove/inspect path) share only the backing HeapArray, which check-class-size's own majority-connector filter deliberately treats as plumbing rather than a distinguishing responsibility (see cluster_judgment.go's cross_Cutting_Connectors comment) - but for a heap, that shared backing store is the entire reason both paths belong to one type. Splitting insert from remove into separate classes over one array would fragment an inherently unified abstraction, not clarify it.",

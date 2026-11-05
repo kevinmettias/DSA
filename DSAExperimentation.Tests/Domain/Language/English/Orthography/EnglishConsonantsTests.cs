@@ -1,6 +1,6 @@
-using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.Domain.Language.English.Orthography;
 
-namespace DSAExperimentation.Tests.Domain.Language.English;
+namespace DSAExperimentation.Tests.Domain.Language.English.Orthography;
 
 public sealed partial class EnglishConsonantsTests
 {
@@ -11,8 +11,8 @@ public sealed partial class EnglishConsonantsTests
     [Fact]
     public void Count_IsTwentyOne() => Assert.Equal(21, EnglishConsonants.Count);
 
-    // Every char: an English letter, in either case, is a consonant exactly when it is no vowel, and
-    // anything else is neither.
+    // Every char: an English letter, in either case, is a consonant exactly when it is no vowel,
+    // and anything else is neither.
     [Fact]
     public void Has_IsEveryEnglishLetterThatIsNoVowelForEveryChar() =>
         Assert.All(
