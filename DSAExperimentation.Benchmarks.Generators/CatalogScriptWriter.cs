@@ -30,7 +30,6 @@ internal sealed class CatalogScriptWriter(string solution, string className, IRe
     private const string BaselineMark = "(Baseline = true)";
     private const string ArgumentSeparator = ", ";
     private const string NoBuffer = "null";
-    private const string RankSuffix = "[]";
     private const string CopyIndex = "[copy]";
     private const string NewLine = "\n";
     private const string WindowsNewLine = "\r\n";
@@ -308,9 +307,7 @@ internal sealed class CatalogScriptWriter(string solution, string className, IRe
             copyRanks = 1;
         }
 
-        var suffixes = Enumerable.Repeat(RankSuffix, ranks + copyRanks);
-
-        return input + string.Concat(suffixes);
+        return NotationTypes.ArrayOf(input, ranks + copyRanks);
     }
 
     private string InputFieldOf(ScriptShape arm, int index)

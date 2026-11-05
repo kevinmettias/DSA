@@ -24,6 +24,7 @@ public sealed partial class NotationTypesTests
             public BinaryTreeNode<string> TextTree;
             public Dictionary<int, int> Counts;
             public int[,] Rectangle;
+            public int[,,] Cube;
             public RoleText Role;
             public Endpoints TwoValues;
             public BoxedText BoxedRole;
@@ -42,11 +43,11 @@ public sealed partial class NotationTypesTests
         }
         """;
 
-    public static TheoryData<string> ReadableFields => ["Integer", "Unsigned", "Text", "Character", "Grid", "Intervals", "Words", "Values", "Tree", "Role", "TwoValues"];
+    public static TheoryData<string> ReadableFields => ["Integer", "Unsigned", "Text", "Character", "Grid", "Rectangle", "Intervals", "Words", "Values", "Tree", "Role", "TwoValues"];
 
-    // A tree LeetCodeWireFormat cannot build, a map LeetCode has no notation for, a rectangular array, a role
-    // type that is a class, and a struct that keeps no value it is built from.
-    public static TheoryData<string> UnreadableFields => ["TextTree", "Counts", "Rectangle", "BoxedRole", "Sized"];
+    // A tree LeetCodeWireFormat cannot build, a map LeetCode has no notation for, an array of a rank past a
+    // grid's, a role type that is a class, and a struct that keeps no value it is built from.
+    public static TheoryData<string> UnreadableFields => ["TextTree", "Counts", "Cube", "BoxedRole", "Sized"];
 
     [Theory]
     [MemberData(nameof(ReadableFields))]
@@ -66,4 +67,21 @@ public sealed partial class NotationTypesTests
     [Fact]
     public void Render_GenericType_QualifiesItFully() =>
         Assert.Equal("global::System.Collections.Generic.IEnumerable<string>", NotationTypes.Render(GeneratorProbe.FieldType(Holder, "Words")));
+
+    // C# reads rank specifiers outermost first, so an array of a grid puts its own brackets before the grid's.
+    public static TheoryData<string, int, string> NestedArrays =>
+        new()
+        {
+            { "int", 1, "int[]" },
+            { "int[,]", 1, "int[][,]" },
+            { "int[,]", 2, "int[][][,]" },
+            { "int[][]", 1, "int[][][]" },
+            { "(int, int)[]", 1, "(int, int)[][]" },
+            { "global::System.Collections.Generic.IList<int[]>", 1, "global::System.Collections.Generic.IList<int[]>[]" },
+        };
+
+    [Theory]
+    [MemberData(nameof(NestedArrays))]
+    public void ArrayOf_RenderedType_PutsTheNewRanksOutermost(string element, int depth, string expected) =>
+        Assert.Equal(expected, NotationTypes.ArrayOf(element, depth));
 }

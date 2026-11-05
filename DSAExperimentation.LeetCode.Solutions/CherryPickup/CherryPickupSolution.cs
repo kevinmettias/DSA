@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CherryPickup;
 // whether repeated (Row1, Col1, Col2) sub-states are cached. The induced state graph
 // is well-founded for Memoizer's own precondition: Row1+Col1 strictly increases on
 // every recursive call, so no state can ever recur on its own path.
+[LeetCodeQuestion("cherry-pickup", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CherryPickupReach))]
 internal static class CherryPickupSolution
 {
     private const int Blocked = int.MinValue;

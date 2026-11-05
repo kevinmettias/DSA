@@ -2524,8 +2524,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,035 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 439 more:
+**Enrolled.** 1,038 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 442 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2714,6 +2714,15 @@ have only the empty tree. A check over those would pass whatever the strategy di
   legal expression, checked by grammar without evaluating: Parse Lisp Expression (15 generated cases
   leave a parenthesis open, 8 put an expression where a variable must stand) and Parsing A Boolean
   Expression (22 give `!` several operands, read by the generator as the negated conjunction).
+- 3 grid questions, once the reader and the generator read a rectangular array (2026-11-05): Cherry
+  Pickup with a reach of grids up to 6 rows (60 of its 77 cases; an 8-row grid takes its unmemoized arm
+  452 ms), Longest Increasing Path in a Matrix up to 50 cells (80 of 84), and Number of Increasing Paths
+  in a Grid, every case of which its naive arm finishes. A `T[,]` is read from LeetCode's rows when they
+  are of one length; rows of different lengths fill no rectangle and stop `[GlobalSetup]`, as any value
+  that does not fit its type does. A grid parameter never matches a declared `integer[][]`, so a solution
+  that hoists one beside its LeetCode-shaped overload, as Number of Possible Sets of Closing Branches does
+  a `long[,]`, still binds the jagged one. The generator writes an array of a grid as `int[][,]`, since C#
+  reads rank specifiers outermost first and `int[,][]` is a grid of arrays.
 
 Open items:
 
@@ -2732,7 +2741,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 70 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 67 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
@@ -2763,6 +2772,9 @@ Open items:
   - Sudoku Solver's strategies return whether they solved the board, where LeetCode's answers in place
     and returns nothing, as `AnswersInPlace` requires; its backtracking-engine arm also runs past 3 s
     on one generated puzzle.
+  - Check If There Is a Valid Parentheses String Path reads its grid as a `char[,]`, which no row of
+    another length fits, and 15 generated grids have one. It needs LeetCode's jagged shape beside its
+    own, with a promise of rows of one length, before the reader ever meets them.
 - **Trimming the enrolled solutions' own tests.** A theory row restates a catalog case when
   a case has the same inputs, read into the strategy's types, and the catalog's judge accepts the
   row's answer for it. That row is the check `CatalogCaseTests` already makes. Measured over the 608

@@ -12,7 +12,8 @@ namespace DSAExperimentation.LeetCode.Harness;
 // applied case by case:
 // - JSON numbers, strings and booleans as themselves (a non-negative integer as a uint too), and a
 //   one-character string as a char;
-// - an array as an array, element by element;
+// - an array as an array, element by element, and an array of rows of one length as a rectangular array,
+//   as Cherry Pickup reads its grid into an int[,];
 // - an array as a tuple of the same arity, the way LeetCode writes an interval as [start, end];
 // - a level-order array as a tree and a flat array as a linked list, through LeetCodeWireFormat;
 // - an interface-typed sequence as an array, or as a List<T> when the interface lets a strategy add;
@@ -29,6 +30,9 @@ internal static class NotationReader
 {
     // A ValueTuple holds seven items before its eighth slot nests the rest, which no LeetCode input needs.
     private const int MostTupleItems = 7;
+
+    // A grid's rank, the one rank past a list's that LeetCode's rows of rows can fill.
+    private const int GridRank = 2;
 
     private const string BareNullText = "A bare null is not a string LeetCode passes.";
 
@@ -91,7 +95,7 @@ internal static class NotationReader
 
         if (type.IsArray)
         {
-            return type.GetArrayRank() == 1 && CanRead(ElementTypeOf(type));
+            return type.GetArrayRank() <= GridRank && CanRead(ElementTypeOf(type));
         }
 
         if (IsTuple(type))
@@ -174,6 +178,11 @@ internal static class NotationReader
 
     private static object StructuredValueOf(JsonElement element, Type type)
     {
+        if (type.IsArray && type.GetArrayRank() == GridRank)
+        {
+            return GridOf(element, ElementTypeOf(type));
+        }
+
         if (type.IsArray)
         {
             return ArrayOf(element, ElementTypeOf(type));
@@ -190,6 +199,37 @@ internal static class NotationReader
         }
 
         return SequenceOf(element, type);
+    }
+
+    // LeetCode's rows as a rectangular array, each row read as a list is; rows of different lengths fill no
+    // rectangle, and are a defect in the snapshot.
+    private static Array GridOf(JsonElement element, Type itemType)
+    {
+        var rows = element.EnumerateArray().Select(row => ArrayOf(row, itemType)).ToList();
+        var columnCount = rows.FirstOrDefault()?.Length ?? 0;
+
+        if (rows.Any(row => row.Length != columnCount))
+        {
+            throw new InvalidOperationException($"Rows of {columnCount} and of other lengths fill no rectangular {itemType.Name}[,].");
+        }
+
+        var grid = Array.CreateInstance(itemType, rows.Count, columnCount);
+
+        for (var row = 0; row < rows.Count; row++)
+        {
+            CopyRow(rows[row], grid, row);
+        }
+
+        return grid;
+    }
+
+    private static void CopyRow(Array cells, Array grid, int row)
+    {
+        for (var column = 0; column < cells.Length; column++)
+        {
+            var cell = cells.GetValue(column);
+            grid.SetValue(cell, row, column);
+        }
     }
 
     private static object SequenceOf(JsonElement element, Type type)

@@ -11,10 +11,16 @@ internal static class NotationTypes
     // A ValueTuple holds seven items before its eighth slot nests the rest.
     public const int MostTupleItems = 7;
 
+    // A grid's rank, the one rank past a list's that LeetCode's rows of rows can fill.
+    private const int GridRank = 2;
+
     private const string TupleOpen = "(";
     private const string TupleClose = ")";
     private const string ItemSeparator = ", ";
     private const char RankSeparator = ',';
+    private const char ArrayOpen = '[';
+    private const char ArrayClose = ']';
+    private const string OneRank = "[]";
 
     // Sequences a strategy can only read, which an array fills, and those it may add to, which a List does.
     private static readonly string[] Sequences =
@@ -54,7 +60,7 @@ internal static class NotationTypes
     public static bool IsReadable(ITypeSymbol type) => type switch
     {
         _ when Scalars.Contains(type.SpecialType) => true,
-        IArrayTypeSymbol { Rank: 1 } array => IsReadable(array.ElementType),
+        IArrayTypeSymbol array when array.Rank <= GridRank => IsReadable(array.ElementType),
         INamedTypeSymbol { IsTupleType: true } tuple =>
             tuple.TupleElements.Length <= MostTupleItems && tuple.TupleElements.All(item => IsReadable(item.Type)),
         INamedTypeSymbol { IsGenericType: true, TypeArguments.Length: 1 } generic => IsReadableGeneric(generic),
@@ -102,6 +108,25 @@ internal static class NotationTypes
 
     private static bool IsKeptAsProperty(INamedTypeSymbol type, IParameterSymbol parameter) =>
         type.GetMembers(parameter.Name).OfType<IPropertySymbol>().Any(property => SymbolEqualityComparer.Default.Equals(property.Type, parameter.Type));
+
+    // An array of a rendered type, nested depth times, written as C# reads it: rank specifiers run outermost
+    // first, so the new brackets go before the type's own trailing ones, and an array of int[,] is int[][,],
+    // where int[,][] would be a grid of int[]. Brackets inside a tuple or a type argument are not trailing,
+    // and stay where they are.
+    public static string ArrayOf(string element, int depth)
+    {
+        var trailing = element.Length;
+
+        while (trailing > 0 && element[trailing - 1] == ArrayClose)
+        {
+            trailing = element.LastIndexOf(ArrayOpen, trailing - 1);
+        }
+
+        var ranks = Enumerable.Repeat(OneRank, depth);
+        var brackets = string.Concat(ranks);
+
+        return element.Substring(0, trailing) + brackets + element.Substring(trailing);
+    }
 
     public static string Render(ITypeSymbol type) => type switch
     {

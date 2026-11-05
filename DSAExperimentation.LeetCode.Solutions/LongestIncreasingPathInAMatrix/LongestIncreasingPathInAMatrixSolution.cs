@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestIncreasingPathInAMatrix;
 // strictly-increasing value relation can never revisit a cell already on the path, so
 // the induced relation is a DAG - safe to memoize, and the two strategies differ only
 // in whether they do.
+[LeetCodeQuestion("longest-increasing-path-in-a-matrix", LeetCodeAnswerOrder.AsWritten, Reach = typeof(LongestIncreasingPathInAMatrixReach))]
 internal static class LongestIncreasingPathInAMatrixSolution
 {
     // The textbook answer: plain recursion, re-exploring every shared sub-path from

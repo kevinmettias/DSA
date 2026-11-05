@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfIncreasingPathsInAGrid;
 // The grid arrives as int[,] rather than LeetCode's own int[][] so that it matches
 // LongestIncreasingPathInAMatrixSolution, the sibling this problem shares both its
 // recurrence and its benchmark workload with.
+[LeetCodeQuestion("number-of-increasing-paths-in-a-grid", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfIncreasingPathsInAGridSolution
 {
     // The grid together with the bounds every neighbor test needs, so the recurrences

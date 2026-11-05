@@ -19,6 +19,11 @@ internal sealed class CatalogBenchmarkWriter(string solution, string className, 
     // beside an iteration, few enough that the copies stay a small multiple of the cases.
     private const int CopiesPerIteration = 16;
 
+    // An input column is an array of the input's type, by case; a class that copies its inputs keeps one
+    // column per copy.
+    private const int ColumnDepth = 1;
+    private const int CopiedColumnDepth = 2;
+
     private const string Columns = "global::DSAExperimentation.LeetCode.Harness.CatalogColumns";
     private const string Contract = "global::DSAExperimentation.Benchmarks.Catalog.ICatalogBenchmarks";
     private const string CaseList = "global::System.Collections.Generic.IReadOnlyList<global::DSAExperimentation.LeetCode.Catalog.LeetCodeCase>";
@@ -211,10 +216,10 @@ internal sealed class CatalogBenchmarkWriter(string solution, string className, 
     {
         if (!rewritesInput)
         {
-            return $"{input}[]";
+            return NotationTypes.ArrayOf(input, ColumnDepth);
         }
 
-        return $"{input}[][]";
+        return NotationTypes.ArrayOf(input, CopiedColumnDepth);
     }
 
     // Which copy the arm's next call spends.

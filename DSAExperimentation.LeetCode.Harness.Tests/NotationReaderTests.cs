@@ -83,7 +83,30 @@ public sealed partial class NotationReaderTests
     public void CanRead_TypeReadRefuses_IsFalse() => Assert.False(NotationReader.CanRead(typeof(Dictionary<int, int>)));
 
     [Fact]
-    public void CanRead_RectangularArray_IsFalse() => Assert.False(NotationReader.CanRead(typeof(int[,])));
+    public void CanRead_RectangularArray_IsTrue() => Assert.True(NotationReader.CanRead(typeof(int[,])));
+
+    [Fact]
+    public void CanRead_ArrayOfRankThree_IsFalse() => Assert.False(NotationReader.CanRead(typeof(int[,,])));
+
+    [Fact]
+    public void Read_RowsOfOneLength_FillARectangularArray()
+    {
+        var grid = (char[,]?)NotationReader.Read("[[\"(\",\"(\"],[\")\",\")\"],[\"(\",\")\"]]", typeof(char[,]));
+
+        Assert.Equal(new[,] { { '(', '(' }, { ')', ')' }, { '(', ')' } }, grid);
+    }
+
+    [Fact]
+    public void Read_NoRows_IsAnEmptyRectangularArray()
+    {
+        var grid = NotationReader.Read("[]", typeof(int[,]));
+
+        Assert.Equal(new int[0, 0], grid);
+    }
+
+    [Fact]
+    public void Read_RowsOfDifferentLengths_ThrowsInvalidOperationException() =>
+        Assert.Throws<InvalidOperationException>(() => NotationReader.Read("[[1,2],[3]]", typeof(int[,])));
 
     [Fact]
     public void Read_RoleTypeOfOneValue_ReadsTheValueIntoIt()
