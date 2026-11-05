@@ -8,5 +8,5 @@ public sealed partial class ClosestDivisorsReachTests
     public void IsWithin_InputsAtTheReach_IsTrue() => Assert.True(ClosestDivisorsReach.IsWithin(42_424_242));
 
     [Fact]
-    public void IsWithin_NumPastTheReach_IsFalse() => Assert.False(ClosestDivisorsReach.IsWithin(42_424_243));
+    public void IsWithin_NumberPastTheReach_IsFalse() => Assert.False(ClosestDivisorsReach.IsWithin(42_424_243));
 }

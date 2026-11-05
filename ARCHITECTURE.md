@@ -2498,8 +2498,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 912 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 316 more:
+**Enrolled.** 1,004 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 408 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2630,6 +2630,30 @@ have only the empty tree. A check over those would pass whatever the strategy di
 - 2 whose strategies leave out an input LeetCode lists, once each gained LeetCode's shape beside its own
   (§17.4): Longest Common Subpath (the city count) and Delivering Boxes from Storage to Ports (the port
   count, with a promise that every box goes to a port and fits one trip, which a generated case broke).
+- 92 whose slowest strategy runs past the time a question's cases are allowed, once a reach could leave
+  out the cases it cannot finish (2026-11-05). Every strategy ran every catalog case, smallest inputs
+  first, each on a thread of its own with a 1.5 s deadline (Release build, 1 MB stacks as a test host
+  gives). A question's reach is the bound - on one input's measure, a length, a nested array's element
+  count or a value, or on two together for 9 of them - that keeps the most cases while every kept case
+  finished in every strategy and each strategy's kept cases add up to 250 ms. A generator wrote each
+  `<Problem>Reach`, its tests and the attribute from that bound; the order rule and a tolerance it read
+  from the statement, as for the rest. The median question keeps 49% of its cases: from 3 of Manhattan
+  Distances of All Arrangements of Pieces' 89 and 2 of Cat and Mouse II's 57 to all of Count Almost
+  Equal Pairs II's and Permutation Sequence's; 34 keep under a third and 13 over nine in ten. Coin
+  Change, Super Egg Drop and Nim Game, whose recursions overflowed the stack, reach amounts up to 6,
+  150 floors and 1,000 stones.
+
+  The reached cases showed what the slow ones had hidden. Permutation Sequence (a rank past n!),
+  Probability of a Two Boxes Having The Same Number of Distinct Balls (an odd number of balls) and
+  Count Increasing Quadruplets (a value outside the permutation) gained promises; Beautiful Array an
+  answer check, since any beautiful array stands; and Select Cells in Grid With Maximum Score's helper
+  stopped being named like a strategy (`RowsHoldingEachValue`). Best Time to Buy and Sell Stock IV
+  gained LeetCode's shape, the budget k before the prices, beside its own.
+
+  The reached cases cost the tests time: in a Debug build the solutions' tests went from 20 s to 38 s
+  and the benchmarks' from a minute and a half to three, most of it brute-force arms whose kept cases
+  `BenchmarkArmsTests` runs again for its repeat-call checks. A smaller budget than 250 ms would trade
+  cases for that time.
 
 Open items:
 
@@ -2648,12 +2672,15 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 193 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 101 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
-  - An exponential baseline, or one that overflows the stack, needs a reach: about 100 run past the
-    250 ms a case is allowed, and each needs its bound chosen from where its slowest arm's times turn.
+  - A slow strategy whose reach the generator could not state: Pow(x, n) costs with |n|, which a
+    one-sided bound cannot say; Rectangle Area, Circle and Rectangle Overlapping, Rectangle Overlap and
+    Find the Number of Possible Ways for an Event finish no case on every strategy in time; K-th Symbol
+    in Grammar and Kth Smallest Instructions were not measured; and Find the Shortest Superstring lets
+    any shortest superstring stand, so it needs an answer check first.
   - A design question whose instance rewrites an input it is handed: Complete Binary Tree Inserter
     grows the tree its constructor takes, so a second call on one harness starts from a bigger tree.
     A design class does not yet hand each call inputs of its own, as `RewritesInput` does above.

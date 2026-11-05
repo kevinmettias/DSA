@@ -8,5 +8,5 @@ public sealed partial class SumGameReachTests
     public void IsWithin_InputsAtTheReach_IsTrue() => Assert.True(SumGameReach.IsWithin(new string('a', 9)));
 
     [Fact]
-    public void IsWithin_NumLengthPastTheReach_IsFalse() => Assert.False(SumGameReach.IsWithin(new string('a', 10)));
+    public void IsWithin_NumberLengthPastTheReach_IsFalse() => Assert.False(SumGameReach.IsWithin(new string('a', 10)));
 }

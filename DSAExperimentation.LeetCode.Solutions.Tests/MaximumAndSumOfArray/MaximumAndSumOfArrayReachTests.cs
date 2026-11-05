@@ -11,5 +11,5 @@ public sealed partial class MaximumAndSumOfArrayReachTests
     public void IsWithin_NumsLengthPastTheReach_IsFalse() => Assert.False(MaximumAndSumOfArrayReach.IsWithin(new int[10], 7));
 
     [Fact]
-    public void IsWithin_NumSlotsPastTheReach_IsFalse() => Assert.False(MaximumAndSumOfArrayReach.IsWithin(new int[9], 8));
+    public void IsWithin_SlotCountPastTheReach_IsFalse() => Assert.False(MaximumAndSumOfArrayReach.IsWithin(new int[9], 8));
 }

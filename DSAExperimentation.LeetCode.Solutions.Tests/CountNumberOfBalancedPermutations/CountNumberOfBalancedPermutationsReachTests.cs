@@ -8,5 +8,5 @@ public sealed partial class CountNumberOfBalancedPermutationsReachTests
     public void IsWithin_InputsAtTheReach_IsTrue() => Assert.True(CountNumberOfBalancedPermutationsReach.IsWithin(new string('a', 9)));
 
     [Fact]
-    public void IsWithin_NumLengthPastTheReach_IsFalse() => Assert.False(CountNumberOfBalancedPermutationsReach.IsWithin(new string('a', 10)));
+    public void IsWithin_NumberLengthPastTheReach_IsFalse() => Assert.False(CountNumberOfBalancedPermutationsReach.IsWithin(new string('a', 10)));
 }

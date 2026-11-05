@@ -30,6 +30,20 @@ public sealed partial class SharedValueCopyTests
             "LC 3115's largest value of nums[i], which bounds its sieve, not the parts a whole holds per cent.",
         ["DSAExperimentation.LeetCode.Solutions.CountNumberOfRectanglesContainingEachPoint.CountNumberOfRectanglesContainingEachPointPromise.MostHeight"] =
             "LC 2250's tallest rectangle or point, the bound its promise checks, not the parts a whole holds per cent.",
+        ["DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockWithTransactionFee.BestTimeToBuyAndSellStockWithTransactionFeeReach.LargestFee"] =
+            "The largest fee whose cases every strategy of LC 714 finishes in time, its reach, not the parts a whole holds per cent.",
+        ["DSAExperimentation.LeetCode.Solutions.KthSmallestInLexicographicalOrder.KthSmallestInLexicographicalOrderReach.LargestUpperBound"] =
+            "The largest n whose cases every strategy of LC 440 finishes in time, its reach, not the parts a whole holds per myriad nor a millisecond's ticks.",
+        ["DSAExperimentation.LeetCode.Solutions.MinimumOneBitOperationsToMakeIntegersZero.MinimumOneBitOperationsToMakeIntegersZeroReach.LargestTarget"] =
+            "The largest n whose cases every strategy of LC 1611 finishes in time, its reach, not the parts a whole holds per million.",
+        ["DSAExperimentation.LeetCode.Solutions.PrisonCellsAfterNDays.PrisonCellsAfterNDaysReach.LargestDayCount"] =
+            "The most days whose cases every strategy of LC 957 finishes in time, its reach, not the parts a whole holds per million.",
+        ["DSAExperimentation.LeetCode.Solutions.NimGame.NimGameReach.LargestStoneCount"] =
+            "The most stones whose cases every strategy of LC 292 finishes in time, its reach, not the parts a whole holds per mille.",
+        ["DSAExperimentation.LeetCode.Solutions.NthMagicalNumber.NthMagicalNumberReach.LargestRank"] =
+            "The largest n whose cases every strategy of LC 878 finishes in time, its reach, not the parts a whole holds per mille.",
+        ["DSAExperimentation.LeetCode.Solutions.NumberOfDigitOne.NumberOfDigitOneReach.LargestUpperBound"] =
+            "The largest n whose cases every strategy of LC 233 finishes in time, its reach, not a second's ticks.",
     };
 
     private static readonly Lazy<IReadOnlyList<LibraryValueCopies.Copy>> Copies =

@@ -6,8 +6,12 @@ namespace DSAExperimentation.LeetCode.Solutions.BeautifulArray;
 // the divide-and-conquer strategies build different ones.
 internal static class BeautifulArrayAnswerCheck
 {
-    public static bool IsAccepted(int length, int[] answer, int[] recorded) =>
-        answer.Order().SequenceEqual(Enumerable.Range(1, length)) && !HasAverageBetween(answer);
+    public static bool IsAccepted(int length, int[] answer, int[] recorded)
+    {
+        var oneToLength = Enumerable.Range(1, length);
+
+        return answer.Order().SequenceEqual(oneToLength) && !HasAverageBetween(answer);
+    }
 
     // Whether some pair's average stands between them: found by the average's position, one pair at a time.
     private static bool HasAverageBetween(int[] values)

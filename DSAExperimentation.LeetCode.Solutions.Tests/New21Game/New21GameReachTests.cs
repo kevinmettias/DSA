@@ -11,5 +11,5 @@ public sealed partial class New21GameReachTests
     public void IsWithin_StopAtPastTheReach_IsFalse() => Assert.False(New21GameReach.IsWithin(1, 21, 5));
 
     [Fact]
-    public void IsWithin_MaxPtsPastTheReach_IsFalse() => Assert.False(New21GameReach.IsWithin(1, 20, 6));
+    public void IsWithin_MaximumPointsPastTheReach_IsFalse() => Assert.False(New21GameReach.IsWithin(1, 20, 6));
 }

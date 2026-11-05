@@ -6,5 +6,10 @@ namespace DSAExperimentation.LeetCode.Solutions.CountIncreasingQuadruplets;
 // first.
 internal static class CountIncreasingQuadrupletsPromise
 {
-    public static bool IsKeptBy(int[] nums) => nums.Order().SequenceEqual(Enumerable.Range(1, nums.Length));
+    public static bool IsKeptBy(int[] nums)
+    {
+        var oneToLength = Enumerable.Range(1, nums.Length);
+
+        return nums.Order().SequenceEqual(oneToLength);
+    }
 }
