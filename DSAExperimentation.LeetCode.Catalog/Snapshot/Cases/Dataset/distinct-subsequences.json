@@ -407,13 +407,6 @@
   },
   {
     "Inputs": [
-      "\"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"",
-      "\"zzzzzzzzzz\""
-    ],
-    "ExpectedOutput": "14782231840815648"
-  },
-  {
-    "Inputs": [
       "\"ppppppppp\"",
       "\"ppp\""
     ],

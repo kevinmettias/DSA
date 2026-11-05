@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DecodeWays;
 //
 // The highest code is the last letter's number (Domain/Language/English's EnglishLetters), which
 // both arms read (ARCHITECTURE §17.5).
+[LeetCodeQuestion("decode-ways", LeetCodeAnswerOrder.AsWritten)]
 internal static class DecodeWaysSolution
 {
     private const int TwoDigitGroupLength = 2;

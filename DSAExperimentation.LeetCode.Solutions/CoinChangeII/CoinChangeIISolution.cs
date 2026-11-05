@@ -22,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CoinChangeII;
 // Amount's upper bound, same as CombinationSumIVSolution - harmless since both
 // strategies overflow identically and a benchmark measures wall-clock time, not the
 // returned value.
+[LeetCodeQuestion("coin-change-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class CoinChangeIISolution
 {
     // The textbook bottom-up tabulation, deliberately written without this repo's

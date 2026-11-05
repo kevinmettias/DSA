@@ -24,6 +24,11 @@ internal enum DatasetDropReason
     // An input is not of the type its parameter declares, such as a 1.5 in an integer tree.
     NotOfDeclaredType,
 
+    // The answer is not of the type the question returns, such as an integer answer past 2^31 - 1:
+    // the reference solution computed with Python's unbounded integers an answer the statement
+    // promises will fit, so the input broke that promise.
+    AnswerNotOfDeclaredType,
+
     // An input lies outside one of the question's stated bounds.
     OutOfBounds,
 

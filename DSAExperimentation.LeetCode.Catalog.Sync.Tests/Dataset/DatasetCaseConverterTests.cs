@@ -22,6 +22,7 @@ public sealed partial class DatasetCaseConverterTests
             { "nums = {3, 3}, target = 6", "[0, 1]", nameof(DatasetDropReason.NotTranslatable) },
             { "nums = [-1,-2], target = 5", "None", nameof(DatasetDropReason.NoAnswer) },
             { "nums = [3, 1.5], target = 6", "[0, 1]", nameof(DatasetDropReason.NotOfDeclaredType) },
+            { "nums = [3, 4], target = 7", "[0, 2147483648]", nameof(DatasetDropReason.AnswerNotOfDeclaredType) },
             { "nums = [3], target = 6", "[0, 0]", nameof(DatasetDropReason.OutOfBounds) },
             { "nums = [2, 7, 11, 15], target = 9", "[0, 1]", nameof(DatasetDropReason.Duplicate) },
         };
@@ -87,6 +88,16 @@ public sealed partial class DatasetCaseConverterTests
             ]).Cases;
 
         Assert.Equal(["\"Alice\"", "\"\""], kept.Select(testCase => testCase.ExpectedOutput));
+    }
+
+    [Fact]
+    public void Convert_WholeNumberAnswerPrintedAsAFloat_WritesItAsAnInteger()
+    {
+        var question = QuestionWith([new("nums", "integer[]")], "integer", [], []);
+
+        var kept = new DatasetCaseConverter(question).Convert([new DatasetCaseDto { Input = "nums = [3,4]", Output = "31.0" }]).Cases;
+
+        Assert.Equal("31", Assert.Single(kept).ExpectedOutput);
     }
 
     [Fact]

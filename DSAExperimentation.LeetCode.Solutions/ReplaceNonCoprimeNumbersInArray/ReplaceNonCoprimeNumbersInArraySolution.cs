@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReplaceNonCoprimeNumbersInArray;
 // coping with that - rescan the whole list from the front after every merge, or
 // keep the finalized prefix on a stack whose top is always the only element a new
 // number can possibly merge with.
+[LeetCodeQuestion("replace-non-coprime-numbers-in-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class ReplaceNonCoprimeNumbersInArraySolution
 {
     // Textbook baseline: a BCL List<long>, scanned from the front for the first

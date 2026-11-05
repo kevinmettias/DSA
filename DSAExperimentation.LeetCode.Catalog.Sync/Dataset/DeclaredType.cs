@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Catalog.Sync.Dataset;
 internal static class DeclaredType
 {
     private const string Integer = "integer";
+    private const string Long = "long";
     private const string ArraySuffix = "[]";
     private const string ListPrefix = "list<";
     private const string ListSuffix = ">";
@@ -19,12 +20,15 @@ internal static class DeclaredType
     private static readonly Dictionary<string, Func<JsonNode, bool>> Scalars = new(StringComparer.Ordinal)
     {
         [Integer] = value => value is JsonValue number && number.TryGetValue<int>(out _),
-        ["long"] = value => value is JsonValue number && number.TryGetValue<long>(out _),
+        [Long] = value => value is JsonValue number && number.TryGetValue<long>(out _),
         ["double"] = value => value is JsonValue number && number.TryGetValue<double>(out _),
         ["boolean"] = value => value is JsonValue flag && flag.TryGetValue<bool>(out _),
         ["string"] = value => value is JsonValue text && text.TryGetValue<string>(out _),
         ["character"] = value => value is JsonValue text && text.TryGetValue<string>(out var letter) && letter.Length == 1,
     };
+
+    // Whether the type holds whole numbers only, which LeetCode writes with no fraction.
+    public static bool IsWholeNumber(string? type) => type is Integer or Long;
 
     public static bool IsOf(JsonNode? value, string type)
     {

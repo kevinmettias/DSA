@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json.Nodes;
 using System.Text.Json;
@@ -14,6 +15,8 @@ namespace DSAExperimentation.LeetCode.Catalog.Sync.Dataset;
 // - the reference solution failed on it, so the "output" is an error message;
 // - its inputs cannot be matched to the signature's by name, or read as literals;
 // - an input is not of the type its parameter declares (DeclaredType);
+// - the answer is not of the type the question returns, such as an integer past 2^31 - 1, which a
+//   statement that returns an integer promises cannot happen;
 // - the reference returned None where the question's answer cannot be empty - it fell off the end,
 //   which happens when the input breaks a promise (Two Sum's "exactly one solution") that no
 //   parsed constraint states;
@@ -36,6 +39,7 @@ internal sealed class DatasetCaseConverter
     private const string NullNotation = "null";
     private const string PythonNone = "None";
     private const string EmptyNodeNotation = "[]";
+    private const string WholeNumberFormat = "0";
 
     // How the reference solution's failures begin: a raised error, or the run's time limit.
     private static readonly string[] FailurePrefixes = ["Error", "Execution timed out"];
@@ -97,7 +101,7 @@ internal sealed class DatasetCaseConverter
             return Dropped<DatasetAnswer?>(DatasetDropReason.NotTranslatable);
         }
 
-        if (!TryExpectedFrom(notation, out var expected))
+        if (!TryExpectedFrom(InDeclaredForm(notation), out var expected))
         {
             return Dropped<DatasetAnswer?>(DatasetDropReason.NoAnswer);
         }
@@ -137,6 +141,22 @@ internal sealed class DatasetCaseConverter
         expected = LeetCodeTypeNames.NodeTypes.Contains(returnType) ? EmptyNodeNotation : null;
         return expected is not null || returnType == LeetCodeTypeNames.Void;
     }
+
+    // A reference that computed a whole-number answer in floating point printed it as a float, as
+    // LC 1994's and LC 2572's did ("31.0"), which LeetCode writes as 31.
+    private string InDeclaredForm(string notation)
+    {
+        if (!DeclaredType.IsWholeNumber(_signature.ReturnType) || !TryWholeNumber(notation, out var value))
+        {
+            return notation;
+        }
+
+        return value.ToString(WholeNumberFormat, CultureInfo.InvariantCulture);
+    }
+
+    // A number with no fraction, however it is written: 31, 31.0 or 3.1e1.
+    private static bool TryWholeNumber(string notation, out decimal value)
+        => decimal.TryParse(notation, NumberStyles.Float, CultureInfo.InvariantCulture, out value) && decimal.IsInteger(value);
 
     private List<string>? InputsOf(string input)
     {
@@ -198,6 +218,11 @@ internal sealed class DatasetCaseConverter
             return Dropped<bool>(DatasetDropReason.NotOfDeclaredType);
         }
 
+        if (!IsAnswerOfDeclaredType(testCase))
+        {
+            return Dropped<bool>(DatasetDropReason.AnswerNotOfDeclaredType);
+        }
+
         if (IsOutOfBounds(testCase))
         {
             return Dropped<bool>(DatasetDropReason.OutOfBounds);
@@ -213,6 +238,10 @@ internal sealed class DatasetCaseConverter
 
     private bool IsOfDeclaredTypes(LeetCodeCase testCase)
         => testCase.Inputs.Zip(_signature.Parameters).All(input => DeclaredType.IsOf(JsonNode.Parse(input.First), input.Second.Type));
+
+    // A question that answers through its input has no answer recorded to check.
+    private bool IsAnswerOfDeclaredType(LeetCodeCase testCase)
+        => testCase.ExpectedOutput is not { } answer || _signature.ReturnType is not { } returnType || DeclaredType.IsOf(JsonNode.Parse(answer), returnType);
 
     private bool IsOutOfBounds(LeetCodeCase testCase)
         =>_bounds.Any(bound => bound.Check(testCase, _signature.Parameters) == LeetCodeBoundCheck.Violated);

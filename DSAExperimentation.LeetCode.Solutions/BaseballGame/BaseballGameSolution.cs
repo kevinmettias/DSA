@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BaseballGame;
 // index (the baseline every solver reaches for first) vs. this repo's own
 // Stack<int> (ValidParentheses/NextGreaterElementI precedent), whose
 // Push/TryPop/TryPeek read exactly as the rules do.
+[LeetCodeQuestion("baseball-game", LeetCodeAnswerOrder.AsWritten)]
 internal static class BaseballGameSolution
 {
     private const string CancelOp = "C";

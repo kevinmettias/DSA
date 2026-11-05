@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CombinationSumIV;
 // bottom-up array (indexed 0..target) versus this repo's own Memoizer walking the
 // recursion top-down (CoinChange precedent, same unbounded-knapsack shape with a
 // sum-reduction instead of a min-reduction).
+[LeetCodeQuestion("combination-sum-iv", LeetCodeAnswerOrder.AsWritten)]
 internal static class CombinationSumIVSolution
 {
     // The textbook bottom-up tabulation. Deliberately written without this repo's

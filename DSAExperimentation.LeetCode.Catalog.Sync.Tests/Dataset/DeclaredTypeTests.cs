@@ -44,6 +44,10 @@ public sealed partial class DeclaredTypeTests
             { "[1,null]", "ListNode" },
         };
 
+    public static TheoryData<string> WholeNumberTypes => new() { "integer", "long" };
+
+    public static TheoryData<string?> OtherTypes => new() { "double", "integer[]", null };
+
     [Theory]
     [MemberData(nameof(OfTheDeclaredType))]
     public void IsOf_ValueOfTheDeclaredType_IsTrue(string notation, string type)
@@ -65,4 +69,14 @@ public sealed partial class DeclaredTypeTests
 
         Assert.False(isOfType);
     }
+
+    [Theory]
+    [MemberData(nameof(WholeNumberTypes))]
+    public void IsWholeNumber_IntegerOrLong_IsTrue(string type)
+        => Assert.True(DeclaredType.IsWholeNumber(type));
+
+    [Theory]
+    [MemberData(nameof(OtherTypes))]
+    public void IsWholeNumber_AnyOtherType_IsFalse(string? type)
+        => Assert.False(DeclaredType.IsWholeNumber(type));
 }
