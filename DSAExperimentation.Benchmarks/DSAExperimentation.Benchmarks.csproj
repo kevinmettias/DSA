@@ -37,4 +37,10 @@
                       ReferenceOutputAssembly="false" />
   </ItemGroup>
 
+  <!-- Each question's snapshot file, so the catalog generator can read the inputs LeetCode declares and bind
+       the LeetCode-shaped overload when a case could feed more than one (ARCHITECTURE 17.4, 17.13). -->
+  <ItemGroup>
+    <AdditionalFiles Include="..\DSAExperimentation.LeetCode.Catalog\Snapshot\Questions\*.json" />
+  </ItemGroup>
+
 </Project>

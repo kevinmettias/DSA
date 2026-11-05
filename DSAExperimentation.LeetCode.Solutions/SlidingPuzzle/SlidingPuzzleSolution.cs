@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SlidingPuzzle;
 // MinMovesByMutationQueue is the textbook alternative: BFS over boards mutated on
 // the fly, never materializing the graph - the arm the composed solution has to
 // justify itself against.
+[LeetCodeQuestion("sliding-puzzle", LeetCodeAnswerOrder.AsWritten)]
 internal static class SlidingPuzzleSolution
 {
     // LeetCode's own definition of "solved".

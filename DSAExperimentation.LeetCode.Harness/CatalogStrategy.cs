@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Nodes;
+using DSAExperimentation.LeetCode.Catalog;
 
 namespace DSAExperimentation.LeetCode.Harness;
 
@@ -57,9 +58,16 @@ internal sealed class CatalogStrategy
             .Select(overloads => new CatalogStrategy(solution, TheBoundOverload(solution, [.. overloads], question), question))];
     }
 
+    // The one overload a case can feed; of several, the one LeetCode's signature shapes (LeetCodeShape).
     private static MethodInfo TheBoundOverload(Type solution, List<MethodInfo> overloads, LeetCodeQuestionAttribute? question)
     {
-        var bound = overloads.Where(method => IsBindable(method, question)).ToList();
+        IReadOnlyList<MethodInfo> bound = [.. overloads.Where(method => IsBindable(method, question))];
+
+        if (bound.Count > 1 && question is not null)
+        {
+            var declared = LeetCodeCatalog.Question(question.TitleSlug).Signature.Parameters.Select(parameter => parameter.Type).ToList();
+            bound = LeetCodeShape.Narrowed(bound, declared);
+        }
 
         if (bound.Count != 1)
         {

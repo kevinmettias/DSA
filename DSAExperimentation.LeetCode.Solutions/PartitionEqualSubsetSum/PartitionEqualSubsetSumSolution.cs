@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PartitionEqualSubsetSum;
 // Both strategies take a second overload that skips the total/parity check and
 // starts straight from an already-known `half`, so a caller that has hoisted that
 // computation (a benchmark's [GlobalSetup], say) is not charged for it again.
+[LeetCodeQuestion("partition-equal-subset-sum", LeetCodeAnswerOrder.AsWritten)]
 internal static class PartitionEqualSubsetSumSolution
 {
     // The textbook answer: bottom-up bool[] tabulation, walking each candidate sum

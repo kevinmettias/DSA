@@ -55,6 +55,26 @@ public sealed partial class CatalogBenchmarkGeneratorTests
         }
         """;
 
+    // A strategy with a hoisted overload the notation reads too, as 17.4 allows beside LeetCode's shape, and
+    // the question's file that declares which shape is LeetCode's.
+    private const string TwoShapeProbe = """
+        using DSAExperimentation.LeetCode;
+
+        [LeetCodeQuestion("probe", LeetCodeAnswerOrder.AsWritten)]
+        internal static class ProbeSolution
+        {
+            public static int CountByLoop(int[][] intervals) => intervals.Length;
+
+            public static int CountByLoop((int Start, int End)[] intervals) => intervals.Length;
+        }
+        """;
+
+    private const string TwoShapeQuestion = """
+        { "Signature": { "FunctionName": "count", "Parameters": [ { "Name": "intervals", "Type": "integer[][]" } ], "ReturnType": "integer" } }
+        """;
+
+    private const string ProbeSlug = "probe";
+
     private const string InPlaceProbe = """
         using DSAExperimentation.LeetCode;
 
@@ -163,6 +183,14 @@ public sealed partial class CatalogBenchmarkGeneratorTests
     [Fact]
     public void Initialize_SolutionAnsweringInPlace_CopiesEachArmsInputsBeforeEachIteration() =>
         Assert.Contains(CopySetup, SourceOf(AnsweringInPlaceProbe), StringComparison.Ordinal);
+
+    [Fact]
+    public void Initialize_TwoShapesWithTheQuestionsFile_BindsLeetCodesShape() =>
+        Assert.DoesNotContain(GeneratorProbe.GenerateWithQuestion(TwoShapeProbe, ProbeSlug, TwoShapeQuestion).Diagnostics, diagnostic => diagnostic.Id == UnboundStrategy);
+
+    [Fact]
+    public void Initialize_TwoShapesWithNoQuestionsFile_ReportsTheChoiceUnsettled() =>
+        Assert.Contains(GeneratorProbe.Generate(TwoShapeProbe).Diagnostics, diagnostic => diagnostic.Id == UnboundStrategy);
 
     [Fact]
     public void Initialize_NoSolutionNamesAQuestion_WritesNothing() =>

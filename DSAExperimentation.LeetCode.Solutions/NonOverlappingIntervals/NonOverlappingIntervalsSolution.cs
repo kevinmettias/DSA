@@ -4,6 +4,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NonOverlappingIntervals;
 // remove so the rest are pairwise non-overlapping. Unlike LC 452's
 // touching-counts-as-overlap semantics, LC 435 treats touching endpoints as
 // non-overlapping (Start >= previous End keeps both intervals).
+[LeetCodeQuestion("non-overlapping-intervals", LeetCodeAnswerOrder.AsWritten)]
 internal static class NonOverlappingIntervalsSolution
 {
     // The textbook answer: repeatedly find the still-active interval with the

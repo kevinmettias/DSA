@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 
 namespace DSAExperimentation.Benchmarks.Generators;
@@ -29,6 +30,12 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
     private const string RewritesInputArgument = "RewritesInput";
     private const string AnswersInPlaceArgument = "AnswersInPlace";
 
+    // Where the catalog keeps one file per question, whose signature names the question's declared inputs.
+    private const string QuestionFolder = "/Snapshot/Questions/";
+    private const string QuestionExtension = ".json";
+    private const char WindowsSeparator = '\\';
+    private const char Separator = '/';
+
     private static readonly DiagnosticDescriptor UnboundStrategy = new(
         id: "DSACAT001",
         title: "A strategy of an enrolled solution cannot be a catalog benchmark arm",
@@ -41,12 +48,22 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
     /// <param name="context">The compiler's context for this generator.</param>
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var classes = context.CompilationProvider.Select(static (compilation, _) => ClassesFor(compilation));
+        var signatures = context.AdditionalTextsProvider
+            .Where(static text => IsQuestionFile(text.Path))
+            .Select(static (text, cancellation) => (Slug: Path.GetFileNameWithoutExtension(text.Path), Declared: LeetCodeShape.DeclaredTypesIn(text.GetText(cancellation)?.ToString() ?? string.Empty)))
+            .Collect();
+        var classes = context.CompilationProvider.Combine(signatures).Select(static (pair, _) => ClassesFor(pair.Left, pair.Right));
 
         context.RegisterSourceOutput(classes, static (output, generated) => Emit(output, generated));
     }
 
-    private static GeneratedClasses ClassesFor(Compilation compilation)
+    private static bool IsQuestionFile(string path)
+    {
+        var normalized = path.Replace(WindowsSeparator, Separator);
+        return normalized.Contains(QuestionFolder) && normalized.EndsWith(QuestionExtension, StringComparison.Ordinal);
+    }
+
+    private static GeneratedClasses ClassesFor(Compilation compilation, ImmutableArray<(string Slug, IReadOnlyList<string> Declared)> signatures)
     {
         var generated = new GeneratedClasses();
 
@@ -59,9 +76,12 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
             .SelectMany(assembly => TypesIn(assembly.GlobalNamespace))
             .Where(type => IsEnrolled(type, attribute));
 
+        var declaredBySlug = signatures.ToDictionary(signature => signature.Slug, signature => signature.Declared, StringComparer.Ordinal);
+
         foreach (var solution in solutions)
         {
-            AddClassFor(solution, attribute, generated);
+            var declared = DeclaredTypesFor(solution, attribute, declaredBySlug);
+            AddClassFor(solution, attribute, declared, generated);
         }
 
         return generated;
@@ -83,25 +103,19 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
     private static bool IsEnrolled(INamedTypeSymbol type, INamedTypeSymbol attribute) =>
         type.GetAttributes().Any(applied => SymbolEqualityComparer.Default.Equals(applied.AttributeClass, attribute));
 
-    private static void AddClassFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, GeneratedClasses generated)
+    // The inputs the solution's question declares, by the slug its attribute names; null when the benchmarks
+    // build was handed no file for it.
+    private static IReadOnlyList<string>? DeclaredTypesFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, Dictionary<string, IReadOnlyList<string>> declaredBySlug)
     {
-        var arms = new List<StrategyShape>();
+        var applied = solution.GetAttributes().First(candidate => SymbolEqualityComparer.Default.Equals(candidate.AttributeClass, attribute));
+        var slug = applied.ConstructorArguments.FirstOrDefault().Value as string;
+        return slug is not null && declaredBySlug.TryGetValue(slug, out var declared) ? declared : null;
+    }
+
+    private static void AddClassFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, IReadOnlyList<string>? declared, GeneratedClasses generated)
+    {
         var source = IsSet(solution, attribute, AnswersInPlaceArgument) ? AnswerSource.FirstInput : AnswerSource.ReturnValue;
-
-        foreach (var overloads in solution.GetMembers().OfType<IMethodSymbol>().Where(IsStrategy).GroupBy(method => method.Name))
-        {
-            var bound = overloads.Where(method => StrategyShape.ReasonUnbound(method, source) is null).ToList();
-
-            if (bound.Count == 1)
-            {
-                var arm = StrategyShape.Of(bound[0], source);
-                arms.Add(arm);
-            }
-            else
-            {
-                generated.Refusals.Add((solution.Name, overloads.Key, ReasonNoneOrSeveral(overloads.ToList(), bound.Count, source)));
-            }
-        }
+        var arms = ArmsOf(solution, source, declared, generated);
 
         // A strategy that answers in place rewrites its input, so each call needs a copy of its own too.
         var name = NameFor(solution);
@@ -117,6 +131,42 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
             .Where(applied => SymbolEqualityComparer.Default.Equals(applied.AttributeClass, attribute))
             .SelectMany(applied => applied.NamedArguments)
             .Any(argument => argument.Key == flag && argument.Value.Value is true);
+
+    // One arm per strategy whose overloads settle on one a case can feed; a refusal for each other strategy.
+    private static List<StrategyShape> ArmsOf(INamedTypeSymbol solution, AnswerSource source, IReadOnlyList<string>? declared, GeneratedClasses generated)
+    {
+        var arms = new List<StrategyShape>();
+
+        foreach (var overloads in solution.GetMembers().OfType<IMethodSymbol>().Where(IsStrategy).GroupBy(method => method.Name))
+        {
+            var bound = BoundOverloadsOf([.. overloads], source, declared);
+
+            if (bound.Count == 1)
+            {
+                var arm = StrategyShape.Of(bound[0], source);
+                arms.Add(arm);
+            }
+            else
+            {
+                generated.Refusals.Add((solution.Name, overloads.Key, ReasonNoneOrSeveral(overloads.ToList(), bound.Count, source)));
+            }
+        }
+
+        return arms;
+    }
+
+    // The overloads a case can feed; of several, those LeetCode's signature shapes (17.4).
+    private static IReadOnlyList<IMethodSymbol> BoundOverloadsOf(List<IMethodSymbol> overloads, AnswerSource source, IReadOnlyList<string>? declared)
+    {
+        IReadOnlyList<IMethodSymbol> bound = [.. overloads.Where(method => StrategyShape.ReasonUnbound(method, source) is null)];
+
+        if (bound.Count > 1 && declared is not null)
+        {
+            return LeetCodeShape.Narrowed(bound, declared);
+        }
+
+        return bound;
+    }
 
     private static string ReasonNoneOrSeveral(List<IMethodSymbol> overloads, int boundCount, AnswerSource source)
     {

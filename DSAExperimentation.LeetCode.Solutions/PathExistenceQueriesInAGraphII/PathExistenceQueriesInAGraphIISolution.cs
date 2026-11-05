@@ -24,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PathExistenceQueriesInAGraphII;
 // last index within maxDiff" is exactly an upper-bound lookup) and precomputes
 // far^(2^k) doubling tables, turning far^(L)(a) >= b into an O(log n)-per-query
 // walk instead of an O(n)-per-query BFS.
+[LeetCodeQuestion("path-existence-queries-in-a-graph-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class PathExistenceQueriesInAGraphIISolution
 {
     // Plain BCL Queue/bool[], adjacency discovered by expanding outward from each

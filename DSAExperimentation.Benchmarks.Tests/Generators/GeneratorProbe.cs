@@ -1,6 +1,7 @@
 using DSAExperimentation.Benchmarks.Generators;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Text;
 
 namespace DSAExperimentation.Benchmarks.Tests.Generators;
 
@@ -74,6 +75,16 @@ internal static class GeneratorProbe
         return driver.GetRunResult();
     }
 
+    // The generator over the probe with the catalog's file for one question beside it, as the benchmarks build
+    // hands it each question's snapshot file.
+    public static GeneratorDriverRunResult GenerateWithQuestion(string source, string slug, string questionJson)
+    {
+        AdditionalText[] files = [new QuestionFile($"C:/catalog/Snapshot/Questions/{slug}.json", questionJson)];
+        var driver = CSharpGeneratorDriver.Create([new CatalogBenchmarkGenerator().AsSourceGenerator()], files).RunGenerators(Compile(source));
+
+        return driver.GetRunResult();
+    }
+
     // The generator over a benchmarks assembly that declares nothing, referencing the probe's solutions in
     // an assembly of their own and the conventions in another below them.
     public static GeneratorDriverRunResult GenerateFromReferences(string solutionSource)
@@ -132,4 +143,12 @@ internal static class GeneratorProbe
             [CSharpSyntaxTree.ParseText(Conventions), CSharpSyntaxTree.ParseText(source)],
             PlatformReferences.Value,
             Library);
+
+    // One question's snapshot file, held in memory.
+    private sealed class QuestionFile(string path, string text) : AdditionalText
+    {
+        public override string Path { get; } = path;
+
+        public override SourceText GetText(CancellationToken cancellationToken = default) => SourceText.From(text);
+    }
 }

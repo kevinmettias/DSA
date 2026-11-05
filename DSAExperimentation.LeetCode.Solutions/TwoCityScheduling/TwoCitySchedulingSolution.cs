@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TwoCityScheduling;
 // LeetCode's int[][] shape, so a benchmark can charge that projection to
 // [GlobalSetup]; (int ACost, int BCost)[] cannot bind to the int[][] overload, so
 // the pair is never ambiguous.
+[LeetCodeQuestion("two-city-scheduling", LeetCodeAnswerOrder.AsWritten)]
 internal static class TwoCitySchedulingSolution
 {
     private const int CitySplitDivisor = 2; // exactly half go to city A per LC 1029

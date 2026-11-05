@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.QueueReconstructionByHeight;
 // composes this repo's own MergeSort.Sort<Element,TSequence> over an
 // ArrayIndexedSequence - the same custom-comparer shape
 // RussianDollEnvelopesSolution already exercises - and DynamicArray<Element>.
+[LeetCodeQuestion("queue-reconstruction-by-height", LeetCodeAnswerOrder.AsWritten, Promise = typeof(QueueReconstructionByHeightPromise))]
 internal static class QueueReconstructionByHeightSolution
 {
     public static int[][] ReconstructQueueByArraySortListInsert(int[][] people) =>

@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LinkedListInBinaryTree;
 // through the recursion: re-slicing a fresh int[1..] at every step (the
 // array-shaped habit most first drafts reach for), or walking the
 // SinglyLinkedListNode<TValue>.Next chain LeetCode actually hands you.
+[LeetCodeQuestion("linked-list-in-binary-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class LinkedListInBinaryTreeSolution
 {
     // The baseline: flatten the list to an array up front, then carry "the rest of

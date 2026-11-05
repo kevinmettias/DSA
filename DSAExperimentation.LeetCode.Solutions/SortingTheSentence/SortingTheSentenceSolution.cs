@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SortingTheSentence;
 // on every legal input and lets the benchmark scale past nine words, the same
 // "scale past the strict LeetCode bound to exercise real complexity" convention
 // AddTwoNumbers and RelativeSortArray already use.
+[LeetCodeQuestion("sorting-the-sentence", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SortingTheSentencePromise))]
 internal static class SortingTheSentenceSolution
 {
     // LeetCode's own input shape: a single space-separated shuffled sentence.

@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RussianDollEnvelopes;
 // already exercises, reused here over a DynamicArraySequence<int> "tails" buffer);
 // MaxEnvelopesByBruteForceDp is the textbook BCL Array.Sort + O(n^2) DP baseline it has to
 // justify itself against.
+[LeetCodeQuestion("russian-doll-envelopes", LeetCodeAnswerOrder.AsWritten)]
 internal static class RussianDollEnvelopesSolution
 {
     public static int MaxEnvelopesBySortThenPatience(int[][] envelopes) =>

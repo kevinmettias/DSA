@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimizeManhattanDistances;
 // sorting each of u and v once up front and, per removal, falling back from the
 // top/bottom entry to the runner-up when the removed point owns it, answers every
 // removal in O(1) off an O(n log n) preprocessing pass.
+[LeetCodeQuestion("minimize-manhattan-distances", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimizeManhattanDistancesSolution
 {
     // The textbook answer: for each point removed, rescan every remaining pair for

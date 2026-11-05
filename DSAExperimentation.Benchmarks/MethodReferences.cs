@@ -89,8 +89,10 @@ internal static class MethodReferences
     };
 
     // A token is resolved in the generic context of the method that holds it, and a token that
-    // cannot be resolved there - a vararg call site, a member of an assembly that failed to load -
-    // contributes nothing rather than failing the whole categorisation.
+    // cannot be resolved there - a vararg call site, a member of an assembly that failed to load, a
+    // generic method whose constraints that context does not meet (StateGraph<string>.NodesOf, reached
+    // from Sliding Puzzle's catalog arm) - contributes nothing rather than failing the whole
+    // categorisation.
     private static void Resolve(MethodBase method, int token, MethodBodyReferences into)
     {
         var typeArguments = method.DeclaringType is { IsGenericType: true } owner ? owner.GetGenericArguments() : null;
@@ -112,7 +114,7 @@ internal static class MethodReferences
             }
         }
         catch (Exception exception) when (exception is ArgumentException or BadImageFormatException or TypeLoadException
-            or MemberAccessException or IOException)
+            or MemberAccessException or IOException or System.Security.VerificationException)
         {
             // An unresolvable token names nothing this categorisation can use.
         }

@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidSquare;
 //
 // The two strategies differ only in how they read that shape off the 6 distances -
 // sort them and check fixed indices, or scan for the min/max directly.
+[LeetCodeQuestion("valid-square", LeetCodeAnswerOrder.AsWritten)]
 internal static class ValidSquareSolution
 {
     private const int ExpectedSideCount = 4;

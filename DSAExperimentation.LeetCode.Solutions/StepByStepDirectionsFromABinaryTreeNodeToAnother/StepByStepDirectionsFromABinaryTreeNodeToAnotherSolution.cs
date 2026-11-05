@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StepByStepDirectionsFromABinaryT
 // the tree, so each strategy carries the LeetCode-shaped overload plus the
 // node-reference overload a caller that already holds the nodes wants (a
 // benchmark's [GlobalSetup], say) - the two-overload shape section 17.4 describes.
+[LeetCodeQuestion("step-by-step-directions-from-a-binary-tree-node-to-another", LeetCodeAnswerOrder.AsWritten, Promise = typeof(StepByStepDirectionsFromABinaryTreeNodeToAnotherPromise))]
 internal static class StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
 {
     private const char Up = 'U';
