@@ -40,7 +40,7 @@ public sealed partial class TimeUnitTests
             ]);
 
     [Fact]
-    public void Ticks_Second_IsOneSecond() => Assert.Equal(TimeSpan.FromSeconds(1).Ticks, TimeUnit.Second.Ticks);
+    public void Ticks_Second_IsOneSecond() => Assert.Equal(TimeUnit.Second.Ticks, TimeSpan.FromSeconds(1).Ticks);
 
     [Fact]
     public void Count_UnitInItself_IsOne() => Assert.Equal(1, TimeUnit.Count<TimeUnit.Day, TimeUnit.Day>());

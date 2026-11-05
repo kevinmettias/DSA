@@ -11,7 +11,7 @@ namespace DSAExperimentation.Domain.Science.Time;
 // nanosecond is a hundredth of a tick, so none of the three is offered. How a problem names its units is
 // its own notation; it maps its names onto these.
 //
-// Every length is fixed, so each unit states its name and length as C# constants (the owner's ruling of
+// Every length is fixed, so each unit states its length as a C# constant (the owner's ruling of
 // 2026-11-04): a caller that knows its units divides one constant by another, Minute.Ticks / Second.Ticks,
 // and the compiler writes 60. A caller generic over its units has Count<TUnit, TIn>, which reads the same
 // constants through ITimeUnit and folds to the count once inlined. LC 1348 first called Count from its
@@ -53,13 +53,11 @@ public static class TimeUnit
     /// <summary>A microsecond, a millionth of a second.</summary>
     public readonly struct Microsecond : ITimeUnit
     {
-        /// <summary>The unit's name, "microsecond".</summary>
-        public const string Name = "microsecond";
+        /// <inheritdoc/>
+        public static string Name => "microsecond";
 
         /// <summary>How long one microsecond lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerMicrosecond;
-
-        static string ITimeUnit.Name => Name;
 
         static long ITimeUnit.Ticks => Ticks;
     }
@@ -67,13 +65,11 @@ public static class TimeUnit
     /// <summary>A millisecond, a thousandth of a second.</summary>
     public readonly struct Millisecond : ITimeUnit
     {
-        /// <summary>The unit's name, "millisecond".</summary>
-        public const string Name = "millisecond";
+        /// <inheritdoc/>
+        public static string Name => "millisecond";
 
         /// <summary>How long one millisecond lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerMillisecond;
-
-        static string ITimeUnit.Name => Name;
 
         static long ITimeUnit.Ticks => Ticks;
     }
@@ -81,13 +77,11 @@ public static class TimeUnit
     /// <summary>A second, the SI unit of time.</summary>
     public readonly struct Second : ITimeUnit
     {
-        /// <summary>The unit's name, "second".</summary>
-        public const string Name = "second";
+        /// <inheritdoc/>
+        public static string Name => "second";
 
         /// <summary>How long one second lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerSecond;
-
-        static string ITimeUnit.Name => Name;
 
         static long ITimeUnit.Ticks => Ticks;
     }
@@ -95,13 +89,11 @@ public static class TimeUnit
     /// <summary>A minute, 60 seconds.</summary>
     public readonly struct Minute : ITimeUnit
     {
-        /// <summary>The unit's name, "minute".</summary>
-        public const string Name = "minute";
+        /// <inheritdoc/>
+        public static string Name => "minute";
 
         /// <summary>How long one minute lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerMinute;
-
-        static string ITimeUnit.Name => Name;
 
         static long ITimeUnit.Ticks => Ticks;
     }
@@ -109,13 +101,11 @@ public static class TimeUnit
     /// <summary>An hour, 60 minutes.</summary>
     public readonly struct Hour : ITimeUnit
     {
-        /// <summary>The unit's name, "hour".</summary>
-        public const string Name = "hour";
+        /// <inheritdoc/>
+        public static string Name => "hour";
 
         /// <summary>How long one hour lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerHour;
-
-        static string ITimeUnit.Name => Name;
 
         static long ITimeUnit.Ticks => Ticks;
     }
@@ -123,13 +113,11 @@ public static class TimeUnit
     /// <summary>A day, 24 hours: the SI-accepted unit, not a civil day that daylight saving or a leap second lengthens.</summary>
     public readonly struct Day : ITimeUnit
     {
-        /// <summary>The unit's name, "day".</summary>
-        public const string Name = "day";
+        /// <inheritdoc/>
+        public static string Name => "day";
 
         /// <summary>How long one day lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerDay;
-
-        static string ITimeUnit.Name => Name;
 
         static long ITimeUnit.Ticks => Ticks;
     }
@@ -137,13 +125,11 @@ public static class TimeUnit
     /// <summary>A week, seven days.</summary>
     public readonly struct Week : ITimeUnit
     {
-        /// <summary>The unit's name, "week".</summary>
-        public const string Name = "week";
+        /// <inheritdoc/>
+        public static string Name => "week";
 
         /// <summary>How long one week lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerDay * DaysPerWeek;
-
-        static string ITimeUnit.Name => Name;
 
         static long ITimeUnit.Ticks => Ticks;
     }
