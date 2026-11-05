@@ -3,24 +3,22 @@ using DSAExperimentation.LeetCode.Solutions.SmallestStringWithSwaps;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.SmallestStringWithSwaps;
 
 // Harness only. Both component-discovery strategies are
-// SmallestStringWithSwapsSolution's - this file just pins them to LeetCode's
-// published examples plus the degenerate no-pair case, where every index is its own
-// component and the string comes back untouched.
+// SmallestStringWithSwapsSolution's - this file just pins them to the degenerate
+// no-pair case, where every index is its own component and the string comes back
+// untouched, and to pairs that only join an index to itself, which leave it untouched
+// too. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class SmallestStringWithSwapsSolutionTests
 {
-    public static TheoryData<string, int[][], string> Examples =>
+    public static TheoryData<string, int[][], string> Cases =>
         new()
         {
-            { "dcab", [[0, 3], [1, 2]], "bacd" },
-            { "dcab", [[0, 3], [1, 2], [0, 2]], "abcd" },
-            { "cba", [[0, 1], [1, 2]], "abc" },
             { "dcab", [], "dcab" },
             { "zyx", [[0, 0], [1, 1]], "zyx" },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SmallestStringByAdjacencyListBfs_LeetCodeExamples_SortsEachComponentIndependently(
+    [MemberData(nameof(Cases))]
+    public void SmallestStringByAdjacencyListBfs_Cases_SortsEachComponentIndependently(
         string source, int[][] pairs, string expected)
     {
         var actual = SmallestStringWithSwapsSolution.SmallestStringByAdjacencyListBfs(source, pairs);
@@ -29,8 +27,8 @@ public sealed partial class SmallestStringWithSwapsSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SmallestStringByDisjointSet_LeetCodeExamples_SortsEachComponentIndependently(
+    [MemberData(nameof(Cases))]
+    public void SmallestStringByDisjointSet_Cases_SortsEachComponentIndependently(
         string source, int[][] pairs, string expected)
     {
         var actual = SmallestStringWithSwapsSolution.SmallestStringByDisjointSet(source, pairs);

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.FindTheSumOfSubsequencePowers;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheSumOfSubsequencePowersSolution's, the same
-// methods FindTheSumOfSubsequencePowersSolutionTests proves correct. k is fixed well
+// methods CatalogCaseTests proves correct. k is fixed well
 // below Length.
 //
 // Sizes are per arm. The 2^n brute force stops at 16 elements; the O(n^4 k)

@@ -3,21 +3,15 @@ using DSAExperimentation.LeetCode.Solutions.MaximumNumberOfGroupsGettingFreshDon
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumNumberOfGroupsGettingFreshDonuts;
 
 // Harness only. Both strategies are MaximumNumberOfGroupsGettingFreshDonutsSolution's
-// - this file pins them to LeetCode's two published examples, the hand-verified case
-// the original coverage carried, and two edges the original left untested: a
-// batchSize of 1 (every group is happy, and the remainder table is empty) and groups
-// that are all whole batches (the memoized search never runs at all).
+// - this file pins them to the hand-verified case the original coverage carried and
+// two edges the original left untested: a batchSize of 1 (every group is happy, and
+// the remainder table is empty) and groups that are all whole batches (the memoized
+// search never runs at all). LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class MaximumNumberOfGroupsGettingFreshDonutsSolutionTests
 {
-    public static TheoryData<int, int[], int> Examples =>
+    public static TheoryData<int, int[], int> Cases =>
         new()
         {
-            // LeetCode example 1. Remainders are {0,0,1,1,2,2}: the two whole-batch
-            // groups are happy for free, and the best ordering of the remaining four
-            // (two 1s, two 2s) adds two more - 2+2=4.
-            { 3, [1, 2, 3, 4, 5, 6], 4 },
-            // LeetCode example 2.
-            { 4, [1, 3, 2, 5, 2, 2, 1, 6], 4 },
             // Remainders are {1,3,0,2}: the whole-batch group is happy for free, and
             // no ordering of remainders 1, 2 and 3 makes more than two of them happy
             // (1,3,2 makes the first happy by starting fresh and the last happy
@@ -31,8 +25,8 @@ public sealed partial class MaximumNumberOfGroupsGettingFreshDonutsSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxHappyGroupsByAllPermutations_LeetCodeExamples_ReturnsHappyGroupCount(
+    [MemberData(nameof(Cases))]
+    public void MaxHappyGroupsByAllPermutations_Cases_ReturnsHappyGroupCount(
         int batchSize, int[] groups, int expected)
     {
         var actual = MaximumNumberOfGroupsGettingFreshDonutsSolution.MaxHappyGroupsByAllPermutations(batchSize, groups);
@@ -41,8 +35,8 @@ public sealed partial class MaximumNumberOfGroupsGettingFreshDonutsSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxHappyGroupsByMemoizedRecurrence_LeetCodeExamples_ReturnsHappyGroupCount(
+    [MemberData(nameof(Cases))]
+    public void MaxHappyGroupsByMemoizedRecurrence_Cases_ReturnsHappyGroupCount(
         int batchSize, int[] groups, int expected)
     {
         var actual = MaximumNumberOfGroupsGettingFreshDonutsSolution.MaxHappyGroupsByMemoizedRecurrence(

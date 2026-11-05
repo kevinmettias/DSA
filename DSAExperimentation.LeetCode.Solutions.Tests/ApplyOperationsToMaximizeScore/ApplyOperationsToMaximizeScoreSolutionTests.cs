@@ -4,24 +4,19 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.ApplyOperationsToMaximizeS
 
 // Harness only. Both strategies are ApplyOperationsToMaximizeScoreSolution's -
 // including the outward boundary scan, which the benchmark used to own privately as
-// its baseline with nothing asserting it. Beyond LeetCode's two published examples the
-// cases pin what the boundary arithmetic and the greedy have to get right: a single
-// element, values whose prime score is 0 (every nums[i] = 1), score ties that force
-// the leftmost-owner rule, operationCount exactly equal to the subarray count,
-// operationCount larger than it, and a product big enough to wrap the 1e9+7 modulus. Every expectation was computed
-// from the problem statement directly - enumerate all subarrays, take each one's
-// picked element, multiply the k largest - not from either strategy.
+// its baseline with nothing asserting it. The cases pin what the boundary arithmetic
+// and the greedy have to get right: a single element, values whose prime score is 0
+// (every nums[i] = 1), score ties that force the leftmost-owner rule, operationCount
+// exactly equal to the subarray count, operationCount larger than it, and a product
+// big enough to wrap the 1e9+7 modulus. Every expectation was computed from the
+// problem statement directly - enumerate all subarrays, take each one's picked
+// element, multiply the k largest - not from either strategy. LeetCode's published
+// examples run in CatalogCaseTests.
 public sealed partial class ApplyOperationsToMaximizeScoreSolutionTests
 {
-    public static TheoryData<int[], int, long> Examples =>
+    public static TheoryData<int[], int, long> Cases =>
         new()
         {
-            // LC example 1: every element has prime score 1, so the two 8s win.
-            { [8, 3, 9, 3, 8], 2, 81L },
-
-            // LC example 2.
-            { [19, 12, 14, 6, 10, 18], 3, 4788L },
-
             // One element, one subarray, one operation.
             { [2], 1, 2L },
 
@@ -55,8 +50,8 @@ public sealed partial class ApplyOperationsToMaximizeScoreSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumScoreByLinearBoundaryScan_LeetCodeExamples_ReturnsGreedyProductModulo(
+    [MemberData(nameof(Cases))]
+    public void MaximumScoreByLinearBoundaryScan_Cases_ReturnsGreedyProductModulo(
         int[] nums, int operationCount, long expected)
     {
         var actual = ApplyOperationsToMaximizeScoreSolution.MaximumScoreByLinearBoundaryScan(nums, operationCount);
@@ -65,8 +60,8 @@ public sealed partial class ApplyOperationsToMaximizeScoreSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumScoreByStackBoundaryScan_LeetCodeExamples_ReturnsGreedyProductModulo(
+    [MemberData(nameof(Cases))]
+    public void MaximumScoreByStackBoundaryScan_Cases_ReturnsGreedyProductModulo(
         int[] nums, int operationCount, long expected)
     {
         var actual = ApplyOperationsToMaximizeScoreSolution.MaximumScoreByStackBoundaryScan(nums, operationCount);

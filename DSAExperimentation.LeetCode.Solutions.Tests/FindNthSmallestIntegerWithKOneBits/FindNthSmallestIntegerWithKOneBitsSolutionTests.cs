@@ -3,21 +3,19 @@ using DSAExperimentation.LeetCode.Solutions.FindNthSmallestIntegerWithKOneBits;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.FindNthSmallestIntegerWithKOneBits;
 
 // Harness only: both strategies live in FindNthSmallestIntegerWithKOneBitsSolution
-// and are asserted against the same examples, so a failure names the strategy
+// and are asserted against the same cases, so a failure names the strategy
 // that broke.
 public sealed partial class FindNthSmallestIntegerWithKOneBitsSolutionTests
 {
-    public static TheoryData<long, int, long> Examples =>
+    public static TheoryData<long, int, long> Cases =>
         new()
         {
-            { 4, 2, 9 },
-            { 3, 1, 4 },
             { 1, 1, 1 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void NthSmallestByPopCountScan_LeetCodeExamples_ReturnsNthIntegerWithKOneBits(
+    [MemberData(nameof(Cases))]
+    public void NthSmallestByPopCountScan_Cases_ReturnsNthIntegerWithKOneBits(
         long position, int oneBitCount, long expected)
     {
         var actual = FindNthSmallestIntegerWithKOneBitsSolution.NthSmallestByPopCountScan(position, oneBitCount);
@@ -26,8 +24,8 @@ public sealed partial class FindNthSmallestIntegerWithKOneBitsSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void NthSmallestByMemoizedBinomialSelection_LeetCodeExamples_ReturnsNthIntegerWithKOneBits(
+    [MemberData(nameof(Cases))]
+    public void NthSmallestByMemoizedBinomialSelection_Cases_ReturnsNthIntegerWithKOneBits(
         long position, int oneBitCount, long expected)
     {
         var actual = FindNthSmallestIntegerWithKOneBitsSolution.NthSmallestByMemoizedBinomialSelection(position, oneBitCount);

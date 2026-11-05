@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.DecodeString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DecodeStringSolution's, the same methods
-// DecodeStringSolutionTests proves correct. LC 394 caps the encoded string at 30
+// CatalogCaseTests proves correct. LC 394 caps the encoded string at 30
 // characters, so the larger length is that cap: six "2[ab]" tiles.
 public class DecodeStringBenchmarks
 {

@@ -3,41 +3,41 @@ using DSAExperimentation.LeetCode.Solutions.IsomorphicStrings;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.IsomorphicStrings;
 
 // Harness only: both strategies live in IsomorphicStringsSolution. One test
-// method per strategy over one shared set of LeetCode's own examples, plus a
-// couple that exercise both mapping directions, so a failure names the
-// strategy (and direction) that broke.
+// method per strategy over one shared set of cases, so a failure names the
+// strategy that broke. The first three rows are LeetCode's own examples, kept here
+// because the catalog records them without their answers; the last is the empty
+// pair. The cases that exercise both mapping directions are catalog cases and run
+// in CatalogCaseTests.
 public sealed partial class IsomorphicStringsSolutionTests
 {
-    public static TheoryData<IsomorphismCase> Examples =>
+    public static TheoryData<IsomorphismCase> Cases =>
         new()
         {
             { new IsomorphismCase(S: "egg", T: "add", Expected: true) },
             { new IsomorphismCase(S: "foo", T: "bar", Expected: false) },
             { new IsomorphismCase(S: "paper", T: "title", Expected: true) },
-            { new IsomorphismCase(S: "badc", T: "baba", Expected: false) },
-            { new IsomorphismCase(S: "ab", T: "aa", Expected: false) },
             { new IsomorphismCase(S: "", T: "", Expected: true) },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsIsomorphicByDictionary_LeetCodeExamples_ReturnsExpected(IsomorphismCase example)
+    [MemberData(nameof(Cases))]
+    public void IsIsomorphicByDictionary_Cases_ReturnsExpected(IsomorphismCase testCase)
     {
-        var actual = IsomorphicStringsSolution.IsIsomorphicByDictionary(example.S, example.T);
+        var actual = IsomorphicStringsSolution.IsIsomorphicByDictionary(testCase.S, testCase.T);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsIsomorphicByHashMap_LeetCodeExamples_ReturnsExpected(IsomorphismCase example)
+    [MemberData(nameof(Cases))]
+    public void IsIsomorphicByHashMap_Cases_ReturnsExpected(IsomorphismCase testCase)
     {
-        var actual = IsomorphicStringsSolution.IsIsomorphicByHashMap(example.S, example.T);
+        var actual = IsomorphicStringsSolution.IsIsomorphicByHashMap(testCase.S, testCase.T);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
-    // One LeetCode example: the two strings to test for a bijection, and whether one
+    // One case: the two strings to test for a bijection, and whether one
     // exists. The two strings are the same type and the relation is not symmetric, so
     // the row names which is which rather than leaving two interchangeable positions.
     // Nested because it is only ever used inside this test class - it is this harness's

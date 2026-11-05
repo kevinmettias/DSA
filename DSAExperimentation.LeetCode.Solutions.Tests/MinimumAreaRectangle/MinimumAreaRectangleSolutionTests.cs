@@ -3,20 +3,16 @@ using DSAExperimentation.LeetCode.Solutions.MinimumAreaRectangle;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumAreaRectangle;
 
 // Harness only. Both strategies are MinimumAreaRectangleSolution's; this file
-// states LeetCode's published examples once and asserts every strategy against
-// them - the linear-rescan baseline included, which the benchmark previously
-// measured without anything checking its answer.
+// states its cases once and asserts every strategy against them - the
+// linear-rescan baseline included, which the benchmark previously measured without
+// anything checking its answer. The cases are point sets that form no rectangle
+// and one that forms exactly one. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class MinimumAreaRectangleSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][], int> Cases =>
         new()
         {
-            // LC example 1: [[1,1],[1,3],[3,1],[3,3],[2,2]] -> 4
-            { [[1, 1], [1, 3], [3, 1], [3, 3], [2, 2]], 4 },
-
-            // LC example 2: [[1,1],[1,3],[3,1],[3,3],[4,1],[4,3]] -> 2
-            { [[1, 1], [1, 3], [3, 1], [3, 3], [4, 1], [4, 3]], 2 },
-
             // Three corners only - no axis-aligned rectangle exists.
             { [[1, 1], [1, 3], [3, 1]], 0 },
 
@@ -31,14 +27,14 @@ public sealed partial class MinimumAreaRectangleSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinAreaRectByLinearScan_LeetCodeExamples_ReturnsSmallestRectangleArea(
+    [MemberData(nameof(Cases))]
+    public void MinAreaRectByLinearScan_Cases_ReturnsSmallestRectangleArea(
         int[][] points, int expected) =>
         Assert.Equal(expected, MinimumAreaRectangleSolution.MinAreaRectByLinearScan(points));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinAreaRectBySetLookup_LeetCodeExamples_ReturnsSmallestRectangleArea(
+    [MemberData(nameof(Cases))]
+    public void MinAreaRectBySetLookup_Cases_ReturnsSmallestRectangleArea(
         int[][] points, int expected) =>
         Assert.Equal(expected, MinimumAreaRectangleSolution.MinAreaRectBySetLookup(points));
 }

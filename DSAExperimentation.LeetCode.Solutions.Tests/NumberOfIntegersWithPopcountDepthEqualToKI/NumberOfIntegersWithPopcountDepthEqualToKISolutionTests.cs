@@ -4,25 +4,23 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.NumberOfIntegersWithPopcou
 
 // Harness only. The popcount-depth counting itself is
 // NumberOfIntegersWithPopcountDepthEqualToKISolution's - this file pins both
-// strategies to LeetCode's published examples plus two hand-verified boundary
+// strategies to two hand-verified boundary
 // cases: desiredDepth = 0 (only x = 1 qualifies) and upperBound = 10,
 // desiredDepth = 1 (the powers of two {2, 4, 8}, deliberately excluding x = 1
 // itself - the case the combinatorial strategy's popcount-1-bucket adjustment
 // exists for).
 public sealed partial class NumberOfIntegersWithPopcountDepthEqualToKISolutionTests
 {
-    public static TheoryData<long, int, long> Examples =>
+    public static TheoryData<long, int, long> Cases =>
         new()
         {
-            { 4L, 1, 2L },
-            { 7L, 2, 3L },
             { 1L, 0, 1L },
             { 10L, 1, 3L },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void PopcountDepthByBruteForce_LeetCodeExamples_ReturnsCountWithMatchingPopcountDepth(
+    [MemberData(nameof(Cases))]
+    public void PopcountDepthByBruteForce_Cases_ReturnsCountWithMatchingPopcountDepth(
         long upperBound, int desiredDepth, long expected)
     {
         var actual = NumberOfIntegersWithPopcountDepthEqualToKISolution.PopcountDepthByBruteForce(upperBound, desiredDepth);
@@ -31,8 +29,8 @@ public sealed partial class NumberOfIntegersWithPopcountDepthEqualToKISolutionTe
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void PopcountDepthByPopcountCombinatorics_LeetCodeExamples_ReturnsCountWithMatchingPopcountDepth(
+    [MemberData(nameof(Cases))]
+    public void PopcountDepthByPopcountCombinatorics_Cases_ReturnsCountWithMatchingPopcountDepth(
         long upperBound, int desiredDepth, long expected)
     {
         var actual = NumberOfIntegersWithPopcountDepthEqualToKISolution.PopcountDepthByPopcountCombinatorics(upperBound, desiredDepth);

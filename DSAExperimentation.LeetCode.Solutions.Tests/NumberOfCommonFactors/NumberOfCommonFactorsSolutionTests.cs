@@ -3,26 +3,18 @@ using DSAExperimentation.LeetCode.Solutions.NumberOfCommonFactors;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.NumberOfCommonFactors;
 
 // Harness only: both algorithms live in NumberOfCommonFactorsSolution. One test
-// method per strategy over one shared set of examples, so a failure names the
+// method per strategy over one shared set of cases, so a failure names the
 // strategy that broke rather than reporting a disagreement between two anonymous
-// arms.
+// arms. The cases include a gcd that is a perfect square, whose root the divisor
+// enumeration must count once. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class NumberOfCommonFactorsSolutionTests
 {
-    public static TheoryData<int, int, int> Examples =>
+    public static TheoryData<int, int, int> Cases =>
         new()
         {
-            // LeetCode examples 1 and 2.
-            { 12, 6, 4 },
-            { 25, 30, 2 },
-
             // gcd = 5, whose divisors are 1 and 5.
             { 25, 15, 2 },
-
-            // The smallest possible input.
-            { 1, 1, 1 },
-
-            // Coprime operands: only 1 divides both.
-            { 7, 13, 1 },
 
             // gcd = 12, whose divisors are 1, 2, 3, 4, 6, 12.
             { 36, 24, 6 },
@@ -33,8 +25,8 @@ public sealed partial class NumberOfCommonFactorsSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountCommonFactorsByLinearScan_LeetCodeExamples_ReturnsCommonFactorCount(
+    [MemberData(nameof(Cases))]
+    public void CountCommonFactorsByLinearScan_Cases_ReturnsCommonFactorCount(
         int first, int second, int expected)
     {
         var actual = NumberOfCommonFactorsSolution.CountCommonFactorsByLinearScan(first, second);
@@ -43,8 +35,8 @@ public sealed partial class NumberOfCommonFactorsSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountCommonFactorsByDivisorEnumeration_LeetCodeExamples_ReturnsCommonFactorCount(
+    [MemberData(nameof(Cases))]
+    public void CountCommonFactorsByDivisorEnumeration_Cases_ReturnsCommonFactorCount(
         int first, int second, int expected)
     {
         var actual = NumberOfCommonFactorsSolution.CountCommonFactorsByDivisorEnumeration(first, second);

@@ -3,22 +3,15 @@ using DSAExperimentation.LeetCode.Solutions.SurroundedRegions;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.SurroundedRegions;
 
 // Harness only: both border strategies live in SurroundedRegionsSolution - this file
-// pins each to LeetCode's published examples. Solve mutates its board in place, so
-// each example carries the input and the expected post-mutation board, and each arm
-// is handed its own clone of the input.
+// pins each to boards whose every 'O' touches the border, so nothing is captured.
+// Solve mutates its board in place, so each case carries the input and the expected
+// post-mutation board, and each arm is handed its own clone of the input. LeetCode's
+// published examples run in CatalogCaseTests.
 public sealed partial class SurroundedRegionsSolutionTests
 {
-    public static TheoryData<char[][], char[][]> Examples =>
+    public static TheoryData<char[][], char[][]> Cases =>
         new()
         {
-            {
-                [['X', 'X', 'X', 'X'], ['X', 'O', 'O', 'X'], ['X', 'X', 'O', 'X'], ['X', 'O', 'X', 'X']],
-                [['X', 'X', 'X', 'X'], ['X', 'X', 'X', 'X'], ['X', 'X', 'X', 'X'], ['X', 'O', 'X', 'X']]
-            },
-            {
-                [['X']],
-                [['X']]
-            },
             {
                 [['O']],
                 [['O']]
@@ -30,8 +23,8 @@ public sealed partial class SurroundedRegionsSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SolveByBorderDepthFirstSearch_LeetCodeExamples_CapturesInteriorRegions(
+    [MemberData(nameof(Cases))]
+    public void SolveByBorderDepthFirstSearch_Cases_CapturesInteriorRegions(
         char[][] board, char[][] expected)
     {
         SurroundedRegionsSolution.SolveByBorderDepthFirstSearch(board);
@@ -40,8 +33,8 @@ public sealed partial class SurroundedRegionsSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SolveByBorderBreadthFirstSearch_LeetCodeExamples_CapturesInteriorRegions(
+    [MemberData(nameof(Cases))]
+    public void SolveByBorderBreadthFirstSearch_Cases_CapturesInteriorRegions(
         char[][] board, char[][] expected)
     {
         SurroundedRegionsSolution.SolveByBorderBreadthFirstSearch(board);

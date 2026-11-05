@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.ThreeSumClosest;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // 3Sum Closest (LC 16): harness only. Both arms are ThreeSumClosestSolution's, the
-// same methods ThreeSumClosestSolutionTests proves correct - cubic exhaustive scan vs.
+// same methods CatalogCaseTests proves correct - cubic exhaustive scan vs.
 // MergeSort plus a linear two-pointer sweep per fixed first element.
 public class ThreeSumClosestBenchmarks
 {

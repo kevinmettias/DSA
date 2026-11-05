@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.EvaluateReversePolishNotation;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are EvaluateReversePolishNotationSolution's, the same
-// methods EvaluateReversePolishNotationSolutionTests proves correct - one operand-stack
+// methods CatalogCaseTests proves correct - one operand-stack
 // evaluation, on the BCL's Stack<int> and on this repo's. Pre-migration this class was
 // an untested compile-smoke placeholder (`Baseline() => 1`, `PrimitiveComposed() => 1`).
 //

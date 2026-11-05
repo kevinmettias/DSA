@@ -9,15 +9,9 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.GroupsOfStrings;
 public sealed partial class GroupsOfStringsSolutionTests
 {
     // (words, [number of groups, size of the largest group])
-    public static TheoryData<string[], int[]> Examples =>
+    public static TheoryData<string[], int[]> Cases =>
         new()
         {
-            // "a"/"b" connect by REPLACE, "ab" by ADD; "cde" reaches none of them.
-            { ["a", "b", "ab", "cde"], [2, 3] },
-
-            // A pure add/delete chain, so the group only forms transitively.
-            { ["a", "ab", "abc"], [1, 3] },
-
             // Identical letter sets are connected to each other.
             { ["ab", "ab", "xyz"], [2, 2] },
 
@@ -33,14 +27,14 @@ public sealed partial class GroupsOfStringsSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GroupSizesByPairwisePopCount_LeetCodeExamples_ReturnsGroupCountAndLargestGroupSize(
+    [MemberData(nameof(Cases))]
+    public void GroupSizesByPairwisePopCount_Cases_ReturnsGroupCountAndLargestGroupSize(
         string[] words, int[] expected) =>
         Assert.Equal(expected, GroupsOfStringsSolution.GroupSizesByPairwisePopCount(words));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GroupSizesByHashMapNeighbors_LeetCodeExamples_ReturnsGroupCountAndLargestGroupSize(
+    [MemberData(nameof(Cases))]
+    public void GroupSizesByHashMapNeighbors_Cases_ReturnsGroupCountAndLargestGroupSize(
         string[] words, int[] expected) =>
         Assert.Equal(expected, GroupsOfStringsSolution.GroupSizesByHashMapNeighbors(words));
 

@@ -3,43 +3,42 @@ using DSAExperimentation.LeetCode.Solutions.ContainsDuplicateIII;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ContainsDuplicateIII;
 
 // Harness only: both strategies are ContainsDuplicateIIISolution's - this file
-// just pins them to LeetCode's published examples, including the two unopenable
-// INT_MIN/INT_MAX cases the bucketed strategy's long-keyed HashMap exists for.
+// just pins them to two edge cases of the bucketing: equal negative values, which
+// land in a floored bucket below zero, and a value distance of int.MaxValue, whose
+// bucket width only fits in the long-keyed HashMap the bucketed strategy uses.
+// LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class ContainsDuplicateIIISolutionTests
 {
-    public static TheoryData<NearbyAlmostDuplicateCase> Examples =>
+    public static TheoryData<NearbyAlmostDuplicateCase> Cases =>
         new()
         {
-            { new NearbyAlmostDuplicateCase([1, 2, 3, 1], 3, 0, Expected: true) },
-            { new NearbyAlmostDuplicateCase([1, 0, 1, 1], 1, 2, Expected: true) },
-            { new NearbyAlmostDuplicateCase([1, 5, 9, 1, 5, 9], 2, 3, Expected: false) },
             { new NearbyAlmostDuplicateCase([-1, -1], 1, 0, Expected: true) },
             { new NearbyAlmostDuplicateCase([-1, 2147483647], 1, 2147483647, Expected: false) },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void HasNearbyAlmostDuplicateByBucketedHashMap_LeetCodeExamples_ReturnsExpected(
-        NearbyAlmostDuplicateCase example)
+    [MemberData(nameof(Cases))]
+    public void HasNearbyAlmostDuplicateByBucketedHashMap_Cases_ReturnsExpected(
+        NearbyAlmostDuplicateCase testCase)
     {
         var actual = ContainsDuplicateIIISolution.HasNearbyAlmostDuplicateByBucketedHashMap(
-            example.Nums, example.IndexDiff, example.ValueDiff);
+            testCase.Nums, testCase.IndexDiff, testCase.ValueDiff);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void HasNearbyAlmostDuplicateBySlidingWindowBruteForce_LeetCodeExamples_ReturnsExpected(
-        NearbyAlmostDuplicateCase example)
+    [MemberData(nameof(Cases))]
+    public void HasNearbyAlmostDuplicateBySlidingWindowBruteForce_Cases_ReturnsExpected(
+        NearbyAlmostDuplicateCase testCase)
     {
         var actual = ContainsDuplicateIIISolution.HasNearbyAlmostDuplicateBySlidingWindowBruteForce(
-            example.Nums, example.IndexDiff, example.ValueDiff);
+            testCase.Nums, testCase.IndexDiff, testCase.ValueDiff);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
-    // One LeetCode example: the array, the index and value distances that must
+    // One case: the array, the index and value distances that must
     // separate two values, and whether such a pair exists. The expected value is
     // named at every construction site, so a row reads as the case it is rather than
     // as a bare `true` whose meaning is its position. Nested because it is only ever

@@ -4,22 +4,20 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.CountSubtreesWithMaxDistan
 
 // Harness only. Both strategies are
 // CountSubtreesWithMaxDistanceBetweenCitiesSolution's - this file just pins them to
-// LeetCode's three published examples plus a four-city path, whose buckets separate
-// a chain from the star shape example 1 already covers.
+// a four-city path, whose buckets separate a chain from the star shape of
+// LeetCode's first example. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class CountSubtreesWithMaxDistanceBetweenCitiesSolutionTests
 {
-    public static TheoryData<int, int[][], int[]> Examples =>
+    public static TheoryData<int, int[][], int[]> Cases =>
         new()
         {
-            { 4, [[1, 2], [2, 3], [2, 4]], [3, 4, 0] },
-            { 2, [[1, 2]], [1] },
-            { 3, [[1, 2], [2, 3]], [2, 1] },
             { 4, [[1, 2], [2, 3], [3, 4]], [3, 2, 1] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountSubtreesByAllPairsBfs_LeetCodeExamples_ReturnsSubtreeCountPerMaxDistance(
+    [MemberData(nameof(Cases))]
+    public void CountSubtreesByAllPairsBfs_Cases_ReturnsSubtreeCountPerMaxDistance(
         int cityCount, int[][] edges, int[] expected)
     {
         var distances = CountSubtreesWithMaxDistanceBetweenCitiesSolution.CountSubtreesByAllPairsBfs(cityCount, edges);
@@ -27,8 +25,8 @@ public sealed partial class CountSubtreesWithMaxDistanceBetweenCitiesSolutionTes
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountSubtreesByDoubleBfs_LeetCodeExamples_ReturnsSubtreeCountPerMaxDistance(
+    [MemberData(nameof(Cases))]
+    public void CountSubtreesByDoubleBfs_Cases_ReturnsSubtreeCountPerMaxDistance(
         int cityCount, int[][] edges, int[] expected)
     {
         var distances = CountSubtreesWithMaxDistanceBetweenCitiesSolution.CountSubtreesByDoubleBfs(cityCount, edges);

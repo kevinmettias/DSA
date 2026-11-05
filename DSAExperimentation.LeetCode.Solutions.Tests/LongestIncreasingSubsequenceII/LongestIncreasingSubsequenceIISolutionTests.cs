@@ -2,20 +2,16 @@ using DSAExperimentation.LeetCode.Solutions.LongestIncreasingSubsequenceII;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.LongestIncreasingSubsequenceII;
 
-// Harness only: both strategies are LongestIncreasingSubsequenceIISolution's. Beyond
-// LeetCode's three published examples this pins the two ends of the k constraint - a
-// run the gap rule admits whole, and a run it rejects at every step.
+// Harness only: both strategies are LongestIncreasingSubsequenceIISolution's. This
+// pins a run the gap rule rejects at every step, a strictly decreasing run that no k
+// can lengthen, and a single element. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class LongestIncreasingSubsequenceIISolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            { [4, 2, 1, 4, 3, 4, 5, 8, 15], 3, 5 },
-            { [7, 4, 5, 1, 8, 12, 4, 7], 5, 4 },
-            { [1, 5], 1, 1 },
-            // Consecutive values, so a gap of one admits the whole run.
-            { [1, 2, 3, 4, 5], 1, 5 },
-            // The same run with gaps of two: k rejects every pair, leaving singletons.
+            // A run with gaps of two: k = 1 rejects every pair, leaving singletons.
             { [1, 3, 5, 7], 1, 1 },
             // Strictly decreasing, so no pair is increasing however wide k is.
             { [5, 4, 3, 2, 1], 10, 1 },
@@ -23,8 +19,8 @@ public sealed partial class LongestIncreasingSubsequenceIISolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void LengthOfLisByDynamicProgramming_LeetCodeExamples_ReturnsLongestConstrainedLength(
+    [MemberData(nameof(Cases))]
+    public void LengthOfLisByDynamicProgramming_Cases_ReturnsLongestConstrainedLength(
         int[] nums, int maxGap, int expected)
     {
         var actual = LongestIncreasingSubsequenceIISolution.LengthOfLisByDynamicProgramming(nums, maxGap);
@@ -33,8 +29,8 @@ public sealed partial class LongestIncreasingSubsequenceIISolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void LengthOfLisBySegmentTreeValueWindow_LeetCodeExamples_ReturnsLongestConstrainedLength(
+    [MemberData(nameof(Cases))]
+    public void LengthOfLisBySegmentTreeValueWindow_Cases_ReturnsLongestConstrainedLength(
         int[] nums, int maxGap, int expected)
     {
         var actual = LongestIncreasingSubsequenceIISolution.LengthOfLisBySegmentTreeValueWindow(nums, maxGap);

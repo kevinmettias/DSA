@@ -3,18 +3,14 @@ using DSAExperimentation.LeetCode.Solutions.NumberOfPairsSatisfyingInequality;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.NumberOfPairsSatisfyingInequality;
 
 // Harness only: both algorithms live in NumberOfPairsSatisfyingInequalitySolution.
-// One test method per strategy over one shared set of examples, so a failure names
+// One test method per strategy over one shared set of cases, so a failure names
 // the strategy that broke rather than reporting a disagreement between two
-// anonymous arms.
+// anonymous arms. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class NumberOfPairsSatisfyingInequalitySolutionTests
 {
-    public static TheoryData<int[], int[], int, long> Examples =>
+    public static TheoryData<int[], int[], int, long> Cases =>
         new()
         {
-            // LeetCode's own two examples.
-            { [3, 2, 5], [2, 2, 1], 1, 3L },
-            { [3, -1], [-2, 2], -1, 0L },
-
             // Every difference equal and diff = 0: the condition holds for every
             // pair, so the answer is n choose 2.
             { [1, 1, 1], [1, 1, 1], 0, 3L },
@@ -30,8 +26,8 @@ public sealed partial class NumberOfPairsSatisfyingInequalitySolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountPairsByPairwiseScan_LeetCodeExamples_ReturnsSatisfyingPairCount(
+    [MemberData(nameof(Cases))]
+    public void CountPairsByPairwiseScan_Cases_ReturnsSatisfyingPairCount(
         int[] nums1, int[] nums2, int diff, long expected)
     {
         var actual = NumberOfPairsSatisfyingInequalitySolution.CountPairsByPairwiseScan(nums1, nums2, diff);
@@ -40,8 +36,8 @@ public sealed partial class NumberOfPairsSatisfyingInequalitySolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountPairsByFenwickTreeSweep_LeetCodeExamples_ReturnsSatisfyingPairCount(
+    [MemberData(nameof(Cases))]
+    public void CountPairsByFenwickTreeSweep_Cases_ReturnsSatisfyingPairCount(
         int[] nums1, int[] nums2, int diff, long expected)
     {
         var actual = NumberOfPairsSatisfyingInequalitySolution.CountPairsByFenwickTreeSweep(nums1, nums2, diff);

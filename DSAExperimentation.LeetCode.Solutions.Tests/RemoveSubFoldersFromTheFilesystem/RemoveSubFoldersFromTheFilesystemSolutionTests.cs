@@ -8,19 +8,11 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.RemoveSubFoldersFromTheFil
 // each arm's result is ordered the same way before comparison.
 public sealed partial class RemoveSubFoldersFromTheFilesystemSolutionTests
 {
-    public static TheoryData<string[], string[]> Examples =>
+    public static TheoryData<string[], string[]> Cases =>
         new()
         {
-            // LeetCode example 1.
-            { ["/a", "/a/b", "/c/d", "/c/d/e", "/c/f"], ["/a", "/c/d", "/c/f"] },
-            // LeetCode example 2.
-            { ["/a", "/a/b/c", "/a/b/d"], ["/a"] },
             // Two independent trees, each collapsing to its own root.
             { ["/ghi", "/hij/klm", "/hij", "/hij/klm/nop"], ["/ghi", "/hij"] },
-            // LeetCode example 3: "/a/b/ca" shares the raw string prefix "/a/b/c" with
-            // "/a/b/c" but is not one of its subfolders - the "/" delimiter check is
-            // what tells them apart.
-            { ["/a/b/c", "/a/b/ca", "/a/b/d"], ["/a/b/c", "/a/b/ca", "/a/b/d"] },
             // A chain given in an order where no ancestor precedes its descendant.
             { ["/a/b/c/d", "/a/b", "/a/b/c", "/a"], ["/a"] },
             // Nothing to remove, and the single-folder degenerate case.
@@ -29,8 +21,8 @@ public sealed partial class RemoveSubFoldersFromTheFilesystemSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void RemoveSubfoldersByPairwisePrefixCheck_LeetCodeExamples_KeepsOnlyOutermostFolders(
+    [MemberData(nameof(Cases))]
+    public void RemoveSubfoldersByPairwisePrefixCheck_Cases_KeepsOnlyOutermostFolders(
         string[] folders, string[] expected) =>
         Assert.Equal(
             expected,
@@ -39,8 +31,8 @@ public sealed partial class RemoveSubFoldersFromTheFilesystemSolutionTests
                 .Order(StringComparer.Ordinal));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void RemoveSubfoldersByMergeSortThenScan_LeetCodeExamples_KeepsOnlyOutermostFolders(
+    [MemberData(nameof(Cases))]
+    public void RemoveSubfoldersByMergeSortThenScan_Cases_KeepsOnlyOutermostFolders(
         string[] folders, string[] expected) =>
         Assert.Equal(
             expected,

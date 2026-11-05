@@ -3,25 +3,14 @@ using DSAExperimentation.LeetCode.Solutions.CountSubIslands;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.CountSubIslands;
 
 // Harness only. Both flood fills are CountSubIslandsSolution's - this file pins
-// them to LeetCode's two published examples plus the three shapes the pre-migration
+// them to the three shapes the pre-migration
 // test carried: every island covered, one island straddling grid1 water, and a
 // grid2 with no land at all.
 public sealed partial class CountSubIslandsSolutionTests
 {
-    public static TheoryData<int[][], int[][], int> Examples =>
+    public static TheoryData<int[][], int[][], int> Cases =>
         new()
         {
-            {
-                [[1, 1, 1, 0, 0], [0, 1, 1, 1, 1], [0, 0, 0, 0, 0], [1, 0, 0, 0, 0], [1, 1, 0, 1, 1]],
-                [[1, 1, 1, 0, 0], [0, 0, 1, 1, 1], [0, 1, 0, 0, 0], [1, 0, 1, 1, 0], [0, 1, 0, 1, 0]],
-                3
-            },
-            {
-                [[1, 0, 1, 0, 1], [1, 1, 1, 1, 1], [0, 0, 0, 0, 0], [1, 1, 1, 1, 1], [1, 0, 1, 0, 1]],
-                [[0, 0, 0, 0, 0], [1, 1, 1, 1, 1], [0, 1, 0, 1, 0], [0, 1, 0, 1, 0], [1, 0, 0, 0, 1]],
-                2
-            },
-
             // grid2's three islands - {(0,0),(0,1),(1,1)}, {(2,0)}, {(2,2)} - each
             // land straight onto grid1 land, so all three qualify.
             {
@@ -42,8 +31,8 @@ public sealed partial class CountSubIslandsSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountByRecursiveFloodFill_LeetCodeExamples_CountsGrid2IslandsFullyCoveredByGrid1(
+    [MemberData(nameof(Cases))]
+    public void CountByRecursiveFloodFill_Cases_CountsGrid2IslandsFullyCoveredByGrid1(
         int[][] grid1, int[][] grid2, int expected)
     {
         var actual = CountSubIslandsSolution.CountByRecursiveFloodFill(grid1, grid2);
@@ -51,8 +40,8 @@ public sealed partial class CountSubIslandsSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountByDepthFirstSearchTraverse_LeetCodeExamples_CountsGrid2IslandsFullyCoveredByGrid1(
+    [MemberData(nameof(Cases))]
+    public void CountByDepthFirstSearchTraverse_Cases_CountsGrid2IslandsFullyCoveredByGrid1(
         int[][] grid1, int[][] grid2, int expected)
     {
         var actual = CountSubIslandsSolution.CountByDepthFirstSearchTraverse(grid1, grid2);

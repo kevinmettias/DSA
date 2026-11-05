@@ -3,24 +3,21 @@ using DSAExperimentation.LeetCode.Solutions.BoatsToSavePeople;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.BoatsToSavePeople;
 
 // Harness only: both strategies live in BoatsToSavePeopleSolution and are asserted
-// against the same examples - LeetCode's three published ones, a single passenger,
+// against the same cases - LeetCode's three published ones, a single passenger,
 // a set where every pair is exactly at the limit, and one where everyone pairs up.
 public sealed partial class BoatsToSavePeopleSolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            { [1, 2], 3, 1 },
-            { [3, 2, 2, 1], 3, 3 },
-            { [3, 5, 3, 4], 5, 4 },
             { [2], 3, 1 },
             { [5, 1, 4, 2], 6, 2 },
             { [1, 1, 1, 1], 2, 2 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void NumberOfRescueBoatsByRepeatedScan_LeetCodeExamples_ReturnsFewestBoats(
+    [MemberData(nameof(Cases))]
+    public void NumberOfRescueBoatsByRepeatedScan_Cases_ReturnsFewestBoats(
         int[] people, int limit, int expected)
     {
         var boats = BoatsToSavePeopleSolution.NumberOfRescueBoatsByRepeatedScan(people, limit);
@@ -29,8 +26,8 @@ public sealed partial class BoatsToSavePeopleSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void NumberOfRescueBoatsBySortThenTwoPointer_LeetCodeExamples_ReturnsFewestBoats(
+    [MemberData(nameof(Cases))]
+    public void NumberOfRescueBoatsBySortThenTwoPointer_Cases_ReturnsFewestBoats(
         int[] people, int limit, int expected)
     {
         var boats = BoatsToSavePeopleSolution.NumberOfRescueBoatsBySortThenTwoPointer(people, limit);

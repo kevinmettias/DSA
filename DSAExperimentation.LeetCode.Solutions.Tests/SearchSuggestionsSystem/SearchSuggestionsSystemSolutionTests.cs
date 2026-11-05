@@ -3,25 +3,16 @@ using DSAExperimentation.LeetCode.Solutions.SearchSuggestionsSystem;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.SearchSuggestionsSystem;
 
 // Harness only. Both the catalog rescan and the sort-once/binary-search strategy
-// are SearchSuggestionsSystemSolution's; this file just pins them to LeetCode's
-// published examples, including the case where no product carries the prefix at
-// all and every keystroke reports an empty suggestion list.
+// are SearchSuggestionsSystemSolution's; this file just pins them to two examples
+// an earlier version of LeetCode's statement published: a search word whose
+// suggestions narrow from three to one as it is typed, and the case where no
+// product carries the prefix at all and every keystroke reports an empty suggestion
+// list. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class SearchSuggestionsSystemSolutionTests
 {
-    public static TheoryData<string[], string, string[][]> Examples =>
+    public static TheoryData<string[], string, string[][]> Cases =>
         new()
         {
-            {
-                ["mobile", "mouse", "moneypot", "monitor", "mousepad"],
-                "mouse",
-                [
-                    ["mobile", "moneypot", "monitor"],
-                    ["mobile", "moneypot", "monitor"],
-                    ["mouse", "mousepad"],
-                    ["mouse", "mousepad"],
-                    ["mouse", "mousepad"],
-                ]
-            },
             {
                 ["bags", "baggage", "banner", "box", "cloths"],
                 "bags",
@@ -34,19 +25,14 @@ public sealed partial class SearchSuggestionsSystemSolutionTests
             },
             {
                 ["havana"],
-                "havana",
-                [["havana"], ["havana"], ["havana"], ["havana"], ["havana"], ["havana"]]
-            },
-            {
-                ["havana"],
                 "tatiana",
                 [[], [], [], [], [], [], []]
             },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SuggestedProductsByCatalogScan_LeetCodeExamples_ReturnsUpToThreeSmallestPrefixMatchesPerCharacter(
+    [MemberData(nameof(Cases))]
+    public void SuggestedProductsByCatalogScan_Cases_ReturnsUpToThreeSmallestPrefixMatchesPerCharacter(
         string[] products, string searchWord, string[][] expected)
     {
         var actual = SearchSuggestionsSystemSolution.SuggestedProductsByCatalogScan(products, searchWord);
@@ -55,8 +41,8 @@ public sealed partial class SearchSuggestionsSystemSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SuggestedProductsBySortedPrefixSearch_LeetCodeExamples_ReturnsUpToThreeSmallestPrefixMatchesPerCharacter(
+    [MemberData(nameof(Cases))]
+    public void SuggestedProductsBySortedPrefixSearch_Cases_ReturnsUpToThreeSmallestPrefixMatchesPerCharacter(
         string[] products, string searchWord, string[][] expected)
     {
         var actual = SearchSuggestionsSystemSolution.SuggestedProductsBySortedPrefixSearch(products, searchWord);

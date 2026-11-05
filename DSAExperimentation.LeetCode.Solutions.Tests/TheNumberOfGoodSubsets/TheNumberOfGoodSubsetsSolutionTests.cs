@@ -3,23 +3,15 @@ using DSAExperimentation.LeetCode.Solutions.TheNumberOfGoodSubsets;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.TheNumberOfGoodSubsets;
 
 // Harness only. Both the unmemoized recursion and the Memoizer-backed one are
-// TheNumberOfGoodSubsetsSolution's - this file pins them to LeetCode's two published
-// examples plus the cases the examples never reach: a value with a repeated prime
-// factor, duplicate values counted by index, 1s doubling the answer, three values that
-// pairwise share a prime, and all ten primes below 30 at once.
+// TheNumberOfGoodSubsetsSolution's - this file pins them to cases LeetCode's examples
+// never reach: single values, a value with a repeated prime factor, duplicate values
+// counted by index, 1s doubling the answer, and three values that pairwise share a
+// prime. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class TheNumberOfGoodSubsetsSolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            // LeetCode example 1: {2}, {3}, {2,3} and each of those with the 1 as well.
-            // 4 = 2^2 is never usable.
-            { [1, 2, 3, 4], 6 },
-
-            // LeetCode example 2: {2}, {3}, {15}, {2,3}, {2,15} - {3,15} share the
-            // prime 3, and 4 is again unusable.
-            { [4, 2, 3, 15], 5 },
-
             // 1 alone is not a product of one or more primes, so it is not a good subset.
             { [1], 0 },
 
@@ -45,20 +37,17 @@ public sealed partial class TheNumberOfGoodSubsetsSolutionTests
 
             // 6, 10 and 15 pairwise share a prime, so only the singletons survive.
             { [6, 10, 15], 3 },
-
-            // All ten primes below 30: every non-empty subset of them is good.
-            { [2, 3, 5, 7, 11, 13, 17, 19, 23, 29], 1023 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void NumberOfGoodSubsetsByBruteForceRecursion_LeetCodeExamples_ReturnsGoodSubsetCount(
+    [MemberData(nameof(Cases))]
+    public void NumberOfGoodSubsetsByBruteForceRecursion_Cases_ReturnsGoodSubsetCount(
         int[] nums, int expected) =>
         Assert.Equal(expected, TheNumberOfGoodSubsetsSolution.NumberOfGoodSubsetsByBruteForceRecursion(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void NumberOfGoodSubsetsByMemoizedRecursion_LeetCodeExamples_ReturnsGoodSubsetCount(
+    [MemberData(nameof(Cases))]
+    public void NumberOfGoodSubsetsByMemoizedRecursion_Cases_ReturnsGoodSubsetCount(
         int[] nums, int expected) =>
         Assert.Equal(expected, TheNumberOfGoodSubsetsSolution.NumberOfGoodSubsetsByMemoizedRecursion(nums));
 }

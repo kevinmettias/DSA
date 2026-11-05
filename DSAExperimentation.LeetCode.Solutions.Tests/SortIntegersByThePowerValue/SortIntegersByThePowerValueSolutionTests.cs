@@ -4,23 +4,20 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.SortIntegersByThePowerValu
 
 // Harness only. Both strategies are SortIntegersByThePowerValueSolution's - this
 // repo's MergeSort over ArrayIndexedSequence and the insertion sort that used to live
-// untested as the benchmark's baseline - pinned to LeetCode's published examples plus
-// a single-value range and a case whose kth falls on a power tie.
+// untested as the benchmark's baseline - pinned to a range whose kth integer is the
+// last in power order: 3's power of 7 puts it after 4, whose power is 2. LeetCode's
+// published examples run in CatalogCaseTests.
 public sealed partial class SortIntegersByThePowerValueSolutionTests
 {
-    public static TheoryData<int, int, int, int> Examples =>
+    public static TheoryData<int, int, int, int> Cases =>
         new()
         {
-            { 12, 15, 2, 13 },
-            { 7, 11, 4, 7 },
-            { 10, 20, 5, 13 },
-            { 1, 1, 1, 1 },
             { 1, 4, 4, 3 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetKthByMergeSort_LeetCodeExamples_ReturnsKthIntegerByPowerValue(
+    [MemberData(nameof(Cases))]
+    public void GetKthByMergeSort_Cases_ReturnsKthIntegerByPowerValue(
         int lo, int hi, int rank, int expected)
     {
         var actual = SortIntegersByThePowerValueSolution.GetKthByMergeSort(lo, hi, rank);
@@ -29,8 +26,8 @@ public sealed partial class SortIntegersByThePowerValueSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetKthByInsertionSort_LeetCodeExamples_ReturnsKthIntegerByPowerValue(
+    [MemberData(nameof(Cases))]
+    public void GetKthByInsertionSort_Cases_ReturnsKthIntegerByPowerValue(
         int lo, int hi, int rank, int expected)
     {
         var actual = SortIntegersByThePowerValueSolution.GetKthByInsertionSort(lo, hi, rank);

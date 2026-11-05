@@ -3,25 +3,25 @@ using DSAExperimentation.LeetCode.Solutions.MaximumIceCreamBars;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumIceCreamBars;
 
 // Harness only: both strategies live in MaximumIceCreamBarsSolution. One test
-// method per strategy over one shared set of examples, so a failure names the
+// method per strategy over one shared set of cases, so a failure names the
 // strategy that broke - the O(n^2) selection scan included, which was previously a
-// benchmark-only arm nothing asserted.
+// benchmark-only arm nothing asserted. The cases sit on the affordability
+// boundary: coins that exactly cover every bar, and a single bar either exactly
+// affordable or one coin short. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class MaximumIceCreamBarsSolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            { [1, 3, 2, 4, 1], 7, 4 }, // LC example 1: 1 + 1 + 2 + 3
-            { [10, 6, 8, 7, 7, 8], 5, 0 }, // LC example 2: even the cheapest bar is unaffordable
-            { [1, 6, 3, 1, 2, 5], 20, 6 }, // LC example 3: the whole tray costs 18
             { [1, 3, 2, 4, 1], 11, 5 }, // coins exactly cover every bar
             { [5], 5, 1 }, // one bar, exactly affordable
             { [5], 4, 0 }, // one bar, one coin short
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxIceCreamBySelectionScan_LeetCodeExamples_ReturnsAffordableBarCount(int[] costs, int coins, int expected)
+    [MemberData(nameof(Cases))]
+    public void MaxIceCreamBySelectionScan_Cases_ReturnsAffordableBarCount(int[] costs, int coins, int expected)
     {
         var actual = MaximumIceCreamBarsSolution.MaxIceCreamBySelectionScan(costs, coins);
 
@@ -29,8 +29,8 @@ public sealed partial class MaximumIceCreamBarsSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxIceCreamByMergeSortGreedy_LeetCodeExamples_ReturnsAffordableBarCount(int[] costs, int coins, int expected)
+    [MemberData(nameof(Cases))]
+    public void MaxIceCreamByMergeSortGreedy_Cases_ReturnsAffordableBarCount(int[] costs, int coins, int expected)
     {
         var actual = MaximumIceCreamBarsSolution.MaxIceCreamByMergeSortGreedy(costs, coins);
 

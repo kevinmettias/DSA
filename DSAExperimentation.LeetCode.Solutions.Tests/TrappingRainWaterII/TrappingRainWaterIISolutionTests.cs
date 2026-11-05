@@ -3,31 +3,13 @@ using DSAExperimentation.LeetCode.Solutions.TrappingRainWaterII;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.TrappingRainWaterII;
 
 // Harness only. Both search strategies are TrappingRainWaterIISolution's -
-// this file just pins them to LeetCode's published examples, plus a
+// this file just pins them to a
 // smaller-than-3x3 case neither original arm exercised.
 public sealed partial class TrappingRainWaterIISolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][], int> Cases =>
         new()
         {
-            {
-                [
-                    [1, 4, 3, 1, 3, 2],
-                    [3, 2, 1, 3, 2, 4],
-                    [2, 3, 3, 2, 3, 1],
-                ],
-                4
-            },
-            {
-                [
-                    [3, 3, 3, 3, 3],
-                    [3, 2, 2, 2, 3],
-                    [3, 2, 1, 2, 3],
-                    [3, 2, 2, 2, 3],
-                    [3, 3, 3, 3, 3],
-                ],
-                10
-            },
             {
                 [
                     [1, 2],
@@ -38,12 +20,12 @@ public sealed partial class TrappingRainWaterIISolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void TrapRainWaterByRelaxationSweep_LeetCodeExamples_ReturnsTotalTrappedVolume(int[][] heightMap, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void TrapRainWaterByRelaxationSweep_Cases_ReturnsTotalTrappedVolume(int[][] heightMap, int expected) =>
         Assert.Equal(expected, TrappingRainWaterIISolution.TrapRainWaterByRelaxationSweep(heightMap));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void TrapRainWaterByHeapFloodFill_LeetCodeExamples_ReturnsTotalTrappedVolume(int[][] heightMap, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void TrapRainWaterByHeapFloodFill_Cases_ReturnsTotalTrappedVolume(int[][] heightMap, int expected) =>
         Assert.Equal(expected, TrappingRainWaterIISolution.TrapRainWaterByHeapFloodFill(heightMap));
 }

@@ -3,22 +3,21 @@ using DSAExperimentation.LeetCode.Solutions.SubarraysDistinctElementSumOfSquares
 namespace DSAExperimentation.LeetCode.Solutions.Tests.SubarraysDistinctElementSumOfSquaresII;
 
 // Harness only: the algorithms live in SubarraysDistinctElementSumOfSquaresIISolution.
-// One test method per strategy over one shared set of LeetCode's own examples, so a
-// failure names the strategy that broke.
+// One test method per strategy over one shared set of cases, so a failure names the
+// strategy that broke. The one case is an array of distinct values, where every
+// subarray's distinct count is its length. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class SubarraysDistinctElementSumOfSquaresIISolutionTests
 {
-    public static TheoryData<int[], long> Examples =>
+    public static TheoryData<int[], long> Cases =>
         new()
         {
-            { [1, 2, 1], 15 },
-            { [2, 2], 3 },
-            { [1], 1 },
             { [1, 2, 3], 20 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SumOfSquaresByBruteForce_LeetCodeExamples_ReturnsModuloSumOfSquares(int[] nums, long expected)
+    [MemberData(nameof(Cases))]
+    public void SumOfSquaresByBruteForce_Cases_ReturnsModuloSumOfSquares(int[] nums, long expected)
     {
         var actual = SubarraysDistinctElementSumOfSquaresIISolution.SumOfSquaresByBruteForce(nums);
 
@@ -26,8 +25,8 @@ public sealed partial class SubarraysDistinctElementSumOfSquaresIISolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SumOfSquaresByRangeFenwickTree_LeetCodeExamples_ReturnsModuloSumOfSquares(int[] nums, long expected)
+    [MemberData(nameof(Cases))]
+    public void SumOfSquaresByRangeFenwickTree_Cases_ReturnsModuloSumOfSquares(int[] nums, long expected)
     {
         var actual = SubarraysDistinctElementSumOfSquaresIISolution.SumOfSquaresByRangeFenwickTree(nums);
 

@@ -3,36 +3,35 @@ using DSAExperimentation.LeetCode.Solutions.RobotReturnToOrigin;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.RobotReturnToOrigin;
 
 // Harness only. Both strategies are RobotReturnToOriginSolution's - this file
-// just pins them to LeetCode's published examples.
+// pins them to a ten-move sequence of all four directions that ends one step right
+// and one step up of the origin. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class RobotReturnToOriginSolutionTests
 {
-    public static TheoryData<JudgeCircleExample> Examples =>
+    public static TheoryData<JudgeCircleCase> Cases =>
         new()
         {
-            new JudgeCircleExample(Moves: "UD", ReturnsToOrigin: true),
-            new JudgeCircleExample(Moves: "LL", ReturnsToOrigin: false),
-            new JudgeCircleExample(Moves: "RRDD", ReturnsToOrigin: false),
-            new JudgeCircleExample(Moves: "LDRRLRUULR", ReturnsToOrigin: false),
+            new JudgeCircleCase(Moves: "LDRRLRUULR", ReturnsToOrigin: false),
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
+    [MemberData(nameof(Cases))]
     public void IsAtOriginBySwitch_VariousMoveSequences_ReturnsWhetherRobotReturnsToOrigin(
-        JudgeCircleExample example) =>
+        JudgeCircleCase testCase) =>
         Assert.Equal(
-            example.ReturnsToOrigin,
-            RobotReturnToOriginSolution.IsAtOriginBySwitch(example.Moves));
+            testCase.ReturnsToOrigin,
+            RobotReturnToOriginSolution.IsAtOriginBySwitch(testCase.Moves));
 
     [Theory]
-    [MemberData(nameof(Examples))]
+    [MemberData(nameof(Cases))]
     public void IsAtOriginByHashMapLookup_VariousMoveSequences_ReturnsWhetherRobotReturnsToOrigin(
-        JudgeCircleExample example) =>
+        JudgeCircleCase testCase) =>
         Assert.Equal(
-            example.ReturnsToOrigin,
-            RobotReturnToOriginSolution.IsAtOriginByHashMapLookup(example.Moves));
+            testCase.ReturnsToOrigin,
+            RobotReturnToOriginSolution.IsAtOriginByHashMapLookup(testCase.Moves));
 
-    // One example: the move sequence and whether it brings the robot back to the
+    // One case: the move sequence and whether it brings the robot back to the
     // origin. The expectation is named rather than carried by its position, so the
     // row reads as an assertion instead of as a bare `true`.
-    public readonly record struct JudgeCircleExample(string Moves, bool ReturnsToOrigin);
+    public readonly record struct JudgeCircleCase(string Moves, bool ReturnsToOrigin);
 }

@@ -3,30 +3,15 @@ using DSAExperimentation.LeetCode.Solutions.QueensThatCanAttackTheKing;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.QueensThatCanAttackTheKing;
 
 // Harness only. Both strategies are QueensThatCanAttackTheKingSolution's - this file
-// pins them to LeetCode's published examples on the problem's own 8x8 board.
-// LeetCode does not fix the order of the returned coordinates, so both arms are
-// compared after sorting by row then column.
+// pins them to positions on the problem's own 8x8 board: no queen in line with the
+// king, a single adjacent queen, and a king boxed in by eight queens. LeetCode does
+// not fix the order of the returned coordinates, so both arms are compared after
+// sorting by row then column. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class QueensThatCanAttackTheKingSolutionTests
 {
-    public static TheoryData<int[][], int[], int[][]> Examples =>
+    public static TheoryData<int[][], int[], int[][]> Cases =>
         new()
         {
-            // LeetCode example 1: the king in the corner, attacked along the rank,
-            // the file and the diagonal - the queens at [0,4] and [2,4] are shadowed.
-            {
-                [[0, 1], [1, 0], [4, 0], [0, 4], [3, 3], [2, 4]],
-                [0, 0],
-                [[0, 1], [1, 0], [3, 3]]
-            },
-
-            // LeetCode example 2: [1,1] is shadowed by [2,2] on the diagonal, and
-            // [3,5]/[4,5] by [3,4]/[4,4].
-            {
-                [[0, 0], [1, 1], [2, 2], [3, 4], [3, 5], [4, 4], [4, 5]],
-                [3, 3],
-                [[2, 2], [3, 4], [4, 4]]
-            },
-
             // No queen shares a rank, file or diagonal with the king: every ray runs
             // off the edge.
             {
@@ -51,8 +36,8 @@ public sealed partial class QueensThatCanAttackTheKingSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void QueensAttackTheKingByLinearScan_LeetCodeExamples_ReturnsAttackingQueens(
+    [MemberData(nameof(Cases))]
+    public void QueensAttackTheKingByLinearScan_Cases_ReturnsAttackingQueens(
         int[][] queens, int[] king, int[][] expected)
     {
         var attacking = QueensThatCanAttackTheKingSolution.QueensAttackTheKingByLinearScan(queens, king);
@@ -61,8 +46,8 @@ public sealed partial class QueensThatCanAttackTheKingSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void QueensAttackTheKingBySetLookup_LeetCodeExamples_ReturnsAttackingQueens(
+    [MemberData(nameof(Cases))]
+    public void QueensAttackTheKingBySetLookup_Cases_ReturnsAttackingQueens(
         int[][] queens, int[] king, int[][] expected)
     {
         var attacking = QueensThatCanAttackTheKingSolution.QueensAttackTheKingBySetLookup(queens, king);

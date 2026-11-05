@@ -9,27 +9,14 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumEmployeesToBeInvite
 // folder no longer carries a Fixtures/ subfolder.
 public sealed partial class MaximumEmployeesToBeInvitedToAMeetingSolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            // LC example 1: employees 1 and 2 favor each other, with 0 and 3 both
-            // chaining into 2 - one of them joins the pair.
-            { [2, 2, 1, 2], 3 },
-
-            // LC example 2: a single 3-cycle fills the table.
-            { [1, 2, 0], 3 },
-
-            // LC example 3: a single 4-cycle.
+            // A single 4-cycle.
             { [3, 0, 1, 2], 4 },
-
-            // Two mutual pairs and no chains: both pairs share one table.
-            { [1, 0, 3, 2], 4 },
 
             // One mutual pair with a one-employee chain hanging off each member.
             { [1, 0, 0, 1], 4 },
-
-            // A mutual pair with no chains against a 3-cycle: the longer cycle wins.
-            { [1, 0, 3, 4, 2], 3 },
 
             // A mutual pair with a two-employee chain on each side (6) beats the
             // separate 3-cycle it shares the input with.
@@ -37,16 +24,16 @@ public sealed partial class MaximumEmployeesToBeInvitedToAMeetingSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumInvitedByManualPeelAndCycleWalk_LeetCodeExamples_ReturnsLargestSeatableGroup(
+    [MemberData(nameof(Cases))]
+    public void MaximumInvitedByManualPeelAndCycleWalk_Cases_ReturnsLargestSeatableGroup(
         int[] favorite, int expected) =>
         Assert.Equal(
             expected,
             MaximumEmployeesToBeInvitedToAMeetingSolution.MaximumInvitedByManualPeelAndCycleWalk(favorite));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumInvitedByGraphPrimitiveComposition_LeetCodeExamples_ReturnsLargestSeatableGroup(
+    [MemberData(nameof(Cases))]
+    public void MaximumInvitedByGraphPrimitiveComposition_Cases_ReturnsLargestSeatableGroup(
         int[] favorite, int expected) =>
         Assert.Equal(
             expected,

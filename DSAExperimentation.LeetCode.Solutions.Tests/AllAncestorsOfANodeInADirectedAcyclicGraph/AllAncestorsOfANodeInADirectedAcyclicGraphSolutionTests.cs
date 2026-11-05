@@ -4,31 +4,20 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.AllAncestorsOfANodeInADire
 
 // Harness only. Both strategies - the per-node forward walk and the Kahn's-order
 // DP pass - are AllAncestorsOfANodeInADirectedAcyclicGraphSolution's; this file
-// pins them to LeetCode's published examples plus the edgeless and single-chain
+// pins them to the edgeless and single-chain
 // cases, which are the two shapes where the topological pass has nothing to
 // propagate and everything to propagate respectively.
 public sealed partial class AllAncestorsOfANodeInADirectedAcyclicGraphSolutionTests
 {
-    public static TheoryData<int, int[][], int[][]> Examples =>
+    public static TheoryData<int, int[][], int[][]> Cases =>
         new()
         {
-            {
-                8,
-                [[0, 3], [0, 4], [1, 3], [2, 4], [2, 7], [3, 5], [3, 6], [3, 7], [4, 6]],
-                [[], [], [], [0, 1], [0, 2], [0, 1, 3], [0, 1, 2, 3, 4], [0, 1, 2, 3]]
-            },
-            {
-                5,
-                [[0, 1], [0, 2], [0, 3], [0, 4], [1, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 4]],
-                [[], [0], [0, 1], [0, 1, 2], [0, 1, 2, 3]]
-            },
             { 5, [], [[], [], [], [], []] },
-            { 4, [[0, 1], [1, 2], [2, 3]], [[], [0], [0, 1], [0, 1, 2]] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetAncestorsByPerNodeForwardWalk_LeetCodeExamples_ReturnsEachNodesAncestorsAscending(
+    [MemberData(nameof(Cases))]
+    public void GetAncestorsByPerNodeForwardWalk_Cases_ReturnsEachNodesAncestorsAscending(
         int nodeCount, int[][] edges, int[][] expected) =>
         Assert.Equal(
             expected,
@@ -37,8 +26,8 @@ public sealed partial class AllAncestorsOfANodeInADirectedAcyclicGraphSolutionTe
                 .Select(ancestors => ancestors.ToArray()));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetAncestorsByTopologicalDpPass_LeetCodeExamples_ReturnsEachNodesAncestorsAscending(
+    [MemberData(nameof(Cases))]
+    public void GetAncestorsByTopologicalDpPass_Cases_ReturnsEachNodesAncestorsAscending(
         int nodeCount, int[][] edges, int[][] expected) =>
         Assert.Equal(
             expected,

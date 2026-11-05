@@ -3,28 +3,17 @@ using DSAExperimentation.LeetCode.Solutions.PalindromicPathQueriesInATree;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.PalindromicPathQueriesInATree;
 
-// Harness only. Both strategies are PalindromicPathQueriesInATreeSolution's. The first
-// two rows are LeetCode's published examples. The rest are derived by hand below - each
-// path's letters listed and their odd counts read off - and were checked against an
-// independent brute force that searches outward from one endpoint for the other and
-// counts the letters it finds, sharing nothing with either strategy. The tour and
-// ancestor index the Fenwick strategy is handed are asserted on their own.
+// Harness only. Both strategies are PalindromicPathQueriesInATreeSolution's. Every row
+// is derived by hand below - each path's letters listed and their odd counts read off -
+// and was checked against an independent brute force that searches outward from one
+// endpoint for the other and counts the letters it finds, sharing nothing with either
+// strategy. The tour and ancestor index the Fenwick strategy is handed are asserted on
+// their own. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class PalindromicPathQueriesInATreeSolutionTests
 {
-    public static TheoryData<int, int[][], string, string[], bool[]> Examples =>
+    public static TheoryData<int, int[][], string, string[], bool[]> Cases =>
         new()
         {
-            {
-                3, [[0, 1], [1, 2]], "aac",
-                ["query 0 2", "update 1 b", "query 0 2"],
-                [true, false]
-            },
-            {
-                4, [[0, 1], [0, 2], [0, 3]], "abca",
-                ["query 1 2", "update 0 b", "query 2 3", "update 3 a", "query 1 3"],
-                [false, false, true]
-            },
-
             // One node: its path is its own letter, a palindrome before and after the
             // update, and its subtree runs to the end of the tour.
             {
@@ -83,8 +72,8 @@ public sealed partial class PalindromicPathQueriesInATreeSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetPalindromePathFlagsByAncestorWalk_Examples_ReturnsWhetherEachQueriedPathRearranges(
+    [MemberData(nameof(Cases))]
+    public void GetPalindromePathFlagsByAncestorWalk_Cases_ReturnsWhetherEachQueriedPathRearranges(
         int nodeCount, int[][] edges, string nodeLetters, string[] queries, bool[] expected)
     {
         var actual = PalindromicPathQueriesInATreeSolution.GetPalindromePathFlagsByAncestorWalk(
@@ -94,8 +83,8 @@ public sealed partial class PalindromicPathQueriesInATreeSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetPalindromePathFlagsByEulerFenwick_Examples_ReturnsWhetherEachQueriedPathRearranges(
+    [MemberData(nameof(Cases))]
+    public void GetPalindromePathFlagsByEulerFenwick_Cases_ReturnsWhetherEachQueriedPathRearranges(
         int nodeCount, int[][] edges, string nodeLetters, string[] queries, bool[] expected)
     {
         var actual = PalindromicPathQueriesInATreeSolution.GetPalindromePathFlagsByEulerFenwick(

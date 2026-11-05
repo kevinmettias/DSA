@@ -3,39 +3,19 @@ using DSAExperimentation.LeetCode.Solutions.DeleteDuplicateFoldersInSystem;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.DeleteDuplicateFoldersInSystem;
 
 // Harness only. Both the pairwise brute force and the signature-grouping pass are
-// DeleteDuplicateFoldersInSystemSolution's - this file pins them to LeetCode's own
-// examples plus the three cases the marking rule turns on: every copy of a repeated
-// subtree is deleted rather than one being kept, leaves are never duplicates of each
-// other, and a repeat counts even when the two copies sit at different depths.
+// DeleteDuplicateFoldersInSystemSolution's - this file pins them to the three cases
+// the marking rule turns on: every copy of a repeated subtree is deleted rather than
+// one being kept, leaves are never duplicates of each other, and a repeat counts even
+// when the two copies sit at different depths. LeetCode's published examples run in
+// CatalogCaseTests.
 //
 // The problem states the returned paths may be in any order, so the assertion
 // compares them as a set.
 public sealed partial class DeleteDuplicateFoldersInSystemSolutionTests
 {
-    public static TheoryData<string[][], string[][]> Examples =>
+    public static TheoryData<string[][], string[][]> Cases =>
         new()
         {
-            // LeetCode example 1: "/a" and "/c" both hold a single empty "b", so both
-            // go; "/d" holds "a" instead and survives with its child.
-            {
-                [["a"], ["c"], ["d"], ["a", "b"], ["c", "b"], ["d", "a"]],
-                [["d"], ["d", "a"]]
-            },
-
-            // LeetCode example 2: "/a/b/x" and "/w" both hold a single empty "y", so both
-            // go; "/a" and "/c" are identical only after that deletion, which marks
-            // nothing new, so both survive.
-            {
-                [["a"], ["c"], ["a", "b"], ["c", "b"], ["a", "b", "x"], ["a", "b", "x", "y"], ["w"], ["w", "y"]],
-                [["c"], ["c", "b"], ["a"], ["a", "b"]]
-            },
-
-            // LeetCode example 3: nothing repeats, so nothing is deleted.
-            {
-                [["a", "b"], ["c", "d"], ["c"], ["a"]],
-                [["c"], ["c", "d"], ["a"], ["a", "b"]]
-            },
-
             // "a" and "b" are exact duplicates of each other two levels deep (each has
             // children x -> {y} and z), so BOTH are deleted entirely, not just one -
             // this problem deletes every copy, unlike "keep one" duplicate-subtree
@@ -65,16 +45,16 @@ public sealed partial class DeleteDuplicateFoldersInSystemSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void DeleteDuplicateFoldersByPairwiseComparison_LeetCodeExamples_ReturnsSurvivingPaths(
+    [MemberData(nameof(Cases))]
+    public void DeleteDuplicateFoldersByPairwiseComparison_Cases_ReturnsSurvivingPaths(
         string[][] paths, string[][] expected) =>
         AssertSamePaths(
             expected,
             DeleteDuplicateFoldersInSystemSolution.DeleteDuplicateFoldersByPairwiseComparison(paths));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void DeleteDuplicateFoldersBySignatureGrouping_LeetCodeExamples_ReturnsSurvivingPaths(
+    [MemberData(nameof(Cases))]
+    public void DeleteDuplicateFoldersBySignatureGrouping_Cases_ReturnsSurvivingPaths(
         string[][] paths, string[][] expected) =>
         AssertSamePaths(
             expected,

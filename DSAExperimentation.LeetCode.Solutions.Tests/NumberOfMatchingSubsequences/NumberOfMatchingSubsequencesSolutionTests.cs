@@ -4,20 +4,14 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.NumberOfMatchingSubsequenc
 
 // Harness only. Both strategies - the per-word two-pointer baseline and the
 // HashMap/Queue waiting-bucket pass - are NumberOfMatchingSubsequencesSolution's;
-// this file pins them to LeetCode's published examples plus the cases the bucket
+// this file pins them to the cases the bucket
 // pass has to get right on its own: words that share a waiting character, repeated
 // words, and a word whose characters all appear but out of order.
 public sealed partial class NumberOfMatchingSubsequencesSolutionTests
 {
-    public static TheoryData<string, string[], int> Examples =>
+    public static TheoryData<string, string[], int> Cases =>
         new()
         {
-            // LC example 1: "bb" is the only word that is not a subsequence.
-            { "abcde", ["a", "bb", "acd", "ace"], 3 },
-
-            // LC example 2.
-            { "dsahjpjauf", ["ahjpjau", "ja", "ahbwzgqnuk", "tnmlanowax"], 2 },
-
             // Right characters, wrong order - and a character searchedText never contains.
             { "abc", ["xyz", "ba"], 0 },
 
@@ -30,8 +24,8 @@ public sealed partial class NumberOfMatchingSubsequencesSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountMatchingSubseqByTwoPointerPerWord_LeetCodeExamples_CountsMatchingWords(
+    [MemberData(nameof(Cases))]
+    public void CountMatchingSubseqByTwoPointerPerWord_Cases_CountsMatchingWords(
         string searchedText, string[] words, int expected)
     {
         var actual = NumberOfMatchingSubsequencesSolution.CountMatchingSubseqByTwoPointerPerWord(searchedText, words);
@@ -40,8 +34,8 @@ public sealed partial class NumberOfMatchingSubsequencesSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountMatchingSubseqByWaitingBuckets_LeetCodeExamples_CountsMatchingWords(
+    [MemberData(nameof(Cases))]
+    public void CountMatchingSubseqByWaitingBuckets_Cases_CountsMatchingWords(
         string searchedText, string[] words, int expected)
     {
         var actual = NumberOfMatchingSubsequencesSolution.CountMatchingSubseqByWaitingBuckets(searchedText, words);

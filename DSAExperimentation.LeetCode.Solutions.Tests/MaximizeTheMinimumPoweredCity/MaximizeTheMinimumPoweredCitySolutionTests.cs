@@ -17,13 +17,9 @@ public sealed partial class MaximizeTheMinimumPoweredCitySolutionTests
     // Each city is covered by its own stations alone.
     private const int SelfOnlyRadius = 0;
 
-    public static TheoryData<int[], int, int, long> Examples =>
+    public static TheoryData<int[], int, int, long> Cases =>
         new()
         {
-            // LC examples 1 and 2.
-            { [1, 2, 4, 5, 0], 1, 2, 5 },
-            { [4, 4, 4, 4], 0, 3, 4 },
-
             // One city that reaches nothing else, so every extra station goes to it.
             { [3], 0, 5, 8 },
 
@@ -42,8 +38,8 @@ public sealed partial class MaximizeTheMinimumPoweredCitySolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxPowerByDescendingLinearScan_LeetCodeExamples_ReturnsMaximizedMinimumPower(
+    [MemberData(nameof(Cases))]
+    public void MaxPowerByDescendingLinearScan_Cases_ReturnsMaximizedMinimumPower(
         int[] stations, int radius, int extraStations, long expected)
     {
         var actual = MaximizeTheMinimumPoweredCitySolution.MaxPowerByDescendingLinearScan(
@@ -53,8 +49,8 @@ public sealed partial class MaximizeTheMinimumPoweredCitySolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxPowerByPredicateSearch_LeetCodeExamples_ReturnsMaximizedMinimumPower(
+    [MemberData(nameof(Cases))]
+    public void MaxPowerByPredicateSearch_Cases_ReturnsMaximizedMinimumPower(
         int[] stations, int radius, int extraStations, long expected)
     {
         var actual = MaximizeTheMinimumPoweredCitySolution.MaxPowerByPredicateSearch(

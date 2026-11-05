@@ -4,27 +4,25 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumMedianSumOfSubseque
 
 // Harness only. The grouping-and-median-picking itself is
 // MaximumMedianSumOfSubsequencesOfSizeThreeSolution's - this file just pins
-// both strategies to LeetCode's published examples plus the smallest possible
+// both strategies to the smallest possible
 // case (one triple, so the median sum is just that triple's own median).
 public sealed partial class MaximumMedianSumOfSubsequencesOfSizeThreeSolutionTests
 {
-    public static TheoryData<int[], long> Examples =>
+    public static TheoryData<int[], long> Cases =>
         new()
         {
-            { [2, 1, 3, 2, 1, 3], 5L },
-            { [1, 1, 10, 10, 10, 10], 20L },
             { [1, 2, 3], 2L },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumMedianSumByBruteForce_LeetCodeExamples_ReturnsMaximumMedianSum(
+    [MemberData(nameof(Cases))]
+    public void MaximumMedianSumByBruteForce_Cases_ReturnsMaximumMedianSum(
         int[] nums, long expected) =>
         Assert.Equal(expected, MaximumMedianSumOfSubsequencesOfSizeThreeSolution.MaximumMedianSumByBruteForce(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumMedianSumBySortedGreedy_LeetCodeExamples_ReturnsMaximumMedianSum(
+    [MemberData(nameof(Cases))]
+    public void MaximumMedianSumBySortedGreedy_Cases_ReturnsMaximumMedianSum(
         int[] nums, long expected) =>
         Assert.Equal(expected, MaximumMedianSumOfSubsequencesOfSizeThreeSolution.MaximumMedianSumBySortedGreedy(nums));
 }

@@ -5,21 +5,15 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumTimeToMakeArraySumA
 // Harness only. Both strategies are
 // MinimumTimeToMakeArraySumAtMostXSolution's - including the dense table, which
 // the benchmark used to own privately as its baseline and nothing asserted.
-// Beyond LeetCode's two published examples the cases pin the schedule's
-// boundaries: a sum already at or below targetSum (no seconds needed at all), a target
-// only the very last operation reaches (every index has to be zeroed), and a
-// nums2 of all zeroes, where nothing grows and the reduction is pure nums1.
+// The cases pin the schedule's boundaries: a sum already at or below targetSum (no
+// seconds needed at all), a target only the very last operation reaches (every index
+// has to be zeroed), and a nums2 of all zeroes, where nothing grows and the reduction
+// is pure nums1. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class MinimumTimeToMakeArraySumAtMostXSolutionTests
 {
-    public static TheoryData<int[], int[], int, int> Examples =>
+    public static TheoryData<int[], int[], int, int> Cases =>
         new()
         {
-            // LC example 1.
-            { [1, 2, 3], [1, 2, 3], 4, 3 },
-
-            // LC example 2: nums2 outgrows every schedule.
-            { [1, 2, 3], [3, 3, 3], 4, -1 },
-
             // Already at or below targetSum before the first second elapses.
             { [5], [1], 10, 0 },
 
@@ -31,8 +25,8 @@ public sealed partial class MinimumTimeToMakeArraySumAtMostXSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinimumTimeByDenseTable_LeetCodeExamples_ReturnsFewestSecondsToReachTarget(
+    [MemberData(nameof(Cases))]
+    public void MinimumTimeByDenseTable_Cases_ReturnsFewestSecondsToReachTarget(
         int[] nums1, int[] nums2, int targetSum, int expected)
     {
         var actual = MinimumTimeToMakeArraySumAtMostXSolution.MinimumTimeByDenseTable(nums1, nums2, targetSum);
@@ -41,8 +35,8 @@ public sealed partial class MinimumTimeToMakeArraySumAtMostXSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinimumTimeByRollingKnapsack_LeetCodeExamples_ReturnsFewestSecondsToReachTarget(
+    [MemberData(nameof(Cases))]
+    public void MinimumTimeByRollingKnapsack_Cases_ReturnsFewestSecondsToReachTarget(
         int[] nums1, int[] nums2, int targetSum, int expected)
     {
         var actual = MinimumTimeToMakeArraySumAtMostXSolution.MinimumTimeByRollingKnapsack(nums1, nums2, targetSum);

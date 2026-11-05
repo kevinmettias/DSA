@@ -7,16 +7,9 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.CycleLengthQueriesInATree;
 // arm, and the HeapArrayIndex.Parent two-pointer walk the test used to inline.
 public sealed partial class CycleLengthQueriesInATreeSolutionTests
 {
-    public static TheoryData<int, int[][], int[]> Examples =>
+    public static TheoryData<int, int[][], int[]> Cases =>
         new()
         {
-            // LC example 1.
-            { 3, new[] { new[] { 5, 3 }, new[] { 4, 7 }, new[] { 2, 3 } }, [4, 5, 3] },
-
-            // LC example 2: 1 and 2 are already parent and child, so the added edge
-            // doubles that edge into a two-node cycle.
-            { 2, new[] { new[] { 1, 2 } }, [2] },
-
             // treeLevels=2 (nodes 1,2,3): adding edge 2-3 closes the triangle 2-1-3-2.
             { 2, new[] { new[] { 2, 3 } }, [3] },
 
@@ -34,8 +27,8 @@ public sealed partial class CycleLengthQueriesInATreeSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CycleLengthQueriesByAncestorDictionary_LeetCodeExamples_ReturnsPerQueryCycleLengths(
+    [MemberData(nameof(Cases))]
+    public void CycleLengthQueriesByAncestorDictionary_Cases_ReturnsPerQueryCycleLengths(
         int treeLevels, int[][] queries, int[] expected)
     {
         var actual = CycleLengthQueriesInATreeSolution.CycleLengthQueriesByAncestorDictionary(
@@ -44,8 +37,8 @@ public sealed partial class CycleLengthQueriesInATreeSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CycleLengthQueriesByParentIndexWalk_LeetCodeExamples_ReturnsPerQueryCycleLengths(
+    [MemberData(nameof(Cases))]
+    public void CycleLengthQueriesByParentIndexWalk_Cases_ReturnsPerQueryCycleLengths(
         int treeLevels, int[][] queries, int[] expected)
     {
         var actual = CycleLengthQueriesInATreeSolution.CycleLengthQueriesByParentIndexWalk(

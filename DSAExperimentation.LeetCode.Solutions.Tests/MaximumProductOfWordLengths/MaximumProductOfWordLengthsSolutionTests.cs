@@ -6,24 +6,21 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumProductOfWordLength
 // methods MaximumProductOfWordLengthsBenchmarks measures.
 public sealed partial class MaximumProductOfWordLengthsSolutionTests
 {
-    public static TheoryData<string[], int> Examples =>
+    public static TheoryData<string[], int> Cases =>
         new()
         {
-            { ["abcw", "baz", "foo", "bar", "xtfn", "abcdef"], 16 },
-            { ["a", "ab", "abc", "d", "cd", "bcd", "abcd"], 4 },
-            { ["a", "aa", "aaa", "aaaa"], 0 },
             { ["a", "b"], 1 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxProductByCharacterScan_LeetCodeExamples_ReturnsLargestDisjointProduct(
+    [MemberData(nameof(Cases))]
+    public void MaxProductByCharacterScan_Cases_ReturnsLargestDisjointProduct(
         string[] words, int expected) =>
         Assert.Equal(expected, MaximumProductOfWordLengthsSolution.MaxProductByCharacterScan(words));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxProductByBitmaskHashMap_LeetCodeExamples_ReturnsLargestDisjointProduct(
+    [MemberData(nameof(Cases))]
+    public void MaxProductByBitmaskHashMap_Cases_ReturnsLargestDisjointProduct(
         string[] words, int expected) =>
         Assert.Equal(expected, MaximumProductOfWordLengthsSolution.MaxProductByBitmaskHashMap(words));
 }

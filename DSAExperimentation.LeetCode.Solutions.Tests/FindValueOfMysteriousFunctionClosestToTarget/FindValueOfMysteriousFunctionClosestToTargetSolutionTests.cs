@@ -3,23 +3,21 @@ using DSAExperimentation.LeetCode.Solutions.FindValueOfMysteriousFunctionClosest
 namespace DSAExperimentation.LeetCode.Solutions.Tests.FindValueOfMysteriousFunctionClosestToTarget;
 
 // Harness only: both strategies live in FindValueOfMysteriousFunctionClosestToTargetSolution
-// and are asserted against the same examples - LeetCode's three published ones plus a case
+// and are asserted against the same cases - LeetCode's three published ones plus a case
 // where no subarray hits the target exactly, so the smallest gap has to come from a strict
 // prefix of some AND walk.
 public sealed partial class FindValueOfMysteriousFunctionClosestToTargetSolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            { [9, 12, 3, 7, 15], 5, 2 },
             { [1000000], 1, 999999 },
-            { [1, 2, 4, 8, 16], 0, 0 },
             { [5, 89, 79, 44], 47, 3 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void ClosestToTargetByBruteForce_LeetCodeExamples_ReturnsSmallestGap(int[] arr, int target, int expected)
+    [MemberData(nameof(Cases))]
+    public void ClosestToTargetByBruteForce_Cases_ReturnsSmallestGap(int[] arr, int target, int expected)
     {
         var actual =
             FindValueOfMysteriousFunctionClosestToTargetSolution.ClosestToTargetByBruteForce(arr, target);
@@ -28,8 +26,8 @@ public sealed partial class FindValueOfMysteriousFunctionClosestToTargetSolution
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void ClosestToTargetByDistinctAndValues_LeetCodeExamples_ReturnsSmallestGap(
+    [MemberData(nameof(Cases))]
+    public void ClosestToTargetByDistinctAndValues_Cases_ReturnsSmallestGap(
         int[] arr,
         int target,
         int expected)

@@ -3,21 +3,20 @@ using DSAExperimentation.LeetCode.Solutions.SortColors;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.SortColors;
 
 // Harness only. Both strategies are SortColorsSolution's - this file just pins
-// them to LeetCode's published examples.
+// them to the shortest inputs: a single element, and two elements out of order.
+// LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class SortColorsSolutionTests
 {
-    public static TheoryData<int[], int[]> Examples =>
+    public static TheoryData<int[], int[]> Cases =>
         new()
         {
-            { [2, 0, 2, 1, 1, 0], [0, 0, 1, 1, 2, 2] },
-            { [2, 0, 1], [0, 1, 2] },
             { [1], [1] },
             { [1, 0], [0, 1] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SortByArraySort_LeetCodeExamples_SortsInPlace(int[] nums, int[] expected)
+    [MemberData(nameof(Cases))]
+    public void SortByArraySort_Cases_SortsInPlace(int[] nums, int[] expected)
     {
         var copy = (int[])nums.Clone();
 
@@ -27,8 +26,8 @@ public sealed partial class SortColorsSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SortByDutchFlagPartition_LeetCodeExamples_SortsInPlace(int[] nums, int[] expected)
+    [MemberData(nameof(Cases))]
+    public void SortByDutchFlagPartition_Cases_SortsInPlace(int[] nums, int[] expected)
     {
         var copy = (int[])nums.Clone();
 

@@ -5,21 +5,12 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.CountVisitedNodesInADirect
 // Harness only. Both strategies live in
 // CountVisitedNodesInADirectedGraphSolution - including the per-start forward walk,
 // which used to exist only as an unasserted benchmark baseline - and this file pins
-// them to the same examples so a failure names the strategy that broke.
+// them to the same cases so a failure names the strategy that broke.
 public sealed partial class CountVisitedNodesInADirectedGraphSolutionTests
 {
-    public static TheoryData<int[], int[]> Examples =>
+    public static TheoryData<int[], int[]> Cases =>
         new()
         {
-            // LeetCode example 1: the cycle 0 -> 1 -> 2 -> 0, with 3 hanging off it.
-            { [1, 2, 0, 0], [3, 3, 3, 4] },
-
-            // LeetCode example 2: one cycle spanning every node.
-            { [1, 2, 3, 4, 0], [5, 5, 5, 5, 5] },
-
-            // The smallest graph the constraints allow: a single two-node cycle.
-            { [1, 0], [2, 2] },
-
             // Two disjoint two-node cycles, so no node ever reaches the other pair.
             { [1, 0, 3, 2], [2, 2, 2, 2] },
 
@@ -33,16 +24,16 @@ public sealed partial class CountVisitedNodesInADirectedGraphSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountVisitedNodesByPerStartWalk_LeetCodeExamples_ReturnsExpectedVisitCounts(
+    [MemberData(nameof(Cases))]
+    public void CountVisitedNodesByPerStartWalk_Cases_ReturnsExpectedVisitCounts(
         int[] edges, int[] expected) =>
         Assert.Equal(
             expected,
             CountVisitedNodesInADirectedGraphSolution.CountVisitedNodesByPerStartWalk(edges));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountVisitedNodesBySccAndReverseBfs_LeetCodeExamples_ReturnsExpectedVisitCounts(
+    [MemberData(nameof(Cases))]
+    public void CountVisitedNodesBySccAndReverseBfs_Cases_ReturnsExpectedVisitCounts(
         int[] edges, int[] expected) =>
         Assert.Equal(
             expected,

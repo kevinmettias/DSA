@@ -8,26 +8,23 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.SolveTheEquation;
 // resulting linear equation.
 public sealed partial class SolveTheEquationSolutionTests
 {
-    public static TheoryData<EquationExample> Examples => new()
+    public static TheoryData<EquationCase> Cases => new()
     {
-        new EquationExample(Equation: "x+5-3+x=6+x-2", Expected: "x=2"),
-        new EquationExample(Equation: "x=x", Expected: "Infinite solutions"),
-        new EquationExample(Equation: "2x=x", Expected: "x=0"),
-        new EquationExample(Equation: "x=x+2", Expected: "No solution"),
+        new EquationCase(Equation: "x=x+2", Expected: "No solution"),
     };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SolveBySubstringParse_LeetCodeAndEdgeCaseExamples_ReturnsExpectedResult(EquationExample example)
-        => Assert.Equal(example.Expected, SolveTheEquationSolution.SolveBySubstringParse(example.Equation));
+    [MemberData(nameof(Cases))]
+    public void SolveBySubstringParse_LeetCodeAndEdgeCaseExamples_ReturnsExpectedResult(EquationCase testCase)
+        => Assert.Equal(testCase.Expected, SolveTheEquationSolution.SolveBySubstringParse(testCase.Equation));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SolveBySpanParse_LeetCodeAndEdgeCaseExamples_ReturnsExpectedResult(EquationExample example)
-        => Assert.Equal(example.Expected, SolveTheEquationSolution.SolveBySpanParse(example.Equation));
+    [MemberData(nameof(Cases))]
+    public void SolveBySpanParse_LeetCodeAndEdgeCaseExamples_ReturnsExpectedResult(EquationCase testCase)
+        => Assert.Equal(testCase.Expected, SolveTheEquationSolution.SolveBySpanParse(testCase.Equation));
 
-    // One LeetCode example: the equation to solve and the answer it solves to. The
+    // One case: the equation to solve and the answer it solves to. The
     // equation and the answer are adjacent strings at the call site, so the bundle
     // names the input and the expectation rather than leaving them swappable.
-    public readonly record struct EquationExample(string Equation, string Expected);
+    public readonly record struct EquationCase(string Equation, string Expected);
 }

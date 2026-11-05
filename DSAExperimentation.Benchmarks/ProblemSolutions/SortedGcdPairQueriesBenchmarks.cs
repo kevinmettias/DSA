@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.SortedGcdPairQueries;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SortedGcdPairQueriesSolution's, the same methods
-// SortedGcdPairQueriesSolutionTests proves correct. The sieve arm is handed a prebuilt
+// CatalogCaseTests proves correct. The sieve arm is handed a prebuilt
 // GcdPairCountIndex, so its O(maxValue log maxValue) build cost is charged to
 // [GlobalSetup] rather than to the queries being measured.
 public class SortedGcdPairQueriesBenchmarks

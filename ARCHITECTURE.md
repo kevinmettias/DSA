@@ -2707,7 +2707,7 @@ Open items:
   - Best Time to Buy and Sell Stock IV takes `(prices, k)` where LeetCode takes `(k, prices)`.
     Reordering alone would not enroll it: its baseline is exponential, and LeetCode allows 1,000
     prices, so it needs a case limit as well.
-- **Trimming the enrolled solutions' own tests, the rest.** A theory row restates a catalog case when
+- **Trimming the enrolled solutions' own tests.** A theory row restates a catalog case when
   a case has the same inputs, read into the strategy's types, and the catalog's judge accepts the
   row's answer for it. That row is the check `CatalogCaseTests` already makes. Measured over the 608
   test classes of enrolled solutions (2026-11-03):
@@ -2728,10 +2728,22 @@ Open items:
   comment that named a deleted test class now names `CatalogCaseTests`, or the solution that holds
   the approach.
 
-  Left for later: the 336 files where only some rows are restated. Dropping those rows mechanically
-  would leave theories named `_LeetCodeExamples_`, and comments describing the published examples,
-  over rows that are no longer either, so each file needs its names and comments rewritten as its
-  rows go.
+  The rest followed on 2026-11-05, measured again over the 781 test classes of the 1,005 enrolled: 490
+  data properties where only some rows were restated, and 74 more whose every row was. The restated
+  rows went - 1,434 from the 490, keeping 1,427, and 224 with the whole properties - along with each
+  comment that belonged to a dropped row (one naming an example, or over that row alone), and 64 test
+  files were left with no test and deleted. What stays is renamed for what it holds: the property
+  `Examples` is `Cases`, each theory's `_LeetCodeExamples_` is `_Cases_`, and a row record named for an
+  example is named for a case. The comments were rewritten file by file, by eight agents working in
+  parallel on 245 files: each now says what its remaining rows cover, and a header that pinned the
+  tests to LeetCode's examples ends "LeetCode's published examples run in CatalogCaseTests." The rewrite
+  found several comments that were never true - Find Winner on a Tic Tac Toe Game's claim that no
+  example wins on the anti-diagonal, Remove Max Number of Edges' account of its example 3, and others
+  - and corrected them. A few rows that are LeetCode's examples stay where the catalog lacks them or
+  states them otherwise: an example of an earlier statement (Reverse Bits, Search Suggestions System),
+  one the catalog records with no output (Isomorphic Strings), or an answer written in another form
+  (Statistics from a Large Sample's mean as 24/11, a tree in preorder). The solutions' tests went from
+  14,746 to 11,391.
 - **Shapes the generator refuses.** Design problems and judge-only inputs each need a rule before
   their problems can enroll.
 

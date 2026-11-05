@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.MaximumSegmentSumAfterRemovals;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumSegmentSumAfterRemovals;
 
 // Harness only. Both strategies are MaximumSegmentSumAfterRemovalsSolution's -
-// this file pins them to LeetCode's published examples plus the degenerate shapes
+// this file pins them to the degenerate shapes
 // those never reach: a single element, a two-element array, an already-sorted
 // suffix-first removal order, and repeated equal values where several segments
 // tie for best.
@@ -14,11 +14,9 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumSegmentSumAfterRemo
 // right.
 public sealed partial class MaximumSegmentSumAfterRemovalsSolutionTests
 {
-    public static TheoryData<int[], int[], long[]> Examples =>
+    public static TheoryData<int[], int[], long[]> Cases =>
         new()
         {
-            { [1, 2, 5, 6, 1], [0, 3, 2, 4, 1], [14, 7, 2, 2, 0] },
-            { [3, 2, 11, 1], [3, 2, 1, 0], [16, 5, 3, 0] },
             { [42], [0], [0] },
             { [2, 3], [0, 1], [3, 0] },
             { [1, 1, 1], [1, 0, 2], [1, 1, 0] },
@@ -26,8 +24,8 @@ public sealed partial class MaximumSegmentSumAfterRemovalsSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumSegmentSumsByRescanAfterEachRemoval_LeetCodeExamples_ReturnsBestSegmentAfterEachRemoval(
+    [MemberData(nameof(Cases))]
+    public void MaximumSegmentSumsByRescanAfterEachRemoval_Cases_ReturnsBestSegmentAfterEachRemoval(
         int[] nums, int[] removeQueries, long[] expected)
     {
         var actual =
@@ -37,8 +35,8 @@ public sealed partial class MaximumSegmentSumAfterRemovalsSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumSegmentSumsByReverseTimeDisjointSet_LeetCodeExamples_ReturnsBestSegmentAfterEachRemoval(
+    [MemberData(nameof(Cases))]
+    public void MaximumSegmentSumsByReverseTimeDisjointSet_Cases_ReturnsBestSegmentAfterEachRemoval(
         int[] nums, int[] removeQueries, long[] expected)
     {
         var actual =

@@ -4,16 +4,15 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.NumberOfWaysToReachAPositi
 
 // Harness only. Both strategies are
 // NumberOfWaysToReachAPositionAfterExactlyKStepsSolution's - this file pins them to
-// LeetCode's published examples plus the three edges the examples leave out: zero
-// steps already on target, a return-to-start walk, and a distance whose parity
-// cannot match the step count.
+// edges LeetCode's examples leave out: zero steps already on target, a
+// return-to-start walk, a distance equal to the step count so that only one walk
+// reaches it, and a distance whose parity cannot match the step count. LeetCode's
+// published examples run in CatalogCaseTests.
 public sealed partial class NumberOfWaysToReachAPositionAfterExactlyKStepsSolutionTests
 {
-    public static TheoryData<int, int, int, int> Examples =>
+    public static TheoryData<int, int, int, int> Cases =>
         new()
         {
-            { 1, 2, 3, 3 },
-            { 2, 5, 10, 0 },
             { 4, 4, 0, 1 },
             { 0, 0, 2, 2 },
             { 0, 3, 3, 1 },
@@ -21,8 +20,8 @@ public sealed partial class NumberOfWaysToReachAPositionAfterExactlyKStepsSoluti
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void NumberOfWaysByUnmemoizedRecursion_LeetCodeExamples_ReturnsStepSequenceCount(
+    [MemberData(nameof(Cases))]
+    public void NumberOfWaysByUnmemoizedRecursion_Cases_ReturnsStepSequenceCount(
         int startPos, int endPos, int stepCount, int expected)
     {
         var actual = NumberOfWaysToReachAPositionAfterExactlyKStepsSolution.NumberOfWaysByUnmemoizedRecursion(
@@ -32,8 +31,8 @@ public sealed partial class NumberOfWaysToReachAPositionAfterExactlyKStepsSoluti
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void NumberOfWaysByMemoizedRecursion_LeetCodeExamples_ReturnsStepSequenceCount(
+    [MemberData(nameof(Cases))]
+    public void NumberOfWaysByMemoizedRecursion_Cases_ReturnsStepSequenceCount(
         int startPos, int endPos, int stepCount, int expected)
     {
         var actual = NumberOfWaysToReachAPositionAfterExactlyKStepsSolution.NumberOfWaysByMemoizedRecursion(

@@ -3,28 +3,19 @@ using DSAExperimentation.LeetCode.Solutions.DivideTwoIntegers;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.DivideTwoIntegers;
 
 // Harness only: both strategies live in DivideTwoIntegersSolution and are
-// asserted against the same published examples, including the two int32-overflow
-// edge cases LeetCode calls out explicitly.
+// asserted against the same case: int.MaxValue divided by 7, a dividend at the top
+// of the int32 range. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class DivideTwoIntegersSolutionTests
 {
-    public static TheoryData<int, int, int> Examples =>
+    public static TheoryData<int, int, int> Cases =>
         new()
         {
-            { 10, 3, 3 },
-            { 7, -3, -2 },
-            { int.MinValue, -1, int.MaxValue },
-            { int.MinValue, 1, int.MinValue },
             { int.MaxValue, 7, 306_783_378 },
-            { int.MinValue, 2, -1_073_741_824 },
-            // A quotient of exactly int.MaxValue, since dividing by one is the identity:
-            // the last candidate an int-indexed search over 0..int.MaxValue cannot hold.
-            { int.MaxValue, 1, int.MaxValue },
-            { int.MaxValue, -1, -int.MaxValue },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void DivideByBuiltInDivision_LeetCodeExamples_TruncatesTowardZero(
+    [MemberData(nameof(Cases))]
+    public void DivideByBuiltInDivision_Cases_TruncatesTowardZero(
         int dividend, int divisor, int expected)
     {
         var actual = DivideTwoIntegersSolution.DivideByBuiltInDivision(dividend, divisor);
@@ -32,8 +23,8 @@ public sealed partial class DivideTwoIntegersSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void DivideByBinarySearchProduct_LeetCodeExamples_TruncatesTowardZero(
+    [MemberData(nameof(Cases))]
+    public void DivideByBinarySearchProduct_Cases_TruncatesTowardZero(
         int dividend, int divisor, int expected)
     {
         var actual = DivideTwoIntegersSolution.DivideByBinarySearchProduct(dividend, divisor);

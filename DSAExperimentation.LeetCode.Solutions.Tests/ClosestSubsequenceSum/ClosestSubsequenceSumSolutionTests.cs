@@ -3,26 +3,23 @@ using DSAExperimentation.LeetCode.Solutions.ClosestSubsequenceSum;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ClosestSubsequenceSum;
 
 // Harness only: both strategies live in ClosestSubsequenceSumSolution and are
-// asserted against the same examples, so a failure names the strategy that broke.
+// asserted against the same cases, so a failure names the strategy that broke.
 // The full 2^n subset scan was previously only a benchmark's baseline arm and went
 // unasserted; it is under test here for the first time, against the same meet-in-
 // the-middle answers.
 public sealed partial class ClosestSubsequenceSumSolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            { [5, -7, 3, 5], 6, 0 },
-            { [7, -9, 15, -2], -5, 1 },
-            { [1, 2, 3], -7, 7 },
             { [-1, -2, -3], -4, 0 },
             { [5], 3, 2 },
             { [1], 0, 0 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinAbsoluteDifferenceByBruteForceSubsets_LeetCodeExamples_ReturnsClosestAchievableSum(
+    [MemberData(nameof(Cases))]
+    public void MinAbsoluteDifferenceByBruteForceSubsets_Cases_ReturnsClosestAchievableSum(
         int[] nums, int goal, int expected)
     {
         var actual = ClosestSubsequenceSumSolution.MinAbsoluteDifferenceByBruteForceSubsets(nums, goal);
@@ -31,8 +28,8 @@ public sealed partial class ClosestSubsequenceSumSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinAbsoluteDifferenceByMeetInTheMiddle_LeetCodeExamples_ReturnsClosestAchievableSum(
+    [MemberData(nameof(Cases))]
+    public void MinAbsoluteDifferenceByMeetInTheMiddle_Cases_ReturnsClosestAchievableSum(
         int[] nums, int goal, int expected)
     {
         var actual = ClosestSubsequenceSumSolution.MinAbsoluteDifferenceByMeetInTheMiddle(nums, goal);

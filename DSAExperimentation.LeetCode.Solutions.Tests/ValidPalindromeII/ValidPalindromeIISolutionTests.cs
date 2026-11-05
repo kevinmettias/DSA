@@ -3,44 +3,40 @@ using DSAExperimentation.LeetCode.Solutions.ValidPalindromeII;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ValidPalindromeII;
 
 // Harness only. Both strategies are ValidPalindromeIISolution's - this file
-// just pins them to LeetCode's published examples and one longer non-palindrome.
+// just pins them to one longer non-palindrome. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class ValidPalindromeIISolutionTests
 {
-    public static TheoryData<PalindromeExample> Examples =>
+    public static TheoryData<PalindromeCase> Cases =>
         new()
         {
-            // LeetCode examples 1-3.
-            new PalindromeExample("aba", IsValidAfterAtMostOneDeletion: true),
-            new PalindromeExample("abca", IsValidAfterAtMostOneDeletion: true),
-            new PalindromeExample("abc", IsValidAfterAtMostOneDeletion: false),
-
             // "abcdef" mismatches a/f, and dropping either leaves b/f or a/e mismatched.
-            new PalindromeExample("abcdef", IsValidAfterAtMostOneDeletion: false),
+            new PalindromeCase("abcdef", IsValidAfterAtMostOneDeletion: false),
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsValidPalindromeByBruteForceDeletion_LeetCodeExamples_ReturnsWhetherAtMostOneDeletionWorks(
-        PalindromeExample example)
+    [MemberData(nameof(Cases))]
+    public void IsValidPalindromeByBruteForceDeletion_Cases_ReturnsWhetherAtMostOneDeletionWorks(
+        PalindromeCase testCase)
     {
-        var actual = ValidPalindromeIISolution.IsValidPalindromeByBruteForceDeletion(example.Text);
+        var actual = ValidPalindromeIISolution.IsValidPalindromeByBruteForceDeletion(testCase.Text);
 
-        Assert.Equal(example.IsValidAfterAtMostOneDeletion, actual);
+        Assert.Equal(testCase.IsValidAfterAtMostOneDeletion, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsValidPalindromeByMismatchSkip_LeetCodeExamples_ReturnsWhetherAtMostOneDeletionWorks(
-        PalindromeExample example)
+    [MemberData(nameof(Cases))]
+    public void IsValidPalindromeByMismatchSkip_Cases_ReturnsWhetherAtMostOneDeletionWorks(
+        PalindromeCase testCase)
     {
-        var actual = ValidPalindromeIISolution.IsValidPalindromeByMismatchSkip(example.Text);
+        var actual = ValidPalindromeIISolution.IsValidPalindromeByMismatchSkip(testCase.Text);
 
-        Assert.Equal(example.IsValidAfterAtMostOneDeletion, actual);
+        Assert.Equal(testCase.IsValidAfterAtMostOneDeletion, actual);
     }
 
     // Nested because it is only ever used inside this test class and has no
-    // independent identity: this harness's own vocabulary for one example.
+    // independent identity: this harness's own vocabulary for one case.
     // The expected answer is a named field of the case rather than a bare `true` or
     // `false` sitting in the signature where only its position says what it means.
-    public readonly record struct PalindromeExample(string Text, bool IsValidAfterAtMostOneDeletion);
+    public readonly record struct PalindromeCase(string Text, bool IsValidAfterAtMostOneDeletion);
 }

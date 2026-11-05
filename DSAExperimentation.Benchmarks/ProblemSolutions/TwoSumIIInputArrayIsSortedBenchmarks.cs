@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.TwoSumIIInputArrayIsSorted;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TwoSumIIInputArrayIsSortedSolution's, the same
-// methods TwoSumIIInputArrayIsSortedSolutionTests proves correct.
+// methods CatalogCaseTests proves correct.
 // TwoSumIIInputArrayIsSortedWorkloads keeps nums and the target inside LC 167's
 // [-1000, 1000] and makes the only valid pair the last two elements - every
 // earlier index's complement is out of the array's value range entirely, so the

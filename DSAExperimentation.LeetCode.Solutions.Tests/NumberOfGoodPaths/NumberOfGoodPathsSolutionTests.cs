@@ -3,9 +3,10 @@ using DSAExperimentation.LeetCode.Solutions.NumberOfGoodPaths;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.NumberOfGoodPaths;
 
 // Harness only. Both strategies are NumberOfGoodPathsSolution's - this file pins
-// them to LeetCode's published examples plus the shapes those never reach: a lone
-// node, a chain where a taller node blocks the only path between two equal ones,
-// and a chain where a shorter node does not.
+// them to shapes LeetCode's examples never reach: all-equal chains, where every pair
+// counts, a lone node, a chain where a taller node blocks the only path between two
+// equal ones, and a chain where a shorter node does not. LeetCode's published
+// examples run in CatalogCaseTests.
 //
 // The pairwise path walk is asserted here too, which is the point of hoisting it
 // into the solution class: before this migration it lived only in the benchmark's
@@ -13,21 +14,13 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.NumberOfGoodPaths;
 // against was even right.
 public sealed partial class NumberOfGoodPathsSolutionTests
 {
-    public static TheoryData<int[], int[][], int> Examples =>
+    public static TheoryData<int[], int[][], int> Cases =>
         new()
         {
-            // LeetCode example 1: the two 1s and the two 3s each connect through a
-            // 2, so only the 1s pair up on top of the five trivial paths.
-            { [1, 3, 2, 1, 3], [[0, 1], [0, 2], [2, 3], [2, 4]], 6 },
-
-            // LeetCode example 2: every value equal, so all four trivial paths plus
-            // all six pairs count.
+            // Every value equal, so all four trivial paths plus all six pairs count.
             { [1, 1, 1, 1], [[0, 1], [1, 2], [2, 3]], 10 },
 
-            // LeetCode example 3: a single node with no edges.
-            { [1], [], 1 },
-
-            // The three-node version of example 2, which the pre-section-17 test
+            // The three-node version of the row above, which the pre-section-17 test
             // asserted.
             { [1, 1, 1], [[0, 1], [1, 2]], 6 },
 
@@ -44,8 +37,8 @@ public sealed partial class NumberOfGoodPathsSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountGoodPathsByPairwisePathWalk_LeetCodeExamples_CountsEveryGoodPath(
+    [MemberData(nameof(Cases))]
+    public void CountGoodPathsByPairwisePathWalk_Cases_CountsEveryGoodPath(
         int[] vals, int[][] edges, int expected)
     {
         var actual = NumberOfGoodPathsSolution.CountGoodPathsByPairwisePathWalk(vals, edges);
@@ -54,8 +47,8 @@ public sealed partial class NumberOfGoodPathsSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountGoodPathsByDisjointSetSweep_LeetCodeExamples_CountsEveryGoodPath(
+    [MemberData(nameof(Cases))]
+    public void CountGoodPathsByDisjointSetSweep_Cases_CountsEveryGoodPath(
         int[] vals, int[][] edges, int expected)
     {
         var actual = NumberOfGoodPathsSolution.CountGoodPathsByDisjointSetSweep(vals, edges);

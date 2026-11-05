@@ -3,17 +3,14 @@ using DSAExperimentation.LeetCode.Solutions.KthSmallestInLexicographicalOrder;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.KthSmallestInLexicographicalOrder;
 
 // Harness only. Both strategies are KthSmallestInLexicographicalOrderSolution's -
-// this file just pins them to LeetCode's published examples plus the first/last
-// elements of example 1's lexicographical order.
+// this file just pins them to the first/last elements of example 1's lexicographical
+// order, two ranks the published example does not ask for. LeetCode's published
+// examples run in CatalogCaseTests.
 public sealed partial class KthSmallestInLexicographicalOrderSolutionTests
 {
-    public static TheoryData<int, int, int> Examples =>
+    public static TheoryData<int, int, int> Cases =>
         new()
         {
-            // LeetCode examples 1 and 2.
-            { 13, 2, 10 },
-            { 1, 1, 1 },
-
             // Example 1's order is [1, 10, 11, 12, 13, 2, 3, ..., 9]: it opens on 1 and
             // closes on 9.
             { 13, 1, 1 },
@@ -21,8 +18,8 @@ public sealed partial class KthSmallestInLexicographicalOrderSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindKthNumberByGenerateAndSort_LeetCodeExamples_ReturnsExpectedValue(
+    [MemberData(nameof(Cases))]
+    public void FindKthNumberByGenerateAndSort_Cases_ReturnsExpectedValue(
         int upperBound, int rank, int expected)
     {
         var actual = KthSmallestInLexicographicalOrderSolution.FindKthNumberByGenerateAndSort(upperBound, rank);
@@ -31,8 +28,8 @@ public sealed partial class KthSmallestInLexicographicalOrderSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindKthNumberByDepthFirstTraversal_LeetCodeExamples_ReturnsExpectedValue(
+    [MemberData(nameof(Cases))]
+    public void FindKthNumberByDepthFirstTraversal_Cases_ReturnsExpectedValue(
         int upperBound, int rank, int expected)
     {
         var actual = KthSmallestInLexicographicalOrderSolution.FindKthNumberByDepthFirstTraversal(upperBound, rank);

@@ -4,21 +4,19 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.LongestRepeatingCharacterR
 
 // LeetCode 424. Longest Repeating Character Replacement: harness only. All three
 // strategies are LongestRepeatingCharacterReplacementSolution's - this file just
-// pins them to LeetCode's published examples.
+// pins them to the empty string, whose longest run is 0 whatever the replacement
+// budget. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class LongestRepeatingCharacterReplacementSolutionTests
 {
-    public static TheoryData<string, int, int> Examples =>
+    public static TheoryData<string, int, int> Cases =>
         new()
         {
-            { "ABAB", 2, 4 },
-            { "AABABBA", 1, 4 },
-            { "AAAA", 2, 4 },
             { "", 2, 0 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void LongestRunByBruteForce_LeetCodeExamples_ReturnsLongestAchievableRun(
+    [MemberData(nameof(Cases))]
+    public void LongestRunByBruteForce_Cases_ReturnsLongestAchievableRun(
         string text, int maxReplacements, int expected)
     {
         var actual = LongestRepeatingCharacterReplacementSolution.LongestRunByBruteForce(text, maxReplacements);
@@ -27,8 +25,8 @@ public sealed partial class LongestRepeatingCharacterReplacementSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void LongestRunBySlidingWindowHashMap_LeetCodeExamples_ReturnsLongestAchievableRun(
+    [MemberData(nameof(Cases))]
+    public void LongestRunBySlidingWindowHashMap_Cases_ReturnsLongestAchievableRun(
         string text, int maxReplacements, int expected)
     {
         var actual = LongestRepeatingCharacterReplacementSolution.LongestRunBySlidingWindowHashMap(text, maxReplacements);
@@ -37,8 +35,8 @@ public sealed partial class LongestRepeatingCharacterReplacementSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void LongestRunBySlidingWindowLetterCounts_LeetCodeExamples_ReturnsLongestAchievableRun(
+    [MemberData(nameof(Cases))]
+    public void LongestRunBySlidingWindowLetterCounts_Cases_ReturnsLongestAchievableRun(
         string text, int maxReplacements, int expected)
     {
         var actual = LongestRepeatingCharacterReplacementSolution.LongestRunBySlidingWindowLetterCounts(text, maxReplacements);

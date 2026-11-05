@@ -3,23 +3,20 @@ using DSAExperimentation.LeetCode.Solutions.ConstrainedSubsequenceSum;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ConstrainedSubsequenceSum;
 
 // Harness only: both strategies live in ConstrainedSubsequenceSumSolution and are
-// asserted against the same examples - LeetCode's three published ones, the
+// asserted against the same cases - LeetCode's three published ones, the
 // all-negative case where the answer must still pick exactly one element, and a
 // single-element array.
 public sealed partial class ConstrainedSubsequenceSumSolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            { [10, 2, -10, 5, 20], 2, 37 },
-            { [-1, -2, -3], 1, -1 },
-            { [10, -2, -10, -5, 20], 2, 23 },
             { [5], 1, 5 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxSumByWindowRescan_LeetCodeExamples_ReturnsMaximumConstrainedSubsequenceSum(
+    [MemberData(nameof(Cases))]
+    public void MaxSumByWindowRescan_Cases_ReturnsMaximumConstrainedSubsequenceSum(
         int[] nums, int maxGap, int expected)
     {
         var actual = ConstrainedSubsequenceSumSolution.MaxSumByWindowRescan(nums, maxGap);
@@ -28,8 +25,8 @@ public sealed partial class ConstrainedSubsequenceSumSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxSumByMonotonicDeque_LeetCodeExamples_ReturnsMaximumConstrainedSubsequenceSum(
+    [MemberData(nameof(Cases))]
+    public void MaxSumByMonotonicDeque_Cases_ReturnsMaximumConstrainedSubsequenceSum(
         int[] nums, int maxGap, int expected)
     {
         var actual = ConstrainedSubsequenceSumSolution.MaxSumByMonotonicDeque(nums, maxGap);

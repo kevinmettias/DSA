@@ -3,29 +3,26 @@ using DSAExperimentation.LeetCode.Solutions.ContainsDuplicate;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ContainsDuplicate;
 
 // Harness only: both strategies live in ContainsDuplicateSolution and are asserted
-// against the same examples, so a failure names the strategy that broke.
+// against the same cases, so a failure names the strategy that broke.
 public sealed partial class ContainsDuplicateSolutionTests
 {
-    public static TheoryData<DuplicateCase> Examples =>
+    public static TheoryData<DuplicateCase> Cases =>
         new()
         {
-            { new DuplicateCase([1, 2, 3, 1], Expected: true) },
-            { new DuplicateCase([1, 2, 3, 4], Expected: false) },
-            { new DuplicateCase([1, 1, 1, 3, 3, 4, 3, 2, 4, 2], Expected: true) },
             { new DuplicateCase([], Expected: false) },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void HasDuplicateByBruteForce_LeetCodeExamples_ReturnsExpected(DuplicateCase example) =>
-        Assert.Equal(example.Expected, ContainsDuplicateSolution.HasDuplicateByBruteForce(example.Nums));
+    [MemberData(nameof(Cases))]
+    public void HasDuplicateByBruteForce_Cases_ReturnsExpected(DuplicateCase testCase) =>
+        Assert.Equal(testCase.Expected, ContainsDuplicateSolution.HasDuplicateByBruteForce(testCase.Nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void HasDuplicateBySetProbe_LeetCodeExamples_ReturnsExpected(DuplicateCase example) =>
-        Assert.Equal(example.Expected, ContainsDuplicateSolution.HasDuplicateBySetProbe(example.Nums));
+    [MemberData(nameof(Cases))]
+    public void HasDuplicateBySetProbe_Cases_ReturnsExpected(DuplicateCase testCase) =>
+        Assert.Equal(testCase.Expected, ContainsDuplicateSolution.HasDuplicateBySetProbe(testCase.Nums));
 
-    // One LeetCode example: the array and whether it holds a repeated value. The
+    // One case: the array and whether it holds a repeated value. The
     // expected value is named at every construction site, so a row reads as the case
     // it is rather than as a bare `true` whose meaning is its position. Nested because
     // it is only ever used inside this test class - it is this harness's own

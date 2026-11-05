@@ -3,21 +3,20 @@ using DSAExperimentation.LeetCode.Solutions.TargetSum;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.TargetSum;
 
 // Harness only. Both strategies are TargetSumSolution's - this file just pins them
-// to LeetCode's published examples, including the unmemoized recursion baseline that
-// was never asserted anywhere before this migration.
+// to a target no assignment of signs can reach. The unmemoized recursion baseline
+// was never asserted anywhere before this migration. LeetCode's published examples
+// run in CatalogCaseTests.
 public sealed partial class TargetSumSolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            { [1, 1, 1, 1, 1], 3, 5 },
-            { [1], 1, 1 },
             { [1, 2], 100, 0 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void WaysByUnmemoizedRecursion_LeetCodeExamples_ReturnsSignAssignmentCount(
+    [MemberData(nameof(Cases))]
+    public void WaysByUnmemoizedRecursion_Cases_ReturnsSignAssignmentCount(
         int[] nums, int target, int expected)
     {
         var actual = TargetSumSolution.WaysByUnmemoizedRecursion(nums, target);
@@ -26,8 +25,8 @@ public sealed partial class TargetSumSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void WaysByMemoizedRecursion_LeetCodeExamples_ReturnsSignAssignmentCount(
+    [MemberData(nameof(Cases))]
+    public void WaysByMemoizedRecursion_Cases_ReturnsSignAssignmentCount(
         int[] nums, int target, int expected)
     {
         var actual = TargetSumSolution.WaysByMemoizedRecursion(nums, target);

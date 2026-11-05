@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockIV;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BestTimeToBuyAndSellStockIVSolution's, the same
-// methods BestTimeToBuyAndSellStockIVSolutionTests proves correct. Pre-migration this
+// methods CatalogCaseTests proves correct. Pre-migration this
 // class was an untested compile-smoke placeholder (Baseline() => 1,
 // PrimitiveComposed() => 1) rather than a second strategy to reconcile.
 //

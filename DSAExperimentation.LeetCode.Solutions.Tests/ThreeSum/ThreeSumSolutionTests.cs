@@ -2,30 +2,28 @@ using DSAExperimentation.LeetCode.Solutions.ThreeSum;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ThreeSum;
 
-// Harness only. Both strategies are ThreeSumSolution's - this file just pins
-// them to LeetCode's published examples. Triplet order is not part of the
-// contract for either strategy (the brute force collects into a HashSet), so
-// examples are compared as sorted sets of triplets.
+// Harness only. Both strategies are ThreeSumSolution's - this file pins them
+// to four zeros, which offer several index triplets but only one distinct value
+// triplet. Triplet order is not part of the contract for either strategy (the
+// brute force collects into a HashSet), so cases are compared as sorted sets of
+// triplets. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class ThreeSumSolutionTests
 {
-    public static TheoryData<int[], (int First, int Second, int Third)[]> Examples =>
+    public static TheoryData<int[], (int First, int Second, int Third)[]> Cases =>
         new()
         {
-            { [-1, 0, 1, 2, -1, -4], [(-1, -1, 2), (-1, 0, 1)] },
-            { [0, 1, 1], [] },
-            { [0, 0, 0], [(0, 0, 0)] },
             { [0, 0, 0, 0], [(0, 0, 0)] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindTripletsByBruteForce_LeetCodeExamples_ReturnsUniqueZeroSumTriplets(
+    [MemberData(nameof(Cases))]
+    public void FindTripletsByBruteForce_Cases_ReturnsUniqueZeroSumTriplets(
         int[] nums, (int First, int Second, int Third)[] expected) =>
         AssertSameTriplets(expected, ThreeSumSolution.FindTripletsByBruteForce(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindTripletsByMergeSortTwoPointers_LeetCodeExamples_ReturnsUniqueZeroSumTriplets(
+    [MemberData(nameof(Cases))]
+    public void FindTripletsByMergeSortTwoPointers_Cases_ReturnsUniqueZeroSumTriplets(
         int[] nums, (int First, int Second, int Third)[] expected) =>
         AssertSameTriplets(expected, ThreeSumSolution.FindTripletsByMergeSortTwoPointers(nums));
 

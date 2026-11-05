@@ -3,18 +3,16 @@ using DSAExperimentation.LeetCode.Solutions.HouseRobberIV;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.HouseRobberIV;
 
 // Harness only. Both strategies are HouseRobberIVSolution's - this file just pins
-// them to LeetCode's published examples, plus the "requiredHouseCount equals the
+// them to the "requiredHouseCount equals the
 // maximum number of non-adjacent houses" boundary the original test carried and
 // three further cases the original arms never reached: a single house,
 // requiredHouseCount = 1, and a run where the only requiredHouseCount non-adjacent
 // choices all sit at the maximum.
 public sealed partial class HouseRobberIVSolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            { [2, 3, 5, 9], 2, 5 },
-            { [2, 7, 9, 3, 1], 2, 2 },
             { [6, 1, 8], 2, 8 },
             { [4], 1, 4 },
             { [5, 3, 4, 7], 1, 3 },
@@ -23,8 +21,8 @@ public sealed partial class HouseRobberIVSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinCapabilityByLinearScan_LeetCodeExamples_ReturnsSmallestFeasibleCapability(
+    [MemberData(nameof(Cases))]
+    public void MinCapabilityByLinearScan_Cases_ReturnsSmallestFeasibleCapability(
         int[] nums, int requiredHouseCount, int expected)
     {
         var actual = HouseRobberIVSolution.MinCapabilityByLinearScan(nums, requiredHouseCount);
@@ -33,8 +31,8 @@ public sealed partial class HouseRobberIVSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinCapabilityByPredicateSearch_LeetCodeExamples_ReturnsSmallestFeasibleCapability(
+    [MemberData(nameof(Cases))]
+    public void MinCapabilityByPredicateSearch_Cases_ReturnsSmallestFeasibleCapability(
         int[] nums, int requiredHouseCount, int expected)
     {
         var actual = HouseRobberIVSolution.MinCapabilityByPredicateSearch(nums, requiredHouseCount);

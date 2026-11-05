@@ -3,26 +3,24 @@ using DSAExperimentation.LeetCode.Solutions.LongestCommonPrefix;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.LongestCommonPrefix;
 
 // Harness only. Both strategies are LongestCommonPrefixSolution's - this file
-// just pins them to LeetCode's published examples.
+// just pins them to a six-letter prefix shared by three words and to a lone empty
+// string. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class LongestCommonPrefixSolutionTests
 {
-    public static TheoryData<string[], string> Examples =>
+    public static TheoryData<string[], string> Cases =>
         new()
         {
-            { ["flower", "flow", "flight"], "fl" },
-            { ["dog", "racecar", "car"], "" },
             { ["interspecies", "interstellar", "interstate"], "inters" },
             { [""], "" },
-            { ["single"], "single" },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void PrefixByLinearScan_LeetCodeExamples_ReturnsSharedPrefix(string[] values, string expected) =>
+    [MemberData(nameof(Cases))]
+    public void PrefixByLinearScan_Cases_ReturnsSharedPrefix(string[] values, string expected) =>
         Assert.Equal(expected, LongestCommonPrefixSolution.PrefixByLinearScan(values));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void PrefixByBinarySearch_LeetCodeExamples_ReturnsSharedPrefix(string[] values, string expected) =>
+    [MemberData(nameof(Cases))]
+    public void PrefixByBinarySearch_Cases_ReturnsSharedPrefix(string[] values, string expected) =>
         Assert.Equal(expected, LongestCommonPrefixSolution.PrefixByBinarySearch(values));
 }

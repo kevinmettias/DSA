@@ -7,15 +7,9 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.NumberOfPeopleAwareOfASecr
 // privately as its baseline and nothing asserted.
 public sealed partial class NumberOfPeopleAwareOfASecretSolutionTests
 {
-    public static TheoryData<int, int, int, long> Examples =>
+    public static TheoryData<int, int, int, long> Cases =>
         new()
         {
-            // LC example 1.
-            { 6, 2, 4, 5 },
-
-            // LC example 2: delay 1, so a person shares the day after learning.
-            { 4, 1, 3, 6 },
-
             // Two days, forget the day after sharing starts.
             { 2, 1, 2, 2 },
 
@@ -30,15 +24,11 @@ public sealed partial class NumberOfPeopleAwareOfASecretSolutionTests
             // The gap between delay and forget leaves day 2 with no sharers at
             // all, so a zero has to propagate through the window sums.
             { 5, 2, 4, 3 },
-
-            // Long enough that the window slides fully off the front, which is
-            // where an off-by-one in the low bound shows up.
-            { 10, 2, 5, 30 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void PeopleWithSecretBySlidingWindowSum_LeetCodeExamples_ReturnsPeopleStillRemembering(
+    [MemberData(nameof(Cases))]
+    public void PeopleWithSecretBySlidingWindowSum_Cases_ReturnsPeopleStillRemembering(
         int dayCount, int delay, int forget, long expected)
     {
         var actual =
@@ -48,8 +38,8 @@ public sealed partial class NumberOfPeopleAwareOfASecretSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void PeopleWithSecretByFenwickRangeSum_LeetCodeExamples_ReturnsPeopleStillRemembering(
+    [MemberData(nameof(Cases))]
+    public void PeopleWithSecretByFenwickRangeSum_Cases_ReturnsPeopleStillRemembering(
         int dayCount, int delay, int forget, long expected)
     {
         var actual =

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.DistributeCandiesAmongChildrenII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DistributeCandiesAmongChildrenIISolution's, the same
-// methods DistributeCandiesAmongChildrenIISolutionTests proves correct. The double loop's
+// methods CatalogCaseTests proves correct. The double loop's
 // true cost is driven by Limit (its bound is min(CandyCount, Limit) outer,
 // min(CandyCount - first, Limit) inner) - once CandyCount comfortably exceeds
 // 3*Limit neither loop is truncated early by the candy count, so Limit alone

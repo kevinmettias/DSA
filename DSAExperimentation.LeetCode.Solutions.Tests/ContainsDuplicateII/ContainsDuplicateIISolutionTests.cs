@@ -3,44 +3,41 @@ using DSAExperimentation.LeetCode.Solutions.ContainsDuplicateII;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ContainsDuplicateII;
 
 // Harness only: both strategies live in ContainsDuplicateIISolution. One test
-// method per strategy over one shared set of LeetCode's own examples, so a failure
-// names the strategy that broke.
+// method per strategy over one shared set of cases - the shortest array that holds a
+// nearby duplicate and a single element with nothing to pair - so a failure names the
+// strategy that broke. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class ContainsDuplicateIISolutionTests
 {
-    public static TheoryData<NearbyDuplicateCase> Examples =>
+    public static TheoryData<NearbyDuplicateCase> Cases =>
         new()
         {
-            { new NearbyDuplicateCase([1, 2, 3, 1], 3, Expected: true) },
-            { new NearbyDuplicateCase([1, 0, 1, 1], 1, Expected: true) },
-            { new NearbyDuplicateCase([1, 2, 3, 1, 2, 3], 2, Expected: false) },
             { new NearbyDuplicateCase([1, 1], 1, Expected: true) },
-            { new NearbyDuplicateCase([1, 1], 0, Expected: false) },
             { new NearbyDuplicateCase([1], 1, Expected: false) },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void HasNearbyDuplicateByBruteForce_LeetCodeExamples_ReturnsExpected(
-        NearbyDuplicateCase example)
+    [MemberData(nameof(Cases))]
+    public void HasNearbyDuplicateByBruteForce_Cases_ReturnsExpected(
+        NearbyDuplicateCase testCase)
     {
         var actual = ContainsDuplicateIISolution.HasNearbyDuplicateByBruteForce(
-            example.Nums, example.IndexDiff);
+            testCase.Nums, testCase.IndexDiff);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void HasNearbyDuplicateByHashMap_LeetCodeExamples_ReturnsExpected(
-        NearbyDuplicateCase example)
+    [MemberData(nameof(Cases))]
+    public void HasNearbyDuplicateByHashMap_Cases_ReturnsExpected(
+        NearbyDuplicateCase testCase)
     {
         var actual = ContainsDuplicateIISolution.HasNearbyDuplicateByHashMap(
-            example.Nums, example.IndexDiff);
+            testCase.Nums, testCase.IndexDiff);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
-    // One LeetCode example: the array, the index distance that must separate two equal
+    // One case: the array, the index distance that must separate two equal
     // values, and whether such a pair exists. The expected value is named at every
     // construction site, so a row reads as the case it is rather than as a bare `true`
     // whose meaning is its position. Nested because it is only ever used inside this

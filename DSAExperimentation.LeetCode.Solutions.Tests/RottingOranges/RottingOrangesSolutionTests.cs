@@ -4,16 +4,16 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.RottingOranges;
 
 // LeetCode 994. Rotting Oranges. See RottingOrangesSolution for the two strategies:
 // a naive independent BFS per fresh orange, and this repo's own multi-source BFS
-// composed over Queue<TElement>. Harness only - the examples are stated once and
-// each strategy gets its own theory so a failure names the arm that broke.
+// composed over Queue<TElement>. Harness only - the cases are stated once and
+// each strategy gets its own theory so a failure names the arm that broke. The
+// cases are the smallest grids: one cell of each kind, a fresh orange beside a
+// rotten one, and a single row the rot has to cross end to end. LeetCode's
+// published examples run in CatalogCaseTests.
 public sealed partial class RottingOrangesSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][], int> Cases =>
         new()
         {
-            { [[2, 1, 1], [1, 1, 0], [0, 1, 1]], 4 },
-            { [[2, 1, 1], [0, 1, 1], [1, 0, 1]], -1 },
-            { [[0, 2]], 0 },
             { [[0]], 0 },
             { [[1]], -1 },
             { [[2]], 0 },
@@ -22,14 +22,14 @@ public sealed partial class RottingOrangesSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void OrangesRottingByPerCellBfs_LeetCodeExamples_ReturnsMinutesUntilAllRot(
+    [MemberData(nameof(Cases))]
+    public void OrangesRottingByPerCellBfs_Cases_ReturnsMinutesUntilAllRot(
         int[][] grid, int expected) =>
         Assert.Equal(expected, RottingOrangesSolution.OrangesRottingByPerCellBfs(grid));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void OrangesRottingByMultiSourceBfs_LeetCodeExamples_ReturnsMinutesUntilAllRot(
+    [MemberData(nameof(Cases))]
+    public void OrangesRottingByMultiSourceBfs_Cases_ReturnsMinutesUntilAllRot(
         int[][] grid, int expected) =>
         Assert.Equal(expected, RottingOrangesSolution.OrangesRottingByMultiSourceBfs(grid));
 }

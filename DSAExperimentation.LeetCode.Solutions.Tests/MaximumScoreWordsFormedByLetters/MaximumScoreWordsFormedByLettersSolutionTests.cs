@@ -3,39 +3,16 @@ using DSAExperimentation.LeetCode.Solutions.MaximumScoreWordsFormedByLetters;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumScoreWordsFormedByLetters;
 
 // Harness only: both strategies live in MaximumScoreWordsFormedByLettersSolution and
-// are asserted against the same examples - including the two cases where taking the
-// locally obvious word is wrong, which is what makes the backtracking necessary.
+// are asserted against the same cases - including one where taking the locally
+// obvious word is wrong, which is what makes the backtracking necessary. LeetCode's
+// published examples run in CatalogCaseTests.
 public sealed partial class MaximumScoreWordsFormedByLettersSolutionTests
 {
     private const int AlphabetSize = 26;
 
-    public static TheoryData<string[], char[], int[], int> Examples =>
+    public static TheoryData<string[], char[], int[], int> Cases =>
         new()
         {
-            // LeetCode example 1, with LeetCode's dense 26-entry score vector.
-            {
-                ["dog", "cat", "dad", "good"],
-                ['a', 'a', 'c', 'd', 'd', 'd', 'g', 'o', 'o'],
-                [1, 0, 9, 5, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                23
-            },
-
-            // LeetCode example 2.
-            {
-                ["xxxz", "ax", "bx", "cx"],
-                ['z', 'a', 'b', 'c', 'x', 'x', 'x'],
-                [4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 10],
-                27
-            },
-
-            // LeetCode example 3.
-            {
-                ["leetcode"],
-                ['l', 'e', 't', 'c', 'o', 'd'],
-                [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-                0
-            },
-
             // Example 1's words and letters with 'o' scored 0 rather than LeetCode's 2.
             // Available letters give a:2, c:1, d:3, g:1, o:2 and no 't' at all, so
             // "cat" can never be formed - only "dog" (5+0+3=8), "dad" (5+1+5=11) and
@@ -86,8 +63,8 @@ public sealed partial class MaximumScoreWordsFormedByLettersSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxScoreWordsByNaiveRecursion_LeetCodeExamples_ReturnsBestReachableSubsetScore(
+    [MemberData(nameof(Cases))]
+    public void MaxScoreWordsByNaiveRecursion_Cases_ReturnsBestReachableSubsetScore(
         string[] words,
         char[] letters,
         int[] score,
@@ -99,8 +76,8 @@ public sealed partial class MaximumScoreWordsFormedByLettersSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxScoreWordsByBacktrackSearch_LeetCodeExamples_ReturnsBestReachableSubsetScore(
+    [MemberData(nameof(Cases))]
+    public void MaxScoreWordsByBacktrackSearch_Cases_ReturnsBestReachableSubsetScore(
         string[] words,
         char[] letters,
         int[] score,
@@ -111,9 +88,8 @@ public sealed partial class MaximumScoreWordsFormedByLettersSolutionTests
         Assert.Equal(expected, actual);
     }
 
-    // LeetCode states score as a dense 26-entry vector, and its published examples
-    // above keep that shape; for the added cases, naming only the non-zero letters
-    // keeps them readable.
+    // LeetCode states score as a dense 26-entry vector; naming only the non-zero
+    // letters keeps each case above readable.
     private static int[] LetterScores(params (char Letter, int Value)[] scores)
     {
         var score = new int[AlphabetSize];

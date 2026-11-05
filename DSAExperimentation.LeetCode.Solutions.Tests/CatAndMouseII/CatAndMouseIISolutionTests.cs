@@ -4,17 +4,14 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.CatAndMouseII;
 
 // Harness only. Both strategies - the uncached minimax recursion and the same
 // recurrence routed through Memoizer - are CatAndMouseIISolution's, so this file
-// only pins them to LeetCode's published examples plus the wall, capture and
-// jump-distance cases that separate a win from a loss.
+// only pins them to the wall, capture and
+// jump-distance cases that separate a win from a loss. LeetCode's published
+// examples run in CatalogCaseTests.
 public sealed partial class CatAndMouseIISolutionTests
 {
-    public static TheoryData<CanMouseWinExample> Examples =>
+    public static TheoryData<CanMouseWinCase> Cases =>
         new()
         {
-            // LeetCode examples 2 and 3; example 1 is in MemoizedOnlyExamples below.
-            { new CanMouseWinExample(Grid: ["M.C...F"], CatJump: 1, MouseJump: 4, Expected: true) },
-            { new CanMouseWinExample(Grid: ["M.C...F"], CatJump: 1, MouseJump: 3, Expected: false) },
-
             // Boards of this file's own, Mouse moving first and either animal free to jump
             // over the other but not over a wall: Mouse steps straight onto the food; a
             // jump of 4 clears the cat to the food, a jump of 1 must stop beside it and is
@@ -23,49 +20,49 @@ public sealed partial class CatAndMouseIISolutionTests
             // from the food Mouse needs four moves to reach round a wall; and walls shut both
             // animals in their corners with the food a diagonal step from each, which neither
             // may take, since moves run along rows and columns only.
-            { new CanMouseWinExample(Grid: ["C..", "...", ".MF"], CatJump: 1, MouseJump: 1, Expected: true) },
-            { new CanMouseWinExample(Grid: ["F.C.M"], CatJump: 1, MouseJump: 4, Expected: true) },
-            { new CanMouseWinExample(Grid: ["F.C.M"], CatJump: 1, MouseJump: 1, Expected: false) },
-            { new CanMouseWinExample(Grid: ["MCF"], CatJump: 1, MouseJump: 1, Expected: false) },
-            { new CanMouseWinExample(Grid: ["M.F", "###", "C.."], CatJump: 1, MouseJump: 1, Expected: true) },
-            { new CanMouseWinExample(Grid: ["M#F", "..C"], CatJump: 1, MouseJump: 1, Expected: false) },
-            { new CanMouseWinExample(Grid: ["M#C", "#F#"], CatJump: 1, MouseJump: 1, Expected: false) },
+            { new CanMouseWinCase(Grid: ["C..", "...", ".MF"], CatJump: 1, MouseJump: 1, Expected: true) },
+            { new CanMouseWinCase(Grid: ["F.C.M"], CatJump: 1, MouseJump: 4, Expected: true) },
+            { new CanMouseWinCase(Grid: ["F.C.M"], CatJump: 1, MouseJump: 1, Expected: false) },
+            { new CanMouseWinCase(Grid: ["MCF"], CatJump: 1, MouseJump: 1, Expected: false) },
+            { new CanMouseWinCase(Grid: ["M.F", "###", "C.."], CatJump: 1, MouseJump: 1, Expected: true) },
+            { new CanMouseWinCase(Grid: ["M#F", "..C"], CatJump: 1, MouseJump: 1, Expected: false) },
+            { new CanMouseWinCase(Grid: ["M#C", "#F#"], CatJump: 1, MouseJump: 1, Expected: false) },
         };
 
     // LeetCode example 1, asserted on the memoized arm alone. Its 3x5 board caps the
     // game at 30 plies, and the exhaustive recursion re-derives every repeated
     // position to that depth with up to nine moves per ply, so it does not finish.
-    public static TheoryData<CanMouseWinExample> MemoizedOnlyExamples =>
+    public static TheoryData<CanMouseWinCase> MemoizedOnlyExamples =>
         new()
         {
-            { new CanMouseWinExample(Grid: ["####F", "#C...", "M...."], CatJump: 1, MouseJump: 2, Expected: true) },
+            { new CanMouseWinCase(Grid: ["####F", "#C...", "M...."], CatJump: 1, MouseJump: 2, Expected: true) },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CanMouseWinByExhaustiveRecursion_LeetCodeExamples_ReturnsWhetherMouseForcesTheFood(
-        CanMouseWinExample example)
+    [MemberData(nameof(Cases))]
+    public void CanMouseWinByExhaustiveRecursion_Cases_ReturnsWhetherMouseForcesTheFood(
+        CanMouseWinCase testCase)
     {
         var mouseWins = CatAndMouseIISolution.CanMouseWinByExhaustiveRecursion(
-            example.Grid, example.CatJump, example.MouseJump);
+            testCase.Grid, testCase.CatJump, testCase.MouseJump);
 
-        Assert.Equal(example.Expected, mouseWins);
+        Assert.Equal(testCase.Expected, mouseWins);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
+    [MemberData(nameof(Cases))]
     [MemberData(nameof(MemoizedOnlyExamples))]
-    public void CanMouseWinByMemoizedRecursion_LeetCodeExamples_ReturnsWhetherMouseForcesTheFood(
-        CanMouseWinExample example)
+    public void CanMouseWinByMemoizedRecursion_Cases_ReturnsWhetherMouseForcesTheFood(
+        CanMouseWinCase testCase)
     {
         var mouseWins = CatAndMouseIISolution.CanMouseWinByMemoizedRecursion(
-            example.Grid, example.CatJump, example.MouseJump);
+            testCase.Grid, testCase.CatJump, testCase.MouseJump);
 
-        Assert.Equal(example.Expected, mouseWins);
+        Assert.Equal(testCase.Expected, mouseWins);
     }
 
-    // One example: the board, each animal's jump distance, and whether the mouse
+    // One case: the board, each animal's jump distance, and whether the mouse
     // can force the food. The row names every position - a bare `bool` argument would read
     // as "true" and say nothing about what is true.
-    public readonly record struct CanMouseWinExample(string[] Grid, int CatJump, int MouseJump, bool Expected);
+    public readonly record struct CanMouseWinCase(string[] Grid, int CatJump, int MouseJump, bool Expected);
 }

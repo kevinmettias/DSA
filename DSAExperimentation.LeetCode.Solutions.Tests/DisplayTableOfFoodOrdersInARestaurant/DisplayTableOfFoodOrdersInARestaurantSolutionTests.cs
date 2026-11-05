@@ -3,55 +3,14 @@ using DSAExperimentation.LeetCode.Solutions.DisplayTableOfFoodOrdersInARestauran
 namespace DSAExperimentation.LeetCode.Solutions.Tests.DisplayTableOfFoodOrdersInARestaurant;
 
 // Harness only: both strategies live in DisplayTableOfFoodOrdersInARestaurantSolution
-// and are asserted against the same examples - LeetCode's three published ones plus
+// and are asserted against the same cases - LeetCode's three published ones plus
 // the multi-table case the original test carried, which exercises a food ordered by
 // several tables and a table that ordered only some of the foods.
 public sealed partial class DisplayTableOfFoodOrdersInARestaurantSolutionTests
 {
-    public static TheoryData<string[][], string[][]> Examples =>
+    public static TheoryData<string[][], string[][]> Cases =>
         new()
         {
-            {
-                [
-                    ["David", "3", "Ceviche"],
-                    ["Corina", "10", "Beef Burrito"],
-                    ["David", "3", "Fried Chicken"],
-                    ["Carla", "5", "Water"],
-                    ["Carla", "5", "Ceviche"],
-                    ["Rous", "3", "Ceviche"],
-                ],
-                [
-                    ["Table", "Beef Burrito", "Ceviche", "Fried Chicken", "Water"],
-                    ["3", "0", "2", "1", "0"],
-                    ["5", "0", "1", "0", "1"],
-                    ["10", "1", "0", "0", "0"],
-                ]
-            },
-            {
-                [
-                    ["James", "12", "Fried Chicken"],
-                    ["Ratesh", "12", "Fried Chicken"],
-                    ["Amadeus", "12", "Fried Chicken"],
-                    ["Adam", "1", "Canadian Waffles"],
-                    ["Brianna", "1", "Canadian Waffles"],
-                ],
-                [
-                    ["Table", "Canadian Waffles", "Fried Chicken"],
-                    ["1", "2", "0"],
-                    ["12", "0", "3"],
-                ]
-            },
-            {
-                [
-                    ["Laura", "2", "Bean Burrito"],
-                    ["Jhon", "2", "Beef Burrito"],
-                    ["Melissa", "2", "Soda"],
-                ],
-                [
-                    ["Table", "Bean Burrito", "Beef Burrito", "Soda"],
-                    ["2", "1", "1", "1"],
-                ]
-            },
             {
                 [
                     ["David", "3", "Ceviche"],
@@ -74,14 +33,14 @@ public sealed partial class DisplayTableOfFoodOrdersInARestaurantSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void DisplayTableByRescanPerCell_LeetCodeExamples_ReturnsSortedDisplayTable(
+    [MemberData(nameof(Cases))]
+    public void DisplayTableByRescanPerCell_Cases_ReturnsSortedDisplayTable(
         string[][] orders, string[][] expected) =>
         AssertRows(expected, DisplayTableOfFoodOrdersInARestaurantSolution.DisplayTableByRescanPerCell(orders));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void DisplayTableByGroupedHashMap_LeetCodeExamples_ReturnsSortedDisplayTable(
+    [MemberData(nameof(Cases))]
+    public void DisplayTableByGroupedHashMap_Cases_ReturnsSortedDisplayTable(
         string[][] orders, string[][] expected) =>
         AssertRows(expected, DisplayTableOfFoodOrdersInARestaurantSolution.DisplayTableByGroupedHashMap(orders));
 

@@ -4,16 +4,13 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.NRepeatedElementInSize2NAr
 
 // Harness only. Both strategies are NRepeatedElementInSize2NArraySolution's - the
 // pairwise baseline the benchmark used to hide, and the Set<int> single pass - so this
-// file just pins them to LeetCode's published examples plus the cases the original
+// file just pins them to the cases the original
 // test added: the repeat trailing the array, and the smallest valid n = 2 input.
 public sealed partial class NRepeatedElementInSize2NArraySolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            { [1, 2, 3, 3], 3 },
-            { [2, 1, 2, 5, 3, 2], 2 },
-            { [5, 1, 5, 2, 5, 3, 5, 4], 5 },
             // n = 2: 4 elements, n + 1 = 3 unique values, one repeated exactly n times.
             { [4, 5, 4, 6], 4 },
             // The repeat is the very first pair, so neither strategy gets to scan far.
@@ -21,14 +18,14 @@ public sealed partial class NRepeatedElementInSize2NArraySolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindRepeatedByPairwiseScan_LeetCodeExamples_ReturnsTheValueRepeatedNTimes(
+    [MemberData(nameof(Cases))]
+    public void FindRepeatedByPairwiseScan_Cases_ReturnsTheValueRepeatedNTimes(
         int[] nums, int expected) =>
         Assert.Equal(expected, NRepeatedElementInSize2NArraySolution.FindRepeatedByPairwiseScan(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindRepeatedByTrackingSet_LeetCodeExamples_ReturnsTheValueRepeatedNTimes(
+    [MemberData(nameof(Cases))]
+    public void FindRepeatedByTrackingSet_Cases_ReturnsTheValueRepeatedNTimes(
         int[] nums, int expected) =>
         Assert.Equal(expected, NRepeatedElementInSize2NArraySolution.FindRepeatedByTrackingSet(nums));
 }

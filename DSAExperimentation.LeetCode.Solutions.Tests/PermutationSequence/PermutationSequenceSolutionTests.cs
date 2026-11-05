@@ -3,22 +3,18 @@ using DSAExperimentation.LeetCode.Solutions.PermutationSequence;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.PermutationSequence;
 
 // Harness only: both strategies live in PermutationSequenceSolution and are
-// asserted against the same examples, so a failure names the strategy that broke.
+// asserted against the same cases, so a failure names the strategy that broke.
 public sealed partial class PermutationSequenceSolutionTests
 {
-    public static TheoryData<int, int, string> Examples =>
+    public static TheoryData<int, int, string> Cases =>
         new()
         {
-            { 3, 3, "213" },
-            { 4, 9, "2314" },
-            { 3, 1, "123" },
             { 1, 1, "1" },
-            { 4, 24, "4321" },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetPermutationByBacktrackEnumeration_LeetCodeExamples_ReturnsKthPermutation(
+    [MemberData(nameof(Cases))]
+    public void GetPermutationByBacktrackEnumeration_Cases_ReturnsKthPermutation(
         int digitCount, int rank, string expected)
     {
         var actual = PermutationSequenceSolution.GetPermutationByBacktrackEnumeration(digitCount, rank);
@@ -27,8 +23,8 @@ public sealed partial class PermutationSequenceSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetPermutationByFactoradicSelection_LeetCodeExamples_ReturnsKthPermutation(
+    [MemberData(nameof(Cases))]
+    public void GetPermutationByFactoradicSelection_Cases_ReturnsKthPermutation(
         int digitCount, int rank, string expected)
     {
         var actual = PermutationSequenceSolution.GetPermutationByFactoradicSelection(digitCount, rank);

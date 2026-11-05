@@ -9,25 +9,21 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.JumpGameIV;
 // index by index.
 public sealed partial class JumpGameIVSolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            { [100, -23, -23, 404, 100, 23, 23, 23, 3, 404], 3 },
-            { [7], 0 },
-            { [7, 6, 9, 6, 9, 6, 9, 7], 1 },
             { [6, 1, 9], 2 },
             { [1, 2, 3, 4, 5], 4 },
-            { [11, 22, 7, 7, 7, 7, 7, 7, 7, 22, 13], 3 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinJumpsByBfsWithGroupPruning_LeetCodeExamples_ReturnsMinimumStepCount(int[] arr, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void MinJumpsByBfsWithGroupPruning_Cases_ReturnsMinimumStepCount(int[] arr, int expected) =>
         Assert.Equal(expected, JumpGameIVSolution.MinJumpsByBfsWithGroupPruning(arr));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinJumpsByBreadthFirstDistances_LeetCodeExamples_ReturnsMinimumStepCount(int[] arr, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void MinJumpsByBreadthFirstDistances_Cases_ReturnsMinimumStepCount(int[] arr, int expected) =>
         Assert.Equal(expected, JumpGameIVSolution.MinJumpsByBreadthFirstDistances(arr));
 
     // LeetCode's third example, 7 6 9 6 9 6 9 7: 7 sits at 0 and 7, 6 at 1, 3 and 5, 9 at

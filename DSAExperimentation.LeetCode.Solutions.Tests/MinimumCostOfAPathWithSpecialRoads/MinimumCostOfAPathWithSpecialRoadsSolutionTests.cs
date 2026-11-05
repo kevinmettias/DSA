@@ -3,21 +3,19 @@ using DSAExperimentation.LeetCode.Solutions.MinimumCostOfAPathWithSpecialRoads;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumCostOfAPathWithSpecialRoads;
 
 // Harness only. Both strategies are MinimumCostOfAPathWithSpecialRoadsSolution's -
-// this file just pins them to LeetCode's published examples plus the shape cases the
-// pre-migration test already carried. The array-scan Dijkstra baseline was previously
-// scaffolding inlined in the benchmark and asserted by nothing; it is held to the same
-// examples as the composed Dijkstra here for the first time.
+// this file just pins them to the shape cases the pre-migration test already
+// carried. The array-scan Dijkstra baseline was previously scaffolding inlined in the
+// benchmark and asserted by nothing; it is held to the same cases as the composed
+// Dijkstra here for the first time. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class MinimumCostOfAPathWithSpecialRoadsSolutionTests
 {
-    public static TheoryData<int[], int[], int[][], int> Examples =>
+    public static TheoryData<int[], int[], int[][], int> Cases =>
         new()
         {
-            // LeetCode example 1: walk to (1,2), take the road to (3,3), walk to (3,4),
-            // take the road to (4,5) - 1 + 2 + 1 + 1 = 5.
-            { [1, 1], [4, 5], [[1, 2, 3, 3, 2], [3, 4, 4, 5, 1]], 5 },
-
-            // LeetCode example 2: every special road is a detour, so the answer is the
-            // plain Manhattan walk from (3,2) to (5,7).
+            // LeetCode example 2 without its road from the target back to the start:
+            // every special road is a detour, so the answer is the plain Manhattan walk
+            // from (3,2) to (5,7).
             { [3, 2], [5, 7], [[3, 2, 3, 4, 4], [3, 3, 5, 5, 5], [3, 4, 5, 6, 6]], 7 },
 
             // A single overpriced road that must be ignored in favour of walking.
@@ -37,8 +35,8 @@ public sealed partial class MinimumCostOfAPathWithSpecialRoadsSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinimumCostByArrayScanDijkstra_LeetCodeExamples_ReturnsCheapestRouteCost(
+    [MemberData(nameof(Cases))]
+    public void MinimumCostByArrayScanDijkstra_Cases_ReturnsCheapestRouteCost(
         int[] start, int[] target, int[][] specialRoads, int expected)
     {
         var actual =
@@ -48,8 +46,8 @@ public sealed partial class MinimumCostOfAPathWithSpecialRoadsSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinimumCostByHeapDijkstra_LeetCodeExamples_ReturnsCheapestRouteCost(
+    [MemberData(nameof(Cases))]
+    public void MinimumCostByHeapDijkstra_Cases_ReturnsCheapestRouteCost(
         int[] start, int[] target, int[][] specialRoads, int expected)
     {
         var actual = MinimumCostOfAPathWithSpecialRoadsSolution.MinimumCostByHeapDijkstra(start, target, specialRoads);

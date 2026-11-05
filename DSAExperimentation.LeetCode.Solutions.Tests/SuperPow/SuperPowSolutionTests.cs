@@ -3,21 +3,19 @@ using DSAExperimentation.LeetCode.Solutions.SuperPow;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.SuperPow;
 
 // Harness only: both strategies live in SuperPowSolution and are asserted against the
-// same examples.
+// same case, 3 raised to a two-digit exponent. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class SuperPowSolutionTests
 {
-    public static TheoryData<int, int[], int> Examples =>
+    public static TheoryData<int, int[], int> Cases =>
         new()
         {
-            { 2, [3], 8 },
-            { 2, [1, 0], 1024 },
-            { 1, [4, 3, 3, 8, 5, 2], 1 },
             { 3, [1, 0], 221 }, // 3^10 = 59049, 59049 mod 1337 = 221
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SuperPowByRepeatedMultiplication_LeetCodeExamples_ReturnsModularPower(
+    [MemberData(nameof(Cases))]
+    public void SuperPowByRepeatedMultiplication_Cases_ReturnsModularPower(
         int baseValue, int[] exponentDigits, int expected)
     {
         var actual = SuperPowSolution.SuperPowByRepeatedMultiplication(baseValue, exponentDigits);
@@ -26,8 +24,8 @@ public sealed partial class SuperPowSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SuperPowByHornerSquaring_LeetCodeExamples_ReturnsModularPower(
+    [MemberData(nameof(Cases))]
+    public void SuperPowByHornerSquaring_Cases_ReturnsModularPower(
         int baseValue, int[] exponentDigits, int expected)
     {
         var actual = SuperPowSolution.SuperPowByHornerSquaring(baseValue, exponentDigits);

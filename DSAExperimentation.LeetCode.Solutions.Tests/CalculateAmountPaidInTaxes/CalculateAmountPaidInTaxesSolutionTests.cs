@@ -3,19 +3,18 @@ using DSAExperimentation.LeetCode.Solutions.CalculateAmountPaidInTaxes;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.CalculateAmountPaidInTaxes;
 
 // Harness only. Both the raw jagged-array walk and the ArraySequence<T> walk are
-// CalculateAmountPaidInTaxesSolution's - this file pins them to LeetCode's published
-// examples plus the zero-income, single-bracket and income-above-the-top-bracket
-// cases, where the loop either never taxes anything or never gets to break early. The
-// bracket sequence the second walk is handed is asserted on its own.
+// CalculateAmountPaidInTaxesSolution's - this file pins them to the zero-income,
+// single-bracket and income-at-or-above-the-top-bracket cases, where the loop either
+// never taxes anything or never gets to break early. The bracket sequence the second
+// walk is handed is asserted on its own. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class CalculateAmountPaidInTaxesSolutionTests
 {
     private const int Precision = 5;
 
-    public static TheoryData<int[][], int, double> Examples =>
+    public static TheoryData<int[][], int, double> Cases =>
         new()
         {
-            { [[3, 50], [7, 10], [12, 25]], 10, 2.65 },
-            { [[1, 0], [4, 25], [5, 50]], 2, 0.25 },
             { [[1, 0], [4, 25], [5, 50]], 0, 0.0 },
             { [[2, 50], [4, 10], [10, 25]], 0, 0.0 },
             { [[2, 50], [6, 10], [8, 25]], 8, 1.9 },
@@ -24,8 +23,8 @@ public sealed partial class CalculateAmountPaidInTaxesSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CalculateTaxByBracketArrayWalk_LeetCodeExamples_ReturnsExpectedAmount(
+    [MemberData(nameof(Cases))]
+    public void CalculateTaxByBracketArrayWalk_Cases_ReturnsExpectedAmount(
         int[][] brackets, int income, double expected)
     {
         var taxDue = CalculateAmountPaidInTaxesSolution.CalculateTaxByBracketArrayWalk(brackets, income);
@@ -34,8 +33,8 @@ public sealed partial class CalculateAmountPaidInTaxesSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CalculateTaxByRandomAccessSequence_LeetCodeExamples_ReturnsExpectedAmount(
+    [MemberData(nameof(Cases))]
+    public void CalculateTaxByRandomAccessSequence_Cases_ReturnsExpectedAmount(
         int[][] brackets, int income, double expected)
     {
         var taxDue =

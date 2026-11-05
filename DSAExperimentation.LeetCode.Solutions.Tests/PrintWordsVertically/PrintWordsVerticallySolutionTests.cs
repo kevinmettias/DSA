@@ -3,28 +3,25 @@ using DSAExperimentation.LeetCode.Solutions.PrintWordsVertically;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.PrintWordsVertically;
 
 // Harness only. Both column builders are PrintWordsVerticallySolution's; this file
-// pins them to LeetCode's three published examples plus a single-word sentence,
+// pins them to a single-word sentence,
 // which is where a trim that ran one character too far would show up first.
 public sealed partial class PrintWordsVerticallySolutionTests
 {
-    public static TheoryData<string, string[]> Examples =>
+    public static TheoryData<string, string[]> Cases =>
         new()
         {
-            { "HOW ARE YOU", ["HAY", "ORO", "WEU"] },
-            { "TO BE OR NOT TO BE", ["TBONTB", "OEROOE", "   T"] },
-            { "CONTEST IS COMING", ["CIC", "OSO", "N M", "T I", "E N", "S G", "T"] },
             { "ALONE", ["A", "L", "O", "N", "E"] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void PrintVerticallyByListTrimEnd_LeetCodeExamples_ReturnsColumnsWithoutTrailingSpaces(
+    [MemberData(nameof(Cases))]
+    public void PrintVerticallyByListTrimEnd_Cases_ReturnsColumnsWithoutTrailingSpaces(
         string sentence, string[] expected) =>
         Assert.Equal(expected, PrintWordsVerticallySolution.PrintVerticallyByListTrimEnd(sentence));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void PrintVerticallyByDynamicArrayColumns_LeetCodeExamples_ReturnsColumnsWithoutTrailingSpaces(
+    [MemberData(nameof(Cases))]
+    public void PrintVerticallyByDynamicArrayColumns_Cases_ReturnsColumnsWithoutTrailingSpaces(
         string sentence, string[] expected) =>
         Assert.Equal(expected, PrintWordsVerticallySolution.PrintVerticallyByDynamicArrayColumns(sentence));
 }

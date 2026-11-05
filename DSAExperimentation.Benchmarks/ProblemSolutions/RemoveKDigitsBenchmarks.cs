@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.RemoveKDigits;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RemoveKDigitsSolution's, the same methods
-// RemoveKDigitsSolutionTests proves correct - the LargestRectangleInHistogramBenchmarks
+// CatalogCaseTests proves correct - the LargestRectangleInHistogramBenchmarks
 // precedent (O(n*k)-ish baseline vs. O(n) primitive-based sweep) applied to
 // string-digit removal instead of histogram area.
 public class RemoveKDigitsBenchmarks

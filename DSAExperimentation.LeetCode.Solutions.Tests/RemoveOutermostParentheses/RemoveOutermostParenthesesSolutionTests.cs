@@ -3,37 +3,33 @@ using DSAExperimentation.LeetCode.Solutions.RemoveOutermostParentheses;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.RemoveOutermostParentheses;
 
 // Harness only. Both strategies are RemoveOutermostParenthesesSolution's - this file
-// just pins them to LeetCode's published examples, a single nested primitive, and the
-// all-trivial-primitives case whose whole answer is the empty string.
+// just pins them to a single nested primitive. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class RemoveOutermostParenthesesSolutionTests
 {
-    public static TheoryData<OutermostParenthesesCase> Examples =>
+    public static TheoryData<OutermostParenthesesCase> Cases =>
         new()
         {
-            { new OutermostParenthesesCase(S: "(()())(())", Expected: "()()()") },
-            { new OutermostParenthesesCase(S: "(()())(())(()(()))", Expected: "()()()()(())") },
-            { new OutermostParenthesesCase(S: "()()", Expected: "") },
             { new OutermostParenthesesCase(S: "(()())", Expected: "()()") },
-            { new OutermostParenthesesCase(S: "(((())))", Expected: "((()))") },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void RemoveOuterParenthesesByDepthCounter_LeetCodeExamples_StripsEachPrimitivesOutermostPair(
-        OutermostParenthesesCase example) =>
+    [MemberData(nameof(Cases))]
+    public void RemoveOuterParenthesesByDepthCounter_Cases_StripsEachPrimitivesOutermostPair(
+        OutermostParenthesesCase testCase) =>
         Assert.Equal(
-            example.Expected,
-            RemoveOutermostParenthesesSolution.RemoveOuterParenthesesByDepthCounter(example.S));
+            testCase.Expected,
+            RemoveOutermostParenthesesSolution.RemoveOuterParenthesesByDepthCounter(testCase.S));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void RemoveOuterParenthesesByOpenerStack_LeetCodeExamples_StripsEachPrimitivesOutermostPair(
-        OutermostParenthesesCase example) =>
+    [MemberData(nameof(Cases))]
+    public void RemoveOuterParenthesesByOpenerStack_Cases_StripsEachPrimitivesOutermostPair(
+        OutermostParenthesesCase testCase) =>
         Assert.Equal(
-            example.Expected,
-            RemoveOutermostParenthesesSolution.RemoveOuterParenthesesByOpenerStack(example.S));
+            testCase.Expected,
+            RemoveOutermostParenthesesSolution.RemoveOuterParenthesesByOpenerStack(testCase.S));
 
-    // One LeetCode example: the primitive string and what stripping every
+    // One case: the primitive string and what stripping every
     // primitive's outermost pair leaves behind. Both values are strings, so each is
     // named at every construction site and a row reads as the case it is rather than
     // as two positions a caller has to keep in order. Nested because it is only ever

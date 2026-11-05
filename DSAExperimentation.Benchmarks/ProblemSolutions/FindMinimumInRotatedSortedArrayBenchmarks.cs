@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.FindMinimumInRotatedSortedArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindMinimumInRotatedSortedArraySolution's, the
-// same methods FindMinimumInRotatedSortedArraySolutionTests proves correct. [GlobalSetup]
+// same methods CatalogCaseTests proves correct. [GlobalSetup]
 // builds one ascending run of distinct values and rotates it at a fixed non-zero
 // pivot, so both arms search the same rotated array. This backfills the
 // compile-smoke placeholder the manifest recorded for this problem.

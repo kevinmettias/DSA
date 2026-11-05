@@ -3,25 +3,17 @@ using DSAExperimentation.LeetCode.Solutions.TheNumberOfWeakCharactersInTheGame;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.TheNumberOfWeakCharactersInTheGame;
 
 // Harness only. Both the pairwise comparison and the sort-then-scan pass are
-// TheNumberOfWeakCharactersInTheGameSolution's - this file pins them to LeetCode's three
-// published examples plus the ties the examples never exercise: equal attacks with
-// unequal defenses, wholly duplicate characters, and an equal-attack pair straddling a
-// genuinely weak character, which is what the descending-attack/ascending-defense
-// tie-break exists to get right.
+// TheNumberOfWeakCharactersInTheGameSolution's - this file pins them to the ties
+// LeetCode's examples never exercise: equal attacks with unequal defenses, wholly
+// duplicate characters, and an equal-attack pair straddling a genuinely weak
+// character, which is what the descending-attack/ascending-defense tie-break exists
+// to get right - plus a lone character, a chain and a mixed board. LeetCode's
+// published examples run in CatalogCaseTests.
 public sealed partial class TheNumberOfWeakCharactersInTheGameSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][], int> Cases =>
         new()
         {
-            // LeetCode example 1: no character beats another on both axes.
-            { [[5, 5], [6, 3], [3, 6]], 0 },
-
-            // LeetCode example 2: [3,3] beats [2,2] on both.
-            { [[2, 2], [3, 3]], 1 },
-
-            // LeetCode example 3: [10,4] beats [4,3] on both.
-            { [[1, 5], [10, 4], [4, 3]], 1 },
-
             // A lone character has nobody to be weak against.
             { [[1, 1]], 0 },
 
@@ -44,16 +36,16 @@ public sealed partial class TheNumberOfWeakCharactersInTheGameSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void NumberOfWeakCharactersByPairwiseComparison_LeetCodeExamples_ReturnsWeakCharacterCount(
+    [MemberData(nameof(Cases))]
+    public void NumberOfWeakCharactersByPairwiseComparison_Cases_ReturnsWeakCharacterCount(
         int[][] properties, int expected) =>
         Assert.Equal(
             expected,
             TheNumberOfWeakCharactersInTheGameSolution.NumberOfWeakCharactersByPairwiseComparison(properties));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void NumberOfWeakCharactersBySortThenScan_LeetCodeExamples_ReturnsWeakCharacterCount(
+    [MemberData(nameof(Cases))]
+    public void NumberOfWeakCharactersBySortThenScan_Cases_ReturnsWeakCharacterCount(
         int[][] properties, int expected) =>
         Assert.Equal(
             expected,

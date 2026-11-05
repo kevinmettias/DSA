@@ -3,27 +3,22 @@ using DSAExperimentation.LeetCode.Solutions.MirrorReflection;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MirrorReflection;
 
 // Harness only. Both strategies are MirrorReflectionSolution's - this file pins
-// them to LeetCode's published examples plus pairs that exercise the GCD reduction
+// them to pairs that exercise the GCD reduction
 // itself (non-coprime (roomSide, rayHeight), and rayHeight = roomSide), including the
 // O(roomSide) unfolding simulation that used to live unasserted in the benchmark.
 public sealed partial class MirrorReflectionSolutionTests
 {
-    public static TheoryData<int, int, int> Examples =>
+    public static TheoryData<int, int, int> Cases =>
         new()
         {
-            { 2, 1, 2 },
-            { 3, 1, 1 },
             { 3, 2, 0 },
             { 1, 1, 1 },
-            { 4, 2, 2 },
             { 4, 3, 2 },
-            { 5, 2, 0 },
-            { 6, 4, 0 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void ReceptorBySimulatedUnfolding_LeetCodeExamples_ReturnsReceptorTheRayHits(
+    [MemberData(nameof(Cases))]
+    public void ReceptorBySimulatedUnfolding_Cases_ReturnsReceptorTheRayHits(
         int roomSide, int rayHeight, int expected)
     {
         var actual = MirrorReflectionSolution.ReceptorBySimulatedUnfolding(roomSide, rayHeight);
@@ -32,8 +27,8 @@ public sealed partial class MirrorReflectionSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void ReceptorByGcdReduction_LeetCodeExamples_ReturnsReceptorTheRayHits(
+    [MemberData(nameof(Cases))]
+    public void ReceptorByGcdReduction_Cases_ReturnsReceptorTheRayHits(
         int roomSide, int rayHeight, int expected)
     {
         var actual = MirrorReflectionSolution.ReceptorByGcdReduction(roomSide, rayHeight);

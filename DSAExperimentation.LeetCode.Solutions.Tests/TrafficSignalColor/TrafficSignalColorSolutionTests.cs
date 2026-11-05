@@ -3,15 +3,13 @@ using DSAExperimentation.LeetCode.Solutions.TrafficSignalColor;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.TrafficSignalColor;
 
 // Harness only. The classification lives in TrafficSignalColorSolution - this
-// file pins it to LeetCode's published examples plus the boundary values its own
+// file pins it to the boundary values its own
 // range check has to get right (0, 30 and 90 inclusive; 91 and 1000 excluded).
 public sealed partial class TrafficSignalColorSolutionTests
 {
-    public static TheoryData<int, string> Examples =>
+    public static TheoryData<int, string> Cases =>
         new()
         {
-            { 60, "Red" },
-            { 5, "Invalid" },
             { 0, "Green" },
             { 30, "Orange" },
             { 90, "Red" },
@@ -20,7 +18,7 @@ public sealed partial class TrafficSignalColorSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void ColorByRangeCheck_LeetCodeExamples_ReturnsSignalState(int timer, string expected) =>
+    [MemberData(nameof(Cases))]
+    public void ColorByRangeCheck_Cases_ReturnsSignalState(int timer, string expected) =>
         Assert.Equal(expected, TrafficSignalColorSolution.ColorByRangeCheck(timer));
 }

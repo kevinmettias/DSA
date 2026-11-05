@@ -3,28 +3,25 @@ using DSAExperimentation.LeetCode.Solutions.Candy;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.Candy;
 
 // Harness only: both strategies live in CandySolution and are asserted against the
-// same examples, including flat and strictly monotonic ratings that the two-pass
+// same cases, flat and strictly decreasing ratings, which the two-pass
 // slope-constraint approach's forward/backward passes have to combine correctly.
+// LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class CandySolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            { new[] { 1, 0, 2 }, 5 },
-            { new[] { 1, 2, 2 }, 4 },
-            { new[] { 1, 3, 4, 5, 2 }, 11 },
-            { new[] { 1 }, 1 },
             { new[] { 1, 1, 1 }, 3 },
             { new[] { 3, 2, 1 }, 6 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinCandiesByRepeatedRelaxation_LeetCodeExamples_ReturnsMinimumCandies(int[] ratings, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void MinCandiesByRepeatedRelaxation_Cases_ReturnsMinimumCandies(int[] ratings, int expected) =>
         Assert.Equal(expected, CandySolution.MinCandiesByRepeatedRelaxation(ratings));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinCandiesByTwoPassSlopeConstraints_LeetCodeExamples_ReturnsMinimumCandies(int[] ratings, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void MinCandiesByTwoPassSlopeConstraints_Cases_ReturnsMinimumCandies(int[] ratings, int expected) =>
         Assert.Equal(expected, CandySolution.MinCandiesByTwoPassSlopeConstraints(ratings));
 }

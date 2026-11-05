@@ -8,14 +8,9 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.CapacityToShipPackagesWith
 // inline as a feasibility sequence.
 public sealed partial class CapacityToShipPackagesWithinDDaysSolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            // LC examples 1-3.
-            { [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5, 15 },
-            { [3, 2, 2, 4, 1, 4], 3, 6 },
-            { [1, 2, 3, 1, 1], 4, 3 },
-
             // One package, one day: the package itself.
             { [7], 1, 7 },
 
@@ -37,8 +32,8 @@ public sealed partial class CapacityToShipPackagesWithinDDaysSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void ShipWithinDaysByManualBisection_LeetCodeExamples_ReturnsSmallestFeasibleCapacity(
+    [MemberData(nameof(Cases))]
+    public void ShipWithinDaysByManualBisection_Cases_ReturnsSmallestFeasibleCapacity(
         int[] weights, int days, int expected)
     {
         var capacity =
@@ -48,8 +43,8 @@ public sealed partial class CapacityToShipPackagesWithinDDaysSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void ShipWithinDaysByPredicateSearch_LeetCodeExamples_ReturnsSmallestFeasibleCapacity(
+    [MemberData(nameof(Cases))]
+    public void ShipWithinDaysByPredicateSearch_Cases_ReturnsSmallestFeasibleCapacity(
         int[] weights, int days, int expected)
     {
         var capacity =

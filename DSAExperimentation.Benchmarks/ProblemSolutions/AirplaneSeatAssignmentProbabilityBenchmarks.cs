@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.AirplaneSeatAssignmentProbability;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AirplaneSeatAssignmentProbabilitySolution's, the same
-// methods AirplaneSeatAssignmentProbabilitySolutionTests proves correct. The O(n^2) memoized
+// methods CatalogCaseTests proves correct. The O(n^2) memoized
 // probability recursion summing over every shorter seat count vs. the closed-form O(1)
 // "1 if n == 1 else 0.5" formula the recursion reduces to.
 public class AirplaneSeatAssignmentProbabilityBenchmarks

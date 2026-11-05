@@ -3,23 +3,14 @@ using DSAExperimentation.LeetCode.Solutions.KDivisibleElementsSubarrays;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.KDivisibleElementsSubarrays;
 
 // Harness only. Both strategies are KDivisibleElementsSubarraysSolution's, and
-// pinning them to the same examples is what finally puts the HashSet baseline -
+// pinning them to the same cases is what finally puts the HashSet baseline -
 // previously a private helper in the benchmark, asserted by nothing - under test
 // alongside the Set-backed dedupe it is measured against.
 public sealed partial class KDivisibleElementsSubarraysSolutionTests
 {
-    public static TheoryData<int[], int, int, int> Examples =>
+    public static TheoryData<int[], int, int, int> Cases =>
         new()
         {
-            // LeetCode example 1: [2,3,3,2,2] with maxDivisibleCount = 2, divisor = 2.
-            // Sixteen candidate subarrays survive the divisible-count bound, eleven of
-            // them distinct.
-            { [2, 3, 3, 2, 2], 2, 2, 11 },
-
-            // LeetCode example 2: every element is divisible by 1 and maxDivisibleCount
-            // covers the whole array, so all 4+3+2+1 subarrays qualify and none repeat.
-            { [1, 2, 3, 4], 4, 1, 10 },
-
             // maxDivisibleCount = 0 with every element divisible by divisor: no subarray
             // qualifies at all.
             { [2, 2, 2], 0, 2, 0 },
@@ -42,8 +33,8 @@ public sealed partial class KDivisibleElementsSubarraysSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountDistinctByHashSetDedupe_LeetCodeExamples_ReturnsDistinctQualifyingSubarrayCount(
+    [MemberData(nameof(Cases))]
+    public void CountDistinctByHashSetDedupe_Cases_ReturnsDistinctQualifyingSubarrayCount(
         int[] nums, int maxDivisibleCount, int divisor, int expected)
     {
         var actual = KDivisibleElementsSubarraysSolution.CountDistinctByHashSetDedupe(nums, maxDivisibleCount, divisor);
@@ -52,8 +43,8 @@ public sealed partial class KDivisibleElementsSubarraysSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountDistinctBySetDedupe_LeetCodeExamples_ReturnsDistinctQualifyingSubarrayCount(
+    [MemberData(nameof(Cases))]
+    public void CountDistinctBySetDedupe_Cases_ReturnsDistinctQualifyingSubarrayCount(
         int[] nums, int maxDivisibleCount, int divisor, int expected)
     {
         var actual = KDivisibleElementsSubarraysSolution.CountDistinctBySetDedupe(nums, maxDivisibleCount, divisor);

@@ -3,42 +3,40 @@ using DSAExperimentation.LeetCode.Solutions.SearchInRotatedSortedArrayII;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.SearchInRotatedSortedArrayII;
 
 // Harness only: the algorithms live in SearchInRotatedSortedArrayIISolution. One
-// test method per strategy over one shared set of LeetCode's own examples, so a
-// failure names the strategy that broke.
+// test method per strategy over one shared set of cases, so a failure names the
+// strategy that broke. The cases are an array of one repeated value that lacks the
+// target, and an empty array. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class SearchInRotatedSortedArrayIISolutionTests
 {
-    public static TheoryData<RotatedSearchExample> Examples =>
+    public static TheoryData<RotatedSearchCase> Cases =>
         new()
         {
-            new RotatedSearchExample(Nums: [2, 5, 6, 0, 0, 1, 2], Target: 0, TargetIsPresent: true),
-            new RotatedSearchExample(Nums: [2, 5, 6, 0, 0, 1, 2], Target: 3, TargetIsPresent: false),
-            new RotatedSearchExample(Nums: [1, 0, 1, 1, 1], Target: 0, TargetIsPresent: true),
-            new RotatedSearchExample(Nums: [1, 1, 1, 1, 1], Target: 2, TargetIsPresent: false),
-            new RotatedSearchExample(Nums: [], Target: 5, TargetIsPresent: false),
+            new RotatedSearchCase(Nums: [1, 1, 1, 1, 1], Target: 2, TargetIsPresent: false),
+            new RotatedSearchCase(Nums: [], Target: 5, TargetIsPresent: false),
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void HasTargetByLinearScan_LeetCodeExamples_ReturnsWhetherTargetIsPresent(RotatedSearchExample example)
+    [MemberData(nameof(Cases))]
+    public void HasTargetByLinearScan_Cases_ReturnsWhetherTargetIsPresent(RotatedSearchCase testCase)
     {
-        var actual = SearchInRotatedSortedArrayIISolution.HasTargetByLinearScan(example.Nums, example.Target);
+        var actual = SearchInRotatedSortedArrayIISolution.HasTargetByLinearScan(testCase.Nums, testCase.Target);
 
-        Assert.Equal(example.TargetIsPresent, actual);
+        Assert.Equal(testCase.TargetIsPresent, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void HasTargetByTrimDuplicatesThenBinarySearch_LeetCodeExamples_ReturnsWhetherTargetIsPresent(
-        RotatedSearchExample example)
+    [MemberData(nameof(Cases))]
+    public void HasTargetByTrimDuplicatesThenBinarySearch_Cases_ReturnsWhetherTargetIsPresent(
+        RotatedSearchCase testCase)
     {
         var actual = SearchInRotatedSortedArrayIISolution.HasTargetByTrimDuplicatesThenBinarySearch(
-            example.Nums, example.Target);
+            testCase.Nums, testCase.Target);
 
-        Assert.Equal(example.TargetIsPresent, actual);
+        Assert.Equal(testCase.TargetIsPresent, actual);
     }
 
-    // One LeetCode example: the rotated, possibly duplicated array, the target to
+    // One case: the rotated, possibly duplicated array, the target to
     // find, and whether the target is present. The expectation is named rather than
     // carried by its position, so the row reads as an assertion instead of a `true`.
-    public readonly record struct RotatedSearchExample(int[] Nums, int Target, bool TargetIsPresent);
+    public readonly record struct RotatedSearchCase(int[] Nums, int Target, bool TargetIsPresent);
 }

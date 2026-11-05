@@ -6,35 +6,31 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.ValidParenthesisString;
 // failure names the strategy that broke.
 public sealed partial class ValidParenthesisStringSolutionTests
 {
-    public static TheoryData<ValidityExample> Examples =>
+    public static TheoryData<ValidityCase> Cases =>
         new()
         {
-            { new ValidityExample(S: "()", Expected: true) },
-            { new ValidityExample(S: "(*)", Expected: true) },
-            { new ValidityExample(S: "(*))", Expected: true) },
-            { new ValidityExample(S: "(((", Expected: false) },
-            { new ValidityExample(S: "", Expected: true) },
-            { new ValidityExample(S: "*", Expected: true) },
-            { new ValidityExample(S: "(", Expected: false) },
-            { new ValidityExample(S: ")(", Expected: false) },
+            { new ValidityCase(S: "(((", Expected: false) },
+            { new ValidityCase(S: "", Expected: true) },
+            { new ValidityCase(S: "*", Expected: true) },
+            { new ValidityCase(S: ")(", Expected: false) },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsValidStringByReachableOpenCountDp_Examples_MatchesExpectedValidity(ValidityExample example) =>
+    [MemberData(nameof(Cases))]
+    public void IsValidStringByReachableOpenCountDp_Cases_MatchesExpectedValidity(ValidityCase testCase) =>
         Assert.Equal(
-            example.Expected,
-            ValidParenthesisStringSolution.IsValidStringByReachableOpenCountDp(example.S));
+            testCase.Expected,
+            ValidParenthesisStringSolution.IsValidStringByReachableOpenCountDp(testCase.S));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsValidStringByTwoIndexStackSweep_Examples_MatchesExpectedValidity(ValidityExample example) =>
+    [MemberData(nameof(Cases))]
+    public void IsValidStringByTwoIndexStackSweep_Cases_MatchesExpectedValidity(ValidityCase testCase) =>
         Assert.Equal(
-            example.Expected,
-            ValidParenthesisStringSolution.IsValidStringByTwoIndexStackSweep(example.S));
+            testCase.Expected,
+            ValidParenthesisStringSolution.IsValidStringByTwoIndexStackSweep(testCase.S));
 
-    // One LeetCode example: the string to validate and whether it can be made valid. The
+    // One case: the string to validate and whether it can be made valid. The
     // row names both positions - a bare `bool` argument would read as "true" and say
     // nothing about what is true.
-    public readonly record struct ValidityExample(string S, bool Expected);
+    public readonly record struct ValidityCase(string S, bool Expected);
 }

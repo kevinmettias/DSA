@@ -3,29 +3,14 @@ using DSAExperimentation.LeetCode.Solutions.NumberOfProvinces;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.NumberOfProvinces;
 
 // Harness only: the algorithms live in NumberOfProvincesSolution. One test method
-// per strategy over one shared set of LeetCode's own examples, so a failure names
-// the strategy that broke.
+// per strategy over one shared set of cases, so a failure names the strategy that
+// broke; the case here is a province that is only connected transitively.
+// LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class NumberOfProvincesSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][], int> Cases =>
         new()
         {
-            {
-                [
-                    [1, 1, 0],
-                    [1, 1, 0],
-                    [0, 0, 1],
-                ],
-                2
-            },
-            {
-                [
-                    [1, 0, 0],
-                    [0, 1, 0],
-                    [0, 0, 1],
-                ],
-                3
-            },
             {
                 // City 0 connects only to 1, and 1 only to 2 - no direct 0-2 edge,
                 // so the province still has to be discovered transitively through
@@ -40,14 +25,14 @@ public sealed partial class NumberOfProvincesSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountProvincesByDepthFirstFloodFill_LeetCodeExamples_ReturnsProvinceCount(
+    [MemberData(nameof(Cases))]
+    public void CountProvincesByDepthFirstFloodFill_Cases_ReturnsProvinceCount(
         int[][] isConnected, int expected) =>
         Assert.Equal(expected, NumberOfProvincesSolution.CountProvincesByDepthFirstFloodFill(isConnected));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountProvincesByDisjointSetUnionFind_LeetCodeExamples_ReturnsProvinceCount(
+    [MemberData(nameof(Cases))]
+    public void CountProvincesByDisjointSetUnionFind_Cases_ReturnsProvinceCount(
         int[][] isConnected, int expected) =>
         Assert.Equal(expected, NumberOfProvincesSolution.CountProvincesByDisjointSetUnionFind(isConnected));
 }

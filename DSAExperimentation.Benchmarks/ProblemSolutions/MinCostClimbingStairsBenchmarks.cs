@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MinCostClimbingStairs;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: all three arms are MinCostClimbingStairsSolution's, the same
-// methods MinCostClimbingStairsSolutionTests proves correct. NaiveRecursive is kept to a
+// methods CatalogCaseTests proves correct. NaiveRecursive is kept to a
 // modest StepCount since its cost blowup (O(2^n)) is real.
 public class MinCostClimbingStairsBenchmarks
 {

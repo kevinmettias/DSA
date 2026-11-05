@@ -4,22 +4,13 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.CountValidPathsInATree;
 
 // Harness only. Both strategies live in CountValidPathsInATreeSolution - including
 // the per-pair path walk, which used to exist only as an unasserted benchmark
-// baseline - and this file pins them to the same examples so a failure names the
+// baseline - and this file pins them to the same cases so a failure names the
 // strategy that broke.
 public sealed partial class CountValidPathsInATreeSolutionTests
 {
-    public static TheoryData<int, int[][], long> Examples =>
+    public static TheoryData<int, int[][], long> Cases =>
         new()
         {
-            // LeetCode example 1. Primes among labels 1..5: 2, 3, 5. Valid pairs
-            // (hand-verified against LeetCode's own explanation): (1,2), (1,3),
-            // (1,4), (2,4).
-            { 5, [[1, 2], [1, 3], [2, 4], [2, 5]], 4L },
-
-            // LeetCode example 2. Primes among labels 1..6: 2, 3, 5. Valid pairs:
-            // (1,2), (1,3), (1,4), (1,6), (2,4), (3,6).
-            { 6, [[1, 2], [1, 3], [2, 4], [3, 5], [3, 6]], 6L },
-
             // A single node: no pair exists, so nothing can be valid.
             { 1, [], 0L },
 
@@ -42,8 +33,8 @@ public sealed partial class CountValidPathsInATreeSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountValidPathsByPerPairPathWalk_LeetCodeExamples_ReturnsExpectedCount(
+    [MemberData(nameof(Cases))]
+    public void CountValidPathsByPerPairPathWalk_Cases_ReturnsExpectedCount(
         int nodeCount, int[][] edges, long expected)
     {
         var paths = CountValidPathsInATreeSolution.CountValidPathsByPerPairPathWalk(nodeCount, edges);
@@ -51,8 +42,8 @@ public sealed partial class CountValidPathsInATreeSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountValidPathsByDisjointSetBlobs_LeetCodeExamples_ReturnsExpectedCount(
+    [MemberData(nameof(Cases))]
+    public void CountValidPathsByDisjointSetBlobs_Cases_ReturnsExpectedCount(
         int nodeCount, int[][] edges, long expected)
     {
         var paths = CountValidPathsInATreeSolution.CountValidPathsByDisjointSetBlobs(nodeCount, edges);

@@ -3,37 +3,34 @@ using DSAExperimentation.LeetCode.Solutions.RepeatedSubstringPattern;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.RepeatedSubstringPattern;
 
 // Harness only. Both strategies are RepeatedSubstringPatternSolution's - this file
-// just pins them to LeetCode's published examples.
+// just pins them to the shortest repeated string, a single letter written twice.
+// LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class RepeatedSubstringPatternSolutionTests
 {
-    public static TheoryData<RepeatedPatternExample> Examples =>
+    public static TheoryData<RepeatedPatternCase> Cases =>
         new()
         {
-            new RepeatedPatternExample(Input: "abab", HasRepeatedPattern: true),
-            new RepeatedPatternExample(Input: "aba", HasRepeatedPattern: false),
-            new RepeatedPatternExample(Input: "abcabcabcabc", HasRepeatedPattern: true),
-            new RepeatedPatternExample(Input: "a", HasRepeatedPattern: false),
-            new RepeatedPatternExample(Input: "aa", HasRepeatedPattern: true),
+            new RepeatedPatternCase(Input: "aa", HasRepeatedPattern: true),
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void HasRepeatedSubstringPatternByDivisorBruteForce_ClassicExamples_ReturnsExpected(
-        RepeatedPatternExample example) =>
+    [MemberData(nameof(Cases))]
+    public void HasRepeatedSubstringPatternByDivisorBruteForce_Cases_ReturnsExpected(
+        RepeatedPatternCase testCase) =>
         Assert.Equal(
-            example.HasRepeatedPattern,
-            RepeatedSubstringPatternSolution.HasRepeatedSubstringPatternByDivisorBruteForce(example.Input));
+            testCase.HasRepeatedPattern,
+            RepeatedSubstringPatternSolution.HasRepeatedSubstringPatternByDivisorBruteForce(testCase.Input));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void HasRepeatedSubstringPatternByKmpFailureFunction_ClassicExamples_ReturnsExpected(
-        RepeatedPatternExample example) =>
+    [MemberData(nameof(Cases))]
+    public void HasRepeatedSubstringPatternByKmpFailureFunction_Cases_ReturnsExpected(
+        RepeatedPatternCase testCase) =>
         Assert.Equal(
-            example.HasRepeatedPattern,
-            RepeatedSubstringPatternSolution.HasRepeatedSubstringPatternByKmpFailureFunction(example.Input));
+            testCase.HasRepeatedPattern,
+            RepeatedSubstringPatternSolution.HasRepeatedSubstringPatternByKmpFailureFunction(testCase.Input));
 
-    // One example: the string and whether it is a substring repeated twice or more.
+    // One case: the string and whether it is a substring repeated twice or more.
     // The expectation is named rather than carried by its position, so the row reads
     // as an assertion instead of as a bare `true`.
-    public readonly record struct RepeatedPatternExample(string Input, bool HasRepeatedPattern);
+    public readonly record struct RepeatedPatternCase(string Input, bool HasRepeatedPattern);
 }

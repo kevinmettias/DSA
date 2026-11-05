@@ -4,30 +4,16 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.CheckingExistenceOfEdgeLen
 
 // Harness only: both strategies are
 // CheckingExistenceOfEdgeLengthLimitedPathsSolution's. This file pins them to
-// LeetCode's two published examples plus the boundaries LeetCode never published -
+// the boundaries LeetCode never published -
 // a query whose endpoints are the same node, a limit exactly equal to the only
 // edge's weight (the bound is strict, so it must not help), a parallel edge whose
 // lighter copy is the one that counts, a pair in two different components, and a
 // query that needs more than one hop.
 public sealed partial class CheckingExistenceOfEdgeLengthLimitedPathsSolutionTests
 {
-    public static TheoryData<int, int[][], int[][], bool[]> Examples =>
+    public static TheoryData<int, int[][], int[][], bool[]> Cases =>
         new()
         {
-            // LeetCode's two published examples.
-            {
-                3,
-                [[0, 1, 2], [1, 2, 4], [2, 0, 8], [1, 0, 16]],
-                [[0, 1, 2], [0, 2, 5]],
-                [false, true]
-            },
-            {
-                5,
-                [[0, 1, 10], [1, 2, 5], [2, 3, 9], [3, 4, 13]],
-                [[0, 4, 14], [1, 4, 13]],
-                [true, false]
-            },
-
             // A node always reaches itself, with no edge crossed and no limit met.
             { 2, [[0, 1, 5]], [[0, 0, 1]], [true] },
 
@@ -55,8 +41,8 @@ public sealed partial class CheckingExistenceOfEdgeLengthLimitedPathsSolutionTes
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void DistanceLimitedPathsExistByPerQueryDfs_LeetCodeExamples_AnswersEachQueryInInputOrder(
+    [MemberData(nameof(Cases))]
+    public void DistanceLimitedPathsExistByPerQueryDfs_Cases_AnswersEachQueryInInputOrder(
         int nodeCount, int[][] edgeList, int[][] queries, bool[] expected)
     {
         var answers =
@@ -67,8 +53,8 @@ public sealed partial class CheckingExistenceOfEdgeLengthLimitedPathsSolutionTes
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void DistanceLimitedPathsExistByOfflineDisjointSet_LeetCodeExamples_AnswersEachQueryInInputOrder(
+    [MemberData(nameof(Cases))]
+    public void DistanceLimitedPathsExistByOfflineDisjointSet_Cases_AnswersEachQueryInInputOrder(
         int nodeCount, int[][] edgeList, int[][] queries, bool[] expected)
     {
         var answers =

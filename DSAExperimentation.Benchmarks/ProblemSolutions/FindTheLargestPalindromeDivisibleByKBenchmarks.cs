@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.FindTheLargestPalindromeDivisibleByK
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheLargestPalindromeDivisibleByKSolution's, the
-// same methods FindTheLargestPalindromeDivisibleByKSolutionTests proves correct.
+// same methods CatalogCaseTests proves correct.
 //
 // Sizes are per arm. The brute-force arm walks halfLength = ceil(DigitCount/2)
 // half-digits, 9*10^(halfLength-1) leaves, so it stops at 9 digits; the digit-DP arm

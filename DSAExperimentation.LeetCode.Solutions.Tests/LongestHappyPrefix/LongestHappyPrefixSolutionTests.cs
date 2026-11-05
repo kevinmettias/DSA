@@ -2,44 +2,36 @@ using DSAExperimentation.LeetCode.Solutions.LongestHappyPrefix;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.LongestHappyPrefix;
 
-// Harness only. Both strategies are LongestHappyPrefixSolution's - this file just
-// pins them to LeetCode's published examples, one theory per strategy so a failure
-// names the strategy that broke.
+// Harness only. Both strategies are LongestHappyPrefixSolution's - this file pins
+// them to a four-character prefix that returns as the suffix and a string with no
+// happy prefix at all, one theory per strategy so a failure names the strategy that
+// broke. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class LongestHappyPrefixSolutionTests
 {
-    public static TheoryData<HappyPrefixExample> Examples =>
+    public static TheoryData<HappyPrefixCase> Cases =>
         new()
         {
-            // LeetCode example 1: "l" is the only prefix that is also a suffix.
-            { new HappyPrefixExample(S: "level", Expected: "l") },
-
-            // LeetCode example 2: the whole 4-character run repeats at the end.
-            { new HappyPrefixExample(S: "leetcodeleet", Expected: "leet") },
-
-            // Overlapping repeats: "abab" is both a prefix and a suffix of "ababab".
-            { new HappyPrefixExample(S: "ababab", Expected: "abab") },
+            // The whole 4-character run repeats at the end.
+            { new HappyPrefixCase(S: "leetcodeleet", Expected: "leet") },
 
             // No prefix is also a suffix.
-            { new HappyPrefixExample(S: "asdf", Expected: string.Empty) },
-
-            // A one-character string has no PROPER prefix that is also a suffix.
-            { new HappyPrefixExample(S: "a", Expected: string.Empty) },
+            { new HappyPrefixCase(S: "asdf", Expected: string.Empty) },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void LongestPrefixByShrinkAndCompare_LeetCodeExamples_ReturnsLongestProperPrefixThatIsAlsoASuffix(
-        HappyPrefixExample example) =>
-        Assert.Equal(example.Expected, LongestHappyPrefixSolution.LongestPrefixByShrinkAndCompare(example.S));
+    [MemberData(nameof(Cases))]
+    public void LongestPrefixByShrinkAndCompare_Cases_ReturnsLongestProperPrefixThatIsAlsoASuffix(
+        HappyPrefixCase testCase) =>
+        Assert.Equal(testCase.Expected, LongestHappyPrefixSolution.LongestPrefixByShrinkAndCompare(testCase.S));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void LongestPrefixByPrefixFunction_LeetCodeExamples_ReturnsLongestProperPrefixThatIsAlsoASuffix(
-        HappyPrefixExample example) =>
-        Assert.Equal(example.Expected, LongestHappyPrefixSolution.LongestPrefixByPrefixFunction(example.S));
+    [MemberData(nameof(Cases))]
+    public void LongestPrefixByPrefixFunction_Cases_ReturnsLongestProperPrefixThatIsAlsoASuffix(
+        HappyPrefixCase testCase) =>
+        Assert.Equal(testCase.Expected, LongestHappyPrefixSolution.LongestPrefixByPrefixFunction(testCase.S));
 
-    // One example as one argument. The input and the answer are both strings, so a
+    // One case as one argument. The input and the answer are both strings, so a
     // two-parameter signature let a row be written with the two swapped and still
     // compile; the fields named at each row below say which is which.
-    public readonly record struct HappyPrefixExample(string S, string Expected);
+    public readonly record struct HappyPrefixCase(string S, string Expected);
 }

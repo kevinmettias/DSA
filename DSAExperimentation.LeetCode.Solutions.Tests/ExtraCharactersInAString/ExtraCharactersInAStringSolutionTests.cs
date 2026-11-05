@@ -3,18 +3,16 @@ using DSAExperimentation.LeetCode.Solutions.ExtraCharactersInAString;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ExtraCharactersInAString;
 
 // Harness only: both strategies live in ExtraCharactersInAStringSolution and are pinned
-// to LeetCode's published examples, plus the degenerate cases the two arms have to agree
+// to the degenerate cases the two arms have to agree
 // on - a string the dictionary cannot touch at all, an exact single-word cover, a
 // dictionary word longer than the string (which the trie arm has to reject by running
 // out of string rather than out of prefix), and the greedy trap where taking the longest
 // word first is worse than taking the shorter one.
 public sealed partial class ExtraCharactersInAStringSolutionTests
 {
-    public static TheoryData<string, string[], int> Examples =>
+    public static TheoryData<string, string[], int> Cases =>
         new()
         {
-            { "leetscode", ["leet", "code", "leetcode"], 1 },
-            { "sayhelloworld", ["hello", "world"], 3 },
             { "abc", ["x", "y"], 3 },
             { "abc", ["abc"], 0 },
             { "ab", ["abc"], 2 },
@@ -22,8 +20,8 @@ public sealed partial class ExtraCharactersInAStringSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinExtraCharsByHashSetFullScan_LeetCodeExamples_ReturnsFewestLeftoverCharacters(
+    [MemberData(nameof(Cases))]
+    public void MinExtraCharsByHashSetFullScan_Cases_ReturnsFewestLeftoverCharacters(
         string text, string[] dictionary, int expected)
     {
         var actual =
@@ -32,8 +30,8 @@ public sealed partial class ExtraCharactersInAStringSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinExtraCharsByTriePrunedScan_LeetCodeExamples_ReturnsFewestLeftoverCharacters(
+    [MemberData(nameof(Cases))]
+    public void MinExtraCharsByTriePrunedScan_Cases_ReturnsFewestLeftoverCharacters(
         string text, string[] dictionary, int expected)
     {
         var actual =

@@ -4,17 +4,14 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumAndSumOfArray;
 
 // Harness only: both strategies are MaximumAndSumOfArraySolution's - the unmemoized
 // recursion and the same recursion routed through this repo's Memoizer - and this
-// file just pins them to LeetCode's published examples plus the small cases that
+// file just pins them to the small cases that
 // catch the two ways a slot walk goes wrong: forcing a slot to be filled, and
 // filling slots in index order rather than picking the better AND.
 public sealed partial class MaximumAndSumOfArraySolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            { [1, 2, 3, 4, 5, 6], 3, 9 },
-            { [1, 3, 10, 4, 7, 1], 9, 24 },
-
             // 3 & 1 = 1 but 3 & 2 = 2 - picking slot 1 just because it comes first
             // would be wrong; the walk must consider leaving slot 1 empty.
             { [3], 2, 2 },
@@ -31,8 +28,8 @@ public sealed partial class MaximumAndSumOfArraySolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumAndSumByBruteForceRecursion_LeetCodeExamples_ReturnsMaximumAndSum(
+    [MemberData(nameof(Cases))]
+    public void MaximumAndSumByBruteForceRecursion_Cases_ReturnsMaximumAndSum(
         int[] nums, int numSlots, int expected)
     {
         var actual = MaximumAndSumOfArraySolution.MaximumAndSumByBruteForceRecursion(nums, numSlots);
@@ -41,8 +38,8 @@ public sealed partial class MaximumAndSumOfArraySolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumAndSumByMemoizedBitmask_LeetCodeExamples_ReturnsMaximumAndSum(
+    [MemberData(nameof(Cases))]
+    public void MaximumAndSumByMemoizedBitmask_Cases_ReturnsMaximumAndSum(
         int[] nums, int numSlots, int expected)
     {
         var actual = MaximumAndSumOfArraySolution.MaximumAndSumByMemoizedBitmask(nums, numSlots);

@@ -9,31 +9,6 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumOperationsToEqualiz
 // strategy is handed are asserted on their own.
 public sealed partial class MinimumOperationsToEqualizeSubarraysSolutionTests
 {
-    public static TheoryData<int[], int, int[][], long[]> Examples =>
-        new()
-        {
-            { [1, 4, 7], 3, [[0, 1], [0, 2]], [1, 2] },
-            { [1, 2, 4], 2, [[0, 2], [0, 0], [1, 2]], [-1, 0, 1] },
-        };
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinOperationsByBruteForce_LeetCodeExamples_ReturnsPerQueryOperationCounts(
-        int[] nums, int stepSize, int[][] queries, long[] expected)
-    {
-        var actual = MinimumOperationsToEqualizeSubarraysSolution.MinOperationsByBruteForce(nums, stepSize, queries);
-        Assert.Equal(expected, actual);
-    }
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinOperationsByMergeSortTree_LeetCodeExamples_ReturnsPerQueryOperationCounts(
-        int[] nums, int stepSize, int[][] queries, long[] expected)
-    {
-        var actual = MinimumOperationsToEqualizeSubarraysSolution.MinOperationsByMergeSortTree(nums, stepSize, queries);
-        Assert.Equal(expected, actual);
-    }
-
     // LeetCode's second example: 1, 2, 4 leave remainders 1, 0, 0 mod 2, so a new run
     // starts at index 1 and index 2 stays in it.
     [Fact]

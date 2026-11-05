@@ -4,17 +4,13 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumScoreOfAGoodSubarra
 
 // Harness only: both strategies live in MaximumScoreOfAGoodSubarraySolution. The
 // O(n^2) expand baseline used to exist only as a benchmark arm with nothing
-// asserting it, so it is pinned to the same examples as the monotonic-stack
+// asserting it, so it is pinned to the same cases as the monotonic-stack
 // sweep here.
 public sealed partial class MaximumScoreOfAGoodSubarraySolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            // LeetCode's two published examples.
-            { [1, 4, 3, 7, 4, 5], 3, 15 },
-            { [5, 5, 4, 5, 4, 1, 1, 1], 0, 20 },
-
             // A single-element array: the only good subarray is the one element at
             // the required index.
             { [7], 0, 7 },
@@ -35,8 +31,8 @@ public sealed partial class MaximumScoreOfAGoodSubarraySolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumScoreByBruteForceExpand_LeetCodeExamples_ReturnsBestGoodSubarrayScore(
+    [MemberData(nameof(Cases))]
+    public void MaximumScoreByBruteForceExpand_Cases_ReturnsBestGoodSubarrayScore(
         int[] nums, int requiredIndex, int expected)
     {
         var actual = MaximumScoreOfAGoodSubarraySolution.MaximumScoreByBruteForceExpand(nums, requiredIndex);
@@ -45,8 +41,8 @@ public sealed partial class MaximumScoreOfAGoodSubarraySolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumScoreByMonotonicStackBoundaries_LeetCodeExamples_ReturnsBestGoodSubarrayScore(
+    [MemberData(nameof(Cases))]
+    public void MaximumScoreByMonotonicStackBoundaries_Cases_ReturnsBestGoodSubarrayScore(
         int[] nums, int requiredIndex, int expected)
     {
         var actual = MaximumScoreOfAGoodSubarraySolution.MaximumScoreByMonotonicStackBoundaries(

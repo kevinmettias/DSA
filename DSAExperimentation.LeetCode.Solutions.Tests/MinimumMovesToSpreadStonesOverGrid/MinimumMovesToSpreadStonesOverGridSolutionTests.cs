@@ -8,26 +8,8 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumMovesToSpreadStones
 // broke.
 public sealed partial class MinimumMovesToSpreadStonesOverGridSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
-        new()
-        {
-            { [[1, 1, 0], [1, 1, 1], [1, 2, 1]], 3 },
-            { [[1, 3, 0], [1, 0, 0], [1, 0, 3]], 4 },
-            { [[1, 1, 1], [1, 1, 1], [1, 1, 1]], 0 }, // already balanced, no moves needed
-        };
-
     public static TheoryData<int[]> RandomizedGrids =>
         new() { new[] { 9, 0, 0, 0, 0, 0, 0, 0, 0 }, new[] { 0, 0, 4, 0, 3, 0, 2, 0, 0 }, new[] { 2, 2, 1, 0, 1, 0, 1, 1, 1 } };
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinimumMovesByBruteForcePermutation_LeetCodeExamples_ReturnsMinimumMoves(int[][] grid, int expected)
-        => Assert.Equal(expected, MinimumMovesToSpreadStonesOverGridSolution.MinimumMovesByBruteForcePermutation(grid));
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinimumMovesByBacktrackPermutation_LeetCodeExamples_ReturnsMinimumMoves(int[][] grid, int expected)
-        => Assert.Equal(expected, MinimumMovesToSpreadStonesOverGridSolution.MinimumMovesByBacktrackPermutation(grid));
 
     [Theory]
     [MemberData(nameof(RandomizedGrids))]

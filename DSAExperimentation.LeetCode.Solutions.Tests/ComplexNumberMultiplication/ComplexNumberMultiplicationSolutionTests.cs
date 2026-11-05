@@ -9,34 +9,32 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.ComplexNumberMultiplicatio
 // Pow(x, n)/Power of Two.
 public sealed partial class ComplexNumberMultiplicationSolutionTests
 {
-    public static TheoryData<ComplexProductCase> Examples => new()
+    public static TheoryData<ComplexProductCase> Cases => new()
     {
-        { new ComplexProductCase(Left: "1+1i", Right: "1+1i", Expected: "0+2i") },
-        { new ComplexProductCase(Left: "1+-1i", Right: "1+-1i", Expected: "0+-2i") },
         { new ComplexProductCase(Left: "3+2i", Right: "1+-2i", Expected: "7+-4i") },
         { new ComplexProductCase(Left: "-2+3i", Right: "1+-4i", Expected: "10+11i") },
         { new ComplexProductCase(Left: "-3+2i", Right: "4+-5i", Expected: "-2+23i") },
     };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MultiplyByStringSplit_ClassicExamples_ReturnsExpectedProduct(ComplexProductCase example)
+    [MemberData(nameof(Cases))]
+    public void MultiplyByStringSplit_Cases_ReturnsExpectedProduct(ComplexProductCase testCase)
     {
-        var actual = ComplexNumberMultiplicationSolution.MultiplyByStringSplit(example.Left, example.Right);
+        var actual = ComplexNumberMultiplicationSolution.MultiplyByStringSplit(testCase.Left, testCase.Right);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MultiplyBySpanParse_ClassicExamples_ReturnsExpectedProduct(ComplexProductCase example)
+    [MemberData(nameof(Cases))]
+    public void MultiplyBySpanParse_Cases_ReturnsExpectedProduct(ComplexProductCase testCase)
     {
-        var actual = ComplexNumberMultiplicationSolution.MultiplyBySpanParse(example.Left, example.Right);
+        var actual = ComplexNumberMultiplicationSolution.MultiplyBySpanParse(testCase.Left, testCase.Right);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
-    // One LeetCode example: the two factors and the product they must yield, each
+    // One case: the two factors and the product they must yield, each
     // spelled "a+bi". All three are strings, so written as three adjacent parameters
     // neither the compiler nor a reader could tell a transposed pair from an intended
     // one; named here, each row says which factor is which. Nested because it is only

@@ -4,23 +4,20 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.NetworkDelayTime;
 
 // Harness only. The graph representation is NetworkDelayTimeSolution's own
 // NetworkNode/NetworkTopology and every shortest-path strategy is one of its
-// methods - this file just pins them to LeetCode's published examples, including
-// the two shapes of "some node is unreachable" (no edges at all, and an edge that
-// only leads away from the source).
+// methods - this file just pins them to a network with no edges at all, the
+// simplest shape of "some node is unreachable". LeetCode's published examples run
+// in CatalogCaseTests.
 public sealed partial class NetworkDelayTimeSolutionTests
 {
-    public static TheoryData<int[][], int, int, int> Examples =>
+    public static TheoryData<int[][], int, int, int> Cases =>
         new()
         {
-            { [[2, 1, 1], [2, 3, 1], [3, 4, 1]], 4, 2, 2 },
             { [], 2, 1, -1 },
-            { [[1, 2, 1]], 2, 1, 1 },
-            { [[1, 2, 1]], 2, 2, -1 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinutesToReachAllByPriorityQueue_LeetCodeExamples_ReturnsMaxDistanceFromSource(
+    [MemberData(nameof(Cases))]
+    public void MinutesToReachAllByPriorityQueue_Cases_ReturnsMaxDistanceFromSource(
         int[][] times, int nodeCount, int sourceNodeId, int expected)
     {
         var minutes = NetworkDelayTimeSolution.MinutesToReachAllByPriorityQueue(times, nodeCount, sourceNodeId);
@@ -29,8 +26,8 @@ public sealed partial class NetworkDelayTimeSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinutesToReachAllByDijkstra_LeetCodeExamples_ReturnsMaxDistanceFromSource(
+    [MemberData(nameof(Cases))]
+    public void MinutesToReachAllByDijkstra_Cases_ReturnsMaxDistanceFromSource(
         int[][] times, int nodeCount, int sourceNodeId, int expected)
     {
         var minutes = NetworkDelayTimeSolution.MinutesToReachAllByDijkstra(times, nodeCount, sourceNodeId);
@@ -39,8 +36,8 @@ public sealed partial class NetworkDelayTimeSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinutesToReachAllByBellmanFord_LeetCodeExamples_ReturnsMaxDistanceFromSource(
+    [MemberData(nameof(Cases))]
+    public void MinutesToReachAllByBellmanFord_Cases_ReturnsMaxDistanceFromSource(
         int[][] times, int nodeCount, int sourceNodeId, int expected)
     {
         var minutes = NetworkDelayTimeSolution.MinutesToReachAllByBellmanFord(times, nodeCount, sourceNodeId);
@@ -49,8 +46,8 @@ public sealed partial class NetworkDelayTimeSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinutesToReachAllByFloydWarshall_LeetCodeExamples_ReturnsMaxDistanceFromSource(
+    [MemberData(nameof(Cases))]
+    public void MinutesToReachAllByFloydWarshall_Cases_ReturnsMaxDistanceFromSource(
         int[][] times, int nodeCount, int sourceNodeId, int expected)
     {
         var minutes = NetworkDelayTimeSolution.MinutesToReachAllByFloydWarshall(times, nodeCount, sourceNodeId);

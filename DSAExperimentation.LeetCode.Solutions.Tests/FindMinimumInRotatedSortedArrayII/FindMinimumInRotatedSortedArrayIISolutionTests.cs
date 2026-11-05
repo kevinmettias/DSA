@@ -3,27 +3,25 @@ using DSAExperimentation.LeetCode.Solutions.FindMinimumInRotatedSortedArrayII;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.FindMinimumInRotatedSortedArrayII;
 
 // Harness only: the algorithms live in FindMinimumInRotatedSortedArrayIISolution.
-// One test method per strategy over one shared set of LeetCode's own examples, so
-// a failure names the strategy that broke.
+// One test method per strategy over one shared set of cases, so a failure names the
+// strategy that broke. The case is an array of one repeated value, where every
+// comparison the binary shrink makes is a tie. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class FindMinimumInRotatedSortedArrayIISolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            { [1, 3, 5], 1 },
-            { [2, 2, 2, 0, 1], 0 },
-            { [10, 1, 10, 10, 10], 1 },
-            { [1], 1 },
             { [2, 2, 2, 2], 2 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindMinByLinearScan_LeetCodeExamples_ReturnsMinimum(int[] nums, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void FindMinByLinearScan_Cases_ReturnsMinimum(int[] nums, int expected) =>
         Assert.Equal(expected, FindMinimumInRotatedSortedArrayIISolution.FindMinByLinearScan(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindMinByDuplicateTolerantBinaryShrink_LeetCodeExamples_ReturnsMinimum(int[] nums, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void FindMinByDuplicateTolerantBinaryShrink_Cases_ReturnsMinimum(int[] nums, int expected) =>
         Assert.Equal(expected, FindMinimumInRotatedSortedArrayIISolution.FindMinByDuplicateTolerantBinaryShrink(nums));
 }

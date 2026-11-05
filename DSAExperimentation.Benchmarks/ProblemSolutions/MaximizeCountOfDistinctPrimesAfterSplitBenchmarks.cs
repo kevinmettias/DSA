@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MaximizeCountOfDistinctPrimesAfterSp
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeCountOfDistinctPrimesAfterSplitSolution's,
-// the same methods MaximizeCountOfDistinctPrimesAfterSplitSolutionTests proves correct.
+// the same methods CatalogCaseTests proves correct.
 // Both apply each query to the array in place, as LC 3569 does, so each call hands its
 // arm a fresh copy of the seeded array. Re-applied to the array a previous call left
 // behind, an early query would split an array whose later-queried indices already hold

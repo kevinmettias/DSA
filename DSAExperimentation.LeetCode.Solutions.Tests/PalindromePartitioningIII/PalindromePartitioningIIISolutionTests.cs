@@ -3,17 +3,14 @@ using DSAExperimentation.LeetCode.Solutions.PalindromePartitioningIII;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.PalindromePartitioningIII;
 
 // Harness only: both strategies live in PalindromePartitioningIIISolution and are
-// asserted against the same examples, so a failure names the strategy that broke.
+// asserted against the same cases, so a failure names the strategy that broke.
 // The naive recursion was previously only a benchmark's baseline arm and went
 // unasserted; it is under test here for the first time.
 public sealed partial class PalindromePartitioningIIISolutionTests
 {
-    public static TheoryData<string, int, int> Examples =>
+    public static TheoryData<string, int, int> Cases =>
         new()
         {
-            { "abc", 2, 1 },
-            { "aabbc", 3, 0 },
-            { "leetcode", 8, 0 },
             { "abc", 1, 1 },
             { "abc", 3, 0 },
             { "aabbc", 1, 2 },
@@ -21,8 +18,8 @@ public sealed partial class PalindromePartitioningIIISolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinChangesByNaiveRecursion_LeetCodeExamples_ReturnsMinimumCharacterChanges(
+    [MemberData(nameof(Cases))]
+    public void MinChangesByNaiveRecursion_Cases_ReturnsMinimumCharacterChanges(
         string text, int partitionCount, int expected)
     {
         var actual = PalindromePartitioningIIISolution.MinChangesByNaiveRecursion(text, partitionCount);
@@ -31,8 +28,8 @@ public sealed partial class PalindromePartitioningIIISolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinChangesByMemoizedRecurrence_LeetCodeExamples_ReturnsMinimumCharacterChanges(
+    [MemberData(nameof(Cases))]
+    public void MinChangesByMemoizedRecurrence_Cases_ReturnsMinimumCharacterChanges(
         string text, int partitionCount, int expected)
     {
         var actual = PalindromePartitioningIIISolution.MinChangesByMemoizedRecurrence(text, partitionCount);

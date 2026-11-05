@@ -4,15 +4,15 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.CountKSubsequencesOfAStrin
 
 // Harness only: the algorithms live in
 // CountKSubsequencesOfAStringWithMaximumBeautySolution. One test method per
-// strategy over one shared set of LeetCode's own examples, so a failure names the
-// strategy that broke.
+// strategy over one shared set of cases - a three-way frequency tie the subsequence
+// has to choose from - so a failure names the strategy that broke; randomized inputs
+// then check that the two strategies agree. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class CountKSubsequencesOfAStringWithMaximumBeautySolutionTests
 {
-    public static TheoryData<string, int, long> Examples =>
+    public static TheoryData<string, int, long> Cases =>
         new()
         {
-            { "bcca", 2, 4 }, // c(freq2) forced in, then choose 1 of {a,b} (freq1 each): C(2,1)*2^1*1^1 = 4
-            { "abbcd", 4, 2 }, // only 4 distinct chars exist - the single set {a,b,c,d}, product 1*2*1*1 = 2
             { "abcabcabc", 2, 27 }, // a,b,c all tied at freq3: choose 2 of 3 -> C(3,2)*3^2 = 27
         };
 
@@ -20,16 +20,16 @@ public sealed partial class CountKSubsequencesOfAStringWithMaximumBeautySolution
         new() { { "aaaabbbbccccdddd", 3 }, { "thequickbrownfoxjumpsoverthelazydog", 5 }, { "zzzzyyyyxxxx", 2 } };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountByBruteForceCombinations_LeetCodeExamples_ReturnsMaxBeautyCount(string text, int subsequenceLength, long expected)
+    [MemberData(nameof(Cases))]
+    public void CountByBruteForceCombinations_Cases_ReturnsMaxBeautyCount(string text, int subsequenceLength, long expected)
     {
         var actual = CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByBruteForceCombinations(text, subsequenceLength);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountByGroupedFrequencyProduct_LeetCodeExamples_ReturnsMaxBeautyCount(string text, int subsequenceLength, long expected)
+    [MemberData(nameof(Cases))]
+    public void CountByGroupedFrequencyProduct_Cases_ReturnsMaxBeautyCount(string text, int subsequenceLength, long expected)
     {
         var actual = CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByGroupedFrequencyProduct(text, subsequenceLength);
         Assert.Equal(expected, actual);

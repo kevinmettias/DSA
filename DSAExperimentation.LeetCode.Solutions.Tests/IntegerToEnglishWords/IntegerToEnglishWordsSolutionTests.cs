@@ -12,18 +12,13 @@ public sealed partial class IntegerToEnglishWordsSolutionTests
     public static TheoryData<int, string> Numbers =>
         new()
         {
-            { 0, "Zero" },
             { 1, "One" },
             { 2, "Two" },
             { 3, "Three" },
             { 4, "Four" },
-            { 5, "Five" },
             { 6, "Six" },
             { 7, "Seven" },
             { 8, "Eight" },
-            { 9, "Nine" },
-            { 10, "Ten" },
-            { 11, "Eleven" },
             { 12, "Twelve" },
             { 13, "Thirteen" },
             { 14, "Fourteen" },
@@ -31,20 +26,12 @@ public sealed partial class IntegerToEnglishWordsSolutionTests
             { 16, "Sixteen" },
             { 17, "Seventeen" },
             { 18, "Eighteen" },
-            { 19, "Nineteen" },
             { 20, "Twenty" },
-            { 31, "Thirty One" },
             { 40, "Forty" },
             { 58, "Fifty Eight" },
             { 60, "Sixty" },
             { 77, "Seventy Seven" },
             { 80, "Eighty" },
-            { 99, "Ninety Nine" },
-            { 100, "One Hundred" },
-            { 1_000, "One Thousand" },
-            { 1_000_010, "One Million Ten" },
-            { 2_000_000_000, "Two Billion" },
-            { int.MaxValue, "Two Billion One Hundred Forty Seven Million Four Hundred Eighty Three Thousand Six Hundred Forty Seven" },
         };
 
     [Theory]

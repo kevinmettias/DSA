@@ -2,21 +2,22 @@ using DSAExperimentation.LeetCode.Solutions.SetMatrixZeroes;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.SetMatrixZeroes;
 
-// Harness only. Both strategies are SetMatrixZeroesSolution's - this file just
-// pins them to LeetCode's published examples. Each row is cloned before
-// zeroing so the two theory methods never share a mutated matrix.
+// Harness only. Both strategies are SetMatrixZeroesSolution's - this file pins
+// them to a single zero in the top-left corner, which clears the whole first row
+// and first column. Each row is cloned before zeroing so the two theory methods
+// never share a mutated matrix. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class SetMatrixZeroesSolutionTests
 {
-    public static TheoryData<int[][], int[][]> Examples =>
+    public static TheoryData<int[][], int[][]> Cases =>
         new()
         {
-            { [[1, 1, 1], [1, 0, 1], [1, 1, 1]], [[1, 0, 1], [0, 0, 0], [1, 0, 1]] },
             { [[0, 1, 2], [3, 4, 5], [1, 3, 1]], [[0, 0, 0], [0, 4, 5], [0, 3, 1]] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SetZeroesByCopyAndScan_LeetCodeExamples_ZeroesRowsAndColumnsInPlace(
+    [MemberData(nameof(Cases))]
+    public void SetZeroesByCopyAndScan_Cases_ZeroesRowsAndColumnsInPlace(
         int[][] matrix, int[][] expected)
     {
         var working = Clone(matrix);
@@ -27,8 +28,8 @@ public sealed partial class SetMatrixZeroesSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SetZeroesByRowColumnSets_LeetCodeExamples_ZeroesRowsAndColumnsInPlace(
+    [MemberData(nameof(Cases))]
+    public void SetZeroesByRowColumnSets_Cases_ZeroesRowsAndColumnsInPlace(
         int[][] matrix, int[][] expected)
     {
         var working = Clone(matrix);

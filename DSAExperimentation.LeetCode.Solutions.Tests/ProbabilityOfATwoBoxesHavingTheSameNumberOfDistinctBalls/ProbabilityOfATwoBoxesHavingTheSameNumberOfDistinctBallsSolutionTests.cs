@@ -4,7 +4,7 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.ProbabilityOfATwoBoxesHavi
 
 // Harness only. Both enumeration strategies are
 // ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsSolution's - this file
-// just pins them to LeetCode's published examples plus two hand-checkable
+// just pins them to two hand-checkable
 // extremes the original test lacked: a deal that always matches ([2, 2], where
 // every half/half split leaves one distinct colour on each side or two on both)
 // and one that never can ([3, 1], where box 1 either holds a single colour or
@@ -15,20 +15,17 @@ public sealed partial class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctB
     // answers are compared well inside their own rounding.
     private const int Precision = 9;
 
-    public static TheoryData<int[], double> Examples =>
+    public static TheoryData<int[], double> Cases =>
         new()
         {
-            { [1, 1], 1.0 },
             { [2, 1, 1], 2.0 / 3.0 },
-            { [1, 2, 1, 2], 0.6 },
-            { [3, 2, 1], 0.3 },
             { [2, 2], 1.0 },
             { [3, 1], 0.0 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetProbabilityByHandRolledRecursion_LeetCodeExamples_ReturnsMatchingDistinctCountProbability(
+    [MemberData(nameof(Cases))]
+    public void GetProbabilityByHandRolledRecursion_Cases_ReturnsMatchingDistinctCountProbability(
         int[] balls, double expected) =>
         Assert.Equal(
             expected,
@@ -37,8 +34,8 @@ public sealed partial class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctB
             precision: Precision);
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetProbabilityByBacktracking_LeetCodeExamples_ReturnsMatchingDistinctCountProbability(
+    [MemberData(nameof(Cases))]
+    public void GetProbabilityByBacktracking_Cases_ReturnsMatchingDistinctCountProbability(
         int[] balls, double expected) =>
         Assert.Equal(
             expected,

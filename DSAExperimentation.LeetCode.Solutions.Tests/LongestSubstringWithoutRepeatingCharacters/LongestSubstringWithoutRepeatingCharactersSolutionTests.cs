@@ -3,27 +3,25 @@ using DSAExperimentation.LeetCode.Solutions.LongestSubstringWithoutRepeatingChar
 namespace DSAExperimentation.LeetCode.Solutions.Tests.LongestSubstringWithoutRepeatingCharacters;
 
 // Harness only. Both strategies are
-// LongestSubstringWithoutRepeatingCharactersSolution's - this file pins them to
-// LeetCode's published examples.
+// LongestSubstringWithoutRepeatingCharactersSolution's - this file pins them to the
+// empty string, whose longest run is 0. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class LongestSubstringWithoutRepeatingCharactersSolutionTests
 {
-    public static TheoryData<string, int> Examples =>
+    public static TheoryData<string, int> Cases =>
         new()
         {
-            { "abcabcbb", 3 },
-            { "bbbbb", 1 },
-            { "pwwkew", 3 },
             { "", 0 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindLengthByBruteForce_LeetCodeExamples_ReturnsLongestUniqueRun(string text, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void FindLengthByBruteForce_Cases_ReturnsLongestUniqueRun(string text, int expected) =>
         Assert.Equal(expected, LongestSubstringWithoutRepeatingCharactersSolution.FindLengthByBruteForce(text));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindLengthBySlidingWindowHashMap_LeetCodeExamples_ReturnsLongestUniqueRun(string text, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void FindLengthBySlidingWindowHashMap_Cases_ReturnsLongestUniqueRun(string text, int expected) =>
         Assert.Equal(
             expected,
             LongestSubstringWithoutRepeatingCharactersSolution.FindLengthBySlidingWindowHashMap(text));

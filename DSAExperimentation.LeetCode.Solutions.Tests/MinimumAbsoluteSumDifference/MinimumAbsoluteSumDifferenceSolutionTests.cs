@@ -3,22 +3,16 @@ using DSAExperimentation.LeetCode.Solutions.MinimumAbsoluteSumDifference;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumAbsoluteSumDifference;
 
 // Harness only. Both strategies are MinimumAbsoluteSumDifferenceSolution's - this
-// file pins them to LeetCode's three published examples plus two cases the original
+// file pins them to two cases the original
 // coverage left untested: a single-element input (there is nothing else in nums1 to
 // swap in, so the one term stands) and an input where the best replacement sits at
 // the very end of the sorted copy, which is the boundary the lower-bound probe's
 // insertion == Length branch exists for.
 public sealed partial class MinimumAbsoluteSumDifferenceSolutionTests
 {
-    public static TheoryData<int[], int[], int> Examples =>
+    public static TheoryData<int[], int[], int> Cases =>
         new()
         {
-            // LeetCode example 1: replacing the 7 with the 5 drops |7-3| from 4 to 2.
-            { [1, 7, 5], [2, 3, 5], 3 },
-            // LeetCode example 2: already elementwise equal, so no swap can help.
-            { [2, 4, 6, 8, 10], [2, 4, 6, 8, 10], 0 },
-            // LeetCode example 3.
-            { [1, 10, 4, 4, 2, 7], [9, 3, 5, 1, 7, 4], 20 },
             // One element: the only replacement available is the value itself.
             { [3], [9], 6 },
             // The closest replacement for 100 is the largest value in nums1, which
@@ -27,8 +21,8 @@ public sealed partial class MinimumAbsoluteSumDifferenceSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinAbsoluteSumDiffByFullRescan_LeetCodeExamples_ReturnsMinimumSum(
+    [MemberData(nameof(Cases))]
+    public void MinAbsoluteSumDiffByFullRescan_Cases_ReturnsMinimumSum(
         int[] nums1, int[] nums2, int expected)
     {
         var actual = MinimumAbsoluteSumDifferenceSolution.MinAbsoluteSumDiffByFullRescan(nums1, nums2);
@@ -37,8 +31,8 @@ public sealed partial class MinimumAbsoluteSumDifferenceSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinAbsoluteSumDiffBySortedBinarySearch_LeetCodeExamples_ReturnsMinimumSum(
+    [MemberData(nameof(Cases))]
+    public void MinAbsoluteSumDiffBySortedBinarySearch_Cases_ReturnsMinimumSum(
         int[] nums1, int[] nums2, int expected)
     {
         var actual = MinimumAbsoluteSumDifferenceSolution.MinAbsoluteSumDiffBySortedBinarySearch(nums1, nums2);

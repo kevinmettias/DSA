@@ -3,19 +3,17 @@ using DSAExperimentation.LeetCode.Solutions.CountPairsWithXorInARange;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.CountPairsWithXorInARange;
 
 // Harness only. Both counting strategies are CountPairsWithXorInARangeSolution's;
-// this file pins them to LeetCode's two published examples - including the
-// [5, 14] band the original coverage replaced with a narrower one of its own - plus
-// the wide-open band, a single value with no pair at all, a duplicate-heavy input
-// whose only in-range XOR is zero, and the low == high == 0 band that makes the
-// trie arm subtract a CountXorBelow(value, 0) that must come to zero: no XOR is below
-// 0, so the walk passes every level without adding a count.
+// this file pins them to LeetCode example 2's array over the narrower [6, 10] band
+// the original coverage used in place of [5, 14], the wide-open band, a single value
+// with no pair at all, a duplicate-heavy input whose only in-range XOR is zero, and
+// the low == high == 0 band that makes the trie arm subtract a CountXorBelow(value, 0)
+// that must come to zero: no XOR is below 0, so the walk passes every level without
+// adding a count. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class CountPairsWithXorInARangeSolutionTests
 {
-    public static TheoryData<int[], int, int, int> Examples =>
+    public static TheoryData<int[], int, int, int> Cases =>
         new()
         {
-            { [1, 4, 2, 7], 2, 6, 6 },
-            { [9, 8, 4, 2, 1], 5, 14, 8 },
             { [9, 8, 4, 2, 1], 6, 10, 4 },
             { [1, 2, 3, 4], 0, 100, 6 },
             { [5], 0, 100, 0 },
@@ -24,8 +22,8 @@ public sealed partial class CountPairsWithXorInARangeSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountPairsByPairwiseScan_LeetCodeExamples_ReturnsPairCountInRange(
+    [MemberData(nameof(Cases))]
+    public void CountPairsByPairwiseScan_Cases_ReturnsPairCountInRange(
         int[] nums, int low, int high, int expected)
     {
         var actual = CountPairsWithXorInARangeSolution.CountPairsByPairwiseScan(nums, low, high);
@@ -33,8 +31,8 @@ public sealed partial class CountPairsWithXorInARangeSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountPairsByBitTrieRangeCount_LeetCodeExamples_ReturnsPairCountInRange(
+    [MemberData(nameof(Cases))]
+    public void CountPairsByBitTrieRangeCount_Cases_ReturnsPairCountInRange(
         int[] nums, int low, int high, int expected)
     {
         var actual = CountPairsWithXorInARangeSolution.CountPairsByBitTrieRangeCount(nums, low, high);

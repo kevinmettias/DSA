@@ -3,18 +3,15 @@ using DSAExperimentation.LeetCode.Solutions.FindKthLargestXorCoordinateValue;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.FindKthLargestXorCoordinateValue;
 
 // Harness only. Both selection strategies are
-// FindKthLargestXorCoordinateValueSolution's; this file pins them to all four of
-// LeetCode's published examples - including rank == 4, the rank the original coverage
-// omitted, whose answer is the 0 that the corner cancellation produces - plus two
-// degenerate shapes where one dimension is a single cell.
+// FindKthLargestXorCoordinateValueSolution's; this file pins them to rank == 4 on
+// LeetCode's example matrix - the rank its published examples omit, whose answer is
+// the 0 that the corner cancellation produces - plus two degenerate shapes where one
+// dimension is a single cell. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class FindKthLargestXorCoordinateValueSolutionTests
 {
-    public static TheoryData<int[][], int, int> Examples =>
+    public static TheoryData<int[][], int, int> Cases =>
         new()
         {
-            { [[5, 2], [1, 6]], 1, 7 },
-            { [[5, 2], [1, 6]], 2, 5 },
-            { [[5, 2], [1, 6]], 3, 4 },
             { [[5, 2], [1, 6]], 4, 0 },
             { [[8]], 1, 8 },
             { [[1, 2, 3]], 1, 3 },
@@ -23,8 +20,8 @@ public sealed partial class FindKthLargestXorCoordinateValueSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void KthLargestValueByFullSort_LeetCodeExamples_ReturnsCorrectRank(
+    [MemberData(nameof(Cases))]
+    public void KthLargestValueByFullSort_Cases_ReturnsCorrectRank(
         int[][] matrix, int rank, int expected)
     {
         var actual = FindKthLargestXorCoordinateValueSolution.KthLargestValueByFullSort(matrix, rank);
@@ -33,8 +30,8 @@ public sealed partial class FindKthLargestXorCoordinateValueSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void KthLargestValueBySizeKHeap_LeetCodeExamples_ReturnsCorrectRank(
+    [MemberData(nameof(Cases))]
+    public void KthLargestValueBySizeKHeap_Cases_ReturnsCorrectRank(
         int[][] matrix, int rank, int expected)
     {
         var actual = FindKthLargestXorCoordinateValueSolution.KthLargestValueBySizeKHeap(matrix, rank);

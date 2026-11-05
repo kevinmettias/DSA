@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.AnglesOfATriangle;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AnglesOfATriangleSolution's, the same methods
-// AnglesOfATriangleSolutionTests proves correct. No [Params] axis - the input is always
+// CatalogCaseTests proves correct. No [Params] axis - the input is always
 // exactly three sides, so there is nothing to scale; the comparison is purely
 // the constant-factor cost of a third Acos call versus deriving the third angle
 // from the triangle's angle sum.

@@ -3,21 +3,14 @@ using DSAExperimentation.LeetCode.Solutions.RotateImage;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.RotateImage;
 
 // Harness only. Both strategies are RotateImageSolution's - this file just pins
-// them to LeetCode's published examples. Each row is cloned before rotating so
-// the two theory methods (and repeated data rows) never share a mutated matrix.
+// them to a one-by-one matrix, which rotates to itself. LeetCode's published
+// examples run in CatalogCaseTests. Each row is cloned before rotating so the two
+// theory methods (and repeated data rows) never share a mutated matrix.
 public sealed partial class RotateImageSolutionTests
 {
-    public static TheoryData<int[][], int[][]> Examples =>
+    public static TheoryData<int[][], int[][]> Cases =>
         new()
         {
-            {
-                [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
-                [[7, 4, 1], [8, 5, 2], [9, 6, 3]]
-            },
-            {
-                [[5, 1, 9, 11], [2, 4, 8, 10], [13, 3, 6, 7], [15, 14, 12, 16]],
-                [[15, 13, 2, 5], [14, 3, 4, 1], [12, 6, 8, 9], [16, 7, 10, 11]]
-            },
             {
                 [[1]],
                 [[1]]
@@ -25,8 +18,8 @@ public sealed partial class RotateImageSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void RotateByArrayReverse_LeetCodeExamples_RotatesClockwiseInPlace(
+    [MemberData(nameof(Cases))]
+    public void RotateByArrayReverse_Cases_RotatesClockwiseInPlace(
         int[][] matrix, int[][] expected)
     {
         var working = Clone(matrix);
@@ -37,8 +30,8 @@ public sealed partial class RotateImageSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void RotateByStackReverse_LeetCodeExamples_RotatesClockwiseInPlace(
+    [MemberData(nameof(Cases))]
+    public void RotateByStackReverse_Cases_RotatesClockwiseInPlace(
         int[][] matrix, int[][] expected)
     {
         var working = Clone(matrix);

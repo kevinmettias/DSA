@@ -2,19 +2,17 @@ using DSAExperimentation.LeetCode.Solutions.MeetingRoomsIII;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MeetingRoomsIII;
 
-// Harness only: both strategies are MeetingRoomsIIISolution's. Beyond LeetCode's two
-// published examples this pins the shapes the simulation has to get right - meetings
-// listed out of start order, a delayed meeting that keeps its original duration, and
-// a tie on the busiest room resolving to the lowest room number.
+// Harness only: both strategies are MeetingRoomsIIISolution's. This pins the shapes
+// the simulation has to get right - meetings listed out of start order, a delayed
+// meeting that keeps its original duration, and a tie on the busiest room resolving
+// to the lowest room number. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class MeetingRoomsIIISolutionTests
 {
-    public static TheoryData<int, int[][], int> Examples =>
+    public static TheoryData<int, int[][], int> Cases =>
         new()
         {
-            { 2, [[0, 10], [1, 5], [2, 7], [3, 4]], 0 },
-            { 3, [[1, 20], [2, 10], [3, 5], [4, 9], [6, 8]], 1 },
-            // Example one, listed out of start order: the answer only comes out right
-            // if the simulation sorts before it books.
+            // LeetCode's example 1 with its meetings listed out of start order: the
+            // answer only comes out right if the simulation sorts before it books.
             { 2, [[3, 4], [0, 10], [2, 7], [1, 5]], 0 },
             // Every meeting fits in room 0, so the spare rooms stay untouched.
             { 4, [[0, 5], [10, 15], [20, 25]], 0 },
@@ -26,8 +24,8 @@ public sealed partial class MeetingRoomsIIISolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MostBookedByLinearScanFreeAt_LeetCodeExamples_ReturnsBusiestRoom(
+    [MemberData(nameof(Cases))]
+    public void MostBookedByLinearScanFreeAt_Cases_ReturnsBusiestRoom(
         int roomCount, int[][] meetings, int expected)
     {
         var actual = MeetingRoomsIIISolution.MostBookedByLinearScanFreeAt(roomCount, meetings);
@@ -36,8 +34,8 @@ public sealed partial class MeetingRoomsIIISolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MostBookedByTwoHeapPool_LeetCodeExamples_ReturnsBusiestRoom(
+    [MemberData(nameof(Cases))]
+    public void MostBookedByTwoHeapPool_Cases_ReturnsBusiestRoom(
         int roomCount, int[][] meetings, int expected)
     {
         var actual = MeetingRoomsIIISolution.MostBookedByTwoHeapPool(roomCount, meetings);

@@ -9,31 +9,6 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimizeManhattanDistances
 // is handed are asserted on their own.
 public sealed partial class MinimizeManhattanDistancesSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
-        new()
-        {
-            {
-                [[3, 10], [5, 15], [10, 2], [4, 4]],
-                12
-            },
-            {
-                [[1, 1], [1, 1], [1, 1]],
-                0
-            },
-        };
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinDistanceByBruteForce_LeetCodeExamples_ReturnsMinimizedMaximumDistance(
-        int[][] points, int expected) =>
-        Assert.Equal(expected, MinimizeManhattanDistancesSolution.MinDistanceByBruteForce(points));
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinDistanceByManhattanTransform_LeetCodeExamples_ReturnsMinimizedMaximumDistance(
-        int[][] points, int expected) =>
-        Assert.Equal(expected, MinimizeManhattanDistancesSolution.MinDistanceByManhattanTransform(points));
-
     // LeetCode's first example, point by point: u = x + y is 13, 20, 12, 8 and
     // v = x - y is -7, -10, 8, 0 for points 0..3. Sorted, u runs 8 (point 3), 12 (2),
     // 13 (0), 20 (1) and v runs -10 (1), -7 (0), 0 (3), 8 (2).

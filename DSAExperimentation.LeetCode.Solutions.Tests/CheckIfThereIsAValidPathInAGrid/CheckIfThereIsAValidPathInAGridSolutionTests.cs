@@ -3,23 +3,14 @@ using DSAExperimentation.LeetCode.Solutions.CheckIfThereIsAValidPathInAGrid;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.CheckIfThereIsAValidPathInAGrid;
 
 // Harness only. Both strategies are CheckIfThereIsAValidPathInAGridSolution's -
-// this file just pins them to LeetCode's published examples plus the corner cases
+// this file just pins them to the corner cases
 // the original coverage carried, one theory per strategy so a failure names the
 // strategy that broke.
 public sealed partial class CheckIfThereIsAValidPathInAGridSolutionTests
 {
-    public static TheoryData<StreetGridCase> Examples =>
+    public static TheoryData<StreetGridCase> Cases =>
         new()
         {
-            // LeetCode example 1: down, right, up, right, down through the corner.
-            { new StreetGridCase([[2, 4, 3], [6, 5, 2]], Expected: true) },
-
-            // LeetCode example 2: two vertical streets that never connect sideways.
-            { new StreetGridCase([[1, 2, 1], [1, 2, 1]], Expected: false) },
-
-            // LeetCode example 3: the last street opens up and down, not left.
-            { new StreetGridCase([[1, 1, 2]], Expected: false) },
-
             // (0,0)-R->(0,1)-D->(1,1)-D->(2,1)-R->(2,2): two turns via a right-down
             // street (3), a straight vertical street (2), then a right-up street (6).
             { new StreetGridCase([[1, 3, 1], [2, 2, 2], [1, 6, 1]], Expected: true) },
@@ -32,22 +23,22 @@ public sealed partial class CheckIfThereIsAValidPathInAGridSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void HasValidPathByRecursiveDfs_LeetCodeExamples_ReportsWhetherTheCornerIsReachable(
-        StreetGridCase example) =>
+    [MemberData(nameof(Cases))]
+    public void HasValidPathByRecursiveDfs_Cases_ReportsWhetherTheCornerIsReachable(
+        StreetGridCase testCase) =>
         Assert.Equal(
-            example.Expected,
-            CheckIfThereIsAValidPathInAGridSolution.HasValidPathByRecursiveDfs(example.Grid));
+            testCase.Expected,
+            CheckIfThereIsAValidPathInAGridSolution.HasValidPathByRecursiveDfs(testCase.Grid));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void HasValidPathByDepthFirstTraverse_LeetCodeExamples_ReportsWhetherTheCornerIsReachable(
-        StreetGridCase example) =>
+    [MemberData(nameof(Cases))]
+    public void HasValidPathByDepthFirstTraverse_Cases_ReportsWhetherTheCornerIsReachable(
+        StreetGridCase testCase) =>
         Assert.Equal(
-            example.Expected,
-            CheckIfThereIsAValidPathInAGridSolution.HasValidPathByDepthFirstTraverse(example.Grid));
+            testCase.Expected,
+            CheckIfThereIsAValidPathInAGridSolution.HasValidPathByDepthFirstTraverse(testCase.Grid));
 
-    // One LeetCode example: the street grid and whether its corner is reachable. The
+    // One case: the street grid and whether its corner is reachable. The
     // expected value is named at every construction site, so a row reads as the case
     // it is rather than as a bare `true` whose meaning is its position. Nested because
     // it is only ever used inside this test class - it is this harness's own

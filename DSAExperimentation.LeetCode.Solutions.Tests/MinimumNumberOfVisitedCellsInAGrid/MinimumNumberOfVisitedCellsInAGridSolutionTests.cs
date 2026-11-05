@@ -4,31 +4,27 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumNumberOfVisitedCell
 
 // Harness only. Both strategies - the O(rows + cols)-per-pop brute-force scan and the
 // Reduce.Graph walk over JumpGridTopology - are
-// MinimumNumberOfVisitedCellsInAGridSolution's; this file just pins them to LeetCode's
-// published examples, plus the 1x1 grid where the start already IS the target and a
-// two-row grid whose every jump is a single step.
+// MinimumNumberOfVisitedCellsInAGridSolution's; this file just pins them to a
+// two-row grid whose every jump is a single step. LeetCode's published examples run
+// in CatalogCaseTests.
 public sealed partial class MinimumNumberOfVisitedCellsInAGridSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][], int> Cases =>
         new()
         {
-            { [[3, 4, 2, 1], [4, 2, 3, 1], [2, 1, 0, 0], [2, 4, 0, 0]], 4 },
-            { [[3, 4, 2, 1], [4, 2, 1, 1], [2, 1, 1, 0], [3, 4, 1, 0]], 3 },
-            { [[2, 1, 0], [1, 0, 0]], -1 },
-            { [[0]], 1 },
             { [[1, 1, 1], [1, 1, 0]], 4 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinVisitedCellsByBruteForceScan_LeetCodeExamples_ReturnsShortestPathCellCount(
+    [MemberData(nameof(Cases))]
+    public void MinVisitedCellsByBruteForceScan_Cases_ReturnsShortestPathCellCount(
         int[][] grid, int expected) =>
         Assert.Equal(
             expected, MinimumNumberOfVisitedCellsInAGridSolution.MinVisitedCellsByBruteForceScan(grid));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinVisitedCellsByReduceGraph_LeetCodeExamples_ReturnsShortestPathCellCount(
+    [MemberData(nameof(Cases))]
+    public void MinVisitedCellsByReduceGraph_Cases_ReturnsShortestPathCellCount(
         int[][] grid, int expected) =>
         Assert.Equal(
             expected, MinimumNumberOfVisitedCellsInAGridSolution.MinVisitedCellsByReduceGraph(grid));

@@ -3,21 +3,19 @@ using DSAExperimentation.LeetCode.Solutions.AssignCookies;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.AssignCookies;
 
 // Harness only: both strategies live in AssignCookiesSolution and are asserted
-// against the same examples, including the case where no cookie is large enough
+// against the same cases, among them the case where no cookie is large enough
 // for either child.
 public sealed partial class AssignCookiesSolutionTests
 {
-    public static TheoryData<int[], int[], int> Examples =>
+    public static TheoryData<int[], int[], int> Cases =>
         new()
         {
-            { [1, 2, 3], [1, 1], 1 },
-            { [1, 2], [1, 2, 3], 2 },
             { [5, 9], [1, 2, 3], 0 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindContentChildrenByBruteForceScan_LeetCodeExamples_ReturnsContentChildCount(int[] greed, int[] sizes, int expected)
+    [MemberData(nameof(Cases))]
+    public void FindContentChildrenByBruteForceScan_Cases_ReturnsContentChildCount(int[] greed, int[] sizes, int expected)
     {
         var actual = AssignCookiesSolution.FindContentChildrenByBruteForceScan(greed, sizes);
 
@@ -25,8 +23,8 @@ public sealed partial class AssignCookiesSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindContentChildrenBySortThenTwoPointer_LeetCodeExamples_ReturnsContentChildCount(int[] greed, int[] sizes, int expected)
+    [MemberData(nameof(Cases))]
+    public void FindContentChildrenBySortThenTwoPointer_Cases_ReturnsContentChildCount(int[] greed, int[] sizes, int expected)
     {
         var actual = AssignCookiesSolution.FindContentChildrenBySortThenTwoPointer(greed, sizes);
 

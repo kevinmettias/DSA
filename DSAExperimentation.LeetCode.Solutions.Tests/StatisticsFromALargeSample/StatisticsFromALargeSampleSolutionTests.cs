@@ -3,24 +3,23 @@ using DSAExperimentation.LeetCode.Solutions.StatisticsFromALargeSample;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.StatisticsFromALargeSample;
 
 // Harness only. Both strategies are StatisticsFromALargeSampleSolution's; this file
-// pins them to LeetCode's published examples plus the odd/even-total pair that
-// exercises both halves of the median rule.
+// pins them to LeetCode's example 2 with its mean stated as the exact ratio 24/11, the
+// odd/even-total pair that exercises both halves of the median rule, a sample of one
+// distinct value, and two buckets far apart. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class StatisticsFromALargeSampleSolutionTests
 {
     // LeetCode fixes the sample's value range at [0, 255], so every count array is
-    // this long however few buckets an example actually fills.
+    // this long however few buckets a case actually fills.
     private const int BucketCount = 256;
 
     // The mean is a ratio, so expectations like 24/11 are only equal to within a
     // few decimal places.
     private const int StatisticPrecision = 5;
 
-    public static TheoryData<long[], double[]> Examples =>
+    public static TheoryData<long[], double[]> Cases =>
         new()
         {
-            // LeetCode example 1: sample [1,2,2,2,3,3,3,3].
-            { Counts((1, 1), (2, 3), (3, 4)), [1.0, 3.0, 19.0 / 8.0, 2.5, 3.0] },
-
             // LeetCode example 2: sample [1,1,1,1,2,2,2,3,3,4,4].
             { Counts((1, 4), (2, 3), (3, 2), (4, 2)), [1.0, 4.0, 24.0 / 11.0, 2.0, 1.0] },
 
@@ -41,14 +40,14 @@ public sealed partial class StatisticsFromALargeSampleSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void ComputeStatisticsBySampleExpansion_LeetCodeExamples_ReturnsMinMaxMeanMedianMode(
+    [MemberData(nameof(Cases))]
+    public void ComputeStatisticsBySampleExpansion_Cases_ReturnsMinMaxMeanMedianMode(
         long[] count, double[] expected) =>
         AssertStatistics(expected, StatisticsFromALargeSampleSolution.ComputeStatisticsBySampleExpansion(count));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void ComputeStatisticsByCumulativeBinarySearch_LeetCodeExamples_ReturnsMinMaxMeanMedianMode(
+    [MemberData(nameof(Cases))]
+    public void ComputeStatisticsByCumulativeBinarySearch_Cases_ReturnsMinMaxMeanMedianMode(
         long[] count, double[] expected) =>
         AssertStatistics(expected, StatisticsFromALargeSampleSolution.ComputeStatisticsByCumulativeBinarySearch(count));
 
@@ -62,7 +61,7 @@ public sealed partial class StatisticsFromALargeSampleSolutionTests
         }
     }
 
-    // States an example as just its non-empty buckets, spread into the full
+    // States a case as just its non-empty buckets, spread into the full
     // 256-slot count array LeetCode actually passes.
     private static long[] Counts(params (int Value, long Occurrences)[] buckets)
     {

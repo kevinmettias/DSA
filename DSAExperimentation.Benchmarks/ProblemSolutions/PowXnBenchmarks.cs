@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.PowXn;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are PowXnSolution's, the same methods PowXnSolutionTests proves
+// Harness only: both arms are PowXnSolution's, the same methods CatalogCaseTests proves
 // correct. Base is chosen close to 1 so the largest exponent doesn't overflow to
 // infinity under either strategy.
 public class PowXnBenchmarks

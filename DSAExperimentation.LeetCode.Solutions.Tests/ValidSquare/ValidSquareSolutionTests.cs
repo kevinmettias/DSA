@@ -2,46 +2,41 @@ using DSAExperimentation.LeetCode.Solutions.ValidSquare;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ValidSquare;
 
-// Harness only. Both strategies are ValidSquareSolution's; this file pins them to
-// LeetCode's published examples.
+// Harness only. Both strategies are ValidSquareSolution's; this file pins them to a
+// square tilted 45 degrees and to four copies of one point. LeetCode's published
+// examples run in CatalogCaseTests.
 public sealed partial class ValidSquareSolutionTests
 {
-    public static TheoryData<SquareExample> Examples =>
+    public static TheoryData<SquareCase> Cases =>
         new()
         {
-            // LeetCode examples 1-3.
-            { new SquareExample(P1: [0, 0], P2: [1, 1], P3: [1, 0], P4: [0, 1], Expected: true) },
-            { new SquareExample(P1: [0, 0], P2: [1, 1], P3: [1, 0], P4: [0, 12], Expected: false) },
-            { new SquareExample(P1: [1, 0], P2: [-1, 0], P3: [0, 1], P4: [0, -1], Expected: true) },
-
-            // A square tilted 45 degrees, four collinear points, and four copies of one point.
-            { new SquareExample(P1: [0, 0], P2: [1, 1], P3: [2, 0], P4: [1, -1], Expected: true) },
-            { new SquareExample(P1: [0, 0], P2: [1, 1], P3: [2, 2], P4: [3, 3], Expected: false) },
-            { new SquareExample(P1: [5, 5], P2: [5, 5], P3: [5, 5], P4: [5, 5], Expected: false) },
+            // A square tilted 45 degrees, then four copies of one point.
+            { new SquareCase(P1: [0, 0], P2: [1, 1], P3: [2, 0], P4: [1, -1], Expected: true) },
+            { new SquareCase(P1: [5, 5], P2: [5, 5], P3: [5, 5], P4: [5, 5], Expected: false) },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsValidSquareByMergeSort_LeetCodeExamples_ReturnsWhetherFourPointsFormASquare(SquareExample example)
+    [MemberData(nameof(Cases))]
+    public void IsValidSquareByMergeSort_Cases_ReturnsWhetherFourPointsFormASquare(SquareCase testCase)
     {
         var actual = ValidSquareSolution.IsValidSquareByMergeSort(
-            example.P1, example.P2, example.P3, example.P4);
+            testCase.P1, testCase.P2, testCase.P3, testCase.P4);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsValidSquareByMinMaxScan_LeetCodeExamples_ReturnsWhetherFourPointsFormASquare(SquareExample example)
+    [MemberData(nameof(Cases))]
+    public void IsValidSquareByMinMaxScan_Cases_ReturnsWhetherFourPointsFormASquare(SquareCase testCase)
     {
         var actual = ValidSquareSolution.IsValidSquareByMinMaxScan(
-            example.P1, example.P2, example.P3, example.P4);
+            testCase.P1, testCase.P2, testCase.P3, testCase.P4);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
-    // One LeetCode example: four points, and whether they form a square. Each corner
+    // One case: four points, and whether they form a square. Each corner
     // is named for the role it plays, so a row cannot be read with two of the four
     // silently exchanged.
-    public readonly record struct SquareExample(int[] P1, int[] P2, int[] P3, int[] P4, bool Expected);
+    public readonly record struct SquareCase(int[] P1, int[] P2, int[] P3, int[] P4, bool Expected);
 }

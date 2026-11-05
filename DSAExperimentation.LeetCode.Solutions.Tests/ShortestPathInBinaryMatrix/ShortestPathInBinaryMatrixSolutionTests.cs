@@ -7,34 +7,29 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.ShortestPathInBinaryMatrix
 // Queue<TElement>.
 public sealed partial class ShortestPathInBinaryMatrixSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][], int> Cases =>
         new()
         {
-            { [[0, 1], [1, 0]], 2 },
-            { [[0, 0, 0], [1, 1, 0], [1, 1, 0]], 4 },
-            { [[1, 0, 0], [1, 1, 0], [1, 1, 0]], -1 },
-            { [[0]], 1 },
-            { [[1]], -1 },
             { [[0, 0], [0, 1]], -1 },
             { [[0, 0, 0], [0, 1, 0], [0, 0, 0]], 4 },
             { [[0, 0, 0], [0, 0, 0], [0, 0, 0]], 3 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void ShortestPathBinaryMatrixByBclQueue_LeetCodeExamples_ReturnsClearPathCellCount(
+    [MemberData(nameof(Cases))]
+    public void ShortestPathBinaryMatrixByBclQueue_Cases_ReturnsClearPathCellCount(
         int[][] grid, int expected) =>
         Assert.Equal(expected, ShortestPathInBinaryMatrixSolution.ShortestPathBinaryMatrixByBclQueue(grid));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void ShortestPathBinaryMatrixByQueueFrontier_LeetCodeExamples_ReturnsClearPathCellCount(
+    [MemberData(nameof(Cases))]
+    public void ShortestPathBinaryMatrixByQueueFrontier_Cases_ReturnsClearPathCellCount(
         int[][] grid, int expected) =>
         Assert.Equal(expected, ShortestPathInBinaryMatrixSolution.ShortestPathBinaryMatrixByQueueFrontier(grid));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void ShortestPathBinaryMatrixByGridShortestPath_LeetCodeExamples_ReturnsClearPathCellCount(
+    [MemberData(nameof(Cases))]
+    public void ShortestPathBinaryMatrixByGridShortestPath_Cases_ReturnsClearPathCellCount(
         int[][] grid, int expected) =>
         Assert.Equal(expected, ShortestPathInBinaryMatrixSolution.ShortestPathBinaryMatrixByGridShortestPath(grid));
 }

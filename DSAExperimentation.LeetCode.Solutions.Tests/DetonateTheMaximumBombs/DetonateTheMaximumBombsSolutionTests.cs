@@ -5,19 +5,13 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.DetonateTheMaximumBombs;
 // Harness only. Both per-candidate reachability strategies are
 // DetonateTheMaximumBombsSolution's - the hand-rolled bool[] recursion and the same
 // successor closure run through this repo's DepthFirstSearch - and this file pins
-// them to LeetCode's published examples plus the one-bomb and two-cluster cases the
+// them to the one-bomb and two-cluster cases the
 // originals were missing.
 public sealed partial class DetonateTheMaximumBombsSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][], int> Cases =>
         new()
         {
-            // LC example 1: bomb 1's blast reaches bomb 0's center but not the reverse.
-            { [[2, 1, 3], [6, 1, 4]], 2 },
-            // LC example 2: neither bomb reaches the other.
-            { [[1, 1, 5], [10, 10, 5]], 1 },
-            // LC example 3: a chain detonated in full from its first bomb.
-            { [[1, 2, 3], [2, 3, 1], [3, 4, 2], [4, 5, 3], [5, 6, 4]], 5 },
             // A lone bomb detonates only itself.
             { [[1, 1, 1]], 1 },
             // Two disjoint clusters - the answer comes from the larger one.
@@ -25,14 +19,14 @@ public sealed partial class DetonateTheMaximumBombsSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxDetonationsByManualRecursion_LeetCodeExamples_ReturnsLargestChainOverEveryTrigger(
+    [MemberData(nameof(Cases))]
+    public void MaxDetonationsByManualRecursion_Cases_ReturnsLargestChainOverEveryTrigger(
         int[][] bombs, int expected) =>
         Assert.Equal(expected, DetonateTheMaximumBombsSolution.MaxDetonationsByManualRecursion(bombs));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxDetonationsByBlastGraphReduce_LeetCodeExamples_ReturnsLargestChainOverEveryTrigger(
+    [MemberData(nameof(Cases))]
+    public void MaxDetonationsByBlastGraphReduce_Cases_ReturnsLargestChainOverEveryTrigger(
         int[][] bombs, int expected) =>
         Assert.Equal(expected, DetonateTheMaximumBombsSolution.MaxDetonationsByBlastGraphReduce(bombs));
 }

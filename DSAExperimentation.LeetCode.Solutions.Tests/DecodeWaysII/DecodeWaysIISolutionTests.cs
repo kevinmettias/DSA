@@ -8,22 +8,18 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.DecodeWaysII;
 // running total reduced mod 1e9+7 as LeetCode requires.
 public sealed partial class DecodeWaysIISolutionTests
 {
-    public static TheoryData<string, long> Examples => new()
+    public static TheoryData<string, long> Cases => new()
     {
-        { "*", 9 },
-        { "1*", 18 },
-        { "2*", 15 },
-        { "**", 96 },
         { "*6*", 99 },
     };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountDecodingsByTabulation_LeetCodeExamples_ReturnsCount(string digits, long expected)
+    [MemberData(nameof(Cases))]
+    public void CountDecodingsByTabulation_Cases_ReturnsCount(string digits, long expected)
         => Assert.Equal(expected, DecodeWaysIISolution.CountDecodingsByTabulation(digits));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountDecodingsByMemoization_LeetCodeExamples_ReturnsCount(string digits, long expected)
+    [MemberData(nameof(Cases))]
+    public void CountDecodingsByMemoization_Cases_ReturnsCount(string digits, long expected)
         => Assert.Equal(expected, DecodeWaysIISolution.CountDecodingsByMemoization(digits));
 }

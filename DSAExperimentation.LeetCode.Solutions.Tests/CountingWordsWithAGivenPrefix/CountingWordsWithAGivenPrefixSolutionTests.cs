@@ -3,17 +3,17 @@ using DSAExperimentation.LeetCode.Solutions.CountingWordsWithAGivenPrefix;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.CountingWordsWithAGivenPrefix;
 
 // Harness only. Both the StartsWith scan and the trie's insert-then-HasPrefix round
-// trip are CountingWordsWithAGivenPrefixSolution's; this file pins them to LeetCode's
-// published examples plus the boundary cases the two have to agree on - a prefix equal
-// to a whole word, a prefix longer than any word, repeated words that must each be
-// counted, and a prefix that occurs inside words without ever starting one.
+// trip are CountingWordsWithAGivenPrefixSolution's; this file pins them to the
+// boundary cases the two have to agree on - a prefix equal to a whole word, a prefix
+// longer than any word, repeated words that must each be counted, and a prefix that
+// occurs inside words without ever starting one - plus the words of LeetCode's first
+// example under a prefix only one of them starts with. LeetCode's published examples
+// run in CatalogCaseTests.
 public sealed partial class CountingWordsWithAGivenPrefixSolutionTests
 {
-    public static TheoryData<string[], string, int> Examples =>
+    public static TheoryData<string[], string, int> Cases =>
         new()
         {
-            { ["pay", "attention", "practice", "attend"], "at", 2 },
-            { ["leetcode", "win", "loops", "success"], "code", 0 },
             { ["i", "love", "leetcode"], "i", 1 },
             { ["a", "b", "c"], "abc", 0 },
             { ["pay", "attention", "practice", "attend"], "pra", 1 },
@@ -22,8 +22,8 @@ public sealed partial class CountingWordsWithAGivenPrefixSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountWordsWithPrefixByStartsWithScan_LeetCodeExamples_ReturnsMatchingWordCount(
+    [MemberData(nameof(Cases))]
+    public void CountWordsWithPrefixByStartsWithScan_Cases_ReturnsMatchingWordCount(
         string[] words, string pref, int expected)
     {
         var actual = CountingWordsWithAGivenPrefixSolution.CountWordsWithPrefixByStartsWithScan(words, pref);
@@ -31,8 +31,8 @@ public sealed partial class CountingWordsWithAGivenPrefixSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountWordsWithPrefixByTriePerWord_LeetCodeExamples_ReturnsMatchingWordCount(
+    [MemberData(nameof(Cases))]
+    public void CountWordsWithPrefixByTriePerWord_Cases_ReturnsMatchingWordCount(
         string[] words, string pref, int expected)
     {
         var actual = CountingWordsWithAGivenPrefixSolution.CountWordsWithPrefixByTriePerWord(words, pref);

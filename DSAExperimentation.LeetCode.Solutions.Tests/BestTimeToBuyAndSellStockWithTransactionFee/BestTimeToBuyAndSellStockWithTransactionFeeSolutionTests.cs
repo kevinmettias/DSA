@@ -4,20 +4,19 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.BestTimeToBuyAndSellStockW
 
 // Harness only. Both strategies are
 // BestTimeToBuyAndSellStockWithTransactionFeeSolution's - this file just pins them
-// to LeetCode's published examples.
+// to a fee larger than any price rise, where the best profit is never to trade.
+// LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class BestTimeToBuyAndSellStockWithTransactionFeeSolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            { [1, 3, 2, 8, 4, 9], 2, 8 },
-            { [1, 3, 7, 5, 10, 3], 3, 6 },
             { [1, 2], 5, 0 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxProfitByUnmemoizedRecursion_LeetCodeExamples_ReturnsBestProfitAfterFees(
+    [MemberData(nameof(Cases))]
+    public void MaxProfitByUnmemoizedRecursion_Cases_ReturnsBestProfitAfterFees(
         int[] prices, int fee, int expected)
     {
         var actual = BestTimeToBuyAndSellStockWithTransactionFeeSolution.MaxProfitByUnmemoizedRecursion(
@@ -27,8 +26,8 @@ public sealed partial class BestTimeToBuyAndSellStockWithTransactionFeeSolutionT
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxProfitByMemoizedRecursion_LeetCodeExamples_ReturnsBestProfitAfterFees(
+    [MemberData(nameof(Cases))]
+    public void MaxProfitByMemoizedRecursion_Cases_ReturnsBestProfitAfterFees(
         int[] prices, int fee, int expected)
     {
         var actual = BestTimeToBuyAndSellStockWithTransactionFeeSolution.MaxProfitByMemoizedRecursion(

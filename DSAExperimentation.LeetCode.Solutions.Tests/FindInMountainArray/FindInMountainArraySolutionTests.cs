@@ -3,20 +3,14 @@ using DSAExperimentation.LeetCode.Solutions.FindInMountainArray;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.FindInMountainArray;
 
 // Harness only. Both strategies are FindInMountainArraySolution's; this file pins
-// them to LeetCode's published examples plus the cases that separate the two
+// them to the cases that separate the two
 // slopes - a target on the peak itself, and one present on both slopes whose
 // smaller index is the required answer.
 public sealed partial class FindInMountainArraySolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            // LeetCode example 1: target sits on the ascending slope.
-            { [1, 2, 3, 4, 5, 3, 1], 3, 2 },
-
-            // LeetCode example 2: target is absent from both slopes.
-            { [0, 1, 2, 4, 2, 1], 3, -1 },
-
             // Present only on the descending slope, so the ascending search must
             // miss before the reversed comparer finds it.
             { [1, 5, 10, 20, 15, 8, 2], 8, 5 },
@@ -32,8 +26,8 @@ public sealed partial class FindInMountainArraySolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindIndexByLinearScan_LeetCodeExamples_ReturnsSmallestMatchingIndex(
+    [MemberData(nameof(Cases))]
+    public void FindIndexByLinearScan_Cases_ReturnsSmallestMatchingIndex(
         int[] mountain, int target, int expected)
     {
         var actual = FindInMountainArraySolution.FindIndexByLinearScan(mountain, target);
@@ -42,8 +36,8 @@ public sealed partial class FindInMountainArraySolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindIndexByPeakBisection_LeetCodeExamples_ReturnsSmallestMatchingIndex(
+    [MemberData(nameof(Cases))]
+    public void FindIndexByPeakBisection_Cases_ReturnsSmallestMatchingIndex(
         int[] mountain, int target, int expected)
     {
         var actual = FindInMountainArraySolution.FindIndexByPeakBisection(mountain, target);

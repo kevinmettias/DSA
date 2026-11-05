@@ -4,19 +4,17 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumXorSumOfTwoArrays;
 
 // Harness only. Both strategies are MinimumXorSumOfTwoArraysSolution's -
 // MinimumXorSumByBruteForceRecursion (previously untested scaffolding inlined in the
-// benchmark as its baseline arm) now faces the same examples as
+// benchmark as its baseline arm) now faces the same cases as
 // MinimumXorSumByMemoizedBitmask (previously this file's own private helper), so a
-// failure names the strategy that broke. Alongside LeetCode's two published examples
-// the cases pin down the single-element base case, a pairing that can reach zero, and
-// a pair where matching the two smallest values together is NOT optimal - the trap a
-// greedy arm would fall into.
+// failure names the strategy that broke. The cases pin down the single-element base
+// case, pairings that can reach zero, and a pair where matching the two smallest
+// values together is NOT optimal - the trap a greedy arm would fall into. LeetCode's
+// published examples run in CatalogCaseTests.
 public sealed partial class MinimumXorSumOfTwoArraysSolutionTests
 {
-    public static TheoryData<int[], int[], int> Examples =>
+    public static TheoryData<int[], int[], int> Cases =>
         new()
         {
-            { [1, 2], [2, 3], 2 },
-            { [1, 0, 3], [5, 3, 4], 8 },
             { [7], [5], 2 },
             { [0, 0], [0, 0], 0 },
             { [1, 2, 3], [3, 2, 1], 0 },
@@ -25,8 +23,8 @@ public sealed partial class MinimumXorSumOfTwoArraysSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinimumXorSumByBruteForceRecursion_LeetCodeExamples_ReturnsMinimalTotal(
+    [MemberData(nameof(Cases))]
+    public void MinimumXorSumByBruteForceRecursion_Cases_ReturnsMinimalTotal(
         int[] nums1, int[] nums2, int expected)
     {
         var actual = MinimumXorSumOfTwoArraysSolution.MinimumXorSumByBruteForceRecursion(nums1, nums2);
@@ -35,8 +33,8 @@ public sealed partial class MinimumXorSumOfTwoArraysSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinimumXorSumByMemoizedBitmask_LeetCodeExamples_ReturnsMinimalTotal(
+    [MemberData(nameof(Cases))]
+    public void MinimumXorSumByMemoizedBitmask_Cases_ReturnsMinimalTotal(
         int[] nums1, int[] nums2, int expected)
     {
         var actual = MinimumXorSumOfTwoArraysSolution.MinimumXorSumByMemoizedBitmask(nums1, nums2);

@@ -4,20 +4,19 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.LongestSubstringWithAtLeas
 
 // Harness only. Both strategies are
 // LongestSubstringWithAtLeastKRepeatingCharactersSolution's - this file just pins
-// them to LeetCode's published examples.
+// them to a string whose letters each appear once, so no substring qualifies.
+// LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class LongestSubstringWithAtLeastKRepeatingCharactersSolutionTests
 {
-    public static TheoryData<string, int, int> Examples =>
+    public static TheoryData<string, int, int> Cases =>
         new()
         {
-            { "aaabb", 3, 3 },
-            { "ababbc", 2, 5 },
             { "weitong", 2, 0 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void LongestByBruteForce_LeetCodeExamples_ReturnsLongestQualifyingLength(
+    [MemberData(nameof(Cases))]
+    public void LongestByBruteForce_Cases_ReturnsLongestQualifyingLength(
         string text, int minimumRepeats, int expected)
     {
         var actual = LongestSubstringWithAtLeastKRepeatingCharactersSolution
@@ -26,8 +25,8 @@ public sealed partial class LongestSubstringWithAtLeastKRepeatingCharactersSolut
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void LongestByDivideAndConquer_LeetCodeExamples_ReturnsLongestQualifyingLength(
+    [MemberData(nameof(Cases))]
+    public void LongestByDivideAndConquer_Cases_ReturnsLongestQualifyingLength(
         string text, int minimumRepeats, int expected)
     {
         var actual = LongestSubstringWithAtLeastKRepeatingCharactersSolution

@@ -3,26 +3,16 @@ using DSAExperimentation.LeetCode.Solutions.QueriesOnNumberOfPointsInsideACircle
 namespace DSAExperimentation.LeetCode.Solutions.Tests.QueriesOnNumberOfPointsInsideACircle;
 
 // Harness only. Both strategies are QueriesOnNumberOfPointsInsideACircleSolution's -
-// this file pins them to LeetCode's two published examples plus the boundary cases
+// this file pins them to the boundary cases
 // the pre-migration test already carried: a zero radius that still covers the point
 // it sits on, and negative coordinates whose squared distance must not lose its sign
 // handling. The brute-force scan was previously untested scaffolding inlined in the
 // benchmark and is asserted here for the first time.
 public sealed partial class QueriesOnNumberOfPointsInsideACircleSolutionTests
 {
-    public static TheoryData<int[][], int[][], int[]> Examples =>
+    public static TheoryData<int[][], int[][], int[]> Cases =>
         new()
         {
-            // LeetCode example 1.
-            { [[1, 3], [3, 3], [5, 3], [2, 2]], [[2, 3, 1], [4, 3, 1], [1, 1, 2]], [3, 2, 2] },
-
-            // LeetCode example 2.
-            {
-                [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]],
-                [[1, 2, 2], [2, 2, 2], [4, 3, 2], [4, 3, 3]],
-                [2, 3, 2, 4]
-            },
-
             // A query centred on a point, one offset from every point, and one that
             // reaches nothing at all - so an empty x-band is exercised too.
             { [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]], [[3, 3, 2], [0, 0, 2], [10, 10, 1]], [3, 1, 0] },
@@ -40,8 +30,8 @@ public sealed partial class QueriesOnNumberOfPointsInsideACircleSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountPointsByBruteForceScan_LeetCodeExamples_CountsPointsInsideEachCircle(
+    [MemberData(nameof(Cases))]
+    public void CountPointsByBruteForceScan_Cases_CountsPointsInsideEachCircle(
         int[][] points, int[][] queries, int[] expected)
     {
         var actual = QueriesOnNumberOfPointsInsideACircleSolution.CountPointsByBruteForceScan(points, queries);
@@ -50,8 +40,8 @@ public sealed partial class QueriesOnNumberOfPointsInsideACircleSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountPointsBySortedXPruning_LeetCodeExamples_CountsPointsInsideEachCircle(
+    [MemberData(nameof(Cases))]
+    public void CountPointsBySortedXPruning_Cases_CountsPointsInsideEachCircle(
         int[][] points, int[][] queries, int[] expected)
     {
         var actual = QueriesOnNumberOfPointsInsideACircleSolution.CountPointsBySortedXPruning(points, queries);

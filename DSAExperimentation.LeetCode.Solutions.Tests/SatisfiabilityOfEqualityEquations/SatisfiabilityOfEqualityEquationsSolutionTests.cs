@@ -5,40 +5,36 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.SatisfiabilityOfEqualityEq
 // LeetCode 990. Satisfiability of Equality Equations. See
 // SatisfiabilityOfEqualityEquationsSolution for the two strategies: a naive
 // adjacency-list BFS reachability query per inequality, and this repo's own
-// DisjointSet over the 26-letter alphabet. Harness only - the examples are stated
+// DisjointSet over the 26-letter alphabet. Harness only - the cases are stated
 // once and each strategy gets its own theory so a failure names the arm that broke.
+// The one case is a lone inequality, which nothing contradicts. LeetCode's published
+// examples run in CatalogCaseTests.
 public sealed partial class SatisfiabilityOfEqualityEquationsSolutionTests
 {
-    public static TheoryData<EquationsExample> Examples =>
+    public static TheoryData<EquationsCase> Cases =>
         new()
         {
-            new EquationsExample(Equations: ["a==b", "b!=a"], IsSatisfiable: false),
-            new EquationsExample(Equations: ["b==a", "a==b"], IsSatisfiable: true),
-            new EquationsExample(Equations: ["a==b", "b==c", "a==c"], IsSatisfiable: true),
-            new EquationsExample(Equations: ["c==c", "b==d", "x!=z"], IsSatisfiable: true),
-            new EquationsExample(Equations: ["a==b", "b!=c", "c==a"], IsSatisfiable: false),
-            new EquationsExample(Equations: ["a!=a"], IsSatisfiable: false),
-            new EquationsExample(Equations: ["a!=b"], IsSatisfiable: true),
+            new EquationsCase(Equations: ["a!=b"], IsSatisfiable: true),
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsSatisfiableByAdjacencyBfs_LeetCodeExamples_ReturnsWhetherEquationsAreSatisfiable(
-        EquationsExample example) =>
+    [MemberData(nameof(Cases))]
+    public void IsSatisfiableByAdjacencyBfs_Cases_ReturnsWhetherEquationsAreSatisfiable(
+        EquationsCase testCase) =>
         Assert.Equal(
-            example.IsSatisfiable,
-            SatisfiabilityOfEqualityEquationsSolution.IsSatisfiableByAdjacencyBfs(example.Equations));
+            testCase.IsSatisfiable,
+            SatisfiabilityOfEqualityEquationsSolution.IsSatisfiableByAdjacencyBfs(testCase.Equations));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsSatisfiableByDisjointSet_LeetCodeExamples_ReturnsWhetherEquationsAreSatisfiable(
-        EquationsExample example) =>
+    [MemberData(nameof(Cases))]
+    public void IsSatisfiableByDisjointSet_Cases_ReturnsWhetherEquationsAreSatisfiable(
+        EquationsCase testCase) =>
         Assert.Equal(
-            example.IsSatisfiable,
-            SatisfiabilityOfEqualityEquationsSolution.IsSatisfiableByDisjointSet(example.Equations));
+            testCase.IsSatisfiable,
+            SatisfiabilityOfEqualityEquationsSolution.IsSatisfiableByDisjointSet(testCase.Equations));
 
-    // One example: the equation system and whether it can hold. The expectation is
+    // One case: the equation system and whether it can hold. The expectation is
     // named rather than carried by its position, so the row reads as an assertion
     // instead of as a bare `true`.
-    public readonly record struct EquationsExample(string[] Equations, bool IsSatisfiable);
+    public readonly record struct EquationsCase(string[] Equations, bool IsSatisfiable);
 }

@@ -4,15 +4,13 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.TaskSchedulerII;
 
 // Harness only: both strategies live in TaskSchedulerIISolution and are asserted here
 // under their own names, so a failure names the strategy that broke. The cases are
-// LeetCode's two published examples plus the boundaries the cooldown rule turns on -
+// the boundaries the cooldown rule turns on -
 // no repeats at all, back-to-back repeats that each force a full wait, and a single
 // task that can never wait for anything.
 public sealed partial class TaskSchedulerIISolutionTests
 {
-    public static TheoryData<int[], int, long> Examples => new()
+    public static TheoryData<int[], int, long> Cases => new()
     {
-        { [1, 2, 1, 2, 3, 1], 3, 9 },
-        { [5, 8, 8, 5], 2, 6 },
         { [1, 2, 3, 4], 10, 4 },
         { [1, 1, 1], 2, 7 },
         { [2, 2], 1, 3 },
@@ -20,7 +18,7 @@ public sealed partial class TaskSchedulerIISolutionTests
     };
 
     [Theory]
-    [MemberData(nameof(Examples))]
+    [MemberData(nameof(Cases))]
     public void CountDaysByBackwardScan_Example_ReturnsDayTheLastTaskLandsOn(
         int[] tasks, int space, long expected)
     {
@@ -30,7 +28,7 @@ public sealed partial class TaskSchedulerIISolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
+    [MemberData(nameof(Cases))]
     public void CountDaysByHashMapOnePass_Example_ReturnsDayTheLastTaskLandsOn(
         int[] tasks, int space, long expected)
     {

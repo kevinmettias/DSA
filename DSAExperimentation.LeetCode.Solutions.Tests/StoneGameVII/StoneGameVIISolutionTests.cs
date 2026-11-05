@@ -4,16 +4,14 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.StoneGameVII;
 
 // Harness only. Both strategies are StoneGameVIISolution's -
 // MaxScoreDifferenceByUnmemoizedRecursion (previously untested scaffolding inlined in
-// the benchmark as its baseline arm) now gets the same examples as
+// the benchmark as its baseline arm) now gets the same cases as
 // MaxScoreDifferenceByMemoizedRecursion (previously this file's own private helper),
 // so a failure names the strategy that broke.
 public sealed partial class StoneGameVIISolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            { [5, 3, 1, 4, 2], 6 },
-            { [7, 90, 5, 1, 100, 10, 10, 2], 122 },
             { [1, 4], 4 },
             { [1, 1], 1 },
             { [1, 2, 3], 2 },
@@ -22,14 +20,14 @@ public sealed partial class StoneGameVIISolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxScoreDifferenceByUnmemoizedRecursion_LeetCodeExamples_ReturnsWinnerMinusLoserScore(
+    [MemberData(nameof(Cases))]
+    public void MaxScoreDifferenceByUnmemoizedRecursion_Cases_ReturnsWinnerMinusLoserScore(
         int[] stones, int expected) =>
         Assert.Equal(expected, StoneGameVIISolution.MaxScoreDifferenceByUnmemoizedRecursion(stones));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxScoreDifferenceByMemoizedRecursion_LeetCodeExamples_ReturnsWinnerMinusLoserScore(
+    [MemberData(nameof(Cases))]
+    public void MaxScoreDifferenceByMemoizedRecursion_Cases_ReturnsWinnerMinusLoserScore(
         int[] stones, int expected) =>
         Assert.Equal(expected, StoneGameVIISolution.MaxScoreDifferenceByMemoizedRecursion(stones));
 }

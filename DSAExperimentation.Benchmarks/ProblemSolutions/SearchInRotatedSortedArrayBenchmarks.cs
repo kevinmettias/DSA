@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.SearchInRotatedSortedArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SearchInRotatedSortedArraySolution's, the same
-// methods SearchInRotatedSortedArraySolutionTests proves correct.
+// methods CatalogCaseTests proves correct.
 public class SearchInRotatedSortedArrayBenchmarks
 {
     // Rotates the sorted array by roughly a third so the pivot sits away from both ends.

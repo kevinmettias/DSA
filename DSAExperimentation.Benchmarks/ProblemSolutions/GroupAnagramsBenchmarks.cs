@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.GroupAnagrams;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GroupAnagramsSolution's, the same methods
-// GroupAnagramsSolutionTests proves correct. Each arm returns the groups the
+// CatalogCaseTests proves correct. Each arm returns the groups the
 // strategy built, so the result isn't discarded as dead code.
 public class GroupAnagramsBenchmarks
 {

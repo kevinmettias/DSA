@@ -2,18 +2,16 @@ using DSAExperimentation.LeetCode.Solutions.GameOfLife;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.GameOfLife;
 
-// Harness only. Both strategies are GameOfLifeSolution's - this file just pins
-// them to LeetCode's published examples. Each row is cloned before advancing
-// so the two theory methods never share a mutated board.
+// Harness only. Both strategies are GameOfLifeSolution's - this file pins them to
+// a 2x2 block, which is a still life, and three 3x3 boards that between them decide
+// survival, overcrowding and birth. Each row is cloned before advancing so the two
+// theory methods never share a mutated board. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class GameOfLifeSolutionTests
 {
-    public static TheoryData<int[][], int[][]> Examples =>
+    public static TheoryData<int[][], int[][]> Cases =>
         new()
         {
-            {
-                [[0, 1, 0], [0, 0, 1], [1, 1, 1], [0, 0, 0]],
-                [[0, 0, 0], [1, 0, 1], [0, 1, 1], [0, 1, 0]]
-            },
             { [[1, 1], [1, 1]], [[1, 1], [1, 1]] },
 
             // A full 3x3 board: each corner keeps its three neighbours and survives, and every
@@ -30,8 +28,8 @@ public sealed partial class GameOfLifeSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void AdvanceByFullBoardCopy_LeetCodeExamples_MatchesExpectedNextGeneration(
+    [MemberData(nameof(Cases))]
+    public void AdvanceByFullBoardCopy_Cases_MatchesExpectedNextGeneration(
         int[][] board, int[][] expected)
     {
         var working = Clone(board);
@@ -42,8 +40,8 @@ public sealed partial class GameOfLifeSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void AdvanceBySetSnapshot_LeetCodeExamples_MatchesExpectedNextGeneration(
+    [MemberData(nameof(Cases))]
+    public void AdvanceBySetSnapshot_Cases_MatchesExpectedNextGeneration(
         int[][] board, int[][] expected)
     {
         var working = Clone(board);

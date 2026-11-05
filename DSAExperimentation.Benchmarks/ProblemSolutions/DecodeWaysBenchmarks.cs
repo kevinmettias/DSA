@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.DecodeWays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DecodeWaysSolution's, the same methods
-// DecodeWaysSolutionTests proves correct.
+// CatalogCaseTests proves correct.
 //
 // A run of n '1's decodes Fib(n + 1) ways, one digit or a pair at every step, and LC 91
 // promises an answer that fits in an int. So the run stops at 44 digits and the string

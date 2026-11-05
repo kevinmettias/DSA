@@ -7,23 +7,20 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.TransposeMatrix;
 // the ones that would expose a swapped row/column bound in it.
 public sealed partial class TransposeMatrixSolutionTests
 {
-    public static TheoryData<int[][], int[][]> Examples =>
+    public static TheoryData<int[][], int[][]> Cases =>
         new()
         {
-            { [[1, 2, 3], [4, 5, 6], [7, 8, 9]], [[1, 4, 7], [2, 5, 8], [3, 6, 9]] },
-            { [[1, 2, 3], [4, 5, 6]], [[1, 4], [2, 5], [3, 6]] },
-            { [[1, 2], [3, 4], [5, 6]], [[1, 3, 5], [2, 4, 6]] },
             { [[7]], [[7]] },
             { [[1, 2, 3, 4]], [[1], [2], [3], [4]] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void TransposeByIndexSwap_LeetCodeExamples_FlipsOverMainDiagonal(int[][] matrix, int[][] expected) =>
+    [MemberData(nameof(Cases))]
+    public void TransposeByIndexSwap_Cases_FlipsOverMainDiagonal(int[][] matrix, int[][] expected) =>
         Assert.Equal(expected, TransposeMatrixSolution.TransposeByIndexSwap(matrix));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void TransposeByCacheBlocking_LeetCodeExamples_FlipsOverMainDiagonal(int[][] matrix, int[][] expected) =>
+    [MemberData(nameof(Cases))]
+    public void TransposeByCacheBlocking_Cases_FlipsOverMainDiagonal(int[][] matrix, int[][] expected) =>
         Assert.Equal(expected, TransposeMatrixSolution.TransposeByCacheBlocking(matrix));
 }

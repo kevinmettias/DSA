@@ -4,27 +4,25 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.SlidingPuzzle;
 
 // Harness only. The puzzle itself is Domain/Games/SlidingPuzzle's, on this folder's
 // TwoByThreeBoard, and both search strategies are SlidingPuzzleSolution's - this file just pins them
-// to LeetCode's published examples.
+// to a board that is already solved, which takes no slides. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class SlidingPuzzleSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][], int> Cases =>
         new()
         {
-            { new[] { new[] { 1, 2, 3 }, new[] { 4, 0, 5 } }, 1 },
-            { new[] { new[] { 1, 2, 3 }, new[] { 5, 4, 0 } }, -1 },
-            { new[] { new[] { 4, 1, 2 }, new[] { 5, 0, 3 } }, 5 },
             { new[] { new[] { 1, 2, 3 }, new[] { 4, 5, 0 } }, 0 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinMovesByMutationQueue_LeetCodeExamples_ReturnsFewestSlidesOrMinusOne(
+    [MemberData(nameof(Cases))]
+    public void MinMovesByMutationQueue_Cases_ReturnsFewestSlidesOrMinusOne(
         int[][] board, int expected) =>
         Assert.Equal(expected, SlidingPuzzleSolution.MinMovesByMutationQueue(board));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinMovesByReduceGraph_LeetCodeExamples_ReturnsFewestSlidesOrMinusOne(
+    [MemberData(nameof(Cases))]
+    public void MinMovesByReduceGraph_Cases_ReturnsFewestSlidesOrMinusOne(
         int[][] board, int expected) =>
         Assert.Equal(expected, SlidingPuzzleSolution.MinMovesByReduceGraph(board));
 

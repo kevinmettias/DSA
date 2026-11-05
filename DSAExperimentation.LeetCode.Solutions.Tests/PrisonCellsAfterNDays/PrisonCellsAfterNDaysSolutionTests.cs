@@ -3,15 +3,17 @@ using DSAExperimentation.LeetCode.Solutions.PrisonCellsAfterNDays;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.PrisonCellsAfterNDays;
 
 // Harness only: both strategies live in PrisonCellsAfterNDaysSolution. One test
-// method per strategy over one shared set of LeetCode's own examples, so a
-// failure names the strategy that broke - which now includes the day-by-day
-// simulation the benchmark used as its untested baseline arm.
+// method per strategy over one shared set of cases, so a failure names the
+// strategy that broke - which now includes the day-by-day simulation the
+// benchmark used as its untested baseline arm. The cases cover the cycle: zero
+// days, the first transition, and day counts far enough along that the cycle
+// length decides the answer. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class PrisonCellsAfterNDaysSolutionTests
 {
-    public static TheoryData<int[], int, int[]> Examples =>
+    public static TheoryData<int[], int, int[]> Cases =>
         new()
         {
-            { [0, 1, 0, 1, 1, 0, 0, 1], 7, [0, 0, 1, 1, 0, 0, 0, 0] },
             // LeetCode's second published example is this cell layout at
             // dayCount = 10^9, whose answer is [0,0,1,1,1,1,1,0]. Both arms share
             // these cases and the daily simulation really does walk every day, so
@@ -30,8 +32,8 @@ public sealed partial class PrisonCellsAfterNDaysSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CellsAfterNDaysByDailySimulation_LeetCodeExamples_ReturnsCellsOnDayN(
+    [MemberData(nameof(Cases))]
+    public void CellsAfterNDaysByDailySimulation_Cases_ReturnsCellsOnDayN(
         int[] cells, int dayCount, int[] expected)
     {
         var actual = PrisonCellsAfterNDaysSolution.CellsAfterNDaysByDailySimulation(cells, dayCount);
@@ -40,8 +42,8 @@ public sealed partial class PrisonCellsAfterNDaysSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CellsAfterNDaysByCycleDetection_LeetCodeExamples_ReturnsCellsOnDayN(
+    [MemberData(nameof(Cases))]
+    public void CellsAfterNDaysByCycleDetection_Cases_ReturnsCellsOnDayN(
         int[] cells, int dayCount, int[] expected)
     {
         var actual = PrisonCellsAfterNDaysSolution.CellsAfterNDaysByCycleDetection(cells, dayCount);

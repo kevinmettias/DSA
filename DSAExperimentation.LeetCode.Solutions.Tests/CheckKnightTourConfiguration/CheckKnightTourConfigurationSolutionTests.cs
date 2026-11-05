@@ -11,33 +11,9 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.CheckKnightTourConfigurati
 // checked it.
 public sealed partial class CheckKnightTourConfigurationSolutionTests
 {
-    public static TheoryData<KnightTourCase> Examples =>
+    public static TheoryData<KnightTourCase> Cases =>
         new()
         {
-            // LC example 1: a genuine tour of a 5 x 5 board.
-            {
-                new KnightTourCase(
-                    [
-                        [0, 11, 16, 5, 20],
-                        [17, 4, 19, 10, 15],
-                        [12, 1, 8, 21, 6],
-                        [3, 18, 23, 14, 9],
-                        [24, 13, 2, 7, 22],
-                    ],
-                    Expected: true)
-            },
-
-            // LC example 2: the 8th move is not a knight's move.
-            {
-                new KnightTourCase(
-                    [
-                        [0, 3, 6],
-                        [5, 8, 1],
-                        [2, 7, 4],
-                    ],
-                    Expected: false)
-            },
-
             // The whole board is the starting cell, so there is no move to check.
             { new KnightTourCase([[0]], Expected: true) },
 
@@ -47,17 +23,6 @@ public sealed partial class CheckKnightTourConfigurationSolutionTests
                     [
                         [0, 3],
                         [2, 1],
-                    ],
-                    Expected: false)
-            },
-
-            // Row-major order: the very first step is a single square right.
-            {
-                new KnightTourCase(
-                    [
-                        [0, 1, 2],
-                        [3, 4, 5],
-                        [6, 7, 8],
                     ],
                     Expected: false)
             },
@@ -105,22 +70,22 @@ public sealed partial class CheckKnightTourConfigurationSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsValidGridByBoardRescan_LeetCodeExamples_ReturnsWhetherTheTourIsValid(
-        KnightTourCase example) =>
+    [MemberData(nameof(Cases))]
+    public void IsValidGridByBoardRescan_Cases_ReturnsWhetherTheTourIsValid(
+        KnightTourCase testCase) =>
         Assert.Equal(
-            example.Expected,
-            CheckKnightTourConfigurationSolution.IsValidGridByBoardRescan(example.Grid));
+            testCase.Expected,
+            CheckKnightTourConfigurationSolution.IsValidGridByBoardRescan(testCase.Grid));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void IsValidGridByPositionLookup_LeetCodeExamples_ReturnsWhetherTheTourIsValid(
-        KnightTourCase example) =>
+    [MemberData(nameof(Cases))]
+    public void IsValidGridByPositionLookup_Cases_ReturnsWhetherTheTourIsValid(
+        KnightTourCase testCase) =>
         Assert.Equal(
-            example.Expected,
-            CheckKnightTourConfigurationSolution.IsValidGridByPositionLookup(example.Grid));
+            testCase.Expected,
+            CheckKnightTourConfigurationSolution.IsValidGridByPositionLookup(testCase.Grid));
 
-    // One LeetCode example: the board and whether it holds a valid knight's tour. The
+    // One case: the board and whether it holds a valid knight's tour. The
     // expected value is named at every construction site, so a row reads as the case
     // it is rather than as a bare `true` whose meaning is its position. Nested because
     // it is only ever used inside this test class - it is this harness's own

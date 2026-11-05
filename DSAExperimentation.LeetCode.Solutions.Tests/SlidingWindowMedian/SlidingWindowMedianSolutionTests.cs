@@ -5,17 +5,16 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.SlidingWindowMedian;
 // Harness only: both strategies live in SlidingWindowMedianSolution.
 public sealed partial class SlidingWindowMedianSolutionTests
 {
-    public static TheoryData<int[], int, double[]> Examples =>
+    public static TheoryData<int[], int, double[]> Cases =>
         new()
         {
-            { [1, 3, -1, -3, 5, 3, 6, 7], 3, [1.0, -1.0, -1.0, 3.0, 5.0, 6.0] },
             { [1, 2, 3, 4, 2, 3, 1, 4, 2], 4, [2.5, 2.5, 3.0, 2.5, 2.5, 2.5] },
             { [4, -2, 9], 1, [4.0, -2.0, 9.0] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MedianSlidingWindowBySortEachWindow_LeetCodeExamples_ReturnsPerWindowMedians(
+    [MemberData(nameof(Cases))]
+    public void MedianSlidingWindowBySortEachWindow_Cases_ReturnsPerWindowMedians(
         int[] nums, int windowSize, double[] expected)
     {
         var actual = SlidingWindowMedianSolution.MedianSlidingWindowBySortEachWindow(nums, windowSize);
@@ -24,8 +23,8 @@ public sealed partial class SlidingWindowMedianSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MedianSlidingWindowByTwoHeapsLazyDeletion_LeetCodeExamples_ReturnsPerWindowMedians(
+    [MemberData(nameof(Cases))]
+    public void MedianSlidingWindowByTwoHeapsLazyDeletion_Cases_ReturnsPerWindowMedians(
         int[] nums, int windowSize, double[] expected)
     {
         var actual = SlidingWindowMedianSolution.MedianSlidingWindowByTwoHeapsLazyDeletion(nums, windowSize);

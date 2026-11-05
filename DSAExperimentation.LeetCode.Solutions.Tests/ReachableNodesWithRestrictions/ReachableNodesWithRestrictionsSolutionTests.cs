@@ -4,22 +4,20 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.ReachableNodesWithRestrict
 
 // Harness only: both strategies live in ReachableNodesWithRestrictionsSolution and are
 // asserted here under their own names, so a failure names the strategy that broke. The
-// cases are LeetCode's two published examples plus the boundaries the restriction rule
+// cases are the boundaries the restriction rule
 // turns on - nothing restricted at all, a single node with no edges, and a restriction
 // sitting directly on node 0's only neighbour so the answer collapses to the root.
 public sealed partial class ReachableNodesWithRestrictionsSolutionTests
 {
-    public static TheoryData<int, int[][], int[], int> Examples => new()
+    public static TheoryData<int, int[][], int[], int> Cases => new()
     {
-        { 7, [[0, 1], [1, 2], [3, 1], [4, 0], [0, 5], [5, 6]], [4, 5], 4 },
-        { 7, [[0, 1], [0, 2], [0, 5], [0, 4], [3, 2], [6, 5]], [4, 2, 1], 3 },
         { 4, [[0, 1], [1, 2], [2, 3]], [], 4 },
         { 3, [[0, 1], [1, 2]], [1], 1 },
         { 1, [], [], 1 },
     };
 
     [Theory]
-    [MemberData(nameof(Examples))]
+    [MemberData(nameof(Cases))]
     public void ReachableNodesByDepthFirstFloodFill_Example_CountsNodesStillReachableFromZero(
         int nodeCount, int[][] edges, int[] restricted, int expected)
     {
@@ -30,7 +28,7 @@ public sealed partial class ReachableNodesWithRestrictionsSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
+    [MemberData(nameof(Cases))]
     public void ReachableNodesByDisjointSet_Example_CountsNodesStillReachableFromZero(
         int nodeCount, int[][] edges, int[] restricted, int expected)
     {

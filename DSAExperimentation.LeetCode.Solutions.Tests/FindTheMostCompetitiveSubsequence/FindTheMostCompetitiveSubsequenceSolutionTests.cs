@@ -3,19 +3,15 @@ using DSAExperimentation.LeetCode.Solutions.FindTheMostCompetitiveSubsequence;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.FindTheMostCompetitiveSubsequence;
 
 // Harness only: both strategies are FindTheMostCompetitiveSubsequenceSolution's.
-// This file just pins them to LeetCode's published examples plus the boundaries
+// This file just pins them to the boundaries
 // LeetCode never published - selectionLength equal to the whole array, a
 // selectionLength of 1, a run of equal elements, and a single-element array -
 // each of which lands on a different branch of the greedy rule.
 public sealed partial class FindTheMostCompetitiveSubsequenceSolutionTests
 {
-    public static TheoryData<int[], int, int[]> Examples =>
+    public static TheoryData<int[], int, int[]> Cases =>
         new()
         {
-            // LeetCode's two published examples.
-            { [3, 5, 2, 6], 2, [2, 6] },
-            { [2, 4, 3, 3, 5, 4, 9, 6], 4, [2, 3, 3, 4] },
-
             // selectionLength is the whole array: nothing may be removed,
             // however descending.
             { [1, 2, 3, 4], 4, [1, 2, 3, 4] },
@@ -37,8 +33,8 @@ public sealed partial class FindTheMostCompetitiveSubsequenceSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MostCompetitiveByRepeatedRemoval_LeetCodeExamples_ReturnsLexicographicallySmallestSubsequence(
+    [MemberData(nameof(Cases))]
+    public void MostCompetitiveByRepeatedRemoval_Cases_ReturnsLexicographicallySmallestSubsequence(
         int[] nums, int selectionLength, int[] expected)
     {
         var actual =
@@ -49,8 +45,8 @@ public sealed partial class FindTheMostCompetitiveSubsequenceSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MostCompetitiveByMonotonicStack_LeetCodeExamples_ReturnsLexicographicallySmallestSubsequence(
+    [MemberData(nameof(Cases))]
+    public void MostCompetitiveByMonotonicStack_Cases_ReturnsLexicographicallySmallestSubsequence(
         int[] nums, int selectionLength, int[] expected)
     {
         var actual =

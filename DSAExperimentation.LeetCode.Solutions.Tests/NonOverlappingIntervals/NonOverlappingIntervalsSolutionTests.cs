@@ -3,25 +3,25 @@ using DSAExperimentation.LeetCode.Solutions.NonOverlappingIntervals;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.NonOverlappingIntervals;
 
 // Harness only. Both strategies are NonOverlappingIntervalsSolution's - this
-// file just pins them to LeetCode's published examples.
+// file just pins them to three identical intervals, all but one of which must be
+// removed. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class NonOverlappingIntervalsSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][], int> Cases =>
         new()
         {
-            { [[1, 2], [2, 3], [3, 4], [1, 3]], 1 },
             { [[1, 100], [1, 100], [1, 100]], 2 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void EraseOverlapIntervalsByBruteForce_LeetCodeExamples_ReturnsMinimumRemovals(
+    [MemberData(nameof(Cases))]
+    public void EraseOverlapIntervalsByBruteForce_Cases_ReturnsMinimumRemovals(
         int[][] intervals, int expected) =>
         Assert.Equal(expected, NonOverlappingIntervalsSolution.EraseOverlapIntervalsByBruteForce(intervals));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void EraseOverlapIntervalsBySortThenGreedy_LeetCodeExamples_ReturnsMinimumRemovals(
+    [MemberData(nameof(Cases))]
+    public void EraseOverlapIntervalsBySortThenGreedy_Cases_ReturnsMinimumRemovals(
         int[][] intervals, int expected) =>
         Assert.Equal(expected, NonOverlappingIntervalsSolution.EraseOverlapIntervalsBySortThenGreedy(intervals));
 }

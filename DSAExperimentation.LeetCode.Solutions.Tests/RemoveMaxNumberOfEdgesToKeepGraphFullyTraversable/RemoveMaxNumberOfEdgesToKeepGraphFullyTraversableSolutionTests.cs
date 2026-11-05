@@ -4,22 +4,15 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.RemoveMaxNumberOfEdgesToKe
 
 // Harness only. Both strategies are
 // RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution's - this file pins them to
-// LeetCode's three published examples plus two the original coverage left untested:
-// Alice alone being unable to traverse (the mirror of example 3, which only fails Bob),
-// and a graph whose type-3 edges alone already span every node, so every single-owner
-// edge is removable.
+// two cases the original coverage left untested: Alice alone being unable to
+// traverse (LeetCode's third example fails both Alice and Bob), and a graph whose
+// type-3 edges alone already span every node, so every single-owner edge is
+// removable. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolutionTests
 {
-    public static TheoryData<int, int[][], int> Examples =>
+    public static TheoryData<int, int[][], int> Cases =>
         new()
         {
-            {
-                4,
-                [[3, 1, 2], [3, 2, 3], [1, 1, 3], [1, 2, 4], [1, 1, 2], [2, 3, 4]],
-                2
-            },
-            { 4, [[3, 1, 2], [3, 2, 3], [1, 1, 4], [2, 1, 4]], 0 },
-            { 4, [[3, 2, 3], [1, 1, 2], [2, 3, 4]], -1 },
             { 4, [[3, 2, 3], [2, 1, 2], [1, 3, 4], [2, 3, 4]], -1 },
             {
                 3,
@@ -29,8 +22,8 @@ public sealed partial class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSol
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxNumberOfEdgesToRemoveByFloodFill_LeetCodeExamples_ReturnsRemovableEdgeCount(
+    [MemberData(nameof(Cases))]
+    public void MaxNumberOfEdgesToRemoveByFloodFill_Cases_ReturnsRemovableEdgeCount(
         int nodeCount, int[][] edges, int expected)
     {
         var actual = RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution.MaxNumberOfEdgesToRemoveByFloodFill(nodeCount, edges);
@@ -39,8 +32,8 @@ public sealed partial class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSol
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxNumberOfEdgesToRemoveByDisjointSet_LeetCodeExamples_ReturnsRemovableEdgeCount(
+    [MemberData(nameof(Cases))]
+    public void MaxNumberOfEdgesToRemoveByDisjointSet_Cases_ReturnsRemovableEdgeCount(
         int nodeCount, int[][] edges, int expected)
     {
         var actual = RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution.MaxNumberOfEdgesToRemoveByDisjointSet(nodeCount, edges);

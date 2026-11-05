@@ -4,25 +4,15 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.RemoveColoredPiecesIfBothN
 
 // Harness only. Both playing the game out and counting each player's fixed move
 // budget are RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution's - this file
-// pins them to LeetCode's three published examples plus the cases the examples never
-// reach: a run short enough to yield no moves at all, equal budgets (which Alice
-// loses, because she needs a STRICTLY larger one), and a string of one color only,
-// where the losing player's budget is never touched.
+// pins them to cases LeetCode's published examples never reach: a run short enough
+// to yield no moves at all, equal budgets (which Alice loses, because she needs a
+// STRICTLY larger one), and a string of one color only, where the losing player's
+// budget is never touched. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolutionTests
 {
-    public static TheoryData<ColoredPiecesCase> Examples =>
+    public static TheoryData<ColoredPiecesCase> Cases =>
         new()
         {
-            // LeetCode example 1: Alice's run of three yields one move, Bob's runs none.
-            { new ColoredPiecesCase(Colors: "AAABABB", AliceWins: true) },
-
-            // LeetCode example 2: neither player has an interior piece to remove, and
-            // Alice, moving first, is the one who is stuck.
-            { new ColoredPiecesCase(Colors: "AA", AliceWins: false) },
-
-            // LeetCode example 3: Bob's run of seven buys him five moves to Alice's one.
-            { new ColoredPiecesCase(Colors: "ABBBBBBBAAA", AliceWins: false) },
-
             // The smallest winning position: one removable 'A' and nothing for Bob.
             { new ColoredPiecesCase(Colors: "AAA", AliceWins: true) },
 
@@ -40,37 +30,31 @@ public sealed partial class RemoveColoredPiecesIfBothNeighborsAreTheSameColorSol
 
             // Bob out-budgets Alice two to three.
             { new ColoredPiecesCase(Colors: "AAAABBBBB", AliceWins: false) },
-
-            // A single colour: Bob never gets a move.
-            { new ColoredPiecesCase(Colors: "AAAAA", AliceWins: true) },
-
-            // Alternating pieces: every run has length one, so nobody can ever move.
-            { new ColoredPiecesCase(Colors: "ABABABAB", AliceWins: false) },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CanAliceWinByGameSimulation_LeetCodeExamples_ReturnsWhetherAliceWins(
-        ColoredPiecesCase example)
+    [MemberData(nameof(Cases))]
+    public void CanAliceWinByGameSimulation_Cases_ReturnsWhetherAliceWins(
+        ColoredPiecesCase testCase)
     {
         var actual = RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution.CanAliceWinByGameSimulation(
-            example.Colors);
+            testCase.Colors);
 
-        Assert.Equal(example.AliceWins, actual);
+        Assert.Equal(testCase.AliceWins, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CanAliceWinByRunLengthCounting_LeetCodeExamples_ReturnsWhetherAliceWins(
-        ColoredPiecesCase example)
+    [MemberData(nameof(Cases))]
+    public void CanAliceWinByRunLengthCounting_Cases_ReturnsWhetherAliceWins(
+        ColoredPiecesCase testCase)
     {
         var actual = RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution.CanAliceWinByRunLengthCounting(
-            example.Colors);
+            testCase.Colors);
 
-        Assert.Equal(example.AliceWins, actual);
+        Assert.Equal(testCase.AliceWins, actual);
     }
 
-    // One LeetCode example: the piece-colour string and whether Alice, moving first
+    // One case: the piece-colour string and whether Alice, moving first
     // and needing a strictly larger move budget than Bob, wins the game. The outcome
     // is named at every construction site, so a row reads as the case it is rather
     // than as a bare `true` whose meaning is its position. Nested because it is only

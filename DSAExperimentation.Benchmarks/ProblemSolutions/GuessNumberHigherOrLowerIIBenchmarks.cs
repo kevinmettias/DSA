@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.GuessNumberHigherOrLowerII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GuessNumberHigherOrLowerIISolution's, the same methods
-// GuessNumberHigherOrLowerIISolutionTests proves correct. HighestNumber is the whole
+// CatalogCaseTests proves correct. HighestNumber is the whole
 // workload, so there is nothing to build in [GlobalSetup].
 //
 // Sizes are per arm. The un-memoized baseline's blowup is real, the same reasoning

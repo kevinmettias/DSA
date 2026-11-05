@@ -3,24 +3,17 @@ using DSAExperimentation.LeetCode.Solutions.WordsWithinTwoEditsOfDictionary;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.WordsWithinTwoEditsOfDictionary;
 
 // Harness only: both strategies live in WordsWithinTwoEditsOfDictionarySolution and
-// are asserted against the same examples, including the budget boundary (two edits
+// are asserted against the same cases, among them the budget boundary (two edits
 // match, three do not), a query that matches nothing, and duplicate queries, which
 // LeetCode reports once each rather than collapsing.
 public sealed partial class WordsWithinTwoEditsOfDictionarySolutionTests
 {
-    public static TheoryData<string[], string[], string[]> Examples =>
+    public static TheoryData<string[], string[], string[]> Cases =>
         new()
         {
-            // LeetCode example 1: "word" is one edit from "wood", "note" two from "joke",
-            // "wood" zero from itself, and "ants" four from every dictionary word.
-            { ["word", "note", "ants", "wood"], ["wood", "joke", "moat"], ["word", "note", "wood"] },
-
-            // LeetCode example 2: nothing is within budget.
-            { ["yes"], ["not"], [] },
-
-            // Example 1's queries against a dictionary of this file's own: "word" and
-            // "note" are in it, "wood" is one edit from "word", and "ants" is at least
-            // three edits from every word.
+            // The queries of LeetCode's first example against a dictionary of this
+            // file's own: "word" and "note" are in it, "wood" is one edit from "word",
+            // and "ants" is at least three edits from every word.
             { ["word", "note", "ants", "wood"], ["word", "note", "cash"], ["word", "note", "wood"] },
 
             // An exact dictionary word costs zero edits, which is inside the budget.
@@ -39,8 +32,8 @@ public sealed partial class WordsWithinTwoEditsOfDictionarySolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindMatchingQueriesByBruteForce_LeetCodeExamples_ReturnsQueriesWithinEditBudget(
+    [MemberData(nameof(Cases))]
+    public void FindMatchingQueriesByBruteForce_Cases_ReturnsQueriesWithinEditBudget(
         string[] queries, string[] dictionary, string[] expected)
     {
         var actual = WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByBruteForce(
@@ -50,8 +43,8 @@ public sealed partial class WordsWithinTwoEditsOfDictionarySolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindMatchingQueriesByEditBudgetTrie_LeetCodeExamples_ReturnsQueriesWithinEditBudget(
+    [MemberData(nameof(Cases))]
+    public void FindMatchingQueriesByEditBudgetTrie_Cases_ReturnsQueriesWithinEditBudget(
         string[] queries, string[] dictionary, string[] expected)
     {
         var actual = WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByEditBudgetTrie(

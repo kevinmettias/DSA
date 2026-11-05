@@ -31,7 +31,7 @@ internal static class CanIWinSolution
     }
 
     // This repo's own Memoizer, keyed on the used-numbers bitmask - the same shape
-    // NimGameSolutionTests/ClimbingStairsSolution already use, just with an int bitmask instead
+    // NimGameSolution/ClimbingStairsSolution already use, just with an int bitmask instead
     // of a bare integer as the memo state. O(2^MaxChoosableInteger * MaxChoosableInteger)
     // states, each one computed once no matter how many times it's reached by a
     // different pick order.

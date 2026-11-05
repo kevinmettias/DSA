@@ -4,21 +4,21 @@ using DSAExperimentation.LeetCode.Solutions.ConstructBinaryTreeFromPreorderAndIn
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ConstructBinaryTreeFromPreorderAndInorderTraversal;
 
 // Harness only: BuildByPreorderIndexMap lives in
-// ConstructBinaryTreeFromPreorderAndInorderTraversalSolution. This file pins it to
-// LeetCode's published examples by re-flattening the reconstructed tree back to
-// preorder and checking it round-trips to the input.
+// ConstructBinaryTreeFromPreorderAndInorderTraversalSolution. This file checks it
+// on LeetCode's first example a second way, by re-flattening the reconstructed tree
+// back to preorder and checking it round-trips to the input. LeetCode's published
+// examples run in CatalogCaseTests.
 public sealed partial class ConstructBinaryTreeFromPreorderAndInorderTraversalSolutionTests
 {
-    public static TheoryData<int[], int[], int[]> Examples =>
+    public static TheoryData<int[], int[], int[]> Cases =>
         new()
         {
             { [3, 9, 20, 15, 7], [9, 3, 15, 20, 7], [3, 9, 20, 15, 7] },
-            { [-1], [-1], [-1] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void BuildByPreorderIndexMap_LeetCodeExamples_ReconstructsBinaryTree(
+    [MemberData(nameof(Cases))]
+    public void BuildByPreorderIndexMap_Cases_ReconstructsBinaryTree(
         int[] preorder, int[] inorder, int[] expectedPreorder)
     {
         var root = ConstructBinaryTreeFromPreorderAndInorderTraversalSolution.BuildByPreorderIndexMap(preorder, inorder);

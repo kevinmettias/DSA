@@ -4,17 +4,14 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.NumberOfWaysToReorderArray
 
 // Harness only. Both counting strategies are
 // NumberOfWaysToReorderArrayToGetSameBSTSolution's - this file just pins them to
-// LeetCode's published examples plus the degenerate shapes (single element, already
+// the degenerate shapes (single element, already
 // ascending, already descending) where the only reordering is the array itself and
 // the answer is 0.
 public sealed partial class NumberOfWaysToReorderArrayToGetSameBSTSolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            { [2, 1, 3], 1 },
-            { [3, 4, 5, 1, 2], 5 },
-            { [1, 2, 3], 0 },
             { [3, 1, 2, 5, 4, 6], 19 },
             { [1], 0 },
             { [3, 2, 1], 0 },
@@ -22,12 +19,12 @@ public sealed partial class NumberOfWaysToReorderArrayToGetSameBSTSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountWaysByListSplitting_LeetCodeExamples_ReturnsOtherOrderCount(int[] nums, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void CountWaysByListSplitting_Cases_ReturnsOtherOrderCount(int[] nums, int expected) =>
         Assert.Equal(expected, NumberOfWaysToReorderArrayToGetSameBSTSolution.CountWaysByListSplitting(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountWaysByTreeFold_LeetCodeExamples_ReturnsOtherOrderCount(int[] nums, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void CountWaysByTreeFold_Cases_ReturnsOtherOrderCount(int[] nums, int expected) =>
         Assert.Equal(expected, NumberOfWaysToReorderArrayToGetSameBSTSolution.CountWaysByTreeFold(nums));
 }

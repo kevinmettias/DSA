@@ -3,33 +3,31 @@ using DSAExperimentation.LeetCode.Solutions.MaximumStrongPairXORII;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumStrongPairXORII;
 
 // Harness only. Both strategies live in MaximumStrongPairXORIISolution - this
-// file just pins them to LeetCode's published examples, the same ones LC 2932
-// publishes for the identical question at a smaller bound, including the case
-// where no strong pair exists at all (nums = [10, 100]).
+// file just pins them to [5, 6, 25, 30], the third example LC 2932 publishes for
+// the identical question at a smaller bound; this problem publishes a different
+// third example. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class MaximumStrongPairXORIISolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            { [1, 2, 3, 4, 5], 7 },
-            { [10, 100], 0 },
             { [5, 6, 25, 30], 7 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumStrongPairXorByBruteForce_LeetCodeExamples_ReturnsMaxStrongPairXor(int[] nums, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void MaximumStrongPairXorByBruteForce_Cases_ReturnsMaxStrongPairXor(int[] nums, int expected) =>
         Assert.Equal(expected, MaximumStrongPairXORIISolution.MaximumStrongPairXorByBruteForce(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumStrongPairXorByBitTrieBuckets_LeetCodeExamples_ReturnsMaxStrongPairXor(
+    [MemberData(nameof(Cases))]
+    public void MaximumStrongPairXorByBitTrieBuckets_Cases_ReturnsMaxStrongPairXor(
         int[] nums, int expected) =>
         Assert.Equal(expected, MaximumStrongPairXORIISolution.MaximumStrongPairXorByBitTrieBuckets(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaximumStrongPairXorBySlidingWindow_LeetCodeExamples_ReturnsMaxStrongPairXor(
+    [MemberData(nameof(Cases))]
+    public void MaximumStrongPairXorBySlidingWindow_Cases_ReturnsMaxStrongPairXor(
         int[] nums, int expected) =>
         Assert.Equal(expected, MaximumStrongPairXORIISolution.MaximumStrongPairXorBySlidingWindow(nums));
 }

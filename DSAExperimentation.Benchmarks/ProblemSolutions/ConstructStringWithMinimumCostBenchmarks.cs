@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.ConstructStringWithMinimumCost;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ConstructStringWithMinimumCostSolution's, the
-// same methods ConstructStringWithMinimumCostSolutionTests proves correct. The
+// same methods CatalogCaseTests proves correct. The
 // automaton arm is handed its hoisted overload's prepared input - an already
 // -built AhoCorasick plus the deduplicated word/cost arrays it and the DP walk
 // over - so building the automaton is charged to [GlobalSetup] rather than to

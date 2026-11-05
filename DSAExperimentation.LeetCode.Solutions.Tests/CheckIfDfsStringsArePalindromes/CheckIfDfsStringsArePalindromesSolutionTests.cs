@@ -4,20 +4,21 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.CheckIfDfsStringsArePalind
 
 // Harness only: the tree is DataStructures' own ParentArrayTree/RootedTreeNode and
 // both strategies are CheckIfDfsStringsArePalindromesSolution's - this file just
-// pins them to LeetCode's published examples (TwoSumTests precedent).
+// pins them to shapes the catalog lacks (TwoSumTests precedent): a root with four
+// leaf children, whose own string is not a palindrome, and a lone root. LeetCode's
+// published examples run in CatalogCaseTests.
 public sealed partial class CheckIfDfsStringsArePalindromesSolutionTests
 {
-    public static TheoryData<int[], string, bool[]> Examples =>
+    public static TheoryData<int[], string, bool[]> Cases =>
         new()
         {
-            { [-1, 0, 0, 1, 1, 2], "aababa", [true, true, false, true, true, true] },
             { [-1, 0, 0, 0, 0], "abcbc", [false, true, true, true, true] },
             { [-1], "a", [true] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetPalindromeFlagsByBruteForce_LeetCodeExamples_ReturnsPerNodePalindromeFlags(
+    [MemberData(nameof(Cases))]
+    public void GetPalindromeFlagsByBruteForce_Cases_ReturnsPerNodePalindromeFlags(
         int[] parent, string nodeCharacters, bool[] expected)
     {
         var flags = CheckIfDfsStringsArePalindromesSolution.GetPalindromeFlagsByBruteForce(parent, nodeCharacters);
@@ -26,8 +27,8 @@ public sealed partial class CheckIfDfsStringsArePalindromesSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetPalindromeFlagsByEulerTourRollingHash_LeetCodeExamples_ReturnsPerNodePalindromeFlags(
+    [MemberData(nameof(Cases))]
+    public void GetPalindromeFlagsByEulerTourRollingHash_Cases_ReturnsPerNodePalindromeFlags(
         int[] parent, string nodeCharacters, bool[] expected)
     {
         var flags =

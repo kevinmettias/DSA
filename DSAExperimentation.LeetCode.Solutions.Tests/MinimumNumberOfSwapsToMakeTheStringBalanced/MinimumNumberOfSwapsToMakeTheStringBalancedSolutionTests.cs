@@ -3,29 +3,23 @@ using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfSwapsToMakeTheStringB
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumNumberOfSwapsToMakeTheStringBalanced;
 
 // Harness only: both strategies live in MinimumNumberOfSwapsToMakeTheStringBalancedSolution
-// and are asserted against the same examples, including the already-balanced cases and
+// and are asserted against the same cases, among them the already-balanced cases and
 // the all-closers-then-all-openers shape the benchmark measures.
 public sealed partial class MinimumNumberOfSwapsToMakeTheStringBalancedSolutionTests
 {
-    public static TheoryData<string, int> Examples =>
+    public static TheoryData<string, int> Cases =>
         new()
         {
-            { "][][", 1 },
-            { "]]][[[", 2 },
-            { "[]", 0 },
             { "[[]]", 0 },
-            { "]][[", 1 },
-            { "]]]][[[[", 2 },
-            { "[]][[]", 1 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinSwapsByBackwardScan_LeetCodeExamples_ReturnsMinimumSwapCount(string text, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void MinSwapsByBackwardScan_Cases_ReturnsMinimumSwapCount(string text, int expected) =>
         Assert.Equal(expected, MinimumNumberOfSwapsToMakeTheStringBalancedSolution.MinSwapsByBackwardScan(text));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinSwapsByStack_LeetCodeExamples_ReturnsMinimumSwapCount(string text, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void MinSwapsByStack_Cases_ReturnsMinimumSwapCount(string text, int expected) =>
         Assert.Equal(expected, MinimumNumberOfSwapsToMakeTheStringBalancedSolution.MinSwapsByStack(text));
 }

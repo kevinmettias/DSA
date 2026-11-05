@@ -4,21 +4,13 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.LongestPathWithDifferentAd
 
 // Harness only. The tree is DataStructures' ParentArrayTree/RootedTreeNode and both
 // strategies are LongestPathWithDifferentAdjacentCharactersSolution's - this file
-// just pins them to the same examples, which is what proves the O(n) fold agrees
+// just pins them to the same cases, which is what proves the O(n) fold agrees
 // with the O(n^2) recomputing walk the benchmark measures it against.
 public sealed partial class LongestPathWithDifferentAdjacentCharactersSolutionTests
 {
-    public static TheoryData<int[], string, int> Examples =>
+    public static TheoryData<int[], string, int> Cases =>
         new()
         {
-            // LeetCode example 1: the 0-2 edge is blocked ('a'-'a') and so is 1-4
-            // ('b'-'b'), leaving 3-1-0 as the longest valid path at three nodes.
-            { [-1, 0, 0, 1, 1, 2], "abacbe", 3 },
-
-            // LeetCode example 2: every child of the root differs from it except
-            // node 1, so two branches join through the root.
-            { [-1, 0, 0, 0], "aabc", 3 },
-
             // A single node is a path of one, with no edge to validate.
             { [-1], "a", 1 },
 
@@ -35,8 +27,8 @@ public sealed partial class LongestPathWithDifferentAdjacentCharactersSolutionTe
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void LongestPathByRecomputedSubtreeWalk_LeetCodeExamples_ReturnsLongestDifferentLabelPathNodeCount(
+    [MemberData(nameof(Cases))]
+    public void LongestPathByRecomputedSubtreeWalk_Cases_ReturnsLongestDifferentLabelPathNodeCount(
         int[] parent, string labels, int expected)
     {
         var actual = LongestPathWithDifferentAdjacentCharactersSolution.LongestPathByRecomputedSubtreeWalk(parent, labels);
@@ -45,8 +37,8 @@ public sealed partial class LongestPathWithDifferentAdjacentCharactersSolutionTe
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void LongestPathByTreeFold_LeetCodeExamples_ReturnsLongestDifferentLabelPathNodeCount(
+    [MemberData(nameof(Cases))]
+    public void LongestPathByTreeFold_Cases_ReturnsLongestDifferentLabelPathNodeCount(
         int[] parent, string labels, int expected)
     {
         var actual = LongestPathWithDifferentAdjacentCharactersSolution.LongestPathByTreeFold(parent, labels);

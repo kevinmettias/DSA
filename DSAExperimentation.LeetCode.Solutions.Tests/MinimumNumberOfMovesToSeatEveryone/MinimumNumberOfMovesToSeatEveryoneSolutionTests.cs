@@ -2,24 +2,21 @@ using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfMovesToSeatEveryone;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumNumberOfMovesToSeatEveryone;
 
-// Harness only. LeetCode 2037's three published examples plus the
-// already-a-permutation case the original test carried, which is the one that
-// catches a pairing that is not by rank. Both strategies live in
-// MinimumNumberOfMovesToSeatEveryoneSolution and are asserted separately so a
-// failure names the arm that broke.
+// Harness only. The one case here is the already-a-permutation case the original
+// test carried, which is the one that catches a pairing that is not by rank. Both
+// strategies live in MinimumNumberOfMovesToSeatEveryoneSolution and are asserted
+// separately so a failure names the arm that broke. LeetCode's published examples
+// run in CatalogCaseTests.
 public sealed partial class MinimumNumberOfMovesToSeatEveryoneSolutionTests
 {
-    public static TheoryData<int[], int[], int> Examples => new()
+    public static TheoryData<int[], int[], int> Cases => new()
     {
-        { [3, 1, 5], [2, 7, 4], 4 },
-        { [4, 1, 5, 9], [1, 3, 2, 6], 7 },
-        { [2, 2, 6, 6], [1, 3, 2, 6], 4 },
         { [4, 1, 5, 9], [1, 4, 9, 5], 0 },
     };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinMovesToSeatBySelectionSort_LeetCodeExamples_ReturnsMinimumMoves(
+    [MemberData(nameof(Cases))]
+    public void MinMovesToSeatBySelectionSort_Cases_ReturnsMinimumMoves(
         int[] seats, int[] students, int expected)
     {
         var actual = MinimumNumberOfMovesToSeatEveryoneSolution.MinMovesToSeatBySelectionSort(seats, students);
@@ -28,8 +25,8 @@ public sealed partial class MinimumNumberOfMovesToSeatEveryoneSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinMovesToSeatByMergeSort_LeetCodeExamples_ReturnsMinimumMoves(
+    [MemberData(nameof(Cases))]
+    public void MinMovesToSeatByMergeSort_Cases_ReturnsMinimumMoves(
         int[] seats, int[] students, int expected)
     {
         var actual = MinimumNumberOfMovesToSeatEveryoneSolution.MinMovesToSeatByMergeSort(seats, students);

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.MissingNumber;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MissingNumberSolution's, the same methods
-// MissingNumberSolutionTests proves correct.
+// CatalogCaseTests proves correct.
 public class MissingNumberBenchmarks
 {
     // LC problem number, reused as the deterministic value seed.

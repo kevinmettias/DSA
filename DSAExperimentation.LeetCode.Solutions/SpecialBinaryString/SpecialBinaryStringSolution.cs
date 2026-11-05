@@ -32,7 +32,7 @@ internal static class SpecialBinaryStringSolution
 
     // This repo's own MergeSort.Sort over an ArrayIndexedSequence with a descending
     // comparer, in place of Array.Sort - the same composition
-    // RussianDollEnvelopesSolutionTests/QueueReconstructionByHeightSolutionTests already exercise.
+    // RussianDollEnvelopesSolution/QueueReconstructionByHeightSolution already exercise.
     public static string MakeLargestSpecialByMergeSort(string specialString) =>
         MergeSortMaximizer.Maximize(specialString);
 

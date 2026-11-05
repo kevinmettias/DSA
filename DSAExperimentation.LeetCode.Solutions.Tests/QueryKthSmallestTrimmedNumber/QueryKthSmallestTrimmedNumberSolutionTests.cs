@@ -9,17 +9,15 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.QueryKthSmallestTrimmedNum
 // sort gets from MergeSort's documented stability.
 public sealed partial class QueryKthSmallestTrimmedNumberSolutionTests
 {
-    public static TheoryData<string[], int[][], int[]> Examples => new()
+    public static TheoryData<string[], int[][], int[]> Cases => new()
     {
-        { ["102", "473", "251", "814"], [[1, 1], [2, 3], [4, 2], [1, 2]], [2, 2, 1, 0] },
-        { ["24", "37", "96", "04"], [[2, 1], [2, 2]], [3, 0] },
         { ["11", "11"], [[1, 1], [2, 1]], [0, 1] },
         { ["456", "123", "789"], [[1, 3], [3, 3]], [1, 2] },
         { ["7"], [[1, 1]], [0] },
     };
 
     [Theory]
-    [MemberData(nameof(Examples))]
+    [MemberData(nameof(Cases))]
     public void AnswerQueriesBySelectionScan_Example_ReturnsOriginalIndexOfKthSmallestTrimmed(
         string[] nums, int[][] queries, int[] expected)
     {
@@ -29,7 +27,7 @@ public sealed partial class QueryKthSmallestTrimmedNumberSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
+    [MemberData(nameof(Cases))]
     public void AnswerQueriesByMergeSort_Example_ReturnsOriginalIndexOfKthSmallestTrimmed(
         string[] nums, int[][] queries, int[] expected)
     {

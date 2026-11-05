@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.VowelsGameInAString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are VowelsGameInAStringSolution's, the same methods
-// VowelsGameInAStringSolutionTests proves correct. Length stays small - CanAliceWinByGameSearch
+// CatalogCaseTests proves correct. Length stays small - CanAliceWinByGameSearch
 // explores actual game states, so unlike a typical O(n^2) baseline its cost
 // does not grow smoothly with n, and a mixed vowel/consonant string can already
 // reach many thousands of recursive states by length 30-40.

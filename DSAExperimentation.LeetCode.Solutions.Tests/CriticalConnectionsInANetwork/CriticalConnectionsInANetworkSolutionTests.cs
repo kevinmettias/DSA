@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.CriticalConnectionsInANetwork;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.CriticalConnectionsInANetwork;
 
 // Harness only. Both strategies live in CriticalConnectionsInANetworkSolution -
-// this file pins them to LeetCode's published examples plus the shapes a bridge
+// this file pins them to the shapes a bridge
 // search has to get right: a ring with no critical connection at all, two cycles
 // joined by a single link, and a pure chain where every connection is critical.
 //
@@ -12,15 +12,9 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.CriticalConnectionsInANetw
 // membership, not discovery order, is the contract.
 public sealed partial class CriticalConnectionsInANetworkSolutionTests
 {
-    public static TheoryData<int, int[][], int[][]> Examples =>
+    public static TheoryData<int, int[][], int[][]> Cases =>
         new()
         {
-            // LC example 1: only the pendant link to server 3 is critical.
-            { 4, [[0, 1], [1, 2], [2, 0], [1, 3]], [[1, 3]] },
-
-            // LC example 2: a lone connection is always critical.
-            { 2, [[0, 1]], [[0, 1]] },
-
             // A ring: every connection sits on the one cycle, so none is critical.
             { 4, [[0, 1], [1, 2], [2, 3], [3, 0]], [] },
 
@@ -32,8 +26,8 @@ public sealed partial class CriticalConnectionsInANetworkSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CriticalConnectionsByEdgeRemovalScan_LeetCodeExamples_ReturnsEveryDisconnectingLink(
+    [MemberData(nameof(Cases))]
+    public void CriticalConnectionsByEdgeRemovalScan_Cases_ReturnsEveryDisconnectingLink(
         int serverCount, int[][] connections, int[][] expected)
     {
         var found = CriticalConnectionsInANetworkSolution.CriticalConnectionsByEdgeRemovalScan(
@@ -43,8 +37,8 @@ public sealed partial class CriticalConnectionsInANetworkSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CriticalConnectionsByLowLinkSearch_LeetCodeExamples_ReturnsEveryDisconnectingLink(
+    [MemberData(nameof(Cases))]
+    public void CriticalConnectionsByLowLinkSearch_Cases_ReturnsEveryDisconnectingLink(
         int serverCount, int[][] connections, int[][] expected)
     {
         var found = CriticalConnectionsInANetworkSolution.CriticalConnectionsByLowLinkSearch(

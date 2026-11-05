@@ -3,19 +3,19 @@ using DSAExperimentation.LeetCode.Solutions.SlidingWindowMaximum;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.SlidingWindowMaximum;
 
 // Harness only. Both search strategies are SlidingWindowMaximumSolution's -
-// this file just pins them to LeetCode's published examples.
+// this file just pins them to a window of size 1, where every element, negative or
+// not, is its own maximum. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class SlidingWindowMaximumSolutionTests
 {
-    public static TheoryData<int[], int, int[]> Examples =>
+    public static TheoryData<int[], int, int[]> Cases =>
         new()
         {
-            { [1, 3, -1, -3, 5, 3, 6, 7], 3, [3, 3, 5, 5, 6, 7] },
             { [4, -2, 9], 1, [4, -2, 9] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxSlidingWindowByBruteForceRescan_LeetCodeExamples_ReturnsPerWindowMaximums(
+    [MemberData(nameof(Cases))]
+    public void MaxSlidingWindowByBruteForceRescan_Cases_ReturnsPerWindowMaximums(
         int[] nums, int windowSize, int[] expected)
     {
         var actual = SlidingWindowMaximumSolution.MaxSlidingWindowByBruteForceRescan(nums, windowSize);
@@ -24,8 +24,8 @@ public sealed partial class SlidingWindowMaximumSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxSlidingWindowByMonotonicDeque_LeetCodeExamples_ReturnsPerWindowMaximums(
+    [MemberData(nameof(Cases))]
+    public void MaxSlidingWindowByMonotonicDeque_Cases_ReturnsPerWindowMaximums(
         int[] nums, int windowSize, int[] expected)
     {
         var actual = SlidingWindowMaximumSolution.MaxSlidingWindowByMonotonicDeque(nums, windowSize);

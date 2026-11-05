@@ -13,13 +13,9 @@ public sealed partial class MaximumNestingDepthOfTwoValidParenthesesStringsSolut
     // The answer labels each character 0 or 1: the two subsequences the split makes.
     private const int GroupCount = 2;
 
-    public static TheoryData<string, int[]> Examples =>
+    public static TheoryData<string, int[]> Cases =>
         new()
         {
-            // LeetCode examples 1 and 2, with the outputs LeetCode publishes.
-            { "(()())", new[] { 0, 1, 1, 1, 1, 0 } },
-            { "()(())()", new[] { 0, 0, 0, 1, 1, 0, 1, 1 } },
-
             // Splits by depth parity, each by hand: a character at odd depth joins
             // group 1, at even depth group 0, so a string d deep leaves each half at most
             // ceil(d / 2) deep - and no split does better, since the d brackets open at
@@ -33,8 +29,8 @@ public sealed partial class MaximumNestingDepthOfTwoValidParenthesesStringsSolut
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxDepthAfterSplitByDepthRescan_LeetCodeExamples_SplitsIntoTwoMinimallyDeepHalves(
+    [MemberData(nameof(Cases))]
+    public void MaxDepthAfterSplitByDepthRescan_Cases_SplitsIntoTwoMinimallyDeepHalves(
         string seq,
         int[] validSplit) =>
         AssertMinimalSplit(
@@ -43,8 +39,8 @@ public sealed partial class MaximumNestingDepthOfTwoValidParenthesesStringsSolut
             MaximumNestingDepthOfTwoValidParenthesesStringsSolution.MaxDepthAfterSplitByDepthRescan(seq));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxDepthAfterSplitByOpenerStack_LeetCodeExamples_SplitsIntoTwoMinimallyDeepHalves(
+    [MemberData(nameof(Cases))]
+    public void MaxDepthAfterSplitByOpenerStack_Cases_SplitsIntoTwoMinimallyDeepHalves(
         string seq,
         int[] validSplit) =>
         AssertMinimalSplit(

@@ -8,13 +8,9 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.SplitTheArrayToMakeCoprime
 // inline.
 public sealed partial class SplitTheArrayToMakeCoprimeProductsSolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            // LeetCode examples 1 and 2.
-            { [4, 7, 8, 15, 3, 5], 2 },
-            { [4, 7, 15, 8, 3, 5], -1 },
-
             // The statement's own illustration: 2 and 3 * 3 = 9 are coprime at index 0.
             { [2, 3, 3], 0 },
 
@@ -47,14 +43,14 @@ public sealed partial class SplitTheArrayToMakeCoprimeProductsSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindValidSplitByProductGcd_LeetCodeExamples_ReturnsSmallestCoprimeSplitIndex(
+    [MemberData(nameof(Cases))]
+    public void FindValidSplitByProductGcd_Cases_ReturnsSmallestCoprimeSplitIndex(
         int[] nums, int expected) =>
         Assert.Equal(expected, SplitTheArrayToMakeCoprimeProductsSolution.FindValidSplitByProductGcd(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindValidSplitByPrimeLastOccurrence_LeetCodeExamples_ReturnsSmallestCoprimeSplitIndex(
+    [MemberData(nameof(Cases))]
+    public void FindValidSplitByPrimeLastOccurrence_Cases_ReturnsSmallestCoprimeSplitIndex(
         int[] nums, int expected) =>
         Assert.Equal(
             expected,

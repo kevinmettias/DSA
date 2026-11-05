@@ -4,16 +4,15 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.CountCollisionsOfMonkeysOn
 
 // Harness only. Both strategies are CountCollisionsOfMonkeysOnAPolygonSolution's -
 // the repeated-doubling arm that used to live untested as the benchmark baseline,
-// and the exponentiation-by-squaring arm - pinned to LeetCode's published examples
-// plus lengths large enough that 2^n has wrapped the modulus several times, which
-// is where the two arms would drift if either handled the fold differently.
+// and the exponentiation-by-squaring arm - pinned to two polygons small enough that
+// 2^n stays below the modulus, plus lengths large enough that 2^n has wrapped the
+// modulus several times, which is where the two arms would drift if either handled
+// the fold differently. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class CountCollisionsOfMonkeysOnAPolygonSolutionTests
 {
-    public static TheoryData<int, int> Examples =>
+    public static TheoryData<int, int> Cases =>
         new()
         {
-            { 3, 6 },
-            { 4, 14 },
             { 5, 30 },
             { 10, 1_022 },
             { 1_000, 688_423_208 },
@@ -21,16 +20,16 @@ public sealed partial class CountCollisionsOfMonkeysOnAPolygonSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void NumberOfWaysByRepeatedMultiplication_LeetCodeExamples_ReturnsCollisionCount(
+    [MemberData(nameof(Cases))]
+    public void NumberOfWaysByRepeatedMultiplication_Cases_ReturnsCollisionCount(
         int monkeyCount, int expected) =>
         Assert.Equal(
             expected,
             CountCollisionsOfMonkeysOnAPolygonSolution.NumberOfWaysByRepeatedMultiplication(monkeyCount));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void NumberOfWaysByExponentiationBySquaring_LeetCodeExamples_ReturnsCollisionCount(
+    [MemberData(nameof(Cases))]
+    public void NumberOfWaysByExponentiationBySquaring_Cases_ReturnsCollisionCount(
         int monkeyCount, int expected) =>
         Assert.Equal(
             expected,

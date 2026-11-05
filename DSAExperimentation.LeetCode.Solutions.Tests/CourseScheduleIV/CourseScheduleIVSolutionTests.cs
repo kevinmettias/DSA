@@ -4,23 +4,19 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.CourseScheduleIV;
 
 // Harness only. The prerequisite network is CourseGraph and both reachability
 // strategies are CourseScheduleIVSolution's - this file just pins them to
-// LeetCode's published examples plus the longer-chain and branching cases that
+// the longer-chain and branching cases that
 // separate a direct prerequisite from a transitive one.
 public sealed partial class CourseScheduleIVSolutionTests
 {
-    public static TheoryData<int, int[][], int[][], bool[]> Examples =>
+    public static TheoryData<int, int[][], int[][], bool[]> Cases =>
         new()
         {
-            { 2, [[1, 0]], [[0, 1], [1, 0]], [false, true] },
-            { 2, [], [[1, 0], [0, 1]], [false, false] },
-            { 3, [[1, 2], [1, 0], [2, 0]], [[1, 0], [1, 2]], [true, true] },
-            { 5, [[0, 1], [1, 2], [2, 3], [3, 4]], [[0, 4], [4, 0], [1, 3]], [true, false, true] },
             { 4, [[0, 1], [0, 2], [1, 3]], [[0, 3], [2, 3], [3, 0]], [true, false, false] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CheckIfPrerequisiteByBreadthFirstSearchPerQuery_LeetCodeExamples_AnswersEveryQuery(
+    [MemberData(nameof(Cases))]
+    public void CheckIfPrerequisiteByBreadthFirstSearchPerQuery_Cases_AnswersEveryQuery(
         int numCourses, int[][] prerequisites, int[][] queries, bool[] expected)
     {
         var actual = CourseScheduleIVSolution.CheckIfPrerequisiteByBreadthFirstSearchPerQuery(
@@ -29,8 +25,8 @@ public sealed partial class CourseScheduleIVSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CheckIfPrerequisiteByFloydWarshall_LeetCodeExamples_AnswersEveryQuery(
+    [MemberData(nameof(Cases))]
+    public void CheckIfPrerequisiteByFloydWarshall_Cases_AnswersEveryQuery(
         int numCourses, int[][] prerequisites, int[][] queries, bool[] expected)
     {
         var actual = CourseScheduleIVSolution.CheckIfPrerequisiteByFloydWarshall(

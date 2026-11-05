@@ -4,18 +4,14 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.SearchInsertPosition;
 
 public sealed partial class SearchInsertPositionSolutionTests
 {
-    public static TheoryData<int[], int, int> Examples => new()
+    public static TheoryData<int[], int, int> Cases => new()
     {
-        { new[] { 1, 3, 5, 6 }, 5, 2 },
-        { new[] { 1, 3, 5, 6 }, 2, 1 },
-        { new[] { 1, 3, 5, 6 }, 7, 4 },
-        { new[] { 1, 3, 5, 6 }, 0, 0 },
         { Array.Empty<int>(), 0, 0 },
     };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SearchInsertByLinearScan_LeetCodeExamples_ReturnsLowerBoundIndex(
+    [MemberData(nameof(Cases))]
+    public void SearchInsertByLinearScan_Cases_ReturnsLowerBoundIndex(
         int[] nums, int target, int expected)
     {
         var actual = SearchInsertPositionSolution.SearchInsertByLinearScan(nums, target);
@@ -23,8 +19,8 @@ public sealed partial class SearchInsertPositionSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SearchInsertByBinarySearchLowerBound_LeetCodeExamples_ReturnsLowerBoundIndex(
+    [MemberData(nameof(Cases))]
+    public void SearchInsertByBinarySearchLowerBound_Cases_ReturnsLowerBoundIndex(
         int[] nums, int target, int expected)
     {
         var actual = SearchInsertPositionSolution.SearchInsertByBinarySearchLowerBound(nums, target);

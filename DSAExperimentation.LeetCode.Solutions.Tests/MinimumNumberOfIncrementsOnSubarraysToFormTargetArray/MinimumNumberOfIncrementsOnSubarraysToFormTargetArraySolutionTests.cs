@@ -4,22 +4,19 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumNumberOfIncrementsO
 
 // Harness only: both strategies live in
 // MinimumNumberOfIncrementsOnSubarraysToFormTargetArraySolution and are asserted against the
-// same examples - LeetCode's published ones plus a flat array, where one stroke covers the
-// whole target and no later rise can add to the count.
+// same case - a flat array, where one stroke covers the whole target and no later rise can
+// add to the count. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class MinimumNumberOfIncrementsOnSubarraysToFormTargetArraySolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            { [1, 2, 3, 2, 1], 3 },
-            { [3, 1, 1, 2], 4 },
-            { [3, 1, 5, 4, 2], 7 },
             { [1, 1, 1, 1], 1 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinNumberOperationsByLayerSimulation_LeetCodeExamples_ReturnsOperationCount(
+    [MemberData(nameof(Cases))]
+    public void MinNumberOperationsByLayerSimulation_Cases_ReturnsOperationCount(
         int[] target,
         int expected) =>
         Assert.Equal(
@@ -27,8 +24,8 @@ public sealed partial class MinimumNumberOfIncrementsOnSubarraysToFormTargetArra
             MinimumNumberOfIncrementsOnSubarraysToFormTargetArraySolution.MinNumberOperationsByLayerSimulation(target));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinNumberOperationsByRisingDiffScan_LeetCodeExamples_ReturnsOperationCount(
+    [MemberData(nameof(Cases))]
+    public void MinNumberOperationsByRisingDiffScan_Cases_ReturnsOperationCount(
         int[] target,
         int expected) =>
         Assert.Equal(

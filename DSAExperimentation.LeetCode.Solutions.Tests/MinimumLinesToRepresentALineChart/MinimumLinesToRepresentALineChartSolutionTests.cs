@@ -7,19 +7,12 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumLinesToRepresentALi
 // ArrayIndexedSequence with the exact cross-product collinearity test - so each is
 // asserted here under its own name. The pre-migration test only covered the second one;
 // the floating-slope baseline (previously untested scaffolding inlined in the benchmark)
-// is asserted here for the first time, against the same examples.
+// is asserted here for the first time, against the same cases.
 public sealed partial class MinimumLinesToRepresentALineChartSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][], int> Cases =>
         new()
         {
-            // LeetCode example 1: a long -1 run, one flat step, then another -1 run.
-            { [[1, 7], [2, 6], [3, 5], [4, 4], [5, 4], [6, 3], [7, 2], [8, 1]], 3 },
-
-            // LeetCode example 2: unsorted input that collapses to a single line once
-            // ordered by day.
-            { [[3, 4], [1, 2], [7, 8], [2, 3]], 1 },
-
             // A single point draws no line at all.
             { [[5, 5]], 0 },
 
@@ -42,16 +35,16 @@ public sealed partial class MinimumLinesToRepresentALineChartSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinimumLinesByArraySortFloatingSlope_LeetCodeExamples_CountsSlopeChanges(
+    [MemberData(nameof(Cases))]
+    public void MinimumLinesByArraySortFloatingSlope_Cases_CountsSlopeChanges(
         int[][] stockPrices, int expected) =>
         Assert.Equal(
             expected,
             MinimumLinesToRepresentALineChartSolution.MinimumLinesByArraySortFloatingSlope(stockPrices));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinimumLinesByMergeSortIntegerSlope_LeetCodeExamples_CountsSlopeChanges(
+    [MemberData(nameof(Cases))]
+    public void MinimumLinesByMergeSortIntegerSlope_Cases_CountsSlopeChanges(
         int[][] stockPrices, int expected) =>
         Assert.Equal(
             expected,

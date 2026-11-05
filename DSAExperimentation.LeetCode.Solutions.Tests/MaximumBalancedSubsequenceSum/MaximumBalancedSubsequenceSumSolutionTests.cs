@@ -3,22 +3,20 @@ using DSAExperimentation.LeetCode.Solutions.MaximumBalancedSubsequenceSum;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumBalancedSubsequenceSum;
 
 // Harness only: the algorithms live in MaximumBalancedSubsequenceSumSolution. One
-// test method per strategy over one shared set of LeetCode's own examples, so a
-// failure names the strategy that broke.
+// test method per strategy over one shared set of cases, so a failure names the
+// strategy that broke. The remaining case is a single element, whose value is the
+// answer. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class MaximumBalancedSubsequenceSumSolutionTests
 {
-    public static TheoryData<int[], long> Examples =>
+    public static TheoryData<int[], long> Cases =>
         new()
         {
-            { [3, 3, 5, 6], 14 },
-            { [5, -1, -3, 8], 13 },
-            { [-2, -1], -1 },
             { [1], 1 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxBalancedSumByBruteForce_LeetCodeExamples_ReturnsMaximumBalancedSum(int[] nums, long expected)
+    [MemberData(nameof(Cases))]
+    public void MaxBalancedSumByBruteForce_Cases_ReturnsMaximumBalancedSum(int[] nums, long expected)
     {
         var actual = MaximumBalancedSubsequenceSumSolution.MaxBalancedSumByBruteForce(nums);
 
@@ -26,8 +24,8 @@ public sealed partial class MaximumBalancedSubsequenceSumSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxBalancedSumBySegmentTree_LeetCodeExamples_ReturnsMaximumBalancedSum(int[] nums, long expected)
+    [MemberData(nameof(Cases))]
+    public void MaxBalancedSumBySegmentTree_Cases_ReturnsMaximumBalancedSum(int[] nums, long expected)
     {
         var actual = MaximumBalancedSubsequenceSumSolution.MaxBalancedSumBySegmentTree(nums);
 

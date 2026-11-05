@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.NimGame;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NimGameSolution's, the same methods
-// NimGameSolutionTests proves correct - the textbook O(n) memoized game-theory
+// CatalogCaseTests proves correct - the textbook O(n) memoized game-theory
 // recursion vs. the closed-form O(1) n % 4 != 0 formula the recursion itself
 // reduces to.
 public class NimGameBenchmarks

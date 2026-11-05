@@ -3,15 +3,13 @@ using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfArrowsToBurstBalloons
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumNumberOfArrowsToBurstBalloons;
 
 // Harness only: both strategies live in MinimumNumberOfArrowsToBurstBalloonsSolution
-// and are asserted against the same examples, including the chained-touching case
+// and are asserted against the same cases, among them the chained-touching case
 // that rules out solving this via IntervalSet.Count.
 public sealed partial class MinimumNumberOfArrowsToBurstBalloonsSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][], int> Cases =>
         new()
         {
-            { [[10, 16], [2, 8], [1, 6], [7, 12]], 2 },
-            { [[1, 2], [3, 4], [5, 6], [7, 8]], 4 },
             // [1,2] and [2,3] touch, [2,3] and [3,4] touch, but no single point lies
             // in all three - proves this can't be solved by transitively merging
             // overlaps (IntervalSet.Count would wrongly return 1 here).
@@ -19,12 +17,12 @@ public sealed partial class MinimumNumberOfArrowsToBurstBalloonsSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindMinArrowShotsByBruteForceRescan_LeetCodeExamples_ReturnsMinArrows(int[][] points, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void FindMinArrowShotsByBruteForceRescan_Cases_ReturnsMinArrows(int[][] points, int expected) =>
         Assert.Equal(expected, MinimumNumberOfArrowsToBurstBalloonsSolution.FindMinArrowShotsByBruteForceRescan(points));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindMinArrowShotsBySortEndsThenGreedyScan_LeetCodeExamples_ReturnsMinArrows(int[][] points, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void FindMinArrowShotsBySortEndsThenGreedyScan_Cases_ReturnsMinArrows(int[][] points, int expected) =>
         Assert.Equal(expected, MinimumNumberOfArrowsToBurstBalloonsSolution.FindMinArrowShotsBySortEndsThenGreedyScan(points));
 }

@@ -3,20 +3,16 @@ using DSAExperimentation.LeetCode.Solutions.NumberOfStudentsUnableToEatLunch;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.NumberOfStudentsUnableToEatLunch;
 
 // Harness only: both strategies are
-// NumberOfStudentsUnableToEatLunchSolution's. This file pins them to LeetCode's
-// two published examples plus the boundaries LeetCode never published - the
-// shortest inputs the constraints allow, a line that stalls on its very first lap,
-// a line where everyone eats only after cycling, and a stall that leaves exactly
-// one student.
+// NumberOfStudentsUnableToEatLunchSolution's. This file pins them to the
+// boundaries LeetCode never published - the shortest inputs the constraints allow,
+// a line that stalls on its very first lap, a line already in serving order, a line
+// where everyone eats only after cycling, and a stall that leaves exactly one
+// student. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class NumberOfStudentsUnableToEatLunchSolutionTests
 {
-    public static TheoryData<int[], int[], int> Examples =>
+    public static TheoryData<int[], int[], int> Cases =>
         new()
         {
-            // LeetCode's two published examples.
-            { [1, 1, 0, 0], [0, 1, 0, 1], 0 },
-            { [1, 1, 1, 0, 0, 1], [1, 0, 0, 0, 1, 1], 3 },
-
             // Nobody wants the only kind of sandwich there is: the line never moves.
             { [1, 1, 1], [0, 0, 0], 3 },
 
@@ -35,8 +31,8 @@ public sealed partial class NumberOfStudentsUnableToEatLunchSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountStudentsByListSimulation_LeetCodeExamples_ReturnsStudentsLeftWhenTheLineStalls(
+    [MemberData(nameof(Cases))]
+    public void CountStudentsByListSimulation_Cases_ReturnsStudentsLeftWhenTheLineStalls(
         int[] students, int[] sandwiches, int expected)
     {
         var actual = NumberOfStudentsUnableToEatLunchSolution.CountStudentsByListSimulation(students, sandwiches);
@@ -45,8 +41,8 @@ public sealed partial class NumberOfStudentsUnableToEatLunchSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountStudentsByQueueStackSimulation_LeetCodeExamples_ReturnsStudentsLeftWhenTheLineStalls(
+    [MemberData(nameof(Cases))]
+    public void CountStudentsByQueueStackSimulation_Cases_ReturnsStudentsLeftWhenTheLineStalls(
         int[] students, int[] sandwiches, int expected)
     {
         var actual = NumberOfStudentsUnableToEatLunchSolution.CountStudentsByQueueStackSimulation(students, sandwiches);

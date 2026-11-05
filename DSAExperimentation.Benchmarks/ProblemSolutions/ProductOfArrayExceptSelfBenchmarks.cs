@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.ProductOfArrayExceptSelf;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the one arm is ProductOfArrayExceptSelfSolution's, the same
-// method ProductOfArrayExceptSelfSolutionTests proves correct. The prior benchmark was
+// method CatalogCaseTests proves correct. The prior benchmark was
 // a compile-smoke placeholder with no real workload; this backfills it with the
 // prefix/suffix pass over a random array of negative and positive values in LC 238's
 // [-30, 30]. BoundedProductDraws plants them so the product of every value fits in an

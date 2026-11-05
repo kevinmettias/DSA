@@ -3,24 +3,22 @@ using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfVerticesToReachAllNod
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumNumberOfVerticesToReachAllNodes;
 
 // Harness only. Both strategies are
-// MinimumNumberOfVerticesToReachAllNodesSolution's - LeetCode's two published
-// examples plus the edgeless graph (every node is its own source) are asserted
-// against each, so the nested-scan baseline is now held to the same answers as the
-// marking pass.
+// MinimumNumberOfVerticesToReachAllNodesSolution's - two edgeless graphs (every node
+// is its own source) are asserted against each, so the nested-scan baseline is now
+// held to the same answers as the marking pass. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class MinimumNumberOfVerticesToReachAllNodesSolutionTests
 {
-    public static TheoryData<int, int[][], int[]> Examples =>
+    public static TheoryData<int, int[][], int[]> Cases =>
         new()
         {
-            { 6, [[0, 1], [0, 2], [2, 5], [3, 4], [4, 2]], [0, 3] },
-            { 5, [[0, 1], [2, 1], [3, 1], [1, 4], [2, 4]], [0, 2, 3] },
             { 3, [], [0, 1, 2] },
             { 1, [], [0] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindSmallestSetOfVerticesByNestedScan_LeetCodeExamples_ReturnsEveryZeroInDegreeNode(
+    [MemberData(nameof(Cases))]
+    public void FindSmallestSetOfVerticesByNestedScan_Cases_ReturnsEveryZeroInDegreeNode(
         int nodeCount, int[][] edges, int[] expected)
     {
         var actual = MinimumNumberOfVerticesToReachAllNodesSolution.FindSmallestSetOfVerticesByNestedScan(nodeCount, edges);
@@ -29,8 +27,8 @@ public sealed partial class MinimumNumberOfVerticesToReachAllNodesSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindSmallestSetOfVerticesByInDegreeSet_LeetCodeExamples_ReturnsEveryZeroInDegreeNode(
+    [MemberData(nameof(Cases))]
+    public void FindSmallestSetOfVerticesByInDegreeSet_Cases_ReturnsEveryZeroInDegreeNode(
         int nodeCount, int[][] edges, int[] expected)
     {
         var actual = MinimumNumberOfVerticesToReachAllNodesSolution.FindSmallestSetOfVerticesByInDegreeSet(nodeCount, edges);

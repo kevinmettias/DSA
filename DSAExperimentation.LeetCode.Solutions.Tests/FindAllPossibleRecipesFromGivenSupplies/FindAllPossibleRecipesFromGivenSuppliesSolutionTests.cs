@@ -4,40 +4,16 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.FindAllPossibleRecipesFrom
 
 // Harness only: both strategies live in
 // FindAllPossibleRecipesFromGivenSuppliesSolution and are asserted against the same
-// examples - LeetCode's three published ones plus the unsatisfiable raw ingredient,
-// the pure cycle, and a graph whose only makeable recipe is declared after the one
-// that depends on it. LeetCode accepts the makeable recipes in any order; every case
-// here is one both strategies emit in the same order, so the assertion can stay an
-// exact sequence rather than a set comparison.
+// cases - the unsatisfiable raw ingredient, the pure cycle, and a graph whose only
+// makeable recipe is declared after the one that depends on it. LeetCode accepts the
+// makeable recipes in any order; every case here is one both strategies emit in the
+// same order, so the assertion can stay an exact sequence rather than a set
+// comparison. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class FindAllPossibleRecipesFromGivenSuppliesSolutionTests
 {
-    public static TheoryData<string[], string[][], string[], string[]> Examples =>
+    public static TheoryData<string[], string[][], string[], string[]> Cases =>
         new()
         {
-            // LeetCode example 1: one recipe, all its ingredients supplied.
-            {
-                ["bread"],
-                [["yeast", "flour"]],
-                ["yeast", "flour", "corn"],
-                ["bread"]
-            },
-
-            // LeetCode example 2: sandwich depends on bread.
-            {
-                ["bread", "sandwich"],
-                [["yeast", "flour"], ["bread", "meat"]],
-                ["yeast", "flour", "meat"],
-                ["bread", "sandwich"]
-            },
-
-            // LeetCode example 3: burger depends on sandwich, which depends on bread.
-            {
-                ["bread", "sandwich", "burger"],
-                [["yeast", "flour"], ["bread", "meat"], ["sandwich", "meat", "bread"]],
-                ["yeast", "flour", "meat"],
-                ["bread", "sandwich", "burger"]
-            },
-
             // flour is never supplied, so bread and everything downstream is unmakeable.
             {
                 ["bread", "sandwich"],
@@ -54,8 +30,8 @@ public sealed partial class FindAllPossibleRecipesFromGivenSuppliesSolutionTests
                 []
             },
 
-            // The only makeable recipe is declared second, so the answer is not in
-            // declaration order.
+            // Cake needs batter, which is declared after it, so the recipes can only
+            // be made in the opposite order to their declaration.
             {
                 ["cake", "batter"],
                 [["batter"], ["flour"]],
@@ -65,8 +41,8 @@ public sealed partial class FindAllPossibleRecipesFromGivenSuppliesSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindAllRecipesByFixedPointSweep_LeetCodeExamples_ReturnsMakeableRecipes(
+    [MemberData(nameof(Cases))]
+    public void FindAllRecipesByFixedPointSweep_Cases_ReturnsMakeableRecipes(
         string[] recipes, string[][] ingredients, string[] supplies, string[] expected)
     {
         var actual = FindAllPossibleRecipesFromGivenSuppliesSolution.FindAllRecipesByFixedPointSweep(
@@ -75,8 +51,8 @@ public sealed partial class FindAllPossibleRecipesFromGivenSuppliesSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindAllRecipesByKahnsAlgorithm_LeetCodeExamples_ReturnsMakeableRecipes(
+    [MemberData(nameof(Cases))]
+    public void FindAllRecipesByKahnsAlgorithm_Cases_ReturnsMakeableRecipes(
         string[] recipes, string[][] ingredients, string[] supplies, string[] expected)
     {
         var actual = FindAllPossibleRecipesFromGivenSuppliesSolution.FindAllRecipesByKahnsAlgorithm(

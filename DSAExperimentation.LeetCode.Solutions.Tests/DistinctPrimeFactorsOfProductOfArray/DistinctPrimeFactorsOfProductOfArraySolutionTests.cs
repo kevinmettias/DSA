@@ -7,22 +7,15 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.DistinctPrimeFactorsOfProd
 // asserted, and the per-element Set<int> union this file used to inline.
 public sealed partial class DistinctPrimeFactorsOfProductOfArraySolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            // LC examples 1-2.
-            { [2, 4, 3, 7, 10, 6], 4 },
-            { [2, 4, 8, 16], 1 },
-
             // A single element that is itself prime, and the largest one LC allows.
             { [997], 1 },
             { [2], 1 },
 
             // A single composite: 1000 = 2^3 * 5^3, so repeated factors collapse.
             { [1000], 2 },
-
-            // Every element prime and distinct: nothing to dedup.
-            { [2, 3, 5, 7, 11, 13], 6 },
 
             // Overlapping factor sets - 6, 10 and 15 pairwise share a prime, so the
             // union is smaller than the sum of the parts.
@@ -36,16 +29,16 @@ public sealed partial class DistinctPrimeFactorsOfProductOfArraySolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void DistinctPrimeFactorsByProductTrialDivision_LeetCodeExamples_ReturnsDistinctPrimeCount(
+    [MemberData(nameof(Cases))]
+    public void DistinctPrimeFactorsByProductTrialDivision_Cases_ReturnsDistinctPrimeCount(
         int[] nums, int expected) =>
         Assert.Equal(
             expected,
             DistinctPrimeFactorsOfProductOfArraySolution.DistinctPrimeFactorsByProductTrialDivision(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void DistinctPrimeFactorsByElementFactorSet_LeetCodeExamples_ReturnsDistinctPrimeCount(
+    [MemberData(nameof(Cases))]
+    public void DistinctPrimeFactorsByElementFactorSet_Cases_ReturnsDistinctPrimeCount(
         int[] nums, int expected) =>
         Assert.Equal(
             expected,

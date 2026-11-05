@@ -8,27 +8,21 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.VowelsOfAllSubstrings;
 // counting the same thing.
 public sealed partial class VowelsOfAllSubstringsSolutionTests
 {
-    public static TheoryData<string, long> Examples =>
+    public static TheoryData<string, long> Cases =>
         new()
         {
-            { "aba", 6L },
-            { "abc", 3L },
-            { "ltcd", 0L },
-            { "a", 1L },
-            { "b", 0L },
-            { "aeiou", 35L },
             { "vowelsofallsubstrings", 523L },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountVowelsBySubstringScan_LeetCodeExamples_ReturnsTotalVowelsOverAllSubstrings(
+    [MemberData(nameof(Cases))]
+    public void CountVowelsBySubstringScan_Cases_ReturnsTotalVowelsOverAllSubstrings(
         string word, long expected) =>
         Assert.Equal(expected, VowelsOfAllSubstringsSolution.CountVowelsBySubstringScan(word));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountVowelsByContributionFormula_LeetCodeExamples_ReturnsTotalVowelsOverAllSubstrings(
+    [MemberData(nameof(Cases))]
+    public void CountVowelsByContributionFormula_Cases_ReturnsTotalVowelsOverAllSubstrings(
         string word, long expected) =>
         Assert.Equal(expected, VowelsOfAllSubstringsSolution.CountVowelsByContributionFormula(word));
 }

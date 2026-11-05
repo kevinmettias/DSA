@@ -8,26 +8,21 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumNumberOfDartsInside
 // repo's own DynamicArray.
 public sealed partial class MaximumNumberOfDartsInsideOfACircularDartboardSolutionTests
 {
-    public static TheoryData<int[][], int, int> Examples =>
+    public static TheoryData<int[][], int, int> Cases =>
         new()
         {
-            // LeetCode example 1: a radius-2 circle centred at the origin has all four
-            // darts exactly on its boundary, so containment has to be inclusive.
-            { [[-2, 0], [2, 0], [0, 2], [0, -2]], 2, 4 },
-
-            // The pre-migration test's own variant of that example, with the two
+            // The pre-migration test's own variant of LeetCode's first example (darts
+            // at (-2, 0), (2, 0), (0, 2) and (0, -2), radius 2), with the two
             // vertical darts pulled inside the boundary instead of onto it.
             { [[-2, 0], [2, 0], [0, 1], [0, -1]], 2, 4 },
 
-            // LeetCode example 2: the optimal radius-5 circle is centred on neither
-            // input dart, which is why dart-only centers are not a correct shortcut.
-            { [[-3, 0], [3, 0], [2, 6], [5, 4], [0, 9], [7, 8]], 5, 5 },
-
-            // LeetCode example 3: the same four darts with half the radius - every
+            // Example 3 of an earlier version of the statement, which now publishes
+            // only two: the first example's four darts with half the radius - every
             // pair is now more than a diameter apart.
             { [[-2, 0], [2, 0], [0, 2], [0, -2]], 1, 1 },
 
-            // LeetCode example 4: a radius-2 circle catches four of the six darts.
+            // Example 4 of that earlier statement: a radius-2 circle catches four of
+            // the six darts.
             { [[1, 2], [3, 5], [1, -1], [2, 3], [4, 1], [1, 3]], 2, 4 },
 
             // A lone dart: the answer is never below one.
@@ -39,8 +34,8 @@ public sealed partial class MaximumNumberOfDartsInsideOfACircularDartboardSoluti
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxDartsByListCandidates_LeetCodeExamples_ReturnsMostDartsOneCircleCovers(
+    [MemberData(nameof(Cases))]
+    public void MaxDartsByListCandidates_Cases_ReturnsMostDartsOneCircleCovers(
         int[][] darts, int radius, int expected)
     {
         var actual = MaximumNumberOfDartsInsideOfACircularDartboardSolution.MaxDartsByListCandidates(darts, radius);
@@ -49,8 +44,8 @@ public sealed partial class MaximumNumberOfDartsInsideOfACircularDartboardSoluti
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MaxDartsByDynamicArrayCandidates_LeetCodeExamples_ReturnsMostDartsOneCircleCovers(
+    [MemberData(nameof(Cases))]
+    public void MaxDartsByDynamicArrayCandidates_Cases_ReturnsMostDartsOneCircleCovers(
         int[][] darts, int radius, int expected)
     {
         var actual = MaximumNumberOfDartsInsideOfACircularDartboardSolution.MaxDartsByDynamicArrayCandidates(

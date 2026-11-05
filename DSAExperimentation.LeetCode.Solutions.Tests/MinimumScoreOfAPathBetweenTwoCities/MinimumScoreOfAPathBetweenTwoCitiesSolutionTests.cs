@@ -7,16 +7,9 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumScoreOfAPathBetween
 // and nothing asserted.
 public sealed partial class MinimumScoreOfAPathBetweenTwoCitiesSolutionTests
 {
-    public static TheoryData<int, int[][], int> Examples =>
+    public static TheoryData<int, int[][], int> Cases =>
         new()
         {
-            // LC example 1: the answer is the [2,4] road, which lies on no shortest
-            // 1 -> 4 route - the detour onto it is free because roads may repeat.
-            { 4, [[1, 2, 9], [2, 3, 6], [2, 4, 5], [1, 4, 7]], 5 },
-
-            // LC example 2.
-            { 4, [[1, 2, 2], [1, 3, 4], [3, 4, 7]], 2 },
-
             // A cheaper road in a component city 1 cannot reach must be ignored.
             { 6, [[1, 2, 9], [2, 3, 6], [2, 4, 5], [1, 4, 7], [5, 6, 1]], 5 },
 
@@ -29,8 +22,8 @@ public sealed partial class MinimumScoreOfAPathBetweenTwoCitiesSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinScoreByBreadthFirstFloodFill_LeetCodeExamples_ReturnsMinimumEdgeWeightInCity1Component(
+    [MemberData(nameof(Cases))]
+    public void MinScoreByBreadthFirstFloodFill_Cases_ReturnsMinimumEdgeWeightInCity1Component(
         int cityCount, int[][] roads, int expected)
     {
         var actual = MinimumScoreOfAPathBetweenTwoCitiesSolution.MinScoreByBreadthFirstFloodFill(cityCount, roads);
@@ -38,8 +31,8 @@ public sealed partial class MinimumScoreOfAPathBetweenTwoCitiesSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinScoreByDisjointSet_LeetCodeExamples_ReturnsMinimumEdgeWeightInCity1Component(
+    [MemberData(nameof(Cases))]
+    public void MinScoreByDisjointSet_Cases_ReturnsMinimumEdgeWeightInCity1Component(
         int cityCount, int[][] roads, int expected)
     {
         var actual = MinimumScoreOfAPathBetweenTwoCitiesSolution.MinScoreByDisjointSet(cityCount, roads);

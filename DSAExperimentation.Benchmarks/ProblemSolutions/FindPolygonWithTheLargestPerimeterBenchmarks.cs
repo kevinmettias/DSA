@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.FindPolygonWithTheLargestPerimeter;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindPolygonWithTheLargestPerimeterSolution's,
-// the same methods FindPolygonWithTheLargestPerimeterSolutionTests proves correct.
+// the same methods CatalogCaseTests proves correct.
 // Neither strategy needs anything hoisted beyond the raw int[] LeetCode
 // itself hands in, so [GlobalSetup] only sizes+seeds the workload.
 //

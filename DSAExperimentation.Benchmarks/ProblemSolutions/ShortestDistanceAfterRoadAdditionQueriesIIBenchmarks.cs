@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.ShortestDistanceAfterRoadAdditionQue
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShortestDistanceAfterRoadAdditionQueriesIISolution's, the
-// same methods ShortestDistanceAfterRoadAdditionQueriesIISolutionTests proves correct.
+// same methods CatalogCaseTests proves correct.
 public class ShortestDistanceAfterRoadAdditionQueriesIIBenchmarks
 {
     private const int Seed = 3244;

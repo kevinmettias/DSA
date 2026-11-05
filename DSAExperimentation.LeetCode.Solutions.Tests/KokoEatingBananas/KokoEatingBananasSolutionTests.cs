@@ -8,16 +8,10 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.KokoEatingBananas;
 // feasibility sequence.
 public sealed partial class KokoEatingBananasSolutionTests
 {
-    public static TheoryData<int[], int, int> Examples =>
+    public static TheoryData<int[], int, int> Cases =>
         new()
         {
-            // LC examples 1-3.
-            { [3, 6, 7, 11], 8, 4 },
-            { [30, 11, 23, 4, 20], 5, 30 },
-            { [30, 11, 23, 4, 20], 6, 23 },
-
             // One pile with exactly one hour: the answer is the pile itself.
-            { [1], 1, 1 },
             { [1000000000], 1, 1000000000 },
 
             // Hours to spare, so the slowest speed already clears every pile.
@@ -33,8 +27,8 @@ public sealed partial class KokoEatingBananasSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinEatingSpeedByManualBisection_LeetCodeExamples_ReturnsSmallestFeasibleSpeed(
+    [MemberData(nameof(Cases))]
+    public void MinEatingSpeedByManualBisection_Cases_ReturnsSmallestFeasibleSpeed(
         int[] piles, int hourBudget, int expected)
     {
         var actual =
@@ -44,8 +38,8 @@ public sealed partial class KokoEatingBananasSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinEatingSpeedByPredicateSearch_LeetCodeExamples_ReturnsSmallestFeasibleSpeed(
+    [MemberData(nameof(Cases))]
+    public void MinEatingSpeedByPredicateSearch_Cases_ReturnsSmallestFeasibleSpeed(
         int[] piles, int hourBudget, int expected)
     {
         var actual =

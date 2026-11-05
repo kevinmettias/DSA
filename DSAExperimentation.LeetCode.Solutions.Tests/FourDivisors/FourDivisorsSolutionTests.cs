@@ -4,15 +4,13 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.FourDivisors;
 
 // Harness only. Both strategies are FourDivisorsSolution's - the sqrt-anchored
 // downward walk and the full-range trial division that used to live untested as the
-// benchmark's baseline - pinned to LeetCode's published examples plus numbers with
+// benchmark's baseline - pinned to numbers with
 // one, two, three and five divisors, which must all contribute nothing.
 public sealed partial class FourDivisorsSolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            { [21, 4, 7], 32 },
-            { [21, 21], 64 },
             { [1], 0 },
             { [8], 15 },
             { [6], 12 },
@@ -22,14 +20,14 @@ public sealed partial class FourDivisorsSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SumFourDivisorsByBinarySearchAnchor_LeetCodeExamples_ReturnsSumOverQualifyingNumbers(
+    [MemberData(nameof(Cases))]
+    public void SumFourDivisorsByBinarySearchAnchor_Cases_ReturnsSumOverQualifyingNumbers(
         int[] nums, int expected) =>
         Assert.Equal(expected, FourDivisorsSolution.SumFourDivisorsByBinarySearchAnchor(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SumFourDivisorsByFullRangeScan_LeetCodeExamples_ReturnsSumOverQualifyingNumbers(
+    [MemberData(nameof(Cases))]
+    public void SumFourDivisorsByFullRangeScan_Cases_ReturnsSumOverQualifyingNumbers(
         int[] nums, int expected) =>
         Assert.Equal(expected, FourDivisorsSolution.SumFourDivisorsByFullRangeScan(nums));
 }

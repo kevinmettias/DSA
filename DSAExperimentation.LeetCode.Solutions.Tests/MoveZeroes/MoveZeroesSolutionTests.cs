@@ -3,20 +3,19 @@ using DSAExperimentation.LeetCode.Solutions.MoveZeroes;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MoveZeroes;
 
 // Harness only. Both strategies are MoveZeroesSolution's - this file just pins
-// them to LeetCode's published examples.
+// them to an array with no zeroes, which both must leave as it was. LeetCode's
+// published examples run in CatalogCaseTests.
 public sealed partial class MoveZeroesSolutionTests
 {
-    public static TheoryData<int[], int[]> Examples =>
+    public static TheoryData<int[], int[]> Cases =>
         new()
         {
-            { [0, 1, 0, 3, 12], [1, 3, 12, 0, 0] },
-            { [0], [0] },
             { [4, 2, 7], [4, 2, 7] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MoveZeroesToEndByLinearScan_LeetCodeExamples_MovesZeroesToEndPreservingOrder(
+    [MemberData(nameof(Cases))]
+    public void MoveZeroesToEndByLinearScan_Cases_MovesZeroesToEndPreservingOrder(
         int[] nums, int[] expected)
     {
         var copy = (int[])nums.Clone();
@@ -27,8 +26,8 @@ public sealed partial class MoveZeroesSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MoveZeroesToEndByArrayIndexedTwoPointer_LeetCodeExamples_MovesZeroesToEndPreservingOrder(
+    [MemberData(nameof(Cases))]
+    public void MoveZeroesToEndByArrayIndexedTwoPointer_Cases_MovesZeroesToEndPreservingOrder(
         int[] nums, int[] expected)
     {
         var copy = (int[])nums.Clone();

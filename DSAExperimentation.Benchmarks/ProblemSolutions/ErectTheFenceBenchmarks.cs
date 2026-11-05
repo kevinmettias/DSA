@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.ErectTheFence;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ErectTheFenceSolution's, the same methods
-// ErectTheFenceSolutionTests proves correct. Points are uniform-random in a bounded grid,
+// CatalogCaseTests proves correct. Points are uniform-random in a bounded grid,
 // so the hull stays a small fraction of Length (h << n), which is exactly what
 // makes the O(n log n + h*n) primitive-based strategy beat the O(n^3) baseline so
 // decisively. LC 587 keeps every coordinate in 0..100 and every tree on a position

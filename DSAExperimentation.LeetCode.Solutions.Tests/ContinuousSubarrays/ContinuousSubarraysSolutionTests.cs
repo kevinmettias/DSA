@@ -4,28 +4,20 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.ContinuousSubarrays;
 
 // Harness only. Both strategies are ContinuousSubarraysSolution's - including the
 // brute-force rescan, which the benchmark used to own privately as its baseline and
-// nothing asserted. Beyond LeetCode's two published examples the cases pin the
-// window's boundaries: a single element, a run where every pair is within the limit
-// so every subarray counts, a strictly descending run where the left edge advances on
-// almost every step, and a spike that empties the window down to one element.
+// nothing asserted. The cases pin the window's boundaries: a single element, a
+// strictly descending run where every pair is within the limit so every subarray
+// counts, a spike that empties the window down to one element, and an alternating run
+// where the left edge advances on every step. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class ContinuousSubarraysSolutionTests
 {
-    public static TheoryData<int[], long> Examples =>
+    public static TheoryData<int[], long> Cases =>
         new()
         {
-            // LC example 1.
-            { [5, 4, 2, 4], 8L },
-
-            // LC example 2: every pair is within 2, so all six subarrays count.
-            { [1, 2, 3], 6L },
-
-            // All values equal: every one of the ten subarrays counts.
-            { [1, 1, 1, 1], 10L },
-
             // One element: the single subarray is trivially continuous.
             { [7], 1L },
 
-            // Strictly descending by one, same shape as the ascending example.
+            // Strictly descending by one: every pair is within the limit, so all six count.
             { [3, 2, 1], 6L },
 
             // A spike far outside the limit - the window collapses to it and restarts.
@@ -36,14 +28,14 @@ public sealed partial class ContinuousSubarraysSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountContinuousSubarraysByBruteForceWindows_LeetCodeExamples_ReturnsContinuousSubarrayCount(
+    [MemberData(nameof(Cases))]
+    public void CountContinuousSubarraysByBruteForceWindows_Cases_ReturnsContinuousSubarrayCount(
         int[] nums, long expected) =>
         Assert.Equal(expected, ContinuousSubarraysSolution.CountContinuousSubarraysByBruteForceWindows(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountContinuousSubarraysByMonotonicDeques_LeetCodeExamples_ReturnsContinuousSubarrayCount(
+    [MemberData(nameof(Cases))]
+    public void CountContinuousSubarraysByMonotonicDeques_Cases_ReturnsContinuousSubarrayCount(
         int[] nums, long expected) =>
         Assert.Equal(expected, ContinuousSubarraysSolution.CountContinuousSubarraysByMonotonicDeques(nums));
 }

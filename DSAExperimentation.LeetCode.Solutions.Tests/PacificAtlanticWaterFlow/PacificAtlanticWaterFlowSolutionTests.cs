@@ -3,38 +3,29 @@ using DSAExperimentation.LeetCode.Solutions.PacificAtlanticWaterFlow;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.PacificAtlanticWaterFlow;
 
 // Harness only. Both strategies are PacificAtlanticWaterFlowSolution's - this file
-// just pins them to LeetCode's published examples, one theory per strategy so a
-// failure names the strategy that broke.
+// pins them to a single cell and a flat grid, where every cell reaches both oceans,
+// one theory per strategy so a failure names the strategy that broke. LeetCode's
+// published examples run in CatalogCaseTests.
 public sealed partial class PacificAtlanticWaterFlowSolutionTests
 {
-    public static TheoryData<int[][], (int Row, int Col)[]> Examples =>
+    public static TheoryData<int[][], (int Row, int Col)[]> Cases =>
         new()
         {
-            {
-                [
-                    [1, 2, 2, 3, 5],
-                    [3, 2, 3, 4, 4],
-                    [2, 4, 5, 3, 1],
-                    [6, 7, 1, 4, 5],
-                    [5, 1, 1, 2, 4],
-                ],
-                [(0, 4), (1, 3), (1, 4), (2, 2), (3, 0), (3, 1), (4, 0)]
-            },
             { [[5]], [(0, 0)] },
             { [[3, 3], [3, 3]], [(0, 0), (0, 1), (1, 0), (1, 1)] },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindCellsByPerCellDfs_LeetCodeExamples_ReturnsCellsThatReachBothOceans(
+    [MemberData(nameof(Cases))]
+    public void FindCellsByPerCellDfs_Cases_ReturnsCellsThatReachBothOceans(
         int[][] heights, (int Row, int Col)[] expected) =>
         Assert.Equal(
             expected.OrderBy(p => p).ToArray(),
             PacificAtlanticWaterFlowSolution.FindCellsByPerCellDfs(heights).OrderBy(p => p).ToArray());
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindCellsByMultiSourceFloodFill_LeetCodeExamples_ReturnsCellsThatReachBothOceans(
+    [MemberData(nameof(Cases))]
+    public void FindCellsByMultiSourceFloodFill_Cases_ReturnsCellsThatReachBothOceans(
         int[][] heights, (int Row, int Col)[] expected) =>
         Assert.Equal(
             expected.OrderBy(p => p).ToArray(),

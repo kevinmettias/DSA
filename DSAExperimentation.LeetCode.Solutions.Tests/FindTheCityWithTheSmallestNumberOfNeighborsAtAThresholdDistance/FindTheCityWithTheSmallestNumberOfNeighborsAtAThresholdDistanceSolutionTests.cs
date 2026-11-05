@@ -4,24 +4,22 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.FindTheCityWithTheSmallest
 
 // Harness only. The road network is CityGraph and every shortest-path strategy is
 // FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolution's -
-// this file just pins them to LeetCode's published examples plus the edge cases
+// this file just pins them to the edge cases
 // the original test left uncovered (a lone city, and a graph where some pair is
 // unreachable at any distance).
 public sealed partial class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolutionTests
 {
-    public static TheoryData<int, int[][], int, int> Examples =>
+    public static TheoryData<int, int[][], int, int> Cases =>
         new()
         {
-            { 4, [[0, 1, 3], [1, 2, 1], [1, 3, 4], [2, 3, 1]], 4, 3 },
-            { 5, [[0, 1, 2], [0, 4, 8], [1, 2, 3], [1, 4, 2], [2, 3, 1], [3, 4, 1]], 2, 0 },
             { 1, [], 1, 0 },
             { 3, [[0, 1, 1]], 1, 2 },
             { 3, [[0, 1, 1], [1, 2, 1]], 1, 2 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindCityByDistanceMatrix_LeetCodeExamples_ReturnsCityWithFewestReachableNeighbors(
+    [MemberData(nameof(Cases))]
+    public void FindCityByDistanceMatrix_Cases_ReturnsCityWithFewestReachableNeighbors(
         int cityCount, int[][] edges, int distanceThreshold, int expected)
     {
         var actual = FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolution
@@ -31,8 +29,8 @@ public sealed partial class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresh
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindCityByDijkstraPerSource_LeetCodeExamples_ReturnsCityWithFewestReachableNeighbors(
+    [MemberData(nameof(Cases))]
+    public void FindCityByDijkstraPerSource_Cases_ReturnsCityWithFewestReachableNeighbors(
         int cityCount, int[][] edges, int distanceThreshold, int expected)
     {
         var actual = FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolution
@@ -42,8 +40,8 @@ public sealed partial class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresh
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindCityByFloydWarshall_LeetCodeExamples_ReturnsCityWithFewestReachableNeighbors(
+    [MemberData(nameof(Cases))]
+    public void FindCityByFloydWarshall_Cases_ReturnsCityWithFewestReachableNeighbors(
         int cityCount, int[][] edges, int distanceThreshold, int expected)
     {
         var actual = FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolution

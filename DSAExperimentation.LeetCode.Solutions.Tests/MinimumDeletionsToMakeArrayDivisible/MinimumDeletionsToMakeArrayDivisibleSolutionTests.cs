@@ -8,17 +8,15 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumDeletionsToMakeArra
 // element ever divides - plus a duplicate smallest that must be counted once, not twice.
 public sealed partial class MinimumDeletionsToMakeArrayDivisibleSolutionTests
 {
-    public static TheoryData<int[], int[], int> Examples => new()
+    public static TheoryData<int[], int[], int> Cases => new()
     {
-        { [2, 3, 2, 4, 3], [9, 6, 9, 3, 15], 2 },
-        { [4, 3, 6], [8, 2, 6, 10], -1 },
         { [4, 2, 8], [16, 8, 32], 0 },
         { [3, 3, 2], [9, 9], 1 },
         { [10], [15, 25], -1 },
     };
 
     [Theory]
-    [MemberData(nameof(Examples))]
+    [MemberData(nameof(Cases))]
     public void MinDeletionsByCandidateScan_Example_ReturnsFewestDeletions(int[] nums, int[] numsDivide, int expected)
     {
         var actual = MinimumDeletionsToMakeArrayDivisibleSolution.MinDeletionsByCandidateScan(nums, numsDivide);
@@ -27,7 +25,7 @@ public sealed partial class MinimumDeletionsToMakeArrayDivisibleSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
+    [MemberData(nameof(Cases))]
     public void MinDeletionsByMergeSort_Example_ReturnsFewestDeletions(int[] nums, int[] numsDivide, int expected)
     {
         var actual = MinimumDeletionsToMakeArrayDivisibleSolution.MinDeletionsByMergeSort(nums, numsDivide);

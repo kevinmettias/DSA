@@ -4,35 +4,31 @@ using DSAExperimentation.LeetCode.Solutions.MinimumObstacleRemovalToReachCorner;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MinimumObstacleRemovalToReachCorner;
 
 // Harness only: both strategies are MinimumObstacleRemovalToReachCornerSolution's
-// - this file just pins them to LeetCode's published examples, plus the cases a
+// - this file just pins them to the cases a
 // 0/1-weighted shortest path gets wrong most easily: a detour that costs nothing
 // at all, a corridor with no detour available, and the single-cell grid where the
 // source already is the corner. The obstacle-cost graph the Dijkstra strategy is
 // handed is asserted on its own, edge by edge.
 public sealed partial class MinimumObstacleRemovalToReachCornerSolutionTests
 {
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][], int> Cases =>
         new()
         {
-            { [[0, 1, 1], [1, 1, 0], [1, 1, 0]], 2 },
-            { [[0, 1, 0, 0, 0], [0, 1, 0, 1, 0], [0, 0, 0, 1, 0]], 0 },
-            { [[0, 0, 0], [0, 1, 0], [0, 0, 0]], 0 },
             { [[0, 1, 1, 1, 0]], 3 },
-            { [[0, 1], [1, 0]], 1 },
             { [[0]], 0 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinimumObstaclesByArrayScanDijkstra_LeetCodeExamples_ReturnsFewestObstaclesOnTheWayToTheCorner(
+    [MemberData(nameof(Cases))]
+    public void MinimumObstaclesByArrayScanDijkstra_Cases_ReturnsFewestObstaclesOnTheWayToTheCorner(
         int[][] grid, int expected) =>
         Assert.Equal(
             expected,
             MinimumObstacleRemovalToReachCornerSolution.MinimumObstaclesByArrayScanDijkstra(grid));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinimumObstaclesByWeightedGridDijkstra_LeetCodeExamples_ReturnsFewestObstaclesOnTheWayToTheCorner(
+    [MemberData(nameof(Cases))]
+    public void MinimumObstaclesByWeightedGridDijkstra_Cases_ReturnsFewestObstaclesOnTheWayToTheCorner(
         int[][] grid, int expected) =>
         Assert.Equal(
             expected,

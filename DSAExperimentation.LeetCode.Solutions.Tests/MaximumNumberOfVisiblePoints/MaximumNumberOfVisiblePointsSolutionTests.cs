@@ -3,18 +3,15 @@ using DSAExperimentation.LeetCode.Solutions.MaximumNumberOfVisiblePoints;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumNumberOfVisiblePoints;
 
 // Harness only. Both strategies are MaximumNumberOfVisiblePointsSolution's - this
-// file pins them to LeetCode's three published examples plus the three shapes a
+// file pins them to the three shapes a
 // windowing bug hides in: a window that straddles the 360/0-degree seam, a field of
 // view narrow enough that a window centered on a point would overcount, and points
 // standing exactly on `location`.
 public sealed partial class MaximumNumberOfVisiblePointsSolutionTests
 {
-    public static TheoryData<int[][], int, int[], int> Examples =>
+    public static TheoryData<int[][], int, int[], int> Cases =>
         new()
         {
-            { [[2, 1], [2, 2], [3, 3]], 90, [1, 1], 3 },
-            { [[2, 1], [2, 2], [3, 4], [1, 1]], 90, [1, 1], 4 },
-            { [[1, 0], [2, 1]], 13, [1, 1], 1 },
             // Angle -90 deg (point (0,-1)) and angle 180 deg (point (-1,0)) are only
             // 90 degrees apart going the short way around (180 -> 270 == -90), but
             // 270 degrees apart in a plain ascending sort - only wrapping finds the
@@ -37,8 +34,8 @@ public sealed partial class MaximumNumberOfVisiblePointsSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void VisiblePointsByPairwiseBruteForce_LeetCodeExamples_ReturnsMaximumVisibleCount(
+    [MemberData(nameof(Cases))]
+    public void VisiblePointsByPairwiseBruteForce_Cases_ReturnsMaximumVisibleCount(
         int[][] points, int angle, int[] location, int expected)
     {
         var actual = MaximumNumberOfVisiblePointsSolution.VisiblePointsByPairwiseBruteForce(points, angle, location);
@@ -47,8 +44,8 @@ public sealed partial class MaximumNumberOfVisiblePointsSolutionTests
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void VisiblePointsBySortAndSlideWindow_LeetCodeExamples_ReturnsMaximumVisibleCount(
+    [MemberData(nameof(Cases))]
+    public void VisiblePointsBySortAndSlideWindow_Cases_ReturnsMaximumVisibleCount(
         int[][] points, int angle, int[] location, int expected)
     {
         var actual = MaximumNumberOfVisiblePointsSolution.VisiblePointsBySortAndSlideWindow(points, angle, location);

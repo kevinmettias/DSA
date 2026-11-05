@@ -4,21 +4,19 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.NumberOfRestrictedPathsFro
 
 // Harness only. The graph, its distance labelling and both counting strategies are
 // NumberOfRestrictedPathsFromFirstToLastNodeSolution's - this file just pins them to
-// LeetCode's published examples, including the second one whose only restricted path
-// leaves most of the graph unreachable under the distance-decreasing rule.
+// the smallest graph, a single edge joining the first node to the last, whose one
+// path is restricted. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class NumberOfRestrictedPathsFromFirstToLastNodeSolutionTests
 {
-    public static TheoryData<int, int[][], long> Examples =>
+    public static TheoryData<int, int[][], long> Cases =>
         new()
         {
-            { 5, [[1, 2, 3], [1, 3, 3], [2, 3, 1], [1, 4, 2], [5, 2, 2], [3, 5, 1], [5, 4, 10]], 3 },
-            { 7, [[1, 3, 1], [4, 1, 2], [7, 3, 4], [2, 5, 3], [5, 6, 1], [6, 7, 2], [7, 5, 3], [2, 6, 4]], 1 },
             { 2, [[1, 2, 1]], 1 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountRestrictedPathsByNaiveDfs_LeetCodeExamples_CountsEveryDistanceDecreasingPath(
+    [MemberData(nameof(Cases))]
+    public void CountRestrictedPathsByNaiveDfs_Cases_CountsEveryDistanceDecreasingPath(
         int nodeCount, int[][] edges, long expected)
     {
         var actual = NumberOfRestrictedPathsFromFirstToLastNodeSolution.CountRestrictedPathsByNaiveDfs(
@@ -28,8 +26,8 @@ public sealed partial class NumberOfRestrictedPathsFromFirstToLastNodeSolutionTe
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountRestrictedPathsByDagFold_LeetCodeExamples_CountsEveryDistanceDecreasingPath(
+    [MemberData(nameof(Cases))]
+    public void CountRestrictedPathsByDagFold_Cases_CountsEveryDistanceDecreasingPath(
         int nodeCount, int[][] edges, long expected)
     {
         var actual = NumberOfRestrictedPathsFromFirstToLastNodeSolution.CountRestrictedPathsByDagFold(

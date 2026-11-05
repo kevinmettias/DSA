@@ -3,43 +3,41 @@ using DSAExperimentation.LeetCode.Solutions.CountTheRepetitions;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.CountTheRepetitions;
 
 // Harness only: both strategies live in CountTheRepetitionsSolution and are asserted
-// against the same examples, including the large-n1 case that only cycle detection
+// against the same cases, among them the large-n1 case that only cycle detection
 // can traverse quickly (the naive arm still finishes it here - it is only LeetCode's
 // real n1 <= 10^6 judge that the O(n1 * |s1|) walk cannot meet in time).
 public sealed partial class CountTheRepetitionsSolutionTests
 {
-    public static TheoryData<RepetitionCase> Examples =>
+    public static TheoryData<RepetitionCase> Cases =>
         new()
         {
-            { new RepetitionCase(S1: "acb", N1: 4, S2: "ab", N2: 2, Expected: 2) },
-            { new RepetitionCase(S1: "acb", N1: 1, S2: "acb", N2: 1, Expected: 1) },
             { new RepetitionCase(S1: "a", N1: 3, S2: "b", N2: 1, Expected: 0) },
             { new RepetitionCase(S1: "acb", N1: 1_000_000, S2: "ab", N2: 100, Expected: 10_000) },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetMaxRepetitionsByNaiveSimulation_LeetCodeExamples_ReturnsMaxRepeatCount(
-        RepetitionCase example)
+    [MemberData(nameof(Cases))]
+    public void GetMaxRepetitionsByNaiveSimulation_Cases_ReturnsMaxRepeatCount(
+        RepetitionCase testCase)
     {
         var actual = CountTheRepetitionsSolution.GetMaxRepetitionsByNaiveSimulation(
-            example.S1, example.N1, example.S2, example.N2);
+            testCase.S1, testCase.N1, testCase.S2, testCase.N2);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void GetMaxRepetitionsByHashMapCycleDetection_LeetCodeExamples_ReturnsMaxRepeatCount(
-        RepetitionCase example)
+    [MemberData(nameof(Cases))]
+    public void GetMaxRepetitionsByHashMapCycleDetection_Cases_ReturnsMaxRepeatCount(
+        RepetitionCase testCase)
     {
         var actual = CountTheRepetitionsSolution.GetMaxRepetitionsByHashMapCycleDetection(
-            example.S1, example.N1, example.S2, example.N2);
+            testCase.S1, testCase.N1, testCase.S2, testCase.N2);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
-    // One LeetCode example: the two strings with their repetition counts, and the
+    // One case: the two strings with their repetition counts, and the
     // largest number of s2 repetitions obtainable from s1. The five values are one
     // thing - a repetition query - so they travel as one named case rather than as five
     // positions a caller has to count off; s1/n1 and s2/n2 are otherwise adjacent

@@ -3,39 +3,36 @@ using DSAExperimentation.LeetCode.Solutions.AddStrings;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.AddStrings;
 
 // Harness only: both strategies live in AddStringsSolution and are asserted against
-// the same examples, including the carry-out case that grows the result.
+// the same cases, among them the carry-out case that grows the result.
 public sealed partial class AddStringsSolutionTests
 {
-    public static TheoryData<DecimalSumExample> Examples =>
+    public static TheoryData<DecimalSumCase> Cases =>
         new()
         {
-            { new DecimalSumExample(A: "11", B: "123", Expected: "134") },
-            { new DecimalSumExample(A: "456", B: "77", Expected: "533") },
-            { new DecimalSumExample(A: "0", B: "0", Expected: "0") },
-            { new DecimalSumExample(A: "99", B: "1", Expected: "100") },
-            { new DecimalSumExample(A: "1", B: "9", Expected: "10") },
+            { new DecimalSumCase(A: "99", B: "1", Expected: "100") },
+            { new DecimalSumCase(A: "1", B: "9", Expected: "10") },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void AddByCharArrayReverse_LeetCodeExamples_ReturnsDecimalSum(DecimalSumExample example)
+    [MemberData(nameof(Cases))]
+    public void AddByCharArrayReverse_Cases_ReturnsDecimalSum(DecimalSumCase testCase)
     {
-        var actual = AddStringsSolution.AddByCharArrayReverse(example.A, example.B);
+        var actual = AddStringsSolution.AddByCharArrayReverse(testCase.A, testCase.B);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void AddByBitStack_LeetCodeExamples_ReturnsDecimalSum(DecimalSumExample example)
+    [MemberData(nameof(Cases))]
+    public void AddByBitStack_Cases_ReturnsDecimalSum(DecimalSumCase testCase)
     {
-        var actual = AddStringsSolution.AddByBitStack(example.A, example.B);
+        var actual = AddStringsSolution.AddByBitStack(testCase.A, testCase.B);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
-    // One LeetCode example: the two decimal addends and their sum. All three are `string`
+    // One case: the two decimal addends and their sum. All three are `string`
     // and the addition is not symmetric, so the row names what each position is rather
     // than leaving three interchangeable arguments.
-    public readonly record struct DecimalSumExample(string A, string B, string Expected);
+    public readonly record struct DecimalSumCase(string A, string B, string Expected);
 }

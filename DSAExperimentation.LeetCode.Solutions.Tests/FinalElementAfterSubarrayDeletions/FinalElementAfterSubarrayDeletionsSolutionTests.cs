@@ -4,31 +4,31 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.FinalElementAfterSubarrayD
 
 // Harness only: all three strategies live in
 // FinalElementAfterSubarrayDeletionsSolution and are asserted against the
-// same examples, so a failure names the strategy that broke. The two full
-// game-tree strategies are exercised on the same small inputs as the O(1)
-// closed form - proving the shortcut right rather than merely asserting it.
+// same cases, so a failure names the strategy that broke. The two full
+// game-tree strategies run on the same inputs as the O(1) closed form, here
+// and over every catalog case in CatalogCaseTests, which is what checks the
+// shortcut against them. The case here is a single-element array, already its
+// own final element. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class FinalElementAfterSubarrayDeletionsSolutionTests
 {
-    public static TheoryData<int[], int> Examples =>
+    public static TheoryData<int[], int> Cases =>
         new()
         {
-            { [1, 5, 2], 2 },
-            { [3, 7], 7 },
             { [9], 9 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FinalElementByDictionaryMinimax_LeetCodeExamples_ReturnsOptimalPlayResult(int[] nums, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void FinalElementByDictionaryMinimax_Cases_ReturnsOptimalPlayResult(int[] nums, int expected) =>
         Assert.Equal(expected, FinalElementAfterSubarrayDeletionsSolution.FinalElementByDictionaryMinimax(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FinalElementByMemoizedMinimax_LeetCodeExamples_ReturnsOptimalPlayResult(int[] nums, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void FinalElementByMemoizedMinimax_Cases_ReturnsOptimalPlayResult(int[] nums, int expected) =>
         Assert.Equal(expected, FinalElementAfterSubarrayDeletionsSolution.FinalElementByMemoizedMinimax(nums));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void FinalElementByEndpointComparison_LeetCodeExamples_ReturnsOptimalPlayResult(int[] nums, int expected) =>
+    [MemberData(nameof(Cases))]
+    public void FinalElementByEndpointComparison_Cases_ReturnsOptimalPlayResult(int[] nums, int expected) =>
         Assert.Equal(expected, FinalElementAfterSubarrayDeletionsSolution.FinalElementByEndpointComparison(nums));
 }

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.FindNumberOfWaysToReachTheKthStair;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindNumberOfWaysToReachTheKthStairSolution's, the
-// same methods FindNumberOfWaysToReachTheKthStairSolutionTests proves correct. TargetStair
+// same methods CatalogCaseTests proves correct. TargetStair
 // stays in the low millions rather than up to LC's own 1e9 ceiling because the
 // unmemoized arm's own call count scales ~O(k) (the targetStair+1 prune only stops
 // each branch after ~log2(k) levels of up-to-2x fanout, but that fanout revisits
