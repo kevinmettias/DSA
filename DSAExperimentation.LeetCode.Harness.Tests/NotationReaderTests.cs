@@ -16,6 +16,14 @@ public sealed partial class NotationReaderTests
     public void Read_IntegerPastInt32_ReadsALong() => Assert.Equal(9_000_000_000L, NotationReader.Read("9000000000", typeof(long)));
 
     [Fact]
+    public void Read_NonNegativeInteger_ReadsAUint()
+    {
+        var value = NotationReader.Read("43261596", typeof(uint));
+
+        Assert.Equal(43261596u, value);
+    }
+
+    [Fact]
     public void Read_Fraction_ReadsADouble() =>
         Assert.Equal(2.5, Assert.IsType<double>(NotationReader.Read("2.5", typeof(double))), FractionDigits);
 

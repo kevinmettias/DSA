@@ -6,6 +6,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOf1Bits;
 // Two ways to count: clear the lowest set bit each step, which runs exactly
 // popcount(n) times, or shift the operand right and test the low bit, which
 // always runs all 32 positions. Which wins depends on how dense the operand is.
+[LeetCodeQuestion("number-of-1-bits", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOf1BitsSolution
 {
 

@@ -38,6 +38,7 @@ internal static class NotationTypes
     [
         SpecialType.System_Int32,
         SpecialType.System_Int64,
+        SpecialType.System_UInt32,
         SpecialType.System_Double,
         SpecialType.System_Boolean,
         SpecialType.System_String,

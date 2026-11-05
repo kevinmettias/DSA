@@ -13,6 +13,7 @@ public sealed partial class NotationTypesTests
         internal sealed class Holder
         {
             public int Integer;
+            public uint Unsigned;
             public string Text;
             public char Character;
             public int[][] Grid;
@@ -41,7 +42,7 @@ public sealed partial class NotationTypesTests
         }
         """;
 
-    public static TheoryData<string> ReadableFields => ["Integer", "Text", "Character", "Grid", "Intervals", "Words", "Values", "Tree", "Role"];
+    public static TheoryData<string> ReadableFields => ["Integer", "Unsigned", "Text", "Character", "Grid", "Intervals", "Words", "Values", "Tree", "Role"];
 
     // A tree LeetCodeWireFormat cannot build, a map LeetCode has no notation for, a rectangular array, a record
     // of two values, a role type that is a class, and a struct that keeps no value it is built from.

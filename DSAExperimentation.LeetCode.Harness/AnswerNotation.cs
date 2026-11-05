@@ -19,7 +19,7 @@ internal static class AnswerNotation
     public static JsonNode Of(object? answer) => answer switch
     {
         null => new JsonArray(),
-        string or bool or int or long or double => JsonSerializer.SerializeToNode(answer) ?? new JsonArray(),
+        string or bool or int or uint or long or double => JsonSerializer.SerializeToNode(answer) ?? new JsonArray(),
         char character => JsonValue.Create(character.ToString()),
         BinaryTreeNode<int> root => ArrayOf(LeetCodeWireFormat.FromBinaryTree(root).Cast<object?>()),
         SinglyLinkedListNode<int> head => ArrayOf(LeetCodeWireFormat.FromLinkedList(head).Cast<object?>()),

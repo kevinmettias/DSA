@@ -9,7 +9,8 @@ namespace DSAExperimentation.LeetCode.Harness;
 // catalog's own LeetCodeNotation.Parse<TValue> needs the type at compile time, and a generated harness
 // holds a strategy's parameter types as Type values. The rules are the ones the hand-written harnesses
 // applied case by case:
-// - JSON numbers, strings and booleans as themselves, and a one-character string as a char;
+// - JSON numbers, strings and booleans as themselves (a non-negative integer as a uint too), and a
+//   one-character string as a char;
 // - an array as an array, element by element;
 // - an array as a tuple of the same arity, the way LeetCode writes an interval as [start, end];
 // - a level-order array as a tree and a flat array as a linked list, through LeetCodeWireFormat;
@@ -30,6 +31,7 @@ internal static class NotationReader
     {
         [typeof(int)] = element => element.GetInt32(),
         [typeof(long)] = element => element.GetInt64(),
+        [typeof(uint)] = element => element.GetUInt32(),
         [typeof(double)] = element => element.GetDouble(),
         [typeof(bool)] = element => element.GetBoolean(),
         [typeof(string)] = TextOf,

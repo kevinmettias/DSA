@@ -7,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReverseBits;
 // or slice the word into four bytes and reverse each through a 256-entry lookup
 // table. The table trades 256 bytes of static state for a fixed four-lookup body
 // that does no per-bit looping.
+[LeetCodeQuestion("reverse-bits", LeetCodeAnswerOrder.AsWritten)]
 internal static class ReverseBitsSolution
 {
     private const int BitsPerByte = 8;

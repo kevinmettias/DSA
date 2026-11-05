@@ -9,6 +9,9 @@ public sealed partial class AnswerNotationTests
     public void Of_Integer_WritesTheNumber() => Assert.Equal("42", AnswerNotation.Of(42).ToJsonString());
 
     [Fact]
+    public void Of_UnsignedInteger_WritesTheNumber() => Assert.Equal("964176192", AnswerNotation.Of(964176192u).ToJsonString());
+
+    [Fact]
     public void Of_Character_WritesAOneCharacterString() => Assert.Equal("\"a\"", AnswerNotation.Of('a').ToJsonString());
 
     [Fact]
