@@ -21,6 +21,7 @@ internal sealed class CatalogStrategy
         BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly;
 
     private readonly MethodInfo _method;
+    private readonly bool _answersInPlace;
     private readonly Type[] _inputTypes;
 
     public Type Solution { get; }
@@ -30,10 +31,11 @@ internal sealed class CatalogStrategy
     // The solutions project: every solution class, enrolled or not.
     public static Assembly SolutionsAssembly { get; } = Assembly.Load(SolutionsAssemblyName);
 
-    private CatalogStrategy(Type solution, MethodInfo method)
+    private CatalogStrategy(Type solution, MethodInfo method, LeetCodeQuestionAttribute? question)
     {
         Solution = solution;
         _method = method;
+        _answersInPlace = question?.AnswersInPlace ?? false;
         _inputTypes = [.. method.GetParameters().Where(parameter => !parameter.IsOut).Select(parameter => parameter.ParameterType)];
     }
 
@@ -44,16 +46,20 @@ internal sealed class CatalogStrategy
             .OrderBy(type => type.FullName, StringComparer.Ordinal)];
 
     // The solution's strategies in declaration order, each the one overload of its name a case can feed.
-    public static IReadOnlyList<CatalogStrategy> Of(Type solution) =>
-        [.. solution.GetMethods(DeclaredStatics)
+    public static IReadOnlyList<CatalogStrategy> Of(Type solution)
+    {
+        var question = solution.GetCustomAttribute<LeetCodeQuestionAttribute>();
+
+        return [.. solution.GetMethods(DeclaredStatics)
             .Where(IsStrategy)
             .OrderBy(method => method.MetadataToken)
             .GroupBy(method => method.Name)
-            .Select(overloads => new CatalogStrategy(solution, TheBoundOverload(solution, [.. overloads])))];
+            .Select(overloads => new CatalogStrategy(solution, TheBoundOverload(solution, [.. overloads], question), question))];
+    }
 
-    private static MethodInfo TheBoundOverload(Type solution, List<MethodInfo> overloads)
+    private static MethodInfo TheBoundOverload(Type solution, List<MethodInfo> overloads, LeetCodeQuestionAttribute? question)
     {
-        var bound = overloads.Where(IsBindable).ToList();
+        var bound = overloads.Where(method => IsBindable(method, question)).ToList();
 
         if (bound.Count != 1)
         {
@@ -76,6 +82,11 @@ internal sealed class CatalogStrategy
         var arguments = ArgumentsFor(parameters, columns, caseIndex);
         var returned = _method.Invoke(null, BindingFlags.DoNotWrapExceptions, binder: null, arguments, culture: null);
         var outputs = parameters.Where(parameter => parameter.IsOut).Select(parameter => arguments[parameter.Position]).ToList();
+
+        if (_answersInPlace)
+        {
+            return AnswerNotation.Of(arguments[0]);
+        }
 
         return NotationOf(returned, outputs);
     }
@@ -111,8 +122,8 @@ internal sealed class CatalogStrategy
     }
 
     // A static local function compiles to an internal method of the class, named for the method around it
-    // (<CountByLoop>g__Step|0_0), so it carries that method's By. The generator, reading members from source,
-    // never sees one, and nor may this.
+    // (<CountByLoop>g__Step|0_0), so it carries that method's By. The generator meets the same method in the
+    // solutions assembly's metadata and leaves it out too.
     private static bool IsStrategy(MethodInfo method) =>
         (method.IsPublic || method.IsAssembly)
             && !method.IsSpecialName
@@ -137,17 +148,26 @@ internal sealed class CatalogStrategy
         return false;
     }
 
-    // The generator's rule, over run-time types: not generic, an answer to store by value, and every input
-    // one LeetCode's notation can be read into.
-    private static bool IsBindable(MethodInfo method)
+    // The generator's rule, over run-time types: not generic, an answer to store by value - or, for a
+    // question answered in place, no return value and a first input to answer with - and every input one
+    // LeetCode's notation can be read into.
+    private static bool IsBindable(MethodInfo method, LeetCodeQuestionAttribute? question)
     {
-        if (method.IsGenericMethodDefinition || HasNoAnswerToStore(method.ReturnType))
+        var parameters = method.GetParameters();
+        var isAnsweredInPlace = question?.AnswersInPlace ?? false;
+        var answers = isAnsweredInPlace ? IsInPlaceAnswer(method, parameters) : !HasNoAnswerToStore(method.ReturnType);
+
+        if (method.IsGenericMethodDefinition || !answers)
         {
             return false;
         }
 
-        return method.GetParameters().All(parameter => parameter.IsOut || IsReadableInput(parameter.ParameterType));
+        return parameters.All(parameter => parameter.IsOut || IsReadableInput(parameter.ParameterType));
     }
+
+    // Returns nothing, and leaves its answer in a first parameter that a case fills.
+    private static bool IsInPlaceAnswer(MethodInfo method, ParameterInfo[] parameters) =>
+        method.ReturnType == typeof(void) && parameters is [{ IsOut: false }, ..];
 
     // A void method answers by mutating its input, and a ref return or a ref struct cannot sit in an array.
     private static bool HasNoAnswerToStore(Type returnType) =>

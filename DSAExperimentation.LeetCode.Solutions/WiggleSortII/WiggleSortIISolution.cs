@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WiggleSortII;
 // clone - filling from the *reversed* halves, rather than a naive ascending
 // interleave, is what keeps the result valid even when values repeat around the
 // median. The two strategies differ only in which sort produces the clone.
+[LeetCodeQuestion("wiggle-sort-ii", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true, AnswerCheck = typeof(WiggleSortIIAnswerCheck))]
 internal static class WiggleSortIISolution
 {
     // The textbook O(n^2) selection sort, written without this repo's primitives -

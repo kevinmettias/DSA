@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReorderList;
 // implemented - the benchmark carried no second algorithm, just two stub
 // [Benchmark] methods that both returned a literal 1 - so there is nothing to
 // reconcile here, only to extract and put under test for the first time.
+[LeetCodeQuestion("reorder-list", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true)]
 internal static class ReorderListSolution
 {
     public static void ReorderByReverseAndMergeInPlace(SinglyLinkedListNode<int>? head)

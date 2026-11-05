@@ -27,6 +27,7 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
     private const string StrategyInfix = "By";
     private const string NoOverloadBinds = "no overload takes a case's inputs";
     private const string RewritesInputArgument = "RewritesInput";
+    private const string AnswersInPlaceArgument = "AnswersInPlace";
 
     private static readonly DiagnosticDescriptor UnboundStrategy = new(
         id: "DSACAT001",
@@ -85,35 +86,46 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
     private static void AddClassFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, GeneratedClasses generated)
     {
         var arms = new List<StrategyShape>();
+        var source = IsSet(solution, attribute, AnswersInPlaceArgument) ? AnswerSource.FirstInput : AnswerSource.ReturnValue;
 
         foreach (var overloads in solution.GetMembers().OfType<IMethodSymbol>().Where(IsStrategy).GroupBy(method => method.Name))
         {
-            var bound = overloads.Where(method => StrategyShape.ReasonUnbound(method) is null).ToList();
+            var bound = overloads.Where(method => StrategyShape.ReasonUnbound(method, source) is null).ToList();
 
             if (bound.Count == 1)
             {
-                arms.Add(StrategyShape.Of(bound[0]));
+                var arm = StrategyShape.Of(bound[0], source);
+                arms.Add(arm);
             }
             else
             {
-                generated.Refusals.Add((solution.Name, overloads.Key, ReasonNoneOrSeveral(overloads.ToList(), bound.Count)));
+                generated.Refusals.Add((solution.Name, overloads.Key, ReasonNoneOrSeveral(overloads.ToList(), bound.Count, source)));
             }
         }
 
+        // A strategy that answers in place rewrites its input, so each call needs a copy of its own too.
         var name = NameFor(solution);
-        var rewritesInput = IsRewritingInput(solution, attribute);
-        var writer = new CatalogBenchmarkWriter(NotationTypes.Render(solution), name, arms, rewritesInput);
+        var copiesInputs = source == AnswerSource.FirstInput || IsSet(solution, attribute, RewritesInputArgument);
+        var writer = new CatalogBenchmarkWriter(NotationTypes.Render(solution), name, arms, copiesInputs);
         generated.Sources.Add((name, writer.Write()));
     }
 
-    private static string ReasonNoneOrSeveral(List<IMethodSymbol> overloads, int boundCount)
+    // Whether the solution's attribute sets a flag, such as RewritesInput: its strategies may rewrite the
+    // inputs they are handed.
+    private static bool IsSet(INamedTypeSymbol solution, INamedTypeSymbol attribute, string flag) =>
+        solution.GetAttributes()
+            .Where(applied => SymbolEqualityComparer.Default.Equals(applied.AttributeClass, attribute))
+            .SelectMany(applied => applied.NamedArguments)
+            .Any(argument => argument.Key == flag && argument.Value.Value is true);
+
+    private static string ReasonNoneOrSeveral(List<IMethodSymbol> overloads, int boundCount, AnswerSource source)
     {
         if (boundCount > 0)
         {
             return $"{boundCount} of its overloads take a case's inputs, so which one is the arm is not settled";
         }
 
-        return StrategyShape.ReasonUnbound(overloads[0]) ?? NoOverloadBinds;
+        return StrategyShape.ReasonUnbound(overloads[0], source) ?? NoOverloadBinds;
     }
 
     private static string NameFor(INamedTypeSymbol solution)
@@ -125,13 +137,6 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
 
         return solution.Name.Substring(0, solution.Name.Length - SolutionSuffix.Length) + ClassSuffix;
     }
-
-    // Whether the solution says its strategies may rewrite the inputs they are handed.
-    private static bool IsRewritingInput(INamedTypeSymbol solution, INamedTypeSymbol attribute) =>
-        solution.GetAttributes()
-            .Where(applied => SymbolEqualityComparer.Default.Equals(applied.AttributeClass, attribute))
-            .SelectMany(applied => applied.NamedArguments)
-            .Any(argument => argument.Key == RewritesInputArgument && argument.Value.Value is true);
 
     private static void Emit(SourceProductionContext output, GeneratedClasses generated)
     {

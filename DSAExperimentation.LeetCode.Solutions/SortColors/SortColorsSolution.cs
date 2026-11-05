@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SortColors;
 // The naive baseline is exactly that general-purpose sort - Array.Sort - the
 // O(n log n) arm the linear Dutch-flag partition below has to justify itself
 // against.
+[LeetCodeQuestion("sort-colors", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true)]
 internal static class SortColorsSolution
 {
     private const int HighColor = 2;

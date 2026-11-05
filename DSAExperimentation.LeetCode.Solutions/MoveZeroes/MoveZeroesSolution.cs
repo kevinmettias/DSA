@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MoveZeroes;
 // strategy below is the same ArrayIndexedSequence<T> Get/Set two-pointer swap
 // SortColors' Dutch-flag partition already proves out for this repo,
 // specialized to a single zero/nonzero split instead of a three-way one.
+[LeetCodeQuestion("move-zeroes", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true)]
 internal static class MoveZeroesSolution
 {
     // The textbook answer: for each zero found, scan forward for the next

@@ -10,6 +10,11 @@ public sealed partial class CatalogBenchmarkGeneratorTests
     // The diagnostic the generator reports for a strategy no arm can call.
     private const string UnboundStrategy = "DSACAT001";
 
+    // An in-place arm's call, then the answer it stores: the input the call left. And the mark of the setup
+    // that copies an arm's inputs before each iteration.
+    private const string InPlaceCall = "global::ProbeSolution.SortByInsertion(input0[index]);\n            answers[index] = input0[index];";
+    private const string CopySetup = "IterationSetup";
+
     private const string EnrolledProbe = """
         using DSAExperimentation.LeetCode;
 
@@ -37,6 +42,16 @@ public sealed partial class CatalogBenchmarkGeneratorTests
             {
                 public static int CountByLoop(int[] values) => values.Length;
             }
+        }
+        """;
+
+    private const string AnsweringInPlaceProbe = """
+        using DSAExperimentation.LeetCode;
+
+        [LeetCodeQuestion("probe", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true)]
+        internal static class ProbeSolution
+        {
+            public static void SortByInsertion(int[] values) { }
         }
         """;
 
@@ -140,6 +155,14 @@ public sealed partial class CatalogBenchmarkGeneratorTests
     [Fact]
     public void Initialize_StrategyAnsweringInPlace_ReportsItRatherThanLeavingItOut() =>
         Assert.Contains(GeneratorProbe.Generate(InPlaceProbe).Diagnostics, diagnostic => diagnostic.Id == UnboundStrategy);
+
+    [Fact]
+    public void Initialize_SolutionAnsweringInPlace_StoresEachCallsFirstInputAsItsAnswer() =>
+        Assert.Contains(InPlaceCall, SourceOf(AnsweringInPlaceProbe), StringComparison.Ordinal);
+
+    [Fact]
+    public void Initialize_SolutionAnsweringInPlace_CopiesEachArmsInputsBeforeEachIteration() =>
+        Assert.Contains(CopySetup, SourceOf(AnsweringInPlaceProbe), StringComparison.Ordinal);
 
     [Fact]
     public void Initialize_NoSolutionNamesAQuestion_WritesNothing() =>

@@ -27,5 +27,5 @@ public sealed partial class CatalogBenchmarkWriterTests
         Assert.Contains("global::Holder.TryFindByScan(input0[index], input1[index], out var output0, out var output1)", SourceFor("TryFindByScan"), StringComparison.Ordinal);
 
     private static string SourceFor(string strategy) =>
-        new CatalogBenchmarkWriter("global::Holder", "HolderCatalogBenchmarks", [StrategyShape.Of(GeneratorProbe.Method(Holder, strategy))], rewritesInput: false).Write();
+        new CatalogBenchmarkWriter("global::Holder", "HolderCatalogBenchmarks", [StrategyShape.Of(GeneratorProbe.Method(Holder, strategy), AnswerSource.ReturnValue)], rewritesInput: false).Write();
 }

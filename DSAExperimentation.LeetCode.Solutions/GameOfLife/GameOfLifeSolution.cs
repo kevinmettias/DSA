@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.GameOfLife;
 //
 // Conway's B3/S23 rule is the game's (Domain/Games/Life), and both arms ask LifeLike<ConwayLife>
 // (ARCHITECTURE §17.5): what they differ in is how they remember the generation they are replacing.
+[LeetCodeQuestion("game-of-life", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true)]
 internal static class GameOfLifeSolution
 {
     // The textbook answer: clone the board into a snapshot up front and read only the

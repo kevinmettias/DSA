@@ -36,6 +36,17 @@ public sealed partial class CatalogStrategyTests
     }
 
     [Fact]
+    public void AnswerTo_StrategyAnsweringInPlace_AnswersWithItsInputAsTheCallLeftIt()
+    {
+        var strategy = CatalogStrategy.Of(typeof(InPlaceProbeSolution)).Single();
+        var columns = strategy.Columns();
+
+        var answer = strategy.AnswerTo(columns, 0);
+
+        Assert.Equal(columns.Cases[0].ExpectedOutput, answer.ToJsonString());
+    }
+
+    [Fact]
     public void Solution_AnyStrategy_IsTheClassThatDeclaresIt() =>
         Assert.All(CatalogStrategy.Of(typeof(TwoSumSolution)), strategy => Assert.Equal(typeof(TwoSumSolution), strategy.Solution));
 

@@ -22,6 +22,8 @@ internal static class GeneratorProbe
                 public LeetCodeQuestionAttribute(string titleSlug, LeetCodeAnswerOrder answerOrder) { }
 
                 public bool RewritesInput { get; set; }
+
+                public bool AnswersInPlace { get; set; }
             }
         }
 

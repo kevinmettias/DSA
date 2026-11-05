@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RecoverBinarySearchTree;
 // benchmark arms only located the pair without writing the fix back, which was
 // weaker than what the test's helper already proved correct, so both strategies
 // here are promoted to perform the real recovery.
+[LeetCodeQuestion("recover-binary-search-tree", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true)]
 internal static class RecoverBinarySearchTreeSolution
 {
     // The textbook baseline: collect the in-order sequence into a BCL List, then

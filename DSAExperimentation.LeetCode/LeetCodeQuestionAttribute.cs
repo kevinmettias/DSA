@@ -25,6 +25,11 @@ internal sealed class LeetCodeQuestionAttribute(string titleSlug, LeetCodeAnswer
     // benchmark does by copying them before each iteration.
     public bool RewritesInput { get; set; }
 
+    // Whether the strategies answer by rewriting their first input, as an in-place question asks (Move
+    // Zeroes moves the zeros within nums): each returns nothing, and its answer is that input as it leaves
+    // it. A harness hands every call inputs of its own, as for RewritesInput.
+    public bool AnswersInPlace { get; set; }
+
     // How far a real-valued answer may stand from LeetCode's and still be accepted, as the statement says
     // ("Answers within 10^-5 of the actual answer will be accepted"); 0 when it is compared as written.
     public double Tolerance { get; set; }

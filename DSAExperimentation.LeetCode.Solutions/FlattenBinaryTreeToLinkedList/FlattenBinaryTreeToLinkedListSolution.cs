@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FlattenBinaryTreeToLinkedList;
 // every node's Right pointer chains to the next node in preorder, with Left always
 // null. Both strategies mutate the tree they are handed - there is no separate
 // "build" input to hoist a prepared-input overload from.
+[LeetCodeQuestion("flatten-binary-tree-to-linked-list", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true)]
 internal static class FlattenBinaryTreeToLinkedListSolution
 {
     // Textbook post-order splice: flatten each subtree first, then graft the

@@ -2186,6 +2186,9 @@ internal static class TwoSumSolution
 - The type that states a prose promise a generated case can break (§17.12), when there is one.
 - Whether the strategies may rewrite the inputs they are handed (`RewritesInput`), as relinking a
   list does, so the generated benchmark hands each call inputs of its own (below).
+- Whether the question is answered in place (`AnswersInPlace`), as Move Zeroes moves the zeros
+  within `nums`: each strategy returns nothing, and its answer is its first input as the call leaves
+  it. Its inputs are copied for every call, as for `RewritesInput`.
 - How far a real-valued answer may stand from LeetCode's (`Tolerance`), when the statement says so:
   "Answers within 10^-5 of the actual answer will be accepted". `CatalogJudge` then accepts each
   number that close, and holds arms to one another at twelve significant digits, as
@@ -2198,7 +2201,7 @@ internal static class TwoSumSolution
   Substring's check takes any palindrome in the string as long as the recorded one. `CatalogJudge`
   asks the check instead of comparing.
 
-All six are facts about the problem. The attribute names no size and no workload: the catalog's
+All seven are facts about the problem. The attribute names no size and no workload: the catalog's
 cases are the inputs LeetCode poses, and choosing sizes stays a tier-5 decision (§17.7). Being data,
 the attribute keeps tier 4 off the machine (§17.6c). Nothing in the solutions project reads the
 catalog.
@@ -2227,8 +2230,10 @@ run of that category times both, and `--filter '*CatalogBenchmarks*'` selects th
   as BenchmarkDotNet does, so an arm that reused its copy would answer differently the second time.
 - A `Try` strategy's answer is its return value gathered with its out parameters, as Two Sum's
   `(found, first, second)`.
+- A strategy that answers in place, for a question that says so, is called on the iteration's next
+  copy of its inputs, and the arm stores that first input as the call left it.
 - A strategy no arm can call fails the build with `DSACAT001`, naming why. It may be generic, answer
-  in place, or take a type the notation cannot be read into. Leaving it out instead would show an
+  in place where its question does not say so, or take a type the notation cannot be read into. Leaving it out instead would show an
   enrolled solution as measured when one of its strategies was not.
 
 **Why generated, and not one class driven by parameters.** A single class whose arm is a
@@ -2362,8 +2367,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 804 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 208 more:
+**Enrolled.** 814 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 218 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2454,6 +2459,11 @@ have only the empty tree. A check over those would pass whatever the strategy di
   array would have let four grid solutions in too, but Number of Possible Sets of Closing Branches
   hoists a `long[,]` overload beside its LeetCode-shaped one, and the generator, which reads no
   catalog, could no longer tell which overload is the arm (§17.4), so grids stay unread.
+- 10 answered in place, once the attribute could say so: Move Zeroes, Sort Colors, Rotate Image, Set
+  Matrix Zeroes, Game of Life, Surrounded Regions, Flatten Binary Tree to Linked List, Recover Binary
+  Search Tree, Reorder List and Wiggle Sort II, which also takes any valid wiggle through an answer
+  check. The dataset records no changed input for such a question, so each is judged on its 2 or 3
+  examples; every generated case is still timed, and holds the arms to one another.
 
 Open items:
 
@@ -2472,7 +2482,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 301 solutions are left (2026-11-04), each blocked for a reason the table and
+- **Enrolling the rest.** 291 solutions are left (2026-11-04), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
@@ -2509,8 +2519,8 @@ Open items:
   would leave theories named `_LeetCodeExamples_`, and comments describing the published examples,
   over rows that are no longer either, so each file needs its names and comments rewritten as its
   rows go.
-- **Shapes the generator refuses.** Design problems, in-place answers and judge-only inputs each
-  need a rule before their problems can enroll.
+- **Shapes the generator refuses.** Design problems and judge-only inputs each need a rule before
+  their problems can enroll.
 
 **How arms agree.** A generated class's arms are held to one another in LeetCode's notation, by the
 attribute's order rule, as `CatalogJudge` holds a baseline to the catalog (`CatalogArmAnswers`). So

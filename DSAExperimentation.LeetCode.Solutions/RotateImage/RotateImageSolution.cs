@@ -7,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RotateImage;
 // they reverse each row - the BCL's Array.Reverse, or this repo's own LIFO
 // Stack<int>, the same digit-reversal primitive ReverseInteger composes,
 // applied here to a matrix row instead of a decimal digit run.
+[LeetCodeQuestion("rotate-image", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true)]
 internal static class RotateImageSolution
 {
     // The textbook baseline: transpose, then let the BCL reverse each row.

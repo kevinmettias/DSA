@@ -154,10 +154,16 @@ internal sealed class CatalogBenchmarkWriter(string solution, string className, 
         return Joined(arm.Inputs.Select((_, index) => $"        var input{index} = {InputFieldOf(arm, index)}[copy];").Prepend(copy));
     }
 
-    // A strategy with out parameters answers with its return value and its outputs gathered into one tuple.
+    // A strategy with out parameters answers with its return value and its outputs gathered into one tuple,
+    // and one that answers in place with its first input as the call leaves it.
     private string CallOf(StrategyShape arm)
     {
         var call = $"{solution}.{arm.Name}({string.Join(ArgumentSeparator, ArgumentsOf(arm))})";
+
+        if (arm.Source == AnswerSource.FirstInput)
+        {
+            return $"            {call};{NewLine}            answers[index] = input0[index];";
+        }
 
         if (arm.OutputCount == 0)
         {

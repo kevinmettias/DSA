@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SurroundedRegions;
 // the breadth-first search above it, which drains an explicit Queue. They write the
 // same marker to the same cells and then share one capture pass, so the boards they
 // leave are identical.
+[LeetCodeQuestion("surrounded-regions", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true)]
 internal static class SurroundedRegionsSolution
 {
     private const char Open = 'O';

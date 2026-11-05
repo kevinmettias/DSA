@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SetMatrixZeroes;
 // The two strategies differ only in how they remember which cells were zero
 // to begin with: a full second copy of the matrix, or this repo's own
 // Set<int>, tracking just the zero rows and columns.
+[LeetCodeQuestion("set-matrix-zeroes", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true)]
 internal static class SetMatrixZeroesSolution
 {
     // The textbook baseline: snapshot the whole matrix before mutating it, so
