@@ -109,6 +109,15 @@ internal static class NotationTypes
     private static bool IsKeptAsProperty(INamedTypeSymbol type, IParameterSymbol parameter) =>
         type.GetMembers(parameter.Name).OfType<IPropertySymbol>().Any(property => SymbolEqualityComparer.Default.Equals(property.Type, parameter.Type));
 
+    // How many consecutive case inputs a parameter of this type can stand for, as NotationReader.WidthOf
+    // counts them: a tuple's or a record's values, when it has several, and one for any other type.
+    public static int WidthOf(ITypeSymbol type) => type switch
+    {
+        INamedTypeSymbol { IsTupleType: true } tuple => tuple.TupleElements.Length,
+        INamedTypeSymbol { IsValueType: true } valueType when RecordValuesOf(valueType) is { } values => values.Count,
+        _ => 1,
+    };
+
     // An array of a rendered type, nested depth times, written as C# reads it: rank specifiers run outermost
     // first, so the new brackets go before the type's own trailing ones, and an array of int[,] is int[][,],
     // where int[,][] would be a grid of int[]. Brackets inside a tuple or a type argument are not trailing,

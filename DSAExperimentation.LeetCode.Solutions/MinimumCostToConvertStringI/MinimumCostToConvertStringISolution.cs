@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToConvertStringI;
 // the given (original, changed, cost) rules. Each position is an
 // independent shortest-path query on the 26-letter conversion graph, so the
 // whole problem reduces to "sum one all-pairs lookup per position".
+[LeetCodeQuestion("minimum-cost-to-convert-string-i", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MinimumCostToConvertStringIPromise))]
 internal static class MinimumCostToConvertStringISolution
 {
     private const long Unreachable = long.MaxValue / 4;

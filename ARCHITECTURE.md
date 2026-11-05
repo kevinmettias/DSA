@@ -2569,8 +2569,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,041 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 445 more:
+**Enrolled.** 1,043 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 447 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2776,6 +2776,14 @@ have only the empty tree. A check over those would pass whatever the strategy di
   6,435 of them (50 of the 85 the promise keeps), the count its enumerate-and-sort arm builds. Find the
   Shortest Superstring takes an answer check, any string as long as the recorded one that holds every
   word, and reaches 9 words (57 of 88), its permutation arm trying every order.
+- Minimum Cost to Convert String I and II (2026-11-05), whose strategies take the three rule arrays as one
+  tuple, beside an overload taking the distance table built from them. Once a rectangular array was read,
+  that table's `long[,]` made a second overload a case could feed, and narrowing compared parameter
+  counts, three each, with LeetCode's five. An overload now takes the declared count when its parameters
+  take one input each, or when their widths add up to it, a tuple or record spread over as many
+  consecutive inputs as `CatalogColumns` reads into it; the harness and the generator count alike. Each
+  also promises what generated cases broke, 17 of I's and 20 of II's: a target as long as its source, a
+  cost for every rule, lowercase letters, and in II each rule's change as long as its original.
 
 Open items:
 
@@ -2794,7 +2802,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 64 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 62 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.

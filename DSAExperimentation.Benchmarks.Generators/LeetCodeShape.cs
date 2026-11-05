@@ -69,7 +69,7 @@ internal static class LeetCodeShape
     // of them when none takes the declared count.
     public static IReadOnlyList<IMethodSymbol> Narrowed(IReadOnlyList<IMethodSymbol> overloads, IReadOnlyList<string> declared)
     {
-        var ofTheCount = overloads.Where(overload => InputsOf(overload).Count == declared.Count).ToList();
+        var ofTheCount = overloads.Where(overload => IsOfTheCount(overload, declared.Count)).ToList();
 
         if (ofTheCount.Count == 0)
         {
@@ -78,6 +78,15 @@ internal static class LeetCodeShape
 
         var best = ofTheCount.Max(overload => MatchesOf(overload, declared));
         return [.. ofTheCount.Where(overload => MatchesOf(overload, declared) == best)];
+    }
+
+    // Takes the declared count of inputs one to a parameter, or spread, a tuple or record parameter over as
+    // many consecutive inputs as it has values, as CatalogColumns reads a case into it.
+    private static bool IsOfTheCount(IMethodSymbol overload, int count)
+    {
+        var inputs = InputsOf(overload);
+
+        return inputs.Count == count || inputs.Sum(NotationTypes.WidthOf) == count;
     }
 
     private static int MatchesOf(IMethodSymbol overload, IReadOnlyList<string> declared) =>

@@ -5,18 +5,24 @@ namespace DSAExperimentation.Benchmarks.Tests.Generators;
 // The compile-time half of the harness's LeetCodeShape: each row names a field or a method of Holder below.
 public sealed partial class LeetCodeShapeTests
 {
-    // Holder's overload pairs: rows beside tuples, a declared input beside one more, and two that match alike.
+    // Holder's overload pairs: rows beside tuples, a declared input beside one more, two that match alike, and
+    // a tuple spread over three inputs beside a table built from them.
     private const string Rows = "CountByRows";
     private const string Pairs = "CountByPairs";
     private const string OneInput = "SumByLoop";
     private const string TwoInputs = "SumByHalf";
     private const string ByArray = "PickByArray";
     private const string ByList = "PickByList";
+    private const string BySpreadRules = "CostByRules";
+    private const string ByTable = "CostByTable";
     private const string IntegerRows = "integer[][]";
     private const string Integers = "integer[]";
     private const int BothOverloads = 2;
 
     private static readonly string[] QuestionsTypes = [IntegerRows, "integer"];
+
+    // A question that lists a source and three rule arrays, which a tuple parameter may take together.
+    private static readonly string[] RulesTypes = ["string", "character[]", "character[]", Integers];
 
     private const string Holder = """
         using System.Collections.Generic;
@@ -36,6 +42,8 @@ public sealed partial class LeetCodeShapeTests
             public static int SumByHalf(int[] values, int half) => 0;
             public static int PickByArray(int[] values) => 0;
             public static int PickByList(IList<int> values) => 0;
+            public static int CostByRules(string source, (char[] Original, char[] Changed, int[] Cost) rules) => 0;
+            public static int CostByTable(string source, long[,] distances) => 0;
         }
         """;
 
@@ -114,5 +122,13 @@ public sealed partial class LeetCodeShapeTests
         var narrowed = LeetCodeShape.Narrowed([GeneratorProbe.Method(Holder, ByArray), GeneratorProbe.Method(Holder, ByList)], [Integers]);
 
         Assert.Equal(BothOverloads, narrowed.Count);
+    }
+
+    [Fact]
+    public void Narrowed_TupleSpreadOverTheDeclaredInputs_KeepsTheTuple()
+    {
+        var narrowed = LeetCodeShape.Narrowed([GeneratorProbe.Method(Holder, BySpreadRules), GeneratorProbe.Method(Holder, ByTable)], RulesTypes);
+
+        Assert.Equal(BySpreadRules, Assert.Single(narrowed).Name);
     }
 }

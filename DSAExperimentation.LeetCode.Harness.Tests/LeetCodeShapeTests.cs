@@ -67,6 +67,14 @@ public sealed partial class LeetCodeShapeTests
     }
 
     [Fact]
+    public void Narrowed_TupleSpreadOverTheDeclaredInputs_KeepsTheTuple()
+    {
+        var narrowed = LeetCodeShape.Narrowed(OverloadsOf(nameof(ShapedProbeSolution.CostByLoop)), ["string", "character[]", "character[]", "integer[]"]);
+
+        Assert.Equal(typeof((char[], char[], int[])), Assert.Single(narrowed).GetParameters()[1].ParameterType);
+    }
+
+    [Fact]
     public void Narrowed_NoOverloadOfTheDeclaredCount_KeepsThemAll()
     {
         var narrowed = LeetCodeShape.Narrowed(OverloadsOf(nameof(ShapedProbeSolution.PickByLoop)), ["integer[]", "integer", "integer"]);

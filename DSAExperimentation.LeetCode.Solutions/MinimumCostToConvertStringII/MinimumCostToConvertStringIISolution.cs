@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToConvertStringII;
 // covering position i with a length-L window and paying that window's
 // shortest registered-string-to-registered-string cost is exactly one
 // operation (or chain of operations) over source[i..i+L).
+[LeetCodeQuestion("minimum-cost-to-convert-string-ii", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MinimumCostToConvertStringIIPromise))]
 internal static class MinimumCostToConvertStringIISolution
 {
     private const long Unreachable = long.MaxValue / 4;
