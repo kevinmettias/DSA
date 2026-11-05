@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SortCharactersByFrequency;
 // with the frequency negated so the heap's only order (ascending priority) pops
 // characters back out in descending-frequency order, popped to completion instead
 // of capped at k.
+[LeetCodeQuestion("sort-characters-by-frequency", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(SortCharactersByFrequencyAnswerCheck))]
 internal static class SortCharactersByFrequencySolution
 {
     // The textbook approach: count with a BCL Dictionary, then sort every

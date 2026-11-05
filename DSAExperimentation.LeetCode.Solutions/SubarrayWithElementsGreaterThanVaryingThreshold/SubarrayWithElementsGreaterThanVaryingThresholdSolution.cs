@@ -29,6 +29,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SubarrayWithElementsGreaterThanV
 // caller-owned bookkeeping" shape a union-by-size policy would need if DisjointSet
 // exposed one (ARCHITECTURE.md §10.1: linking policy is a complexity law, not
 // something that type has to expose).
+[LeetCodeQuestion("subarray-with-elements-greater-than-varying-threshold", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(SubarrayWithElementsGreaterThanVaryingThresholdAnswerCheck))]
 internal static class SubarrayWithElementsGreaterThanVaryingThresholdSolution
 {
     // The partition of already-processed indices into maximal runs, plus each root's

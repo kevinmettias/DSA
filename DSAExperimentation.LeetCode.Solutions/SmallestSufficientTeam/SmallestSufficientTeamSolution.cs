@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SmallestSufficientTeam;
 // whichever completion has the fewest people. The two strategies run that identical
 // recursion; they differ only in whether a state reached by several different pick
 // orders is recomputed each time or once.
+[LeetCodeQuestion("smallest-sufficient-team", LeetCodeAnswerOrder.AnyOrder, AnswerCheck = typeof(SmallestSufficientTeamAnswerCheck))]
 internal static class SmallestSufficientTeamSolution
 {
     // The textbook baseline: the same recursion with no memoization at all, so the

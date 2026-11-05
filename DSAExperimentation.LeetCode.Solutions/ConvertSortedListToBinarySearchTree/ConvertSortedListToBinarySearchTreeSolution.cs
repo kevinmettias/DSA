@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConvertSortedListToBinarySearchT
 // pick the midpoint of each remaining [low, high] range as the subtree root,
 // exactly the recurrence ConvertSortedArrayToBinarySearchTreeSolution uses
 // for LC 108 once the list has been flattened.
+[LeetCodeQuestion("convert-sorted-list-to-binary-search-tree", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(ConvertSortedListToBinarySearchTreeAnswerCheck))]
 internal static class ConvertSortedListToBinarySearchTreeSolution
 {
     public static BinaryTreeNode<int>? BuildByMidpointRecursion(SinglyLinkedListNode<int>? head)

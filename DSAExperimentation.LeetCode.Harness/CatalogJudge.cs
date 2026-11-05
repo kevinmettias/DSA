@@ -19,6 +19,17 @@ internal static class CatalogJudge
     private const string ElementSeparator = ",";
     private const string SignificantDigits = "G12";
 
+    // The output the catalog records for a case, read from LeetCode's notation; null when it records none.
+    public static JsonNode? RecordedOutputOf(LeetCodeCase testCase)
+    {
+        if (testCase.ExpectedOutput is not { } recorded)
+        {
+            return null;
+        }
+
+        return JsonNode.Parse(recorded) ?? throw new InvalidOperationException(BareNullOutput);
+    }
+
     // One line per case answered wrongly, naming the arm, the case's inputs, the recorded output and the
     // answer; empty when every case with a recorded output was answered as recorded.
     public static IReadOnlyList<string> WrongAnswers(
@@ -31,21 +42,32 @@ internal static class CatalogJudge
 
         for (var index = 0; index < cases.Count; index++)
         {
-            if (cases[index].ExpectedOutput is not { } recorded)
+            if (RecordedOutputOf(cases[index]) is not { } expected)
             {
                 continue;
             }
 
-            var expected = JsonNode.Parse(recorded) ?? throw new InvalidOperationException(BareNullOutput);
             var actual = answerTo(index);
 
-            if (!IsAccepted(actual, expected, question.AnswerOrder, question.Tolerance))
+            if (!IsAcceptedFor(question, cases[index], actual, expected))
             {
                 wrong.Add($"{arm} on {string.Join(InputSeparator, cases[index].Inputs)}: the catalog records {expected.ToJsonString()}, and it answered {actual.ToJsonString()}.");
             }
         }
 
         return wrong;
+    }
+
+    // By the question's answer check where it has one, which may accept an answer other than the recorded
+    // one; otherwise against the recorded output by its order rule and tolerance.
+    private static bool IsAcceptedFor(LeetCodeQuestionAttribute question, LeetCodeCase testCase, JsonNode actual, JsonNode expected)
+    {
+        if (question.AnswerCheck is { } check)
+        {
+            return CatalogAnswerCheck.IsAccepted(check, testCase, actual, expected);
+        }
+
+        return IsAccepted(actual, expected, question.AnswerOrder, question.Tolerance);
     }
 
     // Exactly as LeetCode compares, or with whatever the order rule frees put in one order on both sides: the

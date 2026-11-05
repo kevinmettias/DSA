@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CreateGridWithExactlyKPathsI;
 //
 // Both strategies build the identical grid; they differ only in how they decide
 // a rectangle's path count while searching for one that equals k.
+[LeetCodeQuestion("create-grid-with-exactly-k-paths-i", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(CreateGridWithExactlyKPathsIAnswerCheck))]
 internal static class CreateGridWithExactlyKPathsISolution
 {
     private const char FreeCell = '.';

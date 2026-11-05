@@ -25,6 +25,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidArrangementOfPairs;
 // HashMap<int, Stack<int>>, whose Stack composes DynamicArray the same way. Same
 // asymptotic shape either side; the difference is each container's hashing and
 // indirection cost.
+[LeetCodeQuestion("valid-arrangement-of-pairs", LeetCodeAnswerOrder.AsWritten, Promise = typeof(ValidArrangementOfPairsPromise), AnswerCheck = typeof(ValidArrangementOfPairsAnswerCheck))]
 internal static class ValidArrangementOfPairsSolution
 {
     // A pair is [from, to].

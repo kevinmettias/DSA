@@ -28,4 +28,10 @@ internal sealed class LeetCodeQuestionAttribute(string titleSlug, LeetCodeAnswer
     // How far a real-valued answer may stand from LeetCode's and still be accepted, as the statement says
     // ("Answers within 10^-5 of the actual answer will be accepted"); 0 when it is compared as written.
     public double Tolerance { get; set; }
+
+    // A static class whose IsAccepted takes a strategy's inputs, its answer and the answer the catalog records,
+    // and says whether the statement accepts that answer where it lets several stand ("return any of
+    // them"), as LongestPalindromicSubstringAnswerCheck does; null when the recorded answer is the one to
+    // give, by the order rule and the tolerance above.
+    public Type? AnswerCheck { get; set; }
 }

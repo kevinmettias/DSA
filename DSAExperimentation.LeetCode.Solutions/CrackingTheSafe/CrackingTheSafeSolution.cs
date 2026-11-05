@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CrackingTheSafe;
 // Backtrack.TrySearch engine (state mutated in place across recursive calls, not a
 // fresh snapshot per node - the same shape Backtrack.cs/BacktrackingSteps.cs's own doc
 // comments describe).
+[LeetCodeQuestion("cracking-the-safe", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(CrackingTheSafeAnswerCheck))]
 internal static class CrackingTheSafeSolution
 {
     // The textbook answer: a hand-specialized recursive greedy-with-undo search over a

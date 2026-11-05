@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConvertSortedArrayToBinarySearch
 // most one element, every time the range is split. There is only one strategy
 // here: the original test's private helper and both of the original
 // benchmark's [Benchmark] arms all constructed the tree exactly this way.
+[LeetCodeQuestion("convert-sorted-array-to-binary-search-tree", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(ConvertSortedArrayToBinarySearchTreeAnswerCheck))]
 internal static class ConvertSortedArrayToBinarySearchTreeSolution
 {
     public static BinaryTreeNode<int>? BuildByMidpointRecursion(int[] nums) =>

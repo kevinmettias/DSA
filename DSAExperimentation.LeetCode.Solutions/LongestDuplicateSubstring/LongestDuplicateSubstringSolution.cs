@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestDuplicateSubstring;
 // own SuffixArray, whose Kasai's-algorithm LongestCommonPrefixArray already reports
 // every adjacent pair's shared-prefix length, answers the whole problem with a
 // single scan of that array and no separate duplicate-detection pass.
+[LeetCodeQuestion("longest-duplicate-substring", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(LongestDuplicateSubstringAnswerCheck))]
 internal static class LongestDuplicateSubstringSolution
 {
     // Baseline: compare every pair of suffixes directly, O(n^2) pairs each costing

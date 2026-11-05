@@ -662,6 +662,20 @@
       "expires": "2027-05-01"
     },
     {
+      "check": "check-parameter-count",
+      "path": "DSAExperimentation.LeetCode.Solutions/*/*AnswerCheck.cs",
+      "reason": "An answer check's IsAccepted takes the strategy's inputs in LeetCode's order and then the answer and the recorded answer, because CatalogAnswerCheck reads each one positionally from the catalog case into the parameter's type (ARCHITECTURE 17.13). LeetCode fixes how many inputs a question has, so a question of three inputs gives a check of five parameters; grouping them would need a type the notation reader cannot build from a case, and would leave the check's signature no longer the strategy's.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-parameter-count",
+      "path": "DSAExperimentation.LeetCode.Solutions.Tests/*/*AnswerCheckTests.cs",
+      "reason": "An answer check's test theory takes the arguments IsAccepted takes - the question's inputs in LeetCode's order, the answer and the recorded answer - and the verdict it should give, so its parameter count is the check's plus one; the check's own entry says why that count is fixed.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-sealed-classes",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/*Benchmarks.cs",
       "reason": "BenchmarkDotNet discovers benchmark types by reflection and only accepts a benchmark class that is both public and unsealed - sealing one, or narrowing it to internal, makes BDN drop every benchmark method in it silently, with no error and no warning. Verified empirically on this repo: adding `sealed` to AddBinaryBenchmarks removed both of its benchmarks from `--list flat`, and removing the keyword put them back. There is therefore no honest rewrite for these two checks in a benchmark class: the accessibility and the sealedness are the harness contract, not a design choice.",

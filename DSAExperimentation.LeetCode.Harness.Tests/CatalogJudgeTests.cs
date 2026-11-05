@@ -1,5 +1,6 @@
 using System.Text.Json.Nodes;
 using DSAExperimentation.LeetCode.Catalog;
+using DSAExperimentation.LeetCode.Harness.Tests.Probes;
 
 namespace DSAExperimentation.LeetCode.Harness.Tests;
 
@@ -18,6 +19,33 @@ public sealed partial class CatalogJudgeTests
         new() { Inputs = ["[1,2]"], ExpectedOutput = "2" },
         new() { Inputs = ["[1,2,3]"], ExpectedOutput = "3" },
     ];
+
+    // A question whose statement lets several answers stand, judged by its answer check.
+    private static readonly LeetCodeQuestionAttribute Checked = new("probe", LeetCodeAnswerOrder.AsWritten) { AnswerCheck = typeof(SameParityProbeAnswerCheck) };
+
+    [Fact]
+    public void WrongAnswers_AnswersOtherThanTheRecordedOnesThatTheCheckTakes_IsEmpty()
+    {
+        var wrong = CatalogJudge.WrongAnswers(Arm, Checked, Cases, index => JsonValue.Create(index));
+
+        Assert.Empty(wrong);
+    }
+
+    [Fact]
+    public void WrongAnswers_AnswerTheCheckRefuses_NamesItsInputAndBothAnswers()
+    {
+        var wrong = CatalogJudge.WrongAnswers(Arm, Checked, Cases, index => JsonValue.Create(index * 2 + 1));
+
+        Assert.Equal(["CountByLoop on [1,2]: the catalog records 2, and it answered 1."], wrong);
+    }
+
+    [Fact]
+    public void RecordedOutputOf_CaseWithNoRecordedOutput_IsNull()
+    {
+        var recorded = CatalogJudge.RecordedOutputOf(new LeetCodeCase { Inputs = ["[1]"] });
+
+        Assert.Null(recorded);
+    }
 
     [Fact]
     public void WrongAnswers_EveryCaseAnsweredAsRecorded_IsEmpty() =>

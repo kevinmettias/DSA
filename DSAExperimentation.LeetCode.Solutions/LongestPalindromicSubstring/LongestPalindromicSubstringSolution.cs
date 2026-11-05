@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestPalindromicSubstring;
 // problem asks for - solving it is just slicing the input at those bounds, not a new
 // algorithm. Both return LeetCode's actual answer (the substring itself); the
 // original benchmark arms measured only the winning length, which is promoted here.
+[LeetCodeQuestion("longest-palindromic-substring", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(LongestPalindromicSubstringAnswerCheck))]
 internal static class LongestPalindromicSubstringSolution
 {
     public static string FindLongestPalindromeByExpandAroundCenter(string text)

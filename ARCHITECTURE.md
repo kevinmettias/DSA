@@ -2181,8 +2181,15 @@ internal static class TwoSumSolution
   "Answers within 10^-5 of the actual answer will be accepted". `CatalogJudge` then accepts each
   number that close, and holds arms to one another at twelve significant digits, as
   `AnswerGraphText` holds a double.
+- The type that judges an answer where the statement lets several stand (`AnswerCheck`), as "return
+  any of them" does. Its `IsAccepted` takes the strategy's inputs, the answer and the recorded
+  answer, which `CatalogAnswerCheck` reads from the case into its parameter types. The recorded
+  answer is one of those that stand, so it says what any accepted answer must achieve - its length,
+  its size, whether there is one at all - rather than what it must be: Longest Palindromic
+  Substring's check takes any palindrome in the string as long as the recorded one. `CatalogJudge`
+  asks the check instead of comparing.
 
-All five are facts about the problem. The attribute names no size and no workload: the catalog's
+All six are facts about the problem. The attribute names no size and no workload: the catalog's
 cases are the inputs LeetCode poses, and choosing sizes stays a tier-5 decision (§17.7). Being data,
 the attribute keeps tier 4 off the machine (§17.6c). Nothing in the solutions project reads the
 catalog.
@@ -2342,8 +2349,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 763 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 167 more:
+**Enrolled.** 775 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 179 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2411,6 +2418,13 @@ have only the empty tree. A check over those would pass whatever the strategy di
   whole x where there is one (Solve the Equation, read term by term rather than through the
   strategies' parse). Gas Station and 3Sum Closest promise a unique answer, which generated cases
   broke with several stations that could start or two sums tied for closest.
+- 12 whose statements accept any of several answers, once an answer check could judge them: Longest
+  Palindromic Substring, Longest Duplicate Substring, Sort Characters By Frequency, Subarray With
+  Elements Greater Than Varying Threshold, Convert Sorted Array (and Sorted List) to Binary Search
+  Tree, Cracking the Safe, Create Grid with Exactly K Paths I, Build a Matrix With Conditions, Valid
+  Arrangement of Pairs, Smallest Sufficient Team, and Maximum Nesting Depth of Two Valid Parentheses
+  Strings. The last two also promise what their generated cases broke: a valid parentheses string,
+  and pairs that make one path.
 
 Open items:
 
@@ -2429,7 +2443,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 342 solutions are left (2026-11-04), each blocked for a reason the table and
+- **Enrolling the rest.** 330 solutions are left (2026-11-04), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
@@ -2466,9 +2480,8 @@ Open items:
   would leave theories named `_LeetCodeExamples_`, and comments describing the published examples,
   over rows that are no longer either, so each file needs its names and comments rewritten as its
   rows go.
-- **Shapes the generator refuses.** Design problems, in-place answers, judge-only inputs,
-  and any-valid-answer judges each need a rule before their problems can
-  enroll.
+- **Shapes the generator refuses.** Design problems, in-place answers and judge-only inputs each
+  need a rule before their problems can enroll.
 
 **How arms agree.** A generated class's arms are held to one another in LeetCode's notation, by the
 attribute's order rule, as `CatalogJudge` holds a baseline to the catalog (`CatalogArmAnswers`). So
@@ -2476,7 +2489,8 @@ attribute's order rule, as `CatalogJudge` holds a baseline to the catalog (`Cata
 is its wire-format array, so All Possible Full Binary Trees' memoized arm, which shares subtrees
 between the trees it returns, agrees with the arm that builds each tree afresh, as LeetCode reads
 them. Its hand-written class is still listed as incomparable, because there `AnswerGraphText`
-tells a shared subtree from a copy.
+tells a shared subtree from a copy. Where an answer check judges, two arms may give different answers
+it accepts, so they are held to one another by its verdict on each case instead.
 
 ## 18. Testing policy: every tier tests itself
 

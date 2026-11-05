@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Nodes;
 using DSAExperimentation.Benchmarks.Catalog;
+using DSAExperimentation.LeetCode.Catalog;
 using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Benchmarks.Tests.Catalog;
@@ -42,11 +43,23 @@ internal static class CatalogArmAnswers
         var solution = SolutionOf(benchmark);
         var question = CatalogColumns.QuestionOf(solution);
         var notationOf = NotationOf(solution, arm, buffer);
-        var lines = Enumerable.Range(0, buffer.Length)
-            .Select(index => CatalogJudge.AgreementTextOf(notationOf(index), question.AnswerOrder, question.Tolerance));
+        var indices = Enumerable.Range(0, buffer.Length);
 
+        if (question.AnswerCheck is { } check)
+        {
+            var cases = CasesOf(solution, arm);
+            return string.Join(CaseSeparator, indices.Select(index => CatalogAnswerCheck.VerdictTextOf(check, cases[index], notationOf(index))));
+        }
+
+        var lines = indices.Select(index => CatalogJudge.AgreementTextOf(notationOf(index), question.AnswerOrder, question.Tolerance));
         return string.Join(CaseSeparator, lines);
     }
+
+    // The cases an arm's buffer lines up with, which are its strategy's. Where the statement lets several
+    // answers stand, arms may give different ones, so they are held to one another by the answer check's
+    // verdict on each of these.
+    private static IReadOnlyList<LeetCodeCase> CasesOf(Type solution, MethodInfo arm) =>
+        CatalogStrategy.Of(solution).Single(strategy => strategy.Name == arm.Name).Columns().Cases;
 
     // A strategy with out parameters answers (found, outputs...), which an arm stores as one tuple.
     private static bool IsTryShaped(Type solution, MethodInfo arm) =>

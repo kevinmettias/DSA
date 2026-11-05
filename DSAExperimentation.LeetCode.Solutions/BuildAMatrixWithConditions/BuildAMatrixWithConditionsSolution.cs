@@ -26,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BuildAMatrixWithConditions;
 // The naive baseline rescans every unplaced value for one with nothing left ahead
 // of it on each step, O(V^2 + V*E); TopologicalSort.TrySort is Kahn's algorithm
 // proper, O(V+E) via a queue of already-zero-in-degree values.
+[LeetCodeQuestion("build-a-matrix-with-conditions", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(BuildAMatrixWithConditionsAnswerCheck))]
 internal static class BuildAMatrixWithConditionsSolution
 {
     // This repo's own Kahn's algorithm, once per axis. TrySort's false-on-cycle

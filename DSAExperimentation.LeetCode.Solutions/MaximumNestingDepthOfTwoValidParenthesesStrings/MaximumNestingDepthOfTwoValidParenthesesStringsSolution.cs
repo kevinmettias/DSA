@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNestingDepthOfTwoValidPar
 // depths alternate groups, so each subsequence keeps only every other level and
 // the original max depth is halved. Both strategies below answer with that same
 // parity - they differ only in how the depth at each position is obtained.
+[LeetCodeQuestion("maximum-nesting-depth-of-two-valid-parentheses-strings", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MaximumNestingDepthOfTwoValidParenthesesStringsPromise), AnswerCheck = typeof(MaximumNestingDepthOfTwoValidParenthesesStringsAnswerCheck))]
 internal static class MaximumNestingDepthOfTwoValidParenthesesStringsSolution
 {
     // Depth parity assigns each character to one of two groups.
