@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LFUCache;
 // matching HashMap's naming, the same precedent LRUCacheSolution follows for
 // its peer cache). The two arms answer the same LeetCode operation sequence,
 // replayed by the harness.
+[LeetCodeQuestion("lfu-cache", LeetCodeAnswerOrder.AsWritten, Calls = typeof(LFUCacheCalls))]
 internal static class LFUCacheSolution
 {
     // The composed answer: this repo's own HashMap + DoublyLinkedList frequency

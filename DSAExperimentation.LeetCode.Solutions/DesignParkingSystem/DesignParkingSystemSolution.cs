@@ -15,8 +15,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignParkingSystem;
 // Both are O(1) per call; the question the pair answers is whether keying three
 // counters by car type in this repo's own HashMap<int, int> costs anything measurable
 // over three raw fields when the key space is, in this problem, always exactly three.
+[LeetCodeQuestion("design-parking-system", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignParkingSystemSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IParkingSystem CreateByThreeFields(int big, int medium, int small) => new ParkingSystemByThreeFields(big, medium, small);
+
+    public static IParkingSystem CreateByHashMap(int big, int medium, int small) => new ParkingSystemByHashMap(big, medium, small);
+
     private const int BigCarType = 1;
     private const int MediumCarType = 2;
     private const int SmallCarType = 3;

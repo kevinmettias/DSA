@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MyCalendarIII;
 // replayed across a sequence of Book calls, so the strategies here are factory
 // methods returning that stateful object, the same shape MyCalendarISolution
 // (LC 729) and MyCalendarIISolution (LC 731) use.
+[LeetCodeQuestion("my-calendar-iii", LeetCodeAnswerOrder.AsWritten)]
 internal static class MyCalendarIIISolution
 {
     public interface ICalendar

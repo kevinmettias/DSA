@@ -4,34 +4,15 @@ using DSAExperimentation.LeetCode.Solutions.LRUCache;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.LRUCache;
 
 // Harness only. Both strategies are LRUCacheSolution's - this file replays
-// LeetCode's published call sequence against each ICache<int,int> instance,
-// so a failure still names the strategy that broke even though the "input"
-// here is a sequence of get/put calls rather than a single argument tuple -
-// the same shape DesignTaskManagerTests already uses for its own instance-API
-// problem. LRUCacheOp.Apply is pure dispatch plus LeetCode's own -1-on-miss
-// convention (ICache<TKey,TValue>.TryGetValue leaves `value` undefined on a
-// miss, per its own doc comment) - no eviction logic of its own.
+// call scripts the catalog does not hold against each ICache<int,int> instance;
+// LeetCode's published example runs in CatalogCaseTests. LRUCacheOp.Apply is
+// pure dispatch through LRUCacheCalls, which states LeetCode's -1 for a missing
+// key - no eviction logic of its own.
 public sealed partial class LRUCacheSolutionTests
 {
-    public static TheoryData<int, LRUCacheOp[], int?[]> Examples =>
+    public static TheoryData<int, LRUCacheOp[], int?[]> Scripts =>
         new()
         {
-            {
-                2,
-                [
-                    LRUCacheOp.Put(1, 1),
-                    LRUCacheOp.Put(2, 2),
-                    LRUCacheOp.Get(1),
-                    LRUCacheOp.Put(3, 3),
-                    LRUCacheOp.Get(2),
-                    LRUCacheOp.Put(4, 4),
-                    LRUCacheOp.Get(1),
-                    LRUCacheOp.Get(3),
-                    LRUCacheOp.Get(4),
-                ],
-                [null, null, 1, null, -1, null, -1, 3, 4]
-            },
-
             // Reading a key makes it the most recent, so the next eviction takes the
             // other one.
             {
@@ -60,14 +41,14 @@ public sealed partial class LRUCacheSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CreateByLruCachePrimitive_LeetCodeExample_EvictsLeastRecentlyUsedKey(
+    [MemberData(nameof(Scripts))]
+    public void CreateByLruCachePrimitive_Script_EvictsLeastRecentlyUsedKey(
         int capacity, LRUCacheOp[] operations, int?[] expected) =>
         Assert.Equal(expected, RunScript(LRUCacheSolution.CreateByLruCachePrimitive(capacity), operations));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void CreateByDictionaryLinkedList_LeetCodeExample_EvictsLeastRecentlyUsedKey(
+    [MemberData(nameof(Scripts))]
+    public void CreateByDictionaryLinkedList_Script_EvictsLeastRecentlyUsedKey(
         int capacity, LRUCacheOp[] operations, int?[] expected) =>
         Assert.Equal(expected, RunScript(LRUCacheSolution.CreateByDictionaryLinkedList(capacity), operations));
 
@@ -76,7 +57,7 @@ public sealed partial class LRUCacheSolutionTests
 
     // One call in an LRUCache script: which method to invoke and with what
     // arguments. Pure dispatch, built via the named factories below so a script
-    // (like Examples above) reads like the LeetCode call sequence it replays.
+    // (like Scripts above) reads like the LeetCode call sequence it replays.
     // Nested here rather than left at file scope so the file declares exactly
     // one type.
     public readonly record struct LRUCacheOp(LRUCacheOp.OpKind kind, int key, int value)
@@ -85,20 +66,18 @@ public sealed partial class LRUCacheSolutionTests
 
         public static LRUCacheOp Put(int key, int value) => new(OpKind.Put, key, value);
 
-        // null for put, the returned value for get (LeetCode's own -1-on-miss
-        // convention, since ICache<TKey,TValue>.TryGetValue's out value is only
-        // meaningful when it returns true) - so a script runner can assert
-        // against one expected value per operation uniformly. Internal, not
-        // public: only this same assembly's test method ever calls Apply.
+        // null for put, the returned value for get - so a script runner can
+        // assert against one expected value per operation uniformly. Internal,
+        // not public: only this same assembly's test method ever calls Apply.
         internal int? Apply(ICache<int, int> cache)
         {
             if (kind == OpKind.Put)
             {
-                cache.Set(key, value);
+                LRUCacheCalls.Put(cache, key, value);
                 return null;
             }
 
-            return cache.TryGetValue(key, out var cachedValue) ? cachedValue : -1;
+            return LRUCacheCalls.Get(cache, key);
         }
 
         public enum OpKind

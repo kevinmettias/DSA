@@ -18,8 +18,15 @@ namespace DSAExperimentation.LeetCode.Solutions.BookingConcertTicketsInGroups;
 // and differ only in what they can ask of it: a raw array has to scan, a pair of
 // segment trees can answer "is there a qualifying row in this prefix" and "how many
 // seats remain in this prefix" in logarithmic time.
+[LeetCodeQuestion("booking-concert-tickets-in-groups", LeetCodeAnswerOrder.AsWritten)]
 internal static class BookingConcertTicketsInGroupsSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IBookMyShowStrategy CreateByRowScan(int rowCount, int seatsPerRow) => new BookMyShowByRowScan(rowCount, seatsPerRow);
+
+    public static IBookMyShowStrategy CreateBySegmentTreeBinarySearch(int rowCount, int seatsPerRow) => new BookMyShowBySegmentTreeBinarySearch(rowCount, seatsPerRow);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it. Gather returns LeetCode's own [row, seat] pair (empty when no

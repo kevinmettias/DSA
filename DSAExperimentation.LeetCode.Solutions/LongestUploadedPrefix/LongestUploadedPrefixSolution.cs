@@ -14,8 +14,16 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestUploadedPrefix;
 //
 // The whole problem is where the prefix length comes from: rescanned from video 1
 // on every query, or carried as a frontier that only ever moves forward.
+[LeetCodeQuestion("longest-uploaded-prefix", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestUploadedPrefixSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IUploadedPrefix CreateByRescanArray(int videoCount) => new UploadedPrefixByRescanArray(videoCount);
+
+    // LeetCode's constructor gives the video count, which the frontier set needs no bound from.
+    public static IUploadedPrefix CreateBySetFrontier(int videoCount) => new UploadedPrefixBySetFrontier();
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

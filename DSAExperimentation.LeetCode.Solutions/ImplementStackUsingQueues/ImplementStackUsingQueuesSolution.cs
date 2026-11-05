@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ImplementStackUsingQueues;
 // Queue<int> for the baseline (the arm this repo's own Queue<int> has to
 // justify itself against), this repo's own Queue<int> for the composed
 // answer.
+[LeetCodeQuestion("implement-stack-using-queues", LeetCodeAnswerOrder.AsWritten)]
 internal static class ImplementStackUsingQueuesSolution
 {
     internal interface IStackOperations

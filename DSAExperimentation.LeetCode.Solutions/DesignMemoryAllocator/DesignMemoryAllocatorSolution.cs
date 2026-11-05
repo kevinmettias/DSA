@@ -22,8 +22,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignMemoryAllocator;
 // Both strategies share the identical Allocate - a leftmost-free-run scan over a
 // plain int[] memory array, which every accepted solution to this problem does, so
 // it is not the axis being compared. They differ only in Free.
+[LeetCodeQuestion("design-memory-allocator", LeetCodeAnswerOrder.AsWritten, Calls = typeof(DesignMemoryAllocatorCalls))]
 internal static class DesignMemoryAllocatorSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IMemoryAllocatorStrategy CreateByArrayScan(int n) => new MemoryAllocatorByArrayScan(n);
+
+    public static IMemoryAllocatorStrategy CreateByHashMapIndex(int n) => new MemoryAllocatorByHashMapIndex(n);
+
     // The shared surface both strategies implement, so a harness can replay one
     // call script against either without restating it.
     internal interface IMemoryAllocatorStrategy

@@ -25,6 +25,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SnapshotArray;
 // DynamicArray<int> columns and floors to the query with this repo's own
 // BinarySearch.UpperBound over a DynamicArraySequence<int> witness, minus one: the
 // index just past the last value written at or before snapId. O(log n) per query.
+[LeetCodeQuestion("snapshot-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class SnapshotArraySolution
 {
     // The value every index holds before anything is written to it, and therefore

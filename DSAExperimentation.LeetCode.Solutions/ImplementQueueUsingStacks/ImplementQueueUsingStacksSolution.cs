@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ImplementQueueUsingStacks;
 // A design problem's whole point is which stack maneuver you pick, and both
 // strategies are that one maneuver: on two of the BCL's Stack<int>, or on two of
 // this repo's own, which is the comparison the benchmark makes.
+[LeetCodeQuestion("implement-queue-using-stacks", LeetCodeAnswerOrder.AsWritten, Calls = typeof(ImplementQueueUsingStacksCalls))]
 internal static class ImplementQueueUsingStacksSolution
 {
     // The textbook answer: the two-stack transfer over the BCL's Stack<int>, the arm this

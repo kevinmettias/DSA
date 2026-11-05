@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindMedianFromDataStream;
 //
 // IMedianFinder is bespoke to this problem alone - no other LeetCode entry shares
 // an AddNum/FindMedian contract - so it stays here rather than in DataStructures/.
+[LeetCodeQuestion("find-median-from-data-stream", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindMedianFromDataStreamSolution
 {
     // The textbook baseline this composition has to justify itself against: a

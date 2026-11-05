@@ -15,8 +15,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignAuthenticationManager;
 // The problem is a time-to-live mechanism: a flat list the renew probe and the count
 // both scan, or this repo's own ExpiringSet, which lets lapsed tokens go in expiry
 // order (ARCHITECTURE.md §17.6b).
+[LeetCodeQuestion("design-authentication-manager", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignAuthenticationManagerSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IAuthenticationManager CreateByLinearScanList(int timeToLive) => new AuthenticationManagerByLinearScanList(timeToLive);
+
+    public static IAuthenticationManager CreateByExpiringSet(int timeToLive) => new AuthenticationManagerByExpiringSet(timeToLive);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DataStreamAsDisjointIntervals;
 // sequence of addNum/getIntervals calls, not a single pure function, so the strategies here are
 // factory methods returning that stateful object - the same shape BinarySearchTreeIteratorSolution
 // uses for LC 173.
+[LeetCodeQuestion("data-stream-as-disjoint-intervals", LeetCodeAnswerOrder.AsWritten)]
 internal static class DataStreamAsDisjointIntervalsSolution
 {
     public interface ISummaryRanges

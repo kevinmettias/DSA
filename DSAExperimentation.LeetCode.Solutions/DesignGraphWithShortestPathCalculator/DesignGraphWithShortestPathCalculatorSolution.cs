@@ -31,8 +31,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignGraphWithShortestPathCalcu
 // imported type sharing one bare name in the same class is the C# name-resolution
 // wrinkle ARCHITECTURE.md 10.3 documents for DisjointSet, avoided here by naming
 // rather than aliasing.
+[LeetCodeQuestion("design-graph-with-shortest-path-calculator", LeetCodeAnswerOrder.AsWritten, Calls = typeof(DesignGraphWithShortestPathCalculatorCalls))]
 internal static class DesignGraphWithShortestPathCalculatorSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IShortestPathGraph CreateByArrayDijkstra(int nodeCount, int[][] edges) => new ShortestPathGraphByArrayDijkstra(nodeCount, edges);
+
+    public static IShortestPathGraph CreateByHeapDijkstra(int nodeCount, int[][] edges) => new ShortestPathGraphByHeapDijkstra(nodeCount, edges);
+
     // The shared surface both strategies implement, so a harness can replay one
     // call script against either without restating it.
     internal interface IShortestPathGraph

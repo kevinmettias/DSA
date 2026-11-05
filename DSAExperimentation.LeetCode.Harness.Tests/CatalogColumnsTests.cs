@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using DSAExperimentation.LeetCode.Catalog;
 using DSAExperimentation.LeetCode.Solutions.ClimbingStairs;
 using DSAExperimentation.LeetCode.Solutions.MergeIntervals;
@@ -27,6 +28,15 @@ public sealed partial class CatalogColumnsTests
         Assert.All(Enumerable.Range(0, columns.Count), index => Assert.True(TwoSumPromise.IsKeptBy(nums[index], targets[index])));
     }
 
+    // Climbing Stairs' catalog climbs to 45 stairs, so a reach of ten leaves some cases out and keeps others.
+    [Fact]
+    public void For_SolutionWithAReach_KeepsExactlyTheCasesWithinIt()
+    {
+        var within = LeetCodeCatalog.Cases(ClimbingStairsSlug).Where(IsWithinTheProbesReach).Select(InputTextOf);
+
+        Assert.Equal(within, CatalogColumns.For(typeof(ReachProbeSolution), typeof(int)).Cases.Select(InputTextOf));
+    }
+
     [Fact]
     public void For_FewerTypesThanACaseHasInputs_ThrowsInvalidOperationException() =>
         Assert.Throws<InvalidOperationException>(() => CatalogColumns.For(typeof(TwoSumSolution), typeof(int[])));
@@ -38,6 +48,15 @@ public sealed partial class CatalogColumnsTests
         var inputs = columns.Cases[0].Inputs.Select(int.Parse).ToArray();
 
         Assert.Equal(new ProbeCorners(inputs[4], inputs[5], inputs[6], inputs[7]), columns.Column<ProbeCorners>(1)[0]);
+    }
+
+    // A script lists one call per argument list, the constructor's first.
+    [Fact]
+    public void ForScripts_DesignQuestion_ReadsEachScriptsCallsBesideTheirArguments()
+    {
+        var columns = CatalogColumns.ForScripts(typeof(ScriptProbeSolution));
+
+        Assert.Equal(columns.Column<string[]>(0)[0].Length, columns.Column<JsonArray>(1)[0].Count);
     }
 
     [Fact]
@@ -75,4 +94,6 @@ public sealed partial class CatalogColumnsTests
 
     // A case's inputs as one text: LeetCodeCase holds them as a list, which compares by reference.
     private static string InputTextOf(LeetCodeCase testCase) => string.Join(LeetCodeNotation.InputSeparator, testCase.Inputs);
+
+    private static bool IsWithinTheProbesReach(LeetCodeCase testCase) => ReachProbeReach.IsWithin(testCase.Input<int>(0));
 }

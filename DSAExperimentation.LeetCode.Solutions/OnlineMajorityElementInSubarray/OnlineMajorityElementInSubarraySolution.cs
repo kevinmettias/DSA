@@ -18,8 +18,15 @@ namespace DSAExperimentation.LeetCode.Solutions.OnlineMajorityElementInSubarray;
 // can ever satisfy a query - which is what makes both "return the first value that
 // clears the threshold" (the tally baseline) and "sample a bounded number of candidate
 // positions" (the indexed strategy) correct rather than merely plausible.
+[LeetCodeQuestion("online-majority-element-in-subarray", LeetCodeAnswerOrder.AsWritten)]
 internal static class OnlineMajorityElementInSubarraySolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IMajorityChecker CreateByRangeTally(int[] arr) => new MajorityCheckerByRangeTally(arr);
+
+    public static IMajorityChecker CreateByPositionIndex(int[] arr) => new MajorityCheckerByPositionIndex(arr);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one query sequence against either strategy without
     // restating it.

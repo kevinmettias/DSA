@@ -75,6 +75,73 @@ public sealed partial class CatalogBenchmarkGeneratorTests
 
     private const string ProbeSlug = "probe";
 
+    // A design question's probe: one factory makes a map that answers put and get itself, the other a cache
+    // whose get the question's Calls type states, since the cache answers only TryGet.
+    private const string DesignProbe = """
+        using DSAExperimentation.LeetCode;
+
+        [LeetCodeQuestion("probe", LeetCodeAnswerOrder.AsWritten, Calls = typeof(ProbeCalls))]
+        internal static class ProbeSolution
+        {
+            public static ProbeMap CreateByMap(int capacity) => new();
+
+            public static ProbeCache CreateByCache(int capacity) => new();
+        }
+
+        internal sealed class ProbeMap
+        {
+            public void Put(int key, int value) { }
+
+            public int Get(int key) => key;
+        }
+
+        internal sealed class ProbeCache
+        {
+            public void Put(int key, int value) { }
+
+            public bool TryGet(int key, out int value)
+            {
+                value = key;
+                return true;
+            }
+        }
+
+        internal static class ProbeCalls
+        {
+            public static int Get(ProbeCache cache, int key) => cache.TryGet(key, out var value) ? value : -1;
+        }
+        """;
+
+    // The same question with no Calls type, so the cache answers no get.
+    private const string UncalledDesignProbe = """
+        using DSAExperimentation.LeetCode;
+
+        [LeetCodeQuestion("probe", LeetCodeAnswerOrder.AsWritten)]
+        internal static class ProbeSolution
+        {
+            public static ProbeCache CreateByCache(int capacity) => new();
+        }
+
+        internal sealed class ProbeCache
+        {
+            public void Put(int key, int value) { }
+
+            public bool TryGet(int key, out int value)
+            {
+                value = key;
+                return true;
+            }
+        }
+        """;
+
+    private const string DesignQuestion = """
+        { "Signature": { "FunctionName": null, "Parameters": [], "ReturnType": null, "ClassName": "Probe",
+          "ConstructorParameters": [ { "Name": "capacity", "Type": "integer" } ],
+          "Methods": [
+            { "Name": "put", "Parameters": [ { "Name": "key", "Type": "integer" }, { "Name": "value", "Type": "integer" } ], "ReturnType": "void" },
+            { "Name": "get", "Parameters": [ { "Name": "key", "Type": "integer" } ], "ReturnType": "integer" } ] } }
+        """;
+
     private const string InPlaceProbe = """
         using DSAExperimentation.LeetCode;
 
@@ -193,8 +260,33 @@ public sealed partial class CatalogBenchmarkGeneratorTests
         Assert.Contains(GeneratorProbe.Generate(TwoShapeProbe).Diagnostics, diagnostic => diagnostic.Id == UnboundStrategy);
 
     [Fact]
+    public void Initialize_DesignSolution_ArmsReturnTheirCallsAnswers() =>
+        Assert.Contains("public global::DSAExperimentation.LeetCode.Harness.CatalogCallAnswers CreateByMap()", DesignSourceOf(DesignProbe));
+
+    [Fact]
+    public void Initialize_DesignSolution_CallsAMethodTheObjectAnswersOnTheObject() =>
+        Assert.Contains("made.Put(call0Input0[index][call], call0Input1[index][call]);", DesignSourceOf(DesignProbe));
+
+    [Fact]
+    public void Initialize_DesignSolution_CallsTheCallsTypesMethodWithTheObjectFirst() =>
+        Assert.Contains("call1Answers[index][call] = global::ProbeCalls.Get(made, call1Input0[index][call]);", DesignSourceOf(DesignProbe));
+
+    [Fact]
+    public void Initialize_DesignSolution_MakesEachCasesObjectWithTheArmsFactory() =>
+        Assert.Contains("var made = global::ProbeSolution.CreateByCache(input0[index]);", DesignSourceOf(DesignProbe));
+
+    [Fact]
+    public void Initialize_DesignObjectAnsweringNoCall_ReportsTheCallItCannotMake() =>
+        Assert.Contains(
+            GeneratorProbe.GenerateWithQuestion(UncalledDesignProbe, ProbeSlug, DesignQuestion).Diagnostics,
+            diagnostic => diagnostic.Id == UnboundStrategy && diagnostic.GetMessage().Contains("no get call"));
+
+    [Fact]
     public void Initialize_NoSolutionNamesAQuestion_WritesNothing() =>
         Assert.Empty(GeneratorProbe.Generate("internal static class ProbeSolution { public static int CountByLoop(int[] values) => 0; }").GeneratedTrees);
 
     private static string SourceOf(string probe) => GeneratorProbe.Generate(probe).GeneratedTrees.Single().ToString();
+
+    private static string DesignSourceOf(string probe) =>
+        GeneratorProbe.GenerateWithQuestion(probe, ProbeSlug, DesignQuestion).GeneratedTrees.Single().ToString();
 }

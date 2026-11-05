@@ -12,8 +12,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignFrontMiddleBackQueue;
 // for the problem" (ARCHITECTURE.md section 17.3) takes the form of two full
 // classes implementing the shared IFrontMiddleBackQueue surface below, the same
 // shape DesignCircularDequeSolution uses for its own instance-API problem (LC 641).
+[LeetCodeQuestion("design-front-middle-back-queue", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignFrontMiddleBackQueueSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IFrontMiddleBackQueue CreateByListInsert() => new FrontMiddleBackQueueByListInsert();
+
+    public static IFrontMiddleBackQueue CreateByTwoDeques() => new FrontMiddleBackQueueByTwoDeques();
+
     // Both "middle" positions are a halving of the current length; the two
     // strategies below round differently on push and pop, not differently from
     // each other.

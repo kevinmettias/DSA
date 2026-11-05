@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CompleteBinaryTreeInserter;
 // ICompleteBinaryTreeInserter is bespoke to this problem alone - no other LeetCode
 // entry shares an "attach into the next open slot, return the parent" contract - so
 // it stays here rather than in DataStructures/.
+[LeetCodeQuestion("complete-binary-tree-inserter", LeetCodeAnswerOrder.AsWritten, Calls = typeof(CompleteBinaryTreeInserterCalls))]
 internal static class CompleteBinaryTreeInserterSolution
 {
     // The textbook baseline this composition has to justify itself against: keep no

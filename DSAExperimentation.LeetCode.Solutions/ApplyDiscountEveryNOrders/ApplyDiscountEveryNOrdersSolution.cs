@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.ApplyDiscountEveryNOrders;
 
@@ -18,11 +19,9 @@ namespace DSAExperimentation.LeetCode.Solutions.ApplyDiscountEveryNOrders;
 // item - O(catalogue) per lookup - and CreateByHashMapLookup does one O(1) probe into
 // this repo's own HashMap<int, int>, the same "one map, O(1) lookup per element"
 // contrast TwoSumSolution draws.
+[LeetCodeQuestion("apply-discount-every-n-orders", LeetCodeAnswerOrder.AsWritten)]
 internal static class ApplyDiscountEveryNOrdersSolution
 {
-    // LeetCode states the discount as a percentage of the bill.
-    private const double PercentScale = 100.0;
-
     // Real answer: product id -> price in this repo's HashMap, one probe per line item.
     public static ICashier CreateByHashMapLookup(
         int discountInterval, int discount, int[] products, int[] prices) =>
@@ -64,8 +63,8 @@ internal static class ApplyDiscountEveryNOrdersSolution
         }
 
         // The discounted bill: the discount percentage of the whole total taken off,
-        // in the integer-percentage form LeetCode states the discount in.
-        private double DiscountedBill(double total) => total - (total * _discount / PercentScale);
+        // in the per cent LeetCode states the discount in (Domain/Mathematics/Numerals).
+        private double DiscountedBill(double total) => total - (total * _discount / Percent.PartsPerWhole);
     }
 
     private sealed class HashMapLookupCashier : ICashier

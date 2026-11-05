@@ -14,7 +14,7 @@ namespace DSAExperimentation.Domain.Language.English;
 public readonly struct EnglishVowels : ILetterSet<EnglishLetters>
 {
     /// <summary>The vowels, lowercase, in alphabetical order.</summary>
-    public static ImmutableArray<char> Letters { get; } = ['a', 'e', 'i', 'o', 'u'];
+    public static ImmutableArray<char> Letters { get; } = ['a', 'e', 'i', 'o', 'u']; // TODO: should we include 'y' as a vowel sometimes? maybe have an option or separate set for it.
 
     /// <summary>The number of vowels, read from <see cref="Letters"/> once.</summary>
     public static int Count { get; } = Letters.Length;
@@ -28,3 +28,9 @@ public readonly struct EnglishVowels : ILetterSet<EnglishLetters>
     /// <returns>True for a, e, i, o or u, lowercase or capital; otherwise false.</returns>
     public static bool Has(char letter) => LetterSet<EnglishVowels, EnglishLetters>.Has(letter);
 }
+
+// TODO:ALSO WHAT ABOUT CH, TH, SH, AND OTHER DIGRAPHS?
+// TODO: CONSIDER WHETHER TO INCLUDE DIPHTHONGS OR OTHER MULTI-LETTER VOWEL REPRESENTATIONS.
+// TODO: DECIDE ON THE HANDLING OF ACCENTED VOWELS LIKE 'Á', 'É', 'Í', 'Ó', 'Ú'.
+// TODO: CONSIDER WHETHER TO INCLUDE VOWELS WITH DIAERESIS LIKE 'Ä', 'Ë', 'Ï', 'Ö', 'Ü'.
+// TODO: WHAT ABOUT PHONETIC REPRESENTATIONS OF VOWELS LIKE 'F', 'V', ETC. IN CERTAIN CONTEXTS? WHAT ABOUT PHONETIC TRANSCRIPTIONS IN GENERAL?

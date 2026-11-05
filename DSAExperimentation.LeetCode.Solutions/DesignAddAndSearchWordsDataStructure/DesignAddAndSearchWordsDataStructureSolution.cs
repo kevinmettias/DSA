@@ -19,8 +19,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignAddAndSearchWordsDataStruc
 // mutating calls against one instance, so "every strategy for the problem"
 // (ARCHITECTURE.md 17.3) takes the form of two classes implementing the shared
 // IWordDictionaryStrategy surface below.
+[LeetCodeQuestion("design-add-and-search-words-data-structure", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignAddAndSearchWordsDataStructureSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IWordDictionaryStrategy CreateByLinearScan() => new WordDictionaryByLinearScan();
+
+    public static IWordDictionaryStrategy CreateByTrie() => new WordDictionaryByTrie();
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

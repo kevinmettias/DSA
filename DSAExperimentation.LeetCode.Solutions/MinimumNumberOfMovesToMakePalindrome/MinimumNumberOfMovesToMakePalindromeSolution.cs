@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfMovesToMakePalind
 // repo's ArrayIndexedSequence<char> moved with direct Get/Set swaps. Same O(n^2)
 // algorithm and same answer, different real cost purely from the representation -
 // the "performance independence" case ARCHITECTURE.md #8 names.
+[LeetCodeQuestion("minimum-number-of-moves-to-make-palindrome", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MinimumNumberOfMovesToMakePalindromePromise))]
 internal static class MinimumNumberOfMovesToMakePalindromeSolution
 {
     // The textbook answer: a BCL List<char>, moving a matched character to its

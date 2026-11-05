@@ -17,8 +17,15 @@ namespace DSAExperimentation.LeetCode.Solutions.WalkingRobotSimulationII;
 // to defeat: width, height and each Move's step count all reach 1e9. The perimeter
 // strategy keeps only the total distance travelled and decodes position and heading
 // from it modulo the loop length, so Move is O(1).
+[LeetCodeQuestion("walking-robot-simulation-ii", LeetCodeAnswerOrder.AsWritten, Calls = typeof(WalkingRobotSimulationIICalls))]
 internal static class WalkingRobotSimulationIISolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IRobot CreateByStepSimulation(int width, int height) => new RobotByStepSimulation(width, height);
+
+    public static IRobot CreateByPerimeterFormula(int width, int height) => new RobotByPerimeterFormula(width, height);
+
     // LeetCode's own direction spellings, shared by both strategies so the two
     // cannot drift apart on the answer's wording.
     private const string East = "East";

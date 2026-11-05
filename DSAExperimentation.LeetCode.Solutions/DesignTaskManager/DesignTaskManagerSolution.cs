@@ -11,8 +11,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignTaskManager;
 // there is no separate "prepare input" step to hoist into a benchmark's
 // [GlobalSetup] the way OpenTheLock hoists a built graph; each [Benchmark] arm
 // constructs its own instance and replays the same call script instead.
+[LeetCodeQuestion("design-task-manager", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignTaskManagerSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static ITaskManagerStrategy CreateByLinearScan(IEnumerable<(int UserId, int TaskId, int Priority)> tasks) => new TaskManagerByLinearScan(tasks);
+
+    public static ITaskManagerStrategy CreateByLazyDeletionHeap(IEnumerable<(int UserId, int TaskId, int Priority)> tasks) => new TaskManagerByLazyDeletionHeap(tasks);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

@@ -13,8 +13,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignAnOrderedStream;
 // the problem" (ARCHITECTURE.md §17.3) takes the form of two full classes
 // implementing the shared IOrderedStream surface below - the same shape
 // DesignBrowserHistorySolution uses for its own instance-API problem (LC 1472).
+[LeetCodeQuestion("design-an-ordered-stream", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignAnOrderedStreamSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IOrderedStream CreateByListBacked(int streamSize) => new OrderedStreamByListBacked(streamSize);
+
+    public static IOrderedStream CreateByDynamicArrayBacked(int streamSize) => new OrderedStreamByDynamicArrayBacked(streamSize);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one insertion script against either strategy without
     // restating it.

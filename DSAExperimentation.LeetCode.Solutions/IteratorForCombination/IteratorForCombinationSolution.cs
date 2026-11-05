@@ -19,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.IteratorForCombination;
 //   in strictly increasing order. Because characters is already sorted, that order
 //   is lexicographic by construction, so nothing is generated to be discarded and no
 //   sort is needed.
+[LeetCodeQuestion("iterator-for-combination", LeetCodeAnswerOrder.AsWritten)]
 internal static class IteratorForCombinationSolution
 {
     public static CombinationIterator CreateByBitmaskEnumeration(string characters, int combinationLength)

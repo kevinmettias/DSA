@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.OperationsOnTree;
 // Graph-domain query, because the Graph topology contracts here are deliberately
 // child-ward only (GetChildren, never GetParent - see KthAncestorOfATreeNode), so
 // there is no witness for that direction to compose in the first place.
+[LeetCodeQuestion("operations-on-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class OperationsOnTreeSolution
 {
     // The textbook answer: no child links at all, just the parent array. To find

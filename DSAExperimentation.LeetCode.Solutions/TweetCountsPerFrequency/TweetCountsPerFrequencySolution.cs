@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.Domain.Science.Time;
 
 namespace DSAExperimentation.LeetCode.Solutions.TweetCountsPerFrequency;
 
@@ -19,11 +20,14 @@ namespace DSAExperimentation.LeetCode.Solutions.TweetCountsPerFrequency;
 // LC 1348's own TweetCounts() constructor takes no initial state, so there is no
 // separate "prepared input" overload to hoist (§17.4): the recorded instance is
 // itself the prepared input a benchmark builds in [GlobalSetup].
+[LeetCodeQuestion("tweet-counts-per-frequency", LeetCodeAnswerOrder.AsWritten)]
 internal static class TweetCountsPerFrequencySolution
 {
-    private const int SecondsPerMinute = 60;
-    private const int SecondsPerHour = 3_600;
-    private const int SecondsPerDay = 86_400;
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static ITweetCountsStrategy CreateByFlatListFilter() => new TweetCountsByFlatListFilter();
+
+    public static ITweetCountsStrategy CreateByHashMapGroupedByName() => new TweetCountsByHashMapGroupedByName();
 
     // The three frequency names LC 1348 fixes. Private because nothing outside this
     // type needs the *declaration*: the tests and the benchmark each replay LC's own
@@ -34,15 +38,18 @@ internal static class TweetCountsPerFrequencySolution
     private const string Hour = "hour";
     private const string Day = "day";
 
-    // The chunk width each frequency name stands for. LC 1348 fixes these three
-    // names and nothing else, so both strategies read them from here rather than
-    // each restating the conversion.
+    // The chunk width each frequency name stands for, in the seconds LC 1348's times
+    // count. The names are LC 1348's notation; the units they name, and how many
+    // seconds each lasts, are Domain/Science/Time's, so both strategies read them
+    // there rather than restating the conversion. Each width is a constant
+    // expression over the units' constants, so this switch is three literals, as
+    // small as when it held its own numbers, and its callers inline it.
     private static int ResolveChunkSeconds(string freq)
         => freq switch
         {
-            Minute => SecondsPerMinute,
-            Hour => SecondsPerHour,
-            _ => SecondsPerDay,
+            Minute => (int)(TimeUnit.Minute.Ticks / TimeUnit.Second.Ticks),
+            Hour => (int)(TimeUnit.Hour.Ticks / TimeUnit.Second.Ticks),
+            _ => (int)(TimeUnit.Day.Ticks / TimeUnit.Second.Ticks),
         };
 
     private static int BucketCount(int startTime, int endTime, int chunkSeconds)

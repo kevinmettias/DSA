@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FrequencyTracker;
 // AllOneDataStructureSolution uses for its own Design-category problem. There is no
 // separate "prepare input" step to hoist into a benchmark's [GlobalSetup]; each arm
 // constructs its own instance and replays the same call script instead.
+[LeetCodeQuestion("frequency-tracker", LeetCodeAnswerOrder.AsWritten)]
 internal static class FrequencyTrackerSolution
 {
     // The textbook answer: no hashing at all. A raw List<int> multiset, DeleteOne via

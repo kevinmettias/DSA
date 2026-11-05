@@ -21,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindingMKAverage;
 // FIFO eviction and mirrors it into two value-indexed
 // FenwickTree<Element, SumOperation<Element>> Binary Indexed Trees (one of counts,
 // one of sums), so the trimmed mean is two order-statistic queries instead of a sort.
+[LeetCodeQuestion("finding-mk-average", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindingMKAverageSolution
 {
     // Both ends are trimmed by the same count, so a window of windowSize keeps

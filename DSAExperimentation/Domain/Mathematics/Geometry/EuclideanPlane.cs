@@ -4,8 +4,11 @@ namespace DSAExperimentation.Domain.Mathematics.Geometry;
 // whatever its size, as LC 3899 relies on. It is the flat case of ConstantCurvatureSurface's
 // Gauss–Bonnet sum, written as a constant so a caller pays nothing for it (ARCHITECTURE §17.6).
 /// <summary>Facts of the flat (Euclidean) plane.</summary>
-public static class EuclideanPlane
+public static class EuclideanPlane 
 {
     /// <summary>The degrees a triangle's three interior angles add up to on the flat plane.</summary>
-    public const double TriangleAngleSumDegrees = 180.0;
+    public const double TriangleAngleSumDegrees = 180.0; 
 }
+// TODO: 
+// LETS CREATE A PARENT CLASS FOR ALL FLAT SURFACES AND ANOTHER FOR NON-EUCLIDEAN ONES, WHERE THE ANGLES IS CALCULATED BASED ON GENERALIZED FORMULAS LIKE GAUSS–BONNET. 
+// IF WE DO THAT THOUGH WE NEED A WAY TO COMPILE TIME FREEZE IT FOR PERFORMANCE REASONS.

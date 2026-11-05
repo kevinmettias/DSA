@@ -23,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SmallestNumberInInfiniteSet;
 // smallest, and do you already hold this?": an O(n) linear scan plus an O(n) Contains
 // per operation, or this repo's SmallestFreeAllocator, an O(log n) pop plus O(1)
 // duplicate rejection behind exactly that counter (ARCHITECTURE.md §17.6b).
+[LeetCodeQuestion("smallest-number-in-infinite-set", LeetCodeAnswerOrder.AsWritten)]
 internal static class SmallestNumberInInfiniteSetSolution
 {
     // The infinite set is [1, 2, 3, ...], so the first number ever produced is 1.

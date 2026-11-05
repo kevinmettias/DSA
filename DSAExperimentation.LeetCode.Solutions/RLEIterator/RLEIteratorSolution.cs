@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RLEIterator;
 //
 // IRleIterator is bespoke to this problem alone, so it stays here rather than in
 // DataStructures/.
+[LeetCodeQuestion("rle-iterator", LeetCodeAnswerOrder.AsWritten)]
 internal static class RLEIteratorSolution
 {
     // The textbook baseline: eagerly decompress the whole encoding into a flat

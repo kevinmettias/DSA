@@ -15,8 +15,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignHashMap;
 // "prepare input" step to hoist into a benchmark's [GlobalSetup]; each
 // [Benchmark] arm constructs its own instance and replays the same call
 // script instead.
+[LeetCodeQuestion("design-hashmap", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignHashMapSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IMyHashMap CreateByLinearScanList() => new MyHashMapByLinearScanList();
+
+    public static IMyHashMap CreateByHashMapBacked() => new MyHashMapByHashMapBacked();
+
     // The shared surface both strategies implement, so the test and
     // benchmark harnesses can replay one call script against either
     // strategy without restating it.

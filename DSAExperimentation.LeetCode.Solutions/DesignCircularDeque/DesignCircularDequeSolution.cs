@@ -10,8 +10,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignCircularDeque;
 // strategy for the problem" (ARCHITECTURE.md §17.3) takes the form of two full
 // classes implementing the shared ICircularDeque surface below, the same shape
 // DesignCircularQueueSolution uses for its own instance-API problem (LC 622).
+[LeetCodeQuestion("design-circular-deque", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignCircularDequeSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static ICircularDeque CreateByArrayBacked(int capacity) => new CircularDequeByArrayBacked(capacity);
+
+    public static ICircularDeque CreateByBoundedDeque(int capacity) => new CircularDequeByBoundedDeque(capacity);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

@@ -28,3 +28,7 @@ public static class EuclideanPolygons
     /// <returns><see langword="true"/> when the longest side is the shorter; otherwise <see langword="false"/>.</returns>
     public static bool CanClose(int longestSide, long otherSidesTotal) => longestSide < otherSidesTotal;
 }
+
+// TODO: 
+// LETS CREATE A PARENT CLASS FOR ALL FLAT SURFACES AND ANOTHER FOR NON-EUCLIDEAN ONES, WHERE THE ANGLES IS CALCULATED BASED ON GENERALIZED FORMULAS LIKE GAUSS–BONNET. 
+// IF WE DO THAT THOUGH WE NEED A WAY TO COMPILE TIME FREEZE IT FOR PERFORMANCE REASONS.

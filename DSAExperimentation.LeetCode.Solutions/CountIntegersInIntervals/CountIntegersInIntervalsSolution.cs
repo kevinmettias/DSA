@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountIntegersInIntervals;
 // across a sequence of add/count calls, not a single pure function, so the strategies
 // here are factory methods returning that stateful object - the same shape
 // DataStreamAsDisjointIntervalsSolution uses for LC 352's own interval-summary object.
+[LeetCodeQuestion("count-integers-in-intervals", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountIntegersInIntervalsSolution
 {
     public interface ICountIntervals

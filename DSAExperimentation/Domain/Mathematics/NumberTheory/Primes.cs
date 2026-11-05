@@ -8,3 +8,5 @@ public static class Primes
     /// <summary>The smallest prime, 2, and the only even one.</summary>
     public const int Smallest = 2;
 }
+
+// TODO: THIS CLASS SEEMS TO SPARCE, CAN WE ADD MORE UTILITIES LIKE PRIME CHECKING, GENERATING PRIMES, OR FACTORIZATION METHODS?

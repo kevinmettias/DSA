@@ -8,8 +8,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignRideSharingSystem;
 // form of two full classes implementing the shared IRideSharingStrategy surface
 // below, and a benchmark replays one call script against a fresh instance per arm
 // rather than hoisting a "prepared input" (there isn't one to prepare).
+[LeetCodeQuestion("design-ride-sharing-system", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignRideSharingSystemSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IRideSharingStrategy CreateByLinearScanQueue() => new RideSharingSystemByLinearScanQueue();
+
+    public static IRideSharingStrategy CreateByLazyDeletionQueue() => new RideSharingSystemByLazyDeletionQueue();
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

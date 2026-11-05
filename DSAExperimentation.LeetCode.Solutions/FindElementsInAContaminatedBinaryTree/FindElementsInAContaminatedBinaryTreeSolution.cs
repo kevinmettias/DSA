@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindElementsInAContaminatedBinar
 // "recover a contaminated tree, then answer membership" contract - so it stays here
 // rather than in DataStructures/, the same placement CompleteBinaryTreeInserter's
 // ICompleteBinaryTreeInserter gets for LC 919.
+[LeetCodeQuestion("find-elements-in-a-contaminated-binary-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindElementsInAContaminatedBinaryTreeSolution
 {
     private const int ChildIndexMultiplier = 2;

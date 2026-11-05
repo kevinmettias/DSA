@@ -30,6 +30,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ExamRoom;
 //     already makes) plus BinarySearch.LowerBound over a DynamicArraySequence<int>
 //     view (IntervalSet/MyCalendarI precedent), locating p in O(log n) before the same
 //     O(n) shift every array-backed removal pays either way.
+[LeetCodeQuestion("exam-room", LeetCodeAnswerOrder.AsWritten)]
 internal static class ExamRoomSolution
 {
     // Splits a left/right occupied-seat pair to find the midpoint candidate seat.

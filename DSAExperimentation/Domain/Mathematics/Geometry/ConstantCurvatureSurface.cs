@@ -41,5 +41,6 @@ public readonly struct ConstantCurvatureSurface
     /// <summary>The angle sum, in degrees, of a geodesic triangle of the given area on this surface.</summary>
     /// <param name="area">The triangle's area, in the units the curvature is measured in.</param>
     /// <returns>Gauss–Bonnet's pi + K·Area, converted from radians to degrees.</returns>
-    public double TriangleAngleSumDegrees(double area) => (Math.PI + (Curvature * area)) * AngleUnits.DegreesPerRadian;
+    public double TriangleAngleSumDegrees(double area) 
+        => (Math.PI + (Curvature * area)) * AngleUnits.DegreesPerRadian;
 }

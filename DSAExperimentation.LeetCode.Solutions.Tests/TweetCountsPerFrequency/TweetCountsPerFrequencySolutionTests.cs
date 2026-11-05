@@ -46,6 +46,16 @@ public sealed partial class TweetCountsPerFrequencySolutionTests
                 [null, [0, 0]]
             },
             {
+                // The last second of one day and the first of the next: [1, 1] holds only
+                // when a day is exactly 86,400 seconds.
+                [
+                    TweetOp.Record("d", 86_399),
+                    TweetOp.Record("d", 86_400),
+                    TweetOp.Query(Day, "d", 0, 86_400),
+                ],
+                [null, null, [1, 1]]
+            },
+            {
                 [
                     TweetOp.Record("tweet5", 0),
                     TweetOp.Record("tweet5", 100),

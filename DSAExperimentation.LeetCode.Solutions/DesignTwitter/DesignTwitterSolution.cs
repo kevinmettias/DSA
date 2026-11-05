@@ -14,8 +14,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignTwitter;
 // Only getNewsFeed's merge differs between the two arms - postTweet/follow/unfollow
 // are the same bookkeeping in both, restated per class because each keeps its
 // tweets in whatever container its own getNewsFeed strategy wants to walk.
+[LeetCodeQuestion("design-twitter", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignTwitterSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static ITwitterStrategy CreateByGatherAllAndSort() => new TwitterByGatherAllAndSort();
+
+    public static ITwitterStrategy CreateByHeapKWayMerge() => new TwitterByHeapKWayMerge();
+
     private const int FeedSize = 10;
 
     // The shared surface both strategies implement, so the test and benchmark

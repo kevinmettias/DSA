@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StockPriceFluctuation;
 // DetectSquaresSolution uses for its own design problem. The whole difficulty is the
 // correction: an extremum that was true before a correction may be stale afterwards,
 // and neither strategy can afford to search for the record it superseded.
+[LeetCodeQuestion("stock-price-fluctuation", LeetCodeAnswerOrder.AsWritten)]
 internal static class StockPriceFluctuationSolution
 {
     // Composed: this repo's own HashMap<int,int> holds the authoritative price per

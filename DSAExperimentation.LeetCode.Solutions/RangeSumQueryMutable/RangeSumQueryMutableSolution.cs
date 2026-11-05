@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RangeSumQueryMutable;
 // own SegmentTree<int, SumOperation<int>>. SegmentTree.Update takes the new value directly, the same
 // shape as LeetCode's update(index, val), so - unlike FenwickTree.Add, a pure delta increment - no
 // "track the old value to compute a delta" bookkeeping is needed here.
+[LeetCodeQuestion("range-sum-query-mutable", LeetCodeAnswerOrder.AsWritten)]
 internal static class RangeSumQueryMutableSolution
 {
     // The textbook baseline this composition has to justify itself against: a raw array, O(1)

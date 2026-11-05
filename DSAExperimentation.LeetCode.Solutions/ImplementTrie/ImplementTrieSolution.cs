@@ -26,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ImplementTrie;
 // holds it and the one trie to the same answers. The one trie is a strategy under
 // each store LC 208's lowercase words allow, so the benchmark shows where the
 // hand-written chain wins and by how much (ARCHITECTURE 17.5).
+[LeetCodeQuestion("implement-trie-prefix-tree", LeetCodeAnswerOrder.AsWritten, Calls = typeof(ImplementTrieCalls))]
 internal static class ImplementTrieSolution
 {
     // The textbook answer, the arm the one trie is measured against (ARCHITECTURE 17.5).

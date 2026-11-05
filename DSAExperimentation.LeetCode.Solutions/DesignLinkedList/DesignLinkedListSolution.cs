@@ -24,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignLinkedList;
 // benchmark's ArrayListInsertAtFront arm measured directly, but only for AddAtHead in
 // isolation. Promoted here to the full IMyLinkedList surface so it gets the same
 // example coverage as the composed strategy.
+[LeetCodeQuestion("design-linked-list", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignLinkedListSolution
 {
     public static IMyLinkedList CreateBySinglyLinkedListChain() => new SinglyLinkedListChainMyLinkedList();

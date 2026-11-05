@@ -28,6 +28,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumFrequencyStack;
 // repo. Before this migration it lived as untested scaffolding inside
 // MaximumFrequencyStackBenchmarks, so nothing asserted the arm the composed
 // strategy is measured against.
+[LeetCodeQuestion("maximum-frequency-stack", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumFrequencyStackSolution
 {
     public static IFreqStack CreateByHashMapAndStack() => new HashMapAndStackFreqStack();

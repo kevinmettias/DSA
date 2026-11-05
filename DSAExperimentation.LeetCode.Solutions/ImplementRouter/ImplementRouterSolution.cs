@@ -13,8 +13,15 @@ namespace DSAExperimentation.LeetCode.Solutions.ImplementRouter;
 // IRouterStrategy surface below, instead of two static methods sharing an
 // <Operation>By<Strategy> name - the same shape DesignTaskManagerSolution
 // already uses for its own Design-category problem.
+[LeetCodeQuestion("implement-router", LeetCodeAnswerOrder.AsWritten)]
 internal static class ImplementRouterSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IRouterStrategy CreateByLinearScan(int memoryLimit) => new RouterByLinearScan(memoryLimit);
+
+    public static IRouterStrategy CreateByBinarySearchIndex(int memoryLimit) => new RouterByBinarySearchIndex(memoryLimit);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

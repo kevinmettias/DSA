@@ -25,6 +25,8 @@ internal static class GeneratorProbe
                 public bool RewritesInput { get; set; }
 
                 public bool AnswersInPlace { get; set; }
+
+                public System.Type Calls { get; set; }
             }
         }
 

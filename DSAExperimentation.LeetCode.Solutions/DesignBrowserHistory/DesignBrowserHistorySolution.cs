@@ -11,8 +11,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignBrowserHistory;
 // for the problem" (ARCHITECTURE.md §17.3) takes the form of two full classes
 // implementing the shared IBrowserHistory surface below, the same shape
 // DesignCircularQueueSolution uses for its own instance-API problem (LC 622).
+[LeetCodeQuestion("design-browser-history", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignBrowserHistorySolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IBrowserHistory CreateByListBacked(string homepage) => new BrowserHistoryByListBacked(homepage);
+
+    public static IBrowserHistory CreateByDynamicArrayBacked(string homepage) => new BrowserHistoryByDynamicArrayBacked(homepage);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

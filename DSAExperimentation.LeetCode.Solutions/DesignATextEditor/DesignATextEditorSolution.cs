@@ -11,8 +11,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignATextEditor;
 // (ARCHITECTURE.md §17.3) takes the form of two full classes implementing the
 // shared ITextEditor surface below, the same shape DesignBrowserHistorySolution
 // uses for its own instance-API problem (LC 1472).
+[LeetCodeQuestion("design-a-text-editor", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignATextEditorSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static ITextEditor CreateByListBacked() => new TextEditorByListBacked();
+
+    public static ITextEditor CreateByCursorSequence() => new TextEditorByCursorSequence();
+
     // LeetCode reports the last ten characters left of the cursor, or fewer when
     // fewer exist.
     private const int CursorWindow = 10;

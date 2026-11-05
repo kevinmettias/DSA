@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinStack;
 // measures. Both arms are driven through IMinStackOperations so LeetCode's
 // four-call shape reaches them identically, the same move
 // ApplyDiscountEveryNOrdersSolution makes for its own two cashiers.
+[LeetCodeQuestion("min-stack", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinStackSolution
 {
     public static IMinStackOperations CreateByStackPrimitive() => new MinStackOperations();

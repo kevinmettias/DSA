@@ -15,8 +15,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignBitset;
 // stored bit, which is O(size), while carrying the flip as an unapplied
 // interpretation flag and mirroring the running ones-count (size - count) keeps
 // flip/count/all/one all O(1).
+[LeetCodeQuestion("design-bitset", LeetCodeAnswerOrder.AsWritten, Calls = typeof(DesignBitsetCalls))]
 internal static class DesignBitsetSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IBitset CreateByEagerFlip(int size) => new BitsetByEagerFlip(size);
+
+    public static IBitset CreateByLazyFlag(int size) => new BitsetByLazyFlag(size);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it. ToBitString is LeetCode's toString(), renamed so it does not

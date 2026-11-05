@@ -5,8 +5,9 @@ namespace DSAExperimentation.LeetCode;
 // over every case the LeetCode catalog holds for the question, and its answers are judged against the
 // catalog's. What it carries are the problem's own facts - which question, whether its answer's order
 // is free, the type stating a promise a generated case can break, and whether its strategies may
-// rewrite their inputs - never a workload or a size, which are measurement decisions and stay in the
-// benchmarks (17.7). It is data: nothing in this tier reads the catalog.
+// rewrite their inputs - and one fact about its strategies, the largest cases they all finish (Reach).
+// It names no workload, which is a measurement decision and stays in the benchmarks (17.7). It is data:
+// nothing in this tier reads the catalog.
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 internal sealed class LeetCodeQuestionAttribute(string titleSlug, LeetCodeAnswerOrder answerOrder) : Attribute
 {
@@ -39,4 +40,19 @@ internal sealed class LeetCodeQuestionAttribute(string titleSlug, LeetCodeAnswer
     // them"), as LongestPalindromicSubstringAnswerCheck does; null when the recorded answer is the one to
     // give, by the order rule and the tolerance above.
     public Type? AnswerCheck { get; set; }
+
+    // A static class whose IsWithin takes a strategy's inputs and says whether every strategy of the
+    // solution finishes the case in the harness's time, as EliminationGameReach does. A case one arm cannot
+    // finish - its brute force runs for seconds, or its recursion overflows the stack - is left out for
+    // every arm, so all of them still answer the same cases. Null when each strategy finishes every case
+    // the catalog holds. It is the one size the attribute names (owner's ruling, 2026-11-05): which cases
+    // the strategies can reach is a fact about them, not a choice of workload.
+    public Type? Reach { get; set; }
+
+    // For a design question, whose cases are scripts of calls on one object (LRU Cache's get and put): a
+    // static class standing for the calls the strategies' object does not answer by a method of the call's
+    // name, as LRUCacheCalls.Get turns the cache's TryGetValue into LeetCode's -1 for a missing key. Each
+    // method is named for its call and takes the object, then the call's arguments. Null when the object
+    // answers every call itself.
+    public Type? Calls { get; set; }
 }

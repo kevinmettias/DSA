@@ -10,8 +10,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignEventManager;
 // design problem (LC 3408), just without an Add/Rmv pair since this problem's
 // events are all fixed at construction and only ever updated or polled away, never
 // added afterward.
+[LeetCodeQuestion("design-event-manager", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignEventManagerSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IEventManagerStrategy CreateByLinearScan(IEnumerable<(int EventId, int Priority)> events) => new EventManagerByLinearScan(events);
+
+    public static IEventManagerStrategy CreateByLazyDeletionHeap(IEnumerable<(int EventId, int Priority)> events) => new EventManagerByLazyDeletionHeap(events);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

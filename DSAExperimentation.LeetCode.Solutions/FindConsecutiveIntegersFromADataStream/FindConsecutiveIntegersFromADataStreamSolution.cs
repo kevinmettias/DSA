@@ -12,8 +12,15 @@ namespace DSAExperimentation.LeetCode.Solutions.FindConsecutiveIntegersFromAData
 // "every strategy for the problem" (ARCHITECTURE.md section 17.3) takes the form of
 // two classes implementing the shared IDataStreamStrategy surface below, the same
 // shape StreamOfCharactersSolution uses for LC 1032.
+[LeetCodeQuestion("find-consecutive-integers-from-a-data-stream", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindConsecutiveIntegersFromADataStreamSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IDataStreamStrategy CreateByHistoryRescan(int value, int windowSize) => new DataStreamByHistoryRescan(value, windowSize);
+
+    public static IDataStreamStrategy CreateByFixedWindow(int value, int windowSize) => new DataStreamByFixedWindow(value, windowSize);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one stream against either strategy without restating it.
     internal interface IDataStreamStrategy

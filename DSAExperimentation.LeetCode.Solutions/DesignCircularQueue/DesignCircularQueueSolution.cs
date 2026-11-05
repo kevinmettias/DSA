@@ -11,8 +11,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignCircularQueue;
 // implementing the shared ICircularQueue surface below, instead of two static
 // methods sharing an <Operation>By<Strategy> name, the same shape
 // DesignTaskManagerSolution uses for its own instance-API problem (LC 3408).
+[LeetCodeQuestion("design-circular-queue", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignCircularQueueSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static ICircularQueue CreateByArrayBacked(int capacity) => new CircularQueueByArrayBacked(capacity);
+
+    public static ICircularQueue CreateByBoundedQueue(int capacity) => new CircularQueueByBoundedQueue(capacity);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

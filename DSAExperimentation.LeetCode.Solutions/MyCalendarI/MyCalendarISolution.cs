@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MyCalendarI;
 // replayed across a sequence of Book calls, not a single pure function, so the
 // strategies here are factory methods returning that stateful object - the same
 // shape DataStreamAsDisjointIntervalsSolution uses for LC 352.
+[LeetCodeQuestion("my-calendar-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class MyCalendarISolution
 {
     public interface ICalendar

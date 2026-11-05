@@ -39,6 +39,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ImplementMagicDictionary;
 // CreateByBruteForce is the textbook baseline this composition has to justify
 // itself against: buildDict just remembers the word list, and search scans it
 // computing a Hamming distance against every candidate.
+[LeetCodeQuestion("implement-magic-dictionary", LeetCodeAnswerOrder.AsWritten)]
 internal static class ImplementMagicDictionarySolution
 {
     public static IMagicDictionary CreateByBruteForce() => new BruteForceMagicDictionary();

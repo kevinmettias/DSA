@@ -20,6 +20,16 @@ public sealed partial class SharedValueCopyTests
             "How many cells a doubled chain's side spans, not how many sides a polygon needs.",
         ["DSAExperimentation.LeetCode.Solutions.CheckIfAStringContainsAllBinaryCodesOfSizeK.CheckIfAStringContainsAllBinaryCodesOfSizeKSolution.Zero"] =
             "A binary string's 0 bit, which LC 1461 writes with the same glyph as the decimal digit.",
+        ["DSAExperimentation.LeetCode.Solutions.EscapeALargeMaze.EscapeALargeMazeBoard.Size"] =
+            "The side of LC 1036's board, 10^6 squares, not the parts a whole holds in parts per million.",
+        ["DSAExperimentation.LeetCode.Solutions.FindPositiveIntegerSolutionForAGivenEquation.SearchRange.Bound"] =
+            "LC 1237's largest x and y, not the parts a whole holds per mille.",
+        ["DSAExperimentation.LeetCode.Solutions.Finding3DigitEvenNumbers.Finding3DigitEvenNumbersSolution.HundredsPlace"] =
+            "The value of a three-digit number's hundreds place, not the parts a whole holds per cent.",
+        ["DSAExperimentation.LeetCode.Solutions.MaximumPrimeDifference.MaximumPrimeDifferenceSolution.MaxValue"] =
+            "LC 3115's largest value of nums[i], which bounds its sieve, not the parts a whole holds per cent.",
+        ["DSAExperimentation.LeetCode.Solutions.CountNumberOfRectanglesContainingEachPoint.CountNumberOfRectanglesContainingEachPointPromise.MostHeight"] =
+            "LC 2250's tallest rectangle or point, the bound its promise checks, not the parts a whole holds per cent.",
     };
 
     private static readonly Lazy<IReadOnlyList<LibraryValueCopies.Copy>> Copies =

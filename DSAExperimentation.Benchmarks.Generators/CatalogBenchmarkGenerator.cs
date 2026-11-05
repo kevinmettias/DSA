@@ -29,6 +29,7 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
     private const string NoOverloadBinds = "no overload takes a case's inputs";
     private const string RewritesInputArgument = "RewritesInput";
     private const string AnswersInPlaceArgument = "AnswersInPlace";
+    private const string CallsArgument = "Calls";
 
     // Where the catalog keeps one file per question, whose signature names the question's declared inputs.
     private const string QuestionFolder = "/Snapshot/Questions/";
@@ -50,7 +51,7 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
     {
         var signatures = context.AdditionalTextsProvider
             .Where(static text => IsQuestionFile(text.Path))
-            .Select(static (text, cancellation) => (Slug: Path.GetFileNameWithoutExtension(text.Path), Declared: LeetCodeShape.DeclaredTypesIn(text.GetText(cancellation)?.ToString() ?? string.Empty)))
+            .Select(static (text, cancellation) => QuestionSnapshot.Of(text.Path, text.GetText(cancellation)?.ToString() ?? string.Empty))
             .Collect();
         var classes = context.CompilationProvider.Combine(signatures).Select(static (pair, _) => ClassesFor(pair.Left, pair.Right));
 
@@ -63,7 +64,7 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
         return normalized.Contains(QuestionFolder) && normalized.EndsWith(QuestionExtension, StringComparison.Ordinal);
     }
 
-    private static GeneratedClasses ClassesFor(Compilation compilation, ImmutableArray<(string Slug, IReadOnlyList<string> Declared)> signatures)
+    private static GeneratedClasses ClassesFor(Compilation compilation, ImmutableArray<QuestionSnapshot> signatures)
     {
         var generated = new GeneratedClasses();
 
@@ -76,16 +77,72 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
             .SelectMany(assembly => TypesIn(assembly.GlobalNamespace))
             .Where(type => IsEnrolled(type, attribute));
 
-        var declaredBySlug = signatures.ToDictionary(signature => signature.Slug, signature => signature.Declared, StringComparer.Ordinal);
+        var snapshotBySlug = signatures.ToDictionary(signature => signature.Slug, StringComparer.Ordinal);
 
         foreach (var solution in solutions)
         {
-            var declared = DeclaredTypesFor(solution, attribute, declaredBySlug);
-            AddClassFor(solution, attribute, declared, generated);
+            AddClassFor(solution, attribute, QuestionSnapshotFor(solution, attribute, snapshotBySlug), generated);
         }
 
         return generated;
     }
+
+    // A design question's class replays its call scripts; any other question's runs its cases' inputs.
+    private static void AddClassFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, QuestionSnapshot? snapshot, GeneratedClasses generated)
+    {
+        if (snapshot?.Design is { } design)
+        {
+            AddDesignClassFor(solution, attribute, design, generated);
+        }
+        else
+        {
+            AddFunctionClassFor(solution, attribute, snapshot?.Declared, generated);
+        }
+    }
+
+    private static void AddDesignClassFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, DesignShape design, GeneratedClasses generated)
+    {
+        var stated = TypeArgumentOf(solution, attribute, CallsArgument);
+        var arms = new List<ScriptShape>();
+
+        foreach (var overloads in solution.GetMembers().OfType<IMethodSymbol>().Where(IsStrategy).GroupBy(method => method.Name))
+        {
+            var bound = overloads.Select(factory => ScriptShape.Of(factory, stated, design)).ToList();
+            var shapes = bound.Where(candidate => candidate.Shape is not null).Select(candidate => candidate.Shape!).ToList();
+
+            if (shapes.Count == 1)
+            {
+                arms.Add(shapes[0]);
+            }
+            else
+            {
+                generated.Refusals.Add((solution.Name, overloads.Key, ReasonNoFactoryOrSeveral(bound, shapes.Count)));
+            }
+        }
+
+        var name = NameFor(solution);
+        var writer = new CatalogScriptWriter(NotationTypes.Render(solution), name, arms);
+        generated.Sources.Add((name, writer.Write()));
+    }
+
+    private static string ReasonNoFactoryOrSeveral(List<(ScriptShape? Shape, string? Reason)> bound, int boundCount)
+    {
+        if (boundCount > 0)
+        {
+            return $"{boundCount} of its overloads make the question's object, so which one is the arm is not settled";
+        }
+
+        return bound[0].Reason ?? NoOverloadBinds;
+    }
+
+    // The type a typeof argument of the solution's attribute names, such as its Calls type; null when unset.
+    private static INamedTypeSymbol? TypeArgumentOf(INamedTypeSymbol solution, INamedTypeSymbol attribute, string argumentName) =>
+        solution.GetAttributes()
+            .Where(applied => SymbolEqualityComparer.Default.Equals(applied.AttributeClass, attribute))
+            .SelectMany(applied => applied.NamedArguments)
+            .Where(argument => argument.Key == argumentName)
+            .Select(argument => argument.Value.Value as INamedTypeSymbol)
+            .FirstOrDefault(type => type is not null);
 
     // The assembly declaring the attribute, and every referenced assembly that compiles against it, as the
     // solutions project does. LeetCode's conventions declare it, below the solutions that carry it.
@@ -103,16 +160,16 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
     private static bool IsEnrolled(INamedTypeSymbol type, INamedTypeSymbol attribute) =>
         type.GetAttributes().Any(applied => SymbolEqualityComparer.Default.Equals(applied.AttributeClass, attribute));
 
-    // The inputs the solution's question declares, by the slug its attribute names; null when the benchmarks
+    // The snapshot file of the solution's question, by the slug its attribute names; null when the benchmarks
     // build was handed no file for it.
-    private static IReadOnlyList<string>? DeclaredTypesFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, Dictionary<string, IReadOnlyList<string>> declaredBySlug)
+    private static QuestionSnapshot? QuestionSnapshotFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, Dictionary<string, QuestionSnapshot> snapshotBySlug)
     {
         var applied = solution.GetAttributes().First(candidate => SymbolEqualityComparer.Default.Equals(candidate.AttributeClass, attribute));
         var slug = applied.ConstructorArguments.FirstOrDefault().Value as string;
-        return slug is not null && declaredBySlug.TryGetValue(slug, out var declared) ? declared : null;
+        return slug is not null && snapshotBySlug.TryGetValue(slug, out var snapshot) ? snapshot : null;
     }
 
-    private static void AddClassFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, IReadOnlyList<string>? declared, GeneratedClasses generated)
+    private static void AddFunctionClassFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, IReadOnlyList<string>? declared, GeneratedClasses generated)
     {
         var source = IsSet(solution, attribute, AnswersInPlaceArgument) ? AnswerSource.FirstInput : AnswerSource.ReturnValue;
         var arms = ArmsOf(solution, source, declared, generated);

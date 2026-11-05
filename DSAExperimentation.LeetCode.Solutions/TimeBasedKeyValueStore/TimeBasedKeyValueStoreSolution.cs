@@ -23,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TimeBasedKeyValueStore;
 // OnlineElectionSolution already uses - and floors to the query with this repo's
 // own BinarySearch.UpperBound over a DynamicArraySequence<int> witness, minus one:
 // the index just past the last value set at or before t. O(log n) per query.
+[LeetCodeQuestion("time-based-key-value-store", LeetCodeAnswerOrder.AsWritten)]
 internal static class TimeBasedKeyValueStoreSolution
 {
     // Real answer: parallel history columns plus BinarySearch.UpperBound.

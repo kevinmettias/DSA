@@ -20,8 +20,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignAnATMMachine;
 // this repo's own HashMap<int, long> costs anything measurable over plain index
 // arithmetic into a five-slot array when the key space is, in this problem, always
 // exactly five.
+[LeetCodeQuestion("design-an-atm-machine", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignAnATMMachineSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IAtm CreateByFiveSlotArray() => new AtmByFiveSlotArray();
+
+    public static IAtm CreateByHashMap() => new AtmByHashMap();
+
     // Ascending, which is the order LeetCode both deposits in and reports a
     // withdrawal in; the greedy walk reads it backwards.
     private static readonly int[] DenominationsAscending = [20, 50, 100, 200, 500];

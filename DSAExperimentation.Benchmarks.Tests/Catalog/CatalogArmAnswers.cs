@@ -23,27 +23,40 @@ internal static class CatalogArmAnswers
         (Activator.CreateInstance(benchmark) as ICatalogBenchmarks)?.Solution
             ?? throw new InvalidOperationException($"{benchmark.Name} is not a generated catalog class.");
 
-    // The answer to the case at an index of an arm's buffer, in LeetCode's notation.
-    public static Func<int, JsonNode> NotationOf(Type solution, MethodInfo arm, Array answers)
+    // The answer to the case at an index of an arm's answers, in LeetCode's notation: an element of its
+    // buffer, or for a design question's arm the script's answer its call buffers hold.
+    public static Func<int, JsonNode> NotationOf(Type solution, MethodInfo arm, object? answers)
     {
+        if (answers is CatalogCallAnswers scripts)
+        {
+            return scripts.NotationOf;
+        }
+
+        var buffer = BufferOf(arm, answers);
         Func<object?, JsonNode> notationOf = IsTryShaped(solution, arm) ? AnswerNotation.OfFoundOutputs : AnswerNotation.Of;
 
-        return index => notationOf(answers.GetValue(index));
+        return index => notationOf(buffer.GetValue(index));
+    }
+
+    // How many cases an arm's answers are for.
+    public static int CountOf(MethodInfo arm, object? answers)
+    {
+        if (answers is CatalogCallAnswers scripts)
+        {
+            return scripts.Count;
+        }
+
+        return BufferOf(arm, answers).Length;
     }
 
     // Every case's answer in an arm's buffer, one line each, written as CatalogJudge.AgreementTextOf writes
     // it for the question's order rule.
     public static string AgreementTextOf(Type benchmark, MethodInfo arm, object? answers)
     {
-        if (answers is not Array buffer)
-        {
-            throw new InvalidOperationException($"{arm.Name} returned no buffer of answers.");
-        }
-
         var solution = SolutionOf(benchmark);
         var question = CatalogColumns.QuestionOf(solution);
-        var notationOf = NotationOf(solution, arm, buffer);
-        var indices = Enumerable.Range(0, buffer.Length);
+        var notationOf = NotationOf(solution, arm, answers);
+        var indices = Enumerable.Range(0, CountOf(arm, answers));
 
         if (question.AnswerCheck is { } check)
         {
@@ -60,6 +73,9 @@ internal static class CatalogArmAnswers
     // verdict on each of these.
     private static IReadOnlyList<LeetCodeCase> CasesOf(Type solution, MethodInfo arm) =>
         CatalogStrategy.Of(solution).Single(strategy => strategy.Name == arm.Name).Columns().Cases;
+
+    private static Array BufferOf(MethodInfo arm, object? answers) =>
+        answers as Array ?? throw new InvalidOperationException($"{arm.Name} returned no buffer of answers.");
 
     // A strategy with out parameters answers (found, outputs...), which an arm stores as one tuple.
     private static bool IsTryShaped(Type solution, MethodInfo arm) =>

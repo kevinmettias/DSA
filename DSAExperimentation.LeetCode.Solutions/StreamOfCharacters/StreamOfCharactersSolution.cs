@@ -15,8 +15,15 @@ namespace DSAExperimentation.LeetCode.Solutions.StreamOfCharacters;
 // point is a sequence of calls against one instance, so "every strategy for the
 // problem" (ARCHITECTURE.md 17.3) takes the form of two classes implementing the
 // shared IStreamCheckerStrategy surface below.
+[LeetCodeQuestion("stream-of-characters", LeetCodeAnswerOrder.AsWritten)]
 internal static class StreamOfCharactersSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IStreamCheckerStrategy CreateBySuffixRescan(IEnumerable<string> words) => new StreamCheckerBySuffixRescan(words);
+
+    public static IStreamCheckerStrategy CreateByReversedTrie(IEnumerable<string> words) => new StreamCheckerByReversedTrie(words);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one stream against either strategy without restating it.
     internal interface IStreamCheckerStrategy

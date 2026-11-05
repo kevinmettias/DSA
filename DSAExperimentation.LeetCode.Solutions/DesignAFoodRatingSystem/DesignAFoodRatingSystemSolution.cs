@@ -15,8 +15,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignAFoodRatingSystem;
 // instance, so there is no prepared input to hoist into a benchmark's
 // [GlobalSetup]. Each [Benchmark] arm constructs its own instance from LeetCode's
 // own constructor arguments and replays the same call script instead.
+[LeetCodeQuestion("design-a-food-rating-system", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignAFoodRatingSystemSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IFoodRatingStrategy CreateByLinearScan(string[] foods, string[] cuisines, int[] ratings) => new FoodRatingsByLinearScan(foods, cuisines, ratings);
+
+    public static IFoodRatingStrategy CreateByLazyDeletionHeap(string[] foods, string[] cuisines, int[] ratings) => new FoodRatingsByLazyDeletionHeap(foods, cuisines, ratings);
+
     // The shared surface both strategies implement, so a harness can replay one
     // call script against either without restating it.
     internal interface IFoodRatingStrategy

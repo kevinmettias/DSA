@@ -20,8 +20,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignSQL;
 // there is no prepared input to hoist into a benchmark's [GlobalSetup]. Each
 // [Benchmark] arm constructs its own instance from LeetCode's own constructor
 // arguments and replays the same call script instead.
+[LeetCodeQuestion("design-sql", LeetCodeAnswerOrder.AsWritten, Calls = typeof(DesignSQLCalls))]
 internal static class DesignSQLSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static ISqlStrategy CreateByListScan(string[] names, int[] columns) => new SqlByListScan(names, columns);
+
+    public static ISqlStrategy CreateByHashMapTables(string[] names, int[] columns) => new SqlByHashMapTables(names, columns);
+
     // What sel answers for a table, row or column that does not exist - LC 2408's own
     // spelling of "no such cell".
     private const string NoCell = "<null>";

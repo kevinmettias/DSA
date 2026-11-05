@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Nodes;
 using DSAExperimentation.LeetCode.Catalog;
 
 namespace DSAExperimentation.LeetCode.Harness;
@@ -8,11 +9,16 @@ namespace DSAExperimentation.LeetCode.Harness;
 // then indexes plain arrays and calls its strategy directly, and every conversion out of LeetCode's
 // notation is paid here, in [GlobalSetup], never in the timed loop. A case the question's promise rules
 // out is dropped (LeetCodeQuestionAttribute.Promise), so each case left has the one answer the catalog
-// records for it, or none recorded at all. The columns are indexed by parameter, then by case.
+// records for it, or none recorded at all; so is a case beyond the reach of one of the solution's
+// strategies (LeetCodeQuestionAttribute.Reach), so every strategy answers the same cases. The columns
+// are indexed by parameter, then by case.
 internal sealed class CatalogColumns(IReadOnlyList<LeetCodeCase> cases, object?[][] columns)
 {
     // The method a promise type states its promise with, as TwoSumPromise.IsKeptBy does.
     private const string PromiseMethod = "IsKeptBy";
+
+    // The method a reach type states its reach with, as EliminationGameReach.IsWithin does.
+    private const string ReachMethod = "IsWithin";
 
     // The cases in column order, so a harness's k-th answer is the answer to Cases[k].
     public IReadOnlyList<LeetCodeCase> Cases { get; } = cases;
@@ -31,6 +37,18 @@ internal sealed class CatalogColumns(IReadOnlyList<LeetCodeCase> cases, object?[
             .ToArray();
 
         return new CatalogColumns([.. kept.Select(row => row.Case)], byParameter);
+    }
+
+    // A design question's cases as two columns: each script's calls - the class's name, then the names of
+    // LeetCode's methods - and each call's arguments as LeetCode lists them, which CatalogScripts and
+    // CatalogCalls read into the types of the methods that answer them.
+    public static CatalogColumns ForScripts(Type solution)
+    {
+        var cases = LeetCodeCatalog.Cases(QuestionOf(solution).TitleSlug);
+        object?[] calls = [.. cases.Select(testCase => NotationReader.Read(testCase.Inputs[0], typeof(string[])))];
+        object?[] arguments = [.. cases.Select(testCase => JsonNode.Parse(testCase.Inputs[1]))];
+
+        return new CatalogColumns(cases, [calls, arguments]);
     }
 
     // One argument per input; or, for a case with more inputs than parameters, a tuple or record parameter of
@@ -79,17 +97,23 @@ internal sealed class CatalogColumns(IReadOnlyList<LeetCodeCase> cases, object?[
         return NotationReader.ReadSpread(texts, type);
     }
 
-    private static bool IsKept(LeetCodeQuestionAttribute question, Type[] parameterTypes, object?[] arguments)
+    private static bool IsKept(LeetCodeQuestionAttribute question, Type[] parameterTypes, object?[] arguments) =>
+        IsTrueOf(question.Promise, PromiseMethod, parameterTypes, arguments)
+            && IsTrueOf(question.Reach, ReachMethod, parameterTypes, arguments);
+
+    // Whether a statement type's predicate over the strategy's inputs holds for one case: a promise's
+    // IsKeptBy or a reach's IsWithin. True when the question states none.
+    private static bool IsTrueOf(Type? statement, string predicate, Type[] parameterTypes, object?[] arguments)
     {
-        if (question.Promise is not { } promise)
+        if (statement is null)
         {
             return true;
         }
 
-        var isKeptBy = promise.GetMethod(PromiseMethod, BindingFlags.Public | BindingFlags.Static, parameterTypes)
-            ?? throw new InvalidOperationException($"{promise.Name} has no {PromiseMethod} taking the strategy's inputs.");
+        var method = statement.GetMethod(predicate, BindingFlags.Public | BindingFlags.Static, parameterTypes)
+            ?? throw new InvalidOperationException($"{statement.Name} has no {predicate} taking the strategy's inputs.");
 
-        return isKeptBy.Invoke(null, BindingFlags.DoNotWrapExceptions, binder: null, arguments, culture: null) is true;
+        return method.Invoke(null, BindingFlags.DoNotWrapExceptions, binder: null, arguments, culture: null) is true;
     }
 
     public static LeetCodeQuestionAttribute QuestionOf(Type solution) =>

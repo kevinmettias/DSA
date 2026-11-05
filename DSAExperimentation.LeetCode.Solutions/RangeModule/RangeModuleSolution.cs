@@ -33,6 +33,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RangeModule;
 // against: a plain List<(int,int)> of disjoint merged ranges, with addRange merging
 // via an O(n) scan and queryRange checking every stored range for full containment,
 // O(n) per call, instead of IntervalSet's binary search.
+[LeetCodeQuestion("range-module", LeetCodeAnswerOrder.AsWritten)]
 internal static class RangeModuleSolution
 {
     public static IRangeModule CreateByIntervalSetBinarySearch() => new IntervalSetBinarySearchRangeModule();

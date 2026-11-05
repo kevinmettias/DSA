@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LRUCache;
 // LruCache's own doc comment already rejects LeetCode's verbs in favor of
 // matching HashMap's naming, and that precedent carries over here). The two
 // arms answer the same LeetCode operation sequence, replayed by the harness.
+[LeetCodeQuestion("lru-cache", LeetCodeAnswerOrder.AsWritten, Calls = typeof(LRUCacheCalls))]
 internal static class LRUCacheSolution
 {
     // The composed answer: this repo's own HashMap + DoublyLinkedList cache,

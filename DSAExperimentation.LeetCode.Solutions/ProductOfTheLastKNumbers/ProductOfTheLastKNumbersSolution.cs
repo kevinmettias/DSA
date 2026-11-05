@@ -19,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ProductOfTheLastKNumbers;
 // fresh single entry ([1]) instead of ever dividing by zero, which handles zeros for
 // free: a window that would have crossed a zero is exactly a k larger than the
 // entries recorded since the last reset, and those answer 0.
+[LeetCodeQuestion("product-of-the-last-k-numbers", LeetCodeAnswerOrder.AsWritten)]
 internal static class ProductOfTheLastKNumbersSolution
 {
     // Real answer: a running prefix-product array, one division per query.

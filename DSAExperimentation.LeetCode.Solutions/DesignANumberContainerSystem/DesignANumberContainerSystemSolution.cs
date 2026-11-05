@@ -14,8 +14,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignANumberContainerSystem;
 // instance, so there is no prepared input to hoist into a benchmark's
 // [GlobalSetup]. Each [Benchmark] arm constructs its own instance and replays the
 // same call script instead.
+[LeetCodeQuestion("design-a-number-container-system", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignANumberContainerSystemSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static INumberContainerStrategy CreateByLinearScan() => new NumberContainersByLinearScan();
+
+    public static INumberContainerStrategy CreateByLazyDeletionHeap() => new NumberContainersByLazyDeletionHeap();
+
     // The shared surface both strategies implement, so a harness can replay one
     // call script against either without restating it.
     internal interface INumberContainerStrategy

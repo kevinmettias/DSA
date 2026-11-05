@@ -32,3 +32,8 @@ public readonly record struct ChessPiece(string Name, ImmutableArray<GridStep> M
     /// <summary>The knight: one jump, two squares one way and one the other.</summary>
     public static ChessPiece Knight { get; } = new("knight", GridDirections.LShaped, IsSliding: false);
 }
+
+
+// TODO: WHAT ABOUT PAWNS, WHICH HAVE SPECIAL MOVES LIKE FORWARD ONE STEP, INITIAL TWO-STEP, AND DIAGONAL CAPTURES?
+
+// TODO: IF WE WANT TO GENERALIZE THE GAME OF CHEST, WE MIGHT WANT TO SLIDING DISTANCE AS A PARAMETER, SO PIECES CAN SLIDE A LIMITED NUMBER OF STEPS RATHER THAN UNTIL BLOCKED, THAT WOULD REPLACE THE BOOL WITH AN INTEGER OR NULL FOR UNLIMITED.

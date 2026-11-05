@@ -32,6 +32,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignAStackWithIncrementOperati
 // no maxSize cap, no Push and no Pop at all, so nothing asserted the arm the
 // composed strategy is measured against. It is promoted here to LeetCode's real
 // CustomStack surface, which is what finally gets it under test.
+[LeetCodeQuestion("design-a-stack-with-increment-operation", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignAStackWithIncrementOperationSolution
 {
     // LeetCode's own "pop from an empty stack" convention for this problem.

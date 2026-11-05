@@ -15,8 +15,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignMovieRentalSystem;
 // ValueTuple.CompareTo is already element-wise, so that ordering falls straight
 // out of the default IComparable ordering of the tuple. What the two strategies
 // disagree about is when the ordering is paid for: per query, or maintained.
+[LeetCodeQuestion("design-movie-rental-system", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignMovieRentalSystemSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IMovieRentingSystem CreateBySortOnQuery(int shopCount, int[][] entries) => new MovieRentingSystemBySortOnQuery(shopCount, entries);
+
+    public static IMovieRentingSystem CreateByBinarySearchTree(int shopCount, int[][] entries) => new MovieRentingSystemByBinarySearchTree(shopCount, entries);
+
     // LeetCode caps both search() and report() at five results.
     private const int ResultCap = 5;
 

@@ -17,8 +17,15 @@ namespace DSAExperimentation.LeetCode.Solutions.SubrectangleQueries;
 // jagged int[][] versus this repo's own DynamicArray<T>, nested once for the row
 // list and once per row, the same "compose the array Representation primitive
 // directly" move Stack<T> already makes (ARCHITECTURE.md §4.1).
+[LeetCodeQuestion("subrectangle-queries", LeetCodeAnswerOrder.AsWritten, Calls = typeof(SubrectangleQueriesCalls))]
 internal static class SubrectangleQueriesSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static ISubrectangleQueries CreateByArrayBacked(int[][] rectangle) => new SubrectangleQueriesByArrayBacked(rectangle);
+
+    public static ISubrectangleQueries CreateByDynamicArrayBacked(int[][] rectangle) => new SubrectangleQueriesByDynamicArrayBacked(rectangle);
+
     // The rectangle one UpdateSubrectangle call overwrites, inclusive at both
     // corners - LeetCode passes the four coordinates positionally, which is
     // exactly the transposable-argument hazard a named quadruple removes.

@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BinarySearchTreeIterator;
 //
 // Both strategies are that one walk and differ only in the stack the spine is kept
 // on: the BCL's own Stack<T>, or this repo's.
+[LeetCodeQuestion("binary-search-tree-iterator", LeetCodeAnswerOrder.AsWritten)]
 internal static class BinarySearchTreeIteratorSolution
 {
     // The textbook answer: the left-spine walk over the BCL's Stack<T>, the arm this

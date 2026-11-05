@@ -47,6 +47,21 @@ public sealed partial class CatalogStrategyTests
     }
 
     [Fact]
+    public void Of_DesignSolution_FindsTheFactoriesThatMakeItsObject() =>
+        Assert.Equal([nameof(ScriptProbeSolution.CreateByDictionary)], CatalogStrategy.Of(typeof(ScriptProbeSolution)).Select(strategy => strategy.Name));
+
+    // LRU Cache's example on a map that never evicts: it answers as the cache does except for get(2) after
+    // put(3, 3), which the cache had evicted and the map still holds.
+    [Fact]
+    public void AnswerTo_DesignStrategy_ReplaysTheCasesScriptOnTheObjectItMakes()
+    {
+        var strategy = CatalogStrategy.Of(typeof(ScriptProbeSolution)).Single();
+        var columns = strategy.Columns();
+
+        Assert.Equal("[null,null,null,1,null,2,null,1,3,4]", strategy.AnswerTo(columns, 0).ToJsonString());
+    }
+
+    [Fact]
     public void Solution_AnyStrategy_IsTheClassThatDeclaresIt() =>
         Assert.All(CatalogStrategy.Of(typeof(TwoSumSolution)), strategy => Assert.Equal(typeof(TwoSumSolution), strategy.Solution));
 

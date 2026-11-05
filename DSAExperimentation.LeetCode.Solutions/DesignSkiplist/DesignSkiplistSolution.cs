@@ -18,8 +18,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignSkiplist;
 // The observation that makes the Fenwick arm possible: add/erase/search only ever
 // need "how many of this exact value are currently stored", never an ordered walk
 // between values, so no probabilistic multi-level list is needed at all.
+[LeetCodeQuestion("design-skiplist", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignSkiplistSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static ISkiplist CreateByLinearScanList() => new SkiplistByLinearScanList();
+
+    public static ISkiplist CreateByFenwickFrequencies() => new SkiplistByFenwickFrequencies();
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

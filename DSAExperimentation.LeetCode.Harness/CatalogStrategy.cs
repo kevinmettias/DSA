@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Nodes;
 using DSAExperimentation.LeetCode.Catalog;
+using DSAExperimentation.LeetCode.Catalog.Questions;
 
 namespace DSAExperimentation.LeetCode.Harness;
 
@@ -10,6 +11,8 @@ namespace DSAExperimentation.LeetCode.Harness;
 // method (ARCHITECTURE 17.3) with exactly one overload a case can feed - and called by reflection on one
 // case at a time, its answer written in LeetCode's notation. A solution the generator would refuse is
 // refused here too, by name, so the two never disagree about which strategies an enrolled solution has.
+// A design question's strategy is a factory taking the constructor's inputs, and answers a case by
+// replaying its call script on the object it makes (CatalogCalls).
 internal sealed class CatalogStrategy
 {
     private const string StrategyInfix = "By";
@@ -25,6 +28,10 @@ internal sealed class CatalogStrategy
     private readonly bool _answersInPlace;
     private readonly Type[] _inputTypes;
 
+    // For a design question, the methods answering its calls on the object this strategy makes; null for a
+    // function question.
+    private readonly CatalogCalls? _calls;
+
     public Type Solution { get; }
 
     public string Name => _method.Name;
@@ -32,12 +39,13 @@ internal sealed class CatalogStrategy
     // The solutions project: every solution class, enrolled or not.
     public static Assembly SolutionsAssembly { get; } = Assembly.Load(SolutionsAssemblyName);
 
-    private CatalogStrategy(Type solution, MethodInfo method, LeetCodeQuestionAttribute? question)
+    private CatalogStrategy(Type solution, MethodInfo method, LeetCodeQuestionAttribute? question, CatalogCalls? calls)
     {
         Solution = solution;
         _method = method;
         _answersInPlace = question?.AnswersInPlace ?? false;
         _inputTypes = [.. method.GetParameters().Where(parameter => !parameter.IsOut).Select(parameter => parameter.ParameterType)];
+        _calls = calls;
     }
 
     // Every solution class in the solutions project that names its LeetCode question, by full name.
@@ -46,16 +54,77 @@ internal sealed class CatalogStrategy
             .Where(type => type.IsDefined(typeof(LeetCodeQuestionAttribute)))
             .OrderBy(type => type.FullName, StringComparer.Ordinal)];
 
-    // The solution's strategies in declaration order, each the one overload of its name a case can feed.
+    // The solution's strategies in declaration order, each the one overload of its name a case can feed, or
+    // for a design question the one that makes its object.
     public static IReadOnlyList<CatalogStrategy> Of(Type solution)
     {
         var question = solution.GetCustomAttribute<LeetCodeQuestionAttribute>();
+        var design = DesignSignatureOf(question);
 
         return [.. solution.GetMethods(DeclaredStatics)
             .Where(IsStrategy)
             .OrderBy(method => method.MetadataToken)
             .GroupBy(method => method.Name)
-            .Select(overloads => new CatalogStrategy(solution, TheBoundOverload(solution, [.. overloads], question), question))];
+            .Select(overloads => StrategyOf(solution, [.. overloads], question, design))];
+    }
+
+    private static CatalogStrategy StrategyOf(Type solution, List<MethodInfo> overloads, LeetCodeQuestionAttribute? question, LeetCodeSignature? design)
+    {
+        if (question is null || design is null)
+        {
+            return new CatalogStrategy(solution, TheBoundOverload(solution, overloads, question), question, calls: null);
+        }
+
+        var factory = TheFactory(solution, overloads, design);
+        var calls = CatalogCalls.For(factory, question.Calls, design.Methods);
+
+        return new CatalogStrategy(solution, factory, question, calls);
+    }
+
+    // The signature of the solution's question when it is a design question; null for a function question or
+    // a solution that names none.
+    private static LeetCodeSignature? DesignSignatureOf(LeetCodeQuestionAttribute? question)
+    {
+        if (question is null)
+        {
+            return null;
+        }
+
+        var signature = LeetCodeCatalog.Question(question.TitleSlug).Signature;
+
+        if (!signature.IsDesign)
+        {
+            return null;
+        }
+
+        return signature;
+    }
+
+    // The one overload that makes a design question's object: taking the constructor's inputs, each of them
+    // readable, and returning the object its calls are made on.
+    private static MethodInfo TheFactory(Type solution, List<MethodInfo> overloads, LeetCodeSignature design)
+    {
+        var bound = overloads.Where(method => IsFactory(method, design.ConstructorParameters.Count)).ToList();
+
+        if (bound.Count != 1)
+        {
+            throw new InvalidOperationException(
+                $"{solution.Name}.{overloads[0].Name} has {bound.Count} overloads that make the question's object from its constructor's inputs, and a catalog arm needs exactly one.");
+        }
+
+        return bound[0];
+    }
+
+    private static bool IsFactory(MethodInfo method, int constructorInputs)
+    {
+        var parameters = method.GetParameters();
+
+        if (method.IsGenericMethodDefinition || HasNoAnswerToStore(method.ReturnType) || parameters.Length != constructorInputs)
+        {
+            return false;
+        }
+
+        return parameters.All(parameter => IsReadableInput(parameter.ParameterType));
     }
 
     // The one overload a case can feed; of several, the one LeetCode's signature shapes (LeetCodeShape).
@@ -79,13 +148,26 @@ internal sealed class CatalogStrategy
     }
 
     // The catalog's cases read into this strategy's parameter types, fresh on every call, so a strategy
-    // that rewrites its input rewrites only its own copy.
-    public CatalogColumns Columns() => CatalogColumns.For(Solution, _inputTypes);
+    // that rewrites its input rewrites only its own copy; a design question's, as its call scripts.
+    public CatalogColumns Columns()
+    {
+        if (_calls is not null)
+        {
+            return CatalogColumns.ForScripts(Solution);
+        }
+
+        return CatalogColumns.For(Solution, _inputTypes);
+    }
 
     // The answer to the case at caseIndex of columns: the return value, or for a Try strategy the outputs
-    // it found, LeetCode's [] when it found none.
+    // it found, LeetCode's [] when it found none; for a design question, the script's answer.
     public JsonNode AnswerTo(CatalogColumns columns, int caseIndex)
     {
+        if (_calls is { } calls)
+        {
+            return calls.AnswerTo((string[])columns.ValueAt(0, caseIndex)!, (JsonArray)columns.ValueAt(1, caseIndex)!);
+        }
+
         var parameters = _method.GetParameters();
         var arguments = ArgumentsFor(parameters, columns, caseIndex);
         var returned = _method.Invoke(null, BindingFlags.DoNotWrapExceptions, binder: null, arguments, culture: null);

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.CalculateAmountPaidInTaxes;
 
@@ -19,10 +20,11 @@ namespace DSAExperimentation.LeetCode.Solutions.CalculateAmountPaidInTaxes;
 [LeetCodeQuestion("calculate-amount-paid-in-taxes", LeetCodeAnswerOrder.AsWritten, Tolerance = 1e-5)]
 internal static class CalculateAmountPaidInTaxesSolution
 {
-    // brackets[i] is [upper_i, percent_i]; percentages are whole numbers out of 100.
+    // brackets[i] is [upper_i, percent_i]. A rate is a whole number of per cent, so a
+    // bracket's tax divides by the hundred parts a whole holds (Domain/Mathematics/
+    // Numerals), as a double so that the division does not truncate.
     private const int UpperIndex = 0;
     private const int PercentIndex = 1;
-    private const double PercentScale = 100.0;
 
     // The textbook arm: walk LeetCode's jagged array with a raw indexer and nothing
     // else. Deliberately free of this repo's primitives - it is what the composed
@@ -36,7 +38,7 @@ internal static class CalculateAmountPaidInTaxesSolution
         {
             var upper = brackets[i][UpperIndex];
             var taxableInBracket = Math.Max(0, Math.Min(income, upper) - previousUpper);
-            tax += taxableInBracket * brackets[i][PercentIndex] / PercentScale;
+            tax += taxableInBracket * brackets[i][PercentIndex] / (double)Percent.PartsPerWhole;
             previousUpper = upper;
 
             if (income <= upper)
@@ -64,7 +66,7 @@ internal static class CalculateAmountPaidInTaxesSolution
         {
             var (upper, percent) = brackets.Get(i);
             var taxableInBracket = Math.Max(0, Math.Min(income, upper) - previousUpper);
-            tax += taxableInBracket * percent / PercentScale;
+            tax += taxableInBracket * percent / (double)Percent.PartsPerWhole;
             previousUpper = upper;
 
             if (income <= upper)

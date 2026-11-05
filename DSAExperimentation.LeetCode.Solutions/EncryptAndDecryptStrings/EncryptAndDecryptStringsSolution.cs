@@ -23,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.EncryptAndDecryptStrings;
 // Returning the empty string for a character outside keys is LeetCode's own
 // specified behaviour for encrypt, not a house convention: the problem states the
 // encryption cannot be carried out and "" is returned.
+[LeetCodeQuestion("encrypt-and-decrypt-strings", LeetCodeAnswerOrder.AsWritten)]
 internal static class EncryptAndDecryptStringsSolution
 {
     // Every value is a string of length 2, so an encryption is exactly twice its

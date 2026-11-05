@@ -9,8 +9,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignAuctionSystem;
 // form of two full classes implementing the shared IAuctionSystemStrategy surface
 // below, and a benchmark replays one call script against a fresh instance per arm
 // rather than hoisting a "prepared input" (there isn't one to prepare).
+[LeetCodeQuestion("design-auction-system", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignAuctionSystemSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IAuctionSystemStrategy CreateByLinearScan() => new AuctionSystemByLinearScan();
+
+    public static IAuctionSystemStrategy CreateByLazyDeletionHeap() => new AuctionSystemByLazyDeletionHeap();
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

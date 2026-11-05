@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SequentiallyOrdinalRankTracker;
 // Both rank locations by the key (-score, name), so ValueTuple's own lexicographic
 // IComparable already encodes "higher score first, ties broken by ascending name" -
 // no custom IHeapOrder witness is needed beyond the two the library already ships.
+[LeetCodeQuestion("sequentially-ordinal-rank-tracker", LeetCodeAnswerOrder.AsWritten)]
 internal static class SequentiallyOrdinalRankTrackerSolution
 {
     public static IRankTracker CreateByResortEveryGet() => new ResortEveryGetRankTracker();

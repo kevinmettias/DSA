@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DetectSquares;
 // operations, not a single return value - so the strategy choice is which
 // implementation backs it, the same CreateBy<Strategy> factory shape
 // AllOneDataStructureSolution uses for its own design problem.
+[LeetCodeQuestion("detect-squares", LeetCodeAnswerOrder.AsWritten, Calls = typeof(DetectSquaresCalls))]
 internal static class DetectSquaresSolution
 {
     // Composed: points are grouped by x-coordinate into this repo's own HashMap nested

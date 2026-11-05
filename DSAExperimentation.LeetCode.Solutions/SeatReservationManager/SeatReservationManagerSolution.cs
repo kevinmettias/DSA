@@ -16,8 +16,17 @@ namespace DSAExperimentation.LeetCode.Solutions.SeatReservationManager;
 // The whole problem is "where does the smallest free seat come from": an occupancy
 // array every reserve has to scan from seat 1, or this repo's SmallestFreeAllocator,
 // which holds only the seats that were actually given back (ARCHITECTURE.md §17.6b).
+[LeetCodeQuestion("seat-reservation-manager", LeetCodeAnswerOrder.AsWritten)]
 internal static class SeatReservationManagerSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static ISeatManager CreateByLinearScanArray(int seatCount) => new SeatManagerByLinearScanArray(seatCount);
+
+    // LeetCode's constructor gives the seat count, which the allocator needs no bound from: it hands out seats
+    // from 1 upward as they are asked for.
+    public static ISeatManager CreateBySmallestFreeAllocator(int seatCount) => new SeatManagerBySmallestFreeAllocator();
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

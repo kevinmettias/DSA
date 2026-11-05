@@ -11,8 +11,15 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignSpreadsheet;
 // container backs cell storage - a sparse map is the right representation
 // regardless of container, since rows can run to 1e5 while only a handful of
 // cells are ever actually set.
+[LeetCodeQuestion("design-spreadsheet", LeetCodeAnswerOrder.AsWritten)]
 internal static class DesignSpreadsheetSolution
 {
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static ISpreadsheetStrategy CreateByDictionary(int rows) => new SpreadsheetByDictionary(rows);
+
+    public static ISpreadsheetStrategy CreateByHashMap(int rows) => new SpreadsheetByHashMap(rows);
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.
