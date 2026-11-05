@@ -22,25 +22,26 @@ commit beside it, as the rest of this file does.
 - **L2. The Domain TODO plan.** The owner's 47 TODOs in 14 Domain files, 2026-11-05: "i wouldnt
   drop these but i would organize them properly. not everything needs a problem that uses it, the
   problems are just the inspiration." A value fixed for a configuration is a constant (the owner's
-  ruling of 2026-11-04). B1 is done (`9727ac52`). Left, a commit each:
-  - **B2, chess in Betza notation.** A piece is a name and a list of moves, each move its steps, a
-    reach (1, k or unlimited) and a condition (move only, capture only, first move only). The pawn
-    is given for each side, and LC 999, 1222, 2056 and 3001's baselines read a move's steps (the
-    owner's choice, 2026-11-05).
+  ruling of 2026-11-04). Done: B1 (`9727ac52`), B2 (`1330a351`), B5 (`8c4422bb`) and B7
+  (`79134545`). Left, a commit each:
+  - **B2, chess in Betza notation — DONE** (`1330a351`). LC 999's DirectRayWalk reads 22-28% slower
+    on tier-1 code identical but for one field offset, and LC 1222 21-23% faster; neither has a
+    code cause.
   - **B3, positional games.** A board, its winning sets as a hypergraph, and a turn order; m,n,k
     presets whose M, N and K are constants, Connect Four's gravity, a board mask for holes, and
     tic-tac-toe as 3,3,3 (LC 1275).
   - **B4, Latin squares.** Sudoku as a Latin square plus a partition: boxes of rows by columns as
     constants (6 × 6, 16 × 16), and jigsaw regions as a witness of their own (LC 36, 37).
-  - **B5, language.** Scripts/Latin (base letters and diacritics), Phonetics (IPA), English's
-    orthography (vowel and consonant letters, digraphs, trigraphs) and phonology (phonemes,
-    diphthongs, y's two roles).
+  - **B5, language — DONE** (`8c4422bb`). Open for the owner: digraphs beyond the plan's six (wh,
+    gh, kn, wr, the vowel digraphs), accents other than Received Pronunciation (General American
+    needs rhoticity), clicks, implosives and ejectives, and whether ñ is a letter of its own
+    (collation).
   - **B6, numbers.** Number systems (Cayley-Dickson), set theory (cardinals, ordinals), the extended
     reals, IEEE 754 floating point, Roman numerals, English number names with a composer generic
     over its grouping (short, long, Indian), ordinals and fractions, and the facts primes agree on.
     LC 273 gains the composer as a strategy.
-  - **B7, calendars.** The Gregorian rules as constants, the Julian calendar as a configuration; the
-    units' names move to Language/English.
+  - **B7, calendars — DONE** (`79134545`). English month and weekday names wait for LC 1185 or 1507;
+    CalendarMonth/CalendarMonths and DnaBase/DnaBases both draw check-tree-legibility, unwaived.
   - **B8, metrics.** Lp norms with L1, L2 and L-infinity as presets that need no `Pow`, the step
     tables' graph metrics, and the A* heuristics reading them.
   - **B9, other lattices.** Hex and triangular tilings, Z^n, and Life on them; a plan of its own.
@@ -53,10 +54,11 @@ commit beside it, as the rest of this file does.
   with L5 and approved on 2026-11-05: the two interleave, games with no LeetCode problem get strong
   play of their own beyond the generic solvers, and game states are functional unless measured
   slower than make/unmake. The plan folds in L2's B3, B4 and B9.
-  - Foundations first: a two-player game contract with solvers in Algorithms (negamax with
-    alpha-beta, Sprague-Grundy, retrograde analysis), whose adopters include Nim Game, Stone Game
-    I-IX, Can I Win, Predict the Winner, Divisor Game, Sum Game and Cat and Mouse II; players and
-    turns; lines and runs; permutation groups; polyominoes.
+  - Foundations first. Done (`0b7cf7f0`): the game contract (Domain/Mathematics/GameTheory),
+    memoized negamax and Sprague-Grundy (Algorithms/GameSearch), with Nim Game, Stone Game III
+    and Divisor Game adopting them. Left: alpha-beta, retrograde analysis, the other adopters
+    (Stone Game I, II and IV-IX, Can I Win, Predict the Winner, Chalkboard XOR, Sum Game, Cat
+    and Mouse I and II), players and turns, lines and runs, permutation groups, polyominoes.
   - Then the families: k in a row (Connect Four, Gomoku, Pentago, Quarto), capture (Go, Reversi,
     checkers), connection (Hex, on union-find), dominoes, Tetris, the Rubik cube n × n × n, Nim,
     Mastermind, Minesweeper and Lights Out.
@@ -127,11 +129,16 @@ commit beside it, as the rest of this file does.
   stale. Give the trie a node-level write that keeps it, or document that it counts `Set` keys only.
 - **D5.** Engine conversions: retry BalancedBinaryTree and BinaryTreeMaximumPathSum on the span
   fold.
-- **D6.** Benchmark comments that contradict their data: NimGame's two sizes are both multiples of
-  4, so every answer is false; VShapedDiagonalGridWorkloads says "biased" but draws `Next(3)`;
-  LinkedListRandomNode calls 2,000 times on a list of 5,000; NumberOfProvinces' comment. Re-record
-  baseline.tsv on an idle machine, and give LC 336's trie benchmark sizes per arm.
-- **D7.** 42 solution comments still say "rather than at the tier's root".
+- **D6.** Benchmark comments that contradict their data — **DONE except the baseline** (`fa7daad7`).
+  NimGame's sizes are now 21 and 1,000, a win and a loss; VShapedDiagonalGridWorkloads' comment says
+  its draw is uniform; LinkedListRandomNode's comment names its two regimes; NumberOfProvinces'
+  draw gives a city two neighbours at every size, so its workloads form 7 and 25 provinces instead
+  of one each; LC 336's brute force stops at 2,000 words and the other two arms run to LeetCode's
+  5,000. Left: re-record baseline.tsv on an idle machine.
+- **D7.** The 64 solution comments that placed a type "rather than at the tier's root" — **DONE**
+  (`fa7daad7`). Each names the library tier its type would go to, or keeps the tier's root with
+  today's reason where the type is LeetCode's own interface. ColorNode (LC 1591) is exactly
+  `AdjacencyNode` and should become an alias (§13.3), a solution change with an A/B.
 
 ### Waiting on the owner
 
@@ -545,8 +552,9 @@ using) removed from 1,111 files.
   twelve adopters packed (ARCHITECTURE §13.8). It has since become the one trie's
   `AlphabetSlots<TAlphabet, TLayout, TValue>` store, `Trie<AlphabetSlots<...>, TValue>`.
 
-  The benchmark stops at 400 words, inside LeetCode's 5,000. Open: per-arm sizes would let the
-  trie run past the O(n²) brute force.
+  Since `fa7daad7` the benchmark's sizes are per arm: the brute force stops at 2,000 words, where a
+  call at 300 letters takes 0.3 s against 2.2 s at 5,000, and the complement lookup and the trie
+  run on to LeetCode's 5,000.
 - `DSAExperimentation.Benchmarks/baseline.tsv` (`042cdaef`) predates seven fold, reduce and
   traversal commits (`b2d7514c` through `d57a8a57`), after which the tree-fold StrategySwaps arms run
   13-17% faster, so it is stale in the faster direction: a slowdown back to the old speed would pass. Open: re-record it with
