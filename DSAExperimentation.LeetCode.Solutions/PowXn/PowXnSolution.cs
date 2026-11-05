@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PowXn;
 // squaring (O(log |n|)). No repo container or algorithm primitive applies -
 // there is nothing to compose over one double and one exponent counter, the
 // same "lighter repo-primitive fit" case as Power of Two's bit trick.
+[LeetCodeQuestion("powx-n", LeetCodeAnswerOrder.AsWritten, Promise = typeof(PowXnPromise), Reach = typeof(PowXnReach), Tolerance = 1e-5)]
 internal static class PowXnSolution
 {
     // The textbook baseline: multiply the base into the result once per unit of

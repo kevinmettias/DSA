@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using DSAExperimentation.LeetCode.Catalog;
@@ -17,7 +16,6 @@ internal static class CatalogJudge
     private const string SequenceStart = "[";
     private const string SequenceEnd = "]";
     private const string ElementSeparator = ",";
-    private const string SignificantDigits = "G12";
 
     // The output the catalog records for a case, read from LeetCode's notation; null when it records none.
     public static JsonNode? RecordedOutputOf(LeetCodeCase testCase)
@@ -100,15 +98,18 @@ internal static class CatalogJudge
     // The text two strategies' answers share exactly when each is the other's answer by the question's
     // order rule, for holding arms to one another where no recorded output stands between them: a sequence is
     // written with what its order rule frees sorted, anything else as it is.
-    // Under a tolerance, numbers are written to twelve significant digits, as AnswerGraphText writes a double:
-    // two arms that order the same operations differently part only in the last few bits.
+    // Under a tolerance, each number is written as the nearest multiple of the tolerance, so two arms whose
+    // answers LeetCode would each accept for the other write the same text: arms that order the same operations
+    // differently part in their last bits, and Pow(x, n)'s million multiplications against its squarings part
+    // in the eleventh digit, which a fixed count of significant digits splits whenever a rounding boundary
+    // falls between them. A multiple of 10^-5 is that unlikely to fall between two answers 10^-10 apart.
     public static string AgreementTextOf(JsonNode answer, LeetCodeAnswerOrder order, double tolerance = 0)
     {
         var compared = answer;
 
         if (tolerance > 0)
         {
-            compared = RoundedOf(answer) ?? answer;
+            compared = RoundedOf(answer, tolerance) ?? answer;
         }
 
         if (order == LeetCodeAnswerOrder.AsWritten || compared is not JsonArray items)
@@ -119,18 +120,19 @@ internal static class CatalogJudge
         return FreedTextOf(items, order);
     }
 
-    private static JsonNode? RoundedOf(JsonNode? node) => node switch
+    private static JsonNode? RoundedOf(JsonNode? node, double tolerance) => node switch
     {
-        JsonArray items => new JsonArray([.. items.Select(RoundedOf)]),
-        _ when NumberOf(node) is { } number => JsonValue.Create(Rounded(number)),
+        JsonArray items => new JsonArray([.. items.Select(item => RoundedOf(item, tolerance))]),
+        _ when NumberOf(node) is { } number => RoundedValueOf(number, tolerance),
         _ => node?.DeepClone(),
     };
 
-    private static double Rounded(double number)
+    // The multiple of the tolerance nearest the number.
+    private static JsonValue RoundedValueOf(double number, double tolerance)
     {
-        var significant = number.ToString(SignificantDigits, CultureInfo.InvariantCulture);
+        var rounded = Math.Round(number / tolerance, MidpointRounding.AwayFromZero) * tolerance;
 
-        return double.Parse(significant, CultureInfo.InvariantCulture);
+        return JsonValue.Create(rounded);
     }
 
     // Each number at most the tolerance from LeetCode's, arrays element for element, anything else as written.

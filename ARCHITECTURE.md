@@ -2285,8 +2285,11 @@ internal static class TwoSumSolution
   it. Its inputs are copied for every call, as for `RewritesInput`.
 - How far a real-valued answer may stand from LeetCode's (`Tolerance`), when the statement says so:
   "Answers within 10^-5 of the actual answer will be accepted". `CatalogJudge` then accepts each
-  number that close, and holds arms to one another at twelve significant digits, as
-  `AnswerGraphText` holds a double.
+  number that close, and holds arms to one another with each number written as the nearest multiple
+  of the tolerance, so two arms LeetCode would each accept for the other agree. Twelve significant
+  digits, as `AnswerGraphText` holds a double, split Pow(x, n)'s two arms, whose million
+  multiplications and squarings part in the eleventh digit, whenever a rounding boundary fell between
+  them.
 - The type that judges an answer where the statement lets several stand (`AnswerCheck`), as "return
   any of them" does. Its `IsAccepted` takes the strategy's inputs, the answer and the recorded
   answer, which `CatalogAnswerCheck` reads from the case into its parameter types. The recorded
@@ -2498,8 +2501,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,004 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 408 more:
+**Enrolled.** 1,005 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 409 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2650,6 +2653,12 @@ have only the empty tree. A check over those would pass whatever the strategy di
   stopped being named like a strategy (`RowsHoldingEachValue`). Best Time to Buy and Sell Stock IV
   gained LeetCode's shape, the budget k before the prices, beside its own.
 
+  Pow(x, n) took its reach by hand, since its cost follows |n| and a bound on n itself would keep the
+  most negative powers, the slowest of all: |n| up to 1,000,001 keeps 72 of its 78 cases. Its promise,
+  that xⁿ lies within 10^4 and is defined, leaves out the generated cases that run to 10^72, where two
+  correct strategies part in their fourteenth digit; within it, answers stand within 10^-5, the five
+  decimals LeetCode prints.
+
   The reached cases cost the tests time: in a Debug build the solutions' tests went from 20 s to 38 s
   and the benchmarks' from a minute and a half to three, most of it brute-force arms whose kept cases
   `BenchmarkArmsTests` runs again for its repeat-call checks. A smaller budget than 250 ms would trade
@@ -2672,12 +2681,11 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 101 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 100 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
-  - A slow strategy whose reach the generator could not state: Pow(x, n) costs with |n|, which a
-    one-sided bound cannot say; Rectangle Area, Circle and Rectangle Overlapping, Rectangle Overlap and
+  - A slow strategy whose reach the generator could not state: Rectangle Area, Circle and Rectangle Overlapping, Rectangle Overlap and
     Find the Number of Possible Ways for an Event finish no case on every strategy in time; K-th Symbol
     in Grammar and Kth Smallest Instructions were not measured; and Find the Shortest Superstring lets
     any shortest superstring stand, so it needs an answer check first.

@@ -75,6 +75,18 @@ public sealed partial class CatalogJudgeTests
             CatalogJudge.AgreementTextOf(NodeOf("[2.0000000000000004]"), LeetCodeAnswerOrder.AsWritten, Tolerance),
             CatalogJudge.AgreementTextOf(NodeOf("[2]"), LeetCodeAnswerOrder.AsWritten, Tolerance));
 
+    // Pow(x, n)'s two arms on one case: a million multiplications against squarings, apart in the eleventh
+    // digit, where twelve significant digits would write 4.54021997985E-05 for one and 4.5402199798E-05 for
+    // the other.
+    [Fact]
+    public void AgreementTextOf_NumbersApartInTheEleventhDigit_WritesTheSameTextUnderATolerance()
+    {
+        var bySquaring = CatalogJudge.AgreementTextOf(NodeOf("[4.540219979849E-05]"), LeetCodeAnswerOrder.AsWritten, Tolerance);
+        var byMultiplying = CatalogJudge.AgreementTextOf(NodeOf("[4.540219979801E-05]"), LeetCodeAnswerOrder.AsWritten, Tolerance);
+
+        Assert.Equal(bySquaring, byMultiplying);
+    }
+
     [Fact]
     public void IsAccepted_EachInAnyOrderRowReordered_Accepts() =>
         Assert.True(CatalogJudge.IsAccepted(NodeOf("[[0,1,2,6],[]]"), NodeOf("[[0,6,2,1],[]]"), LeetCodeAnswerOrder.EachInAnyOrder));
