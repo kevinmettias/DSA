@@ -4,11 +4,17 @@ namespace DSAExperimentation.Domain.Language.English;
 
 // The 26 English capitals as slots 0 to 25, as LC 424's strings and LC 621's tasks are written: their
 // count tables index capitals by it. Like the lowercase letters they are one run of character codes,
-// from 'A', and there are EnglishLetters.Size of them.
+// from 'A', and there are EnglishLetters.Size of them. As the lowercase run's are, its two ends are
+// constants, the last one derived from the first and the count, so a loop between them or a slot
+// taken as letter - FirstLetter folds to the literals.
 /// <summary>The 26 English capitals, 'A' in slot 0 through 'Z' in slot 25.</summary>
 public readonly struct EnglishUppercase : IAlphabet
 {
-    private const char FirstLetter = 'A';
+    /// <summary>The first capital, 'A', in slot 0.</summary>
+    public const char FirstLetter = 'A';
+
+    /// <summary>The last capital, 'Z', in slot 25.</summary>
+    public const char LastLetter = (char)(FirstLetter + EnglishLetters.Size - 1);
 
     private static LetterRun Run => new(FirstLetter, EnglishLetters.Size);
 

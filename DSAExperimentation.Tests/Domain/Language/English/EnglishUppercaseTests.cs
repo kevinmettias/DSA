@@ -47,4 +47,11 @@ public sealed partial class EnglishUppercaseTests
     public void LetterAt_IndexOf_RoundTripsEverySlot() =>
         Assert.All(Enumerable.Range(0, EnglishLetters.Size), index =>
             Assert.Equal(index, EnglishUppercase.IndexOf(EnglishUppercase.LetterAt(index))));
+
+    // The two ends are constants; each must be the letter its slot holds.
+    [Fact]
+    public void FirstLetterAndLastLetter_AreTheLettersInTheFirstAndLastSlots() =>
+        Assert.Equal(
+            (EnglishUppercase.LetterAt(0), EnglishUppercase.LetterAt(EnglishLetters.Size - 1)),
+            (EnglishUppercase.FirstLetter, EnglishUppercase.LastLetter));
 }
