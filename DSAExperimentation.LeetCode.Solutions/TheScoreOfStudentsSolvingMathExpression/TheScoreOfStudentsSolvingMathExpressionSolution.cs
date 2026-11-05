@@ -27,6 +27,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TheScoreOfStudentsSolvingMathExp
 // constraint (0 <= answers[i] <= 1000) makes that pruning safe and it is what a
 // contest submission would do, but it changes the search this pair exists to
 // compare, so both strategies enumerate the full achievable set.
+[LeetCodeQuestion("the-score-of-students-solving-math-expression", LeetCodeAnswerOrder.AsWritten, Reach = typeof(TheScoreOfStudentsSolvingMathExpressionReach))]
 internal static class TheScoreOfStudentsSolvingMathExpressionSolution
 {
     // LeetCode's own grading scale for this problem.

@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StoneGameVIII;
 // one-dimensional, so the unmemoized arm's blowup is the pure 2^n of re-walking
 // best(i + 1) twice at every boundary - the same shape StoneGameVIISolution's
 // baseline has over its (left, right) interval, here over a single index.
+[LeetCodeQuestion("stone-game-viii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(StoneGameVIIIReach))]
 internal static class StoneGameVIIISolution
 {
     // LeetCode guarantees stones.Length >= 2, and the first move must remove x > 1

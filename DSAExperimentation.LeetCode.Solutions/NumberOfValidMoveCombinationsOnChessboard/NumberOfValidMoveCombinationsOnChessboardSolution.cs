@@ -29,6 +29,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfValidMoveCombinationsOnC
 // piece's lines and one test of the 1-based board. The answer is a count, so the order a
 // piece's lines are listed in does not change it. The piece names and the 1-based squares
 // are LeetCode's.
+[LeetCodeQuestion("number-of-valid-move-combinations-on-chessboard", LeetCodeAnswerOrder.AsWritten, Reach = typeof(NumberOfValidMoveCombinationsOnChessboardReach))]
 internal static class NumberOfValidMoveCombinationsOnChessboardSolution
 {
     // LeetCode's names for the pieces.

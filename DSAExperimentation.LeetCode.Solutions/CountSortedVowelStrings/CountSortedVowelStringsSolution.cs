@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountSortedVowelStrings;
 //
 // The vowels are English's (Domain/Language/English): the recurrence counts them through
 // EnglishVowels, and so does the baseline (ARCHITECTURE §17.5).
+[LeetCodeQuestion("count-sorted-vowel-strings", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CountSortedVowelStringsReach))]
 internal static class CountSortedVowelStringsSolution
 {
     // The textbook brute force: backtrack over every non-decreasing vowel string,

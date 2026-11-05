@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumOperationsToMakeArrayEqua
 // forcing one in (a monotonic Stack<T>, a RangeFenwickTree) would either misrepresent
 // the algorithm or actively compute the wrong answer, not just look unnecessary. See
 // MinOperationsByDifferenceScan's own comment for why.
+[LeetCodeQuestion("minimum-operations-to-make-array-equal-to-target", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MinimumOperationsToMakeArrayEqualToTargetReach))]
 internal static class MinimumOperationsToMakeArrayEqualToTargetSolution
 {
     // The literal textbook approach: repeatedly find the leftmost position that still

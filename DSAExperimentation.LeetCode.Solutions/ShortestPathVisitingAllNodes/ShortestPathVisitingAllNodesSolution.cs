@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortestPathVisitingAllNodes;
 // so far) states, where an input edge moves you to the neighbor with that
 // neighbor's bit set - and both look for the first state whose mask is full. They
 // differ only in how that search is run.
+[LeetCodeQuestion("shortest-path-visiting-all-nodes", LeetCodeAnswerOrder.AsWritten, Reach = typeof(ShortestPathVisitingAllNodesReach))]
 internal static class ShortestPathVisitingAllNodesSolution
 {
     // The textbook answer: true multi-source BFS over a BCL Queue, with every

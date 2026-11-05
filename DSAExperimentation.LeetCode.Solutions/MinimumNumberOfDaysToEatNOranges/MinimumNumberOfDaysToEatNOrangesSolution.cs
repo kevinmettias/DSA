@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfDaysToEatNOranges
 // repeated states are cached. The orange count stays int, not long: the problem's own
 // stated upper bound (2*10^9) is below int.MaxValue, so unlike IntegerReplacement's
 // n+1 branch there is no widening to do here.
+[LeetCodeQuestion("minimum-number-of-days-to-eat-n-oranges", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MinimumNumberOfDaysToEatNOrangesReach))]
 internal static class MinimumNumberOfDaysToEatNOrangesSolution
 {
     // The recurrence's two branches: eat n%2 one at a time then halve the rest, or

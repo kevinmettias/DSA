@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DigitOperationsToMakeTwoIntegers
 // be prime and must never change digit count. That is a shortest-path query -
 // "the cost of an edge is the value you land on" - over DigitStepGraph, the
 // non-prime digit-mutation graph.
+[LeetCodeQuestion("digit-operations-to-make-two-integers-equal", LeetCodeAnswerOrder.AsWritten, Reach = typeof(DigitOperationsToMakeTwoIntegersEqualReach))]
 internal static class DigitOperationsToMakeTwoIntegersEqualSolution
 {
     // The textbook priority-queue Dijkstra: BCL PriorityQueue + Dictionary,

@@ -23,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfSetsOfKNonOverlappingLin
 // (whenever there simply are not enough points to seat segmentCount segments, even
 // with every pair touching). Without it the plain Pascal split recurses on states
 // with a negative upper index forever instead of hitting either base case.
+[LeetCodeQuestion("number-of-sets-of-k-non-overlapping-line-segments", LeetCodeAnswerOrder.AsWritten, Reach = typeof(NumberOfSetsOfKNonOverlappingLineSegmentsReach))]
 internal static class NumberOfSetsOfKNonOverlappingLineSegmentsSolution
 {
     // C(pointCount + segmentCount - 1, 2 * segmentCount): the identity the problem

@@ -2506,8 +2506,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,006 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 410 more:
+**Enrolled.** 1,026 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 430 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2671,6 +2671,16 @@ have only the empty tree. A check over those would pass whatever the strategy di
   correct strategies part in their fourteenth digit; within it, answers stand within 10^-5, the five
   decimals LeetCode prints.
 
+  20 more followed the same day, from a second probe of the unenrolled solutions. 17 took the reach the
+  generator states, Number of Valid Move Combinations On Chessboard among them once the chess rework
+  beside it landed. 3 slow down with their numbers' size, not their count, so a bound on length kept
+  few of their cases, and their reach is written by hand on a measure the generator cannot state:
+  Check If It Is a Good Array's element sum up to 1,937,500,000 (113 of its 122 cases, against 11 by
+  length), Matchsticks to Square's sticks summing to at most 114 (48 of 74, against 16), and Minimum
+  Operations to Make Array Equal to Target's elements each within 999,999 of their target (97 of 105,
+  against 1). The sums are measured cuts over the catalog's cases rather than the arms' costs: two
+  numbers far apart in size cost a subtraction gcd more than their sum says.
+
   The reached cases cost the tests time: in a Debug build the solutions' tests went from 20 s to 38 s
   and the benchmarks' from a minute and a half to three, most of it brute-force arms whose kept cases
   `BenchmarkArmsTests` runs again for its repeat-call checks. A smaller budget than 250 ms would trade
@@ -2693,14 +2703,16 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 99 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 79 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
   - A slow strategy whose reach the generator could not state: Rectangle Area, Circle and Rectangle Overlapping, Rectangle Overlap and
     Find the Number of Possible Ways for an Event finish no case on every strategy in time; K-th Symbol
     in Grammar and Kth Smallest Instructions were not measured; and Find the Shortest Superstring lets
-    any shortest superstring stand, so it needs an answer check first.
+    any shortest superstring stand, so it needs an answer check first. Maximum Number of Moves to Kill
+    All Pawns' graph arm spends about 35 ms on every case, two pawns or fifteen, so no bound on its
+    input keeps more than 4 of its 96 cases.
   - A design question that lets several answers stand needs an answer check over a whole script: All
     One Data Structure's getMaxKey returns "one of the keys" with the largest count.
   - A design question whose answers are random (Shuffle an Array, Random Pick with Weight, Insert
@@ -2713,9 +2725,6 @@ Open items:
   - A statement that leaves the order free without saying so (Word Search II, Majority Element
     II) needs the order rule LeetCode's judge applies, checked against its own submission rather
     than read from the wording.
-  - Best Time to Buy and Sell Stock IV takes `(prices, k)` where LeetCode takes `(k, prices)`.
-    Reordering alone would not enroll it: its baseline is exponential, and LeetCode allows 1,000
-    prices, so it needs a case limit as well.
 - **Trimming the enrolled solutions' own tests.** A theory row restates a catalog case when
   a case has the same inputs, read into the strategy's types, and the catalog's judge accepts the
   row's answer for it. That row is the check `CatalogCaseTests` already makes. Measured over the 608

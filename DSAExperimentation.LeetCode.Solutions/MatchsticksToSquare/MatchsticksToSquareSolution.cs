@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MatchsticksToSquare;
 // Candidates only offers buckets that don't overshoot, which by construction
 // (every bucket <= side, and the total is a multiple of 4) forces every bucket to
 // land on exactly the side length once all matchsticks are placed.
+[LeetCodeQuestion("matchsticks-to-square", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MatchsticksToSquareReach))]
 internal static class MatchsticksToSquareSolution
 {
     // The textbook recursion: a hand-written DFS over four running bucket sums,

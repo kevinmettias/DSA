@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NthTribonacciNumber;
 // expresses the same recurrence directly through this repo's Memoizer as O(n)
 // top-down DP - the FibonacciNumberSolution shape with three prior terms summed
 // instead of two.
+[LeetCodeQuestion("n-th-tribonacci-number", LeetCodeAnswerOrder.AsWritten, Reach = typeof(NthTribonacciNumberReach))]
 internal static class NthTribonacciNumberSolution
 {
     private const int SecondPriorTermOffset = 2;

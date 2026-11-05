@@ -21,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheCountOfGoodIntegers;
 // signature - the same "the composed arm just supplies Candidates/Choose/Unchoose,
 // the enumeration itself is the repo's" shape
 // GenerateParenthesesSolution.GenerateByBacktracking already proves out.
+[LeetCodeQuestion("find-the-count-of-good-integers", LeetCodeAnswerOrder.AsWritten, Reach = typeof(FindTheCountOfGoodIntegersReach))]
 internal static class FindTheCountOfGoodIntegersSolution
 {
     public static long CountByPalindromeEnumeration(int digitCount, int divisor)

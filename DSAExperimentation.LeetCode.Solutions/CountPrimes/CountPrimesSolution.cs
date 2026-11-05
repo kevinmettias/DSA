@@ -7,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountPrimes;
 // The two strategies are the classic O(n * sqrt(n)) trial division every
 // candidate is checked against, and the O(n log log n) Sieve of Eratosthenes
 // that marks composites instead of testing each candidate independently.
+[LeetCodeQuestion("count-primes", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CountPrimesReach))]
 internal static class CountPrimesSolution
 {
     private const int SmallestCandidate = 2;

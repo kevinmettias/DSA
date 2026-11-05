@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.UniquePathsIII;
 // a hand-rolled recursion that marks visited squares by overwriting the grid in place
 // and restores them on the way out, or this repo's generic Backtrack.Search engine
 // closed over a State object that does the same through Choose/Unchoose.
+[LeetCodeQuestion("unique-paths-iii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(UniquePathsIIIReach))]
 internal static class UniquePathsIIISolution
 {
     private const int StartCellMarker = 1;

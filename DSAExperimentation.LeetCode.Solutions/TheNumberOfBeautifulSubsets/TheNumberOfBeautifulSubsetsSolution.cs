@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TheNumberOfBeautifulSubsets;
 //
 // The two strategies differ only in when the conflict rule is applied: after a
 // candidate subset has been generated in full, or while it is still being built.
+[LeetCodeQuestion("the-number-of-beautiful-subsets", LeetCodeAnswerOrder.AsWritten, Reach = typeof(TheNumberOfBeautifulSubsetsReach))]
 internal static class TheNumberOfBeautifulSubsetsSolution
 {
     // The textbook answer: enumerate all 2^n index subsets as bitmasks and reject

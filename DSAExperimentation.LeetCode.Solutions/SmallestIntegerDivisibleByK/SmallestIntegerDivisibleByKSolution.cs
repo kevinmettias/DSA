@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SmallestIntegerDivisibleByK;
 // single-successor graph. That also gets "no such integer
 // exists" for free: BFS's own visited-tracking, not a separate gcd(divisor, 10) check, is
 // what proves remainder 0 unreachable when the divisor shares a factor with 10.
+[LeetCodeQuestion("smallest-integer-divisible-by-k", LeetCodeAnswerOrder.AsWritten, Reach = typeof(SmallestIntegerDivisibleByKReach))]
 internal static class SmallestIntegerDivisibleByKSolution
 {
     // The textbook answer: one int updated in place, BCL-only. After divisor steps the

@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PrimePalindrome;
 //   first half: digits are collected front-to-back in this repo's own
 //   DynamicArray<int>, then mirrored back onto the same array. Only palindromes are
 //   ever trial-divided, so the long palindrome-sparse stretches cost nothing.
+[LeetCodeQuestion("prime-palindrome", LeetCodeAnswerOrder.AsWritten, Reach = typeof(PrimePalindromeReach))]
 internal static class PrimePalindromeSolution
 {
     private const int OddDivisorStep = 2;

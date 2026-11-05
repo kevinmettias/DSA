@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfItIsAGoodArray;
 // running integer: the private Euclidean helper below is the same one
 // WaterAndJugProblemSolution and XOfAKindInADeckOfCardsSolution already keep
 // inline rather than promoting to a shared production type.
+[LeetCodeQuestion("check-if-it-is-a-good-array", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CheckIfItIsAGoodArrayReach))]
 internal static class CheckIfItIsAGoodArraySolution
 {
     // The textbook answer: the subtraction form of Euclid's algorithm, folded

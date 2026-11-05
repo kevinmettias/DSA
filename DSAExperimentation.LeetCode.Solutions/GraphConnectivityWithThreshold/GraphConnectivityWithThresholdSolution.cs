@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.GraphConnectivityWithThreshold;
 //
 // Both strategies run that identical sieve; what differs is the union-find backing
 // it, which is the whole point of the comparison.
+[LeetCodeQuestion("graph-connectivity-with-threshold", LeetCodeAnswerOrder.AsWritten, Reach = typeof(GraphConnectivityWithThresholdReach))]
 internal static class GraphConnectivityWithThresholdSolution
 {
     // A divisor's first multiple that is not the divisor itself.

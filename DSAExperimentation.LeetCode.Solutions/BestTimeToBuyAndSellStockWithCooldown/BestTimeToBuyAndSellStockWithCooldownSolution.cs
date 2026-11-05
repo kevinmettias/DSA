@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockWithCoo
 // (day, holding) state recurs along many different buy/sell/rest paths and the
 // naive version re-derives it from scratch every time. Deliberately written without
 // this repo's primitives.
+[LeetCodeQuestion("best-time-to-buy-and-sell-stock-with-cooldown", LeetCodeAnswerOrder.AsWritten, Reach = typeof(BestTimeToBuyAndSellStockWithCooldownReach))]
 internal static class BestTimeToBuyAndSellStockWithCooldownSolution
 {
     private const int CooldownDays = 2;
