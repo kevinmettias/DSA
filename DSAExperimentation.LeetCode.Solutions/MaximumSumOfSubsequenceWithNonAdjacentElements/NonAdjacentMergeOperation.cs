@@ -1,8 +1,8 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumSumOfSubsequenceWithNonAdjacentElements;
 
-// SegmentTree<Element,TOperation>'s ICombineOperation witness for LC 3165: merges
+// SegmentTree<Element,TOperation>'s IMonoid witness for LC 3165: merges
 // two adjacent segments' NonAdjacentSumNode by marginalizing over whether the
 // left segment's own rightmost element was picked - if it was, the right
 // segment's leftmost element cannot also be picked (they are adjacent in the
@@ -17,9 +17,9 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumSumOfSubsequenceWithNonAd
 // for interface completeness - though note Combine's own merge formula
 // assumes both sides are non-empty real segments (it marginalizes over
 // whether a real rightmost/leftmost boundary element was picked), so unlike
-// MaxOperation/SumOperation this Combine is not a true two-sided identity law
+// Maximum/Addition this Combine is not a true two-sided identity law
 // for arbitrary x; it is simply never asked to be one here.
-internal readonly struct NonAdjacentMergeOperation : ICombineOperation<NonAdjacentSumNode>
+internal readonly struct NonAdjacentMergeOperation : IMonoid<NonAdjacentSumNode>
 {
     public static NonAdjacentSumNode Identity => new(
         0,

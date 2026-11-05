@@ -1,5 +1,5 @@
 using ParentPositionTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<
-    int, DSAExperimentation.DataStructures.ElementAlgebra.MinOperation<int>>;
+    int, DSAExperimentation.Domain.Mathematics.Algebra.Minimum<int>>;
 
 namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
@@ -23,7 +23,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // (p, q] lies strictly below their lowest common ancestor, and the ancestor's child on the way
 // to the later node is among them. So the smallest parent position over (p, q] is the
 // ancestor's own position - one range minimum over this repo's SegmentTree<int,
-// MinOperation<int>>. When the earlier node is itself the ancestor, its child on the way to the
+// Minimum<int>>. When the earlier node is itself the ancestor, its child on the way to the
 // later node is in the range and nothing in it has a smaller parent position, so the same
 // minimum names it.
 /// <summary>

@@ -79,7 +79,7 @@ internal static class GoodSubsequenceQueriesSolution
 
     // Composed: builds a GoodSubsequenceIndex once so every query's full-range
     // gcd and multiple-count are O(log n) SegmentTree range queries instead of an
-    // O(n) rescan - the Query-with-a-custom-ICombineOperation extensibility point
+    // O(n) rescan - the Query-with-a-custom-IMonoid extensibility point
     // DataStructures.SegmentTree.SegmentTree<Element,TOperation> exists for,
     // instantiated twice over (gcd, sum) the same way MinimumStabilityFactorOfArray
     // instantiates it once for LC 3605's window gcds.

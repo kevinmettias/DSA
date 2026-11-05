@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToPartitionABinaryString;
@@ -20,7 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToPartitionABinaryStr
 // MinCostByFenwickRangeSum is the composed strategy: every recursive call
 // needs "how many sensitive elements sit in [left, right]", which is exactly a
 // range-sum query, so it builds this repo's own
-// DataStructures.FenwickTree.FenwickTree<int, SumOperation<int>> over
+// DataStructures.FenwickTree.FenwickTree<int, Addition<int>> over
 // binaryString once and answers every call's sensitive-count in O(log n) via
 // Query, rather than rescanning the segment. Building that Fenwick tree is real
 // input construction, so per the hoisted-overload convention (see
@@ -50,13 +50,13 @@ internal static class MinimumCostToPartitionABinaryStringSolution
             sensitive[i] = isSensitive ? 1 : 0;
         }
 
-        var ones = new FenwickTree<int, SumOperation<int>>(sensitive);
+        var ones = new FenwickTree<int, Addition<int>>(sensitive);
 
         return MinCostByFenwickRangeSum(ones, binaryString.Length, encCost, flatCost);
     }
 
     public static long MinCostByFenwickRangeSum(
-        FenwickTree<int, SumOperation<int>> sensitiveCounts, int length, int encCost, int flatCost) =>
+        FenwickTree<int, Addition<int>> sensitiveCounts, int length, int encCost, int flatCost) =>
         MinCostOfRange(
             (Left: 0, Right: length - 1),
             encCost,
@@ -118,7 +118,7 @@ internal static class MinimumCostToPartitionABinaryStringSolution
 
     // The composed arm's answer: one range-sum query against this repo's Fenwick tree,
     // built once over binaryString and then answering every call in O(log n).
-    private sealed class FenwickRangeSumSensitiveCount(FenwickTree<int, SumOperation<int>> sensitiveCounts)
+    private sealed class FenwickRangeSumSensitiveCount(FenwickTree<int, Addition<int>> sensitiveCounts)
         : ISensitiveCount
     {
         public int CountIn(int left, int right) => sensitiveCounts.Query(left, right);

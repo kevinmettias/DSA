@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods MaximumBalancedSubsequenceSumSolutionTests proves correct. Mirrors
 // CountOfSmallerNumbersAfterSelfBenchmarks' shape - the textbook O(n^2) pairwise
 // scan against an O(n log n) sweep through a repo index structure, this time a
-// SegmentTree<long,MaxOperation<long>> instead of a FenwickTree<int,SumOperation<int>>.
+// SegmentTree<long,Maximum<long>> instead of a FenwickTree<int,Addition<int>>.
 // The crossover lands later than CountOfSmallerNumbersAfterSelfBenchmarks' own -
 // SegmentTree's recursive per-call overhead is real, so BruteForce's tight array
 // scan still wins at 2,000 - which is why 20,000 is included too: large enough for

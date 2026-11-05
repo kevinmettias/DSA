@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.SumOfBeautifulSubsequences;
@@ -149,7 +149,7 @@ internal static class SumOfBeautifulSubsequencesSolution
     private static long CountIncreasingSubsequences(List<int> values)
     {
         var coordinates = new CompressedCoordinates<int>(values.ToArray());
-        var fenwick = new FenwickTree<long, SumOperation<long>>(coordinates.Count);
+        var fenwick = new FenwickTree<long, Addition<long>>(coordinates.Count);
         var total = 0L;
 
         foreach (var value in values)
@@ -165,7 +165,7 @@ internal static class SumOfBeautifulSubsequencesSolution
     // single prefix query.
     private static long AccumulateValue(
         CompressedCoordinates<int> coordinates,
-        FenwickTree<long, SumOperation<long>> fenwick,
+        FenwickTree<long, Addition<long>> fenwick,
         int value,
         long total)
     {

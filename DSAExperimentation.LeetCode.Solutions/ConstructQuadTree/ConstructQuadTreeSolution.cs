@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
@@ -14,7 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConstructQuadTree;
 //
 // BuildByBruteForceCellScan confirms uniformity with a raw cell-by-cell scan -
 // BCL arrays only, the textbook baseline. BuildByRowFenwickTree instead builds one
-// FenwickTree<int,SumOperation<int>> per grid row - the same move
+// FenwickTree<int,Addition<int>> per grid row - the same move
 // RangeSumQuery2DImmutable makes for LC 304 - and confirms uniformity from an
 // O(rows*log(cols)) region-sum check (0 => all zero, area => all one) instead of a
 // raw O(area) scan. Both build a real QuadTreeNode tree, LeetCode's actual answer
@@ -32,7 +32,7 @@ internal static class ConstructQuadTreeSolution
     // part of what ConstructQuadTreeBenchmarks measures for this strategy.
     public static QuadTreeNode BuildByRowFenwickTree(int[][] grid)
     {
-        var rows = grid.Select(row => new FenwickTree<int, SumOperation<int>>(row)).ToArray();
+        var rows = grid.Select(row => new FenwickTree<int, Addition<int>>(row)).ToArray();
 
         return BuildRegionByRowFenwickTree(rows, 0, 0, grid.Length);
     }
@@ -73,7 +73,7 @@ internal static class ConstructQuadTreeSolution
     }
 
     private static QuadTreeNode BuildRegionByRowFenwickTree(
-        FenwickTree<int, SumOperation<int>>[] rows, int row, int col, int size)
+        FenwickTree<int, Addition<int>>[] rows, int row, int col, int size)
     {
         var sum = 0;
         for (var r = row; r < row + size; r++)

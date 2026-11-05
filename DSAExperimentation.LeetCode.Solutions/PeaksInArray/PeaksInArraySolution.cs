@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.PeaksInArray;
@@ -54,7 +54,7 @@ internal static class PeaksInArraySolution
         return count;
     }
 
-    // Composed: a point-update/range-query FenwickTree<int, SumOperation<int>>
+    // Composed: a point-update/range-query FenwickTree<int, Addition<int>>
     // (DataStructures/FenwickTree) stores a 1 at every peak index and 0
     // elsewhere, so a type-1 query is one Query(l+1, r-1) instead of a rescan. A
     // type-2 update can only change peak status at index-1, index and index+1,
@@ -86,9 +86,9 @@ internal static class PeaksInArraySolution
 
     // The indicator tree the type-1 queries above read: a 1 at every peak index
     // of the working copy and 0 elsewhere.
-    private static FenwickTree<int, SumOperation<int>> BuildPeakTree(int[] nums)
+    private static FenwickTree<int, Addition<int>> BuildPeakTree(int[] nums)
     {
-        var peaks = new FenwickTree<int, SumOperation<int>>(nums.Length);
+        var peaks = new FenwickTree<int, Addition<int>>(nums.Length);
 
         for (var i = 1; i < nums.Length - 1; i++)
         {
@@ -101,7 +101,7 @@ internal static class PeaksInArraySolution
         return peaks;
     }
 
-    private static int CountPeaks(FenwickTree<int, SumOperation<int>> peaks, int left, int right)
+    private static int CountPeaks(FenwickTree<int, Addition<int>> peaks, int left, int right)
     {
         var lo = left + 1;
         var hi = right - 1;
@@ -109,7 +109,7 @@ internal static class PeaksInArraySolution
         return lo > hi ? 0 : peaks.Query(lo, hi);
     }
 
-    private static void ApplyUpdate(int[] working, FenwickTree<int, SumOperation<int>> peaks, int index, int value)
+    private static void ApplyUpdate(int[] working, FenwickTree<int, Addition<int>> peaks, int index, int value)
     {
         foreach (var position in AffectedPositions(index, working.Length))
         {

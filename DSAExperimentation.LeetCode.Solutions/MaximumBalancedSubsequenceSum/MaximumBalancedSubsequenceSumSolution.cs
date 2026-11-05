@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 
-using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<long, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<long>>;
+using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<long, DSAExperimentation.Domain.Mathematics.Algebra.Maximum<long>>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumBalancedSubsequenceSum;
 
@@ -62,7 +62,7 @@ internal static class MaximumBalancedSubsequenceSumSolution
     // Composed: coordinate-compress b[i] = nums[i] - i via this repo's own
     // CompressedCoordinates (same idiom CountOfSmallerNumbersAfterSelfSolution
     // uses for a Fenwick-tree sweep), then
-    // sweep left to right through a SegmentTree<long, MaxOperation<long>> holding,
+    // sweep left to right through a SegmentTree<long, Maximum<long>> holding,
     // per rank, the best subsequence sum achieved by any earlier index whose
     // b-value compresses to that rank. Query(0, rank) reads the best sum among
     // every b-value <= b[i] in one O(log n) call - a plain FenwickTree can't play

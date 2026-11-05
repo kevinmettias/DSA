@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
-using RepoRangeFenwickTree = DSAExperimentation.DataStructures.RangeFenwickTree.RangeFenwickTree<long, DSAExperimentation.DataStructures.ElementAlgebra.SumOperation<long>>;
+using RepoRangeFenwickTree = DSAExperimentation.DataStructures.RangeFenwickTree.RangeFenwickTree<long, DSAExperimentation.Domain.Mathematics.Algebra.Addition<long>>;
 
 namespace DSAExperimentation.LeetCode.Solutions.SubarraysDistinctElementSumOfSquaresII;
 
@@ -36,7 +36,7 @@ internal static class SubarraysDistinctElementSumOfSquaresIISolution
     // Composed: fix D[l] = distinct(l, r) for the current right endpoint r, for
     // every start l in [0, r]. Extending r by one value only raises D[l] for
     // l in (previousOccurrence, r] - the value is already present for any earlier
-    // start - a range +1 this repo's own RangeFenwickTree<long, SumOperation<long>>
+    // start - a range +1 this repo's own RangeFenwickTree<long, Addition<long>>
     // applies in O(log n) (same composition MaximizeTheMinimumPoweredCitySolutionTests
     // uses). Squaring is not additive, but its *change* is:
     // (d+1)^2 - d^2 = 2d + 1, so summing 2 * RangeSum(before the update) + rangeLength

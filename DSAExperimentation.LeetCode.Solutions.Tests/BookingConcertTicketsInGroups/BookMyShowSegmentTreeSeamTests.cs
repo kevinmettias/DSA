@@ -5,8 +5,8 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.BookingConcertTicketsInGro
 // The seam between BookingConcertTicketsInGroupsSolution's two seating strategies.
 // BookMyShowByRowScan keeps one int[] of remaining seats per row and is the problem
 // statement read literally; BookMyShowBySegmentTreeBinarySearch replaces that array
-// with two DataStructures.SegmentTree instances - one under MaxOperation<int>, one
-// under SumOperation<int> - plus MonotonePredicateSearch.FirstTrue over the
+// with two DataStructures.SegmentTree instances - one under Maximum<int>, one
+// under Addition<int> - plus MonotonePredicateSearch.FirstTrue over the
 // prefix-max rule PrefixHasCapacity claims is monotone.
 //
 // Everything that can go wrong here is between the two trees: Gather writes both

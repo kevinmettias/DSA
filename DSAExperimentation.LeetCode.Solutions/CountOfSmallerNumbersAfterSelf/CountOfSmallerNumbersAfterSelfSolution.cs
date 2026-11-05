@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountOfSmallerNumbersAfterSelf;
@@ -35,14 +35,14 @@ internal static class CountOfSmallerNumbersAfterSelfSolution
     }
 
     // Coordinate-compress nums via CompressedCoordinates, then sweep right-to-left
-    // through a FenwickTree<int, SumOperation<int>> (this repo's own Binary
+    // through a FenwickTree<int, Addition<int>> (this repo's own Binary
     // Indexed Tree) - PrefixQuery(rank-1) counts every smaller value already added
     // on the way in, and Add(rank, 1) records the current one before moving
     // further left.
     public static int[] CountSmallerByFenwickTreeSweep(int[] nums)
     {
         var coordinates = new CompressedCoordinates<int>(nums);
-        var tree = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
+        var tree = new FenwickTree<int, Addition<int>>(coordinates.Count);
         var counts = new int[nums.Length];
 
         for (var i = nums.Length - 1; i >= 0; i--)

@@ -58,7 +58,7 @@ internal static class FindXValueOfArrayIISolution
     // SegmentTree carry every query in O(log n) - one point update plus one range
     // query per query, versus the baseline's full O(n) rescan. k is a witness rather
     // than a runtime field because XValueCombineOperation's Identity is static
-    // abstract (ICombineOperation), with no runtime channel to receive k through.
+    // abstract (IMonoid), with no runtime channel to receive k through.
     public static int[] XValueCountsBySegmentTreeAutomaton(int[] nums, int modulus, int[][] queries) => modulus switch
     {
         1 => Solve<Modulus1>(nums, queries),

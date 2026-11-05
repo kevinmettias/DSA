@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.BlockPlacementQueries;
@@ -61,7 +61,7 @@ internal static class BlockPlacementQueriesSolution
     // established that one exists at or before coordinate.
     private static long NextObstaclePosition(List<long> obstacles, int obstacleIndex) => obstacles[obstacleIndex + 1];
 
-    // This repo's own point-update SegmentTree<long, MaxOperation<long>> for
+    // This repo's own point-update SegmentTree<long, Maximum<long>> for
     // "the largest gap ending at or before a coordinate", plus this problem's
     // own NearestActiveObstacle (see its own doc comment) for "nearest
     // still-active obstacle" - both driven by walking the queries in reverse,
@@ -135,11 +135,11 @@ internal static class BlockPlacementQueriesSolution
 
     // The gap ending at each obstacle, indexed by that obstacle's own coordinate -
     // the array the prefix-max segment tree is built over.
-    private static SegmentTree<long, MaxOperation<long>> BuildGapTree(
+    private static SegmentTree<long, Maximum<long>> BuildGapTree(
         bool[] isFinalObstacle, int maxCoordinate)
     {
         var gaps = new long[maxCoordinate + 1];
-        Array.Fill(gaps, MaxOperation<long>.Identity);
+        Array.Fill(gaps, Maximum<long>.Identity);
 
         var previousObstacle = 0;
         for (var coordinate = 1; coordinate <= maxCoordinate; coordinate++)
@@ -151,7 +151,7 @@ internal static class BlockPlacementQueriesSolution
             }
         }
 
-        return new SegmentTree<long, MaxOperation<long>>(gaps);
+        return new SegmentTree<long, Maximum<long>>(gaps);
     }
 
     // A type-2 query answered against the obstacles still active at this point in the
@@ -159,7 +159,7 @@ internal static class BlockPlacementQueriesSolution
     // the largest gap ending at or before the nearest active obstacle.
     private static bool CanPlaceAmongActive(
         NearestActiveObstacle nearest,
-        SegmentTree<long, MaxOperation<long>> gapTree,
+        SegmentTree<long, Maximum<long>> gapTree,
         (int X, int Size) query)
     {
         var x = query.X;
@@ -186,7 +186,7 @@ internal static class BlockPlacementQueriesSolution
     }
 
     private static void Deactivate(
-        SegmentTree<long, MaxOperation<long>> gapTree, NearestActiveObstacle nearest, int position)
+        SegmentTree<long, Maximum<long>> gapTree, NearestActiveObstacle nearest, int position)
     {
         if (nearest.TryNearestAtOrAfter(position + 1, out var rightNeighbor))
         {
@@ -194,7 +194,7 @@ internal static class BlockPlacementQueriesSolution
             gapTree.Update(rightNeighbor, rightNeighbor - leftNeighbor);
         }
 
-        gapTree.Update(position, MaxOperation<long>.Identity);
+        gapTree.Update(position, Maximum<long>.Identity);
         nearest.Deactivate(position);
     }
 }

@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.Domain.Mathematics.Modular;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindXValueOfArrayII;
@@ -9,10 +9,10 @@ namespace DSAExperimentation.LeetCode.Solutions.FindXValueOfArrayII;
 // own output residue (r * left.Product) is what feeds the right range's Counts
 // lookup. Identity is the empty range: Product = 1 mod k (multiplying by nothing
 // changes nothing) and an all-zero Counts (no prefixes to land anywhere) - the same
-// two-sided identity SumOperation<T>.Identity = T.Zero plays, verified by
+// two-sided identity Addition<T>.Identity = T.Zero plays, verified by
 // construction rather than a runtime check because TOperation.Combine's own
 // associativity law is unenforced everywhere in this tier.
-internal readonly struct XValueCombineOperation<TModulus> : ICombineOperation<XValueNode>
+internal readonly struct XValueCombineOperation<TModulus> : IMonoid<XValueNode>
     where TModulus : struct, IModulus
 {
     // k sizes this problem's arrays, and LeetCode bounds it to 5, so the long a modulus is read as

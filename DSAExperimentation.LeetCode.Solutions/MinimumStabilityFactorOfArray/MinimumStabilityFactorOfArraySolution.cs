@@ -102,7 +102,7 @@ internal static class MinimumStabilityFactorOfArraySolution
 
     // Composed: builds a SegmentTree<int, GcdOperation<int>> once so every window's gcd
     // is an O(log n) range query instead of an O(windowLength) rescan - the
-    // Query-with-a-custom-ICombineOperation extensibility point
+    // Query-with-a-custom-IMonoid extensibility point
     // DataStructures.SegmentTree.SegmentTree<Element,TOperation> exists for - and hands
     // the cut-budget rule, with every factor from 0 to n, to this repo's own
     // MonotonePredicateSearch.FirstTrue. A factor of n always holds - a window of n + 1

@@ -16,10 +16,9 @@ commit beside it, as the rest of this file does.
 
 ### Requested, in progress or not started
 
-- **L1. Time units, English's number words and the per cent.** Opted into on 2026-11-02, written by
-  another session, finished at the owner's request on 2026-11-05, and in HEAD since `c632570f` and
-  `bffe4166`. Left: the final A/B, mutation probes, nomos, ARCHITECTURE's §13.3 and §17.6 rows and
-  §17.10 account, and a commit that records them.
+- **L1. Time units, English's number words and the per cent — DONE** (`c632570f`, `bffe4166`,
+  `efa9abb8`). Opted into on 2026-11-02, written by another session, finished at the owner's request
+  on 2026-11-05: probes 39 of 39 caught, no arm moved in an A/B, and ARCHITECTURE records them.
 - **L2. The Domain TODO plan.** The owner's 47 TODOs in 14 Domain files, 2026-11-05: "i wouldnt
   drop these but i would organize them properly. not everything needs a problem that uses it, the
   problems are just the inspiration." A value fixed for a configuration is a constant (the owner's

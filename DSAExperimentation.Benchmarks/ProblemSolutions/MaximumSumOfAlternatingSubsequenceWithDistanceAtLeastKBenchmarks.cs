@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods CatalogCaseTests proves
 // correct. Mirrors MaximumBalancedSubsequenceSumBenchmarks' shape - the textbook
 // O(n^2) pairwise scan against an O(n log n) sweep through a repo index
-// structure, this time two SegmentTree<long,MaxOperation<long>> trees instead
+// structure, this time two SegmentTree<long,Maximum<long>> trees instead
 // of one.
 public class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKBenchmarks
 {

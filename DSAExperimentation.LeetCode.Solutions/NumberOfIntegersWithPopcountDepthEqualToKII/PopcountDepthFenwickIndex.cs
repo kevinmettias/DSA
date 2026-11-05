@@ -1,12 +1,12 @@
 using System.Numerics;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfIntegersWithPopcountDepthEqualToKII;
 
 // Tracks, for every popcount-depth value the problem's own "0 <= k <= 5"
 // bound can ever ask about, one point-update/range-sum
-// FenwickTree<int, SumOperation<int>> over "does index j currently hold a
+// FenwickTree<int, Addition<int>> over "does index j currently hold a
 // value at this depth" - so a [1, l, r, k] query is one Query(l, r) on the
 // k-th tree, and a [2, idx, val] update touches at most two trees (Add(-1) on
 // the old depth, Add(+1) on the new one) instead of anything being rescanned.
@@ -15,15 +15,15 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfIntegersWithPopcountDept
 // popcount-depth - which is why it lives beside the solution rather than at
 // the tier's root.
 internal sealed class PopcountDepthFenwickIndex(
-    FenwickTree<int, SumOperation<int>>[] treesByDepth, int[] depthByIndex)
+    FenwickTree<int, Addition<int>>[] treesByDepth, int[] depthByIndex)
 {
     public static PopcountDepthFenwickIndex Build(long[] nums)
     {
-        var treesByDepth = new FenwickTree<int, SumOperation<int>>[PopcountDepthBounds.MaxTrackedDepth + 1];
+        var treesByDepth = new FenwickTree<int, Addition<int>>[PopcountDepthBounds.MaxTrackedDepth + 1];
 
         for (var depth = 0; depth <= PopcountDepthBounds.MaxTrackedDepth; depth++)
         {
-            treesByDepth[depth] = new FenwickTree<int, SumOperation<int>>(nums.Length);
+            treesByDepth[depth] = new FenwickTree<int, Addition<int>>(nums.Length);
         }
 
         var depthByIndex = new int[nums.Length];

@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.Tests.DataStructures.SegmentTree;
@@ -8,7 +8,7 @@ public sealed partial class SegmentTreeTests
     [Fact]
     public void Query_SumOperation_FullRange_ReturnsTotalSum()
     {
-        var tree = new SegmentTree<int, SumOperation<int>>(Samples.SumValues);
+        var tree = new SegmentTree<int, Addition<int>>(Samples.SumValues);
 
         var actual = tree.Query(0, Samples.LastIndex);
 
@@ -18,7 +18,7 @@ public sealed partial class SegmentTreeTests
     [Fact]
     public void Query_SumOperation_PartialRange_ReturnsRangeSum()
     {
-        var tree = new SegmentTree<int, SumOperation<int>>(Samples.SumValues);
+        var tree = new SegmentTree<int, Addition<int>>(Samples.SumValues);
 
         var actual = tree.Query(1, Samples.PartialRangeRightIndex);
 
@@ -28,7 +28,7 @@ public sealed partial class SegmentTreeTests
     [Fact]
     public void Query_SumOperation_SingleElementRange_ReturnsThatElement()
     {
-        var tree = new SegmentTree<int, SumOperation<int>>(Samples.SumValues);
+        var tree = new SegmentTree<int, Addition<int>>(Samples.SumValues);
 
         var actual = tree.Query(Samples.MiddleIndex, Samples.MiddleIndex);
 
@@ -38,7 +38,7 @@ public sealed partial class SegmentTreeTests
     [Fact]
     public void Update_SumOperation_ChangesOnlyQueriesCoveringThatIndex()
     {
-        var tree = new SegmentTree<int, SumOperation<int>>(Samples.SumValues);
+        var tree = new SegmentTree<int, Addition<int>>(Samples.SumValues);
         tree.Update(Samples.MiddleIndex, Samples.UpdatedValue);
 
         var updatedElementQuery = tree.Query(Samples.MiddleIndex, Samples.MiddleIndex);
@@ -57,7 +57,7 @@ public sealed partial class SegmentTreeTests
     [Fact]
     public void Query_MinOperation_ReturnsSmallestInRange()
     {
-        var tree = new SegmentTree<int, MinOperation<int>>(Samples.MinMaxValues);
+        var tree = new SegmentTree<int, Minimum<int>>(Samples.MinMaxValues);
 
         var fullRangeMin = tree.Query(0, Samples.LastIndex);
 
@@ -71,7 +71,7 @@ public sealed partial class SegmentTreeTests
     [Fact]
     public void Query_MaxOperation_ReturnsLargestInRange()
     {
-        var tree = new SegmentTree<int, MaxOperation<int>>(Samples.MinMaxValues);
+        var tree = new SegmentTree<int, Maximum<int>>(Samples.MinMaxValues);
 
         var fullRangeMax = tree.Query(0, Samples.LastIndex);
 
@@ -85,7 +85,7 @@ public sealed partial class SegmentTreeTests
     [Fact]
     public void Update_MinOperation_LoweringAValueUpdatesRangeMinimum()
     {
-        var tree = new SegmentTree<int, MinOperation<int>>(Samples.MinMaxValues);
+        var tree = new SegmentTree<int, Minimum<int>>(Samples.MinMaxValues);
         tree.Update(Samples.MiddleIndex, Samples.LoweredValue);
 
         var actual = tree.Query(0, Samples.LastIndex);
@@ -96,7 +96,7 @@ public sealed partial class SegmentTreeTests
     [Fact]
     public void Count_ReflectsConstructorInputLength()
     {
-        var tree = new SegmentTree<int, SumOperation<int>>(Samples.ThreeValues);
+        var tree = new SegmentTree<int, Addition<int>>(Samples.ThreeValues);
 
         Assert.Equal(Samples.ThreeValues.Length, tree.Count);
     }
@@ -104,7 +104,7 @@ public sealed partial class SegmentTreeTests
     [Fact]
     public void Query_OutOfRangeRight_ThrowsArgumentOutOfRangeException()
     {
-        var tree = new SegmentTree<int, SumOperation<int>>(Samples.ThreeValues);
+        var tree = new SegmentTree<int, Addition<int>>(Samples.ThreeValues);
 
         Assert.Throws<ArgumentOutOfRangeException>(() => tree.Query(0, Samples.ThreeValues.Length));
     }
@@ -112,7 +112,7 @@ public sealed partial class SegmentTreeTests
     [Fact]
     public void Query_LeftGreaterThanRight_ThrowsArgumentOutOfRangeException()
     {
-        var tree = new SegmentTree<int, SumOperation<int>>(Samples.ThreeValues);
+        var tree = new SegmentTree<int, Addition<int>>(Samples.ThreeValues);
 
         Assert.Throws<ArgumentOutOfRangeException>(
             () => tree.Query(Samples.LastIndexInThreeValues, 1));
@@ -121,7 +121,7 @@ public sealed partial class SegmentTreeTests
     [Fact]
     public void Update_IndexOutOfRange_ThrowsArgumentOutOfRangeException()
     {
-        var tree = new SegmentTree<int, SumOperation<int>>(Samples.ThreeValues);
+        var tree = new SegmentTree<int, Addition<int>>(Samples.ThreeValues);
 
         Assert.Throws<ArgumentOutOfRangeException>(
             () => tree.Update(Samples.ThreeValues.Length, Samples.AnyUpdateValue));
@@ -130,7 +130,7 @@ public sealed partial class SegmentTreeTests
     [Fact]
     public void Constructor_SingleElement_QueryReturnsThatElement()
     {
-        var tree = new SegmentTree<int, SumOperation<int>>([Samples.SingleElementValue]);
+        var tree = new SegmentTree<int, Addition<int>>([Samples.SingleElementValue]);
 
         var actual = tree.Query(0, 0);
 

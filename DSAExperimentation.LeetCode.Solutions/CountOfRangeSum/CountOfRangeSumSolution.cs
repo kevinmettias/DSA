@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountOfRangeSum;
@@ -10,7 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountOfRangeSum;
 // The two strategies differ only in how they count, for each prefix[j], how many
 // earlier prefix[i] already seen fall in [prefix[j]-upper, prefix[j]-lower] - a
 // direct O(n^2) scan over every pair, or coordinate-compressing the prefix sums and
-// sweeping left-to-right through this repo's own FenwickTree<int, SumOperation<int>>
+// sweeping left-to-right through this repo's own FenwickTree<int, Addition<int>>
 // (a Binary Indexed Tree of counts), with each query's compressed bounds found via
 // CompressedCoordinates.LowerBound/UpperBound. Same coordinate-compression-plus-Fenwick-sweep
 // shape CountOfSmallerNumbersAfterSelfSolution uses for LC 315, generalized from a
@@ -50,7 +50,7 @@ internal static class CountOfRangeSumSolution
     {
         var prefix = BuildPrefixSums(nums);
         var coordinates = new CompressedCoordinates<long>(prefix);
-        var tree = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
+        var tree = new FenwickTree<int, Addition<int>>(coordinates.Count);
         var count = 0;
         var index = new RangeSumIndex(coordinates, tree);
 
@@ -88,5 +88,5 @@ internal static class CountOfRangeSumSolution
     }
 
     private readonly record struct RangeSumIndex(
-        CompressedCoordinates<long> Coordinates, FenwickTree<int, SumOperation<int>> Tree);
+        CompressedCoordinates<long> Coordinates, FenwickTree<int, Addition<int>> Tree);
 }

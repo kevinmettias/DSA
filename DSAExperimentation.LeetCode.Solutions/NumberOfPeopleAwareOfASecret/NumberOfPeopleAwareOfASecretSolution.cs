@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfPeopleAwareOfASecret;
@@ -14,7 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfPeopleAwareOfASecret;
 // Both strategies run that identical recurrence; they differ only in how the
 // window sum is obtained. SlidingWindowSum re-adds the whole window on every day;
 // FenwickRangeSum keeps dp in this repo's own
-// FenwickTree<long, SumOperation<long>> so each day costs one O(log n) Add/Query
+// FenwickTree<long, Addition<long>> so each day costs one O(log n) Add/Query
 // pair instead.
 [LeetCodeQuestion("number-of-people-aware-of-a-secret", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfPeopleAwareOfASecretSolution
@@ -72,13 +72,13 @@ internal static class NumberOfPeopleAwareOfASecretSolution
         return sum % LeetCodeModulus.Value;
     }
 
-    // The same recurrence against FenwickTree<long, SumOperation<long>>, which is
+    // The same recurrence against FenwickTree<long, Addition<long>>, which is
     // already exactly "point add, prefix/range sum": each day is one Query for the
     // sharing window plus one Add for the newcomers, and the final tail sum is a
     // single Query - O(n log n) overall.
     public static long PeopleWithSecretByFenwickRangeSum(int dayCount, int delay, int forget)
     {
-        var dp = new FenwickTree<long, SumOperation<long>>(dayCount);
+        var dp = new FenwickTree<long, Addition<long>>(dayCount);
         dp.Add(0, 1);
 
         for (var day = FirstDay + 1; day <= dayCount; day++)

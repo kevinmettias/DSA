@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumInversionCountInSubarraysOfFixedLength;
@@ -10,4 +10,4 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumInversionCountInSubarrays
 // The two were returned as an unnamed pair - the types keep a caller from
 // swapping them, but nothing said which one MEANS which.
 internal readonly record struct RankIndex(
-    FenwickTree<int, SumOperation<int>> Tree, CompressedCoordinates<int> Coordinates);
+    FenwickTree<int, Addition<int>> Tree, CompressedCoordinates<int> Coordinates);

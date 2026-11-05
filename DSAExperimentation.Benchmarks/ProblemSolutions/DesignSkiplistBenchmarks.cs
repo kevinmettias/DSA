@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are DesignSkiplistSolution's, the same classes
 // DesignSkiplistSolutionTests proves correct. A linear-scan List<int> multiset
 // (Contains/IndexOf + RemoveAt, O(n) per call) against this repo's own
-// FenwickTree<int,SumOperation<int>> used as a point-update/point-query frequency
+// FenwickTree<int,Addition<int>> used as a point-update/point-query frequency
 // array over num's bounded domain, O(log 2*10^4) per call. Both replay the same
 // fixed batch of add-then-search-then-erase calls a real Skiplist caller would make.
 public class DesignSkiplistBenchmarks

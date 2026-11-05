@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumInversionCountInSubarraysOfFixedLength;
@@ -14,7 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumInversionCountInSubarrays
 // inversions does the current window have" incrementally is the same
 // coordinate-compression-plus-Fenwick-sweep CountSubarraysWithMajorityElementIISolution
 // already uses for a different inversion-shaped count: rank each value, keep
-// a FenwickTree<int, SumOperation<int>> of which ranks are currently in the
+// a FenwickTree<int, Addition<int>> of which ranks are currently in the
 // window, and let each insertion/removal report its own inversion
 // contribution straight from the tree's prefix sums. The window then slides
 // one element at a time - remove the leftmost, insert the new rightmost -
@@ -86,7 +86,7 @@ internal static class MinimumInversionCountInSubarraysOfFixedLengthSolution
     private static RankIndex BuildRankIndex(int[] nums)
     {
         var coordinates = new CompressedCoordinates<int>(nums);
-        var tree = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
+        var tree = new FenwickTree<int, Addition<int>>(coordinates.Count);
 
         return new RankIndex(tree, coordinates);
     }
@@ -95,7 +95,7 @@ internal static class MinimumInversionCountInSubarraysOfFixedLengthSolution
     // greater than this one now forms an inversion with it (earlier
     // position, larger value).
     private static long Insert(
-        FenwickTree<int, SumOperation<int>> tree,
+        FenwickTree<int, Addition<int>> tree,
         CompressedCoordinates<int> coordinates,
         int value,
         int windowCountBeforeInsert)
@@ -111,7 +111,7 @@ internal static class MinimumInversionCountInSubarraysOfFixedLengthSolution
     // window, so every remaining value smaller than it was already forming
     // an inversion with it - undo exactly that contribution.
     private static long Remove(
-        FenwickTree<int, SumOperation<int>> tree, CompressedCoordinates<int> coordinates, int value)
+        FenwickTree<int, Addition<int>> tree, CompressedCoordinates<int> coordinates, int value)
     {
         var rank = coordinates.RankOf(value);
         var lessCount = rank == 0 ? 0 : tree.PrefixQuery(rank - 1);

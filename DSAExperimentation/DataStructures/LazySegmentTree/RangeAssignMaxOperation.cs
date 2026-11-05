@@ -1,5 +1,5 @@
 using System.Numerics;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 
 namespace DSAExperimentation.DataStructures.LazySegmentTree;
 
@@ -8,7 +8,7 @@ namespace DSAExperimentation.DataStructures.LazySegmentTree;
 // caller can legitimately assign. NoUpdate is null; a newer assignment always overwrites whatever
 // was already pending (ComposeUpdate keeps outer, discards inner - assignment has no memory of
 // what it replaces), and assigning v to any number of elements makes their max v regardless of
-// rangeLength. The aggregate itself is plain max, so Identity and Combine are MaxOperation's.
+// rangeLength. The aggregate itself is plain max, so Identity and Combine are Maximum's.
 /// <summary>
 /// The range-assign, range-max algebra for LazySegmentTree: an update is a value to assign, with null meaning none.
 /// </summary>
@@ -16,7 +16,7 @@ public readonly struct RangeAssignMaxOperation<Element> : IRangeUpdateOperation<
     where Element : struct, IComparable<Element>, IMinMaxValue<Element>
 {
     /// <summary><c>Element.MinValue</c>, the maximum of an empty range.</summary>
-    public static Element Identity => MaxOperation<Element>.Identity;
+    public static Element Identity => Maximum<Element>.Identity;
 
     public static Element? NoUpdate => null;
 
@@ -24,7 +24,7 @@ public readonly struct RangeAssignMaxOperation<Element> : IRangeUpdateOperation<
     /// <param name="left">The maximum of the left range.</param>
     /// <param name="right">The maximum of the right range.</param>
     /// <returns>The larger of <paramref name="left"/> and <paramref name="right"/>.</returns>
-    public static Element Combine(Element left, Element right) => MaxOperation<Element>.Combine(left, right);
+    public static Element Combine(Element left, Element right) => Maximum<Element>.Combine(left, right);
 
     public static Element? ComposeUpdate(Element? outer, Element? inner) => outer;
 

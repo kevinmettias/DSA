@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.RangeSumQueryMutable;
@@ -9,7 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RangeSumQueryMutable;
 // This is a design problem - LeetCode's own shape is a stateful object (a constructor plus Update
 // and SumRange operations), not a single return value - the same shape RangeSumQuery2DImmutableSolution
 // uses for its own design problem. The composed strategy needs no new data structure: this repo's
-// own SegmentTree<int, SumOperation<int>>. SegmentTree.Update takes the new value directly, the same
+// own SegmentTree<int, Addition<int>>. SegmentTree.Update takes the new value directly, the same
 // shape as LeetCode's update(index, val), so - unlike FenwickTree.Add, a pure delta increment - no
 // "track the old value to compute a delta" bookkeeping is needed here.
 [LeetCodeQuestion("range-sum-query-mutable", LeetCodeAnswerOrder.AsWritten)]
@@ -46,9 +46,9 @@ internal static class RangeSumQueryMutableSolution
 
     private sealed class SegmentTreeRangeSum : INumArray
     {
-        private readonly SegmentTree<int, SumOperation<int>> _tree;
+        private readonly SegmentTree<int, Addition<int>> _tree;
 
-        public SegmentTreeRangeSum(int[] nums) => _tree = new SegmentTree<int, SumOperation<int>>(nums);
+        public SegmentTreeRangeSum(int[] nums) => _tree = new SegmentTree<int, Addition<int>>(nums);
 
         public void Update(int index, int val) => _tree.Update(index, val);
 

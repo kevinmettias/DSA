@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.Domain.Language.English;
 
@@ -52,7 +52,7 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
         return (int)state.Rank;
     }
 
-    // This repo's FenwickTree<int, SumOperation<int>>, seeded from the same 26-slot
+    // This repo's FenwickTree<int, Addition<int>>, seeded from the same 26-slot
     // frequency array, answers the smaller-letter count as one PrefixQuery and
     // absorbs each placement as one Add - the same value-indexed-Fenwick shape
     // MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigits uses for digits.
@@ -60,7 +60,7 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
     {
         var (factorial, inverseFactorial) = BuildFactorialTables(text.Length);
         var remaining = BuildFrequencyTable(text);
-        var counts = new FenwickTree<int, SumOperation<int>>(remaining);
+        var counts = new FenwickTree<int, Addition<int>>(remaining);
         var state = new RankState(0L, InverseFactorialProduct(remaining, inverseFactorial), text.Length);
 
         foreach (var letter in text)

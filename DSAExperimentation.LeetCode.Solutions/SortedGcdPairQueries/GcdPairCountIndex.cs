@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.PrefixSums;
 
 namespace DSAExperimentation.LeetCode.Solutions.SortedGcdPairQueries;
@@ -17,9 +17,9 @@ internal sealed class GcdPairCountIndex
 {
     // TotalBefore(v) is the number of pairs whose gcd is <= v; total 0 is the sentinel
     // "no pairs have gcd <= 0" (gcd is always positive), never itself a query answer.
-    private readonly PrefixSums<long, SumOperation<long>> _cumulativePairCountUpTo;
+    private readonly PrefixSums<long, Addition<long>> _cumulativePairCountUpTo;
 
-    private GcdPairCountIndex(PrefixSums<long, SumOperation<long>> cumulativePairCountUpTo) =>
+    private GcdPairCountIndex(PrefixSums<long, Addition<long>> cumulativePairCountUpTo) =>
         _cumulativePairCountUpTo = cumulativePairCountUpTo;
 
     // countGcdExactly's slot 0 is gcd 0, which no pair has, so the totals start at gcd 1:
@@ -34,7 +34,7 @@ internal sealed class GcdPairCountIndex
         var countDivisibleBy = CountDivisibleByEachValue(countOfValue, maxValue);
         var countGcdExactly = CountGcdExactlyEachValue(countDivisibleBy, maxValue);
 
-        var cumulative = new PrefixSums<long, SumOperation<long>>(countGcdExactly.AsSpan(1));
+        var cumulative = new PrefixSums<long, Addition<long>>(countGcdExactly.AsSpan(1));
 
         return new GcdPairCountIndex(cumulative);
     }

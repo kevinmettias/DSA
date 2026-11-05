@@ -73,7 +73,7 @@ internal static class MaximizeActiveSectionWithTradeIISolution
         }
     }
 
-    // This repo's own SegmentTree<int, MaxOperation<int>>, composed via
+    // This repo's own SegmentTree<int, Maximum<int>>, composed via
     // ActiveSectionTradeIndex's per-string preprocessing (§17.3 witness) -
     // hoisted out of the per-query loop exactly like OpenTheLock hoists a
     // built lock graph, so the O(n) build is [GlobalSetup]'s cost and each

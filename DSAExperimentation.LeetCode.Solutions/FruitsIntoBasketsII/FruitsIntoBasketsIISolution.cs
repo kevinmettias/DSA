@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FruitsIntoBasketsII;
 // many fruit types end up unplaced. n <= 100, so the direct O(n^2) rescan is
 // this problem's own intended solution - no repo primitive earns its keep at
 // this size. See LC 3479 (Fruits Into Baskets III) for the identical rule at
-// n <= 1e5, where this repo's SegmentTree<int, MaxOperation<int>> does.
+// n <= 1e5, where this repo's SegmentTree<int, Maximum<int>> does.
 [LeetCodeQuestion("fruits-into-baskets-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class FruitsIntoBasketsIISolution
 {

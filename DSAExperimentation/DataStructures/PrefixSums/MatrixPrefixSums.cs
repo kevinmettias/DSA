@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 
 namespace DSAExperimentation.DataStructures.PrefixSums;
 
@@ -11,14 +11,14 @@ namespace DSAExperimentation.DataStructures.PrefixSums;
 //
 // The four totals are the bottom-right one and the corner above-left of the rectangle, less the strip
 // above it and the strip to its left, each of which also holds that corner. Taking a total back out
-// is Invert, as in PrefixSums. Regrouping the four is only sound because IGroupOperation's operations
+// is Invert, as in PrefixSums. Regrouping the four is only sound because IAbelianGroup's operations
 // commute, which a one-dimensional range never needed to ask.
 //
 // Rows arrive as a jagged array, the shape the problems hand over. A ragged matrix is refused, because
 // a short row has no answer for a rectangle that reaches past its end.
 /// <summary>Running totals of a fixed matrix under a group operation, for O(1) rectangle queries.</summary>
 public sealed class MatrixPrefixSums<Element, TOperation>
-    where TOperation : struct, IGroupOperation<Element>
+    where TOperation : struct, IAbelianGroup<Element>
 {
     private const string RaggedRowsMessage = "Every row must hold as many values as the first.";
     private const string EndOutOfBoundsMessage = "An end was outside [0, RowCount] or [0, ColumnCount] for these prefix sums.";

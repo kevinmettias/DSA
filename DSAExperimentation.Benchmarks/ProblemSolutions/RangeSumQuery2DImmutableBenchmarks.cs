@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: all three arms are RangeSumQuery2DImmutableSolution's, the same factories
 // RangeSumQuery2DImmutableSolutionTests proves correct - a brute-force cell scan baseline (O(rows *
-// cols) per SumRegion call), one FenwickTree<int,SumOperation<int>> per row (an O(log cols) query per
+// cols) per SumRegion call), one FenwickTree<int,Addition<int>> per row (an O(log cols) query per
 // covered row), and the prefix-sum table LeetCode's O(1) requirement asks for (four lookups per
 // call). [GlobalSetup] builds the random matrix and query batch; each arm's own factory call
 // (construction included) plus the full query replay is what gets measured, the same shape

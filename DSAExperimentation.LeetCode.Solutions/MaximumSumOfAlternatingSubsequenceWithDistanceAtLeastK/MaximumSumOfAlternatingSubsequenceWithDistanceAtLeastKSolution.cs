@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 
-using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<long, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<long>>;
+using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<long, DSAExperimentation.Domain.Mathematics.Algebra.Maximum<long>>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastK;
 
@@ -67,7 +67,7 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
     // Composed: coordinate-compress nums via this repo's own CompressedCoordinates
     // (the same idiom MaximumBalancedSubsequenceSumSolution uses for its own
     // value-ranked sweep),
-    // then sweep left to right through two SegmentTree<long, MaxOperation<long>>
+    // then sweep left to right through two SegmentTree<long, Maximum<long>>
     // instances ranked by value - one holding valleyEnd (queried by rank range
     // "< nums[i]" to extend into a peak), the other holding peakEnd (queried by
     // "> nums[i]" to extend into a valley). The distance constraint is enforced by

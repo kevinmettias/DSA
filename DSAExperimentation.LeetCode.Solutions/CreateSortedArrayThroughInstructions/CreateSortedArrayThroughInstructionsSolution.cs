@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.CreateSortedArrayThroughInstructions;
@@ -52,7 +52,7 @@ internal static class CreateSortedArrayThroughInstructionsSolution
         return Math.Min(less, greater);
     }
 
-    // This repo's own FenwickTree<int, SumOperation<int>> - a Binary Indexed Tree of
+    // This repo's own FenwickTree<int, Addition<int>> - a Binary Indexed Tree of
     // counts indexed by value rather than by position, the same sweep
     // CountOfSmallerNumbersAfterSelf runs for LeetCode 315, here left to right
     // instead of right to left. PrefixQuery(value - 1) is every strictly-smaller
@@ -61,7 +61,7 @@ internal static class CreateSortedArrayThroughInstructionsSolution
     public static int CreateSortedArrayByFenwickTreeSweep(int[] instructions)
     {
         var maxValue = instructions.Max();
-        var tree = new FenwickTree<int, SumOperation<int>>(maxValue + 1);
+        var tree = new FenwickTree<int, Addition<int>>(maxValue + 1);
         long cost = 0;
 
         for (var i = 0; i < instructions.Length; i++)

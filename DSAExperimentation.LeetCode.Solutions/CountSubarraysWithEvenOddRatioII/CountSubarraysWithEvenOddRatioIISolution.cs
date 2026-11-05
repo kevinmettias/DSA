@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.Sequence;
 
@@ -16,7 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithEvenOddRatioII
 // odd element +a and every even element -b, and count index pairs (L, R)
 // with prefix[L] <= prefix[R]. Coordinate-compress the prefix sums via
 // BinarySearch.LowerBound, then sweep left to right through this repo's own
-// FenwickTree<int, SumOperation<int>> (a Binary Indexed Tree) - the same
+// FenwickTree<int, Addition<int>> (a Binary Indexed Tree) - the same
 // shape CountOfRangeSumSolutionTests already uses for LC 327, and the one sweep both
 // this problem and LC 4011 count through: 4011's own arm calls this one and
 // narrows the total to the int its much smaller bound keeps it inside.
@@ -60,7 +60,7 @@ internal static class CountSubarraysWithEvenOddRatioIISolution
         var prefix = WeightedPrefixSums(nums, oddWeight, evenWeight);
         var sortedDistinct = prefix.Distinct().Order().ToArray();
         var ranks = new ArraySequence<long>(sortedDistinct);
-        var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
+        var tree = new FenwickTree<int, Addition<int>>(sortedDistinct.Length);
 
         var count = 0L;
 

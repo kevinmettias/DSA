@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfPairsSatisfyingInequality;
@@ -39,7 +39,7 @@ internal static class NumberOfPairsSatisfyingInequalitySolution
 
     // Coordinate-compress the differences via CompressedCoordinates, then sweep
     // left to right: its UpperBound finds how many distinct values are
-    // <= d[j]+diff, and FenwickTree<int, SumOperation<int>>.PrefixQuery sums
+    // <= d[j]+diff, and FenwickTree<int, Addition<int>>.PrefixQuery sums
     // how many already-swept d[i] (so i < j by construction) sit at or below that
     // rank. Add(ownRank, 1) admits the current element before moving on.
     // O(n log n) - the same compress-and-sweep shape LC 315 uses, generalized from
@@ -48,7 +48,7 @@ internal static class NumberOfPairsSatisfyingInequalitySolution
     {
         var differences = DifferencesOf(nums1, nums2);
         var coordinates = new CompressedCoordinates<int>(differences);
-        var tree = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
+        var tree = new FenwickTree<int, Addition<int>>(coordinates.Count);
 
         var count = 0L;
 

@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // tree, not just a leaf count. Confirming a region is uniform is the hot path:
 // a brute-force cell scan (early-exits on the first mismatch, but must touch
 // every cell to CONFIRM a genuinely uniform one) vs. one
-// FenwickTree<int,SumOperation<int>> per row giving an O(rows*log(cols)) region-
+// FenwickTree<int,Addition<int>> per row giving an O(rows*log(cols)) region-
 // sum check instead. The Fenwick approach's per-call win does not necessarily
 // pay for itself in aggregate here: unlike RangeSumQuery2DImmutable's
 // independently large, caller-chosen QueryCount, a quad tree's own recursion

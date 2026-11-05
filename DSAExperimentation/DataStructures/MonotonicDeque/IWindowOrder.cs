@@ -13,8 +13,8 @@ namespace DSAExperimentation.DataStructures.MonotonicDeque;
 // third witness.
 //
 // Neither IHeapOrder, which is Heap's own Topology contract (§5 step 5), nor ElementAlgebra's
-// MaxOperation/MinOperation: a monoid does not promise that Combine returns one of its arguments, so a
-// deque over SumOperation would compile and mean nothing.
+// Maximum/Minimum: a monoid does not promise that Combine returns one of its arguments, so a
+// deque over Addition would compile and mean nothing.
 /// <summary>
 /// Which extremum a <see cref="MonotonicDeque{Key, TOrder}"/> tracks: whether an arriving key dominates a resident one.
 /// </summary>

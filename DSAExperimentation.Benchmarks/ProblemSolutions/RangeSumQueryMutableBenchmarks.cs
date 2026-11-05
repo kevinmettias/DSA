@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are RangeSumQueryMutableSolution's, the same factories
 // RangeSumQueryMutableSolutionTests proves correct - a raw-array baseline (Update writes the slot
 // directly, O(1); SumRange rescans the range, O(n)) vs. this repo's own
-// SegmentTree<int,SumOperation<int>> (Update and Query both O(log n)). Both process the same
+// SegmentTree<int,Addition<int>> (Update and Query both O(log n)). Both process the same
 // interleaved stream of update/sumRange calls against a fresh instance built by their own factory
 // each iteration, so mutation from one run never leaks into the next.
 public class RangeSumQueryMutableBenchmarks

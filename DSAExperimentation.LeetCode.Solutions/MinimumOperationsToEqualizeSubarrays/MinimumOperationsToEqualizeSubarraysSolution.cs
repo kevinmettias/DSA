@@ -16,7 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumOperationsToEqualizeSubar
 // the classic "sum of absolute deviations is minimized at the median" fact.
 // Answering that per query is a range order-statistic query, composed here
 // as a merge-sort tree: DataStructures.SegmentTree.SegmentTree generic over
-// SortedMergeOperation (this folder's own ICombineOperation<int[]> witness),
+// SortedMergeOperation (this folder's own IMonoid<int[]> witness),
 // so Query(l, r) returns the queried range already sorted and the median /
 // deviation sum falls out directly.
 [LeetCodeQuestion("minimum-operations-to-equalize-subarrays", LeetCodeAnswerOrder.AsWritten)]

@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.Heap;
 using DSAExperimentation.DataStructures.Sequence;
@@ -67,7 +67,7 @@ internal static class FindServersThatHandledMostNumberOfRequestsSolution
     // already orders by End first, Server second) - its root is always the next
     // server due to free.
     //
-    // Free servers: a FenwickTree<int, SumOperation<int>> of 0/1 availability.
+    // Free servers: a FenwickTree<int, Addition<int>> of 0/1 availability.
     // Finding the first free server at or after `start` reduces to "smallest index
     // whose availability prefix sum has grown past the count already seen before
     // start" - PrefixQuery is monotonic non-decreasing (deltas are only 0/1), so that
@@ -90,7 +90,7 @@ internal static class FindServersThatHandledMostNumberOfRequestsSolution
     // Smallest available server index >= start, wrapping to [0, start) when nothing
     // is free from start through the end of the ring.
     private static bool TryFindAvailableServer(
-        FenwickTree<int, SumOperation<int>> availability, int serverCount, int start, out int server)
+        FenwickTree<int, Addition<int>> availability, int serverCount, int start, out int server)
     {
         var totalAvailable = availability.PrefixQuery(serverCount - 1);
 
@@ -129,7 +129,7 @@ internal static class FindServersThatHandledMostNumberOfRequestsSolution
 
     private sealed class ServerPool(int serverCount)
     {
-        private readonly FenwickTree<int, SumOperation<int>> _availability =
+        private readonly FenwickTree<int, Addition<int>> _availability =
             new(Enumerable.Repeat(1, serverCount).ToArray());
         private readonly Heap<(int End, int Server), MinHeapOrder<(int, int)>> _busy = new();
 
@@ -155,7 +155,7 @@ internal static class FindServersThatHandledMostNumberOfRequestsSolution
         }
     }
 
-    private readonly struct AvailabilityPrefixSequence(FenwickTree<int, SumOperation<int>> availability, int length)
+    private readonly struct AvailabilityPrefixSequence(FenwickTree<int, Addition<int>> availability, int length)
         : IRandomAccessSequence<int>
     {
         public int Length => length;

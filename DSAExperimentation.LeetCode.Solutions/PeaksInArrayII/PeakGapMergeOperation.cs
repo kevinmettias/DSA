@@ -1,8 +1,8 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 
 namespace DSAExperimentation.LeetCode.Solutions.PeaksInArrayII;
 
-// SegmentTree<Element,TOperation>'s ICombineOperation witness for LC 4017:
+// SegmentTree<Element,TOperation>'s IMonoid witness for LC 4017:
 // merges two adjacent ranges' PeakGapNode by bridging the left range's
 // rightmost peak to the right range's leftmost peak - the positions strictly
 // between them form exactly one more no-peak gap, on top of whichever gaps
@@ -10,9 +10,9 @@ namespace DSAExperimentation.LeetCode.Solutions.PeaksInArrayII;
 // NonAdjacentMergeOperation (LC 3165), PeakGapNode.None IS a true two-sided
 // identity for this Combine: a side with no peak at all contributes nothing
 // but its own absence, so Combine falls straight through to the other side
-// regardless of which side it is - the same law SumOperation/MaxOperation's
+// regardless of which side it is - the same law Addition/Maximum's
 // own Identity satisfies.
-internal readonly struct PeakGapMergeOperation : ICombineOperation<PeakGapNode>
+internal readonly struct PeakGapMergeOperation : IMonoid<PeakGapNode>
 {
     public static PeakGapNode Identity => PeakGapNode.None;
 

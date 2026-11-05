@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.PrefixSums;
 
@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RangeSumQuery2DImmutable;
 // SumRegion operation), not a single return value - the same shape MinStackSolution and
 // LRUCacheSolution use for their own design problems. Three strategies, by how much SumRegion
 // pays: the baseline rescans every cell of the region; the row Fenwick trees - one of this repo's
-// own FenwickTree<int, SumOperation<int>> per row, the move RangeFenwickTree.cs makes with two -
+// own FenwickTree<int, Addition<int>> per row, the move RangeFenwickTree.cs makes with two -
 // pay O(log cols) per covered row, which is the right shape only if the matrix could change
 // (LC 308); and this repo's MatrixPrefixSums answers in four lookups, the O(1) LeetCode asks for,
 // because the matrix never changes.
@@ -50,10 +50,10 @@ internal static class RangeSumQuery2DImmutableSolution
 
     private sealed class RowFenwickTreeMatrix : INumMatrix
     {
-        private readonly FenwickTree<int, SumOperation<int>>[] _rows;
+        private readonly FenwickTree<int, Addition<int>>[] _rows;
 
         public RowFenwickTreeMatrix(int[][] matrix) =>
-            _rows = matrix.Select(row => new FenwickTree<int, SumOperation<int>>(row)).ToArray();
+            _rows = matrix.Select(row => new FenwickTree<int, Addition<int>>(row)).ToArray();
 
         public int SumRegion(int row1, int col1, int row2, int col2)
         {
@@ -71,7 +71,7 @@ internal static class RangeSumQuery2DImmutableSolution
     // MatrixPrefixSums holds the table. LeetCode's bounds keep every sum under 200 * 200 * 10^4, inside an int.
     private sealed class PrefixSumMatrix(int[][] matrix) : INumMatrix
     {
-        private readonly MatrixPrefixSums<int, SumOperation<int>> _sums = new(matrix);
+        private readonly MatrixPrefixSums<int, Addition<int>> _sums = new(matrix);
 
         public int SumRegion(int row1, int col1, int row2, int col2) => _sums.Query(row1, col1, row2, col2);
     }

@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumDeletionsToMakeAlternatingSubstring;
@@ -65,7 +65,7 @@ internal static class MinimumDeletionsToMakeAlternatingSubstringSolution
     public static int[] AnswerQueriesByFenwickAdjacency(string text, int[][] queries)
     {
         var chars = text.ToCharArray();
-        var tree = new FenwickTree<int, SumOperation<int>>(BuildAdjacentEqualEdges(chars));
+        var tree = new FenwickTree<int, Addition<int>>(BuildAdjacentEqualEdges(chars));
         var answers = new List<int>();
 
         foreach (var query in queries)
@@ -96,7 +96,7 @@ internal static class MinimumDeletionsToMakeAlternatingSubstringSolution
         return edges;
     }
 
-    private static void Flip(FenwickTree<int, SumOperation<int>> tree, char[] chars, int index)
+    private static void Flip(FenwickTree<int, Addition<int>> tree, char[] chars, int index)
     {
         var oldLeftEdge = index > 0 ? EdgeValue(chars[index - 1], chars[index]) : 0;
         var hasRightNeighbor = index < chars.Length - 1;

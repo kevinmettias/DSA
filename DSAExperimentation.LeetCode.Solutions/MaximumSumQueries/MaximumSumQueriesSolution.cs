@@ -1,7 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
 
-using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<long, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<long>>;
+using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<long, DSAExperimentation.Domain.Mathematics.Algebra.Maximum<long>>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumSumQueries;
 
@@ -51,10 +51,10 @@ internal static class MaximumSumQueriesSolution
     // LowerBound turns a threshold that need not be a member into a rank), then sweep
     // indices and queries together in decreasing nums1/x order with this repo's own
     // MergeSort. Every index whose nums1 has just become >= the current query's x is
-    // folded into a SegmentTree<long, MaxOperation<long>> keyed by its nums2's compressed
+    // folded into a SegmentTree<long, Maximum<long>> keyed by its nums2's compressed
     // rank (point-update = the best sum seen at that rank so far); a query then answers
     // "max sum among nums2 >= y" with one range-max query over the compressed-rank suffix
-    // [LowerBound(y), lastRank]. Unset ranks carry MaxOperation's own identity
+    // [LowerBound(y), lastRank]. Unset ranks carry Maximum's own identity
     // (long.MinValue) as the "no candidate" sentinel, which is what makes -1 fall out with
     // no extra bookkeeping. O((n + q) log n) in total, against the baseline's O(n*q).
     public static int[] MaxSumsBySweepWithSegmentTree(int[] nums1, int[] nums2, int[][] queries)

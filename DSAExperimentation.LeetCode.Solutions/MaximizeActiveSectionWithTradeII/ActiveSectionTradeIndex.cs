@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximizeActiveSectionWithTradeII;
@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeActiveSectionWithTradeII
 // the query list never change, only which spots a trade touches), every maximal
 // run of '0's in text, a per-position pointer to "the most recent zero-run
 // starting at or before this position", and a
-// SegmentTree<int, MaxOperation<int>> over the pairwise sum of every two
+// SegmentTree<int, Maximum<int>> over the pairwise sum of every two
 // CONSECUTIVE zero-runs' lengths - the score for "sacrifice the single
 // one-run between these two zero-runs, merging them into one".
 //
@@ -24,7 +24,7 @@ internal sealed class ActiveSectionTradeIndex
     private readonly string _text;
     private readonly (int Start, int Length)[] _zeroRuns;
     private readonly int[] _zeroRunAtOrBefore;
-    private readonly SegmentTree<int, MaxOperation<int>>? _adjacentPairMax;
+    private readonly SegmentTree<int, Maximum<int>>? _adjacentPairMax;
 
     public int ActiveOnes { get; }
 
@@ -72,7 +72,7 @@ internal sealed class ActiveSectionTradeIndex
     // The score for sacrificing the single one-run between each pair of CONSECUTIVE
     // zero-runs, as a range-maximum tree over those pairwise sums - or null when
     // text holds fewer than two runs, leaving no pair to merge.
-    private static SegmentTree<int, MaxOperation<int>>? BuildAdjacentPairMax((int Start, int Length)[] zeroRuns)
+    private static SegmentTree<int, Maximum<int>>? BuildAdjacentPairMax((int Start, int Length)[] zeroRuns)
     {
         if (zeroRuns.Length < 2)
         {
@@ -86,7 +86,7 @@ internal sealed class ActiveSectionTradeIndex
             adjacentPairSums[i] = zeroRuns[i].Length + zeroRuns[i + 1].Length;
         }
 
-        return new SegmentTree<int, MaxOperation<int>>(adjacentPairSums);
+        return new SegmentTree<int, Maximum<int>>(adjacentPairSums);
     }
 
     // The best achievable active-section count after at most one trade

@@ -1,11 +1,11 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 
 namespace DSAExperimentation.DataStructures.FenwickTree;
 
 // Add/PrefixQuery/Query are O(log n) - depends on FenwickArray<Element>.Get/Set being O(1). See
 // ARCHITECTURE.md §8.
 //
-// TOperation must be an abelian group, not merely associative - see IGroupOperation<Element>'s own doc
+// TOperation must be an abelian group, not merely associative - see IAbelianGroup<Element>'s own doc
 // comment for why RangeQuery's use of Invert forces this. Unenforced precondition law, same shape
 // as BinarySearch's sortedness: an operation with no real inverse still compiles and runs, just
 // returns a silently wrong Query result.
@@ -20,7 +20,7 @@ namespace DSAExperimentation.DataStructures.FenwickTree;
 /// A Fenwick tree over an abelian group operation that adds to one element or combines a range in O(log n).
 /// </summary>
 public sealed class FenwickTree<Element, TOperation>
-    where TOperation : struct, IGroupOperation<Element>
+    where TOperation : struct, IAbelianGroup<Element>
 {
     private const string IndexOutOfBoundsMessage = "Index was outside the bounds of the Fenwick tree.";
     private const string RangeOutOfBoundsMessage = "Range was outside the bounds of the Fenwick tree, or left exceeded right.";

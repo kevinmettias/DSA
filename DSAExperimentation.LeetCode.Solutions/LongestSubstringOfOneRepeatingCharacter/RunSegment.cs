@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestSubstringOfOneRepeatingCh
 internal readonly record struct RunSegment(char Left, char Right, int Len, int PrefixLen, int SuffixLen, int MaxLen)
 {
     // The neutral element: an empty range contributes nothing to either side it is
-    // combined with, the same shape MaxOperation<Element>.Identity has.
+    // combined with, the same shape Maximum<Element>.Identity has.
     public static RunSegment Empty => new('\0', '\0', Len: 0, PrefixLen: 0, SuffixLen: 0, MaxLen: 0);
 
     // A single character is a range of length one whose prefix run, suffix run and

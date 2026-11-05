@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.RangeSumQueryMutable;
 // The seam between RangeSumQueryMutableSolution's two NumArray implementations.
 // CreateByArrayRescan clones the array and rescans it per SumRange;
 // CreateBySegmentTreeQuery builds one DataStructures.SegmentTree<int,
-// SumOperation<int>> and answers every later Update and SumRange from it.
+// Addition<int>> and answers every later Update and SumRange from it.
 //
 // The two arms agree on any single call, so nothing in a one-shot test can tell
 // them apart - what the segment tree has to get right is that Update replaces a

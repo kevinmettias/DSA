@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.ReversePairs;
@@ -9,7 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReversePairs;
 // The naive strategy is the textbook O(n^2) pairwise scan; the composed strategy
 // coordinate-compresses nums (as long, since 2*value can overflow a 32-bit int) via
 // CompressedCoordinates and its RankOf/UpperBound, then sweeps
-// left-to-right through a FenwickTree<int, SumOperation<int>> (this repo's own Binary
+// left-to-right through a FenwickTree<int, Addition<int>> (this repo's own Binary
 // Indexed Tree) - before inserting nums[j]'s own rank, UpperBound locates the first
 // rank strictly greater than 2*nums[j], and a single Query over [rank, end] counts
 // every earlier nums[i] that forms a reverse pair with it. Same coordinate-
@@ -45,7 +45,7 @@ internal static class ReversePairsSolution
     public static int CountByFenwickTreeSweep(int[] nums)
     {
         var coordinates = new CompressedCoordinates<long>(nums.Select(value => (long)value).ToArray());
-        var tree = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
+        var tree = new FenwickTree<int, Addition<int>>(coordinates.Count);
         var count = 0;
 
         foreach (var value in nums)

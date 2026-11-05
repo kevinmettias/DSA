@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.DataStructures.PrefixSums;
@@ -13,19 +13,19 @@ namespace DSAExperimentation.DataStructures.PrefixSums;
 // same name is exactly the off-by-one this type removes. "Before" is in the name so the boundary is read
 // off the call site, and Query is inclusive at both ends like every range structure beside it.
 //
-// TOperation must be a group, not a monoid, for the same reason as FenwickTree's (see IGroupOperation):
-// a range is a difference of two totals. SumOperation and XorOperation are the two that ship. The
+// TOperation must be a group, not a monoid, for the same reason as FenwickTree's (see IAbelianGroup):
+// a range is a difference of two totals. Addition and BitwiseXor are the two that ship. The
 // element type is the caller's choice of overflow range, not this type's: an int[] whose sums need long
-// is widened by the caller before construction, as choosing SumOperation<long> already is.
+// is widened by the caller before construction, as choosing Addition<long> already is.
 //
 // Totals hands the Count + 1 running totals to BinarySearch as an ArraySequence view, composing
 // Sequence's public type rather than implementing its contract (§9.4's DynamicArraySequence shape).
 // They are sorted only when every term moves the total one way - non-negative addends under
-// SumOperation, never in general under XorOperation - a precondition that is the caller's, as
+// Addition, never in general under BitwiseXor - a precondition that is the caller's, as
 // BinarySearch's sortedness always is.
 /// <summary>Running totals of a fixed sequence under a group operation, for O(1) range queries.</summary>
 public sealed class PrefixSums<Element, TOperation>
-    where TOperation : struct, IGroupOperation<Element>
+    where TOperation : struct, IAbelianGroup<Element>
 {
     private const string EndOutOfBoundsMessage = "end was outside [0, Count] for these prefix sums.";
     private const string RangeOutOfBoundsMessage = "Range was outside the bounds of these prefix sums, or left exceeded right.";

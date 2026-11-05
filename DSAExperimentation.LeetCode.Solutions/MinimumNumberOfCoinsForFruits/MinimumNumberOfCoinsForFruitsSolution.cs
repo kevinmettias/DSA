@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfCoinsForFruits;
@@ -40,17 +40,17 @@ internal static class MinimumNumberOfCoinsForFruitsSolution
     }
 
     // Same recurrence, but dp[i+1 .. min(n, 2i)+1]'s minimum is one O(log n) query
-    // against this repo's own SegmentTree<int, MinOperation<int>> instead of an
+    // against this repo's own SegmentTree<int, Minimum<int>> instead of an
     // O(window) rescan. dp is filled right-to-left, so every index a query touches
     // has already been written by the time it is read.
     public static int MinCoinsBySegmentTreeDp(int[] prices)
     {
         var n = prices.Length;
         var initial = new int[n + 2];
-        Array.Fill(initial, MinOperation<int>.Identity);
+        Array.Fill(initial, Minimum<int>.Identity);
         initial[n + 1] = 0;
 
-        var tree = new SegmentTree<int, MinOperation<int>>(initial);
+        var tree = new SegmentTree<int, Minimum<int>>(initial);
 
         for (var i = n; i >= 1; i--)
         {

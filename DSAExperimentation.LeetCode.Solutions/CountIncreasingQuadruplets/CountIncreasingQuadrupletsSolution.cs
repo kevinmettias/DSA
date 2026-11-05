@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountIncreasingQuadruplets;
@@ -67,7 +67,7 @@ internal static class CountIncreasingQuadrupletsSolution
     // threshold nums[pivotIndex] is fixed for the whole inner j-loop, so a running counter
     // of the j's already passed with nums[j] < nums[pivotIndex] is exact. The second factor
     // is a rank query over the suffix, which is what this repo's own
-    // FenwickTree<int, SumOperation<int>> - a Binary Indexed Tree of the values
+    // FenwickTree<int, Addition<int>> - a Binary Indexed Tree of the values
     // already admitted from the right - answers in O(log n): value v is stored at
     // index v-1, so Query(nums[j], n-1) counts the admitted values strictly
     // greater than nums[j] (and nums[j] == n has nothing above it). O(n^2 log n),
@@ -77,7 +77,7 @@ internal static class CountIncreasingQuadrupletsSolution
     public static long CountQuadrupletsByFenwickTreeSweep(int[] nums)
     {
         var n = nums.Length;
-        var suffixGreaterCounts = new FenwickTree<int, SumOperation<int>>(n);
+        var suffixGreaterCounts = new FenwickTree<int, Addition<int>>(n);
         var total = 0L;
 
         for (var k = n - 1; k >= 0; k--)
@@ -92,7 +92,7 @@ internal static class CountIncreasingQuadrupletsSolution
     // Every j < pivotIndex inverting with nums[pivotIndex] contributes the j's seen so far
     // below nums[pivotIndex] times the suffix values above nums[j] admitted by the Fenwick tree.
     private static long CountPivotPairsAt(
-        int[] nums, int pivotIndex, FenwickTree<int, SumOperation<int>> suffixGreaterCounts)
+        int[] nums, int pivotIndex, FenwickTree<int, Addition<int>> suffixGreaterCounts)
     {
         var n = nums.Length;
         var leftSmallerCount = 0;

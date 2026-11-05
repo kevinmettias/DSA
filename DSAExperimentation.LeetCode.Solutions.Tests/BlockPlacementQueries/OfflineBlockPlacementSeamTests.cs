@@ -7,7 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.BlockPlacementQueries;
 // query. CanPlaceBySegmentTreeMerge answers the same queries by walking them in
 // REVERSE, so every "place an obstacle" becomes a deactivation, and composes three
 // DataStructures primitives to do it: a point-update SegmentTree<long,
-// MaxOperation<long>> holding each gap indexed by its right-hand obstacle, plus
+// Maximum<long>> holding each gap indexed by its right-hand obstacle, plus
 // NearestActiveObstacle, which merges each deactivated coordinate into its
 // neighbour in two DisjointSets and reads the nearest obstacle off Find.
 //
@@ -29,7 +29,7 @@ public sealed partial class OfflineBlockPlacementSeamTests
 
     // The smallest coordinate the problem allows, where the permanent obstacle at 0
     // is the only one: an empty gap tree has to answer a range query over an index
-    // that holds MaxOperation's identity and nothing else.
+    // that holds Maximum's identity and nothing else.
     [Fact]
     public void CanPlace_AtTheSmallestCoordinate_MatchesLinearScan()
     {

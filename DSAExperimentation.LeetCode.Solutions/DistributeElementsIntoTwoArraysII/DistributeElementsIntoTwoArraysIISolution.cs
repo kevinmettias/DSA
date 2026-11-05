@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.DistributeElementsIntoTwoArraysII;
@@ -58,7 +58,7 @@ internal static class DistributeElementsIntoTwoArraysIISolution
 
     // Composed: coordinate-compress nums via CompressedCoordinates (the same
     // idiom CountOfSmallerNumbersAfterSelfSolution uses for a Fenwick-tree sweep),
-    // then keep one FenwickTree<int, SumOperation<int>> per array recording which
+    // then keep one FenwickTree<int, Addition<int>> per array recording which
     // ranks it has taken so far. greaterCount(x) is the array's own element count
     // minus PrefixQuery(rank(x)) - every element at or below x's rank - so what is
     // left over is exactly the count strictly greater than x. O(n log n)
@@ -67,8 +67,8 @@ internal static class DistributeElementsIntoTwoArraysIISolution
     {
         var coordinates = new CompressedCoordinates<int>(nums);
 
-        var tree1 = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
-        var tree2 = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
+        var tree1 = new FenwickTree<int, Addition<int>>(coordinates.Count);
+        var tree2 = new FenwickTree<int, Addition<int>>(coordinates.Count);
         var arr1 = new List<int> { nums[0] };
         var arr2 = new List<int> { nums[1] };
 
@@ -95,8 +95,8 @@ internal static class DistributeElementsIntoTwoArraysIISolution
     private static void PlaceByGreaterCount(
         CompressedCoordinates<int> coordinates,
         int value,
-        (List<int> Values, FenwickTree<int, SumOperation<int>> Tree) first,
-        (List<int> Values, FenwickTree<int, SumOperation<int>> Tree) second)
+        (List<int> Values, FenwickTree<int, Addition<int>> Tree) first,
+        (List<int> Values, FenwickTree<int, Addition<int>> Tree) second)
     {
         var rank = coordinates.RankOf(value);
         var greater1 = first.Values.Count - first.Tree.PrefixQuery(rank);

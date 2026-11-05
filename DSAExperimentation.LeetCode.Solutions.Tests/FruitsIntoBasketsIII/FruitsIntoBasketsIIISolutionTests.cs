@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.FruitsIntoBasketsIII;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.FruitsIntoBasketsIII;
 
 // Harness only. The segment tree itself is this repo's own
-// SegmentTree<int, MaxOperation<int>>; both search strategies are
+// SegmentTree<int, Maximum<int>>; both search strategies are
 // FruitsIntoBasketsIIISolution's - this file just pins them to LeetCode's
 // published examples (identical to LC 3477's, at the harder n <= 1e5 bound)
 // plus a couple of hand-verified edge cases.

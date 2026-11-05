@@ -1,7 +1,7 @@
 using System.Numerics;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using RootMaskTree = DSAExperimentation.DataStructures.FenwickTree.FenwickTree<
-    int, DSAExperimentation.DataStructures.ElementAlgebra.XorOperation<int>>;
+    int, DSAExperimentation.Domain.Mathematics.Algebra.BitwiseXor<int>>;
 
 namespace DSAExperimentation.LeetCode.Solutions.PalindromicPathQueriesInATree;
 
@@ -114,13 +114,13 @@ internal static class PalindromicPathQueriesInATreeSolution
     // parity mask of the path from the root down to it - changes, on an update at v,
     // by the same old-letter-XOR-new-letter delta at every position in v's subtree
     // and nowhere else: a range update with point reads. This repo's FenwickTree<int,
-    // XorOperation<int>> holds the root masks as a difference array: toggling a
+    // BitwiseXor<int>> holds the root masks as a difference array: toggling a
     // subtree is two point Adds, at its first position and one past its last, and a
     // node's root mask is the PrefixQuery at its position. XOR is a group, each mask
     // its own inverse, which is what FenwickTree asks of its operation. Queries read
     // single positions only, so the plain FenwickTree over differences is enough:
-    // RangeFenwickTree's second tree serves range reads, and its IScaledGroupOperation
-    // is one XorOperation does not implement.
+    // RangeFenwickTree's second tree serves range reads, and its IIntegerModule
+    // is one BitwiseXor does not implement.
     //
     // A path's mask is then rootMask(u) XOR rootMask(v) XOR bit(letter at lca): every
     // node from the root down to the lca sits on both root paths and cancels, the

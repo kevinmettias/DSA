@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.BookingConcertTicketsInGroups;
@@ -102,7 +102,7 @@ internal static class BookingConcertTicketsInGroupsSolution
     }
 
     // This repo's own SegmentTree over the same per-row remaining-seat values, once
-    // under MaxOperation<int> and once under SumOperation<int>. The max tree turns
+    // under Maximum<int> and once under Addition<int>. The max tree turns
     // "the leftmost row in [fromRow, maxRow] with at least threshold free seats"
     // into a binary search on the answer: a prefix max over a growing window is
     // monotonically non-decreasing, so PrefixHasCapacity below is
@@ -116,16 +116,16 @@ internal static class BookingConcertTicketsInGroupsSolution
         private const int OneSeat = 1;
 
         private readonly int _seatsPerRow;
-        private readonly SegmentTree<int, MaxOperation<int>> _maxAvailable;
-        private readonly SegmentTree<int, SumOperation<int>> _sumAvailable;
+        private readonly SegmentTree<int, Maximum<int>> _maxAvailable;
+        private readonly SegmentTree<int, Addition<int>> _sumAvailable;
 
         public BookMyShowBySegmentTreeBinarySearch(int rowCount, int seatsPerRow)
         {
             _seatsPerRow = seatsPerRow;
             var initial = new int[rowCount];
             Array.Fill(initial, seatsPerRow);
-            _maxAvailable = new SegmentTree<int, MaxOperation<int>>(initial);
-            _sumAvailable = new SegmentTree<int, SumOperation<int>>(initial);
+            _maxAvailable = new SegmentTree<int, Maximum<int>>(initial);
+            _sumAvailable = new SegmentTree<int, Addition<int>>(initial);
         }
 
         public int[] Gather(int groupSize, int maxRow)
@@ -200,7 +200,7 @@ internal static class BookingConcertTicketsInGroupsSolution
         // MonotonePredicateSearch assumes but never checks. A rule for this problem
         // alone: the predicate is BookMyShow's own seating rule.
         private readonly struct PrefixHasCapacity(
-            SegmentTree<int, MaxOperation<int>> availableSeats, int fromRow, int threshold)
+            SegmentTree<int, Maximum<int>> availableSeats, int fromRow, int threshold)
             : IMonotonePredicate<int>
         {
             public bool IsSatisfiedBy(int row) => availableSeats.Query(fromRow, row) >= threshold;

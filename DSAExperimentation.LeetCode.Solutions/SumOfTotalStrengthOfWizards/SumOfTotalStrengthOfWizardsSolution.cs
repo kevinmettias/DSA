@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.PrefixSums;
 
 namespace DSAExperimentation.LeetCode.Solutions.SumOfTotalStrengthOfWizards;
@@ -62,7 +62,7 @@ internal static class SumOfTotalStrengthOfWizardsSolution
         var previousSmaller = NearestBoundary.SmallerToTheLeft(strength, NoSmallerElementToTheLeft);
         var nextSmallerOrEqual = NearestBoundary.SmallerOrEqualToTheRight(strength, strength.Length);
         var prefix = ComputePrefixSums(strength);
-        var prefixOfPrefix = new PrefixSums<long, SumOperation<long>>(prefix);
+        var prefixOfPrefix = new PrefixSums<long, Addition<long>>(prefix);
 
         return SumWeightedContributions(strength, previousSmaller, nextSmallerOrEqual, prefixOfPrefix);
     }
@@ -82,7 +82,7 @@ internal static class SumOfTotalStrengthOfWizardsSolution
     }
 
     private static int SumWeightedContributions(
-        int[] strength, int[] previousSmaller, int[] nextSmallerOrEqual, PrefixSums<long, SumOperation<long>> prefixOfPrefix)
+        int[] strength, int[] previousSmaller, int[] nextSmallerOrEqual, PrefixSums<long, Addition<long>> prefixOfPrefix)
     {
         long total = 0;
 

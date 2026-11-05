@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace DSAExperimentation.DataStructures.ElementAlgebra;
+namespace DSAExperimentation.Domain.Mathematics.Algebra;
 
 // Identity is Element.MaxValue, not a caller-supplied sentinel: Combine(MaxValue, x) must always
 // resolve to x for a "no overlap" query branch to be invisible to the result, the same role
@@ -8,7 +8,7 @@ namespace DSAExperimentation.DataStructures.ElementAlgebra;
 /// <summary>
 /// Combines elements by keeping the smaller, or the left one on a tie, with <c>Element.MaxValue</c> as the identity.
 /// </summary>
-public readonly struct MinOperation<Element> : ICombineOperation<Element>
+public readonly struct Minimum<Element> : IMonoid<Element>
     where Element : IComparable<Element>, IMinMaxValue<Element>
 {
     public static Element Identity => Element.MaxValue;

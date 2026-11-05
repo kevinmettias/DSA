@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountGoodTripletsInAnArray;
@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountGoodTripletsInAnArray;
 // how many earlier positions hold a smaller a-value by how many later positions
 // hold a larger one, and sum those products. They differ only in how the two
 // per-position counts are obtained - direct inner loops, or two
-// FenwickTree<int, SumOperation<int>> sweeps (this repo's own Binary Indexed
+// FenwickTree<int, Addition<int>> sweeps (this repo's own Binary Indexed
 // Tree), the same coordinate-free counting shape
 // CountOfSmallerNumbersAfterSelfSolution uses for LC 315.
 [LeetCodeQuestion("count-good-triplets-in-an-array", LeetCodeAnswerOrder.AsWritten)]
@@ -79,7 +79,7 @@ internal static class CountGoodTripletsInAnArraySolution
     {
         var n = ranks.Length;
         var leftSmallerCount = new int[n];
-        var leftTree = new FenwickTree<int, SumOperation<int>>(n);
+        var leftTree = new FenwickTree<int, Addition<int>>(n);
 
         for (var i = 0; i < n; i++)
         {
@@ -95,7 +95,7 @@ internal static class CountGoodTripletsInAnArraySolution
     {
         var n = ranks.Length;
         var rightLargerCount = new int[n];
-        var rightTree = new FenwickTree<int, SumOperation<int>>(n);
+        var rightTree = new FenwickTree<int, Addition<int>>(n);
 
         for (var i = n - 1; i >= 0; i--)
         {

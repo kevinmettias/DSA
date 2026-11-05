@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.PrefixSums;
 
 namespace DSAExperimentation.LeetCode.Solutions.StatisticsFromALargeSample;
@@ -114,7 +114,7 @@ internal static class StatisticsFromALargeSampleSolution
             accumulator.Accumulate(value, count[value]);
         }
 
-        var cumulative = new PrefixSums<long, SumOperation<long>>(count);
+        var cumulative = new PrefixSums<long, Addition<long>>(count);
         var mean = (double)accumulator.WeightedSum / accumulator.Total;
         var median = MedianFromCumulative(cumulative, accumulator.Total);
 
@@ -162,7 +162,7 @@ internal static class StatisticsFromALargeSampleSolution
         }
     }
 
-    private static double MedianFromCumulative(PrefixSums<long, SumOperation<long>> cumulative, long total)
+    private static double MedianFromCumulative(PrefixSums<long, Addition<long>> cumulative, long total)
     {
         if (total % MedianParityDivisor == 1)
         {
@@ -179,6 +179,6 @@ internal static class StatisticsFromALargeSampleSolution
     // sorted position p" (1-based) is i for the first end i + 1 whose total
     // reaches p - LowerBound's definition exactly, one slot along because
     // TotalBefore(0) is 0 and never reaches a position p >= 1.
-    private static int ValueAtSortedPosition(PrefixSums<long, SumOperation<long>> cumulative, long position)
+    private static int ValueAtSortedPosition(PrefixSums<long, Addition<long>> cumulative, long position)
         => BinarySearch.LowerBound(cumulative.Totals, position) - 1;
 }

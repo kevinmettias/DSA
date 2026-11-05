@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.PrefixSums;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumSubarrayMinProduct;
@@ -53,7 +53,7 @@ internal static class MaximumSubarrayMinProductSolution
     {
         // Both sentinels are one step outside the array, so the span between them,
         // exclusive at both ends, is the whole array when nothing blocks.
-        var prefixSums = new PrefixSums<long, SumOperation<long>>(nums.Select(value => (long)value).ToArray());
+        var prefixSums = new PrefixSums<long, Addition<long>>(nums.Select(value => (long)value).ToArray());
         var previousSmaller = NearestBoundary.SmallerToTheLeft(nums, NoSmallerElementToTheLeft);
         var nextSmaller = NearestBoundary.SmallerToTheRight(nums, nums.Length);
 

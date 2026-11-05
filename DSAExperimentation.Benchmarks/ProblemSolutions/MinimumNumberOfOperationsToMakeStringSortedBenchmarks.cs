@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // They accumulate the identical modular permutation-rank sum and differ only in how
 // the "how many remaining letters are smaller" query is answered - a linear O(26)
 // scan of the frequency array against this repo's FenwickTree<int,
-// SumOperation<int>> - so that query is the only thing being compared. The random
+// Addition<int>> - so that query is the only thing being compared. The random
 // string is built in [GlobalSetup] because sizing and seeding a workload is a
 // measurement decision; it is already LeetCode's own input shape, so neither arm
 // needs a hoisted overload.

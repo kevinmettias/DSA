@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.DataStructures.RangeFenwickTree;
@@ -8,7 +8,7 @@ namespace DSAExperimentation.DataStructures.RangeFenwickTree;
 // Collections/Deque/Deque.cs, itself Operations-composing-Operations rather than raw
 // Representation. RangeAdd/PrefixQuery/Query are O(log n) - depends on FenwickArray<Element>.Get/Set
 // being O(1) (see ARCHITECTURE.md §8) and on TOperation.Scale being O(1) or cheap (see
-// IScaledGroupOperation<Element>'s own doc comment).
+// IIntegerModule<Element>'s own doc comment).
 //
 // Derivation, 0-indexed inclusive ranges: RangeAdd(l, r, val) posts val into B1's difference
 // array at position l (and -val at r+1, if in bounds) the same way a plain difference-array
@@ -23,7 +23,7 @@ namespace DSAExperimentation.DataStructures.RangeFenwickTree;
 // Query(i, i) - no separate method needed.
 /// <summary>A fixed-length sequence with range-add updates and range queries, each in O(log n).</summary>
 public sealed class RangeFenwickTree<Element, TOperation>
-    where TOperation : struct, IScaledGroupOperation<Element>
+    where TOperation : struct, IIntegerModule<Element>
 {
     private const string IndexOutOfBoundsMessage = "Index was outside the bounds of the range Fenwick tree.";
     private const string RangeOutOfBoundsMessage = "Range was outside the bounds of the range Fenwick tree, or left exceeded right.";

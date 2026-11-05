@@ -1,9 +1,9 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 
 namespace DSAExperimentation.DataStructures.LazySegmentTree;
 
 // The algebra lazy propagation needs: the element monoid every range structure shares
-// (ElementAlgebra.ICombineOperation - its Identity and Combine), refined with an update action that
+// (ElementAlgebra.IMonoid - its Identity and Combine), refined with an update action that
 // only this structure has. That refinement is structure-local by design: a member one structure needs
 // stays out of the shared chain (ARCHITECTURE.md §11.4), so SegmentTree and FenwickTree never see it.
 //
@@ -19,7 +19,7 @@ namespace DSAExperimentation.DataStructures.LazySegmentTree;
 /// <summary>
 /// The algebra LazySegmentTree runs on: an element monoid plus updates it can defer, compose and apply.
 /// </summary>
-public interface IRangeUpdateOperation<Element, TUpdate> : ICombineOperation<Element>
+public interface IRangeUpdateOperation<Element, TUpdate> : IMonoid<Element>
 {
     /// <summary>The update meaning nothing is pending, distinct from every update a caller applies.</summary>
     static abstract TUpdate NoUpdate { get; }

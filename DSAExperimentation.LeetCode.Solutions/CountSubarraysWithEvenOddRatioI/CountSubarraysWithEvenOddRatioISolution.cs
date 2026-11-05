@@ -27,7 +27,7 @@ internal static class CountSubarraysWithEvenOddRatioISolution
         (int)CountSubarraysWithEvenOddRatioIISolution.CountByBruteForce(nums, ratioNumerator, ratioDenominator);
 
     // LC 4013's own sweep - build the +a/-b weighted prefix sums, coordinate-compress
-    // them, then query this repo's FenwickTree<int, SumOperation<int>> for how many
+    // them, then query this repo's FenwickTree<int, Addition<int>> for how many
     // earlier prefixes are <= prefix[R] before inserting prefix[R] itself - kept there
     // because its bound is the one that needs the count to stay a long. At n <= 1000 the
     // total cannot leave int range, so narrowing that arm is the whole difference between

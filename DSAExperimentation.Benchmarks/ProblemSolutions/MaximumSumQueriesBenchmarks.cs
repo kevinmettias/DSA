@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MaximumSumQueriesSolutionTests proves correct. BruteForceScan answers each query
 // independently by rescanning every index - O(n*q) - while SweepWithSegmentTree
 // MergeSorts indices and queries by descending nums1/x, admits indices into a
-// SegmentTree<long, MaxOperation<long>> keyed by nums2's coordinate-compressed rank as
+// SegmentTree<long, Maximum<long>> keyed by nums2's coordinate-compressed rank as
 // their nums1 threshold is met, and answers each query with one range-max query over
 // CompressedCoordinates.LowerBound(y)..lastRank - O((n + q) log n).
 //

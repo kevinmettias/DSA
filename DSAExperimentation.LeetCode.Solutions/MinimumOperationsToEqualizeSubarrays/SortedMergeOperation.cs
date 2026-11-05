@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumOperationsToEqualizeSubarrays;
 
@@ -9,7 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumOperationsToEqualizeSubar
 // because Combine has to return a brand-new Element per SegmentTree's own
 // contract, not mutate a shared IIndexedSequence in place the way MergeSort's
 // Merge does.
-internal readonly struct SortedMergeOperation : ICombineOperation<int[]>
+internal readonly struct SortedMergeOperation : IMonoid<int[]>
 {
     public static int[] Identity => [];
 

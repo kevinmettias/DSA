@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 
 namespace DSAExperimentation.DataStructures.SegmentTree;
 
@@ -11,7 +11,7 @@ namespace DSAExperimentation.DataStructures.SegmentTree;
 // carried their own copy of this body and a repo-wide structural-duplication check flagged the
 // pair. Free-standing rather than a method on SegmentTreeArray<Element>: that type's own doc
 // comment scopes it to a pure O(1) Get/Set Representation, and a recursion that consults
-// ICombineOperation is not the array's business (ARCHITECTURE.md §5 step 3, §17.6's tier split
+// IMonoid is not the array's business (ARCHITECTURE.md §5 step 3, §17.6's tier split
 // between a Representation and the Algorithm that populates it).
 internal static class SegmentTreeBuild
 {
@@ -22,7 +22,7 @@ internal static class SegmentTreeBuild
         SegmentTreeArray<Element> values,
         SegmentRange range,
         IReadOnlyList<Element> initial)
-        where TOperation : struct, ICombineOperation<Element>
+        where TOperation : struct, IMonoid<Element>
     {
         if (range.Start == range.End)
         {

@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountNumberOfTeams;
@@ -59,7 +59,7 @@ internal static class CountNumberOfTeamsSolution
 
     // Each of the four counts comes from a coordinate-compressed sweep: rank a
     // rating via the CompressedCoordinates' LowerBound/UpperBound, tally it in a
-    // FenwickTree<int, SumOperation<int>> (this repo's own Binary Indexed Tree),
+    // FenwickTree<int, Addition<int>> (this repo's own Binary Indexed Tree),
     // and read the prefix sums back out. The same rank-then-Fenwick-sweep shape
     // CountOfSmallerNumbersAfterSelfSolution uses, run once left-to-right and once
     // right-to-left so every index learns how many soldiers on each side rank below
@@ -96,7 +96,7 @@ internal static class CountNumberOfTeamsSolution
         var n = rating.Length;
         var less = new int[n];
         var greater = new int[n];
-        var tree = new FenwickTree<int, SumOperation<int>>(coordinates.Count);
+        var tree = new FenwickTree<int, Addition<int>>(coordinates.Count);
         var seenSoFar = 0;
 
         for (var step = 0; step < n; step++)

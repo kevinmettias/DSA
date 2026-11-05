@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.Sequence;
 
@@ -16,7 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithMajorityElemen
 // into "the mapped subarray sums positive", and with prefix[0..n] the running
 // sum, subarray (i, j] sums positive iff prefix[j] > prefix[i]. Coordinate-
 // compressing prefix and sweeping it left to right through a FenwickTree<int,
-// SumOperation<int>> counts, for each j, how many earlier prefix[i] are strictly
+// Addition<int>> counts, for each j, how many earlier prefix[i] are strictly
 // smaller - the same one-sided coordinate-compression-plus-Fenwick-sweep
 // CountOfSmallerNumbersAfterSelfSolutionTests already uses for LC 315, in O(n log n).
 [LeetCodeQuestion("count-subarrays-with-majority-element-ii", LeetCodeAnswerOrder.AsWritten)]
@@ -59,7 +59,7 @@ internal static class CountSubarraysWithMajorityElementIISolution
 
         var sortedDistinct = prefix.Distinct().OrderBy(value => value).ToArray();
         var sequence = new ArraySequence<long>(sortedDistinct);
-        var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
+        var tree = new FenwickTree<int, Addition<int>>(sortedDistinct.Length);
         var count = 0L;
 
         foreach (var prefixSum in prefix)

@@ -1,6 +1,6 @@
 using System.Numerics;
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.Sequence;
 
@@ -168,8 +168,8 @@ internal static class PermutationsIVSolution
         var evenCount = permutationLength / 2;
         var pools = (
             Factorial: factorial,
-            OddPresence: new FenwickTree<int, SumOperation<int>>(Enumerable.Repeat(1, oddCount).ToList()),
-            EvenPresence: new FenwickTree<int, SumOperation<int>>(Enumerable.Repeat(1, evenCount).ToList()));
+            OddPresence: new FenwickTree<int, Addition<int>>(Enumerable.Repeat(1, oddCount).ToList()),
+            EvenPresence: new FenwickTree<int, Addition<int>>(Enumerable.Repeat(1, evenCount).ToList()));
         var cursor = (
             RemainingRank: targetRank - 1,
             OddRemaining: oddCount,
@@ -189,8 +189,8 @@ internal static class PermutationsIVSolution
 
     private static (int Value, (long RemainingRank, int OddRemaining, int EvenRemaining, bool? PreviousWasOdd) Cursor)
         TakeFenwickStep(
-            (long[] Factorial, FenwickTree<int, SumOperation<int>> OddPresence,
-                FenwickTree<int, SumOperation<int>> EvenPresence) pools,
+            (long[] Factorial, FenwickTree<int, Addition<int>> OddPresence,
+                FenwickTree<int, Addition<int>> EvenPresence) pools,
             (long RemainingRank, int OddRemaining, int EvenRemaining, bool? PreviousWasOdd) cursor,
             int permutationLength, int position)
     {
@@ -221,8 +221,8 @@ internal static class PermutationsIVSolution
     // decides which pool loses it.
     private static (int Value, (long RemainingRank, int OddRemaining, int EvenRemaining, bool? PreviousWasOdd) Cursor)
         TakeFenwickOpener(
-            (long[] Factorial, FenwickTree<int, SumOperation<int>> OddPresence,
-                FenwickTree<int, SumOperation<int>> EvenPresence) pools,
+            (long[] Factorial, FenwickTree<int, Addition<int>> OddPresence,
+                FenwickTree<int, Addition<int>> EvenPresence) pools,
             (long RemainingRank, int OddRemaining, int EvenRemaining, bool? PreviousWasOdd) cursor)
     {
         var blockSize = SaturatingMultiply(
@@ -255,7 +255,7 @@ internal static class PermutationsIVSolution
     // ascending by slot) via BinarySearch.LowerBound over the tree's running
     // presence count - the first slot whose prefix count reaches rank + 1 - then
     // marks that slot absent.
-    private static int SelectAndRemove(FenwickTree<int, SumOperation<int>> presence, int rank)
+    private static int SelectAndRemove(FenwickTree<int, Addition<int>> presence, int rank)
     {
         var prefixCounts = new PresencePrefixSequence(presence);
         var slot = BinarySearch.LowerBound(prefixCounts, rank + 1);
@@ -294,7 +294,7 @@ internal static class PermutationsIVSolution
     // Presence counts are 0/1 per slot, so PrefixQuery(i) - how many of slots
     // 0..i are still present - is monotonically non-decreasing in i: exactly the
     // sorted-ascending precondition BinarySearch.LowerBound leans on.
-    private readonly struct PresencePrefixSequence(FenwickTree<int, SumOperation<int>> presence)
+    private readonly struct PresencePrefixSequence(FenwickTree<int, Addition<int>> presence)
         : IRandomAccessSequence<int>
     {
         public int Length => presence.Count;

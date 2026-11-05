@@ -1,9 +1,11 @@
-namespace DSAExperimentation.DataStructures.ElementAlgebra;
+namespace DSAExperimentation.Domain.Mathematics.Algebra;
 
 // A group with a Scale that must equal Combine-ing `value` with itself `count` times - repeated-
-// addition scalar multiplication over the group. RangeFenwickTree needs it because the two-Fenwick-
-// tree range-update/range-query trick multiplies a running combined value by an integer position
-// count.
+// addition scalar multiplication over the group. Every abelian group is a module over the integers
+// this way, which gives the contract its name; what it adds to IAbelianGroup is that the integer
+// multiple is a member of its own, held to the cost law below. RangeFenwickTree needs it because the
+// two-Fenwick-tree range-update/range-query trick multiplies a running combined value by an integer
+// position count.
 //
 // Complexity law, obligation stated here and consequence on RangeFenwickTree: Scale must be O(1) or
 // cheap - real multiplication for a numeric sum, not O(log count) repeated doubling - or the tree's
@@ -13,7 +15,7 @@ namespace DSAExperimentation.DataStructures.ElementAlgebra;
 /// <summary>
 /// A group operation that can also combine many copies of one element at once, as range-update structures require.
 /// </summary>
-public interface IScaledGroupOperation<Element> : IGroupOperation<Element>
+public interface IIntegerModule<Element> : IAbelianGroup<Element>
 {
     /// <summary>
     /// Combines a number of copies of an element, which must equal repeated Combine and cost O(1) or close to it.

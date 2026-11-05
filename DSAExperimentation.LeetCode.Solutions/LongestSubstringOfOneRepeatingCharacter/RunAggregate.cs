@@ -1,8 +1,8 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestSubstringOfOneRepeatingCharacter;
 
-// SegmentTree<Element,TOperation>'s ICombineOperation witness for LC 2213: the
+// SegmentTree<Element,TOperation>'s IMonoid witness for LC 2213: the
 // standard "runs" merge. A run only bridges the boundary when the left range's
 // rightmost character equals the right range's leftmost one; when it does, the
 // left range's trailing run and the right range's leading run join into one
@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestSubstringOfOneRepeatingCh
 // only ever depends on the two edge characters, the total length, the runs
 // touching the outer edges and the best run anywhere inside - none of which
 // depends on how the pieces were grouped.
-internal readonly struct RunAggregate : ICombineOperation<RunSegment>
+internal readonly struct RunAggregate : IMonoid<RunSegment>
 {
     public static RunSegment Identity => RunSegment.Empty;
 

@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.Sequence;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
@@ -19,7 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindingMKAverage;
 // justify itself against: a List<int> window and a full re-sort on every query.
 // CreateByFenwickOrderStatistics keeps the window in this repo's own Queue<int> for
 // FIFO eviction and mirrors it into two value-indexed
-// FenwickTree<Element, SumOperation<Element>> Binary Indexed Trees (one of counts,
+// FenwickTree<Element, Addition<Element>> Binary Indexed Trees (one of counts,
 // one of sums), so the trimmed mean is two order-statistic queries instead of a sort.
 [LeetCodeQuestion("finding-mk-average", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindingMKAverageSolution
@@ -99,8 +99,8 @@ internal static class FindingMKAverageSolution
     private sealed class FenwickOrderStatisticsMKAverage(int windowSize, int trimCount) : IMKAverage
     {
         private readonly RepoQueue _window = new();
-        private readonly FenwickTree<int, SumOperation<int>> _counts = new(FindingMKAverageConstants.MaxElementValue);
-        private readonly FenwickTree<long, SumOperation<long>> _sums = new(FindingMKAverageConstants.MaxElementValue);
+        private readonly FenwickTree<int, Addition<int>> _counts = new(FindingMKAverageConstants.MaxElementValue);
+        private readonly FenwickTree<long, Addition<long>> _sums = new(FindingMKAverageConstants.MaxElementValue);
 
         public void AddElement(int num)
         {
@@ -152,7 +152,7 @@ internal static class FindingMKAverageSolution
         // An IRandomAccessSequence<int> view over the count tree's prefix sums - the
         // same "wrap an existing structure in a witness over its own Get" idiom
         // RangeModuleSolution's StartsView and IntervalSet's IntervalEndsView use.
-        private readonly struct FenwickCountSequence(FenwickTree<int, SumOperation<int>> counts)
+        private readonly struct FenwickCountSequence(FenwickTree<int, Addition<int>> counts)
             : IRandomAccessSequence<int>
         {
             public int Length => counts.Count;

@@ -25,7 +25,7 @@ internal static class CountSubarraysWithMajorityElementISolution
         (int)CountSubarraysWithMajorityElementIISolution.CountByBruteForce(nums, target);
 
     // Composed: build prefix[0..n] from the +1/-1 mapping, coordinate-compress it, then
-    // sweep left to right through a FenwickTree<int, SumOperation<int>> (this repo's own
+    // sweep left to right through a FenwickTree<int, Addition<int>> (this repo's own
     // Binary Indexed Tree), counting - before inserting prefix[j] - how many earlier
     // prefix values were strictly smaller. Summing that count across every j is exactly
     // the number of majority subarrays. LC 3739's bound is where that sweep has to carry a

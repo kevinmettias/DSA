@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 using DSAExperimentation.LeetCode.Solutions.MaximumTotalSubarrayValueII;
 
@@ -17,8 +17,8 @@ public class MaximumTotalSubarrayValueIIBenchmarks
 
     private int[] _nums = [];
 
-    private SegmentTree<int, MaxOperation<int>> _maxTree = null!;
-    private SegmentTree<int, MinOperation<int>> _minTree = null!;
+    private SegmentTree<int, Maximum<int>> _maxTree = null!;
+    private SegmentTree<int, Minimum<int>> _minTree = null!;
     [Params(100, 500)]
     public int Size { get; set; }
 
@@ -26,8 +26,8 @@ public class MaximumTotalSubarrayValueIIBenchmarks
     public void Setup()
     {
         _nums = MaximumTotalSubarrayValueIIWorkloads.BuildNums(Size, Seed);
-        _maxTree = new SegmentTree<int, MaxOperation<int>>(_nums);
-        _minTree = new SegmentTree<int, MinOperation<int>>(_nums);
+        _maxTree = new SegmentTree<int, Maximum<int>>(_nums);
+        _minTree = new SegmentTree<int, Minimum<int>>(_nums);
     }
 
     [Benchmark(Baseline = true)]

@@ -1,11 +1,11 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 
 namespace DSAExperimentation.DataStructures.SegmentTree;
 
 // Update/Query are O(log n) - a claim that assumes SegmentTreeArray<Element>.Get/Set are O(1). See
 // ARCHITECTURE.md §8 and SegmentTreeArray.cs.
 //
-// TOperation.Combine must be associative (ICombineOperation<Element>'s own doc comment states this) -
+// TOperation.Combine must be associative (IMonoid<Element>'s own doc comment states this) -
 // an unenforced precondition law, the same shape as BinarySearch's sortedness: an operation that
 // isn't actually associative still builds and queries without error, just silently returns a
 // wrong combined value whenever the tree's own grouping (forced by its shape) differs from
@@ -16,7 +16,7 @@ namespace DSAExperimentation.DataStructures.SegmentTree;
 // range-update/range-query rather than a second method here).
 /// <summary>A fixed-length sequence with point updates and range queries, each in O(log n).</summary>
 public sealed class SegmentTree<Element, TOperation>
-    where TOperation : struct, ICombineOperation<Element>
+    where TOperation : struct, IMonoid<Element>
 {
     private const string IndexOutOfBoundsMessage = "Index was outside the bounds of the segment tree.";
     private const string RangeOutOfBoundsMessage = "Range was outside the bounds of the segment tree, or left exceeded right.";

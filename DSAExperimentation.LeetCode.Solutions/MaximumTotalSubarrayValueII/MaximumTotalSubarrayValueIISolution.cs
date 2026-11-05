@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Heap;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumTotalSubarrayValueII;
@@ -75,12 +75,12 @@ internal static class MaximumTotalSubarrayValueIISolution
     // top-k walk described above.
     public static long MaxTotalValueBySegmentTreeHeap(int[] nums, int topCount) =>
         MaxTotalValueBySegmentTreeHeap(
-            new SegmentTree<int, MaxOperation<int>>(nums),
-            new SegmentTree<int, MinOperation<int>>(nums),
+            new SegmentTree<int, Maximum<int>>(nums),
+            new SegmentTree<int, Minimum<int>>(nums),
             topCount);
 
     public static long MaxTotalValueBySegmentTreeHeap(
-        SegmentTree<int, MaxOperation<int>> maxTree, SegmentTree<int, MinOperation<int>> minTree, int topCount)
+        SegmentTree<int, Maximum<int>> maxTree, SegmentTree<int, Minimum<int>> minTree, int topCount)
     {
         var heap = new Heap<SubarrayCandidate, MaxHeapOrder<SubarrayCandidate>>();
 
@@ -98,8 +98,8 @@ internal static class MaximumTotalSubarrayValueIISolution
     // since the row is sorted in that one direction only.
     private static long SumTopK(
         Heap<SubarrayCandidate, MaxHeapOrder<SubarrayCandidate>> heap,
-        SegmentTree<int, MaxOperation<int>> maxTree,
-        SegmentTree<int, MinOperation<int>> minTree,
+        SegmentTree<int, Maximum<int>> maxTree,
+        SegmentTree<int, Minimum<int>> minTree,
         int topCount)
     {
         var total = 0L;
@@ -120,7 +120,7 @@ internal static class MaximumTotalSubarrayValueIISolution
     }
 
     private static SubarrayCandidate MakeCandidate(
-        SegmentTree<int, MaxOperation<int>> maxTree, SegmentTree<int, MinOperation<int>> minTree, int left, int right) =>
+        SegmentTree<int, Maximum<int>> maxTree, SegmentTree<int, Minimum<int>> minTree, int left, int right) =>
         new((long)maxTree.Query(left, right) - minTree.Query(left, right), left, right);
 
     // Meaningless outside this problem's lazy top-k walk, so it stays in this

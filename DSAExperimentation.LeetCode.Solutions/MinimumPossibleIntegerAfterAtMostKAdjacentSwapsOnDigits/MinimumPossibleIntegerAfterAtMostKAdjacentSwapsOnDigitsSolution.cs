@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.Domain.Mathematics.Numerals;
 using RepoIntQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
@@ -53,7 +53,7 @@ internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSol
         return bestIndex;
     }
 
-    // This repo's own FenwickTree<int, SumOperation<int>> over a 0/1 "still unplaced" array
+    // This repo's own FenwickTree<int, Addition<int>> over a 0/1 "still unplaced" array
     // answers "how many unplaced digits sit before this position" in O(log length): Add marks
     // a position placed by subtracting its 1, PrefixQuery counts what is left in front of it.
     // Per-digit occurrence order rides on this repo's own Queue<int> - FIFO, because
@@ -65,7 +65,7 @@ internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSol
         var unplacedFlags = Enumerable.Repeat(1, length).ToArray();
         var context = new PlacementContext(
             BuildPositionsByDigit(num),
-            new FenwickTree<int, SumOperation<int>>(unplacedFlags),
+            new FenwickTree<int, Addition<int>>(unplacedFlags),
             new char[length]);
         var remainingSwaps = maxSwaps;
 
@@ -151,6 +151,6 @@ internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSol
 
     private readonly record struct PlacementContext(
         RepoIntQueue[] PositionsByDigit,
-        FenwickTree<int, SumOperation<int>> StillUnplaced,
+        FenwickTree<int, Addition<int>> StillUnplaced,
         char[] Result);
 }

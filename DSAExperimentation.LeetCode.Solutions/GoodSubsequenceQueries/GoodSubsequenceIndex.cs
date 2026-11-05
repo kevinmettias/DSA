@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.NumberTheory;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.GoodSubsequenceQueries;
@@ -17,7 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.GoodSubsequenceQueries;
 // the whole array except in the one case explained on HasGoodSubsequenceByRangeQuery.
 internal sealed class GoodSubsequenceIndex(
     SegmentTree<int, GcdOperation<int>> gcdTree,
-    SegmentTree<int, SumOperation<int>> multipleCountTree,
+    SegmentTree<int, Addition<int>> multipleCountTree,
     int[] divided,
     int modulus)
 {
@@ -26,7 +26,7 @@ internal sealed class GoodSubsequenceIndex(
     // reader outside this type, so it stays a plain primary constructor parameter.
     public SegmentTree<int, GcdOperation<int>> GcdTree => gcdTree;
 
-    public SegmentTree<int, SumOperation<int>> MultipleCountTree => multipleCountTree;
+    public SegmentTree<int, Addition<int>> MultipleCountTree => multipleCountTree;
 
     public int[] Divided => divided;
 
@@ -44,7 +44,7 @@ internal sealed class GoodSubsequenceIndex(
 
         return new GoodSubsequenceIndex(
             new SegmentTree<int, GcdOperation<int>>(divided),
-            new SegmentTree<int, SumOperation<int>>(multiples),
+            new SegmentTree<int, Addition<int>>(multiples),
             divided,
             modulus);
     }

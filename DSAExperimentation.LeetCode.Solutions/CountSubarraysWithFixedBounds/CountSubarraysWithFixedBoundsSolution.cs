@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountSubarraysWithFixedBounds;
@@ -56,16 +56,16 @@ internal static class CountSubarraysWithFixedBoundsSolution
         return (min, max);
     }
 
-    // This repo's own SegmentTree pair - one folded by MinOperation<int>, one by
-    // MaxOperation<int> - answers each subarray's min and max in O(log n) after an
+    // This repo's own SegmentTree pair - one folded by Minimum<int>, one by
+    // Maximum<int> - answers each subarray's min and max in O(log n) after an
     // O(n) build, so the innermost rescan disappears entirely: the same "fold the
     // array once, then query ranges" composition LC 2286 uses over its own
-    // MaxOperation tree, here with the Min and Max folds side by side and one query
+    // Maximum tree, here with the Min and Max folds side by side and one query
     // pair per (start, end).
     public static long CountFixedBoundSubarraysBySegmentTreeQueries(int[] nums, int minK, int maxK)
     {
-        var minTree = new SegmentTree<int, MinOperation<int>>(nums);
-        var maxTree = new SegmentTree<int, MaxOperation<int>>(nums);
+        var minTree = new SegmentTree<int, Minimum<int>>(nums);
+        var maxTree = new SegmentTree<int, Maximum<int>>(nums);
         long count = 0;
 
         for (var start = 0; start < nums.Length; start++)

@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.PrefixSums;
 using DSAExperimentation.DataStructures.Sequence;
@@ -146,7 +146,7 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
         var values = ValuesAsLongs(nums);
         var rankByAscendingValue = RankPositions(n, ValueOrder.Ascending, nums);
         var rankByDescendingValue = RankPositions(n, ValueOrder.Descending, nums);
-        var prefix = new PrefixSums<long, SumOperation<long>>(values);
+        var prefix = new PrefixSums<long, Addition<long>>(values);
         var source = (n, values, prefix, rankByAscendingValue, rankByDescendingValue);
 
         return BestAcrossWindowLengths(swapBudget, source);
@@ -198,7 +198,7 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
     // window and then slid across every later start position.
     private static long BestAcrossWindowLengths(
         int swapBudget,
-        (int N, long[] Values, PrefixSums<long, SumOperation<long>> Prefix, int[] RankAscending, int[] RankDescending) source)
+        (int N, long[] Values, PrefixSums<long, Addition<long>> Prefix, int[] RankAscending, int[] RankDescending) source)
     {
         var ranks = (Ascending: source.RankAscending, Descending: source.RankDescending);
         var best = long.MinValue;
@@ -237,7 +237,7 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
     // one position at a time to every later start, keeping the best window seen.
     private static long BestForLength(
         WindowLedger ledger,
-        (int N, long[] Values, PrefixSums<long, SumOperation<long>> Prefix, int[] RankAscending, int[] RankDescending) source,
+        (int N, long[] Values, PrefixSums<long, Addition<long>> Prefix, int[] RankAscending, int[] RankDescending) source,
         int windowLength,
         int swapBudget)
     {
@@ -263,7 +263,7 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
     // passed apart - and elementCount is prefix.Count, the element count the
     // prefix sums were built over, so the caller need not say it twice.
     private static long BestForWindow(
-        WindowLedger ledger, PrefixSums<long, SumOperation<long>> prefix, (int Start, int Length) window, int swapBudget)
+        WindowLedger ledger, PrefixSums<long, Addition<long>> prefix, (int Start, int Length) window, int swapBudget)
     {
         var elementCount = prefix.Count;
         var windowSum = prefix.Query(window.Start, window.Start + window.Length - 1);
@@ -323,7 +323,7 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
     private static long SumAfterSwaps(long windowSum, WindowLedger ledger, int swaps)
         => windowSum - ledger.SumOfSmallestInside(swaps) + ledger.SumOfLargestOutside(swaps);
 
-    private readonly struct FenwickPrefixCountSequence(FenwickTree<long, SumOperation<long>> counts)
+    private readonly struct FenwickPrefixCountSequence(FenwickTree<long, Addition<long>> counts)
         : IRandomAccessSequence<long>
     {
         public int Length => counts.Count;
@@ -337,10 +337,10 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
     // largest outside" are both answered by the same SumOfSmallestByRank shape.
     private sealed class WindowLedger(int elementCount)
     {
-        private readonly FenwickTree<long, SumOperation<long>> _insideCount = new(elementCount);
-        private readonly FenwickTree<long, SumOperation<long>> _insideSum = new(elementCount);
-        private readonly FenwickTree<long, SumOperation<long>> _outsideCount = new(elementCount);
-        private readonly FenwickTree<long, SumOperation<long>> _outsideSum = new(elementCount);
+        private readonly FenwickTree<long, Addition<long>> _insideCount = new(elementCount);
+        private readonly FenwickTree<long, Addition<long>> _insideSum = new(elementCount);
+        private readonly FenwickTree<long, Addition<long>> _outsideCount = new(elementCount);
+        private readonly FenwickTree<long, Addition<long>> _outsideSum = new(elementCount);
 
         public void MarkInside(int position, long value, int[] rankAscending)
         {
@@ -381,7 +381,7 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
         // unlike a value-indexed Fenwick (FindingMKAverageBenchmarks' SumOfSmallest),
         // no partial remainder at the boundary rank is possible.
         private static long SumOfSmallestByRank(
-            FenwickTree<long, SumOperation<long>> count, FenwickTree<long, SumOperation<long>> sum, int swapCount)
+            FenwickTree<long, Addition<long>> count, FenwickTree<long, Addition<long>> sum, int swapCount)
         {
             if (swapCount == 0)
             {

@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.PrefixSums;
 using DSAExperimentation.LeetCode.Solutions.RangeSumQueryImmutable;
@@ -60,7 +60,7 @@ public class RangeSumQueryImmutableBenchmarks
     [Benchmark]
     public int[] FenwickTreeQuery()
     {
-        var tree = new FenwickTree<int, SumOperation<int>>(_nums);
+        var tree = new FenwickTree<int, Addition<int>>(_nums);
 
         for (var i = 0; i < _queries.Length; i++)
         {
@@ -73,7 +73,7 @@ public class RangeSumQueryImmutableBenchmarks
     [Benchmark]
     public int[] PrefixSumsQuery()
     {
-        var sums = new PrefixSums<int, SumOperation<int>>(_nums);
+        var sums = new PrefixSums<int, Addition<int>>(_nums);
 
         for (var i = 0; i < _queries.Length; i++)
         {

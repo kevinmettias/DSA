@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.DesignSkiplist;
@@ -65,14 +65,14 @@ internal static class DesignSkiplistSolution
         }
     }
 
-    // This repo's own FenwickTree<int, SumOperation<int>>, used as a point-update /
+    // This repo's own FenwickTree<int, Addition<int>>, used as a point-update /
     // point-query frequency array over num's bounded domain (0 <= num <= 2*10^4 per
     // LeetCode's own constraint). Add is FenwickTree's native +1 delta; Search and
     // Erase both read the current count through a single-index Query, and Erase
     // turns that into a -1 delta. Every call is O(log 2*10^4).
     internal sealed class SkiplistByFenwickFrequencies : ISkiplist
     {
-        private readonly FenwickTree<int, SumOperation<int>> _frequencies = new(DesignSkiplistConstants.MaxValue + 1);
+        private readonly FenwickTree<int, Addition<int>> _frequencies = new(DesignSkiplistConstants.MaxValue + 1);
 
         public void Add(int num) => _frequencies.Add(num, 1);
 

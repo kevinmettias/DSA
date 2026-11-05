@@ -22,7 +22,7 @@ namespace DSAExperimentation.DataStructures.LazySegmentTree;
 // LazySegmentTreeArray/LazySegmentTreeIndex/LazySegmentRange copies, and check-duplicate-constant
 // plus check-interfile-duplication both flagged the result against SegmentTree's identical files.
 // IRangeUpdateOperation<Element,TUpdate> refines the element monoid both trees share
-// (ElementAlgebra.ICombineOperation) with the update action only this tree has - the algebra is the
+// (ElementAlgebra.IMonoid) with the update action only this tree has - the algebra is the
 // element type's, not SegmentTree's, so sharing it reuses no other structure's contract (§11.4).
 //
 // Range-update only, deliberately: no point-Update method. Mixing point-update semantics (which
@@ -82,7 +82,7 @@ public sealed class LazySegmentTree<Element, TUpdate, TOperation>
     // _pending needs no seeding pass here: the constructor builds it with TOperation.NoUpdate as the
     // arena's fill, so every node reads as "nothing pending" before Build touches anything - not
     // merely the nodes this recursion visits.
-    // TOperation refines ElementAlgebra.ICombineOperation, so the build recursion SegmentTree uses
+    // TOperation refines ElementAlgebra.IMonoid, so the build recursion SegmentTree uses
     // takes it directly.
     private void Build(SegmentRange range, IReadOnlyList<Element> initial) =>
         SegmentTreeBuild.Fill<Element, TOperation>(_values, range, initial);

@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.RangeFenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.ShortestPathInAWeightedTree;
@@ -121,7 +121,7 @@ internal static class ShortestPathInAWeightedTreeSolution
     // Node v's distance from the root is the sum of every ancestor edge's
     // weight, and updating one edge changes that sum for exactly the subtree
     // below it - a range-add. This repo's own RangeFenwickTree<long,
-    // SumOperation<long>> (RangeFenwickTree.cs's own doc comment: "a point
+    // Addition<long>> (RangeFenwickTree.cs's own doc comment: "a point
     // query is just Query(i, i)") is exactly a range-add/point-query structure,
     // so each edge's weight is posted once as a RangeAdd over its child's
     // subtree, an update re-posts the delta over the same range, and a [2, x]
@@ -140,7 +140,7 @@ internal static class ShortestPathInAWeightedTreeSolution
     private static (
         PreOrderTour Tour,
         int[] CurrentWeight,
-        RangeFenwickTree<long, SumOperation<long>> Fenwick) BuildEulerSweepState(int nodeCount, int[][] edges)
+        RangeFenwickTree<long, Addition<long>> Fenwick) BuildEulerSweepState(int nodeCount, int[][] edges)
     {
         var (parent, parentEdge) = EdgeListTree.ParentsFrom(nodeCount, edges, root: 0, firstId: 1);
         var nodes = ParentArrayTree.Build(parent);
@@ -156,10 +156,10 @@ internal static class ShortestPathInAWeightedTreeSolution
     // rooting joined it to its parent by. CurrentWeight records what was posted,
     // so an update can post only the difference. Node 0 is the root and hangs
     // from no edge.
-    private static (int[] CurrentWeight, RangeFenwickTree<long, SumOperation<long>> Fenwick)
+    private static (int[] CurrentWeight, RangeFenwickTree<long, Addition<long>> Fenwick)
         PostInitialEdgeWeights(int[][] edges, int[] parentEdge, PreOrderTour tour)
     {
-        var fenwick = new RangeFenwickTree<long, SumOperation<long>>(tour.NodeCount);
+        var fenwick = new RangeFenwickTree<long, Addition<long>>(tour.NodeCount);
         var currentWeight = new int[tour.NodeCount];
 
         for (var id = 1; id < tour.NodeCount; id++)
@@ -174,7 +174,7 @@ internal static class ShortestPathInAWeightedTreeSolution
     }
 
     private static List<int> AnswerQueriesByEulerSweep(
-        (PreOrderTour Tour, int[] CurrentWeight, RangeFenwickTree<long, SumOperation<long>> Fenwick) state,
+        (PreOrderTour Tour, int[] CurrentWeight, RangeFenwickTree<long, Addition<long>> Fenwick) state,
         int[][] queries)
     {
         var answers = new List<int>();
@@ -201,7 +201,7 @@ internal static class ShortestPathInAWeightedTreeSolution
     // is the other: the new weight's difference from the posted one is re-posted
     // over child's subtree, and the new weight becomes the posted one.
     private static void RepostEdgeWeight(
-        (PreOrderTour Tour, int[] CurrentWeight, RangeFenwickTree<long, SumOperation<long>> Fenwick) state,
+        (PreOrderTour Tour, int[] CurrentWeight, RangeFenwickTree<long, Addition<long>> Fenwick) state,
         int child,
         int weight)
     {

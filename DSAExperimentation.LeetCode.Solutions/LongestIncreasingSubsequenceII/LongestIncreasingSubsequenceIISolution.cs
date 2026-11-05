@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestIncreasingSubsequenceII;
@@ -50,7 +50,7 @@ internal static class LongestIncreasingSubsequenceIISolution
         return length;
     }
 
-    // This repo's own SegmentTree<int, MaxOperation<int>> keyed directly by value:
+    // This repo's own SegmentTree<int, Maximum<int>> keyed directly by value:
     // slot v holds the best valid subsequence length ending exactly at value v, so
     // the best predecessor for num is a single range-max over [num - maxGap, num - 1]
     // - the value window the problem itself defines. Keying by value rather than by
@@ -60,7 +60,7 @@ internal static class LongestIncreasingSubsequenceIISolution
     public static int LengthOfLisBySegmentTreeValueWindow(int[] nums, int maxGap)
     {
         var maxValue = nums.Max();
-        var tree = new SegmentTree<int, MaxOperation<int>>(new int[maxValue + 1]);
+        var tree = new SegmentTree<int, Maximum<int>>(new int[maxValue + 1]);
         var best = 0;
 
         foreach (var num in nums)

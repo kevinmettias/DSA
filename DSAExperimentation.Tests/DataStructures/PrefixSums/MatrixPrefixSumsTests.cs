@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.PrefixSums;
 
 namespace DSAExperimentation.Tests.DataStructures.PrefixSums;
@@ -34,53 +34,53 @@ public sealed partial class MatrixPrefixSumsTests
 
     [Fact]
     public void RowCount_IsTheNumberOfRows() =>
-        Assert.Equal(2, new MatrixPrefixSums<long, SumOperation<long>>(Values).RowCount);
+        Assert.Equal(2, new MatrixPrefixSums<long, Addition<long>>(Values).RowCount);
 
     [Fact]
     public void ColumnCount_IsTheNumberOfValuesInARow() =>
-        Assert.Equal(3, new MatrixPrefixSums<long, SumOperation<long>>(Values).ColumnCount);
+        Assert.Equal(3, new MatrixPrefixSums<long, Addition<long>>(Values).ColumnCount);
 
     [Theory]
     [MemberData(nameof(EndsToTotalsBefore))]
     public void TotalBefore_Ends_CombinesTheTopLeftRectangle(int rowEnd, int columnEnd, long expected) =>
-        Assert.Equal(expected, new MatrixPrefixSums<long, SumOperation<long>>(Values).TotalBefore(rowEnd, columnEnd));
+        Assert.Equal(expected, new MatrixPrefixSums<long, Addition<long>>(Values).TotalBefore(rowEnd, columnEnd));
 
     [Theory]
     [MemberData(nameof(EndsOutsideZeroToCount))]
     public void TotalBefore_EndOutsideZeroToCount_Throws(int rowEnd, int columnEnd) =>
         Assert.Throws<ArgumentOutOfRangeException>(
-            () => new MatrixPrefixSums<long, SumOperation<long>>(Values).TotalBefore(rowEnd, columnEnd));
+            () => new MatrixPrefixSums<long, Addition<long>>(Values).TotalBefore(rowEnd, columnEnd));
 
     [Theory]
     [MemberData(nameof(InclusiveRectanglesToSums))]
     public void Query_InclusiveRectangle_SumsEveryEdge(RectangleSum rectangle) =>
         Assert.Equal(
             rectangle.Expected,
-            new MatrixPrefixSums<long, SumOperation<long>>(Values).Query(rectangle.Top, rectangle.Left, rectangle.Bottom, rectangle.Right));
+            new MatrixPrefixSums<long, Addition<long>>(Values).Query(rectangle.Top, rectangle.Left, rectangle.Bottom, rectangle.Right));
 
     [Theory]
     [MemberData(nameof(RectanglesOutOfBoundsOrReversed))]
     public void Query_RectangleOutOfBoundsOrReversed_Throws(int top, int left, int bottom, int right) =>
         Assert.Throws<ArgumentOutOfRangeException>(
-            () => new MatrixPrefixSums<long, SumOperation<long>>(Values).Query(top, left, bottom, right));
+            () => new MatrixPrefixSums<long, Addition<long>>(Values).Query(top, left, bottom, right));
 
     // 6 ^ 5 ^ 3 ^ 0 == 0, so the whole matrix xors to 0 while its sum is 14.
     [Fact]
     public void Query_XorOperation_CancelsRepeatedBits() =>
-        Assert.Equal(0, new MatrixPrefixSums<int, XorOperation<int>>(CancellingValues).Query(0, 0, 1, 1));
+        Assert.Equal(0, new MatrixPrefixSums<int, BitwiseXor<int>>(CancellingValues).Query(0, 0, 1, 1));
 
     [Fact]
     public void Query_XorOperation_RecoversOneValue() =>
-        Assert.Equal(5, new MatrixPrefixSums<int, XorOperation<int>>(CancellingValues).Query(0, 1, 0, 1));
+        Assert.Equal(5, new MatrixPrefixSums<int, BitwiseXor<int>>(CancellingValues).Query(0, 1, 0, 1));
 
     [Fact]
     public void MatrixPrefixSums_RaggedRows_Throws() =>
-        Assert.Throws<ArgumentException>(() => new MatrixPrefixSums<long, SumOperation<long>>([[1, 2], [3]]));
+        Assert.Throws<ArgumentException>(() => new MatrixPrefixSums<long, Addition<long>>([[1, 2], [3]]));
 
     [Fact]
     public void MatrixPrefixSums_NoRows_HasOneTotalOfIdentity()
     {
-        var empty = new MatrixPrefixSums<long, SumOperation<long>>([]);
+        var empty = new MatrixPrefixSums<long, Addition<long>>([]);
 
         Assert.Equal(0, empty.RowCount);
         Assert.Equal(0, empty.ColumnCount);

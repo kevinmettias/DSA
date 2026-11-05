@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.MakeArrayEmpty;
@@ -17,7 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MakeArrayEmpty;
 //
 // The strategies differ only in how that present-count is answered: an O(n) scan of
 // a bool array, or an O(log n) range query on this repo's own
-// FenwickTree<int, SumOperation<int>> (Binary Indexed Tree) holding 1 for present
+// FenwickTree<int, Addition<int>> (Binary Indexed Tree) holding 1 for present
 // and 0 for removed - the same coordinate-free range-count contrast
 // CountGoodTripletsInAnArraySolution draws for LC 2179.
 [LeetCodeQuestion("make-array-empty", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MakeArrayEmptyPromise))]
@@ -65,7 +65,7 @@ internal static class MakeArrayEmptySolution
         var order = RemovalOrder(nums);
         var present = new int[n];
         Array.Fill(present, 1);
-        var tree = new FenwickTree<int, SumOperation<int>>(present);
+        var tree = new FenwickTree<int, Addition<int>>(present);
 
         long total = 0;
         var previous = -1;
@@ -85,7 +85,7 @@ internal static class MakeArrayEmptySolution
 
     // The wrap-around counterpart of CountPresentWrapping, over the tree instead of
     // the flag array.
-    private static int PresentCountWrapping(FenwickTree<int, SumOperation<int>> tree, int left, int right)
+    private static int PresentCountWrapping(FenwickTree<int, Addition<int>> tree, int left, int right)
         => PresentCount(tree, left, tree.Count - 1) + PresentCount(tree, 0, right);
 
     private static int CountPresent(bool[] present, int left, int right)
@@ -103,7 +103,7 @@ internal static class MakeArrayEmptySolution
         return count;
     }
 
-    private static int PresentCount(FenwickTree<int, SumOperation<int>> tree, int left, int right)
+    private static int PresentCount(FenwickTree<int, Addition<int>> tree, int left, int right)
         => left > right ? 0 : tree.Query(left, right);
 
     // The original indices in the order their values actually get removed: ascending

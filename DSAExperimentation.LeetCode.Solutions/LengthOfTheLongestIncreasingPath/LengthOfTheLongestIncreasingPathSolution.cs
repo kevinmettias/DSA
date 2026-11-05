@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 
-using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<int, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<int>>;
+using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<int, DSAExperimentation.Domain.Mathematics.Algebra.Maximum<int>>;
 
 namespace DSAExperimentation.LeetCode.Solutions.LengthOfTheLongestIncreasingPath;
 
@@ -36,7 +36,7 @@ internal static class LengthOfTheLongestIncreasingPathSolution
     }
 
     // Composed: ChainLengths below is a coordinate-compressed, x-ascending sweep
-    // through a SegmentTree<int, MaxOperation<int>> - the same "compress + segment-tree
+    // through a SegmentTree<int, Maximum<int>> - the same "compress + segment-tree
     // sweep" idiom MaximumBalancedSubsequenceSumSolution uses for its own O(n log n)
     // arm - giving the longest chain ENDING at every point in one pass. Negating both
     // coordinates of every point turns "longest chain STARTING at i, extending toward

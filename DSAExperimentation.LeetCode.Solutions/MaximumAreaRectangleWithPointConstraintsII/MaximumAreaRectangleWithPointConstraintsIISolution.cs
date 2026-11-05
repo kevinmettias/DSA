@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 using DSAExperimentation.LeetCode.Solutions.MaximumAreaRectangleWithPointConstraintsI;
 
@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumAreaRectangleWithPointCon
 // or -1 if none exists - but with n up to 2e5, where Part I's polynomial
 // strategies are no longer tractable. That is the genuinely different composed
 // arm Part I's own doc comment points to: a left-to-right sweep
-// over x-columns, using this repo's own SegmentTree<Element, MaxOperation<Element>>
+// over x-columns, using this repo's own SegmentTree<Element, Maximum<Element>>
 // as a point-update/range-max index over compressed y so each column does
 // O(log n) work instead of an O(n) border scan.
 [LeetCodeQuestion("maximum-area-rectangle-with-point-constraints-ii", LeetCodeAnswerOrder.AsWritten, Promise = typeof(MaximumAreaRectangleWithPointConstraintsIIPromise))]
@@ -98,7 +98,7 @@ internal static class MaximumAreaRectangleWithPointConstraintsIISolution
             yIndex[yValues[i]] = i;
         }
 
-        var lastXAtY = new SegmentTree<int, MaxOperation<int>>(
+        var lastXAtY = new SegmentTree<int, Maximum<int>>(
             Enumerable.Repeat(int.MinValue, yValues.Length).ToArray());
         var openEdges = new Dictionary<(int Y1, int Y2), int>();
 
@@ -178,6 +178,6 @@ internal static class MaximumAreaRectangleWithPointConstraintsIISolution
 
     private readonly record struct SweepIndex(
         Dictionary<int, int> YIndex,
-        SegmentTree<int, MaxOperation<int>> LastXAtY,
+        SegmentTree<int, Maximum<int>> LastXAtY,
         Dictionary<(int Y1, int Y2), int> OpenEdges);
 }

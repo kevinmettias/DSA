@@ -1,10 +1,10 @@
 using System.Numerics;
 
-namespace DSAExperimentation.DataStructures.ElementAlgebra;
+namespace DSAExperimentation.Domain.Mathematics.Algebra;
 
 // XOR is self-inverse - a XOR b XOR b == a - so Invert is the identity function, not negation.
 /// <summary>Bitwise XOR as a group operation, with identity zero and every value its own inverse.</summary>
-public readonly struct XorOperation<Element> : IGroupOperation<Element>
+public readonly struct BitwiseXor<Element> : IAbelianGroup<Element>
     where Element : IBinaryInteger<Element>
 {
     /// <summary>Zero, since XOR with zero leaves any value unchanged.</summary>

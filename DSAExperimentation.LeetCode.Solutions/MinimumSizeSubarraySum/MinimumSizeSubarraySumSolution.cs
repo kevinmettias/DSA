@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.PrefixSums;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumSizeSubarraySum;
@@ -51,7 +51,7 @@ internal static class MinimumSizeSubarraySumSolution
     // BinarySearch.LowerBound for each start index's earliest qualifying end.
     public static int MinLengthByBinarySearchPrefixSum(int target, int[] nums)
     {
-        var prefix = new PrefixSums<int, SumOperation<int>>(nums);
+        var prefix = new PrefixSums<int, Addition<int>>(nums);
 
         var best = int.MaxValue;
 

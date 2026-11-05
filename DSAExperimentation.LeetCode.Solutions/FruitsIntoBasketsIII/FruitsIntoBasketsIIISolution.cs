@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.FruitsIntoBasketsIII;
@@ -44,8 +44,8 @@ internal static class FruitsIntoBasketsIIISolution
         return false;
     }
 
-    // This repo's own SegmentTree<int, MaxOperation<int>> over basket capacity,
-    // used baskets flattened to MaxOperation<int>.Identity (int.MinValue) so
+    // This repo's own SegmentTree<int, Maximum<int>> over basket capacity,
+    // used baskets flattened to Maximum<int>.Identity (int.MinValue) so
     // they can never again satisfy a capacity >= 1 requirement - the same
     // "deactivate by writing Identity" move BlockPlacementQueriesSolution
     // makes on its own gap tree. "Leftmost basket whose capacity is >=
@@ -60,7 +60,7 @@ internal static class FruitsIntoBasketsIIISolution
     // the O(n) rescan above.
     public static int CountUnplacedBySegmentTreeSearch(int[] fruits, int[] baskets)
     {
-        var tree = new SegmentTree<int, MaxOperation<int>>(baskets);
+        var tree = new SegmentTree<int, Maximum<int>>(baskets);
         var unplaced = 0;
 
         foreach (var quantity in fruits)
@@ -69,7 +69,7 @@ internal static class FruitsIntoBasketsIIISolution
 
             if (basket is int index)
             {
-                tree.Update(index, MaxOperation<int>.Identity);
+                tree.Update(index, Maximum<int>.Identity);
             }
             else
             {
@@ -83,7 +83,7 @@ internal static class FruitsIntoBasketsIIISolution
     // The first basket whose prefix max reaches capacity is the leftmost free basket
     // that fits it. FirstTrue's high + 1 - one past the last basket - means even the
     // whole row's max falls short, so no free basket fits at all.
-    private static int? LeftmostBasketAtLeast(SegmentTree<int, MaxOperation<int>> baskets, int capacity)
+    private static int? LeftmostBasketAtLeast(SegmentTree<int, Maximum<int>> baskets, int capacity)
     {
         var lastBasket = baskets.Count - 1;
         var basket = MonotonePredicateSearch.FirstTrue(0, lastBasket, new ReachesCapacity(baskets, capacity));
@@ -95,7 +95,7 @@ internal static class FruitsIntoBasketsIIISolution
     // false up to the answer and true from there on, since widening a range can only
     // raise its max. A rule for this problem alone: the fit test is LC 3479's own
     // content.
-    private readonly struct ReachesCapacity(SegmentTree<int, MaxOperation<int>> baskets, int capacity)
+    private readonly struct ReachesCapacity(SegmentTree<int, Maximum<int>> baskets, int capacity)
         : IMonotonePredicate<int>
     {
         public bool IsSatisfiedBy(int last) => baskets.Query(0, last) >= capacity;

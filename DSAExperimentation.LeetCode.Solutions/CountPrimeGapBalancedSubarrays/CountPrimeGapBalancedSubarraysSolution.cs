@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.MonotonicDeque;
 using DSAExperimentation.DataStructures.PrefixSums;
 
@@ -97,7 +97,7 @@ internal static class CountPrimeGapBalancedSubarraysSolution
         List<int> primeValues, List<int> primeIndices, int arrayLength, int maxGap)
     {
         var (leftChoices, rightChoices) = BuildChoiceCounts(primeIndices, arrayLength);
-        var leftChoiceTotals = new PrefixSums<long, SumOperation<long>>(leftChoices);
+        var leftChoiceTotals = new PrefixSums<long, Addition<long>>(leftChoices);
         var window = new MinMaxWindow<int>();
         var windowStart = 0;
         long total = 0;
@@ -166,7 +166,7 @@ internal static class CountPrimeGapBalancedSubarraysSolution
     // A window that has not yet reached the prime before windowEnd admits none, and
     // that empty range has no left endpoints to sum.
     private static long CountSubarraysEndingAt(
-        PrefixSums<long, SumOperation<long>> leftChoiceTotals, long[] rightChoices, int windowStart, int windowEnd)
+        PrefixSums<long, Addition<long>> leftChoiceTotals, long[] rightChoices, int windowStart, int windowEnd)
     {
         if (windowEnd - 1 < windowStart)
         {

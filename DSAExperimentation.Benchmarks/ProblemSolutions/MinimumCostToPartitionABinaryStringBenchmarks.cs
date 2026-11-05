@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.LeetCode.Solutions.MinimumCostToPartitionABinaryString;
 
@@ -20,7 +20,7 @@ public class MinimumCostToPartitionABinaryStringBenchmarks
 
     private string _binaryString = "";
 
-    private FenwickTree<int, SumOperation<int>> _sensitiveCounts = null!;
+    private FenwickTree<int, Addition<int>> _sensitiveCounts = null!;
     [Params(1024, 8192)]
     public int Length { get; set; }
 
@@ -39,7 +39,7 @@ public class MinimumCostToPartitionABinaryStringBenchmarks
         }
 
         _binaryString = new string(characters);
-        _sensitiveCounts = new FenwickTree<int, SumOperation<int>>(sensitive);
+        _sensitiveCounts = new FenwickTree<int, Addition<int>>(sensitive);
     }
 
     [Benchmark(Baseline = true)]

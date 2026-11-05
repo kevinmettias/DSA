@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.Sequence;
 
@@ -18,7 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AlternatingGroupsIII;
 // bad edges sorted (the same "sorted DynamicArray + BinarySearch.LowerBound"
 // shape DataStructures.IntervalSet already uses, down to reusing
 // BinarySearch.LowerBound itself for insertion-point lookup instead of a second
-// bisection loop), and two point-update FenwickTree<Element, SumOperation<Element>>
+// bisection loop), and two point-update FenwickTree<Element, Addition<Element>>
 // instances - one counting runs per length, one summing lengths per length -
 // answer a size query with two prefix lookups instead of ever walking the runs.
 internal sealed class AlternatingRunLedger
@@ -26,15 +26,15 @@ internal sealed class AlternatingRunLedger
     private readonly int[] _tiles;
     private readonly int _tileCount;
     private readonly DynamicArray<int> _badEdges = new();
-    private readonly FenwickTree<int, SumOperation<int>> _runsByLength;
-    private readonly FenwickTree<long, SumOperation<long>> _lengthSumByLength;
+    private readonly FenwickTree<int, Addition<int>> _runsByLength;
+    private readonly FenwickTree<long, Addition<long>> _lengthSumByLength;
 
     public AlternatingRunLedger(int[] colors)
     {
         _tiles = (int[])colors.Clone();
         _tileCount = _tiles.Length;
-        _runsByLength = new FenwickTree<int, SumOperation<int>>(_tileCount);
-        _lengthSumByLength = new FenwickTree<long, SumOperation<long>>(_tileCount);
+        _runsByLength = new FenwickTree<int, Addition<int>>(_tileCount);
+        _lengthSumByLength = new FenwickTree<long, Addition<long>>(_tileCount);
 
         for (var edge = 0; edge < _tileCount; edge++)
         {

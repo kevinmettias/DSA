@@ -596,19 +596,18 @@ thirty solutions' composed arms wrote by hand, six of them as a helper of their 
 ### 11.4 Element algebras: one chain across four structures, and why §11.1 does not split it
 
 `SegmentTree`, `FenwickTree`, `RangeFenwickTree` and `LazySegmentTree` each need an algebra over
-their elements, and they share one chain in `DataStructures/ElementAlgebra/` — `ICombineOperation`
-(monoid) ← `IGroupOperation` (+ `Invert`) ← `IScaledGroupOperation` (+ `Scale`) — with one
-`SumOperation` at the deepest position addition reaches, plus `MinOperation`, `MaxOperation` and
-`XorOperation`. `IRangeUpdateOperation` refines `ICombineOperation` but stays in
+their elements, and they share one chain in `Domain/Mathematics/Algebra/` — `IMonoid`
+(monoid) ← `IAbelianGroup` (+ `Invert`) ← `IIntegerModule` (+ `Scale`) — with `Addition` at the
+deepest position its arithmetic reaches, plus `Minimum`, `Maximum` and `BitwiseXor`. `IRangeUpdateOperation` refines `IMonoid` but stays in
 `LazySegmentTree/`.
 
 **Why §5 step 5 does not fire.** Step 5 forbids reusing another domain's *Representation or
 Topology* contract, because a fold's node list and a heap's array are different enough shapes that a
 shared interface leaks. These contracts are neither: they are laws on the element type — identity,
-associativity, inverse, scaling — the way `INumber<T>` is, which every `SumOperation` already
+associativity, inverse, scaling — the way `INumber<T>` is, which every `Addition` already
 depended on. No structure reuses another structure's contract; all four consume a neutral one,
 the same arrangement as `ByPriorityOrder` implementing `Heap`'s `IHeapOrder` for `ShortestPath`.
-One contract per structure would cost what it once did: byte-identical `SumOperation`s per
+One contract per structure would cost what it once did: byte-identical `Addition`s per
 structure, and an adapter re-presenting one contract's `Identity`/`Combine` under another's name so
 two trees could share a build recursion.
 
@@ -622,8 +621,8 @@ so keeping them apart would buy nothing but an adapter.
 **The rule that keeps the chain honest.** A member only one structure needs never joins it; it goes in
 a structure-local refinement. `IRangeUpdateOperation`'s update tags are the example: lazy
 propagation is `LazySegmentTree`'s business, so `SegmentTree` and `FenwickTree` never see them.
-The structures' own constraints say which link each needs — a Fenwick tree over `MinOperation` is a
-compile error, because it needs `Invert` — and the reason is stated once, on `IGroupOperation`.
+The structures' own constraints say which link each needs — a Fenwick tree over `Minimum` is a
+compile error, because it needs `Invert` — and the reason is stated once, on `IAbelianGroup`.
 Dispatch is unaffected: every operation is a static-abstract witness on a struct type parameter.
 
 ## 12. Worked example: `Algorithms/Traversal/DepthFirst/DepthFirstSearch`
@@ -792,7 +791,6 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `DisjointSet/` | `DisjointSetForest`, `DisjointSet` (§10) |
 | `DoublyLinkedList/` | `DoublyLinkedList`, `DoublyLinkedListNode` (§13.7) |
 | `DynamicArray/` | `DynamicArrayStorage`, `DynamicArray` (§14.3) |
-| `ElementAlgebra/` | `ICombineOperation`, `IGroupOperation`, `IScaledGroupOperation`, `SumOperation`, `MinOperation`, `MaxOperation`, `XorOperation` — the one refinement chain the range structures draw from (§11.4) |
 | `FenwickTree/` | `FenwickArray`, `FenwickTree` |
 | `Graph/Adjacency/` | `AdjacencyNode`, `AdjacencyTopology`, `WeightedAdjacencyNode`, `WeightedAdjacencyTopology` — the general-graph sibling of `RootedTreeNode`/`RootedTreeTopology`, graph tier only: an adjacency list promises no acyclicity, so a DAG or tree witness over it is written by the caller who can vouch for one. A LeetCode problem whose node is exactly this shape uses it through a per-file `using` alias that keeps the problem's own name (`using CourseNode = …AdjacencyNode;`), and the file that wires the edges says what an edge means there, since that is the caller's reading of the list, not a property of the node |
 | `Graph/Contracts/Ordering/` | `IChildren`, `IEdges`, `IChildOrder` and their witnesses (§3.1) |
@@ -810,7 +808,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `KeyedDisjointSet/` | `KeyedDisjointSet` — composes `DisjointSet` and `HashMap` (§10.4) |
 | `LazySegmentTree/` | `LazySegmentTree`, `IRangeUpdateOperation` and its witnesses (§11.4) |
 | `MonotonicDeque/` | `IWindowOrder`, `MaxWindowOrder`, `MinWindowOrder`, `MonotonicDeque` — composes the unbounded `CircularBuffer` (§19.1, §20); `MinMaxWindow` — one `MonotonicDeque` per order (§19.1) |
-| `PrefixSums/` | `PrefixSums`, `MatrixPrefixSums` — consume `ElementAlgebra`'s `IGroupOperation` (§19.2) |
+| `PrefixSums/` | `PrefixSums`, `MatrixPrefixSums` — consume `Domain/Mathematics/Algebra`'s `IAbelianGroup` (§19.2) |
 | `Queue/` | `Queue`, `BoundedQueue` — `CircularBuffer` unbounded and bounded, restricted to FIFO's ends (§20) |
 | `RangeFenwickTree/` | `RangeFenwickTree` |
 | `RollingHash/` | `RollingHash`, `RollingHashLane`, `RollingHashValue` |
@@ -878,6 +876,7 @@ specifically:
 | `Games/Zuma/` | `IZumaRule`, `ZumaRow<TRule>`, `ClassicZuma` — the cascading collapse of touching same-coloured balls, general over the group length that vanishes, with Zuma's own three the preset LC 488's BFS arm uses |
 | `Language/` | `CaseFolded` — a cased alphabet with case set aside, a letter and its capital in one slot, exact only where case pairs letter for letter (§19.6); `NumberWord` — a number and the word a language names it with, from which a table of words is built |
 | `Language/English/` | `EnglishLowercase`, `EnglishUppercase` — the 26 letters in each case, read by the count tables and the trie, and by LC 424's and LC 621's capitals; `EnglishLetters` — both cases folded, with English's numbering, A as 1 through Z as 26, read by LC 2156's rolling-hash arm and LC 91's memoized arm; `EnglishVowels` — the five vowels as a letter set over it, shared by LC 1641, LC 2063 and LC 3227; `EnglishConsonants` — the other 21 letters, read from the vowels, which no problem uses yet; `EnglishNumberWords` — English's number words, zero to nineteen, the tens, a hundred and the short scale's powers of a thousand, each a `NumberWord` with its number, from which LC 273 builds its capitalized tables and reads the numbers it splits by. LC 639's letter count sits in a helper its baseline shares and reads none of them |
+| `Mathematics/Algebra/` | `IMonoid`, `IAbelianGroup`, `IIntegerModule`, `Addition`, `Minimum`, `Maximum`, `BitwiseXor` — the laws a range structure needs of its elements, one chain under the mathematics' names (§11.4), drawn on by the segment trees, the Fenwick trees and `PrefixSums` |
 | `Mathematics/Geometry/` | `EuclideanPolygons`, `EuclideanPlane`, `ConstantCurvatureSurface`, `AngleUnits` — when sides close into a polygon and a triangle's angle sum on the flat plane, read by the composed arms of LC 2971, LC 976, LC 3024 and LC 3899; a triangle's angle sum on any surface of constant curvature; and a turn's degrees, read by LC 1610 |
 | `Mathematics/Lattices/` | `IPlanarLatticeStep<TSelf>`, `LatticeSymmetry`, `GridStep`, `GridDirections` — a step of the square lattice a grid's cells sit on, each named (`Up` is (-1, 0)), with the lattice's algebra (steps add and negate, a quarter turn and a mirror), its orbits, its neighbour tables in a fixed order (orthogonal, diagonal, octilinear, L-shaped, and the distance neighbourhoods), and the clockwise turning cycle. Read by tier 1's grid engines, `ChessPiece`'s moves and the grid solutions, baselines among them |
 | `Mathematics/Surfaces/` | `ISurface`, `GluedRectangle<TRows, TCols>`, `MirroredAxes`, the presets `BoundedRectangle`, `Cylinder`, `Torus`, `MobiusStrip`, `KleinBottle`, and in `Gluings/` `IEdgeGluing`, `Unglued`, `Straight`, `Twisted` — a board's global shape, a rectangle with each pair of opposite edges left open, glued straight or glued twisted; `GridSize.HasCell` is the bounded rectangle's rule |
@@ -990,7 +989,7 @@ traversal engines. Tries are decided case by case (§13.8, §13.9).
 `Mechanisms/Cache/ICache.cs`, which both implement; §17.6b says why they are mechanisms rather than
 data structures. They are peer implementations of one public contract, and `ICache<TKey,TValue>`
 makes that contract real. It is an interface, not a shared base class, per §6's
-composition-over-inheritance precedent (`IHeapOrder`, `ICombineOperation`, `IGroupOperation` are
+composition-over-inheritance precedent (`IHeapOrder`, `IMonoid`, `IAbelianGroup` are
 all interfaces) — the two caches share no method bodies to inherit, only this public shape, and
 LRU-vs-LFU is a real, caller-visible axis (it changes which key an identical call sequence evicts)
 rather than a mechanics-only choice, the same §10.1 discriminator that separates
@@ -1663,6 +1662,7 @@ about LeetCode rather than about any problem's world, and one problem's own spel
 | `Domain/Games/Zuma/` | `IZumaRule`, `ZumaRow<TRule>`, `ClassicZuma` | A group of touching balls of one colour at least the rule's length vanishes, cascading; Zuma's own length is three. Each pass removes every such group at once, which is the game's one-at-a-time cascade while the row holds at most one, as after one ball goes into a settled row. The colour letters are LeetCode's, and nothing reads them. |
 | `Domain/Language/` | `CaseFolded` | A cased writing system's letters with case set aside: a letter and its capital take one slot, and a letter's lowercase form stands for it. That holds only where case pairs letter for letter, as English's and Russian's do; German's ß capitalizes to two letters and Turkish pairs i with İ and ı with I, so the type says so rather than claiming every script. A `NumberWord` is a number and the word a language names it with, so a table of words places each word at its own number. |
 | `Domain/Language/English/` | `EnglishLowercase`, `EnglishUppercase`, `EnglishLetters`, `EnglishVowels`, `EnglishConsonants`, `EnglishNumberWords` | The 26 letters in each case as presets of tier 1's `IAlphabet` (§19.6), each a run of character codes whose two ends are constants, and the two folded into `EnglishLetters`. English numbers its letters from one, A as 1 through Z as 26: a notation people use, and English's rather than every alphabet's, since Greek and Hebrew numerals give kappa and kaf the value 20, so `NumberOf` is `EnglishLetters`' and not the contract's. The five written vowels are a letter set over the folded letters, so 'A' is a vowel as 'a' is; y, a vowel only in some words, is not one of them. The consonants are the alphabet's other letters, read from the vowels, so each letter is in exactly one of the two sets. How a strategy counts or finds them stays with it. English's number words are named values too: zero to nineteen, each with a word of its own, the tens, a hundred, and the short scale's word for each power of a thousand through quintillion, all lowercase as written within a sentence. Only the words are stated. How they compose follows how a number's digits are grouped, which the short scale, the long scale and Indian English's lakh and crore do differently, so composing them is the caller's for now, and LC 273's capitals are its own notation. |
+| `Domain/Mathematics/Algebra/` | `IMonoid`, `IAbelianGroup`, `IIntegerModule`, `Addition`, `Minimum`, `Maximum`, `BitwiseXor` | The laws a range structure needs of its elements, as the mathematics names them: a monoid, an associative combine with an identity; an abelian group, a monoid whose combine commutes and can be undone; and an integer module, an abelian group whose integer multiple is a member of its own, held to an O(1) cost. Addition, minimum, maximum and bitwise exclusive or are presets, each at the deepest link its arithmetic reaches: minimum and maximum have no inverse, so a Fenwick tree over either does not compile. Each is a struct witness with static members, so a structure generic over one compiles its own arithmetic (§11.4). |
 | `Domain/Mathematics/Geometry/` | `EuclideanPolygons`, `EuclideanPlane`, `ConstantCurvatureSurface`, `AngleUnits` | Mathematical facts no data structure or algorithm represents, which the owner ruled are Domain's, each named for the geometry it holds in. On the flat plane, sides close into a polygon when the longest is shorter than the rest together, which for three sides is the triangle inequality, and a polygon has at least three sides; a sphere has two-sided lunes. A triangle's angles make 180 degrees on the flat plane, a constant a caller pays nothing for, and on a surface of constant curvature K, Gauss–Bonnet's π + K·Area, which is exact. A turn is 360 degrees by the degree's definition. Sorting, scanning and the law of cosines stay with the strategies, and `Algorithms/Geometry` keeps operations such as the convex hull. |
 | `Domain/Mathematics/Lattices/` | `IPlanarLatticeStep<TSelf>`, `LatticeSymmetry`, `GridStep`, `GridDirections` | The square lattice a grid's cells sit on: a step as how far it goes down the rows and across the columns, the steps named (`Up` is (-1, 0), `UpUpLeft` an L-shaped jump), and the neighbour tables made of them, each in a fixed order that is part of the contract. A planar lattice's steps form a group under addition, and its symmetries are turns by its smallest rotation, which can only be of order 2, 3, 4 or 6, and a mirror. `IPlanarLatticeStep` puts that algebra on the step type, so a generic method infers the lattice from the step it is handed. A set of steps agrees with the lattice when every symmetry maps it onto itself, which makes it a union of the orbits `LatticeSymmetry` lists. Each table is one: `Orthogonal` is `Right`'s orbit and `LShaped` any jump's. The tables keep their own literal order, and the orbits check them as sets. `Clockwise` (up, right, down, left) is the turning cycle a spiral or a heading moves along, numbered as `CompassHeading` is, and `TurnRight`, `TurnLeft` and `OppositeOrthogonal` are the index rules a hot loop turns by. `WithinManhattan` and `WithinChebyshev` are the von Neumann and Moore neighbourhoods of any range. A test-only hexagonal step proves the contract is not the square's alone: a hexagonal grid's cells sit on the triangular lattice A2, which turns in sixths. A triangular grid's cells are not a lattice, since their up and down triangles are two orbits and a cell's steps depend on which it is, so it is not offered. The owner ruled on 2026-11-03 that these are "more general than any one game or domain", "all useful values that agree with the topology of the grid", and "generalizable to satisfy a wide range of topologies", so they left tier 1, where a baseline could not read them, and chess, the compass and the grid engines all read them here. |
 | `Domain/Mathematics/Surfaces/` | `ISurface`, `GluedRectangle<TRows, TCols>`, `MirroredAxes`, `BoundedRectangle`, `Cylinder`, `Torus`, `MobiusStrip`, `KleinBottle`; `Gluings/`: `IEdgeGluing`, `Unglued`, `Straight`, `Twisted` | The board's topology, as the lattice is its local structure: a rectangle of cells with each pair of opposite edges left open, a boundary no step crosses, or glued, so a step off one edge comes back in at the other, the same way round (straight) or the opposite way (twisted). The choice is per pair, so `GluedRectangle` composes two gluings and the presets name the common ones: nothing glued is the rectangle LeetCode's grids are, a disk; one pair straight is the cylinder, both the torus; one pair twisted is the Mobius strip, and with the other straight, the Klein bottle. A glued edge is crossed as many times as a step needs and the gluing counts the crossings, so a knight on a board two cells wide lands right. Crossing a twisted pair an odd number of times mirrors the other axis, and `TryLand` reports it (`MirroredAxes`): a set of steps closed under the mirror, such as the orthogonal ones, is unchanged, while an ordered one, such as a heading or `Clockwise`, has its left and right swapped. `GridSize.HasCell` is the bounded rectangle's rule, one unsigned comparison per axis, and the JIT inlines the whole chain. A grid without defects is flat, so by Gauss-Bonnet its closed surfaces have Euler characteristic 0, the torus and the Klein bottle. Two twisted pairs would make the projective plane, which needs cone points, and a diagonal step out of a corner comes back to its own cell, which a test shows; the sphere needs them too, as a cube's corners are. Neither is offered. The tests read each preset back as a cell complex built from where its steps land, and check its Euler characteristic and boundary circles: 1 and one for the rectangle, 0 and two for the cylinder, 0 and one for the Mobius strip, 0 and none for the torus and the Klein bottle, which orientation tells apart, since once round the Klein bottle a walker comes back mirrored. |
@@ -1672,7 +1672,7 @@ about LeetCode rather than about any problem's world, and one problem's own spel
 | `Domain/Science/Dna/` | `DnaBase`, `DnaBases` | The four bases, adenine A, cytosine C, guanine G and thymine T, each a named value carrying its name and letter. `DnaBases.All` lists them once, and its letters, names, spelled-out string and alphabet slots are all read from that one list. As an alphabet they are A to T with gaps, so their slots come from a `LetterTable` (§19.6). They were tier 1's `StandardAlphabets.Dna`, a fact about DNA in a graph's folder. A number for each base is not DNA's: LC 187's 2-bit order is its own strategy. |
 | `Domain/Science/Time/` | `ITimeUnit`, `TimeUnit` | A unit of time as a witness carrying its name and its length: the microsecond, millisecond, second, minute, hour, day and week, each a struct in `TimeUnit`. The lengths are .NET's `TimeSpan` constants, exact to its 100-nanosecond tick, so the platform stays their one source, and a week's seven days is the one count stated here. The day is the 86,400 seconds the SI accepts, not a civil day, which daylight saving makes 23 or 25 hours and a leap second 86,401 seconds; a month and a year are the calendar's, not a fixed length, and a nanosecond is a hundredth of a tick, so none of them is offered. Each length is a constant, so a caller that knows its units divides one by another and the compiler writes the count, and `TimeUnit.Count<TUnit, TIn>` gives the same count to code generic over its units. LC 1348's frequency names are its own notation, mapped onto the units in its folder. |
 
-Their tests mirror them in `DSAExperimentation.Tests/Domain/{Computing/Binary,Computing/Filesystem,Computing/Paths,Devices/Compass,Devices/Locks,Devices/Telephone,Games/Chess,Games/Dice,Games/Life,Games/SlidingPuzzle,Games/Sudoku,Games/TicTacToe,Games/Zuma,Language,Language/English,Mathematics/Geometry,Mathematics/Lattices,Mathematics/NumberTheory,Mathematics/Numerals,Mathematics/Surfaces,Mathematics/Surfaces/Gluings,Science/Dna,Science/Time}/`. The
+Their tests mirror them in `DSAExperimentation.Tests/Domain/{Computing/Binary,Computing/Filesystem,Computing/Paths,Devices/Compass,Devices/Locks,Devices/Telephone,Games/Chess,Games/Dice,Games/Life,Games/SlidingPuzzle,Games/Sudoku,Games/TicTacToe,Games/Zuma,Language,Language/English,Mathematics/Algebra,Mathematics/Geometry,Mathematics/Lattices,Mathematics/NumberTheory,Mathematics/Numerals,Mathematics/Surfaces,Mathematics/Surfaces/Gluings,Science/Dna,Science/Time}/`. The
 domain knowledge still written inside individual problem folders moves here problem by problem
 (§17.10).
 
@@ -2075,6 +2075,12 @@ grid", and "generalizable to satisfy a wide range of topologies". A plan in nine
 - **A board carries its steps** (`Grid.Steps`), so a search moves along any table, and LC 1091 has
   an 8-connected arm on the engine.
 
+The element algebra (2026-11-05). The laws the range structures need of their elements moved from
+`DataStructures/ElementAlgebra` to `Domain/Mathematics/Algebra`, since they are mathematics, and
+took the mathematics' names at the owner's ruling: `IMonoid`, `IAbelianGroup` and
+`IIntegerModule`, with `Addition`, `Minimum`, `Maximum` and `BitwiseXor` as presets. Every user
+names them so; the move changed what each compiles to in nothing but the names.
+
 The time units, English's number words and the per cent (2026-11-05). Another session began them
 on 2026-11-03, and the owner asked for them to be finished. Each states facts a problem's arms
 read, and leaves how they are combined to the arms:
@@ -2124,9 +2130,8 @@ the TODOs it answers:
   answered: the unit is a definition, and only the angles around a point need flatness to make a
   turn.
 
-Not started, though the owner opted into each on 2026-11-02:
-
-- Moving `ElementAlgebra`'s group laws to `Domain/Mathematics`.
+All four subjects the owner opted into on 2026-11-02 are done: the time units, English's number
+words, the per cent, and the element algebra above.
 
 Deferred by the owner: generalizing beyond what is exact, such as geometry on surfaces of varying
 curvature. This waits until the architecture is stable, and then happens only if it helps.
@@ -2861,8 +2866,8 @@ Its one axis is `IWindowOrder.IsDominatedBy(resident, arriving)`: does the arriv
 resident unable ever to be the window's extremum again? That is a Topology witness under §5's first
 row, because it is re-derived on every push and max versus min changes what the front reports.
 Neither ready-made contract fits. `IHeapOrder` is `Heap`'s own Topology contract (§5 step 5).
-`MaxOperation`/`MinOperation` are monoids, and a monoid does not promise that `Combine` returns one
-of its arguments, so a deque over `SumOperation` would compile and mean nothing. Ties are dominated,
+`Maximum`/`Minimum` are monoids, and a monoid does not promise that `Combine` returns one
+of its arguments, so a deque over `Addition` would compile and mean nothing. Ties are dominated,
 because every hand-written copy evicted them; a "keep ties" order would be a third witness.
 
 `MinMaxWindow<Key>` pairs the two orders. Six solutions bound a window by its range rather than its
@@ -2878,21 +2883,21 @@ value, for the reasons §19.8 measured.
 ### 19.2 `PrefixSums`: a consumer of the group chain, with a view rather than an interface
 
 `DataStructures/PrefixSums/` is the static sibling of `FenwickTree`: running totals under an
-`IGroupOperation` (§11.4), answering an inclusive range by one `Invert`. It joins the element-algebra
+`IAbelianGroup` (§11.4), answering an inclusive range by one `Invert`. It joins the element-algebra
 chain as a consumer and adds no contract to it. It is a sealed class that *exposes* an
 `ArraySequence` view, `Totals`, for `BinarySearch`, rather than implementing
 `IRandomAccessSequence` itself. That is §9.4's shape: the Sequence contracts belong to the algorithms
 that consume them. The exclusive read is named `TotalBefore(end)`, not `PrefixQuery`, because
 `FenwickTree.PrefixQuery` includes its index, and an exclusive member under the same name would be
 the off-by-one this type exists to remove. Widening `int` input to `long` totals stays the caller's
-choice, as choosing `SumOperation<long>` already is.
+choice, as choosing `Addition<long>` already is.
 
 `MatrixPrefixSums` is the same totals over a matrix, which LC 304's region sums were building by
 hand. LC 1738's coordinate xors build one too, but read every total in a loop, where `TotalBefore`'s
 bounds checks measured about 10% slower at 300 x 300, so it keeps its own table. `TotalBefore(rowEnd, columnEnd)` combines the top-left
 rectangle before both ends, and `Query(top, left, bottom, right)` answers an inclusive rectangle from
 four of those totals: the bottom-right one and the corner, less the strip above and the strip to the
-left. Regrouping the four is sound only because `IGroupOperation`'s operations commute, a law a
+left. Regrouping the four is sound only because `IAbelianGroup`'s operations commute, a law a
 one-dimensional range never needed. Rows arrive jagged, the shape the problems hand over, and a
 ragged matrix is refused. It has no `Totals` view, because no caller binary-searches a 2-D table.
 

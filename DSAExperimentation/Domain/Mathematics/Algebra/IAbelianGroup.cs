@@ -1,4 +1,4 @@
-namespace DSAExperimentation.DataStructures.ElementAlgebra;
+namespace DSAExperimentation.Domain.Mathematics.Algebra;
 
 // An abelian group: a monoid whose Combine can be undone. FenwickTree needs exactly this and nothing
 // weaker - it stores prefix values and answers a range query as Combine(prefix(right),
@@ -10,7 +10,7 @@ namespace DSAExperimentation.DataStructures.ElementAlgebra;
 /// <summary>
 /// A commutative combine operation with an inverse for every element, so a range can be answered from two prefixes.
 /// </summary>
-public interface IGroupOperation<Element> : ICombineOperation<Element>
+public interface IAbelianGroup<Element> : IMonoid<Element>
 {
     /// <summary>Finds the element that undoes another under Combine.</summary>
     /// <param name="value">The element to invert.</param>

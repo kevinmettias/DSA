@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.Tests.DataStructures.FenwickTree;
@@ -10,7 +10,7 @@ public sealed partial class FenwickTreeTests
     [Fact]
     public void Constructor_FromInitialValues_PrefixQueryMatchesRunningSum()
     {
-        var tree = new FenwickTree<int, SumOperation<int>>(AscendingFive);
+        var tree = new FenwickTree<int, Addition<int>>(AscendingFive);
 
         Assert.Equal(1, tree.PrefixQuery(0));
         Assert.Equal(Fixtures.PrefixSumThroughIndex1, tree.PrefixQuery(1));
@@ -20,7 +20,7 @@ public sealed partial class FenwickTreeTests
     [Fact]
     public void Query_SumOperation_ReturnsRangeSum()
     {
-        var tree = new FenwickTree<int, SumOperation<int>>(AscendingFive);
+        var tree = new FenwickTree<int, Addition<int>>(AscendingFive);
 
         var sumThroughRangeEnd = tree.Query(1, Fixtures.RangeEnd);
         Assert.Equal(Fixtures.SumThroughRangeEnd, sumThroughRangeEnd);
@@ -35,7 +35,7 @@ public sealed partial class FenwickTreeTests
     [Fact]
     public void Add_AppliesDeltaToEveryQueryCoveringThatIndex()
     {
-        var tree = new FenwickTree<int, SumOperation<int>>(AscendingFive);
+        var tree = new FenwickTree<int, Addition<int>>(AscendingFive);
 
         tree.Add(Fixtures.UpdateIndex, Fixtures.UpdateDelta);
 
@@ -55,7 +55,7 @@ public sealed partial class FenwickTreeTests
     [Fact]
     public void Query_XorOperation_ReturnsRangeXor()
     {
-        var tree = new FenwickTree<int, XorOperation<int>>(AscendingFive);
+        var tree = new FenwickTree<int, BitwiseXor<int>>(AscendingFive);
 
         var xorOfFirstThreeElements = tree.Query(0, Fixtures.FirstThreeRangeEnd);
         Assert.Equal(Fixtures.XorOfFirstThreeElements, xorOfFirstThreeElements);
@@ -67,7 +67,7 @@ public sealed partial class FenwickTreeTests
     [Fact]
     public void Constructor_SizeOnly_StartsAtIdentityEverywhere()
     {
-        var tree = new FenwickTree<int, SumOperation<int>>(Fixtures.SizeOnlyTreeSize);
+        var tree = new FenwickTree<int, Addition<int>>(Fixtures.SizeOnlyTreeSize);
 
         var sumOfAllElements = tree.Query(0, Fixtures.LastIndex);
         Assert.Equal(0, sumOfAllElements);
@@ -76,7 +76,7 @@ public sealed partial class FenwickTreeTests
     [Fact]
     public void Count_ReflectsConstructorSize()
     {
-        var tree = new FenwickTree<int, SumOperation<int>>(Fixtures.CountTreeSize);
+        var tree = new FenwickTree<int, Addition<int>>(Fixtures.CountTreeSize);
 
         Assert.Equal(Fixtures.CountTreeSize, tree.Count);
     }
@@ -84,7 +84,7 @@ public sealed partial class FenwickTreeTests
     [Fact]
     public void Query_OutOfRangeRight_ThrowsArgumentOutOfRangeException()
     {
-        var tree = new FenwickTree<int, SumOperation<int>>(AscendingFive);
+        var tree = new FenwickTree<int, Addition<int>>(AscendingFive);
 
         Assert.Throws<ArgumentOutOfRangeException>(() => tree.Query(0, Fixtures.OutOfRangeIndex));
     }
@@ -92,7 +92,7 @@ public sealed partial class FenwickTreeTests
     [Fact]
     public void Add_IndexOutOfRange_ThrowsArgumentOutOfRangeException()
     {
-        var tree = new FenwickTree<int, SumOperation<int>>(AscendingFive);
+        var tree = new FenwickTree<int, Addition<int>>(AscendingFive);
 
         Assert.Throws<ArgumentOutOfRangeException>(() => tree.Add(Fixtures.OutOfRangeIndex, Fixtures.Delta));
     }

@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.ElementAlgebra;
+using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.Tests.DataStructures.SegmentTree;
@@ -24,7 +24,7 @@ public sealed partial class SegmentTreeBuildTests
     {
         var values = new SegmentTreeArray<int>(1);
 
-        SegmentTreeBuild.Fill<int, SumOperation<int>>(values, new SegmentRange(RootNode, 0, 0), [7]);
+        SegmentTreeBuild.Fill<int, Addition<int>>(values, new SegmentRange(RootNode, 0, 0), [7]);
 
         Assert.Equal(7, values.Get(RootNode));
     }
@@ -35,7 +35,7 @@ public sealed partial class SegmentTreeBuildTests
     {
         var values = new SegmentTreeArray<int>(LeafCount);
 
-        SegmentTreeBuild.Fill<int, SumOperation<int>>(values, new SegmentRange(RootNode, 0, LeafCount - 1), [1, 2, 3, 4]);
+        SegmentTreeBuild.Fill<int, Addition<int>>(values, new SegmentRange(RootNode, 0, LeafCount - 1), [1, 2, 3, 4]);
 
         Assert.Equal(expected, values.Get(node));
     }
@@ -45,7 +45,7 @@ public sealed partial class SegmentTreeBuildTests
     {
         var values = new SegmentTreeArray<int>(LeafCount, ArenaFill);
 
-        SegmentTreeBuild.Fill<int, SumOperation<int>>(values, new SegmentRange(RootNode, 0, LeafCount - 1), [1, 2, 3, 4]);
+        SegmentTreeBuild.Fill<int, Addition<int>>(values, new SegmentRange(RootNode, 0, LeafCount - 1), [1, 2, 3, 4]);
 
         Assert.Equal(ArenaFill, values.Get(FirstUnvisitedNode));
     }
