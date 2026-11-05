@@ -21,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheShortestSuperstring;
 //   overlap instead of minimizing hop count. The memoized result carries the
 //   predecessor that achieved the optimum as well as the optimum itself, because the
 //   answer is a word order to rebuild, not just the metric.
+[LeetCodeQuestion("find-the-shortest-superstring", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(FindTheShortestSuperstringAnswerCheck), Reach = typeof(FindTheShortestSuperstringReach))]
 internal static class FindTheShortestSuperstringSolution
 {
     // No candidate order has been seen yet; any real total overlap (>= 0) beats it.

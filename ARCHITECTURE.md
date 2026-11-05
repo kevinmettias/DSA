@@ -2551,8 +2551,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,038 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 442 more:
+**Enrolled.** 1,041 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 445 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2750,6 +2750,14 @@ have only the empty tree. A check over those would pass whatever the strategy di
   that hoists one beside its LeetCode-shaped overload, as Number of Possible Sets of Closing Branches does
   a `long[,]`, still binds the jagged one. The generator writes an array of a grid as `int[][,]`, since C#
   reads rank specifiers outermost first and `int[,][]` is a grid of arrays.
+- 3 whose reach the first scan could not find, once a scan could take the cases in an order the caller
+  chooses (2026-11-05): ordered by input length, three abandoned cases ended it before the cheap ones
+  were timed. Find the Number of Possible Ways for an Event reaches 1,000,000 stage assignments,
+  stageCount^n (20 of its 91 cases; 5^10 takes its brute force 546 ms). Kth Smallest Instructions
+  promises a rank among its C(row + column, row) instructions, which 5 generated cases pass, and reaches
+  6,435 of them (50 of the 85 the promise keeps), the count its enumerate-and-sort arm builds. Find the
+  Shortest Superstring takes an answer check, any string as long as the recorded one that holds every
+  word, and reaches 9 words (57 of 88), its permutation arm trying every order.
 
 Open items:
 
@@ -2768,16 +2776,14 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 67 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 64 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
-  - A slow strategy whose reach the generator could not state: Rectangle Area, Circle and Rectangle Overlapping, Rectangle Overlap and
-    Find the Number of Possible Ways for an Event finish no case on every strategy in time; Kth Smallest
-    Instructions was not measured; and Find the Shortest Superstring lets
-    any shortest superstring stand, so it needs an answer check first. Maximum Number of Moves to Kill
-    All Pawns' graph arm spends about 35 ms on every case, two pawns or fifteen, so no bound on its
-    input keeps more than 4 of its 96 cases.
+  - A slow strategy whose reach the generator could not state: Rectangle Area, Circle and Rectangle
+    Overlapping and Rectangle Overlap finish no case on every strategy in time. Maximum Number of Moves
+    to Kill All Pawns' graph arm spends about 35 ms on every case, two pawns or fifteen, so no bound on
+    its input keeps more than 4 of its 96 cases.
   - A design question that lets several answers stand needs an answer check over a whole script: All
     One Data Structure's getMaxKey returns "one of the keys" with the largest count.
   - A design question whose answers are random (Shuffle an Array, Random Pick with Weight, Insert

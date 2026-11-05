@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheNumberOfPossibleWaysForAn
 // composed arm recognizes the per-j counts as a textbook DP recurrence and hands it
 // to this repo's own Memoizer instead of hand-writing the table and its iteration
 // order.
+[LeetCodeQuestion("find-the-number-of-possible-ways-for-an-event", LeetCodeAnswerOrder.AsWritten, Reach = typeof(FindTheNumberOfPossibleWaysForAnEventReach))]
 internal static class FindTheNumberOfPossibleWaysForAnEventSolution
 {
     // Every one of the stageCount^n stage assignments, tallied by how many distinct

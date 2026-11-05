@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.KthSmallestInstructions;
 // The rank is taken as a long rather than LeetCode's int so the count of routes can
 // be compared against it without a widening cast at every step; every int caller
 // converts implicitly.
+[LeetCodeQuestion("kth-smallest-instructions", LeetCodeAnswerOrder.AsWritten, Promise = typeof(KthSmallestInstructionsPromise), Reach = typeof(KthSmallestInstructionsReach))]
 internal static class KthSmallestInstructionsSolution
 {
     private const char Horizontal = 'H';
