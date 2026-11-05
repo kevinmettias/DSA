@@ -7,6 +7,149 @@ Items are closed by the commits they name; what is still open says so.
 
 ---
 
+## Open work ledger (2026-11-05)
+
+Everything the owner has asked for that is not finished. It comes from a sweep of every request in
+the working session that began on 2026-10-04 (typed messages, answers to questions, approved plans),
+each checked against git. An item keeps its id until a commit closes it; close one by naming the
+commit beside it, as the rest of this file does.
+
+### Requested, in progress or not started
+
+- **L1. Time units, English's number words and the per cent.** Opted into on 2026-11-02, written by
+  another session, finished at the owner's request on 2026-11-05, and in HEAD since `c632570f` and
+  `bffe4166`. Left: the final A/B, mutation probes, nomos, ARCHITECTURE's §13.3 and §17.6 rows and
+  §17.10 account, and a commit that records them.
+- **L2. The Domain TODO plan.** The owner's 47 TODOs in 14 Domain files, 2026-11-05: "i wouldnt
+  drop these but i would organize them properly. not everything needs a problem that uses it, the
+  problems are just the inspiration." A value fixed for a configuration is a constant (the owner's
+  ruling of 2026-11-04). B1 is done (`9727ac52`). Left, a commit each:
+  - **B2, chess in Betza notation.** A piece is a name and a list of moves, each move its steps, a
+    reach (1, k or unlimited) and a condition (move only, capture only, first move only). The pawn
+    is given for each side, and LC 999, 1222, 2056 and 3001's baselines read a move's steps (the
+    owner's choice, 2026-11-05).
+  - **B3, positional games.** A board, its winning sets as a hypergraph, and a turn order; m,n,k
+    presets whose M, N and K are constants, Connect Four's gravity, a board mask for holes, and
+    tic-tac-toe as 3,3,3 (LC 1275).
+  - **B4, Latin squares.** Sudoku as a Latin square plus a partition: boxes of rows by columns as
+    constants (6 × 6, 16 × 16), and jigsaw regions as a witness of their own (LC 36, 37).
+  - **B5, language.** Scripts/Latin (base letters and diacritics), Phonetics (IPA), English's
+    orthography (vowel and consonant letters, digraphs, trigraphs) and phonology (phonemes,
+    diphthongs, y's two roles).
+  - **B6, numbers.** Number systems (Cayley-Dickson), set theory (cardinals, ordinals), the extended
+    reals, IEEE 754 floating point, Roman numerals, English number names with a composer generic
+    over its grouping (short, long, Indian), ordinals and fractions, and the facts primes agree on.
+    LC 273 gains the composer as a strategy.
+  - **B7, calendars.** The Gregorian rules as constants, the Julian calendar as a configuration; the
+    units' names move to Language/English.
+  - **B8, metrics.** Lp norms with L1, L2 and L-infinity as presets that need no `Pow`, the step
+    tables' graph metrics, and the A* heuristics reading them.
+  - **B9, other lattices.** Hex and triangular tilings, Z^n, and Life on them; a plan of its own.
+  - O8 below is this plan's open question.
+- **L3. The games program.** 2026-11-02: "we should also include, go, checkers, connect 4, dominos,
+  quatro, pentago, hex, reversi, five in a row, and other popular games that are a matter of logic,
+  combinatorics, geometry, information or abstract strategy. also other games that arent purely
+  logical or mathematical, but highly so, like rubik cube, tetris, etc. and like always generalized
+  them as much as possible and make use of composition, generics and functional design." Not
+  started. It needs a plan, for the owner's approval, that folds in L2's B2, B3, B4 and B9.
+  - Foundations first: a two-player game contract with solvers in Algorithms (negamax with
+    alpha-beta, Sprague-Grundy, retrograde analysis), whose adopters include Nim Game, Stone Game
+    I-IX, Can I Win, Predict the Winner, Divisor Game, Sum Game and Cat and Mouse II; players and
+    turns; lines and runs; permutation groups; polyominoes.
+  - Then the families: k in a row (Connect Four, Gomoku, Pentago, Quarto), capture (Go, Reversi,
+    checkers), connection (Hex, on union-find), dominoes, Tetris, the Rubik cube n × n × n, Nim,
+    Mastermind, Minesweeper and Lights Out.
+- **L4. Element algebra into Domain/Mathematics.** Opted into on 2026-11-02: the group laws in
+  DataStructures/ElementAlgebra are mathematics. Not started. L5's segment-tree and Fenwick items
+  need it.
+- **L5. Compile-time composition of the data structures.** 2026-11-02: "isnt a trie just a
+  specialized tree? same with suffictree, LazySegmenttree, fenwichtree, countedbittrie, segmenttree?
+  can suffixarray, suffixtree, and suffixautomaton share code? ... shouldnt a singlylinkedlist be a
+  constained doublylinkedlist?" 2026-11-03: "the idea is to make this compile time composable, so a
+  data structure doesnt need logic it doesnt need at runtime, but can still show what each ds adds
+  or removes compared to another one." The trie is done (`11b250e5` to `dc589c3d`). Left:
+  - the trie family: BitTrie as the one trie over binary digits, CountedBitTrie if a pooled layout
+    matches it, and SuffixTree as a compressed layout;
+  - the index-space trees: a topology witness for SegmentTree, LazySegmentTree as SegmentTree with
+    propagation a witness that compiles out, Fenwick as two implicit trees, and a witness for Heap;
+  - one substring-index contract over SuffixArray, SuffixTree and SuffixAutomaton, with LCP and the
+    conversions between them, and a review of AhoCorasick;
+  - linked lists: forward-link and back-link contracts, the singly linked list as the doubly linked
+    list without its back link, and CycleDetection on the forward contract.
+- **L6. A contract for every specialized layer.** 2026-11-03: a hand-written specialized structure
+  "must create a interface or contract for exactly the layer it wants to swap in for and what
+  invariantes that layer guarantees", with one contract suite and a strategy benchmark against the
+  modular template. Done once, for LC 208's trie (`5bb34a09`). Left: find the other hand-written
+  structures in the solutions and give each its layer's contract.
+- **L7. The most general form, beyond what is done.** 2026-11-02: "do the most general form for a
+  die, and do the same for other things too." Done: dice, keypads, path notations, locks, Life and
+  Sudoku's names. Left: a compass rose of N points (4 and 8 as presets), Java-package path notation,
+  the most general form of the Mechanisms (Cache, ExpiringSet, SmallestFreeAllocator), Life on any
+  neighbourhood and boundary (with B9), and LC 497 adopting PrefixSumSampler.
+- **L8. One source per fact, the follow-up sweeps** (approved 2026-11-03). Baselines still keep
+  copies of the keypad (LC 17), folder paths (LC 1233), Zuma (LC 488), Sudoku (LC 36, 37), geometry
+  (LC 976, 2971, 3024, 3899, 1610), dice (LC 2318) and gcd's identity (GoodSubsequenceQueries,
+  MinimumStabilityFactorOfArray). Inspect CatAndMouseII, FindSubstringWithGivenHashValue,
+  MaximumNumberOfTasks, StampingTheSequence, SubsequencesWithAUniqueMiddleModeI, DecodeWays,
+  MultiplyStrings, SlidingPuzzle and DeleteDuplicateFolders too. 52 harness files declare
+  `AlphabetSize = 26`; widen SharedValueCopyTests to the benchmarks with them. A commit per subject,
+  each with an A/B.
+- **L9. The fastest C# on LeetCode, and alternative strategies.** 2026-11-03: "we want not just
+  the expected answer but the optimal answer, that would get the 100% tile mark ... if there are
+  multiple different implementations that maybe use different algorithms or data structures that
+  make for an interest comparison and experiement, then do that too." The fetch tool is built; this
+  waits on O1.
+- **L10. LeetCode integration without manual adding** (a future feature, recorded 2026-11-05, not
+  yet approved to build). Every new problem would flow into the catalog, and its solutions would
+  still compose the library and swap strategies. Proposed pipeline: the weekly sync discovers new
+  questions (today it only refreshes the ~1,110 it tracks); a scaffold writes each new question's
+  folder and signature, and flags its promises and answer checks rather than guessing them;
+  LeetCode's fastest C# (L9) becomes the baseline, so the question enrolls at once; then a gated,
+  scheduled agent composes library strategies from a capability index, and a gap report turns a
+  missing primitive into a library proposal for the owner.
+- **L11. Catalog enrollment** (another session's area). 910 solutions enrolled, 72 of them design
+  questions run through call scripts; 195 left as of 2026-11-05. The case-limit mechanism has
+  landed, but no problem declares a limit yet.
+
+### Deferred loose ends
+
+- **D1.** Lattice phases 4 and 5: 11 benchmarks were never measured (RottingOranges,
+  ShortestPathInBinaryMatrix, SpiralMatrix I-IV, SwimInRisingWater, UniquePathsIII, ZeroOneMatrix,
+  WalkingRobotSimulation, RobotBoundedInCircle).
+- **D2.** The grid commit's two rows with no cause found (`c37fe537`): LC 2577 and LC 3341 4-5%
+  slower at 20 × 20, and BricksFallingWhenHit 8-9% slower at 60.
+- **D3.** LC 773 reads 1-3% slower since `7408f14b` (§17.10): an A/A pass and the disassembly, or
+  close it as noise.
+- **D4.** The one trie's `Count`: a write through `TrieNode.HasValue`'s public setter leaves it
+  stale. Give the trie a node-level write that keeps it, or document that it counts `Set` keys only.
+- **D5.** Engine conversions: retry BalancedBinaryTree and BinaryTreeMaximumPathSum on the span
+  fold.
+- **D6.** Benchmark comments that contradict their data: NimGame's two sizes are both multiples of
+  4, so every answer is false; VShapedDiagonalGridWorkloads says "biased" but draws `Next(3)`;
+  LinkedListRandomNode calls 2,000 times on a list of 5,000; NumberOfProvinces' comment. Re-record
+  baseline.tsv on an idle machine, and give LC 336's trie benchmark sizes per arm.
+- **D7.** 42 solution comments still say "rather than at the tier's root".
+
+### Waiting on the owner
+
+- **O1.** The LeetCode session cookie, for L9 and for the Run-endpoint case importer.
+- **O2.** The GitHub setting "Allow GitHub Actions to create and approve pull requests", which the
+  weekly catalog sync's pull request needs.
+- **O3.** Keep the catalog's hand-sized `[Params]` workloads, or generate them (recommended: keep).
+- **O4.** Delete SparseArrayChildren, which nothing has used since `fc25146a`?
+- **O5.** Make CircularBuffer abstract, and split IntervalSet by bound (both low priority).
+- **O6.** nomos: commit X81 in code-standards, declare `peer_groups` for check-sibling-symmetry, and
+  a nomos step in CI.
+- **O7.** A grid-specialized distance array for multi-source breadth-first search (`FromAll`).
+- **O8.** What the empty TODOs in EuclideanPlane.cs and EuclideanPolygons.cs mean.
+- **O9.** BenchmarkClass: a class-size waiver of its own, or a split of its static index; and a
+  sixth check-literals family for the ~40 problem-statement constants in the solutions, or paying
+  them down.
+- **O10.** Deferred by the owner, not waiting: geometry beyond the exact cases, "general where exact
+  for now... fully general when we have everything else stablized".
+
+---
+
 ## Testing
 
 ### The solution-tier waiver hid real gaps — FIXED
