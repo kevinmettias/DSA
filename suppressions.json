@@ -2,6 +2,38 @@
   "schema": 1,
   "waivers": [
     {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/GameSearch/Negamax.cs",
+      "anchor": "`Replay` is exercised by a test",
+      "reason": "BestReply.Replay is reached only through IRecurrence, the interface Memoizer calls it by, from the solver's public method. BestReplyTests names it (Replay_...) and drives it through that method, but the check's call graph does not follow the interface call to the implementation, so it reports no test naming a member that two tests name. Memoizer's own MemoRun is reached by a direct call, which is why its tests count.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/GameSearch/SpragueGrundy.cs",
+      "anchor": "`Replay` is exercised by a test",
+      "reason": "ExcludedOptions.Replay is reached only through IRecurrence, the interface Memoizer calls it by, from the solver's public method. ExcludedOptionsTests names it (Replay_...) and drives it through that method, but the check's call graph does not follow the interface call to the implementation, so it reports no test naming a member that two tests name. Memoizer's own MemoRun is reached by a direct call, which is why its tests count.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-conditional-expression",
+      "path": "DSAExperimentation/Algorithms/GameSearch/SpragueGrundy.cs",
+      "anchor": "int[moveCount]`",
+      "reason": "The conditional chooses where a scratch buffer lives: on the stack when it is small, on the heap when it is not, which is C#'s idiom for a stackalloc of unknown size. Neither operand can be named in a local first, as the check asks, without making the buffer both ways: a stackalloc evaluated before the choice is always taken, and the if/else form trips check-branch-choice.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-conditional-expression",
+      "path": "DSAExperimentation/Domain/Mathematics/GameTheory/MinimumExcludant.cs",
+      "anchor": "bool[length]`",
+      "reason": "The conditional chooses where a scratch buffer lives: on the stack when it is small, on the heap when it is not, which is C#'s idiom for a stackalloc of unknown size. Neither operand can be named in a local first, as the check asks, without making the buffer both ways: a stackalloc evaluated before the choice is always taken, and the if/else form trips check-branch-choice.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-naming-clarity",
       "path": "DSAExperimentation.Tests/Architecture/ReachWalker.cs",
       "anchor": "`VisitObjectCreation`",

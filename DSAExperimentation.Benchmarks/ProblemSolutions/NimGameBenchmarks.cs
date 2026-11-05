@@ -19,4 +19,7 @@ public class NimGameBenchmarks
 
     [Benchmark(Baseline = true)]
     public bool CanWinByModuloFormula() => NimGameSolution.CanWinByModuloFormula(Stones);
+
+    [Benchmark]
+    public bool CanWinBySpragueGrundy() => NimGameSolution.CanWinBySpragueGrundy(Stones);
 }

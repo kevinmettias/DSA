@@ -17,4 +17,8 @@ public class DivisorGameBenchmarks
     [Benchmark(Baseline = true)]
     public bool CanAliceWinByParityFormula() =>
         DivisorGameSolution.CanAliceWinByParityFormula(StartingPosition);
+
+    [Benchmark]
+    public bool CanAliceWinBySpragueGrundy() =>
+        DivisorGameSolution.CanAliceWinBySpragueGrundy(StartingPosition);
 }

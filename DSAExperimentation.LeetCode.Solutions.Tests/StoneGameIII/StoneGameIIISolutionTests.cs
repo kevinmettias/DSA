@@ -29,4 +29,10 @@ public sealed partial class StoneGameIIISolutionTests
     public void WinnerByMemoizedRecursion_Cases_ReturnsWinnerUnderOptimalPlay(
         int[] stoneValue, string expected) =>
         Assert.Equal(expected, StoneGameIIISolution.WinnerByMemoizedRecursion(stoneValue));
+
+    [Theory]
+    [MemberData(nameof(Cases))]
+    public void WinnerByNegamax_Cases_ReturnsWinnerUnderOptimalPlay(
+        int[] stoneValue, string expected) =>
+        Assert.Equal(expected, StoneGameIIISolution.WinnerByNegamax(stoneValue));
 }

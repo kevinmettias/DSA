@@ -25,6 +25,12 @@ public sealed partial class DivisorGameSolutionTests
 
     [Theory]
     [MemberData(nameof(Cases))]
+    public void CanAliceWinBySpragueGrundy_Cases_MatchesExpectedOutcome(
+        DivisorGameCase testCase) =>
+        Assert.Equal(testCase.AliceWins, DivisorGameSolution.CanAliceWinBySpragueGrundy(testCase.N));
+
+    [Theory]
+    [MemberData(nameof(Cases))]
     public void CanAliceWinByParityFormula_Cases_MatchesExpectedOutcome(
         DivisorGameCase testCase) =>
         Assert.Equal(testCase.AliceWins, DivisorGameSolution.CanAliceWinByParityFormula(testCase.N));

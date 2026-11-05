@@ -1,4 +1,7 @@
+using System.Collections.Immutable;
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Algorithms.GameSearch;
+using DSAExperimentation.Domain.Mathematics.GameTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.DivisorGame;
 
@@ -29,6 +32,11 @@ internal static class DivisorGameSolution
     public static bool CanAliceWinByParityFormula(int position) =>
         position % ParityDivisor == 0;
 
+    // The rule named as Domain's impartial game: Alice, moving first, wins when the start's
+    // Grundy number, from Algorithms/GameSearch, is not zero.
+    public static bool CanAliceWinBySpragueGrundy(int position) =>
+        SpragueGrundy.Number(new ProperDivisorSubtraction(position), position) != 0;
+
     // The recurrence, as a named type: the position is winning as soon as some proper
     // divisor of it hands the opponent a losing position - the rule as stated.
     private sealed class WinFromPosition : IRecurrence<int, bool>
@@ -45,5 +53,37 @@ internal static class DivisorGameSolution
 
             return false;
         }
+    }
+
+    // The rule as an impartial game: a turn subtracts a proper divisor of the position. Each
+    // position's proper divisors are sieved once, up to the start, so move i subtracts the
+    // i-th of them without searching.
+    private readonly struct ProperDivisorSubtraction : IImpartialGame<int>
+    {
+        private readonly ImmutableArray<ImmutableArray<int>> _properDivisors;
+
+        public ProperDivisorSubtraction(int largest)
+        {
+            var divisors = new List<int>[largest + 1];
+
+            for (var position = 0; position <= largest; position++)
+            {
+                divisors[position] = [];
+            }
+
+            for (var divisor = 1; divisor <= largest; divisor++)
+            {
+                for (var multiple = divisor * ParityDivisor; multiple <= largest; multiple += divisor)
+                {
+                    divisors[multiple].Add(divisor);
+                }
+            }
+
+            _properDivisors = [.. divisors.Select(list => list.ToImmutableArray())];
+        }
+
+        public int MoveCount(int position) => _properDivisors[position].Length;
+
+        public int Next(int position, int move) => position - _properDivisors[position][move];
     }
 }

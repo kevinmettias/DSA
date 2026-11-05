@@ -1,4 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Algorithms.GameSearch;
+using DSAExperimentation.Domain.Mathematics.GameTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.StoneGameIII;
 
@@ -39,6 +41,15 @@ internal static class StoneGameIIISolution
     // This repo's own Memoizer<TState,TResult> supplies the cache, keyed on the exact
     // index the recurrence branches on, collapsing the exponential recursion to one
     // evaluation per reachable index.
+    // The rule named as Domain's alternating game, valued by Algorithms/GameSearch's negamax:
+    // the recursion above, with the minimax and its memo the library's.
+    public static string WinnerByNegamax(int[] stoneValue)
+    {
+        var difference = Negamax.Value<PrefixTakeGame, int, int>(new PrefixTakeGame(stoneValue), 0);
+
+        return DetermineWinner(difference);
+    }
+
     public static string WinnerByMemoizedRecursion(int[] stoneValue)
     {
         var difference = Memoizer.Memoize<int, int>(
@@ -106,4 +117,28 @@ internal static class StoneGameIIISolution
             < 0 => Bob,
             _ => Tie,
         };
+
+    // The rule as an alternating game: from an index, a turn takes the next one to three stones,
+    // and move i takes i + 1 of them, scoring their sum; nothing is left to score at the end.
+    private readonly struct PrefixTakeGame(int[] stoneValue) : IAlternatingGame<int, int>
+    {
+        public int MoveCount(int index) => Math.Min(MaxTakePerTurn, stoneValue.Length - index);
+
+        public int Next(int index, int move) => index + move + 1;
+
+        public int Gain(int index, int move)
+        {
+            var taken = stoneValue.AsSpan(index, move + 1);
+            var sum = 0;
+
+            foreach (var stone in taken)
+            {
+                sum += stone;
+            }
+
+            return sum;
+        }
+
+        public int ValueWhenOver(int index) => 0;
+    }
 }

@@ -43,4 +43,7 @@ public class StoneGameIIIBenchmarks
 
     [Benchmark]
     public string MemoizedRecursion() => StoneGameIIISolution.WinnerByMemoizedRecursion(_stoneValue);
+
+    [Benchmark]
+    public string Negamax() => StoneGameIIISolution.WinnerByNegamax(_stoneValue);
 }
