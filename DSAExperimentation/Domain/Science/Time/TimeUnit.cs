@@ -2,14 +2,16 @@ using System.Runtime.CompilerServices;
 
 namespace DSAExperimentation.Domain.Science.Time;
 
-// Units of time, each a named struct carrying its name and its length. A microsecond, a millisecond, a
-// second, a minute, an hour and a day are each an exact number of .NET's 100-nanosecond ticks, and their
-// lengths are TimeSpan's own constants, so the platform stays the one source of those numbers; a week is
-// seven days, the one count stated here. The day is the unit of 86,400 seconds the SI accepts, not a
-// civil day: a change of daylight saving makes a civil day 23 or 25 hours, and a leap second makes a UTC
-// day 86,401 seconds. A month and a year are not a fixed length, since the calendar decides them, and a
-// nanosecond is a hundredth of a tick, so none of the three is offered. How a problem names its units is
-// its own notation; it maps its names onto these.
+// Units of time, each a named struct carrying its length. A microsecond, a millisecond, a second, a
+// minute, an hour and a day are each an exact number of .NET's 100-nanosecond ticks, and their
+// lengths are TimeSpan's own constants, so the platform stays the one source of those numbers; a
+// week is seven days, the one count stated here. The day is the unit of 86,400 seconds the SI
+// accepts, not a civil day: a change of daylight saving makes a civil day 23 or 25 hours, and a
+// leap second makes a UTC day 86,401 seconds. A month and a year are not a fixed length: a calendar
+// decides them, so they are its units, and Calendars/ states them (Calendar.MonthLength and
+// YearLength). A nanosecond is a hundredth of a tick, so it is not offered either. A unit's name is
+// a language's, so English's words for these are Language/English's (EnglishTimeUnitWords), and how
+// a problem names its units is its own notation, mapped onto these.
 //
 // Every length is fixed, so each unit states its length as a C# constant (the owner's ruling of
 // 2026-11-04): a caller that knows its units divides one constant by another, Minute.Ticks / Second.Ticks,
@@ -17,12 +19,10 @@ namespace DSAExperimentation.Domain.Science.Time;
 // constants through ITimeUnit and folds to the count once inlined. LC 1348 first called Count from its
 // switch on a frequency's name: each arm folded, but the switch's IL had grown past what the JIT would
 // inline into the query, which then paid a call on every query and read 7-21% slower.
-/// <summary>Units of time, each a struct carrying its name and its length, and the count of one unit in another.</summary>
+/// <summary>Units of time, each carrying its length, and the count of one unit in another.</summary>
 public static class TimeUnit
 {
     private const int DaysPerWeek = 7;
-
-    // TODO: CONSIDER ADDING MORE TIME UNITS LIKE MONTH, YEAR, OR CUSTOM UNITS, AND HANDLING NON-FIXED LENGTH UNITS.
 
     private const string NotAWholeCountMessage = "Expected a unit that fits a whole number of times into this one.";
 
@@ -57,9 +57,6 @@ public static class TimeUnit
         public const long Ticks = TimeSpan.TicksPerMicrosecond;
 
         static long ITimeUnit.Ticks => Ticks;
-
-        /// <inheritdoc/>
-        public static string Name => "microsecond";
     }
 
     /// <summary>A millisecond, a thousandth of a second.</summary>
@@ -69,9 +66,6 @@ public static class TimeUnit
         public const long Ticks = TimeSpan.TicksPerMillisecond;
 
         static long ITimeUnit.Ticks => Ticks;
-
-        /// <inheritdoc/>
-        public static string Name => "millisecond";
     }
 
     /// <summary>A second, the SI unit of time.</summary>
@@ -81,9 +75,6 @@ public static class TimeUnit
         public const long Ticks = TimeSpan.TicksPerSecond;
 
         static long ITimeUnit.Ticks => Ticks;
-
-        /// <inheritdoc/>
-        public static string Name => "second";
     }
 
     /// <summary>A minute, 60 seconds.</summary>
@@ -93,9 +84,6 @@ public static class TimeUnit
         public const long Ticks = TimeSpan.TicksPerMinute;
 
         static long ITimeUnit.Ticks => Ticks;
-
-        /// <inheritdoc/>
-        public static string Name => "minute";
     }
 
     /// <summary>An hour, 60 minutes.</summary>
@@ -105,9 +93,6 @@ public static class TimeUnit
         public const long Ticks = TimeSpan.TicksPerHour;
 
         static long ITimeUnit.Ticks => Ticks;
-
-        /// <inheritdoc/>
-        public static string Name => "hour";
     }
 
     /// <summary>A day, 24 hours: the SI-accepted unit, not a civil day that daylight saving or a leap second lengthens.</summary>
@@ -117,9 +102,6 @@ public static class TimeUnit
         public const long Ticks = TimeSpan.TicksPerDay;
 
         static long ITimeUnit.Ticks => Ticks;
-
-        /// <inheritdoc/>
-        public static string Name => "day";
     }
 
     /// <summary>A week, seven days.</summary>
@@ -129,10 +111,5 @@ public static class TimeUnit
         public const long Ticks = TimeSpan.TicksPerDay * DaysPerWeek;
 
         static long ITimeUnit.Ticks => Ticks;
-
-        /// <inheritdoc/>
-        public static string Name => "week";
     }
 }
-
-// TODO: FOLLOW SIMILAR PATTERN AS TODOS IN EnglishNumberWords.cs

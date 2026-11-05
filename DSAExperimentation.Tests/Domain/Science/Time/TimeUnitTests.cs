@@ -3,7 +3,7 @@ using DSAExperimentation.Domain.Science.Time;
 namespace DSAExperimentation.Tests.Domain.Science.Time;
 
 // Each unit's length is the fact, so the tests state it as how many of the next smaller unit make it
-// up, which chains every length back to the microsecond, and read each name.
+// up, which chains every length back to the microsecond.
 public sealed partial class TimeUnitTests
 {
     [Fact]
@@ -31,15 +31,6 @@ public sealed partial class TimeUnitTests
             ]);
 
     [Fact]
-    public void Name_EachUnit_IsItsEnglishName() =>
-        Assert.Equal(
-            ["microsecond", "millisecond", "second", "minute", "hour", "day", "week"],
-            [
-                TimeUnit.Microsecond.Name, TimeUnit.Millisecond.Name, TimeUnit.Second.Name, TimeUnit.Minute.Name,
-                TimeUnit.Hour.Name, TimeUnit.Day.Name, TimeUnit.Week.Name,
-            ]);
-
-    [Fact]
     public void Ticks_Second_IsOneSecond() => Assert.Equal(TimeUnit.Second.Ticks, TimeSpan.FromSeconds(1).Ticks);
 
     [Fact]
@@ -53,11 +44,9 @@ public sealed partial class TimeUnitTests
     public void Count_UnitThatDoesNotFitWholly_Throws() =>
         Assert.Throws<ArgumentException>(() => TimeUnit.Count<NinetySeconds, TimeUnit.Minute>());
 
-    // A unit no whole number of minutes long.
+    // A unit of the caller's own, no whole number of minutes long.
     private readonly struct NinetySeconds : ITimeUnit
     {
-        public static string Name => "ninety seconds";
-
         public static long Ticks => 90 * TimeSpan.TicksPerSecond;
     }
 }
