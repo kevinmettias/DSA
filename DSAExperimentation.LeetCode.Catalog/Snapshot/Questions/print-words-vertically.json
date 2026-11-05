@@ -56,7 +56,7 @@
       "Inputs": [
         "\"TO BE OR NOT TO BE\""
       ],
-      "ExpectedOutput": "[\"TBONTB\",\"OEROOE\",\" T\"]"
+      "ExpectedOutput": "[\"TBONTB\",\"OEROOE\",\"   T\"]"
     },
     {
       "Inputs": [

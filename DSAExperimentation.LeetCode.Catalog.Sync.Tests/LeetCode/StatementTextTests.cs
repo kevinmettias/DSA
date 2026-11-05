@@ -55,6 +55,12 @@ public sealed partial class StatementTextTests
         </pre>
         """;
 
+    // LC 1324's second example, whose last row holds three spaces before its letter.
+    private const string SpacedString = """
+        <p><strong>Output:</strong> [&quot;TBONTB&quot;,&quot;OEROOE&quot;,&quot;   T&quot;]
+        <strong>Explanation:</strong> Trailing spaces are not allowed.</p>
+        """;
+
     private const string ConstraintsList = """
         <p><strong>Constraints:</strong></p>
         <ul>
@@ -71,6 +77,10 @@ public sealed partial class StatementTextTests
     [Fact]
     public void Outputs_ExampleBlocks_ReadsTheDecodedValue()
         => Assert.Equal(["\"cba\""], StatementText.Outputs(BlockExamples));
+
+    [Fact]
+    public void Outputs_QuotedStringHoldingSeveralSpaces_KeepsThem()
+        => Assert.Equal(["[\"TBONTB\",\"OEROOE\",\"   T\"]"], StatementText.Outputs(SpacedString));
 
     [Fact]
     public void Inputs_PreformattedExamples_ReadsEachInputLine()

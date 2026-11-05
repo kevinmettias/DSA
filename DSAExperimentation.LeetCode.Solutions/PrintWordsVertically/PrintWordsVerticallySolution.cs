@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PrintWordsVertically;
 // how that row is trimmed: the textbook arm materializes the padded row as a
 // string and calls TrimEnd, while the composed arm trims in place by popping the
 // tail of this repo's own DynamicArray<char> before the string is ever built.
+[LeetCodeQuestion("print-words-vertically", LeetCodeAnswerOrder.AsWritten)]
 internal static class PrintWordsVerticallySolution
 {
     private const char Padding = ' ';

@@ -22,6 +22,7 @@ internal static partial class StatementText
     private const string ItemsGroup = "items";
     private const string ItemGroup = "item";
     private const string SingleSpace = " ";
+    private const char Quote = '"';
     private const char NoBreakSpace = '\u00a0';
     private const string ZeroWidthSpace = "\u200b";
 
@@ -74,17 +75,29 @@ internal static partial class StatementText
     private static partial Regex Superscripts();
 
     // Tags dropped, entities decoded, zero-width spaces removed, every run of whitespace (no-break
-    // spaces included) one space.
+    // spaces included) one space - except inside a quoted string, whose spaces are part of its value:
+    // LC 1324's "   T" keeps all three.
     private static string PlainText(string html)
     {
         var untagged = Tag().Replace(html, string.Empty);
         var decoded = WebUtility.HtmlDecode(untagged).Replace(NoBreakSpace, ' ').Replace(ZeroWidthSpace, string.Empty);
-        return Whitespace().Replace(decoded, SingleSpace).Trim();
+        return WhitespaceOrQuoted().Replace(decoded, CollapsedUnlessQuoted).Trim();
+    }
+
+    private static string CollapsedUnlessQuoted(Match match)
+    {
+        if (match.Value[0] == Quote)
+        {
+            return match.Value;
+        }
+
+        return SingleSpace;
     }
 
     [GeneratedRegex(@"<[^>]+>")]
     private static partial Regex Tag();
 
-    [GeneratedRegex(@"\s+")]
-    private static partial Regex Whitespace();
+    // A quoted string, escapes included, or a run of whitespace outside one.
+    [GeneratedRegex(@"""(?:[^""\\]|\\.)*""|\s+")]
+    private static partial Regex WhitespaceOrQuoted();
 }

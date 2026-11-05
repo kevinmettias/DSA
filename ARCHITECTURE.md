@@ -2110,7 +2110,10 @@ here is one of its hidden tests. Each case carries its source:
   example list holds inputs the statement never shows, such as Check if There is a Valid Path in a
   Grid's three grids, and pairing by position had recorded other inputs' answers for them until
   2026-11-03. An output the statement writes in prose, such as "tail connects to node index 1", is
-  not recorded.
+  not recorded. Reading the statement's text folds each run of whitespace into one space, except
+  inside a quoted string, whose spaces are its value: Print Words Vertically's `"   T"` had been
+  recorded as `" T"`, and Regions Cut by Slashes' stated grids `" /"` had not matched their stored
+  inputs, so its examples went unpaired, until 2026-11-04.
 - **Dataset** cases come from LeetCodeDataset (Apache-2.0). Their inputs were generated and their
   outputs printed by a reference Python solution. The importer drops a case:
   - whose reference failed;
@@ -2334,8 +2337,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 743 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 147 more:
+**Enrolled.** 744 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 148 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2391,6 +2394,7 @@ have only the empty tree. A check over those would pass whatever the strategy di
   the generated cases did not always keep.
 - Accounts Merge, whose generated cases gave one email to accounts of different names. The statement
   makes one person of accounts that share an email, and its promise drops the rest.
+- Print Words Vertically, once its recorded example kept the spaces of `"   T"` (§17.12).
 
 Open items:
 
@@ -2409,7 +2413,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 362 solutions are left (2026-11-04), each blocked for a reason the table and
+- **Enrolling the rest.** 361 solutions are left (2026-11-04), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
