@@ -113,5 +113,5 @@ internal static class ValidSudokuSolution
     private static bool TryRecordDigit(Set<string> seen, int row, int col, char digit) =>
         seen.TryAdd($"r{row}:{digit}") &&
         seen.TryAdd($"c{col}:{digit}") &&
-        seen.TryAdd($"b{Sudoku<ClassicSudoku>.BoxOf(row, col)}:{digit}");
+        seen.TryAdd($"b{Sudoku<ClassicSudoku>.RegionOf(row, col)}:{digit}");
 }
