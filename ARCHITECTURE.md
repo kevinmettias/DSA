@@ -2569,8 +2569,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,047 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 451 more:
+**Enrolled.** 1,048 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 452 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2794,6 +2794,15 @@ have only the empty tree. A check over those would pass whatever the strategy di
 - Check If There Is a Valid Parentheses String Path, once it took LeetCode's `char[][]` beside its own
   `char[,]` (§17.4) and promised a rectangle of parentheses: 15 generated grids have rows of different
   lengths, which no `char[,]` holds. Every case it keeps finishes in 7.8 ms, unmemoized arm included.
+- Modify Graph Edge Weights (2026-11-05), once its query tuple was read spread over LeetCode's inputs
+  and an answer check took any valid assignment: each -1 edge from 1 to 2 * 10^9, every other edge as it
+  was, the edges in any order, and the destination exactly target away. The check found the half-distance
+  arm wrong. It priced each -1 edge by the input's order of its ends, source to the first and the second
+  to destination, so on 5 generated cycle graphs, whose shortest path crossed an edge the other way, it
+  gave up on assignments that exist. It prices the shorter crossing now. Over 20,000 random graphs of up
+  to 7 nodes the old pricing answered 3,799 wrongly and the new none, judged by the check and by the rule
+  that an assignment exists exactly when the all-floor distance is at most target and the distance
+  without the -1 edges at least target.
 
 Open items:
 
@@ -2812,7 +2821,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 58 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 57 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.

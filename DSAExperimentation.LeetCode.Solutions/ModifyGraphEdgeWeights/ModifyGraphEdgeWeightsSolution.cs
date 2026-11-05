@@ -23,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ModifyGraphEdgeWeights;
 // weight arrays, where the composed arm asks ShortestPath.Dijkstra over
 // AssignableEdgeGraph. Shortest distances are the same whichever oracle computes
 // them, so the choice of oracle changes no weight the scan settles on.
+[LeetCodeQuestion("modify-graph-edge-weights", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(ModifyGraphEdgeWeightsAnswerCheck))]
 internal static class ModifyGraphEdgeWeightsSolution
 {
     // LeetCode states each edge as [from, to, weight].
@@ -236,22 +237,60 @@ internal static class ModifyGraphEdgeWeightsSolution
     }
 
     // Both half-distances come from the graph as it stands, so an edge an earlier
-    // iteration already stretched is priced in rather than re-derived. An end that no
-    // path has reached yet fails the whole read instead of standing in as zero:
+    // iteration already stretched is priced in rather than re-derived. The path may
+    // cross the edge either way, so both crossings are read and the shorter priced;
+    // reading only the input's order of its ends priced a cycle's far side backwards
+    // and gave up on assignments that exist. A crossing whose entry or exit no path
+    // has reached yet is no crossing at all, rather than an end standing in as zero:
     // pricing an unreachable end as 0 would let the formula invent a weight the graph
-    // cannot actually support. Both lookups run even when the first finds nothing -
-    // they are pure reads, and a half-distance only means anything as one of a pair.
+    // cannot actually support.
     private static bool TrySettledHalfDistances(WeightSearch search, int edgeIndex, out int head, out int tail)
     {
         var (from, to) = search.Graph.Endpoints(edgeIndex);
         var fromSource = Distances(search.Graph, search.Source);
         var fromDestination = Distances(search.Graph, search.Destination);
-        var headNode = search.Graph.Node(from);
-        var tailNode = search.Graph.Node(to);
-        var headSettled = fromSource.TryGetValue(headNode, out head);
-        var tailSettled = fromDestination.TryGetValue(tailNode, out tail);
+        var forward = HalvesThrough(fromSource, fromDestination, search.Graph.Node(from), search.Graph.Node(to));
+        var backward = HalvesThrough(fromSource, fromDestination, search.Graph.Node(to), search.Graph.Node(from));
 
-        return headSettled && tailSettled;
+        (head, tail) = ShorterOf(forward, backward);
+
+        return forward is not null || backward is not null;
+    }
+
+    // The two halves a path from source to destination pays crossing the edge from entry to exit, or null
+    // when either end is not yet reached: the distance from source to entry, and from exit to destination.
+    private static (int Head, int Tail)? HalvesThrough(
+        Dictionary<AssignableEdgeNode, int> fromSource, Dictionary<AssignableEdgeNode, int> fromDestination,
+        AssignableEdgeNode entry, AssignableEdgeNode exit)
+    {
+        if (!fromSource.TryGetValue(entry, out var head) || !fromDestination.TryGetValue(exit, out var tail))
+        {
+            return null;
+        }
+
+        return (head, tail);
+    }
+
+    // An edge is undirected, so the path through it crosses it whichever way is shorter: the input's order
+    // of its ends says nothing about which end the path meets first.
+    private static (int Head, int Tail) ShorterOf((int Head, int Tail)? forward, (int Head, int Tail)? backward)
+    {
+        if (forward is not { } ahead)
+        {
+            return backward ?? default;
+        }
+
+        if (backward is not { } behind)
+        {
+            return ahead;
+        }
+
+        if (ahead.Head + ahead.Tail <= behind.Head + behind.Tail)
+        {
+            return ahead;
+        }
+
+        return behind;
     }
 
     // Whatever target has left over once both halves are paid for, and never below the
