@@ -10,16 +10,12 @@ namespace DSAExperimentation.LeetCode.Harness;
 /// The answers of a generated arm for a design question: every call's return value, by case, in the buffer
 /// of the method the call made.
 /// </summary>
-public sealed class CatalogCallAnswers
+/// <param name="calls">For each case, the index of each call's method, the constructor's first.</param>
+/// <param name="buffersByMethod">Each method's buffer of answers by case and call; null for a method that returns nothing.</param>
+public sealed class CatalogCallAnswers(int[][] calls, Array?[] buffersByMethod)
 {
-    private readonly int[][] _calls;
-    private readonly Array?[] _buffersByMethod;
-
-    internal CatalogCallAnswers(int[][] calls, Array?[] buffersByMethod)
-    {
-        _calls = calls;
-        _buffersByMethod = buffersByMethod;
-    }
+    private readonly int[][] _calls = calls;
+    private readonly Array?[] _buffersByMethod = buffersByMethod;
 
     /// <summary>How many cases the answers are for.</summary>
     public int Count => _calls.Length;
@@ -33,7 +29,8 @@ public sealed class CatalogCallAnswers
 
         for (var call = 0; call < script.Length; call++)
         {
-            answers.Add(AnswerOf(script[call], caseIndex, call));
+            var answer = AnswerOf(script[call], caseIndex, call);
+            answers.Add(answer);
         }
 
         return answers;
@@ -46,7 +43,10 @@ public sealed class CatalogCallAnswers
             return null;
         }
 
-        var answers = (Array)buffer.GetValue(caseIndex)!;
+        if (buffer.GetValue(caseIndex) is not Array answers)
+        {
+            throw new InvalidOperationException($"Method {method}'s buffer holds no answers for case {caseIndex}.");
+        }
 
         return AnswerNotation.Of(answers.GetValue(call));
     }

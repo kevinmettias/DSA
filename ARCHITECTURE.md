@@ -2254,9 +2254,21 @@ internal static class TwoSumSolution
   its size, whether there is one at all - rather than what it must be: Longest Palindromic
   Substring's check takes any palindrome in the string as long as the recorded one. `CatalogJudge`
   asks the check instead of comparing.
+- For a design question, the type standing for the calls the strategies' instance does not answer by a
+  method of the call's name (`Calls`), as `LRUCacheCalls.Get` turns `ICache`'s `TryGetValue` into
+  LeetCode's -1 for a missing key. Each of its methods is named for its call and takes the instance,
+  then the call's arguments (below).
+- The type that states how far the strategies reach (`Reach`), when one of them cannot finish every
+  case the catalog holds: a brute force that runs for seconds on the larger inputs, a recursion that
+  overflows the stack. Its `IsWithin` takes the strategy's inputs, as a promise's `IsKeptBy` does, and
+  `CatalogColumns` leaves out every case beyond it for every arm, so all of them answer the same cases
+  and the ratio to the Baseline keeps its meaning. It bounds the question's own measure - a length, a
+  value - and chooses no input of its own.
 
-All seven are facts about the problem. The attribute names no size and no workload: the catalog's
-cases are the inputs LeetCode poses, and choosing sizes stays a tier-5 decision (§17.7). Being data,
+The first eight are facts about the problem; the reach is one about its strategies. The attribute
+names no workload: the catalog's cases are the inputs LeetCode poses, and choosing sizes stays a
+tier-5 decision (§17.7). A reach is the one size it names, by the owner's ruling of 2026-11-05: it
+says which of LeetCode's own cases the strategies can finish, where a workload would choose inputs. Being data,
 the attribute keeps tier 4 off the machine (§17.6c). Nothing in the solutions project reads the
 catalog.
 
@@ -2296,6 +2308,19 @@ run of that category times both, and `--filter '*CatalogBenchmarks*'` selects th
   question declares, then the one matching most of the declared types - and a tie is refused. The
   benchmarks project hands the generator each question's snapshot file for its signature, and
   `CatalogStrategy` reads the same signature from the catalog (`LeetCodeShape` in each).
+- A design question's cases are call scripts: the class's name, then each method LeetCode calls on
+  one instance, beside each call's arguments. Its strategies are factories, `CreateBy<Strategy>`, that
+  take the constructor's inputs and make the instance. The generator reads the question's constructor
+  and methods from its snapshot file (`DesignShape`) and binds each method by name, ignoring case and
+  LeetCode's underscores: to a static method of the question's `Calls` type, which takes the instance
+  first, or else to the instance's own method (`ScriptShape`). `[GlobalSetup]` lays the scripts out
+  once (`CatalogScripts`): which method each call makes, and each call's arguments read into the types
+  of the method that answers it. Each arm makes its instance with its factory, case by case, and makes
+  every call directly through a switch on the method, writing each answer into a buffer of that
+  method's return type. It returns the buffers together as a `CatalogCallAnswers`, which the tests
+  read back as LeetCode writes a script's answer: null for the constructor and for each call that
+  returns nothing. `CatalogStrategy` replays the same bindings by reflection (`CatalogCalls`).
+  LeetCodeDataset holds no design question, so each is judged on its published examples alone.
 - A strategy no arm can call fails the build with `DSACAT001`, naming why. It may be generic, answer
   in place where its question does not say so, or take a type the notation cannot be read into. Leaving it out instead would show an
   enrolled solution as measured when one of its strategies was not.
@@ -2319,6 +2344,8 @@ of tier 4. It holds:
 - `NotationReader` and `CatalogColumns`, the reading described above;
 - `CatalogStrategy`, which finds an enrolled solution's strategies by the generator's own rule and
   calls one on one case;
+- `CatalogCalls`, `CatalogScripts` and `CatalogCallAnswers`, which bind a design question's calls,
+  lay its scripts out for a generated arm, and read the arm's answers back;
 - `AnswerNotation` and `CatalogJudge`, which write an answer back in LeetCode's notation and judge it
   against the recorded output by the question's order rule. A missing tree or list in a sequence of
   them is LeetCode's `[]`, as a whole answer that is null is, the way LeetCode prints LC 725's empty
@@ -2431,8 +2458,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 837 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 241 more:
+**Enrolled.** 910 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 314 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2548,6 +2575,18 @@ have only the empty tree. A check over those would pass whatever the strategy di
   Search Tree, Reorder List and Wiggle Sort II, which also takes any valid wiggle through an answer
   check. The dataset records no changed input for such a question, so each is judged on its 2 or 3
   examples; every generated case is still timed, and holds the arms to one another.
+- 72 design questions, once call scripts could be replayed (2026-11-05). 61 bind as they are, their
+  instances answering every call by its name. 11 state a `Calls` type: LRU Cache and LFU Cache (get's -1),
+  Implement Queue using Stacks (`IsEmpty`), Implement Trie (`IPrefixSet`'s `Add`, `HasKey`,
+  `HasPrefix`), Design SQL (ins, rmv, sel, exp), Subrectangle Queries and Detect Squares (corners and
+  points as LeetCode lists them), Design Bitset (`ToBitString`), Walking Robot Simulation II, Design
+  Memory Allocator and Design Graph With Shortest Path Calculator. Longest Uploaded Prefix and Seat
+  Reservation Manager each have a strategy that needs no count, whose factory takes LeetCode's count
+  all the same. 37 of the 72 first gained factories, their strategies having been nested classes
+  only.
+- Minimum Number of Moves to Make Palindrome, promising a string that can become a palindrome: at most
+  one letter appears an odd number of times. Both strategies nudge an unmatched letter inward and
+  retry, so on the 38 generated cases that break it they never finished.
 
 Open items:
 
@@ -2566,12 +2605,24 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 268 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 195 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
-  - An exponential baseline, or one that overflows the stack, needs a case limit before the
-    dataset's largest inputs run through it.
+  - An exponential baseline, or one that overflows the stack, needs a reach: about 100 run past the
+    250 ms a case is allowed, and each needs its bound chosen from where its slowest arm's times turn.
+  - A design question whose instance rewrites an input it is handed: Complete Binary Tree Inserter
+    grows the tree its constructor takes, so a second call on one harness starts from a bigger tree.
+    A design class does not yet hand each call inputs of its own, as `RewritesInput` does above.
+  - A design question that lets several answers stand needs an answer check over a whole script: All
+    One Data Structure's getMaxKey returns "one of the keys" with the largest count.
+  - A design question whose answers are random (Shuffle an Array, Random Pick with Weight, Insert
+    Delete GetRandom O(1) and seven more) has no recorded answer to compare.
+  - Ten design solutions are not shaped as an instance and its calls: Number of Recent Calls, Range
+    Sum Query - Immutable and Range Frequency Queries answer one query, or one batch, per call; Fancy
+    Sequence, Kth Largest Element in a Stream, Online Election, Online Stock Span, Prefix and Suffix
+    Search, Range Sum Query 2D - Immutable and Kth Ancestor of a Tree Node take a constructor other
+    than LeetCode's.
   - A statement that leaves the order free without saying so (Word Search II, Majority Element
     II) needs the order rule LeetCode's judge applies, checked against its own submission rather
     than read from the wording.

@@ -82,7 +82,7 @@ internal sealed class CatalogScriptWriter(string solution, string className, IRe
                 {{FieldOf(arm)}}Calls = {{LocalOf(arm)}}Scripts.Calls;
         {{Joined(arm.Inputs.Select((input, index) => $"        {FieldOf(arm)}Input{index} = {LocalOf(arm)}Scripts.ConstructorColumn<{input}>({index});"))}}
         {{Joined(arm.Calls.Select((call, method) => CallSetupOf(arm, call, method)))}}
-                {{FieldOf(arm)}}Answers = {{LocalOf(arm)}}Scripts.AnswersFrom({{string.Join(ArgumentSeparator, arm.Calls.Select((call, method) => BufferOf(arm, call, method)))}});
+                {{FieldOf(arm)}}Answers = {{LocalOf(arm)}}Scripts.AnswersFrom([{{string.Join(ArgumentSeparator, arm.Calls.Select((call, method) => BufferOf(arm, call, method)))}}]);
         """;
 
     private static string CallSetupOf(ScriptShape arm, ScriptCall call, int method)

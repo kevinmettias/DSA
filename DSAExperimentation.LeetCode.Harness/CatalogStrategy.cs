@@ -68,19 +68,6 @@ internal sealed class CatalogStrategy
             .Select(overloads => StrategyOf(solution, [.. overloads], question, design))];
     }
 
-    private static CatalogStrategy StrategyOf(Type solution, List<MethodInfo> overloads, LeetCodeQuestionAttribute? question, LeetCodeSignature? design)
-    {
-        if (question is null || design is null)
-        {
-            return new CatalogStrategy(solution, TheBoundOverload(solution, overloads, question), question, calls: null);
-        }
-
-        var factory = TheFactory(solution, overloads, design);
-        var calls = CatalogCalls.For(factory, question.Calls, design.Methods);
-
-        return new CatalogStrategy(solution, factory, question, calls);
-    }
-
     // The signature of the solution's question when it is a design question; null for a function question or
     // a solution that names none.
     private static LeetCodeSignature? DesignSignatureOf(LeetCodeQuestionAttribute? question)
@@ -100,31 +87,17 @@ internal sealed class CatalogStrategy
         return signature;
     }
 
-    // The one overload that makes a design question's object: taking the constructor's inputs, each of them
-    // readable, and returning the object its calls are made on.
-    private static MethodInfo TheFactory(Type solution, List<MethodInfo> overloads, LeetCodeSignature design)
+    private static CatalogStrategy StrategyOf(Type solution, List<MethodInfo> overloads, LeetCodeQuestionAttribute? question, LeetCodeSignature? design)
     {
-        var bound = overloads.Where(method => IsFactory(method, design.ConstructorParameters.Count)).ToList();
-
-        if (bound.Count != 1)
+        if (question is null || design is null)
         {
-            throw new InvalidOperationException(
-                $"{solution.Name}.{overloads[0].Name} has {bound.Count} overloads that make the question's object from its constructor's inputs, and a catalog arm needs exactly one.");
+            return new CatalogStrategy(solution, TheBoundOverload(solution, overloads, question), question, calls: null);
         }
 
-        return bound[0];
-    }
+        var factory = TheFactory(solution, overloads, design);
+        var calls = CatalogCallBinder.Bind(factory, question.Calls, design.Methods);
 
-    private static bool IsFactory(MethodInfo method, int constructorInputs)
-    {
-        var parameters = method.GetParameters();
-
-        if (method.IsGenericMethodDefinition || HasNoAnswerToStore(method.ReturnType) || parameters.Length != constructorInputs)
-        {
-            return false;
-        }
-
-        return parameters.All(parameter => IsReadableInput(parameter.ParameterType));
+        return new CatalogStrategy(solution, factory, question, calls);
     }
 
     // The one overload a case can feed; of several, the one LeetCode's signature shapes (LeetCodeShape).
@@ -147,6 +120,56 @@ internal sealed class CatalogStrategy
         return bound[0];
     }
 
+    // The generator's rule, over run-time types: not generic, an answer to store by value - or, for a
+    // question answered in place, no return value and a first input to answer with - and every input one
+    // LeetCode's notation can be read into.
+    private static bool IsBindable(MethodInfo method, LeetCodeQuestionAttribute? question)
+    {
+        var parameters = method.GetParameters();
+        var isAnsweredInPlace = question?.AnswersInPlace ?? false;
+        var answers = isAnsweredInPlace ? IsInPlaceAnswer(method, parameters) : !HasNoAnswerToStore(method.ReturnType);
+
+        if (method.IsGenericMethodDefinition || !answers)
+        {
+            return false;
+        }
+
+        return parameters.All(parameter => parameter.IsOut || IsReadableInput(parameter.ParameterType));
+    }
+
+    // Returns nothing, and leaves its answer in a first parameter that a case fills.
+    private static bool IsInPlaceAnswer(MethodInfo method, ParameterInfo[] parameters) =>
+        method.ReturnType == typeof(void) && parameters is [{ IsOut: false }, ..];
+
+    // The one overload that makes a design question's object: taking the constructor's inputs, each of them
+    // readable, and returning the object its calls are made on.
+    private static MethodInfo TheFactory(Type solution, List<MethodInfo> overloads, LeetCodeSignature design)
+    {
+        var bound = overloads.Where(method => IsFactory(method, design.ConstructorParameters.Count)).ToList();
+
+        if (bound.Count != 1)
+        {
+            throw new InvalidOperationException(
+                $"{solution.Name}.{overloads[0].Name} has {bound.Count} overloads that make the question's object from its constructor's inputs, and a catalog arm needs exactly one.");
+        }
+
+        return bound[0];
+    }
+
+    private static bool IsFactory(MethodInfo method, int constructorInputs)
+    {
+        var parameters = method.GetParameters();
+        var makesNoInstanceFromTheInputs =
+            method.IsGenericMethodDefinition || HasNoAnswerToStore(method.ReturnType) || parameters.Length != constructorInputs;
+
+        if (makesNoInstanceFromTheInputs)
+        {
+            return false;
+        }
+
+        return parameters.All(parameter => IsReadableInput(parameter.ParameterType));
+    }
+
     // The catalog's cases read into this strategy's parameter types, fresh on every call, so a strategy
     // that rewrites its input rewrites only its own copy; a design question's, as its call scripts.
     public CatalogColumns Columns()
@@ -165,7 +188,7 @@ internal sealed class CatalogStrategy
     {
         if (_calls is { } calls)
         {
-            return calls.AnswerTo((string[])columns.ValueAt(0, caseIndex)!, (JsonArray)columns.ValueAt(1, caseIndex)!);
+            return ScriptAnswerTo(calls, columns, caseIndex);
         }
 
         var parameters = _method.GetParameters();
@@ -179,6 +202,18 @@ internal sealed class CatalogStrategy
         }
 
         return NotationOf(returned, outputs);
+    }
+
+    // A design question's case replayed: its columns hold the script's calls and their arguments
+    // (CatalogColumns.ForScripts).
+    private static JsonNode ScriptAnswerTo(CatalogCalls calls, CatalogColumns columns, int caseIndex)
+    {
+        if (columns.ValueAt(0, caseIndex) is not string[] script || columns.ValueAt(1, caseIndex) is not JsonArray arguments)
+        {
+            throw new InvalidOperationException($"Case {caseIndex} holds no call script.");
+        }
+
+        return calls.AnswerTo(script, arguments);
     }
 
     // A case's inputs at the positions of the parameters they fill; each out parameter's slot stays empty
@@ -237,27 +272,6 @@ internal sealed class CatalogStrategy
 
         return false;
     }
-
-    // The generator's rule, over run-time types: not generic, an answer to store by value - or, for a
-    // question answered in place, no return value and a first input to answer with - and every input one
-    // LeetCode's notation can be read into.
-    private static bool IsBindable(MethodInfo method, LeetCodeQuestionAttribute? question)
-    {
-        var parameters = method.GetParameters();
-        var isAnsweredInPlace = question?.AnswersInPlace ?? false;
-        var answers = isAnsweredInPlace ? IsInPlaceAnswer(method, parameters) : !HasNoAnswerToStore(method.ReturnType);
-
-        if (method.IsGenericMethodDefinition || !answers)
-        {
-            return false;
-        }
-
-        return parameters.All(parameter => parameter.IsOut || IsReadableInput(parameter.ParameterType));
-    }
-
-    // Returns nothing, and leaves its answer in a first parameter that a case fills.
-    private static bool IsInPlaceAnswer(MethodInfo method, ParameterInfo[] parameters) =>
-        method.ReturnType == typeof(void) && parameters is [{ IsOut: false }, ..];
 
     // A void method answers by mutating its input, and a ref return or a ref struct cannot sit in an array.
     private static bool HasNoAnswerToStore(Type returnType) =>

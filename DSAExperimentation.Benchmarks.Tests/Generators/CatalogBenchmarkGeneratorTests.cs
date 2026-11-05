@@ -75,6 +75,18 @@ public sealed partial class CatalogBenchmarkGeneratorTests
 
     private const string ProbeSlug = "probe";
 
+    // What the generated class of DesignProbe holds: an arm returning its calls' answers; put, which the
+    // map answers itself; get on the cache, through the Calls type with the instance first; each case's
+    // instance made by the arm's factory; and the answer buffers as one list, put's slot empty.
+    private const string DesignArm = "public global::DSAExperimentation.LeetCode.Harness.CatalogCallAnswers CreateByMap()";
+    private const string OwnMethodCall = "made.Put(call0Input0[index][call], call0Input1[index][call]);";
+    private const string StatedMethodCall = "call1Answers[index][call] = global::ProbeCalls.Get(made, call1Input0[index][call]);";
+    private const string FactoryCall = "var made = global::ProbeSolution.CreateByCache(input0[index]);";
+    private const string BuffersByMethod = "AnswersFrom([null, _createByMapCall1Answers]);";
+
+    // The refusal for a get no method answers.
+    private const string NoGetCall = "no get call";
+
     // A design question's probe: one factory makes a map that answers put and get itself, the other a cache
     // whose get the question's Calls type states, since the cache answers only TryGet.
     private const string DesignProbe = """
@@ -261,25 +273,31 @@ public sealed partial class CatalogBenchmarkGeneratorTests
 
     [Fact]
     public void Initialize_DesignSolution_ArmsReturnTheirCallsAnswers() =>
-        Assert.Contains("public global::DSAExperimentation.LeetCode.Harness.CatalogCallAnswers CreateByMap()", DesignSourceOf(DesignProbe));
+        Assert.Contains(DesignArm, DesignSourceOf(DesignProbe));
 
     [Fact]
-    public void Initialize_DesignSolution_CallsAMethodTheObjectAnswersOnTheObject() =>
-        Assert.Contains("made.Put(call0Input0[index][call], call0Input1[index][call]);", DesignSourceOf(DesignProbe));
+    public void Initialize_DesignSolution_CallsAMethodTheMadeInstanceAnswersOnIt() =>
+        Assert.Contains(OwnMethodCall, DesignSourceOf(DesignProbe));
 
     [Fact]
-    public void Initialize_DesignSolution_CallsTheCallsTypesMethodWithTheObjectFirst() =>
-        Assert.Contains("call1Answers[index][call] = global::ProbeCalls.Get(made, call1Input0[index][call]);", DesignSourceOf(DesignProbe));
+    public void Initialize_DesignSolution_CallsTheCallsTypesMethodWithTheInstanceFirst() =>
+        Assert.Contains(StatedMethodCall, DesignSourceOf(DesignProbe));
 
     [Fact]
-    public void Initialize_DesignSolution_MakesEachCasesObjectWithTheArmsFactory() =>
-        Assert.Contains("var made = global::ProbeSolution.CreateByCache(input0[index]);", DesignSourceOf(DesignProbe));
+    public void Initialize_DesignSolution_MakesEachCasesInstanceWithTheArmsFactory() =>
+        Assert.Contains(FactoryCall, DesignSourceOf(DesignProbe));
+
+    // As one list, a slot per method in the signature's order: put returns nothing, get fills its buffer. A
+    // buffer handed alone to a params Array[] would stand for the list itself.
+    [Fact]
+    public void Initialize_DesignSolution_HandsItsAnswerBuffersAsOneListByMethod() =>
+        Assert.Contains(BuffersByMethod, DesignSourceOf(DesignProbe));
 
     [Fact]
-    public void Initialize_DesignObjectAnsweringNoCall_ReportsTheCallItCannotMake() =>
+    public void Initialize_DesignInstanceAnsweringNoCall_ReportsTheCallItCannotMake() =>
         Assert.Contains(
             GeneratorProbe.GenerateWithQuestion(UncalledDesignProbe, ProbeSlug, DesignQuestion).Diagnostics,
-            diagnostic => diagnostic.Id == UnboundStrategy && diagnostic.GetMessage().Contains("no get call"));
+            diagnostic => diagnostic.Id == UnboundStrategy && diagnostic.GetMessage().Contains(NoGetCall));
 
     [Fact]
     public void Initialize_NoSolutionNamesAQuestion_WritesNothing() =>

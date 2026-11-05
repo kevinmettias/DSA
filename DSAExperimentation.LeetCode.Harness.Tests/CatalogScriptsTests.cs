@@ -30,8 +30,7 @@ public sealed partial class CatalogScriptsTests
 
     [Fact]
     public void AnswersFrom_EachMethodsBuffer_AnswersEveryCase() =>
-        Assert.Equal(1, Scripts.AnswersFrom(Scripts.AnswerBuffer<int>(), null).Count);
-
+        Assert.Equal(1, Scripts.AnswersFrom([Scripts.AnswerBuffer<int>(), null]).Count);
     [Fact]
     public void New_MethodsOmittingOneAScriptCalls_ThrowsInvalidOperationException() =>
         Assert.Throws<InvalidOperationException>(() => new CatalogScripts(CatalogColumns.ForScripts(typeof(ScriptProbeSolution)), ["get"]));

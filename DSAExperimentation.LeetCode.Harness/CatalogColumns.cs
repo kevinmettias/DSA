@@ -39,18 +39,6 @@ internal sealed class CatalogColumns(IReadOnlyList<LeetCodeCase> cases, object?[
         return new CatalogColumns([.. kept.Select(row => row.Case)], byParameter);
     }
 
-    // A design question's cases as two columns: each script's calls - the class's name, then the names of
-    // LeetCode's methods - and each call's arguments as LeetCode lists them, which CatalogScripts and
-    // CatalogCalls read into the types of the methods that answer them.
-    public static CatalogColumns ForScripts(Type solution)
-    {
-        var cases = LeetCodeCatalog.Cases(QuestionOf(solution).TitleSlug);
-        object?[] calls = [.. cases.Select(testCase => NotationReader.Read(testCase.Inputs[0], typeof(string[])))];
-        object?[] arguments = [.. cases.Select(testCase => JsonNode.Parse(testCase.Inputs[1]))];
-
-        return new CatalogColumns(cases, [calls, arguments]);
-    }
-
     // One argument per input; or, for a case with more inputs than parameters, a tuple or record parameter of
     // several values over as many consecutive inputs, when the widths add up to the inputs exactly.
     private static object?[] ArgumentsOf(LeetCodeCase testCase, Type[] parameterTypes)
@@ -114,6 +102,18 @@ internal sealed class CatalogColumns(IReadOnlyList<LeetCodeCase> cases, object?[
             ?? throw new InvalidOperationException($"{statement.Name} has no {predicate} taking the strategy's inputs.");
 
         return method.Invoke(null, BindingFlags.DoNotWrapExceptions, binder: null, arguments, culture: null) is true;
+    }
+
+    // A design question's cases as two columns: each script's calls - the class's name, then the names of
+    // LeetCode's methods - and each call's arguments as LeetCode lists them, which CatalogScripts and
+    // CatalogCalls read into the types of the methods that answer them.
+    public static CatalogColumns ForScripts(Type solution)
+    {
+        var cases = LeetCodeCatalog.Cases(QuestionOf(solution).TitleSlug);
+        object?[] calls = [.. cases.Select(testCase => NotationReader.Read(testCase.Inputs[0], typeof(string[])))];
+        object?[] arguments = [.. cases.Select(testCase => JsonNode.Parse(testCase.Inputs[1]))];
+
+        return new CatalogColumns(cases, [calls, arguments]);
     }
 
     public static LeetCodeQuestionAttribute QuestionOf(Type solution) =>

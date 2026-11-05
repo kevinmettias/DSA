@@ -81,68 +81,12 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
 
         foreach (var solution in solutions)
         {
-            AddClassFor(solution, attribute, QuestionSnapshotFor(solution, attribute, snapshotBySlug), generated);
+            var snapshot = QuestionSnapshotFor(solution, attribute, snapshotBySlug);
+            AddClassFor(solution, attribute, snapshot, generated);
         }
 
         return generated;
     }
-
-    // A design question's class replays its call scripts; any other question's runs its cases' inputs.
-    private static void AddClassFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, QuestionSnapshot? snapshot, GeneratedClasses generated)
-    {
-        if (snapshot?.Design is { } design)
-        {
-            AddDesignClassFor(solution, attribute, design, generated);
-        }
-        else
-        {
-            AddFunctionClassFor(solution, attribute, snapshot?.Declared, generated);
-        }
-    }
-
-    private static void AddDesignClassFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, DesignShape design, GeneratedClasses generated)
-    {
-        var stated = TypeArgumentOf(solution, attribute, CallsArgument);
-        var arms = new List<ScriptShape>();
-
-        foreach (var overloads in solution.GetMembers().OfType<IMethodSymbol>().Where(IsStrategy).GroupBy(method => method.Name))
-        {
-            var bound = overloads.Select(factory => ScriptShape.Of(factory, stated, design)).ToList();
-            var shapes = bound.Where(candidate => candidate.Shape is not null).Select(candidate => candidate.Shape!).ToList();
-
-            if (shapes.Count == 1)
-            {
-                arms.Add(shapes[0]);
-            }
-            else
-            {
-                generated.Refusals.Add((solution.Name, overloads.Key, ReasonNoFactoryOrSeveral(bound, shapes.Count)));
-            }
-        }
-
-        var name = NameFor(solution);
-        var writer = new CatalogScriptWriter(NotationTypes.Render(solution), name, arms);
-        generated.Sources.Add((name, writer.Write()));
-    }
-
-    private static string ReasonNoFactoryOrSeveral(List<(ScriptShape? Shape, string? Reason)> bound, int boundCount)
-    {
-        if (boundCount > 0)
-        {
-            return $"{boundCount} of its overloads make the question's object, so which one is the arm is not settled";
-        }
-
-        return bound[0].Reason ?? NoOverloadBinds;
-    }
-
-    // The type a typeof argument of the solution's attribute names, such as its Calls type; null when unset.
-    private static INamedTypeSymbol? TypeArgumentOf(INamedTypeSymbol solution, INamedTypeSymbol attribute, string argumentName) =>
-        solution.GetAttributes()
-            .Where(applied => SymbolEqualityComparer.Default.Equals(applied.AttributeClass, attribute))
-            .SelectMany(applied => applied.NamedArguments)
-            .Where(argument => argument.Key == argumentName)
-            .Select(argument => argument.Value.Value as INamedTypeSymbol)
-            .FirstOrDefault(type => type is not null);
 
     // The assembly declaring the attribute, and every referenced assembly that compiles against it, as the
     // solutions project does. LeetCode's conventions declare it, below the solutions that carry it.
@@ -167,6 +111,63 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
         var applied = solution.GetAttributes().First(candidate => SymbolEqualityComparer.Default.Equals(candidate.AttributeClass, attribute));
         var slug = applied.ConstructorArguments.FirstOrDefault().Value as string;
         return slug is not null && snapshotBySlug.TryGetValue(slug, out var snapshot) ? snapshot : null;
+    }
+
+    // A design question's class replays its call scripts; any other question's runs its cases' inputs.
+    private static void AddClassFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, QuestionSnapshot? snapshot, GeneratedClasses generated)
+    {
+        if (snapshot?.Design is { } design)
+        {
+            AddDesignClassFor(solution, attribute, design, generated);
+        }
+        else
+        {
+            AddFunctionClassFor(solution, attribute, snapshot?.Declared, generated);
+        }
+    }
+
+    private static void AddDesignClassFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, DesignShape design, GeneratedClasses generated)
+    {
+        var stated = TypeArgumentOf(solution, attribute, CallsArgument);
+        var arms = new List<ScriptShape>();
+
+        foreach (var overloads in solution.GetMembers().OfType<IMethodSymbol>().Where(IsStrategy).GroupBy(method => method.Name))
+        {
+            var bound = overloads.Select(factory => ScriptShape.Of(factory, stated, design)).ToList();
+            var shapes = bound.Select(candidate => candidate.Shape).OfType<ScriptShape>().ToList();
+
+            if (shapes.Count == 1)
+            {
+                arms.Add(shapes[0]);
+            }
+            else
+            {
+                generated.Refusals.Add((solution.Name, overloads.Key, ReasonNoFactoryOrSeveral(bound, shapes.Count)));
+            }
+        }
+
+        var name = NameFor(solution);
+        var writer = new CatalogScriptWriter(NotationTypes.Render(solution), name, arms);
+        generated.Sources.Add((name, writer.Write()));
+    }
+
+    // The type a typeof argument of the solution's attribute names, such as its Calls type; null when unset.
+    private static INamedTypeSymbol? TypeArgumentOf(INamedTypeSymbol solution, INamedTypeSymbol attribute, string argumentName) =>
+        solution.GetAttributes()
+            .Where(applied => SymbolEqualityComparer.Default.Equals(applied.AttributeClass, attribute))
+            .SelectMany(applied => applied.NamedArguments)
+            .Where(argument => argument.Key == argumentName)
+            .Select(argument => argument.Value.Value as INamedTypeSymbol)
+            .FirstOrDefault(type => type is not null);
+
+    private static string ReasonNoFactoryOrSeveral(List<(ScriptShape? Shape, string? Reason)> bound, int boundCount)
+    {
+        if (boundCount > 0)
+        {
+            return $"{boundCount} of its overloads make the question's instance, so which one is the arm is not settled";
+        }
+
+        return bound[0].Reason ?? NoOverloadBinds;
     }
 
     private static void AddFunctionClassFor(INamedTypeSymbol solution, INamedTypeSymbol attribute, IReadOnlyList<string>? declared, GeneratedClasses generated)
@@ -235,16 +236,6 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
         return StrategyShape.ReasonUnbound(overloads[0], source) ?? NoOverloadBinds;
     }
 
-    private static string NameFor(INamedTypeSymbol solution)
-    {
-        if (!solution.Name.EndsWith(SolutionSuffix, StringComparison.Ordinal))
-        {
-            return solution.Name + ClassSuffix;
-        }
-
-        return solution.Name.Substring(0, solution.Name.Length - SolutionSuffix.Length) + ClassSuffix;
-    }
-
     private static void Emit(SourceProductionContext output, GeneratedClasses generated)
     {
         foreach (var (name, source) in generated.Sources)
@@ -290,5 +281,15 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
         public List<(string Name, string Source)> Sources { get; } = [];
 
         public List<(string Solution, string Strategy, string Reason)> Refusals { get; } = [];
+    }
+
+    private static string NameFor(INamedTypeSymbol solution)
+    {
+        if (!solution.Name.EndsWith(SolutionSuffix, StringComparison.Ordinal))
+        {
+            return solution.Name + ClassSuffix;
+        }
+
+        return solution.Name.Substring(0, solution.Name.Length - SolutionSuffix.Length) + ClassSuffix;
     }
 }

@@ -5,5 +5,5 @@ internal static class ReachProbeReach
 {
     private const int TallestFlight = 10;
 
-    public static bool IsWithin(int n) => n <= TallestFlight;
+    public static bool IsWithin(int stairs) => stairs <= TallestFlight;
 }

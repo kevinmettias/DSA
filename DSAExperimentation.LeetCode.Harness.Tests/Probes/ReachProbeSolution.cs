@@ -6,5 +6,5 @@ namespace DSAExperimentation.LeetCode.Harness.Tests.Probes;
 [LeetCodeQuestion("climbing-stairs", LeetCodeAnswerOrder.AsWritten, Reach = typeof(ReachProbeReach))]
 internal static class ReachProbeSolution
 {
-    public static int WaysByCounting(int n) => n;
+    public static int WaysByCounting(int stairs) => stairs;
 }

@@ -691,6 +691,34 @@
       "expires": "2027-05-01"
     },
     {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.LeetCode.Solutions/*/*Calls.cs",
+      "reason": "A Calls type's method is named for the LeetCode call it answers, ignoring case - ins, rmv, sel, exp, getPos - because that name is how CatalogCalls and the generator bind it to the call script (ARCHITECTURE 17.13); spelling it out would leave the call unanswered.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-boolean-predicate",
+      "path": "DSAExperimentation.LeetCode.Solutions/*/*Calls.cs",
+      "reason": "A Calls type's method is named for the LeetCode call it answers, ignoring case - empty, search, startsWith, ins - because that name is how CatalogCalls and the generator bind it to the call script (ARCHITECTURE 17.13); a predicate prefix would leave the call unanswered.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-parameter-count",
+      "path": "DSAExperimentation.LeetCode.Solutions/*/*Calls.cs",
+      "reason": "A Calls type's method takes the instance the script calls and then exactly the arguments LeetCode's call lists, in its order - updateSubrectangle lists five - because the harness reads each from the script positionally (ARCHITECTURE 17.13); LeetCode fixes how many there are.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.LeetCode.Solutions.Tests/*/*CallsTests.cs",
+      "reason": "A Calls type's test method starts with the name of the Calls method it tests - Rmv, GetPos, GetDir - which is LeetCode's call name, because the harness binds that name to the call script (ARCHITECTURE 17.13) and LeetCodeStrategyCoverageTests and check-test-coverage read a test by its first word.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-parameter-count",
       "path": "DSAExperimentation.LeetCode.Solutions.Tests/*/*AnswerCheckTests.cs",
       "reason": "An answer check's test theory takes the arguments IsAccepted takes - the question's inputs in LeetCode's order, the answer and the recorded answer - and the verdict it should give, so its parameter count is the check's plus one; the check's own entry says why that count is fixed.",

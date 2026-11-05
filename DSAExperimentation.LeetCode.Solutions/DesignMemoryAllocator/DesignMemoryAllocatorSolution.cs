@@ -27,9 +27,9 @@ internal static class DesignMemoryAllocatorSolution
 {
     // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
     // scripts run on (ARCHITECTURE 17.13).
-    public static IMemoryAllocatorStrategy CreateByArrayScan(int n) => new MemoryAllocatorByArrayScan(n);
+    public static IMemoryAllocatorStrategy CreateByArrayScan(int memorySize) => new MemoryAllocatorByArrayScan(memorySize);
 
-    public static IMemoryAllocatorStrategy CreateByHashMapIndex(int n) => new MemoryAllocatorByHashMapIndex(n);
+    public static IMemoryAllocatorStrategy CreateByHashMapIndex(int memorySize) => new MemoryAllocatorByHashMapIndex(memorySize);
 
     // The shared surface both strategies implement, so a harness can replay one
     // call script against either without restating it.
