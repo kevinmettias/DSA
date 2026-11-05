@@ -2112,8 +2112,8 @@ here is one of its hidden tests. Each case carries its source:
   2026-11-03. An output the statement writes in prose, such as "tail connects to node index 1", is
   not recorded. Reading the statement's text folds each run of whitespace into one space, except
   inside a quoted string, whose spaces are its value: Print Words Vertically's `"   T"` had been
-  recorded as `" T"`, and Regions Cut by Slashes' stated grids `" /"` had not matched their stored
-  inputs, so its examples went unpaired, until 2026-11-04.
+  recorded as `" T"`, and Regions Cut by Slashes' second grid, `[" /","  "]`, had not matched its
+  stored input, which left all three of its examples unpaired, until 2026-11-04.
 - **Dataset** cases come from LeetCodeDataset (Apache-2.0). Their inputs were generated and their
   outputs printed by a reference Python solution. The importer drops a case:
   - whose reference failed;
