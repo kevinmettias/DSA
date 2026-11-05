@@ -23,7 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.QueensThatCanAttackTheKing;
 // O(queens) once is precisely what the arm has to earn back.
 //
 // The board and the queen's lines are chess's (Domain/Games/Chess), and both arms read
-// them there (ARCHITECTURE §17.5): ChessPiece.Queen.Moves' order is the order each arm
+// them there (ARCHITECTURE §17.5): the order of ChessPiece.QueenRide's steps is the order each arm
 // lists the attackers in, so the arms agree answer for answer.
 [LeetCodeQuestion("queens-that-can-attack-the-king", LeetCodeAnswerOrder.AnyOrder)]
 internal static class QueensThatCanAttackTheKingSolution
@@ -39,7 +39,7 @@ internal static class QueensThatCanAttackTheKingSolution
     {
         var attackers = new List<(int Row, int Col)>();
 
-        foreach (var (deltaRow, deltaCol) in ChessPiece.Queen.Moves)
+        foreach (var (deltaRow, deltaCol) in ChessPiece.QueenRide.Steps)
         {
             var row = board.KingRow + deltaRow;
             var col = board.KingCol + deltaCol;
@@ -88,7 +88,7 @@ internal static class QueensThatCanAttackTheKingSolution
 
         var attackers = new List<(int Row, int Col)>();
 
-        foreach (var line in ChessPiece.Queen.Moves)
+        foreach (var line in ChessPiece.QueenRide.Steps)
         {
             var attacker = FindAttackerAlongRay(occupied, board, line);
 

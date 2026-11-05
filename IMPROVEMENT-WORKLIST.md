@@ -49,8 +49,10 @@ commit beside it, as the rest of this file does.
   quatro, pentago, hex, reversi, five in a row, and other popular games that are a matter of logic,
   combinatorics, geometry, information or abstract strategy. also other games that arent purely
   logical or mathematical, but highly so, like rubik cube, tetris, etc. and like always generalized
-  them as much as possible and make use of composition, generics and functional design." Not
-  started. It needs a plan, for the owner's approval, that folds in L2's B2, B3, B4 and B9.
+  them as much as possible and make use of composition, generics and functional design." Planned
+  with L5 and approved on 2026-11-05: the two interleave, games with no LeetCode problem get strong
+  play of their own beyond the generic solvers, and game states are functional unless measured
+  slower than make/unmake. The plan folds in L2's B3, B4 and B9.
   - Foundations first: a two-player game contract with solvers in Algorithms (negamax with
     alpha-beta, Sprague-Grundy, retrograde analysis), whose adopters include Nim Game, Stone Game
     I-IX, Can I Win, Predict the Winner, Divisor Game, Sum Game and Cat and Mouse II; players and
@@ -58,15 +60,17 @@ commit beside it, as the rest of this file does.
   - Then the families: k in a row (Connect Four, Gomoku, Pentago, Quarto), capture (Go, Reversi,
     checkers), connection (Hex, on union-find), dominoes, Tetris, the Rubik cube n × n × n, Nim,
     Mastermind, Minesweeper and Lights Out.
-- **L4. Element algebra into Domain/Mathematics.** Opted into on 2026-11-02: the group laws in
-  DataStructures/ElementAlgebra are mathematics. Not started. L5's segment-tree and Fenwick items
-  need it.
+- **L4. Element algebra into Domain/Mathematics — DONE** (`a78f0815`). Opted into on 2026-11-02:
+  the group laws are mathematics, so they moved to Domain/Mathematics/Algebra under the
+  mathematics' names, the owner's ruling of 2026-11-05 (IMonoid, IAbelianGroup, IIntegerModule;
+  Addition, Minimum, Maximum, BitwiseXor).
 - **L5. Compile-time composition of the data structures.** 2026-11-02: "isnt a trie just a
   specialized tree? same with suffictree, LazySegmenttree, fenwichtree, countedbittrie, segmenttree?
   can suffixarray, suffixtree, and suffixautomaton share code? ... shouldnt a singlylinkedlist be a
   constained doublylinkedlist?" 2026-11-03: "the idea is to make this compile time composable, so a
   data structure doesnt need logic it doesnt need at runtime, but can still show what each ds adds
-  or removes compared to another one." The trie is done (`11b250e5` to `dc589c3d`). Left:
+  or removes compared to another one." The trie is done (`11b250e5` to `dc589c3d`). Planned with L3
+  and approved on 2026-11-05. Left:
   - the trie family: BitTrie as the one trie over binary digits, CountedBitTrie if a pooled layout
     matches it, and SuffixTree as a compressed layout;
   - the index-space trees: a topology witness for SegmentTree, LazySegmentTree as SegmentTree with

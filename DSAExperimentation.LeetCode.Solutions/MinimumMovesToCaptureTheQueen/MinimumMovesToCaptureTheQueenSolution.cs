@@ -30,12 +30,12 @@ internal static class MinimumMovesToCaptureTheQueenSolution
     // is among them. The arm the direct line-of-sight check below has to beat.
     public static int MinMovesByDestinationEnumeration(ChessSquare rook, ChessSquare bishop, ChessSquare queen)
     {
-        if (CanReachAnySquare(rook, ChessPiece.Rook.Moves.AsSpan(), bishop, queen))
+        if (CanReachAnySquare(rook, ChessPiece.RookRide.Steps.AsSpan(), bishop, queen))
         {
             return 1;
         }
 
-        if (CanReachAnySquare(bishop, ChessPiece.Bishop.Moves.AsSpan(), rook, queen))
+        if (CanReachAnySquare(bishop, ChessPiece.BishopRide.Steps.AsSpan(), rook, queen))
         {
             return 1;
         }

@@ -121,12 +121,13 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
         }
     }
 
-    // Each arm's lines and board, chess's own; LeetCode numbers squares from 1.
+    // Each arm's lines and board, chess's own: the steps of each piece's one move, a ride.
+    // LeetCode numbers squares from 1.
     private static ImmutableArray<GridStep> LinesFor(string pieceType) => pieceType switch
     {
-        RookPieceType => ChessPiece.Rook.Moves,
-        BishopPieceType => ChessPiece.Bishop.Moves,
-        QueenPieceType => ChessPiece.Queen.Moves,
+        RookPieceType => ChessPiece.RookRide.Steps,
+        BishopPieceType => ChessPiece.BishopRide.Steps,
+        QueenPieceType => ChessPiece.QueenRide.Steps,
         _ => throw new ArgumentOutOfRangeException(nameof(pieceType), pieceType, UnknownPieceTypeMessage),
     };
 
