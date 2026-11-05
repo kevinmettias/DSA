@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DecodeString;
 // result - walked in a single left-to-right pass. StringBuilder (not string
 // concatenation) keeps each ']' fold-back O(repeated length) instead of
 // re-copying the whole enclosing scope every time.
+[LeetCodeQuestion("decode-string", LeetCodeAnswerOrder.AsWritten, Promise = typeof(DecodeStringPromise))]
 internal static class DecodeStringSolution
 {
     // The textbook answer: recursion depth tracks nesting depth, not input

@@ -21,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AllAncestorsOfANodeInADirectedAc
 // pass: by the time a node is reached in topological order every one of ITS
 // ancestors is already final, so unioning {node} + node's ancestors onto each
 // child once is enough.
+[LeetCodeQuestion("all-ancestors-of-a-node-in-a-directed-acyclic-graph", LeetCodeAnswerOrder.AsWritten, Promise = typeof(AllAncestorsOfANodeInADirectedAcyclicGraphPromise))]
 internal static class AllAncestorsOfANodeInADirectedAcyclicGraphSolution
 {
     // The textbook answer: walk forward from every node in turn and record that
@@ -170,7 +171,7 @@ internal static class AllAncestorsOfANodeInADirectedAcyclicGraphSolution
 
     // LeetCode's own input shape: edges[i] = [fromi, toi], an edge from ancestor
     // fromi to descendant toi over nodes 0..n-1.
-    private static List<AncestorNode> BuildNodes(int nodeCount, int[][] edges)
+    internal static List<AncestorNode> BuildNodes(int nodeCount, int[][] edges)
     {
         var nodes = new List<AncestorNode>(nodeCount);
 

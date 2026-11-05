@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConstructStringWithMinimumCost;
 // first i characters, dp[0] = 0, and a word matching target at [i, i+len) offers
 // dp[i+len] = min(dp[i+len], dp[i] + cost] - and differ only in how they find
 // every (position, matching word) pair the DP transitions over.
+[LeetCodeQuestion("construct-string-with-minimum-cost", LeetCodeAnswerOrder.AsWritten, Promise = typeof(ConstructStringWithMinimumCostPromise))]
 internal static class ConstructStringWithMinimumCostSolution
 {
     private const int Unreached = int.MaxValue;

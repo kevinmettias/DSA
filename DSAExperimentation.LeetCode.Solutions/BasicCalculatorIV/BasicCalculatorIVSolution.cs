@@ -19,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BasicCalculatorIV;
 // instead of keeping two structurally identical parsers in sync - the same
 // "same algorithm, repo primitive vs. BCL equivalent" comparison
 // BasicCalculatorSolution's Stack<(int,int)> vs. BCL Stack arms use for LC 224.
+[LeetCodeQuestion("basic-calculator-iv", LeetCodeAnswerOrder.AsWritten, Promise = typeof(BasicCalculatorIVPromise))]
 internal static class BasicCalculatorIVSolution
 {
     // The textbook baseline: a plain BCL Dictionary<string,long> for the running

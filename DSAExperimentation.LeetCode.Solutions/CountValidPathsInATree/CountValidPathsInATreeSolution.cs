@@ -26,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountValidPathsInATree;
 // non-prime node) to count every valid path whose unique prime is p: a running
 // pairwise sweep over p's arms adds, one arm at a time, the nodes paired with every
 // earlier arm plus the nodes paired with p itself. O(n a(n)) overall.
+[LeetCodeQuestion("count-valid-paths-in-a-tree", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CountValidPathsInATreePromise))]
 internal static class CountValidPathsInATreeSolution
 {
     // The validity rule itself: one prime on the path, no more and no fewer.

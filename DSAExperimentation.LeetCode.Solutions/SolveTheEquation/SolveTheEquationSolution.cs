@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SolveTheEquation;
 // SolveBySpanParse instead walks the same term boundaries over a
 // ReadOnlySpan<char> and calls int.Parse directly on the slice, allocating nothing
 // per term.
+[LeetCodeQuestion("solve-the-equation", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SolveTheEquationPromise))]
 internal static class SolveTheEquationSolution
 {
     private const string InfiniteSolutionsMessage = "Infinite solutions";

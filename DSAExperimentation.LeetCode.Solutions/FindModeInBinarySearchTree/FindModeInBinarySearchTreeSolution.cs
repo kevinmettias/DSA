@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindModeInBinarySearchTree;
 // InOrderTraversal/IInOrderHooks over BinaryTreeNode<int>, the same composition
 // KthSmallestElementInABSTSolution uses, collecting modes into a
 // DynamicArray<int> instead of a BCL List<int>.
+[LeetCodeQuestion("find-mode-in-binary-search-tree", LeetCodeAnswerOrder.AnyOrder, Promise = typeof(FindModeInBinarySearchTreePromise))]
 internal static class FindModeInBinarySearchTreeSolution
 {
     // The textbook fix for an arbitrary binary tree: a Dictionary<int,int>

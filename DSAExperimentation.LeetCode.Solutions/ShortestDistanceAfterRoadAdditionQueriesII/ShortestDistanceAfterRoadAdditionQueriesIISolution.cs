@@ -19,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortestDistanceAfterRoadAdditio
 // however many interior cities have been bypassed so far - and "which cities have been
 // bypassed" is precisely a merged set of disjoint closed ranges, which is this repo's
 // own IntervalSet<int>.
+[LeetCodeQuestion("shortest-distance-after-road-addition-queries-ii", LeetCodeAnswerOrder.AsWritten, Promise = typeof(ShortestDistanceAfterRoadAdditionQueriesIIPromise))]
 internal static class ShortestDistanceAfterRoadAdditionQueriesIISolution
 {
     // Baseline: keep growing one real adjacency list and re-run a fresh BFS from city 0

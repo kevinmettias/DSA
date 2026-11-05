@@ -45,4 +45,16 @@ public sealed partial class AllAncestorsOfANodeInADirectedAcyclicGraphSolutionTe
             AllAncestorsOfANodeInADirectedAcyclicGraphSolution
                 .GetAncestorsByTopologicalDpPass(nodeCount, edges)
                 .Select(ancestors => ancestors.ToArray()));
+
+    // One node per id, each pointing at the nodes its edges lead to, in edge order: 0 at 1 and 2, 1 at 2.
+    [Fact]
+    public void BuildNodes_Edges_PointsEachNodeAtTheNodesItsEdgesLeadTo()
+    {
+        var nodes = AllAncestorsOfANodeInADirectedAcyclicGraphSolution.BuildNodes(4, [[0, 1], [0, 2], [1, 2]]);
+        var ids = nodes.Select(node => node.Id);
+        var successors = nodes.Select(node => node.Neighbors.Select(neighbor => neighbor.Id).ToArray());
+
+        Assert.Equal([0, 1, 2, 3], ids);
+        Assert.Equal([[1, 2], [2], [], []], successors);
+    }
 }

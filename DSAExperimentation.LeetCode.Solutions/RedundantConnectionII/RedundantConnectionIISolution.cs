@@ -7,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RedundantConnectionII;
 // two ways - a node ends up with two parents, or (with every node still having at
 // most one parent) the edges close a cycle - and DisjointSet.IsConnected/Union
 // alone only detects the second.
+[LeetCodeQuestion("redundant-connection-ii", LeetCodeAnswerOrder.AsWritten, Promise = typeof(RedundantConnectionIIPromise))]
 internal static class RedundantConnectionIISolution
 {
     // The textbook brute force: retry validity from scratch for every candidate

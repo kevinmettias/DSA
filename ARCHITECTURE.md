@@ -2342,8 +2342,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 749 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 153 more:
+**Enrolled.** 763 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 167 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2403,6 +2403,14 @@ have only the empty tree. A check over those would pass whatever the strategy di
 - 5 whose failing cases each recorded an answer past 32 bits, once the importer dropped those
   (§17.12): Coin Change II, Combination Sum IV, Decode Ways, Baseball Game and Replace Non-Coprime
   Numbers in Array.
+- 14 more promises, among them an acyclic graph (All Ancestors of a Node in a Directed Acyclic
+  Graph, checked by the library's topological sort), no move after a win (Find Winner on a Tic Tac
+  Toe Game, on Domain's tic-tac-toe rules), a rooted tree with one edge added (Redundant Connection
+  II), roads that never cross (Shortest Distance After Road Addition Queries II), a search tree (Find
+  Mode in Binary Search Tree, in any order), unique positions (Erect the Fence, in any order), and a
+  whole x where there is one (Solve the Equation, read term by term rather than through the
+  strategies' parse). Gas Station and 3Sum Closest promise a unique answer, which generated cases
+  broke with several stations that could start or two sums tied for closest.
 
 Open items:
 
@@ -2421,7 +2429,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 356 solutions are left (2026-11-04), each blocked for a reason the table and
+- **Enrolling the rest.** 342 solutions are left (2026-11-04), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.

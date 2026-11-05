@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.GasStation;
 // force simulates a full lap from every candidate start, while the greedy pass
 // walks the route once, advancing its candidate start the moment the running
 // tank goes negative.
+[LeetCodeQuestion("gas-station", LeetCodeAnswerOrder.AsWritten, Promise = typeof(GasStationPromise))]
 internal static class GasStationSolution
 {
     // The textbook O(n^2) check: simulate a full lap from each candidate start,

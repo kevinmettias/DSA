@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindServersThatHandledMostNumber
 // Both strategies simulate the same arrival sequence and differ only in how they
 // answer "smallest free server index at or after `start`, wrapping": a walk around
 // the ring, or a prefix-sum ceiling query.
+[LeetCodeQuestion("find-servers-that-handled-most-number-of-requests", LeetCodeAnswerOrder.AnyOrder, Promise = typeof(FindServersThatHandledMostNumberOfRequestsPromise))]
 internal static class FindServersThatHandledMostNumberOfRequestsSolution
 {
     // A request that finds no free server is dropped, not queued.

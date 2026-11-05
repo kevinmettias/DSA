@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindWinnerOnATicTacToeGame;
 // rules are Domain/Games/TicTacToe's, which the running-counts arm reads; the
 // board-rescan baseline reads the board's size there and writes its own rescan
 // (ARCHITECTURE §17.5).
+[LeetCodeQuestion("find-winner-on-a-tic-tac-toe-game", LeetCodeAnswerOrder.AsWritten, Promise = typeof(FindWinnerOnATicTacToeGamePromise))]
 internal static class FindWinnerOnATicTacToeGameSolution
 {
     // The textbook baseline: keep the board itself and, after each move, rescan

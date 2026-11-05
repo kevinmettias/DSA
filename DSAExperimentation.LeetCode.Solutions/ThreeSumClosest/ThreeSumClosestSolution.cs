@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ThreeSumClosest;
 // The two strategies differ in whether the array gets sorted first: a cubic scan
 // over every triplet in original order, or MergeSort followed by a linear
 // two-pointer sweep per fixed first element.
+[LeetCodeQuestion("3sum-closest", LeetCodeAnswerOrder.AsWritten, Promise = typeof(ThreeSumClosestPromise))]
 internal static class ThreeSumClosestSolution
 {
     // Index of the third element when seeding `best` from the first three values.

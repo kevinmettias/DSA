@@ -2826,6 +2826,13 @@
     },
     {
       "check": "check-mutable-struct",
+      "path": "DSAExperimentation.LeetCode.Solutions/FindModeInBinarySearchTree/FindModeInBinarySearchTreePromise.cs",
+      "reason": "IInOrderHooks is an instance contract, and InOrderTraversal.Walk hands back the hook value every visit acted on; this hook keeps the previous value and whether the walk has met one out of order by value, so the answer travels in that returned value with no allocation and no static or AsyncLocal slot. Its fields are private or privately set and change only inside Visit, so the `items[0].Field = x` hazard this rule names cannot be written outside the type.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-mutable-struct",
       "path": "DSAExperimentation.Tests/DataStructures/Graph/Engines/Dags/Trees/Fixtures/CountingInOrderHooks.cs",
       "reason": "The fixture exists to be mutable: it counts by value so a test can see that every in-order visit acted on the one hook value Walk hands back, rather than on a copy a recursive frame was given - which a hook appending to a list it holds cannot show. Its setter is private and only Visit changes it, so the hazard this rule names cannot be written outside the type.",
       "owner": "@kmettias",

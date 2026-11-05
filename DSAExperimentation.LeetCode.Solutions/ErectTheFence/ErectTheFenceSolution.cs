@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ErectTheFence;
 // the fence itself, to keep the measured method's return value cheap - a
 // measurement choice, not part of either algorithm's answer. LeetCode's actual
 // answer is the point set, so both are promoted to return it here.
+[LeetCodeQuestion("erect-the-fence", LeetCodeAnswerOrder.AnyOrder, Promise = typeof(ErectTheFencePromise))]
 internal static class ErectTheFenceSolution
 {
     private const int MinPointsForTurn = 2;
