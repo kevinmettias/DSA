@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Grids;
 
@@ -106,5 +107,23 @@ public sealed partial class GridChildrenTests
         passable[0, 0] = true;
 
         Assert.Equal(0, new GridChildren<NodePerStep>(new GridNode(0, 0, new Grid(passable))).Count);
+    }
+
+    [Fact]
+    public void Get_OctilinearBoard_YieldsEveryNeighbourInTheTablesOrder()
+    {
+        var grid = new Grid(new bool[3, 3] { { true, true, true }, { true, true, true }, { true, true, true } }, GridDirections.Octilinear);
+        var children = new GridChildren<NodePerStep>(new GridNode(1, 1, grid));
+        var neighbours = Enumerable.Range(0, children.Count).Select(index => children.Get(index)).Select(node => (node.Row - 1, node.Col - 1));
+
+        Assert.Equal(GridDirections.Octilinear.Select(step => (step.DeltaRow, step.DeltaCol)), neighbours);
+    }
+
+    [Fact]
+    public void Count_OctilinearBoardCorner_HasThreeNeighbours()
+    {
+        var grid = new Grid(new bool[3, 3] { { true, true, true }, { true, true, true }, { true, true, true } }, GridDirections.Octilinear);
+
+        Assert.Equal(3, new GridChildren<NodePerStep>(new GridNode(0, 0, grid)).Count);
     }
 }

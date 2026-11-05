@@ -31,4 +31,10 @@ public sealed partial class ShortestPathInBinaryMatrixSolutionTests
     public void ShortestPathBinaryMatrixByQueueFrontier_LeetCodeExamples_ReturnsClearPathCellCount(
         int[][] grid, int expected) =>
         Assert.Equal(expected, ShortestPathInBinaryMatrixSolution.ShortestPathBinaryMatrixByQueueFrontier(grid));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ShortestPathBinaryMatrixByGridShortestPath_LeetCodeExamples_ReturnsClearPathCellCount(
+        int[][] grid, int expected) =>
+        Assert.Equal(expected, ShortestPathInBinaryMatrixSolution.ShortestPathBinaryMatrixByGridShortestPath(grid));
 }

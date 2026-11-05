@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
@@ -61,7 +62,11 @@ public static class GridEarliestArrival
         throw new InvalidOperationException(NeverSettled);
     }
 
-    // The run's state with only the start reached, at second 0.
+    // The run's state with only the start reached, at second 0. It runs once per search, so it is kept
+    // out of Time: inlined, its two bounds checks (each the bounded rectangle's rule, GridSize.HasCell)
+    // spent enough of Time's inlining budget that the JIT stopped inlining the heap's Swap, which every
+    // push and pop runs, and LC 2577 read 5-11% slower.
+    [MethodImpl(MethodImplOptions.NoInlining)]
     private static Search Begin(int[][] cellTimes, (int Row, int Col) start, (int Row, int Col) target)
     {
         var size = GridSize.Of(cellTimes);

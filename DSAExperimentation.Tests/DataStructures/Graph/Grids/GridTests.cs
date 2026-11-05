@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Grids;
 
@@ -150,4 +151,17 @@ public sealed partial class GridTests
     {
         public bool CanEnter(int row, int col) => col % 2 == 0;
     }
+
+    [Fact]
+    public void Steps_ABoardGivenNone_AreTheOrthogonalSteps() =>
+        Assert.Equal(GridDirections.Orthogonal.ToArray(), new Grid(2, 3).Steps.ToArray());
+
+    [Fact]
+    public void Steps_ABoardBuiltWithTheOctilinearSteps_KeepsThem() =>
+        Assert.Equal(GridDirections.Octilinear.ToArray(), new Grid(new bool[2, 3], GridDirections.Octilinear).Steps.ToArray());
+
+    // GridChildren marks each step in one bit of a 64-bit mask, so a board of more steps is refused.
+    [Fact]
+    public void Steps_MoreThanAMaskHolds_AreRefused() =>
+        Assert.Throws<ArgumentOutOfRangeException>(() => new Grid(new bool[1, 1], GridDirections.WithinChebyshev(4)));
 }

@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Mathematics.Surfaces;
+
 namespace DSAExperimentation.DataStructures.Graph.Grids;
 
 // A rectangular board's extent, and the one bounds rule every grid search asks: is (row, col) on it?
@@ -17,11 +19,12 @@ public readonly record struct GridSize(int Rows, int Cols)
     /// <returns>The grid's row count and its first row's length.</returns>
     public static GridSize Of<TCell>(TCell[][] cells) => new(cells.Length, cells[0].Length);
 
-    // Signed comparisons on purpose: an index one step past either edge, in either direction, is
-    // off the board, which is what lets a neighbour scan probe past the border unguarded.
+    // The bounded rectangle's rule (Domain/Mathematics/Surfaces), the surface LeetCode's grids are:
+    // an index one step past either edge, in either direction, is off the board, which is what lets
+    // a neighbour scan probe past the border unguarded. A board that wraps is another surface.
     /// <summary>Reports whether a cell lies on the board.</summary>
     /// <param name="row">The cell's row, which may be negative or past the last row.</param>
     /// <param name="col">The cell's column, which may be negative or past the last column.</param>
     /// <returns>True when both the row and the column fall within the board; otherwise false.</returns>
-    public bool HasCell(int row, int col) => row >= 0 && row < Rows && col >= 0 && col < Cols;
+    public bool HasCell(int row, int col) => BoundedRectangle.TryLand(ref row, ref col, (Rows, Cols), out _);
 }

@@ -40,4 +40,8 @@ public class ShortestPathInBinaryMatrixBenchmarks
     [Benchmark]
     public int RepoQueueBfs() =>
         ShortestPathInBinaryMatrixSolution.ShortestPathBinaryMatrixByQueueFrontier(_grid);
+
+    [Benchmark]
+    public int GridEngineBfs() =>
+        ShortestPathInBinaryMatrixSolution.ShortestPathBinaryMatrixByGridShortestPath(_grid);
 }

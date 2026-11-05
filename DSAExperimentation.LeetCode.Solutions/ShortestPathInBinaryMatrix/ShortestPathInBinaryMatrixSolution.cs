@@ -1,3 +1,5 @@
+using DSAExperimentation.Algorithms.ShortestPaths.Grids;
+using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.Domain.Mathematics.Lattices;
 using BclQueue = System.Collections.Generic.Queue<(int Row, int Col)>;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>;
@@ -9,14 +11,14 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortestPathInBinaryMatrix;
 // n x n binary matrix, moving in any of the 8 king directions through 0 cells
 // only, or -1 when no such path exists.
 //
-// Both strategies are the same single-source breadth-first sweep - the answer is
-// the BFS distance to the far corner, counted in cells rather than steps, so the
-// start cell sits at distance 1. They differ only in the FIFO frontier they drain:
+// Every strategy is the same single-source breadth-first sweep - the answer is the
+// BFS distance to the far corner, counted in cells rather than steps, so the start
+// cell sits at distance 1. The first two differ only in the FIFO frontier they drain:
 // the baseline uses the BCL's Queue<T>, the composed strategy uses this repo's own
 // Queue<TElement>, the same frontier RottingOranges and ZeroOneMatrix use for their
-// 4-directional grid sweeps. Graph/Grids' GridChildren is hardcoded to the 4
-// orthogonal neighbours and has no diagonal mode, so neither arm can go through
-// that topology for this problem's 8 directions.
+// 4-directional grid sweeps. The third hands the whole search to the grid engine: a
+// board whose cells are joined by the eight octilinear steps (Grid.Steps), which
+// GridChildren walks as it walks the orthogonal four.
 //
 // A distance of 0 means "not yet reached": real distances start at 1 for the start
 // cell, so the freshly allocated distance grid already reads as unvisited and needs
@@ -110,6 +112,30 @@ internal static class ShortestPathInBinaryMatrixSolution
         return LeetCodeAnswer.None;
     }
 
+    // The engine's breadth-first search over a board of the clear cells joined by the eight
+    // octilinear steps. It counts the steps from corner to corner, and the answer counts the
+    // cells on the path, one more.
+    public static int ShortestPathBinaryMatrixByGridShortestPath(int[][] grid)
+    {
+        if (IsEitherCornerBlocked(grid))
+        {
+            return LeetCodeAnswer.None;
+        }
+
+        var board = Grid.Where(GridSize.Of(grid), new ClearCells(grid), GridDirections.Octilinear);
+        var farCorner = grid.Length - 1;
+        var start = board.NodeAt(0, 0);
+        var target = board.NodeAt(farCorner, farCorner);
+        var steps = GridShortestPath.Distance<NodePerCell>(start, target);
+
+        if (steps is not { } stepCount)
+        {
+            return LeetCodeAnswer.None;
+        }
+
+        return stepCount + 1;
+    }
+
     // LeetCode guarantees a square grid, so either corner being blocked settles the
     // answer before any search starts.
     private static bool IsEitherCornerBlocked(int[][] grid)
@@ -171,6 +197,12 @@ internal static class ShortestPathInBinaryMatrixSolution
 
     private static bool IsOutsideGrid(int row, int col, int size) =>
         row < 0 || row >= size || col < 0 || col >= size;
+
+    // The cells a path may cross: the problem's clear ground.
+    private readonly struct ClearCells(int[][] grid) : IGridCellFilter
+    {
+        public bool CanEnter(int row, int col) => grid[row][col] == ClearCell;
+    }
 
     // The read-only grid and the in-place-mutated distance map both sweeps relax
     // into - bundled so TryRelax reads one board rather than two loose arrays.

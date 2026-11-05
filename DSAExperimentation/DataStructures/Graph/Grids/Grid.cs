@@ -1,3 +1,6 @@
+using System.Collections.Immutable;
+using DSAExperimentation.Domain.Mathematics.Lattices;
+
 namespace DSAExperimentation.DataStructures.Graph.Grids;
 
 // The shared, read-only context a GridNode carries a reference to - the same
@@ -12,13 +15,23 @@ namespace DSAExperimentation.DataStructures.Graph.Grids;
 // The table is allocated on first use, so a board walked with NodePerStep never has one. A node made
 // elsewhere for the same cell is equal to it, since GridNode is a record, so a caller that builds its
 // own start node still meets the board's nodes in a visited set.
+//
+// The board also says which steps join a cell to its neighbours: the square lattice's orthogonal
+// steps unless it is given others, such as the eight octilinear ones for a problem that moves
+// diagonally too. GridChildren lists a cell's neighbours in this table's order.
 /// <summary>
 /// A rectangular board of open and blocked cells, shared by every <see cref="GridNode"/> on it.
 /// </summary>
 /// <param name="passable">Which cells are open, indexed [row, col]; its dimensions are the board's.</param>
-public sealed class Grid(bool[,] passable)
+/// <param name="steps">The steps that join a cell to its neighbours, in the order its neighbours are listed.</param>
+public sealed class Grid(bool[,] passable, ImmutableArray<GridStep> steps)
 {
+    // GridChildren marks which steps lead to an open cell in one bit each of a 64-bit mask.
+    private const int MostSteps = 64;
+
     private const string OffTheBoardMessage = "Expected a cell on the board.";
+
+    private const string TooManyStepsMessage = "A board joins a cell to at most 64 neighbours.";
 
     private GridNode?[]? _nodes;
 
@@ -30,6 +43,16 @@ public sealed class Grid(bool[,] passable)
 
     /// <summary>How many columns the board has.</summary>
     public int Cols => Size.Cols;
+
+    /// <summary>The steps that join a cell to its neighbours, in the order its neighbours are listed.</summary>
+    public ImmutableArray<GridStep> Steps { get; } = AtMostMostSteps(steps);
+
+    /// <summary>A board whose cells are joined by the four orthogonal steps.</summary>
+    /// <param name="passable">Which cells are open, indexed [row, col]; its dimensions are the board's.</param>
+    public Grid(bool[,] passable)
+        : this(passable, GridDirections.Orthogonal)
+    {
+    }
 
     // Every cell open: a board whose only walls are its edges.
     public Grid(int rows, int cols)
@@ -70,6 +93,15 @@ public sealed class Grid(bool[,] passable)
     /// <returns>A board of <paramref name="size"/>, open exactly where <paramref name="filter"/> accepted.</returns>
     public static Grid Where<TFilter>(GridSize size, TFilter filter)
         where TFilter : struct, IGridCellFilter
+        => Where(size, filter, GridDirections.Orthogonal);
+
+    /// <summary>Builds the board whose open cells are the ones a filter accepts, joined by the given steps.</summary>
+    /// <param name="size">The board's extent.</param>
+    /// <param name="filter">The rule a cell must pass to be open, asked once about each cell.</param>
+    /// <param name="steps">The steps that join a cell to its neighbours, in the order its neighbours are listed.</param>
+    /// <returns>A board of <paramref name="size"/>, open exactly where <paramref name="filter"/> accepted.</returns>
+    public static Grid Where<TFilter>(GridSize size, TFilter filter, ImmutableArray<GridStep> steps)
+        where TFilter : struct, IGridCellFilter
     {
         var open = new bool[size.Rows, size.Cols];
 
@@ -81,7 +113,7 @@ public sealed class Grid(bool[,] passable)
             }
         }
 
-        return new Grid(open);
+        return new Grid(open, steps);
     }
 
     // Every open cell as a node of this grid, row by row: the roots a whole-board flood fill scans.
@@ -101,6 +133,16 @@ public sealed class Grid(bool[,] passable)
                 }
             }
         }
+    }
+
+    private static ImmutableArray<GridStep> AtMostMostSteps(ImmutableArray<GridStep> steps)
+    {
+        if (steps.Length > MostSteps)
+        {
+            throw new ArgumentOutOfRangeException(nameof(steps), steps.Length, TooManyStepsMessage);
+        }
+
+        return steps;
     }
 
     private static bool[,] AllOpen(int rows, int cols)
