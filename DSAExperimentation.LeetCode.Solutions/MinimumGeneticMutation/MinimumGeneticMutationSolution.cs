@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumGeneticMutation;
 // so its composed arm shares DataStructures.Graph.Hamming outright with WordLadder's,
 // and the two differ only in the "+1" WordLadder applies and the alphabet they
 // mutate over.
+[LeetCodeQuestion("minimum-genetic-mutation", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumGeneticMutationSolution
 {
     // The textbook answer: BCL Queue + HashSet over candidates generated on the

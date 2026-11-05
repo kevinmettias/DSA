@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LexicographicallySmallestEquival
 // Both strategies answer the same question - "which letters share a class, and what
 // is the smallest member of each" - over the 26 lowercase letters; they differ only
 // in how the classes are discovered.
+[LeetCodeQuestion("lexicographically-smallest-equivalent-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class LexicographicallySmallestEquivalentStringSolution
 {
     // The textbook answer: materialize an adjacency list over the 26 letters and BFS

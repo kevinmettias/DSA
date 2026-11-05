@@ -23,13 +23,29 @@ public sealed partial class NotationTypesTests
             public BinaryTreeNode<string> TextTree;
             public Dictionary<int, int> Counts;
             public int[,] Rectangle;
+            public RoleText Role;
+            public Endpoints TwoValues;
+            public BoxedText BoxedRole;
+            public Capacity Sized;
+        }
+
+        internal readonly record struct RoleText(string Text);
+
+        internal readonly record struct Endpoints(int Start, int End);
+
+        internal sealed record BoxedText(string Text);
+
+        internal readonly struct Capacity
+        {
+            public Capacity(int count) { }
         }
         """;
 
-    public static TheoryData<string> ReadableFields => ["Integer", "Text", "Character", "Grid", "Intervals", "Words", "Values", "Tree"];
+    public static TheoryData<string> ReadableFields => ["Integer", "Text", "Character", "Grid", "Intervals", "Words", "Values", "Tree", "Role"];
 
-    // A tree LeetCodeWireFormat cannot build, a map LeetCode has no notation for, and a rectangular array.
-    public static TheoryData<string> UnreadableFields => ["TextTree", "Counts", "Rectangle"];
+    // A tree LeetCodeWireFormat cannot build, a map LeetCode has no notation for, a rectangular array, a record
+    // of two values, a role type that is a class, and a struct that keeps no value it is built from.
+    public static TheoryData<string> UnreadableFields => ["TextTree", "Counts", "Rectangle", "TwoValues", "BoxedRole", "Sized"];
 
     [Theory]
     [MemberData(nameof(ReadableFields))]

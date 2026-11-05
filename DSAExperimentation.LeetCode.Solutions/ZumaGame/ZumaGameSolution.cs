@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ZumaGame;
 //
 // The cascade collapse is the game's (Domain/Games/Zuma): the BFS arm calls ZumaRow<ClassicZuma>.Collapse, and
 // the DFS baseline keeps its own Collapse, CollapseOnePass and run length (ARCHITECTURE §17.5).
+[LeetCodeQuestion("zuma-game", LeetCodeAnswerOrder.AsWritten)]
 internal static class ZumaGameSolution
 {
     // The baseline's own copy of the shortest group that vanishes.

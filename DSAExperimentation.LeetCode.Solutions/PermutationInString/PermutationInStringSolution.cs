@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PermutationInString;
 // maintained incrementally as it slides, using a running "matched distinct
 // characters" counter - the same shape this repo's Find All Anagrams in a
 // String (438) coverage uses.
+[LeetCodeQuestion("permutation-in-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class PermutationInStringSolution
 {
     // The textbook answer: rebuild and compare a fresh frequency Dictionary for

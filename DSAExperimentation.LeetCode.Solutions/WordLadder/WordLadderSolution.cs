@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WordLadder;
 //
 // LeetCode counts words in the sequence rather than edges walked, so every
 // strategy here answers distance + 1, and 0 when endWord is unreachable.
+[LeetCodeQuestion("word-ladder", LeetCodeAnswerOrder.AsWritten, Promise = typeof(WordLadderPromise))]
 internal static class WordLadderSolution
 {
     private const int NoLadder = 0;

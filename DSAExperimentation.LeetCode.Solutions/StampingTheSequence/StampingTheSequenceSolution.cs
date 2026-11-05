@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StampingTheSequence;
 // records into this repo's own Stack<int> and unwinds it once at the end, since LIFO
 // order IS forward chronological order - O(m) total. Both return the same move
 // sequence; LeetCode accepts any sequence that replays onto target.
+[LeetCodeQuestion("stamping-the-sequence", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(StampingTheSequenceAnswerCheck))]
 internal static class StampingTheSequenceSolution
 {
     // The textbook arm: a BCL List that is kept in forward order as it grows, so no

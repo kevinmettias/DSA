@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfAParenthesesStringCanBeVa
 // A free position plays the role '*' plays in LC 678 Valid Parenthesis String, with
 // one difference the DP arm below has to respect: a free position must become a
 // bracket, it can never vanish. An odd-length string is therefore never valid.
+[LeetCodeQuestion("check-if-a-parentheses-string-can-be-valid", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CheckIfAParenthesesStringCanBeValidPromise))]
 internal static class CheckIfAParenthesesStringCanBeValidSolution
 {
     private const char FreePosition = '0'; // locked[i] == '0' -> position i may become either bracket

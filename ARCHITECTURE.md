@@ -2211,8 +2211,11 @@ run of that category times both, and `--filter '*CatalogBenchmarks*'` selects th
 - Every strategy (§17.3) becomes an arm, and the first declared is the baseline.
 - `[GlobalSetup]` reads the cases into typed column arrays through the harness library's
   `CatalogColumns`. That conversion out of LeetCode's notation is paid once, never inside the timed
-  loop. `NotationReader` holds the rules: scalars, arrays, tuples from `[start, end]` rows, and trees
-  and lists through `LeetCodeWireFormat`.
+  loop. `NotationReader` holds the rules: scalars, arrays, tuples from `[start, end]` rows, trees
+  and lists through `LeetCodeWireFormat`, and a role type standing for one value, such as
+  `SourceText(string Text)`, as that value: a value type whose one public constructor takes one value
+  and keeps it as the property of the same name. The generator's `NotationTypes` states the same rules
+  over compile-time types.
 - Each arm copies its columns into locals and calls the strategy directly in a `for` loop, writing
   each answer into a buffer (§17.8).
 - A solution whose strategies may rewrite their inputs, as relinking a list does, says so with
@@ -2358,8 +2361,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 778 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 182 more:
+**Enrolled.** 802 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 206 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2440,6 +2443,12 @@ have only the empty tree. A check over those would pass whatever the strategy di
   assembly's metadata, as the generator reads it, no code can name it. Combination Sum (in any
   order), Convert BST to Greater Tree (which rewrites its tree, so `RewritesInput = true`) and
   Maximum Sum BST in Binary Tree.
+- 24 whose strategies take a role type for one LeetCode input, such as Find the Index of the First
+  Occurrence in a String's `Haystack` and `Needle`, once the notation reader and the generator read
+  one as the value it holds. Four also promise what generated cases broke: a lock mask as long as its
+  string (Check if a Parentheses String Can Be Valid), one index per query character (Longest
+  Substring of One Repeating Character), exactly one `*` (Substring Matching Pattern) and unique words
+  (Word Ladder). Stamping the Sequence's answer check takes any stamp sequence that spells the target.
 
 Open items:
 
@@ -2458,7 +2467,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 327 solutions are left (2026-11-04), each blocked for a reason the table and
+- **Enrolling the rest.** 303 solutions are left (2026-11-04), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.

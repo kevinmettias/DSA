@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Harness.Tests.Probes;
 
 namespace DSAExperimentation.LeetCode.Harness.Tests;
 
@@ -75,4 +76,23 @@ public sealed partial class NotationReaderTests
 
     [Fact]
     public void CanRead_RectangularArray_IsFalse() => Assert.False(NotationReader.CanRead(typeof(int[,])));
+
+    [Fact]
+    public void Read_RoleTypeOfOneValue_ReadsTheValueIntoIt()
+    {
+        var role = NotationReader.Read("\"leet\"", typeof(ProbeRoleText));
+
+        Assert.Equal(new ProbeRoleText("leet"), role);
+    }
+
+    [Fact]
+    public void Read_ArrayOfRoleTypes_ReadsEachItem()
+    {
+        var items = NotationReader.Read("[\"a\",\"b\"]", typeof(ProbeRoleText[]));
+
+        Assert.Equal<ProbeRoleText>([new("a"), new("b")], Assert.IsType<ProbeRoleText[]>(items));
+    }
+
+    [Fact]
+    public void CanRead_RecordOfTwoValues_IsFalse() => Assert.False(NotationReader.CanRead(typeof(ProbeEndpoints)));
 }

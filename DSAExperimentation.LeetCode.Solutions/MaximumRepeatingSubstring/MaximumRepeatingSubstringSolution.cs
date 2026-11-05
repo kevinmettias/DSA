@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumRepeatingSubstring;
 // with - the BCL's own string.Contains, or this repo's KMP-based
 // PrefixFunctionSearch. Each writes the short walk out itself, so the baseline never
 // runs through code that could call the library's search (ARCHITECTURE 17.5).
+[LeetCodeQuestion("maximum-repeating-substring", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumRepeatingSubstringSolution
 {
 

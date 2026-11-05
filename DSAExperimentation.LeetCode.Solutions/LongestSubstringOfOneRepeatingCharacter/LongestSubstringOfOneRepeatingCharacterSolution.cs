@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestSubstringOfOneRepeatingCh
 // the buffer end to end) versus this repo's own SegmentTree<Element,TOperation>
 // carrying a RunSegment per node, so a point update costs O(log n) and the answer
 // is read straight off the root.
+[LeetCodeQuestion("longest-substring-of-one-repeating-character", LeetCodeAnswerOrder.AsWritten, Promise = typeof(LongestSubstringOfOneRepeatingCharacterPromise))]
 internal static class LongestSubstringOfOneRepeatingCharacterSolution
 {
     // The textbook answer: a plain char[] mutated in place and rescanned from the

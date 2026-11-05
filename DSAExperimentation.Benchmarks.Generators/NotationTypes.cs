@@ -57,6 +57,7 @@ internal static class NotationTypes
         INamedTypeSymbol { IsTupleType: true } tuple =>
             tuple.TupleElements.Length <= MostTupleItems && tuple.TupleElements.All(item => IsReadable(item.Type)),
         INamedTypeSymbol { IsGenericType: true, TypeArguments.Length: 1 } generic => IsReadableGeneric(generic),
+        INamedTypeSymbol { IsValueType: true } valueType when OneValueOf(valueType) is { } value => IsReadable(value),
         _ => false,
     };
 
@@ -75,6 +76,23 @@ internal static class NotationTypes
 
     private static string MetadataNameOf(INamedTypeSymbol type) =>
         $"{type.ContainingNamespace.ToDisplayString()}.{type.MetadataName}";
+
+    // The one value a role type such as SourceText(string Text) stands for: a value type whose one public
+    // constructor, beside the parameterless one every struct has, takes one value and keeps it as the
+    // property of the same name. Null for any other type.
+    private static ITypeSymbol? OneValueOf(INamedTypeSymbol type)
+    {
+        var constructors = type.InstanceConstructors.Where(constructor => constructor is { IsImplicitlyDeclared: false, DeclaredAccessibility: Accessibility.Public }).ToList();
+
+        if (constructors.Count != 1 || constructors[0].Parameters.Length != 1)
+        {
+            return null;
+        }
+
+        var parameter = constructors[0].Parameters[0];
+        var property = type.GetMembers(parameter.Name).OfType<IPropertySymbol>().FirstOrDefault();
+        return property is not null && SymbolEqualityComparer.Default.Equals(property.Type, parameter.Type) ? parameter.Type : null;
+    }
 
     public static string Render(ITypeSymbol type) => type switch
     {

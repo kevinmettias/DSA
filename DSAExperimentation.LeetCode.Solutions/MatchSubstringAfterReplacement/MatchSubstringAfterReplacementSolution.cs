@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MatchSubstringAfterReplacement;
 //
 // Both strategies walk the same candidate start positions; they differ only in how
 // "is (patternChar, sourceChar) an allowed pair" is answered.
+[LeetCodeQuestion("match-substring-after-replacement", LeetCodeAnswerOrder.AsWritten)]
 internal static class MatchSubstringAfterReplacementSolution
 {
     // The textbook baseline this composition has to justify itself against: keep the

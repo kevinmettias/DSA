@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WildcardMatching;
 // mismatch instead of exploring every split explicitly - and a memoized top-down
 // recurrence over (text position, pattern position) composed from this repo's own
 // Memoizer.
+[LeetCodeQuestion("wildcard-matching", LeetCodeAnswerOrder.AsWritten)]
 internal static class WildcardMatchingSolution
 {
     // The textbook answer: track the most recent '*' (star) and the text position

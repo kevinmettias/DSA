@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RepeatedStringMatch;
 // baseline never runs through code that could call the library's search
 // (ARCHITECTURE 17.5). Both searches are ordinal, so neither answer depends on the
 // machine's culture, and an empty pattern occurs in every candidate.
+[LeetCodeQuestion("repeated-string-match", LeetCodeAnswerOrder.AsWritten)]
 internal static class RepeatedStringMatchSolution
 {
     // The textbook answer: BCL string.Contains, deliberately left as the arm

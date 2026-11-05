@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumWindowSubstring;
 // a single count alive across the whole scan in this repo's own HashMap<char,int>,
 // the same primitive/precedent LongestSubstringWithoutRepeatingCharacters uses for
 // its own sliding window.
+[LeetCodeQuestion("minimum-window-substring", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumWindowSubstringSolution
 {
     // The textbook O(|s|^2) restart-from-every-start scan.

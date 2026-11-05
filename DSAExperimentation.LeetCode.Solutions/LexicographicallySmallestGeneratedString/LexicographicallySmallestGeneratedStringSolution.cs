@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LexicographicallySmallestGenerat
 //      lands as late (least significant) as possible and the result stays
 //      lexicographically smallest. If every position in the window was fixed
 //      by some 'T', there is no room to bump and the word is impossible.
+[LeetCodeQuestion("lexicographically-smallest-generated-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class LexicographicallySmallestGeneratedStringSolution
 {
     private const char DefaultChar = 'a';

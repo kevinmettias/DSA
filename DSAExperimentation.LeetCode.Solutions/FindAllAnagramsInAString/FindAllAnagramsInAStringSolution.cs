@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindAllAnagramsInAString;
 // distinct characters" counter, so each character enters and leaves the window
 // exactly once - O(|s| + |p|) instead of rebuilding a fresh frequency map for every
 // window start.
+[LeetCodeQuestion("find-all-anagrams-in-a-string", LeetCodeAnswerOrder.AnyOrder)]
 internal static class FindAllAnagramsInAStringSolution
 {
     // The textbook answer: a fresh BCL Dictionary<char,int> built and compared for

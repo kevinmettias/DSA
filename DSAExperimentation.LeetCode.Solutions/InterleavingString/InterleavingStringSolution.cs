@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.InterleavingString;
 // the next position in target (k = i + j), so this is a single recursion over one
 // two-dimensional state space rather than two independent walks: the memoized arm
 // caches each (i, j), the roll-forward arm keeps one row.
+[LeetCodeQuestion("interleaving-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class InterleavingStringSolution
 {
     // The textbook arm the memoized recurrence is measured against: the same

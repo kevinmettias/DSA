@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SubstringMatchingPattern;
 // prefix occurrence and the LATEST suffix occurrence is always at least as good as
 // any other pair: moving the prefix later only raises the position the suffix must
 // clear, and moving the suffix earlier only lowers it.
+[LeetCodeQuestion("substring-matching-pattern", LeetCodeAnswerOrder.AsWritten, Promise = typeof(SubstringMatchingPatternPromise))]
 internal static class SubstringMatchingPatternSolution
 {
     // The textbook answer: enumerate every substring of subject (O(n^2) of them) and test

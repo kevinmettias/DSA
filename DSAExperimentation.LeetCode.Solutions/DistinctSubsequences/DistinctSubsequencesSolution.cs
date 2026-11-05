@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DistinctSubsequences;
 // memoized so overlapping suffixes are only counted once: at every source
 // character there is always the "skip it" branch, plus a "consume it" branch
 // exactly when it matches the next unconsumed target character.
+[LeetCodeQuestion("distinct-subsequences", LeetCodeAnswerOrder.AsWritten)]
 internal static class DistinctSubsequencesSolution
 {
     // The textbook arm the memoized recurrence is measured against: the same

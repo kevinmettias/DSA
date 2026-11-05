@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheIndexOfTheFirstOccurrence
 // Karp already answers "every occurrence", so this problem only needs the first
 // one. The baseline is the BCL substring search the repo's own algorithm has to
 // beat.
+[LeetCodeQuestion("find-the-index-of-the-first-occurrence-in-a-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheIndexOfTheFirstOccurrenceInAStringSolution
 {
     // What you would write without this repo: BCL ordinal substring search.

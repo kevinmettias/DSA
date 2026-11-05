@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheOccurrenceOfFirstAlmostEq
 // internally (see its own doc comment) precisely because it cannot assume that
 // in general, but a LeetCode caller that knows its problem's alphabet is free
 // to make that choice itself.
+[LeetCodeQuestion("find-the-occurrence-of-first-almost-equal-substring", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheOccurrenceOfFirstAlmostEqualSubstringSolution
 {
     private const char Sentinel = '\0';

@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindBeautifulIndicesInTheGivenAr
 // file's brute force cannot reach, so its class owns the brute force and the pairing
 // step (ARCHITECTURE 17.3) and this class calls in for them; the prefix-function
 // search stays this class's own, as #3008's is the Z-function.
+[LeetCodeQuestion("find-beautiful-indices-in-the-given-array-i", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindBeautifulIndicesInTheGivenArrayISolution
 {
     // The textbook double loop for both occurrence searches, then an O(|A| * |B|)

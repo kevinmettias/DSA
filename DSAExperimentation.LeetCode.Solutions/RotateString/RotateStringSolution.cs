@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RotateString;
 // same length and goal occurs somewhere inside source + source. They differ only in
 // how that occurrence is looked for: a restart-on-mismatch scan, or this repo's KMP
 // failure function.
+[LeetCodeQuestion("rotate-string", LeetCodeAnswerOrder.AsWritten)]
 internal static class RotateStringSolution
 {
     // The textbook answer: double source, then scan every start position, comparing

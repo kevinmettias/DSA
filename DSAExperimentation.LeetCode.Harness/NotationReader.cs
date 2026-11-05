@@ -13,7 +13,9 @@ namespace DSAExperimentation.LeetCode.Harness;
 // - an array as an array, element by element;
 // - an array as a tuple of the same arity, the way LeetCode writes an interval as [start, end];
 // - a level-order array as a tree and a flat array as a linked list, through LeetCodeWireFormat;
-// - an interface-typed sequence as an array, or as a List<T> when the interface lets a strategy add.
+// - an interface-typed sequence as an array, or as a List<T> when the interface lets a strategy add;
+// - a role type standing for one value, such as SourceText(string Text), as that value: a value type
+//   whose one public constructor takes one value and keeps it as the property of the same name.
 // CatalogBenchmarkGenerator states the same rules over compile-time types, so a parameter it accepts is
 // one this reads. A type outside them is refused by name, never guessed at, and a value that does not fit
 // its type is a defect in the checked-in snapshot, which stops [GlobalSetup] rather than being skipped.
@@ -69,7 +71,12 @@ internal static class NotationReader
             return type.GetGenericArguments().All(CanRead);
         }
 
-        return IsSequence(type) && CanRead(type.GetGenericArguments()[0]);
+        if (IsSequence(type))
+        {
+            return CanRead(type.GetGenericArguments()[0]);
+        }
+
+        return OneValueOf(type) is { } value && CanRead(value);
     }
 
     // A scalar, or a tree or list LeetCodeWireFormat builds from one array: read in one step, not item by item.
@@ -93,6 +100,25 @@ internal static class NotationReader
 
     private static object TextOf(JsonElement element) =>
         element.GetString() ?? throw new InvalidOperationException(BareNullText);
+
+    // The one value a role type stands for, as a positional record of one value declares it; null for any
+    // other type. A value type alone, so a class's copy constructor never counts as a second way to build it.
+    private static Type? OneValueOf(Type type)
+    {
+        if (!type.IsValueType)
+        {
+            return null;
+        }
+
+        if (type.GetConstructors() is not [var constructor] || constructor.GetParameters() is not [var parameter])
+        {
+            return null;
+        }
+
+        var property = parameter.Name is { } name ? type.GetProperty(name) : null;
+        var keepsTheValue = property?.PropertyType == parameter.ParameterType;
+        return keepsTheValue ? parameter.ParameterType : null;
+    }
 
     private static object? ValueOf(JsonElement element, Type type)
     {
@@ -124,6 +150,12 @@ internal static class NotationReader
         if (IsTuple(type))
         {
             return TupleOf(element, type);
+        }
+
+        if (OneValueOf(type) is { } valueType)
+        {
+            var value = ValueOf(element, valueType);
+            return Activator.CreateInstance(type, value) ?? throw new InvalidOperationException($"{type} could not be constructed.");
         }
 
         return SequenceOf(element, type);

@@ -6,6 +6,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RegularExpressionMatching;
 // single character and '*' matching zero or more of the preceding element) match
 // the whole of `text`? Both strategies share the same (textIndex, patternIndex)
 // recurrence; they differ only in whether repeated states are cached.
+[LeetCodeQuestion("regular-expression-matching", LeetCodeAnswerOrder.AsWritten)]
 internal static class RegularExpressionMatchingSolution
 {
     private const int StarTokenLength = 2;
