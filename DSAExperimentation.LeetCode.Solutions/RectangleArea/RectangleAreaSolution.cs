@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RectangleArea;
 // grid and count them. Its internals stay a plain bool[] rather than this repo's
 // DynamicArray<bool> - a baseline represents "what you would write without this
 // repo", and there is no input container here for a repo type to occupy.
+[LeetCodeQuestion("rectangle-area", LeetCodeAnswerOrder.AsWritten, Reach = typeof(RectangleAreaReach))]
 internal static class RectangleAreaSolution
 {
     public static long TotalAreaByClosedFormOverlap(Rectangle firstRectangle, Rectangle secondRectangle)

@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RectangleOverlap;
 // than this repo's DynamicArray<bool>, for the reason RectangleAreaSolution gives
 // - a baseline represents "what you would write without this repo", and the only
 // input container here is LeetCode's own int[] pair.
+[LeetCodeQuestion("rectangle-overlap", LeetCodeAnswerOrder.AsWritten, Promise = typeof(RectangleOverlapPromise), Reach = typeof(RectangleOverlapReach))]
 internal static class RectangleOverlapSolution
 {
     private const int X1 = 0;

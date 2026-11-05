@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CircleAndRectangleOverlapping;
 // in it. No repo container or algorithm primitive applies to a handful of coordinate
 // comparisons - the same "lighter repo-primitive fit" case RectangleOverlap (LC 836)
 // and RectangleArea (LC 223) already document.
+[LeetCodeQuestion("circle-and-rectangle-overlapping", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CircleAndRectangleOverlappingReach))]
 internal static class CircleAndRectangleOverlappingSolution
 {
     // The textbook answer: an O(width * height) sweep that tests every integer lattice

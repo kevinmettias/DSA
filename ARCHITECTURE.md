@@ -2569,8 +2569,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,043 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 447 more:
+**Enrolled.** 1,047 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 451 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2784,6 +2784,16 @@ have only the empty tree. A check over those would pass whatever the strategy di
   consecutive inputs as `CatalogColumns` reads into it; the harness and the generator count alike. Each
   also promises what generated cases broke, 17 of I's and 20 of II's: a target as long as its source, a
   cost for every rule, lowercase letters, and in II each rule's change as long as its original.
+- 3 whose unit-grid arms count every cell of the shapes' box, once the scan, ordered by that box's area
+  and reading inputs spread over records, timed them (2026-11-05): no case is beyond them, only their
+  sum. Rectangle Area reaches boxes of 4,000,000 cells (70 of 76 cases; the next three add 522 ms),
+  Circle and Rectangle Overlapping rectangles of 36,000,000 (111 of 114), and Rectangle Overlap boxes of
+  9,000,000 (93 of 99; past them, sides of up to 2 * 10^9 make a grid too large to allocate or to index
+  with an int). Rectangle Overlap also promises rectangles of non-zero area, which one generated case
+  breaks with a rectangle of no width, where its grid arm finds no overlap and the closed form one.
+- Check If There Is a Valid Parentheses String Path, once it took LeetCode's `char[][]` beside its own
+  `char[,]` (§17.4) and promised a rectangle of parentheses: 15 generated grids have rows of different
+  lengths, which no `char[,]` holds. Every case it keeps finishes in 7.8 ms, unmemoized arm included.
 
 Open items:
 
@@ -2802,14 +2812,13 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 62 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 58 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
-  - A slow strategy whose reach the generator could not state: Rectangle Area, Circle and Rectangle
-    Overlapping and Rectangle Overlap finish no case on every strategy in time. Maximum Number of Moves
-    to Kill All Pawns' graph arm spends about 35 ms on every case, two pawns or fifteen, so no bound on
-    its input keeps more than 4 of its 96 cases.
+  - A slow strategy no reach can bound: Maximum Number of Moves to Kill All Pawns' graph arm spends
+    about 35 ms on every case, two pawns or fifteen, so no bound on its input keeps more than 4 of its
+    96 cases.
   - A design question that lets several answers stand needs an answer check over a whole script: All
     One Data Structure's getMaxKey returns "one of the keys" with the largest count.
   - A design question whose answers are random (Shuffle an Array, Random Pick with Weight, Insert
@@ -2831,9 +2840,6 @@ Open items:
   - Sudoku Solver's strategies return whether they solved the board, where LeetCode's answers in place
     and returns nothing, as `AnswersInPlace` requires; its backtracking-engine arm also runs past 3 s
     on one generated puzzle.
-  - Check If There Is a Valid Parentheses String Path reads its grid as a `char[,]`, which no row of
-    another length fits, and 15 generated grids have one. It needs LeetCode's jagged shape beside its
-    own, with a promise of rows of one length, before the reader ever meets them.
 - **Trimming the enrolled solutions' own tests.** A theory row restates a catalog case when
   a case has the same inputs, read into the strategy's types, and the catalog's judge accepts the
   row's answer for it. That row is the check `CatalogCaseTests` already makes. Measured over the 608

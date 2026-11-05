@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfThereIsAValidParenthesesS
 // polynomial number of distinct states. The induced state graph satisfies Memoizer's
 // well-foundedness precondition by construction: Row + Col strictly increases on
 // every recursive call, so no state can recur on its own path.
+[LeetCodeQuestion("check-if-there-is-a-valid-parentheses-string-path", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CheckIfThereIsAValidParenthesesStringPathPromise))]
 internal static class CheckIfThereIsAValidParenthesesStringPathSolution
 {
     // The textbook answer: bare right/down recursion over the same states, with no
@@ -25,6 +26,14 @@ internal static class CheckIfThereIsAValidParenthesesStringPathSolution
     // arm the memoized strategy has to justify itself against.
     public static bool HasValidPathByUnmemoizedRecursion(char[,] grid) =>
         HasValidPathFrom(0, 0, 0, Board.Over(grid));
+
+    // LeetCode's shape (ARCHITECTURE 17.4): the grid as LeetCode passes it, rows of characters, laid into the
+    // rectangular grid both walks index.
+    public static bool HasValidPathByUnmemoizedRecursion(char[][] grid) =>
+        HasValidPathByUnmemoizedRecursion(RectangleOf(grid));
+
+    public static bool HasValidPathByMemoizedRecursion(char[][] grid) =>
+        HasValidPathByMemoizedRecursion(RectangleOf(grid));
 
     // The same recurrence handed to Memoizer, whose own memo run routes every
     // recursive branch through one shared cache keyed by the (Row, Col, Balance)
@@ -35,6 +44,23 @@ internal static class CheckIfThereIsAValidParenthesesStringPathSolution
         var board = Board.Over(grid);
 
         return Memoizer.Memoize<(int Row, int Col, int Balance), bool>((0, 0, 0), new WalkDownOrRight(board));
+    }
+
+    // Rows of one length as the rectangular grid they fill, row by row.
+    private static char[,] RectangleOf(char[][] rows)
+    {
+        var columnCount = rows.FirstOrDefault()?.Length ?? 0;
+        var grid = new char[rows.Length, columnCount];
+
+        for (var row = 0; row < rows.Length; row++)
+        {
+            for (var column = 0; column < columnCount; column++)
+            {
+                grid[row, column] = rows[row][column];
+            }
+        }
+
+        return grid;
     }
 
     private static bool HasValidPathFrom(int row, int col, int balance, Board board)
