@@ -38,7 +38,7 @@ public static class TimeUnit
     {
         if (TUnit.Ticks % TIn.Ticks != 0)
         {
-            ThrowNotAWholeCount();
+            ThrowNotAWholeCount<TIn>();
         }
 
         return TUnit.Ticks / TIn.Ticks;
@@ -48,90 +48,90 @@ public static class TimeUnit
     // and the test above folds away. With the throw in it the JIT judged Count unprofitable and called
     // it; without, it still called Count from a switch arm profiling found cold, so Count asks to be
     // inlined everywhere, and every arm compiles to its count.
-    private static void ThrowNotAWholeCount() => throw new ArgumentException(NotAWholeCountMessage, "TIn");
+    private static void ThrowNotAWholeCount<TIn>() => throw new ArgumentException(NotAWholeCountMessage, nameof(TIn));
 
     /// <summary>A microsecond, a millionth of a second.</summary>
     public readonly struct Microsecond : ITimeUnit
     {
-        /// <inheritdoc/>
-        public static string Name => "microsecond";
-
         /// <summary>How long one microsecond lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerMicrosecond;
 
         static long ITimeUnit.Ticks => Ticks;
+
+        /// <inheritdoc/>
+        public static string Name => "microsecond";
     }
 
     /// <summary>A millisecond, a thousandth of a second.</summary>
     public readonly struct Millisecond : ITimeUnit
     {
-        /// <inheritdoc/>
-        public static string Name => "millisecond";
-
         /// <summary>How long one millisecond lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerMillisecond;
 
         static long ITimeUnit.Ticks => Ticks;
+
+        /// <inheritdoc/>
+        public static string Name => "millisecond";
     }
 
     /// <summary>A second, the SI unit of time.</summary>
     public readonly struct Second : ITimeUnit
     {
-        /// <inheritdoc/>
-        public static string Name => "second";
-
         /// <summary>How long one second lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerSecond;
 
         static long ITimeUnit.Ticks => Ticks;
+
+        /// <inheritdoc/>
+        public static string Name => "second";
     }
 
     /// <summary>A minute, 60 seconds.</summary>
     public readonly struct Minute : ITimeUnit
     {
-        /// <inheritdoc/>
-        public static string Name => "minute";
-
         /// <summary>How long one minute lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerMinute;
 
         static long ITimeUnit.Ticks => Ticks;
+
+        /// <inheritdoc/>
+        public static string Name => "minute";
     }
 
     /// <summary>An hour, 60 minutes.</summary>
     public readonly struct Hour : ITimeUnit
     {
-        /// <inheritdoc/>
-        public static string Name => "hour";
-
         /// <summary>How long one hour lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerHour;
 
         static long ITimeUnit.Ticks => Ticks;
+
+        /// <inheritdoc/>
+        public static string Name => "hour";
     }
 
     /// <summary>A day, 24 hours: the SI-accepted unit, not a civil day that daylight saving or a leap second lengthens.</summary>
     public readonly struct Day : ITimeUnit
     {
-        /// <inheritdoc/>
-        public static string Name => "day";
-
         /// <summary>How long one day lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerDay;
 
         static long ITimeUnit.Ticks => Ticks;
+
+        /// <inheritdoc/>
+        public static string Name => "day";
     }
 
     /// <summary>A week, seven days.</summary>
     public readonly struct Week : ITimeUnit
     {
-        /// <inheritdoc/>
-        public static string Name => "week";
-
         /// <summary>How long one week lasts, in TimeSpan's ticks.</summary>
         public const long Ticks = TimeSpan.TicksPerDay * DaysPerWeek;
 
         static long ITimeUnit.Ticks => Ticks;
+
+        /// <inheritdoc/>
+        public static string Name => "week";
     }
 }
 
