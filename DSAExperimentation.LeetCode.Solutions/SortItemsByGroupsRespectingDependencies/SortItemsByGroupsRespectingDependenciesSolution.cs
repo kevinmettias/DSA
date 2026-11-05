@@ -24,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SortItemsByGroupsRespectingDepen
 // prerequisites on each step, O(V^2 + V*E) per level; TopologicalSort.TrySort is
 // Kahn's algorithm proper, O(V+E) via a queue of already-zero-in-degree nodes - the
 // same pairing CourseScheduleII (LC 210) measures, run twice.
+[LeetCodeQuestion("sort-items-by-groups-respecting-dependencies", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(SortItemsByGroupsRespectingDependenciesAnswerCheck))]
 internal static class SortItemsByGroupsRespectingDependenciesSolution
 {
     // LeetCode's own "this item has no group" marker.

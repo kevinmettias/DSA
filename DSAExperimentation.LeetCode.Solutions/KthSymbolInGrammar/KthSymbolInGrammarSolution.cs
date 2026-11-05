@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.KthSymbolInGrammar;
 // No repo container or algorithm primitive applies here - there is nothing to compose
 // over one running (row, index) pair, the same "lighter repo-primitive fit" case
 // Pow(x, n)'s exponentiation by squaring already is.
+[LeetCodeQuestion("k-th-symbol-in-grammar", LeetCodeAnswerOrder.AsWritten, Promise = typeof(KthSymbolInGrammarPromise), Reach = typeof(KthSymbolInGrammarReach))]
 internal static class KthSymbolInGrammarSolution
 {
     // Baseline: build every row in full, then index the requested position. O(2^n)

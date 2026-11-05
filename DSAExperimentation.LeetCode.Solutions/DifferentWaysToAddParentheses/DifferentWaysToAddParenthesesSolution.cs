@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DifferentWaysToAddParentheses;
 // is reached both as the left half of one split and the right half of another -
 // is re-derived from scratch each time, or solved once and shared through this
 // repo's own Memoizer<TState,TResult>, keyed by substring.
+[LeetCodeQuestion("different-ways-to-add-parentheses", LeetCodeAnswerOrder.AnyOrder)]
 internal static class DifferentWaysToAddParenthesesSolution
 {
     // Textbook baseline: plain split/recurse/combine, re-deriving any substring

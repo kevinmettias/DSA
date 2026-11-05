@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CourseScheduleII;
 // The naive baseline rescans every remaining course for one with zero remaining
 // prerequisites on each step, O(V^2 + V*E); TopologicalSort.TrySort is Kahn's
 // algorithm proper, O(V+E) via a queue of already-zero-in-degree courses.
+[LeetCodeQuestion("course-schedule-ii", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(CourseScheduleIIAnswerCheck))]
 internal static class CourseScheduleIISolution
 {
     // LeetCode's own input shape: prerequisites[i] = [a, b] means course b must

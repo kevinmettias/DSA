@@ -5,6 +5,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ParseLispExpression;
 // difference is how a nested "let" extends the environment its body sees - so
 // that difference is named rather than restated: both arms evaluate against an
 // IScopeEnvironment and implement only the four decision points it declares.
+[LeetCodeQuestion("parse-lisp-expression", LeetCodeAnswerOrder.AsWritten, Promise = typeof(ParseLispExpressionPromise))]
 internal static class ParseLispExpressionSolution
 {
     private const string AddOperator = "add";

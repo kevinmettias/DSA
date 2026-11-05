@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MatrixCellsInDistanceOrder;
 // matrix sorted by Manhattan distance from (rCenter, cCenter). LeetCode accepts any
 // ordering among equidistant cells, so the two strategies here are allowed to
 // disagree on ties and only have to agree on the distance sequence.
+[LeetCodeQuestion("matrix-cells-in-distance-order", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(MatrixCellsInDistanceOrderAnswerCheck))]
 internal static class MatrixCellsInDistanceOrderSolution
 {
     // The textbook answer: Manhattan distance is a closed form, so compute it per

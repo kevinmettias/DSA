@@ -2506,8 +2506,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,026 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 430 more:
+**Enrolled.** 1,035 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 439 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2685,6 +2685,17 @@ have only the empty tree. A check over those would pass whatever the strategy di
   and the benchmarks' from a minute and a half to three, most of it brute-force arms whose kept cases
   `BenchmarkArmsTests` runs again for its repeat-call checks. A smaller budget than 250 ms would trade
   cases for that time.
+- 9 from the same second probe whose answers parted from the catalog's for a reason their statement
+  gives (2026-11-05). Different Ways to Add Parentheses and Frequencies of Shortest Supersequences say
+  any order stands, the second with a reach of up to 15 words. Course Schedule II, Sort Items by Groups
+  Respecting Dependencies and Matrix Cells in Distance Order let any valid order stand, so each gained
+  an answer check: every course after its prerequisites, every group in one stretch, the distance never
+  falling. Four promise what generated cases broke: lowercase words (Check If a Word Occurs As a Prefix
+  of Any Word in a Sentence, whose trie arm threw on "c++ c#"), a position within the row (K-th Symbol
+  in Grammar, which also takes a reach of rows up to 22, its row expansion doubling each row), and a
+  legal expression, checked by grammar without evaluating: Parse Lisp Expression (15 generated cases
+  leave a parenthesis open, 8 put an expression where a variable must stand) and Parsing A Boolean
+  Expression (22 give `!` several operands, read by the generator as the negated conjunction).
 
 Open items:
 
@@ -2703,13 +2714,13 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 79 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 70 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
   - A slow strategy whose reach the generator could not state: Rectangle Area, Circle and Rectangle Overlapping, Rectangle Overlap and
-    Find the Number of Possible Ways for an Event finish no case on every strategy in time; K-th Symbol
-    in Grammar and Kth Smallest Instructions were not measured; and Find the Shortest Superstring lets
+    Find the Number of Possible Ways for an Event finish no case on every strategy in time; Kth Smallest
+    Instructions was not measured; and Find the Shortest Superstring lets
     any shortest superstring stand, so it needs an answer check first. Maximum Number of Moves to Kill
     All Pawns' graph arm spends about 35 ms on every case, two pawns or fifteen, so no bound on its
     input keeps more than 4 of its 96 cases.
@@ -2723,8 +2734,17 @@ Open items:
     Search, Range Sum Query 2D - Immutable and Kth Ancestor of a Tree Node take a constructor other
     than LeetCode's.
   - A statement that leaves the order free without saying so (Word Search II, Majority Element
-    II) needs the order rule LeetCode's judge applies, checked against its own submission rather
-    than read from the wording.
+    II, Expression Add Operators, Concatenated Words, Palindrome Pairs) needs the order rule
+    LeetCode's judge applies, checked against its own submission rather than read from the wording.
+    Every strategy of the five answers every case in some order. Concatenated Words and Palindrome
+    Pairs would also promise unique words, which generated cases with a repeated word break.
+  - Maximum Product of the Length of Two Palindromic Substrings: the dataset records a wrong output on
+    3 cases. "babadabababa" holds "babadabab" and "aba", for 27, where it records 25; a brute force
+    over every pair agrees with both strategies on all three. The catalog has no way yet to correct an
+    output it imports.
+  - Sudoku Solver's strategies return whether they solved the board, where LeetCode's answers in place
+    and returns nothing, as `AnswersInPlace` requires; its backtracking-engine arm also runs past 3 s
+    on one generated puzzle.
 - **Trimming the enrolled solutions' own tests.** A theory row restates a catalog case when
   a case has the same inputs, read into the strategy's types, and the catalog's judge accepts the
   row's answer for it. That row is the check `CatalogCaseTests` already makes. Measured over the 608

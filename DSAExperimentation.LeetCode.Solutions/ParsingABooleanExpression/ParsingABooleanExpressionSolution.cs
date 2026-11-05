@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ParsingABooleanExpression;
 // The two strategies differ only in which stack holds the pending operands: the
 // CLR's own call stack, walked by a recursive-descent parser, or this repo's
 // Stack<char> driven iteratively by a single left-to-right character scan.
+[LeetCodeQuestion("parsing-a-boolean-expression", LeetCodeAnswerOrder.AsWritten, Promise = typeof(ParsingABooleanExpressionPromise))]
 internal static class ParsingABooleanExpressionSolution
 {
     private const char TrueToken = 't';

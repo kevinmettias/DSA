@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfAWordOccursAsAPrefixOfAny
 // they only differ in how "does this word start with searchWord" is decided: a
 // direct character comparison, or an insert-then-HasPrefix round trip through
 // this repo's own trie, its children slots over the lowercase letters.
+[LeetCodeQuestion("check-if-a-word-occurs-as-a-prefix-of-any-word-in-a-sentence", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CheckIfAWordOccursAsAPrefixOfAnyWordInASentencePromise))]
 internal static class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution
 {
     private const char WordSeparator = ' ';

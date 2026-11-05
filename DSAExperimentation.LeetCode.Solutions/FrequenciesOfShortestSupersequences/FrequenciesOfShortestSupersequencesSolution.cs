@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FrequenciesOfShortestSupersequen
 // full, not just one instance of it), and report one frequency vector per subset.
 // Both strategies share that same subset search; they differ only in how "does
 // doubling this subset leave an acyclic graph?" is answered.
+[LeetCodeQuestion("frequencies-of-shortest-supersequences", LeetCodeAnswerOrder.AnyOrder, Reach = typeof(FrequenciesOfShortestSupersequencesReach))]
 internal static class FrequenciesOfShortestSupersequencesSolution
 {
     // The textbook arm: a three-color DFS over plain adjacency lists, skipping any
