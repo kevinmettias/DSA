@@ -18,9 +18,9 @@ public sealed partial class ImplementTrieBenchmarksTests
     // generated words are distinct and the trie round-trips them - all 2*WordCount verdicts true is
     // exactly the whole set found by both search and startsWith.
     [Fact]
-    public void InsertThenSearchAndStartsWithOverArrayNodes_FindsTheWholeGeneratedSet()
+    public void ArrayNodes_FindsTheWholeGeneratedSet()
     {
-        var verdicts = BuildHarness().InsertThenSearchAndStartsWithOverArrayNodes();
+        var verdicts = BuildHarness().ArrayNodes();
 
         Assert.Equal(VerdictsPerQuery * SmallestWordCount, verdicts.Length);
         Assert.DoesNotContain(false, verdicts);

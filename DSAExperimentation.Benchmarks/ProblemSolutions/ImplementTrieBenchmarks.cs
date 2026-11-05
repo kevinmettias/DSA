@@ -1,15 +1,17 @@
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.ImplementTrie;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are ImplementTrieSolution's - LC 208's textbook node chain over
-// plain arrays, and this repo's own trie over the lowercase letters, the same primitive
-// TrieReturnedBySolutionSeamTests pins the composed factory to returning. The textbook arm is
-// the baseline (ARCHITECTURE 17.5): what a LeetCode answer writes without this repo, not a rival
+// Harness only: every arm is ImplementTrieSolution's. This is LC 208's strategy benchmark: the
+// textbook node chain over plain arrays against the one trie as a set under each store LC 208's words
+// allow - slots packed in letter order behind a mask, a slot for every letter, and a hash map per
+// node - so it shows where the hand-written chain wins and by how much. The textbook arm is the
+// baseline (ARCHITECTURE 17.5): what a LeetCode answer writes without this repo, not a rival
 // representation of the repo's own. Each arm inserts the whole word set, then replays search and
-// startsWith over a shuffled copy of it, so insert cost is charged to both halves rather than
-// just the first, and returns every verdict, each query's search then its startsWith.
+// startsWith over a shuffled copy of it, so insert cost is charged to both halves rather than just
+// the first, and returns every verdict, each query's search then its startsWith.
 public class ImplementTrieBenchmarks
 {
     private const int RandomSeed = 208; // LC problem number
@@ -39,35 +41,30 @@ public class ImplementTrieBenchmarks
         _verdicts = new bool[_queries.Length * VerdictsPerQuery];
     }
 
+    private static string BuildWord(Random random)
+    {
+        var letters = new char[WordLength];
+
+        for (var index = 0; index < WordLength; index++)
+        {
+            letters[index] = EnglishLowercase.Letters[random.Next(EnglishLetters.Size)];
+        }
+
+        return new string(letters);
+    }
+
+    // Written against the textbook trie's own type rather than through Replay: a generic method over a
+    // class shares one body across classes and calls through the interface, a dispatch the one trie's
+    // struct views do not pay.
     [Benchmark(Baseline = true)]
-    public bool[] InsertThenSearchAndStartsWithOverArrayNodes()
+    public bool[] ArrayNodes()
     {
         var trie = ImplementTrieSolution.CreateByArrayNodes();
         var next = 0;
 
         foreach (var word in _words)
         {
-            trie.Insert(word);
-        }
-
-        foreach (var word in _queries)
-        {
-            _verdicts[next++] = trie.HasWord(word);
-            _verdicts[next++] = trie.HasPrefix(word[.._prefixLength]);
-        }
-
-        return _verdicts;
-    }
-
-    [Benchmark]
-    public bool[] InsertThenSearchAndStartsWith()
-    {
-        var trie = ImplementTrieSolution.CreateByTriePrimitive();
-        var next = 0;
-
-        foreach (var word in _words)
-        {
-            trie.Set(word, true);
+            trie.Add(word);
         }
 
         foreach (var word in _queries)
@@ -79,15 +76,33 @@ public class ImplementTrieBenchmarks
         return _verdicts;
     }
 
-    private static string BuildWord(Random random)
-    {
-        var letters = new char[WordLength];
+    [Benchmark]
+    public bool[] PackedSlots() => Replay(ImplementTrieSolution.CreateByPackedSlots());
 
-        for (var index = 0; index < WordLength; index++)
+    [Benchmark]
+    public bool[] DenseSlots() => Replay(ImplementTrieSolution.CreateByDenseSlots());
+
+    [Benchmark]
+    public bool[] HashedChildren() => Replay(ImplementTrieSolution.CreateByHashedChildren());
+
+    // The one workload, compiled once for each set: every set passed here is a struct, so each call is
+    // direct.
+    private bool[] Replay<TSet>(TSet words)
+        where TSet : IPrefixSet
+    {
+        var next = 0;
+
+        foreach (var word in _words)
         {
-            letters[index] = EnglishLowercase.Letters[random.Next(EnglishLetters.Size)];
+            words.Add(word);
         }
 
-        return new string(letters);
+        foreach (var word in _queries)
+        {
+            _verdicts[next++] = words.HasKey(word);
+            _verdicts[next++] = words.HasPrefix(word[.._prefixLength]);
+        }
+
+        return _verdicts;
     }
 }

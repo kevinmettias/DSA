@@ -799,7 +799,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `Graph/Contracts/Topologies/` | `IGraphTopology`, `IEdgeTopology`, `EdgeTopologyAsGraphTopology` (§3.2) |
 | `Graph/Engines/Dags/` | `IDagTopology` (§3.2) |
 | `Graph/Engines/Dags/Trees/` | `ITreeTopology`; the binary tree (`BinaryTreeNode`, `BinaryTreeChildren`, `BinaryTreeTopology`, `ChildSide`, `BinarySearchTree`, `InOrderTraversal`, `IInOrderHooks`, `FindClosest`); the bit trie with its real witness (`BitTrie*`, §13.9); the rooted tree (`RootedTreeNode`, `RootedTreeTopology`, `ParentArrayTree`, `EdgeListTree`, `PreOrderTour`, `PreOrderLowestCommonAncestor`); the quad tree (`QuadTreeNode`, `QuadTreeGrid`). `EdgeListTree` roots LeetCode's undirected edge list with a breadth-first walk, returning the parent array `ParentArrayTree` reads and, for each node, the index of the edge that joins it to its parent - the one thing a parent array cannot recover. `PreOrderTour` lays a `RootedTreeNode` tree out in pre-order, so every subtree is one contiguous range of positions; `PreOrderLowestCommonAncestor` reads ancestors off that layout with one range minimum, O(log n) per query after O(n) preparation. It is hardwired to the tour, so it lives here rather than beside `Algorithms/Ancestry/LowestCommonAncestor`, which is generic over `ITreeTopology` (§13.5) |
-| `Graph/Engines/Dags/Trees/Tries/` | The one trie (§13.8): `IPrefixMap`, the map's contract; `Trie<TStore, TValue>`, its key walk written once, and `TrieNode`; and the child store each configuration injects, `ITrieChildStore`, or `IOrderedTrieChildStore` for a store whose children have an order. `AlphabetSlots` (with `AlphabetSlotsEnumerator`) keeps a node's children in slots over any `IAlphabet` of up to 64 letters, in letter order, so its trie has a real witness (`TrieTopology`, `TrieChildren`); `HashedChildren` takes any `char` and has no order, so its trie has none. `ITrieLayout`, `DenseTrieLayout`, `PackedTrieLayout` — where the slot store keeps its children, a type argument each trie names |
+| `Graph/Engines/Dags/Trees/Tries/` | The one trie (§13.8): `IPrefixMap`, the map's contract, and `IPrefixSet`, the set's, which the trie meets through `PrefixSet`, its view of a map to `bool`; `Trie<TStore, TValue>`, its key walk written once, and `TrieNode`; and the child store each configuration injects, `ITrieChildStore`, or `IOrderedTrieChildStore` for a store whose children have an order. `AlphabetSlots` (with `AlphabetSlotsEnumerator`) keeps a node's children in slots over any `IAlphabet` of up to 64 letters, in letter order, so its trie has a real witness (`TrieTopology`, `TrieChildren`); `HashedChildren` takes any `char` and has no order, so its trie has none. `ITrieLayout`, `DenseTrieLayout`, `PackedTrieLayout` — where the slot store keeps its children, a type argument each trie names |
 | `Graph/Grids/` | `Grid`, `GridNode`, `GridChildren`, `GridSize`, `GridNeighbors`, `IGridCellFilter`, `GridTopology`, `IGridNodeSource` with `NodePerCell` and `NodePerStep`, and the weighted `WeightedGrid*` (§17.6). The steps they walk by, `GridStep` and `GridDirections`, are facts about the square lattice, in `Domain/Mathematics/Lattices`; a `Grid` carries the table its cells are joined by (`Steps`, the orthogonal four unless it is built with others, such as the octilinear eight LC 1091 moves by), and `GridChildren` reads which of them lead somewhere open into a mask once per node, so its `Count` is a population count and `Get` a set bit. `GridSize` is a board's extent and its one bounds rule, the bounded rectangle's (`Domain/Mathematics/Surfaces`); a walk's `IGridNodeSource` says whether a cell's node is the board's one node for it or a new one per step; `GridNeighbors` is a cell's on-board neighbours in a direction table's order, filtered by an `IGridCellFilter`, for a `DepthFirstSearch.Traverse` successor whose "open" is decided by the problem's cells rather than a fixed map like `Grid`'s |
 | `Graph/Hamming/` | `HammingNode`, `HammingTopology`, `HammingGraph`, `HammingSearch`, `MutationStart`, `MutationTarget` (§17.6); the letters a mutation writes are an `IAlphabet` type argument (§19.6) |
 | `Graph/ShortestPaths/` | `ByPriorityOrder` (§13.2) |
@@ -1060,9 +1060,16 @@ trie's own Representation axis, not one contract spanning two domains. And a ref
 shares code just as the bounded-alphabet trie's node did, since each store is a struct type argument
 compiled for its own alphabet and layout. A problem names the store its invariants allow: keys over
 a small alphabet `AlphabetSlots`, any other keys `HashedChildren`. A hand-specialized trie is a
-strategy behind `IPrefixMap`, the contract for exactly the layer it replaces, and is benchmarked
-against the template (§17.5). `DataStructures/Trie`'s `Trie<TValue>` keeps its own hashed walk only
-until its last users move onto the one trie. Moving the
+strategy behind the contract for exactly the layer it replaces, and is benchmarked against the
+template (§17.5): `IPrefixMap` for a map, or `IPrefixSet` for a trie that keeps keys and no values,
+as LC 208's textbook trie does. The one trie is a set through `PrefixSet`, a struct view of a map to
+`bool` that holds one reference and walks nothing itself, so one contract suite, `PrefixSetTests`,
+runs over the textbook trie and the view under each store. Which slot layout is faster depends on
+the work. Where every run builds the trie, the packed layout's arrays, which hold only the children a
+node has, win: LC 208's packed set is 65% faster than the textbook trie at 10,000 words, and the
+dense set 5-15% slower than it. Where the trie is built once and then read, the dense layout's one
+slot read wins: 32-39% over packed on LC 3093 and 9-16% on LC 472. `DataStructures/Trie`'s
+`Trie<TValue>` keeps its own hashed walk only until its last users move onto the one trie. Moving the
 bounded-alphabet trie's 12 problems onto it changed no allocation, and no time beyond what identical
 code reads apart, once the slot store's enumerator held a reference to the store rather than a copy:
 a copy is two values a recursive walk keeps alive across its calls, and it cost LC 676 12-30%.
@@ -1487,7 +1494,10 @@ So a baseline may read what the library *states*, and may not use what it *imple
 - **It may implement contracts.** An interface, a witness contract with static abstract members among
   them, states what a layer guarantees. A baseline that writes a layer by hand implements that layer's
   contract, so one contract test suite runs over it and the library's configuration alike, and a
-  strategy benchmark compares the two.
+  strategy benchmark compares the two. The suite is an abstract test class in
+  `DSAExperimentation.Tests` whose abstract member builds the set or map it judges. The library's
+  configurations derive from it there, and a baseline from the LeetCode tests, which reference the
+  library's tests for that alone: LC 208's `ArrayNodeTrieTests` derives from `PrefixSetTests`.
 - **It may not use an implementation.** A type or member of `DataStructures`, `Algorithms` or
   `Mechanisms` that is neither a contract nor a constant or enum - a container, an engine, a
   mechanism, a layout witness - is the library doing the work, and a baseline that used one would no

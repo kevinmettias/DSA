@@ -21,6 +21,8 @@
     <ProjectReference Include="..\DSAExperimentation.LeetCode.Catalog\DSAExperimentation.LeetCode.Catalog.csproj" />
     <ProjectReference Include="..\DSAExperimentation.LeetCode.Harness\DSAExperimentation.LeetCode.Harness.csproj" />
     <ProjectReference Include="..\DSAExperimentation\DSAExperimentation.csproj" />
+    <!-- For the contract suites a LeetCode strategy that specializes a library layer inherits (ARCHITECTURE §17.5). -->
+    <ProjectReference Include="..\DSAExperimentation.Tests\DSAExperimentation.Tests.csproj" />
   </ItemGroup>
 
 </Project>

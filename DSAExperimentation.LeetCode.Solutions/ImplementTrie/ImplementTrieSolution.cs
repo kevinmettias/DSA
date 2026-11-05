@@ -1,56 +1,73 @@
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 using DSAExperimentation.Domain.Language.English;
-using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+using DenseWords = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PrefixSet<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.DenseTrieLayout,
+        bool>>;
+using HashedWords = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PrefixSet<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.HashedChildren<bool>>;
+using PackedWords = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PrefixSet<
     DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
         DSAExperimentation.Domain.Language.English.EnglishLowercase,
         DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
-        bool>,
-    bool>;
+        bool>>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ImplementTrie;
 
 // LeetCode 208. Implement Trie (Prefix Tree): a design problem - insert/search/
 // startsWith against a fixed word set, not a single return value.
 //
-// This repo's own trie already implements exactly this shape
-// (Set/HasKey/HasPrefix, LeetCode's own verbs traded for this repo's naming - the
-// same trade LRUCacheSolution makes over ICache<TKey,TValue>), so the composed
-// strategy is that trie, directly, over the lowercase letters LC 208's words use.
-// The textbook strategy is the node chain LC 208's own editorial writes - each node
-// 26 child slots and an end-of-word mark, over plain arrays - asked HasWord and
-// HasPrefix in place of LeetCode's search and startsWith, as this repo's own Trie is
-// asked HasKey and HasPrefix.
+// The layer LC 208 asks for is a set of words with prefix queries, IPrefixSet, its
+// verbs traded for the contract's (Add, HasKey, HasPrefix) as LRUCacheSolution trades
+// get and put for ICache's. The textbook strategy is the node chain LC 208's own
+// editorial writes - each node 26 child slots and an end-of-word mark, over plain
+// arrays - and it implements IPrefixSet itself, so one contract suite (PrefixSetTests)
+// holds it and the one trie to the same answers. The one trie is a strategy under
+// each store LC 208's lowercase words allow, so the benchmark shows where the
+// hand-written chain wins and by how much (ARCHITECTURE 17.5).
 internal static class ImplementTrieSolution
 {
-    // The textbook answer, the arm this repo's Trie is measured against (ARCHITECTURE 17.5).
+    // The textbook answer, the arm the one trie is measured against (ARCHITECTURE 17.5).
     public static ArrayNodeTrie CreateByArrayNodes() => new();
 
-    public static WordTrie CreateByTriePrimitive() => new();
+    public static PackedWords CreateByPackedSlots() => new(new());
 
-    internal sealed class ArrayNodeTrie
+    public static DenseWords CreateByDenseSlots() => new(new());
+
+    public static HashedWords CreateByHashedChildren() => new(new());
+
+    internal sealed class ArrayNodeTrie : IPrefixSet
     {
-
         private readonly Node _root = new();
 
-        public void Insert(string word)
+        public int Count { get; private set; }
+
+        public void Add(string key)
         {
             var node = _root;
 
-            foreach (var letter in word)
+            foreach (var letter in key)
             {
                 node = node.Children[letter - EnglishLowercase.FirstLetter] ??= new Node();
             }
 
-            node.IsWord = true;
+            if (!node.IsWord)
+            {
+                node.IsWord = true;
+                Count++;
+            }
         }
 
-        public bool HasWord(string word)
+        public bool HasKey(string key)
         {
-            var node = NodeAt(word);
+            var node = NodeAt(key);
 
             return node is not null && node.IsWord;
         }
 
-        public bool HasPrefix(string prefix) => NodeAt(prefix) is not null;
+        // Every key starts with the empty prefix, so it asks whether any key was added (IPrefixSet).
+        public bool HasPrefix(string prefix) => prefix.Length == 0 ? Count > 0 : NodeAt(prefix) is not null;
 
         // The node `text` spells from the root, or null where the chain stops short of it.
         private Node? NodeAt(string text)

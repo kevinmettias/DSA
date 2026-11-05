@@ -1,18 +1,14 @@
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 using DSAExperimentation.LeetCode.Solutions.ImplementTrie;
-using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
-        DSAExperimentation.Domain.Language.English.EnglishLowercase,
-        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
-        bool>,
-    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ImplementTrie;
 
-// Harness only. Both tries are ImplementTrieSolution's - this file replays LeetCode's
+// Harness only. Every strategy is ImplementTrieSolution's - this file replays LeetCode's
 // own insert/search/startsWith call sequence against each, the same operation-script
 // shape LRUCacheTests already uses for its own instance-API problem.
-// ImplementTrieOp.Apply is pure dispatch onto each trie's own verbs - no trie logic of
-// its own.
+// ImplementTrieOp.Apply is pure dispatch onto IPrefixSet's verbs - no trie logic of its
+// own. What every strategy owes beyond LeetCode's example is IPrefixSet's contract:
+// ArrayNodeTrieTests holds the textbook trie to it, and PrefixSetTests the one trie.
 public sealed partial class ImplementTrieSolutionTests
 {
     public static TheoryData<ImplementTrieOp[], bool?[]> Examples =>
@@ -34,21 +30,29 @@ public sealed partial class ImplementTrieSolutionTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByArrayNodes_LeetCodeExample_MatchesExpectedBehavior(
-        ImplementTrieOp[] operations, bool?[] expected)
-    {
-        var trie = ImplementTrieSolution.CreateByArrayNodes();
-
-        Assert.Equal(expected, operations.Select(operation => operation.Apply(trie)));
-    }
+        ImplementTrieOp[] operations, bool?[] expected) =>
+        Assert.Equal(expected, RunScript(ImplementTrieSolution.CreateByArrayNodes(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CreateByTriePrimitive_LeetCodeExample_MatchesExpectedBehavior(
+    public void CreateByPackedSlots_LeetCodeExample_MatchesExpectedBehavior(
         ImplementTrieOp[] operations, bool?[] expected) =>
-        Assert.Equal(expected, RunScript(ImplementTrieSolution.CreateByTriePrimitive(), operations));
+        Assert.Equal(expected, RunScript(ImplementTrieSolution.CreateByPackedSlots(), operations));
 
-    private static bool?[] RunScript(WordTrie trie, ImplementTrieOp[] operations) =>
-        [.. operations.Select(operation => operation.Apply(trie))];
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByDenseSlots_LeetCodeExample_MatchesExpectedBehavior(
+        ImplementTrieOp[] operations, bool?[] expected) =>
+        Assert.Equal(expected, RunScript(ImplementTrieSolution.CreateByDenseSlots(), operations));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByHashedChildren_LeetCodeExample_MatchesExpectedBehavior(
+        ImplementTrieOp[] operations, bool?[] expected) =>
+        Assert.Equal(expected, RunScript(ImplementTrieSolution.CreateByHashedChildren(), operations));
+
+    private static bool?[] RunScript(IPrefixSet words, ImplementTrieOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(words))];
 
     // One call in an Implement-Trie script: which method to invoke and on what word.
     // Built via the named factories below so a script (like Examples above) reads
@@ -66,31 +70,15 @@ public sealed partial class ImplementTrieSolutionTests
         // search/startsWith - so a script runner can assert against one expected
         // value per operation uniformly. Internal, not public: only this same
         // assembly's test method ever calls Apply.
-        internal bool? Apply(ImplementTrieSolution.ArrayNodeTrie trie)
+        internal bool? Apply(IPrefixSet words)
         {
             if (kind == OpKind.Insert)
             {
-                trie.Insert(word);
+                words.Add(word);
                 return null;
             }
 
-            if (kind == OpKind.Search)
-            {
-                return trie.HasWord(word);
-            }
-
-            return trie.HasPrefix(word);
-        }
-
-        internal bool? Apply(WordTrie trie)
-        {
-            if (kind == OpKind.Insert)
-            {
-                trie.Set(word, true);
-                return null;
-            }
-
-            return kind == OpKind.Search ? trie.HasKey(word) : trie.HasPrefix(word);
+            return kind == OpKind.Search ? words.HasKey(word) : words.HasPrefix(word);
         }
 
         public enum OpKind
