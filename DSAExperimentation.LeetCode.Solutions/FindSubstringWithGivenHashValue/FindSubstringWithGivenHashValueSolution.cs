@@ -26,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindSubstringWithGivenHashValue;
 // A letter's value is its number, a as 1 through z as 26 (Domain/Language/English's EnglishLetters):
 // the rolling-hash arm reads it, and the window-rehash baseline keeps its own LetterValue
 // (ARCHITECTURE §17.5).
+[LeetCodeQuestion("find-substring-with-given-hash-value", LeetCodeAnswerOrder.AsWritten, Promise = typeof(FindSubstringWithGivenHashValuePromise))]
 internal static class FindSubstringWithGivenHashValueSolution
 {
     // The letters' numbers, injected into RollingHash through the same

@@ -22,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumTotalBeautyOfTheGardens;
 //   - "what is the tallest affordable h" - a walk down from the cap one height at a
 //     time, or MonotonePredicateSearch.LastTrue over the heights up to the cap, the
 //     same search-on-the-answer shape KokoEatingBananas uses.
+[LeetCodeQuestion("maximum-total-beauty-of-the-gardens", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumTotalBeautyOfTheGardensSolution
 {
     // The textbook answer: BCL Array.Sort, a linear count of the prefix below a

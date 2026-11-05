@@ -12,6 +12,9 @@ public sealed partial class AnswerNotationTests
     public void Of_UnsignedInteger_WritesTheNumber() => Assert.Equal("964176192", AnswerNotation.Of(964176192u).ToJsonString());
 
     [Fact]
+    public void OfFound_OneOutput_WritesThatOutputAlone() => Assert.Equal("\"ee\"", AnswerNotation.OfFound(["ee"]).ToJsonString());
+
+    [Fact]
     public void Of_Character_WritesAOneCharacterString() => Assert.Equal("\"a\"", AnswerNotation.Of('a').ToJsonString());
 
     [Fact]

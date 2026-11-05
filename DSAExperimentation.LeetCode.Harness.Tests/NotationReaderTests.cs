@@ -102,5 +102,42 @@ public sealed partial class NotationReaderTests
     }
 
     [Fact]
-    public void CanRead_RecordOfTwoValues_IsFalse() => Assert.False(NotationReader.CanRead(typeof(ProbeEndpoints)));
+    public void CanRead_RecordOfTwoValues_IsTrue() => Assert.True(NotationReader.CanRead(typeof(ProbeEndpoints)));
+
+    [Fact]
+    public void Read_RecordOfTwoValuesFromAnArray_ReadsEachValueIntoIt()
+    {
+        var endpoints = NotationReader.Read("[3,7]", typeof(ProbeEndpoints));
+
+        Assert.Equal(new ProbeEndpoints(3, 7), endpoints);
+    }
+
+    // A type and how many consecutive inputs it can stand for.
+    public static TheoryData<Type, int> Widths => new()
+    {
+        { typeof((int, int, int)), 3 },
+        { typeof(ProbeEndpoints), 2 },
+        { typeof(ProbeRoleText), 1 },
+        { typeof(int[]), 1 },
+    };
+
+    [Theory]
+    [MemberData(nameof(Widths))]
+    public void WidthOf_Type_CountsTheValuesItIsBuiltFrom(Type type, int width) => Assert.Equal(width, NotationReader.WidthOf(type));
+
+    [Fact]
+    public void ReadSpread_TwoTextsAsARecordOfTwo_BuildsItFromBoth()
+    {
+        var endpoints = NotationReader.ReadSpread(["3", "7"], typeof(ProbeEndpoints));
+
+        Assert.Equal(new ProbeEndpoints(3, 7), endpoints);
+    }
+
+    [Fact]
+    public void ReadSpread_ThreeTextsAsATuple_BuildsItFromAll()
+    {
+        var query = NotationReader.ReadSpread(["0", "4", "9"], typeof((int Source, int Destination, int Target)));
+
+        Assert.Equal((0, 4, 9), query);
+    }
 }

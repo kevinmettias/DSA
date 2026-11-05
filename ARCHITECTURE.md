@@ -2270,10 +2270,13 @@ run of that category times both, and `--filter '*CatalogBenchmarks*'` selects th
   `CatalogColumns`. That conversion out of LeetCode's notation is paid once, never inside the timed
   loop. `NotationReader` holds the rules: scalars (a `uint` too, from a non-negative integer, as
   LeetCode's bit questions take one), arrays, tuples from `[start, end]` rows, trees
-  and lists through `LeetCodeWireFormat`, and a role type standing for one value, such as
-  `SourceText(string Text)`, as that value: a value type whose one public constructor takes one value
-  and keeps it as the property of the same name. The generator's `NotationTypes` states the same rules
-  over compile-time types.
+  and lists through `LeetCodeWireFormat`, and a positional record of value type - one public
+  constructor that keeps each value as the property of the same name - as its values: a role type of
+  one value, such as `SourceText(string Text)`, as that value, and a record of several as an array of
+  them, as a tuple is read. For a case that lists more inputs than the strategy takes, a tuple or
+  record of several values stands for as many consecutive inputs, when the widths add up exactly: Rectangle
+  Area's eight coordinates are two `Rectangle(X1, Y1, X2, Y2)`. The generator's `NotationTypes` states
+  the same rules over compile-time types.
 - Each arm copies its columns into locals and calls the strategy directly in a `for` loop, writing
   each answer into a buffer (§17.8).
 - A solution whose strategies may rewrite their inputs, as relinking a list does, says so with
@@ -2283,7 +2286,8 @@ run of that category times both, and `--filter '*CatalogBenchmarks*'` selects th
   input an earlier call consumed. The benchmarks' tests call such an arm twice within one iteration,
   as BenchmarkDotNet does, so an arm that reused its copy would answer differently the second time.
 - A `Try` strategy's answer is its return value gathered with its out parameters, as Two Sum's
-  `(found, first, second)`.
+  `(found, first, second)`. One output is written as itself, as Find Substring With Given Hash Value's
+  substring is, and several as LeetCode's array of them.
 - A strategy that answers in place, for a question that says so, is called on the iteration's next
   copy of its inputs, and the arm stores that first input as the call left it.
 - A strategy may have two overloads a case can feed, when its hoisted overload takes a type the
@@ -2427,8 +2431,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 830 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 234 more:
+**Enrolled.** 837 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 241 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2532,6 +2536,13 @@ have only the empty tree. A check over those would pass whatever the strategy di
   landed, with a promise that every word has one length; Power Grid Maintenance, once its grouping
   helper stopped being named like a strategy (`ConnectedGridsOf`, as Car Fleet's was renamed); and
   Increasing Order Search Tree, which relinks its tree, so `RewritesInput = true`.
+- 7 whose strategies take several of LeetCode's inputs as one tuple or record, once consecutive inputs
+  could be read into one: Cheapest Flights Within K Stops, Minimum Time to Reach Target with Limited
+  Power, Minimum Moves to Capture the Queen, Minimum Weighted Subgraph With the Required Paths, Maximum
+  Total Beauty of the Gardens, Path with Maximum Probability (within 10^-5, promising edges and
+  endpoints that are nodes of the graph) and Find Substring With Given Hash Value (promising lowercase
+  letters and a window that has the hash, which generated cases broke). Rectangle Area and Circle and
+  Rectangle Overlapping read now too, but their unit-grid arms take seconds over the catalog.
 - 10 answered in place, once the attribute could say so: Move Zeroes, Sort Colors, Rotate Image, Set
   Matrix Zeroes, Game of Life, Surrounded Regions, Flatten Binary Tree to Linked List, Recover Binary
   Search Tree, Reorder List and Wiggle Sort II, which also takes any valid wiggle through an answer
@@ -2555,7 +2566,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 275 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 268 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.

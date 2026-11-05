@@ -22,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumWeightedSubgraphWithTheRe
 // results every candidate then reads off - the third run on the edge-reversed
 // graph, since "distance to dest" is exactly "distance from dest on the reverse
 // graph".
+[LeetCodeQuestion("minimum-weighted-subgraph-with-the-required-paths", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumWeightedSubgraphWithTheRequiredPathsSolution
 {
     // Textbook baseline: BCL adjacency lists plus a PriorityQueue<int, long>

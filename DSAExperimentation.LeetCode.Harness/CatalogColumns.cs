@@ -33,15 +33,50 @@ internal sealed class CatalogColumns(IReadOnlyList<LeetCodeCase> cases, object?[
         return new CatalogColumns([.. kept.Select(row => row.Case)], byParameter);
     }
 
+    // One argument per input; or, for a case with more inputs than parameters, a tuple or record parameter of
+    // several values over as many consecutive inputs, when the widths add up to the inputs exactly.
     private static object?[] ArgumentsOf(LeetCodeCase testCase, Type[] parameterTypes)
     {
-        if (testCase.Inputs.Count != parameterTypes.Length)
+        if (testCase.Inputs.Count == parameterTypes.Length)
+        {
+            return [.. testCase.Inputs.Zip(parameterTypes, NotationReader.Read)];
+        }
+
+        var widths = parameterTypes.Select(NotationReader.WidthOf).ToArray();
+
+        if (widths.Sum() != testCase.Inputs.Count)
         {
             throw new InvalidOperationException(
                 $"A case lists {testCase.Inputs.Count} inputs, and the strategy takes {parameterTypes.Length}.");
         }
 
-        return [.. testCase.Inputs.Zip(parameterTypes, NotationReader.Read)];
+        return SpreadArgumentsOf(testCase.Inputs, parameterTypes, widths);
+    }
+
+    private static object?[] SpreadArgumentsOf(IReadOnlyList<string> inputs, Type[] parameterTypes, int[] widths)
+    {
+        var arguments = new object?[parameterTypes.Length];
+        var next = 0;
+
+        for (var parameter = 0; parameter < parameterTypes.Length; parameter++)
+        {
+            var texts = inputs.Skip(next).Take(widths[parameter]).ToList();
+            arguments[parameter] = ArgumentOf(texts, parameterTypes[parameter]);
+            next += widths[parameter];
+        }
+
+        return arguments;
+    }
+
+    // One input read into its parameter, or several built into the tuple or record they stand for.
+    private static object? ArgumentOf(List<string> texts, Type type)
+    {
+        if (texts.Count == 1)
+        {
+            return NotationReader.Read(texts[0], type);
+        }
+
+        return NotationReader.ReadSpread(texts, type);
     }
 
     private static bool IsKept(LeetCodeQuestionAttribute question, Type[] parameterTypes, object?[] arguments)

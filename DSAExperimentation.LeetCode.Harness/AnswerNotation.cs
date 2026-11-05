@@ -68,8 +68,13 @@ internal static class AnswerNotation
         return OfFound(ItemsOf(gathered).Skip(1));
     }
 
-    // The outputs a Try strategy found.
-    public static JsonNode OfFound(IEnumerable<object?> outputs) => ArrayOf(outputs);
+    // The outputs a Try strategy found: one output is its own answer, as Find Substring With Given Hash
+    // Value's substring is, and several are LeetCode's array of them, as Two Sum's two indices are.
+    public static JsonNode OfFound(IEnumerable<object?> outputs)
+    {
+        var found = outputs.ToList();
+        return found.Count == 1 ? Of(found[0]) : ArrayOf(found);
+    }
 
     // What a Try strategy that found nothing stands for: LeetCode's empty answer.
     public static JsonNode NoneFound() => new JsonArray();

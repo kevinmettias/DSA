@@ -21,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumMovesToCaptureTheQueen;
 // itself, the walk read 12-13% slower at 100,000 queries, and as a span it is within the
 // drift identical code shows. The line-of-sight arm's same-line tests are grid geometry
 // with no second user, so they stay below.
+[LeetCodeQuestion("minimum-moves-to-capture-the-queen", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumMovesToCaptureTheQueenSolution
 {
     // The textbook baseline: simulate every square each sliding piece could

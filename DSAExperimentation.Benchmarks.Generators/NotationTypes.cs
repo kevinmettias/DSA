@@ -58,7 +58,7 @@ internal static class NotationTypes
         INamedTypeSymbol { IsTupleType: true } tuple =>
             tuple.TupleElements.Length <= MostTupleItems && tuple.TupleElements.All(item => IsReadable(item.Type)),
         INamedTypeSymbol { IsGenericType: true, TypeArguments.Length: 1 } generic => IsReadableGeneric(generic),
-        INamedTypeSymbol { IsValueType: true } valueType when OneValueOf(valueType) is { } value => IsReadable(value),
+        INamedTypeSymbol { IsValueType: true } valueType when RecordValuesOf(valueType) is { } values => values.All(IsReadable),
         _ => false,
     };
 
@@ -78,22 +78,30 @@ internal static class NotationTypes
     private static string MetadataNameOf(INamedTypeSymbol type) =>
         $"{type.ContainingNamespace.ToDisplayString()}.{type.MetadataName}";
 
-    // The one value a role type such as SourceText(string Text) stands for: a value type whose one public
-    // constructor, beside the parameterless one every struct has, takes one value and keeps it as the
-    // property of the same name. Null for any other type.
-    private static ITypeSymbol? OneValueOf(INamedTypeSymbol type)
+    // The values a positional record of value type is built from, in order: the parameters of its one public
+    // constructor, beside the parameterless one every struct has, each kept as the property of the same
+    // name - a role type such as SourceText(string Text), or Rectangle(X1, Y1, X2, Y2). Null for any other.
+    private static List<ITypeSymbol>? RecordValuesOf(INamedTypeSymbol type)
     {
         var constructors = type.InstanceConstructors.Where(constructor => constructor is { IsImplicitlyDeclared: false, DeclaredAccessibility: Accessibility.Public }).ToList();
 
-        if (constructors.Count != 1 || constructors[0].Parameters.Length != 1)
+        if (constructors.Count != 1 || constructors[0].Parameters.Length == 0)
         {
             return null;
         }
 
-        var parameter = constructors[0].Parameters[0];
-        var property = type.GetMembers(parameter.Name).OfType<IPropertySymbol>().FirstOrDefault();
-        return property is not null && SymbolEqualityComparer.Default.Equals(property.Type, parameter.Type) ? parameter.Type : null;
+        var parameters = constructors[0].Parameters;
+
+        if (!parameters.All(parameter => IsKeptAsProperty(type, parameter)))
+        {
+            return null;
+        }
+
+        return [.. parameters.Select(parameter => parameter.Type)];
     }
+
+    private static bool IsKeptAsProperty(INamedTypeSymbol type, IParameterSymbol parameter) =>
+        type.GetMembers(parameter.Name).OfType<IPropertySymbol>().Any(property => SymbolEqualityComparer.Default.Equals(property.Type, parameter.Type));
 
     public static string Render(ITypeSymbol type) => type switch
     {

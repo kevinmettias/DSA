@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheapestFlightsWithinKStops;
 // Dijkstra's own precondition. FindCheapestPriceByNaiveDfs is the textbook
 // alternative it has to justify itself against: every path with at most
 // maxStops + 1 edges, unmemoized and exponential in maxStops.
+[LeetCodeQuestion("cheapest-flights-within-k-stops", LeetCodeAnswerOrder.AsWritten)]
 internal static class CheapestFlightsWithinKStopsSolution
 {
     // The textbook answer: recurse over every itinerary with edges to spare,

@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
@@ -15,8 +16,12 @@ namespace DSAExperimentation.LeetCode.Harness;
 // - an array as a tuple of the same arity, the way LeetCode writes an interval as [start, end];
 // - a level-order array as a tree and a flat array as a linked list, through LeetCodeWireFormat;
 // - an interface-typed sequence as an array, or as a List<T> when the interface lets a strategy add;
-// - a role type standing for one value, such as SourceText(string Text), as that value: a value type
-//   whose one public constructor takes one value and keeps it as the property of the same name.
+// - a positional record of value type - one public constructor that keeps each value as the property of
+//   the same name - as its values: a role type of one value, such as SourceText(string Text), as that
+//   value, and a record of several as an array of them, the way a tuple is read;
+// - and, for a case that lists more inputs than the strategy takes, a tuple or record of several values
+//   over as many consecutive inputs (ReadSpread), as Rectangle Area's eight coordinates are two
+//   Rectangle(X1, Y1, X2, Y2).
 // CatalogBenchmarkGenerator states the same rules over compile-time types, so a parameter it accepts is
 // one this reads. A type outside them is refused by name, never guessed at, and a value that does not fit
 // its type is a defect in the checked-in snapshot, which stops [GlobalSetup] rather than being skipped.
@@ -54,6 +59,27 @@ internal static class NotationReader
         return ValueOf(document.RootElement, type);
     }
 
+    // How many consecutive case inputs a parameter of this type can stand for: a tuple's or a record's
+    // values, when it has several, and one for any other type.
+    public static int WidthOf(Type type)
+    {
+        if (IsTuple(type))
+        {
+            return type.GetGenericArguments().Length;
+        }
+
+        return RecordValuesOf(type)?.Length ?? 1;
+    }
+
+    // A tuple or a record built from one value per text, in order.
+    public static object ReadSpread(IReadOnlyList<string> texts, Type type)
+    {
+        // A tuple keeps its items in fields, so it is no positional record, and its type arguments are its values.
+        var valueTypes = RecordValuesOf(type) ?? type.GetGenericArguments();
+        var values = texts.Zip(valueTypes, Read).ToArray();
+        return Activator.CreateInstance(type, values) ?? throw new InvalidOperationException($"{type} could not be constructed.");
+    }
+
     // Whether Read has a reading for the type: the dispatch Read follows, asked of the type alone, which is
     // how a strategy's parameters are checked before any case is read.
     public static bool CanRead(Type type)
@@ -78,7 +104,7 @@ internal static class NotationReader
             return CanRead(type.GetGenericArguments()[0]);
         }
 
-        return OneValueOf(type) is { } value && CanRead(value);
+        return RecordValuesOf(type) is { } values && values.All(CanRead);
     }
 
     // A scalar, or a tree or list LeetCodeWireFormat builds from one array: read in one step, not item by item.
@@ -103,24 +129,28 @@ internal static class NotationReader
     private static object TextOf(JsonElement element) =>
         element.GetString() ?? throw new InvalidOperationException(BareNullText);
 
-    // The one value a role type stands for, as a positional record of one value declares it; null for any
-    // other type. A value type alone, so a class's copy constructor never counts as a second way to build it.
-    private static Type? OneValueOf(Type type)
+    // The values a positional record of value type is built from, in order: the parameters of its one public
+    // constructor, each kept as the property of the same name. Null for any other type. A value type alone,
+    // so a class's copy constructor never counts as a second way to build it.
+    private static Type[]? RecordValuesOf(Type type)
     {
-        if (!type.IsValueType)
+        if (!type.IsValueType || type.GetConstructors() is not [var constructor])
         {
             return null;
         }
 
-        if (type.GetConstructors() is not [var constructor] || constructor.GetParameters() is not [var parameter])
+        var parameters = constructor.GetParameters();
+
+        if (parameters.Length == 0 || !parameters.All(parameter => IsKeptAsProperty(type, parameter)))
         {
             return null;
         }
 
-        var property = parameter.Name is { } name ? type.GetProperty(name) : null;
-        var keepsTheValue = property?.PropertyType == parameter.ParameterType;
-        return keepsTheValue ? parameter.ParameterType : null;
+        return [.. parameters.Select(parameter => parameter.ParameterType)];
     }
+
+    private static bool IsKeptAsProperty(Type type, ParameterInfo parameter) =>
+        parameter.Name is { } name && type.GetProperty(name)?.PropertyType == parameter.ParameterType;
 
     private static object? ValueOf(JsonElement element, Type type)
     {
@@ -154,10 +184,9 @@ internal static class NotationReader
             return TupleOf(element, type);
         }
 
-        if (OneValueOf(type) is { } valueType)
+        if (RecordValuesOf(type) is { } valueTypes)
         {
-            var value = ValueOf(element, valueType);
-            return Activator.CreateInstance(type, value) ?? throw new InvalidOperationException($"{type} could not be constructed.");
+            return RecordOf(element, type, valueTypes);
         }
 
         return SequenceOf(element, type);
@@ -198,6 +227,23 @@ internal static class NotationReader
         }
 
         return items;
+    }
+
+    // A record of one value from that value, and of several from an array of them.
+    private static object RecordOf(JsonElement element, Type type, Type[] valueTypes)
+    {
+        var values = RecordArgumentsOf(element, valueTypes);
+        return Activator.CreateInstance(type, values) ?? throw new InvalidOperationException($"{type} could not be constructed.");
+    }
+
+    private static object?[] RecordArgumentsOf(JsonElement element, Type[] valueTypes)
+    {
+        if (valueTypes.Length == 1)
+        {
+            return [ValueOf(element, valueTypes[0])];
+        }
+
+        return [.. element.EnumerateArray().Zip(valueTypes, ValueOf)];
     }
 
     private static object TupleOf(JsonElement element, Type type)

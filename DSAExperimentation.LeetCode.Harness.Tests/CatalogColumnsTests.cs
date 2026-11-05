@@ -2,6 +2,7 @@ using DSAExperimentation.LeetCode.Catalog;
 using DSAExperimentation.LeetCode.Solutions.ClimbingStairs;
 using DSAExperimentation.LeetCode.Solutions.MergeIntervals;
 using DSAExperimentation.LeetCode.Solutions.TwoSum;
+using DSAExperimentation.LeetCode.Harness.Tests.Probes;
 
 namespace DSAExperimentation.LeetCode.Harness.Tests;
 
@@ -29,6 +30,15 @@ public sealed partial class CatalogColumnsTests
     [Fact]
     public void For_FewerTypesThanACaseHasInputs_ThrowsInvalidOperationException() =>
         Assert.Throws<InvalidOperationException>(() => CatalogColumns.For(typeof(TwoSumSolution), typeof(int[])));
+
+    [Fact]
+    public void For_RecordsStandingForSeveralInputs_ReadsConsecutiveInputsIntoEach()
+    {
+        var columns = CatalogColumns.For(typeof(SpreadProbeSolution), typeof(ProbeCorners), typeof(ProbeCorners));
+        var inputs = columns.Cases[0].Inputs.Select(int.Parse).ToArray();
+
+        Assert.Equal(new ProbeCorners(inputs[4], inputs[5], inputs[6], inputs[7]), columns.Column<ProbeCorners>(1)[0]);
+    }
 
     [Fact]
     public void Column_IntervalsAsPairs_ReadsEachIntervalAsAStartAndAnEnd()

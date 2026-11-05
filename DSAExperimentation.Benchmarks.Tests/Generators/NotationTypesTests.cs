@@ -42,11 +42,11 @@ public sealed partial class NotationTypesTests
         }
         """;
 
-    public static TheoryData<string> ReadableFields => ["Integer", "Unsigned", "Text", "Character", "Grid", "Intervals", "Words", "Values", "Tree", "Role"];
+    public static TheoryData<string> ReadableFields => ["Integer", "Unsigned", "Text", "Character", "Grid", "Intervals", "Words", "Values", "Tree", "Role", "TwoValues"];
 
-    // A tree LeetCodeWireFormat cannot build, a map LeetCode has no notation for, a rectangular array, a record
-    // of two values, a role type that is a class, and a struct that keeps no value it is built from.
-    public static TheoryData<string> UnreadableFields => ["TextTree", "Counts", "Rectangle", "TwoValues", "BoxedRole", "Sized"];
+    // A tree LeetCodeWireFormat cannot build, a map LeetCode has no notation for, a rectangular array, a role
+    // type that is a class, and a struct that keeps no value it is built from.
+    public static TheoryData<string> UnreadableFields => ["TextTree", "Counts", "Rectangle", "BoxedRole", "Sized"];
 
     [Theory]
     [MemberData(nameof(ReadableFields))]

@@ -698,6 +698,13 @@
       "expires": "2027-05-01"
     },
     {
+      "check": "check-parameter-count",
+      "path": "DSAExperimentation.LeetCode.Solutions.Tests/*/*PromiseTests.cs",
+      "reason": "A promise's test theory takes the arguments its IsKeptBy takes - the question's inputs in LeetCode's order, as the strategy reads them - and the verdict it should give, so a question of five inputs gives a theory of six parameters; LeetCode fixes how many inputs there are, as the answer-check entries above say.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-sealed-classes",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/*Benchmarks.cs",
       "reason": "BenchmarkDotNet discovers benchmark types by reflection and only accepts a benchmark class that is both public and unsealed - sealing one, or narrowing it to internal, makes BDN drop every benchmark method in it silently, with no error and no warning. Verified empirically on this repo: adding `sealed` to AddBinaryBenchmarks removed both of its benchmarks from `--list flat`, and removing the keyword put them back. There is therefore no honest rewrite for these two checks in a benchmark class: the accessibility and the sealedness are the harness contract, not a design choice.",

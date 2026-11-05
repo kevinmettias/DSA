@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PathWithMaximumProbability;
 // The exhaustive walk is the textbook arm that reduction has to justify itself
 // against, and it lives here rather than in the benchmark so the same examples assert
 // both.
+[LeetCodeQuestion("path-with-maximum-probability", LeetCodeAnswerOrder.AsWritten, Tolerance = 1e-5, Promise = typeof(PathWithMaximumProbabilityPromise))]
 internal static class PathWithMaximumProbabilitySolution
 {
     // LC 1514 reports "no path from start to end" as probability 0, not as

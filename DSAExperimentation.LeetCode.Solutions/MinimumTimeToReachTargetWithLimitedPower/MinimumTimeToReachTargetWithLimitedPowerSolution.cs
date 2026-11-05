@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToReachTargetWithLimi
 // that achieve the minimum time) is answered for free by the state expansion
 // itself: it is just "scan every remainingPower level target was settled at,
 // keep the one with the smallest time, then the largest power."
+[LeetCodeQuestion("minimum-time-to-reach-target-with-limited-power", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumTimeToReachTargetWithLimitedPowerSolution
 {
     // Baseline: BCL PriorityQueue + Dictionary, expanding (node, remainingPower)
