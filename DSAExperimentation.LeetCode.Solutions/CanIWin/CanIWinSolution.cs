@@ -1,4 +1,7 @@
+using System.Numerics;
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Algorithms.GameSearch;
+using DSAExperimentation.Domain.Mathematics.GameTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.CanIWin;
 
@@ -49,6 +52,25 @@ internal static class CanIWinSolution
         }
 
         return Memoizer.Memoize<int, bool>(0, new CanWinByPicking(maxChoosableInteger, desiredTotal));
+    }
+
+    // The rule named as Domain's impartial game. Once the pool can reach the total, whoever
+    // reaches it makes the last move, so the game is under normal play and the first player wins
+    // when the start's Grundy number, from Algorithms/GameSearch, is not zero.
+    public static bool CanWinBySpragueGrundy(int maxChoosableInteger, int desiredTotal)
+    {
+        if (desiredTotal <= 0)
+        {
+            return true;
+        }
+
+        var poolSum = maxChoosableInteger * (maxChoosableInteger + 1) / 2;
+        if (poolSum < desiredTotal)
+        {
+            return false;
+        }
+
+        return SpragueGrundy.Number(new NumberPickGame(maxChoosableInteger, desiredTotal), 0) != 0;
     }
 
     private static int SumChosen(int mask, int maxChoosableInteger)
@@ -112,6 +134,35 @@ internal static class CanIWinSolution
             }
 
             return false;
+        }
+    }
+
+    // The rule as an impartial game over the used-numbers mask: a turn picks an unused number,
+    // move i the (i + 1)-th smallest of them, and the game is over once the picks reach the total.
+    private readonly struct NumberPickGame(int maxChoosableInteger, int desiredTotal)
+        : IImpartialGame<int>
+    {
+        public int MoveCount(int usedMask)
+        {
+            if (SumChosen(usedMask, maxChoosableInteger) >= desiredTotal)
+            {
+                return 0;
+            }
+
+            return maxChoosableInteger - BitOperations.PopCount((uint)usedMask);
+        }
+
+        // Clearing the lowest unused bit `move` times leaves the move's number as the lowest.
+        public int Next(int usedMask, int move)
+        {
+            var unused = ~usedMask;
+
+            for (var skipped = 0; skipped < move; skipped++)
+            {
+                unused &= unused - 1;
+            }
+
+            return usedMask | (unused & -unused);
         }
     }
 }

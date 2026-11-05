@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.PredictTheWinner;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are PredictTheWinnerSolution's, the same methods
+// Harness only: every arm is PredictTheWinnerSolution's, the same methods
 // CatalogCaseTests proves correct. The array length stops at LC 486's
 // own cap of 20, which is modest enough for the un-memoized baseline's real blowup,
 // the same reasoning FibonacciNumberBenchmarks documents.
@@ -28,4 +28,7 @@ public class PredictTheWinnerBenchmarks
 
     [Benchmark]
     public bool CanWinByMemoizedRecursion() => PredictTheWinnerSolution.CanWinByMemoizedRecursion(_nums);
+
+    [Benchmark]
+    public bool CanWinByNegamax() => PredictTheWinnerSolution.CanWinByNegamax(_nums);
 }

@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.StoneGameII;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.StoneGameII;
 
-// Harness only. Both strategies are StoneGameIISolution's -
+// Harness only. Every strategy is StoneGameIISolution's -
 // MaxStonesByUnmemoizedRecursion (previously untested scaffolding inlined in the
 // benchmark as its baseline arm) now gets the same cases as
 // MaxStonesByMemoizedRecursion (previously the test's own private helper), so a
@@ -28,4 +28,10 @@ public sealed partial class StoneGameIISolutionTests
     public void MaxStonesByMemoizedRecursion_Cases_ReturnsMostStonesAliceCanForce(
         int[] piles, int expected) =>
         Assert.Equal(expected, StoneGameIISolution.MaxStonesByMemoizedRecursion(piles));
+
+    [Theory]
+    [MemberData(nameof(Cases))]
+    public void MaxStonesByNegamax_Cases_ReturnsMostStonesAliceCanForce(
+        int[] piles, int expected) =>
+        Assert.Equal(expected, StoneGameIISolution.MaxStonesByNegamax(piles));
 }

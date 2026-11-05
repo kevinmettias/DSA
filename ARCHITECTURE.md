@@ -2204,6 +2204,22 @@ values unless that measures slower than making and unmaking moves. The foundatio
   fastest, not a replacement for it. The plan's turn orders wait for the positional games, the first
   that use them; both solvers assume two players alternating, which the contract states.
 
+  Seven more adopters followed, each beside its problem's own strategies. Negamax took LC 877
+  (Stone Game) and LC 486 (Predict the Winner), whose rows lose a pile from either end; LC 1140
+  (Stone Game II), where Alice's stones are half the row plus the difference she can force;
+  LC 1690 (Stone Game VII); and LC 1872 (Stone Game VIII) as it is played, a turn ending at any
+  later boundary, which costs O(n^2) where the problem's recurrence folds that choice into O(n).
+  Sprague-Grundy took LC 1510 (Stone Game IV) and LC 464 (Can I Win), the second over its
+  used-numbers mask, an impartial game under normal play once the pool can reach the total. A
+  move's number is the order the recursion tries it in, and so sets how deep the recursion goes:
+  LC 1510 tries the largest square first and holds at most 8 piles on the stack from 10^5 stones,
+  against 100,001 smallest first, and LC 1872 tries the furthest boundary first and holds two.
+  Five problems did not fit, and keep their own strategies. LC 1563 (Stone Game V) is one
+  player's choices, since the other discards the larger half by rule. LC 1686 (Stone Game VI)
+  and LC 810 (Chalkboard XOR Game) have a position for every subset of up to 10^5 and 1,000
+  items. LC 2029 (Stone Game IX) and LC 1927 (Sum Game) fit the contract's form, but their
+  positions number in the billions at their constraints, where a closed form answers.
+
 Deferred by the owner: generalizing beyond what is exact, such as geometry on surfaces of varying
 curvature. This waits until the architecture is stable, and then happens only if it helps.
 

@@ -1,4 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Algorithms.GameSearch;
+using DSAExperimentation.Domain.Mathematics.GameTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.PredictTheWinner;
 
@@ -25,6 +27,17 @@ internal static class PredictTheWinnerSolution
             new ScoreDifferenceFrom(nums));
 
         return scoreDiff >= 0;
+    }
+
+    // The rule named as Domain's alternating game, valued by Algorithms/GameSearch's negamax:
+    // the recursion above, with the minimax and its memo the library's. Player one wins or ties
+    // when the difference they can force is not negative.
+    public static bool CanWinByNegamax(int[] nums)
+    {
+        var difference = Negamax.Value<EndPickGame, (int Left, int Right), int>(
+            new EndPickGame(nums), (0, nums.Length - 1));
+
+        return difference >= 0;
     }
 
     // The recurrence itself, named: taking either end leaves the opponent the rest,
@@ -57,5 +70,36 @@ internal static class PredictTheWinnerSolution
         var takeLeft = nums[left] - ScoreDiff(nums, left + 1, right);
         var takeRight = nums[right] - ScoreDiff(nums, left, right - 1);
         return Math.Max(takeLeft, takeRight);
+    }
+
+    // The rule as an alternating game: from a range of scores a turn takes the score at either end,
+    // move 0 the left one and move 1 the right; a single score is one move, and an empty range has
+    // nothing left to take.
+    private readonly struct EndPickGame(int[] nums) : IAlternatingGame<(int Left, int Right), int>
+    {
+        private const int TakeLeft = 0;
+        private const int EndCount = 2;
+
+        public int MoveCount((int Left, int Right) range) =>
+            Math.Clamp(range.Right - range.Left + 1, 0, EndCount);
+
+        public (int Left, int Right) Next((int Left, int Right) range, int move)
+        {
+            if (move == TakeLeft)
+            {
+                return (range.Left + 1, range.Right);
+            }
+
+            return (range.Left, range.Right - 1);
+        }
+
+        public int Gain((int Left, int Right) range, int move)
+        {
+            var taken = move == TakeLeft ? range.Left : range.Right;
+
+            return nums[taken];
+        }
+
+        public int ValueWhenOver((int Left, int Right) range) => 0;
     }
 }

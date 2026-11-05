@@ -1,4 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Algorithms.GameSearch;
+using DSAExperimentation.Domain.Mathematics.GameTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.StoneGameVII;
 
@@ -42,6 +44,16 @@ internal static class StoneGameVIISolution
         return Memoizer.Memoize<(int Left, int Right), int>(
             (0, stones.Length - 1),
             new ScoreDifferencesOverPrefix(prefix));
+    }
+
+    // The rule named as Domain's alternating game, valued by Algorithms/GameSearch's negamax:
+    // the recursion above, with the minimax and its memo the library's.
+    public static int MaxScoreDifferenceByNegamax(int[] stones)
+    {
+        var prefix = BuildPrefixSums(stones);
+
+        return Negamax.Value<EndRemovalGame, (int Left, int Right), int>(
+            new EndRemovalGame(prefix), (0, stones.Length - 1));
     }
 
     // The recurrence, as a named type: the score difference the mover can force from one
@@ -98,5 +110,47 @@ internal static class StoneGameVIISolution
         }
 
         return prefix;
+    }
+
+    // The rule as an alternating game: from a range of stones a turn removes the stone at either
+    // end, move 0 the left one and move 1 the right, and scores the sum of the stones left; the
+    // game is over at one stone, which nobody scores.
+    private readonly struct EndRemovalGame(int[] prefix)
+        : IAlternatingGame<(int Left, int Right), int>
+    {
+        private const int RemoveLeft = 0;
+        private const int EndCount = 2;
+
+        public int MoveCount((int Left, int Right) range)
+        {
+            if (range.Left < range.Right)
+            {
+                return EndCount;
+            }
+
+            return 0;
+        }
+
+        public (int Left, int Right) Next((int Left, int Right) range, int move)
+        {
+            if (move == RemoveLeft)
+            {
+                return (range.Left + 1, range.Right);
+            }
+
+            return (range.Left, range.Right - 1);
+        }
+
+        public int Gain((int Left, int Right) range, int move)
+        {
+            if (move == RemoveLeft)
+            {
+                return RemoveLeftScore(prefix, range.Left, range.Right);
+            }
+
+            return RemoveRightScore(prefix, range.Left, range.Right);
+        }
+
+        public int ValueWhenOver((int Left, int Right) range) => 0;
     }
 }

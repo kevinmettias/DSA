@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.StoneGameVIII;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.StoneGameVIII;
 
-// Harness only. Both strategies are StoneGameVIIISolution's -
+// Harness only. Every strategy is StoneGameVIIISolution's -
 // MaxScoreDifferenceByUnmemoizedRecursion (previously untested scaffolding inlined
 // in the benchmark as its baseline arm) now faces the same examples as
 // MaxScoreDifferenceByMemoizedRecursion (previously this file's own private
@@ -36,6 +36,12 @@ public sealed partial class StoneGameVIIISolutionTests
     public void MaxScoreDifferenceByMemoizedRecursion_LeetCodeExamples_ReturnsWinnerMinusLoserScore(
         int[] stones, long expected) =>
         Assert.Equal(expected, StoneGameVIIISolution.MaxScoreDifferenceByMemoizedRecursion(stones));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxScoreDifferenceByNegamax_LeetCodeExamples_ReturnsWinnerMinusLoserScore(
+        int[] stones, long expected) =>
+        Assert.Equal(expected, StoneGameVIIISolution.MaxScoreDifferenceByNegamax(stones));
 
     // Each boundary adds one more stone to the total before it: -1, then -1 + 2 = 1,
     // 1 - 3 = -2, -2 + 4 = 2 and 2 - 5 = -3.

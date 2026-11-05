@@ -1,4 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Algorithms.GameSearch;
+using DSAExperimentation.Domain.Mathematics.GameTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.StoneGameII;
 
@@ -19,6 +21,10 @@ internal static class StoneGameIISolution
 
     // The window bound M every game starts from.
     private const int InitialWindow = 1;
+
+    // Alice's stones and Bob's add up to the row and differ by what Alice can force, so hers are
+    // half of the row plus that difference.
+    private const int Halves = 2;
 
     // The textbook baseline: plain minimax recursion over (index, M) with no
     // caching, so the same state recurs through every pick-sequence that reaches it
@@ -43,6 +49,18 @@ internal static class StoneGameIISolution
         return Memoizer.Memoize<(int Index, int Window), int>(
             (0, InitialWindow),
             new WindowPickOrder(pileCount, suffixSum));
+    }
+
+    // The rule named as Domain's alternating game, valued by Algorithms/GameSearch's negamax: the
+    // recursion above, scoring each turn's piles rather than the rest of the row, with the minimax
+    // and its memo the library's.
+    public static int MaxStonesByNegamax(int[] piles)
+    {
+        var suffixSum = SuffixSums(piles);
+        var difference = Negamax.Value<WindowTakeGame, (int Index, int Window), int>(
+            new WindowTakeGame(piles.Length, suffixSum), (0, InitialWindow));
+
+        return (suffixSum[0] + difference) / Halves;
     }
 
     // The rule, named: from (index, window) the player to move takes some X in [1, 2M]
@@ -106,5 +124,27 @@ internal static class StoneGameIISolution
         }
 
         return suffixSum;
+    }
+
+    // The rule as an alternating game: from (index, window) a turn takes the next 1 to 2M piles,
+    // move i taking i + 1 of them and widening the window to at least that many, and scores the
+    // piles it took; nothing is left to score once the row is taken.
+    private readonly struct WindowTakeGame(int pileCount, int[] suffixSum)
+        : IAlternatingGame<(int Index, int Window), int>
+    {
+        public int MoveCount((int Index, int Window) state) =>
+            Math.Min(MaxTakeMultiplier * state.Window, pileCount - state.Index);
+
+        public (int Index, int Window) Next((int Index, int Window) state, int move)
+        {
+            var take = move + 1;
+
+            return (state.Index + take, Math.Max(state.Window, take));
+        }
+
+        public int Gain((int Index, int Window) state, int move) =>
+            suffixSum[state.Index] - suffixSum[state.Index + move + 1];
+
+        public int ValueWhenOver((int Index, int Window) state) => 0;
     }
 }

@@ -1,4 +1,6 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Algorithms.GameSearch;
+using DSAExperimentation.Domain.Mathematics.GameTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.StoneGame;
 
@@ -34,6 +36,17 @@ internal static class StoneGameSolution
         return scoreDiff > 0;
     }
 
+    // The rule named as Domain's alternating game, valued by Algorithms/GameSearch's negamax:
+    // the recursion above, with the minimax and its memo the library's. Alice, moving first,
+    // wins when the difference she can force is positive.
+    public static bool CanAliceWinByNegamax(int[] piles)
+    {
+        var difference = Negamax.Value<EndPickGame, (int Left, int Right), int>(
+            new EndPickGame(piles), (0, piles.Length - 1));
+
+        return difference > 0;
+    }
+
     // The rule, named: the player to move takes whichever end leaves the opponent the
     // worse remaining sub-range, so a range is worth the better of the two ends minus
     // what the opponent can then force from the range behind it. The piles are the whole
@@ -65,5 +78,36 @@ internal static class StoneGameSolution
         var takeLeft = piles[left] - ScoreDiff(piles, left + 1, right);
         var takeRight = piles[right] - ScoreDiff(piles, left, right - 1);
         return Math.Max(takeLeft, takeRight);
+    }
+
+    // The rule as an alternating game: from a range of piles a turn takes the pile at either end
+    // and scores it, move 0 the left one and move 1 the right; a single pile is one move, and an
+    // empty range has nothing left to score.
+    private readonly struct EndPickGame(int[] piles) : IAlternatingGame<(int Left, int Right), int>
+    {
+        private const int TakeLeft = 0;
+        private const int EndCount = 2;
+
+        public int MoveCount((int Left, int Right) range) =>
+            Math.Clamp(range.Right - range.Left + 1, 0, EndCount);
+
+        public (int Left, int Right) Next((int Left, int Right) range, int move)
+        {
+            if (move == TakeLeft)
+            {
+                return (range.Left + 1, range.Right);
+            }
+
+            return (range.Left, range.Right - 1);
+        }
+
+        public int Gain((int Left, int Right) range, int move)
+        {
+            var taken = move == TakeLeft ? range.Left : range.Right;
+
+            return piles[taken];
+        }
+
+        public int ValueWhenOver((int Left, int Right) range) => 0;
     }
 }

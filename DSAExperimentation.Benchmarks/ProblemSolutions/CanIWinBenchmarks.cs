@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.CanIWin;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are CanIWinSolution's, the same methods CanIWinSolutionTests
+// Harness only: every arm is CanIWinSolution's, the same methods CanIWinSolutionTests
 // proves correct. desiredTotal is set to the exact sum of every choosable number,
 // so a win can only be confirmed on the very last pick - forcing BOTH strategies
 // through their full worst-case search tree instead of an early exit on the first
@@ -40,4 +40,10 @@ public class CanIWinBenchmarks
     [ArgumentsSource(nameof(MemoizedSizes))]
     public bool CanWinByMemoizedRecursion(int maxChoosableInteger) =>
         CanIWinSolution.CanWinByMemoizedRecursion(maxChoosableInteger, _desiredTotalByMaxChoosable[maxChoosableInteger]);
+
+    [Benchmark]
+    [ArgumentsSource(nameof(MemoizedSizes))]
+    public bool CanWinBySpragueGrundy(int maxChoosableInteger) =>
+        CanIWinSolution.CanWinBySpragueGrundy(
+            maxChoosableInteger, _desiredTotalByMaxChoosable[maxChoosableInteger]);
 }

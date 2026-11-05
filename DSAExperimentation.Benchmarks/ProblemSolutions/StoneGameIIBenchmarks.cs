@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.StoneGameII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are StoneGameIISolution's, the same methods
+// Harness only: every arm is StoneGameIISolution's, the same methods
 // StoneGameIISolutionTests proves correct. UnmemoizedRecursion is plain minimax over
 // (index, M) - exponential, since the same state recurs through many different
 // pick-sequences reaching it - against this repo's own Memoizer<TState,TResult>
@@ -49,4 +49,9 @@ public class StoneGameIIBenchmarks
     [ArgumentsSource(nameof(MemoizedSizes))]
     public int MemoizedRecursion(int pileCount) =>
         StoneGameIISolution.MaxStonesByMemoizedRecursion(_pilesBySize[pileCount]);
+
+    [Benchmark]
+    [ArgumentsSource(nameof(MemoizedSizes))]
+    public int Negamax(int pileCount) =>
+        StoneGameIISolution.MaxStonesByNegamax(_pilesBySize[pileCount]);
 }

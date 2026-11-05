@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.StoneGameIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are StoneGameIVSolution's, the same methods StoneGameIVSolutionTests
+// Harness only: every arm is StoneGameIVSolution's, the same methods StoneGameIVSolutionTests
 // proves correct. Plain un-memoized minimax recursion over the remaining stone count -
 // exponential, since the same remaining count recurs through many different perfect-
 // square-removal sequences reaching it - vs. the same recurrence settled bottom-up in one
@@ -13,6 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // sqrt(stones), wider than DivisorGame's or StoneGameIII's own branching), so it stops
 // at 20 stones; the table runs on to LC 1510's own bound of 10^5 - it never recurses, so
 // nothing but its O(n sqrt n) time grows with n. The two are compared at the sizes both run.
+// Sprague-Grundy runs the table's sizes too: it recurses, but its moves try the largest square
+// first, so it stays a few piles deep (StoneGameIVSolution's SquareRemovalGame).
 public class StoneGameIVBenchmarks
 {
     public static IEnumerable<int> BaselineSizes => [16, 20];
@@ -28,4 +30,9 @@ public class StoneGameIVBenchmarks
     [ArgumentsSource(nameof(TableSizes))]
     public bool CanAliceWinByBottomUpTable(int stoneCount) =>
         StoneGameIVSolution.CanAliceWinByBottomUpTable(stoneCount);
+
+    [Benchmark]
+    [ArgumentsSource(nameof(TableSizes))]
+    public bool CanAliceWinBySpragueGrundy(int stoneCount) =>
+        StoneGameIVSolution.CanAliceWinBySpragueGrundy(stoneCount);
 }

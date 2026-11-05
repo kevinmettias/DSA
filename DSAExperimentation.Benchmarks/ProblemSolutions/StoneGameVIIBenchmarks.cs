@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.StoneGameVII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are StoneGameVIISolution's, the same methods
+// Harness only: every arm is StoneGameVIISolution's, the same methods
 // StoneGameVIISolutionTests proves correct. UnmemoizedRecursion is plain minimax recursion
 // over (left, right) bounds - exponential, since the same sub-range recurs through
 // many different removal orders - against this repo's own Memoizer<TState,TResult>
@@ -34,4 +34,7 @@ public class StoneGameVIIBenchmarks
 
     [Benchmark]
     public int MemoizedRecursion() => StoneGameVIISolution.MaxScoreDifferenceByMemoizedRecursion(_stones);
+
+    [Benchmark]
+    public int Negamax() => StoneGameVIISolution.MaxScoreDifferenceByNegamax(_stones);
 }

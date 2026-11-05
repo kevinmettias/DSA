@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.StoneGameVII;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.StoneGameVII;
 
-// Harness only. Both strategies are StoneGameVIISolution's -
+// Harness only. Every strategy is StoneGameVIISolution's -
 // MaxScoreDifferenceByUnmemoizedRecursion (previously untested scaffolding inlined in
 // the benchmark as its baseline arm) now gets the same cases as
 // MaxScoreDifferenceByMemoizedRecursion (previously this file's own private helper),
@@ -30,4 +30,10 @@ public sealed partial class StoneGameVIISolutionTests
     public void MaxScoreDifferenceByMemoizedRecursion_Cases_ReturnsWinnerMinusLoserScore(
         int[] stones, int expected) =>
         Assert.Equal(expected, StoneGameVIISolution.MaxScoreDifferenceByMemoizedRecursion(stones));
+
+    [Theory]
+    [MemberData(nameof(Cases))]
+    public void MaxScoreDifferenceByNegamax_Cases_ReturnsWinnerMinusLoserScore(
+        int[] stones, int expected) =>
+        Assert.Equal(expected, StoneGameVIISolution.MaxScoreDifferenceByNegamax(stones));
 }

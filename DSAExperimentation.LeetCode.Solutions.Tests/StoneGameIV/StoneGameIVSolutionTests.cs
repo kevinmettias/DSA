@@ -2,19 +2,21 @@ using DSAExperimentation.LeetCode.Solutions.StoneGameIV;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.StoneGameIV;
 
-// Harness only: both strategies live in StoneGameIVSolution and are asserted against
+// Harness only: every strategy lives in StoneGameIVSolution and is asserted against
 // the same cases. The un-memoized recursion is the definition and the table is the
 // same recurrence settled bottom-up, so pinning both to one set of cases is the check
-// that the table changed nothing.
+// that the table changed nothing; Sprague-Grundy values the same game as Domain's
+// impartial game.
 //
 // The rows are read by hand: the losing counts up to 20 are 0, 2, 5, 7, 10, 12, 15, 17
 // and 20 - each is losing because every square move from it lands on a winning count,
 // and every other count wins by a square move onto one of them (3 - 1 = 2, 6 - 1 = 5,
 // 8 - 1 = 7, 9 - 9 = 0).
 //
-// UpperRangeExamples sit at LC 1510's n <= 10^5, where only the table can run: the
-// recursion is exponential. Their answers come from a pull-style table written
-// separately in Python, not from either strategy: 10^5 wins, and 99,919 is the largest
+// UpperRangeExamples sit at LC 1510's n <= 10^5, where the plain recursion cannot run:
+// it is exponential. The table runs there, and so does Sprague-Grundy, whose recursion
+// stays a few piles deep. Their answers come from a pull-style table written
+// separately in Python, not from any strategy: 10^5 wins, and 99,919 is the largest
 // losing count up to 10^5. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class StoneGameIVSolutionTests
 {
@@ -46,10 +48,24 @@ public sealed partial class StoneGameIVSolutionTests
         Assert.Equal(testCase.AliceWins, StoneGameIVSolution.CanAliceWinByBottomUpTable(testCase.N));
 
     [Theory]
+    [MemberData(nameof(Cases))]
+    public void CanAliceWinBySpragueGrundy_DeeperRecursion_MatchesExpectedOutcome(
+        TakeAwaySquaresCase testCase) =>
+        Assert.Equal(
+            testCase.AliceWins, StoneGameIVSolution.CanAliceWinBySpragueGrundy(testCase.N));
+
+    [Theory]
     [MemberData(nameof(UpperRangeExamples))]
     public void CanAliceWinByBottomUpTable_UpperRangeCounts_MatchesSeparatelyComputedOutcome(
         TakeAwaySquaresCase testCase) =>
         Assert.Equal(testCase.AliceWins, StoneGameIVSolution.CanAliceWinByBottomUpTable(testCase.N));
+
+    [Theory]
+    [MemberData(nameof(UpperRangeExamples))]
+    public void CanAliceWinBySpragueGrundy_UpperRangeCounts_MatchesSeparatelyComputedOutcome(
+        TakeAwaySquaresCase testCase) =>
+        Assert.Equal(
+            testCase.AliceWins, StoneGameIVSolution.CanAliceWinBySpragueGrundy(testCase.N));
 
     // Nested because it is only ever used inside this test class and has no
     // independent identity: this harness's own vocabulary for one case.

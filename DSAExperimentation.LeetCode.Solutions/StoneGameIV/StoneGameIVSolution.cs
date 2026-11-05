@@ -1,3 +1,6 @@
+using DSAExperimentation.Algorithms.GameSearch;
+using DSAExperimentation.Domain.Mathematics.GameTheory;
+
 namespace DSAExperimentation.LeetCode.Solutions.StoneGameIV;
 
 // LeetCode 1510. Stone Game IV: players alternate removing a non-zero square number
@@ -61,6 +64,29 @@ internal static class StoneGameIVSolution
         for (var square = 1; losingCount + (square * square) < moverWins.Length; square++)
         {
             moverWins[losingCount + (square * square)] = true;
+        }
+    }
+
+    // The rule named as Domain's impartial game: Alice, moving first, wins when the start's
+    // Grundy number, from Algorithms/GameSearch, is not zero.
+    public static bool CanAliceWinBySpragueGrundy(int stoneCount) =>
+        SpragueGrundy.Number(new SquareRemovalGame(), stoneCount) != 0;
+
+    // The rule as an impartial game: a turn removes a non-zero square number of stones, move i
+    // the (i + 1)-th largest square the pile holds. Largest first keeps the recursion shallow:
+    // the first line of play falls by the largest squares and values the small piles it lands
+    // on, so the smaller removals tried after it mostly reach piles already valued. From 10^5
+    // stones the walk holds at most 8 piles on its stack this way, and 100,001 smallest first
+    // (counted by a separate script), deep enough to overflow it as the old memoized recursion did.
+    private readonly struct SquareRemovalGame : IImpartialGame<int>
+    {
+        public int MoveCount(int stones) => (int)Math.Sqrt(stones);
+
+        public int Next(int stones, int move)
+        {
+            var root = MoveCount(stones) - move;
+
+            return stones - (root * root);
         }
     }
 }

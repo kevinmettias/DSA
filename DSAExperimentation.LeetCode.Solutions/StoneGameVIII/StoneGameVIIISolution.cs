@@ -1,5 +1,7 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Algorithms.GameSearch;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.Domain.Mathematics.GameTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.StoneGameVIII;
 
@@ -24,6 +26,10 @@ internal static class StoneGameVIIISolution
     // stones - so the earliest boundary anyone may end a move at is index 1 (taking
     // stones[0] and stones[1]), never 0.
     private const int FirstBoundary = 1;
+
+    // Before the first move the front stone is stones[0] alone, the boundary just short of the
+    // first a move may end at.
+    private const int OpeningFront = FirstBoundary - 1;
 
     // The textbook baseline: plain minimax recursion with no caching, so every
     // boundary re-explores the entire tail behind it once per branch. Deliberately a
@@ -66,6 +72,16 @@ internal static class StoneGameVIIISolution
     public static long MaxScoreDifferenceByMemoizedRecursion(ArraySequence<long> prefix) =>
         Memoizer.Memoize<int, long>(FirstBoundary, new ScoreDifferencesFromBoundary(prefix));
 
+    // The game as it is played, named as Domain's alternating game and valued by
+    // Algorithms/GameSearch's negamax. A turn may end at any later boundary, so negamax tries
+    // every one: O(n^2) moves, where the recurrences above fold a turn's choice into one step per
+    // boundary and do O(n) work.
+    public static long MaxScoreDifferenceByNegamax(int[] stones) =>
+        MaxScoreDifferenceByNegamax(BuildPrefixSums(stones));
+
+    public static long MaxScoreDifferenceByNegamax(ArraySequence<long> prefix) =>
+        Negamax.Value<BoundaryGame, int, long>(new BoundaryGame(prefix), OpeningFront);
+
     // The recurrence, as a named type: the best score difference reachable from one
     // boundary, with the prefix-sum table arriving through the primary constructor and
     // the memoized continuation through `rest`.
@@ -105,5 +121,26 @@ internal static class StoneGameVIIISolution
         }
 
         return new ArraySequence<long>(prefix);
+    }
+
+    // The rule as an alternating game: a position is the boundary the front stone reaches, and a
+    // turn ends at any later one and scores the sum up to it, the stone it puts back. Move i ends
+    // i boundaries short of the last, so the far boundaries are valued first and each nearer one
+    // finds the positions after it valued already: the recursion holds at most two positions. The
+    // game is over when the front stone is the only one left.
+    private readonly struct BoundaryGame(ArraySequence<long> prefix) : IAlternatingGame<int, long>
+    {
+        public int MoveCount(int front) => prefix.Length - 1 - front;
+
+        public int Next(int front, int move) => prefix.Length - 1 - move;
+
+        public long Gain(int front, int move)
+        {
+            var end = Next(front, move);
+
+            return prefix.Get(end);
+        }
+
+        public long ValueWhenOver(int front) => 0;
     }
 }

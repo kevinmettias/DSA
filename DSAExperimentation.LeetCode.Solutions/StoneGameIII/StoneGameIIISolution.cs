@@ -41,20 +41,20 @@ internal static class StoneGameIIISolution
     // This repo's own Memoizer<TState,TResult> supplies the cache, keyed on the exact
     // index the recurrence branches on, collapsing the exponential recursion to one
     // evaluation per reachable index.
-    // The rule named as Domain's alternating game, valued by Algorithms/GameSearch's negamax:
-    // the recursion above, with the minimax and its memo the library's.
-    public static string WinnerByNegamax(int[] stoneValue)
-    {
-        var difference = Negamax.Value<PrefixTakeGame, int, int>(new PrefixTakeGame(stoneValue), 0);
-
-        return DetermineWinner(difference);
-    }
-
     public static string WinnerByMemoizedRecursion(int[] stoneValue)
     {
         var difference = Memoizer.Memoize<int, int>(
             0,
             new PrefixPickOrder(stoneValue));
+
+        return DetermineWinner(difference);
+    }
+
+    // The rule named as Domain's alternating game, valued by Algorithms/GameSearch's negamax:
+    // the recursion above, with the minimax and its memo the library's.
+    public static string WinnerByNegamax(int[] stoneValue)
+    {
+        var difference = Negamax.Value<PrefixTakeGame, int, int>(new PrefixTakeGame(stoneValue), 0);
 
         return DetermineWinner(difference);
     }
