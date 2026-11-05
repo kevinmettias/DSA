@@ -6,6 +6,7 @@ namespace DSAExperimentation.LeetCode.Solutions.GroupAnagrams;
 // permutations of one another. Both strategies key each string by its sorted
 // letters and differ only in the map that collects the buckets - a BCL
 // Dictionary, or this repo's own HashMap.
+[LeetCodeQuestion("group-anagrams", LeetCodeAnswerOrder.AnyOrderThroughout)]
 internal static class GroupAnagramsSolution
 {
     // The textbook baseline: a BCL Dictionary keyed on each word's sorted letters.

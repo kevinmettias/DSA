@@ -48,9 +48,9 @@ internal static class CatalogJudge
         return wrong;
     }
 
-    // Exactly as LeetCode compares, or with the answer's top-level elements in any order; each element is
-    // compared as written either way. Under a tolerance, each number may stand that far from LeetCode's, in
-    // the order written.
+    // Exactly as LeetCode compares, or with whatever the order rule frees put in one order on both sides: the
+    // answer's elements, each element's own elements, or both. Under a tolerance, each number may stand that
+    // far from LeetCode's, in the order written.
     public static bool IsAccepted(JsonNode actual, JsonNode expected, LeetCodeAnswerOrder order, double tolerance = 0)
     {
         var written = JsonNode.Parse(actual.ToJsonString());
@@ -60,7 +60,7 @@ internal static class CatalogJudge
             return IsWithin(written, expected, tolerance);
         }
 
-        if (order != LeetCodeAnswerOrder.AnyOrder)
+        if (order == LeetCodeAnswerOrder.AsWritten)
         {
             return JsonNode.DeepEquals(written, expected);
         }
@@ -72,12 +72,12 @@ internal static class CatalogJudge
             return JsonNode.DeepEquals(written, expected);
         }
 
-        return SortedTextOf(answered).SequenceEqual(SortedTextOf(wanted), StringComparer.Ordinal);
+        return FreedTextOf(answered, order) == FreedTextOf(wanted, order);
     }
 
     // The text two strategies' answers share exactly when each is the other's answer by the question's
-    // order rule, for holding arms to one another where no recorded output stands between them: an
-    // any-order sequence is written with its top-level elements sorted, anything else as it is.
+    // order rule, for holding arms to one another where no recorded output stands between them: a sequence is
+    // written with what its order rule frees sorted, anything else as it is.
     // Under a tolerance, numbers are written to twelve significant digits, as AnswerGraphText writes a double:
     // two arms that order the same operations differently part only in the last few bits.
     public static string AgreementTextOf(JsonNode answer, LeetCodeAnswerOrder order, double tolerance = 0)
@@ -89,12 +89,12 @@ internal static class CatalogJudge
             compared = RoundedOf(answer) ?? answer;
         }
 
-        if (order != LeetCodeAnswerOrder.AnyOrder || compared is not JsonArray items)
+        if (order == LeetCodeAnswerOrder.AsWritten || compared is not JsonArray items)
         {
             return compared.ToJsonString();
         }
 
-        return $"{SequenceStart}{string.Join(ElementSeparator, SortedTextOf(items))}{SequenceEnd}";
+        return FreedTextOf(items, order);
     }
 
     private static JsonNode? RoundedOf(JsonNode? node) => node switch
@@ -137,6 +137,27 @@ internal static class CatalogJudge
         return value.GetValue<double>();
     }
 
-    private static IEnumerable<string> SortedTextOf(JsonArray items) =>
-        items.Select(item => item?.ToJsonString() ?? NullText).Order(StringComparer.Ordinal);
+    // The sequence's text with what its order rule frees put in one order: its elements sorted under AnyOrder,
+    // each element's own elements sorted under EachInAnyOrder, both under AnyOrderThroughout.
+    private static string FreedTextOf(JsonArray items, LeetCodeAnswerOrder order)
+    {
+        var elements = items.Select(item => ElementTextOf(item, order));
+
+        if (order is LeetCodeAnswerOrder.AnyOrder or LeetCodeAnswerOrder.AnyOrderThroughout)
+        {
+            elements = elements.Order(StringComparer.Ordinal);
+        }
+
+        return $"{SequenceStart}{string.Join(ElementSeparator, elements)}{SequenceEnd}";
+    }
+
+    private static string ElementTextOf(JsonNode? item, LeetCodeAnswerOrder order)
+    {
+        if (order is LeetCodeAnswerOrder.EachInAnyOrder or LeetCodeAnswerOrder.AnyOrderThroughout && item is JsonArray inner)
+        {
+            return FreedTextOf(inner, LeetCodeAnswerOrder.AnyOrder);
+        }
+
+        return item?.ToJsonString() ?? NullText;
+    }
 }

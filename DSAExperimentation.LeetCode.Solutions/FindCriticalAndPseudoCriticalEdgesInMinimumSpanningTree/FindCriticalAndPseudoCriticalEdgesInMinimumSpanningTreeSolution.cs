@@ -23,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindCriticalAndPseudoCriticalEdg
 // MinimumSpanningTree.Kruskal itself is not reused directly because its
 // IEdgeTopology-based edge discovery has no notion of "skip edge #i" or "force edge #i
 // in", and both probes need per-edge index identity, since weights tie.
+[LeetCodeQuestion("find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree", LeetCodeAnswerOrder.EachInAnyOrder, Promise = typeof(FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreePromise))]
 internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSolution
 {
     // "No edge is excluded" / "no edge is forced" for an unconstrained probe.

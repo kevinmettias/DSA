@@ -48,6 +48,28 @@ public sealed partial class CatalogJudgeTests
             CatalogJudge.AgreementTextOf(NodeOf("[2]"), LeetCodeAnswerOrder.AsWritten, Tolerance));
 
     [Fact]
+    public void IsAccepted_EachInAnyOrderRowReordered_Accepts() =>
+        Assert.True(CatalogJudge.IsAccepted(NodeOf("[[0,1,2,6],[]]"), NodeOf("[[0,6,2,1],[]]"), LeetCodeAnswerOrder.EachInAnyOrder));
+
+    [Fact]
+    public void IsAccepted_EachInAnyOrderRowsSwapped_Refuses() =>
+        Assert.False(CatalogJudge.IsAccepted(NodeOf("[[],[0,1]]"), NodeOf("[[0,1],[]]"), LeetCodeAnswerOrder.EachInAnyOrder));
+
+    [Fact]
+    public void IsAccepted_AnyOrderThroughoutReorderedAtBothDepths_Accepts() =>
+        Assert.True(CatalogJudge.IsAccepted(NodeOf("[[\"eat\",\"tea\"],[\"bat\"]]"), NodeOf("[[\"bat\"],[\"tea\",\"eat\"]]"), LeetCodeAnswerOrder.AnyOrderThroughout));
+
+    [Fact]
+    public void IsAccepted_AnyOrderInnerReordered_Refuses() =>
+        Assert.False(CatalogJudge.IsAccepted(NodeOf("[[3,1]]"), NodeOf("[[1,3]]"), LeetCodeAnswerOrder.AnyOrder));
+
+    [Fact]
+    public void AgreementTextOf_AnyOrderThroughoutReordered_WritesTheSameText() =>
+        Assert.Equal(
+            CatalogJudge.AgreementTextOf(NodeOf("[[1,3],[0,1]]"), LeetCodeAnswerOrder.AnyOrderThroughout),
+            CatalogJudge.AgreementTextOf(NodeOf("[[1,0],[3,1]]"), LeetCodeAnswerOrder.AnyOrderThroughout));
+
+    [Fact]
     public void IsAccepted_AnyOrderSequenceReordered_Accepts() =>
         Assert.True(CatalogJudge.IsAccepted(NodeOf("[1,0]"), NodeOf("[0,1]"), LeetCodeAnswerOrder.AnyOrder));
 

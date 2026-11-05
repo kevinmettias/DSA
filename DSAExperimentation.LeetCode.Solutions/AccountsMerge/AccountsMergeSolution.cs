@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AccountsMerge;
 // moment a second account reaches an already-seen email) in O(totalEmails) - the
 // same RedundantConnectionSolution union-on-shared-element shape applied to emails
 // instead of graph edges.
+[LeetCodeQuestion("accounts-merge", LeetCodeAnswerOrder.AnyOrder, Promise = typeof(AccountsMergePromise))]
 internal static class AccountsMergeSolution
 {
     // The textbook answer: decide "same person" by scanning every email of account i

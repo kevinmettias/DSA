@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CriticalConnectionsInANetwork;
 //
 // LeetCode accepts the connections in any order, so each strategy reports each
 // pair with its smaller server first and leaves the outer order to its own walk.
+[LeetCodeQuestion("critical-connections-in-a-network", LeetCodeAnswerOrder.AnyOrderThroughout, Promise = typeof(CriticalConnectionsInANetworkPromise))]
 internal static class CriticalConnectionsInANetworkSolution
 {
     // The textbook answer: rebuild a List<int>[] adjacency without one connection,
