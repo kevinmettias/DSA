@@ -27,6 +27,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestCommonSubpath;
 // every path (see RollingHash.Hash's own doc comment - the combination formula
 // self-cancels), so length 0 is trivially shared with no special-casing: the binary
 // search's floor is exactly right without an extra branch.
+[LeetCodeQuestion("longest-common-subpath", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestCommonSubpathSolution
 {
     // The binary search takes the upper half whenever the midpoint length passes, so
@@ -42,6 +43,10 @@ internal static class LongestCommonSubpathSolution
     // a BCL HashSet<string>. Deliberately written without this repo's primitives -
     // it is the O(length)-per-window arm the hashed strategy below has to justify
     // itself against.
+    // LeetCode's shape, which also lists the city count n: every path's cities lie below it, and neither
+    // strategy needs the bound (ARCHITECTURE 17.4).
+    public static int LongestCommonSubpathByNaiveWindowKeys(int cityCount, int[][] paths) => LongestCommonSubpathByNaiveWindowKeys(paths);
+
     public static int LongestCommonSubpathByNaiveWindowKeys(int[][] paths)
     {
         var high = ShortestPathLength(paths);
@@ -53,6 +58,8 @@ internal static class LongestCommonSubpathSolution
     // prefix lookup, so the per-window key cost stops depending on L at all - the
     // same asymmetry DistinctEchoSubstrings demonstrates for a single string, here
     // applied across n paths at once.
+    public static int LongestCommonSubpathByRollingHash(int cityCount, int[][] paths) => LongestCommonSubpathByRollingHash(paths);
+
     public static int LongestCommonSubpathByRollingHash(int[][] paths)
     {
         var codes = BuildCharCodes(paths);

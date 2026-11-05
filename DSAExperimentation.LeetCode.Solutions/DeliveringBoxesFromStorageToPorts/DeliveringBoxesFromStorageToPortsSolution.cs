@@ -20,11 +20,17 @@ namespace DSAExperimentation.LeetCode.Solutions.DeliveringBoxesFromStorageToPort
 // at every position, or carried in this repo's MonotonicDeque - the same technique
 // ConstrainedSubsequenceSum applies to LC 1425, here under MinWindowOrder because
 // it tracks a MINIMUM instead of a maximum.
+[LeetCodeQuestion("delivering-boxes-from-storage-to-ports", LeetCodeAnswerOrder.AsWritten, Promise = typeof(DeliveringBoxesFromStorageToPortsPromise))]
 internal static class DeliveringBoxesFromStorageToPortsSolution
 {
     // Every trip pays one leg out to its first port and one leg back to storage,
     // whatever it carries.
     private const int TripBaseCost = 2;
+
+    // LeetCode's shape, which also lists the port count: every box names its port, and neither strategy
+    // needs the bound (ARCHITECTURE 17.4).
+    public static int MinTripsByWindowRescan(int[][] boxes, int portsCount, int maxBoxes, int maxWeight)
+        => MinTripsByWindowRescan(boxes, maxBoxes, maxWeight);
 
     public static int MinTripsByWindowRescan(int[][] boxes, int maxBoxes, int maxWeight)
         => MinTripsByWindowRescan(BoxDeliverySchedule.Build(boxes), maxBoxes, maxWeight);
@@ -62,6 +68,9 @@ internal static class DeliveringBoxesFromStorageToPortsSolution
 
         return best;
     }
+
+    public static int MinTripsByMonotonicDeque(int[][] boxes, int portsCount, int maxBoxes, int maxWeight)
+        => MinTripsByMonotonicDeque(boxes, maxBoxes, maxWeight);
 
     public static int MinTripsByMonotonicDeque(int[][] boxes, int maxBoxes, int maxWeight)
         => MinTripsByMonotonicDeque(BoxDeliverySchedule.Build(boxes), maxBoxes, maxWeight);

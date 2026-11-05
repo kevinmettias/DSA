@@ -2493,8 +2493,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 910 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 314 more:
+**Enrolled.** 912 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 316 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2622,6 +2622,9 @@ have only the empty tree. A check over those would pass whatever the strategy di
 - Minimum Number of Moves to Make Palindrome, promising a string that can become a palindrome: at most
   one letter appears an odd number of times. Both strategies nudge an unmatched letter inward and
   retry, so on the 38 generated cases that break it they never finished.
+- 2 whose strategies leave out an input LeetCode lists, once each gained LeetCode's shape beside its own
+  (§17.4): Longest Common Subpath (the city count) and Delivering Boxes from Storage to Ports (the port
+  count, with a promise that every box goes to a port and fits one trip, which a generated case broke).
 
 Open items:
 
@@ -2640,7 +2643,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 195 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 193 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
