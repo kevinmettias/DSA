@@ -25,6 +25,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WordsWithinTwoEditsOfDictionary;
 // only in whether a query is compared against the dictionary one whole word at a
 // time, or walked once against a trie in which the dictionary's shared prefixes
 // have already been merged.
+[LeetCodeQuestion("words-within-two-edits-of-dictionary", LeetCodeAnswerOrder.AsWritten, Promise = typeof(WordsWithinTwoEditsOfDictionaryPromise))]
 internal static class WordsWithinTwoEditsOfDictionarySolution
 {
     // The textbook answer: for every query, scan the dictionary word by word and

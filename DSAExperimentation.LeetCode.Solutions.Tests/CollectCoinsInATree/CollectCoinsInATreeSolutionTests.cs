@@ -31,7 +31,7 @@ public sealed partial class CollectCoinsInATreeSolutionTests
     public void MinEdgesByRescan_LeetCodeExamples_ReturnsRoundTripEdgeCount(
         int[][] edges, int[] coins, int expected)
     {
-        var actual = CollectCoinsInATreeSolution.MinEdgesByRescan(edges, coins);
+        var actual = CollectCoinsInATreeSolution.MinEdgesByRescan(coins, edges);
 
         Assert.Equal(expected, actual);
     }
@@ -41,7 +41,7 @@ public sealed partial class CollectCoinsInATreeSolutionTests
     public void MinEdgesByLeafQueue_LeetCodeExamples_ReturnsRoundTripEdgeCount(
         int[][] edges, int[] coins, int expected)
     {
-        var actual = CollectCoinsInATreeSolution.MinEdgesByLeafQueue(edges, coins);
+        var actual = CollectCoinsInATreeSolution.MinEdgesByLeafQueue(coins, edges);
 
         Assert.Equal(expected, actual);
     }

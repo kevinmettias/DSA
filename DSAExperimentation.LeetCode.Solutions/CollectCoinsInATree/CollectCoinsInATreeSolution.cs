@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CollectCoinsInATree;
 //
 // The two strategies differ only in how the first, coin-aware round finds its
 // removable frontier.
+[LeetCodeQuestion("collect-coins-in-a-tree", LeetCodeAnswerOrder.AsWritten, Promise = typeof(CollectCoinsInATreePromise))]
 internal static class CollectCoinsInATreeSolution
 {
     // The radius-2 collection rule: two unconditional leaf layers account for the
@@ -30,7 +31,7 @@ internal static class CollectCoinsInATreeSolution
     // O(n) rounds on a path-shaped tree). Deliberately written without this repo's
     // primitives - it is the arm the queue-driven peel below has to justify itself
     // against.
-    public static int MinEdgesByRescan(int[][] edges, int[] coins)
+    public static int MinEdgesByRescan(int[] coins, int[][] edges)
     {
         var adjacency = BuildAdjacency(coins.Length, edges);
 
@@ -56,7 +57,7 @@ internal static class CollectCoinsInATreeSolution
     // shape MinimumHeightTrees uses for its centroid search and TopologicalSort's
     // Kahn's algorithm uses for in-degree - just undirected degree, gated by a coin
     // predicate for this first round only.
-    public static int MinEdgesByLeafQueue(int[][] edges, int[] coins)
+    public static int MinEdgesByLeafQueue(int[] coins, int[][] edges)
     {
         var adjacency = BuildAdjacency(coins.Length, edges);
 

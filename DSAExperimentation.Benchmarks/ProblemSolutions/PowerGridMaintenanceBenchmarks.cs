@@ -28,7 +28,7 @@ public class PowerGridMaintenanceBenchmarks
     {
         _connections = PowerGridMaintenanceWorkloads.BuildConnections(StationCount, Seed);
         _queries = PowerGridMaintenanceWorkloads.BuildQueries(StationCount, StationCount * QueriesPerStation, Seed);
-        _grids = PowerGridMaintenanceSolution.GroupByGrid(StationCount, _connections);
+        _grids = PowerGridMaintenanceSolution.ConnectedGridsOf(StationCount, _connections);
     }
 
     [Benchmark(Baseline = true)]

@@ -15,12 +15,13 @@ namespace DSAExperimentation.LeetCode.Solutions.PowerGridMaintenance;
 // (baseline), or this repo's own Heap<int, MinHeapOrder<int>> with lazy deletion - an
 // offline station is popped the first time it would surface as an answer, since it
 // can never come back online, but an operational one is only ever peeked.
+[LeetCodeQuestion("power-grid-maintenance", LeetCodeAnswerOrder.AsWritten)]
 internal static class PowerGridMaintenanceSolution
 {
     // The grids connections[] form, as the DisjointSet both strategies are handed: the
     // grouping step they share, which a benchmark prepares once rather than timing
     // (ARCHITECTURE 17.4).
-    public static DisjointSet GroupByGrid(int stationCount, int[][] connections)
+    public static DisjointSet ConnectedGridsOf(int stationCount, int[][] connections)
     {
         var disjointSet = new DisjointSet(stationCount + 1);
 
@@ -34,7 +35,7 @@ internal static class PowerGridMaintenanceSolution
 
     public static int[] MaintenanceResultsByUnionFindSortedSet(int stationCount, int[][] connections, int[][] queries)
     {
-        var disjointSet = GroupByGrid(stationCount, connections);
+        var disjointSet = ConnectedGridsOf(stationCount, connections);
 
         return MaintenanceResultsByUnionFindSortedSet(stationCount, disjointSet, queries);
     }
@@ -112,7 +113,7 @@ internal static class PowerGridMaintenanceSolution
     // return, but a still-operational one is left in place for the next query.
     public static int[] MaintenanceResultsByUnionFindHeap(int stationCount, int[][] connections, int[][] queries)
     {
-        var disjointSet = GroupByGrid(stationCount, connections);
+        var disjointSet = ConnectedGridsOf(stationCount, connections);
 
         return MaintenanceResultsByUnionFindHeap(stationCount, disjointSet, queries);
     }

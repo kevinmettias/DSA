@@ -36,9 +36,9 @@ public sealed partial class PowerGridMaintenanceSolutionTests
 
     [Theory]
     [MemberData(nameof(TwoGridStationPairs))]
-    public void GroupByGrid_TwoSeparateGrids_ConnectsOnlyStationsInTheSameGrid(int first, int second, bool expected)
+    public void ConnectedGridsOf_TwoSeparateGrids_ConnectsOnlyStationsInTheSameGrid(int first, int second, bool expected)
     {
-        var grids = PowerGridMaintenanceSolution.GroupByGrid(4, [[1, 2], [3, 4]]);
+        var grids = PowerGridMaintenanceSolution.ConnectedGridsOf(4, [[1, 2], [3, 4]]);
 
         Assert.Equal(expected, grids.IsConnected(first, second));
     }

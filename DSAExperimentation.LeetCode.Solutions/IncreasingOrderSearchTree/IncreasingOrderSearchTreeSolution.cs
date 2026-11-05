@@ -24,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.IncreasingOrderSearchTree;
 // KthSmallestElementInABSTBenchmarks already makes for LC 230. Before this
 // migration the baseline lived only inside IncreasingOrderSearchTreeBenchmarks, so
 // nothing asserted it.
+[LeetCodeQuestion("increasing-order-search-tree", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class IncreasingOrderSearchTreeSolution
 {
     // A throwaway head node the first relinked node is chained onto, so the walk

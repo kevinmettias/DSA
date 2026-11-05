@@ -2373,8 +2373,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 826 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 230 more:
+**Enrolled.** 830 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 234 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2473,6 +2473,11 @@ have only the empty tree. A check over those would pass whatever the strategy di
   Directions From a Binary Tree Node to Another, Two City Scheduling and Valid Square. Three also
   promise what generated cases broke: a queue that can be reconstructed, words numbered from 1, and
   two different values of a tree whose values are unique.
+- Collect Coins in a Tree, once its strategies took `(coins, edges)` in LeetCode's order and promised
+  a tree of one node per coin; Words Within Two Edits of Dictionary, once the trie work beside it
+  landed, with a promise that every word has one length; Power Grid Maintenance, once its grouping
+  helper stopped being named like a strategy (`ConnectedGridsOf`, as Car Fleet's was renamed); and
+  Increasing Order Search Tree, which relinks its tree, so `RewritesInput = true`.
 - 10 answered in place, once the attribute could say so: Move Zeroes, Sort Colors, Rotate Image, Set
   Matrix Zeroes, Game of Life, Surrounded Regions, Flatten Binary Tree to Linked List, Recover Binary
   Search Tree, Reorder List and Wiggle Sort II, which also takes any valid wiggle through an answer
@@ -2496,7 +2501,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 279 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 275 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
