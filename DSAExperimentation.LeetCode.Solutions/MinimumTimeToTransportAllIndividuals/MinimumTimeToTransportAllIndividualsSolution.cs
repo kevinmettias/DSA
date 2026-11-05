@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumTimeToTransportAllIndivid
 // forever - stays sound for Dijkstra despite never being a DAG; a memoized
 // top-down recurrence (Algorithms.DynamicProgramming.Memoizer) would not be,
 // since it requires the state graph to be well-founded.
+[LeetCodeQuestion("minimum-time-to-transport-all-individuals", LeetCodeAnswerOrder.AsWritten, Tolerance = 1e-5)]
 internal static class MinimumTimeToTransportAllIndividualsSolution
 {
     // Textbook baseline: BCL PriorityQueue<(mask,stage), double> Dijkstra,
@@ -23,6 +24,12 @@ internal static class MinimumTimeToTransportAllIndividualsSolution
     // not a library type - and keeping only the search engine textbook, never
     // materializing the graph itself. The arm the composed strategy below has to justify itself
     // against.
+    // LeetCode's shape, which lists n and m, the lengths of time and mul, beside the boat's capacity k:
+    // neither strategy needs the two lengths (ARCHITECTURE 17.4).
+    public static double MinTimeByBruteForceDijkstra(
+        (int IndividualCount, int Capacity, int StageCount) counts, int[] time, double[] mul) =>
+        MinTimeByBruteForceDijkstra(time, counts.Capacity, mul);
+
     public static double MinTimeByBruteForceDijkstra(int[] time, int capacity, double[] mul)
     {
         var fullMask = (1 << time.Length) - 1;
@@ -76,6 +83,12 @@ internal static class MinimumTimeToTransportAllIndividualsSolution
     // TransportTopology gives every reachable (mask, stage)'s distance from
     // the start in one call; the answer is the cheapest of those whose mask
     // is full, since the puzzle may finish under any of the m stages.
+    // LeetCode's shape, which lists n and m, the lengths of time and mul, beside the boat's capacity k:
+    // neither strategy needs the two lengths (ARCHITECTURE 17.4).
+    public static double MinTimeByDijkstraOverTransportGraph(
+        (int IndividualCount, int Capacity, int StageCount) counts, int[] time, double[] mul) =>
+        MinTimeByDijkstraOverTransportGraph(time, counts.Capacity, mul);
+
     public static double MinTimeByDijkstraOverTransportGraph(int[] time, int capacity, double[] mul)
     {
         var graph = TransportGraph.Build(time, capacity, mul);

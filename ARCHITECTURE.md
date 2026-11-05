@@ -2569,8 +2569,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,048 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 452 more:
+**Enrolled.** 1,049 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 453 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2803,6 +2803,11 @@ have only the empty tree. A check over those would pass whatever the strategy di
   to 7 nodes the old pricing answered 3,799 wrongly and the new none, judged by the check and by the rule
   that an assignment exists exactly when the all-floor distance is at most target and the distance
   without the -1 edges at least target.
+- Minimum Time to Transport All Individuals, once each strategy took LeetCode's shape beside its own
+  (§17.4): its counts n, k and m as one tuple read spread over LeetCode's first three inputs, of which
+  the strategies need only the boat's capacity k, since n and m are the lengths of time and mul. It
+  stands within 10^-5, the five decimals LeetCode prints, as Pow(x, n) does, and is judged on LeetCode's
+  three examples, the catalog holding no generated case for it.
 
 Open items:
 
@@ -2821,7 +2826,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 57 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 56 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
@@ -2849,6 +2854,10 @@ Open items:
   - Sudoku Solver's strategies return whether they solved the board, where LeetCode's answers in place
     and returns nothing, as `AnswersInPlace` requires; its backtracking-engine arm also runs past 3 s
     on one generated puzzle.
+  - Shortest Matching Substring's strategies each take the pattern two ways, as LeetCode's string and as
+    its three parts, and both overloads match LeetCode's declared types alike, the role types matching
+    none. Counting a one-value role type as its value would settle it, but would tie Burst Balloons,
+    whose role-typed overload then matches as well as its plain one.
 - **Trimming the enrolled solutions' own tests.** A theory row restates a catalog case when
   a case has the same inputs, read into the strategy's types, and the catalog's judge accepts the
   row's answer for it. That row is the check `CatalogCaseTests` already makes. Measured over the 608
