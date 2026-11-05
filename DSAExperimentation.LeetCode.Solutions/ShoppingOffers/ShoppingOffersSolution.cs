@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShoppingOffers;
 // vectors - reachable via different offer application orders - reuse the same
 // cached answer instead of re-solving it; a raw int[] key would use reference
 // equality and never hit.
+[LeetCodeQuestion("shopping-offers", LeetCodeAnswerOrder.AsWritten, Reach = typeof(ShoppingOffersReach))]
 internal static class ShoppingOffersSolution
 {
     // The textbook baseline this composition has to justify itself against: plain

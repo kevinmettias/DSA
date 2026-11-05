@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumHeightTrees;
 //
 // Both strategies build the same undirected adjacency list from the edge list; they
 // differ only in how they search it.
+[LeetCodeQuestion("minimum-height-trees", LeetCodeAnswerOrder.AnyOrder, Reach = typeof(MinimumHeightTreesReach))]
 internal static class MinimumHeightTreesSolution
 {
     // At most 2 centroid nodes remain once leaf-peeling settles.

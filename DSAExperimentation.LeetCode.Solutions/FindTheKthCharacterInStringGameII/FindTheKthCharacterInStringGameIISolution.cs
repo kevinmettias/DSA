@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheKthCharacterInStringGameI
 // never actually be built - only its length is tracked round by round, and the
 // target position is traced backward through the operations to the single seed
 // character it descends from.
+[LeetCodeQuestion("find-the-k-th-character-in-string-game-ii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(FindTheKthCharacterInStringGameIIReach))]
 internal static class FindTheKthCharacterInStringGameIISolution
 {
     // The textbook answer: build the actual string exactly as the operations

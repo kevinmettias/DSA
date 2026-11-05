@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SoupServings;
 // order that reaches it (exponential), the memoized strategy computes each pair once
 // via this repo's own Memoizer<TState,TResult> - the same (state)->probability shape
 // PredictTheWinnerSolution uses over an interval's (left, right) bounds.
+[LeetCodeQuestion("soup-servings", LeetCodeAnswerOrder.AsWritten, Reach = typeof(SoupServingsReach), Tolerance = 1e-5)]
 internal static class SoupServingsSolution
 {
     private const int ServingSizeMl = 25;

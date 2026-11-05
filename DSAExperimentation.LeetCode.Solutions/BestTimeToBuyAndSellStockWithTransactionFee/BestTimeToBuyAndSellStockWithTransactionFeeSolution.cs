@@ -7,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockWithTra
 // Sell Stock with Cooldown) already establishes, just with the "next buy skipped"
 // cooldown rule swapped out for "subtract fee once per completed sale" - the sell
 // transition pays fee instead of advancing an extra day.
+[LeetCodeQuestion("best-time-to-buy-and-sell-stock-with-transaction-fee", LeetCodeAnswerOrder.AsWritten, Reach = typeof(BestTimeToBuyAndSellStockWithTransactionFeeReach))]
 internal static class BestTimeToBuyAndSellStockWithTransactionFeeSolution
 {
     // Plain un-memoized recursion over (day, holding) - exponential, since the

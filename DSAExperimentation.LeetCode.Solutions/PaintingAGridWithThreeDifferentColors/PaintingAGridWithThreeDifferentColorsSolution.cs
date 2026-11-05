@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PaintingAGridWithThreeDifferentC
 // Both strategies answer the same question - the count, reduced mod 1e9+7 - and
 // differ only in what they enumerate: every cell of the whole grid, or every valid
 // column pattern once and then the columns.
+[LeetCodeQuestion("painting-a-grid-with-three-different-colors", LeetCodeAnswerOrder.AsWritten, Reach = typeof(PaintingAGridWithThreeDifferentColorsReach))]
 internal static class PaintingAGridWithThreeDifferentColorsSolution
 {
     private const int NumberOfColors = 3;

@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.OpenTheLock;
 // (Domain/Devices/Locks), with this problem's deadends left out, so what this class
 // contributes is the start combination, the deadend filter, and the choice of how to
 // search.
+[LeetCodeQuestion("open-the-lock", LeetCodeAnswerOrder.AsWritten, Reach = typeof(OpenTheLockReach))]
 internal static class OpenTheLockSolution
 {
     // The textbook answer: BCL Queue + HashSet, generating each of the 8 candidate

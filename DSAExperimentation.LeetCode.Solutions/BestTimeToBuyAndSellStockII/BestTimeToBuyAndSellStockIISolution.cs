@@ -5,6 +5,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockII;
 // LC 121's single trade, every local upswing can be captured on its own, so the
 // two strategies differ in whether that fact is exploited directly or discovered
 // by exhaustively trying every buy/sell decision.
+[LeetCodeQuestion("best-time-to-buy-and-sell-stock-ii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(BestTimeToBuyAndSellStockIIReach))]
 internal static class BestTimeToBuyAndSellStockIISolution
 {
     // Textbook baseline: an unmemoized two-way choice (buy-or-skip when flat,

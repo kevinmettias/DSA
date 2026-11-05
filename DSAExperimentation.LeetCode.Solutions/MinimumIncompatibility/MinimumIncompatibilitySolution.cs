@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumIncompatibility;
 // state from scratch every time it is reached, while the composed strategy caches
 // it once through this repo's own Memoizer<TState,TResult> - the same memoize-or-
 // not pairing StoneGameVSolution runs, keyed on a subset mask instead of a range.
+[LeetCodeQuestion("minimum-incompatibility", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MinimumIncompatibilityReach))]
 internal static class MinimumIncompatibilitySolution
 {
     // Halves int.MaxValue for a "no valid grouping from here" sentinel that still

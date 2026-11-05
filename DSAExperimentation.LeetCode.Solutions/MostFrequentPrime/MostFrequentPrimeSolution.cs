@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MostFrequentPrime;
 // and only differ in how they test primality - the two strategies exist to
 // contrast that one choice, the same way AddBinarySolution's two strategies
 // share DigitWalk and only differ in how they undo the digit reversal.
+[LeetCodeQuestion("most-frequent-prime", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MostFrequentPrimeReach))]
 internal static class MostFrequentPrimeSolution
 {
     // A generated number only qualifies once it exceeds this LeetCode-defined

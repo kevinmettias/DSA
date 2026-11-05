@@ -26,6 +26,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountAlmostEqualPairsII;
 //
 // Both arms take a second, string[]-of-PaddedWidth overload so a benchmark can charge
 // the zero-padding to [GlobalSetup] rather than either measured pairwise scan.
+[LeetCodeQuestion("count-almost-equal-pairs-ii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CountAlmostEqualPairsIIReach))]
 internal static class CountAlmostEqualPairsIISolution
 {
     private const int PaddedWidth = 7; // nums[i] < 1e7, so at most 7 digits.

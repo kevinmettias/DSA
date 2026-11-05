@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ParallelCoursesII;
 // mask once per order that can reach it, while MinNumberOfSemestersByMemoizedRecursion
 // routes the same recurrence through this repo's own Memoizer keyed on that mask,
 // so each of the 2^n states is solved exactly once.
+[LeetCodeQuestion("parallel-courses-ii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(ParallelCoursesIIReach))]
 internal static class ParallelCoursesIISolution
 {
     // The textbook answer: the same recurrence with no memoization at all, so a

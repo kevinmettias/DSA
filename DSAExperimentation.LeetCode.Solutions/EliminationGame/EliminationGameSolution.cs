@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.EliminationGame;
 // you would write without this repo", and there is no input container here for a
 // repo type to occupy (RectangleArea's TotalAreaByUnitGridCoverageCount is the same
 // call, made explicitly for the same reason).
+[LeetCodeQuestion("elimination-game", LeetCodeAnswerOrder.AsWritten, Reach = typeof(EliminationGameReach))]
 internal static class EliminationGameSolution
 {
     private const int EliminationStride = 2;

@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SellingPiecesOfWood;
 // not int: up to 2*10^4 listed prices at up to 10^6 each can sum past Int32.MaxValue,
 // the same overflow-law-first reasoning IntegerReplacement's int-vs-long choice
 // already documents.
+[LeetCodeQuestion("selling-pieces-of-wood", LeetCodeAnswerOrder.AsWritten, Reach = typeof(SellingPiecesOfWoodReach))]
 internal static class SellingPiecesOfWoodSolution
 {
     // The textbook answer: plain recursion with no cache at all, which is exponential

@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SumGame;
 // The two recursive arms share one CanMoverForceAliceWin body and one named recurrence:
 // they differ only in whether the driver between recursive calls is this repo's Memoizer
 // cache or the call stack itself, which is the whole difference the benchmark measures.
+[LeetCodeQuestion("sum-game", LeetCodeAnswerOrder.AsWritten, Reach = typeof(SumGameReach))]
 internal static class SumGameSolution
 {
     private const int MinDigit = 0;

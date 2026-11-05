@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfArrowsToBurstBall
 // set of remaining balloons, so sorting once is enough. This is NOT IntervalSet.Count: transitively-merged overlap
 // groups can still need more than one stabbing point, e.g. [1,2],[2,3],[3,4] merge
 // into one interval but need two arrows.
+[LeetCodeQuestion("minimum-number-of-arrows-to-burst-balloons", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MinimumNumberOfArrowsToBurstBalloonsReach))]
 internal static class MinimumNumberOfArrowsToBurstBalloonsSolution
 {
     // LeetCode's own shape.

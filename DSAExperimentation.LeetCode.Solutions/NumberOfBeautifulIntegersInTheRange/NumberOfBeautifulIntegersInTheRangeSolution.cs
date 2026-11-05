@@ -24,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfBeautifulIntegersInTheRa
 // Same "tuple state, Memoizer.Memoize<TState,TResult>" composition
 // CountTheNumberOfSquareFreeSubsetsSolution.CountByBitmaskMemo already proves
 // out for a different counting recurrence.
+[LeetCodeQuestion("number-of-beautiful-integers-in-the-range", LeetCodeAnswerOrder.AsWritten, Reach = typeof(NumberOfBeautifulIntegersInTheRangeReach))]
 internal static class NumberOfBeautifulIntegersInTheRangeSolution
 {
     public static long CountByBruteForce(int low, int high, int divisor)

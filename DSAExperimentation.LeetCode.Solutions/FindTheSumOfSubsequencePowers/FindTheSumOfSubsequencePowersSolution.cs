@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheSumOfSubsequencePowers;
 // inner count is only a step function of v, changing at the handful of actual
 // pairwise gaps present in nums - so it is enough to evaluate it once per distinct
 // gap and weight by how wide a run of v it covers.
+[LeetCodeQuestion("find-the-sum-of-subsequence-powers", LeetCodeAnswerOrder.AsWritten, Reach = typeof(FindTheSumOfSubsequencePowersReach))]
 internal static class FindTheSumOfSubsequencePowersSolution
 {
     // The textbook answer: enumerate every subsequenceLength-element subsequence

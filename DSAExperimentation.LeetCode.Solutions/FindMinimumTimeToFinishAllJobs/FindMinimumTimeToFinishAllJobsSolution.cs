@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindMinimumTimeToFinishAllJobs;
 // and differ only in how they search for it: enumerate every assignment and keep
 // the best, or binary-search the answer itself and ask a feasibility question at
 // each candidate.
+[LeetCodeQuestion("find-minimum-time-to-finish-all-jobs", LeetCodeAnswerOrder.AsWritten, Reach = typeof(FindMinimumTimeToFinishAllJobsReach))]
 internal static class FindMinimumTimeToFinishAllJobsSolution
 {
     // The textbook answer: try all k^n worker assignments depth-first, tracking the

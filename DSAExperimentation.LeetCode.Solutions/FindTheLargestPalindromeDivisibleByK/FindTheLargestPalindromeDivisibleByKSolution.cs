@@ -24,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheLargestPalindromeDivisibl
 // already proves out, and records the largest digit that keeps each visited state
 // feasible in a side dictionary so the greedy walk that follows looks the answer up
 // in O(1) per position instead of re-deriving it.
+[LeetCodeQuestion("find-the-largest-palindrome-divisible-by-k", LeetCodeAnswerOrder.AsWritten, Reach = typeof(FindTheLargestPalindromeDivisibleByKReach))]
 internal static class FindTheLargestPalindromeDivisibleByKSolution
 {
     public static string LargestPalindromeByBruteForce(int digitCount, int divisor)

@@ -5,6 +5,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DistributeCandiesAmongChildrenII
 // now both up to 1e6, so the answer no longer fits an int and the double loop no
 // longer fits a benchmark budget - the closed form is what actually has to carry
 // this version.
+[LeetCodeQuestion("distribute-candies-among-children-ii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(DistributeCandiesAmongChildrenIIReach))]
 internal static class DistributeCandiesAmongChildrenIISolution
 {
     // Same double loop LC 2928 uses. Still correct at LC 2929's bound, just the

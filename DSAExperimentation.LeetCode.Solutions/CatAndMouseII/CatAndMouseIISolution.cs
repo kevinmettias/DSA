@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CatAndMouseII;
 // scratch over a plain bool[,] board, the composed arm routes the identical body
 // through this repo's own Memoizer over a Grid - the CanIWin/PredictTheWinner shape,
 // just with a 2D position pair instead of a bitmask or an interval.
+[LeetCodeQuestion("cat-and-mouse-ii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CatAndMouseIIReach))]
 internal static class CatAndMouseIISolution
 {
     private const char WallMark = '#';

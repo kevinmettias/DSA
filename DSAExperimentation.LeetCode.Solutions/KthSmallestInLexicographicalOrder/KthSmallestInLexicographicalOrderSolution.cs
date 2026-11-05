@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.KthSmallestInLexicographicalOrde
 // successor-function DepthFirstSearch.Traverse - the rank-th smallest is simply the
 // (rank-1)-th element of that same order, one root-seeded Traverse call per digit 1-9
 // since each root's subtree is a disjoint range.
+[LeetCodeQuestion("k-th-smallest-in-lexicographical-order", LeetCodeAnswerOrder.AsWritten, Reach = typeof(KthSmallestInLexicographicalOrderReach))]
 internal static class KthSmallestInLexicographicalOrderSolution
 {
     private const int MaxDigit = 9;

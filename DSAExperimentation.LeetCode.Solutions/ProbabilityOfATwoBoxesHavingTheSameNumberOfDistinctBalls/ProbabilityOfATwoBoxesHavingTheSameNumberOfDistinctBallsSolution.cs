@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ProbabilityOfATwoBoxesHavingTheS
 // the balls AND both boxes hold equally many distinct colours; dividing the total
 // by C(total, total/2), the number of equally likely half/half deals, is the
 // probability asked for.
+[LeetCodeQuestion("probability-of-a-two-boxes-having-the-same-number-of-distinct-balls", LeetCodeAnswerOrder.AsWritten, Reach = typeof(ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsReach), Promise = typeof(ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsPromise), Tolerance = 1e-5)]
 internal static class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsSolution
 {
     // The textbook answer, and the arm the Backtrack composition has to justify

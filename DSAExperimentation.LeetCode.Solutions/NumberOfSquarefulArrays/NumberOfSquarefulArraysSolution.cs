@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfSquarefulArrays;
 // into Backtrack.Search's candidate enumeration, abandoning a partial arrangement
 // the moment its last placed pair fails instead of after every remaining position
 // has been filled in.
+[LeetCodeQuestion("number-of-squareful-arrays", LeetCodeAnswerOrder.AsWritten, Reach = typeof(NumberOfSquarefulArraysReach))]
 internal static class NumberOfSquarefulArraysSolution
 {
     // The textbook answer: plain recursion over a BCL used[] flag array, generating

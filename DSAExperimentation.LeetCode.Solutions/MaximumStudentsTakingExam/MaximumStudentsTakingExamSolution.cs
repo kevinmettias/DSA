@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumStudentsTakingExam;
 // Both strategies run that identical recursion; they differ only in whether a (row,
 // prevMask) state reached by several different row sequences is recomputed each time
 // or once.
+[LeetCodeQuestion("maximum-students-taking-exam", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MaximumStudentsTakingExamReach))]
 internal static class MaximumStudentsTakingExamSolution
 {
     // The textbook baseline: the same recursion with no memoization at all, so the

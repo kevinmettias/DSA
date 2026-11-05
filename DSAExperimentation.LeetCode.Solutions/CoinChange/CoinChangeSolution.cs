@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CoinChange;
 // walking the recursion top-down (HouseRobber/DecodeWays/ClimbingStairs
 // precedent) - each remaining amount solved once and reused across every coin
 // choice that lands back on it.
+[LeetCodeQuestion("coin-change", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CoinChangeReach))]
 internal static class CoinChangeSolution
 {
     // Larger than any reachable dp value (LC bounds amount well below int range)

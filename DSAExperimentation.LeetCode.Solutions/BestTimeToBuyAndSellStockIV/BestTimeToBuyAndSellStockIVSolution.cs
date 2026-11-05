@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BestTimeToBuyAndSellStockIV;
 // transactionBudget - no further buy is ever explored past that point. Same state
 // machine as LC 123 (Best Time to Buy and Sell Stock III), generalized from a
 // fixed cap of 2 to an arbitrary transactionBudget.
+[LeetCodeQuestion("best-time-to-buy-and-sell-stock-iv", LeetCodeAnswerOrder.AsWritten, Reach = typeof(BestTimeToBuyAndSellStockIVReach))]
 internal static class BestTimeToBuyAndSellStockIVSolution
 {
     // Unmemoized recursion over the exact same state machine the composed
@@ -16,6 +17,9 @@ internal static class BestTimeToBuyAndSellStockIVSolution
     // genuinely exponential, the arm the memoized strategy has to beat.
     public static int MaxProfitByBruteForce(int[] prices, int transactionBudget) =>
         ProfitFrom((0, 0, 0), prices, transactionBudget);
+
+    // LeetCode's shape, which lists the transaction budget k before the prices (ARCHITECTURE 17.4).
+    public static int MaxProfitByBruteForce(int transactionBudget, int[] prices) => MaxProfitByBruteForce(prices, transactionBudget);
 
     // Same recurrence, run through Algorithms.DynamicProgramming.Memoizer so
     // each of the at-most 2 * n * (k + 1) distinct (day, holding, done)
@@ -25,6 +29,9 @@ internal static class BestTimeToBuyAndSellStockIVSolution
         Memoizer.Memoize<(int Day, int Holding, int Done), int>(
             (0, 0, 0),
             new ProfitDayByDay(prices, transactionBudget));
+
+    public static int MaxProfitByTransactionMemoization(int transactionBudget, int[] prices) =>
+        MaxProfitByTransactionMemoization(prices, transactionBudget);
 
     private static int ProfitFrom(
         (int Day, int Holding, int Done) state, int[] prices, int transactionBudget)

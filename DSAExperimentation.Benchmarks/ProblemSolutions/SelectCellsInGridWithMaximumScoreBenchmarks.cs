@@ -31,7 +31,7 @@ public class SelectCellsInGridWithMaximumScoreBenchmarks
     {
         var grid = SelectCellsWorkloads.BuildGrid(gridSize, Seed);
 
-        return (grid, SelectCellsInGridWithMaximumScoreSolution.GroupRowsByValue(grid));
+        return (grid, SelectCellsInGridWithMaximumScoreSolution.RowsHoldingEachValue(grid));
     }
 
     [Benchmark(Baseline = true)]

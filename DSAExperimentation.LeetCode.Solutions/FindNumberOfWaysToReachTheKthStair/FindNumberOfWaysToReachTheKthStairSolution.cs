@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindNumberOfWaysToReachTheKthSta
 // adds at least 2^0 = 1, so the position never decreases below where it already
 // overshot - which is what bounds both strategies below to O(log k) recursion depth
 // despite targetStair running up to 1e9.
+[LeetCodeQuestion("find-number-of-ways-to-reach-the-k-th-stair", LeetCodeAnswerOrder.AsWritten, Reach = typeof(FindNumberOfWaysToReachTheKthStairReach))]
 internal static class FindNumberOfWaysToReachTheKthStairSolution
 {
     // The textbook answer: plain unmemoized recursion over Alice's own two

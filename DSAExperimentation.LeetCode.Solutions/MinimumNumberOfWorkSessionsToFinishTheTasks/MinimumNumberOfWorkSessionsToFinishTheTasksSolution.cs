@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfWorkSessionsToFin
 // memoized arm routes the same recurrence through this repo's own Memoizer keyed on
 // the remaining-task mask, so each state is solved exactly once and every later
 // split that reaches it is a cache hit.
+[LeetCodeQuestion("minimum-number-of-work-sessions-to-finish-the-tasks", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MinimumNumberOfWorkSessionsToFinishTheTasksReach))]
 internal static class MinimumNumberOfWorkSessionsToFinishTheTasksSolution
 {
     // The textbook answer: the same recurrence with no cache at all, deliberately

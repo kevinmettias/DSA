@@ -21,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheMinimumCostArrayPermutati
 // path DP uses over Memoizer (there maximizing overlap; here minimizing absolute
 // difference), so the composed strategy below reuses this repo's own Memoizer
 // rather than hand-rolling a second memoized recursion.
+[LeetCodeQuestion("find-the-minimum-cost-array-permutation", LeetCodeAnswerOrder.AsWritten, Reach = typeof(FindTheMinimumCostArrayPermutationReach))]
 internal static class FindTheMinimumCostArrayPermutationSolution
 {
     // Textbook baseline: generates every one of the n! permutations via BCL

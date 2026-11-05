@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestBinarySubsequenceLessThan
 // category already established for GasStation/JumpGame/MaximumProductSubarray. The
 // two strategies here are that scan and the exhaustive subset enumeration it has to
 // justify itself against.
+[LeetCodeQuestion("longest-binary-subsequence-less-than-or-equal-to-k", LeetCodeAnswerOrder.AsWritten, Reach = typeof(LongestBinarySubsequenceLessThanOrEqualToKReach))]
 internal static class LongestBinarySubsequenceLessThanOrEqualToKSolution
 {
     // 2^30 already exceeds 1e9, the largest value LeetCode's k can take, so no '1'

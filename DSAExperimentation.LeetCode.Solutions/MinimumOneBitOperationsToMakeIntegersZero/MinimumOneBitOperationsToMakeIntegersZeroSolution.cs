@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumOneBitOperationsToMakeInt
 // the path a hop at a time and therefore does work proportional to the answer
 // itself; the closed form recognizes the answer as the inverse Gray code of the
 // target and only ever touches its own ~log2(n) bits.
+[LeetCodeQuestion("minimum-one-bit-operations-to-make-integers-zero", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MinimumOneBitOperationsToMakeIntegersZeroReach))]
 internal static class MinimumOneBitOperationsToMakeIntegersZeroSolution
 {
     // The state every operation count is measured to, and therefore the search root.

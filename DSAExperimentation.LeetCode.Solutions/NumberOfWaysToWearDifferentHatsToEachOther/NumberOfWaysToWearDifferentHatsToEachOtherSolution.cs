@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysToWearDifferentHatsT
 // The two arms differ only in whether that recurrence remembers anything: many
 // different hat orderings reach the identical (hat, mask) state, so the unmemoized
 // arm re-explores each one from scratch.
+[LeetCodeQuestion("number-of-ways-to-wear-different-hats-to-each-other", LeetCodeAnswerOrder.AsWritten, Reach = typeof(NumberOfWaysToWearDifferentHatsToEachOtherReach))]
 internal static class NumberOfWaysToWearDifferentHatsToEachOtherSolution
 {
     // The textbook answer: the same recurrence as plain recursion with no cache

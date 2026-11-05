@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PalindromePartitioningIII;
 // - MinChangesByMemoizedRecurrence drives the identical recurrence through this
 //   repo's Memoizer (the PalindromePartitioningII precedent), so each state is
 //   solved exactly once.
+[LeetCodeQuestion("palindrome-partitioning-iii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(PalindromePartitioningIIIReach))]
 internal static class PalindromePartitioningIIISolution
 {
     // Half of int.MaxValue: "no valid partition from here", chosen so it can absorb a

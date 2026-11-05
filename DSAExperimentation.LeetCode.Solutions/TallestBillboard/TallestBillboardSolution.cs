@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TallestBillboard;
 //   MemoizedDiff threads the identical recurrence through this repo's own
 //   Memoizer<TState,TResult>, keying on the exact (index, diff) pair, so each state is
 //   solved once - the same (index, runningState) shape TargetSum already uses.
+[LeetCodeQuestion("tallest-billboard", LeetCodeAnswerOrder.AsWritten, Reach = typeof(TallestBillboardReach))]
 internal static class TallestBillboardSolution
 {
     // Sentinel for "this branch cannot end with the piles level". Halved so that adding

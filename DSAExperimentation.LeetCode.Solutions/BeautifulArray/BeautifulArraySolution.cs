@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BeautifulArray;
 // required to return the same array: the backtracking arm returns the
 // lexicographically smallest one, the divide-and-conquer arm returns the one its
 // recursion builds, and they first diverge at n = 8.
+[LeetCodeQuestion("beautiful-array", LeetCodeAnswerOrder.AsWritten, Reach = typeof(BeautifulArrayReach), AnswerCheck = typeof(BeautifulArrayAnswerCheck))]
 internal static class BeautifulArraySolution
 {
     // 2 * a[k] == a[i] + a[j] is the averaging rule the whole problem is about.

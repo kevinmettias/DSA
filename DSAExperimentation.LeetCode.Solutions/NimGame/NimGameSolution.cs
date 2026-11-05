@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NimGame;
 // ClimbingStairsSolution/HouseRobberSolution already use for their own recurrences.
 // The recursion reduces to the well-known `stoneCount % 4 != 0` closed form, which
 // the second strategy computes directly.
+[LeetCodeQuestion("nim-game", LeetCodeAnswerOrder.AsWritten, Reach = typeof(NimGameReach))]
 internal static class NimGameSolution
 {
     // LC 292 lets a turn remove 1, 2, or 3 stones; the losing positions are exactly

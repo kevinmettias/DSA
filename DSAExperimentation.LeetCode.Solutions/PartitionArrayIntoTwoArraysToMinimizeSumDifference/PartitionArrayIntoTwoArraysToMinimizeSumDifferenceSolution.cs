@@ -24,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PartitionArrayIntoTwoArraysToMin
 //   (the Subsets precedent) enumerates each n-element half's 2^n subset sums,
 //   MergeSort orders each size-group over an ArrayIndexedSequence, and
 //   BinarySearch.LowerBound locates the closest size-complementary partner sum.
+[LeetCodeQuestion("partition-array-into-two-arrays-to-minimize-sum-difference", LeetCodeAnswerOrder.AsWritten, Reach = typeof(PartitionArrayIntoTwoArraysToMinimizeSumDifferenceReach))]
 internal static class PartitionArrayIntoTwoArraysToMinimizeSumDifferenceSolution
 {
     // The input holds 2n elements and each output array takes n of them.

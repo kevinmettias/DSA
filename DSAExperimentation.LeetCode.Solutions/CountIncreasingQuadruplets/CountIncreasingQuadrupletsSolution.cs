@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountIncreasingQuadruplets;
 // independent: the answer is the sum, over every such pair, of (how many i < j
 // have nums[i] < nums[k]) times (how many l > k have nums[l] > nums[j]). The two
 // strategies differ only in how they obtain the second factor.
+[LeetCodeQuestion("count-increasing-quadruplets", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CountIncreasingQuadrupletsReach), Promise = typeof(CountIncreasingQuadrupletsPromise))]
 internal static class CountIncreasingQuadrupletsSolution
 {
     // The textbook answer: four nested loops testing the inequality exactly as

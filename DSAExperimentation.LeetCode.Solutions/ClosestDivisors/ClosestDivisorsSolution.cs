@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ClosestDivisors;
 // scans the whole range; the composed strategy anchors at floor(sqrt(candidate)) via
 // IntegerSquareRoot.Floor - LC 69's own binary search, promoted to the library - then walks
 // down a few steps to the first exact divisor.
+[LeetCodeQuestion("closest-divisors", LeetCodeAnswerOrder.AnyOrder, Reach = typeof(ClosestDivisorsReach))]
 internal static class ClosestDivisorsSolution
 {
     // LeetCode asks about num + 1 and num + 2, so the second candidate is +2.

@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StoneGameVII;
 // the sum of what is left behind, so both branches read a prefix-sum table instead of
 // a single stones[left]/stones[right] lookup. The two strategies differ only in
 // whether the (Left, Right) states are cached.
+[LeetCodeQuestion("stone-game-vii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(StoneGameVIIReach))]
 internal static class StoneGameVIISolution
 {
     // The textbook baseline: plain interval recursion with no caching. Every removal

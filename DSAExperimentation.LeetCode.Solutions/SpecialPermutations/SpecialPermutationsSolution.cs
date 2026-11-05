@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SpecialPermutations;
 // them" - through this repo's own Memoizer, so a suffix is counted once for
 // every distinct (set, predecessor) it can follow rather than once per prefix
 // that reaches it.
+[LeetCodeQuestion("special-permutations", LeetCodeAnswerOrder.AsWritten, Reach = typeof(SpecialPermutationsReach))]
 internal static class SpecialPermutationsSolution
 {
     // Seeds the recurrence's start state: nothing has been placed yet, so the

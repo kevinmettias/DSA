@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RaceCar;
 // both strategies search inside RaceCarStateSpace's target-scaled box: the textbook
 // arm generates states on the fly and just refuses to leave it, the composed arm
 // pre-materializes it as a graph and hands the whole thing to BreadthFirstDistances.
+[LeetCodeQuestion("race-car", LeetCodeAnswerOrder.AsWritten, Reach = typeof(RaceCarReach))]
 internal static class RaceCarSolution
 {
     // The textbook answer: BCL Queue + HashSet over mutated (position, speed)

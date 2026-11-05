@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PartitionToKEqualSumSubsets;
 // sum. Candidates only offers buckets that don't overshoot, which by construction
 // (every bucket <= target, and the total is a multiple of bucketCount) forces every
 // bucket to land on exactly the target once all numbers are placed.
+[LeetCodeQuestion("partition-to-k-equal-sum-subsets", LeetCodeAnswerOrder.AsWritten, Reach = typeof(PartitionToKEqualSumSubsetsReach))]
 internal static class PartitionToKEqualSumSubsetsSolution
 {
     // The textbook recursion: a hand-written DFS over bucketCount running bucket sums,

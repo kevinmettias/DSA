@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysToReachAPositionAfte
 // composed strategy routes the same recurrence through this repo's own Memoizer
 // keyed on the (Steps, Diff) tuple - the 2-D value-tuple state shape TargetSumSolution's
 // (Index, Sum) already establishes - so each state is solved once.
+[LeetCodeQuestion("number-of-ways-to-reach-a-position-after-exactly-k-steps", LeetCodeAnswerOrder.AsWritten, Reach = typeof(NumberOfWaysToReachAPositionAfterExactlyKStepsReach))]
 internal static class NumberOfWaysToReachAPositionAfterExactlyKStepsSolution
 {
     // The textbook answer: plain recursion, no cache, BCL arithmetic only. This is

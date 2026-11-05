@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.GuessNumberHigherOrLowerII;
 //
 // Both strategies walk the same recurrence over (low, high) bounds; they differ only
 // in whether repeated sub-ranges are cached.
+[LeetCodeQuestion("guess-number-higher-or-lower-ii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(GuessNumberHigherOrLowerIIReach))]
 internal static class GuessNumberHigherOrLowerIISolution
 {
     // The textbook answer: plain exponential recursion over (low, high) bounds, no

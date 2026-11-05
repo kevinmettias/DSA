@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CycleLengthQueriesInATree;
 // treeLevels only bounds the id range the queries may use - the walk reads each id's depth
 // out of the id itself - so neither strategy consults it; it stays on the signature
 // because that is LeetCode's own shape.
+[LeetCodeQuestion("cycle-length-queries-in-a-tree", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CycleLengthQueriesInATreeReach))]
 internal static class CycleLengthQueriesInATreeSolution
 {
     // Ids are 1-based, so id 1 is the root and id - 1 is the same node's 0-indexed

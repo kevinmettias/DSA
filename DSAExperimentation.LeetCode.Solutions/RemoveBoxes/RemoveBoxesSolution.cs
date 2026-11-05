@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveBoxes;
 //
 // Both strategies walk the same recurrence over the same boxes array; they differ
 // only in whether repeated (left, right, extra) triples are cached.
+[LeetCodeQuestion("remove-boxes", LeetCodeAnswerOrder.AsWritten, Reach = typeof(RemoveBoxesReach))]
 internal static class RemoveBoxesSolution
 {
     // The textbook answer: plain exponential recursion over (left, right, extra)

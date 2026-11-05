@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SelectCellsInGridWithMaximumScor
 // choice by DISTINCT VALUE instead of by row, which shrinks the "already
 // committed" half of the state from an unbounded value-set down to a <= 10-bit
 // row mask - exactly the shape this repo's own Memoizer can cache.
+[LeetCodeQuestion("select-cells-in-grid-with-maximum-score", LeetCodeAnswerOrder.AsWritten, Reach = typeof(SelectCellsInGridWithMaximumScoreReach))]
 internal static class SelectCellsInGridWithMaximumScoreSolution
 {
     // Textbook baseline: walk the grid row by row, either skipping the row or
@@ -48,7 +49,7 @@ internal static class SelectCellsInGridWithMaximumScoreSolution
     // This repo's own Memoizer over (ValueIndex, RowMask): every distinct value in
     // the grid either contributes to the score (claiming one of the rows it
     // appears in, if that row is still free) or is skipped entirely.
-    public static int MaxScoreByBitmaskMemoization(int[][] grid) => MaxScoreByBitmaskMemoization(GroupRowsByValue(grid));
+    public static int MaxScoreByBitmaskMemoization(int[][] grid) => MaxScoreByBitmaskMemoization(RowsHoldingEachValue(grid));
 
     public static int MaxScoreByBitmaskMemoization(Dictionary<int, List<int>> rowsByValue)
     {
@@ -95,7 +96,7 @@ internal static class SelectCellsInGridWithMaximumScoreSolution
     // Every distinct value mapped to the rows it appears in - the input the
     // bitmask strategy's recursion actually walks, so a benchmark's
     // [GlobalSetup] can charge this grouping to setup instead of the measured DP.
-    public static Dictionary<int, List<int>> GroupRowsByValue(int[][] grid)
+    public static Dictionary<int, List<int>> RowsHoldingEachValue(int[][] grid)
     {
         var rowsByValue = new Dictionary<int, List<int>>();
 

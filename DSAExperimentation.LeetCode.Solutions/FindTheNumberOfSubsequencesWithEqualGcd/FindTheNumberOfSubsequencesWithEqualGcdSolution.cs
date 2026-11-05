@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheNumberOfSubsequencesWithE
 // under LeetCodeModulus, LeetCode's shared 1e9+7 convention
 // (CountTheNumberOfSquareFreeSubsets's own CountByBitmaskMemo precedent for this
 // exact Memoizer-plus-LeetCodeModulus composition).
+[LeetCodeQuestion("find-the-number-of-subsequences-with-equal-gcd", LeetCodeAnswerOrder.AsWritten, Reach = typeof(FindTheNumberOfSubsequencesWithEqualGcdReach))]
 internal static class FindTheNumberOfSubsequencesWithEqualGcdSolution
 {
     public static int CountPairsByBruteForce(int[] nums)

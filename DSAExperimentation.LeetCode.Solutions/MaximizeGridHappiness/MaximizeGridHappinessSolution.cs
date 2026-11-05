@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeGridHappiness;
 //
 // Both strategies run that identical recursion; they differ only in whether a state
 // reached by several different placement sequences is recomputed each time or once.
+[LeetCodeQuestion("maximize-grid-happiness", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MaximizeGridHappinessReach))]
 internal static class MaximizeGridHappinessSolution
 {
     // The occupancy digit each cell contributes to the profile window.

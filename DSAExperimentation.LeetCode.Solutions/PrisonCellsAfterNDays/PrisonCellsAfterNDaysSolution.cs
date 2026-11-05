@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PrisonCellsAfterNDays;
 // key before" role TwoSumSolution uses HashMap for, keyed on a packed state
 // instead of a value), so the walk can skip to dayCount modulo the cycle length
 // rather than stepping through all of dayCount, which LeetCode allows to reach 10^9.
+[LeetCodeQuestion("prison-cells-after-n-days", LeetCodeAnswerOrder.AsWritten, Reach = typeof(PrisonCellsAfterNDaysReach))]
 internal static class PrisonCellsAfterNDaysSolution
 {
     private const int CellCount = 8;

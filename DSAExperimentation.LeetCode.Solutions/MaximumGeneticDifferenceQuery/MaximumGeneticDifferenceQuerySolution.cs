@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumGeneticDifferenceQuery;
 //
 // Both strategies answer exactly that; they differ in how much of the ancestor set
 // they re-walk per query.
+[LeetCodeQuestion("maximum-genetic-difference-query", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MaximumGeneticDifferenceQueryReach))]
 internal static class MaximumGeneticDifferenceQuerySolution
 {
 

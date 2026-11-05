@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfGroupsGettingFres
 // (running residue, remaining remainder counts) state have the same future, and
 // drives that recurrence through this repo's own Memoizer - the same top-down
 // memoized search CountAllPossibleRoutes uses, over a different state shape.
+[LeetCodeQuestion("maximum-number-of-groups-getting-fresh-donuts", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MaximumNumberOfGroupsGettingFreshDonutsReach))]
 internal static class MaximumNumberOfGroupsGettingFreshDonutsSolution
 {
     // State is encoded as "residue|c1,c2,..." because a bare int[] has no structural

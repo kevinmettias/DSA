@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StoneGame;
 // total can never split evenly) guarantee Alice can force a strictly positive
 // difference; both strategies still run the real recurrence rather than returning
 // a constant, so a regression in the difference itself is still caught.
+[LeetCodeQuestion("stone-game", LeetCodeAnswerOrder.AsWritten, Reach = typeof(StoneGameReach))]
 internal static class StoneGameSolution
 {
     // The textbook baseline: plain recursion over (left, right) bounds with no

@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfDistinctRollSequences;
 //
 // The die's faces are Domain/Games/Dice's: the memoized arm rolls a SixSidedDie, and the baseline
 // keeps its own DieFaces. Which roll may follow which is this problem's game and stays here.
+[LeetCodeQuestion("number-of-distinct-roll-sequences", LeetCodeAnswerOrder.AsWritten, Reach = typeof(NumberOfDistinctRollSequencesReach))]
 internal static class NumberOfDistinctRollSequencesSolution
 {
     // The baseline's own copy of the die's faces, 1 through DieFaces.

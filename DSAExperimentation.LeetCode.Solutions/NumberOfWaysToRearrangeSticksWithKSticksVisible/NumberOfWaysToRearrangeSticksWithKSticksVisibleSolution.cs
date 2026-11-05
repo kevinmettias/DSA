@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysToRearrangeSticksWit
 // Memoizer<TState,TResult>, keyed on the (sticks, visible) pair, solves each state
 // once - the same top-down shape UniqueBinarySearchTrees uses for a different
 // counting recurrence.
+[LeetCodeQuestion("number-of-ways-to-rearrange-sticks-with-k-sticks-visible", LeetCodeAnswerOrder.AsWritten, Reach = typeof(NumberOfWaysToRearrangeSticksWithKSticksVisibleReach))]
 internal static class NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
 {
     // The textbook answer: enumerate every permutation of [1..stickCount] by

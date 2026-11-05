@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.UglyNumberIII;
 // time; the composed strategy states the same monotone predicate as
 // UglyCountReachesRank and hands it to MonotonePredicateSearch.FirstTrue - the same
 // shape NthMagicalNumber already uses for two factors, extended to three.
+[LeetCodeQuestion("ugly-number-iii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(UglyNumberIIIReach))]
 internal static class UglyNumberIIISolution
 {
     // Deliberately written without this repo's primitives - a plain counting walk

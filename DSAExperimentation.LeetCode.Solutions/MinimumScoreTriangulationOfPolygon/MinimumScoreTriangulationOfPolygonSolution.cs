@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumScoreTriangulationOfPolyg
 // vertex array is used as LeetCode hands it over and there is nothing to pad. Both
 // strategies walk the same recurrence over the same values; they differ only in
 // whether repeated (left, right) sub-polygons are cached.
+[LeetCodeQuestion("minimum-score-triangulation-of-polygon", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MinimumScoreTriangulationOfPolygonReach))]
 internal static class MinimumScoreTriangulationOfPolygonSolution
 {
     private const int MinSpanForTriangle = 2;

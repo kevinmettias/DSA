@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SplitArrayWithSameAverage;
 // sumNeeded) through this repo's own Memoizer - the PartitionEqualSubsetSum
 // precedent with one extra dimension (a required subset SIZE, not just a
 // required subset SUM).
+[LeetCodeQuestion("split-array-with-same-average", LeetCodeAnswerOrder.AsWritten, Reach = typeof(SplitArrayWithSameAverageReach))]
 internal static class SplitArrayWithSameAverageSolution
 {
     // A subset and its complement give the same split, so only sizes up to half

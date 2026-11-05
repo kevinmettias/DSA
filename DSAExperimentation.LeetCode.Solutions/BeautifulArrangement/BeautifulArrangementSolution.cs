@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BeautifulArrangement;
 // every full permutation and reject it afterward, or fold the rule directly into
 // this repo's own Backtrack.Search Candidates step so an illegal value is never
 // placed in the first place.
+[LeetCodeQuestion("beautiful-arrangement", LeetCodeAnswerOrder.AsWritten, Reach = typeof(BeautifulArrangementReach))]
 internal static class BeautifulArrangementSolution
 {
     // The textbook answer: generate every full permutation of [1..n] and check it

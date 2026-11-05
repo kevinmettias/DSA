@@ -16,6 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumAndSumOfArray;
 // (slot, usedMask) state reached by several different placement orders is
 // recomputed each time or once - the same split MaximumStudentsTakingExamSolution
 // makes over its own (row, prevMask) bitmask state.
+[LeetCodeQuestion("maximum-and-sum-of-array", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MaximumAndSumOfArrayReach))]
 internal static class MaximumAndSumOfArraySolution
 {
     // Slots are numbered from 1, and it is the slot NUMBER that is ANDed with the

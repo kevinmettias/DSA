@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StoneGameIV;
 // recursion at all, so LC 1510's n up to 10^5 costs it nothing in stack depth - the
 // memoized recursion it replaces went one call deeper per stone and overflowed the
 // stack at n = 10,000.
+[LeetCodeQuestion("stone-game-iv", LeetCodeAnswerOrder.AsWritten, Reach = typeof(StoneGameIVReach))]
 internal static class StoneGameIVSolution
 {
     // The textbook answer: plain recursion over the remaining count, no cache.

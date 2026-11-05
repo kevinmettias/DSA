@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CyclicallyRotatingAGrid;
 // position at a time rotationSteps times is O(k) per ring however few cells it
 // holds - the natural first-draft mistake - while reducing rotationSteps modulo the
 // ring length first is O(ring).
+[LeetCodeQuestion("cyclically-rotating-a-grid", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CyclicallyRotatingAGridReach))]
 internal static class CyclicallyRotatingAGridSolution
 {
     // A ring layer consumes one row/column off each opposing side of the shorter

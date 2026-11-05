@@ -7,6 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinCostClimbingStairs;
 // virtual start state (-1) represents "before the first step," folding the free
 // choice of starting at index 0 or 1 into Math.Min(minCost(0), minCost(1)) inside
 // one shared cache, instead of two separate top-level calls.
+[LeetCodeQuestion("min-cost-climbing-stairs", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MinCostClimbingStairsReach))]
 internal static class MinCostClimbingStairsSolution
 {
     // LC 746 allows climbing 1 or 2 steps at a time.

@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CanIWin;
 // either reaches desiredTotal outright or leaves the opponent facing a state where
 // CanWin is false - bitmask game-theory recursion over "which numbers have already
 // been picked" (one bit per choosable integer).
+[LeetCodeQuestion("can-i-win", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CanIWinReach))]
 internal static class CanIWinSolution
 {
     // The textbook baseline: the same recursion with no memoization at all,

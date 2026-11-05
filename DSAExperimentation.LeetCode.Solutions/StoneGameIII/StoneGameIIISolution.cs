@@ -13,6 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StoneGameIII;
 // 1406 asks for the name of the winner, so both strategies map that difference onto
 // "Alice"/"Bob"/"Tie" before returning. The two differ only in whether the states
 // are cached.
+[LeetCodeQuestion("stone-game-iii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(StoneGameIIIReach))]
 internal static class StoneGameIIISolution
 {
     // LC 1406's rule: a turn takes 1, 2, or 3 stones from the front.

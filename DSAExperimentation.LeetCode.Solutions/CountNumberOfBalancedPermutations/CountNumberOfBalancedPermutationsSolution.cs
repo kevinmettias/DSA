@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountNumberOfBalancedPermutation
 // the digits at odd indices. Both strategies answer the same question with the
 // same signature (TwoSumSolution precedent) so the harnesses can hold them to
 // one contract.
+[LeetCodeQuestion("count-number-of-balanced-permutations", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CountNumberOfBalancedPermutationsReach))]
 internal static class CountNumberOfBalancedPermutationsSolution
 {
     // Textbook baseline: every distinct permutation of num's characters, deduped

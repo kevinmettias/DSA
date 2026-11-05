@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.AirplaneSeatAssignmentProbabilit
 // to ("1 if n == 1 else 0.5"), which is the arm the recursion is measured against;
 // keeping both here is what finally puts them under the same assertions instead of one
 // living in a test and the other only in a benchmark.
+[LeetCodeQuestion("airplane-seat-assignment-probability", LeetCodeAnswerOrder.AsWritten, Reach = typeof(AirplaneSeatAssignmentProbabilityReach))]
 internal static class AirplaneSeatAssignmentProbabilitySolution
 {
     // First seat index after the base case (seat 1) that the recursion sums over.

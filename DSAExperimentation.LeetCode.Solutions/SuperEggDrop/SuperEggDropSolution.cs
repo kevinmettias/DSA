@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SuperEggDrop;
 // where the two branches cross, since WorstCaseOverTrials(trial) is monotonic in trial
 // (raising the trial floor can only help the "breaks" branch and hurt the
 // "survives" one) - O(eggs * floors * log(floors)).
+[LeetCodeQuestion("super-egg-drop", LeetCodeAnswerOrder.AsWritten, Reach = typeof(SuperEggDropReach))]
 internal static class SuperEggDropSolution
 {
 

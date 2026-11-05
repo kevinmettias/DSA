@@ -22,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostTreeFromLeafValues;
 // the next one is >= it and charge mid * min(newTop, current). A sentinel of
 // int.MaxValue at the bottom of the stack stands in for "no neighbour on this side
 // yet", so it never wins a Math.Min and never gets popped. O(n).
+[LeetCodeQuestion("minimum-cost-tree-from-leaf-values", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MinimumCostTreeFromLeafValuesReach))]
 internal static class MinimumCostTreeFromLeafValuesSolution
 {
     // The sentinel plus one real leaf: below this nothing is left to merge.

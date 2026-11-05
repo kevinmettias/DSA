@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountTheNumberOfSquareFreeSubset
 // contributes, minus 1 for the empty subset. Both strategies answer the same question
 // with the same signature (TwoSumSolution precedent) so the test harness can assert
 // agreement and the benchmark harness can time them against each other.
+[LeetCodeQuestion("count-the-number-of-square-free-subsets", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CountTheNumberOfSquareFreeSubsetsReach))]
 internal static class CountTheNumberOfSquareFreeSubsetsSolution
 {
     private const int MaxValue = 30;

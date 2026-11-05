@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindPolygonWithTheLargestPerimet
 // When sides close into a polygon is the flat plane's (Domain/Mathematics/Geometry): the
 // running-sum arm asks EuclideanPolygons, and the subset baseline keeps its own test
 // (ARCHITECTURE §17.5).
+[LeetCodeQuestion("find-polygon-with-the-largest-perimeter", LeetCodeAnswerOrder.AsWritten, Reach = typeof(FindPolygonWithTheLargestPerimeterReach))]
 internal static class FindPolygonWithTheLargestPerimeterSolution
 {
     // Textbook baseline: try every subset of size >= 3 directly against the

@@ -19,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.VowelsGameInAString;
 //
 // The vowels are English's (Domain/Language/English): the closed form's set is built from
 // EnglishVowels.Letters, and the game-tree baseline asks EnglishVowels (ARCHITECTURE §17.5).
+[LeetCodeQuestion("vowels-game-in-a-string", LeetCodeAnswerOrder.AsWritten, Reach = typeof(VowelsGameInAStringReach))]
 internal static class VowelsGameInAStringSolution
 {
     private static readonly Set<char> VowelSet = new(EnglishVowels.Letters);

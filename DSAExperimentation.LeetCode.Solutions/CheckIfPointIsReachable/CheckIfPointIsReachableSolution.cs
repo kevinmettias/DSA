@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfPointIsReachable;
 // primitive to compose over, which is the reasoning FindGreatestCommonDivisorOf-
 // ArraySolution and XOfAKindInADeckOfCardsSolution already record for their own
 // inline Euclidean helpers.
+[LeetCodeQuestion("check-if-point-is-reachable", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CheckIfPointIsReachableReach))]
 internal static class CheckIfPointIsReachableSolution
 {
     // Both coordinates of the start point (1, 1).

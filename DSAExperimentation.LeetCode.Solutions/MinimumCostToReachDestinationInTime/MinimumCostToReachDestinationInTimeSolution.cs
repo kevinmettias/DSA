@@ -21,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToReachDestinationInT
 // MinCostByNaiveDfs is the textbook alternative that expansion has to justify
 // itself against: every walk the budget can pay for, unmemoized, so the same
 // (city, elapsedTime) position is re-derived once per route that reaches it.
+[LeetCodeQuestion("minimum-cost-to-reach-destination-in-time", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MinimumCostToReachDestinationInTimeReach))]
 internal static class MinimumCostToReachDestinationInTimeSolution
 {
     // Both strategies use int.MaxValue as their running "nothing found yet" cost,

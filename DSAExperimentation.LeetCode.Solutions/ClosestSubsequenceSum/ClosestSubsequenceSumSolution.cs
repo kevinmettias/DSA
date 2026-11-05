@@ -22,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ClosestSubsequenceSum;
 //
 // Neither strategy short-circuits on an exact match, so both always scan to
 // completion regardless of goal.
+[LeetCodeQuestion("closest-subsequence-sum", LeetCodeAnswerOrder.AsWritten, Reach = typeof(ClosestSubsequenceSumReach))]
 internal static class ClosestSubsequenceSumSolution
 {
     private const int Taken = 1;

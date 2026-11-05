@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.StoneGameII;
 // Both strategies precompute the same suffix-sum array - plain array arithmetic, not
 // a repo primitive - so the only thing that differs between them is whether the
 // (Index, M) states are cached.
+[LeetCodeQuestion("stone-game-ii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(StoneGameIIReach))]
 internal static class StoneGameIISolution
 {
     // LC1140's rule: a turn may take between 1 and 2*M piles.

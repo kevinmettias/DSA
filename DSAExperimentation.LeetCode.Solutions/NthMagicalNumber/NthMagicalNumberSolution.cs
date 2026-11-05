@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NthMagicalNumber;
 // it to MonotonePredicateSearch.FirstTrue - the "binary search on the answer" shape
 // FirstBadVersion uses, just with a two-term counting predicate per candidate
 // instead of a single comparison.
+[LeetCodeQuestion("nth-magical-number", LeetCodeAnswerOrder.AsWritten, Reach = typeof(NthMagicalNumberReach))]
 internal static class NthMagicalNumberSolution
 {
     // Deliberately written without this repo's primitives - a plain counting walk

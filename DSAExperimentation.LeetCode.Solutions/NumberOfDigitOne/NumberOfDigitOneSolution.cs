@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfDigitOne;
 // across 1..n in O(log n) without ever materializing another number - the
 // contribution of each digit position depends only on the digits already
 // seen (higherDigits), the digit itself, and the remainder still to come.
+[LeetCodeQuestion("number-of-digit-one", LeetCodeAnswerOrder.AsWritten, Reach = typeof(NumberOfDigitOneReach))]
 internal static class NumberOfDigitOneSolution
 {
     // The textbook baseline this composition has to justify itself against:

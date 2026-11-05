@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.New21Game;
 // computes each total once via this repo's own Memoizer<TState,TResult> - the same
 // (state)->probability shape SoupServingsSolution uses over its pair of remaining
 // soup amounts, here over a single running total.
+[LeetCodeQuestion("new-21-game", LeetCodeAnswerOrder.AsWritten, Reach = typeof(New21GameReach), Tolerance = 1e-5)]
 internal static class New21GameSolution
 {
     private const int Start = 0;

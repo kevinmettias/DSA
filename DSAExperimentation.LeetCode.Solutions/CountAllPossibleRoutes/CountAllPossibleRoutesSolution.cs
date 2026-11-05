@@ -19,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountAllPossibleRoutes;
 // (City, Fuel) tuple state, the 2-D value-tuple state shape CoinChangeII's
 // (Index, Remaining) already establishes, collapsing the work to
 // O(locations.Length^2 * fuel).
+[LeetCodeQuestion("count-all-possible-routes", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CountAllPossibleRoutesReach))]
 internal static class CountAllPossibleRoutesSolution
 {
     // The textbook answer: plain recursion, no cache, BCL arithmetic only. This is

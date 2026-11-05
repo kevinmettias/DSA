@@ -19,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SubsequencesWithAUniqueMiddleMod
 //     This case contributes nothing, however the other 4 are distributed.
 // LeetCodeModulus, LeetCode's own 1e9+7, supplies the modulus every counting
 // problem here reports against.
+[LeetCodeQuestion("subsequences-with-a-unique-middle-mode-i", LeetCodeAnswerOrder.AsWritten, Reach = typeof(SubsequencesWithAUniqueMiddleModeIReach))]
 internal static class SubsequencesWithAUniqueMiddleModeISolution
 {
     // Textbook baseline: every combination of 5 indices, mode computed directly

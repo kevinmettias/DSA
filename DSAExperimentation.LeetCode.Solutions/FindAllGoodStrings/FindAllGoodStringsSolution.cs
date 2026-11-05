@@ -5,6 +5,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindAllGoodStrings;
 
 // LeetCode 1397. Find All Good Strings: how many length-n strings lie in
 // [s1, s2] lexicographically and do not contain evil as a substring, modulo 1e9+7.
+[LeetCodeQuestion("find-all-good-strings", LeetCodeAnswerOrder.AsWritten, Reach = typeof(FindAllGoodStringsReach))]
 internal static class FindAllGoodStringsSolution
 {
     // The textbook answer: walk every candidate from s1 to s2 in lexicographic

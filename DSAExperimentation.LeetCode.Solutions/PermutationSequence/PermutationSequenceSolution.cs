@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PermutationSequence;
 // out of a shrinking pool, over this repo's own DynamicArray<int> - Get(index) reads
 // the next digit, RemoveAt(index) shrinks the pool, both operations the classic
 // algorithm already needs.
+[LeetCodeQuestion("permutation-sequence", LeetCodeAnswerOrder.AsWritten, Reach = typeof(PermutationSequenceReach), Promise = typeof(PermutationSequencePromise))]
 internal static class PermutationSequenceSolution
 {
     public static string GetPermutationByBacktrackEnumeration(int digitCount, int rank)

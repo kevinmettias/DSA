@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountSubtreesWithMaxDistanceBetw
 // (a BFS to find some farthest city, then a BFS from there whose own farthest
 // distance already is the diameter, valid because any connected subset of a tree
 // is itself a tree).
+[LeetCodeQuestion("count-subtrees-with-max-distance-between-cities", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CountSubtreesWithMaxDistanceBetweenCitiesReach))]
 internal static class CountSubtreesWithMaxDistanceBetweenCitiesSolution
 {
     // A single city is a subtree with no distance to report, so masks below this

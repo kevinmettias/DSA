@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ChalkboardXorGame;
 // recursion keyed on the remaining-elements bitmask through this repo's own
 // Memoizer, and the O(n) closed form the recursion provably reduces to - the same
 // "recursion reduces to a closed form" pairing NimGameSolution already makes.
+[LeetCodeQuestion("chalkboard-xor-game", LeetCodeAnswerOrder.AsWritten, Reach = typeof(ChalkboardXorGameReach))]
 internal static class ChalkboardXorGameSolution
 {
     private const int EvenCountModulus = 2;

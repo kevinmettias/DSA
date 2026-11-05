@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ManhattanDistancesOfAllArrangeme
 // cells). Rows and columns are independent, so the total pairwise-distance sum
 // over every cell pair splits into a row term and a column term, each a closed
 // form over 0..rowCount-1 / 0..columnCount-1.
+[LeetCodeQuestion("manhattan-distances-of-all-arrangements-of-pieces", LeetCodeAnswerOrder.AsWritten, Reach = typeof(ManhattanDistancesOfAllArrangementsOfPiecesReach))]
 internal static class ManhattanDistancesOfAllArrangementsOfPiecesSolution
 {
     // The textbook answer: actually generate every pieceCount-cell arrangement

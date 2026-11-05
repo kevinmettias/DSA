@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountKReducibleNumbersLessThanN;
 // in binary (length L, no leading zeros); x is k-reducible when repeatedly replacing it
 // with its own popcount reaches 1 within k applications. Both strategies answer
 // the same question with the same signature (TwoSumSolution precedent).
+[LeetCodeQuestion("count-k-reducible-numbers-less-than-n", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CountKReducibleNumbersLessThanNReach))]
 internal static class CountKReducibleNumbersLessThanNSolution
 {
     // Textbook baseline: parse n and simulate the popcount chain for every x in

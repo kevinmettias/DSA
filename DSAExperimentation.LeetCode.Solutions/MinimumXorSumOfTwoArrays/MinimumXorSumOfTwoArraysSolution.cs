@@ -19,6 +19,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumXorSumOfTwoArrays;
 // (index, connected-mask) assignment recurrence, here XOR-ing instead of adding an
 // edge cost and with no unmatched-element fallback to make up, since the matching is
 // total.
+[LeetCodeQuestion("minimum-xor-sum-of-two-arrays", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MinimumXorSumOfTwoArraysReach))]
 internal static class MinimumXorSumOfTwoArraysSolution
 {
     // The textbook answer: plain exponential recursion, no cache, nothing from this

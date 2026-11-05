@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.BurstBalloons;
 //
 // Both strategies walk the same recurrence over the same PaddedBalloons array; they
 // differ only in whether repeated (left, right) sub-ranges are cached.
+[LeetCodeQuestion("burst-balloons", LeetCodeAnswerOrder.AsWritten, Reach = typeof(BurstBalloonsReach))]
 internal static class BurstBalloonsSolution
 {
     // The textbook answer: plain exponential recursion over (left, right) pairs, no
