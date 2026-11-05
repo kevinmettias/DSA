@@ -1,4 +1,9 @@
-using DSAExperimentation.DataStructures.Trie;
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
+    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountingWordsWithAGivenPrefix;
 
@@ -8,7 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountingWordsWithAGivenPrefix;
 // Both strategies visit every word - the answer is a count, so neither gets to stop
 // early - and differ only in how "does this word start with pref" is decided: a direct
 // character comparison, or an insert-then-HasPrefix round trip through this repo's own
-// Trie<TValue>. That is LC 1455's pairing
+// trie over the lowercase letters. That is LC 1455's pairing
 // (CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution) asked of every word instead
 // of only up to the first match.
 [LeetCodeQuestion("counting-words-with-a-given-prefix", LeetCodeAnswerOrder.AsWritten)]
@@ -42,7 +47,7 @@ internal static class CountingWordsWithAGivenPrefixSolution
 
         foreach (var word in words)
         {
-            var trie = new Trie<bool>();
+            var trie = new WordTrie();
             trie.Set(word, true);
 
             if (trie.HasPrefix(pref))

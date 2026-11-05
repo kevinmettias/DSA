@@ -1,5 +1,10 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.DataStructures.Trie;
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
+    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ExtraCharactersInAString;
 
@@ -18,7 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ExtraCharactersInAString;
 //   write without this repo, and it lives here rather than in the benchmark so that it
 //   is actually asserted.
 //
-//   TriePrunedScan walks a Trie<bool> instead, extending the candidate one character at
+//   TriePrunedScan walks a trie instead, extending the candidate one character at
 //   a time and stopping the instant HasPrefix reports that no dictionary word shares
 //   that prefix. The inner loop is then bounded by the longest dictionary word rather
 //   than by the remaining string length. The recurrence itself is Memoizer.Memoize over
@@ -53,7 +58,7 @@ internal static class ExtraCharactersInAStringSolution
         return fewestLeftoverFrom[0];
     }
 
-    // This repo's own arm: a Trie<bool> prunes the candidate scan the moment the prefix
+    // This repo's own arm: a trie over the lowercase letters prunes the candidate scan the moment the prefix
     // leaves the dictionary, and Memoizer carries the recurrence over start indices.
     public static int MinExtraCharsByTriePrunedScan(string text, string[] dictionary)
     {
@@ -62,9 +67,9 @@ internal static class ExtraCharactersInAStringSolution
         return FewestLeftoverByTrie(text, words);
     }
 
-    private static Trie<bool> BuildTrie(string[] dictionary)
+    private static WordTrie BuildTrie(string[] dictionary)
     {
-        var words = new Trie<bool>();
+        var words = new WordTrie();
 
         foreach (var word in dictionary)
         {
@@ -77,14 +82,14 @@ internal static class ExtraCharactersInAStringSolution
     // The recurrence the memoized arm fills, with the trie handed in already built:
     // from a start position the fewest leftover characters are either "waste this one
     // and continue" or the best over the dictionary words that begin here.
-    private static int FewestLeftoverByTrie(string text, Trie<bool> words) =>
+    private static int FewestLeftoverByTrie(string text, WordTrie words) =>
         Memoizer.Memoize<int, int>(0, new FewestLeftoverFromStart(text, words));
 
     // The end positions of the dictionary words that begin at `start`, in ascending
     // order, giving up as soon as the candidate leaves the dictionary: the same
-    // Trie<bool> walk, just handed to the recurrence one word at a time so the
+    // trie walk, just handed to the recurrence one word at a time so the
     // recurrence itself reads as the two branches it chooses between.
-    private static IEnumerable<int> WordEndsStartingAt(string text, Trie<bool> words, int start)
+    private static IEnumerable<int> WordEndsStartingAt(string text, WordTrie words, int start)
     {
         for (var end = start + 1; end <= text.Length; end++)
         {
@@ -105,7 +110,7 @@ internal static class ExtraCharactersInAStringSolution
     // characters are either this one wasted and the rest continued, or the best over
     // the dictionary words that begin right here.
     private sealed class FewestLeftoverFromStart(
-        string text, Trie<bool> words) : IRecurrence<int, int>
+        string text, WordTrie words) : IRecurrence<int, int>
     {
         public int Replay(int start, IRecurrence<int, int> rest)
         {

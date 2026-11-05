@@ -5,7 +5,9 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.DesignAddAndSearchWordsDat
 // Harness only. Both strategies are DesignAddAndSearchWordsDataStructureSolution's
 // - this file adds every word in wordsToAdd, then replays searches against each
 // IWordDictionaryStrategy implementation and checks the results LeetCode itself
-// publishes, so a failure still names the strategy that broke.
+// publishes, so a failure still names the strategy that broke. The last row is one
+// LeetCode's examples miss: a prefix of an added word is not a word, so a walk that
+// ends partway down a word must answer false.
 public sealed partial class DesignAddAndSearchWordsDataStructureSolutionTests
 {
     public static TheoryData<string[], string[], bool[]> Examples =>
@@ -30,6 +32,11 @@ public sealed partial class DesignAddAndSearchWordsDataStructureSolutionTests
                 ["abc"],
                 ["...", "a.c", "ab.", "..."],
                 new[] { true, true, true, true }
+            },
+            {
+                ["bad"],
+                ["ba", "b.", "..", "bad"],
+                new[] { false, false, false, true }
             },
         };
 

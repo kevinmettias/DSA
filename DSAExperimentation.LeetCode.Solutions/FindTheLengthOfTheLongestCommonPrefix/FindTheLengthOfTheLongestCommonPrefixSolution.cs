@@ -1,4 +1,9 @@
-using DSAExperimentation.DataStructures.Trie;
+using DigitTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Mathematics.Numerals.DecimalDigits,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
+    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.FindTheLengthOfTheLongestCommonPrefix;
 
@@ -46,17 +51,17 @@ internal static class FindTheLengthOfTheLongestCommonPrefixSolution
     }
 
     // Every arr1 value, as its digit string, is inserted into this repo's own
-    // Trie<TValue> once; each arr2 value then walks only its OWN digit count of
-    // HasPrefix checks (at most 10, the widest int) to find how far into the
-    // trie it can follow, rather than being re-compared against arr1 one value
-    // at a time.
+    // trie, its children slots over the ten decimal digits, once; each arr2 value
+    // then walks only its OWN digit count of HasPrefix checks (at most 10, the
+    // widest int) to find how far into the trie it can follow, rather than being
+    // re-compared against arr1 one value at a time.
     public static int LongestPrefixLengthByTrie(int[] arr1, int[] arr2)
     {
         var trie = BuildDigitTrie(arr1);
         return LongestPrefixLengthByTrie(trie, arr2);
     }
 
-    public static int LongestPrefixLengthByTrie(Trie<bool> trie, int[] arr2)
+    public static int LongestPrefixLengthByTrie(DigitTrie trie, int[] arr2)
     {
         var best = 0;
 
@@ -69,7 +74,7 @@ internal static class FindTheLengthOfTheLongestCommonPrefixSolution
         return best;
     }
 
-    private static int MatchedPrefixLength(Trie<bool> trie, string digits)
+    private static int MatchedPrefixLength(DigitTrie trie, string digits)
     {
         var length = 0;
 
@@ -81,9 +86,9 @@ internal static class FindTheLengthOfTheLongestCommonPrefixSolution
         return length;
     }
 
-    public static Trie<bool> BuildDigitTrie(int[] arr1)
+    public static DigitTrie BuildDigitTrie(int[] arr1)
     {
-        var trie = new Trie<bool>();
+        var trie = new DigitTrie();
 
         foreach (var x in arr1)
         {

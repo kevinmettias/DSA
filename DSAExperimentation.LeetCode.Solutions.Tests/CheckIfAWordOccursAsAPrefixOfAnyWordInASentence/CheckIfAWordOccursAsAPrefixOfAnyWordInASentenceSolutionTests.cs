@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.CheckIfAWordOccursAsAPrefixOfAnyWord
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.CheckIfAWordOccursAsAPrefixOfAnyWordInASentence;
 
-// Harness only. Both the StartsWith scan and the Trie<bool> insert-then-HasPrefix
+// Harness only. Both the StartsWith scan and the trie's insert-then-HasPrefix
 // round trip are CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution's; this
 // file pins them to LeetCode's published examples plus the boundary cases the two
 // have to agree on - a whole-word match, a first-word match, and a search word that

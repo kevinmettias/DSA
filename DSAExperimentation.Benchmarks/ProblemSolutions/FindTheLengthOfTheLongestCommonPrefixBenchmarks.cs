@@ -1,6 +1,11 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.Trie;
 using DSAExperimentation.LeetCode.Solutions.FindTheLengthOfTheLongestCommonPrefix;
+using DigitTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Mathematics.Numerals.DecimalDigits,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
+    bool>;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -16,7 +21,7 @@ public class FindTheLengthOfTheLongestCommonPrefixBenchmarks
     private int[] _arr1 = [];
 
     private int[] _arr2 = [];
-    private Trie<bool> _trie = new();
+    private DigitTrie _trie = new();
     [Params(200, 5_000)]
     public int Length { get; set; }
 

@@ -1,6 +1,11 @@
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.DataStructures.Trie;
 using DSAExperimentation.LeetCode.Solutions.ConcatenatedWords;
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.DenseTrieLayout,
+        bool>,
+    bool>;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -20,7 +25,7 @@ public class ConcatenatedWordsBenchmarks
     private string[] _words = [];
 
     private Set<string> _dictionary = new();
-    private Trie<bool> _trie = new();
+    private WordTrie _trie = new();
     [Params(6, 30)]
     public int Length { get; set; }
 
@@ -33,7 +38,7 @@ public class ConcatenatedWordsBenchmarks
 
         _dictionary = new Set<string>(_words);
 
-        _trie = new Trie<bool>();
+        _trie = new WordTrie();
         foreach (var word in _words)
         {
             _trie.Set(word, true);

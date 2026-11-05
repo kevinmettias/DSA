@@ -1,5 +1,10 @@
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.Trie;
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
+    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.CheckIfAWordOccursAsAPrefixOfAnyWordInASentence;
 
@@ -10,7 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CheckIfAWordOccursAsAPrefixOfAny
 // Both strategies walk the words left to right and stop at the first match, so
 // they only differ in how "does this word start with searchWord" is decided: a
 // direct character comparison, or an insert-then-HasPrefix round trip through
-// this repo's own Trie<TValue>.
+// this repo's own trie, its children slots over the lowercase letters.
 internal static class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution
 {
     private const char WordSeparator = ' ';
@@ -46,7 +51,7 @@ internal static class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution
     {
         for (var i = 0; i < words.Count; i++)
         {
-            var trie = new Trie<bool>();
+            var trie = new WordTrie();
             trie.Set(words.Get(i), true);
 
             if (trie.HasPrefix(searchWord))

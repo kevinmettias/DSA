@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.CountingWordsWithAGivenPrefix;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.CountingWordsWithAGivenPrefix;
 
-// Harness only. Both the StartsWith scan and the Trie<bool> insert-then-HasPrefix round
+// Harness only. Both the StartsWith scan and the trie's insert-then-HasPrefix round
 // trip are CountingWordsWithAGivenPrefixSolution's; this file pins them to LeetCode's
 // published examples plus the boundary cases the two have to agree on - a prefix equal
 // to a whole word, a prefix longer than any word, repeated words that must each be

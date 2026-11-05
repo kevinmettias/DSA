@@ -101,8 +101,7 @@ internal static class PropertiesGraphSolution
     // (via the bulk-seeding constructor) for per-row dedup, Has for O(1)-average
     // membership - and DisjointSet for union-find, the same forest
     // CountConnectedComponentsInLCMGraphSolution's own composed arm reaches for.
-    // Set<T> has no enumerator (Trie.cs's own doc comment notes Trie<TValue>
-    // keeps a comparable surface deliberately narrow), so each row's distinct
+    // Set<T> has no enumerator, so each row's distinct
     // values are also kept as a plain array alongside its Set - Distinct's own
     // Set<int> is what produces that array, TryAdd rejecting every repeat.
     public static int NumberOfComponentsByDisjointSet(int[][] properties, int minimumIntersectionCount)

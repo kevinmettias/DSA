@@ -1,4 +1,15 @@
-using DSAExperimentation.DataStructures.Trie;
+using SuffixTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.DenseTrieLayout,
+        int>,
+    int>;
+using SuffixNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieNode<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.DenseTrieLayout,
+        int>,
+    int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestCommonSuffixQueries;
 
@@ -11,7 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestCommonSuffixQueries;
 // matches, and read off the best word recorded at the deepest node reached" - the
 // same suffix-as-reversed-prefix move SuffixArray/SuffixAutomaton document
 // elsewhere in this repo, here composed with the existing character trie instead.
-[LeetCodeQuestion("longest-common-suffix-queries", LeetCodeAnswerOrder.AsWritten)]
+[LeetCodeQuestion("longest-common-suffix-queries", LeetCodeAnswerOrder.AsWritten, Promise = typeof(LongestCommonSuffixQueriesPromise))]
 internal static class LongestCommonSuffixQueriesSolution
 {
     public static int[] FindIndicesByBruteForce(string[] wordsContainer, string[] wordsQuery)
@@ -83,15 +94,11 @@ internal static class LongestCommonSuffixQueriesSolution
     private static bool HasCommonCharacterAt(SuffixCursor left, SuffixCursor right)
         => left.Index >= 0 && right.Index >= 0 && left.Text[left.Index] == right.Text[right.Index];
 
-    // Trie<int>.Set only ever marks the FINAL node of the key it is given - there is
-    // no public way to touch every ancestor node in a single walk - so, unlike a
-    // hand-rolled trie, populating every prefix depth costs one Set per depth
-    // (O(word length) calls, each itself an O(depth) walk from the root: O(m^2) per
-    // word of length m). That is the price of staying inside Trie<TValue>'s existing
-    // public surface rather than reaching into TrieNode<TValue> (which Trie.cs keeps
-    // private) or growing the primitive a new per-node-callback insert just for this
-    // problem. Still asymptotically better than the brute force above for anything
-    // but the smallest containers, and every call is Trie<int>'s own Set/TryGetValue.
+    // This repo's own trie over the lowercase letters, holding every word reversed, so a common
+    // suffix is a common path from the root. Each node keeps the best word through it - the
+    // shortest, then the earliest - written as the word is walked in, one step per letter, and a
+    // query answers with the value at the deepest node its letters, read backwards, reach:
+    // O(total length) to build and O(query length) to ask.
     public static int[] FindIndicesByTrie(string[] wordsContainer, string[] wordsQuery)
     {
         var trie = BuildSuffixTrie(wordsContainer);
@@ -99,7 +106,7 @@ internal static class LongestCommonSuffixQueriesSolution
         return FindIndicesByTrie(trie, wordsQuery);
     }
 
-    public static int[] FindIndicesByTrie(Trie<int> trie, string[] wordsQuery)
+    public static int[] FindIndicesByTrie(SuffixTrie trie, string[] wordsQuery)
     {
         var result = new int[wordsQuery.Length];
 
@@ -111,75 +118,61 @@ internal static class LongestCommonSuffixQueriesSolution
         return result;
     }
 
-    // Every prefix of every reversed word (i.e. every suffix of the original word)
-    // is inserted with the index of the best word sharing it: words are processed in
-    // index order and a candidate only overwrites the stored value when it is
-    // STRICTLY shorter, so an untouched tie silently keeps the earliest index.
-    public static Trie<int> BuildSuffixTrie(string[] wordsContainer)
+    // Words are walked in index order, and a node's word is replaced only by a STRICTLY shorter
+    // one, so a tie keeps the earlier index. The root, the empty suffix every word shares, is kept
+    // like any other node, so it ends up holding the shortest word overall.
+    public static SuffixTrie BuildSuffixTrie(string[] wordsContainer)
     {
-        var trie = new Trie<int>();
-
-        trie.Set(string.Empty, ShortestThenEarliest(wordsContainer));
+        var trie = new SuffixTrie();
 
         for (var i = 0; i < wordsContainer.Length; i++)
         {
-            var reversed = Reverse(wordsContainer[i]);
+            var word = wordsContainer[i];
+            var node = trie.Root;
+            KeepIfShorter(node, i, wordsContainer);
 
-            for (var length = 1; length <= reversed.Length; length++)
+            for (var end = word.Length - 1; end >= 0; end--)
             {
-                var prefix = reversed[..length];
-
-                if (!trie.TryGetValue(prefix, out var current) || IsShorterWord(i, current, wordsContainer))
-                {
-                    trie.Set(prefix, i);
-                }
+                node = node.Children.GetOrAddChildFor(word[end]);
+                KeepIfShorter(node, i, wordsContainer);
             }
         }
 
         return trie;
     }
 
-    private static int ShortestThenEarliest(string[] wordsContainer)
+    private static void KeepIfShorter(SuffixNode node, int candidate, string[] wordsContainer)
     {
-        var best = 0;
-
-        for (var i = 1; i < wordsContainer.Length; i++)
+        if (!node.HasValue || IsShorterWord(candidate, node.Value, wordsContainer))
         {
-            if (wordsContainer[i].Length < wordsContainer[best].Length)
-            {
-                best = i;
-            }
+            node.HasValue = true;
+            node.Value = candidate;
         }
-
-        return best;
     }
 
     private static bool IsShorterWord(int candidate, int current, string[] wordsContainer) =>
         wordsContainer[candidate].Length < wordsContainer[current].Length;
 
-    // Walks reversed-query prefixes from longest to shortest, stopping at the first
-    // one the trie actually has a value for. Length 0 (the empty suffix, common to
-    // every word) always hits, since BuildSuffixTrie sets it unconditionally.
-    private static int DeepestMatchIndex(Trie<int> trie, string query)
+    // Follows the query from its last letter for as long as the trie does, and answers with the
+    // deepest node's word. The root holds a word once any is built, so a query sharing no last
+    // letter with any word is answered by the shortest word.
+    private static int DeepestMatchIndex(SuffixTrie trie, string query)
     {
-        var reversed = Reverse(query);
+        var node = trie.Root;
 
-        for (var length = reversed.Length; length >= 0; length--)
+        for (var end = query.Length - 1; end >= 0; end--)
         {
-            if (trie.TryGetValue(reversed[..length], out var index))
+            var child = node.Children.ChildFor(query[end]);
+
+            if (child is null)
             {
-                return index;
+                break;
             }
+
+            node = child;
         }
 
-        return 0;
-    }
-
-    private static string Reverse(string value)
-    {
-        var chars = value.ToCharArray();
-        Array.Reverse(chars);
-        return new string(chars);
+        return node.Value;
     }
 
     // The two words a best-match comparison weighs up: the candidate the scan is

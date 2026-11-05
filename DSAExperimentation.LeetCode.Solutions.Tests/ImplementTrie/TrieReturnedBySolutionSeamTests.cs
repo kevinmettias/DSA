@@ -3,9 +3,9 @@ using DSAExperimentation.LeetCode.Solutions.ImplementTrie;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ImplementTrie;
 
 // The seam ImplementTrieSolution crosses in the open: its entry point is not a
-// function that consumes DataStructures.Trie, it RETURNS one. CreateByTriePrimitive
+// function that consumes a trie, it RETURNS one. CreateByTriePrimitive
 // hands LeetCode's Insert/Search/StartsWith surface back as this repo's own
-// Trie<bool>, so the caller of the solution is holding a live tree whose nodes are
+// trie, so the caller of the solution is holding a live tree whose nodes are
 // shared between every key inserted through it.
 //
 // That makes every test here a statement about the returned structure, not about

@@ -1,12 +1,17 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.Trie;
 using DSAExperimentation.LeetCode.Solutions.LongestCommonSuffixQueries;
+using SuffixTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.DenseTrieLayout,
+        int>,
+    int>;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestCommonSuffixQueriesSolution's, the same
 // methods LongestCommonSuffixQueriesSolutionTests proves correct. The trie arm is handed an
-// already-built Trie<int>, so container insertion is charged to [GlobalSetup] and
+// already-built trie, so container insertion is charged to [GlobalSetup] and
 // only query answering is measured.
 public class LongestCommonSuffixQueriesBenchmarks
 {
@@ -15,7 +20,7 @@ public class LongestCommonSuffixQueriesBenchmarks
     private string[] _wordsContainer = [];
 
     private string[] _wordsQuery = [];
-    private Trie<int> _trie = new();
+    private SuffixTrie _trie = new();
     [Params(30, 200)]
     public int ContainerSize { get; set; }
 

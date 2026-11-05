@@ -1,5 +1,10 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.DataStructures.Trie;
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
+    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.WordBreak;
 
@@ -7,7 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WordBreak;
 // one or more dictionary words?
 //
 // Two strategies sit here. CanBreakByTrieMemoized composes this repo's own
-// Trie<bool> - screening dictionary prefixes - with Memoizer, which caches each
+// trie - screening dictionary prefixes - with Memoizer, which caches each
 // start index's segmentability so a shared suffix is only solved once; the same
 // composition this repo's Word Break II coverage extends to collect every sentence
 // instead of a single true/false. CanBreakByIterativeReachability rolls that
@@ -48,7 +53,7 @@ internal static class WordBreakSolution
 
     public static bool CanBreakByTrieMemoized(string source, IList<string> wordDict)
     {
-        var trie = new Trie<bool>();
+        var trie = new WordTrie();
 
         foreach (var word in wordDict)
         {
@@ -63,7 +68,7 @@ internal static class WordBreakSolution
     // exhausted string as the base case. The string and the trie screening its
     // prefixes belong to the caller and never vary during a run, so they travel in
     // as constructor state.
-    private sealed class SegmentableFromEveryIndex(string source, Trie<bool> trie)
+    private sealed class SegmentableFromEveryIndex(string source, WordTrie trie)
         : IRecurrence<int, bool>
     {
         /// <inheritdoc/>

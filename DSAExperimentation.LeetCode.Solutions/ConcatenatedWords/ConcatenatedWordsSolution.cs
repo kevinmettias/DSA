@@ -1,6 +1,11 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.DataStructures.Trie;
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.DenseTrieLayout,
+        bool>,
+    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ConcatenatedWords;
 
@@ -12,7 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConcatenatedWords;
 // list. HashSetUnboundedScan is the textbook DP + hash-membership approach - each
 // start index rescans every candidate end position with no way to know a prefix
 // is already dead. TriePrunedMemoized is the WordBreak/WordBreakII precedent: a
-// Trie<bool> lets HasPrefix break the inner loop the moment no dictionary word
+// trie lets HasPrefix break the inner loop the moment no dictionary word
 // extends the current prefix, and Memoizer caches each start index so a shared
 // suffix is only solved once.
 internal static class ConcatenatedWordsSolution
@@ -60,7 +65,7 @@ internal static class ConcatenatedWordsSolution
 
     public static List<string> FindAllByTriePrunedMemo(string[] words)
     {
-        var trie = new Trie<bool>();
+        var trie = new WordTrie();
 
         foreach (var word in words)
         {
@@ -70,15 +75,15 @@ internal static class ConcatenatedWordsSolution
         return FindAllByTriePrunedMemo(words, trie);
     }
 
-    public static List<string> FindAllByTriePrunedMemo(string[] words, Trie<bool> trie) =>
+    public static List<string> FindAllByTriePrunedMemo(string[] words, WordTrie trie) =>
         words.Where(word => CanFormFromOtherWordsByTriePrunedMemo(word, trie)).ToList();
 
-    private static bool CanFormFromOtherWordsByTriePrunedMemo(string word, Trie<bool> trie) =>
+    private static bool CanFormFromOtherWordsByTriePrunedMemo(string word, WordTrie trie) =>
         Memoizer.Memoize<int, bool>(0, new FromWord(word, trie));
 
     // The rule, named: a piece of a word is dictionary-known and the rest of the word
     // after it is itself a piece, all the way to the end.
-    private sealed class FromWord(string word, Trie<bool> trie) : IRecurrence<int, bool>
+    private sealed class FromWord(string word, WordTrie trie) : IRecurrence<int, bool>
     {
         public bool Replay(int start, IRecurrence<int, bool> rest)
         {
@@ -140,5 +145,5 @@ internal static class ConcatenatedWordsSolution
         Found,
     }
 
-    private readonly record struct WordLookup(Trie<bool> Trie, string Word);
+    private readonly record struct WordLookup(WordTrie Trie, string Word);
 }

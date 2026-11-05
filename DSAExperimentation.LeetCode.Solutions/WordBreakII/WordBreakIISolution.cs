@@ -1,5 +1,10 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.DataStructures.Trie;
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
+    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.WordBreakII;
 
@@ -24,12 +29,12 @@ internal static class WordBreakIISolution
         return HashSetScanFrom(0, source, words, memo);
     }
 
-    // This repo's own Trie<bool> screens dictionary prefixes so the scan can break
+    // This repo's own trie screens dictionary prefixes so the scan can break
     // out the moment no dictionary word extends the current piece; Memoizer caches
     // each start index's sentence list so a shared suffix is only solved once.
     public static List<string> SentencesByTrieMemoized(string source, IList<string> wordDict)
     {
-        var trie = new Trie<bool>();
+        var trie = new WordTrie();
 
         foreach (var word in wordDict)
         {
@@ -44,7 +49,7 @@ internal static class WordBreakIISolution
     // remainder, with the exhausted string yielding the empty sentence as its base
     // case. The string and the trie screening its prefixes belong to the caller and
     // never vary during a run, so they travel in as constructor state.
-    private sealed class SentencesFromEveryIndex(string source, Trie<bool> trie)
+    private sealed class SentencesFromEveryIndex(string source, WordTrie trie)
         : IRecurrence<int, List<string>>
     {
         /// <inheritdoc/>

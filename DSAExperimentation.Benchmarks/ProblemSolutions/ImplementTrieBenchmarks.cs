@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Solutions.ImplementTrie;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ImplementTrieSolution's - LC 208's textbook node chain over
-// plain arrays, and this repo's own DataStructures.Trie.Trie<bool>, the same primitive
+// plain arrays, and this repo's own trie over the lowercase letters, the same primitive
 // TrieReturnedBySolutionSeamTests pins the composed factory to returning. The textbook arm is
 // the baseline (ARCHITECTURE 17.5): what a LeetCode answer writes without this repo, not a rival
 // representation of the repo's own. Each arm inserts the whole word set, then replays search and

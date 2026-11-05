@@ -1,5 +1,10 @@
-using DSAExperimentation.DataStructures.Trie;
 using DSAExperimentation.LeetCode.Solutions.ImplementTrie;
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
+    bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.ImplementTrie;
 
@@ -42,7 +47,7 @@ public sealed partial class ImplementTrieSolutionTests
         ImplementTrieOp[] operations, bool?[] expected) =>
         Assert.Equal(expected, RunScript(ImplementTrieSolution.CreateByTriePrimitive(), operations));
 
-    private static bool?[] RunScript(Trie<bool> trie, ImplementTrieOp[] operations) =>
+    private static bool?[] RunScript(WordTrie trie, ImplementTrieOp[] operations) =>
         [.. operations.Select(operation => operation.Apply(trie))];
 
     // One call in an Implement-Trie script: which method to invoke and on what word.
@@ -77,7 +82,7 @@ public sealed partial class ImplementTrieSolutionTests
             return trie.HasPrefix(word);
         }
 
-        internal bool? Apply(Trie<bool> trie)
+        internal bool? Apply(WordTrie trie)
         {
             if (kind == OpKind.Insert)
             {
