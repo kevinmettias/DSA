@@ -8,8 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheKthLargestIntegerInTheArr
 // moment lengths differ ("9" sorts after "10"). NumericStringToken below carries the
 // correct numeric order instead: the longer digit string wins, and equal lengths
 // fall back to an ordinal digit-by-digit compare. It is meaningless outside this
-// problem's own input encoding, so it stays here rather than in Algorithms/ or
-// at the tier's root.
+// problem's own input encoding, so it stays here rather than in Algorithms/.
 //
 // The two strategies differ in how much of the array they actually order: a full
 // O(n log n) sort followed by a direct index, or an O(n log k) size-k min-heap

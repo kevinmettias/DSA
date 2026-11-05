@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.KthAncestorOfATreeNode;
 // jagged array means, and it gives KthAncestorOfATreeNodeSolution's hoisted
 // overload (ARCHITECTURE.md §17.4) a parameter type that can never be confused
 // with the int[] parent array the LeetCode-shaped overload takes. It answers LC
-// 1483 and nothing else, so it lives beside the solution rather than at the tier's root.
+// 1483 and nothing else, so it lives beside the solution rather than in the library.
 internal sealed class AncestorJumps(int[][] ancestorsByLevel, int nodeCount)
 {
     public int NodeCount => nodeCount;

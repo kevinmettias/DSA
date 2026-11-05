@@ -6,8 +6,8 @@ namespace DSAExperimentation.LeetCode.Solutions.SmallestIntegerDivisibleByK;
 // built: tier 1's StateNode shape, with the one successor where a lock's node has eight.
 //
 // "Edge = append one decimal '1'" is LC 1015's own content rather than a reusable
-// shape, so this node lives beside the solution instead of in DataStructures or
-// at the tier's root (ARCHITECTURE.md §17.3).
+// shape, so this node lives beside the solution instead of in DataStructures
+// (ARCHITECTURE.md §17.3).
 internal sealed class RemainderNode(int remainder)
 {
     public int Remainder { get; } = remainder;

@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfWaysToArriveAtDestinatio
 // every road takes positive time so no other intersection can share its distance),
 // so that's the fold's base case instead of threading a separate "is this the
 // target" flag through Combine. Answers LC 1976 alone, which is why it lives beside
-// the solution rather than at the tier's root (RoomWaysAlgebra's own precedent).
+// the solution rather than in Algorithms/ (RoomWaysAlgebra's own precedent).
 internal readonly struct WaysCountAlgebra : IFoldAlgebra<WaysNode, long>
 {
     public long Empty => 0;

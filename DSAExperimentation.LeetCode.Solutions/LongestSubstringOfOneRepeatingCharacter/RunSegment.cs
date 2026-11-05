@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestSubstringOfOneRepeatingCh
 // and the longest run seen anywhere inside. Len == 0 marks the empty range -
 // RunAggregate.Identity - and is the one case where Left/Right carry no real
 // character. This answers LC 2213 alone, which is why it lives beside the solution
-// rather than at the tier's root (ARCHITECTURE.md section 17.3), the same placement
+// rather than in the library (ARCHITECTURE.md section 17.3), the same placement
 // PeakGapNode and LisAggregate already have.
 internal readonly record struct RunSegment(char Left, char Right, int Len, int PrefixLen, int SuffixLen, int MaxLen)
 {

@@ -6,5 +6,6 @@ namespace DSAExperimentation.LeetCode.Solutions.AvailableCapturesForRook;
 // O(rows*cols) scan that finds it, and so those hoisted overloads read as
 // "board plus rook" rather than "board plus two loose ints". LC 999 is the only
 // problem with a board whose single rook is the query origin, so per §17.3 this
-// lives beside the solution rather than at the tier's root.
+// lives beside the solution rather than in Domain/Games/Chess, which holds the board
+// and the pieces.
 internal readonly record struct RookSquare(int Row, int Col);

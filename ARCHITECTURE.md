@@ -1408,7 +1408,7 @@ its own enclosing namespace segment — the §10.3/§15.3 wrinkle, avoided by co
 of aliased around once per problem.
 
 A problem folder may hold more than the solution file. A witness that serves *one* problem's
-strategies and nothing else belongs there too, not at the tier's root:
+strategies and nothing else belongs there too, not in the library:
 `LeetCode/CountWaysToBuildRoomsInAnAntColony/` holds `RoomWaysAlgebra.cs` and
 `RoomWaysPrecomputedFactorialAlgebra.cs`, two `IFoldAlgebra` witnesses that compute LC 1916's
 multinomial and are meaningless anywhere else. What a problem says about its *world* is Domain code

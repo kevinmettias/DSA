@@ -12,26 +12,40 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Words are drawn unique over three letters, at most LongestWordLength long, so k is set
 // apart from n: the short words keep every arm's cost in its count of words, and words
 // up to LC 336's 300 letters are where the complement lookup's k^2 shows against the
-// trie's k. Both counts and lengths stay inside LC 336's 5,000 words of 300 letters.
+// trie's k.
+//
+// Sizes are per arm. The brute force's n^2 pairs stop it at 2,000 words, where a call on
+// words of up to 300 letters took 0.3 s, against 2.2 s at LC 336's 5,000 (2026-11-05,
+// Release, the best of three calls, on efficiency cores). The complement
+// lookup and the trie, linear in the word count, run on to 5,000, at 0.4 s and 0.1 s,
+// and all three are compared at the counts they share. Every count and length stays
+// inside LC 336's 5,000 words of 300 letters.
 public class PalindromePairsBenchmarks
 {
     private const int AlphabetSize = 3;
+    private const int RandomSeed = 1;
 
-    private string[] _words = [];
-
-    [Params(80, 400)]
-    public int WordCount { get; set; }
+    private Dictionary<int, string[]> _wordsByCount = [];
 
     [Params(8, 300)]
     public int LongestWordLength { get; set; }
 
+    public static IEnumerable<int> BruteForceWordCounts => [80, 400, 2_000];
+
+    public static IEnumerable<int> LinearWordCounts => [.. BruteForceWordCounts, 5_000];
+
+    // Every count any arm runs is drawn here, outside the timed region, each from its own
+    // generator on the same seed; an arm looks its own up.
     [GlobalSetup]
-    public void Setup()
+    public void Setup() =>
+        _wordsByCount = LinearWordCounts.ToDictionary(wordCount => wordCount, BuildWords);
+
+    private string[] BuildWords(int wordCount)
     {
-        var random = new Random(1);
+        var random = new Random(RandomSeed);
         var unique = new HashSet<string>();
 
-        while (unique.Count < WordCount)
+        while (unique.Count < wordCount)
         {
             var length = random.Next(1, LongestWordLength + 1);
             var chars = new char[length];
@@ -44,17 +58,21 @@ public class PalindromePairsBenchmarks
             unique.Add(new string(chars));
         }
 
-        _words = [.. unique];
+        return [.. unique];
     }
 
     [Benchmark(Baseline = true)]
-    public List<(int First, int Second)> BruteForce() => PalindromePairsSolution.FindPairsByBruteForce(_words);
+    [ArgumentsSource(nameof(BruteForceWordCounts))]
+    public List<(int First, int Second)> BruteForce(int wordCount) =>
+        PalindromePairsSolution.FindPairsByBruteForce(_wordsByCount[wordCount]);
 
     [Benchmark]
-    public List<(int First, int Second)> HashMapComplementLookup() =>
-        PalindromePairsSolution.FindPairsByHashMapComplementLookup(_words);
+    [ArgumentsSource(nameof(LinearWordCounts))]
+    public List<(int First, int Second)> HashMapComplementLookup(int wordCount) =>
+        PalindromePairsSolution.FindPairsByHashMapComplementLookup(_wordsByCount[wordCount]);
 
     [Benchmark]
-    public List<(int First, int Second)> ReversedWordTrie() =>
-        PalindromePairsSolution.FindPairsByReversedWordTrie(_words);
+    [ArgumentsSource(nameof(LinearWordCounts))]
+    public List<(int First, int Second)> ReversedWordTrie(int wordCount) =>
+        PalindromePairsSolution.FindPairsByReversedWordTrie(_wordsByCount[wordCount]);
 }

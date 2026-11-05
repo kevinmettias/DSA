@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeGridHappiness;
 // shape, it belongs here rather than in either strategy.
 //
 // Meaningless outside this problem, so it lives beside the solution
-// (ARCHITECTURE.md §17.3) rather than at the tier's root. It is also the prepared-input
+// (ARCHITECTURE.md §17.3) rather than in the library. It is also the prepared-input
 // shape §17.4 calls for: a benchmark builds it once in [GlobalSetup] and hands it to
 // the measured method, and since it is not an IEnumerable it can never be confused
 // with the (rowCount, columnCount) overload.

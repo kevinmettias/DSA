@@ -9,7 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MedianOfTwoSortedArrays;
 // the last partition that fits in O(log m) without ever touching nums2's own length.
 // Index 0 always fits, its left side being empty. This answers LC 4's partition search
 // and nothing else, which is why it lives beside the solution rather than in
-// DataStructures or at the tier's root.
+// Algorithms/, beside the predicate contract it implements.
 internal readonly struct PartitionLeftFits(int[] nums1, int[] nums2, int half) : IMonotonePredicate<int>
 {
     public bool IsSatisfiedBy(int index)

@@ -14,7 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountWaysToBuildRoomsInAnAntColo
 // own "no repo container fits a running scalar" precedent), which is O(subtree size)
 // per node - see RoomWaysPrecomputedFactorialAlgebra for the O(1)-per-node variant
 // this trades against. This algebra answers one LeetCode problem and nothing else,
-// which is why it lives beside the solution rather than at the tier's root.
+// which is why it lives beside the solution rather than in Algorithms/.
 internal readonly struct RoomWaysAlgebra : IFoldAlgebra<RootedTreeNode, (long Size, long Ways)>
 {
     public (long Size, long Ways) Empty => (0, 1);

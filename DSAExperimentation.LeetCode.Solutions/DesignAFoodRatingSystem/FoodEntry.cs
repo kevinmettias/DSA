@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignAFoodRatingSystem;
 // reversed (other before this) to make the smaller name compare greater under
 // MaxHeapOrder. IComparable<FoodEntry> is what DataStructures.Heap.MaxHeapOrder
 // requires; a witness meaningful only to this problem's heap ordering, so it lives
-// here rather than at the tier's root (§17.3).
+// here rather than in the library (§17.3).
 internal readonly record struct FoodEntry(int Rating, string Food) : IComparable<FoodEntry>
 {
     public int CompareTo(FoodEntry other)

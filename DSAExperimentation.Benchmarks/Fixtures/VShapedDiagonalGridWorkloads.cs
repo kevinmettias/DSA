@@ -1,9 +1,9 @@
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
-// Benchmark workload sizing for LC 3459 - a random square grid over {0,1,2} biased
-// toward 1s and 2s (0 is a valid mid-segment value here, not a blocked cell, but an
-// even split across all three still leaves 1-starts and their 2/0 follow-ups common
-// enough for both strategies to find real segments to extend).
+// Benchmark workload sizing for LC 3459 - a random square grid over {0,1,2}, each cell
+// drawn uniformly from the three. 0 is a valid mid-segment value here, not a blocked
+// cell, so an even split leaves 1-starts and their 2/0 follow-ups common enough for
+// both strategies to find real segments to extend.
 internal static class VShapedDiagonalGridWorkloads
 {
     public static int[][] BuildGrid(int size, int seed)

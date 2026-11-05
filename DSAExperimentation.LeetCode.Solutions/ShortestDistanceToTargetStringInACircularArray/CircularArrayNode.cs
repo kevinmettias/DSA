@@ -5,12 +5,11 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortestDistanceToTargetStringIn
 // once while the graph is built, so the wraparound lives in the construction and
 // never in the search.
 //
-// Answers this problem alone - an index-and-payload node fixing no vertex set and
-// no modulus - so it lives beside the solution rather than at the tier's root or in
-// DataStructures/ (ARCHITECTURE.md #17.3/#17.6), the same placement
-// FunctionalGraphNode has for LC 2360. It previously existed as a Tests fixture
-// and again in Benchmarks/Fixtures; this is the declaration this problem now uses
-// for both.
+// Answers this problem alone - DataStructures' AdjacencyNode plus the word at its
+// index, which only this problem reads - so it lives beside the solution rather than
+// in DataStructures/ (ARCHITECTURE.md #17.3/#17.6). It previously existed as a Tests
+// fixture and again in Benchmarks/Fixtures; this is the declaration this problem now
+// uses for both.
 internal sealed class CircularArrayNode(int index, string word)
 {
     public int Index { get; } = index;

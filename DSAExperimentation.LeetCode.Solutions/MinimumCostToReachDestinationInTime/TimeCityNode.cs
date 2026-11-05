@@ -9,7 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToReachDestinationInT
 // transitions are discovered.
 //
 // This shape answers LC 1928 and nothing else, so it lives beside the solution
-// rather than at the tier's root (ARCHITECTURE.md section 17.3).
+// rather than in DataStructures/ (ARCHITECTURE.md section 17.3).
 internal sealed class TimeCityNode(int city, int time)
 {
     public int City { get; } = city;

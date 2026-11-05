@@ -8,7 +8,8 @@ namespace DSAExperimentation.LeetCode.Solutions.LastDayWhereYouCanStillCross;
 // This is not a Grid: DataStructures.Graph.Grids.Grid answers "is this cell passable"
 // once and for all, while the whole problem here is that passability is a function of
 // the day being probed. It fixes one problem's semantics rather than a shape, and
-// answers nothing else, so it lives beside the solution instead of at the tier's root.
+// answers nothing else, so it lives beside the solution instead of beside Grid in
+// DataStructures/.
 internal sealed class FloodSchedule(int[,] floodDay)
 {
     public int Rows => floodDay.GetLength(0);

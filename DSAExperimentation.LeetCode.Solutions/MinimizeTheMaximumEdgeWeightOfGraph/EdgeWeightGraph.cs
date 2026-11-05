@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimizeTheMaximumEdgeWeightOfGr
 // the nodes that can reach node 0 in the original graph - the same reversal
 // GridShortestPath's caller never needs, because a grid's edges are already
 // symmetric. Meaningless outside this one problem, so it stays in this folder
-// rather than the tier's root (ARCHITECTURE.md §17.3).
+// rather than in DataStructures/ (ARCHITECTURE.md §17.3).
 internal sealed class EdgeWeightGraph(List<(int To, int Weight)>[] reversedAdjacency, int maxWeight)
 {
     public int NodeCount => reversedAdjacency.Length;

@@ -7,8 +7,8 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumEdgeTogglesOnATree;
 // is), plus - the one thing a plain parent array does not carry -
 // ParentEdgeIndex[node.Id]: the original index into edges[] of the edge connecting
 // that node to its parent, which is what the answer has to report. A witness
-// meaningful only to this problem, so it lives here rather than at the tier's root
-// (§17.3).
+// meaningful only to this problem, so it lives here rather than beside EdgeListTree in
+// DataStructures/ (§17.3).
 internal sealed record ToggleTree(RootedTreeNode Root, int[] ParentEdgeIndex)
 {
     public static ToggleTree Build(int nodeCount, int[][] edges)

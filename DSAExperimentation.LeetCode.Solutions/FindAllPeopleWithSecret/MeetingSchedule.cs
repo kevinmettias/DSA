@@ -10,7 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindAllPeopleWithSecret;
 // in a single hop, so the group is the unit of work each strategy iterates.
 //
 // Bespoke to this one problem, which is why it lives beside the solution rather
-// than at the tier's root (§17.3): nothing here fixes a modulus or a vertex set another
+// than in the library (§17.3): nothing here fixes a modulus or a vertex set another
 // problem could share - it is simply this problem's own input shape, hoisted out
 // of the measured strategies so a benchmark can build it once in [GlobalSetup].
 internal readonly record struct MeetingSchedule(

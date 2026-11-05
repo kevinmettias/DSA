@@ -13,7 +13,13 @@ public sealed partial class NumberOfProvincesWorkloadsTests
     private const int Seed = 1;
     private const int Connected = 1;
     private const int Disconnected = 0;
-    private const int ExpectedProvinceCount = 1;
+    private const int FewestProvinces = 2;
+
+    // The generator's two expected neighbours per city, give or take half: a draw's mean at these
+    // sizes sits within a few tenths of two, and a rate that ignored the city count, as the old
+    // 1-in-10 did, would give 4.9 neighbours at 50 cities and 19.9 at 200.
+    private const double FewestMeanNeighbours = 1.0;
+    private const double MostMeanNeighbours = 3.0;
 
     [Fact]
     public void BuildAdjacencyMatrix_CityCount_ReturnsASquareMatrix()
@@ -45,31 +51,30 @@ public sealed partial class NumberOfProvincesWorkloadsTests
         Assert.All(Enumerable.Range(0, CityCount), city => Assert.Equal(Connected, matrix[city][city]));
     }
 
-    // How many provinces a draw falls into is not fixed by the seed, but the connection rate is, and a
-    // 1-in-10 rate is far above G(n,p)'s connectivity threshold at these sizes: at both of the city
-    // counts the benchmark reads this generator at, the draw comes out as ONE province, not the
-    // "several provinces" the generator's own comment describes. Measured at both params rather than
-    // assumed from the comment, and reported to the campaign owner as a comment/parameter mismatch.
+    // The answer is the province count, so a draw that came out as one province at both of the
+    // city counts the benchmark reads, as the old 1-in-10 rate's did, could not tell a counting arm
+    // from one that returns 1. Several provinces at both, and fewer than one per city, so the arms
+    // also merge real components rather than meeting only lone cities.
     [Fact]
-    public void BuildAdjacencyMatrix_BothBenchmarkCityCounts_ComeOutAsASingleProvince()
+    public void BuildAdjacencyMatrix_BothBenchmarkCityCounts_FormSeveralProvinces()
     {
-        Assert.Equal(
-            ExpectedProvinceCount,
-            ProvinceCount(NumberOfProvincesWorkloads.BuildAdjacencyMatrix(CityCount, Seed)));
-        Assert.Equal(
-            ExpectedProvinceCount,
-            ProvinceCount(NumberOfProvincesWorkloads.BuildAdjacencyMatrix(LargestCityCount, Seed)));
+        var smallest = NumberOfProvincesWorkloads.BuildAdjacencyMatrix(CityCount, Seed);
+        var largest = NumberOfProvincesWorkloads.BuildAdjacencyMatrix(LargestCityCount, Seed);
+
+        Assert.InRange(ProvinceCount(smallest), FewestProvinces, CityCount - 1);
+        Assert.InRange(ProvinceCount(largest), FewestProvinces, LargestCityCount - 1);
     }
 
-    // A draw that comes out connected implies the other half of the comment's claim, which is the part
-    // the strategies depend on: no city is an isolated singleton, so every arm walks a real component
-    // instead of short-circuiting on lone cities.
+    // The rate scales with the city count, so the graph keeps its shape across the benchmark's
+    // sizes: a city has about two neighbours at 50 cities and at 200 alike.
     [Fact]
-    public void BuildAdjacencyMatrix_EveryCity_HasAtLeastOneNeighbourBeyondItsOwnSelfLoop()
+    public void BuildAdjacencyMatrix_BothBenchmarkCityCounts_GiveACityAboutTwoNeighbours()
     {
-        var matrix = NumberOfProvincesWorkloads.BuildAdjacencyMatrix(CityCount, Seed);
+        var smallest = NumberOfProvincesWorkloads.BuildAdjacencyMatrix(CityCount, Seed);
+        var largest = NumberOfProvincesWorkloads.BuildAdjacencyMatrix(LargestCityCount, Seed);
 
-        Assert.All(Enumerable.Range(0, CityCount), city => Assert.True(NeighbourCount(matrix, city) > 0));
+        Assert.InRange(MeanNeighbourCount(smallest), FewestMeanNeighbours, MostMeanNeighbours);
+        Assert.InRange(MeanNeighbourCount(largest), FewestMeanNeighbours, MostMeanNeighbours);
     }
 
     [Fact]
@@ -83,9 +88,6 @@ public sealed partial class NumberOfProvincesWorkloadsTests
         .. Enumerable.Range(0, matrix.Length)
             .Select(column => Enumerable.Range(0, matrix.Length).Select(row => matrix[row][column]).ToArray()),
     ];
-
-    private static int NeighbourCount(int[][] matrix, int city) =>
-        matrix[city].Where((_, other) => other != city).Count(entry => entry == Connected);
 
     private static int ProvinceCount(int[][] matrix)
     {
@@ -122,4 +124,10 @@ public sealed partial class NumberOfProvincesWorkloadsTests
             }
         }
     }
+
+    private static double MeanNeighbourCount(int[][] matrix) =>
+        Enumerable.Range(0, matrix.Length).Average(city => NeighbourCount(matrix, city));
+
+    private static int NeighbourCount(int[][] matrix, int city) =>
+        matrix[city].Where((_, other) => other != city).Count(entry => entry == Connected);
 }

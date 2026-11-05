@@ -10,7 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumCostToConnectTwoGroupsOfP
 // Deliberately not an IEnumerable, so the solution's LeetCode-shaped int[][] overload
 // and its prepared overload can never be ambiguous. This is a witness for one problem
 // and nothing else - the same reason LeetCode/NumberOfWaysToWearDifferentHatsToEachOther
-// keeps HatPreferences beside its solution instead of at the tier's root.
+// keeps HatPreferences beside its solution instead of in the library.
 internal sealed class ConnectionCosts(
     int[][] cost,
     int groupOneSize,

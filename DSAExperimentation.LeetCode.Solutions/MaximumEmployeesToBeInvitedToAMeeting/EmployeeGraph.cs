@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumEmployeesToBeInvitedToAMe
 // names.
 //
 // Bespoke to this one problem, which is why it lives beside the solution rather
-// than at the tier's root (ARCHITECTURE.md #17.3): nothing here fixes a modulus or a vertex
+// than in the library (ARCHITECTURE.md #17.3): nothing here fixes a modulus or a vertex
 // set another problem could share - it is simply this problem's own input shape,
 // hoisted out of the measured strategy so a benchmark can build it once in
 // [GlobalSetup] (#17.4). Being a named type rather than a bare List<EmployeeNode>

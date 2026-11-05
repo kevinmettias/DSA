@@ -4,7 +4,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignAuctionSystem;
 // first, then userId - LC's own tie-break rule for getHighestBidder (the highest
 // userId wins on equal bidAmount). IComparable<BidEntry> is what
 // DataStructures.Heap.MaxHeapOrder<Element> requires; a witness meaningful only to
-// this problem's heap ordering, so it lives here rather than at the tier's root (§17.3).
+// this problem's heap ordering, so it lives here rather than in the library (§17.3).
 internal readonly record struct BidEntry(int BidAmount, int UserId) : IComparable<BidEntry>
 {
     public int CompareTo(BidEntry other)

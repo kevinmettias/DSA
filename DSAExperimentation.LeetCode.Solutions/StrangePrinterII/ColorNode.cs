@@ -5,10 +5,10 @@ namespace DSAExperimentation.LeetCode.Solutions.StrangePrinterII;
 // inside that rectangle was necessarily printed on top of it afterward - the same
 // "prerequisite -> dependent" shape LeetCode/CourseSchedule's CourseNode uses.
 //
-// Answers LC 1591 alone - a plain adjacency-list graph node with no fixed vertex
-// set or modulus - so it lives beside the solution rather than at the tier's root or in
-// DataStructures/ (ARCHITECTURE.md §17.3/§17.6). It previously existed twice: once
-// as a Tests fixture and once again as a private copy inside
+// Answers LC 1591 alone. Its shape is exactly DataStructures' AdjacencyNode, a color
+// for the id and MustPrintBefore for the out-edges, which ARCHITECTURE.md §13.3 has a
+// problem use through a `using` alias; it has not moved onto one yet. It previously
+// existed twice: once as a Tests fixture and once again as a private copy inside
 // StrangePrinterIIBenchmarks; this is the single surviving declaration.
 internal sealed class ColorNode(int color)
 {

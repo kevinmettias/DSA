@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.Solutions.TopKFrequentWords;
 // lexicographically largest one - leaving the lexicographically smallest survivor
 // for equal frequencies, exactly LeetCode 692's required order. It is meaningless
 // outside this problem's own tie-break rule, so it stays here rather than in
-// Algorithms/ or at the tier's root.
+// Algorithms/.
 [LeetCodeQuestion("top-k-frequent-words", LeetCodeAnswerOrder.AsWritten)]
 internal static class TopKFrequentWordsSolution
 {

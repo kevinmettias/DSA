@@ -4,8 +4,8 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumNumberOfVisitedCellsInAGr
 // pattern DataStructures.Graph.Grids' Grid uses for GridNode/GridChildren, just
 // reporting each cell's own jump distance instead of a bool passability flag.
 //
-// Answers this problem alone, so it lives beside the solution rather than at the tier's root
-// or in DataStructures/ (ARCHITECTURE.md #17.3/#17.6): DataStructures.Graph.Grids' Grid
+// Answers this problem alone, so it lives beside the solution rather than in
+// DataStructures/ (ARCHITECTURE.md #17.3/#17.6): DataStructures.Graph.Grids' Grid
 // fixes "edge = the 4 orthogonal neighbours", while this one reads a per-cell jump
 // budget out of LC 2617's own input. It previously existed as a Tests fixture and
 // again in Benchmarks/Fixtures; this is the declaration both harnesses now share.

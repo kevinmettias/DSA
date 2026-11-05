@@ -1,11 +1,10 @@
 namespace DSAExperimentation.LeetCode.Solutions.FlattenNestedListIterator;
 
 // Mirrors LeetCode's own NestedInteger union type: a node is either a single
-// integer or a list of further NestedIntegers, never both. Answers LC 341 alone -
-// no fixed content of its own (no modulus, no vertex set), just the shape LC's
-// own interface hands every strategy here, so it lives beside the solution rather
-// than at the tier's root (ARCHITECTURE.md #17.6), the same call CourseNode makes for
-// CourseSchedule/CourseScheduleII.
+// integer or a list of further NestedIntegers, never both. It is the shape LC's own
+// interface hands every strategy here, and LC 341 is the only problem in this tier
+// that reads it, so it lives beside the solution rather than at the tier's root,
+// which holds what LeetCode fixes for every problem (ARCHITECTURE.md #17.3, #17.11).
 internal sealed class NestedInteger(int value, List<NestedInteger>? list)
 {
     public bool IsInteger => list is null;

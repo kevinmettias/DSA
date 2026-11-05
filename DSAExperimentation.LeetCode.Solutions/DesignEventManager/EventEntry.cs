@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DesignEventManager;
 // smallest eventId wins on equal priority, the opposite of DesignTaskManager's own
 // tie-break, so this can't reuse TaskEntry's CompareTo as-is). IComparable<EventEntry>
 // is what DataStructures.Heap.MaxHeapOrder<Element> requires; a witness meaningful
-// only to this problem's heap ordering, so it lives here rather than at the tier's root
+// only to this problem's heap ordering, so it lives here rather than in the library
 // (§17.3).
 internal readonly record struct EventEntry(int Priority, int EventId) : IComparable<EventEntry>
 {

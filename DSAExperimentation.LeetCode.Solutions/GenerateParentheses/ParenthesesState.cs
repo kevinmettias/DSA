@@ -3,8 +3,8 @@ namespace DSAExperimentation.LeetCode.Solutions.GenerateParentheses;
 // Backtrack.Search's mutable TState for LC 22: tracks how many '(' and ')' have been
 // placed so Candidates alone can decide what is legal next - never more opens than
 // pairs, never more closes than opens already placed. This shape answers one problem
-// and nothing else, so it lives beside the solution rather than in Algorithms/ or
-// at the tier's root (ARCHITECTURE.md 17.3).
+// and nothing else, so it lives beside the solution rather than in Algorithms/
+// (ARCHITECTURE.md 17.3).
 internal sealed class ParenthesesState(int pairs)
 {
     private int Opened { get; set; }

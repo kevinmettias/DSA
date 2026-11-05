@@ -4,9 +4,9 @@ namespace DSAExperimentation.LeetCode.Solutions.LargestColorValueInADirectedGrap
 // colors string. Edges point predecessor -> successor, the same direction Kahn's
 // algorithm needs for in-degree bookkeeping (CourseNode's own precedent).
 //
-// Answers LC 1857 alone - a plain adjacency-list graph node with no fixed vertex
-// set or modulus - so it lives beside the solution rather than at the tier's root or in
-// DataStructures/ (ARCHITECTURE.md #17.3/#17.6). It previously existed twice: once
+// Answers LC 1857 alone - DataStructures' AdjacencyNode plus the color each node
+// carries, which only this problem reads - so it lives beside the solution rather than
+// in DataStructures/ (ARCHITECTURE.md #17.3/#17.6). It previously existed twice: once
 // as a Tests fixture and once again as a private copy inside
 // LargestColorValueInADirectedGraphBenchmarks; this is the single surviving
 // declaration.

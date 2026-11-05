@@ -4,8 +4,8 @@ namespace DSAExperimentation.LeetCode.Solutions.SortItemsByGroupsRespectingDepen
 // in-degree bookkeeping - the same CourseNode shape (LC 210), with GroupId added so
 // items can be bucketed by group once the item-level topological order is known.
 // That GroupId is LC 1203's own two-level semantics and nothing else's, so this node
-// lives beside the solution rather than at the tier's root or in DataStructures/
-// (ARCHITECTURE.md #17.3, #17.6).
+// lives beside the solution rather than in DataStructures/, whose AdjacencyNode is this
+// shape without it (ARCHITECTURE.md #17.3, #17.6).
 internal sealed class ItemNode(int id, int groupId)
 {
     public int Id { get; } = id;

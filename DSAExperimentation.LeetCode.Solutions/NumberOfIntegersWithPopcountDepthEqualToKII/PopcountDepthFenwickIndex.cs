@@ -12,8 +12,8 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfIntegersWithPopcountDept
 // the old depth, Add(+1) on the new one) instead of anything being rescanned.
 // This answers LC 3624 alone - the depth bound baked into PopcountDepthBounds.MaxTrackedDepth
 // comes from this problem's own constraint, not a general property of
-// popcount-depth - which is why it lives beside the solution rather than at
-// the tier's root.
+// popcount-depth - which is why it lives beside the solution rather than beside
+// FenwickTree in DataStructures/.
 internal sealed class PopcountDepthFenwickIndex(
     FenwickTree<int, Addition<int>>[] treesByDepth, int[] depthByIndex)
 {

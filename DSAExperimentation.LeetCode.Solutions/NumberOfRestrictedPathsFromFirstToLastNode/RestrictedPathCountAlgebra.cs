@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfRestrictedPathsFromFirst
 // edge weight is positive so no other node can share its distance), so that's the
 // fold's base case instead of threading a separate "is this the target" flag through
 // Combine. Answers LC 1786 alone, which is why it lives beside the solution rather
-// than at the tier's root (RoomWaysAlgebra's own precedent).
+// than in Algorithms/ (RoomWaysAlgebra's own precedent).
 internal readonly struct RestrictedPathCountAlgebra : IFoldAlgebra<RestrictedPathNode, long>
 {
     public long Empty => 0;

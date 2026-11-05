@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.DeliveringBoxesFromStorageToPort
 // window at all.
 //
 // Meaningless outside this problem, so it lives beside the solution
-// (ARCHITECTURE.md section 17.3) rather than at the tier's root. It is also the
+// (ARCHITECTURE.md section 17.3) rather than in the library. It is also the
 // prepared-input shape section 17.4 calls for: the benchmark builds it once in
 // [GlobalSetup] and hands it to the measured method, and since it is not an
 // IEnumerable it can never be confused with the int[][] overload.

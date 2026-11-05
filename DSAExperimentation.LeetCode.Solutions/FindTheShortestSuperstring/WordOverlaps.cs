@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheShortestSuperstring;
 // question, which is why both strategies below are handed one of these rather than
 // recomputing string overlaps each time.
 //
-// This lives beside the solution rather than at the tier's root because it is meaningless
+// This lives beside the solution rather than in the library because it is meaningless
 // outside this problem: it fixes LC 943's own "no word is a substring of another"
 // premise and its assemble-by-dropping-the-overlap rule, the same reason
 // CountWaysToBuildRoomsInAnAntColony keeps its two algebras in its own folder.

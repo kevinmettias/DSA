@@ -10,9 +10,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // -call-many loop - a real Solution instance's own lifetime - so DynamicArrayCache's
 // one-time O(n) DynamicArray conversion is charged to the measured method, same as
 // ReservoirSampling's O(1) setup, rather than hoisting construction into
-// [GlobalSetup] and hiding it from the comparison. CallCount is large relative to
-// Length so that one-time conversion is amortized across many O(1) lookups, instead
-// of a small call count hiding ReservoirSampling's per-call O(n) cost.
+// [GlobalSetup] and hiding it from the comparison. CallCount is fixed, so the two
+// lengths are two regimes. At 200 nodes it is ten calls per node, and the cache's
+// one-time conversion is amortized across many O(1) lookups. At 5,000 it is fewer
+// calls than nodes, so the conversion is most of the cached arm's cost, while
+// ReservoirSampling still pays O(n) on every call. Both stay inside LC 382's 10^4
+// nodes and 10^4 calls.
 public class LinkedListRandomNodeBenchmarks
 {
     private const int CallCount = 2_000;

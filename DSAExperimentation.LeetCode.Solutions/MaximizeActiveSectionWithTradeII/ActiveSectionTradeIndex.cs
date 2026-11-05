@@ -18,7 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximizeActiveSectionWithTradeII
 // valid sacrifice, and pairing it with that neighbor already scores at least
 // "largest zero-run + 1", which beats "largest zero-run minus any smaller
 // sacrifice" outright. A witness meaningful only to this problem (§17.3), so
-// it lives in its own LeetCode/ folder rather than the tier's root.
+// it lives in its problem's folder rather than in the library.
 internal sealed class ActiveSectionTradeIndex
 {
     private readonly string _text;

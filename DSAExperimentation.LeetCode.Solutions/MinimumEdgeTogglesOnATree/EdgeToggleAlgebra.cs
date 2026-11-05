@@ -18,7 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumEdgeTogglesOnATree;
 // zip each result back to the edge it came from - the start/target/edge lookups
 // travel as the algebra's own field, the way RoomWaysPrecomputedFactorialAlgebra
 // carries its factorial table. A witness meaningful
-// only to this problem, so it lives here rather than at the tier's root (§17.3).
+// only to this problem, so it lives here rather than in Algorithms/ (§17.3).
 internal readonly struct EdgeToggleAlgebra(string start, string target, int[] parentEdgeIndex)
     : IFoldAlgebra<RootedTreeNode, (bool NeedsParentToggle, List<int> ToggledEdges)>
 {

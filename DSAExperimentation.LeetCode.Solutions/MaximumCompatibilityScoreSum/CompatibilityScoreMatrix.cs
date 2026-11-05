@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumCompatibilityScoreSum;
 // front is the whole of this problem's input preparation - the same "Build, then
 // search" split OpenTheLock's BuildLockGraph makes for LC 752.
 //
-// It lives beside the solution rather than at the tier's root because a student/mentor answer
+// It lives beside the solution rather than in Domain/ because a student/mentor answer
 // sheet fixes THIS problem's content and nothing else's (ARCHITECTURE §17.3), and it
 // is deliberately not an IEnumerable: it is the parameter type of the prepared-input
 // overloads (§17.4), so it must never be bindable by the int[][]-shaped overloads the
