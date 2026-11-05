@@ -2349,8 +2349,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 775 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 179 more:
+**Enrolled.** 778 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 182 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2425,6 +2425,12 @@ have only the empty tree. A check over those would pass whatever the strategy di
   Arrangement of Pairs, Smallest Sufficient Team, and Maximum Nesting Depth of Two Valid Parentheses
   Strings. The last two also promise what their generated cases broke: a valid parentheses string,
   and pairs that make one path.
+- 3 whose strategies call a static local function, once neither the harness nor the generator took
+  the compiled function for a strategy. It is an internal method of the class named for the strategy
+  around it (`<CountByLoop>g__Step|0_0`), so it carries that strategy's `By`; read from the solutions
+  assembly's metadata, as the generator reads it, no code can name it. Combination Sum (in any
+  order), Convert BST to Greater Tree (which rewrites its tree, so `RewritesInput = true`) and
+  Maximum Sum BST in Binary Tree.
 
 Open items:
 
@@ -2443,7 +2449,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 330 solutions are left (2026-11-04), each blocked for a reason the table and
+- **Enrolling the rest.** 327 solutions are left (2026-11-04), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.

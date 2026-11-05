@@ -28,6 +28,14 @@ public sealed partial class CatalogStrategyTests
         Assert.DoesNotContain(nameof(CountingProbeSolution.Halve), CatalogStrategy.Of(typeof(CountingProbeSolution)).Select(strategy => strategy.Name));
 
     [Fact]
+    public void Of_StrategyCallingALocalFunction_FindsTheStrategyAlone()
+    {
+        var names = CatalogStrategy.Of(typeof(LocalFunctionProbeSolution)).Select(strategy => strategy.Name);
+
+        Assert.Equal([nameof(LocalFunctionProbeSolution.CountByHelper)], names);
+    }
+
+    [Fact]
     public void Solution_AnyStrategy_IsTheClassThatDeclaresIt() =>
         Assert.All(CatalogStrategy.Of(typeof(TwoSumSolution)), strategy => Assert.Equal(typeof(TwoSumSolution), strategy.Solution));
 

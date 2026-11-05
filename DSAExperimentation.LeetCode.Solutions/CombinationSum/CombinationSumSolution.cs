@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CombinationSum;
 // Sorting first lets both strategies stop scanning a branch's remaining
 // candidates the moment the running sum would exceed target, instead of
 // checking every one of them.
+[LeetCodeQuestion("combination-sum", LeetCodeAnswerOrder.AnyOrder)]
 internal static class CombinationSumSolution
 {
     // The textbook answer: plain recursion over a BCL List<int> path buffer,

@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumSumBSTInBinaryTree;
 // step needs to know specifically whether left.Max or right.Min came from an *actual*
 // left/right child versus an absent one - exactly the positional identity that
 // compaction throws away.
+[LeetCodeQuestion("maximum-sum-bst-in-binary-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumSumBSTInBinaryTreeSolution
 {
     // The empty subtree is a valid BST, and its sum is the floor on any answer.

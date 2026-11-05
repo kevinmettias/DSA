@@ -7,6 +7,9 @@ public sealed partial class CatalogBenchmarkGeneratorTests
     // The file the generator writes for the probe's ProbeSolution.
     private const string ProbeClassFile = "ProbeCatalogBenchmarks.g.cs";
 
+    // The diagnostic the generator reports for a strategy no arm can call.
+    private const string UnboundStrategy = "DSACAT001";
+
     private const string EnrolledProbe = """
         using DSAExperimentation.LeetCode;
 
@@ -46,6 +49,37 @@ public sealed partial class CatalogBenchmarkGeneratorTests
             public static void SortByInsertion(int[] values) { }
         }
         """;
+
+    // A strategy that calls a static local function, which its assembly's metadata holds as an internal method
+    // named for the strategy around it - one no arm could store an answer from, since it takes a ref.
+    private const string LocalFunctionProbe = """
+        using DSAExperimentation.LeetCode;
+
+        namespace DSAExperimentation.LeetCode.Solutions.Probe
+        {
+            [LeetCodeQuestion("probe", LeetCodeAnswerOrder.AsWritten)]
+            internal static class ProbeSolution
+            {
+                public static int CountByHelper(int[] values)
+                {
+                    var total = 0;
+
+                    foreach (var value in values)
+                    {
+                        Add(ref total);
+                    }
+
+                    return total;
+
+                    static void Add(ref int total) => total++;
+                }
+            }
+        }
+        """;
+
+    [Fact]
+    public void Initialize_StrategyCallingALocalFunctionInMetadata_ReportsNoArmForTheLocalFunction() =>
+        Assert.DoesNotContain(GeneratorProbe.GenerateFromEmittedReferences(LocalFunctionProbe).Diagnostics, diagnostic => diagnostic.Id == UnboundStrategy);
 
     [Fact]
     public void Initialize_EnrolledSolution_WritesOneClassNamedForItsProblem() =>
@@ -105,7 +139,7 @@ public sealed partial class CatalogBenchmarkGeneratorTests
 
     [Fact]
     public void Initialize_StrategyAnsweringInPlace_ReportsItRatherThanLeavingItOut() =>
-        Assert.Contains(GeneratorProbe.Generate(InPlaceProbe).Diagnostics, diagnostic => diagnostic.Id == "DSACAT001");
+        Assert.Contains(GeneratorProbe.Generate(InPlaceProbe).Diagnostics, diagnostic => diagnostic.Id == UnboundStrategy);
 
     [Fact]
     public void Initialize_NoSolutionNamesAQuestion_WritesNothing() =>

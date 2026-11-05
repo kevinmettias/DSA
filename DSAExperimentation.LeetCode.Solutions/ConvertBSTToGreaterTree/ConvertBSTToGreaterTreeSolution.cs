@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConvertBSTToGreaterTree;
 // the composed version (both are O(n) time) but it needs no second array and no
 // second full walk, which is the real cost InOrderTraversal's missing reverse
 // direction imposes on the composed strategy.
+[LeetCodeQuestion("convert-bst-to-greater-tree", LeetCodeAnswerOrder.AsWritten, RewritesInput = true)]
 internal static class ConvertBSTToGreaterTreeSolution
 {
     // The textbook baseline: a hand-rolled recursive reverse in-order walk

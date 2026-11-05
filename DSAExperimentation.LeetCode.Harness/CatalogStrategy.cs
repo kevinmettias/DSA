@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Nodes;
 
 namespace DSAExperimentation.LeetCode.Harness;
@@ -109,8 +110,14 @@ internal sealed class CatalogStrategy
         return AnswerNotation.OfFound(outputs);
     }
 
+    // A static local function compiles to an internal method of the class, named for the method around it
+    // (<CountByLoop>g__Step|0_0), so it carries that method's By. The generator, reading members from source,
+    // never sees one, and nor may this.
     private static bool IsStrategy(MethodInfo method) =>
-        (method.IsPublic || method.IsAssembly) && !method.IsSpecialName && IsStrategyNamed(method.Name);
+        (method.IsPublic || method.IsAssembly)
+            && !method.IsSpecialName
+            && !method.IsDefined(typeof(CompilerGeneratedAttribute))
+            && IsStrategyNamed(method.Name);
 
     // A `By` after the first character, starting a new word.
     private static bool IsStrategyNamed(string name)

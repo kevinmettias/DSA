@@ -147,9 +147,11 @@ public sealed class CatalogBenchmarkGenerator : IIncrementalGenerator
         }
     }
 
-    // A non-private static method named <Operation>By<Strategy>, as 17.3 names every strategy.
+    // A non-private static method named <Operation>By<Strategy>, as 17.3 names every strategy. A static local
+    // function, read from the solutions assembly's metadata, is an internal method named for the strategy
+    // around it (<CountByLoop>g__Step|0_0), which no code can name: it is not a strategy of its own.
     private static bool IsStrategy(IMethodSymbol method) =>
-        method is { IsStatic: true, MethodKind: MethodKind.Ordinary, DeclaredAccessibility: Accessibility.Public or Accessibility.Internal }
+        method is { IsStatic: true, MethodKind: MethodKind.Ordinary, DeclaredAccessibility: Accessibility.Public or Accessibility.Internal, CanBeReferencedByName: true }
             && IsStrategyNamed(method.Name);
 
     // A `By` after the first character, starting a new word.

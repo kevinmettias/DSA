@@ -41,6 +41,11 @@ internal static class GeneratorProbe
         [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("{{BenchmarksAssembly}}")]
         """;
 
+    // What the solutions grant the benchmarks above them, as the real solutions project does.
+    private const string SolutionsGrants = $$"""
+        [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("{{BenchmarksAssembly}}")]
+        """;
+
     // This repository's own assemblies, which the test host trusts beside the platform's.
     private const string RepositoryAssemblyPrefix = "DSAExperimentation";
 
@@ -79,6 +84,34 @@ internal static class GeneratorProbe
             BenchmarksAssembly, [], [.. PlatformAlone.Value, conventions.ToMetadataReference(), solutions.ToMetadataReference()], Library);
 
         return CSharpGeneratorDriver.Create(new CatalogBenchmarkGenerator()).RunGenerators(benchmarks).GetRunResult();
+    }
+
+    // The same layout with the solutions and conventions emitted and referenced as assembly images, so the
+    // generator reads the solutions from metadata as it reads the real project: there a static local
+    // function is an internal method of its class, not a declaration inside a method body.
+    public static GeneratorDriverRunResult GenerateFromEmittedReferences(string solutionSource)
+    {
+        var conventions = ImageOf(CSharpCompilation.Create(
+            ConventionsAssembly, [CSharpSyntaxTree.ParseText(Conventions), CSharpSyntaxTree.ParseText(ConventionsGrants)], PlatformAlone.Value, Library));
+        var solutions = ImageOf(CSharpCompilation.Create(
+            SolutionsAssembly, [CSharpSyntaxTree.ParseText(solutionSource), CSharpSyntaxTree.ParseText(SolutionsGrants)], [.. PlatformAlone.Value, conventions], Library));
+        var benchmarks = CSharpCompilation.Create(BenchmarksAssembly, [], [.. PlatformAlone.Value, conventions, solutions], Library);
+
+        return CSharpGeneratorDriver.Create(new CatalogBenchmarkGenerator()).RunGenerators(benchmarks).GetRunResult();
+    }
+
+    // The compilation emitted, and referenced as the assembly it makes.
+    private static MetadataReference ImageOf(CSharpCompilation compilation)
+    {
+        using var image = new MemoryStream();
+        var emitted = compilation.Emit(image);
+
+        if (!emitted.Success)
+        {
+            throw new InvalidOperationException(string.Join(Environment.NewLine, emitted.Diagnostics));
+        }
+
+        return MetadataReference.CreateFromImage(image.ToArray());
     }
 
     // The type of the probe's field named `name`, declared on a class named Holder.
