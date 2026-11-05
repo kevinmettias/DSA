@@ -67,7 +67,7 @@ public sealed class BitTrie
     private readonly BitTrieNode _root = new();
 
     // Counts Insert calls, including duplicate values - not distinct values the
-    // way Trie<TValue>.Count is (Trie.cs's HasValue flag has no equivalent here;
+    // way the one trie's Count is (TrieNode's HasValue flag has no equivalent here;
     // no per-leaf marker exists to detect "this exact value was already present"
     // without one). The only consumer is TryMaxXor's emptiness guard below, which
     // needs nothing sharper than "has Insert ever been called."

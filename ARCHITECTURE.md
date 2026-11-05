@@ -820,7 +820,6 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `SinglyLinkedList/` | `SinglyLinkedListNode`, `RandomLinkedListNode`, `CycleDetection` (§13.7) |
 | `Stack/` | `Stack` — composes `DynamicArray` (§4.1) |
 | `SuffixArray/`, `SuffixAutomaton/`, `SuffixTree/` | `SuffixArray`; `SuffixAutomaton`, `SuffixAutomatonState`; `SuffixTree`, `SuffixTreeNode` — witness-less, for §13.8's reasons |
-| `Trie/` | `Trie`, `TrieNode` — the general, arbitrary-`char` trie, witness-less (§13.8) |
 
 **`Algorithms/`** is organized by utility, and holds the Operations not hardwired to one of this
 repo's Representations (§13.5). `Searching` and `Sorting` have no topology axis (§4.1/§10.2) but
@@ -1007,8 +1006,8 @@ type implements `ITreeTopology` at all*; it's only ever been the test for whethe
 The real question is Representation, checked directly rather than assumed: every call site of
 `IChildren<TNode>.Get(int)` in this repo (`DepthFirstWalk.cs`, `BreadthFirstWalk.cs`,
 `TopDownWalk.cs`) drives it in a plain sequential `for i in 0..Count-1` sweep, never random access —
-but the interface's own doc comment still states an O(1)-*per-call* obligation, and
-`TrieNode<TValue>.Children`/`SuffixTreeNode.Children` are `HashMap<char,·>`, which cannot honestly
+but the interface's own doc comment still states an O(1)-*per-call* obligation, and a node's
+children kept in a `HashMap<char,·>` (`HashedChildren`, `SuffixTreeNode.Children`) cannot honestly
 promise indexed O(1) `Get` the way a fixed slot array can. That is a §8 Representation/
 Complexity-law mismatch — and it is fixable, by bounding the alphabet:
 the one trie, `Graph/Engines/Dags/Trees/Tries/Trie<TStore, TValue>`, takes where a node keeps its
@@ -1016,8 +1015,8 @@ children as a type argument, and `AlphabetSlots<TAlphabet, TLayout, TValue>` kee
 any `IAlphabet` of at most 64 letters (§19.6). The store keeps a mask with a bit per letter that has a
 child, so `TrieChildren.Count` is a popcount and `Get` finds a child by its rank without scanning empty
 slots, and a `foreach` over a node's `Children` gives each child with its letter, so a walk that needs
-every child's letter visits only the children present. `TrieTests.cs` proves the witness is real, not just
-a satisfied interface, with two facades reusing generic Tree-tier engines unmodified:
+every child's letter visits only the children present. `TrieTopologyTests.cs` proves the witness is
+real, not just a satisfied interface, with two facades reusing generic Tree-tier engines unmodified:
 `TreeMetrics.Size` counts every node across a shared-prefix chain, and `LowestCommonAncestor.Find`
 over a trie topology *is* longest-common-prefix — the node where two keys diverge is exactly the node
 reached by walking their shared prefix, with no trie-specific LCA code at all.
@@ -1030,10 +1029,15 @@ popcount of the mask below the letter, growing from one slot by doubling up to t
 Measured outside the tree on `710a862b` (IMPROVEMENT-WORKLIST), packed nodes made LC 336 2.2 to 5
 times faster with 3.4 times less allocation, and every other trie built per call 25-68% faster, while
 StreamOfCharacters, which builds its trie once and then only reads it, ran 52-70% slower. So each
-adopter names its layout: LC 1032 dense, the other twelve packed. Three walks that need every
-child's letter (LC 676, LC 720, LC 2452) first asked each node for all 26 letters, and measured 4-44%
-slower packed than HEAD's dense trie; walking the node's `Children` instead made them 18-86% faster
-than HEAD under either layout, and packed allocates a third to a quarter as much.
+adopter names its layout: LC 1032 dense, the other twelve packed. The general trie's ten users chose
+the same way when they moved onto the one trie (0ffda5d2): LC 3093 and LC 472, whose benchmarks
+build the trie once and then read it, dense, 32-39% and 9-16% faster than packed; the other eight
+packed. On LC 208, whose every run builds the trie, the packed set is 65% faster than the textbook
+trie at 10,000 words, and the dense set, laid out as that trie is, 5-15% slower than it. Three
+walks that need every child's letter (LC 676, LC 720, LC 2452) first asked each node for all 26
+letters, and measured 4-44% slower packed than HEAD's dense trie; walking the node's `Children`
+instead made them 18-86% faster than HEAD under either layout, and packed allocates a third to a
+quarter as much.
 
 A trie over `HashedChildren<TValue>`, keyed by any `char`, correctly stays witness-less — its whole
 value is *not* being bounded to a small alphabet, so narrowing it to gain a witness would defeat its
@@ -1049,7 +1053,7 @@ would earn a witness, not the automaton itself; `SuffixAutomaton`'s transition g
 a tree, though its suffix-link parent pointers form a separate, real tree that's a plausible
 witness candidate in its own right.
 
-There is one trie, not two (the owner's ruling of 2026-11-02, quoted in §17.5). Until then the
+There is one trie, not two (the owner's ruling of 2026-11-02, quoted in §17.5). Until then a
 general `Trie<TValue>` and a bounded-alphabet sibling each carried a copy of the key walk behind
 `Set`/`HasKey`/`TryGetValue`/`HasPrefix`, and this section called the copy deliberate. What differs
 between them is only how a node keeps its children, so that is now the injected axis and the walk is
@@ -1064,15 +1068,13 @@ strategy behind the contract for exactly the layer it replaces, and is benchmark
 template (§17.5): `IPrefixMap` for a map, or `IPrefixSet` for a trie that keeps keys and no values,
 as LC 208's textbook trie does. The one trie is a set through `PrefixSet`, a struct view of a map to
 `bool` that holds one reference and walks nothing itself, so one contract suite, `PrefixSetTests`,
-runs over the textbook trie and the view under each store. Which slot layout is faster depends on
-the work. Where every run builds the trie, the packed layout's arrays, which hold only the children a
-node has, win: LC 208's packed set is 65% faster than the textbook trie at 10,000 words, and the
-dense set 5-15% slower than it. Where the trie is built once and then read, the dense layout's one
-slot read wins: 32-39% over packed on LC 3093 and 9-16% on LC 472. `DataStructures/Trie`'s
-`Trie<TValue>` keeps its own hashed walk only until its last users move onto the one trie. Moving the
-bounded-alphabet trie's 12 problems onto it changed no allocation, and no time beyond what identical
-code reads apart, once the slot store's enumerator held a reference to the store rather than a copy:
-a copy is two values a recursive walk keeps alive across its calls, and it cost LC 676 12-30%.
+runs over the textbook trie and the view under each store. Moving the bounded-alphabet trie's 12
+problems onto the one trie changed no allocation, and no time beyond what identical code reads
+apart, once the slot store's enumerator held a reference to the store rather than a copy: a copy is
+two values a recursive walk keeps alive across its calls, and it cost LC 676 12-30%. Moving the
+general trie's ten problems onto it made every one faster, 13-94%, since each keeps its children in
+slots over the small alphabet LeetCode bounds its keys to rather than in a hash map, and the general
+trie was deleted.
 
 ### 13.9 The two-part witness test, and `BitTrie`
 

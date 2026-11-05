@@ -131,20 +131,6 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/Trie/Trie.cs",
-      "reason": "TryGetValue's default! is the standard TryGetValue/TryParse out-parameter contract (only meaningful when the method returns true); named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
-      "owner": "@kmettias",
-      "expires": "2027-05-01"
-    },
-    {
-      "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/Trie/TrieNode.cs",
-      "reason": "Value's default! is only meaningful once HasValue is true (set by Trie\u003cTValue\u003e.Set); every reader checks HasValue first, the same out-parameter-shaped contract HashMap.TryGetValue uses. Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
-      "owner": "@kmettias",
-      "expires": "2027-05-01"
-    },
-    {
-      "check": "check-presumption",
       "path": "DSAExperimentation/DataStructures/DoublyLinkedList/DoublyLinkedList.cs",
       "reason": "each ! promises a sentinel-adjacent Previous/Next is present - true by construction, since the permanent dummy head/tail nodes are never removed and every real node's Previous/Next is always set by AddFront before it can be reached by Remove/PopBack; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
@@ -343,13 +329,6 @@
       "check": "check-function-cohesion",
       "path": "DSAExperimentation.Tests/DataStructures/Stack/StackTests.cs",
       "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Of the 3 tests this entry waives, 2 performs one mutation (an add, a removal, a union, a write) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. The remaining test is not that shape: `Count_ReflectsPushesAndPops` asserts between mutations because the count is the subject rather than the mutations: the name claims Count reflects a *sequence* of operations, so the test has to observe it partway through to show which operation moved it. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
-      "owner": "@kmettias",
-      "expires": "2027-05-01"
-    },
-    {
-      "check": "check-function-cohesion",
-      "path": "DSAExperimentation.Tests/DataStructures/Trie/TrieTests.cs",
-      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Of the 2 tests this entry waives, 1 performs one mutation (an add, a removal, a union, a write) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. The remaining test is not that shape: `SharedPrefixNode_TracksEachWordIndependently` writes a second key after asserting on the first because the write is the test: the point is that a short word and the longer word continuing past it coexist in one shared node chain, so the second Set is only meaningful once the first key's presence has been observed in that same chain. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
       "owner": "@kmettias",
       "expires": "2027-05-01"
     },
