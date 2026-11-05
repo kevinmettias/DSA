@@ -523,29 +523,64 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetTrie.cs",
-      "reason": "TryGetValue's value = default! is named inline as a `presumption: allow` comment stating the invariant that makes it true (value is only meaningful when the method returns true, the standard TryGetValue/TryParse out-parameter contract Trie\u003cTValue\u003e.TryGetValue already uses) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/Trie.cs",
+      "reason": "TryGetValue's value = default! is named inline as a `presumption: allow` comment stating the invariant that makes it true (value is only meaningful when the method returns true, the standard TryGetValue/TryParse out-parameter contract Dictionary\u003cTKey, TValue\u003e.TryGetValue uses) - recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2027-05-01"
     },
     {
       "check": "check-mutable-struct",
-      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetTrieChildEnumerator.cs",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetSlotsEnumerator.cs",
       "reason": "An enumerator exists to be advanced: foreach calls MoveNext on it, which moves the unvisited-letters mask on and sets Current. It is a struct so that walking a node's children allocates nothing, the reason List<T>.Enumerator is a mutable struct too; a class would cost an allocation per node a walk visits.",
       "owner": "@kmettias",
       "expires": "2027-05-01"
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetTrieChildEnumerator.cs",
-      "reason": "MoveNext's ChildAt(letter)! is named inline as a `presumption: allow` comment stating the invariant that makes it true (the letter was read from the node's child mask, so the node has a child for it) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetSlotsEnumerator.cs",
+      "reason": "MoveNext's _slots.ChildAt(letter)! is named inline as a `presumption: allow` comment stating the invariant that makes it true (the letter was read from the store's child mask, so the store has a child for it) - recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2027-05-01"
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetTrieNode.cs",
-      "reason": "Each ! is named inline as a `presumption: allow` comment stating the invariant that makes it true: Value's default! (Value is only meaningful once HasValue is true, checked by every reader before use), and the two slot reads in ChildOfRank and GetOrAddChild (the node's mask has the child's bit set, and every set bit has its child stored at the layout's position) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/TrieNode.cs",
+      "reason": "Value's default! is named inline as a `presumption: allow` comment stating the invariant that makes it true (Value is only meaningful once HasValue is true, checked by every reader before use) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetSlots.cs",
+      "reason": "The two slot reads in ChildOfRank and GetOrAddChild are named inline as `presumption: allow` comments stating the invariant that makes them true (the store's mask has the child's bit set, and every set bit has its child stored at the layout's position) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetSlots.cs",
+      "reason": "AlphabetSlots is a trie node's own child store, kept inline as a field of its TrieNode so that a step from a node to its child reads the mask and the slot array with no object between them, as the node itself held them before the store was split out (one-trie plan, 2026-11-04). Adding a child sets a mask bit, so the store changes; TrieNode hands it out only by ref (`ref TStore Children`), so every change lands in the node's own field and never in a copy, and no caller copies a store out of its node (checked across every user, 2026-11-04). A readonly struct would make each add return a new store for the node to write back, a change to ITrieChildStore's contract for every store with no gain in behavior.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-value-sharing",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetSlots.cs",
+      "reason": "Copies of a store share its slot array, and a copy is not meant to exist: the store's one home is its TrieNode's field, reached by ref. A reference-type store would put an object between each node and its children, the hop this layout exists to avoid. The one copy taken on purpose is the enumerator's, which reads the children as they stand, like List\u003cT\u003e.Enumerator; adding to a node while walking it is as invalid as changing a list while enumerating it.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/AlphabetSlots.cs",
+      "reason": "ChildAt, ChildFor and ChildOfRank are the store's three ways of finding one child: by the alphabet's slot, by a key character, and by rank in letter order. The store already is the module for a node's children, so the shared prefix names its one subject rather than a hidden second responsibility, and ChildFor and ChildOfRank are the names ITrieChildStore and IOrderedTrieChildStore give every store.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-readonly-fields",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/TrieNode.cs",
+      "reason": "_children is returned by ref from Children, so that adding a child through the store changes this node's own field. A readonly field can only be returned as ref readonly, through which each add would act on a defensive copy and the child would be lost.",
       "owner": "@kmettias",
       "expires": "2027-05-01"
     },

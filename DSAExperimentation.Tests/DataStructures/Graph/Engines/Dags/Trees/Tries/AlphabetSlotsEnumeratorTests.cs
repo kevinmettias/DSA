@@ -5,15 +5,17 @@ namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees.Tries
 
 // A child's Value is set to its letter's slot as it is added, so each (letter, child) pair the
 // enumerator gives can be checked against itself, under both layouts.
-public sealed partial class AlphabetTrieChildEnumeratorTests
+public sealed partial class AlphabetSlotsEnumeratorTests
 {
     private static readonly int[] OutOfOrder = [25, 2, 0, 13, 1];
 
     [Fact]
     public void MoveNext_EmptyNode_IsFalse()
     {
-        var dense = new AlphabetTrieChildEnumerator<EnglishLowercase, DenseTrieLayout, int>(new());
-        var packed = new AlphabetTrieChildEnumerator<EnglishLowercase, PackedTrieLayout, int>(new());
+        var denseSlots = AlphabetSlots<EnglishLowercase, DenseTrieLayout, int>.Empty();
+        var packedSlots = AlphabetSlots<EnglishLowercase, PackedTrieLayout, int>.Empty();
+        var dense = new AlphabetSlotsEnumerator<EnglishLowercase, DenseTrieLayout, int>(in denseSlots);
+        var packed = new AlphabetSlotsEnumerator<EnglishLowercase, PackedTrieLayout, int>(in packedSlots);
 
         Assert.False(dense.MoveNext());
         Assert.False(packed.MoveNext());
@@ -32,15 +34,15 @@ public sealed partial class AlphabetTrieChildEnumeratorTests
     private static (int Letter, int StoredUnder)[] Walk<TLayout>()
         where TLayout : struct, ITrieLayout
     {
-        var node = new AlphabetTrieNode<EnglishLowercase, TLayout, int>();
+        var node = new TrieNode<AlphabetSlots<EnglishLowercase, TLayout, int>, int>();
 
         foreach (var letter in OutOfOrder)
         {
-            node.GetOrAddChild(letter).Value = letter;
+            node.Children.GetOrAddChild(letter).Value = letter;
         }
 
         var steps = new List<(int, int)>();
-        var walk = new AlphabetTrieChildEnumerator<EnglishLowercase, TLayout, int>(node);
+        var walk = new AlphabetSlotsEnumerator<EnglishLowercase, TLayout, int>(in node.Children);
 
         while (walk.MoveNext())
         {

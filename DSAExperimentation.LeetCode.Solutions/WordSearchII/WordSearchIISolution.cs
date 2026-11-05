@@ -1,12 +1,16 @@
 using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Domain.Language.English;
-using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieNode<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        string>,
     string>;
-using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        string>,
     string>;
 
 namespace DSAExperimentation.LeetCode.Solutions.WordSearchII;
@@ -16,7 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WordSearchII;
 // word. WordSearchSolutionTests (LC 79) already proves Backtrack.Search's choose/explore/
 // unchoose walk finds one word on a board; finding every word from a whole
 // dictionary at once composes exactly one more existing primitive -
-// AlphabetTrie, walked node-by-node alongside the board so a branch with
+// the trie over AlphabetSlots, walked node-by-node alongside the board so a branch with
 // no matching trie child is pruned before Candidates() ever yields it, instead of
 // re-running a fresh single-word search per candidate word.
 internal static class WordSearchIISolution
@@ -24,7 +28,7 @@ internal static class WordSearchIISolution
     // The textbook answer: WordSearchSolution's own per-word recursive DFS (LC 79),
     // re-run once per dictionary word from scratch over a BCL bool[,] visited grid -
     // O(words * cells * 4^L). Deliberately written without this repo's Backtracking
-    // primitive or AlphabetTrie - the arm FindWordsByTrieBacktrack has to justify
+    // primitive or trie - the arm FindWordsByTrieBacktrack has to justify
     // itself against.
     public static HashSet<string> FindWordsByBruteForceDfs(char[][] board, string[] words)
     {
@@ -59,7 +63,7 @@ internal static class WordSearchIISolution
         return false;
     }
 
-    // This repo's own choose/explore/unchoose engine, pruned by an AlphabetTrie
+    // This repo's own choose/explore/unchoose engine, pruned by a trie
     // built from the whole dictionary: a branch with no matching trie child is
     // pruned before Candidates() ever yields it, so shared prefixes across the
     // dictionary are explored once instead of once per word. The packed layout: the
@@ -182,7 +186,7 @@ internal static class WordSearchIISolution
         // A neighbour can extend the walk when the walk has not used it yet and the
         // trie has a child for its letter.
         private bool CanExtendWalk((int Row, int Col) cell) =>
-            !_used[cell.Row, cell.Col] && _node.ChildAt(EnglishLowercase.IndexOf(board[cell.Row][cell.Col])) is not null;
+            !_used[cell.Row, cell.Col] && _node.Children.ChildAt(EnglishLowercase.IndexOf(board[cell.Row][cell.Col])) is not null;
 
         public void Choose((int Row, int Col) cell)
         {
@@ -190,7 +194,7 @@ internal static class WordSearchIISolution
             Row = cell.Row;
             Col = cell.Col;
             _used[Row, Col] = true;
-            _node = _node.ChildAt(EnglishLowercase.IndexOf(board[Row][Col]))!;
+            _node = _node.Children.ChildAt(EnglishLowercase.IndexOf(board[Row][Col]))!;
             _started = true;
         }
 

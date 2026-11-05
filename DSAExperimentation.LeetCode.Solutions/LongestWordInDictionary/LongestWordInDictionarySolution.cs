@@ -1,12 +1,16 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.Domain.Language.English;
-using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieNode<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
     bool>;
-using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
     bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestWordInDictionary;
@@ -18,7 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestWordInDictionary;
 //
 // The two strategies differ in how "is this prefix a complete word" is answered -
 // a linear scan of the whole word list per prefix, or a single O(1) HasValue check
-// per step of one root-to-leaf walk over this repo's own AlphabetTrie.
+// per step of one root-to-leaf walk over this repo's own trie.
 [LeetCodeQuestion("longest-word-in-dictionary", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestWordInDictionarySolution
 {
@@ -72,7 +76,7 @@ internal static class LongestWordInDictionarySolution
         return true;
     }
 
-    // This repo's own AlphabetTrie over the lowercase letters: build one trie from the whole word list,
+    // This repo's own trie, AlphabetSlots over the lowercase letters: build one trie from the whole word list,
     // then walk it from the root descending only through nodes whose HasValue is
     // already true - a step is legal exactly when the prefix reached so far is
     // itself a complete dictionary word, which is this problem's own "built one

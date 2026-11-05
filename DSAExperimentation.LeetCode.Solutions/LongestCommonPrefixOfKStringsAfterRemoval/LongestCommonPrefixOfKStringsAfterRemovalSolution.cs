@@ -1,20 +1,28 @@
 using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Domain.Language.English;
-using PrefixNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using PrefixNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieNode<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
-using PrefixTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using PrefixTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
-using PrefixTopology = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieTopology<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using PrefixTopology = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieTopology<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
-using PrefixChildren = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieChildren<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using PrefixChildren = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieChildren<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestCommonPrefixOfKStringsAfterRemoval;
@@ -124,7 +132,7 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     }
 
     // Composed: build the counting trie once, reduce it twice over the SAME
-    // generic Tree engine AlphabetTrieTests already proves out (once with this
+    // generic Tree engine TrieTests already proves out (once with this
     // problem's own SubtreeWordCountAlgebra for per-node prefix multiplicity,
     // once with the repo's existing DistanceMapReduceAlgebra for per-node depth),
     // then answer every index with an O(word length) walk. O(total input length)
@@ -288,7 +296,7 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
 
         for (var i = 0; i < word.Length; i++)
         {
-            current = current.ChildAt(EnglishLowercase.IndexOf(word[i]))!;
+            current = current.Children.ChildAt(EnglishLowercase.IndexOf(word[i]))!;
             path[i + 1] = current;
         }
 
@@ -299,7 +307,7 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     // that EXACT string occurs in words) plus SubtreeWordCountAlgebra's summed
     // descendants, so duplicate words (LC's own "run","run","run" example) must
     // be tracked as a running count at the end node, not the plain
-    // AlphabetTrie<..., bool> "is this a word" flag every other trie-backed solution
+    // Trie<AlphabetSlots<..., bool>, bool> "is this a word" flag every other trie-backed solution
     // in this catalogue uses - that flag would silently collapse three "run"s
     // into one. The packed layout: the trie is built once per call and walked a few
     // times, which packed nodes measured faster for (IMPROVEMENT-WORKLIST, 2026-11-02).

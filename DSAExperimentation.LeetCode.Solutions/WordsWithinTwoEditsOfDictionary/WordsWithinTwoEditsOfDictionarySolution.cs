@@ -1,12 +1,16 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.Domain.Language.English;
-using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieNode<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
     bool>;
-using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
     bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.WordsWithinTwoEditsOfDictionary;
@@ -58,9 +62,9 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
         return differences <= WordsWithinTwoEditsOfDictionaryConstants.MaxEdits;
     }
 
-    // This repo's own AlphabetTrie over the lowercase letters, the bounded-alphabet trie
+    // This repo's own trie, its children AlphabetSlots over the lowercase letters,
     // that stores the whole dictionary once with its common prefixes shared, walked per
-    // query by a budgeted DFS over the already-public Root/ChildAt - ImplementMagicDictionary's
+    // query by a budgeted DFS over the already-public Root/Children.ChildAt - ImplementMagicDictionary's
     // one-substitution walk generalized from a budget of exactly 1 to "at most 2".
     // Descending into the child that matches the query's character is free; any other
     // child spends an edit, and the walk succeeds as soon as it consumes the whole

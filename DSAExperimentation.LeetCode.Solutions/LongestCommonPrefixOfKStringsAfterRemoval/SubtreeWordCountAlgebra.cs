@@ -1,7 +1,9 @@
 using DSAExperimentation.Algorithms.Reducing;
-using PrefixNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using PrefixNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieNode<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestCommonPrefixOfKStringsAfterRemoval;
@@ -25,9 +27,9 @@ internal readonly struct SubtreeWordCountAlgebra
     {
         var count = node.HasValue ? node.Value : 0;
 
-        for (var rank = 0; rank < node.ChildCount; rank++)
+        for (var rank = 0; rank < node.Children.Count; rank++)
         {
-            count += state[node.ChildOfRank(rank)];
+            count += state[node.Children.ChildOfRank(rank)];
         }
 
         state[node] = count;

@@ -799,7 +799,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `Graph/Contracts/Topologies/` | `IGraphTopology`, `IEdgeTopology`, `EdgeTopologyAsGraphTopology` (§3.2) |
 | `Graph/Engines/Dags/` | `IDagTopology` (§3.2) |
 | `Graph/Engines/Dags/Trees/` | `ITreeTopology`; the binary tree (`BinaryTreeNode`, `BinaryTreeChildren`, `BinaryTreeTopology`, `ChildSide`, `BinarySearchTree`, `InOrderTraversal`, `IInOrderHooks`, `FindClosest`); the bit trie with its real witness (`BitTrie*`, §13.9); the rooted tree (`RootedTreeNode`, `RootedTreeTopology`, `ParentArrayTree`, `EdgeListTree`, `PreOrderTour`, `PreOrderLowestCommonAncestor`); the quad tree (`QuadTreeNode`, `QuadTreeGrid`). `EdgeListTree` roots LeetCode's undirected edge list with a breadth-first walk, returning the parent array `ParentArrayTree` reads and, for each node, the index of the edge that joins it to its parent - the one thing a parent array cannot recover. `PreOrderTour` lays a `RootedTreeNode` tree out in pre-order, so every subtree is one contiguous range of positions; `PreOrderLowestCommonAncestor` reads ancestors off that layout with one range minimum, O(log n) per query after O(n) preparation. It is hardwired to the tour, so it lives here rather than beside `Algorithms/Ancestry/LowestCommonAncestor`, which is generic over `ITreeTopology` (§13.5) |
-| `Graph/Engines/Dags/Trees/Tries/` | `AlphabetTrie`, `AlphabetTrieNode`, `AlphabetTrieChildren`, `AlphabetTrieChildEnumerator`, `AlphabetTrieTopology` — a trie over any `IAlphabet` of up to 64 letters, with a real witness (§13.8); `ITrieLayout`, `DenseTrieLayout`, `PackedTrieLayout` — where a node stores its children, a type argument each trie names |
+| `Graph/Engines/Dags/Trees/Tries/` | The one trie (§13.8): `IPrefixMap`, the map's contract; `Trie<TStore, TValue>`, its key walk written once, and `TrieNode`; and the child store each configuration injects, `ITrieChildStore`, or `IOrderedTrieChildStore` for a store whose children have an order. `AlphabetSlots` (with `AlphabetSlotsEnumerator`) keeps a node's children in slots over any `IAlphabet` of up to 64 letters, in letter order, so its trie has a real witness (`TrieTopology`, `TrieChildren`); `HashedChildren` takes any `char` and has no order, so its trie has none. `ITrieLayout`, `DenseTrieLayout`, `PackedTrieLayout` — where the slot store keeps its children, a type argument each trie names |
 | `Graph/Grids/` | `Grid`, `GridNode`, `GridChildren`, `GridSize`, `GridNeighbors`, `IGridCellFilter`, `GridTopology`, `IGridNodeSource` with `NodePerCell` and `NodePerStep`, and the weighted `WeightedGrid*` (§17.6). The steps they walk by, `GridStep` and `GridDirections`, are facts about the square lattice, in `Domain/Mathematics/Lattices`. `GridSize` is a board's extent and its one bounds rule; a walk's `IGridNodeSource` says whether a cell's node is the board's one node for it or a new one per step; `GridNeighbors` is a cell's on-board neighbours in a direction table's order, filtered by an `IGridCellFilter`, for a `DepthFirstSearch.Traverse` successor whose "open" is decided by the problem's cells rather than a fixed map like `Grid`'s |
 | `Graph/Hamming/` | `HammingNode`, `HammingTopology`, `HammingGraph`, `HammingSearch`, `MutationStart`, `MutationTarget` (§17.6); the letters a mutation writes are an `IAlphabet` type argument (§19.6) |
 | `Graph/ShortestPaths/` | `ByPriorityOrder` (§13.2) |
@@ -1010,18 +1010,18 @@ but the interface's own doc comment still states an O(1)-*per-call* obligation, 
 `TrieNode<TValue>.Children`/`SuffixTreeNode.Children` are `HashMap<char,·>`, which cannot honestly
 promise indexed O(1) `Get` the way a fixed slot array can. That is a §8 Representation/
 Complexity-law mismatch — and it is fixable, by bounding the alphabet:
-`Graph/Engines/Dags/Trees/Tries/AlphabetTrie<TAlphabet, TLayout, TValue>` is the general
-`Trie<TValue>`'s bounded-alphabet sibling (`Set`/`HasKey`/`TryGetValue`/`HasPrefix`-compatible), over
-any `IAlphabet` of at most 64 letters (§19.6). Each node keeps a mask with a bit per letter that has a
-child, so `AlphabetTrieChildren.Count` is a popcount and `Get` finds a child by its rank without
-scanning empty slots, and a `foreach` over a node's `Children` gives each child with its letter, so a
-walk that needs every child's letter visits only the children present. `AlphabetTrieTests.cs` proves the witness is real, not just
+the one trie, `Graph/Engines/Dags/Trees/Tries/Trie<TStore, TValue>`, takes where a node keeps its
+children as a type argument, and `AlphabetSlots<TAlphabet, TLayout, TValue>` keeps them in slots over
+any `IAlphabet` of at most 64 letters (§19.6). The store keeps a mask with a bit per letter that has a
+child, so `TrieChildren.Count` is a popcount and `Get` finds a child by its rank without scanning empty
+slots, and a `foreach` over a node's `Children` gives each child with its letter, so a walk that needs
+every child's letter visits only the children present. `TrieTests.cs` proves the witness is real, not just
 a satisfied interface, with two facades reusing generic Tree-tier engines unmodified:
 `TreeMetrics.Size` counts every node across a shared-prefix chain, and `LowestCommonAncestor.Find`
 over a trie topology *is* longest-common-prefix — the node where two keys diverge is exactly the node
 reached by walking their shared prefix, with no trie-specific LCA code at all.
 
-Where a node stores its children is the trie's second type argument (owner ruling, 2026-11-02).
+Where the slot store keeps its children is its second type argument (owner ruling, 2026-11-02).
 `ITrieLayout` answers in integers, a position and a capacity, so a layout is not generic over the
 node type and a trie compiles only its own layout's arithmetic. `DenseTrieLayout` gives every letter
 a slot, read directly. `PackedTrieLayout` stores only the children present, in letter order, at the
@@ -1034,28 +1034,37 @@ child's letter (LC 676, LC 720, LC 2452) first asked each node for all 26 letter
 slower packed than HEAD's dense trie; walking the node's `Children` instead made them 18-86% faster
 than HEAD under either layout, and packed allocates a third to a quarter as much.
 
-The general, arbitrary-`char`-keyed `Trie<TValue>` correctly stays witness-less — its whole value is
-*not* being bounded to a small alphabet, so narrowing it to gain a witness would defeat the type's
-own purpose rather than just cost something. `BitTrie` earns one (§13.9). `SuffixTree`,
+A trie over `HashedChildren<TValue>`, keyed by any `char`, correctly stays witness-less — its whole
+value is *not* being bounded to a small alphabet, so narrowing it to gain a witness would defeat its
+purpose rather than just cost something. Its store has no order, and `TrieTopology` asks for an
+`IOrderedTrieChildStore`, so it is the compiler that withholds the tree engines from it. `BitTrie`
+earns one (§13.9). `SuffixTree`,
 `SuffixAutomaton` and `AhoCorasick` are not yet reviewed under this test, and each raises a question
 of its own: `SuffixTree`'s edge-compression (substring-range labels, not one-char-per-edge) is a
 second, independent representation question on top of the alphabet one; `AhoCorasick`'s trie
-portion has the same bounded-alphabet shape `BitTrie`/`AlphabetTrie` do, but its runtime matching
+portion has the same bounded-alphabet shape `BitTrie`/`AlphabetSlots` do, but its runtime matching
 walks `Fail`/`OutputLink` edges that aren't tree edges at all, so at most its construction-time trie
 would earn a witness, not the automaton itself; `SuffixAutomaton`'s transition graph is a DAG, not
 a tree, though its suffix-link parent pointers form a separate, real tree that's a plausible
 witness candidate in its own right.
 
-`Trie<TValue>` and `AlphabetTrie` each carry their own copy of the key walk behind `Set`/
-`HasKey`/`TryGetValue`/`HasPrefix`, and that duplication is deliberate. Every way to share it costs
-something this architecture refuses to pay. A common node base class for `HasValue`/`Value` would be
-the first class inheritance in `DataStructures/`, against §6's composition rule and §13.7's "an
-interface, not a shared base class". A shared child-step witness would be one Representation
-contract spanning two domains, which §5 step 5 forbids: replicate the pattern, not the type. And a
-generic walk over a reference-typed node with a struct step witness gets shared canonical code
-whenever `TValue` is a reference type, which turns today's inline slot index into a dictionary
-lookup per character. The two loops are a dozen lines each; what differs between them (a `HashMap`
-step vs a validated slot index) is exactly the Representation difference this section is about.
+There is one trie, not two (the owner's ruling of 2026-11-02, quoted in §17.5). Until then the
+general `Trie<TValue>` and a bounded-alphabet sibling each carried a copy of the key walk behind
+`Set`/`HasKey`/`TryGetValue`/`HasPrefix`, and this section called the copy deliberate. What differs
+between them is only how a node keeps its children, so that is now the injected axis and the walk is
+written once, in `Trie<TStore, TValue> : IPrefixMap<TValue>`. The objections once raised against
+sharing it do not hold for this shape. There is no base class: `TrieNode<TStore, TValue>` is one
+sealed class that holds its store as a struct field. The store contract, `ITrieChildStore`, is the
+trie's own Representation axis, not one contract spanning two domains. And a reference-typed `TValue`
+shares code just as the bounded-alphabet trie's node did, since each store is a struct type argument
+compiled for its own alphabet and layout. A problem names the store its invariants allow: keys over
+a small alphabet `AlphabetSlots`, any other keys `HashedChildren`. A hand-specialized trie is a
+strategy behind `IPrefixMap`, the contract for exactly the layer it replaces, and is benchmarked
+against the template (§17.5). `DataStructures/Trie`'s `Trie<TValue>` keeps its own hashed walk only
+until its last users move onto the one trie. Moving the
+bounded-alphabet trie's 12 problems onto it changed no allocation, and no time beyond what identical
+code reads apart, once the slot store's enumerator held a reference to the store rather than a copy:
+a copy is two values a recursive walk keeps alive across its calls, and it cost LC 676 12-30%.
 
 ### 13.9 The two-part witness test, and `BitTrie`
 
@@ -1071,7 +1080,7 @@ structure stays domain-local, correctly, for a stated reason — not a default.
 
 `BitTrie` passes both. `BitTrieNode` has real identity (a `class`, not an index into shared storage,
 unlike `Heap`/`DisjointSet`), and its two named `Zero`/`One` slots already give `IChildren`'s
-O(1)-indexed-`Get` obligation honestly, with no alphabet-bounding work needed the way `AlphabetTrie`
+O(1)-indexed-`Get` obligation honestly, with no alphabet-bounding work needed the way `AlphabetSlots`
 required.
 
 `BitTrieChildren` follows `BinaryTreeChildren`'s shape — computed on demand from two named
@@ -1088,7 +1097,7 @@ witness, and they only ever ask "how many children, and give me each one."
 `Insert`/`TryMaxXor` themselves stay hand-written against `Zero`/`One` directly — the witness
 doesn't replace them, it opens the trie to generic Tree-tier engines for free.
 `BitTrieTests.Size_ViaTreeMetrics_CountsEveryNodeAcrossASharedBitPrefixChain` proves the witness is
-real the same way `AlphabetTrieTests` does: `TreeMetrics.Size` (`Algorithms/Metrics`, generic over
+real the same way `TrieTests` does: `TreeMetrics.Size` (`Algorithms/Metrics`, generic over
 any `ITreeTopology`) counts every node of a two-value trie with no `BitTrie`-specific code at all.
 `CountedBitTrie` fails both halves of the test, and §13.3 records why.
 

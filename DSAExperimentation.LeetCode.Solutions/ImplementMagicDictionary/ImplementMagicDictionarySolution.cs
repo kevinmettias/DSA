@@ -1,12 +1,16 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.Domain.Language.English;
-using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieNode<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
     bool>;
-using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using WordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
     bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ImplementMagicDictionary;
@@ -20,11 +24,11 @@ namespace DSAExperimentation.LeetCode.Solutions.ImplementMagicDictionary;
 // use for their own design problems.
 //
 // CreateByTrieSearch buildDict's every dictionary word into this repo's own
-// AlphabetTrie over the lowercase letters (all-lowercase alphabet is exactly what
-// LeetCode promises here). Search isn't a prefix/lookup query Trie<TValue>'s own
+// trie, AlphabetSlots over the lowercase letters (all-lowercase alphabet is exactly what
+// LeetCode promises here). Search isn't a prefix/lookup query the trie's own
 // Set/HasKey/TryGetValue/HasPrefix surface already provides, so it's a manual
-// DFS walking the trie's already-public Root/ChildAt directly (the same
-// navigation AlphabetTrieTests.WalkTo/ReplaceWordsSolution.ShortestRootPrefix
+// DFS walking the trie's already-public Root/Children.ChildAt directly (the same
+// navigation TrieTests.WalkTo/ReplaceWordsSolution.ShortestRootPrefix
 // already rehearse), trying every one-character substitution at exactly one
 // position and matching exactly everywhere else - composed here rather than
 // built as a new production primitive. The search visits only the letters each

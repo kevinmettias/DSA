@@ -16,7 +16,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PalindromePairs;
 // to string prefixes/suffixes instead of numeric complements - using this repo's own
 // HashMap<TKey,TValue> for the O(1) lookup, in O(n*k^2) (k = max word length): every
 // split builds, reverses and hashes its sides afresh. FindPairsByReversedWordTrie
-// walks each word once down this repo's AlphabetTrie of the words reversed, asking
+// walks each word once down this repo's trie of the words reversed, asking
 // Manacher's radii whether the rest of the word is a palindrome at each step.
 internal static class PalindromePairsSolution
 {
@@ -110,7 +110,7 @@ internal static class PalindromePairsSolution
         => cut != word.Length && IsPalindrome(suffix);
 
     // O(sum of words[i].length), the bound LC 336 sets, over one of this repo's
-    // AlphabetTries holding every word reversed. words[i] + words[j] is a palindrome
+    // tries holding every word reversed. words[i] + words[j] is a palindrome
     // in exactly one of two ways:
     // - words[j] is no longer than words[i]: words[j] reversed opens words[i], and the
     //   rest of words[i] is a palindrome (empty when the lengths match).
@@ -139,11 +139,11 @@ internal static class PalindromePairsSolution
     // about seven times as long.
     //
     // It walks the nodes itself, as CountPrefixAndSuffixPairsIISolution does: a node's
-    // Value here is the WordStop recorded there, on inner nodes too, which AlphabetTrie's
+    // Value here is the WordStop recorded there, on inner nodes too, which the trie's
     // own Set - one value at the end of each key - has no way to write.
     public static List<(int First, int Second)> FindPairsByReversedWordTrie(IReadOnlyList<string> words)
     {
-        var reversedWords = new AlphabetTrie<EnglishLowercase, PackedTrieLayout, WordStop>();
+        var reversedWords = new Trie<AlphabetSlots<EnglishLowercase, PackedTrieLayout, WordStop>, WordStop>();
         var indexedWords = new IndexedWord[words.Count];
 
         for (var i = 0; i < words.Count; i++)
@@ -165,7 +165,7 @@ internal static class PalindromePairsSolution
     // The word's letters from last to first: at depth d the reversal's remaining letters
     // are the word's first length - d, so it is listed there when those are a palindrome.
     private static void InsertReversed(
-        AlphabetTrieNode<EnglishLowercase, PackedTrieLayout, WordStop> root, IndexedWord word)
+        TrieNode<AlphabetSlots<EnglishLowercase, PackedTrieLayout, WordStop>, WordStop> root, IndexedWord word)
     {
         var node = root;
         var lastLetter = word.Text.Length - 1;
@@ -184,8 +184,8 @@ internal static class PalindromePairsSolution
     }
 
     // The node's stop, created the first time anything is recorded there. HasValue marks
-    // the nodes that have one, as AlphabetTrie's own Set marks the nodes holding a value.
-    private static WordStop StopAt(AlphabetTrieNode<EnglishLowercase, PackedTrieLayout, WordStop> node)
+    // the nodes that have one, as the trie's own Set marks the nodes holding a value.
+    private static WordStop StopAt(TrieNode<AlphabetSlots<EnglishLowercase, PackedTrieLayout, WordStop>, WordStop> node)
     {
         if (!node.HasValue)
         {
@@ -196,18 +196,18 @@ internal static class PalindromePairsSolution
         return node.Value;
     }
 
-    private static AlphabetTrieNode<EnglishLowercase, PackedTrieLayout, WordStop> ChildOrNew(
-        AlphabetTrieNode<EnglishLowercase, PackedTrieLayout, WordStop> node, char letter)
-        => node.GetOrAddChild(EnglishLowercase.IndexOf(letter));
+    private static TrieNode<AlphabetSlots<EnglishLowercase, PackedTrieLayout, WordStop>, WordStop> ChildOrNew(
+        TrieNode<AlphabetSlots<EnglishLowercase, PackedTrieLayout, WordStop>, WordStop> node, char letter)
+        => node.Children.GetOrAddChild(EnglishLowercase.IndexOf(letter));
 
     // The word on the left. A node at depth d below the word's own length spells its
     // first d letters, so a word ending there is them reversed and shorter, and pairs
     // when the word's remaining letters are a palindrome. The node spelling the whole
     // word holds the rest: the word of equal length ending there, and the longer ones.
     private static void AddPairsWithWordOnLeft(
-        AlphabetTrieNode<EnglishLowercase, PackedTrieLayout, WordStop> root, IndexedWord word, List<(int, int)> pairs)
+        TrieNode<AlphabetSlots<EnglishLowercase, PackedTrieLayout, WordStop>, WordStop> root, IndexedWord word, List<(int, int)> pairs)
     {
-        AlphabetTrieNode<EnglishLowercase, PackedTrieLayout, WordStop>? node = root;
+        TrieNode<AlphabetSlots<EnglishLowercase, PackedTrieLayout, WordStop>, WordStop>? node = root;
 
         for (var depth = 0; node is not null && depth < word.Text.Length; depth++)
         {
@@ -227,9 +227,9 @@ internal static class PalindromePairsSolution
     }
 
     // The node one letter further down, or null where no reversed word continues with it.
-    private static AlphabetTrieNode<EnglishLowercase, PackedTrieLayout, WordStop>? ChildFor(
-        AlphabetTrieNode<EnglishLowercase, PackedTrieLayout, WordStop> node, char letter)
-        => node.ChildAt(EnglishLowercase.IndexOf(letter));
+    private static TrieNode<AlphabetSlots<EnglishLowercase, PackedTrieLayout, WordStop>, WordStop>? ChildFor(
+        TrieNode<AlphabetSlots<EnglishLowercase, PackedTrieLayout, WordStop>, WordStop> node, char letter)
+        => node.Children.ChildAt(EnglishLowercase.IndexOf(letter));
 
     // At the node spelling the whole left word, the word ending there is its own reversal
     // - itself, when it is a palindrome, and then no pair - and every longer word listed

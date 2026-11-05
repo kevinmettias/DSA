@@ -1,8 +1,10 @@
 using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.LongestCommonPrefixOfKStringsAfterRemoval;
-using PrefixTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using PrefixTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.LongestCommonPrefixOfKStringsAfterRemoval;
@@ -51,7 +53,7 @@ public sealed partial class LongestCommonPrefixOfKStringsAfterRemovalSolutionTes
         var trie = LongestCommonPrefixOfKStringsAfterRemovalSolution.BuildTrie(["jump", "run", "run", "jump", "run"]);
         var copies = new[] { "jump", "run" }.Select(word => CopiesOf(trie, word));
         var rootLetters = Enumerable.Range(0, EnglishLetters.Size)
-            .Where(slot => trie.Root.ChildAt(slot) is not null)
+            .Where(slot => trie.Root.Children.ChildAt(slot) is not null)
             .Select(EnglishLowercase.LetterAt);
 
         Assert.Equal(2, trie.Count);

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PalindromePairsSolutionTests proves correct - the O(n^2*k) brute force that concatenates
 // and checks every ordered word pair directly, the O(n*k^2) approach using this repo's own
 // HashMap<TKey,TValue> as a reversed-complement lookup for every prefix/suffix split, and
-// the O(sum of lengths) walk down this repo's AlphabetTrie of the words reversed that
+// the O(sum of lengths) walk down this repo's trie of the words reversed that
 // LC 336 requires.
 //
 // Words are drawn unique over three letters, at most LongestWordLength long, so k is set

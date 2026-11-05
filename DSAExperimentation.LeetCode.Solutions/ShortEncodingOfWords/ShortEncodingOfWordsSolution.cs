@@ -1,12 +1,16 @@
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Language.English;
-using ReversedWordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using ReversedWordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieNode<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
     bool>;
-using ReversedWordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using ReversedWordTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
     bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ShortEncodingOfWords;
@@ -19,7 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortEncodingOfWords;
 //
 // Three ways to answer "is this word a proper suffix of another": check every pair
 // with EndsWith, evict every proper suffix from a Set as each word is scanned, or
-// insert every REVERSED word into an AlphabetTrie and keep only the words whose
+// insert every REVERSED word into a trie and keep only the words whose
 // reversed node is a leaf.
 [LeetCodeQuestion("short-encoding-of-words", LeetCodeAnswerOrder.AsWritten)]
 internal static class ShortEncodingOfWordsSolution
@@ -120,7 +124,7 @@ internal static class ShortEncodingOfWordsSolution
         return remaining;
     }
 
-    // This repo's own bounded-alphabet AlphabetTrie over the lowercase letters, fed every
+    // This repo's own trie, AlphabetSlots over the lowercase letters, fed every
     // word REVERSED: a word needs its own encoding exactly when no other reversed word
     // extends past it, i.e. when its reversed node is a trie leaf. O(total
     // characters) instead of the pairwise scan's O(n^2 * L). The packed layout: the trie
@@ -164,13 +168,13 @@ internal static class ShortEncodingOfWordsSolution
 
         for (var i = word.Length - 1; i >= 0; i--)
         {
-            node = node.ChildAt(EnglishLowercase.IndexOf(word[i]))!;
+            node = node.Children.ChildAt(EnglishLowercase.IndexOf(word[i]))!;
         }
 
         return node;
     }
 
-    private static bool IsLeaf(ReversedWordNode node) => node.ChildCount == 0;
+    private static bool IsLeaf(ReversedWordNode node) => node.Children.Count == 0;
 
     private static string Reverse(string word)
     {

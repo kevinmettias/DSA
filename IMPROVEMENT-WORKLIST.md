@@ -396,7 +396,8 @@ using) removed from 1,111 files.
   by measurement. A packed node cannot take `Children[i] ??= child`, so the four production sites
   that do this move to a get-or-add call. Done: `AlphabetTrie<TAlphabet, TLayout, TValue>` replaces
   `LowercaseTrie`, with `DenseTrieLayout` and `PackedTrieLayout`; LC 1032 names dense and the other
-  twelve adopters packed (ARCHITECTURE §13.8).
+  twelve adopters packed (ARCHITECTURE §13.8). It has since become the one trie's
+  `AlphabetSlots<TAlphabet, TLayout, TValue>` store, `Trie<AlphabetSlots<...>, TValue>`.
 
   The benchmark stops at 400 words, inside LeetCode's 5,000. Open: per-arm sizes would let the
   trie run past the O(n²) brute force.

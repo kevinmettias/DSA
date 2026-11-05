@@ -1,20 +1,28 @@
 using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 using DSAExperimentation.Domain.Language.English;
-using SumNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using SumNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieNode<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
-using SumTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using SumTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
-using SumTopology = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieTopology<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using SumTopology = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieTopology<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
-using SumChildren = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieChildren<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using SumChildren = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieChildren<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MapSumPairs;
@@ -63,7 +71,7 @@ internal static class MapSumPairsSolution
         }
     }
 
-    // This repo's own AlphabetTrie over the lowercase letters (bounded-alphabet Trie, a real
+    // This repo's own trie, AlphabetSlots over the lowercase letters (an ordered store, so a real
     // ITreeTopology witness per ARCHITECTURE.md 13.8) stores each key's value at
     // its end-of-word node - insert reuses Set's own overwrite-on-existing-key
     // semantics directly, exactly LC677's own "override to the new pair" rule.
@@ -97,7 +105,7 @@ internal static class MapSumPairsSolution
 
             foreach (var ch in prefix)
             {
-                current = current.ChildAt(EnglishLowercase.IndexOf(ch));
+                current = current.Children.ChildAt(EnglishLowercase.IndexOf(ch));
 
                 if (current is null)
                 {

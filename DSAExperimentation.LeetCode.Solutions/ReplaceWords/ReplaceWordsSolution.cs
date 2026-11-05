@@ -1,7 +1,9 @@
 using DSAExperimentation.Domain.Language.English;
-using RootTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using RootTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        bool>,
     bool>;
 
 namespace DSAExperimentation.LeetCode.Solutions.ReplaceWords;
@@ -12,7 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ReplaceWords;
 // The two strategies differ in how they find that shortest root - scanning the whole
 // dictionary and checking StartsWith for each candidate (every root has to be
 // checked anyway, since the first match found is not guaranteed to be the shortest),
-// vs. this repo's own AlphabetTrie, where the shortest root falls out for free
+// vs. this repo's own trie, where the shortest root falls out for free
 // by walking the word once and stopping at the first HasValue node reached.
 [LeetCodeQuestion("replace-words", LeetCodeAnswerOrder.AsWritten)]
 internal static class ReplaceWordsSolution
@@ -52,7 +54,7 @@ internal static class ReplaceWordsSolution
         => word.Text.StartsWith(root.Text, StringComparison.Ordinal)
             && (best is null || root.Text.Length < best.Length);
 
-    // This repo's own AlphabetTrie over the lowercase letters: every root is set true, and
+    // This repo's own trie, AlphabetSlots over the lowercase letters: every root is set true, and
     // walking a sentence word stops at the first HasValue node - the shortest matching root,
     // because the walk visits nodes in root-to-leaf order. The packed layout: the trie is
     // built once per call and walked once per word, which packed nodes measured faster for
@@ -82,7 +84,7 @@ internal static class ReplaceWordsSolution
 
         for (var i = 0; i < word.Length; i++)
         {
-            var next = current.ChildAt(EnglishLowercase.IndexOf(word[i]));
+            var next = current.Children.ChildAt(EnglishLowercase.IndexOf(word[i]));
 
             if (next is null)
             {

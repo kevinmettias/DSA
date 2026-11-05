@@ -3,8 +3,8 @@ using DSAExperimentation.DataStructures.Alphabets;
 namespace DSAExperimentation.Domain.Language;
 
 // A cased writing system's letters with case set aside: a letter and its capital take the same slot,
-// so a count, a set or a trie over this alphabet treats 'A' and 'a' as one letter. An AlphabetTrie
-// over it is a case-insensitive map, and LetterAt gives the lowercase form. The lowercase run is
+// so a count, a set or a trie over this alphabet treats 'A' and 'a' as one letter. A trie whose
+// children are AlphabetSlots over it is a case-insensitive map, and LetterAt gives the lowercase form. The lowercase run is
 // tried first, since most text is lowercase.
 //
 // That is exact only where case pairs letter for letter, as in English and Russian: the two

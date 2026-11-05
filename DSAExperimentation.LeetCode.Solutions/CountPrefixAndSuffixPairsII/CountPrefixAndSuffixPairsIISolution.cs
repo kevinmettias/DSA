@@ -1,11 +1,15 @@
 using DSAExperimentation.Domain.Language.English;
-using PairNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using PairNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieNode<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
-using PairTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using PairTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountPrefixAndSuffixPairsII;
@@ -65,11 +69,11 @@ internal static class CountPrefixAndSuffixPairsIISolution
                word.Text.AsSpan(word.Text.Length - candidate.Text.Length).SequenceEqual(candidate.Text);
     }
 
-    // This repo's own AlphabetTrie (Graph/Engines/Dags/Trees/Tries) over the lowercase letters, keyed
-    // one interleaved character at a time via its public Root/GetOrAddChild/Value - the same direct
-    // node-walking AlphabetTrieTests already relies on for its own longest-common-prefix composition.
+    // This repo's own trie (Graph/Engines/Dags/Trees/Tries), AlphabetSlots over the lowercase letters, keyed
+    // one interleaved character at a time via its public Root/Children.GetOrAddChild/Value - the same direct
+    // node-walking TrieTests already relies on for its own longest-common-prefix composition.
     // Value doubles as a per-node counter (how many words' encoded sequence ends exactly here) rather
-    // than the single-value slot AlphabetTrie.Set assumes, which is why this walks the nodes itself
+    // than the single-value slot Trie.Set assumes, which is why this walks the nodes itself
     // instead of calling Set/TryGetValue. The packed layout: the trie is built as it is walked, and
     // packed nodes measured faster and smaller for that (IMPROVEMENT-WORKLIST, 2026-11-02).
     public static long CountPairsByLowercaseTrie(string[] words)
@@ -99,7 +103,7 @@ internal static class CountPrefixAndSuffixPairsIISolution
     }
 
     private static PairNode StepInto(PairNode node, char letter)
-        => node.GetOrAddChild(EnglishLowercase.IndexOf(letter));
+        => node.Children.GetOrAddChild(EnglishLowercase.IndexOf(letter));
 
     // The two sides of "is words[i] a prefix-and-suffix of words[j]": the candidate that has
     // to appear at both ends, and the word it has to appear in. The relation is one-directional,

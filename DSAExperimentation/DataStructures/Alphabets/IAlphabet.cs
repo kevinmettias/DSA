@@ -4,7 +4,7 @@ namespace DSAExperimentation.DataStructures.Alphabets;
 // Size - 1, so a count table, a bitmask or a trie node can index letters by slot. Which letters, in
 // what order, is a fact about a writing system or a world - the English letters, DNA's bases - so the
 // presets are Domain's (ARCHITECTURE §17.6), and this contract is what they fill, here in tier 1
-// because AlphabetTrie reads it. A preset is a struct whose members are static abstract, so code
+// because the trie's AlphabetSlots store reads it. A preset is a struct whose members are static abstract, so code
 // generic over it is compiled for that alphabet and a slot folds to arithmetic or a table read.
 //
 // IndexOf and LetterAt throw outside the alphabet rather than return -1, because a wrong slot

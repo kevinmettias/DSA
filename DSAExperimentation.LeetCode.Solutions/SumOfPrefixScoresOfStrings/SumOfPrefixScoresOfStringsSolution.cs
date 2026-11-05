@@ -1,11 +1,15 @@
 using DSAExperimentation.Domain.Language.English;
-using PrefixNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrieNode<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using PrefixNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieNode<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
-using PrefixTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetTrie<
-    DSAExperimentation.Domain.Language.English.EnglishLowercase,
-    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+using PrefixTrie = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.Trie<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
+        DSAExperimentation.Domain.Language.English.EnglishLowercase,
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.PackedTrieLayout,
+        int>,
     int>;
 
 namespace DSAExperimentation.LeetCode.Solutions.SumOfPrefixScoresOfStrings;
@@ -56,10 +60,10 @@ internal static class SumOfPrefixScoresOfStringsSolution
         return score;
     }
 
-    // This repo's own AlphabetTrie over the lowercase letters, the bounded-alphabet trie
+    // This repo's own trie, its children AlphabetSlots over the lowercase letters, the trie
     // MapSumPairs and CountingWordsWithAGivenPrefix already use. Instead of storing a value
     // only at each word's end node the way Set does, every word is walked in through the
-    // already-public Root/GetOrAddChild and every node on its path has its Value
+    // already-public Root/Children.GetOrAddChild and every node on its path has its Value
     // incremented - so a node's Value ends up being exactly the score of the prefix
     // that reaches it. Scoring a word is then one more walk, summing the counts
     // already sitting along its own root-to-leaf path: O(wordCount * wordLength) to
@@ -91,7 +95,7 @@ internal static class SumOfPrefixScoresOfStringsSolution
 
         foreach (var ch in word)
         {
-            current = current.GetOrAddChild(EnglishLowercase.IndexOf(ch));
+            current = current.Children.GetOrAddChild(EnglishLowercase.IndexOf(ch));
             current.Value++;
         }
     }
@@ -103,7 +107,7 @@ internal static class SumOfPrefixScoresOfStringsSolution
 
         foreach (var ch in word)
         {
-            current = current.ChildAt(EnglishLowercase.IndexOf(ch))!;
+            current = current.Children.ChildAt(EnglishLowercase.IndexOf(ch))!;
             score += current.Value;
         }
 
