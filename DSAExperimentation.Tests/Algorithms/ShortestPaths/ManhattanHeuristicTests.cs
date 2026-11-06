@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Metrics;
 
 namespace DSAExperimentation.Tests.Algorithms.ShortestPaths;
 
@@ -71,6 +72,18 @@ public sealed partial class ManhattanHeuristicTests
         var distance = ManhattanHeuristic.Estimate(target, target);
 
         Assert.Equal(0, distance);
+    }
+
+    // The heuristic keeps its own two absolute values, which compile tighter than a call into the
+    // preset (ARCHITECTURE 17.10), so this holds them to the L1 norm on every pair of a grid.
+    [Fact]
+    public void Estimate_EveryPairOfAGrid_IsTheL1LengthOfTheDisplacement()
+    {
+        var nodes = WeightedGrid.Build(5, 4).Values;
+
+        Assert.All(nodes, node => Assert.All(nodes, target => Assert.Equal(
+            L1Norm.Length(node.Row - target.Row, node.Col - target.Col),
+            ManhattanHeuristic.Estimate(node, target))));
     }
 
     // One grid pair: the two endpoints the estimate is taken between, and the sum of the

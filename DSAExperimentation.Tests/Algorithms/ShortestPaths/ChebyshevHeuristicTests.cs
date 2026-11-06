@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.Metrics;
 
 namespace DSAExperimentation.Tests.Algorithms.ShortestPaths;
 
@@ -53,6 +54,18 @@ public sealed partial class ChebyshevHeuristicTests
         var backward = ChebyshevHeuristic.Estimate(second, first);
 
         Assert.Equal(forward, backward);
+    }
+
+    // The heuristic keeps its own absolute values and maximum, which compile tighter than a call
+    // into the preset (ARCHITECTURE 17.10), so this holds them to the L∞ norm on a whole grid.
+    [Fact]
+    public void Estimate_EveryPairOfAGrid_IsTheLInfinityLengthOfTheDisplacement()
+    {
+        var nodes = WeightedGrid.Build(5, 4).Values;
+
+        Assert.All(nodes, node => Assert.All(nodes, target => Assert.Equal(
+            LInfinityNorm.Length(node.Row - target.Row, node.Col - target.Col),
+            ChebyshevHeuristic.Estimate(node, target))));
     }
 
     // One grid pair: the two endpoints the estimate is taken between, and the distance the

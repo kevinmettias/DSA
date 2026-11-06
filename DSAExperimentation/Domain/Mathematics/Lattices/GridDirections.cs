@@ -20,6 +20,15 @@ namespace DSAExperimentation.Domain.Mathematics.Lattices;
 // data, so the property would build a new array on every access, and a span cannot be enumerated
 // across a yield, which many grid searches do. ImmutableArray cannot be changed by a caller, indexes
 // straight into its array, and enumerates with a struct enumerator.
+//
+// Distances. WithinManhattan and WithinChebyshev are the balls of the L1 and L∞ norms
+// (Domain/Mathematics/Metrics) on the lattice. Each neighbour table's own distance, the fewest
+// of its steps from one cell to another, is GridDistances': L1 for Orthogonal, L∞ for
+// Octilinear, and a metric of its own for LShaped. Euclidean distance is the L2 norm of R^n, not
+// a distance any set of steps counts: a count of steps is a whole number, and a diagonal
+// neighbour is the square root of 2 away. A distance whose steps cost different amounts is a
+// path's cost, which Algorithms/ShortestPaths computes for any weights, so none is stated here.
+// Other lattices, topologies and dimensions are the TODO at the end, left to B9 (§17.10).
 /// <summary>The square lattice's step tables, each a list of named steps in a fixed order, and the index rules for turning along them.</summary>
 public static class GridDirections
 {
@@ -123,9 +132,5 @@ public static class GridDirections
     }
 }
 
-
-// TODO: CAN THIS GENERALIZE TO OTHER DISTANCE METRICS BEYOND MANHATTAN AND CHEBYSHEV?
-
-// TODO: CONSIDER ADDING SUPPORT FOR OTHER DISTANCE METRICS LIKE EUCLIDEAN OR CUSTOM WEIGHTED DISTANCES.
 
 // TODO: CAN THIS GENERALIZE TO OTHER LATTICE STRUCTURES, TOPOLOGIES OR HIGHER DIMENSIONS?

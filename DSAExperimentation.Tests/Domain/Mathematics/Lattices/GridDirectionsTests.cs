@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Mathematics.Lattices;
+using DSAExperimentation.Domain.Mathematics.Metrics;
 
 namespace DSAExperimentation.Tests.Domain.Mathematics.Lattices;
 
@@ -93,7 +94,8 @@ public sealed partial class GridDirectionsTests
         var steps = GridDirections.WithinManhattan(range);
 
         Assert.Equal(2 * range * (range + 1), steps.Length);
-        Assert.All(steps, step => Assert.InRange(Math.Abs(step.DeltaRow) + Math.Abs(step.DeltaCol), 1, range));
+        Assert.All(steps, step =>
+            Assert.InRange(L1Norm.Length(step.DeltaRow, step.DeltaCol), 1, range));
     }
 
     [Theory]
@@ -103,7 +105,8 @@ public sealed partial class GridDirectionsTests
         var steps = GridDirections.WithinChebyshev(range);
 
         Assert.Equal(((2 * range) + 1) * ((2 * range) + 1) - 1, steps.Length);
-        Assert.All(steps, step => Assert.InRange(Math.Max(Math.Abs(step.DeltaRow), Math.Abs(step.DeltaCol)), 1, range));
+        Assert.All(steps, step =>
+            Assert.InRange(LInfinityNorm.Length(step.DeltaRow, step.DeltaCol), 1, range));
     }
 
     // A neighbourhood agrees with the lattice when every symmetry maps it onto itself.

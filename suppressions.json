@@ -2,6 +2,38 @@
   "schema": 1,
   "waivers": [
     {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation/Domain/Mathematics/Metrics/LpNorm.cs",
+      "message": "abbreviation `lp`",
+      "reason": "Lp is the name mathematics gives the norm family, the L of the Lebesgue spaces with its exponent p, as L1, L2 and L-infinity are its members' names, and the owner's own word for this subject. It abbreviates no longer word, and a spelled-out name would be one no reader of the mathematics looks for (ARCHITECTURE 17.9).",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.Tests/Domain/Mathematics/Metrics/LpNormTests.cs",
+      "message": "abbreviation `lp`",
+      "reason": "The test class is named for LpNorm, as check-test-coverage requires, and Lp is the norm family's mathematical name, not an abbreviation; see LpNorm.cs's own waiver.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-doc-placement",
+      "path": "DSAExperimentation/Domain/Mathematics/Metrics/L1Norm.cs",
+      "message": "restates the interface member `ILpNorm.",
+      "reason": "The check pairs members with the contract by name alone. The public Length and Distance here are generic overloads, exact in any number type and one of them planar, and none implements ILpNorm: the contract's double members are implemented explicitly and read them, so these docs describe signatures the contract does not have, and an inheritdoc would document the wrong parameters (ARCHITECTURE 17.9).",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-doc-placement",
+      "path": "DSAExperimentation/Domain/Mathematics/Metrics/LInfinityNorm.cs",
+      "message": "restates the interface member `ILpNorm.",
+      "reason": "The check pairs members with the contract by name alone. The public Length and Distance here are generic overloads, exact in any number type and one of them planar, and none implements ILpNorm: the contract's double members are implemented explicitly and read them, so these docs describe signatures the contract does not have, and an inheritdoc would document the wrong parameters (ARCHITECTURE 17.9).",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-presumption",
       "path": "DSAExperimentation/DataStructures/SegmentTree/SegmentTree.cs",
       "reason": "each _pending! reads the tag arena, which is null only under the trivial action (NoAction, whose update type NoUpdate has nothing to defer) and is always built by the constructor of every other configuration; PushDown and ApplyToNode, the two readers, are reached only from ChildrenOf behind the folded NoUpdate type test and from ApplyToRange, which only the configuration with an action calls (ARCHITECTURE.md section 13.10). Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
