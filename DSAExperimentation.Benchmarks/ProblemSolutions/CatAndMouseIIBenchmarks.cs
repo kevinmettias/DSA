@@ -2,10 +2,11 @@ using DSAExperimentation.LeetCode.Solutions.CatAndMouseII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are CatAndMouseIISolution's, the same methods
+// Harness only: every arm is CatAndMouseIISolution's, the same methods
 // CatAndMouseIISolutionTests proves correct - the textbook unmemoized minimax recursion,
 // re-exploring every repeated board position from scratch, vs. the identical
-// recurrence routed through this repo's own Memoizer. The workload is a single-row
+// recurrence routed through this repo's own Memoizer, vs. retrograde analysis, which
+// values every position of the board backwards from the ends. The workload is a single-row
 // corridor (Food at one end, Cat in the middle, Mouse at the far end) so both
 // players' positions - and therefore the distinct state count - stay small while
 // CorridorLength still grows the unmemoized search tree. Grid construction is
@@ -47,4 +48,8 @@ public class CatAndMouseIIBenchmarks
     [Benchmark]
     public bool CanMouseWinByMemoizedRecursion() =>
         CatAndMouseIISolution.CanMouseWinByMemoizedRecursion(_grid, CatJump, MouseJump);
+
+    [Benchmark]
+    public bool CanMouseWinByRetrogradeAnalysis() =>
+        CatAndMouseIISolution.CanMouseWinByRetrogradeAnalysis(_grid, CatJump, MouseJump);
 }

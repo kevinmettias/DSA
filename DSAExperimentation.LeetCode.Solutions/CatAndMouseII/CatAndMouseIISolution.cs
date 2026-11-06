@@ -1,5 +1,7 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Algorithms.GameSearch;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Mathematics.GameTheory;
 using DSAExperimentation.Domain.Mathematics.Lattices;
 
 namespace DSAExperimentation.LeetCode.Solutions.CatAndMouseII;
@@ -10,11 +12,13 @@ namespace DSAExperimentation.LeetCode.Solutions.CatAndMouseII;
 // Cat moves and Mouse only wins the state if EVERY reachable Cat move still leads
 // to a mouse-win state.
 //
-// Both strategies evaluate exactly that recurrence and differ in whether a state's
+// The two recursions evaluate exactly that recurrence and differ in whether a state's
 // result is remembered: the baseline re-explores every repeated board position from
 // scratch over a plain bool[,] board, the composed arm routes the identical body
 // through this repo's own Memoizer over a Grid - the CanIWin/PredictTheWinner shape,
-// just with a 2D position pair instead of a bitmask or an interval.
+// just with a 2D position pair instead of a bitmask or an interval. The third
+// strategy drops the turn from the state and values every position backwards from
+// the ends by retrograde analysis, over CatAndMouseGame.
 [LeetCodeQuestion("cat-and-mouse-ii", LeetCodeAnswerOrder.AsWritten, Reach = typeof(CatAndMouseIIReach))]
 internal static class CatAndMouseIISolution
 {
@@ -33,6 +37,10 @@ internal static class CatAndMouseIISolution
     // force a win from there. It stands in for the official "1000 turns" rule while
     // keeping the memoized state space small enough to actually enumerate.
     private const int TurnCapCellMultiplier = 2;
+
+    // The statement's own limit: the cat wins if the mouse has not reached the food within 1,000
+    // turns, each animal's move being one turn.
+    private const int TurnLimit = 1000;
 
     // The textbook answer: the same minimax recursion with no cache at all, so every
     // repeated board position is re-derived. Deliberately written without this
@@ -53,6 +61,23 @@ internal static class CatAndMouseIISolution
         var (context, start) = ParseGrid(grid, catJump, mouseJump);
 
         return Memoizer.Memoize<GameState, bool>(start, new CanMouseWinUnderPlay(context));
+    }
+
+    // The game as Domain's game graph, valued backwards from the positions that end it by
+    // retrograde analysis (Algorithms/GameSearch), as LeetCode's hint suggests. A position is where
+    // each animal stands and whose move it is, so play can come back to one. The recursions above
+    // cut that off with a turn cap; here a position neither animal can force to an end is a draw,
+    // and a draw is the cat's, since the mouse never reaches the food. The statement's 1,000 turns
+    // need no turn count in the position: the mouse wins within them exactly when its win lasts
+    // no more moves than that, which the solved game reports.
+    public static bool CanMouseWinByRetrogradeAnalysis(string[] grid, int catJump, int mouseJump)
+    {
+        var (game, start) = ReadGame(grid, catJump, mouseJump);
+        var solved = RetrogradeAnalysis.Solve<CatAndMouseGame, CatAndMousePosition>(game);
+        var startIndex = game.IndexOf(start);
+        var isMouseWin = solved.OutcomeOf(startIndex) == GameOutcome.Win;
+
+        return isMouseWin && solved.MovesToEnd(startIndex) <= TurnLimit;
     }
 
     // The baseline's ParseGrid: the same fixed shape, with the walkable cells kept as
@@ -301,6 +326,79 @@ internal static class CatAndMouseIISolution
                 break;
             }
         }
+    }
+
+    // Reads the grid into the game: its walkable cells numbered in row order, each animal's moves
+    // from every one of them and the food's cell, and the start, with the mouse to move.
+    private static (CatAndMouseGame Game, CatAndMousePosition Start) ReadGame(
+        string[] grid, int catJump, int mouseJump)
+    {
+        var board = BuildBoard(grid);
+        var floor = FloorCells(board);
+        var numbers = NumbersOf(floor, board);
+        var mouseMoves = MovesFrom(floor, new StepLimit(mouseJump, Blocker: null), board, numbers);
+        var catMoves = MovesFrom(floor, new StepLimit(catJump, Blocker: null), board, numbers);
+        var (foodRow, foodCol) = Locate(grid, FoodMark);
+        var (mouseRow, mouseCol) = Locate(grid, MouseMark);
+        var (catRow, catCol) = Locate(grid, CatMark);
+        var game = new CatAndMouseGame(mouseMoves, catMoves, numbers[foodRow, foodCol]);
+        var mouse = numbers[mouseRow, mouseCol];
+        var cat = numbers[catRow, catCol];
+        var start = new CatAndMousePosition(mouse, cat, CatAndMouseGame.MouseSeat);
+
+        return (game, start);
+    }
+
+    // The walkable cells in row order: a cell's place here is its number in a position.
+    private static (int Row, int Col)[] FloorCells(Grid board)
+    {
+        var floor = new List<(int Row, int Col)>();
+
+        for (var row = 0; row < board.Rows; row++)
+        {
+            for (var col = 0; col < board.Cols; col++)
+            {
+                if (board.IsPassable(row, col))
+                {
+                    floor.Add((row, col));
+                }
+            }
+        }
+
+        return [.. floor];
+    }
+
+    // Each walkable cell's number at its row and column. A wall's entry is never read, since no
+    // animal stands on or moves to a wall.
+    private static int[,] NumbersOf((int Row, int Col)[] floor, Grid board)
+    {
+        var numbers = new int[board.Rows, board.Cols];
+
+        for (var number = 0; number < floor.Length; number++)
+        {
+            var (row, col) = floor[number];
+            numbers[row, col] = number;
+        }
+
+        return numbers;
+    }
+
+    // One animal's moves from every walkable cell, by number: staying put, or a jump along a row or
+    // column of up to its limit. The cat's ignore the mouse in its path. The statement lets only
+    // the mouse jump over the other, but a cat with the mouse in its path can land on it and win,
+    // so the cells beyond change no position's value, and each cell's moves are fixed once.
+    private static int[][] MovesFrom(
+        (int Row, int Col)[] floor, StepLimit limit, Grid board, int[,] numbers)
+    {
+        var moves = new int[floor.Length][];
+
+        for (var number = 0; number < floor.Length; number++)
+        {
+            var reachable = ReachableCells(floor[number], limit, board);
+            moves[number] = [.. reachable.Select(cell => numbers[cell.Row, cell.Col])];
+        }
+
+        return moves;
     }
 
     // Everything one call's recurrence needs that stays fixed across every state -

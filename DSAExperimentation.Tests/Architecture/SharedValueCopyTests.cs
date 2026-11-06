@@ -46,6 +46,8 @@ public sealed partial class SharedValueCopyTests
             "The largest n whose cases every strategy of LC 233 finishes in time, its reach, not a second's ticks.",
         ["DSAExperimentation.LeetCode.Solutions.FindTheNumberOfPossibleWaysForAnEvent.FindTheNumberOfPossibleWaysForAnEventReach.LargestAssignmentCount"] =
             "The most stage assignments whose cases every strategy of LC 3317 finishes in time, its reach, not the parts a whole holds per million.",
+        ["DSAExperimentation.LeetCode.Solutions.CatAndMouseII.CatAndMouseIISolution.TurnLimit"] =
+            "LC 1728's 1,000 turns, after which the cat wins, not the parts a whole holds per mille.",
     };
 
     private static readonly Lazy<IReadOnlyList<LibraryValueCopies.Copy>> Copies =

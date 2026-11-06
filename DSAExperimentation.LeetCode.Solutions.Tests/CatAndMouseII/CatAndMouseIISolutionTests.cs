@@ -2,9 +2,9 @@ using DSAExperimentation.LeetCode.Solutions.CatAndMouseII;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.CatAndMouseII;
 
-// Harness only. Both strategies - the uncached minimax recursion and the same
-// recurrence routed through Memoizer - are CatAndMouseIISolution's, so this file
-// only pins them to the wall, capture and
+// Harness only. Every strategy - the uncached minimax recursion, the same
+// recurrence routed through Memoizer, and retrograde analysis over the game graph -
+// is CatAndMouseIISolution's, so this file only pins them to the wall, capture and
 // jump-distance cases that separate a win from a loss. LeetCode's published
 // examples run in CatalogCaseTests.
 public sealed partial class CatAndMouseIISolutionTests
@@ -38,6 +38,45 @@ public sealed partial class CatAndMouseIISolutionTests
             { new CanMouseWinCase(Grid: ["####F", "#C...", "M...."], CatJump: 1, MouseJump: 2, Expected: true) },
         };
 
+    // Boards up to LeetCode's 8 x 8 from the catalog's cases, asserted on retrograde
+    // analysis alone: the problem's reach keeps every catalog case past a single row
+    // from the catalog harness, since the exhaustive recursion cannot finish them. The
+    // fourth is a draw - the food is walled off from both animals and the cat cannot
+    // corner the mouse - and a draw is the cat's.
+    public static TheoryData<CanMouseWinCase> RetrogradeOnlyBoards =>
+        new()
+        {
+            {
+                new CanMouseWinCase(
+                    Grid: ["M......", ".......", ".....#C", "......#",
+                        ".......", "#F.....", "......."],
+                    CatJump: 3, MouseJump: 3, Expected: true)
+            },
+            {
+                new CanMouseWinCase(
+                    Grid: [".......", ".......", ".......", "...C...",
+                        "...M...", ".......", "...F..."],
+                    CatJump: 5, MouseJump: 5, Expected: true)
+            },
+            {
+                new CanMouseWinCase(
+                    Grid: ["M.......", "........", ".####...", ".....#..",
+                        "......#F", "........", "........", ".....C.."],
+                    CatJump: 2, MouseJump: 1, Expected: false)
+            },
+            {
+                new CanMouseWinCase(
+                    Grid: ["M....", ".....", "...C.", "#####", "....F"],
+                    CatJump: 2, MouseJump: 1, Expected: false)
+            },
+            {
+                new CanMouseWinCase(
+                    Grid: ["M.......", "........", "........", "...F....",
+                        "........", "........", "........", ".......C"],
+                    CatJump: 6, MouseJump: 2, Expected: false)
+            },
+        };
+
     [Theory]
     [MemberData(nameof(Cases))]
     public void CanMouseWinByExhaustiveRecursion_Cases_ReturnsWhetherMouseForcesTheFood(
@@ -56,6 +95,19 @@ public sealed partial class CatAndMouseIISolutionTests
         CanMouseWinCase testCase)
     {
         var mouseWins = CatAndMouseIISolution.CanMouseWinByMemoizedRecursion(
+            testCase.Grid, testCase.CatJump, testCase.MouseJump);
+
+        Assert.Equal(testCase.Expected, mouseWins);
+    }
+
+    [Theory]
+    [MemberData(nameof(Cases))]
+    [MemberData(nameof(MemoizedOnlyExamples))]
+    [MemberData(nameof(RetrogradeOnlyBoards))]
+    public void CanMouseWinByRetrogradeAnalysis_Cases_ReturnsWhetherMouseForcesTheFood(
+        CanMouseWinCase testCase)
+    {
+        var mouseWins = CatAndMouseIISolution.CanMouseWinByRetrogradeAnalysis(
             testCase.Grid, testCase.CatJump, testCase.MouseJump);
 
         Assert.Equal(testCase.Expected, mouseWins);
