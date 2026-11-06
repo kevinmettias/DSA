@@ -1,7 +1,8 @@
 namespace DSAExperimentation.DataStructures.SegmentTree;
 
 // Concrete, not behind an interface - exactly one segment-tree representation exists today
-// (ARCHITECTURE.md §5 step 3).
+// (ARCHITECTURE.md §5 step 3). The one tree keeps two: its nodes' values, and the pending tags
+// that only a configuration with a range action allocates.
 //
 // Fixed-size at construction (4 * leafCount, the standard recursive-segment-tree upper bound that
 // covers any non-power-of-two leaf count) - like DisjointSetForest, the universe size is known
@@ -19,9 +20,9 @@ internal sealed class SegmentTreeArray<Element>
     private readonly Element[] _nodes;
 
     // fill seeds every slot, not only the nodes a tree's own recursion happens to visit: the arena
-    // is private to one tree, so a uniform start is always equivalent, and it is what
-    // LazySegmentTree's pending tags need - a node's tag must read as "nothing pending" whether or
-    // not anything ever wrote to that node.
+    // is private to one tree, so a uniform start is always equivalent, and it is what the pending
+    // tags of a tree with a range action need - a node's tag must read as "nothing pending"
+    // whether or not anything ever wrote to that node.
     public SegmentTreeArray(int leafCount, Element? fill = default)
     {
         _nodes = new Element[SizeMultiplier * Math.Max(leafCount, 1)];

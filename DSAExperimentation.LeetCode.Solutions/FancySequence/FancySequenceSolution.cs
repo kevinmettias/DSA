@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.LazySegmentTree;
+using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.FancySequence;
 
@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FancySequence;
 // implementation backs it, the same CreateBy<Strategy> factory shape
 // AllOneDataStructureSolution/LRUCacheSolution use for their own design problems.
 // Both factories take the number of appends the caller will make, because the
-// composed strategy's LazySegmentTree is a fixed-width structure; LeetCode's own
+// composed strategy's segment tree is a fixed-width structure; LeetCode's own
 // constructor takes no argument and grows unboundedly.
 //
 // CreateByArrayRescan is the textbook baseline this composition has to justify
@@ -21,17 +21,17 @@ namespace DSAExperimentation.LeetCode.Solutions.FancySequence;
 //
 // CreateByLazySegmentTreeAffine recognizes addAll/multAll as the one lazy-propagated
 // affine transform x -> Mult*x + Add that this repo's own
-// LazySegmentTree<Element,TUpdate,TOperation> already generalizes over via
+// SegmentTree<Element,TUpdate,TOperation> already generalizes over via
 // IRangeUpdateOperation - RangeAddSumOperation/RangeAssignMaxOperation are its two
 // existing witnesses (add-then-sum, assign-then-max) and AffineOperation beside this
 // file is a third - so each whole-prefix update costs O(log n) instead of O(n)
-// (FallingSquaresSolution's own LazySegmentTree-vs-rescan precedent, there with
+// (FallingSquaresSolution's own lazy-segment-tree-vs-rescan precedent, there with
 // range-assign-max instead of an affine op).
 internal static class FancySequenceSolution
 {
     // Append plants a raw value with a single-point update whose Mult is 0 (not the
     // more obvious 1) specifically so the update can never equal AffineOperation's
-    // NoUpdate = (1, 0), even when val is 0, which LazySegmentTree's own
+    // NoUpdate = (1, 0), even when val is 0, which SegmentTree's own
     // ValidateUpdate would otherwise reject as "no pending update to apply".
     private const long PlantValueMultiplier = 0L;
 
@@ -87,7 +87,7 @@ internal static class FancySequenceSolution
 
     private sealed class LazySegmentTreeAffineFancySequence(int capacity) : IFancySequence
     {
-        private readonly LazySegmentTree<long, (long Mult, long Add), AffineOperation> _tree = new(new long[capacity]);
+        private readonly SegmentTree<long, (long Mult, long Add), AffineOperation> _tree = new(new long[capacity]);
 
         private int _size;
 
@@ -98,7 +98,7 @@ internal static class FancySequenceSolution
         }
 
         // An addAll of 0 and a multAll of 1 are both the affine identity, which is
-        // AffineOperation.NoUpdate - reserved by LazySegmentTree to mean "nothing
+        // AffineOperation.NoUpdate - reserved by SegmentTree.UpdateRange to mean "nothing
         // pending" - so they are skipped rather than forwarded. Skipping is also the
         // correct answer: neither changes a single value.
         public void AddAll(int inc)

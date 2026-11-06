@@ -8,10 +8,11 @@ namespace DSAExperimentation.DataStructures.SegmentTree;
 // travel together through this recursion, never independently.
 internal readonly record struct SegmentRange(int Node, int Start, int End)
 {
-    // Both SegmentTree and LazySegmentTree recurse by splitting a range into its two child
-    // ranges at the midpoint - Split centralizes that shared arithmetic once, here, rather than
-    // each caller re-deriving mid/left-child/right-child independently (the cross-file
-    // duplication a repo-wide structural-duplication check flagged when each did).
+    // Build, Update, Query and the range update's push-down all recurse by splitting a range
+    // into its two child ranges at the midpoint - Split centralizes that shared arithmetic once,
+    // here, rather than each caller re-deriving mid/left-child/right-child independently (the
+    // cross-file duplication a repo-wide structural-duplication check flagged when the point and
+    // the lazy tree were still two structures, each with its own copy).
     public (SegmentRange Left, SegmentRange Right) Split()
     {
         var mid = Start + ((End - Start) / AlgorithmConstants.HalvingFactor);

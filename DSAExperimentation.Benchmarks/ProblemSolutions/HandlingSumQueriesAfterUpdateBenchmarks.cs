@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods HandlingSumQueriesAfterUpdateSolutionTests proves correct - re-scanning a mutable
 // bit array on every flip and every "add p per current one" query (baseline, the
 // naive approach the problem is designed to make too slow) vs. this repo's own
-// LazySegmentTree<int, bool, FlipCountOperation> answering both the range flip and
+// SegmentTree<int, bool, FlipCountOperation> answering both the range flip and
 // the current-one-count as O(log n) operations. [GlobalSetup] builds nums1, nums2 and
 // the query stream - already LeetCode's own input shape, so no hoisted overload is
 // needed - and query kinds cycle through flip/add/read so both strategies pay a

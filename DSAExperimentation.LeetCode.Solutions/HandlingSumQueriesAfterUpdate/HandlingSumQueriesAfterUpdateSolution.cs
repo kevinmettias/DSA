@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.LazySegmentTree;
+using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.HandlingSumQueriesAfterUpdate;
 
@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.Solutions.HandlingSumQueriesAfterUpdate;
 // the same p to every position that holds a one, so the only thing it changes about
 // the total is `p * (ones in nums1)`. That reduces the whole problem to maintaining
 // one number - the count of ones in nums1 under range flips - which is exactly what
-// this repo's LazySegmentTree<Element, TUpdate, TOperation> does once handed
+// this repo's SegmentTree<Element, TUpdate, TOperation> does once handed
 // FlipCountOperation, the third IRangeUpdateOperation witness (beside
 // RangeAddSumOperation and RangeAssignMaxOperation) and the same "compose the generic
 // lazy engine over a new algebra" move FancySequence's AffineOperation makes.
@@ -63,13 +63,13 @@ internal static class HandlingSumQueriesAfterUpdateSolution
         }
     }
 
-    // One LazySegmentTree over nums1 turns both halves of the cost into O(log n): a
+    // One lazy SegmentTree over nums1 turns both halves of the cost into O(log n): a
     // type-1 query is a single lazy range update (FlipCountOperation rewrites a node's
     // count as rangeLength - count without touching its leaves), and a type-2 query is
     // one whole-array Query for the current count of ones.
     public static long[] HandleQueryByLazySegmentTree(int[] nums1, int[] nums2, int[][] queries)
     {
-        var ones = new LazySegmentTree<int, bool, FlipCountOperation>(nums1);
+        var ones = new SegmentTree<int, bool, FlipCountOperation>(nums1);
         var lastIndex = nums1.Length - 1;
         var total = nums2.Sum(value => (long)value);
         var answers = new List<long>();

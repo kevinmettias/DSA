@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FallingSquaresSolution's - the classic O(n^2) "check
 // every earlier square's footprint for overlap" brute force vs. the O(n log n)
-// coordinate-compression + LazySegmentTree approach. Footprints are randomly
+// coordinate-compression + lazy SegmentTree approach. Footprints are randomly
 // overlapping so both strategies pay their full worst-case cost rather than
 // degenerating to disjoint, non-interacting squares. Left edges start at 1, LC 699's
 // smallest.

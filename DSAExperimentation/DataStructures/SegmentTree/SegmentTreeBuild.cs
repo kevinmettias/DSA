@@ -2,17 +2,18 @@ using DSAExperimentation.Domain.Mathematics.Algebra;
 
 namespace DSAExperimentation.DataStructures.SegmentTree;
 
-// The one recursion both range trees build with: a leaf takes its element straight from the source
+// The recursion the segment tree builds with: a leaf takes its element straight from the source
 // array, an internal node takes the combination of its two children, and [Start, End] narrows over
 // SegmentRange.Split exactly as the query/update recursions narrow it - which is what makes every
 // node this writes a node those recursions later read.
 //
-// Extracted for the same reason SegmentRange.Split was: SegmentTree and LazySegmentTree each
-// carried their own copy of this body and a repo-wide structural-duplication check flagged the
-// pair. Free-standing rather than a method on SegmentTreeArray<Element>: that type's own doc
-// comment scopes it to a pure O(1) Get/Set Representation, and a recursion that consults
-// IMonoid is not the array's business (ARCHITECTURE.md §5 step 3, §17.6's tier split
-// between a Representation and the Algorithm that populates it).
+// Extracted for the same reason SegmentRange.Split was: the point and the lazy tree, while they
+// were two structures, each carried their own copy of this body and a repo-wide
+// structural-duplication check flagged the pair. Free-standing rather than a method on
+// SegmentTreeArray<Element>: that type's own doc comment scopes it to a pure O(1) Get/Set
+// Representation, and a recursion that consults IMonoid is not the array's business
+// (ARCHITECTURE.md §5 step 3, §17.6's tier split between a Representation and the Algorithm that
+// populates it).
 internal static class SegmentTreeBuild
 {
     // TOperation is an explicit witness argument rather than inferable: Element and TOperation are

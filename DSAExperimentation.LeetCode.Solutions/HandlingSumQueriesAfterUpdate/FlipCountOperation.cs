@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.LazySegmentTree;
+using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.HandlingSumQueriesAfterUpdate;
 
@@ -10,16 +10,16 @@ namespace DSAExperimentation.LeetCode.Solutions.HandlingSumQueriesAfterUpdate;
 // ApplyUpdate is the whole trick: flipping k bits of which `aggregate` are ones
 // leaves exactly rangeLength - aggregate ones, so a node's count can be corrected
 // without ever descending to its leaves. ComposeUpdate is XOR, because two pending
-// flips on the same node cancel - the closure property that lets LazySegmentTree fold
+// flips on the same node cancel - the closure property that lets the segment tree fold
 // an arriving flip onto one already queued instead of pushing the old one down first.
-// NoUpdate = false is therefore also the "nothing pending" sentinel LazySegmentTree
+// NoUpdate = false is therefore also the "nothing pending" sentinel SegmentTree
 // reserves, which is why callers only ever pass `true` as an explicit update.
 //
 // Combine is addition and Identity is 0: counts of ones over disjoint ranges add.
 //
 // This witness answers one LeetCode problem and nothing else - "count ones under
 // range flips" is LC 2569's own semantics, not a general shape - so it lives beside
-// the solution rather than in DataStructures/LazySegmentTree beside
+// the solution rather than in DataStructures/SegmentTree beside
 // RangeAddSumOperation/RangeAssignMaxOperation, the same placement
 // FancySequence's AffineOperation and LongestBalancedSubarrayII's
 // BalanceRangeAddOperation already take.

@@ -18,9 +18,8 @@ namespace DSAExperimentation.DataStructures.RangeFenwickTree;
 // re-walking every position individually.
 //
 // Range-update only, deliberately: no point-Add method. Point-update/range-query is FenwickTree's
-// job - mixing that usage pattern onto this type would silently redefine what PrefixQuery means,
-// the same trap SegmentTree/LazySegmentTree stay split to avoid. A point query is just
-// Query(i, i) - no separate method needed.
+// job - mixing that usage pattern onto this type would silently redefine what PrefixQuery means.
+// A point query is just Query(i, i) - no separate method needed.
 /// <summary>A fixed-length sequence with range-add updates and range queries, each in O(log n).</summary>
 public sealed class RangeFenwickTree<Element, TOperation>
     where TOperation : struct, IIntegerModule<Element>

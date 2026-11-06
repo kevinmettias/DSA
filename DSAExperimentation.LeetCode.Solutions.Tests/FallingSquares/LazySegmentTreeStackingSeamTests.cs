@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.FallingSquares;
 // HeightsByBruteForceOverlapScan keeps a height per square and scans every earlier
 // square for footprint overlap. HeightsByLazySegmentTree coordinate-compresses every
 // footprint onto a dense leaf range and composes DataStructures'
-// LazySegmentTree<int, int?, RangeAssignMaxOperation<int>> over it: one range-max
+// SegmentTree<int, int?, RangeAssignMaxOperation<int>> over it: one range-max
 // Query asks what is already stacked under the square, one UpdateRange plants the
 // new height across the same footprint.
 //

@@ -29,7 +29,7 @@ public sealed partial class SegmentTreeArrayTests
 
     // ArraySize is beyond the leaves of a four-leaf tree, so this slot is one no build recursion
     // would ever reach - the whole point of seeding the arena uniformly rather than at the nodes a
-    // tree happens to visit (LazySegmentTree's pending tags rely on it).
+    // tree happens to visit (the pending tags of a tree with a range action rely on it).
     [Fact]
     public void Constructor_WithFill_SeedsSlotsNoRecursionWouldVisit()
     {

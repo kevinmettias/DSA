@@ -53,6 +53,7 @@ public sealed partial class Tier5WitnessTests
         "IHeapOrder",
         "IMonoid",
         "IRangeUpdateOperation",
+        "IRangeAction",
         "IAbelianGroup",
         "IIntegerModule",
         "IRandomAccessSequence",

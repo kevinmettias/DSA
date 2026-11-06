@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.LazySegmentTree;
+using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestBalancedSubarrayII;
 
@@ -22,7 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestBalancedSubarrayII;
 // longest one ending at r is r minus the LEFTMOST l < r with Balance[l] ==
 // Balance[r].
 //
-// Balance is maintained as a LazySegmentTree<BalanceRange, int,
+// Balance is maintained as a SegmentTree<BalanceRange, int,
 // BalanceRangeAddOperation> of size n+1: activating position k (or deactivating a
 // stale one at q) is a range-add of the weight over the suffix [k, n] (or [q, n])
 // - future, not-yet-reached positions are pre-filled with a contribution that is
@@ -31,7 +31,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestBalancedSubarrayII;
 // then a MonotonePredicateSearch over l whose every probe is the tree's own
 // Query(left, right) - BalanceRangeAddOperation's own doc comment explains why
 // comparing a target against a range's [Min, Max] is enough to decide whether that
-// range actually contains it, so no change to LazySegmentTree is needed to support
+// range actually contains it, so no change to SegmentTree is needed to support
 // the search.
 [LeetCodeQuestion("longest-balanced-subarray-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class LongestBalancedSubarrayIISolution
@@ -75,7 +75,7 @@ internal static class LongestBalancedSubarrayIISolution
         var initial = new BalanceRange[count + 1];
         Array.Fill(initial, new BalanceRange(0, 0));
 
-        var balance = new LazySegmentTree<BalanceRange, int, BalanceRangeAddOperation>(initial);
+        var balance = new SegmentTree<BalanceRange, int, BalanceRangeAddOperation>(initial);
         var lastSeenPosition = new HashMap<int, int>();
         var longest = 0;
 
@@ -94,7 +94,7 @@ internal static class LongestBalancedSubarrayIISolution
     // stops counting toward its parity (a range-add over the suffix it still covers),
     // and position itself starts counting.
     private static void ApplyActivation(
-        LazySegmentTree<BalanceRange, int, BalanceRangeAddOperation> balance,
+        SegmentTree<BalanceRange, int, BalanceRangeAddOperation> balance,
         HashMap<int, int> lastSeenPosition,
         int[] nums,
         int position)
@@ -114,11 +114,11 @@ internal static class LongestBalancedSubarrayIISolution
     // The leftmost earlier index sharing Balance[position] is where the longest
     // balanced run ending here starts, and this repo's own
     // MonotonePredicateSearch.FirstTrue finds it over [0, position - 1], one Query per
-    // probe - no access to LazySegmentTree's own internals. When no earlier index
+    // probe - no access to SegmentTree's own internals. When no earlier index
     // shares it, FirstTrue answers high + 1, which is position itself: a run of length
     // 0, exactly "no balanced subarray ends here".
     private static int LongestEndingAt(
-        LazySegmentTree<BalanceRange, int, BalanceRangeAddOperation> balance, int position)
+        SegmentTree<BalanceRange, int, BalanceRangeAddOperation> balance, int position)
     {
         var target = balance.Query(position, position).Min;
         var matchPosition =
@@ -133,7 +133,7 @@ internal static class LongestBalancedSubarrayIISolution
     // first last at which the span reaches target is an index holding target itself, so
     // the boundary is the leftmost match, not merely the first range that brackets it.
     private readonly struct SpansBalance(
-        LazySegmentTree<BalanceRange, int, BalanceRangeAddOperation> balance, int target)
+        SegmentTree<BalanceRange, int, BalanceRangeAddOperation> balance, int target)
         : IMonotonePredicate<int>
     {
         public bool IsSatisfiedBy(int last)

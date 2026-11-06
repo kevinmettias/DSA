@@ -2,6 +2,13 @@
   "schema": 1,
   "waivers": [
     {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/SegmentTree/SegmentTree.cs",
+      "reason": "each _pending! reads the tag arena, which is null only under the trivial action (NoAction, whose update type NoUpdate has nothing to defer) and is always built by the constructor of every other configuration; PushDown and ApplyToNode, the two readers, are reached only from ChildrenOf behind the folded NoUpdate type test and from ApplyToRange, which only the configuration with an action calls (ARCHITECTURE.md section 13.10). Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-test-coverage",
       "path": "DSAExperimentation/Algorithms/GameSearch/Negamax.cs",
       "anchor": "`Replay` is exercised by a test",

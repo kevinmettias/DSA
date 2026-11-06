@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.LazySegmentTree;
+using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.LongestBalancedSubarrayII;
 
@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LongestBalancedSubarrayII;
 // between them is actually attained somewhere in that range. That is what lets
 // LongestBalancedSubarrayIISolution search the tree from outside (one Query call
 // per MonotonePredicateSearch probe) for the leftmost index holding a target
-// value, with no change to LazySegmentTree itself.
+// value, with no change to SegmentTree itself.
 internal readonly struct BalanceRangeAddOperation : IRangeUpdateOperation<BalanceRange, int>
 {
     public static BalanceRange Identity => new(int.MaxValue, int.MinValue);

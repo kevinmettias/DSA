@@ -8,7 +8,8 @@ namespace DSAExperimentation.Domain.Mathematics.Algebra;
 //   - IAbelianGroup          FenwickTree,        + Invert: a range is a difference of two prefixes
 //                            PrefixSums
 //     - IIntegerModule       RangeFenwickTree    + Scale: a range update is a scaled prefix
-//   IRangeUpdateOperation    LazySegmentTree     + an update action, kept structure-local
+//   IRangeUpdateOperation    SegmentTree with    + an update action, kept structure-local
+//                            range updates
 //
 // Associativity is an unenforced precondition law, the same shape as BinarySearch's sortedness: an
 // operation that is not associative still builds and queries without error, and silently returns a

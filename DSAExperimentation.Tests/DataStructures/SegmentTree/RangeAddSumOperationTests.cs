@@ -1,6 +1,6 @@
-using DSAExperimentation.DataStructures.LazySegmentTree;
+using DSAExperimentation.DataStructures.SegmentTree;
 
-namespace DSAExperimentation.Tests.DataStructures.LazySegmentTree;
+namespace DSAExperimentation.Tests.DataStructures.SegmentTree;
 
 public sealed partial class RangeAddSumOperationTests
 {

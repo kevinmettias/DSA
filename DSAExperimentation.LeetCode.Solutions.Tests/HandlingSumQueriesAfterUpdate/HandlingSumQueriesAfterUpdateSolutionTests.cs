@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.HandlingSumQueriesAfterUpdate;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.HandlingSumQueriesAfterUpdate;
 
 // Harness only. Both strategies - the rescanning bit array and the
-// LazySegmentTree<int, bool, FlipCountOperation> walk - are
+// SegmentTree<int, bool, FlipCountOperation> walk - are
 // HandlingSumQueriesAfterUpdateSolution's; this file just pins them to the
 // cancelling-flip, multiple-reading and no-ones cases that exercise the flip
 // algebra's own laws. LeetCode's published examples run in CatalogCaseTests.

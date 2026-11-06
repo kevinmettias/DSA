@@ -593,19 +593,19 @@ into a new array and sorts that, for a caller whose input is not its own to reor
 input is a benchmark's workload, reused by every invocation. It adds no axis, only the copy that
 thirty solutions' composed arms wrote by hand, six of them as a helper of their own.
 
-### 11.4 Element algebras: one chain across four structures, and why §11.1 does not split it
+### 11.4 Element algebras: one chain across three structures, and why §11.1 does not split it
 
-`SegmentTree`, `FenwickTree`, `RangeFenwickTree` and `LazySegmentTree` each need an algebra over
+`SegmentTree` (in both its configurations, §13.10), `FenwickTree` and `RangeFenwickTree` each need an algebra over
 their elements, and they share one chain in `Domain/Mathematics/Algebra/` — `IMonoid`
 (monoid) ← `IAbelianGroup` (+ `Invert`) ← `IIntegerModule` (+ `Scale`) — with `Addition` at the
-deepest position its arithmetic reaches, plus `Minimum`, `Maximum` and `BitwiseXor`. `IRangeUpdateOperation` refines `IMonoid` but stays in
-`LazySegmentTree/`.
+deepest position its arithmetic reaches, plus `Minimum`, `Maximum` and `BitwiseXor`. `IRangeUpdateOperation` refines `IMonoid` with a range action, `IRangeAction`, but stays in
+`SegmentTree/`.
 
 **Why §5 step 5 does not fire.** Step 5 forbids reusing another domain's *Representation or
 Topology* contract, because a fold's node list and a heap's array are different enough shapes that a
 shared interface leaks. These contracts are neither: they are laws on the element type — identity,
 associativity, inverse, scaling — the way `INumber<T>` is, which every `Addition` already
-depended on. No structure reuses another structure's contract; all four consume a neutral one,
+depended on. No structure reuses another structure's contract; all three consume a neutral one,
 the same arrangement as `ByPriorityOrder` implementing `Heap`'s `IHeapOrder` for `ShortestPath`.
 One contract per structure would cost what it once did: byte-identical `Addition`s per
 structure, and an adapter re-presenting one contract's `Identity`/`Combine` under another's name so
@@ -620,7 +620,8 @@ so keeping them apart would buy nothing but an adapter.
 
 **The rule that keeps the chain honest.** A member only one structure needs never joins it; it goes in
 a structure-local refinement. `IRangeUpdateOperation`'s update tags are the example: lazy
-propagation is `LazySegmentTree`'s business, so `SegmentTree` and `FenwickTree` never see them.
+propagation is the segment tree's business, its range action (§13.10), so `FenwickTree` never sees
+them, and neither does a segment tree configured with the trivial action.
 The structures' own constraints say which link each needs — a Fenwick tree over `Minimum` is a
 compile error, because it needs `Invert` — and the reason is stated once, on `IAbelianGroup`.
 Dispatch is unaffected: every operation is a static-abstract witness on a struct type parameter.
@@ -806,13 +807,12 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `Heap/` | `IHeapOrder`, `MinHeapOrder`, `MaxHeapOrder`, `HeapArrayIndex`, `HeapArray`, `Heap` (§4) |
 | `IntervalSet/` | `IntervalSet` — the one sanctioned upward reference, to `Algorithms/Searching` (§17.6a) |
 | `KeyedDisjointSet/` | `KeyedDisjointSet` — composes `DisjointSet` and `HashMap` (§10.4) |
-| `LazySegmentTree/` | `LazySegmentTree`, `IRangeUpdateOperation` and its witnesses (§11.4) |
 | `MonotonicDeque/` | `IWindowOrder`, `MaxWindowOrder`, `MinWindowOrder`, `MonotonicDeque` — composes the unbounded `CircularBuffer` (§19.1, §20); `MinMaxWindow` — one `MonotonicDeque` per order (§19.1) |
 | `PrefixSums/` | `PrefixSums`, `MatrixPrefixSums` — consume `Domain/Mathematics/Algebra`'s `IAbelianGroup` (§19.2) |
 | `Queue/` | `Queue`, `BoundedQueue` — `CircularBuffer` unbounded and bounded, restricted to FIFO's ends (§20) |
 | `RangeFenwickTree/` | `RangeFenwickTree` |
 | `RollingHash/` | `RollingHash`, `RollingHashLane`, `RollingHashValue` |
-| `SegmentTree/` | `SegmentTree` and its array, build, index and range helpers |
+| `SegmentTree/` | `SegmentTree` and its array, build, index and range helpers; the one tree in two configurations (§13.10): `SegmentTree<Element, TUpdate, TOperation, TAction>`, abstract, and the two that derive from it, `SegmentTree<Element, TOperation>` with the trivial action (`NoAction`, whose update type `NoUpdate` has one value) and `SegmentTree<Element, TUpdate, TOperation>` with `TOperation`'s own; the action contract `IRangeAction`, and `IRangeUpdateOperation`, a monoid and its action in one witness, with `RangeAddSumOperation` and `RangeAssignMaxOperation` (§11.4) |
 | `Sequence/` | `IRandomAccessSequence`, `ArraySequence`, `DynamicArraySequence`, `OffsetSequence`, `MatrixSequence`, `IIndexedSequence`, `ArrayIndexedSequence`, `DynamicArrayIndexedSequence` (§9, §11, §13.6) |
 | `Set/` | `Set` — composes `HashMap<T,bool>` (§4.1) |
 | `SinglyLinkedList/` | `SinglyLinkedListNode`, `RandomLinkedListNode`, `CycleDetection` (§13.7) |
@@ -982,13 +982,17 @@ beside the contract it witnesses. `BinaryTreeTopology` implements
 `ITreeTopology<BinaryTreeNode<TValue>,BinaryTreeChildren<TValue>>`, so the binary tree sits at
 `Graph/Engines/Dags/Trees/` — the same relationship `Grids/` has with `IGraphTopology`.
 
-A tree-*named* structure is not thereby a tree witness. `SegmentTree`, `FenwickTree`,
-`LazySegmentTree`, `RangeFenwickTree`, and `Heap` (§4) are all array + index-arithmetic
+A tree-*named* structure is not thereby a tree witness. `SegmentTree` (both configurations,
+§13.10), `FenwickTree`, `RangeFenwickTree`, and `Heap` (§4) are all array + index-arithmetic
 representations with no separate node identity for a `TChildren` parameter to vary over — the same
 reason §4 gives for keeping `Heap` out of `IGraphTopology`. Promoting any of these to a real
 `ITreeTopology`/`IDagTopology` witness — and re-deriving their hand-written recursion as instances
 of Graph's generic `Fold`/`Walk` engines — is a per-structure algorithm redesign, not a file
-move, and is a deliberate future exercise. `SinglyLinkedList`/`DoublyLinkedList` stay out for the
+move, and is a deliberate future exercise. C2's plan offered `SegmentTree` one, "children 2i and
+2i+1", if it fell out naturally, and it did not: the engines take `ITreeTopology<TNode,
+TChildren>` with `TNode : class`, and a segment tree's node is an index into its arena, which fails
+§13.9's first test. Walking it would mean an object per node or a struct-node engine, a redesign
+of its own. `SinglyLinkedList`/`DoublyLinkedList` stay out for the
 same reason: no `IChildren`, no `ITreeTopology`, and their O(1) pointer-splice operations
 (`AddFront`/`Remove`/`PopBack`, Floyd's cycle detection) don't route through Graph's generic
 traversal engines. Tries are decided case by case (§13.8, §13.9).
@@ -1118,6 +1122,76 @@ doesn't replace them, it opens the trie to generic Tree-tier engines for free.
 real the same way `TrieTests` does: `TreeMetrics.Size` (`Algorithms/Metrics`, generic over
 any `ITreeTopology`) counts every node of a two-value trie with no `BitTrie`-specific code at all.
 `CountedBitTrie` fails both halves of the test, and §13.3 records why.
+
+### 13.10 One segment tree: the range action is a witness
+
+`SegmentTree` and `LazySegmentTree` were two structures with one recursion between them: the same
+arena, the same `SegmentRange.Split`, the same build, and a lazy tree that added a tag per node and
+a push-down. They are one tree now, `SegmentTree<Element, TUpdate, TOperation, TAction>`, whose last
+type argument is how an update to a whole range acts on the combined values, `IRangeAction`
+(`NoUpdate`, `ComposeUpdate`, `ApplyUpdate`, the members `IRangeUpdateOperation` used to declare). A
+configuration names its action, and what it adds over its sibling is that type argument:
+
+| Configuration | Action | Operations | Adds |
+| --- | --- | --- | --- |
+| `SegmentTree<Element, TOperation>` | `NoAction<Element>` | point `Update`, range `Query` | nothing: no tags, no push-down |
+| `SegmentTree<Element, TUpdate, TOperation>` | `TOperation`'s own (`IRangeUpdateOperation`) | the same, and `UpdateRange` | a tag per node and its push-down |
+
+**The trivial action compiles propagation out.** `NoAction`'s update type, `NoUpdate`, has one
+value, so nothing can be pending. The tree asks for that type, `typeof(TUpdate) !=
+typeof(NoUpdate)`, before it allocates the tag arena and before every push-down, and the JIT folds
+the test for each instantiation, in code shared across reference-type elements as well, because
+`NoUpdate` is a non-generic struct. The spelling a value fixed per configuration takes elsewhere, a
+static abstract on the action, does not fold there: `NoAction<Element>` over a reference type is
+shared code itself, and a probe showed its property read as a call through a runtime lookup on every
+use. For the same reason the monoid is a type argument of its own, beside the action, rather than
+forwarded through `NoAction`: the forward was one more call per combine for a reference-type
+element.
+
+**Where the test sits changes the code around it.** Written into `QueryChildren` and `Update`
+themselves, the test folded, yet the JIT's profile-guided inlining of those two methods changed:
+with dynamic PGO `QueryChildren` went from 458 to 105 bytes, `Split` and both `Query` calls left as
+calls, and `Update` from 214 to 588 bytes; with PGO off both were unchanged. The test now sits in
+one always-inlined helper, `ChildrenOf`, which pushes down and splits, and it takes the node's range
+by `in`: by value, the inlined helper copied the 12-byte range to the stack before `Split` (read
+with PGO off).
+
+**Which operations exist is a derived class.** The general tree is abstract, with a constructor only
+this assembly can call, and `UpdateRange` is declared by the configuration with an action alone, so
+the trivial one has no range update to refuse at run time, §20's rule for an operation a
+configuration lacks. Both configurations derive rather than wrap, so each is one object from its
+arenas, the deques' arrangement (§20). Point `Update` belongs to both: it pushes a pending tag down
+along its path before it rewrites a leaf, so a lazy tree now takes point updates too, and the two
+kinds of update mix safely on one instance.
+
+**What the JIT made of it.** Tier-1 code read with `DOTNET_JitDisasm` under the `inlining` verb
+(§19.8), 15 s an arm, against the commit before, twice a side with dynamic PGO, which varies the
+code of a few methods between runs of one build, and once with it off:
+- the trivial action: on LC 307 (`Addition`) the recursion, `Query`, `QueryChildren` and `Update`,
+  is byte for byte what it was, 328, 458 and 214 bytes with PGO and 193, 105 and 259 without; the
+  public `Query` and `Update` and the validators are the same instructions, `_leafCount` read 8
+  bytes further into the object, past the tag arena's field. `MaximumTotalSubarrayValueII`'s
+  `Maximum` and `Minimum` trees are the same, except `Minimum`'s `QueryChildren` with PGO, which
+  differed between two runs of the old build too (506 and 503 bytes) and is identical with PGO off.
+  `MinimumOperationsToEqualizeSubarrays`, whose `int[]` elements make its code shared, is the same
+  instructions, generic-dictionary offsets aside. No tag arena is allocated.
+- an action: on LC 699, 1622, 2569 and 3721, the range update's recursion (`ApplyToRange`, once
+  `UpdateRange`'s private overload), `PushDown`, `ApplyToNode`, `ApplyToBothChildren`,
+  `TryResolveAtNode`, `RecombineFromChildren`, the constructor and the build are identical, within
+  the spread PGO shows between two runs of the old build (LC 2569's `ApplyToRange` is 1260 or 1338
+  bytes, before and after alike). `Query` is what changed. The lazy tree had a one-method recursion
+  of its own, and it now has the point tree's shape, `Query` calling `QueryChildren`, which inlines
+  the push-down and a level of `Query`. The work is the same, one push-down and one split per node a
+  query straddles, but the calls fall differently: on LC 699 with PGO, a 697-byte `Query` that
+  called `Split`, `PushDown` and itself became a 477-byte `Query` and a 986-byte `QueryChildren`.
+  Without PGO, LC 2569's `QueryChildren` is inlined back into `Query`, the same calls plus one
+  12-byte copy of the range; on the other three it stays a call of its own.
+
+The contract suite, `SegmentTreeTests`, runs over five configurations, the trivial action under
+`Addition`, `Minimum` and `Maximum` and the two actions this folder ships, and holds every query
+after a seeded script to the monoid's fold of a plain array that took the same updates, a range
+update reaching each element as the action's own `ApplyUpdate` over a range of one. That the trivial
+action keeps no tags is read off what its constructor allocates.
 
 ## 14. Worked example: the three Storage/Operations decompositions
 

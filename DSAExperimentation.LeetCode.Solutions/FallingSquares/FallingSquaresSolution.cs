@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.LazySegmentTree;
+using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.FallingSquares;
 
@@ -59,7 +59,7 @@ internal static class FallingSquaresSolution
     // Coordinate-compresses every square's footprint onto a dense leaf-index range
     // with CompressedCoordinates, then tracks the current stack height over that
     // range with this repo's own
-    // LazySegmentTree<int,int?,RangeAssignMaxOperation<int>> - range-max Query
+    // SegmentTree<int,int?,RangeAssignMaxOperation<int>> - range-max Query
     // answers "what's already stacked directly under this square" and range-assign
     // UpdateRange plants the new height across that same footprint, exactly the
     // algebra RangeAssignMaxOperation.cs already provides (a newer assignment
@@ -67,7 +67,7 @@ internal static class FallingSquaresSolution
     public static List<int> HeightsByLazySegmentTree(int[][] positions)
     {
         var coordinates = new CompressedCoordinates<int>(FootprintEdges(positions));
-        var tree = new LazySegmentTree<int, int?, RangeAssignMaxOperation<int>>(new int[coordinates.Count - 1]);
+        var tree = new SegmentTree<int, int?, RangeAssignMaxOperation<int>>(new int[coordinates.Count - 1]);
 
         var result = new List<int>(positions.Length);
         var overallMax = 0;

@@ -15,7 +15,7 @@ namespace DSAExperimentation.DataStructures.FenwickTree;
 // reading the old value out via a PrefixQuery-shaped lookup this type intentionally keeps out of
 // scope). Point-update/range-query only - see RangeFenwickTree for the range-update/range-query
 // variant; mixing that scheme's usage pattern onto this type would silently redefine what
-// PrefixQuery even means, the same trap SegmentTree/LazySegmentTree stay split to avoid.
+// PrefixQuery even means.
 /// <summary>
 /// A Fenwick tree over an abelian group operation that adds to one element or combines a range in O(log n).
 /// </summary>
