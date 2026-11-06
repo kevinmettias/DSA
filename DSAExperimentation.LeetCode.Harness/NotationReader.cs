@@ -11,7 +11,8 @@ namespace DSAExperimentation.LeetCode.Harness;
 // holds a strategy's parameter types as Type values. The rules are the ones the hand-written harnesses
 // applied case by case:
 // - JSON numbers, strings and booleans as themselves (a non-negative integer as a uint too), and a
-//   one-character string as a char;
+//   one-character string as a char; and a value that may be absent, a T?, as null for LeetCode's null and
+//   as a T otherwise, as Copy List with Random Pointer writes a node with no random pointer [7,null];
 // - an array as an array, element by element, and an array of rows of one length as a rectangular array,
 //   as Cherry Pickup reads its grid into an int[,];
 // - an array as a tuple of the same arity, the way LeetCode writes an interval as [start, end];
@@ -88,6 +89,11 @@ internal static class NotationReader
     // how a strategy's parameters are checked before any case is read.
     public static bool CanRead(Type type)
     {
+        if (Nullable.GetUnderlyingType(type) is { } present)
+        {
+            return CanRead(present);
+        }
+
         if (IsReadAsAWhole(type))
         {
             return true;
@@ -158,6 +164,11 @@ internal static class NotationReader
 
     private static object? ValueOf(JsonElement element, Type type)
     {
+        if (Nullable.GetUnderlyingType(type) is { } present)
+        {
+            return MaybeValueOf(element, present);
+        }
+
         if (ScalarReaders.TryGetValue(type, out var readScalar))
         {
             return readScalar(element);
@@ -174,6 +185,17 @@ internal static class NotationReader
         }
 
         return StructuredValueOf(element, type);
+    }
+
+    // LeetCode's null as no value, and any other element as the value it holds.
+    private static object? MaybeValueOf(JsonElement element, Type present)
+    {
+        if (element.ValueKind == JsonValueKind.Null)
+        {
+            return null;
+        }
+
+        return ValueOf(element, present);
     }
 
     private static object StructuredValueOf(JsonElement element, Type type)

@@ -49,11 +49,11 @@ public sealed partial class CloneGraphSolutionTests
 
     [Fact]
     public void CloneByDictionaryDfs_NullNode_ReturnsNull() =>
-        Assert.Null(CloneGraphSolution.CloneByDictionaryDfs(null));
+        Assert.Null(CloneGraphSolution.CloneByDictionaryDfs((Node?)null));
 
     [Fact]
     public void CloneByHashMapDfs_NullNode_ReturnsNull() =>
-        Assert.Null(CloneGraphSolution.CloneByHashMapDfs(null));
+        Assert.Null(CloneGraphSolution.CloneByHashMapDfs((Node?)null));
 
     // The clone prints as LeetCode's expected output, and - when there is a graph at
     // all - shares no node with its source. An empty graph's given node is null, and

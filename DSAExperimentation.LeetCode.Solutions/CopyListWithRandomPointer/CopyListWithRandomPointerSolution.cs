@@ -12,8 +12,25 @@ namespace DSAExperimentation.LeetCode.Solutions.CopyListWithRandomPointer;
 // recursing into an already-visited node - reachable either through Next or
 // through Random, in either order - returns its existing clone instead of
 // looping forever or allocating a duplicate.
+[LeetCodeQuestion("copy-list-with-random-pointer", LeetCodeAnswerOrder.AsWritten)]
 internal static class CopyListWithRandomPointerSolution
 {
+    // LeetCode's shape (ARCHITECTURE 17.4): the list as its judge writes it, [value, random index] per node,
+    // and the copy read back the same way. The judge refuses a copy that shares a node with the list it was
+    // given, which reads back here as no list at all.
+    public static int?[][] CopyByHashMapMemo(int?[][] nodes)
+    {
+        var head = LeetCodeRandomLists.From(nodes);
+        var copy = CopyByHashMapMemo(head);
+
+        if (LeetCodeRandomLists.IsSharingANode(copy, head))
+        {
+            return [];
+        }
+
+        return LeetCodeRandomLists.PairsOf(copy);
+    }
+
     public static RandomLinkedListNode<int>? CopyByHashMapMemo(RandomLinkedListNode<int>? head)
     {
         var clones = new HashMap<RandomLinkedListNode<int>, RandomLinkedListNode<int>>();

@@ -21,6 +21,7 @@ internal static class NotationTypes
     private const char ArrayOpen = '[';
     private const char ArrayClose = ']';
     private const string OneRank = "[]";
+    private const string MaybeMark = "?";
 
     // Sequences a strategy can only read, which an array fills, and those it may add to, which a List does.
     private static readonly string[] Sequences =
@@ -63,6 +64,7 @@ internal static class NotationTypes
         IArrayTypeSymbol array when array.Rank <= GridRank => IsReadable(array.ElementType),
         INamedTypeSymbol { IsTupleType: true } tuple =>
             tuple.TupleElements.Length <= MostTupleItems && tuple.TupleElements.All(item => IsReadable(item.Type)),
+        INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T } maybe => IsReadable(maybe.TypeArguments[0]),
         INamedTypeSymbol { IsGenericType: true, TypeArguments.Length: 1 } generic => IsReadableGeneric(generic),
         INamedTypeSymbol { IsValueType: true } valueType when RecordValuesOf(valueType) is { } values => values.All(IsReadable),
         _ => false,
@@ -140,6 +142,7 @@ internal static class NotationTypes
     public static string Render(ITypeSymbol type) => type switch
     {
         IArrayTypeSymbol array => $"{Render(array.ElementType)}[{new string(RankSeparator, array.Rank - 1)}]",
+        INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T } maybe => Render(maybe.TypeArguments[0]) + MaybeMark,
         INamedTypeSymbol { IsTupleType: true } tuple =>
             TupleOpen + string.Join(ItemSeparator, tuple.TupleElements.Select(item => Render(item.Type))) + TupleClose,
         INamedTypeSymbol { IsGenericType: true } generic =>

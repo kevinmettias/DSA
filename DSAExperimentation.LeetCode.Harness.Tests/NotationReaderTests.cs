@@ -163,4 +163,15 @@ public sealed partial class NotationReaderTests
 
         Assert.Equal((0, 4, 9), query);
     }
+
+    [Fact]
+    public void Read_NullableValues_ReadLeetCodesNullAsNoValue()
+    {
+        var node = NotationReader.Read("[7,null]", typeof(int?[]));
+
+        Assert.Equal(new int?[] { 7, null }, node);
+    }
+
+    [Fact]
+    public void CanRead_NullableOfAReadableType_IsTrue() => Assert.True(NotationReader.CanRead(typeof(int?[][])));
 }

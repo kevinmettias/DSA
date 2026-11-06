@@ -13,8 +13,27 @@ namespace DSAExperimentation.LeetCode.Solutions.CloneGraph;
 // unimplemented placeholders (`return 1;`) that never called either walk, so
 // the naive-BCL-baseline arm below is new - the composed HashMap walk is the
 // one that used to live as CloneGraphSolutionTests' own private helper.
+[LeetCodeQuestion("clone-graph", LeetCodeAnswerOrder.AsWritten)]
 internal static class CloneGraphSolution
 {
+    // LeetCode's shape (ARCHITECTURE 17.4): the graph as its judge writes it, an adjacency list, and the clone
+    // read back the same way (CloneGraphAdjacency).
+    public static int[][] CloneByDictionaryDfs(int[][] adjacencyList)
+    {
+        var graph = CloneGraphAdjacency.GraphOf(adjacencyList);
+        var clone = CloneByDictionaryDfs(graph);
+
+        return CloneGraphAdjacency.AdjacencyOf(clone, graph);
+    }
+
+    public static int[][] CloneByHashMapDfs(int[][] adjacencyList)
+    {
+        var graph = CloneGraphAdjacency.GraphOf(adjacencyList);
+        var clone = CloneByHashMapDfs(graph);
+
+        return CloneGraphAdjacency.AdjacencyOf(clone, graph);
+    }
+
     // The textbook DFS: a BCL Dictionary as the original-to-clone memo.
     // Deliberately written without this repo's primitives - it is the arm the
     // composed strategy below has to justify itself against.

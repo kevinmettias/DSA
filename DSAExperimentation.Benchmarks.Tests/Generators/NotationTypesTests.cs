@@ -6,6 +6,10 @@ namespace DSAExperimentation.Benchmarks.Tests.Generators;
 // type is the parameter type in question.
 public sealed partial class NotationTypesTests
 {
+    // Holder's array of values that may be absent, and how a generated class writes its type.
+    private const string NullableArrayField = "RandomNodes";
+    private const string NullableArrayType = "int?[][]";
+
     private const string Holder = """
         using System.Collections.Generic;
         using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
@@ -24,6 +28,7 @@ public sealed partial class NotationTypesTests
             public BinaryTreeNode<string> TextTree;
             public Dictionary<int, int> Counts;
             public int[,] Rectangle;
+            public int?[][] RandomNodes;
             public int[,,] Cube;
             public RoleText Role;
             public Endpoints TwoValues;
@@ -43,7 +48,7 @@ public sealed partial class NotationTypesTests
         }
         """;
 
-    public static TheoryData<string> ReadableFields => ["Integer", "Unsigned", "Text", "Character", "Grid", "Rectangle", "Intervals", "Words", "Values", "Tree", "Role", "TwoValues"];
+    public static TheoryData<string> ReadableFields => ["Integer", "Unsigned", "Text", "Character", "Grid", "Rectangle", "RandomNodes", "Intervals", "Words", "Values", "Tree", "Role", "TwoValues"];
 
     // A tree LeetCodeWireFormat cannot build, a map LeetCode has no notation for, an array of a rank past a
     // grid's, a role type that is a class, and a struct that keeps no value it is built from.
@@ -67,6 +72,15 @@ public sealed partial class NotationTypesTests
     [Fact]
     public void Render_GenericType_QualifiesItFully() =>
         Assert.Equal("global::System.Collections.Generic.IEnumerable<string>", NotationTypes.Render(GeneratorProbe.FieldType(Holder, "Words")));
+
+    // A value that may be absent writes as its type and a question mark, never as Nullable<T> with its argument twice.
+    [Fact]
+    public void Render_NullableArray_MarksTheValueType()
+    {
+        var rendered = NotationTypes.Render(GeneratorProbe.FieldType(Holder, NullableArrayField));
+
+        Assert.Equal(NullableArrayType, rendered);
+    }
 
     // C# reads rank specifiers outermost first, so an array of a grid puts its own brackets before the grid's.
     public static TheoryData<string, int, string> NestedArrays =>

@@ -2662,8 +2662,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,054 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 458 more:
+**Enrolled.** 1,056 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 460 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2916,6 +2916,14 @@ have only the empty tree. A check over those would pass whatever the strategy di
   order are exactly the old ones with the new value, or without the key, rising; and a promise drops the
   generated trees that are no search tree of unique values, which rebuilt from their values come back
   another tree.
+- Clone Graph and Copy List with Random Pointer, whose strategies copy nodes of a type the notation does
+  not read, once each took LeetCode's shape beside its own (§17.4): the graph as its adjacency list
+  (`CloneGraphAdjacency`, in its folder, since its node is that question's own) and the list as
+  `[value, random index]` pairs (`LeetCodeRandomLists`), built into nodes, copied, and read back the same
+  way. Their judges refuse a copy that shares a node with what it copies, so a copy that does reads back
+  as no graph or no list. The pairs' null index needed a value that may be absent: the reader reads a
+  `T?` as null for LeetCode's null and as a `T` otherwise, and the generator writes it as `int?`. Both
+  are judged on LeetCode's examples.
 
 Open items:
 
@@ -2934,7 +2942,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 51 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 49 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
