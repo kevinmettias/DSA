@@ -2662,8 +2662,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,049 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 453 more:
+**Enrolled.** 1,052 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 456 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2901,6 +2901,13 @@ have only the empty tree. A check over those would pass whatever the strategy di
   the strategies need only the boat's capacity k, since n and m are the lengths of time and mul. It
   stands within 10^-5, the five decimals LeetCode prints, as Pow(x, n) does, and is judged on LeetCode's
   three examples, the catalog holding no generated case for it.
+- 3 whose signature lists an input only LeetCode's judge reads, once each strategy took LeetCode's shape
+  beside its own (§17.4), the judge's part done by `LeetCodeWireFormat`: Linked List Cycle, whose judge
+  links the tail back to node `pos` (`WithCycleAt`; the cycle is built into the list read for the case,
+  so `RewritesInput = true` hands each call a list of its own); Lowest Common Ancestor of a Binary Search
+  Tree, whose judge names p and q by value (`NodeWithValue`) and prints the ancestor's value; and Delete
+  Node in a Linked List, whose judge names the node by value and reads the whole list back from its head
+  (`AnswersInPlace = true`). Each is judged on LeetCode's examples, the dataset holding none.
 
 Open items:
 
@@ -2919,7 +2926,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 56 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 53 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
@@ -2951,6 +2958,11 @@ Open items:
     its three parts, and both overloads match LeetCode's declared types alike, the role types matching
     none. Counting a one-value role type as its value would settle it, but would tie Burst Balloons,
     whose role-typed overload then matches as well as its plain one.
+  - Lowest Common Ancestor of a Binary Tree would take the shape Lowest Common Ancestor of a Binary
+    Search Tree took, but every one of its 17 generated cases records `[]`: the dataset's reference
+    printed None, which the importer writes as the empty tree a tree-valued answer may be, and an
+    ancestor of two nodes of one tree always exists. Linked List Cycle II and Intersection of Two Linked
+    Lists record no output at all, their examples stating the answer in prose.
 - **Trimming the enrolled solutions' own tests.** A theory row restates a catalog case when
   a case has the same inputs, read into the strategy's types, and the catalog's judge accepts the
   row's answer for it. That row is the check `CatalogCaseTests` already makes. Measured over the 608

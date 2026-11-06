@@ -114,6 +114,101 @@ internal static class LeetCodeWireFormat
         return head;
     }
 
+    // The cycle LeetCode's judge builds from pos and never passes to the function: the list's tail links back
+    // to the node at index pos, and a pos of -1, or one past the list, leaves the list as it is.
+    public static SinglyLinkedListNode<int>? WithCycleAt(SinglyLinkedListNode<int>? head, int pos)
+    {
+        if (NodeAt(head, pos) is { } entry)
+        {
+            TailFrom(entry).Next = entry;
+        }
+
+        return head;
+    }
+
+    // The node at index pos, or null for a negative pos or one past the list.
+    private static SinglyLinkedListNode<int>? NodeAt(SinglyLinkedListNode<int>? head, int pos)
+    {
+        if (pos < 0)
+        {
+            return null;
+        }
+
+        var node = head;
+
+        for (var index = 0; index < pos && node is not null; index++)
+        {
+            node = node.Next;
+        }
+
+        return node;
+    }
+
+    private static SinglyLinkedListNode<int> TailFrom(SinglyLinkedListNode<int> node)
+    {
+        var tail = node;
+
+        while (tail.Next is not null)
+        {
+            tail = tail.Next;
+        }
+
+        return tail;
+    }
+
+    // The node of a tree that LeetCode names by its value, as its judge does when a function takes nodes of
+    // the tree it is handed, whose values such questions keep unique. The judge names only a node the tree
+    // holds, so a value no node holds is a case that breaks the question's promise.
+    public static BinaryTreeNode<int> NodeWithValue(BinaryTreeNode<int>? root, int value)
+    {
+        var pending = new Stack<BinaryTreeNode<int>>();
+
+        if (root is not null)
+        {
+            pending.Push(root);
+        }
+
+        while (pending.TryPop(out var node))
+        {
+            if (node.Value == value)
+            {
+                return node;
+            }
+
+            PushChildren(pending, node);
+        }
+
+        throw new ArgumentException($"No node of the tree holds {value}.", nameof(value));
+    }
+
+    // The node of a list that LeetCode names by its value, as Delete Node in a Linked List's judge does,
+    // whose values that question keeps unique; as for a tree, the judge names only a node the list holds.
+    public static SinglyLinkedListNode<int> NodeWithValue(SinglyLinkedListNode<int>? head, int value)
+    {
+        for (var node = head; node is not null; node = node.Next)
+        {
+            if (node.Value == value)
+            {
+                return node;
+            }
+        }
+
+        throw new ArgumentException($"No node of the list holds {value}.", nameof(value));
+    }
+
+    private static void PushChildren(Stack<BinaryTreeNode<int>> pending, BinaryTreeNode<int> node)
+    {
+        if (node.Left is not null)
+        {
+            pending.Push(node.Left);
+        }
+
+        if (node.Right is not null)
+        {
+            pending.Push(node.Right);
+        }
+    }
+
     public static int[] FromLinkedList(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();

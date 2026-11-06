@@ -12,8 +12,19 @@ namespace DSAExperimentation.LeetCode.Solutions.DeleteNodeInALinkedList;
 // strategy exists in this repo's coverage today - the test's private Delete
 // helper, previously duplicated; the benchmark was a compile-smoke placeholder
 // with no second arm to reconcile.
+[LeetCodeQuestion("delete-node-in-a-linked-list", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true)]
 internal static class DeleteNodeInALinkedListSolution
 {
+    // LeetCode's shape (ARCHITECTURE 17.4): its signature lists the head and names the node by its value,
+    // which its judge turns into the list's node; it then reads the whole list back from the head as the
+    // answer.
+    public static void DeleteByNextValueCopy(SinglyLinkedListNode<int> head, int node)
+    {
+        var named = LeetCodeWireFormat.NodeWithValue(head, node);
+
+        DeleteByNextValueCopy(named);
+    }
+
     public static void DeleteByNextValueCopy(SinglyLinkedListNode<int> node)
     {
         // LC 237 guarantees node is never the list's tail, so Next is always present.

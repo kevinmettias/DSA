@@ -84,4 +84,55 @@ public sealed partial class LeetCodeWireFormatTests
         Assert.Null(LeetCodeWireFormat.ToLinkedList([]));
         Assert.Empty(LeetCodeWireFormat.FromLinkedList(null));
     }
+
+    [Fact]
+    public void WithCycleAt_PositionInTheList_LinksTheTailBackToThatNode()
+    {
+        var list = LeetCodeWireFormat.ToLinkedList([3, 2, 0, -4]);
+        var second = LeetCodeWireFormat.NodeWithValue(list, 2);
+        var tail = LeetCodeWireFormat.NodeWithValue(list, -4);
+
+        LeetCodeWireFormat.WithCycleAt(list, 1);
+
+        Assert.Same(second, tail.Next);
+    }
+
+    // -1 is LeetCode's own "no cycle"; a position past the list links nothing either.
+    public static TheoryData<int> PositionsWithNoCycle => [-1, 4];
+
+    [Theory]
+    [MemberData(nameof(PositionsWithNoCycle))]
+    public void WithCycleAt_PositionOutsideTheList_LeavesTheListAsItIs(int pos)
+    {
+        var head = LeetCodeWireFormat.WithCycleAt(LeetCodeWireFormat.ToLinkedList([3, 2, 0, -4]), pos);
+
+        Assert.Equal([3, 2, 0, -4], LeetCodeWireFormat.FromLinkedList(head));
+    }
+
+    [Fact]
+    public void NodeWithValue_ValueInTheTree_FindsItsNode()
+    {
+        var root = LeetCodeWireFormat.ToBinaryTree([3, 5, 1, 6, 2, 0, 8, null, null, 7, 4]);
+        var node = LeetCodeWireFormat.NodeWithValue(root, 4);
+
+        Assert.Equal(4, node.Value);
+        Assert.Null(node.Left);
+    }
+
+    [Fact]
+    public void NodeWithValue_ValueNotInTheTree_ThrowsArgumentException()
+    {
+        var root = LeetCodeWireFormat.ToBinaryTree([3, 5, 1]);
+
+        Assert.Throws<ArgumentException>(() => LeetCodeWireFormat.NodeWithValue(root, 9));
+    }
+
+    [Fact]
+    public void NodeWithValue_ValueInTheList_FindsItsNode()
+    {
+        var head = LeetCodeWireFormat.ToLinkedList([4, 5, 1, 9]);
+        var node = LeetCodeWireFormat.NodeWithValue(head, 5);
+
+        Assert.Equal([5, 1, 9], LeetCodeWireFormat.FromLinkedList(node));
+    }
 }
