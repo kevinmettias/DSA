@@ -2741,8 +2741,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,059 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 463 more:
+**Enrolled.** 1,068 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 472 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -3017,6 +3017,32 @@ have only the empty tree. A check over those would pass whatever the strategy di
   judge accepts either val on an inner node, so an answer check compares trees with the inner nodes'
   values set aside (`IsSameTree`); the catalog records them false, and the arms keep the true an
   input's inner node carried.
+- Word Search II, Majority Element II, Expression Add Operators, Concatenated Words, Palindrome Pairs
+  and Word Ladder II, whose statements leave the order of an answer's elements unsaid, as `AnyOrder`:
+  LeetCode's judge is known to take each answer in any order, though no reordered answer was submitted
+  to confirm it, LeetCode's session not being at hand (O11 in IMPROVEMENT-WORKLIST.md). Every strategy
+  of the six answers every case in some order. Concatenated Words and Palindrome Pairs promise unique
+  words, which generated cases with a repeated word break (`ConcatenatedWordsPromise`,
+  `PalindromePairsPromise`), and Expression Add Operators reaches digit strings of up to 8 digits, a
+  9-digit case running its depth-first arm past 250 ms.
+- Shortest Matching Substring, Maximum Product of the Length of Two Palindromic Substrings and Lowest
+  Common Ancestor of a Binary Tree, once the catalog could correct an output it imports. A correction
+  is kept by hand in `Snapshot/Corrections/<slug>.json`, which the sync never writes: it names a case
+  by its inputs, the output the case should record, and why, with what was run to know it, and
+  `LeetCodeCatalog.Cases` records that output in place of the source's (`CorrectionFiles`). A test
+  fails on a correction whose case no source holds any longer. Each correction was computed by a brute
+  force over the case's whole space: the dataset records -1 where "xyz" holds a 3-letter match for
+  "*x*z"; 25, 117 and 81 where every pair of non-overlapping odd palindromes gives 27, 117 and 81 (the
+  dataset's own reference was wrong on 3 cases); and `[]` on every generated case of Lowest Common
+  Ancestor of a Binary Tree, its reference having printed no node, where the deepest node on both root
+  paths holds the value. That question took the shape Lowest Common Ancestor of a Binary Search Tree
+  took - LeetCode names p and q by value and prints the ancestor's - and a promise of unique values,
+  without which a value names no one node, drops its 2 generated cases with a repeated value. Shortest
+  Matching Substring's strategies each take the pattern two ways, as LeetCode's string and as its
+  three parts, and both overloads matched LeetCode's declared types alike. The narrowing now breaks
+  such a tie by counting a one-value role type as that value's type, but only after the first match:
+  counted there, it would tie Burst Balloons, whose role-typed overload would match as well as its
+  plain one.
 
 Open items:
 
@@ -3035,7 +3061,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 46 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 37 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
@@ -3051,30 +3077,14 @@ Open items:
     Sequence, Kth Largest Element in a Stream, Online Election, Online Stock Span, Prefix and Suffix
     Search, Range Sum Query 2D - Immutable and Kth Ancestor of a Tree Node take a constructor other
     than LeetCode's.
-  - A statement that leaves the order free without saying so (Word Search II, Majority Element
-    II, Expression Add Operators, Concatenated Words, Palindrome Pairs) needs the order rule
-    LeetCode's judge applies, checked against its own submission rather than read from the wording.
-    Every strategy of the five answers every case in some order. Concatenated Words and Palindrome
-    Pairs would also promise unique words, which generated cases with a repeated word break.
-  - Maximum Product of the Length of Two Palindromic Substrings: the dataset records a wrong output on
-    3 cases. "babadabababa" holds "babadabab" and "aba", for 27, where it records 25; a brute force
-    over every pair agrees with both strategies on all three. The catalog has no way yet to correct an
-    output it imports.
   - Sudoku Solver's strategies return whether they solved the board, where LeetCode's answers in place
     and returns nothing, as `AnswersInPlace` requires. Letting an in-place strategy return a value
     besides would bind them, but would enroll little: only LeetCode's example records an output, the
     dataset recording no changed board; of its 19 generated puzzles at least 8 have no solution at all;
     and two of them, each with 60 empty cells, run the backtracking-engine arm past 0.8 s and 3 s where
     another with 60 empty cells takes 12 ms, so no count of empty cells bounds them.
-  - Shortest Matching Substring's strategies each take the pattern two ways, as LeetCode's string and as
-    its three parts, and both overloads match LeetCode's declared types alike, the role types matching
-    none. Counting a one-value role type as its value would settle it, but would tie Burst Balloons,
-    whose role-typed overload then matches as well as its plain one.
-  - Lowest Common Ancestor of a Binary Tree would take the shape Lowest Common Ancestor of a Binary
-    Search Tree took, but every one of its 17 generated cases records `[]`: the dataset's reference
-    printed None, which the importer writes as the empty tree a tree-valued answer may be, and an
-    ancestor of two nodes of one tree always exists. Linked List Cycle II and Intersection of Two Linked
-    Lists record no output at all, their examples stating the answer in prose.
+  - Linked List Cycle II and Intersection of Two Linked Lists record no output at all, their examples
+    stating the answer in prose. A correction could record each example's answer.
 - **Trimming the enrolled solutions' own tests.** A theory row restates a catalog case when
   a case has the same inputs, read into the strategy's types, and the catalog's judge accepts the
   row's answer for it. That row is the check `CatalogCaseTests` already makes. Measured over the 608

@@ -48,6 +48,24 @@ public sealed partial class ImplementRand10UsingRand7SolutionTests
     public void Rand10ByRecycledRejectionSampling_LeetCodeExamples_ReturnsOneValueInRangePerCall(int calls, int[] published) =>
         AssertOneValueInRangePerCall(ImplementRand10UsingRand7Solution.Rand10ByRecycledRejectionSampling, calls, published);
 
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void Rand10ByRejectionSampling_LeetCodesCallCount_ReturnsThatManyValuesInRange(int calls, int[] published)
+    {
+        var drawn = ImplementRand10UsingRand7Solution.Rand10ByRejectionSampling(calls);
+
+        AssertInRangeAsPublished(drawn, published);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void Rand10ByRecycledRejectionSampling_LeetCodesCallCount_ReturnsThatManyValuesInRange(int calls, int[] published)
+    {
+        var drawn = ImplementRand10UsingRand7Solution.Rand10ByRecycledRejectionSampling(calls);
+
+        AssertInRangeAsPublished(drawn, published);
+    }
+
     [Fact]
     public void Rand10ByRejectionSampling_ManyCalls_AlwaysStaysInRange() =>
         AssertAlwaysInRange(ImplementRand10UsingRand7Solution.Rand10ByRejectionSampling);
@@ -115,6 +133,12 @@ public sealed partial class ImplementRand10UsingRand7SolutionTests
         var rand7 = new SeededRandomRand7(new Random(1));
         var drawn = Enumerable.Range(0, calls).Select(_ => rand10(rand7)).ToArray();
 
+        AssertInRangeAsPublished(drawn, published);
+    }
+
+    // As many values as LeetCode published, each in range, as each published value is.
+    private static void AssertInRangeAsPublished(int[] drawn, int[] published)
+    {
         Assert.Equal(published.Length, drawn.Length);
         Assert.All(drawn.Concat(published), value => Assert.InRange(value, 1, Rand10Maximum));
     }

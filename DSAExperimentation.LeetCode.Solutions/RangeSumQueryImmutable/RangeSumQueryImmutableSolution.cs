@@ -16,8 +16,19 @@ namespace DSAExperimentation.LeetCode.Solutions.RangeSumQueryImmutable;
 // built in O(n), every SumRange afterward is one O(1) subtraction, the answer for an
 // array that never changes. FenwickTree pays its log factor for updates this problem
 // never makes (LC 307 does).
+//
+// LeetCode's shape is that object and its sumRange calls, so each strategy's
+// overload taking only the array makes one, the object the catalog harness replays
+// LeetCode's call scripts on (ARCHITECTURE 17.13). The object asks the strategy's
+// query overload, which the hand-written benchmark calls directly, so each
+// strategy is written once.
+[LeetCodeQuestion("range-sum-query-immutable", LeetCodeAnswerOrder.AsWritten)]
 internal static class RangeSumQueryImmutableSolution
 {
+    // LeetCode's shape: a NumArray that keeps the array as given and sums the slice
+    // on every call.
+    public static INumArray SumRangeByBruteForceRescan(int[] nums) => new BruteForceRescanArray(nums);
+
     // The textbook answer: sum the slice directly every call. Deliberately
     // written without this repo's primitives - it is the arm the tree strategy
     // below has to justify itself against.
@@ -33,22 +44,43 @@ internal static class RangeSumQueryImmutableSolution
         return total;
     }
 
-    // LeetCode's shape: builds NumArray's tree fresh for this one call.
-    public static int SumRangeByFenwickTree(int[] nums, int left, int right) =>
-        SumRangeByFenwickTree(new FenwickTree<int, Addition<int>>(nums), left, right);
+    // LeetCode's shape: a NumArray whose constructor builds the tree once.
+    public static INumArray SumRangeByFenwickTree(int[] nums) => new FenwickTreeArray(nums);
 
-    // The prepared-input overload: the tree NumArray's constructor would already
-    // have built, so a caller answering many queries against the same array
-    // pays construction once rather than per query.
+    // The prepared-input overload: one query against the tree NumArray's
+    // constructor built, so a caller answering many queries against the same
+    // array pays construction once rather than per query.
     public static int SumRangeByFenwickTree(FenwickTree<int, Addition<int>> tree, int left, int right) =>
         tree.Query(left, right);
 
-    // LeetCode's shape: builds NumArray's running totals fresh for this one call.
-    public static int SumRangeByPrefixSums(int[] nums, int left, int right) =>
-        SumRangeByPrefixSums(new PrefixSums<int, Addition<int>>(nums), left, right);
+    // LeetCode's shape: a NumArray whose constructor builds the running totals once.
+    public static INumArray SumRangeByPrefixSums(int[] nums) => new PrefixSumsArray(nums);
 
-    // The prepared-input overload: the totals NumArray's constructor would already
-    // have built. LeetCode's bounds keep every total within 10^4 * 10^5, inside an int.
+    // The prepared-input overload: one query against the totals NumArray's
+    // constructor built. LeetCode's bounds keep every total within 10^4 * 10^5,
+    // inside an int.
     public static int SumRangeByPrefixSums(PrefixSums<int, Addition<int>> sums, int left, int right) =>
         sums.Query(left, right);
+
+    // The array as given; every query sums its window.
+    private sealed class BruteForceRescanArray(int[] nums) : INumArray
+    {
+        public int SumRange(int left, int right) => SumRangeByBruteForceRescan(nums, left, right);
+    }
+
+    // A Fenwick tree over the array, built once; every query is an O(log n) Query.
+    private sealed class FenwickTreeArray(int[] nums) : INumArray
+    {
+        private readonly FenwickTree<int, Addition<int>> _tree = new(nums);
+
+        public int SumRange(int left, int right) => SumRangeByFenwickTree(_tree, left, right);
+    }
+
+    // The array's running totals, built once; every query is one subtraction.
+    private sealed class PrefixSumsArray(int[] nums) : INumArray
+    {
+        private readonly PrefixSums<int, Addition<int>> _sums = new(nums);
+
+        public int SumRange(int left, int right) => SumRangeByPrefixSums(_sums, left, right);
+    }
 }

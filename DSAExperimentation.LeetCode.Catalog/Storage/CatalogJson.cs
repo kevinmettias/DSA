@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Catalog.Storage;
 //   Snapshot/Statistics.json                every question's LeetCodeStatistics, as of one date (StatisticsFile)
 //   Snapshot/ContestRatings.json            the contest ratings of the questions that have one (ContestRatingsFile)
 //   Snapshot/Cases/<source>/<slug>.json     the cases one source supplies for one question (CaseFiles)
+//   Snapshot/Corrections/<slug>.json        outputs corrected by hand for one question (CorrectionFiles)
 //
 // Snapshot/ is found from this file's own path ([CallerFilePath]), so a test, a benchmark and the
 // sync tool all read and write the checked-in source tree whatever their build output layout.

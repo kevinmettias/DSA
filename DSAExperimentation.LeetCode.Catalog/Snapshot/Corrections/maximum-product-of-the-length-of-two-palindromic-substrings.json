@@ -1,0 +1,23 @@
+[
+  {
+    "Inputs": [
+      "\"babadabababa\""
+    ],
+    "ExpectedOutput": "27",
+    "Reason": "The dataset records 25; every pair of non-overlapping odd-length palindromes gives at most 27."
+  },
+  {
+    "Inputs": [
+      "\"aaaaabaaabaaaabaaaaabaaaa\""
+    ],
+    "ExpectedOutput": "117",
+    "Reason": "The dataset records 99; every pair of non-overlapping odd-length palindromes gives at most 117."
+  },
+  {
+    "Inputs": [
+      "\"aaabaaaabaaaaabaaaaaaab\""
+    ],
+    "ExpectedOutput": "81",
+    "Reason": "The dataset records 77; every pair of non-overlapping odd-length palindromes gives at most 81."
+  }
+]

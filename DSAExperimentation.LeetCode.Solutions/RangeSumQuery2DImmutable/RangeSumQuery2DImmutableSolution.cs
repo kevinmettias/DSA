@@ -14,7 +14,10 @@ namespace DSAExperimentation.LeetCode.Solutions.RangeSumQuery2DImmutable;
 // own FenwickTree<int, Addition<int>> per row, the move RangeFenwickTree.cs makes with two -
 // pay O(log cols) per covered row, which is the right shape only if the matrix could change
 // (LC 308); and this repo's MatrixPrefixSums answers in four lookups, the O(1) LeetCode asks for,
-// because the matrix never changes.
+// because the matrix never changes. Each strategy is a factory taking LeetCode's constructor input, the
+// object the catalog harness replays LeetCode's call scripts on (ARCHITECTURE 17.13); C's matrixRowSize and
+// matrixColSize, which the snapshot lists beside the matrix, are never passed by a script.
+[LeetCodeQuestion("range-sum-query-2d-immutable", LeetCodeAnswerOrder.AsWritten)]
 internal static class RangeSumQuery2DImmutableSolution
 {
     // The textbook baseline this composition has to justify itself against: no preprocessing at
@@ -30,6 +33,7 @@ internal static class RangeSumQuery2DImmutableSolution
     // removed.
     public static INumMatrix CreateByPrefixSums(int[][] matrix) => new PrefixSumMatrix(matrix);
 
+    // The matrix as given; every query sums every cell of its region.
     private sealed class BruteForceCellScanMatrix(int[][] matrix) : INumMatrix
     {
         public int SumRegion(int row1, int col1, int row2, int col2)
@@ -48,6 +52,7 @@ internal static class RangeSumQuery2DImmutableSolution
         }
     }
 
+    // A Fenwick tree per row, built once; every query asks each covered row's tree.
     private sealed class RowFenwickTreeMatrix : INumMatrix
     {
         private readonly FenwickTree<int, Addition<int>>[] _rows;

@@ -6,9 +6,31 @@ namespace DSAExperimentation.LeetCode.Solutions.RandomFlipMatrix;
 // matrix, without replacement, until Reset() clears the picks. A Design problem (an
 // instance API, not a pure function), so - like InsertDeleteGetRandomO1Solution -
 // every strategy is a class implementing the shared IFlipMatrix surface below rather
-// than a static method sharing an <Operation>By<Strategy> name.
+// than a static method sharing an <Operation>By<Strategy> name. LeetCode accepts any
+// cell still 0 for each flip, so no answer can match a recording:
+// RandomFlipMatrixAnswerCheck judges a whole script, replaying which cells it flipped.
+[LeetCodeQuestion("random-flip-matrix", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(RandomFlipMatrixAnswerCheck))]
 internal static class RandomFlipMatrixSolution
 {
+    // LeetCode's constructor takes the matrix's size alone, so the factories fix the
+    // seed: a call script replayed twice, or once per benchmark iteration, flips the
+    // same cells.
+    private const int Seed = 1;
+
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make
+    // the object its call scripts run on (ARCHITECTURE 17.13).
+    public static IFlipMatrix CreateByListScan(int rows, int cols)
+    {
+        var random = new Random(Seed);
+        return new FlipMatrixByListScan(rows, cols, random);
+    }
+
+    public static IFlipMatrix CreateByHashMapSwapRemove(int rows, int cols)
+    {
+        var random = new Random(Seed);
+        return new FlipMatrixByHashMapSwapRemove(rows, cols, random);
+    }
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay the same Flip/Reset script against either strategy without
     // restating it.

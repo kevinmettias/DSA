@@ -12,60 +12,43 @@ namespace DSAExperimentation.LeetCode.Solutions.KthAncestorOfATreeNode;
 // Every Graph-domain topology contract here (ITreeTopology included) is child-ward
 // only - GetChildren, never GetParent - so the faster strategy cannot walk ancestors
 // live off a topology and precomputes them from the parent array instead.
+//
+// This is a design problem - LeetCode's own shape is a TreeAncestor built from
+// (n, parent) and answering one getKthAncestor(node, k) at a time - so each strategy
+// is a factory taking LeetCode's constructor inputs and returning an ITreeAncestor,
+// the object the catalog harness replays a call script on (ARCHITECTURE.md §17.13).
+[LeetCodeQuestion("kth-ancestor-of-a-tree-node", LeetCodeAnswerOrder.AsWritten)]
 internal static class KthAncestorOfATreeNodeSolution
 {
-
     // The textbook baseline this precompute has to justify itself against: step
     // up the raw parent array one step at a time, O(k) per query and no precompute
-    // at all. Deliberately written without this repo's primitives.
-    public static int GetKthAncestorByParentWalk(int[] parent, int node, int ancestorSteps)
-    {
-        var current = node;
+    // at all. LeetCode's constructor gives n beside the parent array it is the
+    // length of, so neither strategy reads it.
+    public static ITreeAncestor CreateByParentWalk(int nodeCount, int[] parent) => new ParentWalkAncestor(parent);
 
-        for (var step = 0; step < ancestorSteps; step++)
+    // Binary lifting: the constructor builds the table once, and each query is one
+    // jump per set bit of k, O(log k).
+    public static ITreeAncestor CreateByBinaryLifting(int nodeCount, int[] parent) => BuildAncestorJumps(parent);
+
+    // Deliberately written without this repo's primitives.
+    private sealed class ParentWalkAncestor(int[] parent) : ITreeAncestor
+    {
+        public int GetKthAncestor(int node, int generations)
         {
-            if (current == ParentArrayTree.NoParent)
+            var current = node;
+
+            for (var step = 0; step < generations; step++)
             {
-                return LeetCodeAnswer.None;
+                if (current == ParentArrayTree.NoParent)
+                {
+                    return LeetCodeAnswer.None;
+                }
+
+                current = parent[current];
             }
 
-            current = parent[current];
+            return current;
         }
-
-        return current;
-    }
-
-    // Binary lifting, in LeetCode's own shape: one query against a table this call
-    // builds. A caller answering many queries builds the table once with
-    // BuildAncestorJumps and uses the overload below.
-    public static int GetKthAncestorByBinaryLifting(int[] parent, int node, int ancestorSteps) =>
-        GetKthAncestorByBinaryLifting(BuildAncestorJumps(parent), node, ancestorSteps);
-
-    // The hoisted overload (ARCHITECTURE.md §17.4): the table is already built, so
-    // all that is charged here is one jump per set bit of ancestorSteps, O(log k).
-    // No node is n or more steps below the root, so such a step count is answered
-    // -1 before it can name a level the table does not have.
-    public static int GetKthAncestorByBinaryLifting(AncestorJumps jumps, int node, int ancestorSteps)
-    {
-        if (ancestorSteps >= jumps.NodeCount)
-        {
-            return LeetCodeAnswer.None;
-        }
-
-        var current = node;
-        var remainingSteps = ancestorSteps;
-
-        for (var level = 0; remainingSteps > 0 && current != ParentArrayTree.NoParent; level++)
-        {
-            if ((remainingSteps & 1) == 1)
-            {
-                current = jumps.Jump(level, current);
-            }
-
-            remainingSteps >>= 1;
-        }
-
-        return current;
     }
 
     // Level 0 is the parent array itself; each level above jumps twice along the one

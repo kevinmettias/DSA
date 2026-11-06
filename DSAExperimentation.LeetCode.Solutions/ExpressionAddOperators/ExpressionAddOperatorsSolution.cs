@@ -10,6 +10,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ExpressionAddOperators;
 // ExprState carries the expression built so far, so no two distinct operand/operator
 // choices can ever produce an equal node - the difference is only whether the walk is
 // a hand-rolled recursive backtrack or DepthFirstSearch.Traverse's engine.
+[LeetCodeQuestion("expression-add-operators", LeetCodeAnswerOrder.AnyOrder, Reach = typeof(ExpressionAddOperatorsReach))]
 internal static class ExpressionAddOperatorsSolution
 {
     // The textbook recursive backtrack: BCL recursion and string concatenation, the

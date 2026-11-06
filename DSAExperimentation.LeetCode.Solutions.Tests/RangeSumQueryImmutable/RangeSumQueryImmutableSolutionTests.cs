@@ -2,42 +2,44 @@ using DSAExperimentation.LeetCode.Solutions.RangeSumQueryImmutable;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.RangeSumQueryImmutable;
 
-// Harness only. All three strategies are RangeSumQueryImmutableSolution's - this file
-// just pins them to LeetCode's published examples.
+// Harness only. All three strategies are RangeSumQueryImmutableSolution's - this row
+// asks the NumArray each one's factory makes for a one-element window of a negative
+// value inside a three-element array. LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class RangeSumQueryImmutableSolutionTests
 {
-    public static TheoryData<int[], int, int, int> Examples =>
+    public static TheoryData<int[], int, int, int> Cases =>
         new()
         {
-            { new[] { -2, 0, 3, -5, 2, -1 }, 0, 2, 1 },
-            { new[] { -2, 0, 3, -5, 2, -1 }, 2, 5, -1 },
-            { new[] { -2, 0, 3, -5, 2, -1 }, 0, 5, -3 },
             { new[] { 7, -3, 4 }, 1, 1, -3 },
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SumRangeByFenwickTree_LeetCodeExamples_ReturnsRangeSum(int[] nums, int left, int right, int expected)
+    [MemberData(nameof(Cases))]
+    public void SumRangeByFenwickTree_Cases_ReturnsRangeSum(int[] nums, int left, int right, int expected)
     {
-        var actual = RangeSumQueryImmutableSolution.SumRangeByFenwickTree(nums, left, right);
+        var numArray = RangeSumQueryImmutableSolution.SumRangeByFenwickTree(nums);
+        var actual = numArray.SumRange(left, right);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SumRangeByPrefixSums_LeetCodeExamples_ReturnsRangeSum(int[] nums, int left, int right, int expected)
+    [MemberData(nameof(Cases))]
+    public void SumRangeByPrefixSums_Cases_ReturnsRangeSum(int[] nums, int left, int right, int expected)
     {
-        var actual = RangeSumQueryImmutableSolution.SumRangeByPrefixSums(nums, left, right);
+        var numArray = RangeSumQueryImmutableSolution.SumRangeByPrefixSums(nums);
+        var actual = numArray.SumRange(left, right);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SumRangeByBruteForceRescan_LeetCodeExamples_ReturnsRangeSum(int[] nums, int left, int right, int expected)
+    [MemberData(nameof(Cases))]
+    public void SumRangeByBruteForceRescan_Cases_ReturnsRangeSum(int[] nums, int left, int right, int expected)
     {
-        var actual = RangeSumQueryImmutableSolution.SumRangeByBruteForceRescan(nums, left, right);
+        var numArray = RangeSumQueryImmutableSolution.SumRangeByBruteForceRescan(nums);
+        var actual = numArray.SumRange(left, right);
 
         Assert.Equal(expected, actual);
     }

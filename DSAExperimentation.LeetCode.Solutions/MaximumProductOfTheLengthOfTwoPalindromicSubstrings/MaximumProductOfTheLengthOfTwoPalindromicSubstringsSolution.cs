@@ -21,6 +21,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumProductOfTheLengthOfTwoPa
 //
 // Both strategies take LeetCode's own string, so neither needs a hoisted
 // prepared-input overload - there is no input structure to build.
+[LeetCodeQuestion("maximum-product-of-the-length-of-two-palindromic-substrings", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolution
 {
     // Converts a Manacher-style radius count into the palindrome diameter it spans.

@@ -95,6 +95,37 @@ public sealed partial class FancySequenceSolutionTests
             },
         };
 
+    // Scripts run from LeetCode's constructor, which foresees no appends, so the
+    // segment tree widens 0 -> 1 -> 2 -> 4 -> 8 -> 16 as the appends arrive, each
+    // time with updates still pending on the values it carries over.
+    public static TheoryData<FancyOp[], int?[]> UnsizedExamples =>
+        new()
+        {
+            {
+                // LeetCode example 1, which widens the tree on each of its appends.
+                [
+                    FancyOp.Append(2), FancyOp.AddAll(3), FancyOp.Append(7), FancyOp.MultAll(2),
+                    FancyOp.GetIndex(0),
+                    FancyOp.AddAll(3), FancyOp.Append(10), FancyOp.MultAll(2),
+                    FancyOp.GetIndex(0), FancyOp.GetIndex(1), FancyOp.GetIndex(2),
+                ],
+                [null, null, null, null, 10, null, null, null, 26, 34, 20]
+            },
+            {
+                // [3] -> [8,7,4] -> [16,14,8] -> [17,15,9,10,7] -> nine values, each
+                // then multiplied by 10.
+                [
+                    FancyOp.Append(1), FancyOp.MultAll(3), FancyOp.Append(2), FancyOp.AddAll(5),
+                    FancyOp.Append(4), FancyOp.MultAll(2), FancyOp.Append(9), FancyOp.Append(6),
+                    FancyOp.AddAll(1), FancyOp.Append(3), FancyOp.Append(5), FancyOp.Append(8),
+                    FancyOp.Append(2), FancyOp.MultAll(10),
+                    FancyOp.GetIndex(0), FancyOp.GetIndex(4), FancyOp.GetIndex(5), FancyOp.GetIndex(8),
+                    FancyOp.GetIndex(9),
+                ],
+                [null, null, null, null, null, null, null, null, null, null, null, null, null, null, 170, 70, 30, 20, NeverAppended]
+            },
+        };
+
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByArrayRescan_LeetCodeExamples_ReportsEachIndexModuloOneENine(
@@ -106,6 +137,28 @@ public sealed partial class FancySequenceSolutionTests
     public void CreateByLazySegmentTreeAffine_LeetCodeExamples_ReportsEachIndexModuloOneENine(
         int capacity, FancyOp[] operations, int?[] expected) =>
         Assert.Equal(expected, RunScript(FancySequenceSolution.CreateByLazySegmentTreeAffine(capacity), operations));
+
+    [Theory]
+    [MemberData(nameof(UnsizedExamples))]
+    public void CreateByArrayRescan_NoAppendsForeseen_ReportsEachIndexModuloOneENine(
+        FancyOp[] operations, int?[] expected)
+    {
+        var fancy = FancySequenceSolution.CreateByArrayRescan();
+        var answers = RunScript(fancy, operations);
+
+        Assert.Equal(expected, answers);
+    }
+
+    [Theory]
+    [MemberData(nameof(UnsizedExamples))]
+    public void CreateByLazySegmentTreeAffine_NoAppendsForeseen_WidensWithPendingUpdatesApplied(
+        FancyOp[] operations, int?[] expected)
+    {
+        var fancy = FancySequenceSolution.CreateByLazySegmentTreeAffine();
+        var answers = RunScript(fancy, operations);
+
+        Assert.Equal(expected, answers);
+    }
 
     private static int?[] RunScript(
         FancySequenceSolution.IFancySequence fancy, FancyOp[] operations) =>

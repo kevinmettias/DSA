@@ -9,6 +9,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MajorityElementII;
 // two [Benchmark] arms were unwired stubs that each just returned the literal 1,
 // never calling into any algorithm at all - so nothing needed reconciling beyond
 // naming the counting walk once.
+[LeetCodeQuestion("majority-element-ii", LeetCodeAnswerOrder.AnyOrder)]
 internal static class MajorityElementIISolution
 {
     // The textbook arm the HashMap count is measured against, and the one place this

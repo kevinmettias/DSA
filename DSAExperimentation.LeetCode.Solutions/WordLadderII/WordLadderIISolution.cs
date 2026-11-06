@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WordLadderII;
 // or a distance label from a single Reduce.Graph pass over DataStructures.Graph.Hamming's graph.
 // The strictly-decreasing filter is what keeps every backtrack finite despite the
 // graph itself being cyclic.
+[LeetCodeQuestion("word-ladder-ii", LeetCodeAnswerOrder.AnyOrder)]
 internal static class WordLadderIISolution
 {
     // The textbook answer: layered BFS building a parents-by-word map, keeping

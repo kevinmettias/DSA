@@ -10,9 +10,11 @@ namespace DSAExperimentation.LeetCode.Solutions.FancySequence;
 // operations, not a single return value - so the strategy choice is which
 // implementation backs it, the same CreateBy<Strategy> factory shape
 // AllOneDataStructureSolution/LRUCacheSolution use for their own design problems.
-// Both factories take the number of appends the caller will make, because the
-// composed strategy's segment tree is a fixed-width structure; LeetCode's own
-// constructor takes no argument and grows unboundedly.
+// LeetCode's constructor takes no argument and the sequence grows unboundedly, so
+// each strategy's factory takes none either (ARCHITECTURE.md §17.13). Beside it, an
+// overload takes the number of appends a caller will make, so a caller that knows it
+// sizes the segment tree once and never widens it (LeetCode's shape beside its own,
+// §17.4).
 //
 // CreateByArrayRescan is the textbook baseline this composition has to justify
 // itself against: keep the live values in a plain BCL list and rewrite every one of
@@ -27,6 +29,7 @@ namespace DSAExperimentation.LeetCode.Solutions.FancySequence;
 // file is a third - so each whole-prefix update costs O(log n) instead of O(n)
 // (FallingSquaresSolution's own lazy-segment-tree-vs-rescan precedent, there with
 // range-assign-max instead of an affine op).
+[LeetCodeQuestion("fancy-sequence", LeetCodeAnswerOrder.AsWritten)]
 internal static class FancySequenceSolution
 {
     // Append plants a raw value with a single-point update whose Mult is 0 (not the
@@ -39,11 +42,25 @@ internal static class FancySequenceSolution
 
     private const long IdentityAddend = 0L;
 
+    // LeetCode's constructor foresees no appends at all.
+    private const int NoAppendsForeseen = 0;
+
+    // How many times wider a full segment tree is rebuilt.
+    private const int WideningFactor = 2;
+
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make the object its call
+    // scripts run on (ARCHITECTURE 17.13).
+    public static IFancySequence CreateByArrayRescan() => CreateByArrayRescan(NoAppendsForeseen);
+
+    public static IFancySequence CreateByLazySegmentTreeAffine() => CreateByLazySegmentTreeAffine(NoAppendsForeseen);
+
     public static IFancySequence CreateByArrayRescan(int capacity) => new ArrayRescanFancySequence(capacity);
 
     public static IFancySequence CreateByLazySegmentTreeAffine(int capacity) =>
         new LazySegmentTreeAffineFancySequence(capacity);
 
+    // LeetCode's Fancy: the four calls its scripts make, which each strategy's object
+    // answers under the same names.
     internal interface IFancySequence
     {
         void Append(int val);
@@ -85,16 +102,40 @@ internal static class FancySequenceSolution
         private int ValueAt(int idx) => (int)_values[idx];
     }
 
+    // The segment tree is as wide as the capacity it is given. An append past that
+    // width rebuilds it twice as wide, so a sequence of unknown length - LeetCode's -
+    // still pays O(log n) amortized per append, as a List's doubling keeps its own Add
+    // O(1) amortized.
     private sealed class LazySegmentTreeAffineFancySequence(int capacity) : IFancySequence
     {
-        private readonly SegmentTree<long, (long Mult, long Add), AffineOperation> _tree = new(new long[capacity]);
+        private SegmentTree<long, (long Mult, long Add), AffineOperation> _tree = new(new long[capacity]);
 
         private int _size;
 
         public void Append(int val)
         {
+            if (_size == _tree.Count)
+            {
+                _tree = Widened();
+            }
+
             _tree.UpdateRange(_size, _size, (PlantValueMultiplier, val));
             _size++;
+        }
+
+        // A tree twice as wide whose leaves are the values this one reads now, every
+        // pending update already applied to them, so nothing is left pending.
+        private SegmentTree<long, (long Mult, long Add), AffineOperation> Widened()
+        {
+            var width = Math.Max(1, _tree.Count * WideningFactor);
+            var values = new long[width];
+
+            for (var i = 0; i < _size; i++)
+            {
+                values[i] = _tree.Query(i, i);
+            }
+
+            return new(values);
         }
 
         // An addAll of 0 and a multAll of 1 are both the affine identity, which is

@@ -18,6 +18,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PalindromePairs;
 // split builds, reverses and hashes its sides afresh. FindPairsByReversedWordTrie
 // walks each word once down this repo's trie of the words reversed, asking
 // Manacher's radii whether the rest of the word is a palindrome at each step.
+[LeetCodeQuestion("palindrome-pairs", LeetCodeAnswerOrder.AnyOrder, Promise = typeof(PalindromePairsPromise))]
 internal static class PalindromePairsSolution
 {
     // The textbook O(n^2*k) answer: try every ordered pair, concatenate, and scan

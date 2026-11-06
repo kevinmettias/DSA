@@ -22,13 +22,30 @@ namespace DSAExperimentation.LeetCode.Solutions.RandomPickWithBlacklist;
 // itself against: redraw from [0, rangeSize) until landing outside the blacklist, using
 // a BCL HashSet<int> for membership. Its expected retries per pick grow with how much of
 // [0, rangeSize) is blacklisted, which the remap solution avoids entirely by construction.
+//
+// LeetCode accepts any whitelisted number for each pick, so no answer can match a
+// recording: RandomPickWithBlacklistAnswerCheck judges a whole script.
+[LeetCodeQuestion("random-pick-with-blacklist", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(RandomPickWithBlacklistAnswerCheck))]
 internal static class RandomPickWithBlacklistSolution
 {
+    // LeetCode's constructor takes the range and the blacklist alone, so the overloads
+    // of LeetCode's shape fix the seed: a call script replayed twice, or once per
+    // benchmark iteration, picks the same numbers.
+    private const int Seed = 1;
+
     public static IRandomPick CreateByRejectionSampling(int rangeSize, int[] blacklist, int seed) =>
         new RejectionSamplingRandomPick(rangeSize, blacklist, seed);
 
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make
+    // the object its call scripts run on (ARCHITECTURE 17.13).
+    public static IRandomPick CreateByRejectionSampling(int rangeSize, int[] blacklist) =>
+        CreateByRejectionSampling(rangeSize, blacklist, Seed);
+
     public static IRandomPick CreateBySetHashMapRemap(int rangeSize, int[] blacklist, int seed) =>
         new SetHashMapRemapRandomPick(rangeSize, blacklist, seed);
+
+    public static IRandomPick CreateBySetHashMapRemap(int rangeSize, int[] blacklist) =>
+        CreateBySetHashMapRemap(rangeSize, blacklist, Seed);
 
     internal interface IRandomPick
     {

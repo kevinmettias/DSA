@@ -3,76 +3,98 @@ using DSAExperimentation.LeetCode.Solutions.RandomPointInNonOverlappingRectangle
 namespace DSAExperimentation.LeetCode.Solutions.Tests.RandomPointInNonOverlappingRectangles;
 
 // Harness only. Both strategies are
-// RandomPointInNonOverlappingRectanglesSolution's - this file pins them to
-// LeetCode's published example and to added rectangle sets: every drawn point must
-// land inside one of the given rectangles, and picks must be weighted by rectangle
-// area rather than uniform over rectangles.
+// RandomPointInNonOverlappingRectanglesSolution's, each held here as LeetCode's
+// Solution object its factory makes from rects - the object whose pick() calls the
+// strategy's one-pick algorithm - and pinned to LeetCode's published example and to
+// added rectangle sets: every drawn point must land inside one of the given
+// rectangles, and picks must be weighted by rectangle area rather than uniform over
+// rectangles.
 public sealed partial class RandomPointInNonOverlappingRectanglesSolutionTests
 {
     private const int DrawsPerBoundsCheck = 100;
     private const int DrawsPerAreaWeightingCheck = 500;
     private const int MinLargeRectangleHitsOutOf500 = 480;
-    private const int PublishedScriptSeed = 1;
 
     // LeetCode's example 1: Solution(rects) followed by five pick() calls, published as
     // [1, -2], [1, -1], [-1, -2], [-2, -2], [0, 0]. Any integer point inside a rectangle
     // is a correct pick, so those five are one valid draw rather than the draw: a row
     // asserts that each published point passes the same inside-a-rectangle check the
-    // strategy's own picks must pass. Both strategies are static functions rather than
-    // LeetCode's Solution class, so the constructor's rects go to every call and one
-    // pick() is one call.
+    // strategy's own picks must pass, one pick() per published point.
     public static TheoryData<int[][], int[][]> PublishedExamples =>
         new()
         {
             { [[-2, -2, 1, 1], [2, 2, 4, 6]], [[1, -2], [1, -1], [-1, -2], [-2, -2], [0, 0]] },
         };
 
-    public static TheoryData<int[][], int> Examples =>
+    public static TheoryData<int[][]> Examples =>
         new()
         {
-            { [[1, 1, 3, 3]], 1 },
-            { [[-2, -2, -1, -1], [1, 0, 3, 0]], 2 },
+            { [[1, 1, 3, 3]] },
+            { [[-2, -2, -1, -1], [1, 0, 3, 0]] },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PickByLinearScan_LeetCodeExamples_AlwaysLandsInsideSomeRectangle(int[][] rects, int seed) =>
-        AssertEveryPickLandsInsideARectangle(rects, seed, new LinearScanPicker());
+    public void PickByLinearScan_LeetCodeExamples_AlwaysLandsInsideSomeRectangle(int[][] rects)
+    {
+        var picker = RandomPointInNonOverlappingRectanglesSolution.PickByLinearScan(rects);
+
+        AssertEveryPickLandsInsideARectangle(rects, picker);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PickByBinarySearchUpperBound_LeetCodeExamples_AlwaysLandsInsideSomeRectangle(
-        int[][] rects, int seed) =>
-        AssertEveryPickLandsInsideARectangle(rects, seed, new BinarySearchPicker());
+    public void PickByBinarySearchUpperBound_LeetCodeExamples_AlwaysLandsInsideSomeRectangle(int[][] rects)
+    {
+        var picker = RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound(rects);
+
+        AssertEveryPickLandsInsideARectangle(rects, picker);
+    }
 
     [Theory]
     [MemberData(nameof(PublishedExamples))]
     public void PickByLinearScan_PublishedExamples_EachPickLandsInsideARectangleAsThePublishedOnesDo(
-        int[][] rects, int[][] publishedPicks) =>
-        AssertEachScriptedPickLandsInsideARectangle(rects, publishedPicks, new LinearScanPicker());
+        int[][] rects, int[][] publishedPicks)
+    {
+        var picker = RandomPointInNonOverlappingRectanglesSolution.PickByLinearScan(rects);
+
+        AssertEachScriptedPickLandsInsideARectangle(rects, publishedPicks, picker);
+    }
 
     [Theory]
     [MemberData(nameof(PublishedExamples))]
     public void PickByBinarySearchUpperBound_PublishedExamples_EachPickLandsInsideARectangleAsThePublishedOnesDo(
-        int[][] rects, int[][] publishedPicks) =>
-        AssertEachScriptedPickLandsInsideARectangle(rects, publishedPicks, new BinarySearchPicker());
+        int[][] rects, int[][] publishedPicks)
+    {
+        var picker = RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound(rects);
+
+        AssertEachScriptedPickLandsInsideARectangle(rects, publishedPicks, picker);
+    }
 
     [Fact]
-    public void PickByLinearScan_OneRectangleFarLargerByArea_LandsThereFarMoreOften() =>
-        AssertLargeRectangleDominates(new LinearScanPicker());
+    public void PickByLinearScan_OneRectangleFarLargerByArea_LandsThereFarMoreOften()
+    {
+        int[][] rects = [[0, 0, 0, 0], [0, 0, 100, 100]];
+        var picker = RandomPointInNonOverlappingRectanglesSolution.PickByLinearScan(rects);
+
+        AssertLargeRectangleDominates(picker);
+    }
 
     [Fact]
-    public void PickByBinarySearchUpperBound_OneRectangleFarLargerByArea_LandsThereFarMoreOften() =>
-        AssertLargeRectangleDominates(new BinarySearchPicker());
+    public void PickByBinarySearchUpperBound_OneRectangleFarLargerByArea_LandsThereFarMoreOften()
+    {
+        int[][] rects = [[0, 0, 0, 0], [0, 0, 100, 100]];
+        var picker = RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound(rects);
+
+        AssertLargeRectangleDominates(picker);
+    }
 
     private static void AssertEveryPickLandsInsideARectangle(
-        int[][] rects, int seed, IRectanglePicker picker)
+        int[][] rects, RandomPointInNonOverlappingRectanglesSolution.IRectanglePointPicker picker)
     {
-        var random = new Random(seed);
-
         for (var i = 0; i < DrawsPerBoundsCheck; i++)
         {
-            var point = picker.Pick(rects, random);
+            var point = picker.Pick();
             Assert.Contains(rects, rect => IsInside(point, rect));
         }
     }
@@ -80,28 +102,25 @@ public sealed partial class RandomPointInNonOverlappingRectanglesSolutionTests
     // One pick per pick() call in the published script, each checked the way the
     // published point for that call is checked.
     private static void AssertEachScriptedPickLandsInsideARectangle(
-        int[][] rects, int[][] publishedPicks, IRectanglePicker picker)
+        int[][] rects, int[][] publishedPicks, RandomPointInNonOverlappingRectanglesSolution.IRectanglePointPicker picker)
     {
-        var random = new Random(PublishedScriptSeed);
-
         foreach (var publishedPick in publishedPicks)
         {
             Assert.Contains(rects, rect => IsInside(publishedPick, rect));
 
-            var point = picker.Pick(rects, random);
+            var point = picker.Pick();
             Assert.Contains(rects, rect => IsInside(point, rect));
         }
     }
 
-    private static void AssertLargeRectangleDominates(IRectanglePicker picker)
+    // The picker was made from a single-point rectangle at the origin and a 101 x 101
+    // one from it, so about two picks in 10,202 land on the origin.
+    private static void AssertLargeRectangleDominates(RandomPointInNonOverlappingRectanglesSolution.IRectanglePointPicker picker)
     {
-        int[][] rects = [[0, 0, 0, 0], [0, 0, 100, 100]];
-        var random = new Random(3);
-
         var largeRectangleHits = 0;
         for (var i = 0; i < DrawsPerAreaWeightingCheck; i++)
         {
-            var point = picker.Pick(rects, random);
+            var point = picker.Pick();
             if (point[0] != 0 || point[1] != 0)
             {
                 largeRectangleHits++;
@@ -111,31 +130,11 @@ public sealed partial class RandomPointInNonOverlappingRectanglesSolutionTests
         Assert.True(largeRectangleHits > MinLargeRectangleHitsOutOf500);
     }
 
-    private static bool IsInside(int[] point, int[] rect) =>
-        point[0] >= rect[0] && point[0] <= rect[2] && point[1] >= rect[1] && point[1] <= rect[3];
-
-    // One drawing strategy: given the rectangles and a source of randomness, return one
-    // point that lies inside one of them. The two shared assertion helpers used to take
-    // the strategy as a bare delegate, which named neither the decision nor its inputs;
-    // this type states in one named method what a picker is and is the place the contract
-    // - always inside a rectangle, weighted by area - is written down. Nested because both
-    // it and its two implementations are only ever used inside this test class.
-    private interface IRectanglePicker
+    private static bool IsInside(int[] point, int[] rect)
     {
-        int[] Pick(int[][] rects, Random random);
-    }
+        var isWithinColumns = point[0] >= rect[0] && point[0] <= rect[2];
+        var isWithinRows = point[1] >= rect[1] && point[1] <= rect[3];
 
-    // Uniform-free prefix-area scan: the arm that reaches for the solution's own name.
-    private sealed class LinearScanPicker : IRectanglePicker
-    {
-        public int[] Pick(int[][] rects, Random random) =>
-            RandomPointInNonOverlappingRectanglesSolution.PickByLinearScan(rects, random);
-    }
-
-    // The strategy the solution offers as its efficient arm, behind the same name.
-    private sealed class BinarySearchPicker : IRectanglePicker
-    {
-        public int[] Pick(int[][] rects, Random random) =>
-            RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound(rects, random);
+        return isWithinColumns && isWithinRows;
     }
 }

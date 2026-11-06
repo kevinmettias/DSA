@@ -17,8 +17,25 @@ namespace DSAExperimentation.LeetCode.Solutions.GenerateRandomPointInACircle;
 // axis" shape ARCHITECTURE.md documents for Traversal/DepthFirst/DepthFirstSearch.
 // Each strategy takes its seed from the caller, as RandomPickWithBlacklistSolution's
 // do, so the same seed draws the same points and a replay is reproducible.
+//
+// Each class's factory makes it as LeetCode's constructor does, from the radius and
+// the center alone, so the catalog harness can replay call scripts on it (ARCHITECTURE
+// 17.13). The points are random, so GenerateRandomPointInACircleAnswerCheck judges
+// them rather than the recorded draw.
+[LeetCodeQuestion("generate-random-point-in-a-circle", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(GenerateRandomPointInACircleAnswerCheck))]
 internal static class GenerateRandomPointInACircleSolution
 {
+    // Fixed, so a replay of one script draws the same points every time.
+    private const int Seed = 1;
+
+    // LeetCode's Solution(radius, x_center, y_center), drawing by rejection sampling.
+    public static IRandomPointGenerator CreateByRejectionSampling(double radius, double xCenter, double yCenter) =>
+        new GenerateRandomPointInACircleByRejectionSampling(radius, xCenter, yCenter, Seed);
+
+    // LeetCode's Solution(radius, x_center, y_center), drawing by one polar draw.
+    public static IRandomPointGenerator CreateByClosedFormPolar(double radius, double xCenter, double yCenter) =>
+        new GenerateRandomPointInACircleByClosedFormPolar(radius, xCenter, yCenter, Seed);
+
     internal interface IRandomPointGenerator
     {
         double[] RandPoint();

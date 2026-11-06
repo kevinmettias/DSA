@@ -10,11 +10,25 @@ namespace DSAExperimentation.LeetCode.Solutions.RandomPickIndex;
 // instance - Pick alone, this time - so "every strategy for the problem" (§17.3)
 // takes the form of two classes implementing a shared IRandomPickIndex surface,
 // the same shape InsertDeleteGetRandomO1Solution already uses for its own
-// Design-category problem. Each strategy takes its seed from the caller, as
-// RandomPickWithBlacklistSolution's do, so the same calls against the same seed
-// pick the same indices and a replay is reproducible.
+// Design-category problem. Each strategy takes its seed from the caller, so the
+// same calls against the same seed pick the same indices and a replay is
+// reproducible. LeetCode accepts any index holding the target for each pick, so no
+// answer can match a recording: RandomPickIndexAnswerCheck judges a whole script.
+[LeetCodeQuestion("random-pick-index", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(RandomPickIndexAnswerCheck))]
 internal static class RandomPickIndexSolution
 {
+    // LeetCode's constructor takes nums alone, so the factories fix the seed: a call
+    // script replayed twice, or once per benchmark iteration, picks the same indices.
+    private const int Seed = 1;
+
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make
+    // the object its call scripts run on (ARCHITECTURE 17.13).
+    public static IRandomPickIndex CreateByReservoirSampling(int[] nums) =>
+        new RandomPickIndexByReservoirSampling(nums, Seed);
+
+    public static IRandomPickIndex CreateByHashMapGrouping(int[] nums) =>
+        new RandomPickIndexByHashMapGrouping(nums, Seed);
+
     internal interface IRandomPickIndex
     {
         int Pick(int target);

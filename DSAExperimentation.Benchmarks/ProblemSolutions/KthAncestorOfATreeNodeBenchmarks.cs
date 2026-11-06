@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.KthAncestorOfATreeNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are KthAncestorOfATreeNodeSolution's, the same methods
+// Harness only: both arms are KthAncestorOfATreeNodeSolution's, the same factories
 // KthAncestorOfATreeNodeSolutionTests proves correct - the textbook "walk the raw
 // parent[] array k times" per query against a binary-lifting table that answers
 // each query in one jump per set bit of k.
@@ -58,24 +58,23 @@ public class KthAncestorOfATreeNodeBenchmarks
     [Benchmark(Baseline = true)]
     public int[] WalkParentArrayPerQuery()
     {
-        for (var i = 0; i < _queries.Length; i++)
-        {
-            var (node, k) = _queries[i];
-            _ancestors[i] = KthAncestorOfATreeNodeSolution.GetKthAncestorByParentWalk(_parent, node, k);
-        }
-
-        return _ancestors;
+        var tree = KthAncestorOfATreeNodeSolution.CreateByParentWalk(NodeCount, _parent);
+        return AskEach(tree);
     }
 
     [Benchmark]
     public int[] BinaryLiftingTable()
     {
-        var jumps = KthAncestorOfATreeNodeSolution.BuildAncestorJumps(_parent);
+        var tree = KthAncestorOfATreeNodeSolution.CreateByBinaryLifting(NodeCount, _parent);
+        return AskEach(tree);
+    }
 
+    private int[] AskEach(ITreeAncestor tree)
+    {
         for (var i = 0; i < _queries.Length; i++)
         {
             var (node, k) = _queries[i];
-            _ancestors[i] = KthAncestorOfATreeNodeSolution.GetKthAncestorByBinaryLifting(jumps, node, k);
+            _ancestors[i] = tree.GetKthAncestor(node, k);
         }
 
         return _ancestors;

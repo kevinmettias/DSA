@@ -117,13 +117,12 @@ commit beside it, as the rest of this file does.
   LeetCode's fastest C# (L9) becomes the baseline, so the question enrolls at once; then a gated,
   scheduled agent composes library strategies from a capability index, and a gap report turns a
   missing primitive into a library proposal for the owner.
-- **L11. Catalog enrollment** (another session's area). 1,059 solutions enrolled as of 2026-11-05,
-  72 of them design questions run through call scripts and 123 with a reach (a case limit);
-  46 left, each with its reason in ARCHITECTURE 17.13 "Enrolling the rest". What remains needs an
-  owner call (O11, O12) or a harness feature: an answer check over a whole design script (All One),
-  random or non-instance design questions, Shortest Matching Substring's overload tie, the codecs'
-  serialize and deserialize halves, which the harness takes for strategies, and Sudoku Solver's
-  in-place shape.
+- **L11. Catalog enrollment** (another session's area). 1,068 solutions enrolled as of 2026-11-05,
+  72 of them design questions run through call scripts and 124 with a reach (a case limit);
+  37 left, each with its reason in ARCHITECTURE 17.13 "Enrolling the rest". What remains needs a
+  harness feature: random or non-instance design questions, the codecs' serialize and deserialize
+  halves, which the harness takes for strategies, Sudoku Solver's in-place shape, and the questions
+  whose examples state their answer in prose, which a correction can now record.
 
 ### Deferred loose ends
 
@@ -170,14 +169,14 @@ commit beside it, as the rest of this file does.
   them down.
 - **O10.** Deferred by the owner, not waiting: geometry beyond the exact cases, "general where exact
   for now... fully general when we have everything else stablized".
-- **O11.** The order rule LeetCode's judge applies to five catalog questions whose statements leave it
-  unsaid (Word Search II, Majority Element II, Expression Add Operators, Concatenated Words,
-  Palindrome Pairs; every strategy is right in some order). Learning it means submitting reordered
-  answers under the owner's account, which needs O1 and the owner's say-so: the submit approval of
-  2026-11-03 was for runtime charts.
-- **O12.** The dataset records 3 wrong outputs for Maximum Product of the Length of Two Palindromic
-  Substrings ("babadabababa" makes 27; it records 25). Add a way for the catalog to correct an output
-  it imports, or leave the question out?
+- **O11.** Six catalog questions whose statements leave the order unsaid were enrolled as `AnyOrder`
+  on 2026-11-05, from what LeetCode's judge is known to accept (Word Search II, Majority Element II,
+  Expression Add Operators, Concatenated Words, Palindrome Pairs, Word Ladder II; every strategy is
+  right in some order). Confirming it means submitting reordered answers under the owner's account,
+  which needs O1 and the owner's say-so: the submit approval of 2026-11-03 was for runtime charts.
+- **O12. — DONE** 2026-11-05. The catalog corrects an output it imports from a hand-kept file per
+  question (`Snapshot/Corrections`, ARCHITECTURE 17.13), each correction saying why and what was run
+  to know it; Maximum Product of the Length of Two Palindromic Substrings is enrolled on it.
 
 ---
 

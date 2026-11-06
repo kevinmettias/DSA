@@ -11,6 +11,7 @@ namespace DSAExperimentation.LeetCode.Catalog.Tests;
 public sealed partial class LeetCodeCatalogTests
 {
     private const string TwoSum = "two-sum";
+    private const string MaximumPalindromeProduct = "maximum-product-of-the-length-of-two-palindromic-substrings";
 
     [Fact]
     public void TitleSlugs_EveryQuestionFile_LoadsUnderItsOwnSlug()
@@ -84,6 +85,16 @@ public sealed partial class LeetCodeCatalogTests
 
         Assert.Equal(sources.Order(), sources);
         Assert.Equal(LeetCodeCaseSource.Example, sources[0]);
+    }
+
+    [Fact]
+    public void Cases_CorrectedQuestion_RecordsEachCorrectedOutput()
+    {
+        var cases = LeetCodeCatalog.Cases(MaximumPalindromeProduct);
+
+        Assert.All(
+            CorrectionFiles.Read(MaximumPalindromeProduct),
+            correction => Assert.Contains(cases, testCase => testCase.Inputs.SequenceEqual(correction.Inputs) && testCase.ExpectedOutput == correction.ExpectedOutput));
     }
 
     [Fact]

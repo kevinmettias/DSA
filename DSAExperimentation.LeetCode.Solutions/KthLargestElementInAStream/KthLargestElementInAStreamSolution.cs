@@ -11,6 +11,11 @@ namespace DSAExperimentation.LeetCode.Solutions.KthLargestElementInAStream;
 // IKthLargestStream is bespoke to this problem alone - no other LeetCode entry
 // shares an Add-returns-running-order-statistic contract - so it stays here rather
 // than in DataStructures/.
+//
+// Each factory takes LeetCode's constructor inputs, k and nums, so the catalog harness
+// makes the object its call scripts run on from them (ARCHITECTURE.md §17.13); the
+// numsSize LeetCode's C signature lists after nums is no script's to pass.
+[LeetCodeQuestion("kth-largest-element-in-a-stream", LeetCodeAnswerOrder.AsWritten)]
 internal static class KthLargestElementInAStreamSolution
 {
     // The textbook baseline this composition has to justify itself against: a BCL

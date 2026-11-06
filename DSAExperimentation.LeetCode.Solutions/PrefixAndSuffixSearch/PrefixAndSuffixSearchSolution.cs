@@ -6,9 +6,20 @@ namespace DSAExperimentation.LeetCode.Solutions.PrefixAndSuffixSearch;
 // f(prefix, suffix) with the largest index of a word that has that prefix AND that
 // suffix, or -1 if none does. The two strategies are the classic per-query-scan vs.
 // precompute-once tradeoff.
+//
+// LeetCode's shape is a WordFilter built from the words and queried by f calls, so
+// each strategy's overload taking only the words makes one, the object the catalog
+// harness replays LeetCode's call scripts on (ARCHITECTURE 17.13). The object asks
+// the strategy's query overload, which the hand-written benchmark calls directly,
+// so each strategy is written once.
+[LeetCodeQuestion("prefix-and-suffix-search", LeetCodeAnswerOrder.AsWritten, Calls = typeof(PrefixAndSuffixSearchCalls))]
 internal static class PrefixAndSuffixSearchSolution
 {
     private const string PrefixSuffixSeparator = "#";
+
+    // LeetCode's shape: a WordFilter that keeps the words as given and scans them all
+    // on every query.
+    public static IWordFilter SearchByLinearScan(string[] words) => new LinearScanFilter(words);
 
     // The textbook baseline: scan every word for every query. Iterating words in
     // index order and letting a later match overwrite an earlier one is exactly
@@ -29,18 +40,14 @@ internal static class PrefixAndSuffixSearchSolution
         return found;
     }
 
-    // One-time O(numWords * wordLength^2) precompute of every (prefix, suffix)
-    // substring pair of each word into this repo's own HashMap<string,int>, later
-    // words overwriting earlier ones on a shared key - so a hit always reports the
-    // largest matching word index - after which every query is a single
-    // O(1)-average lookup.
-    public static int SearchByPrecomputedHashMap(string[] words, SearchPrefix prefix, SearchSuffix suffix)
-    {
-        var index = BuildPrefixSuffixIndex(words);
+    // LeetCode's shape: a WordFilter whose constructor pays the one-time
+    // O(numWords * wordLength^2) precompute of every (prefix, suffix) substring pair
+    // of each word into this repo's own HashMap<string,int>, later words overwriting
+    // earlier ones on a shared key - so a hit always reports the largest matching
+    // word index - after which every query is a single O(1)-average lookup.
+    public static IWordFilter SearchByPrecomputedHashMap(string[] words) => new PrecomputedHashMapFilter(words);
 
-        return SearchByPrecomputedHashMap(index, prefix, suffix);
-    }
-
+    // The prepared-input overload: one query against the index the constructor built.
     public static int SearchByPrecomputedHashMap(
         HashMap<string, int> indexByPrefixAndSuffix, SearchPrefix prefix, SearchSuffix suffix)
         => indexByPrefixAndSuffix.TryGetValue(prefix.Text + PrefixSuffixSeparator + suffix.Text, out var index)
@@ -66,5 +73,20 @@ internal static class PrefixAndSuffixSearchSolution
         }
 
         return indexByPrefixAndSuffix;
+    }
+
+    // The words as given; every query scans them all.
+    private sealed class LinearScanFilter(string[] words) : IWordFilter
+    {
+        public int Search(SearchPrefix prefix, SearchSuffix suffix) => SearchByLinearScan(words, prefix, suffix);
+    }
+
+    // Every word's (prefix, suffix) keys, indexed once; every query is one lookup.
+    private sealed class PrecomputedHashMapFilter(string[] words) : IWordFilter
+    {
+        private readonly HashMap<string, int> _indexByPrefixAndSuffix = BuildPrefixSuffixIndex(words);
+
+        public int Search(SearchPrefix prefix, SearchSuffix suffix) =>
+            SearchByPrecomputedHashMap(_indexByPrefixAndSuffix, prefix, suffix);
     }
 }

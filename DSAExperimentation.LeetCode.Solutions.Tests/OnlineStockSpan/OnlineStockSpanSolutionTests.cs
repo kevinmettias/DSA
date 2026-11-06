@@ -2,17 +2,17 @@ using DSAExperimentation.LeetCode.Solutions.OnlineStockSpan;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.OnlineStockSpan;
 
-// Harness only: both strategies live in OnlineStockSpanSolution and are asserted
-// against the same examples - LeetCode's published next() stream, the strictly
-// increasing stream the old test drove by hand, a single day, a strictly
-// decreasing stream where no day ever spans another, and a flat stream where
-// every day spans all of them (prices are compared with <=, not <).
+// Harness only: both strategies live in OnlineStockSpanSolution, and these rows
+// feed each one's whole-stream overload, the one the hand-written benchmark times -
+// a strictly increasing stream, a single day, a strictly decreasing stream where
+// no day ever spans another, and a flat stream where every day spans all of them
+// (prices are compared with <=, not <). LeetCode's published examples run in
+// CatalogCaseTests.
 public sealed partial class OnlineStockSpanSolutionTests
 {
-    public static TheoryData<int[], int[]> Examples =>
+    public static TheoryData<int[], int[]> Cases =>
         new()
         {
-            { [100, 80, 60, 70, 60, 75, 85], [1, 1, 1, 2, 1, 4, 6] },
             { [10, 20, 30], [1, 2, 3] },
             { [7], [1] },
             { [30, 20, 10], [1, 1, 1] },
@@ -20,12 +20,12 @@ public sealed partial class OnlineStockSpanSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SpansByBackwardScan_LeetCodeExamples_ReturnsSpanPerDay(int[] prices, int[] expected) =>
+    [MemberData(nameof(Cases))]
+    public void SpansByBackwardScan_Cases_ReturnsSpanPerDay(int[] prices, int[] expected) =>
         Assert.Equal(expected, OnlineStockSpanSolution.SpansByBackwardScan(prices));
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void SpansByMonotonicStack_LeetCodeExamples_ReturnsSpanPerDay(int[] prices, int[] expected) =>
+    [MemberData(nameof(Cases))]
+    public void SpansByMonotonicStack_Cases_ReturnsSpanPerDay(int[] prices, int[] expected) =>
         Assert.Equal(expected, OnlineStockSpanSolution.SpansByMonotonicStack(prices));
 }

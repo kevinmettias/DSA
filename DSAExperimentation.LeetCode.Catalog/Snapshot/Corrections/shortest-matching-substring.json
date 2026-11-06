@@ -1,0 +1,10 @@
+[
+  {
+    "Inputs": [
+      "\"xyz\"",
+      "\"*x*z\""
+    ],
+    "ExpectedOutput": "3",
+    "Reason": "The dataset records -1; trying every substring of s against p's three parts finds 3."
+  }
+]

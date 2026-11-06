@@ -15,8 +15,31 @@ namespace DSAExperimentation.LeetCode.Solutions.InsertDeleteGetRandomO1;
 // mutating calls against one instance, so there is no separate "prepare
 // input" step to hoist into a benchmark's [GlobalSetup]; each [Benchmark] arm
 // constructs its own instance and replays the same call script instead.
+//
+// Each CreateBy<Strategy> factory is LeetCode's constructor for one class, so the
+// catalog harness replays LeetCode's call scripts on it. getRandom may answer any
+// member, so an answer check judges each script (InsertDeleteGetRandomO1AnswerCheck)
+// rather than the recorded draws.
+[LeetCodeQuestion("insert-delete-getrandom-o1", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(InsertDeleteGetRandomO1AnswerCheck))]
 internal static class InsertDeleteGetRandomO1Solution
 {
+    // LeetCode's constructor takes no seed, so each instance a factory makes draws from
+    // a Random of its own, seeded alike so that every replay of a script draws the
+    // same members and a failing draw reproduces.
+    private const int DrawSeed = 380;
+
+    public static IRandomizedSet CreateByListScan()
+    {
+        var random = new Random(DrawSeed);
+        return new RandomizedSetByListScan(random);
+    }
+
+    public static IRandomizedSet CreateByHashMapSwapRemove()
+    {
+        var random = new Random(DrawSeed);
+        return new RandomizedSetByHashMapSwapRemove(random);
+    }
+
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
     // restating it.

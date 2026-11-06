@@ -1,0 +1,137 @@
+[
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "2",
+      "7"
+    ],
+    "ExpectedOutput": "2",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 2 and 7 holds 2."
+  },
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "6",
+      "8"
+    ],
+    "ExpectedOutput": "3",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 6 and 8 holds 3."
+  },
+  {
+    "Inputs": [
+      "[37,-34,-48,null,-100,-101,48,null,null,null,null,-54,null,-71,-22,null,null,null,8]",
+      "-100",
+      "-101"
+    ],
+    "ExpectedOutput": "37",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to -100 and -101 holds 37."
+  },
+  {
+    "Inputs": [
+      "[3,1,4,null,2]",
+      "2",
+      "1"
+    ],
+    "ExpectedOutput": "1",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 2 and 1 holds 1."
+  },
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "6",
+      "4"
+    ],
+    "ExpectedOutput": "5",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 6 and 4 holds 5."
+  },
+  {
+    "Inputs": [
+      "[6,2,8,0,4,7,9,null,null,3,5]",
+      "0",
+      "5"
+    ],
+    "ExpectedOutput": "2",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 0 and 5 holds 2."
+  },
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "3",
+      "0"
+    ],
+    "ExpectedOutput": "3",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 3 and 0 holds 3."
+  },
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "6",
+      "2"
+    ],
+    "ExpectedOutput": "5",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 6 and 2 holds 5."
+  },
+  {
+    "Inputs": [
+      "[3,1,4,null,2]",
+      "2",
+      "3"
+    ],
+    "ExpectedOutput": "3",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 2 and 3 holds 3."
+  },
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "0",
+      "8"
+    ],
+    "ExpectedOutput": "1",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 0 and 8 holds 1."
+  },
+  {
+    "Inputs": [
+      "[6,2,8,0,4,7,9,null,null,3,5]",
+      "3",
+      "5"
+    ],
+    "ExpectedOutput": "4",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 3 and 5 holds 4."
+  },
+  {
+    "Inputs": [
+      "[2,1]",
+      "2",
+      "1"
+    ],
+    "ExpectedOutput": "2",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 2 and 1 holds 2."
+  },
+  {
+    "Inputs": [
+      "[3,5,1,6,2,0,8,null,null,7,4]",
+      "7",
+      "4"
+    ],
+    "ExpectedOutput": "2",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 7 and 4 holds 2."
+  },
+  {
+    "Inputs": [
+      "[6,2,8,0,4,7,9,null,null,3,5]",
+      "2",
+      "4"
+    ],
+    "ExpectedOutput": "2",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 2 and 4 holds 2."
+  },
+  {
+    "Inputs": [
+      "[6,2,8,0,4,7,9,null,null,3,5]",
+      "2",
+      "8"
+    ],
+    "ExpectedOutput": "6",
+    "Reason": "The dataset records [], its reference having printed no node; the deepest node on both root paths to 2 and 8 holds 6."
+  }
+]

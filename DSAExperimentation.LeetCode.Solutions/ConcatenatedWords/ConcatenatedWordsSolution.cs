@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConcatenatedWords;
 // trie lets HasPrefix break the inner loop the moment no dictionary word
 // extends the current prefix, and Memoizer caches each start index so a shared
 // suffix is only solved once.
+[LeetCodeQuestion("concatenated-words", LeetCodeAnswerOrder.AnyOrder, Promise = typeof(ConcatenatedWordsPromise))]
 internal static class ConcatenatedWordsSolution
 {
     public static List<string> FindAllByHashSetScan(string[] words)

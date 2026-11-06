@@ -4,17 +4,17 @@ using DSAExperimentation.LeetCode.Solutions.RangeFrequencyQueries;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.RangeFrequencyQueries;
 
-// Harness only. Both strategies are RangeFrequencyQueriesSolution's - this file
-// pins them to LeetCode's published example queries, plus a value that never
-// occurs, a single-index window, and a window that excludes some occurrences. The
-// value index the second strategy bisects is asserted on its own.
+// Harness only. Both strategies are RangeFrequencyQueriesSolution's - these rows
+// query the RangeFreqQuery each one's factory makes: more queries on LeetCode's
+// array, among them a window that excludes some occurrences and a single-index
+// window, then a value that never occurs and a one-element array. The value index
+// the second strategy bisects is asserted on its own. LeetCode's published
+// examples run in CatalogCaseTests.
 public sealed partial class RangeFrequencyQueriesSolutionTests
 {
-    public static TheoryData<RangeFrequencyCase> Examples =>
+    public static TheoryData<RangeFrequencyCase> Cases =>
         new()
         {
-            { new RangeFrequencyCase(Arr: [12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56], Left: 1, Right: 2, Value: 4, Expected: 1) },
-            { new RangeFrequencyCase(Arr: [12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56], Left: 0, Right: 11, Value: 33, Expected: 2) },
             { new RangeFrequencyCase(Arr: [12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56], Left: 0, Right: 11, Value: 22, Expected: 2) },
             { new RangeFrequencyCase(Arr: [12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56], Left: 0, Right: 3, Value: 33, Expected: 1) },
             { new RangeFrequencyCase(Arr: [12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56], Left: 5, Right: 5, Value: 2, Expected: 1) },
@@ -23,25 +23,23 @@ public sealed partial class RangeFrequencyQueriesSolutionTests
         };
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void QueryByBinarySearchIndex_LeetCodeExamples_ReturnsFrequencyOfValueInSubarray(
-        RangeFrequencyCase example)
+    [MemberData(nameof(Cases))]
+    public void QueryByBinarySearchIndex_Cases_ReturnsFrequencyOfValueInSubarray(RangeFrequencyCase testCase)
     {
-        var actual = RangeFrequencyQueriesSolution.QueryByBinarySearchIndex(
-            example.Arr, example.Left, example.Right, example.Value);
+        var rangeFreqQuery = RangeFrequencyQueriesSolution.QueryByBinarySearchIndex(testCase.Arr);
+        var actual = rangeFreqQuery.Query(testCase.Left, testCase.Right, testCase.Value);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
     [Theory]
-    [MemberData(nameof(Examples))]
-    public void QueryByBruteForceRescan_LeetCodeExamples_ReturnsFrequencyOfValueInSubarray(
-        RangeFrequencyCase example)
+    [MemberData(nameof(Cases))]
+    public void QueryByBruteForceRescan_Cases_ReturnsFrequencyOfValueInSubarray(RangeFrequencyCase testCase)
     {
-        var actual = RangeFrequencyQueriesSolution.QueryByBruteForceRescan(
-            example.Arr, example.Left, example.Right, example.Value);
+        var rangeFreqQuery = RangeFrequencyQueriesSolution.QueryByBruteForceRescan(testCase.Arr);
+        var actual = rangeFreqQuery.Query(testCase.Left, testCase.Right, testCase.Value);
 
-        Assert.Equal(example.Expected, actual);
+        Assert.Equal(testCase.Expected, actual);
     }
 
     // LeetCode's array read off position by position: 12 at 0 and 9, 33 at 1 and 7, 4 at
@@ -66,12 +64,11 @@ public sealed partial class RangeFrequencyQueriesSolutionTests
         return [.. Enumerable.Range(0, positions.Count).Select(positions.Get)];
     }
 
-    // One LeetCode example: the array, the inclusive window as its left and right
-    // indices, the value whose occurrences are counted, and how many land inside the
-    // window. Left, Right and Value are all bare ints, so each is named at every
-    // construction site and a row reads as the case it is rather than as three
-    // positions a caller has to keep in order. Nested because it is only ever used
-    // inside this test class - it is this harness's own vocabulary, not a type another
-    // file would import.
+    // One case: the array, the inclusive window as its left and right indices, the value
+    // whose occurrences are counted, and how many land inside the window. Left, Right and
+    // Value are all bare ints, so each is named at every construction site and a row reads
+    // as the case it is rather than as three positions a caller has to keep in order.
+    // Nested because it is only ever used inside this test class - it is this harness's
+    // own vocabulary, not a type another file would import.
     public readonly record struct RangeFrequencyCase(int[] Arr, int Left, int Right, int Value, int Expected);
 }

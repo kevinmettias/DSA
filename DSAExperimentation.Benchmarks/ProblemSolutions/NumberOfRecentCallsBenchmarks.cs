@@ -2,8 +2,9 @@ using DSAExperimentation.LeetCode.Solutions.NumberOfRecentCalls;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are NumberOfRecentCallsSolution's, the same methods
-// NumberOfRecentCallsSolutionTests proves correct. The workload is a stream of strictly
+// Harness only: both arms are NumberOfRecentCallsSolution's, the same factories
+// NumberOfRecentCallsSolutionTests proves correct, each counter pinged once per
+// timestamp, in order, its counts returned. The workload is a stream of strictly
 // increasing timestamps with small random gaps, so the 3000ms window always
 // holds a large slice of recent history - the case where rescanning the whole
 // history costs O(calls) per ping (O(calls^2) over the run) while the queue window
@@ -16,6 +17,9 @@ public class NumberOfRecentCallsBenchmarks
     private const int MaxGapExclusive = 50;
 
     private int[] _timestamps = [];
+
+    // Every ping's count; sized in setup so the replay allocates nothing.
+    private int[] _counts = [];
 
     [Params(500, 5_000)]
     public int CallCount { get; set; }
@@ -32,13 +36,31 @@ public class NumberOfRecentCallsBenchmarks
             t += random.Next(MinGap, MaxGapExclusive);
             _timestamps[i] = t;
         }
+
+        _counts = new int[CallCount];
     }
 
     [Benchmark(Baseline = true)]
-    public int[] FullHistoryRescan() =>
-        NumberOfRecentCallsSolution.PingCountsByFullHistoryRescan(_timestamps);
+    public int[] FullHistoryRescan()
+    {
+        var counter = NumberOfRecentCallsSolution.CreateByFullHistoryRescan();
+        return PingEach(counter);
+    }
 
     [Benchmark]
-    public int[] SlidingWindowQueue() =>
-        NumberOfRecentCallsSolution.PingCountsBySlidingWindowQueue(_timestamps);
+    public int[] SlidingWindowQueue()
+    {
+        var counter = NumberOfRecentCallsSolution.CreateBySlidingWindowQueue();
+        return PingEach(counter);
+    }
+
+    private int[] PingEach(NumberOfRecentCallsSolution.IRecentCounter counter)
+    {
+        for (var i = 0; i < _timestamps.Length; i++)
+        {
+            _counts[i] = counter.Ping(_timestamps[i]);
+        }
+
+        return _counts;
+    }
 }

@@ -64,7 +64,10 @@ public static class LeetCodeCatalog
             .OrderBy(problem => problem.Question.FrontendId)
             .ToList();
 
-    /// <summary>Every case the catalog holds for one problem: its examples, then the dataset's, then LeetCode Run's.</summary>
+    /// <summary>
+    /// Every case the catalog holds for one problem: its examples, then the dataset's, then LeetCode Run's, each
+    /// recording the output a hand-kept correction gives it where its source's was wrong or missing.
+    /// </summary>
     /// <param name="titleSlug">The problem's URL slug, such as "two-sum".</param>
     /// <returns>The problem's cases, each tagged with its source.</returns>
     /// <exception cref="KeyNotFoundException">The catalog does not hold the problem.</exception>
@@ -73,7 +76,19 @@ public static class LeetCodeCatalog
         var examples = Question(titleSlug).Examples.Select(example => example with { Source = LeetCodeCaseSource.Example });
         var dataset = CaseFiles.Read(LeetCodeCaseSource.Dataset, titleSlug);
         var run = CaseFiles.Read(LeetCodeCaseSource.LeetCodeRun, titleSlug);
+        var corrections = CorrectionFiles.Read(titleSlug);
 
-        return examples.Concat(dataset).Concat(run).ToList();
+        return [.. examples.Concat(dataset).Concat(run).Select(testCase => Corrected(testCase, corrections))];
+    }
+
+    // The case with the output a correction naming its inputs records, or as its source recorded it.
+    private static LeetCodeCase Corrected(LeetCodeCase testCase, IReadOnlyList<CaseCorrection> corrections)
+    {
+        if (corrections.FirstOrDefault(correction => correction.Inputs.SequenceEqual(testCase.Inputs)) is not { } correction)
+        {
+            return testCase;
+        }
+
+        return testCase with { ExpectedOutput = correction.ExpectedOutput };
     }
 }

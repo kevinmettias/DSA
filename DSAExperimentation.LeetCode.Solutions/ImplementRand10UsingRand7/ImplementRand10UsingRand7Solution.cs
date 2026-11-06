@@ -14,11 +14,21 @@ namespace DSAExperimentation.LeetCode.Solutions.ImplementRand10UsingRand7;
 // Rand10ByRecycledRejectionSampling answers LeetCode's follow-up - "could you
 // minimize the number of calls to rand7()?" - by keeping what a rejected draw
 // still knows instead of throwing it away.
+//
+// LeetCode's judge passes one input, n, calls rand10() n times and accepts any n
+// values in 1..10, so each strategy also takes LeetCode's shape beside its own
+// (ARCHITECTURE 17.4): n in, the n values its one-call form draws from one Rand7()
+// source out. The values are random, so ImplementRand10UsingRand7AnswerCheck judges
+// them rather than the recorded draw.
+[LeetCodeQuestion("implement-rand10-using-rand7", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(ImplementRand10UsingRand7AnswerCheck))]
 internal static class ImplementRand10UsingRand7Solution
 {
     private const int Rand7RangeSize = 7;
     private const int RejectionThreshold = 40;
     private const int Rand10Range = 10;
+
+    // Fixed, so a replay of one case draws the same values every time.
+    private const int Seed = 1;
 
     public static int Rand10ByRejectionSampling(IRand7 rand7)
     {
@@ -33,6 +43,9 @@ internal static class ImplementRand10UsingRand7Solution
 
         return 1 + (index - 1) % Rand10Range;
     }
+
+    // LeetCode's shape: rand10() called n times.
+    public static int[] Rand10ByRejectionSampling(int callCount) => ValuesOf(callCount, Rand10ByRejectionSampling);
 
     // Each round extends the value carried out of the last one by one more Rand7()
     // call: a value uniform over 1..r and a draw make a value uniform over 1..7r, of
@@ -60,5 +73,32 @@ internal static class ImplementRand10UsingRand7Solution
         } while (index > accepted);
 
         return 1 + (index - 1) % Rand10Range;
+    }
+
+    // LeetCode's shape: rand10() called n times.
+    public static int[] Rand10ByRecycledRejectionSampling(int callCount) => ValuesOf(callCount, Rand10ByRecycledRejectionSampling);
+
+    // The judge's n calls, made in turn on one Rand7() source, as LeetCode's SolBase
+    // supplies one to a whole test case.
+    private static int[] ValuesOf(int callCount, Func<IRand7, int> rand10)
+    {
+        var rand7 = new SeededRand7(Seed);
+        var values = new int[callCount];
+
+        for (var call = 0; call < callCount; call++)
+        {
+            values[call] = rand10(rand7);
+        }
+
+        return values;
+    }
+
+    // The stand-in for the Rand7() LeetCode's SolBase supplies: a seeded System.Random,
+    // drawn from per call.
+    private sealed class SeededRand7(int seed) : IRand7
+    {
+        private readonly Random _random = new(seed);
+
+        public int Draw() => _random.Next(1, Rand7RangeSize + 1);
     }
 }

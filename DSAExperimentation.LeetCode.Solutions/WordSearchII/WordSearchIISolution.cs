@@ -23,6 +23,7 @@ namespace DSAExperimentation.LeetCode.Solutions.WordSearchII;
 // the trie over AlphabetSlots, walked node-by-node alongside the board so a branch with
 // no matching trie child is pruned before Candidates() ever yields it, instead of
 // re-running a fresh single-word search per candidate word.
+[LeetCodeQuestion("word-search-ii", LeetCodeAnswerOrder.AnyOrder)]
 internal static class WordSearchIISolution
 {
     // The textbook answer: WordSearchSolution's own per-word recursive DFS (LC 79),

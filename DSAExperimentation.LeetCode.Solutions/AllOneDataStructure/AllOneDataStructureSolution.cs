@@ -30,6 +30,11 @@ namespace DSAExperimentation.LeetCode.Solutions.AllOneDataStructure;
 // CreateByDictionaryScan is the textbook baseline this composition has to justify
 // itself against: a plain Dictionary<string,int> of counts, with GetMaxKey/GetMinKey
 // each doing an O(n) full scan.
+//
+// getMaxKey and getMinKey may answer any of the keys tied at the count they report, and
+// the two arms pick differently among a tie, so an answer check judges each script
+// (AllOneDataStructureAnswerCheck) rather than the recorded keys.
+[LeetCodeQuestion("all-oone-data-structure", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(AllOneDataStructureAnswerCheck))]
 internal static class AllOneDataStructureSolution
 {
     // LC 432's "there is no such key" answer: GetMaxKey/GetMinKey return the empty

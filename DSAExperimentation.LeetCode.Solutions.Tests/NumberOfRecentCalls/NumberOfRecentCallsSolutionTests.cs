@@ -2,10 +2,11 @@ using DSAExperimentation.LeetCode.Solutions.NumberOfRecentCalls;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.NumberOfRecentCalls;
 
-// Harness only: both strategies live in NumberOfRecentCallsSolution and are asserted
-// against the same examples - LeetCode's published ping stream, the far-apart stream
-// the old test drove by hand, a single call, and the two window boundaries (a request
-// exactly 3000ms old is still counted, one 3001ms old is not).
+// Harness only: both strategies live in NumberOfRecentCallsSolution, and each
+// example's pings are replayed one at a time on the counter its factory makes. The
+// examples are LeetCode's published ping stream, the far-apart stream the old test
+// drove by hand, a single call, and the two window boundaries (a request exactly
+// 3000ms old is still counted, one 3001ms old is not).
 public sealed partial class NumberOfRecentCallsSolutionTests
 {
     public static TheoryData<int[], int[]> Examples =>
@@ -22,13 +23,27 @@ public sealed partial class NumberOfRecentCallsSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PingCountsByFullHistoryRescan_LeetCodeExamples_ReturnsCountPerPing(
-        int[] timestamps, int[] expected) =>
-        Assert.Equal(expected, NumberOfRecentCallsSolution.PingCountsByFullHistoryRescan(timestamps));
+    public void CreateByFullHistoryRescan_LeetCodeExamples_ReturnsCountPerPing(
+        int[] timestamps, int[] expected)
+    {
+        var counter = NumberOfRecentCallsSolution.CreateByFullHistoryRescan();
+        var counts = PingEach(counter, timestamps);
+
+        Assert.Equal(expected, counts);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PingCountsBySlidingWindowQueue_LeetCodeExamples_ReturnsCountPerPing(
-        int[] timestamps, int[] expected) =>
-        Assert.Equal(expected, NumberOfRecentCallsSolution.PingCountsBySlidingWindowQueue(timestamps));
+    public void CreateBySlidingWindowQueue_LeetCodeExamples_ReturnsCountPerPing(
+        int[] timestamps, int[] expected)
+    {
+        var counter = NumberOfRecentCallsSolution.CreateBySlidingWindowQueue();
+        var counts = PingEach(counter, timestamps);
+
+        Assert.Equal(expected, counts);
+    }
+
+    // One ping per timestamp, in order, on the one counter - LeetCode's call script.
+    private static int[] PingEach(NumberOfRecentCallsSolution.IRecentCounter counter, int[] timestamps) =>
+        [.. timestamps.Select(counter.Ping)];
 }

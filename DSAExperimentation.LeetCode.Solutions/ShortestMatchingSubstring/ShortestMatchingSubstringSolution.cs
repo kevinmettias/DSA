@@ -12,6 +12,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ShortestMatchingSubstring;
 // earliest possible p2 occurrence after it and the earliest possible p3 occurrence
 // after that. The greedy step is optimal for a fixed start: an earlier valid p2
 // end can only push the earliest valid subsequent p3 earlier or equal, never later.
+[LeetCodeQuestion("shortest-matching-substring", LeetCodeAnswerOrder.AsWritten)]
 internal static class ShortestMatchingSubstringSolution
 {
     public static int ShortestLengthByBruteForceIndexOf(SourceText text, WildcardPattern pattern) =>

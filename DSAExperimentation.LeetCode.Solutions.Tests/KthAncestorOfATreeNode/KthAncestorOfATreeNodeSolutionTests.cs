@@ -2,7 +2,8 @@ using DSAExperimentation.LeetCode.Solutions.KthAncestorOfATreeNode;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.KthAncestorOfATreeNode;
 
-// Harness only: both strategies are KthAncestorOfATreeNodeSolution's. The parent
+// Harness only: both strategies are KthAncestorOfATreeNodeSolution's, each query
+// asked of the TreeAncestor its factory makes from LeetCode's (n, parent). The parent
 // array below is LeetCode's published example - a complete binary tree on seven
 // nodes - plus a straight chain, so both the "chain runs out" and the "deepest
 // possible node" cases are asserted against each strategy.
@@ -85,66 +86,55 @@ public sealed partial class KthAncestorOfATreeNodeSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void GetKthAncestorByParentWalk_LeetCodeExamples_ReturnsAncestorOrMinusOne(
+    public void CreateByParentWalk_LeetCodeExamples_ReturnsAncestorOrMinusOne(
         int[] parent, int node, int ancestorSteps, int expected)
     {
-        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByParentWalk(parent, node, ancestorSteps);
+        var tree = KthAncestorOfATreeNodeSolution.CreateByParentWalk(parent.Length, parent);
+        var ancestor = tree.GetKthAncestor(node, ancestorSteps);
 
         Assert.Equal(expected, ancestor);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void GetKthAncestorByBinaryLifting_LeetCodeExamples_ReturnsAncestorOrMinusOne(
+    public void CreateByBinaryLifting_LeetCodeExamples_ReturnsAncestorOrMinusOne(
         int[] parent, int node, int ancestorSteps, int expected)
     {
-        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByBinaryLifting(parent, node, ancestorSteps);
-
-        Assert.Equal(expected, ancestor);
-    }
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void BuildAncestorJumps_LeetCodeExamples_AnswersFromOnePrecomputedTable(
-        int[] parent, int node, int ancestorSteps, int expected)
-    {
-        var jumps = KthAncestorOfATreeNodeSolution.BuildAncestorJumps(parent);
-        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByBinaryLifting(jumps, node, ancestorSteps);
-
-        Assert.Equal(parent.Length, jumps.NodeCount);
-        Assert.Equal(expected, ancestor);
-    }
-
-    [Theory]
-    [MemberData(nameof(LongestChainQueries))]
-    public void GetKthAncestorByParentWalk_LeetCodesLongestChain_ReturnsAncestorOrMinusOne(
-        int node, int ancestorSteps, int expected)
-    {
-        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByParentWalk(LongestChain, node, ancestorSteps);
+        var tree = KthAncestorOfATreeNodeSolution.CreateByBinaryLifting(parent.Length, parent);
+        var ancestor = tree.GetKthAncestor(node, ancestorSteps);
 
         Assert.Equal(expected, ancestor);
     }
 
     [Theory]
     [MemberData(nameof(LongestChainQueries))]
-    public void GetKthAncestorByBinaryLifting_LeetCodesLongestChain_ReturnsAncestorOrMinusOne(
+    public void CreateByParentWalk_LeetCodesLongestChain_ReturnsAncestorOrMinusOne(
         int node, int ancestorSteps, int expected)
     {
-        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByBinaryLifting(LongestChain, node, ancestorSteps);
+        var tree = KthAncestorOfATreeNodeSolution.CreateByParentWalk(LongestChainLength, LongestChain);
+        var ancestor = tree.GetKthAncestor(node, ancestorSteps);
 
         Assert.Equal(expected, ancestor);
     }
 
     [Theory]
     [MemberData(nameof(LongestChainQueries))]
-    public void BuildAncestorJumps_LeetCodesLongestChain_HoldsSixteenLevels(
+    public void CreateByBinaryLifting_LeetCodesLongestChain_ReturnsAncestorOrMinusOne(
         int node, int ancestorSteps, int expected)
+    {
+        var tree = KthAncestorOfATreeNodeSolution.CreateByBinaryLifting(LongestChainLength, LongestChain);
+        var ancestor = tree.GetKthAncestor(node, ancestorSteps);
+
+        Assert.Equal(expected, ancestor);
+    }
+
+    [Fact]
+    public void BuildAncestorJumps_LeetCodesLongestChain_HoldsSixteenLevels()
     {
         var jumps = KthAncestorOfATreeNodeSolution.BuildAncestorJumps(LongestChain);
-        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByBinaryLifting(jumps, node, ancestorSteps);
 
+        Assert.Equal(LongestChainLength, jumps.NodeCount);
         Assert.Equal(LongestChainLevels, jumps.Levels);
-        Assert.Equal(expected, ancestor);
     }
 
     // parent[v] = v - 1: the deepest tree a given node count admits.

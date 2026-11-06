@@ -13,9 +13,37 @@ namespace DSAExperimentation.LeetCode.Solutions.RandomPickWithWeight;
 // algorithm with interchangeable implementations: a linear scan of the prefix
 // sums, the library's PrefixSumSampler (BinarySearch.UpperBound over them, the
 // pairing RandomPointInNonOverlappingRectanglesSolution uses for area-weighted
-// sampling), or its AliasSampler, Vose's O(1) alias table.
+// sampling), or its AliasSampler, Vose's O(1) alias table. LeetCode accepts any
+// index of positive weight for each pick, so no answer can match a recording:
+// RandomPickWithWeightAnswerCheck judges a whole script.
+[LeetCodeQuestion("random-pick-with-weight", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(RandomPickWithWeightAnswerCheck))]
 internal static class RandomPickWithWeightSolution
 {
+    // LeetCode's constructor takes the weights alone, so the factories fix the seed: a
+    // call script replayed twice, or once per benchmark iteration, picks the same
+    // indices.
+    private const int Seed = 1;
+
+    // Each strategy as LeetCode's constructor makes it, so the catalog harness can make
+    // the object its call scripts run on (ARCHITECTURE 17.13).
+    public static IRandomPickWithWeight CreateByLinearScan(int[] weights)
+    {
+        var random = new Random(Seed);
+        return new RandomPickWithWeightByLinearScan(weights, random);
+    }
+
+    public static IRandomPickWithWeight CreateByBinarySearchUpperBound(int[] weights)
+    {
+        var random = new Random(Seed);
+        return new RandomPickWithWeightByBinarySearchUpperBound(weights, random);
+    }
+
+    public static IRandomPickWithWeight CreateByAliasTable(int[] weights)
+    {
+        var random = new Random(Seed);
+        return new RandomPickWithWeightByAliasTable(weights, random);
+    }
+
     internal interface IRandomPickWithWeight
     {
         int PickIndex();

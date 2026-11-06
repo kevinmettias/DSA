@@ -2,7 +2,8 @@ using DSAExperimentation.LeetCode.Solutions.GenerateRandomPointInACircle;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.GenerateRandomPointInACircle;
 
-// Harness only: both strategies live in GenerateRandomPointInACircleSolution.
+// Harness only: both strategies live in GenerateRandomPointInACircleSolution, each
+// reached through its class and through the factory the catalog harness calls.
 // RandPoint()'s result is nondeterministic, so each example asserts the
 // invariants a valid draw must satisfy (lands inside the circle; degenerates to
 // the exact center when radius is zero; produces enough distinct points to rule
@@ -46,6 +47,28 @@ public sealed partial class GenerateRandomPointInACircleSolutionTests
             new GenerateRandomPointInACircleSolution.GenerateRandomPointInACircleByClosedFormPolar(
                 example.Radius, example.XCenter, example.YCenter, Seed),
             example);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByRejectionSampling_LeetCodeExamples_MakesAGeneratorThatLandsWithinTheCircleAndVaries(
+        RandPointCase example)
+    {
+        var generator = GenerateRandomPointInACircleSolution.CreateByRejectionSampling(
+            example.Radius, example.XCenter, example.YCenter);
+
+        AssertRandPointBehavesCorrectly(generator, example);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByClosedFormPolar_LeetCodeExamples_MakesAGeneratorThatLandsWithinTheCircleAndVaries(
+        RandPointCase example)
+    {
+        var generator = GenerateRandomPointInACircleSolution.CreateByClosedFormPolar(
+            example.Radius, example.XCenter, example.YCenter);
+
+        AssertRandPointBehavesCorrectly(generator, example);
+    }
 
     private static void AssertRandPointBehavesCorrectly(
         GenerateRandomPointInACircleSolution.IRandomPointGenerator generator,

@@ -2,7 +2,8 @@ using DSAExperimentation.LeetCode.Solutions.OnlineElection;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.OnlineElection;
 
-// Harness only: both strategies live in OnlineElectionSolution and are asserted
+// Harness only: both strategies live in OnlineElectionSolution, each example's
+// queries replayed one at a time on the object its factory makes, and are asserted
 // against the same examples - LeetCode's published vote log with its six queries
 // (including ones that land exactly on a vote time and ones that fall between
 // two), the two-vote tie the old test drove by hand, a lead that changes hands
@@ -26,21 +27,27 @@ public sealed partial class OnlineElectionSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LeadersByPerQueryRescan_LeetCodeExamples_ReturnsLeaderAtEachQueriedTime(
+    public void CreateByPerQueryRescan_LeetCodeExamples_ReturnsLeaderAtEachQueriedTime(
         int[] persons, int[] times, int[] queries, int[] expected)
     {
-        var actual = OnlineElectionSolution.LeadersByPerQueryRescan(persons, times, queries);
+        var candidate = OnlineElectionSolution.CreateByPerQueryRescan(persons, times);
+        var leaders = QueryEach(candidate, queries);
 
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, leaders);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LeadersByPrecomputedBinarySearch_LeetCodeExamples_ReturnsLeaderAtEachQueriedTime(
+    public void CreateByPrecomputedBinarySearch_LeetCodeExamples_ReturnsLeaderAtEachQueriedTime(
         int[] persons, int[] times, int[] queries, int[] expected)
     {
-        var actual = OnlineElectionSolution.LeadersByPrecomputedBinarySearch(persons, times, queries);
+        var candidate = OnlineElectionSolution.CreateByPrecomputedBinarySearch(persons, times);
+        var leaders = QueryEach(candidate, queries);
 
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, leaders);
     }
+
+    // One q per queried time, in order, on the one object - LeetCode's call script.
+    private static int[] QueryEach(OnlineElectionSolution.ITopVotedCandidate candidate, int[] queries) =>
+        [.. queries.Select(candidate.Q)];
 }
