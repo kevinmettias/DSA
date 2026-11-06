@@ -22,16 +22,15 @@ commit beside it, as the rest of this file does.
 - **L2. The Domain TODO plan.** The owner's 47 TODOs in 14 Domain files, 2026-11-05: "i wouldnt
   drop these but i would organize them properly. not everything needs a problem that uses it, the
   problems are just the inspiration." A value fixed for a configuration is a constant (the owner's
-  ruling of 2026-11-04). Done: B1 (`9727ac52`), B2 (`1330a351`), B5 (`8c4422bb`) and B7
-  (`79134545`). Left, a commit each:
+  ruling of 2026-11-04). Done: B1 (`9727ac52`), B2 (`1330a351`), B4 (`d8a7dac8`), B5 (`8c4422bb`)
+  and B7 (`79134545`). Left, a commit each:
   - **B2, chess in Betza notation — DONE** (`1330a351`). LC 999's DirectRayWalk reads 22-28% slower
     on tier-1 code identical but for one field offset, and LC 1222 21-23% faster; neither has a
     code cause.
   - **B3, positional games.** A board, its winning sets as a hypergraph, and a turn order; m,n,k
     presets whose M, N and K are constants, Connect Four's gravity, a board mask for holes, and
     tic-tac-toe as 3,3,3 (LC 1275).
-  - **B4, Latin squares.** Sudoku as a Latin square plus a partition: boxes of rows by columns as
-    constants (6 × 6, 16 × 16), and jigsaw regions as a witness of their own (LC 36, 37).
+  - **B4, Latin squares — DONE** (`d8a7dac8`). A 4 × 4 grid is a test fixture, not a preset.
   - **B5, language — DONE** (`8c4422bb`). Open for the owner: digraphs beyond the plan's six (wh,
     gh, kn, wr, the vowel digraphs), accents other than Received Pronunciation (General American
     needs rhoticity), clicks, implosives and ejectives, and whether ñ is a letter of its own
@@ -56,9 +55,10 @@ commit beside it, as the rest of this file does.
   slower than make/unmake. The plan folds in L2's B3, B4 and B9.
   - Foundations first. Done (`0b7cf7f0`): the game contract (Domain/Mathematics/GameTheory),
     memoized negamax and Sprague-Grundy (Algorithms/GameSearch), with Nim Game, Stone Game III
-    and Divisor Game adopting them. Left: alpha-beta, retrograde analysis, the other adopters
-    (Stone Game I, II and IV-IX, Can I Win, Predict the Winner, Chalkboard XOR, Sum Game, Cat
-    and Mouse I and II), players and turns, lines and runs, permutation groups, polyominoes.
+    and Divisor Game adopting them; then (`bf24d183`) Stone Game I, II, IV, VII and VIII, Predict
+    the Winner and Can I Win, while Stone Game V, VI and IX, Chalkboard XOR and Sum Game were
+    judged not to fit (ARCHITECTURE §17.10). Left: alpha-beta, retrograde analysis with Cat and
+    Mouse I and II, players and turns, lines and runs, permutation groups, polyominoes.
   - Then the families: k in a row (Connect Four, Gomoku, Pentago, Quarto), capture (Go, Reversi,
     checkers), connection (Hex, on union-find), dominoes, Tetris, the Rubik cube n × n × n, Nim,
     Mastermind, Minesweeper and Lights Out.
@@ -75,8 +75,10 @@ commit beside it, as the rest of this file does.
   and approved on 2026-11-05. Left:
   - the trie family: BitTrie as the one trie over binary digits, CountedBitTrie if a pooled layout
     matches it, and SuffixTree as a compressed layout;
-  - the index-space trees: a topology witness for SegmentTree, LazySegmentTree as SegmentTree with
-    propagation a witness that compiles out, Fenwick as two implicit trees, and a witness for Heap;
+  - the index-space trees: LazySegmentTree as SegmentTree with propagation a witness that
+    compiles out is DONE (`dcdfa62d`, §13.10). Left: Fenwick as two implicit trees and a witness for
+    Heap. A topology witness for SegmentTree did not fall out, since its node is an index
+    (§13.9's first test);
   - one substring-index contract over SuffixArray, SuffixTree and SuffixAutomaton, with LCP and the
     conversions between them, and a review of AhoCorasick;
   - linked lists: forward-link and back-link contracts, the singly linked list as the doubly linked
@@ -139,6 +141,10 @@ commit beside it, as the rest of this file does.
   (`fa7daad7`). Each names the library tier its type would go to, or keeps the tier's root with
   today's reason where the type is LeetCode's own interface. ColorNode (LC 1591) is exactly
   `AdjacencyNode` and should become an alias (§13.3), a solution change with an A/B.
+- **D8.** Exact cover as an `Algorithms/` engine (Knuth's Algorithm X with dancing links). Sudoku
+  of any grid reduces to it (cell, row-symbol, column-symbol and region-symbol constraints), so
+  LC 37 would be its first adopter as a third strategy; N-queens and polyomino tilings (L3) reduce
+  to it too. Recorded by B4 (`d8a7dac8`).
 
 ### Waiting on the owner
 
