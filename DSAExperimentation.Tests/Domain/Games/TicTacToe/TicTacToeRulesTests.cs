@@ -1,9 +1,13 @@
+using DSAExperimentation.Domain.Games.PositionalGames;
 using DSAExperimentation.Domain.Games.TicTacToe;
+using DSAExperimentation.Domain.Games.Turns;
 
 namespace DSAExperimentation.Tests.Domain.Games.TicTacToe;
 
 public sealed partial class TicTacToeRulesTests
 {
+    private const int Squares = TicTacToeRules.BoardSize * TicTacToeRules.BoardSize;
+
     public static TheoryData<int, TicTacToePlayer> MovesToTheirPlayers =>
         new() { { 0, TicTacToePlayer.X }, { 1, TicTacToePlayer.O }, { 2, TicTacToePlayer.X }, { 7, TicTacToePlayer.O } };
 
@@ -32,6 +36,17 @@ public sealed partial class TicTacToeRulesTests
     public void PlayerMaking_AMovesFirstAndThePlayersAlternate(int moveIndex, TicTacToePlayer expected) =>
         Assert.Equal(expected, TicTacToeRules.PlayerMaking(moveIndex));
 
+    [Fact]
+    public void BoardSize_IsTheBoardsWidth() =>
+        Assert.Equal(TicTacToeRules.BoardSize, TicTacToeBoard.Columns);
+
+    // X sits in the first seat of two players alternating, O in the second.
+    [Fact]
+    public void PlayerMaking_XHoldsTheFirstSeatOfTwoPlayersAlternating() =>
+        Assert.All(Enumerable.Range(0, Squares), move => Assert.Equal(
+            TwoPlayersAlternating.SeatMaking(move) == TwoPlayersAlternating.First,
+            TicTacToeRules.PlayerMaking(move) == TicTacToePlayer.X));
+
     [Theory]
     [MemberData(nameof(SquaresOnTheMainDiagonal))]
     public void IsOnDiagonal_SquareOnIt_ReturnsTrue(int row, int column) =>
@@ -51,6 +66,27 @@ public sealed partial class TicTacToeRulesTests
     [MemberData(nameof(SquaresOffTheAntiDiagonal))]
     public void IsOnAntiDiagonal_SquareOffIt_ReturnsFalse(int row, int column) =>
         Assert.False(TicTacToeRules.IsOnAntiDiagonal(row, column));
+
+    public static TheoryData<PositionalOutcome, TicTacToeOutcome> PositionalOutcomesToTicTacToes =>
+        new()
+        {
+            { PositionalOutcome.WonBy(TwoPlayersAlternating.First), TicTacToeOutcome.XWins },
+            { PositionalOutcome.WonBy(TwoPlayersAlternating.Second), TicTacToeOutcome.OWins },
+            { PositionalOutcome.Drawn, TicTacToeOutcome.Draw },
+            { PositionalOutcome.Pending, TicTacToeOutcome.Pending },
+        };
+
+    [Fact]
+    public void Game_IsTheWholeBoardWithItsEightLines() =>
+        Assert.Equal(
+            [Squares, 8],
+            [TicTacToeRules.Game.Board.PlayableCount, TicTacToeRules.Game.WinningSets.Count]);
+
+    [Theory]
+    [MemberData(nameof(PositionalOutcomesToTicTacToes))]
+    public void OutcomeOf_APositionalOutcome_NamesTheFirstSeatX(
+        PositionalOutcome outcome, TicTacToeOutcome expected) =>
+        Assert.Equal(expected, TicTacToeRules.OutcomeOf(outcome));
 
     [Theory]
     [MemberData(nameof(GamesToTheirOutcomes))]

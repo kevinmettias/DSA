@@ -14,6 +14,8 @@ namespace DSAExperimentation.Domain.Mathematics.Lattices;
 //   that lists cells in the order they were reached comes out the same from every caller.
 // - Clockwise is a turning cycle, not a neighbour set: up, right, down, left, numbered as
 //   CompassHeading is, so a spiral walk or a robot turns by moving one index along it.
+// - LineDirections is not a neighbour set either: row, column, diagonal, anti-diagonal, the order
+//   lines are usually listed in, and the order the m,n,k games' winning lines are generated in.
 // A puzzle's own numbered direction codes keep their own order, built from the named steps.
 //
 // ImmutableArray rather than a ReadOnlySpan property: a span of tuples cannot be backed by static
@@ -59,6 +61,15 @@ public static class GridDirections
     /// <summary>The four orthogonal steps in turning order, each a quarter turn clockwise of the one before: up, right, down, left.</summary>
     public static readonly ImmutableArray<GridStep> Clockwise =
         [GridStep.Up, GridStep.Right, GridStep.Down, GridStep.Left];
+
+    // A straight line of cells runs both ways along a step, so a line needs one step of each
+    // opposite pair; with their opposites these four are Octilinear again.
+    /// <summary>
+    /// The four directions a straight line of cells runs in: along a row, down a column, and down
+    /// each diagonal.
+    /// </summary>
+    public static readonly ImmutableArray<GridStep> LineDirections =
+        [GridStep.Right, GridStep.Down, GridStep.DownRight, GridStep.DownLeft];
 
     /// <summary>The index in <see cref="Clockwise"/> of the step a quarter turn clockwise of the one at the given index.</summary>
     /// <param name="clockwiseIndex">An index into <see cref="Clockwise"/>.</param>

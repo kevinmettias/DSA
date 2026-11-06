@@ -2,9 +2,10 @@ using DSAExperimentation.LeetCode.Solutions.FindWinnerOnATicTacToeGame;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.FindWinnerOnATicTacToeGame;
 
-// Harness only. Both the full-board rescan and the running-count bookkeeping are
-// FindWinnerOnATicTacToeGameSolution's; this file pins them to the row and column
-// wins LeetCode's examples never exercise, an anti-diagonal win for A, two pending
+// Harness only. The full-board rescan, the running-count bookkeeping and the
+// positional game's referee are FindWinnerOnATicTacToeGameSolution's; this file
+// pins them to the row and column wins LeetCode's examples never exercise, an
+// anti-diagonal win for A, two pending
 // games (one with no moves at all), and a win on the ninth move, which must beat
 // the full board, so a regression names the strategy that broke. LeetCode's
 // published examples run in CatalogCaseTests.
@@ -32,4 +33,12 @@ public sealed partial class FindWinnerOnATicTacToeGameSolutionTests
     public void FindWinnerByRunningCounts_Cases_ReturnsTheWinnerOrTheGameState(
         int[][] moves, string expected) =>
         Assert.Equal(expected, FindWinnerOnATicTacToeGameSolution.FindWinnerByRunningCounts(moves));
+
+    [Theory]
+    [MemberData(nameof(Cases))]
+    public void FindWinnerByPositionalGame_Cases_ReturnsTheWinnerOrTheGameState(
+        int[][] moves, string expected) =>
+        Assert.Equal(
+            expected,
+            FindWinnerOnATicTacToeGameSolution.FindWinnerByPositionalGame(moves));
 }

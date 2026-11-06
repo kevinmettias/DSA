@@ -59,6 +59,18 @@ public sealed partial class GridDirectionsTests
             GridDirections.Clockwise[index]));
 
     [Fact]
+    public void LineDirections_IsRowColumnDiagonalAntiDiagonal() =>
+        Assert.Equal(
+            [(0, 1), (1, 0), (1, 1), (1, -1)],
+            GridDirections.LineDirections.Select(Pair).ToArray());
+
+    [Fact]
+    public void LineDirections_WithTheirOpposites_AreOctilinear() =>
+        Assert.Equal(
+            GridDirections.Octilinear.Select(Pair).Order(),
+            GridDirections.LineDirections.SelectMany(BothWays).Select(Pair).Order());
+
+    [Fact]
     public void TurnRight_EachIndex_IndexesTheStepTurnedClockwise() =>
         Assert.All(ClockwiseIndexes(), index => Assert.Equal(
             GridStep.Rotate(GridDirections.Clockwise[index]),
@@ -121,6 +133,8 @@ public sealed partial class GridDirectionsTests
         AssertKeptBySymmetries(GridDirections.WithinChebyshev(range));
 
     public static TheoryData<int> Ranges => [1, 2, 3, 5];
+
+    private static GridStep[] BothWays(GridStep step) => [step, -step];
 
     private static IEnumerable<int> ClockwiseIndexes() => Enumerable.Range(0, GridDirections.Clockwise.Length);
 

@@ -3,6 +3,20 @@
   "waivers": [
     {
       "check": "check-abbreviations",
+      "path": "DSAExperimentation/Domain/Games/PositionalGames/InARow/MnkGame.cs",
+      "reason": "m,n,k is the name the game family has in the literature (the m,n,k-game: an m by n board, k in a row to win), and the owner named the type MnkGame<TShape> in the approved plan (2026-11-05). It is three letters standing for the three numbers, not an abbreviation of a longer word; the shape's members spell them out as Columns, Rows and InARow.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.Tests/Domain/Games/PositionalGames/InARow/MnkGameTests.cs",
+      "reason": "m,n,k is the name the game family has in the literature (the m,n,k-game: an m by n board, k in a row to win), and the owner named the type MnkGame<TShape> in the approved plan (2026-11-05). It is three letters standing for the three numbers, not an abbreviation of a longer word; the shape's members spell them out as Columns, Rows and InARow.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-abbreviations",
       "path": "DSAExperimentation/Domain/Mathematics/Metrics/LpNorm.cs",
       "message": "abbreviation `lp`",
       "reason": "Lp is the name mathematics gives the norm family, the L of the Lebesgue spaces with its exponent p, as L1, L2 and L-infinity are its members' names, and the owner's own word for this subject. It abbreviates no longer word, and a spelled-out name would be one no reader of the mathematics looks for (ARCHITECTURE 17.9).",

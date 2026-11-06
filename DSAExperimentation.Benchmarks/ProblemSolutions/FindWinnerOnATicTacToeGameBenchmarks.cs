@@ -3,14 +3,14 @@ using DSAExperimentation.LeetCode.Solutions.FindWinnerOnATicTacToeGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are FindWinnerOnATicTacToeGameSolution's, the same
+// Harness only: every arm is FindWinnerOnATicTacToeGameSolution's, the same
 // methods FindWinnerOnATicTacToeGameSolutionTests proves correct. LC 1275 fixes the
 // board at 3 x 3 and so at nine moves, which leaves one size to run, and Size is
 // that board's - Domain/Games/TicTacToe's BoardSize, the board both strategies play on.
 // The workload shuffles every cell of the board into a move
 // order in [GlobalSetup], so only the replay is measured; at this seed the shuffle
-// completes no line - LC 1275 allows no move after a win - so both arms walk all
-// nine moves and report a draw.
+// completes no line - LC 1275 allows no move after a win - so every arm walks all
+// nine moves and reports a draw.
 public class FindWinnerOnATicTacToeGameBenchmarks
 {
     // LC problem number, reused as the deterministic move-order seed.
@@ -52,4 +52,8 @@ public class FindWinnerOnATicTacToeGameBenchmarks
     [Benchmark]
     public string IncrementalRunningCounts() =>
         FindWinnerOnATicTacToeGameSolution.FindWinnerByRunningCounts(_moves);
+
+    [Benchmark]
+    public string PositionalGameReferee() =>
+        FindWinnerOnATicTacToeGameSolution.FindWinnerByPositionalGame(_moves);
 }

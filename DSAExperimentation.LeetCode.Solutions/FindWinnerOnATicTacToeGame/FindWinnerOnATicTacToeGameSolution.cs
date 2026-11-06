@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Games.PositionalGames;
+using DSAExperimentation.Domain.Games.PositionalGames.InARow;
 using DSAExperimentation.Domain.Games.TicTacToe;
 using Vocabulary = DSAExperimentation.LeetCode.Solutions.FindWinnerOnATicTacToeGame.TicTacToeVocabulary;
 
@@ -14,7 +16,8 @@ namespace DSAExperimentation.LeetCode.Solutions.FindWinnerOnATicTacToeGame;
 // new move actually falls on. Both play LC 1275's fixed 3 x 3 board. The game's
 // rules are Domain/Games/TicTacToe's, which the running-counts arm reads; the
 // board-rescan baseline reads the board's size there and writes its own rescan
-// (ARCHITECTURE §17.5).
+// (ARCHITECTURE §17.5). A third arm hands the moves to those rules whole: the
+// 3,3,3 positional game's own referee, unspecialized.
 [LeetCodeQuestion("find-winner-on-a-tic-tac-toe-game", LeetCodeAnswerOrder.AsWritten, Promise = typeof(FindWinnerOnATicTacToeGamePromise))]
 internal static class FindWinnerOnATicTacToeGameSolution
 {
@@ -160,6 +163,32 @@ internal static class FindWinnerOnATicTacToeGameSolution
                 || Math.Abs(_diagonal) == TicTacToeRules.BoardSize
                 || Math.Abs(_antiDiagonal) == TicTacToeRules.BoardSize;
         }
+    }
+
+    // The rules themselves, with nothing specialized: tic-tac-toe as Domain's 3,3,3
+    // positional game, whose referee claims each move's cell for its seat and
+    // judges it by the lines through that cell (Domain/Games/PositionalGames). An
+    // instructive arm beside the two above, since every positional game shares it.
+    public static string FindWinnerByPositionalGame(int[][] moves)
+    {
+        var cells = CellsOf(moves);
+        var outcome = TicTacToeRules.Game.Replay<FreePlacement>(cells);
+        var standing = TicTacToeRules.OutcomeOf(outcome);
+
+        return Vocabulary.AnswerFor(standing);
+    }
+
+    // Each move's square as the board numbers its cells, row by row.
+    private static int[] CellsOf(int[][] moves)
+    {
+        var cells = new int[moves.Length];
+
+        for (var i = 0; i < moves.Length; i++)
+        {
+            cells[i] = MnkGame<TicTacToeBoard>.CellAt(moves[i][0], moves[i][1]);
+        }
+
+        return cells;
     }
 
     // Player A takes every even-indexed move, player B every odd one.
