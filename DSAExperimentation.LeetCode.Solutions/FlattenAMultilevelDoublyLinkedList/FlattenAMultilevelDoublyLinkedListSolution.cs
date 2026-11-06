@@ -12,8 +12,27 @@ namespace DSAExperimentation.LeetCode.Solutions.FlattenAMultilevelDoublyLinkedLi
 // is the textbook baseline it has to justify itself against: rescan from head after every
 // single splice (the classic "no bookkeeping" naive flatten, O(n^2) once every node has a
 // child), using nothing from this repo.
+[LeetCodeQuestion("flatten-a-multilevel-doubly-linked-list", LeetCodeAnswerOrder.AsWritten)]
 internal static class FlattenAMultilevelDoublyLinkedListSolution
 {
+    // LeetCode's shape (ARCHITECTURE 17.4): the list as its judge writes it, level by level, and the
+    // flattened list read back as its values (MultilevelListNotation).
+    public static int[] FlattenByBruteForceRescan(int?[] levels)
+    {
+        var head = MultilevelListNotation.From(levels);
+        var flattened = FlattenByBruteForceRescan(head);
+
+        return MultilevelListNotation.ValuesOf(flattened);
+    }
+
+    public static int[] FlattenByStack(int?[] levels)
+    {
+        var head = MultilevelListNotation.From(levels);
+        var flattened = FlattenByStack(head);
+
+        return MultilevelListNotation.ValuesOf(flattened);
+    }
+
     public static Node? FlattenByBruteForceRescan(Node? head)
     {
         while (TrySpliceNextChild(head))
