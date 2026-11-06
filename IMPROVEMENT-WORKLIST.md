@@ -22,14 +22,13 @@ commit beside it, as the rest of this file does.
 - **L2. The Domain TODO plan.** The owner's 47 TODOs in 14 Domain files, 2026-11-05: "i wouldnt
   drop these but i would organize them properly. not everything needs a problem that uses it, the
   problems are just the inspiration." A value fixed for a configuration is a constant (the owner's
-  ruling of 2026-11-04). Done: B1 (`9727ac52`), B2 (`1330a351`), B4 (`d8a7dac8`), B5 (`8c4422bb`)
-  and B7 (`79134545`). Left, a commit each:
+  ruling of 2026-11-04). Done: B1 (`9727ac52`), B2 (`1330a351`), B3 (`08214dd8`), B4 (`d8a7dac8`),
+  B5 (`8c4422bb`), B7 (`79134545`) and B8 (`5448d55a`). Left, a commit each:
   - **B2, chess in Betza notation — DONE** (`1330a351`). LC 999's DirectRayWalk reads 22-28% slower
     on tier-1 code identical but for one field offset, and LC 1222 21-23% faster; neither has a
     code cause.
-  - **B3, positional games.** A board, its winning sets as a hypergraph, and a turn order; m,n,k
-    presets whose M, N and K are constants, Connect Four's gravity, a board mask for holes, and
-    tic-tac-toe as 3,3,3 (LC 1275).
+  - **B3, positional games — DONE** (`08214dd8`). Pentago, Quarto and strong play (alpha-beta,
+    pattern evaluation) are L3's.
   - **B4, Latin squares — DONE** (`d8a7dac8`). A 4 × 4 grid is a test fixture, not a preset.
   - **B5, language — DONE** (`8c4422bb`). Open for the owner: digraphs beyond the plan's six (wh,
     gh, kn, wr, the vowel digraphs), accents other than Received Pronunciation (General American
@@ -41,8 +40,10 @@ commit beside it, as the rest of this file does.
     LC 273 gains the composer as a strategy.
   - **B7, calendars — DONE** (`79134545`). English month and weekday names wait for LC 1185 or 1507;
     CalendarMonth/CalendarMonths and DnaBase/DnaBases both draw check-tree-legibility, unwaived.
-  - **B8, metrics.** Lp norms with L1, L2 and L-infinity as presets that need no `Pow`, the step
-    tables' graph metrics, and the A* heuristics reading them.
+  - **B8, metrics — DONE** (`5448d55a`), but for the A* heuristics, which keep their own `Math.Abs`:
+    every form of reading the presets grew their tier-1 code (ManhattanHeuristic.Estimate 54 to
+    60-68 bytes), so their tests hold them to the presets instead. GridDirections' TODO on other
+    lattices stays for B9.
   - **B9, other lattices.** Hex and triangular tilings, Z^n, and Life on them; a plan of its own.
   - O8 below is this plan's open question.
 - **L3. The games program.** 2026-11-02: "we should also include, go, checkers, connect 4, dominos,
@@ -59,7 +60,8 @@ commit beside it, as the rest of this file does.
     the Winner and Can I Win, while Stone Game V, VI and IX, Chalkboard XOR and Sum Game were
     judged not to fit (ARCHITECTURE §17.10). Left: alpha-beta, retrograde analysis with Cat and
     Mouse I and II, players and turns, lines and runs, permutation groups, polyominoes.
-  - Then the families: k in a row (Connect Four, Gomoku, Pentago, Quarto), capture (Go, Reversi,
+  - Then the families: k in a row (Connect Four's and Gomoku's rules are done, `08214dd8`; their
+    strong play, Pentago and Quarto are left), capture (Go, Reversi,
     checkers), connection (Hex, on union-find), dominoes, Tetris, the Rubik cube n × n × n, Nim,
     Mastermind, Minesweeper and Lights Out.
 - **L4. Element algebra into Domain/Mathematics — DONE** (`a78f0815`). Opted into on 2026-11-02:
@@ -99,8 +101,9 @@ commit beside it, as the rest of this file does.
   MinimumStabilityFactorOfArray). Inspect CatAndMouseII, FindSubstringWithGivenHashValue,
   MaximumNumberOfTasks, StampingTheSequence, SubsequencesWithAUniqueMiddleModeI, DecodeWays,
   MultiplyStrings, SlidingPuzzle and DeleteDuplicateFolders too. 52 harness files declare
-  `AlphabetSize = 26`; widen SharedValueCopyTests to the benchmarks with them. A commit per subject,
-  each with an A/B.
+  `AlphabetSize = 26`; widen SharedValueCopyTests to the benchmarks with them. Three solutions copy
+  "two players" (TicTacToeVocabulary, CatAndMouseII and FindTheScoreDifferenceInAGame's
+  `PlayerCount`), which `Domain/Games/Turns` now states. A commit per subject, each with an A/B.
 - **L9. The fastest C# on LeetCode, and alternative strategies.** 2026-11-03: "we want not just
   the expected answer but the optimal answer, that would get the 100% tile mark ... if there are
   multiple different implementations that maybe use different algorithms or data structures that
