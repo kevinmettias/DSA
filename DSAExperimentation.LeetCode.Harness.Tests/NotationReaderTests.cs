@@ -174,4 +174,13 @@ public sealed partial class NotationReaderTests
 
     [Fact]
     public void CanRead_NullableOfAReadableType_IsTrue() => Assert.True(NotationReader.CanRead(typeof(int?[][])));
+
+    [Fact]
+    public void Read_QuadTreeLevelOrder_ReadsItsLeavesUnderTheRoot()
+    {
+        var read = NotationReader.Read("[[0,1],[1,0],[1,1],[1,1],[1,0]]", typeof(QuadTreeNode));
+        var root = Assert.IsType<QuadTreeNode>(read);
+
+        Assert.Equal((false, true), (root.IsLeaf, root.TopLeft?.IsLeaf));
+    }
 }

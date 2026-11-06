@@ -23,6 +23,9 @@ internal static class NotationTypes
     private const string OneRank = "[]";
     private const string MaybeMark = "?";
 
+    // LeetCode's quad tree input, read through LeetCodeQuadTrees.
+    private const string QuadTree = "DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.QuadTreeNode";
+
     // Sequences a strategy can only read, which an array fills, and those it may add to, which a List does.
     private static readonly string[] Sequences =
     [
@@ -65,6 +68,7 @@ internal static class NotationTypes
         INamedTypeSymbol { IsTupleType: true } tuple =>
             tuple.TupleElements.Length <= MostTupleItems && tuple.TupleElements.All(item => IsReadable(item.Type)),
         INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T } maybe => IsReadable(maybe.TypeArguments[0]),
+        INamedTypeSymbol { IsGenericType: false } named when MetadataNameOf(named) == QuadTree => true,
         INamedTypeSymbol { IsGenericType: true, TypeArguments.Length: 1 } generic => IsReadableGeneric(generic),
         INamedTypeSymbol { IsValueType: true } valueType when RecordValuesOf(valueType) is { } values => values.All(IsReadable),
         _ => false,

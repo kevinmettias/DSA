@@ -20,6 +20,7 @@ namespace DSAExperimentation.LeetCode.Solutions.LogicalOrOfTwoBinaryGridsReprese
 // coarse either input tree actually is, while DirectRecursiveMerge is output-
 // sensitive - its cost tracks the combined node count of the two INPUT trees, not
 // the grid area.
+[LeetCodeQuestion("logical-or-of-two-binary-grids-represented-as-quad-trees", LeetCodeAnswerOrder.AsWritten, AnswerCheck = typeof(LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesAnswerCheck))]
 internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
 {
     // The textbook answer, and the arm the two materializing ones are measured against
@@ -65,6 +66,23 @@ internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
     // Materializes both trees to grids through this repo's QuadTreeGrid and rebuilds via
     // ConstructQuadTreeSolution's own raw-cell-scan baseline, reused rather than
     // re-inlined here.
+    // LeetCode's shape (ARCHITECTURE 17.4): the two trees alone. The grid they stand for is no finer than the
+    // deeper tree's leaves, a side of 2^depth cells, and a coarser leaf covers whole blocks of it, so the
+    // grids materialized at that side rebuild into the same tree as at any finer one.
+    public static QuadTreeNode OrByBruteForceGridMaterialize(QuadTreeNode tree1, QuadTreeNode tree2)
+    {
+        var size = SideOf(tree1, tree2);
+
+        return OrByBruteForceGridMaterialize(tree1, tree2, size);
+    }
+
+    public static QuadTreeNode OrByFenwickGridMaterialize(QuadTreeNode tree1, QuadTreeNode tree2)
+    {
+        var size = SideOf(tree1, tree2);
+
+        return OrByFenwickGridMaterialize(tree1, tree2, size);
+    }
+
     public static QuadTreeNode OrByBruteForceGridMaterialize(QuadTreeNode tree1, QuadTreeNode tree2, int size)
     {
         var merged = MergeGrids(tree1, tree2, size);
@@ -75,6 +93,25 @@ internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
     {
         var merged = MergeGrids(tree1, tree2, size);
         return ConstructQuadTreeSolution.BuildByRowFenwickTree(merged);
+    }
+
+    private static int SideOf(QuadTreeNode tree1, QuadTreeNode tree2)
+    {
+        var depth = Math.Max(DepthOf(tree1), DepthOf(tree2));
+
+        return 1 << depth;
+    }
+
+    private static int DepthOf(QuadTreeNode? node)
+    {
+        if (node is null || node.IsLeaf)
+        {
+            return 0;
+        }
+
+        var deepest = new[] { node.TopLeft, node.TopRight, node.BottomLeft, node.BottomRight }.Max(DepthOf);
+
+        return deepest + 1;
     }
 
     private static int[][] MergeGrids(QuadTreeNode tree1, QuadTreeNode tree2, int size)

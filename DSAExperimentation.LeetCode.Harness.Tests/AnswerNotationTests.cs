@@ -58,4 +58,12 @@ public sealed partial class AnswerNotationTests
     [Fact]
     public void OfFoundOutputs_NotATuple_ThrowsInvalidOperationException() =>
         Assert.Throws<InvalidOperationException>(() => AnswerNotation.OfFoundOutputs(7));
+
+    [Fact]
+    public void Of_QuadTree_WritesLeetCodesLevelOrder()
+    {
+        var root = LeetCodeQuadTrees.From([[0, 1], [1, 0], [1, 1], [1, 1], [1, 0]]);
+
+        Assert.Equal("[[0,1],[1,0],[1,1],[1,1],[1,0]]", AnswerNotation.Of(root).ToJsonString());
+    }
 }

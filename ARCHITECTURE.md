@@ -2662,8 +2662,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,057 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 461 more:
+**Enrolled.** 1,059 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 463 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2928,6 +2928,16 @@ have only the empty tree. A check over those would pass whatever the strategy di
   null ending each level and one more null for each node the next level does not hang from
   (`MultilevelListNotation`, in its folder), and reads the flattened list back as its values; a node
   that still has a child, or does not point back at the one before it, reads back as no list.
+- Construct Quad Tree and Logical OR of Two Binary Grids Represented as Quad-Trees, once the reader and
+  the answer writer took LeetCode's quad tree (`LeetCodeQuadTrees`): in level order, each node as
+  `[isLeaf, val]`, and after the root every node's four children in turn, null where there is none, as
+  a leaf's four always are. Construct Quad Tree could not take LeetCode's shape beside its own, both
+  being its grid, so the harness reads and writes `QuadTreeNode` itself, as it does a binary tree.
+  Logical OR's two materializing arms took LeetCode's two trees beside their own, which add the grid's
+  side: a tree d levels deep stands for a side of 2^d, and a coarser leaf covers whole blocks of it. Its
+  judge accepts either val on an inner node, so an answer check compares trees with the inner nodes'
+  values set aside (`IsSameTree`); the catalog records them false, and the arms keep the true an
+  input's inner node carried.
 
 Open items:
 
@@ -2946,7 +2956,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 48 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 46 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
@@ -2972,8 +2982,11 @@ Open items:
     over every pair agrees with both strategies on all three. The catalog has no way yet to correct an
     output it imports.
   - Sudoku Solver's strategies return whether they solved the board, where LeetCode's answers in place
-    and returns nothing, as `AnswersInPlace` requires; its backtracking-engine arm also runs past 3 s
-    on one generated puzzle.
+    and returns nothing, as `AnswersInPlace` requires. Letting an in-place strategy return a value
+    besides would bind them, but would enroll little: only LeetCode's example records an output, the
+    dataset recording no changed board; of its 19 generated puzzles at least 8 have no solution at all;
+    and two of them, each with 60 empty cells, run the backtracking-engine arm past 0.8 s and 3 s where
+    another with 60 empty cells takes 12 ms, so no count of empty cells bounds them.
   - Shortest Matching Substring's strategies each take the pattern two ways, as LeetCode's string and as
     its three parts, and both overloads match LeetCode's declared types alike, the role types matching
     none. Counting a one-value role type as its value would settle it, but would tie Burst Balloons,

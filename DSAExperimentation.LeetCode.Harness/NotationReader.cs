@@ -16,7 +16,8 @@ namespace DSAExperimentation.LeetCode.Harness;
 // - an array as an array, element by element, and an array of rows of one length as a rectangular array,
 //   as Cherry Pickup reads its grid into an int[,];
 // - an array as a tuple of the same arity, the way LeetCode writes an interval as [start, end];
-// - a level-order array as a tree and a flat array as a linked list, through LeetCodeWireFormat;
+// - a level-order array as a tree and a flat array as a linked list, through LeetCodeWireFormat, and a
+//   quad tree's level order of [isLeaf, val] pairs as a QuadTreeNode, through LeetCodeQuadTrees;
 // - an interface-typed sequence as an array, or as a List<T> when the interface lets a strategy add;
 // - a positional record of value type - one public constructor that keeps each value as the property of
 //   the same name - as its values: a role type of one value, such as SourceText(string Text), as that
@@ -119,7 +120,8 @@ internal static class NotationReader
 
     // A scalar, or a tree or list LeetCodeWireFormat builds from one array: read in one step, not item by item.
     private static bool IsReadAsAWhole(Type type) =>
-        ScalarReaders.ContainsKey(type) || type == typeof(BinaryTreeNode<int>) || type == typeof(SinglyLinkedListNode<int>);
+        ScalarReaders.ContainsKey(type) || type == typeof(BinaryTreeNode<int>) || type == typeof(SinglyLinkedListNode<int>)
+            || type == typeof(QuadTreeNode);
 
     private static bool IsSequence(Type type) =>
         type.IsGenericType && SequenceDefinitions.Contains(type.GetGenericTypeDefinition());
@@ -172,6 +174,11 @@ internal static class NotationReader
         if (ScalarReaders.TryGetValue(type, out var readScalar))
         {
             return readScalar(element);
+        }
+
+        if (type == typeof(QuadTreeNode))
+        {
+            return LeetCodeQuadTrees.From(element.Deserialize<int[]?[]>() ?? []);
         }
 
         if (type == typeof(BinaryTreeNode<int>))

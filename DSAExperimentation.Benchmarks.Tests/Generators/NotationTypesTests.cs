@@ -29,6 +29,7 @@ public sealed partial class NotationTypesTests
             public Dictionary<int, int> Counts;
             public int[,] Rectangle;
             public int?[][] RandomNodes;
+            public QuadTreeNode Quad;
             public int[,,] Cube;
             public RoleText Role;
             public Endpoints TwoValues;
@@ -48,7 +49,7 @@ public sealed partial class NotationTypesTests
         }
         """;
 
-    public static TheoryData<string> ReadableFields => ["Integer", "Unsigned", "Text", "Character", "Grid", "Rectangle", "RandomNodes", "Intervals", "Words", "Values", "Tree", "Role", "TwoValues"];
+    public static TheoryData<string> ReadableFields => ["Integer", "Unsigned", "Text", "Character", "Grid", "Rectangle", "RandomNodes", "Quad", "Intervals", "Words", "Values", "Tree", "Role", "TwoValues"];
 
     // A tree LeetCodeWireFormat cannot build, a map LeetCode has no notation for, an array of a rank past a
     // grid's, a role type that is a class, and a struct that keeps no value it is built from.

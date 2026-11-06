@@ -23,6 +23,7 @@ internal static class AnswerNotation
         char character => JsonValue.Create(character.ToString()),
         BinaryTreeNode<int> root => ArrayOf(LeetCodeWireFormat.FromBinaryTree(root).Cast<object?>()),
         SinglyLinkedListNode<int> head => ArrayOf(LeetCodeWireFormat.FromLinkedList(head).Cast<object?>()),
+        QuadTreeNode root => ArrayOf(LeetCodeQuadTrees.LevelOrderOf(root)),
         ITuple tuple => ArrayOf(ItemsOf(tuple)),
         IEnumerable sequence when IsSequenceOfTreesOrLists(sequence.GetType()) => TreesOrListsArrayOf(sequence.Cast<object?>()),
         IEnumerable sequence => ArrayOf(sequence.Cast<object?>()),

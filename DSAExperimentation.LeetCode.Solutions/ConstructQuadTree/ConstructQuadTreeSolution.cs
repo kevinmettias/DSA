@@ -22,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.ConstructQuadTree;
 // weaker than what the problem asks for. See ConstructQuadTreeBenchmarks.cs for why
 // the Fenwick approach's cheaper per-call confirmation still loses in aggregate:
 // its own forest-build cost is charged into the same measured call.
+[LeetCodeQuestion("construct-quad-tree", LeetCodeAnswerOrder.AsWritten)]
 internal static class ConstructQuadTreeSolution
 {
     public static QuadTreeNode BuildByBruteForceCellScan(int[][] grid) =>
