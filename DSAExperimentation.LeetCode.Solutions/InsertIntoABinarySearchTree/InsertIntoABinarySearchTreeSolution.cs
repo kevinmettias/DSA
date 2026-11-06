@@ -9,8 +9,25 @@ namespace DSAExperimentation.LeetCode.Solutions.InsertIntoABinarySearchTree;
 // BST, so correctness only requires the returned tree to stay BST-ordered and
 // to contain every original value plus the new one - not that its shape match
 // the other strategy's.
+[LeetCodeQuestion("insert-into-a-binary-search-tree", LeetCodeAnswerOrder.AsWritten, Promise = typeof(InsertIntoABinarySearchTreePromise), AnswerCheck = typeof(InsertIntoABinarySearchTreeAnswerCheck))]
 internal static class InsertIntoABinarySearchTreeSolution
 {
+    // LeetCode's shape (ARCHITECTURE 17.4): the tree itself rather than the values it was built from. Its
+    // values in level order are a sequence that, inserted one by one, builds the same search tree again.
+    public static BinaryTreeNode<int>? InsertByCollectSortRebuild(BinaryTreeNode<int>? root, int newValue)
+    {
+        var existingValues = LevelOrderValues(root);
+
+        return InsertByCollectSortRebuild(existingValues, newValue);
+    }
+
+    public static BinaryTreeNode<int>? InsertByBstInsert(BinaryTreeNode<int>? root, int newValue)
+    {
+        var existingValues = LevelOrderValues(root);
+
+        return InsertByBstInsert(existingValues, newValue);
+    }
+
     // The naive approach many first solutions reach for: collect the existing
     // tree's values via an in-order walk (built fresh from the same values
     // here, so the walk is folded into construction), fold the new value into
@@ -102,6 +119,8 @@ internal static class InsertIntoABinarySearchTreeSolution
         tree.Insert(newValue);
         return tree.Root;
     }
+
+    private static IEnumerable<int> LevelOrderValues(BinaryTreeNode<int>? root) => LeetCodeWireFormat.FromBinaryTree(root).OfType<int>();
 
     private static void CollectInOrder(BinaryTreeNode<int>? node, List<int> values)
     {

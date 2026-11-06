@@ -9,8 +9,25 @@ namespace DSAExperimentation.LeetCode.Solutions.DeleteNodeInABST;
 // tree, and both strategies below take one and hand back the tree with the key
 // removed, so a caller checks the result the same way for either: Has/
 // InOrderTraversal, the composition KthSmallestElementInABSTSolutionTests already uses.
+[LeetCodeQuestion("delete-node-in-a-bst", LeetCodeAnswerOrder.AsWritten, Promise = typeof(DeleteNodeInABSTPromise), AnswerCheck = typeof(DeleteNodeInABSTAnswerCheck))]
 internal static class DeleteNodeInABSTSolution
 {
+    // LeetCode's shape (ARCHITECTURE 17.4): the tree's root and the key, and the root back. The search tree
+    // both strategies take is built by inserting the tree's values in level order, which builds the same tree.
+    public static BinaryTreeNode<int>? DeleteByCollectFilterRebuild(BinaryTreeNode<int>? root, int key)
+    {
+        var tree = SearchTreeOf(root);
+
+        return DeleteByCollectFilterRebuild(tree, key).Root;
+    }
+
+    public static BinaryTreeNode<int>? DeleteByBinarySearchTreeDelete(BinaryTreeNode<int>? root, int key)
+    {
+        var tree = SearchTreeOf(root);
+
+        return DeleteByBinarySearchTreeDelete(tree, key).Root;
+    }
+
     // The naive approach many first solutions reach for: walk the whole tree
     // in-order, drop the key from the resulting sorted values, and insert what
     // remains into a fresh tree - root-first so height stays O(log n) instead of
@@ -37,6 +54,19 @@ internal static class DeleteNodeInABSTSolution
     public static BinarySearchTree<int> DeleteByBinarySearchTreeDelete(BinarySearchTree<int> tree, int key)
     {
         tree.TryDelete(key);
+        return tree;
+    }
+
+    private static BinarySearchTree<int> SearchTreeOf(BinaryTreeNode<int>? root)
+    {
+        var tree = new BinarySearchTree<int>();
+        var levelOrder = LeetCodeWireFormat.FromBinaryTree(root).OfType<int>();
+
+        foreach (var value in levelOrder)
+        {
+            tree.Insert(value);
+        }
+
         return tree;
     }
 

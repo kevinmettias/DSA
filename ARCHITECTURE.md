@@ -2662,8 +2662,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,052 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 456 more:
+**Enrolled.** 1,054 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 458 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -2908,6 +2908,14 @@ have only the empty tree. A check over those would pass whatever the strategy di
   Tree, whose judge names p and q by value (`NodeWithValue`) and prints the ancestor's value; and Delete
   Node in a Linked List, whose judge names the node by value and reads the whole list back from its head
   (`AnswersInPlace = true`). Each is judged on LeetCode's examples, the dataset holding none.
+- Insert into a Binary Search Tree and Delete Node in a BST, whose strategies took the values a tree is
+  built from, or the library's `BinarySearchTree<int>`, where LeetCode passes the tree. Each strategy took
+  LeetCode's shape beside its own (§17.4): the tree's values in level order, which inserted one by one
+  build the same search tree again. LeetCode lets any search tree of the right values stand, so an answer
+  check reads an answer through `LeetCodeSearchTrees.InOrderValues` and accepts it when its values in
+  order are exactly the old ones with the new value, or without the key, rising; and a promise drops the
+  generated trees that are no search tree of unique values, which rebuilt from their values come back
+  another tree.
 
 Open items:
 
@@ -2926,7 +2934,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 53 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 51 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.

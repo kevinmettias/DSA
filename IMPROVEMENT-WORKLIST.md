@@ -114,9 +114,9 @@ commit beside it, as the rest of this file does.
   LeetCode's fastest C# (L9) becomes the baseline, so the question enrolls at once; then a gated,
   scheduled agent composes library strategies from a capability index, and a gap report turns a
   missing primitive into a library proposal for the owner.
-- **L11. Catalog enrollment** (another session's area). 1,052 solutions enrolled as of 2026-11-05,
+- **L11. Catalog enrollment** (another session's area). 1,054 solutions enrolled as of 2026-11-05,
   72 of them design questions run through call scripts and 123 with a reach (a case limit);
-  53 left, each with its reason in ARCHITECTURE 17.13 "Enrolling the rest". What remains needs an
+  51 left, each with its reason in ARCHITECTURE 17.13 "Enrolling the rest". What remains needs an
   owner call (O11, O12) or a harness feature: graph and node inputs (Clone Graph, Copy List with
   Random Pointer, the quad trees), an answer check over a whole design script (All One), random or
   non-instance design questions, Shortest Matching Substring's overload tie, and Sudoku Solver's
