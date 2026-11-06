@@ -37,6 +37,13 @@ public sealed record LeetCodeSignature
     /// <summary>The design class's constructor inputs; empty for a function question.</summary>
     public required IReadOnlyList<LeetCodeParameter> ConstructorParameters { get; init; }
 
+    /// <summary>
+    /// The design class's constructor inputs as a call script passes them: LeetCode's metaData also lists C's
+    /// length of an array input, such as Random Pick Index's numsSize, which no script passes.
+    /// </summary>
+    [JsonIgnore]
+    public IReadOnlyList<LeetCodeParameter> ScriptedConstructorParameters => LengthCompanions.Without(ConstructorParameters);
+
     /// <summary>The design class's methods; empty for a function question.</summary>
     public required IReadOnlyList<LeetCodeMethod> Methods { get; init; }
 

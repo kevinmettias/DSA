@@ -115,6 +115,14 @@ internal static class NotationTypes
     private static bool IsKeptAsProperty(INamedTypeSymbol type, IParameterSymbol parameter) =>
         type.GetMembers(parameter.Name).OfType<IPropertySymbol>().Any(property => SymbolEqualityComparer.Default.Equals(property.Type, parameter.Type));
 
+    // The one value a role type keeps, such as SourceText(string Text)'s string, which NotationReader reads it as;
+    // null for any other type.
+    public static ITypeSymbol? RoleValueOf(ITypeSymbol type) => type switch
+    {
+        INamedTypeSymbol { IsValueType: true, IsTupleType: false } valueType when RecordValuesOf(valueType) is { Count: 1 } values => values[0],
+        _ => null,
+    };
+
     // How many consecutive case inputs a parameter of this type can stand for, as NotationReader.WidthOf
     // counts them: a tuple's or a record's values, when it has several, and one for any other type.
     public static int WidthOf(ITypeSymbol type) => type switch

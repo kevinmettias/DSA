@@ -2,8 +2,8 @@ namespace DSAExperimentation.LeetCode.Harness.Tests.Probes;
 
 // A solution-shaped class for LeetCodeShapeTests, outside the solutions project and never enrolled: each
 // strategy has two overloads a case could feed, as 17.4's hoisted overloads may - rows beside tuples, a
-// declared input beside one more, an array beside a list that match alike, and a tuple spread over three
-// inputs beside a table built from them.
+// declared input beside one more, an array beside a list that match alike, a tuple spread over three
+// inputs beside a table built from them, and a role type of one string beside a tuple of two.
 internal static class ShapedProbeSolution
 {
     public static int CountByLoop(int[][] intervals) => intervals.Length;
@@ -21,4 +21,8 @@ internal static class ShapedProbeSolution
     public static int CostByLoop(string source, (char[] Original, char[] Changed, int[] Cost) rules) => source.Length + rules.Cost.Sum();
 
     public static int CostByLoop(string source, long[,] distances) => source.Length + distances.Length;
+
+    public static int MeasureByLoop(ProbeRoleText text) => text.Text.Length;
+
+    public static int MeasureByLoop((string Prefix, string Suffix) parts) => parts.Prefix.Length + parts.Suffix.Length;
 }

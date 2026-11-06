@@ -145,7 +145,7 @@ internal sealed class CatalogStrategy
     // readable, and returning the object its calls are made on.
     private static MethodInfo TheFactory(Type solution, List<MethodInfo> overloads, LeetCodeSignature design)
     {
-        var bound = overloads.Where(method => IsFactory(method, design.ConstructorParameters.Count)).ToList();
+        var bound = overloads.Where(method => IsFactory(method, design.ScriptedConstructorParameters.Count)).ToList();
 
         if (bound.Count != 1)
         {

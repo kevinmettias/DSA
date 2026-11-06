@@ -15,14 +15,18 @@ public sealed partial class LeetCodeShapeTests
     private const string ByList = "PickByList";
     private const string BySpreadRules = "CostByRules";
     private const string ByTable = "CostByTable";
+    private const string ByRole = "MeasureByRole";
+    private const string ByPair = "MeasureByPair";
     private const string IntegerRows = "integer[][]";
     private const string Integers = "integer[]";
     private const int BothOverloads = 2;
 
     private static readonly string[] QuestionsTypes = [IntegerRows, "integer"];
 
+    private const string DeclaredText = "string";
+
     // A question that lists a source and three rule arrays, which a tuple parameter may take together.
-    private static readonly string[] RulesTypes = ["string", "character[]", "character[]", Integers];
+    private static readonly string[] RulesTypes = [DeclaredText, "character[]", "character[]", Integers];
 
     private const string Holder = """
         using System.Collections.Generic;
@@ -44,7 +48,13 @@ public sealed partial class LeetCodeShapeTests
             public static int PickByList(IList<int> values) => 0;
             public static int CostByRules(string source, (char[] Original, char[] Changed, int[] Cost) rules) => 0;
             public static int CostByTable(string source, long[,] distances) => 0;
+            public static int MeasureByRole(RoleText text) => 0;
+            public static int MeasureByPair(Pair pair) => 0;
         }
+
+        internal readonly record struct RoleText(string Text);
+
+        internal readonly record struct Pair(string Prefix, string Suffix);
         """;
 
     // A question file: its signature declares an integer[][] and an integer, after a title and before a
@@ -122,6 +132,14 @@ public sealed partial class LeetCodeShapeTests
         var narrowed = LeetCodeShape.Narrowed([GeneratorProbe.Method(Holder, ByArray), GeneratorProbe.Method(Holder, ByList)], [Integers]);
 
         Assert.Equal(BothOverloads, narrowed.Count);
+    }
+
+    [Fact]
+    public void Narrowed_RoleTypeBesideARecordMatchingAlike_KeepsTheRoleTypeOfTheDeclaredValue()
+    {
+        var narrowed = LeetCodeShape.Narrowed([GeneratorProbe.Method(Holder, ByRole), GeneratorProbe.Method(Holder, ByPair)], [DeclaredText]);
+
+        Assert.Equal(ByRole, Assert.Single(narrowed).Name);
     }
 
     [Fact]

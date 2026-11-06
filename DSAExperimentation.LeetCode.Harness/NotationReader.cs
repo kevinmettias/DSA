@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 
@@ -16,6 +17,8 @@ namespace DSAExperimentation.LeetCode.Harness;
 // - an array as an array, element by element, and an array of rows of one length as a rectangular array,
 //   as Cherry Pickup reads its grid into an int[,];
 // - an array as a tuple of the same arity, the way LeetCode writes an interval as [start, end];
+// - LeetCode's notation as it stands, for a JsonNode, as an answer check over a design question's script
+//   takes the script's arguments, whose types change call by call;
 // - a level-order array as a tree and a flat array as a linked list, through LeetCodeWireFormat, and a
 //   quad tree's level order of [isLeaf, val] pairs as a QuadTreeNode, through LeetCodeQuadTrees;
 // - an interface-typed sequence as an array, or as a List<T> when the interface lets a strategy add;
@@ -77,6 +80,10 @@ internal static class NotationReader
         return RecordValuesOf(type)?.Length ?? 1;
     }
 
+    // The one value a role type keeps, such as SourceText(string Text)'s string, which Read reads it as; null for
+    // any other type.
+    public static Type? RoleValueOf(Type type) => RecordValuesOf(type) is [var value] ? value : null;
+
     // A tuple or a record built from one value per text, in order.
     public static object ReadSpread(IReadOnlyList<string> texts, Type type)
     {
@@ -121,7 +128,7 @@ internal static class NotationReader
     // A scalar, or a tree or list LeetCodeWireFormat builds from one array: read in one step, not item by item.
     private static bool IsReadAsAWhole(Type type) =>
         ScalarReaders.ContainsKey(type) || type == typeof(BinaryTreeNode<int>) || type == typeof(SinglyLinkedListNode<int>)
-            || type == typeof(QuadTreeNode);
+            || type == typeof(QuadTreeNode) || typeof(JsonNode).IsAssignableFrom(type);
 
     private static bool IsSequence(Type type) =>
         type.IsGenericType && SequenceDefinitions.Contains(type.GetGenericTypeDefinition());
@@ -174,6 +181,11 @@ internal static class NotationReader
         if (ScalarReaders.TryGetValue(type, out var readScalar))
         {
             return readScalar(element);
+        }
+
+        if (typeof(JsonNode).IsAssignableFrom(type))
+        {
+            return JsonNode.Parse(element.GetRawText());
         }
 
         if (type == typeof(QuadTreeNode))

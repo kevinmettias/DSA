@@ -75,6 +75,14 @@ public sealed partial class LeetCodeShapeTests
     }
 
     [Fact]
+    public void Narrowed_RoleTypeBesideATupleMatchingAlike_KeepsTheRoleTypeOfTheDeclaredValue()
+    {
+        var narrowed = LeetCodeShape.Narrowed(OverloadsOf(nameof(ShapedProbeSolution.MeasureByLoop)), ["string"]);
+
+        Assert.Equal(typeof(ProbeRoleText), Assert.Single(narrowed).GetParameters()[0].ParameterType);
+    }
+
+    [Fact]
     public void Narrowed_NoOverloadOfTheDeclaredCount_KeepsThemAll()
     {
         var narrowed = LeetCodeShape.Narrowed(OverloadsOf(nameof(ShapedProbeSolution.PickByLoop)), ["integer[]", "integer", "integer"]);

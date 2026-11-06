@@ -47,7 +47,13 @@ internal static class LeetCodeShape
         }
 
         var best = ofTheCount.Max(overload => MatchesOf(overload, declared));
-        return [.. ofTheCount.Where(overload => MatchesOf(overload, declared) == best)];
+        var leading = ofTheCount.Where(overload => MatchesOf(overload, declared) == best).ToList();
+
+        // A tie between overloads that match alike is broken by reading each one-value role type as its value,
+        // as the notation reads it: Shortest Matching Substring's pattern as a WildcardPattern(string) matches
+        // LeetCode's string, where the same pattern split into a three-part record does not.
+        var bestRead = leading.Max(overload => ReadMatchesOf(overload, declared));
+        return [.. leading.Where(overload => ReadMatchesOf(overload, declared) == bestRead)];
     }
 
     // Takes the declared count of inputs one to a parameter, or spread, a tuple or record parameter over as
@@ -61,6 +67,9 @@ internal static class LeetCodeShape
 
     private static int MatchesOf(MethodInfo overload, IReadOnlyList<string> declared) =>
         InputsOf(overload).Zip(declared).Count(pair => IsDeclaredType(pair.First, pair.Second));
+
+    private static int ReadMatchesOf(MethodInfo overload, IReadOnlyList<string> declared) =>
+        InputsOf(overload).Zip(declared).Count(pair => IsDeclaredType(NotationReader.RoleValueOf(pair.First) ?? pair.First, pair.Second));
 
     // Whether a parameter type is the type LeetCode declares, read as this repository reads its inputs.
     public static bool IsDeclaredType(Type type, string declared)

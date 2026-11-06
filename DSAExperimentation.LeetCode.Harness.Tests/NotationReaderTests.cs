@@ -175,6 +175,15 @@ public sealed partial class NotationReaderTests
     [Fact]
     public void CanRead_NullableOfAReadableType_IsTrue() => Assert.True(NotationReader.CanRead(typeof(int?[][])));
 
+    // A design script's arguments change type call by call, so an answer check takes them as LeetCode wrote them.
+    [Fact]
+    public void Read_JsonArray_IsTheArrayAsWritten()
+    {
+        var arguments = NotationReader.Read("[[],[\"a\"],[1,2]]", typeof(System.Text.Json.Nodes.JsonArray));
+
+        Assert.Equal("[[],[\"a\"],[1,2]]", Assert.IsType<System.Text.Json.Nodes.JsonArray>(arguments).ToJsonString());
+    }
+
     [Fact]
     public void Read_QuadTreeLevelOrder_ReadsItsLeavesUnderTheRoot()
     {
