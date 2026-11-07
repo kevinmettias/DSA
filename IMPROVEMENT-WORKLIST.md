@@ -62,13 +62,21 @@ commit beside it, as the rest of this file does.
     (`01384577`), with Cat and Mouse II adopting it; players and turns came with B3 (`08214dd8`).
     Alpha-beta with a transposition table and iterative deepening, and Connect Four's strong play
     on bit masks (`9dee5e01`); positions stay functional, the search measuring level with
-    make/unmake (moves alone about 10% slower). Left: Gomoku's evaluation (225 cells want a wider
-    mask), lines and runs beyond B3's m,n,k lines, permutation groups, polyominoes.
+    make/unmake (moves alone about 10% slower). Gomoku's strong play on a 256-bit board
+    (`a032d25f`): five in a row by shifts behind the layer BitboardGame meets (IBitboardGame),
+    standard gomoku's exactly five as an overline rule, victory by continuous fours, and the
+    open-lines evaluation counted by shifts with the threats tried first. Permutation groups
+    (`7237b9a0`): IGroup in the algebra chain, Domain/Mathematics/Groups (Permutation,
+    PermutationCycles, SymmetricGroup<TDegree>), the sliding puzzle's parity law over the tiles'
+    permutation and LC 765's cycle arm; they feed the Rubik cube. Left: lines and runs beyond
+    B3's m,n,k lines, polyominoes (whose tilings now have their solver, D8's exact cover,
+    `c4c67b4d`), victory by continuous threats, and a forward-pruning axis that would let alpha-beta
+    skip Gomoku's far cells (a change to the shared search, for the owner).
     Cat and Mouse I (LC 913) is not covered.
-  - Then the families: k in a row (Connect Four's and Gomoku's rules are done, `08214dd8`; their
-    strong play, Pentago and Quarto are left), capture (Go, Reversi,
-    checkers), connection (Hex, on union-find), dominoes, Tetris, the Rubik cube n × n × n, Nim,
-    Mastermind, Minesweeper and Lights Out.
+  - Then the families: k in a row (Connect Four's and Gomoku's rules are done, `08214dd8`, and
+    their strong play, `9dee5e01` and `a032d25f`; Pentago and Quarto are left), capture (Go,
+    Reversi, checkers), connection (Hex, on union-find), dominoes, Tetris, the Rubik cube
+    n × n × n, Nim, Mastermind, Minesweeper and Lights Out.
 - **L4. Element algebra into Domain/Mathematics — DONE** (`a78f0815`). Opted into on 2026-11-02:
   the group laws are mathematics, so they moved to Domain/Mathematics/Algebra under the
   mathematics' names, the owner's ruling of 2026-11-05 (IMonoid, IAbelianGroup, IIntegerModule;
@@ -156,10 +164,13 @@ commit beside it, as the rest of this file does.
   (`fa7daad7`). Each names the library tier its type would go to, or keeps the tier's root with
   today's reason where the type is LeetCode's own interface. ColorNode (LC 1591) is exactly
   `AdjacencyNode` and should become an alias (§13.3), a solution change with an A/B.
-- **D8.** Exact cover as an `Algorithms/` engine (Knuth's Algorithm X with dancing links). Sudoku
-  of any grid reduces to it (cell, row-symbol, column-symbol and region-symbol constraints), so
-  LC 37 would be its first adopter as a third strategy; N-queens and polyomino tilings (L3) reduce
-  to it too. Recorded by B4 (`d8a7dac8`).
+- **D8.** Exact cover as an `Algorithms/` engine — **DONE** (`c4c67b4d`). Knuth's Algorithm X
+  over flat dancing links (`Algorithms/ExactCover`), the problem and its rule in
+  `Domain/Mathematics/Combinatorics/ExactCovers`. Sudoku of any grid (`SudokuCover<TGrid>`) and
+  the n-queens puzzle (`NQueensCover`, diagonals secondary) reduce to it, and LC 37, 51 and 52
+  each gained an exact-cover strategy (LC 37's runs in 20 us against the specialized recursion's
+  216). Left for the owner: reusing the links across solves (LC 37's 57 KB a call), Knuth's
+  organ-pipe column order for n-queens, and polyomino tilings (L3).
 
 ### Waiting on the owner
 
