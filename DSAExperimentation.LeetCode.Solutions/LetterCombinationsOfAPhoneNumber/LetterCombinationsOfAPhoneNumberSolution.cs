@@ -12,21 +12,11 @@ namespace DSAExperimentation.LeetCode.Solutions.LetterCombinationsOfAPhoneNumber
 // expansion carried by hand, or this repo's generic Backtrack.Search walking one
 // decision level per digit position.
 //
-// The keypad is the telephone's (Domain/Devices/Telephone): the backtracking arm reads Keypad<E161Keypad>, and
-// the expansion baseline keeps its own copy below (ARCHITECTURE §17.5).
+// The keypad is the telephone's (Domain/Devices/Telephone): both arms read a digit's letters from
+// Keypad<E161Keypad> (ARCHITECTURE §17.5).
 [LeetCodeQuestion("letter-combinations-of-a-phone-number", LeetCodeAnswerOrder.AnyOrder)]
 internal static class LetterCombinationsOfAPhoneNumberSolution
 {
-    // The baseline's own copy of the keypad's letter groups, keyed by digit.
-    private const string Digit2Letters = "abc";
-    private const string Digit3Letters = "def";
-    private const string Digit4Letters = "ghi";
-    private const string Digit5Letters = "jkl";
-    private const string Digit6Letters = "mno";
-    private const string Digit7Letters = "pqrs";
-    private const string Digit8Letters = "tuv";
-    private const string Digit9Letters = "wxyz";
-
     // The textbook answer: grow the result list one digit at a time, appending
     // every letter of the next digit to every combination built so far.
     // Deliberately written without this repo's primitives - it is the arm the
@@ -65,19 +55,7 @@ internal static class LetterCombinationsOfAPhoneNumberSolution
         return next;
     }
 
-    private static string LettersFor(char digit)
-        => digit switch
-        {
-            '2' => Digit2Letters,
-            '3' => Digit3Letters,
-            '4' => Digit4Letters,
-            '5' => Digit5Letters,
-            '6' => Digit6Letters,
-            '7' => Digit7Letters,
-            '8' => Digit8Letters,
-            '9' => Digit9Letters,
-            _ => string.Empty,
-        };
+    private static string LettersFor(char digit) => Keypad<E161Keypad>.KeyFor(digit).Spelling;
 
     // This repo's own Backtrack.Search: each digit position is a decision level,
     // Candidates offers that digit's letters, and a choice sequence as long as the
