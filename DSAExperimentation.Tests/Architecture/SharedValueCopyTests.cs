@@ -8,6 +8,8 @@ public sealed partial class SharedValueCopyTests
     // Keyed by the copy's full name: a constant that repeats a shared value but means something else.
     private static readonly Dictionary<string, string> AllowedCopies = new(StringComparer.Ordinal)
     {
+        ["DSAExperimentation.LeetCode.Solutions.FancySequence.FancySequenceSolution.IdentityAddend"] =
+            "The addend of LC 1622's identity map, x to 1x + 0: the additive identity, not the gcd's.",
         ["DSAExperimentation.LeetCode.Solutions.ValidSquare.ValidSquareSolution.FourthSideIndex"] =
             "The fourth side's place among the sorted distances, not how many sides a polygon needs.",
         ["DSAExperimentation.LeetCode.Solutions.TransposeMatrix.TransposeMatrixSolution.BlockSize"] =

@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.Solutions.MinimumStabilityFactorOfArray;
 
@@ -31,11 +32,6 @@ namespace DSAExperimentation.LeetCode.Solutions.MinimumStabilityFactorOfArray;
 [LeetCodeQuestion("minimum-stability-factor-of-array", LeetCodeAnswerOrder.AsWritten)]
 internal static class MinimumStabilityFactorOfArraySolution
 {
-    // The gcd of no values - 0, since gcd(0, x) = x - where a running gcd starts folding from.
-    // Restated rather than read as GcdOperation's identity: the baseline folds from it too, and a
-    // baseline reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const int EmptyGcd = 0;
-
     // Baseline: recomputes each window's gcd from scratch by scanning its L+1
     // elements (with an early exit once the running gcd hits 1) - "what you'd
     // write without this repo" (ARCHITECTURE.md 17.5), no range-query structure at
@@ -85,7 +81,8 @@ internal static class MinimumStabilityFactorOfArraySolution
 
     private static int WindowGcd(int[] nums, int start, int windowLength)
     {
-        var gcd = EmptyGcd;
+        // The gcd of no values, where a running gcd starts folding from.
+        var gcd = CommonDivisors.GcdIdentity;
 
         for (var offset = 0; offset <= windowLength; offset++)
         {
@@ -147,8 +144,8 @@ internal static class MinimumStabilityFactorOfArraySolution
     }
 
     // Euclid's algorithm, written out here rather than taken from the core GcdOperation: the
-    // brute-force baseline reaches it through WindowGcd, and a baseline arm composes nothing of this
-    // repository's own (ARCHITECTURE section 17.5).
+    // brute-force baseline reaches it through WindowGcd, and a baseline uses no library
+    // implementation (ARCHITECTURE section 17.5).
     private static int Gcd(int left, int right)
     {
         while (right != 0)

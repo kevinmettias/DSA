@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Mathematics.NumberTheory;
+
 namespace DSAExperimentation.LeetCode.Solutions.GoodSubsequenceQueries;
 
 // LeetCode 3901. Good Subsequence Queries: after each update, does nums have a
@@ -22,11 +24,6 @@ namespace DSAExperimentation.LeetCode.Solutions.GoodSubsequenceQueries;
 [LeetCodeQuestion("good-subsequence-queries", LeetCodeAnswerOrder.AsWritten)]
 internal static class GoodSubsequenceQueriesSolution
 {
-    // The gcd of no values - 0, since gcd(0, x) = x - where a running gcd starts folding from.
-    // Restated rather than read as GcdOperation's identity: the baseline folds from it too, and a
-    // baseline reaches no library type, not even a constant (ARCHITECTURE 17.5).
-    private const int EmptyGcd = 0;
-
     // The textbook answer: no persistent structure, every query rescans nums'
     // modulus-divided values from scratch in O(n) - "what you'd write without this
     // repo" (ARCHITECTURE.md 17.5).
@@ -57,7 +54,9 @@ internal static class GoodSubsequenceQueriesSolution
     private static bool HasGoodSubsequenceByScan(int[] divided)
     {
         var multiplesCount = 0;
-        var gcd = EmptyGcd;
+
+        // The gcd of no values, where a running gcd starts folding from.
+        var gcd = CommonDivisors.GcdIdentity;
 
         foreach (var value in divided)
         {
@@ -156,7 +155,7 @@ internal static class GoodSubsequenceQueriesSolution
     // case for the sweep above to spell out.
     private static void BuildPrefixCommonDivisors(int[] prefix, int[] divided)
     {
-        prefix[0] = EmptyGcd;
+        prefix[0] = CommonDivisors.GcdIdentity;
 
         for (var i = 0; i < divided.Length; i++)
         {
@@ -169,7 +168,7 @@ internal static class GoodSubsequenceQueriesSolution
     // prefix above.
     private static void BuildSuffixCommonDivisors(int[] suffix, int[] divided)
     {
-        suffix[divided.Length] = EmptyGcd;
+        suffix[divided.Length] = CommonDivisors.GcdIdentity;
 
         for (var i = divided.Length - 1; i >= 0; i--)
         {
@@ -191,8 +190,8 @@ internal static class GoodSubsequenceQueriesSolution
     }
 
     // Euclid's algorithm, written out here rather than taken from the core GcdOperation: the
-    // brute-force baseline reaches it through HasGoodSubsequenceByScan and HasRemovableIndex, and a baseline arm composes nothing of this
-    // repository's own (ARCHITECTURE section 17.5).
+    // brute-force baseline reaches it through HasGoodSubsequenceByScan and HasRemovableIndex, and a
+    // baseline uses no library implementation (ARCHITECTURE section 17.5).
     private static int Gcd(int left, int right)
     {
         while (right != 0)
