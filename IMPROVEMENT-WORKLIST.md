@@ -117,11 +117,11 @@ commit beside it, as the rest of this file does.
   LeetCode's fastest C# (L9) becomes the baseline, so the question enrolls at once; then a gated,
   scheduled agent composes library strategies from a capability index, and a gap report turns a
   missing primitive into a library proposal for the owner.
-- **L11. Catalog enrollment** (another session's area). 1,068 solutions enrolled as of 2026-11-05,
-  72 of them design questions run through call scripts and 124 with a reach (a case limit);
-  37 left, each with its reason in ARCHITECTURE 17.13 "Enrolling the rest". What remains needs a
-  harness feature: random or non-instance design questions, the codecs' serialize and deserialize
-  halves, which the harness takes for strategies, Sudoku Solver's in-place shape, and the questions
+- **L11. Catalog enrollment** (another session's area). 1,090 solutions enrolled as of 2026-11-05,
+  94 of them design questions run through call scripts and 124 with a reach (a case limit);
+  15 left, each with its reason in ARCHITECTURE 17.13 "Enrolling the rest". What remains needs a
+  harness feature: the codecs' serialize and deserialize halves, which the harness takes for
+  strategies, iterator and interactive questions, Sudoku Solver's in-place shape, and the questions
   whose examples state their answer in prose, which a correction can now record.
 
 ### Deferred loose ends

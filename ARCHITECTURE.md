@@ -2741,8 +2741,8 @@ A solution that passes every case still stays out when its question has no recor
 Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
 have only the empty tree. A check over those would pass whatever the strategy did.
 
-**Enrolled.** 1,068 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 472 more:
+**Enrolled.** 1,090 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 494 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -3043,6 +3043,36 @@ have only the empty tree. A check over those would pass whatever the strategy di
   such a tie by counting a one-value role type as that value's type, but only after the first match:
   counted there, it would tie Burst Balloons, whose role-typed overload would match as well as its
   plain one.
+- 22 design questions, once an answer check could judge a whole script and C's array lengths stopped
+  counting among a constructor's parameters. The harness reads a design script's arguments and answers
+  as written (`JsonNode`), and an answer check `IsAccepted(string[] calls, JsonArray arguments,
+  JsonArray answer, JsonArray recorded)` replays the script, reading `numsSize`, `matrixRowSize` and
+  `matrixColSize` nowhere (`LengthCompanions`).
+  - Twelve answer at random or let several answers stand, so each has an answer check, and each
+    strategy draws from a seeded `Random` its object owns, so a replay draws the same values: All O`one
+    Data Structure (getMaxKey and getMinKey name any key at the largest or smallest count), Insert
+    Delete GetRandom O(1) and its Duplicates Allowed form (insert and remove answer as a replayed set or
+    multiset does, getRandom a value held), Linked List Random Node, Random Pick Index, Random Pick with
+    Weight (the index of a positive weight), Random Pick with Blacklist, Random Flip Matrix (a cell not
+    flipped since the last reset), Shuffle an Array (any permutation of nums, and nums as given on
+    reset), Generate Random Point in a Circle (within the radius, to 10^-5), Random Point in
+    Non-overlapping Rectangles (a point on some rectangle) and Implement Rand10() Using Rand7(), a
+    function question whose judge passes n and takes any n values from 1 to 10. With the checks
+    stripped, 5 of the first four questions' 8 arms failed, the recorded draws differing.
+  - Ten were not shaped as an instance and its calls. Each strategy gained a factory taking LeetCode's
+    constructor and returning the object its calls go to (`IStockSpanner`, `IWordFilter`,
+    `ITreeAncestor`, ...). Fancy Sequence's segment tree now doubles when full, LeetCode's constructor
+    giving no capacity. Number of Recent Calls', Online Election's and Kth Ancestor of a Tree Node's
+    batch functions are gone, their benchmarks replaying the calls instead. Prefix and Suffix Search
+    maps `f` onto `Search` (`PrefixAndSuffixSearchCalls`). Kth Largest Element in a Stream and the two
+    Range Sum Queries bound as they were once the lengths dropped.
+
+  Where a hand-written benchmark calls a strategy's one-shot method (Shuffle an Array, Random Point in
+  Non-overlapping Rectangles, Linked List Random Node, Online Stock Span, Prefix and Suffix Search,
+  Range Frequency Queries, Range Sum Query - Immutable), the factory is an overload of the strategy's
+  own name (§17.4) rather than a `CreateBy` method, since every public `By` method group is a strategy
+  and holds exactly one factory. None of the twelve has a dataset case, so each is judged on
+  LeetCode's examples alone.
 
 Open items:
 
@@ -3061,22 +3091,13 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 37 solutions are left (2026-11-05), each blocked for a reason the table and
+- **Enrolling the rest.** 15 solutions are left (2026-11-05), each blocked for a reason the table and
   the exclusions above name. Each needs one of these, or stays out:
   - A solution whose answers differ needs its statement read, then a promise type for each
     constraint its failing cases break (§17.12), or a judge rule below.
   - A slow strategy no reach can bound: Maximum Number of Moves to Kill All Pawns' graph arm spends
     about 35 ms on every case, two pawns or fifteen, so no bound on its input keeps more than 4 of its
     96 cases.
-  - A design question that lets several answers stand needs an answer check over a whole script: All
-    One Data Structure's getMaxKey returns "one of the keys" with the largest count.
-  - A design question whose answers are random (Shuffle an Array, Random Pick with Weight, Insert
-    Delete GetRandom O(1) and seven more) has no recorded answer to compare.
-  - Ten design solutions are not shaped as an instance and its calls: Number of Recent Calls, Range
-    Sum Query - Immutable and Range Frequency Queries answer one query, or one batch, per call; Fancy
-    Sequence, Kth Largest Element in a Stream, Online Election, Online Stock Span, Prefix and Suffix
-    Search, Range Sum Query 2D - Immutable and Kth Ancestor of a Tree Node take a constructor other
-    than LeetCode's.
   - Sudoku Solver's strategies return whether they solved the board, where LeetCode's answers in place
     and returns nothing, as `AnswersInPlace` requires. Letting an in-place strategy return a value
     besides would bind them, but would enroll little: only LeetCode's example records an output, the
