@@ -2,6 +2,43 @@
   "schema": 1,
   "waivers": [
     {
+      "check": "check-instance-free-members",
+      "path": "DSAExperimentation/Algorithms/GameSearch/DepthLimitedSearch.cs",
+      "anchor": "`UnsearchedValue`",
+      "reason": "UnsearchedValue reads game and evaluation, DepthLimitedSearch's primary-constructor parameters, which are instance state: marking it static would not compile. The check's C# front end lists a type's instance members from its fields, properties and methods (csharp_Instance_Member_Names), so a captured primary-constructor parameter is not among them; the class's other helpers escape only because they also call an instance method or read a const, which the front end counts. The captures are not readonly fields on purpose: a method called on a readonly field of a generic struct type is called on a defensive copy.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-conditional-expression",
+      "path": "DSAExperimentation/Algorithms/GameSearch/DepthLimitedSearch.cs",
+      "anchor": "int[moveCount]`",
+      "reason": "The conditional chooses where a scratch buffer lives: on the stack when it is small, on the heap when it is not, which is C#'s idiom for a stackalloc of unknown size, the same reading as SpragueGrundy.cs's and MinimumExcludant.cs's own waivers. Neither operand can be named in a local first, as the check asks, without making the buffer both ways: a stackalloc evaluated before the choice is always taken, and the if/else form trips check-branch-choice.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-parameter-count",
+      "path": "DSAExperimentation/Algorithms/GameSearch/AlphaBeta.cs",
+      "reason": "Each of the five parameters is an independent axis the caller picks, the way Negamax.Value takes a game and a position: the game's rules, the static evaluation at the depth limit, the move ordering, the position and the depth. The first three are struct witnesses, so each search compiles them into its own code (ARCHITECTURE section 5, the owner's static-dispatch ruling of 2026-10-03). Grouping the witnesses into a record struct would only move the same five type arguments onto that type at every call, and would name no concept the search has: DepthLimitedSearch itself is that grouping, internal, with the cutoff and the table besides.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-value-sharing",
+      "path": "DSAExperimentation/Algorithms/GameSearch/TranspositionTable.cs",
+      "reason": "The table is a struct around its dictionary on purpose: DepthLimitedSearch takes it as a type argument constrained to struct, so the search's instantiation is exact and the JIT compiles the table's two calls into it, where a reference-type argument would make the search shared generic code with runtime lookups on every node (memory: shared-generic-witness-cost, measured 1-40%). The sharing the check names is the point: the search holds the one copy AlphaBeta.BestMoveByDeepening makes, and every pass reads what the last remembered. It is never stored elsewhere or compared.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/Domain/Games/PositionalGames/BitboardGame.cs",
+      "reason": "Four of the nine public declarations are IAlternatingGame's members (MoveCount, Next, Gain, ValueWhenOver), which the game must have to be searched, and two are the type and its constructor. The other three are the one subject they serve, the game's numbering of its moves: ChoicesOf (the choices open, which CentreFirstColumns orders), ChoiceOf (the choice a move number makes, how a caller reads a best move as a column) and Replay (a position from the choices played, how a caller sets one up). Moving them out would leave them reading the game's private board and masks from another type.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-presumption",
       "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/BitTrie.cs",
       "reason": "MaxXorPattern's ChildFor(...)! promises the same bit's child is present once the opposite bit's child is absent: every Set walks all 32 levels before it returns and nothing is ever removed, so every node the walk reaches above the last level has a child, and with the opposite one absent the same one is present by elimination between exactly two. TryMaxXor walks only once Count \u003e 0. Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",

@@ -18,5 +18,13 @@ public sealed partial class FreePlacementTests
     public void TryPlace_AMoveOffTheBoard_IsRefused(int move) =>
         Assert.False(FreePlacement.TryPlace(Empty(), move, out _));
 
+    [Fact]
+    public void Choices_AreTheOpenCells() =>
+        Assert.Equal(0b1010_0110UL, FreePlacement.Choices(0b1010_0110UL));
+
+    [Fact]
+    public void CellClaimed_IsTheCellChosen() =>
+        Assert.Equal(Move, FreePlacement.CellClaimed(1UL << Move, Move));
+
     private static int[] Empty() => BoardMask.Full(Cells).EmptyPosition();
 }
