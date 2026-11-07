@@ -2,6 +2,27 @@
   "schema": 1,
   "waivers": [
     {
+      "check": "check-single-letter-name",
+      "path": "DSAExperimentation/Domain/Mathematics/Polyominoes/Tetrominoes.cs",
+      "reason": "Each preset is named by the letter it is the shape of, which is its name, not an abbreviation: Golomb named the pentominoes F, I, L, N, P, T, U, V, W, X, Y and Z and the free tetrominoes I, O, T, S and L (Polyominoes, 1965), and the Tetris Guideline names its seven pieces I, O, T, S, Z, J and L. A reader of Pentominoes.X or Tetrominoes.T reads the piece's own name, as ChessPiece.Rook reads the rook's; spelling it out (LetterX, XPentomino) would rename the piece to something no source calls it. The letters are properties of a static class, so they are always read qualified by the set they belong to.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-single-letter-name",
+      "path": "DSAExperimentation/Domain/Mathematics/Polyominoes/Pentominoes.cs",
+      "reason": "Each preset is named by the letter it is the shape of, which is its name, not an abbreviation: Golomb named the pentominoes F, I, L, N, P, T, U, V, W, X, Y and Z and the free tetrominoes I, O, T, S and L (Polyominoes, 1965), and the Tetris Guideline names its seven pieces I, O, T, S, Z, J and L. A reader of Pentominoes.X or Tetrominoes.T reads the piece's own name, as ChessPiece.Rook reads the rook's; spelling it out (LetterX, XPentomino) would rename the piece to something no source calls it. The letters are properties of a static class, so they are always read qualified by the set they belong to.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/Domain/Mathematics/Polyominoes/Polyform.cs",
+      "reason": "Polyform is a value type, and its public surface is one subject, a set of cells under the lattice's symmetry group: making one (Of), the group's two generators acting on it (Turned, Mirrored), and the orbit and stabilizer of the piece under an equivalence's subgroup (Orientations, SymmetryCount, OrientationCount, Canonical, IsEquivalentTo), each of which reads the same normalized cells through the same private images walk; Equals, GetHashCode and CompareTo are the value protocol a set of polyforms needs. Moving the orbit members to a second type would give it the images walk and the normal form to agree on, the drift one source per fact exists to prevent, and would leave Polyform with nothing but its cells. Counted the way the check counts, ten declarations of one subject, as Bitboard256.cs's own waiver reads.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-presumption",
       "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/MaxXorWalk.cs",
       "reason": "Pattern's ChildFor(...)! promises the query's own digit's child holds a value once the opposite digit's child holds none. The walk's precondition is that the root holds a value (BitTrie and CountedBitTrie call it only once Count \u003e 0), and a node holds a value exactly when one of its children does: for BitTrieNode every Insert walks all 32 levels and nothing is removed, so a node above the last level has a child; for CountedBitTrieNode a node's count is the sum of its children's. So with the opposite child empty the own child holds every value the node does, by elimination between exactly two. Moved here from BitTrie.cs with the walk it waives. Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
