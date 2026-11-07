@@ -1,0 +1,20 @@
+[
+  {
+    "Inputs": [
+      "[-1,0,0]",
+      "[1,1,1]",
+      "[[0,1],[0,2],[0,3]]"
+    ],
+    "ExpectedOutput": "[0,1,-1]",
+    "Reason": "The statement's output is [0,1,-1]. An independent brute force, a script of its own, run outside the repository, that XORs each node's values up its parent chain to the root, takes u's subtree as the nodes whose parent chain passes u, and ranks the distinct sums gives [0,1,-1] too."
+  },
+  {
+    "Inputs": [
+      "[-1,0,1]",
+      "[5,2,7]",
+      "[[0,1],[1,2],[1,3],[2,1]]"
+    ],
+    "ExpectedOutput": "[0,7,-1,0]",
+    "Reason": "The statement's output is [0,7,-1,0]. An independent brute force, a script of its own, run outside the repository, that XORs each node's values up its parent chain to the root, takes u's subtree as the nodes whose parent chain passes u, and ranks the distinct sums gives [0,7,-1,0] too."
+  }
+]

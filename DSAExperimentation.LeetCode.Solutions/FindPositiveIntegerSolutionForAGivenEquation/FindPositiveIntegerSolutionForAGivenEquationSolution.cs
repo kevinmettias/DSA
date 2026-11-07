@@ -10,12 +10,27 @@ namespace DSAExperimentation.LeetCode.Solutions.FindPositiveIntegerSolutionForAG
 // The function is an ICustomFunction rather than a delegate for the same reason LeetCode
 // hides it behind an API object: a strategy is only allowed to know the monotonicity,
 // never the formula, and the interface is where that contract gets written down - which a
-// bare Func<int, int, int> parameter had nowhere to put. Every strategy has a
-// LeetCode-shaped overload pinned to LeetCode's own 1..1000 range and one taking an
-// explicit bound, which is what lets a benchmark vary the search space without the range
-// becoming part of the measured work.
+// bare Func<int, int, int> parameter had nowhere to put. Every strategy has three
+// overloads: one taking LeetCode's own inputs, function_id and z, which builds the
+// function the id names as LeetCode's judge does; one taking the function, pinned to
+// LeetCode's own 1..1000 range; and one taking an explicit bound, which is what lets a
+// benchmark vary the search space without the range becoming part of the measured work.
+[LeetCodeQuestion(
+    "find-positive-integer-solution-for-a-given-equation",
+    LeetCodeAnswerOrder.AnyOrder,
+    Promise = typeof(FindPositiveIntegerSolutionForAGivenEquationPromise))]
 internal static class FindPositiveIntegerSolutionForAGivenEquationSolution
 {
+    // LeetCode's shape (ARCHITECTURE 17.4): its judge takes function_id and z, and hands
+    // findSolution the hidden CustomFunction that id names, which the statement states for
+    // ids 1 and 2 only (StatedCustomFunctions); the pairs come back in any order.
+    public static List<(int X, int Y)> FindSolutionsByBruteForce(int functionId, int targetValue)
+    {
+        var function = StatedCustomFunctions.Of(functionId);
+
+        return FindSolutionsByBruteForce(function, targetValue);
+    }
+
     // The textbook answer: evaluate the function at all bound^2 pairs and keep the
     // ones that hit targetValue. It assumes nothing about f beyond being callable, so
     // it is the arm the two monotonicity-exploiting strategies have to justify
@@ -41,6 +56,14 @@ internal static class FindPositiveIntegerSolutionForAGivenEquationSolution
         }
 
         return solutions;
+    }
+
+    // LeetCode's shape, as for the brute force above.
+    public static List<(int X, int Y)> FindSolutionsByTwoPointer(int functionId, int targetValue)
+    {
+        var function = StatedCustomFunctions.Of(functionId);
+
+        return FindSolutionsByTwoPointer(function, targetValue);
     }
 
     // The classic O(bound) walk: start at the bottom-left corner (smallest x, largest
@@ -92,6 +115,14 @@ internal static class FindPositiveIntegerSolutionForAGivenEquationSolution
         }
 
         return (x, y);
+    }
+
+    // LeetCode's shape, as for the brute force above.
+    public static List<(int X, int Y)> FindSolutionsByBinarySearchPerRow(int functionId, int targetValue)
+    {
+        var function = StatedCustomFunctions.Of(functionId);
+
+        return FindSolutionsByBinarySearchPerRow(function, targetValue);
     }
 
     // For a fixed x the row f(x, 1..bound) is itself sorted ascending, so each row is

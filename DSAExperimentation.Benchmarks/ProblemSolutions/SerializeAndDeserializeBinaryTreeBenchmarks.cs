@@ -31,11 +31,9 @@ public class SerializeAndDeserializeBinaryTreeBenchmarks
 
     [Benchmark(Baseline = true)]
     public BinaryTreeNode<int>? StringConcatRoundTrip() =>
-        SerializeAndDeserializeBinaryTreeSolution.DeserializeByStringConcat(
-            SerializeAndDeserializeBinaryTreeSolution.SerializeByStringConcat(_root));
+        SerializeAndDeserializeBinaryTreeSolution.RoundTripByStringConcat(_root);
 
     [Benchmark]
     public BinaryTreeNode<int>? QueueRoundTrip() =>
-        SerializeAndDeserializeBinaryTreeSolution.DeserializeByQueue(
-            SerializeAndDeserializeBinaryTreeSolution.SerializeByQueue(_root));
+        SerializeAndDeserializeBinaryTreeSolution.RoundTripByQueue(_root);
 }

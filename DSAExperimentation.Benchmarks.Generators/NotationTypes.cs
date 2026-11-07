@@ -25,6 +25,7 @@ internal static class NotationTypes
 
     // LeetCode's quad tree input, read through LeetCodeQuadTrees.
     private const string QuadTree = "DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.QuadTreeNode";
+    private const string JsonNodeName = "System.Text.Json.Nodes.JsonNode";
 
     // Sequences a strategy can only read, which an array fills, and those it may add to, which a List does.
     private static readonly string[] Sequences =
@@ -69,6 +70,7 @@ internal static class NotationTypes
             tuple.TupleElements.Length <= MostTupleItems && tuple.TupleElements.All(item => IsReadable(item.Type)),
         INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T } maybe => IsReadable(maybe.TypeArguments[0]),
         INamedTypeSymbol { IsGenericType: false } named when MetadataNameOf(named) == QuadTree => true,
+        _ when IsJsonNode(type) => true,
         INamedTypeSymbol { IsGenericType: true, TypeArguments.Length: 1 } generic => IsReadableGeneric(generic),
         INamedTypeSymbol { IsValueType: true } valueType when RecordValuesOf(valueType) is { } values => values.All(IsReadable),
         _ => false,
@@ -85,6 +87,20 @@ internal static class NotationTypes
         }
 
         return Sequences.Contains(definition) && IsReadable(argument);
+    }
+
+    // A JsonNode or a type derived from it, which the harness reads LeetCode's notation into as written.
+    public static bool IsJsonNode(ITypeSymbol type)
+    {
+        for (var current = type as INamedTypeSymbol; current is not null; current = current.BaseType)
+        {
+            if (MetadataNameOf(current) == JsonNodeName)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static string MetadataNameOf(INamedTypeSymbol type) =>

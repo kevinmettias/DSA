@@ -1,3 +1,5 @@
+using System.Text.Json;
+using DSAExperimentation.LeetCode.Catalog.Questions;
 using DSAExperimentation.LeetCode.Catalog.Storage;
 
 namespace DSAExperimentation.LeetCode.Catalog.Tests.Storage;
@@ -6,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Catalog.Tests.Storage;
 public sealed partial class CorrectionFilesTests
 {
     private const string LowestCommonAncestor = "lowest-common-ancestor-of-a-binary-tree";
+    private const string PeekingIterator = "peeking-iterator";
 
     [Fact]
     public void Read_CorrectedQuestion_SaysWhyOfEachCorrection()
@@ -30,6 +33,49 @@ public sealed partial class CorrectionFilesTests
             .ToList();
 
         Assert.Empty(strays);
+    }
+
+    [Fact]
+    public void SignatureFor_CorrectedQuestion_SaysWhy()
+    {
+        var correction = CorrectionFiles.SignatureFor(PeekingIterator);
+
+        Assert.NotNull(correction);
+        Assert.False(string.IsNullOrWhiteSpace(correction.Reason));
+    }
+
+    [Fact]
+    public void SignatureFor_UncorrectedQuestion_IsNull() => Assert.Null(CorrectionFiles.SignatureFor("two-sum"));
+
+    // The sync writes a corrected signature into the question's file, so the snapshot already holds it, and a
+    // sync that skipped the correction would show here as a file no longer agreeing with it.
+    [Fact]
+    public void SignatureTitleSlugs_EveryCorrection_IsTheSnapshotQuestionsSignature()
+    {
+        var strays = CorrectionFiles.SignatureTitleSlugs()
+            .Where(titleSlug => !IsSnapshotSignatureCorrected(titleSlug))
+            .ToList();
+
+        Assert.Empty(strays);
+    }
+
+    [Fact]
+    public void WithCorrectedSignature_SnapshotQuestion_ChangesNoFile()
+    {
+        QuestionFiles.TryRead(PeekingIterator, out LeetCodeQuestion? question);
+        Assert.NotNull(question);
+
+        var corrected = CorrectionFiles.WithCorrectedSignature(question);
+
+        Assert.False(QuestionFiles.TryWrite(corrected));
+    }
+
+    private static bool IsSnapshotSignatureCorrected(string titleSlug)
+    {
+        var correction = CorrectionFiles.SignatureFor(titleSlug) ?? throw new InvalidOperationException($"{titleSlug} lists no correction.");
+        var recorded = JsonSerializer.Serialize(LeetCodeCatalog.Question(titleSlug).Signature);
+
+        return recorded == JsonSerializer.Serialize(correction.Signature);
     }
 
     private static IEnumerable<LeetCodeCase> SourceCases(string titleSlug)

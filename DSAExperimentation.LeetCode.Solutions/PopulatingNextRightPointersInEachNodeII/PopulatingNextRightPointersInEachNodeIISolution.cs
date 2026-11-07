@@ -15,6 +15,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PopulatingNextRightPointersInEac
 // '#' closing each level - [1,#,2,3,#,4,5,7,#] - with null standing for '#'. That
 // readout is the answer every strategy returns, so the strategies differ only in
 // how they link, not in what they report.
+[LeetCodeQuestion("populating-next-right-pointers-in-each-node-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class PopulatingNextRightPointersInEachNodeIISolution
 {
     // The textbook answer: a manual queue-driven BFS, one level (queue snapshot

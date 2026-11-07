@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Nodes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 
@@ -74,6 +75,13 @@ internal static class LeetCodeShape
     // Whether a parameter type is the type LeetCode declares, read as this repository reads its inputs.
     public static bool IsDeclaredType(Type type, string declared)
     {
+        // A type the notation reads into no type of this repository's own - LeetCode's NestedInteger - is read as
+        // written, into a JsonNode.
+        if (typeof(JsonNode).IsAssignableFrom(type))
+        {
+            return !IsReadableDeclared(declared);
+        }
+
         if (Scalars.TryGetValue(declared, out var scalar))
         {
             return type == scalar;
@@ -112,6 +120,17 @@ internal static class LeetCodeShape
         }
 
         return null;
+    }
+
+    // Whether the notation reads LeetCode's declared type into a type of this repository's own.
+    private static bool IsReadableDeclared(string declared)
+    {
+        if (Scalars.ContainsKey(declared))
+        {
+            return true;
+        }
+
+        return ElementTypeOf(declared) is { } element && IsReadableDeclared(element);
     }
 
     private static List<Type> InputsOf(MethodInfo overload) =>

@@ -32,10 +32,10 @@ public class FlattenNestedListIteratorBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public List<int> EagerFlatten() => Drain(FlattenNestedListIteratorSolution.CreateByEagerFlatten(_nestedList));
+    public List<int> EagerFlatten() => Drain(FlattenNestedListIteratorSolution.FlattenByEagerFlatten(_nestedList));
 
     [Benchmark]
-    public List<int> LazyStack() => Drain(FlattenNestedListIteratorSolution.CreateByLazyStack(_nestedList));
+    public List<int> LazyStack() => Drain(FlattenNestedListIteratorSolution.FlattenByLazyStack(_nestedList));
 
     private static List<int> Drain(FlattenNestedListIteratorSolution.IFlattenIterator iterator)
     {

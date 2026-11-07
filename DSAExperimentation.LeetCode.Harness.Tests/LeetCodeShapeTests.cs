@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Nodes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.Harness.Tests.Probes;
 
@@ -14,6 +15,7 @@ public sealed partial class LeetCodeShapeTests
         { typeof(IList<int>), "list<integer>" },
         { typeof(BinaryTreeNode<int>), "TreeNode" },
         { typeof(char), "character" },
+        { typeof(JsonArray), "list<NestedInteger>" },
     };
 
     // A parameter type and a type a question may declare, which it is not.
@@ -22,6 +24,7 @@ public sealed partial class LeetCodeShapeTests
         { typeof((int, int)[]), "integer[][]" },
         { typeof(int[]), "integer[][]" },
         { typeof(string), "character" },
+        { typeof(JsonArray), "integer[]" },
     };
 
     [Theory]

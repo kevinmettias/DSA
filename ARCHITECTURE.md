@@ -2737,12 +2737,11 @@ would have timed a different workload. Merge k Sorted Lists' second call merged 
 already spliced together, and never returned. The probe renders every input before and after each
 call to find these, and each of the 27 now says `RewritesInput = true`.
 
-A solution that passes every case still stays out when its question has no recorded output to judge.
-Kth Smallest Path XOR Sum's two examples state none, and the Populating Next Right Pointers questions
-have only the empty tree. A check over those would pass whatever the strategy did.
+A solution that passes every case still stays out when its question has no recorded output to judge,
+since a check over none would pass whatever the strategy did, until a correction records one.
 
-**Enrolled.** 1,090 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 494 more:
+**Enrolled.** 1,102 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 506 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -3073,6 +3072,44 @@ have only the empty tree. A check over those would pass whatever the strategy di
   own name (§17.4) rather than a `CreateBy` method, since every public `By` method group is a strategy
   and holds exactly one factory. None of the twelve has a dataset case, so each is judged on
   LeetCode's examples alone.
+- 12 more, once corrections could record what a source lacks, a signature correction could fix
+  LeetCode's metaData, and a JsonNode could take an input the notation reads into no type of this
+  repository's own:
+  - Evaluate Division, taking LeetCode's equations, values and every query at once beside its own one
+    query (§17.4), to within 10^-5, with a promise that no two paths between variables multiply out to
+    different ratios ("there is no contradiction"), which 15 of its 53 generated cases break: a cycle
+    a/b = 2, b/c = 3, c/d = 0.5, d/a = 0.333, where each strategy answers with whichever path its walk
+    meets first (`EvaluateDivisionPromise`).
+  - Intersection of Two Linked Lists, whose judge joins listB into listA's tail from intersectVal,
+    skipA and skipB (`IntersectionJudge`, the skips read together into one pair) and prints the node
+    returned, read as its value, 0 for none; Populating Next Right Pointers in Each Node and its II,
+    whose strategies already answered the judge's readout along the next pointers, '#' written as
+    null; and Kth Smallest Path XOR Sum, which passed as it was. Each had examples whose outputs the
+    statement states but the scrape could not read, so a correction records each one, from the
+    statement and checked by a brute force run outside the repository.
+  - Guess the Word, whose judge plays the hidden Master itself and prints a sentence, "You guessed the
+    secret word correctly.", which each strategy's LeetCode shape returns from a `SecretWordMaster`
+    built as the judge builds it, and a correction records; and Find Positive Integer Solution for a
+    Given Equation, whose judge hands over one of nine hidden functions by id, of which the statement
+    states two, x + y and x * y (`StatedCustomFunctions`), with a promise keeping the cases naming
+    those, and its pairs in any order.
+  - Serialize and Deserialize Binary Tree, Serialize and Deserialize BST and Encode and Decode TinyURL,
+    once each strategy became one round trip, as the judge runs it: encode, then decode what was
+    written, the result printed. The halves moved into a codec per strategy (`QueueCodec.Serialize`,
+    ...), out of the `By` naming that marks a strategy, where the tests and benchmarks still reach them.
+    A round trip that returned its input untouched would pass every case, where LeetCode's judge
+    passes only the string between the halves, so each question's tests check the halves themselves.
+  - Peeking Iterator, whose metaData lists a function of nums and commands though its examples are call
+    scripts on a class: a signature correction (`Snapshot/Corrections/Signatures/<slug>.json`, with its
+    reason) names the class, its constructor and its three methods, and the sync writes it into the
+    question's file in place of the metaData's, so the harness and the generator both see a design
+    question (`CorrectionFiles.WithCorrectedSignature`). A test fails when a question's file no longer
+    holds its corrected signature.
+  - Flatten Nested List Iterator, whose judge drains the iterator into a list: each strategy took that
+    shape beside its own, reading LeetCode's nested list as a `JsonArray` (`NestedInteger.ListOf`). The
+    narrowing now counts a JsonNode as the declared type when the notation reads that type into none of
+    this repository's own, LeetCode's NestedInteger being the one, in the harness and the generator
+    alike. Its factories took the name `FlattenBy`, beside their LeetCode shape.
 
 Open items:
 
@@ -3091,10 +3128,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 15 solutions are left (2026-11-05), each blocked for a reason the table and
-  the exclusions above name. Each needs one of these, or stays out:
-  - A solution whose answers differ needs its statement read, then a promise type for each
-    constraint its failing cases break (§17.12), or a judge rule below.
+- **Enrolling the rest.** 3 solutions are left (2026-11-06):
   - A slow strategy no reach can bound: Maximum Number of Moves to Kill All Pawns' graph arm spends
     about 35 ms on every case, two pawns or fifteen, so no bound on its input keeps more than 4 of its
     96 cases.
@@ -3104,8 +3138,9 @@ Open items:
     dataset recording no changed board; of its 19 generated puzzles at least 8 have no solution at all;
     and two of them, each with 60 empty cells, run the backtracking-engine arm past 0.8 s and 3 s where
     another with 60 empty cells takes 12 ms, so no count of empty cells bounds them.
-  - Linked List Cycle II and Intersection of Two Linked Lists record no output at all, their examples
-    stating the answer in prose. A correction could record each example's answer.
+  - Linked List Cycle II records no output, its examples stating the answer in prose; a correction and
+    a LeetCode shape returning the cycle's entry index would enroll it, as they did Intersection of Two
+    Linked Lists. It waits on another session's open linked-list change to the same solution.
 - **Trimming the enrolled solutions' own tests.** A theory row restates a catalog case when
   a case has the same inputs, read into the strategy's types, and the catalog's judge accepts the
   row's answer for it. That row is the check `CatalogCaseTests` already makes. Measured over the 608

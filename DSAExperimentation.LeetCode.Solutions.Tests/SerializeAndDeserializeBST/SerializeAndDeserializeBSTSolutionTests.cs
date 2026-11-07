@@ -21,37 +21,43 @@ public sealed partial class SerializeAndDeserializeBSTSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SerializeByNullMarkerQueue_LeetCodeExamples_RoundTripsThroughDeserializeByNullMarkerQueue(int?[] levelOrder)
+    public void RoundTripByNullMarkerQueue_LeetCodeExamples_ReturnsTheSameTree(int?[] levelOrder)
     {
-        var text = SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(LeetCodeWireFormat.ToBinaryTree(levelOrder));
+        var root = LeetCodeWireFormat.ToBinaryTree(levelOrder);
+        var copy = SerializeAndDeserializeBSTSolution.RoundTripByNullMarkerQueue(root);
 
-        Assert.Equal(levelOrder, LeetCodeWireFormat.FromBinaryTree(SerializeAndDeserializeBSTSolution.DeserializeByNullMarkerQueue(text)));
+        Assert.Equal(levelOrder, LeetCodeWireFormat.FromBinaryTree(copy));
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void DeserializeByNullMarkerQueue_WhatSerializeByNullMarkerQueueWrote_WritesBackTheSameText(int?[] levelOrder)
+    public void NullMarkerQueueCodec_WhatSerializeWrote_DeserializesAndSerializesBackToTheSameText(int?[] levelOrder)
     {
-        var text = SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(LeetCodeWireFormat.ToBinaryTree(levelOrder));
+        var root = LeetCodeWireFormat.ToBinaryTree(levelOrder);
+        var text = SerializeAndDeserializeBSTSolution.NullMarkerQueueCodec.Serialize(root);
+        var copy = SerializeAndDeserializeBSTSolution.NullMarkerQueueCodec.Deserialize(text);
 
-        Assert.Equal(text, SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(SerializeAndDeserializeBSTSolution.DeserializeByNullMarkerQueue(text)));
+        Assert.Equal(text, SerializeAndDeserializeBSTSolution.NullMarkerQueueCodec.Serialize(copy));
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SerializeByPreOrderValues_LeetCodeExamples_RoundTripsThroughDeserializeByBstInsert(int?[] levelOrder)
+    public void RoundTripByPreOrderValues_LeetCodeExamples_ReturnsTheSameTree(int?[] levelOrder)
     {
-        var text = SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(LeetCodeWireFormat.ToBinaryTree(levelOrder));
+        var root = LeetCodeWireFormat.ToBinaryTree(levelOrder);
+        var copy = SerializeAndDeserializeBSTSolution.RoundTripByPreOrderValues(root);
 
-        Assert.Equal(levelOrder, LeetCodeWireFormat.FromBinaryTree(SerializeAndDeserializeBSTSolution.DeserializeByBstInsert(text)));
+        Assert.Equal(levelOrder, LeetCodeWireFormat.FromBinaryTree(copy));
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void DeserializeByBstInsert_WhatSerializeByPreOrderValuesWrote_WritesBackTheSameText(int?[] levelOrder)
+    public void PreOrderValuesCodec_WhatSerializeWrote_DeserializesAndSerializesBackToTheSameText(int?[] levelOrder)
     {
-        var text = SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(LeetCodeWireFormat.ToBinaryTree(levelOrder));
+        var root = LeetCodeWireFormat.ToBinaryTree(levelOrder);
+        var text = SerializeAndDeserializeBSTSolution.PreOrderValuesCodec.Serialize(root);
+        var copy = SerializeAndDeserializeBSTSolution.PreOrderValuesCodec.Deserialize(text);
 
-        Assert.Equal(text, SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(SerializeAndDeserializeBSTSolution.DeserializeByBstInsert(text)));
+        Assert.Equal(text, SerializeAndDeserializeBSTSolution.PreOrderValuesCodec.Serialize(copy));
     }
 }

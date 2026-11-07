@@ -14,6 +14,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PeekingIterator;
 // IPeekingIterator is bespoke to this problem alone - no other LeetCode entry
 // shares a HasNext/Peek/Next contract - so it stays here rather than in
 // DataStructures/.
+[LeetCodeQuestion("peeking-iterator", LeetCodeAnswerOrder.AsWritten)]
 internal static class PeekingIteratorSolution
 {
     // The textbook baseline this composition has to justify itself against: a

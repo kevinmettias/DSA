@@ -13,9 +13,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // WordCount stops at LeetCode's own 100-word cap. Match-count filtering converges in
 // single-digit rounds regardless of pool size, so it is the per-round penalty, not the
 // round count, that grows with the pool. The generated pool is LeetCode's own string[]
-// shape, so the only thing hoisted into [GlobalSetup] is generating it; a fresh
-// SecretWordMaster is constructed per invocation because the guess counter is per-run
-// state.
+// shape, so the only things hoisted into [GlobalSetup] are generating it and the set
+// of its words the Master answers membership from; a fresh SecretWordMaster is
+// constructed per invocation over that set because the guess counter is per-run state.
 public class GuessTheWordBenchmarks
 {
     private const int RandomSeed = 843; // LC problem number
@@ -24,6 +24,8 @@ public class GuessTheWordBenchmarks
     private const int AlphabetSize = 26;
 
     private string[] _wordList = [];
+
+    private IReadOnlySet<string> _words = new HashSet<string>();
 
     private string _secret = "";
     [Params(10, 100)]
@@ -47,6 +49,7 @@ public class GuessTheWordBenchmarks
         }
 
         _wordList = words.ToArray();
+        _words = seen;
         _secret = _wordList[WordCount / MiddleIndexDivisor];
     }
 
@@ -64,9 +67,9 @@ public class GuessTheWordBenchmarks
 
     [Benchmark(Baseline = true)]
     public string InPlaceListRemoval() =>
-        GuessTheWordSolution.FindSecretWordByInPlaceListRemoval(_wordList, new SecretWordMaster(_secret));
+        GuessTheWordSolution.FindSecretWordByInPlaceListRemoval(_wordList, new SecretWordMaster(_secret, _words));
 
     [Benchmark]
     public string ShrinkingCandidatePool() =>
-        GuessTheWordSolution.FindSecretWordByShrinkingPool(_wordList, new SecretWordMaster(_secret));
+        GuessTheWordSolution.FindSecretWordByShrinkingPool(_wordList, new SecretWordMaster(_secret, _words));
 }

@@ -22,6 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.PopulatingNextRightPointersInEac
 // guarantees is not what makes the walk work (BinaryTreeChildren compacts null
 // Left/Right slots away, so a missing child just yields a shorter level), which is
 // why the same walk answers both problems unchanged.
+[LeetCodeQuestion("populating-next-right-pointers-in-each-node", LeetCodeAnswerOrder.AsWritten)]
 internal static class PopulatingNextRightPointersInEachNodeSolution
 {
     // Textbook baseline: BCL Queue + Dictionary, snapshotting Count at the top of

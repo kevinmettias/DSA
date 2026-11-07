@@ -22,18 +22,18 @@ public sealed partial class FlattenNestedListIteratorSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CreateByLazyStack_LeetCodeExamples_FlattensNestedListInOrder(NestedListShape shape, List<int> expected)
+    public void FlattenByLazyStack_LeetCodeExamples_FlattensNestedListInOrder(NestedListShape shape, List<int> expected)
     {
-        var flattened = Flatten(FlattenNestedListIteratorSolution.CreateByLazyStack(BuildList(shape)));
+        var flattened = Flatten(FlattenNestedListIteratorSolution.FlattenByLazyStack(BuildList(shape)));
 
         Assert.Equal(expected, flattened);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CreateByEagerFlatten_LeetCodeExamples_FlattensNestedListInOrder(NestedListShape shape, List<int> expected)
+    public void FlattenByEagerFlatten_LeetCodeExamples_FlattensNestedListInOrder(NestedListShape shape, List<int> expected)
     {
-        var flattened = Flatten(FlattenNestedListIteratorSolution.CreateByEagerFlatten(BuildList(shape)));
+        var flattened = Flatten(FlattenNestedListIteratorSolution.FlattenByEagerFlatten(BuildList(shape)));
 
         Assert.Equal(expected, flattened);
     }

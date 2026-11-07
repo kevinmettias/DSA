@@ -1,0 +1,9 @@
+[
+  {
+    "Inputs": [
+      "[1,2,3,4,5,null,7]"
+    ],
+    "ExpectedOutput": "[1,null,2,3,null,4,5,7,null]",
+    "Reason": "The statement's output is [1,#,2,3,#,4,5,7,#]; the answer is written as int?[], with '#' written as null. An independent brute force, a script of its own, run outside the repository, that groups the nodes by depth in a left-first depth-first walk, links each to the next at its depth and reads each level along the next pointers, '#' after it, gives [1,#,2,3,#,4,5,7,#] too."
+  }
+]

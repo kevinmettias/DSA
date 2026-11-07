@@ -1,0 +1,43 @@
+{
+  "Signature": {
+    "FunctionName": null,
+    "Parameters": [
+      {
+        "Name": "nums",
+        "Type": "list<integer>"
+      },
+      {
+        "Name": "commands",
+        "Type": "list<integer>"
+      }
+    ],
+    "ReturnType": null,
+    "OutputParameterIndex": null,
+    "HasCustomJudge": true,
+    "ClassName": "PeekingIterator",
+    "ConstructorParameters": [
+      {
+        "Name": "nums",
+        "Type": "integer[]"
+      }
+    ],
+    "Methods": [
+      {
+        "Name": "next",
+        "Parameters": [],
+        "ReturnType": "integer"
+      },
+      {
+        "Name": "peek",
+        "Parameters": [],
+        "ReturnType": "integer"
+      },
+      {
+        "Name": "hasNext",
+        "Parameters": [],
+        "ReturnType": "boolean"
+      }
+    ]
+  },
+  "Reason": "LeetCode's metaData lists a function PeekingIterator(nums, commands) returning list<string>, but its judge replays a call script on a class: its examples' inputs are a script, [\"PeekingIterator\",\"next\",\"peek\",...] with each call's arguments, its output one answer per call, and its C# starter code is a class PeekingIterator(IEnumerator<int> iterator) with Peek, Next and HasNext. The constructor's iterator is written as the array it walks, [[1,2,3]]."
+}

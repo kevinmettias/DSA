@@ -17,6 +17,7 @@ namespace DSAExperimentation.LeetCode.Solutions.KthSmallestPathXORSum;
 // case is a straight-line chain of up to 5e4 nodes, deep enough to risk
 // overflowing the call stack) and differ only in how much of that walk is shared
 // across queries.
+[LeetCodeQuestion("kth-smallest-path-xor-sum", LeetCodeAnswerOrder.AsWritten)]
 internal static class KthSmallestPathXORSumSolution
 {
     // Textbook: no memoization at all. Every query redoes the full root-to-

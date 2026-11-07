@@ -10,9 +10,33 @@ namespace DSAExperimentation.LeetCode.Solutions.GuessTheWord;
 //
 // Both strategies pick the same guess every round - candidate 0, in the original
 // wordList order - so they converge on the identical secret in the identical number of
-// rounds. The only thing they differ in is how the pool is narrowed.
+// rounds. The only thing they differ in is how the pool is narrowed. Neither draws at
+// random, so a replay of a case guesses the same words.
+[LeetCodeQuestion("guess-the-word", LeetCodeAnswerOrder.AsWritten)]
 internal static class GuessTheWordSolution
 {
+    // LeetCode's shape (ARCHITECTURE 17.4): its judge takes secret, words and
+    // allowedGuesses, plays the hidden Master itself, and prints a sentence saying whether
+    // the secret was guessed within allowedGuesses calls. findSecretWord returns nothing,
+    // so the verdict is the Master's, from the calls it was asked, and the word a strategy
+    // returns plays no part in it.
+    public static string FindSecretWordByInPlaceListRemoval(string secret, string[] words, int allowedGuesses)
+    {
+        var master = MasterFor(secret, words);
+        _ = FindSecretWordByInPlaceListRemoval(words, master);
+
+        return master.VerdictWithin(allowedGuesses);
+    }
+
+    // The Master LeetCode's judge builds for one case: the secret, and the list as the
+    // set it answers membership from.
+    private static SecretWordMaster MasterFor(string secret, string[] words)
+    {
+        var listed = new HashSet<string>(words);
+
+        return new SecretWordMaster(secret, listed);
+    }
+
     // The textbook answer: keep the pool in a BCL List<string> and delete the
     // eliminated words from it in place, walking back to front so the indices stay
     // valid. Removing near the front shifts every trailing element, so a round that
@@ -41,6 +65,15 @@ internal static class GuessTheWordSolution
         }
 
         return string.Empty;
+    }
+
+    // LeetCode's shape, as for the in-place strategy above.
+    public static string FindSecretWordByShrinkingPool(string secret, string[] words, int allowedGuesses)
+    {
+        var master = MasterFor(secret, words);
+        _ = FindSecretWordByShrinkingPool(words, master);
+
+        return master.VerdictWithin(allowedGuesses);
     }
 
     // This repo's own DynamicArray<string> holding the shrinking pool, rebuilt round

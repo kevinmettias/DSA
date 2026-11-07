@@ -75,11 +75,9 @@ public class SerializeAndDeserializeBSTBenchmarks
 
     [Benchmark(Baseline = true)]
     public BinaryTreeNode<int>? NullMarkerQueueRoundTrip() =>
-        SerializeAndDeserializeBSTSolution.DeserializeByNullMarkerQueue(
-            SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(_root));
+        SerializeAndDeserializeBSTSolution.RoundTripByNullMarkerQueue(_root);
 
     [Benchmark]
     public BinaryTreeNode<int>? PreOrderValueOnlyRoundTrip() =>
-        SerializeAndDeserializeBSTSolution.DeserializeByBstInsert(
-            SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(_root));
+        SerializeAndDeserializeBSTSolution.RoundTripByPreOrderValues(_root);
 }

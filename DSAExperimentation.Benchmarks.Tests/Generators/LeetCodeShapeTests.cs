@@ -30,6 +30,7 @@ public sealed partial class LeetCodeShapeTests
 
     private const string Holder = """
         using System.Collections.Generic;
+        using System.Text.Json.Nodes;
         using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
         internal static class Holder
@@ -39,6 +40,7 @@ public sealed partial class LeetCodeShapeTests
             public static IEnumerable<string> Words;
             public static BinaryTreeNode<int> Tree;
             public static string Text;
+            public static JsonArray Nested;
 
             public static int CountByRows(int[][] intervals) => 0;
             public static int CountByPairs((int Start, int End)[] intervals) => 0;
@@ -75,6 +77,7 @@ public sealed partial class LeetCodeShapeTests
         { "Words", "list<string>" },
         { "Tree", "TreeNode" },
         { "Text", "string" },
+        { "Nested", "list<NestedInteger>" },
     };
 
     // A field and a type a question may declare, which it is not.
@@ -83,6 +86,7 @@ public sealed partial class LeetCodeShapeTests
         { "Intervals", "integer[][]" },
         { "Grid", "integer[]" },
         { "Text", "character" },
+        { "Nested", "integer[]" },
     };
 
     [Fact]

@@ -72,7 +72,8 @@ internal static class QuestionsCommand
             tally.Renamed(slug, dto.TitleSlug);
         }
 
-        var question = LeetCodeQuestionMapper.ToQuestion(dto);
+        var mapped = LeetCodeQuestionMapper.ToQuestion(dto);
+        var question = CorrectionFiles.WithCorrectedSignature(mapped);
         var statistics = LeetCodeQuestionMapper.ToStatistics(dto);
 
         if (QuestionFiles.TryWrite(question))

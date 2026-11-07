@@ -8,6 +8,7 @@ namespace DSAExperimentation.LeetCode.Solutions.EvaluateDivision;
 // is then an explicit-stack DFS from the dividend, multiplying edge weights along the
 // way until the divisor is reached or the reachable component is exhausted - -1.0 if
 // either variable has never appeared in an equation.
+[LeetCodeQuestion("evaluate-division", LeetCodeAnswerOrder.AsWritten, Promise = typeof(EvaluateDivisionPromise), Tolerance = 1e-5)]
 internal static class EvaluateDivisionSolution
 {
     private const double NotFound = -1.0;
@@ -22,6 +23,22 @@ internal static class EvaluateDivisionSolution
     {
         var neighborsByNode = BuildDictionaryGraph(equations);
 
+        return AnswerFromDictionary(neighborsByNode, dividend, divisor);
+    }
+
+    // LeetCode's shape (ARCHITECTURE 17.4): its equations as variable pairs beside their values, and every query
+    // answered at once from one graph.
+    public static double[] EvaluateByDictionaryDfs(IList<IList<string>> equations, double[] values, IList<IList<string>> queries)
+    {
+        var triples = EquationsOf(equations, values);
+        var neighborsByNode = BuildDictionaryGraph(triples);
+
+        return [.. queries.Select(query => AnswerFromDictionary(neighborsByNode, new Dividend(query[0]), new Divisor(query[1])))];
+    }
+
+    private static double AnswerFromDictionary(
+        Dictionary<string, Dictionary<string, double>> neighborsByNode, Dividend dividend, Divisor divisor)
+    {
         if (!neighborsByNode.ContainsKey(dividend.Name) || !neighborsByNode.ContainsKey(divisor.Name))
         {
             return NotFound;
@@ -105,6 +122,21 @@ internal static class EvaluateDivisionSolution
     {
         var neighborsByNode = BuildHashMapGraph(equations);
 
+        return AnswerFromHashMap(neighborsByNode, dividend, divisor);
+    }
+
+    // LeetCode's shape, as for the Dictionary arm above.
+    public static double[] EvaluateByHashMapStackDfs(IList<IList<string>> equations, double[] values, IList<IList<string>> queries)
+    {
+        var triples = EquationsOf(equations, values);
+        var neighborsByNode = BuildHashMapGraph(triples);
+
+        return [.. queries.Select(query => AnswerFromHashMap(neighborsByNode, new Dividend(query[0]), new Divisor(query[1])))];
+    }
+
+    private static double AnswerFromHashMap(
+        HashMap<string, HashMap<string, double>> neighborsByNode, Dividend dividend, Divisor divisor)
+    {
         if (!neighborsByNode.HasKey(dividend.Name) || !neighborsByNode.HasKey(divisor.Name))
         {
             return NotFound;
@@ -186,6 +218,11 @@ internal static class EvaluateDivisionSolution
             frontier.Pending.Push((neighbor, current.Product * weight));
         }
     }
+
+    // LeetCode's equations, each variable pair beside its value.
+    private static IEnumerable<(string Dividend, string Divisor, double Value)> EquationsOf(
+        IList<IList<string>> equations, double[] values) =>
+        equations.Zip(values, (pair, value) => (pair[0], pair[1], value));
 
     internal readonly record struct FrontierState(HashSet<string> Visited, FrontierStack Pending);
 

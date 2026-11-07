@@ -1,0 +1,35 @@
+[
+  {
+    "Inputs": [
+      "8",
+      "[4,1,8,4,5]",
+      "[5,6,1,8,4,5]",
+      "2",
+      "3"
+    ],
+    "ExpectedOutput": "8",
+    "Reason": "The statement prints \"Intersected at '8'\", which LeetCode's shape (ARCHITECTURE 17.4) reads as the node's value, 8. An independent brute force, a script of its own, run outside the repository, that builds the judge's two lists, listA's node at skipA being listB's node at skipB, and compares every node of listA with every node of listB by reference gives 8 too."
+  },
+  {
+    "Inputs": [
+      "2",
+      "[1,9,1,2,4]",
+      "[3,2,4]",
+      "3",
+      "1"
+    ],
+    "ExpectedOutput": "2",
+    "Reason": "The statement prints \"Intersected at '2'\", which LeetCode's shape (ARCHITECTURE 17.4) reads as the node's value, 2. An independent brute force, a script of its own, run outside the repository, that builds the judge's two lists, listA's node at skipA being listB's node at skipB, and compares every node of listA with every node of listB by reference gives 2 too."
+  },
+  {
+    "Inputs": [
+      "0",
+      "[2,6,4]",
+      "[1,5]",
+      "3",
+      "2"
+    ],
+    "ExpectedOutput": "0",
+    "Reason": "The statement prints \"No intersection\", which LeetCode's shape (ARCHITECTURE 17.4) reads as 0, which names no node since node values are at least 1. An independent brute force, a script of its own, run outside the repository, that builds the judge's two lists, listA's node at skipA being listB's node at skipB, and compares every node of listA with every node of listB by reference gives 0 too."
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "Inputs": [
+      "\"acckzz\"",
+      "[\"acckzz\",\"ccbazz\",\"eiowzz\",\"abcczz\"]",
+      "10"
+    ],
+    "ExpectedOutput": "\"You guessed the secret word correctly.\"",
+    "Reason": "The catalog records no output, the statement printing a sentence rather than a value: its example states \"You guessed the secret word correctly.\", which LeetCode's judge prints when the secret was guessed within allowedGuesses calls, and which each strategy's LeetCode-shaped overload returns as a string. A replay of LeetCode's Master in a script of my own found the secret on the first call guessing the first remaining candidate, as both strategies do, and within allowedGuesses in every order of guessing each word once."
+  },
+  {
+    "Inputs": [
+      "\"hamada\"",
+      "[\"hamada\",\"khaled\"]",
+      "10"
+    ],
+    "ExpectedOutput": "\"You guessed the secret word correctly.\"",
+    "Reason": "The catalog records no output, the statement printing a sentence rather than a value: its example states \"You guessed the secret word correctly.\", which LeetCode's judge prints when the secret was guessed within allowedGuesses calls, and which each strategy's LeetCode-shaped overload returns as a string. A replay of LeetCode's Master in a script of my own found the secret on the first call guessing the first remaining candidate, as both strategies do, and within allowedGuesses in every order of guessing each word once."
+  }
+]

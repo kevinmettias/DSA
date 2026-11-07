@@ -102,6 +102,13 @@ internal static class LeetCodeShape
     // Whether a parameter type is the type LeetCode declares, read as this repository reads its inputs.
     public static bool IsDeclaredType(ITypeSymbol type, string declared)
     {
+        // A type the notation reads into no type of this repository's own - LeetCode's NestedInteger - is read as
+        // written, into a JsonNode.
+        if (NotationTypes.IsJsonNode(type))
+        {
+            return !IsReadableDeclared(declared);
+        }
+
         if (Scalars.TryGetValue(declared, out var scalar))
         {
             return type.SpecialType == scalar;
@@ -138,6 +145,17 @@ internal static class LeetCodeShape
         INamedTypeSymbol { IsGenericType: true, TypeArguments.Length: 1 } named when Sequences.Contains(MetadataNameOf(named.OriginalDefinition)) => named.TypeArguments[0],
         _ => null,
     };
+
+    // Whether the notation reads LeetCode's declared type into a type of this repository's own.
+    private static bool IsReadableDeclared(string declared)
+    {
+        if (Scalars.ContainsKey(declared) || Nodes.ContainsKey(declared))
+        {
+            return true;
+        }
+
+        return ElementTypeOf(declared) is { } element && IsReadableDeclared(element);
+    }
 
     private static List<ITypeSymbol> InputsOf(IMethodSymbol overload) =>
         [.. overload.Parameters.Where(parameter => parameter.RefKind != RefKind.Out).Select(parameter => parameter.Type)];
