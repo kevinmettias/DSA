@@ -68,10 +68,12 @@ commit beside it, as the rest of this file does.
     open-lines evaluation counted by shifts with the threats tried first. Permutation groups
     (`7237b9a0`): IGroup in the algebra chain, Domain/Mathematics/Groups (Permutation,
     PermutationCycles, SymmetricGroup<TDegree>), the sliding puzzle's parity law over the tiles'
-    permutation and LC 765's cycle arm; they feed the Rubik cube. Left: lines and runs beyond
-    B3's m,n,k lines, polyominoes (whose tilings now have their solver, D8's exact cover,
-    `c4c67b4d`), victory by continuous threats, and a forward-pruning axis that would let alpha-beta
-    skip Gomoku's far cells (a change to the shared search, for the owner).
+    permutation and LC 765's cycle arm; they feed the Rubik cube. Polyominoes (`11dce4d6`):
+    polyforms on any planar lattice, their fixed, one-sided and free orientations, tetrominoes and
+    pentominoes as presets, growth's counts held to OEIS, and tilings as D8's exact cover
+    (`c4c67b4d`); they feed Tetris. Left: lines and runs beyond B3's m,n,k lines, victory by
+    continuous threats, and a forward-pruning axis that would let alpha-beta skip Gomoku's far
+    cells (a change to the shared search, for the owner).
     Cat and Mouse I (LC 913) is not covered.
   - Then the families: k in a row (Connect Four's and Gomoku's rules are done, `08214dd8`, and
     their strong play, `9dee5e01` and `a032d25f`; Pentago and Quarto are left), capture (Go,
@@ -96,8 +98,12 @@ commit beside it, as the rest of this file does.
     shared with BitTrie through TrieWalk's stepped walk and MaxXorWalk), with the pooled layout
     kept as PooledCountedBitTrie behind the XOR multiset contract (IXorMultiset), which all four
     users take: 40-byte object nodes allocated 14-64% more than 12-byte array slots in every one
-    and ran 10-30% slower at LC 1803's and LC 2935's larger sizes (§13.9). Left: SuffixTree as a
-    compressed layout;
+    and ran 10-30% slower at LC 1803's and LC 2935's larger sizes (§13.9). SuffixTree as a
+    compressed layout — DONE (`1c4934e7`): path compression is the one trie's axis (an edge-label
+    witness and a walk beside the one-letter walk, which keeps its own code), and the suffix tree
+    its configuration over a text, its queries at 1,000 letters 5-16% faster. Open for the
+    owner: a compressed word trie (a radix tree, which needs edge splits on insert), a slot store
+    for the suffix tree, and a lazy store for its leaves' empty maps;
   - the index-space trees: LazySegmentTree as SegmentTree with propagation a witness that
     compiles out is DONE (`dcdfa62d`, §13.10); the range Fenwick tree is the point tree over a
     product group, its two implicit trees named as step functions (`99374aaf`, §13.13). No segment
@@ -121,15 +127,16 @@ commit beside it, as the rest of this file does.
   Sudoku's names. Left: a compass rose of N points (4 and 8 as presets), Java-package path notation,
   the most general form of the Mechanisms (Cache, ExpiringSet, SmallestFreeAllocator), Life on any
   neighbourhood and boundary (with B9), and LC 497 adopting PrefixSumSampler.
-- **L8. One source per fact, the follow-up sweeps** (approved 2026-11-03). Baselines still keep
-  copies of the keypad (LC 17), folder paths (LC 1233), Zuma (LC 488), Sudoku (LC 36, 37), geometry
-  (LC 976, 2971, 3024, 3899, 1610), dice (LC 2318) and gcd's identity (GoodSubsequenceQueries,
-  MinimumStabilityFactorOfArray). Inspect CatAndMouseII, FindSubstringWithGivenHashValue,
-  MaximumNumberOfTasks, StampingTheSequence, SubsequencesWithAUniqueMiddleModeI, DecodeWays,
-  MultiplyStrings, SlidingPuzzle and DeleteDuplicateFolders too. 52 harness files declare
-  `AlphabetSize = 26`; widen SharedValueCopyTests to the benchmarks with them. Three solutions copy
-  "two players" (TicTacToeVocabulary, CatAndMouseII and FindTheScoreDifferenceInAGame's
-  `PlayerCount`), which `Domain/Games/Turns` now states. A commit per subject, each with an A/B.
+- **L8. One source per fact, the follow-up sweeps** (approved 2026-11-03). Batch 1 DONE, a commit
+  per subject: the keypad (LC 17, `48cfc621`), folder paths (LC 1233, `3e410476`, whose
+  pairwise baseline no longer builds a string per pair), Zuma (LC 488, `183a831b`), dice (LC
+  2318, `b4b6ef07`), gcd's identity (`cf41ab8b`, now Domain/Mathematics/NumberTheory/CommonDivisors)
+  and the two players (LC 1275, 1728 and 3847, `c5fa7e2b`). Of the inspect list,
+  MaximumNumberOfTasks, StampingTheSequence, SubsequencesWithAUniqueMiddleModeI, DecodeWays and
+  DeleteDuplicateFolders hold no copy of a fact. Left, in batch 2: geometry (LC 976, 2971, 3024,
+  3899, 1610), Sudoku (LC 36, 37), FindSubstringWithGivenHashValue's letter number,
+  MultiplyStrings' "0", SlidingPuzzle's target, and widening SharedValueCopyTests to the
+  benchmarks' 52 `AlphabetSize = 26`.
 - **L9. The fastest C# on LeetCode, and alternative strategies.** 2026-11-03: "we want not just
   the expected answer but the optimal answer, that would get the 100% tile mark ... if there are
   multiple different implementations that maybe use different algorithms or data structures that
