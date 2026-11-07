@@ -58,8 +58,10 @@ commit beside it, as the rest of this file does.
     memoized negamax and Sprague-Grundy (Algorithms/GameSearch), with Nim Game, Stone Game III
     and Divisor Game adopting them; then (`bf24d183`) Stone Game I, II, IV, VII and VIII, Predict
     the Winner and Can I Win, while Stone Game V, VI and IX, Chalkboard XOR and Sum Game were
-    judged not to fit (ARCHITECTURE §17.10). Left: alpha-beta, retrograde analysis with Cat and
-    Mouse I and II, players and turns, lines and runs, permutation groups, polyominoes.
+    judged not to fit (ARCHITECTURE §17.10). Retrograde analysis values games that cycle
+    (`01384577`), with Cat and Mouse II adopting it; players and turns came with B3 (`08214dd8`).
+    Left: alpha-beta, lines and runs beyond B3's m,n,k lines, permutation groups, polyominoes.
+    Cat and Mouse I (LC 913) is not covered.
   - Then the families: k in a row (Connect Four's and Gomoku's rules are done, `08214dd8`; their
     strong play, Pentago and Quarto are left), capture (Go, Reversi,
     checkers), connection (Hex, on union-find), dominoes, Tetris, the Rubik cube n × n × n, Nim,
