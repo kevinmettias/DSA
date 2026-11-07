@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Language.English;
+
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
 // Benchmark workload sizing for LC 2976 - a 26-letter conversion ring
@@ -8,23 +10,22 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // requested length.
 internal static class LetterConversionWorkloads
 {
-    // The ring's own size and the exclusive bound on an edge cost - the two sizing
-    // values this fixture is built out of, each typed once here rather than at every
-    // place the array length, the wrap-around modulus and the random bound meet.
-    private const int AlphabetSize = 26;
+    // The exclusive bound on an edge cost. The ring's own size is the alphabet's,
+    // EnglishLetters.Size, where the array length, the wrap-around modulus and the
+    // random bound meet.
     private const int MaxEdgeCostExclusive = 1000;
 
     public static (char[] Original, char[] Changed, int[] Cost) BuildRing(int seed)
     {
         var random = new Random(seed);
-        var original = new char[AlphabetSize];
-        var changed = new char[AlphabetSize];
-        var cost = new int[AlphabetSize];
+        var original = new char[EnglishLetters.Size];
+        var changed = new char[EnglishLetters.Size];
+        var cost = new int[EnglishLetters.Size];
 
-        for (var i = 0; i < AlphabetSize; i++)
+        for (var i = 0; i < EnglishLetters.Size; i++)
         {
             original[i] = (char)('a' + i);
-            changed[i] = (char)('a' + ((i + 1) % AlphabetSize));
+            changed[i] = (char)('a' + ((i + 1) % EnglishLetters.Size));
             cost[i] = random.Next(1, MaxEdgeCostExclusive);
         }
 
@@ -39,8 +40,8 @@ internal static class LetterConversionWorkloads
 
         for (var i = 0; i < length; i++)
         {
-            source[i] = (char)('a' + random.Next(AlphabetSize));
-            target[i] = (char)('a' + random.Next(AlphabetSize));
+            source[i] = (char)('a' + random.Next(EnglishLetters.Size));
+            target[i] = (char)('a' + random.Next(EnglishLetters.Size));
         }
 
         return (new string(source), new string(target));

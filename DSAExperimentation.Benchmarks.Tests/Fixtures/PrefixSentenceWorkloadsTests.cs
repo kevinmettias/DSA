@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -12,8 +13,6 @@ public sealed partial class PrefixSentenceWorkloadsTests
     private const char WordSeparator = ' ';
     private const int MinWordLength = 3;
     private const int MaxWordLengthExclusive = 8;
-    private const char FirstLetter = 'a';
-    private const int AlphabetSize = 26;
 
     [Fact]
     public void BuildSentence_WordCount_ReturnsExactlyThatManySpaceSeparatedWords() =>
@@ -32,7 +31,7 @@ public sealed partial class PrefixSentenceWorkloadsTests
             words,
             word => Assert.All(
                 word,
-                letter => Assert.InRange(letter, FirstLetter, (char)(FirstLetter + AlphabetSize - 1))));
+                letter => Assert.InRange(letter, EnglishLowercase.FirstLetter, EnglishLowercase.LastLetter)));
     }
 
     [Fact]

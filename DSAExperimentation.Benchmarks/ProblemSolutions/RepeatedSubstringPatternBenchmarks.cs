@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.RepeatedSubstringPattern;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,8 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // completion.
 public class RepeatedSubstringPatternBenchmarks
 {
-    private const int AlphabetSize = 26;
-
     private string _text = "";
 
     [Params(200, 5_000)]
@@ -19,7 +18,7 @@ public class RepeatedSubstringPatternBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _text = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+        _text = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(EnglishLetters.Size))).ToArray());
     }
 
     [Benchmark(Baseline = true)]

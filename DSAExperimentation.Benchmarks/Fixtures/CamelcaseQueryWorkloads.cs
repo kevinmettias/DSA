@@ -1,4 +1,5 @@
 using System.Text;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
@@ -12,9 +13,6 @@ internal static class CamelcaseQueryWorkloads
     // Each generated lowercase run is between 3 and 7 characters long.
     private const int MinRunLength = 3;
     private const int MaxRunLengthExclusive = 8;
-
-    // Number of lowercase letters in the English alphabet.
-    private const int AlphabetSize = 26;
 
     public static string[] BuildMatchingQueries(string pattern, int count, int seed)
     {
@@ -45,7 +43,7 @@ internal static class CamelcaseQueryWorkloads
 
         for (var i = 0; i < runLength; i++)
         {
-            builder.Append((char)('a' + random.Next(AlphabetSize)));
+            builder.Append((char)('a' + random.Next(EnglishLetters.Size)));
         }
     }
 }

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -14,7 +15,6 @@ public sealed partial class GuessTheWordBenchmarksTests
     private const int RandomSeed = 843;
     private const int WordLength = 6;
     private const int MiddleIndexDivisor = 2;
-    private const int AlphabetSize = 26;
 
     [Fact]
     public void InPlaceListRemoval_SeededWordPool_FindsTheHiddenWord() =>
@@ -47,7 +47,7 @@ public sealed partial class GuessTheWordBenchmarksTests
 
         for (var i = 0; i < WordLength; i++)
         {
-            chars[i] = (char)('a' + random.Next(AlphabetSize));
+            chars[i] = (char)('a' + random.Next(EnglishLetters.Size));
         }
 
         return new string(chars);

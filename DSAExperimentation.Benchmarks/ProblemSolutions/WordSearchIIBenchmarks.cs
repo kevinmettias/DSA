@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.WordSearchII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +12,6 @@ public class WordSearchIIBenchmarks
     private const int BoardSize = 8;
     private const int WordLength = 4;
     private const int RandomSeed = 17;
-    private const int AlphabetSize = 26;
 
     private char[][] _board = [];
 
@@ -24,10 +24,10 @@ public class WordSearchIIBenchmarks
     {
         var random = new Random(RandomSeed);
         _board = Enumerable.Range(0, BoardSize)
-            .Select(_ => Enumerable.Range(0, BoardSize).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray())
+            .Select(_ => Enumerable.Range(0, BoardSize).Select(_ => (char)('a' + random.Next(EnglishLetters.Size))).ToArray())
             .ToArray();
         _words = Enumerable.Range(0, WordCount)
-            .Select(_ => new string(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray()))
+            .Select(_ => new string(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(EnglishLetters.Size))).ToArray()))
             .ToArray();
     }
 

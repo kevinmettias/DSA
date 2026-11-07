@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.ShortestPalindrome;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,8 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // artificially competitive.
 public class ShortestPalindromeBenchmarks
 {
-    private const int AlphabetSize = 26;
-
     private string _value = "";
 
     [Params(200, 2_000)]
@@ -24,7 +23,7 @@ public class ShortestPalindromeBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = (char)('a' + random.Next(0, AlphabetSize));
+            chars[i] = (char)('a' + random.Next(0, EnglishLetters.Size));
         }
 
         _value = new string(chars);

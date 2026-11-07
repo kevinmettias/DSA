@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.PrintWordsVertically;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -20,7 +21,6 @@ public class PrintWordsVerticallyBenchmarks
 {
     private const int RandomSeed = 1324; // LC problem number
     private const int WordLengthUpperBound = 12; // exclusive upper bound passed to Random.Next
-    private const int AlphabetSize = 26;
 
     private DynamicArray<string> _words = new();
 
@@ -42,7 +42,7 @@ public class PrintWordsVerticallyBenchmarks
     private static string RandomWord(Random random)
     {
         var wordLength = random.Next(1, WordLengthUpperBound);
-        return new([.. Enumerable.Range(0, wordLength).Select(_ => (char)('A' + random.Next(AlphabetSize)))]);
+        return new([.. Enumerable.Range(0, wordLength).Select(_ => (char)('A' + random.Next(EnglishLetters.Size)))]);
     }
 
     [Benchmark(Baseline = true)]

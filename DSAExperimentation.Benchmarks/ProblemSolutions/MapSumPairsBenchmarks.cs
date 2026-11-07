@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.MapSumPairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +17,6 @@ public class MapSumPairsBenchmarks
     private const int PrefixLength = 3;
     private const int RandomSeed = 677; // LC problem number
     private const int MaxValueExclusive = 100;
-    private const int AlphabetSize = 26;
 
     private string[] _keys = [];
 
@@ -39,7 +39,7 @@ public class MapSumPairsBenchmarks
     }
 
     private static string RandomWord(Random random)
-        => new(Enumerable.Range(0, KeyLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+        => new(Enumerable.Range(0, KeyLength).Select(_ => (char)('a' + random.Next(EnglishLetters.Size))).ToArray());
 
     [Benchmark(Baseline = true)]
     public int[] DictionaryScan() => Replay(new MapSumPairsSolution.MapSumByDictionaryScan());

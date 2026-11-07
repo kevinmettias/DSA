@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.LongestChunkedPalindromeDecomposition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,9 +14,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // at LC 1147's 1,000-character cap.
 public class LongestChunkedPalindromeDecompositionBenchmarks
 {
-    private const char UniqueFirstLetter = 'a';
-    private const char FirstCycledLetter = 'b';
-    private const int CycledLetterCount = 25;
+    // 'b'..'z': every letter after the alphabet's first, which the text holds once.
+    private const int CycledLetterCount = EnglishLetters.Size - 1;
 
     private string _text = "";
 
@@ -26,11 +26,11 @@ public class LongestChunkedPalindromeDecompositionBenchmarks
     public void Setup()
     {
         var chars = new char[Length];
-        chars[0] = UniqueFirstLetter;
+        chars[0] = EnglishLowercase.FirstLetter;
 
         for (var i = 1; i < Length; i++)
         {
-            chars[i] = (char)(FirstCycledLetter + ((i - 1) % CycledLetterCount));
+            chars[i] = EnglishLowercase.LetterAt(1 + ((i - 1) % CycledLetterCount));
         }
 
         _text = new string(chars);

@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.StringTransformation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class StringTransformationBenchmarks
 {
     private const int Seed = 1;
-    private const int AlphabetSize = 26;
     private const long Operations = 1_000_000_000_007;
 
     // The target is the source rotated by half its length - a genuine rotation
@@ -29,7 +29,7 @@ public class StringTransformationBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        var characters = Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray();
+        var characters = Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(EnglishLetters.Size))).ToArray();
         var source = new string(characters);
         var rotation = Length / HalfwayDivisor;
 

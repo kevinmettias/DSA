@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.CountingWordsWithAGivenPrefix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +11,6 @@ public class CountingWordsWithAGivenPrefixBenchmarks
 {
     private const string Prefix = "a";
     private const int RandomSeed = 2185; // LC problem number
-    private const int AlphabetSize = 26;
     private const int MinWordLength = 3;
     private const int MaxWordLengthExclusive = 8;
 
@@ -25,7 +25,7 @@ public class CountingWordsWithAGivenPrefixBenchmarks
     {
         var random = new Random(RandomSeed);
         _words = Enumerable.Range(0, WordCount)
-            .Select(_ => new string((char)('a' + random.Next(0, AlphabetSize)), random.Next(MinWordLength, MaxWordLengthExclusive)))
+            .Select(_ => new string((char)('a' + random.Next(0, EnglishLetters.Size)), random.Next(MinWordLength, MaxWordLengthExclusive)))
             .ToArray();
     }
 

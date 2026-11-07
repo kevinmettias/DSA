@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.ImplementMagicDictionary;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -20,8 +21,6 @@ public class ImplementMagicDictionaryBenchmarks
 
     private const int RandomSeed = 676; // LeetCode problem number
 
-    private const int AlphabetSize = 26;
-
     private string[] _dictionary = [];
 
     private string[] _searchWords = [];
@@ -41,13 +40,14 @@ public class ImplementMagicDictionaryBenchmarks
     }
 
     private static string RandomWord(Random random)
-        => new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+        => new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(EnglishLetters.Size))).ToArray());
 
     private static string OneCharacterAway(string word, Random random)
     {
         var characters = word.ToCharArray();
         var position = random.Next(word.Length);
-        characters[position] = (char)('a' + ((characters[position] - 'a' + 1) % AlphabetSize));
+        characters[position] =
+            (char)('a' + ((characters[position] - 'a' + 1) % EnglishLetters.Size));
         return new string(characters);
     }
 

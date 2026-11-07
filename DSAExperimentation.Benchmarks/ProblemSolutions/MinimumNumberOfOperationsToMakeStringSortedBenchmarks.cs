@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.MinimumNumberOfOperationsToMakeStringSorted;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +15,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MinimumNumberOfOperationsToMakeStringSortedBenchmarks
 {
     private const int RandomSeed = 1830; // LC problem number
-    private const int AlphabetSize = 26;
 
     private string _text = "";
 
@@ -26,7 +26,7 @@ public class MinimumNumberOfOperationsToMakeStringSortedBenchmarks
     {
         var random = new Random(RandomSeed);
         _text = new string(
-            Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+            Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(EnglishLetters.Size))).ToArray());
     }
 
     [Benchmark(Baseline = true)]

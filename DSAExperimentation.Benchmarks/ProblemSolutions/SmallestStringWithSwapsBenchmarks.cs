@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.SmallestStringWithSwaps;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -18,7 +19,6 @@ public class SmallestStringWithSwapsBenchmarks
 {
     // LC problem number, used as the RNG seed.
     private const int RandomSeed = 1202;
-    private const int AlphabetSize = 26;
 
     private string _source = "";
 
@@ -33,7 +33,7 @@ public class SmallestStringWithSwapsBenchmarks
         var chars = new char[Length];
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = (char)('a' + random.Next(AlphabetSize));
+            chars[i] = (char)('a' + random.Next(EnglishLetters.Size));
         }
 
         _source = new string(chars);

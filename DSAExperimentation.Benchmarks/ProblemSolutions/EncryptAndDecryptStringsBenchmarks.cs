@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.EncryptAndDecryptStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,6 @@ public class EncryptAndDecryptStringsBenchmarks
 {
     private const int DecryptCalls = 100;
     private const int WordLength = 20;
-    private const int AlphabetSize = 26;
     private const int RandomSeed = 1;
 
     private char[] _keys = [];
@@ -40,8 +40,8 @@ public class EncryptAndDecryptStringsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _keys = [.. Enumerable.Range(0, AlphabetSize).Select(index => (char)('a' + index))];
-        _values = [.. Enumerable.Range(0, AlphabetSize).Select(NextLetterPair)];
+        _keys = [.. Enumerable.Range(0, EnglishLetters.Size).Select(index => (char)('a' + index))];
+        _values = [.. Enumerable.Range(0, EnglishLetters.Size).Select(NextLetterPair)];
         _dictionary = [.. Enumerable.Range(0, DictionarySize).Select(_ => RandomWord(random))];
 
         // Every query is the true encryption of some dictionary word, so both
@@ -57,7 +57,7 @@ public class EncryptAndDecryptStringsBenchmarks
     }
 
     private static string RandomWord(Random random)
-        => new([.. Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize)))]);
+        => new([.. Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(EnglishLetters.Size)))]);
 
     [Benchmark(Baseline = true)]
     public int[] RecomputeEveryDecrypt()
@@ -76,7 +76,7 @@ public class EncryptAndDecryptStringsBenchmarks
     }
 
     private static string NextLetterPair(int index)
-        => new([(char)('a' + index), (char)('a' + ((index + 1) % AlphabetSize))]);
+        => new([(char)('a' + index), (char)('a' + ((index + 1) % EnglishLetters.Size))]);
 
     private int[] DecryptAll(EncryptAndDecryptStringsSolution.IEncrypter encrypter)
     {

@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.MaximumScoreWordsFormedByLetters;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumScoreWordsFormedByLetters;
@@ -8,8 +9,6 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.MaximumScoreWordsFormedByL
 // published examples run in CatalogCaseTests.
 public sealed partial class MaximumScoreWordsFormedByLettersSolutionTests
 {
-    private const int AlphabetSize = 26;
-
     public static TheoryData<string[], char[], int[], int> Cases =>
         new()
         {
@@ -92,7 +91,7 @@ public sealed partial class MaximumScoreWordsFormedByLettersSolutionTests
     // letters keeps each case above readable.
     private static int[] LetterScores(params (char Letter, int Value)[] scores)
     {
-        var score = new int[AlphabetSize];
+        var score = new int[EnglishLetters.Size];
 
         foreach (var (letter, value) in scores)
         {

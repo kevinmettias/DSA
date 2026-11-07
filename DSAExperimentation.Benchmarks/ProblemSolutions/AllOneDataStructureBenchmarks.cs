@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.AllOneDataStructure;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,8 +16,6 @@ public class AllOneDataStructureBenchmarks
 {
     private const int RandomSeed = 432; // LC problem number
     private const string KeyPrefix = "key";
-    private const char FirstLetter = 'a';
-    private const int AlphabetSize = 26;
     private const int OpsCapacityMultiplier = 4;
     private const int IncOpType = 0;
     private const int GetMaxKeyOpType = 2;
@@ -64,7 +63,8 @@ public class AllOneDataStructureBenchmarks
     private static int LettersToSpell(int count)
     {
         var width = 1;
-        for (var spellable = AlphabetSize; spellable < count; spellable *= AlphabetSize)
+        for (var spellable = EnglishLetters.Size; spellable < count;
+             spellable *= EnglishLetters.Size)
         {
             width++;
         }
@@ -79,8 +79,8 @@ public class AllOneDataStructureBenchmarks
         var remaining = index;
         for (var position = width - 1; position >= 0; position--)
         {
-            letters[position] = (char)(FirstLetter + (remaining % AlphabetSize));
-            remaining /= AlphabetSize;
+            letters[position] = EnglishLowercase.LetterAt(remaining % EnglishLetters.Size);
+            remaining /= EnglishLetters.Size;
         }
 
         return new string(letters);

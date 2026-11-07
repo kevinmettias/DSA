@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Language.English;
+
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
 // Benchmark workload sizing for LC 2977 - a handful of short (length 1-3)
@@ -7,10 +9,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 internal static class SubstringConversionWorkloads
 {
     private const int RuleCount = 60;
-
-    // The letters this fixture draws from, as an exclusive bound on the offset from
-    // 'a' - the same size the three random-string sites below are built over.
-    private const int AlphabetSize = 26;
 
     public static (string[] Original, string[] Changed, int[] Cost) BuildRules(int seed)
     {
@@ -36,7 +34,7 @@ internal static class SubstringConversionWorkloads
 
         for (var i = 0; i < length; i++)
         {
-            chars[i] = (char)('a' + random.Next(AlphabetSize));
+            chars[i] = (char)('a' + random.Next(EnglishLetters.Size));
         }
 
         return new string(chars);
@@ -50,8 +48,8 @@ internal static class SubstringConversionWorkloads
 
         for (var i = 0; i < length; i++)
         {
-            source[i] = (char)('a' + random.Next(AlphabetSize));
-            target[i] = (char)('a' + random.Next(AlphabetSize));
+            source[i] = (char)('a' + random.Next(EnglishLetters.Size));
+            target[i] = (char)('a' + random.Next(EnglishLetters.Size));
         }
 
         return (new string(source), new string(target));

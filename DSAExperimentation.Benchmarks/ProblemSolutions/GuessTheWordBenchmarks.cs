@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.GuessTheWord;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +22,6 @@ public class GuessTheWordBenchmarks
     private const int RandomSeed = 843; // LC problem number
     private const int WordLength = 6;
     private const int MiddleIndexDivisor = 2;
-    private const int AlphabetSize = 26;
 
     private string[] _wordList = [];
 
@@ -59,7 +59,7 @@ public class GuessTheWordBenchmarks
 
         for (var i = 0; i < length; i++)
         {
-            chars[i] = (char)('a' + random.Next(AlphabetSize));
+            chars[i] = (char)('a' + random.Next(EnglishLetters.Size));
         }
 
         return new string(chars);

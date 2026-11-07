@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.PrefixAndSuffixSearch;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -19,7 +20,6 @@ public class PrefixAndSuffixSearchBenchmarks
 {
     private const int RandomSeed = 745; // LC 745
     private const int WordLength = 7;
-    private const int AlphabetSize = 26;
 
     // Length of the prefix/suffix pulled from each word to build a query.
     private const int QueryAffixLength = 2;
@@ -39,7 +39,7 @@ public class PrefixAndSuffixSearchBenchmarks
     {
         var random = new Random(RandomSeed);
         _words = Enumerable.Range(0, WordCount)
-            .Select(_ => new string(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray()))
+            .Select(_ => new string(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(EnglishLetters.Size))).ToArray()))
             .ToArray();
         _queries = _words.Select(word => (word[..QueryAffixLength], word[^QueryAffixLength..])).ToArray();
         _index = PrefixAndSuffixSearchSolution.PrecomputedHashMap.BuildPrefixSuffixIndex(_words);

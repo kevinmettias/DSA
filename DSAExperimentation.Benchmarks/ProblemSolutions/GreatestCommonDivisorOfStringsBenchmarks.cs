@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.GreatestCommonDivisorOfStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is 76.
 public class GreatestCommonDivisorOfStringsBenchmarks
 {
-    private const int UppercaseAlphabetSize = 26;
     private const int Str1RepeatCount = 13;
     private const int Str2RepeatCount = 7;
 
@@ -30,7 +30,7 @@ public class GreatestCommonDivisorOfStringsBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        var unit = new string(Enumerable.Range(0, UnitLength).Select(_ => (char)('A' + random.Next(UppercaseAlphabetSize))).ToArray());
+        var unit = new string(Enumerable.Range(0, UnitLength).Select(_ => (char)('A' + random.Next(EnglishLetters.Size))).ToArray());
         var str1Units = Enumerable.Repeat(unit, Str1RepeatCount);
         _str1 = string.Concat(str1Units);
         var str2Units = Enumerable.Repeat(unit, Str2RepeatCount);

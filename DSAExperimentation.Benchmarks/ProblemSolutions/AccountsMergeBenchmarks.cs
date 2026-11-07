@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.AccountsMerge;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,6 @@ public class AccountsMergeBenchmarks
     private const int EmailsPerPerson = 4;
     private const int MinEmailsPerAccount = 2;
     private const int EmailCountRange = 3;
-    private const int AlphabetSize = 26;
 
     private string[][] _accounts = [];
 
@@ -57,7 +57,8 @@ public class AccountsMergeBenchmarks
     // letters (Personaa, Personab, ...) rather than digits; two letters cover the 200 owners that
     // LC 721's bound of 1,000 accounts can draw.
     private static string OwnerName(int owner) =>
-        $"Person{(char)('a' + (owner / AlphabetSize))}{(char)('a' + (owner % AlphabetSize))}";
+        $"Person{(char)('a' + (owner / EnglishLetters.Size))}"
+        + $"{(char)('a' + (owner % EnglishLetters.Size))}";
 
     [Benchmark(Baseline = true)]
     public List<string[]> PairwiseEmailOverlapScan() =>

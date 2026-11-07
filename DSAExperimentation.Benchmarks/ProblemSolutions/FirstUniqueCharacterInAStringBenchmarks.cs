@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.FirstUniqueCharacterInAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,8 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // already use.
 public class FirstUniqueCharacterInAStringBenchmarks
 {
-    private const int AlphabetSize = 26;
-
     private string _value = string.Empty;
 
     [Params(500, 5_000)]
@@ -25,7 +24,7 @@ public class FirstUniqueCharacterInAStringBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = (char)('a' + random.Next(0, AlphabetSize));
+            chars[i] = (char)('a' + random.Next(0, EnglishLetters.Size));
         }
 
         _value = new string(chars);

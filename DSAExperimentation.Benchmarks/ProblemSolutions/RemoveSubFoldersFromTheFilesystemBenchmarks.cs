@@ -1,5 +1,6 @@
 using System.Text;
 using DSAExperimentation.Domain.Computing.Filesystem;
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.RemoveSubFoldersFromTheFilesystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +17,6 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
     private const int MinBreadth = 2;
     private const int BreadthDivisor = 10;
     private const int MaxDepthExclusive = 5;
-    private const int AlphabetSize = 26;
     private const string FolderNamePrefix = "f";
 
     private string[] _folders = [];
@@ -64,8 +64,8 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
 
         do
         {
-            letters.Insert(0, (char)('a' + (remaining % AlphabetSize)));
-            remaining /= AlphabetSize;
+            letters.Insert(0, (char)('a' + (remaining % EnglishLetters.Size)));
+            remaining /= EnglishLetters.Size;
         }
         while (remaining > 0);
 

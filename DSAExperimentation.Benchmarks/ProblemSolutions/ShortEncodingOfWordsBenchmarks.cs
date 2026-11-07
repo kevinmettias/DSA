@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.ShortEncodingOfWords;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -19,7 +20,6 @@ public class ShortEncodingOfWordsBenchmarks
     private const int RandomSeed = 820;
 
     private const int MaxPrefixLength = 2;
-    private const int AlphabetSize = 26;
     private static readonly string[] SuffixPool =
         ["e", "me", "time", "bell", "ing", "ation", "tion", "er", "ed", "s"];
 
@@ -42,7 +42,7 @@ public class ShortEncodingOfWordsBenchmarks
 
             for (var i = 0; i < prefixLength; i++)
             {
-                prefix[i] = (char)('a' + random.Next(AlphabetSize));
+                prefix[i] = (char)('a' + random.Next(EnglishLetters.Size));
             }
 
             words.Add(new string(prefix) + suffix);

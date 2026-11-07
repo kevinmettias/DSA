@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.StreamOfCharacters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,10 +16,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // nearly every character.
 public class StreamOfCharactersBenchmarks
 {
-    private const int RandomSeed = 1032;
+    private const int RandomSeed = 1032; // LC problem number
 
-    // LC problem number
-    private const int AlphabetSize = 26; private static readonly string[] Words =
+    private static readonly string[] Words =
     [
         "characters", "algorithm", "benchmark", "primitive", "structure",
         "traversal", "reference", "composed", "sequence", "children",
@@ -33,7 +33,7 @@ public class StreamOfCharactersBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _stream = Enumerable.Range(0, StreamLength).Select(_ => (char)('a' + random.Next(0, AlphabetSize))).ToArray();
+        _stream = Enumerable.Range(0, StreamLength).Select(_ => (char)('a' + random.Next(0, EnglishLetters.Size))).ToArray();
     }
 
     [Benchmark(Baseline = true)]

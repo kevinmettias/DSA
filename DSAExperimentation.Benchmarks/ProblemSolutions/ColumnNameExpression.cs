@@ -1,4 +1,5 @@
 using System.Text;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -10,9 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Pure and stateless: an int in, a string out, sharing nothing with the arms that consume it.
 internal static class ColumnNameExpression
 {
-    // Base-26 "spreadsheet column" alphabet size (a-z).
-    private const int AlphabetSize = 26;
-
     private const string Plus = " + ";
 
     internal static string Build(int length)
@@ -42,8 +40,8 @@ internal static class ColumnNameExpression
 
         do
         {
-            chars.Insert(0, (char)('a' + (n % AlphabetSize)));
-            n = (n / AlphabetSize) - 1;
+            chars.Insert(0, (char)('a' + (n % EnglishLetters.Size)));
+            n = (n / EnglishLetters.Size) - 1;
         } while (n >= 0);
 
         return new string(chars.ToArray());

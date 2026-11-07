@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.PartitionLabels;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +11,6 @@ public class PartitionLabelsBenchmarks
 {
     // LC problem number, reused as the deterministic PRNG seed.
     private const int RandomSeed = 763;
-    private const int AlphabetSize = 26;
 
     private string _text = "";
 
@@ -25,7 +25,7 @@ public class PartitionLabelsBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = (char)('a' + random.Next(AlphabetSize));
+            chars[i] = (char)('a' + random.Next(EnglishLetters.Size));
         }
 
         _text = new string(chars);

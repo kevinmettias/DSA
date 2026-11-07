@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Language.English;
+
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
 // Benchmark workload sizing for LC 990 - equations over the 26 lowercase variables
@@ -6,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // work while leaving enough "!=" equations to charge for them.
 internal static class EqualityEquationWorkloads
 {
-    private const int AlphabetSize = 26;
     private const int InequalityProbabilityDenominator = 5;
     private const string EqualsOperator = "==";
     private const string NotEqualsOperator = "!=";
@@ -18,8 +19,8 @@ internal static class EqualityEquationWorkloads
 
         for (var i = 0; i < equationCount; i++)
         {
-            var first = (char)('a' + random.Next(AlphabetSize));
-            var second = (char)('a' + random.Next(AlphabetSize));
+            var first = (char)('a' + random.Next(EnglishLetters.Size));
+            var second = (char)('a' + random.Next(EnglishLetters.Size));
             var isInequality = random.Next(InequalityProbabilityDenominator) == 0;
             var op = isInequality ? NotEqualsOperator : EqualsOperator;
             equations[i] = $"{first}{op}{second}";

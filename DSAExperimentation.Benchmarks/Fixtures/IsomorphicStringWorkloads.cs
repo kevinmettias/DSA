@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Language.English;
+
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
 // Benchmark workload sizing for LC 205: a guaranteed-isomorphic pair of
@@ -7,8 +9,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // bijection over 'a'..'z' - which is exactly what "isomorphic" requires.
 internal static class IsomorphicStringWorkloads
 {
-    private const int AlphabetSize = 26;
-
     public static (string Source, string Target) BuildIsomorphicPair(int length, int seed)
     {
         var random = new Random(seed);
@@ -19,7 +19,7 @@ internal static class IsomorphicStringWorkloads
 
         for (var i = 0; i < length; i++)
         {
-            var letter = (char)('a' + random.Next(AlphabetSize));
+            var letter = (char)('a' + random.Next(EnglishLetters.Size));
             source[i] = letter;
             target[i] = cipher[letter - 'a'];
         }
@@ -29,9 +29,9 @@ internal static class IsomorphicStringWorkloads
 
     private static char[] BuildRandomLetterPermutation(Random random)
     {
-        var letters = new char[AlphabetSize];
+        var letters = new char[EnglishLetters.Size];
 
-        for (var i = 0; i < AlphabetSize; i++)
+        for (var i = 0; i < EnglishLetters.Size; i++)
         {
             letters[i] = (char)('a' + i);
         }

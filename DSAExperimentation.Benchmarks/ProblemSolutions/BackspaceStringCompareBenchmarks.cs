@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.BackspaceStringCompare;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +15,6 @@ public class BackspaceStringCompareBenchmarks
 {
     private const int RandomSeed = 844; // LC problem number
     private const int BackspaceChanceDenominator = 5;
-    private const int AlphabetSize = 26;
 
     private string _firstText = "";
 
@@ -49,7 +49,8 @@ public class BackspaceStringCompareBenchmarks
         return new string(characters);
     }
 
-    private static char RandomLetter(Random random) => (char)('a' + random.Next(AlphabetSize));
+    private static char RandomLetter(Random random)
+        => (char)('a' + random.Next(EnglishLetters.Size));
 
     [Benchmark(Baseline = true)]
     public bool IsTypedTextEqualByBclStack() =>

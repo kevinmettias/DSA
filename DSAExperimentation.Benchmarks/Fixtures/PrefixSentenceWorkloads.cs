@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Language.English;
+
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
 // Benchmark workload sizing for LC 1455's sentence scan. Everything about the
@@ -6,8 +8,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 internal static class PrefixSentenceWorkloads
 {
     private const char WordSeparator = ' ';
-    private const char FirstLetter = 'a';
-    private const int AlphabetSize = 26;
     private const int MinWordLength = 3;
     private const int MaxWordLengthExclusive = 8;
 
@@ -18,7 +18,7 @@ internal static class PrefixSentenceWorkloads
         var random = new Random(seed);
         var words = Enumerable.Range(0, wordCount)
             .Select(_ => new string(
-                (char)(FirstLetter + random.Next(0, AlphabetSize)),
+                (char)(EnglishLowercase.FirstLetter + random.Next(0, EnglishLetters.Size)),
                 random.Next(MinWordLength, MaxWordLengthExclusive)));
 
         return string.Join(WordSeparator, words);

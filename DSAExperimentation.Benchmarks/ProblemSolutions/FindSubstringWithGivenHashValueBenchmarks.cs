@@ -22,7 +22,6 @@ public class FindSubstringWithGivenHashValueBenchmarks
     private const int Modulo = 1_000_000_000;
     private const int K = 20;
     private const int RandomSeed = 2156; // LC problem number
-    private const int AlphabetSize = 26;
 
     private string _text = "";
 
@@ -42,7 +41,7 @@ public class FindSubstringWithGivenHashValueBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = (char)('a' + random.Next(AlphabetSize));
+            chars[i] = (char)('a' + random.Next(EnglishLetters.Size));
         }
 
         _text = new string(chars);

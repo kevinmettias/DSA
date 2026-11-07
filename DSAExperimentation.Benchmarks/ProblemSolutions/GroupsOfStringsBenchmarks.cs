@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.GroupsOfStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -18,7 +19,6 @@ public class GroupsOfStringsBenchmarks
     private const int RandomSeed = 2157; // LC problem number
     private const int MinWordLength = 3;
     private const int MaxWordLengthExclusive = 9;
-    private const int AlphabetSize = 26;
 
     private ArraySequence<int> _masks;
 
@@ -41,9 +41,9 @@ public class GroupsOfStringsBenchmarks
 
     private static string BuildRandomWord(Random random)
     {
-        var alphabet = new char[AlphabetSize];
+        var alphabet = new char[EnglishLetters.Size];
 
-        for (var i = 0; i < AlphabetSize; i++)
+        for (var i = 0; i < EnglishLetters.Size; i++)
         {
             alphabet[i] = (char)('a' + i);
         }

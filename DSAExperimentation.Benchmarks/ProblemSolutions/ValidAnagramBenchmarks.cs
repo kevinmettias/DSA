@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.ValidAnagram;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,8 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // instead of an early mismatch cutting brute force short.
 public class ValidAnagramBenchmarks
 {
-    private const int AlphabetSize = 26;
-
     private string _source = "";
 
     private string _target = "";
@@ -20,7 +19,7 @@ public class ValidAnagramBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        var letters = Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray();
+        var letters = Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(EnglishLetters.Size))).ToArray();
         _source = new string(letters);
         _target = new string([.. letters[1..], letters[0]]);
     }

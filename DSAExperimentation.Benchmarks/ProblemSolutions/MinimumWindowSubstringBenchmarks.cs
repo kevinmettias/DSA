@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.MinimumWindowSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MinimumWindowSubstringBenchmarks
 {
     private const string Target = "XYZ";
-    private const int AlphabetSize = 26;
 
     private string _text = "";
 
@@ -23,7 +23,7 @@ public class MinimumWindowSubstringBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _text = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(0, AlphabetSize))).ToArray());
+        _text = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(0, EnglishLetters.Size))).ToArray());
     }
 
     [Benchmark(Baseline = true)]

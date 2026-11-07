@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.LongestWordInDictionary;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +14,6 @@ public class LongestWordInDictionaryBenchmarks
 {
     // LC problem number, used as the deterministic setup seed.
     private const int RandomSeed = 720;
-    private const int AlphabetSize = 26;
     private const int FreshChainChance = 4;
 
     private string[] _words = [];
@@ -33,7 +33,7 @@ public class LongestWordInDictionaryBenchmarks
             var startsFreshChain = current.Length == 0 || random.Next(FreshChainChance) == 0;
 
             current = startsFreshChain
-                ? ((char)('a' + random.Next(AlphabetSize))).ToString()
+                ? ((char)('a' + random.Next(EnglishLetters.Size))).ToString()
                 : AppendedRandomLetter(current, random);
 
             words.Add(current);
@@ -43,7 +43,7 @@ public class LongestWordInDictionaryBenchmarks
     }
 
     private static string AppendedRandomLetter(string current, Random random)
-        => current + (char)('a' + random.Next(AlphabetSize));
+        => current + (char)('a' + random.Next(EnglishLetters.Size));
 
     [Benchmark(Baseline = true)]
     public string DictionaryScanPerPrefix() =>

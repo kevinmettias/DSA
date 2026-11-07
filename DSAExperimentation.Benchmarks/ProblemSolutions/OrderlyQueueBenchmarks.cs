@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.OrderlyQueue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -17,7 +18,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class OrderlyQueueBenchmarks
 {
     private const int RandomSeed = 899; // LC problem number
-    private const int AlphabetSize = 26;
     private const int RotationsOnly = 1;
 
     private string _text = "";
@@ -29,7 +29,7 @@ public class OrderlyQueueBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _text = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+        _text = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(EnglishLetters.Size))).ToArray());
     }
 
     [Benchmark(Baseline = true)]

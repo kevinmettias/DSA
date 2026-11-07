@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -19,7 +20,6 @@ public sealed partial class FindSubstringWithGivenHashValueBenchmarksTests
     // Mirrors the benchmark's own text and hash: its seed, alphabet, window length, power and LC
     // 2156's largest modulus.
     private const int RandomSeed = 2156;
-    private const int AlphabetSize = 26;
     private const int WindowLength = 20;
     private const int Power = 7;
     private const int Modulo = 1_000_000_000;
@@ -57,7 +57,7 @@ public sealed partial class FindSubstringWithGivenHashValueBenchmarksTests
 
         for (var i = 0; i < length; i++)
         {
-            letters[i] = (char)('a' + random.Next(AlphabetSize));
+            letters[i] = (char)('a' + random.Next(EnglishLetters.Size));
         }
 
         return new string(letters);

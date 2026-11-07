@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.MaximumScoreWordsFormedByLetters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MaximumScoreWordsFormedByLettersBenchmarks
 {
     private const string Alphabet = "abcdefghijklmnop";
-    private const int AlphabetSize = 26;
     private const int RandomSeed = 4;
     private const int MaxLetterScoreExclusive = 10;
     private const int MinWordLength = 2;
@@ -42,14 +42,14 @@ public class MaximumScoreWordsFormedByLettersBenchmarks
         var random = new Random(RandomSeed);
         _score = BuildScores(random);
 
-        var totalUsage = new int[AlphabetSize];
+        var totalUsage = new int[EnglishLetters.Size];
         _words = BuildWords(random, totalUsage);
         _letters = BuildLetterPool(totalUsage);
     }
 
     private static int[] BuildScores(Random random)
     {
-        var score = new int[AlphabetSize];
+        var score = new int[EnglishLetters.Size];
 
         foreach (var letter in Alphabet)
         {
@@ -89,7 +89,7 @@ public class MaximumScoreWordsFormedByLettersBenchmarks
     {
         var letters = new List<char>();
 
-        for (var c = 0; c < AlphabetSize; c++)
+        for (var c = 0; c < EnglishLetters.Size; c++)
         {
             for (var n = 0; n < (totalUsage[c] + 1) / LetterBudgetDivisor; n++)
             {

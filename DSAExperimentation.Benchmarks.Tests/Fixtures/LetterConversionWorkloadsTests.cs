@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -8,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 // two strings being independent draws of the requested length.
 public sealed partial class LetterConversionWorkloadsTests
 {
-    private const int AlphabetSize = 26;
     private const int Seed = 2976; // LC problem number
     private const int Length = 256;
     private const int MinEdgeCost = 1;
@@ -20,9 +20,9 @@ public sealed partial class LetterConversionWorkloadsTests
     {
         var (original, changed, cost) = LetterConversionWorkloads.BuildRing(Seed);
 
-        Assert.Equal(AlphabetSize, original.Length);
-        Assert.Equal(AlphabetSize, changed.Length);
-        Assert.Equal(AlphabetSize, cost.Length);
+        Assert.Equal(EnglishLetters.Size, original.Length);
+        Assert.Equal(EnglishLetters.Size, changed.Length);
+        Assert.Equal(EnglishLetters.Size, cost.Length);
     }
 
     // a -> b -> ... -> z -> a is the ring, which is what makes every character reachable from every
@@ -32,10 +32,10 @@ public sealed partial class LetterConversionWorkloadsTests
     {
         var (original, changed, _) = LetterConversionWorkloads.BuildRing(Seed);
 
-        foreach (var position in Enumerable.Range(0, AlphabetSize))
+        foreach (var position in Enumerable.Range(0, EnglishLetters.Size))
         {
             Assert.Equal((char)(FirstLetter + position), original[position]);
-            Assert.Equal(original[(position + 1) % AlphabetSize], changed[position]);
+            Assert.Equal(original[(position + 1) % EnglishLetters.Size], changed[position]);
         }
     }
 
@@ -44,8 +44,8 @@ public sealed partial class LetterConversionWorkloadsTests
     {
         var (original, changed, _) = LetterConversionWorkloads.BuildRing(Seed);
 
-        Assert.Equal(AlphabetSize, original.Distinct().Count());
-        Assert.Equal(AlphabetSize, changed.Distinct().Count());
+        Assert.Equal(EnglishLetters.Size, original.Distinct().Count());
+        Assert.Equal(EnglishLetters.Size, changed.Distinct().Count());
     }
 
     [Fact]
@@ -79,8 +79,8 @@ public sealed partial class LetterConversionWorkloadsTests
     {
         var (source, target) = LetterConversionWorkloads.BuildStrings(Length, Seed);
 
-        Assert.All(source, character => Assert.InRange(character, FirstLetter, (char)(FirstLetter + AlphabetSize - 1)));
-        Assert.All(target, character => Assert.InRange(character, FirstLetter, (char)(FirstLetter + AlphabetSize - 1)));
+        Assert.All(source, character => Assert.InRange(character, FirstLetter, (char)(FirstLetter + EnglishLetters.Size - 1)));
+        Assert.All(target, character => Assert.InRange(character, FirstLetter, (char)(FirstLetter + EnglishLetters.Size - 1)));
     }
 
     [Fact]

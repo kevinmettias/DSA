@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.RemoveDuplicateLetters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class RemoveDuplicateLettersBenchmarks
 {
     private const int RandomSeed = 316; // LC problem number
-    private const int AlphabetSize = 26;
 
     private string _letters = "";
 
@@ -18,7 +18,7 @@ public class RemoveDuplicateLettersBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _letters = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+        _letters = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(EnglishLetters.Size))).ToArray());
     }
 
     [Benchmark(Baseline = true)]

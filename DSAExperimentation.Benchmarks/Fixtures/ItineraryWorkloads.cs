@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.ReconstructItinerary;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
@@ -11,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // LC 332's are - "JFK" at index 0 and one letter tripled ("BBB" to "ZZZ") for the rest.
 internal static class ItineraryWorkloads
 {
-    private const int AirportCount = 26;
     private const int CodeLength = 3;
 
     public static string[][] BuildTickets(int ticketCount, int seed)
@@ -35,10 +35,10 @@ internal static class ItineraryWorkloads
 
     private static string[] AirportCodes()
     {
-        var airports = new string[AirportCount];
+        var airports = new string[EnglishLetters.Size];
         airports[0] = StartAirport.Code;
 
-        for (var i = 1; i < AirportCount; i++)
+        for (var i = 1; i < EnglishLetters.Size; i++)
         {
             airports[i] = new string((char)('A' + i), CodeLength);
         }
@@ -47,10 +47,10 @@ internal static class ItineraryWorkloads
     }
 
     // A uniformly random airport other than the current one: one draw over the other
-    // AirportCount - 1 indices, stepping past the current index.
+    // EnglishLetters.Size - 1 indices, stepping past the current index.
     private static int NextAirport(int current, Random random)
     {
-        var draw = random.Next(AirportCount - 1);
+        var draw = random.Next(EnglishLetters.Size - 1);
 
         if (draw >= current)
         {

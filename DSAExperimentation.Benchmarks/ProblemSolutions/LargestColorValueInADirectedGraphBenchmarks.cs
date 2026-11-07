@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.LargestColorValueInADirectedGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // instead of an early cycle bailout.
 public class LargestColorValueInADirectedGraphBenchmarks
 {
-    private const int AlphabetSize = 26;
     private const int MaxFanOut = 3;
 
     // LC problem number, reused as the deterministic node-color seed.
@@ -27,7 +27,7 @@ public class LargestColorValueInADirectedGraphBenchmarks
     {
         var random = new Random(RandomSeed);
         _nodes = Enumerable.Range(0, NodeCount)
-            .Select(id => new ColorGraphNode(id, random.Next(AlphabetSize)))
+            .Select(id => new ColorGraphNode(id, random.Next(EnglishLetters.Size)))
             .ToList();
 
         for (var i = 0; i < NodeCount; i++)

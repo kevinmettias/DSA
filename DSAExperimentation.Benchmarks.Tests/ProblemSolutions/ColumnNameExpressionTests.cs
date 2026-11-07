@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -10,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // grammar however large the requested length grows.
 public sealed partial class ColumnNameExpressionTests
 {
-    private const int SingleLetterAlphabetSize = 26;
     private const int ThirtyNames = 30;
     private const int TwoHundredNames = 200;
 
@@ -22,7 +22,7 @@ public sealed partial class ColumnNameExpressionTests
     // LC 770's variable grammar: one or more lowercase letters, nothing else.
     private const string LowercaseNamePattern = "^[a-z]+$";
 
-    // The name at index SingleLetterAlphabetSize - the first past the single-letter alphabet, where
+    // The name at index EnglishLetters.Size - the first past the single-letter alphabet, where
     // the base-26 counter carries.
     private const string FirstTwoLetterName = "aa";
 
@@ -64,7 +64,7 @@ public sealed partial class ColumnNameExpressionTests
     public void Build_PastTheSingleLetterAlphabet_ContinuesWithTheTwoLetterHandful() =>
         Assert.Equal(
             FirstTwoLetterName,
-            ColumnNameExpression.Build(SingleLetterAlphabetSize + 1).Split(Plus)[SingleLetterAlphabetSize]);
+            ColumnNameExpression.Build(EnglishLetters.Size + 1).Split(Plus)[EnglishLetters.Size]);
 
     // The largest expression BasicCalculatorIVBenchmarks times has to stay inside LC 770's bound.
     [Fact]

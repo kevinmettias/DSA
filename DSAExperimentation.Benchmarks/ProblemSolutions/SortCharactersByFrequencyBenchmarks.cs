@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.SortCharactersByFrequency;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class SortCharactersByFrequencyBenchmarks
 {
     private const int RandomSeed = 7;
-    private const int AlphabetSize = 26;
 
     private string _text = "";
 
@@ -21,7 +21,7 @@ public class SortCharactersByFrequencyBenchmarks
 
         // Bounded to a 26-letter alphabet so real frequency skew emerges, the same
         // reasoning TopKFrequentElementsBenchmarks' bounded random range documents.
-        _text = new string([.. Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(0, AlphabetSize)))]);
+        _text = new string([.. Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(0, EnglishLetters.Size)))]);
     }
 
     [Benchmark(Baseline = true)]

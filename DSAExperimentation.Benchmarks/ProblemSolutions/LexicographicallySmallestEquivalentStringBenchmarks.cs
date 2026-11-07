@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.LexicographicallySmallestEquivalentString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class LexicographicallySmallestEquivalentStringBenchmarks
 {
     private const int RandomSeed = 1061; // LC problem number
-    private const int AlphabetSize = 26;
 
     private string _s1 = "";
 
@@ -31,9 +31,9 @@ public class LexicographicallySmallestEquivalentStringBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            s1[i] = (char)('a' + random.Next(AlphabetSize));
-            s2[i] = (char)('a' + random.Next(AlphabetSize));
-            baseChars[i] = (char)('a' + random.Next(AlphabetSize));
+            s1[i] = (char)('a' + random.Next(EnglishLetters.Size));
+            s2[i] = (char)('a' + random.Next(EnglishLetters.Size));
+            baseChars[i] = (char)('a' + random.Next(EnglishLetters.Size));
         }
 
         _s1 = new string(s1);

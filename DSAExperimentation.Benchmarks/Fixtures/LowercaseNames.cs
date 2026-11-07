@@ -1,4 +1,5 @@
 using System.Text;
+using DSAExperimentation.Domain.Language.English;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
@@ -10,15 +11,14 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // three. OfWidth serves the problems that fix a name's length instead.
 internal static class LowercaseNames
 {
-    private const int AlphabetSize = 26;
-
     public static string Of(int index)
     {
         var letters = new StringBuilder();
 
-        for (var remaining = index + 1; remaining > 0; remaining = (remaining - 1) / AlphabetSize)
+        for (var remaining = index + 1; remaining > 0;
+             remaining = (remaining - 1) / EnglishLetters.Size)
         {
-            var letter = (char)('a' + ((remaining - 1) % AlphabetSize));
+            var letter = (char)('a' + ((remaining - 1) % EnglishLetters.Size));
             letters.Insert(0, letter);
         }
 
@@ -34,8 +34,8 @@ internal static class LowercaseNames
 
         for (var position = width - 1; position >= 0; position--)
         {
-            letters[position] = (char)('a' + (remaining % AlphabetSize));
-            remaining /= AlphabetSize;
+            letters[position] = (char)('a' + (remaining % EnglishLetters.Size));
+            remaining /= EnglishLetters.Size;
         }
 
         return new string(letters);

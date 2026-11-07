@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Language.English;
+
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
 // Benchmark workload sizing for LC 1178 - the mask encoding itself lives in the
@@ -12,7 +14,6 @@ internal static class NumberOfValidWordsForEachPuzzleWorkloads
     private const int MinWordLength = 4; // LC 1178: words[i].length >= 4
     private const int WordLengthUpperBound = 9; // exclusive; word length ranges [4, 8]
     private const int PuzzleLength = 7; // LC 1178: every puzzle has exactly 7 distinct letters
-    private const int AlphabetSize = 26;
 
     public static string[] BuildWords(int count, Random random) => Build(count, new WordSource(random));
 
@@ -24,7 +25,7 @@ internal static class NumberOfValidWordsForEachPuzzleWorkloads
 
         while (letters.Count < length)
         {
-            letters.Add((char)('a' + random.Next(0, AlphabetSize)));
+            letters.Add((char)('a' + random.Next(0, EnglishLetters.Size)));
         }
 
         return new string([.. letters]);

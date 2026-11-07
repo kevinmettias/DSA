@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.DesignSpreadsheet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +15,6 @@ public class DesignSpreadsheetBenchmarks
 {
     private const int Seed = 3484;
     private const int ValueUpperBound = 100_000;
-    private const int ColumnCount = 26;
 
     private List<Func<DesignSpreadsheetSolution.ISpreadsheetStrategy, int?>> _script = new();
 
@@ -124,7 +124,7 @@ public class DesignSpreadsheetBenchmarks
 
     private static string RandomCell(int cellCount, Random random)
     {
-        var column = (char)('A' + random.Next(0, ColumnCount));
+        var column = (char)('A' + random.Next(0, EnglishLetters.Size));
         var row = random.Next(1, cellCount + 1);
         return $"{column}{row}";
     }

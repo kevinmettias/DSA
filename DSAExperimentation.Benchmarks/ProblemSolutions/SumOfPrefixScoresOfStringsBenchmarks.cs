@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.SumOfPrefixScoresOfStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +17,6 @@ public class SumOfPrefixScoresOfStringsBenchmarks
 {
     private const int WordLength = 8;
     private const int RandomSeed = 2416; // LC problem number
-    private const int AlphabetSize = 26;
 
     private string[] _words = [];
 
@@ -31,7 +31,7 @@ public class SumOfPrefixScoresOfStringsBenchmarks
     }
 
     private static string RandomWord(Random random)
-        => new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+        => new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(EnglishLetters.Size))).ToArray());
 
     [Benchmark(Baseline = true)]
     public int[] StartsWithScan() => SumOfPrefixScoresOfStringsSolution.SumPrefixScoresByStartsWithScan(_words);
