@@ -23,7 +23,7 @@ commit beside it, as the rest of this file does.
   drop these but i would organize them properly. not everything needs a problem that uses it, the
   problems are just the inspiration." A value fixed for a configuration is a constant (the owner's
   ruling of 2026-11-04). Done: B1 (`9727ac52`), B2 (`1330a351`), B3 (`08214dd8`), B4 (`d8a7dac8`),
-  B5 (`8c4422bb`), B7 (`79134545`) and B8 (`5448d55a`). Left, a commit each:
+  B5 (`8c4422bb`), B6 (`82fc8b68`, `a0b6d432`), B7 (`79134545`) and B8 (`5448d55a`). Left:
   - **B2, chess in Betza notation — DONE** (`1330a351`). LC 999's DirectRayWalk reads 22-28% slower
     on tier-1 code identical but for one field offset, and LC 1222 21-23% faster; neither has a
     code cause.
@@ -34,10 +34,10 @@ commit beside it, as the rest of this file does.
     gh, kn, wr, the vowel digraphs), accents other than Received Pronunciation (General American
     needs rhoticity), clicks, implosives and ejectives, and whether ñ is a letter of its own
     (collation).
-  - **B6, numbers.** Number systems (Cayley-Dickson), set theory (cardinals, ordinals), the extended
-    reals, IEEE 754 floating point, Roman numerals, English number names with a composer generic
-    over its grouping (short, long, Indian), ordinals and fractions, and the facts primes agree on.
-    LC 273 gains the composer as a strategy.
+  - **B6, numbers — DONE** in two commits: the mathematics, IEEE doubles, Roman numerals, digit
+    groupings and the primes' facts (`82fc8b68`), then English number names composed in any scale,
+    with LC 273's composer arm (`a0b6d432`). Not built: binary16 and binary32 as presets of one
+    IEEE format witness. No covered problem reads the Roman numerals (LC 12 and 13 are not covered).
   - **B7, calendars — DONE** (`79134545`). English month and weekday names wait for LC 1185 or 1507;
     CalendarMonth/CalendarMonths and DnaBase/DnaBases both draw check-tree-legibility, unwaived.
   - **B8, metrics — DONE** (`5448d55a`), but for the A* heuristics, which keep their own `Math.Abs`:
@@ -83,10 +83,12 @@ commit beside it, as the rest of this file does.
     compiles out is DONE (`dcdfa62d`, §13.10). Left: Fenwick as two implicit trees and a witness for
     Heap. A topology witness for SegmentTree did not fall out, since its node is an index
     (§13.9's first test);
-  - one substring-index contract over SuffixArray, SuffixTree and SuffixAutomaton, with LCP and the
-    conversions between them, and a review of AhoCorasick;
-  - linked lists: forward-link and back-link contracts, the singly linked list as the doubly linked
-    list without its back link, and CycleDetection on the forward contract.
+  - the substring indexes — DONE (`39d2a3d2`): contracts split by capability over the three
+    structures, LCP queries beside the suffix array, the tree-to-array conversion, and AhoCorasick
+    kept apart as their dual (§13.12);
+  - linked lists — DONE (`70eb6c40`): one node, each configuration adding its own links, and
+    CycleDetection on the forward link. The plan's struct links and Previous extension member were
+    measured out (§13.11): they cost inline budget in LC 146's arm.
 - **L6. A contract for every specialized layer.** 2026-11-03: a hand-written specialized structure
   "must create a interface or contract for exactly the layer it wants to swap in for and what
   invariantes that layer guarantees", with one contract suite and a strategy benchmark against the
