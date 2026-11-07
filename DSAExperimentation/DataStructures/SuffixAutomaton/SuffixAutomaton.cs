@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures.SubstringIndex;
+
 namespace DSAExperimentation.DataStructures.SuffixAutomaton;
 
 // The minimal automaton (in the online-construction/"Blumer et al." sense) recognizing exactly the
@@ -15,13 +17,22 @@ namespace DSAExperimentation.DataStructures.SuffixAutomaton;
 // precondition like BinarySearch's sortedness, since no public method here mutates state after
 // construction at all, the same "no caller-supplied shape could ever violate it" guarantee Trie.cs
 // already claims for its own prefix-tree invariant.
+//
+// Of the substring-index capabilities (ARCHITECTURE §8) it answers presence, counting and the
+// longest repeat, and not locating: a state knows how many positions it ends at and the first of
+// them, not the rest. Nor does it convert to or from the suffix tree or array of its text cheaply:
+// its suffix-link tree is the suffix tree of the reversed text, so reaching the text's own tree
+// takes the automaton of the reversed text, and building this automaton afresh is O(n) anyway.
 /// <summary>
 /// The minimal automaton that accepts exactly the substrings of a fixed text, built once at construction.
 /// </summary>
-public sealed class SuffixAutomaton
+public sealed class SuffixAutomaton : ICountingSubstringIndex, ILongestRepeatIndex
 {
     private const int RootIndex = 0;
     private const int NotFound = -1;
+
+    // A substring repeats when it ends at two positions at least.
+    private const int RepeatedEndCount = 2;
 
     // OrderByLengthDescending's bucket array is indexed by a state's own Length + 1 (one slot of
     // headroom so a zero-length state has somewhere to prefix-sum from) and needs one further slot
@@ -84,6 +95,34 @@ public sealed class SuffixAutomaton
 
     private int OccurrenceCountAt(int state) => _endposSize[state];
 
+    // O(states): every substring in a state ends at the same positions, so the longest repeat is
+    // the longest string of the longest state that ends at two of them, and it ends at the state's
+    // first end position. The root, with no string longer than the empty one, is the answer when no
+    // state repeats; its first end, one before the text, puts the empty answer at position 0.
+    /// <summary>
+    /// Finds the longest substring that occurs at least twice in the text, in O(text.Length).
+    /// </summary>
+    /// <returns>
+    /// Its first occurrence; <see cref="SubstringOccurrence.Empty"/> when no character repeats.
+    /// </returns>
+    public SubstringOccurrence FindLongestRepeat()
+    {
+        var longest = RootIndex;
+
+        for (var state = RootIndex + 1; state < _states.Count; state++)
+        {
+            var isRepeated = _endposSize[state] >= RepeatedEndCount;
+
+            if (isRepeated && _states[state].Length > _states[longest].Length)
+            {
+                longest = state;
+            }
+        }
+
+        var length = _states[longest].Length;
+        return new SubstringOccurrence(_states[longest].FirstEnd - length + 1, length);
+    }
+
     // The classic online extension step: create a new state for the whole-prefix-so-far
     // equivalence class, walk up Link from the previous "last" state adding a transition to it
     // until either running off the top (root's Link, -1) or finding an existing transition for character -
@@ -94,6 +133,7 @@ public sealed class SuffixAutomaton
     {
         var cur = NewState();
         _states[cur].Length = _states[last].Length + 1;
+        _states[cur].FirstEnd = _states[last].Length;
 
         var ancestorState = last;
 
@@ -123,6 +163,7 @@ public sealed class SuffixAutomaton
         var clone = NewState();
         _states[clone].Length = _states[ancestorState].Length + 1;
         _states[clone].Link = _states[existingTarget].Link;
+        _states[clone].FirstEnd = _states[existingTarget].FirstEnd;
         _states[clone].IsClone = true;
         CopyTransitions(_states[existingTarget], _states[clone]);
         RewireTransitionsToClone(ancestorState, character, existingTarget, clone);

@@ -23,4 +23,9 @@ internal sealed class SuffixTreeNode
     public int SuffixStart { get; set; } = -1;
 
     public bool IsSuffixEnd => SuffixStart >= 0;
+
+    // How many suffixes run through this node, its own included when it ends one: the number of
+    // times the string its path spells occurs in the text. Set once, by the build, when the node
+    // leaves the rightmost path and no later suffix can reach it.
+    public int SuffixCount { get; set; }
 }

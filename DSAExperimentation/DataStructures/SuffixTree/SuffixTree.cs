@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures.SubstringIndex;
+
 // A plain "using DSAExperimentation.DataStructures.SuffixArray;" plus a bare SuffixArray reference
 // hits CS0118 ("SuffixArray is a namespace but is used like a type") from any file outside that
 // namespace's own folder - the ARCHITECTURE.md §10.3/§15.3 namespace-segment/type-name collision,
@@ -12,7 +14,14 @@ namespace DSAExperimentation.DataStructures.SuffixTree;
 // already-public Suffixes/LongestCommonPrefixArray - licensed by the same rule DynamicArraySequence uses to compose
 // DynamicArray, ARCHITECTURE.md §5 step 5/§9.4: composing another domain's already-public concrete
 // representation is fine, only forcing that domain to implement your own interface is prohibited),
-// then answering HasSubstring/FindOccurrences queries repeatedly.
+// then answering the substring-index queries (ARCHITECTURE §8) repeatedly: presence, counting and
+// locating in time linear in the pattern, and the longest repeat in time linear in the tree.
+//
+// The two conversions between this tree and a suffix array are both standard and cheap. A suffix
+// array with its common prefix lengths becomes this tree through the constructor, by the stack
+// build below. This tree becomes a suffix array through ToSuffixArray: a depth-first walk that
+// takes each node's children in character order meets the suffixes in sorted order, and two
+// neighbours share the shallowest depth the walk passes between them.
 //
 // Deliberately NOT Ukkonen's online algorithm. Every stateful text Representation in this repo
 // (RollingHash, SuffixArray, SuffixAutomaton) is batch/offline - full input known upfront,
@@ -32,7 +41,12 @@ namespace DSAExperimentation.DataStructures.SuffixTree;
 /// The compressed trie of every suffix of a fixed text, built from its suffix array at construction.
 /// </summary>
 public sealed class SuffixTree
+    : ICountingSubstringIndex, ILocatingSubstringIndex, ILongestRepeatIndex
 {
+    // A substring repeats when at least two suffixes start with it.
+    private const int RepeatedSuffixCount = 2;
+    private const int NoOccurrence = 0;
+
     private readonly string _text;
     private readonly SuffixTreeNode _root;
 
@@ -41,8 +55,10 @@ public sealed class SuffixTree
     {
     }
 
-    // suffixArray must have been built over this exact text - unenforced precondition, the same
-    // shape as RollingHash's own cross-instance lane/comparer law.
+    // suffixArray must have been built over this exact text with the default comparer - unenforced
+    // precondition, the same shape as RollingHash's own cross-instance lane/comparer law. The
+    // children are keyed by exact character, so a comparer that calls two characters equal would
+    // hand this build common prefixes the tree cannot branch on.
     public SuffixTree(ReadOnlySpan<char> text, SuffixArrayStructure suffixArray)
     {
         _text = text.ToString();
@@ -57,31 +73,53 @@ public sealed class SuffixTree
     /// <returns>True when the pattern occurs in the text; always true for an empty pattern.</returns>
     public bool HasSubstring(ReadOnlySpan<char> pattern) => pattern.IsEmpty || Walk(pattern) is not null;
 
+    // O(pattern.Length) average, the walk HasSubstring takes: every suffix that starts with the
+    // pattern passes through the node the walk ends at, and the build counted those as it went.
+    /// <summary>
+    /// Counts a pattern's occurrences, overlapping ones included, in time linear in the pattern's
+    /// length.
+    /// </summary>
+    /// <param name="pattern">The characters to count, compared exactly.</param>
+    /// <returns>
+    /// The count: 0 for an absent pattern, and the text's length plus one for an empty one.
+    /// </returns>
+    public int CountOccurrences(ReadOnlySpan<char> pattern)
+    {
+        if (pattern.IsEmpty)
+        {
+            return _text.Length + 1;
+        }
+
+        return Walk(pattern)?.SuffixCount ?? NoOccurrence;
+    }
+
     // O(pattern.Length + occurrences) average: one walk to the match point, then a subtree
     // enumeration bounded by the number of leaves under it (an internal node's count is bounded by
     // its own leaf count in any tree). Order is unspecified.
     //
-    // The empty pattern returns every real suffix start, {0, .., text.Length - 1} - not the
-    // "every insertion point including text.Length itself" convention this repo's other FindAll-
-    // family members use for an empty pattern. A suffix tree indexes actual (non-empty-context)
-    // suffixes, one leaf per starting index; there is no leaf for the degenerate empty suffix at
-    // text.Length, the same convention SuffixArray.Suffixes itself already uses (a permutation of
-    // 0..n-1, never including n).
+    // The empty pattern occurs at every insertion point, 0 through text.Length, as the contract
+    // says. The tree has no leaf for the empty suffix at text.Length, so that answer is the range
+    // itself rather than a walk.
     /// <summary>
     /// Lists each position where a pattern starts in the text, overlaps included, in no particular order.
     /// </summary>
     /// <param name="pattern">The characters to look for, compared exactly.</param>
-    /// <returns>The start positions; none for an absent pattern, every text position for an empty one.</returns>
+    /// <returns>
+    /// The start positions: none for an absent pattern, and every position from 0 to the text's
+    /// length for an empty one.
+    /// </returns>
     public IEnumerable<int> FindOccurrences(ReadOnlySpan<char> pattern)
     {
         if (pattern.IsEmpty)
         {
-            return AllSuffixStartsFrom(_root);
+            return Enumerable.Range(0, _text.Length + 1);
         }
 
         var node = Walk(pattern);
         return node is null ? NoOccurrences() : AllSuffixStartsFrom(node);
     }
+
+    private static IEnumerable<int> NoOccurrences() => [];
 
     // Iterative (explicit stack, not recursion) - the same stack-overflow-risk-class avoidance
     // already applied to SuffixAutomaton's endpos precompute, since a degenerate-depth suffix tree
@@ -108,63 +146,162 @@ public sealed class SuffixTree
         }
     }
 
-    // presumption: allow -- key is only ever drawn from node.Children.Keys immediately before this
-    // call, so it is guaranteed present in node.Children; TryGetValue's own bool result is
-    // redundant at this exact call shape, not a real "might be missing" check.
-    private static SuffixTreeNode RequireChild(SuffixTreeNode node, char key)
+    // The deepest node that two suffixes pass through spells the longest repeat. A node fewer than
+    // two suffixes pass through has no such node below it, since a child's count is part of its
+    // parent's, so the walk prunes there and visits only the branching part of the tree. A node's
+    // edge ends where its path does, so the path starts its depth before that end. Iterative for
+    // the same reason as AllSuffixStartsFrom.
+    /// <summary>
+    /// Finds the longest substring that occurs at least twice in the text, in O(text.Length).
+    /// </summary>
+    /// <returns>
+    /// One of its occurrences, any one when several longest repeats tie;
+    /// <see cref="SubstringOccurrence.Empty"/> when no character repeats.
+    /// </returns>
+    public SubstringOccurrence FindLongestRepeat()
     {
-        node.Children.TryGetValue(key, out var child);
-        return child!;
+        var longest = SubstringOccurrence.Empty;
+        var pending = new Stack<(SuffixTreeNode Node, int Depth)>();
+        pending.Push((_root, 0));
+
+        while (pending.Count > 0)
+        {
+            var (node, depth) = pending.Pop();
+
+            if (node.SuffixCount >= RepeatedSuffixCount)
+            {
+                longest = LongerOf(longest, node, depth);
+                PushChildren(pending, node, depth);
+            }
+        }
+
+        return longest;
     }
 
-    private static IEnumerable<int> NoOccurrences() => [];
+    // The node's path, if it is longer than the longest repeat found so far.
+    private static SubstringOccurrence LongerOf(
+        SubstringOccurrence longest, SuffixTreeNode node, int depth)
+    {
+        if (depth <= longest.Length)
+        {
+            return longest;
+        }
 
-    // Stack-based construction: a stack of (node, string-depth) pairs tracks the path from root to
-    // the rightmost leaf inserted so far. Each new suffix (in suffix-array order) either attaches
-    // directly under the stack's current top (its own depth already equals the LCP height, the
-    // "leaf becomes internal" case - no special code needed, see SuffixTreeNode's own doc comment)
-    // or requires splitting the edge just popped past (see SplitEdge).
+        return new SubstringOccurrence(node.Start + node.Length - depth, depth);
+    }
+
+    private static void PushChildren(
+        Stack<(SuffixTreeNode Node, int Depth)> pending, SuffixTreeNode node, int depth)
+    {
+        foreach (var child in node.Children.Values)
+        {
+            pending.Push((child, depth + child.Length));
+        }
+    }
+
+    // O(text.Length * alphabet log alphabet): each node's children are sorted once. A suffix that
+    // ends at a node is a prefix of every suffix below it, so it sorts first and is taken before
+    // the children. Between two suffixes taken one after the other the walk climbs to their lowest
+    // common ancestor and descends again, and no node it passes is shallower than that ancestor, so
+    // the shallowest depth it passes is their common prefix length.
+    /// <summary>
+    /// Reads the suffix array, with its common prefix lengths, off the tree's leaves.
+    /// </summary>
+    /// <returns>The suffix array of the text, under the default comparer's ordinal order.</returns>
+    public SuffixArrayStructure ToSuffixArray()
+    {
+        var walk = new SortedLeafWalk(_text.Length);
+        var pending = new Stack<(SuffixTreeNode Node, int Depth)>();
+        pending.Push((_root, 0));
+
+        while (pending.Count > 0)
+        {
+            var (node, depth) = pending.Pop();
+            walk.Pass(depth - node.Length);
+
+            if (node.IsSuffixEnd)
+            {
+                walk.Take(node.SuffixStart, depth);
+            }
+
+            PushChildrenInReverseOrder(pending, node, depth);
+        }
+
+        return new SuffixArrayStructure(walk.Suffixes, walk.NeighbourPrefixes);
+    }
+
+    // Largest character first, so the smallest is popped first.
+    private static void PushChildrenInReverseOrder(
+        Stack<(SuffixTreeNode Node, int Depth)> pending, SuffixTreeNode node, int depth)
+    {
+        var keys = node.Children.Keys.ToArray();
+        Array.Sort(keys);
+
+        for (var i = keys.Length - 1; i >= 0; i--)
+        {
+            var child = RequireChild(node, keys[i]);
+            pending.Push((child, depth + child.Length));
+        }
+    }
+
+    // Stack-based construction: a stack of path nodes tracks the path from root to the rightmost
+    // leaf inserted so far. Each new suffix (in suffix-array order) either attaches directly under
+    // the stack's current top (its own depth already equals the LCP height, the "leaf becomes
+    // internal" case - no special code needed, see SuffixTreeNode's own doc comment) or requires
+    // splitting the edge just popped past (see SplitEdge). Each path node carries the rank of the
+    // first suffix below it, so a node leaving the path knows how many suffixes it holds.
     private static SuffixTreeNode BuildFromSuffixArray(string text, SuffixArrayStructure suffixArray)
     {
-        var context = new BuildContext(text, text.Length);
+        var context = new BuildContext(
+            text, suffixArray.Suffixes, suffixArray.LongestCommonPrefixArray);
         var root = new SuffixTreeNode();
 
-        if (context.N == 0)
+        if (context.TextLength == 0)
         {
             return root;
         }
 
-        var suffixes = suffixArray.Suffixes;
-        var stack = InitializeRightmostPathStack(context, root, suffixes[0]);
+        var stack = InitializeRightmostPathStack(context, root);
 
-        for (var i = 1; i < context.N; i++)
+        for (var rank = 1; rank < context.TextLength; rank++)
         {
-            InsertSuffix(context, suffixes[i], suffixArray.LongestCommonPrefixArray[i - 1], stack);
+            InsertSuffix(context, rank, stack);
+        }
+
+        while (stack.Count > 0)
+        {
+            Finish(stack.Pop(), context.TextLength);
         }
 
         return root;
     }
 
-    private static Stack<(SuffixTreeNode Node, int Depth)> InitializeRightmostPathStack(
-        BuildContext context, SuffixTreeNode root, int firstSuffixStart)
+    private static Stack<PathNode> InitializeRightmostPathStack(
+        BuildContext context, SuffixTreeNode root)
     {
-        var stack = new Stack<(SuffixTreeNode Node, int Depth)>();
-        stack.Push((root, 0));
+        var stack = new Stack<PathNode>();
+        stack.Push(new PathNode(root, 0, 0));
 
-        var firstLeaf = CreateLeaf(firstSuffixStart, firstSuffixStart, context.N);
+        var firstSuffixStart = context.Suffixes[0];
+        var firstLeaf = CreateLeaf(firstSuffixStart, firstSuffixStart, context.TextLength);
         root.Children.Set(context.Text[firstLeaf.Start], firstLeaf);
-        stack.Push((firstLeaf, context.N - firstSuffixStart));
+        stack.Push(new PathNode(firstLeaf, context.TextLength - firstSuffixStart, 0));
 
         return stack;
     }
 
-    private static void InsertSuffix(BuildContext context, int suffixStart, int branchDepth, Stack<(SuffixTreeNode Node, int Depth)> stack)
+    // A node popped here has a suffix sorted after its whole subtree arriving, so its count is
+    // final. A split node takes the place of the node it was split from, the first suffix below it
+    // included.
+    private static void InsertSuffix(BuildContext context, int rank, Stack<PathNode> stack)
     {
+        var branchDepth = context.NeighbourPrefixes[rank - 1];
         var lastPopped = stack.Peek();
 
         while (stack.Peek().Depth > branchDepth)
         {
             lastPopped = stack.Pop();
+            Finish(lastPopped, rank);
         }
 
         var top = stack.Peek();
@@ -172,11 +309,11 @@ public sealed class SuffixTree
         if (top.Depth != branchDepth)
         {
             var splitNode = SplitEdge(context.Text, top.Node, lastPopped.Node, branchDepth - top.Depth);
-            stack.Push((splitNode, branchDepth));
-            top = (splitNode, branchDepth);
+            top = new PathNode(splitNode, branchDepth, lastPopped.FirstRank);
+            stack.Push(top);
         }
 
-        var newLeaf = AttachLeaf(context, top.Node, suffixStart, branchDepth);
+        var newLeaf = AttachLeaf(context, top.Node, rank, branchDepth);
         stack.Push(newLeaf);
     }
 
@@ -207,17 +344,31 @@ public sealed class SuffixTree
         splitNode.Children.Set(text[child.Start], child);
     }
 
-    private static (SuffixTreeNode Node, int Depth) AttachLeaf(BuildContext context, SuffixTreeNode parent, int suffixStart, int branchDepth)
+    private static PathNode AttachLeaf(
+        BuildContext context, SuffixTreeNode parent, int rank, int branchDepth)
     {
-        var leaf = CreateLeaf(suffixStart, suffixStart + branchDepth, context.N);
+        var suffixStart = context.Suffixes[rank];
+        var leaf = CreateLeaf(suffixStart, suffixStart + branchDepth, context.TextLength);
         parent.Children.Set(context.Text[leaf.Start], leaf);
-        return (leaf, context.N - suffixStart);
+        return new PathNode(leaf, context.TextLength - suffixStart, rank);
     }
 
-    // Walk is shared by BOTH HasSubstring AND FindOccurrences (two distinct callers), placed here last
-    // for that reason - contrast BuildFromSuffixArray/InitializeRightmostPathStack/InsertSuffix/
-    // SplitEdge/InsertSplitNode/ReparentShrunkChild/AttachLeaf above, each with exactly one caller,
-    // placed immediately after it in DFS call order.
+    // presumption: allow -- key is only ever drawn from node.Children.Keys immediately before this
+    // call, so it is guaranteed present in node.Children; TryGetValue's own bool result is
+    // redundant at this exact call shape, not a real "might be missing" check.
+    private static SuffixTreeNode RequireChild(SuffixTreeNode node, char key)
+    {
+        node.Children.TryGetValue(key, out var child);
+        return child!;
+    }
+
+    // Finish is shared by InsertSuffix and BuildFromSuffixArray's last pass: the suffixes below a
+    // node are the ranks from its first up to the rank that ended it.
+    private static void Finish(PathNode pathNode, int endRank) =>
+        pathNode.Node.SuffixCount = endRank - pathNode.FirstRank;
+
+    // Walk is shared by HasSubstring, CountOccurrences and FindOccurrences, placed here last for
+    // that reason.
     private SuffixTreeNode? Walk(ReadOnlySpan<char> pattern)
     {
         var current = _root;
@@ -260,8 +411,16 @@ public sealed class SuffixTree
     private static SuffixTreeNode CreateLeaf(int suffixStart, int edgeStart, int textLength)
         => new() { Start = edgeStart, Length = textLength - edgeStart, SuffixStart = suffixStart };
 
-    // Bundles the text/length pair every construction-time helper needs beyond its own per-suffix
-    // arguments - both fixed for the whole build, the same "least-frequently-varying args" grouping
-    // SuffixArray's own DoublingContext/KasaiContext already use.
-    private readonly record struct BuildContext(string Text, int N);
+    // Bundles what every construction-time helper needs beyond its own per-suffix arguments - the
+    // text and the suffix array's two arrays, all fixed for the whole build, the same
+    // "least-frequently-varying args" grouping SuffixArray's own DoublingContext/KasaiContext use.
+    private readonly record struct BuildContext(
+        string Text, int[] Suffixes, int[] NeighbourPrefixes)
+    {
+        public int TextLength => Text.Length;
+    }
+
+    // One node on the rightmost path during the build: its string depth, and the rank of the first
+    // suffix below it.
+    private readonly record struct PathNode(SuffixTreeNode Node, int Depth, int FirstRank);
 }

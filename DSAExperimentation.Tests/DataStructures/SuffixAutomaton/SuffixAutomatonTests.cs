@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SuffixAutomaton;
+using DSAExperimentation.DataStructures.SubstringIndex;
 using SuffixAutomatonStructure = DSAExperimentation.DataStructures.SuffixAutomaton.SuffixAutomaton;
 
 namespace DSAExperimentation.Tests.DataStructures.SuffixAutomaton;
@@ -27,6 +28,20 @@ public sealed partial class SuffixAutomatonTests
         Assert.Equal(Fixtures.SharedEndposStateOccurrenceCount, automaton.CountOccurrences(Fixtures.TracedSubstringC));
         Assert.Equal(Fixtures.SharedEndposStateOccurrenceCount, automaton.CountOccurrences(Fixtures.TracedSubstringBc));
     }
+
+    // "bc" ends at 2 and 4, in the clone state the second "c" split off; its first occurrence
+    // starts at 1.
+    [Fact]
+    public void FindLongestRepeat_HandVerifiedWorkedExample_IsTheClonedStatesFirstOccurrence() =>
+        Assert.Equal(
+            new SubstringOccurrence(Fixtures.FirstBcStart, Fixtures.TracedSubstringBc.Length),
+            new SuffixAutomatonStructure(Fixtures.WorkedExampleText).FindLongestRepeat());
+
+    [Fact]
+    public void FindLongestRepeat_NoRepeatedLetter_IsTheEmptySubstring() =>
+        Assert.Equal(
+            SubstringOccurrence.Empty,
+            new SuffixAutomatonStructure(Fixtures.AbsentSubstringXyz).FindLongestRepeat());
 
     [Fact]
     public void HasSubstring_PresentSubstring_ReturnsTrue()
@@ -174,6 +189,7 @@ public sealed partial class SuffixAutomatonTests
         public const int SharedEndposStateOccurrenceCount = 2;
         public const string TracedSubstringC = "c";
         public const string TracedSubstringBc = "bc";
+        public const int FirstBcStart = 1;
         public const string PresentSubstring = "cbc";
         public const string AbsentSubstringXyz = "xyz";
         public const string AbsentSubstringBa = "ba";

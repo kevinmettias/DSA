@@ -1,3 +1,6 @@
+using System.Runtime.CompilerServices;
+using DSAExperimentation.DataStructures.SubstringIndex;
+
 namespace DSAExperimentation.DataStructures.SuffixArray;
 
 // Precomputes, from a fixed text, the permutation of every suffix's starting index in ascending
@@ -30,11 +33,14 @@ namespace DSAExperimentation.DataStructures.SuffixArray;
 // text is copied once into a local char[] at construction: a ReadOnlySpan<char> can't be captured
 // by the Comparison<int> delegate Array.Sort needs, and unlike RollingHash's single synchronous
 // pass, this algorithm re-reads characters repeatedly across every doubling round and again during
-// Kasai's pass - a real necessity here, not an optional convenience.
+// Kasai's pass - a real necessity here, not an optional convenience. The copy is not kept: the
+// sorted order alone answers the longest repeat, and what a pattern query adds, the text to compare
+// against, SuffixArrayIndex keeps beside the array. A caller that only reads the order (LC 899,
+// 1044, 1163) so carries no text it never reads (ARCHITECTURE §8).
 /// <summary>
 /// The sorted suffixes of a fixed text, with their ranks and the longest common prefix of each adjacent pair.
 /// </summary>
-public sealed class SuffixArray
+public sealed class SuffixArray : ILongestRepeatIndex
 {
     private const int NoRankSentinel = -1;
 
@@ -64,6 +70,56 @@ public sealed class SuffixArray
         Suffixes = BuildSuffixArray(buffer, comparer);
         Rank = BuildRank(Suffixes);
         LongestCommonPrefixArray = BuildLongestCommonPrefixArray(buffer, Suffixes, Rank, comparer);
+    }
+
+    // The arrays another structure already holds in this order, as SuffixTree.ToSuffixArray reads
+    // them off its leaves: only the rank is derived. The caller vouches that they are a text's
+    // sorted suffixes and their neighbours' common prefix lengths under the default comparer.
+    internal SuffixArray(int[] suffixes, int[] longestCommonPrefixArray)
+    {
+        Suffixes = suffixes;
+        Rank = BuildRank(suffixes);
+        LongestCommonPrefixArray = longestCommonPrefixArray;
+    }
+
+    // Two suffixes share their longest common prefix with every suffix sorted between them, so the
+    // longest substring that starts two suffixes is the largest entry of the array, reported at the
+    // first such entry in sorted order. Overlap is allowed by construction: nothing keeps the two
+    // suffixes' starts at least the prefix's length apart.
+    //
+    // Always inlined: LC 1044 builds an array, asks this and drops the array, so the JIT keeps the
+    // array's object on the stack - until this is a call, which the object escapes into. With
+    // tiered PGO off the call stayed, and the object moved to the heap with a write barrier per
+    // field.
+    /// <summary>
+    /// Finds the longest substring that occurs at least twice in the text, in O(n).
+    /// </summary>
+    /// <returns>
+    /// Where it starts in the first, in sorted order, of two suffixes that share it, and its
+    /// length;
+    /// <see cref="SubstringOccurrence.Empty"/> when no character repeats.
+    /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public SubstringOccurrence FindLongestRepeat()
+    {
+        var bestLength = 0;
+        var bestPosition = 0;
+
+        for (var i = 0; i < LongestCommonPrefixArray.Length; i++)
+        {
+            if (LongestCommonPrefixArray[i] > bestLength)
+            {
+                bestLength = LongestCommonPrefixArray[i];
+                bestPosition = i;
+            }
+        }
+
+        if (bestLength == 0)
+        {
+            return SubstringOccurrence.Empty;
+        }
+
+        return new SubstringOccurrence(Suffixes[bestPosition], bestLength);
     }
 
     private static int[] BuildSuffixArray(char[] buffer, IComparer<char> comparer)

@@ -1,10 +1,15 @@
+using DSAExperimentation.DataStructures.SubstringIndex;
 using DSAExperimentation.DataStructures.SuffixTree;
+using DSAExperimentation.Tests.DataStructures.SubstringIndex.Fixtures;
+using SuffixArrayStructure = DSAExperimentation.DataStructures.SuffixArray.SuffixArray;
 using SuffixTreeStructure = DSAExperimentation.DataStructures.SuffixTree.SuffixTree;
 
 namespace DSAExperimentation.Tests.DataStructures.SuffixTree;
 
 public sealed partial class SuffixTreeTests
 {
+    public static TheoryData<string> TextNames => new(SubstringIndexTexts.Names);
+
     // Hand-verified worked example from the design pass: "banana" never triggers a split (only the
     // leaf-becomes-internal path), so this alone can't catch a split-ordering bug - see the
     // "abcabd" tests below for that.
@@ -49,14 +54,82 @@ public sealed partial class SuffixTreeTests
         Assert.Empty(tree.FindOccurrences(Fixtures.AbsentPattern));
     }
 
+    // The empty pattern occurs at every insertion point, the text's end included, though no leaf
+    // stands for the empty suffix there.
     [Fact]
-    public void FindOccurrences_EmptyPattern_ReturnsEveryRealSuffixStart()
+    public void FindOccurrences_EmptyPattern_ReturnsEveryInsertionPoint()
     {
         var tree = new SuffixTreeStructure(Fixtures.BananaText);
 
         var occurrences = tree.FindOccurrences(string.Empty);
 
-        Assert.Equal(Enumerable.Range(0, Fixtures.BananaText.Length).ToHashSet(), occurrences.ToHashSet());
+        var insertionPoints = Enumerable.Range(0, Fixtures.BananaText.Length + 1).ToHashSet();
+
+        Assert.Equal(insertionPoints, occurrences.ToHashSet());
+    }
+
+    // "ana" ends mid-edge, on the way to the node for "anana"'s branch, and both suffixes that
+    // start with it run through that node.
+    [Fact]
+    public void CountOccurrences_Banana_CountsAnaTwiceThoughTheyOverlap() =>
+        Assert.Equal(
+            Fixtures.AnaOccurrences,
+            new SuffixTreeStructure(Fixtures.BananaText)
+                .CountOccurrences(Fixtures.KnownSubstringAna));
+
+    [Fact]
+    public void CountOccurrences_AbsentPattern_IsZero() =>
+        Assert.Equal(
+            0,
+            new SuffixTreeStructure(Fixtures.BananaText).CountOccurrences(Fixtures.AbsentPattern));
+
+    [Fact]
+    public void CountOccurrences_EmptyPattern_CountsEveryInsertionPoint() =>
+        Assert.Equal(
+            Fixtures.BananaText.Length + 1,
+            new SuffixTreeStructure(Fixtures.BananaText).CountOccurrences(string.Empty));
+
+    // "ab" at 0 and 3 is the deepest node two suffixes pass through, and it was made by a split.
+    [Fact]
+    public void FindLongestRepeat_AbcAbd_IsTheSplitNodesAb()
+    {
+        var repeat = new SuffixTreeStructure(Fixtures.AbcAbdText).FindLongestRepeat();
+
+        Assert.Equal(
+            Fixtures.AbSubstring, Fixtures.AbcAbdText.Substring(repeat.Start, repeat.Length));
+    }
+
+    [Fact]
+    public void FindLongestRepeat_EmptyText_IsTheEmptySubstring() =>
+        Assert.Equal(
+            SubstringOccurrence.Empty, new SuffixTreeStructure(string.Empty).FindLongestRepeat());
+
+    // The tree's leaves in character order are the suffix array, and the depths between neighbours
+    // its common prefix lengths: the conversion must agree with the array built from the text.
+    [Theory]
+    [MemberData(nameof(TextNames))]
+    public void ToSuffixArray_EveryText_IsTheSuffixArrayOfTheText(string textName)
+    {
+        var text = SubstringIndexTexts.Named(textName);
+        var expected = new SuffixArrayStructure(text);
+
+        var converted = new SuffixTreeStructure(text).ToSuffixArray();
+
+        Assert.Equal(ArraysOf(expected), ArraysOf(converted));
+    }
+
+    // Array to tree is the constructor; tree to array is ToSuffixArray. A round trip changes
+    // nothing.
+    [Theory]
+    [MemberData(nameof(TextNames))]
+    public void ToSuffixArray_TreeBuiltFromAnArray_GivesThatArrayBack(string textName)
+    {
+        var text = SubstringIndexTexts.Named(textName);
+        var original = new SuffixArrayStructure(text);
+
+        var roundTrip = new SuffixTreeStructure(text, original).ToSuffixArray();
+
+        Assert.Equal(ArraysOf(original), ArraysOf(roundTrip));
     }
 
     // "abcabd" (repeated substring "ab" at positions 0 and 3) specifically exercises the
@@ -94,11 +167,11 @@ public sealed partial class SuffixTreeTests
     }
 
     [Fact]
-    public void FindOccurrences_EmptyText_EmptyPatternReturnsEmpty()
+    public void FindOccurrences_EmptyText_EmptyPatternOccursOnceAtZero()
     {
         var tree = new SuffixTreeStructure(string.Empty);
 
-        Assert.Empty(tree.FindOccurrences(string.Empty));
+        Assert.Equal([0], tree.FindOccurrences(string.Empty));
     }
 
     [Fact]
@@ -166,6 +239,9 @@ public sealed partial class SuffixTreeTests
         }
     }
 
+    private static int[][] ArraysOf(SuffixArrayStructure suffixArray) =>
+        [suffixArray.Suffixes, suffixArray.Rank, suffixArray.LongestCommonPrefixArray];
+
     private static IEnumerable<string> CandidatePatterns(string text)
     {
         yield return string.Empty;
@@ -206,7 +282,7 @@ public sealed partial class SuffixTreeTests
     /// <summary>
     /// The texts these tests build suffix trees from, the patterns they search for, and the
     /// occurrence indices they expect back, named once so a second test does not have to reach
-    /// into a neighbour's body for them. A holder of its own because twenty-three constants
+    /// into a neighbour's body for them. A holder of its own because twenty-four constants
     /// beside the tests are a second subject, and the tests read as tests only once they are out
     /// of the way.
     /// </summary>
@@ -239,5 +315,6 @@ public sealed partial class SuffixTreeTests
 
         public const int SecondAnaOccurrenceIndex = 3;
         public const int SecondAbOccurrenceIndex = 3;
+        public const int AnaOccurrences = 2;
     }
 }

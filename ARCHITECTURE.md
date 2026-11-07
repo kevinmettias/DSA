@@ -334,6 +334,13 @@ representation swap from silently regressing performance instead of failing loud
 [`HeapArray.cs`](DSAExperimentation/DataStructures/Heap/HeapArray.cs) carry exactly this cross-reference
 as the worked example.
 
+The same rule, applied to a family of structures that answer overlapping questions at different
+costs, splits a contract by capability: each structure implements exactly the capabilities it
+answers well, and none fakes one with a slower walk. The substring indexes are the worked example
+(§13.12): `SuffixArray`, `SuffixTree` and `SuffixAutomaton` share presence, counting and the longest
+repeat, only the array and the tree list occurrences, and only the array answers the longest common
+prefix of two suffixes, through a composition rather than an interface.
+
 ## 9. Worked example: `Algorithms/Searching/BinarySearch`
 
 `BinarySearch` is bound to a Representation contract that the searching algorithms define for
@@ -782,7 +789,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | Folder | Holds |
 | --- | --- |
 | (root) | `AlgorithmConstants`, `ArrayGrowth`, `RangeBounds` — constants and checks read by more than one structure, at the lowest tier that reads them (§17.6a) |
-| `AhoCorasick/` | `AhoCorasick`, `AhoCorasickNode`, `AhoCorasickMatch` — witness-less, for §13.8's reasons |
+| `AhoCorasick/` | `AhoCorasick`, `AhoCorasickNode`, `AhoCorasickMatch` — witness-less, for §13.8's reasons; reviewed against the substring-index contracts and kept apart from them (§13.12) |
 | `Alphabets/` | `IAlphabet`, `LetterRun`, `LetterTable`, `ILetterSet`, `LetterSet` — an alphabet as an index scheme, each letter in a dense slot, with presets as struct witnesses; its two layouts, a run of character codes and letters spelled out in order; and a named subset of an alphabet's letters as a mask over its slots (§19.6). The presets are Domain's |
 | `Buffers/` | `ContiguousGroupBuffer`, `ContiguousGroupBufferStorage` (§14.1) |
 | `CircularBuffer/` | `CircularBuffer`, `IBufferCapacity`, `UnboundedCapacity`, `BoundedCapacity` — the wraparound structure the queue family configures, with its capacity a witness (§20) |
@@ -818,7 +825,8 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `Set/` | `Set` — composes `HashMap<T,bool>` (§4.1) |
 | `SinglyLinkedList/` | `SinglyLinkedListNode`, `RandomLinkedListNode`, the one linked node with `Random` added (§13.7, §13.11) |
 | `Stack/` | `Stack` — composes `DynamicArray` (§4.1) |
-| `SuffixArray/`, `SuffixAutomaton/`, `SuffixTree/` | `SuffixArray`; `SuffixAutomaton`, `SuffixAutomatonState`; `SuffixTree`, `SuffixTreeNode` — witness-less, for §13.8's reasons |
+| `SubstringIndex/` | `ISubstringIndex`, `ICountingSubstringIndex`, `ILocatingSubstringIndex`, `ILongestRepeatIndex`, `SubstringOccurrence` — the substring-index contracts, split by capability (§13.12) |
+| `SuffixArray/`, `SuffixAutomaton/`, `SuffixTree/` | `SuffixArray`, `SuffixArrayIndex` (the array kept with its text, for pattern queries), `LongestCommonPrefixQueries` (a range minimum beside the array); `SuffixAutomaton`, `SuffixAutomatonState`; `SuffixTree`, `SuffixTreeNode` — witness-less, for §13.8's reasons; each implements the substring-index contracts it answers well, and `SuffixTree.ToSuffixArray` (with `SortedLeafWalk`, its walk's state) and the tree's constructor convert between tree and array (§13.12) |
 
 **`Algorithms/`** is organized by utility, and holds the Operations not hardwired to one of this
 repo's Representations (§13.5). `Searching` and `Sorting` have no topology axis (§4.1/§10.2) but
@@ -1068,6 +1076,8 @@ walks `Fail`/`OutputLink` edges that aren't tree edges at all, so at most its co
 would earn a witness, not the automaton itself; `SuffixAutomaton`'s transition graph is a DAG, not
 a tree, though its suffix-link parent pointers form a separate, real tree that's a plausible
 witness candidate in its own right.
+What these three answer as substring indexes, and what `AhoCorasick` does not, is a separate
+question from whether any of them earns a tree witness, and §13.12 answers it.
 
 There is one trie, not two (the owner's ruling of 2026-11-02, quoted in §17.5). Until then a
 general `Trie<TValue>` and a bounded-alphabet sibling each carried a copy of the key walk behind
@@ -1270,6 +1280,119 @@ The contract suites run over all three configurations: `LinkedNodeTests` (value,
 walk, allocation) and `CycleDetectionTests` (every chain of up to nine nodes, acyclic and with its
 tail rejoining each node, and a doubly linked chain whose back links close a ring but whose forward
 links end).
+
+### 13.12 Substring indexes: one contract, split by what each structure answers
+
+`SuffixArray`, `SuffixTree` and `SuffixAutomaton` each index one fixed text so that a question about
+a pattern costs time in the pattern rather than the text. They answer some of the same questions at
+different costs, and some questions only one of them answers well, so the contract is split by
+capability (§8) and each structure implements exactly what it answers naturally. The contracts sit
+in `DataStructures/SubstringIndex/`:
+
+- `ISubstringIndex`: `HasSubstring`, whether a pattern occurs.
+- `ICountingSubstringIndex : ISubstringIndex`: `CountOccurrences`, how often, without listing where.
+- `ILocatingSubstringIndex : ISubstringIndex`: `FindOccurrences`, every position.
+- `ILongestRepeatIndex`: `FindLongestRepeat`, the longest substring that occurs twice, overlaps
+  allowed (LC 1044's question), as a `SubstringOccurrence` (start, length). It takes no pattern, so
+  it does not extend `ISubstringIndex`.
+
+Counting and locating are the text-index literature's names for the two queries an FM-index answers.
+Two laws bind every implementation: characters compare by ordinal value, and the empty pattern
+occurs at each of the text's n + 1 insertion points. `SuffixTree.FindOccurrences` used to answer n,
+having no leaf for the empty suffix; it now answers n + 1, as `SuffixAutomaton` and the repository's
+FindAll family already did.
+
+| Capability | `SuffixArray` | `SuffixTree` | `SuffixAutomaton` |
+| --- | --- | --- | --- |
+| Build | O(n log² n): prefix doubling, then Kasai | the array's build, then O(n) | O(n) amortized, online |
+| `HasSubstring` | O(m log n), through `SuffixArrayIndex` | O(m) | O(m) |
+| `CountOccurrences` | O(m log n): two binary searches | O(m): the build counts the suffixes through each node | O(m): end-position counts from the build |
+| `FindOccurrences` | O(m log n + occ): a run of the sorted suffixes | O(m + occ): the leaves below | not answered: a state keeps how many positions it ends at, not which |
+| `FindLongestRepeat` | O(n): the largest neighbour prefix | O(n): the deepest node two suffixes pass through | O(n): the longest state ending at two positions |
+| Longest common prefix of two suffixes | O(log n) after O(n): `LongestCommonPrefixQueries` | through `ToSuffixArray` | not answered: its link tree gives the longest common suffix of two prefixes |
+
+The tree's and the automaton's O(m) is per character through a node's `HashMap`, O(1) on average,
+the performance law §8 asks each type to state.
+
+**What each adds is a composition, not a flag.** `SuffixArray` keeps the sorted suffixes, their
+ranks and the neighbour prefixes, and drops its copy of the text: that is all LC 899, 1044 and 1163
+read, and their construction is the code it was. A pattern query compares the pattern against the
+text, so `SuffixArrayIndex` keeps the text beside an array, and that pair is the array's substring
+index. The longest repeat needs no text, so the bare array answers it. The longest common prefix of
+two suffixes is a range minimum over the neighbour prefixes, so `LongestCommonPrefixQueries` builds
+a `SegmentTree<int, Minimum<int>>` beside the array, as `PreOrderLowestCommonAncestor` builds one
+beside its tour: O(n) to prepare and O(log n) a query, where a sparse table would trade O(n log n)
+preparation for O(1). Only the array answers that question naturally, so it has no interface; an
+interface with one implementation is the speculative cost §5 step 3 declines. The suffix tree adds
+an int per node, how many suffixes run through it, set as the stack build pops the node off its
+rightmost path (the ranks from its first suffix up to the one that pushed it off), which makes
+counting O(m) instead of O(m + occ). The automaton adds each state's first end position, set when
+the state is made and copied by a clone, which places the longest repeat it finds.
+
+**Callers keep static dispatch.** The structures are classes, so code generic over these contracts
+is shared over `__Canon`, and its interface calls go through a runtime lookup. Users call the
+concrete types. The strategy benchmark first wrote its batch loops once, generic over the contract
+and always inlined, and the tier-1 code still called through the interface: inlining a shared
+generic body does not devirtualize a call on its reference-type argument, and profile-guided
+devirtualization at best guarded an inlined copy with a type check. So it has one loop per
+structure, overloaded by type, and each arm's calls are direct. The contract suite goes through the
+interfaces, since it times nothing.
+
+**The conversions.** A suffix array with its neighbour prefixes becomes a suffix tree through the
+tree's constructor, the stack build it always had. A tree becomes an array through
+`SuffixTree.ToSuffixArray`: a depth-first walk that takes each node's children in character order
+meets the suffixes in sorted order (a suffix ending at a node first, as a prefix of those below),
+and two neighbours share the shallowest depth the walk passes between them, O(n σ log σ) for σ
+letters. `SuffixTreeTests` holds the conversion to the array built from each fixture text, and a
+round trip to the array a tree was built from. Neither conversion reaches the automaton: its
+suffix-link tree is the suffix tree of the reversed text, so reaching the text's own tree means
+building the automaton of the reversed text, and the automaton of the text is built afresh in O(n),
+which no conversion beats.
+
+**`AhoCorasick` stays apart.** It indexes a set of patterns and is asked about a text: the dual of a
+substring index, which indexes a text and is asked about patterns. No operation of one contract fits
+the other; `HasSubstring` on a pattern-set automaton would have to mean "is this one of the
+patterns", a different question. A sibling contract, a multi-pattern matcher, would have one
+implementation, since LC 3213's and LC 3076's baselines try each pattern at each position with no
+layer of their own to put behind it, so it waits for a second matcher (§5 step 3; L6 would find
+one). The two families meet on one problem, which of k patterns occur in a text: one Aho-Corasick
+pass answers it in O(n + Σm + matches), and a substring index of the text answers each pattern in
+turn; which to build is decided by which side is fixed and reused. Whether its construction-time
+trie earns a tree witness is §13.8's question, not this one.
+
+**The suite and the benchmark.** The suite is a class per contract (`SubstringIndexTests`,
+`CountingSubstringIndexTests`, `LocatingSubstringIndexTests`, `LongestRepeatIndexTests`), each
+running its contract over every structure that implements it, on 24 texts: random over two to four
+letters, and adversarial (none, one letter, a run and runs broken at either end, periods with and
+without a break, the Fibonacci and Thue-Morse words, all-distinct letters, a repeat at both ends
+that does not overlap, letters that differ only in case, banana, mississippi). Each is asked every
+pattern a scan draws from it, the empty pattern and patterns running past the text's end among them,
+against the scan's answer. `LongestCommonPrefixQueriesTests` asks every pair of suffixes. Seven
+mutation probes each failed it: an occurrence ending at the text's end sorting before the pattern in
+the array's search, the automaton's last position contributing no occurrence, the tree's last
+rightmost-path nodes counting one rank short, a longest repeat accepted only when its occurrences
+overlap and one accepted only when they do not, the conversion's neighbour prefixes shifted to a
+node's own depth, and the range minimum shifted one neighbour later. `SubstringIndexBenchmarks`
+compares the three on presence and counting for 1,000 patterns, the longest repeat, and building,
+over random DNA texts of 1,000 and 100,000 letters; its `Query` parameter is the operation, so each
+row compares the three on one.
+
+**What the users' code became.** LC 1044's composed arm calls `SuffixArray.FindLongestRepeat`, the
+scan it wrote out before. Read in tier-1 code under the `inlining` verb with `DOTNET_JitDisasm`
+(§19.8), 15 s an arm, four or five times a side with dynamic PGO and once without, the solution
+method makes the same calls, with `FindLongestRepeat` inlined, in fewer instructions in every run:
+237 to 239 before and 231 to 234 after with PGO, 79 and 76 without. In bytes that is 926 (952 once)
+and 947 or 948 with PGO, two more callee-saved registers and one epilogue fewer, and 279 and 266
+without. With PGO the benchmark arm, a 10-byte jump to the solution method before, now inlines it
+whole. `FindLongestRepeat` is always inlined: as a call, without PGO, the array escaped into it and
+its object moved from the stack to the heap, with a write barrier per field.
+`SubstringOccurrence.Empty` is built where it is read, since a static field of the struct cost a
+static-base helper call in the inlined code. LC 1163's method is the same instructions (859 and 203
+bytes, PGO on and off). `SuffixArray`'s construction helpers, whose IL did not change, are the same
+bytes without PGO (`BuildSuffixArray` 300, `BuildRank` 72, `BuildLongestCommonPrefixArray` 280);
+with it `BuildSuffixArray` read 561 in four runs of five before and 561 to 604 after, the spread
+profile counts give one method between runs. LC 899's and the `AhoCorasick` users' code did not
+change.
 
 ## 14. Worked example: the three Storage/Operations decompositions
 

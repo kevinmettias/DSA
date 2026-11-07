@@ -61,26 +61,15 @@ internal static class LongestDuplicateSubstringSolution
             && second + offset < text.Length
             && text[first + offset] == text[second + offset];
 
-    // Composed: the answer is the maximum entry of the suffix array's
-    // longest-common-prefix array, and the substring it names starts at the suffix
-    // that entry belongs to. O(n log^2 n) to build, then one linear scan.
+    // Composed: the answer is the suffix array's longest repeat, the maximum entry of
+    // its longest-common-prefix array starting at the suffix that entry belongs to -
+    // the scan this arm once wrote out, now the array's own FindLongestRepeat.
+    // O(n log^2 n) to build, then one linear scan. No repeat comes back as the empty
+    // substring at 0, which is LeetCode's "".
     public static string LongestDuplicateSubstringBySuffixArray(string text)
     {
-        var suffixArray = new SuffixArrayStructure(text);
-        var longestCommonPrefixes = suffixArray.LongestCommonPrefixArray;
+        var repeat = new SuffixArrayStructure(text).FindLongestRepeat();
 
-        var bestLength = 0;
-        var bestSuffixIndex = 0;
-
-        for (var i = 0; i < longestCommonPrefixes.Length; i++)
-        {
-            if (longestCommonPrefixes[i] > bestLength)
-            {
-                bestLength = longestCommonPrefixes[i];
-                bestSuffixIndex = i;
-            }
-        }
-
-        return bestLength == 0 ? "" : text.Substring(suffixArray.Suffixes[bestSuffixIndex], bestLength);
+        return text.Substring(repeat.Start, repeat.Length);
     }
 }

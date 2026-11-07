@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.SubstringIndex;
 using SuffixArrayStructure = DSAExperimentation.DataStructures.SuffixArray.SuffixArray;
 
 namespace DSAExperimentation.Tests.DataStructures.SuffixArray;
@@ -90,6 +91,18 @@ public sealed partial class SuffixArrayTests
         Assert.Equal(expected, suffixArray.Suffixes);
     }
 
+    // Banana's neighbour prefixes are [1, 3, 0, 0, 2]: the 3 is "ana", shared by the suffixes at 3
+    // and 1, and reported at the first of the two in sorted order.
+    [Fact]
+    public void FindLongestRepeat_Banana_IsAnaAtTheFirstOfItsSortedSuffixes() =>
+        Assert.Equal(
+            new SubstringOccurrence(Fixtures.BananaAnaStart, Fixtures.AnaLength),
+            Build(Fixtures.Banana).FindLongestRepeat());
+
+    [Fact]
+    public void FindLongestRepeat_NoNeighboursShareALetter_IsTheEmptySubstring() =>
+        Assert.Equal(SubstringOccurrence.Empty, Build(Fixtures.Dcba).FindLongestRepeat());
+
     // The one place a text becomes a suffix array, so a case chooses a text and a
     // comparer and gets the same O(1)-indexed structure every test asserts against.
     private static SuffixArrayStructure Build(string text) => Build(text, Comparer<char>.Default);
@@ -164,6 +177,8 @@ public sealed partial class SuffixArrayTests
         public const string EmptyText = "";
         public const string SingleCharacterText = "a";
         public const string MixedCaseText = "BaAb";
+        public const int BananaAnaStart = 3;
+        public const int AnaLength = 3;
 
         public static readonly int[] BananaSuffixOrder = [5, 3, 1, 0, 4, 2];
         public static readonly int[] BananaLcpValues = [1, 3, 0, 0, 2];

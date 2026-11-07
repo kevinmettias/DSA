@@ -14,6 +14,12 @@ internal sealed class SuffixAutomatonState
     // Suffix link to another state; -1 only for the root (state 0).
     public int Link { get; set; } = -1;
 
+    // The position of the last character of this state's first occurrence: the text's position
+    // when the main extension step created it, its original's when CloneState copied it, since a
+    // clone's end positions include its original's. -1 for the root, whose empty string ends
+    // before the text's first character.
+    public int FirstEnd { get; set; } = -1;
+
     // True for a state created by CloneState rather than by the main extension step - the
     // discriminator SuffixAutomaton's endpos-size precompute uses to decide which states get a
     // direct occurrence contribution of 1 (every non-root, non-clone state) versus 0 (root and

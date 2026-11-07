@@ -13,6 +13,10 @@ public sealed partial class SuffixTreeNodeTests
     [Fact]
     public void IsSuffixEnd_NewNode_IsFalse() => Assert.False(new SuffixTreeNode().IsSuffixEnd);
 
+    // The build sets the count when the node's subtree is complete; until then it counts nothing.
+    [Fact]
+    public void SuffixCount_NewNode_IsZero() => Assert.Equal(0, new SuffixTreeNode().SuffixCount);
+
     [Theory]
     [MemberData(nameof(RealSuffixStarts))]
     public void IsSuffixEnd_AnySuffixStartFromZeroUp_IsTrue(int suffixStart)
