@@ -7,4 +7,8 @@ public sealed partial class TrieFailuresTests
     [Fact]
     public void ThrowNotAChildRank_NamesTheRank() =>
         Assert.Equal("rank", Assert.Throws<ArgumentOutOfRangeException>(() => TrieFailures.ThrowNotAChildRank(2)).ParamName);
+
+    [Fact]
+    public void ThrowCountFull_IsAnOverflow() =>
+        Assert.Throws<OverflowException>(TrieFailures.ThrowCountFull);
 }

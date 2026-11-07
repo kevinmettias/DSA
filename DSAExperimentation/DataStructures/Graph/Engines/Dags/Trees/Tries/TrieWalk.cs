@@ -36,6 +36,28 @@ internal static class TrieWalk<TNode, TStore, TLetter>
         return current;
     }
 
+    // The same walk, applying a step to each node on the path, the root first: how a payload kept
+    // along the path, a count, follows a key in or out. On a path already laid down it adds
+    // nothing, so a step that undoes another takes a key back out along the path it went in by.
+    // The walk without a step stays a method of its own, so that no configuration without a
+    // payload on its path inlines a step it does not take.
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static TNode GetOrAddPath<TKey, TStep>(TNode root, TKey key)
+        where TKey : struct, ITrieKey<TLetter>
+        where TStep : struct, ITrieStep<TNode>
+    {
+        TStep.Apply(root);
+        var current = root;
+
+        for (var position = 0; position < key.Length; position++)
+        {
+            current = current.Children.GetOrAddChildFor(key.LetterAt(position));
+            TStep.Apply(current);
+        }
+
+        return current;
+    }
+
     // The node a key's path ends on, or null where the path stops short of it.
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TNode? Find<TKey>(TNode root, TKey key)

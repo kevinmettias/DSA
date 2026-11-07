@@ -2,6 +2,52 @@
   "schema": 1,
   "waivers": [
     {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/MaxXorWalk.cs",
+      "reason": "Pattern's ChildFor(...)! promises the query's own digit's child holds a value once the opposite digit's child holds none. The walk's precondition is that the root holds a value (BitTrie and CountedBitTrie call it only once Count \u003e 0), and a node holds a value exactly when one of its children does: for BitTrieNode every Insert walks all 32 levels and nothing is removed, so a node above the last level has a child; for CountedBitTrieNode a node's count is the sum of its children's. So with the opposite child empty the own child holds every value the node does, by elimination between exactly two. Moved here from BitTrie.cs with the walk it waives. Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-error-values",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/TrieFailures.cs",
+      "reason": "ThrowCountFull is CountedBitTrie's refusal of an insert past int.MaxValue copies, the OverflowException IXorMultiset's contract names. It is a capacity boundary, not an outcome a caller handles: no LeetCode bound comes within six orders of magnitude of it, a count that wrapped would read as nothing held and corrupt every later walk, and PooledCountedBitTrie, the other implementation of the contract, throws the same exception from checked arithmetic. An error value would put a test after every Insert in every caller for a case none of them can reach. Thrown from here so the insert walk keeps no throw in its body, as ThrowNotAChildRank is.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/CountedBitTrie.cs",
+      "message": "is exercised by a test, and NO TEST NAMES IT",
+      "reason": "CountedBitTrie's Count, TryRemove, TryMaxXor and CountXorBelow are held to IXorMultiset's contract by XorMultisetContractTests, the layer's one contract suite, which CountedBitTrieMultisetTests runs over CountedBitTrie through its view CountedBitTrieMultiset; its private steps' Apply run in every Insert and TryRemove there, and SeedRootCount, the test seam, in CountedBitTrieTests' overflow facts, which name Insert. check-test-coverage reads a test's subject from the class that declares the test method, so facts a configuration inherits from a contract suite never reach the type it configures, and it reports members that the contract's run exercises and names. Writing the facts again in each configuration would be a second copy of the contract, the duplication one suite per layer exists to avoid (ARCHITECTURE 17.5). Scoped by message to exercised-but-unnamed findings: a member no test runs is still reported.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/CountedBitTrieMultiset.cs",
+      "message": "is exercised by a test, and NO TEST NAMES IT",
+      "reason": "CountedBitTrieMultiset's Count, Empty, TryRemove, TryMaxXor and CountXorBelow are held to IXorMultiset's contract by XorMultisetContractTests, the layer's one contract suite, whose every fact CountedBitTrieMultisetTests inherits; its own fact is that the view holds no state of its own. check-test-coverage reads a test's subject from the class that declares the test method, so facts a configuration inherits from a contract suite never reach the type it configures, and it reports members that the contract's run exercises and names. Writing the facts again in each configuration would be a second copy of the contract, the duplication one suite per layer exists to avoid (ARCHITECTURE 17.5). Scoped by message to exercised-but-unnamed findings: a member no test runs is still reported.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/PooledCountedBitTrie.cs",
+      "message": "is exercised by a test, and NO TEST NAMES IT",
+      "reason": "PooledCountedBitTrie's Count, TryRemove, TryMaxXor and CountXorBelow are held to IXorMultiset's contract by XorMultisetContractTests, the layer's one contract suite, which PooledCountedBitTrieMultisetTests runs over PooledCountedBitTrie through its view, the same suite the template meets; SeedRootCount, the test seam, runs in PooledCountedBitTrieTests' overflow facts, which name Insert. check-test-coverage reads a test's subject from the class that declares the test method, so facts a configuration inherits from a contract suite never reach the type it configures, and it reports members that the contract's run exercises and names. Writing the facts again in each configuration would be a second copy of the contract, the duplication one suite per layer exists to avoid (ARCHITECTURE 17.5). Scoped by message to exercised-but-unnamed findings: a member no test runs is still reported.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/PooledCountedBitTrieMultiset.cs",
+      "message": "is exercised by a test, and NO TEST NAMES IT",
+      "reason": "PooledCountedBitTrieMultiset's Count, Empty, TryRemove, TryMaxXor and CountXorBelow are held to IXorMultiset's contract by XorMultisetContractTests, the layer's one contract suite, whose every fact PooledCountedBitTrieMultisetTests inherits; its own fact is that the view holds no state of its own. check-test-coverage reads a test's subject from the class that declares the test method, so facts a configuration inherits from a contract suite never reach the type it configures, and it reports members that the contract's run exercises and names. Writing the facts again in each configuration would be a second copy of the contract, the duplication one suite per layer exists to avoid (ARCHITECTURE 17.5). Scoped by message to exercised-but-unnamed findings: a member no test runs is still reported.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-responsibility-extraction",
       "path": "DSAExperimentation/Domain/Games/PositionalGames/Bitboard256.cs",
       "reason": "Bitboard256 is a value type, and its public surface is its arithmetic, as ulong's is: the four bitwise operators and the two shifts that carry bits across its words; the reads by which a game numbers its moves by the open cells (Count, LowestCell, NthCell, CountBelow, WithoutLowestCell); and Cell, Of and HasCell, which make and test a mask of cells. Its words are private so that no other type depends on the representation, and every operation reads them, so moving any out would expose the words or give a second type the same four fields. Counted the way the check counts, nine declarations of one subject.",
@@ -121,13 +167,6 @@
       "check": "check-responsibility-extraction",
       "path": "DSAExperimentation/Domain/Games/PositionalGames/BitboardGame.cs",
       "reason": "Four of the nine public declarations are IAlternatingGame's members (MoveCount, Next, Gain, ValueWhenOver), which the game must have to be searched, and two are the type and its constructor. The other three are the one subject they serve, the game's numbering of its moves: ChoicesOf (the choices open, which CentreFirstColumns orders), ChoiceOf (the choice a move number makes, how a caller reads a best move as a column) and Replay (a position from the choices played, how a caller sets one up). Moving them out would leave them reading the game's private board and masks from another type.",
-      "owner": "@kmettias",
-      "expires": "2027-05-01"
-    },
-    {
-      "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/BitTrie.cs",
-      "reason": "MaxXorPattern's ChildFor(...)! promises the same bit's child is present once the opposite bit's child is absent: every Set walks all 32 levels before it returns and nothing is ever removed, so every node the walk reaches above the last level has a child, and with the opposite one absent the same one is present by elimination between exactly two. TryMaxXor walks only once Count \u003e 0. Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2027-05-01"
     },

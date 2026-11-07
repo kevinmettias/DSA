@@ -1,5 +1,4 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.CountedBitTrie;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 using DSAExperimentation.DataStructures.Sequence;
 
@@ -38,7 +37,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumStrongPairXORII;
 // The more obvious shape - sort, then one window of
 // partners that grows on the right and shrinks on the left - needs a trie that
 // can take a value back out, and that is the sliding-window strategy below, over
-// CountedBitTrie (DataStructures/CountedBitTrie/CountedBitTrie.cs).
+// PooledCountedBitTrie, the pooled strategy for the XOR multiset (ARCHITECTURE 13.9).
 [LeetCodeQuestion("maximum-strong-pair-xor-ii", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumStrongPairXORIISolution
 {
@@ -95,11 +94,11 @@ internal static class MaximumStrongPairXORIISolution
     // is its partner exactly when 2x >= y. y only grows walking right, so the
     // smallest partner only moves right too, and the window [left, right] holds
     // exactly y's partners - y itself among them, whose XOR of 0 never wins.
-    // CountedBitTrie holds the window: a value that falls out on the left is
+    // PooledCountedBitTrie holds the window: a value that falls out on the left is
     // removed, so one trie serves every y.
     public static int MaximumStrongPairXorBySlidingWindow(ArrayIndexedSequence<int> sortedNums)
     {
-        var window = new CountedBitTrie();
+        var window = new PooledCountedBitTrie();
         var best = 0;
         var left = 0;
 

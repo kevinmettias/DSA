@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.CountedBitTrie;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 using DSAExperimentation.Domain.Mathematics.Algebra;
 using DSAExperimentation.DataStructures.MonotonicDeque;
 using DSAExperimentation.DataStructures.PrefixSums;
@@ -59,14 +59,14 @@ internal static class MaximumSubarrayXORWithBoundedRangeSolution
     // in a MinMaxWindow. A subarray [l, r]'s XOR is TotalBefore(r + 1) XOR
     // TotalBefore(l) of this repo's PrefixSums under BitwiseXor, so the best
     // subarray ending at r is the best XOR of TotalBefore(r + 1) against the live
-    // totals TotalBefore(left..r) - one greedy walk down this repo's CountedBitTrie,
+    // totals TotalBefore(left..r) - one greedy walk down this repo's PooledCountedBitTrie,
     // which takes back each total the left edge passes. The window always holds
     // TotalBefore(right), so that walk always finds a live value.
     // O(n * 32) against the scan's O(n * window).
     public static int MaxSubarrayXorBySlidingWindowBitTrie(int[] nums, int maxSpread)
     {
         var prefix = new PrefixSums<int, BitwiseXor<int>>(nums);
-        var live = new CountedBitTrie();
+        var live = new PooledCountedBitTrie();
         var window = new MinMaxWindow<int>();
         var left = 0;
         var best = 0;

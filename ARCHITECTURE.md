@@ -815,7 +815,6 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `Alphabets/` | `IAlphabet`, `LetterRun`, `LetterTable`, `ILetterSet`, `LetterSet` — an alphabet as an index scheme, each letter in a dense slot, with presets as struct witnesses; its two layouts, a run of character codes and letters spelled out in order; and a named subset of an alphabet's letters as a mask over its slots (§19.6). The presets are Domain's |
 | `Buffers/` | `ContiguousGroupBuffer`, `ContiguousGroupBufferStorage` (§14.1) |
 | `CircularBuffer/` | `CircularBuffer`, `IBufferCapacity`, `UnboundedCapacity`, `BoundedCapacity` — the wraparound structure the queue family configures, with its capacity a witness (§20) |
-| `CountedBitTrie/` | `CountedBitTrie` — a bit trie over a multiset, whose values can be removed: every node carries a count, and a walk reads the counts to tell a live branch from a dead one. It stands beside `BitTrie` rather than inside it, so `BitTrie`'s insert-only users pay for no counts, and it has no `ITreeTopology` witness for both of §13.9's reasons: its nodes are slots in shared arrays, and after a removal it still holds paths whose values are gone |
 | `CursorSequence/` | `CursorSequence` — a sequence edited and read at a cursor between two `DynamicArray`s, the composition `Stack` makes with a cursor in place of LIFO (§4.1). LC 2296's text editor uses it; LC 1472's browser history declined it, measured, because its jumps of k pages cost O(k) transfers here against an index's O(1) |
 | `Deque/` | `Deque`, `BoundedDeque` — `CircularBuffer` unbounded and bounded (§20) |
 | `DisjointSet/` | `DisjointSetForest`, `DisjointSet` (§10) |
@@ -827,7 +826,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `Graph/Contracts/Topologies/` | `IGraphTopology`, `IEdgeTopology`, `EdgeTopologyAsGraphTopology` (§3.2) |
 | `Graph/Engines/Dags/` | `IDagTopology` (§3.2) |
 | `Graph/Engines/Dags/Trees/` | `ITreeTopology`; the binary tree (`BinaryTreeNode`, `BinaryTreeChildren`, `BinaryTreeTopology`, `ChildSide`, `BinarySearchTree`, `InOrderTraversal`, `IInOrderHooks`, `FindClosest`); the rooted tree (`RootedTreeNode`, `RootedTreeTopology`, `ParentArrayTree`, `EdgeListTree`, `PreOrderTour`, `PreOrderLowestCommonAncestor`); the quad tree (`QuadTreeNode`, `QuadTreeGrid`). `EdgeListTree` roots LeetCode's undirected edge list with a breadth-first walk, returning the parent array `ParentArrayTree` reads and, for each node, the index of the edge that joins it to its parent - the one thing a parent array cannot recover. `PreOrderTour` lays a `RootedTreeNode` tree out in pre-order, so every subtree is one contiguous range of positions; `PreOrderLowestCommonAncestor` reads ancestors off that layout with one range minimum, O(log n) per query after O(n) preparation. It is hardwired to the tour, so it lives here rather than beside `Algorithms/Ancestry/LowestCommonAncestor`, which is generic over `ITreeTopology` (§13.5) |
-| `Graph/Engines/Dags/Trees/Tries/` | The one trie (§13.8): `IPrefixMap`, the map's contract, and `IPrefixSet`, the set's, which the trie meets through `PrefixSet`, its view of a map to `bool`; `TrieWalk`, the walk down a key written once for every configuration; the key each configuration injects, `ITrieKey`: `TextKey`, a string's characters, `Int32BitsKey`, an int's 32 bits from the most significant, and `KeyPrefix`, a key's first letters, which a prefix query walks; the node, `ITrieNode`, whose class is the configuration's payload: `TrieNode`, a value and whether a key ends there, and `BitTrieNode`, nothing; the map, `Trie<TKey, TLetter, TStore, TValue>`, with the word trie `Trie<TStore, TValue>` as its configuration, and the set `BitTrie`, the trie over an int's bits with its maximum-XOR walk; the maximum-XOR set's contract, `IMaxXorSet`, which `BitTrie` meets through its view `BitTrieSet` and `TwoFieldBitTrie`, the hand-specialized strategy for that layer, meets on its own (§13.9); and the child store each configuration injects, `ITrieChildStore`, or `IOrderedTrieChildStore` for a store whose children have an order. `AlphabetSlots` (with `AlphabetSlotsEnumerator`) keeps a node's children in slots over any `IAlphabet` of up to 64 letters, in letter order, so its trie has a real witness (`TrieTopology`, `TrieChildren`); `HashedChildren` takes any `char` and has no order, so its trie has none. `BinarySlots` keeps a node's two children inline, one per binary digit, 0 before 1, for any node class, so the bit trie has a witness too, `TrieNodeTopology` with `TrieNodeChildren`, the witness for a node class other than `TrieNode` (§13.9). `ITrieLayout`, `DenseTrieLayout`, `PackedTrieLayout` — where the slot store keeps its children, a type argument each trie names |
+| `Graph/Engines/Dags/Trees/Tries/` | The one trie (§13.8): `IPrefixMap`, the map's contract, and `IPrefixSet`, the set's, which the trie meets through `PrefixSet`, its view of a map to `bool`; `TrieWalk`, the walk down a key written once for every configuration; the key each configuration injects, `ITrieKey`: `TextKey`, a string's characters, `Int32BitsKey`, an int's 32 bits from the most significant, and `KeyPrefix`, a key's first letters, which a prefix query walks; the node, `ITrieNode`, whose class is the configuration's payload: `TrieNode`, a value and whether a key ends there, `BitTrieNode`, nothing, and `CountedBitTrieNode`, a count of the values whose path passes through it; the map, `Trie<TKey, TLetter, TStore, TValue>`, with the word trie `Trie<TStore, TValue>` as its configuration, and the set `BitTrie`, the trie over an int's bits with its maximum-XOR walk; the maximum-XOR set's contract, `IMaxXorSet`, which `BitTrie` meets through its view `BitTrieSet` and `TwoFieldBitTrie`, the hand-specialized strategy for that layer, meets on its own (§13.9); the counted bit trie `CountedBitTrie`, the trie over an int's bits with a count per node, so values can be removed, and the XOR multiset's contract, `IXorMultiset`, which `CountedBitTrie` meets through its view `CountedBitTrieMultiset` and `PooledCountedBitTrie`, the hand-specialized strategy whose nodes are slots in shared arrays, through `PooledCountedBitTrieMultiset` (§13.9); `IBitTrieNode`, a bit trie's node, whose payload says which children hold a value, `MaxXorWalk`, the maximum-XOR walk both bit tries share, and `ITrieStep`, what a walk does to each node on a key's path; and the child store each configuration injects, `ITrieChildStore`, or `IOrderedTrieChildStore` for a store whose children have an order. `AlphabetSlots` (with `AlphabetSlotsEnumerator`) keeps a node's children in slots over any `IAlphabet` of up to 64 letters, in letter order, so its trie has a real witness (`TrieTopology`, `TrieChildren`); `HashedChildren` takes any `char` and has no order, so its trie has none. `BinarySlots` keeps a node's two children inline, one per binary digit, 0 before 1, for any node class, so the bit trie has a witness too, `TrieNodeTopology` with `TrieNodeChildren`, the witness for a node class other than `TrieNode` (§13.9). `ITrieLayout`, `DenseTrieLayout`, `PackedTrieLayout` — where the slot store keeps its children, a type argument each trie names |
 | `Graph/Grids/` | `Grid`, `GridNode`, `GridChildren`, `GridSize`, `GridNeighbors`, `IGridCellFilter`, `GridTopology`, `IGridNodeSource` with `NodePerCell` and `NodePerStep`, and the weighted `WeightedGrid*` (§17.6). The steps they walk by, `GridStep` and `GridDirections`, are facts about the square lattice, in `Domain/Mathematics/Lattices`; a `Grid` carries the table its cells are joined by (`Steps`, the orthogonal four unless it is built with others, such as the octilinear eight LC 1091 moves by), and `GridChildren` reads which of them lead somewhere open into a mask once per node, so its `Count` is a population count and `Get` a set bit. `GridSize` is a board's extent and its one bounds rule, the bounded rectangle's (`Domain/Mathematics/Surfaces`); a walk's `IGridNodeSource` says whether a cell's node is the board's one node for it or a new one per step; `GridNeighbors` is a cell's on-board neighbours in a direction table's order, filtered by an `IGridCellFilter`, for a `DepthFirstSearch.Traverse` successor whose "open" is decided by the problem's cells rather than a fixed map like `Grid`'s |
 | `Graph/Hamming/` | `HammingNode`, `HammingTopology`, `HammingGraph`, `HammingSearch`, `MutationStart`, `MutationTarget` (§17.6); the letters a mutation writes are an `IAlphabet` type argument (§19.6) |
 | `Graph/ShortestPaths/` | `ByPriorityOrder` (§13.2) |
@@ -1128,7 +1127,9 @@ as LC 208's textbook trie does. The one trie is a set through `PrefixSet`, a str
 runs over the textbook trie and the view under each store. The bit trie's layer is the maximum-XOR
 set, `IMaxXorSet`: `BitTrie` meets it through `BitTrieSet`, the same kind of view, and
 `TwoFieldBitTrie` is the hand-specialized strategy for it, with one contract suite,
-`MaxXorSetContractTests`, over both (§13.9). Moving the bounded-alphabet trie's 12 problems onto the
+`MaxXorSetContractTests`, over both (§13.9). The counted bit trie's layer is the XOR multiset,
+`IXorMultiset`, with one suite, `XorMultisetContractTests`, over `CountedBitTrie` and the pooled
+strategy, `PooledCountedBitTrie` (§13.9). Moving the bounded-alphabet trie's 12 problems onto the
 one trie changed no allocation, and no time beyond what identical code reads apart, once the slot
 store's enumerator held a reference to the store rather than a copy: a copy is two values a
 recursive walk keeps alive across its calls, and it cost LC 676 12-30%. Moving the general trie's
@@ -1155,8 +1156,8 @@ whether a key ends there, laid out as before. `BitTrie`'s keys all end at depth 
 is a key's end and none above it is, and its node, `BitTrieNode`, carries nothing: its 32 bytes are
 the object header and the two child references. A store names the node class its children are
 (`ITrieChildStore<TSelf, TNode>`), so `AlphabetSlots` and `HashedChildren` name `TrieNode` as
-before, and `BinarySlots<TNode>` takes the node class as a type argument, so a node with a count can
-reuse it. A node class is a reference type, so `TrieWalk`'s code is shared across node classes
+before, and `BinarySlots<TNode>` takes the node class as a type argument, so `CountedBitTrieNode`,
+a node with a count, reuses it (§13.9). A node class is a reference type, so `TrieWalk`'s code is shared across node classes
 wherever it is not inlined, and calls through the node and store contracts in shared code are
 lookups at run time. Its two methods are marked to inline, which holds only while the method they
 inline into has inlining budget left: inlined into LC 2932's whole bucket sweep, a bit-trie insert
@@ -1261,7 +1262,54 @@ change the set, and a struct type argument costs nothing at run time, since each
 compiled for its set and calls it directly. The strategy is a class of its own beside LC 2935's
 solution rather than methods of it, because the catalog makes every static method of a solution
 class an arm, and a method over any set is no one arm (DSACAT001).
-`CountedBitTrie` fails both halves of the test, and §13.3 records why.
+`CountedBitTrie` is the one trie with a third payload, a count (the composition plan's C1, its
+second part): `Int32BitsKey` over `BinarySlots` with `CountedBitTrieNode`, which counts the held
+values whose path passes through it, so a value can be taken back out. A removal lowers the counts
+along a path and leaves its nodes, so a node's existence says only that some value once passed
+through it, and liveness is the count. Its walks are the template's. `Insert` and `TryRemove` are
+`TrieWalk`'s walk with a step, `ITrieStep`, that adds one to each count on the path, the root's
+first, or takes one away; the walk with a step is a method beside the walk without one, so no
+configuration without a payload on its path inlines a step. `TryRemove` first asks `TrieWalk.Find`
+whether the value's last node holds a copy. `TryMaxXor` is `MaxXorWalk`, the query walk moved out of
+`BitTrie` and written once over `IBitTrieNode`, whose payload says which child holds a value:
+`BitTrieNode`'s present children, `CountedBitTrieNode`'s positive ones. `BitTrie`'s query walk
+compiles as it did, 68 bytes in LC 421 and 83 in LC 1707, LC 1707's the same instructions and LC
+421's the same instructions in another block order, since the shared walk brings its own profile
+into the inline. `CountXorBelow`, the range count, is the one walk the counted configuration adds.
+Each walk is a static method over the root compiled on its own, as `BitTrie`'s are (§13.8): read
+in the four users' tier-1 code while they ran on it, each was called directly with its walk inlined,
+and nothing called shared trie code. With nodes that are objects it passes this section's first test, and it still fails the
+second, since after a removal the tree holds paths whose values are gone: it hands out no root, so
+no Tree-tier engine is given a node to walk. Every node's count is at most the root's, so the root's
+is the only count that can overflow, and an insert past `int.MaxValue` copies is refused before any
+count changes.
+
+Its node is 40 bytes, an object header, two references and the count, padded. A node of the pooled
+layout the counted trie had been is 12: two child slots side by side in one int array and the count
+in another, slot 0 a sentinel whose zeros let a walk step off every path without a test, and arrays
+that hold no references for the collector to trace. Measured in its four users (LC 1803, LC 1938,
+LC 2935's sliding window and LC 3845) in process, at each benchmark's sizes and over two passes, the
+one trie allocated 14-64% more in every one, and ran slower where the trie outgrows the cache, LC
+1803 at 5,000 values by 24-30% and LC 2935 at 20,000 by 10-26%, within the noise elsewhere. So the
+pooled layout stays, as `PooledCountedBitTrie`, the hand-specialized strategy for exactly one layer,
+the XOR multiset `IXorMultiset`, under §17.5's rule as the owner applied it to `TwoFieldBitTrie` on
+2026-11-06. The contract states the layer's invariants: `Count` counts copies, `TryRemove` takes
+one out and is false, changing nothing, when none is held, `TryMaxXor` and `CountXorBelow` read only
+held values as unsigned bit patterns, and an insert past `int.MaxValue` copies throws
+`OverflowException`. Both tries stay classes their users call directly, and each meets the contract
+through a struct view, `CountedBitTrieMultiset` and `PooledCountedBitTrieMultiset`, as `BitTrieSet`
+makes `BitTrie` a set. One contract suite, `XorMultisetContractTests`, holds both to a brute-force
+multiset, and `XorMultisetBenchmarks` (`StrategySwaps`) times them on a sliding window at LC 2935's
+sizes, the pooled trie as the baseline. All four users take the pooled trie, so the counted
+configuration of the one trie has no problem of its own yet; it is the template the strategy is
+measured against.
+
+The pooled trie's users changed only its name and the overflow check, and the check is checked
+arithmetic on the root's increment, which adds no IL: a comparison and a throw call ahead of the
+increment cost LC 3845's benchmarked root, which inlines its whole loop, inlining budget, and its
+budget ran out at different calls (97 inlines tried against 93). With checked arithmetic every
+user's root tries the same inlines as before and fails the same ones, and allocates the same bytes;
+`Insert` compiles one `inc` of the root's count as a load, an add, a jump on overflow and a store.
 
 ### 13.10 One segment tree: the range action is a witness
 

@@ -1,42 +1,24 @@
 using DSAExperimentation.Domain.Computing.Binary;
-namespace DSAExperimentation.DataStructures.CountedBitTrie;
 
-// A binary trie over int's 32-bit two's-complement pattern (bit 31 down to bit 0) holding a
-// MULTISET of ints that can shrink: every node counts the live values whose bit path passes
-// through it, so TryRemove takes a value back out, and the two greedy walks - TryMaxXor's
-// "prefer the opposite bit" and CountXorBelow's range count - read those counts to see only what
-// is live. Built for the members of the Maximum XOR family that forget values: a sliding window
-// (LeetCode 3845), a depth-first walk that undoes on the way back up (1938), and a range count
-// (1803).
+namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
+
+// A hand-specialized strategy for exactly one layer, the XOR multiset (IXorMultiset), beside the
+// one trie's configuration of it, CountedBitTrie (the owner's rule of 2026-11-02, as applied to the
+// bit trie on 2026-11-06, ARCHITECTURE §13.9). It keeps that layer's invariants and nothing more:
+// Count counts copies, TryRemove takes one back out, TryMaxXor reads only live values, and
+// CountXorBelow counts them below a limit. XorMultisetContractTests holds it and the template to
+// the same answers, and XorMultisetBenchmarks compares them.
 //
-// A new type beside BitTrie (Graph/Engines/Dags/Trees/Tries/BitTrie.cs), not a Remove bolted onto
-// it, because the two hold different things. BitTrie is insert-only: its structure IS its content -
-// a node exists exactly when some inserted value's path passes through it - and its TryMaxXor walk
-// leans on that, since every node it reaches has a child.
-// Here a removal leaves the nodes in place and lowers the counts, so a node's existence says only
-// that some value once passed through it; liveness is the count, and every walk reads it.
-// Putting a count on BitTrie would hand its insert-only users (LeetCode 421, 1707, 2932, 2935) a
-// count per node and a count test per step that none of them reads. BitTrie, its tree-topology
-// witness and every one of those users are untouched.
-//
-// No ITreeTopology witness, for both reasons ARCHITECTURE.md §13.9's test names. Nodes are slots
-// in shared arrays, not objects with an identity of their own - the Heap/DisjointSet case, not
-// BitTrieNode's. And the structural tree is not the content: after a removal it still holds every
-// path ever inserted, so a generic Tree-tier engine walking it (TreeMetrics.Size, say) would
-// count values that are gone.
-//
-// Index-addressed arrays rather than one object per node: _children keeps a node's two child
-// slots side by side at node * 2 + bit, so a walk picks a child by arithmetic on the bit instead
-// of branching between two fields, and _counts keeps its live count; the two double together when
-// full. Slot 0 is a sentinel for "no node" - count 0, both child slots pointing back at itself -
-// so a walk that steps off every inserted path keeps reading zeros instead of testing for an
-// absent child at each level. Nodes are never reclaimed: storage grows with the distinct paths
-// ever inserted (at most 32 nodes per value), not with Count.
-//
-// Measured side by side on the three solutions' operation mixes (BenchmarkDotNet medium job, 200
-// to 20,000 values): the counts the solutions kept in a HashMap<BitTrieNode, int> cost 5-10x
-// against the same class nodes carrying the count in a field, and these arrays then run 15-40%
-// faster than those nodes from 2,000 values up, within 15% either way at 200.
+// What it specializes away is the node as an object. Nodes are slots in shared arrays, a pool that
+// doubles when full: _children keeps a node's two child slots side by side at node * 2 + bit, so a
+// walk picks a child by arithmetic on the bit, and _counts keeps its live count. A node costs 12
+// bytes where the template's CountedBitTrieNode costs 40, an object header, two references and the
+// count, padded, and the arrays hold no references for the collector to trace. Slot 0 is a sentinel
+// for "no node", count 0 with both child slots pointing back at itself, so a walk that steps off
+// every inserted path keeps reading zeros instead of testing for an absent child at each level.
+// Nodes are never reclaimed: storage grows with the distinct paths ever inserted (at most 32 nodes
+// per value), not with Count. What it gives up is the one trie's node contract, so its walks are
+// its own, written out for an int's 32 bits.
 //
 // Every XOR here is read as an UNSIGNED 32-bit pattern, BitTrie.TryMaxXor's reading: TryMaxXor
 // maximizes the unsigned pattern and CountXorBelow compares unsigned. For non-negative values
@@ -46,10 +28,10 @@ namespace DSAExperimentation.DataStructures.CountedBitTrie;
 // Insert, TryRemove, TryMaxXor and CountXorBelow each walk the 32 levels once (TryRemove twice):
 // O(1), Insert's amortized over the doubling.
 /// <summary>
-/// A multiset of ints in a binary trie over their 32 bits, answering maximum-XOR and XOR-below-a-limit
-/// queries, with removal.
+/// A XOR multiset as a bit trie whose nodes are slots in shared arrays, its walks written out
+/// for ints.
 /// </summary>
-public sealed class CountedBitTrie
+public sealed class PooledCountedBitTrie
 {
     private const int ChildSlotsPerNode = 2;
 
@@ -66,16 +48,29 @@ public sealed class CountedBitTrie
     private int _nodeCount = Root + 1;
 
     // How many values are live, duplicates included - every live value's path starts at the root.
-    /// <summary>The number of values held, duplicates included.</summary>
+    /// <summary>Gets how many values are held, duplicates included.</summary>
     public int Count => _counts[Root];
 
+    // Every node's count is at most the root's, so the root is the only count that can overflow,
+    // and its increment, the first write, is checked arithmetic, which throws before it stores.
+    // Checked arithmetic adds no IL, only a jump on overflow in the compiled code, so callers that
+    // inline Insert keep their inlining budget: a comparison and a throw call written out ahead of
+    // the increment made LC 3845's benchmarked root, which inlines its whole loop, run out of
+    // budget at different calls than before.
     /// <summary>Adds one copy of a value.</summary>
     /// <param name="value">The value to add, any int.</param>
+    /// <exception cref="OverflowException">
+    /// The trie already holds <see cref="int.MaxValue"/> values.
+    /// </exception>
     public void Insert(int value)
     {
         var bits = unchecked((uint)value);
         var node = Root;
-        _counts[Root]++;
+
+        checked
+        {
+            _counts[Root]++;
+        }
 
         for (var level = BitWidths.Int32 - 1; level >= 0; level--)
         {
@@ -225,7 +220,9 @@ public sealed class CountedBitTrie
     /// <param name="limit">
     /// The exclusive bound, read unsigned, so an overflowed <c>int.MaxValue + 1</c> means 2^31.
     /// </param>
-    /// <returns>The number of held values, duplicates included, whose XOR with the value is below the limit.</returns>
+    /// <returns>
+    /// The number of held values, duplicates included, whose XOR with the value is below the limit.
+    /// </returns>
     public int CountXorBelow(int value, int limit)
     {
         var valueBits = unchecked((uint)value);
@@ -248,6 +245,11 @@ public sealed class CountedBitTrie
 
         return count;
     }
+
+    // A test's way to reach the overflow refusal without 2^31 inserts: the root alone is given the
+    // count, breaking the rule that a count is the sum of its children's, so nothing else is
+    // meaningful on a trie seeded this way.
+    internal void SeedRootCount(int count) => _counts[Root] = count;
 
     private static uint BitAt(uint bits, int level) => (bits >> level) & 1u;
 

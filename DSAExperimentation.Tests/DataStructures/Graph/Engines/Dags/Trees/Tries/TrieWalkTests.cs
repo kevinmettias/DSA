@@ -5,6 +5,11 @@ using BitWalk = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries
     DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.BinarySlots<
         DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.BitTrieNode>,
     int>;
+using CountedWalk = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieWalk<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.CountedBitTrieNode,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.BinarySlots<
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.CountedBitTrieNode>,
+    int>;
 using WordNode = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieNode<
     DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.AlphabetSlots<
         DSAExperimentation.Domain.Language.English.EnglishLowercase,
@@ -74,5 +79,25 @@ public sealed partial class TrieWalkTests
 
         Assert.Same(end, BitWalk.Find(root, new Int32BitsKey(5)));
         Assert.Null(BitWalk.Find(root, new Int32BitsKey(4)));
+    }
+
+    // 4 and 5 share their first 31 bits: the step reaches the root and that shared chain on both
+    // walks, and each leaf on its own walk only.
+    [Fact]
+    public void GetOrAddPath_WithAStep_AppliesItToEveryNodeOnThePathFromTheRoot()
+    {
+        var root = new CountedBitTrieNode();
+        var four = CountedWalk.GetOrAddPath<Int32BitsKey, CountUp>(root, new Int32BitsKey(4));
+        var five = CountedWalk.GetOrAddPath<Int32BitsKey, CountUp>(root, new Int32BitsKey(5));
+        var sharedBits = new KeyPrefix<Int32BitsKey, int>(new Int32BitsKey(4), 31);
+        var shared = CountedWalk.Find(root, sharedBits);
+
+        Assert.Equal((2, 2, 1, 1), (root.Count, shared?.Count, four.Count, five.Count));
+    }
+
+    // A test step: one more value passes through each node it reaches.
+    private readonly struct CountUp : ITrieStep<CountedBitTrieNode>
+    {
+        public static void Apply(CountedBitTrieNode node) => node.Count++;
     }
 }

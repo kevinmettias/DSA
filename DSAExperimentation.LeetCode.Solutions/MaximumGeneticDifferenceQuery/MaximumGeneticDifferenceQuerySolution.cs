@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
-using DSAExperimentation.DataStructures.CountedBitTrie;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
@@ -47,7 +47,7 @@ internal static class MaximumGeneticDifferenceQuerySolution
     }
 
     // Composed: one offline DepthFirstTraversal over the ParentArrayTree.Build tree.
-    // Each node's id is inserted into this repo's own CountedBitTrie as the walk enters
+    // Each node's id is inserted into this repo's own PooledCountedBitTrie as the walk enters
     // it and removed again as it leaves, so while a node is being visited the trie
     // holds exactly its ancestor set - every query parked on that node is then
     // answered by one O(32) greedy max-XOR walk over the live values instead of an
@@ -64,7 +64,9 @@ internal static class MaximumGeneticDifferenceQuerySolution
         var answers = new int[queries.Length];
 
         DepthFirstTraversal.Walk<RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>, AncestorWalk>(
-            root, new AncestorWalk(GroupQueriesByNode(queries, nodeCount), new CountedBitTrie(), answers));
+            root,
+            new AncestorWalk(
+                GroupQueriesByNode(queries, nodeCount), new PooledCountedBitTrie(), answers));
 
         return answers;
     }
@@ -106,11 +108,13 @@ internal static class MaximumGeneticDifferenceQuerySolution
     // queries are answered, so TryMaxXor always finds a live value and its result is
     // the answer.
     private readonly struct AncestorWalk(
-        List<(int QueryIndex, int Value)>[] queriesByNode, CountedBitTrie ancestors, int[] answers)
+        List<(int QueryIndex, int Value)>[] queriesByNode,
+        PooledCountedBitTrie ancestors,
+        int[] answers)
         : IDepthFirstHooks<RootedTreeNode>
     {
         private readonly List<(int QueryIndex, int Value)>[] _queriesByNode = queriesByNode;
-        private readonly CountedBitTrie _ancestors = ancestors;
+        private readonly PooledCountedBitTrie _ancestors = ancestors;
         private readonly int[] _answers = answers;
 
         public void Enter(RootedTreeNode node, int depth)

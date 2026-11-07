@@ -117,37 +117,12 @@ public sealed class BitTrie
         return true;
     }
 
-    // Precondition: Count > 0. Every Insert walks all 32 levels before it returns and nothing is
-    // ever removed, so every node this walk reaches above the last level has a child; where the
-    // opposite bit's child is absent, the same bit's is present. The walk looks for the query's
-    // complement, the partner every bit of whose XOR would be 1, and takes the query's own bit
-    // where the complement's is missing. Each digit is read from its own key, so both arrive as the
-    // top bit shifted down, which the store's two slots need no check for. The XOR is built from
-    // the top: shifted up one per level, its new low bit is 1 exactly where the walk went the
-    // opposite way.
+    // Precondition: Count > 0. The walk is MaxXorWalk's, shared with CountedBitTrie, compiled here
+    // for BitTrieNode, whose children that exist all hold a value: every Insert walks all 32 levels
+    // before it returns and nothing is ever removed, so where the opposite bit's child is absent,
+    // the same bit's is present.
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private static uint MaxXorPattern(BitTrieNode root, Int32BitsKey key, Int32BitsKey complement)
-    {
-        var current = root;
-        var xor = 0u;
-
-        for (var position = 0; position < Int32BitsKey.Bits; position++)
-        {
-            var opposite = current.Children.ChildFor(complement.LetterAt(position));
-            xor <<= 1;
-
-            if (opposite is null)
-            {
-                // presumption: allow -- the opposite child is absent, and every node above the last
-                // level has a child (see the precondition), so the same bit's child is present.
-                current = current.Children.ChildFor(key.LetterAt(position))!;
-                continue;
-            }
-
-            xor |= 1;
-            current = opposite;
-        }
-
-        return xor;
-    }
+    private static uint MaxXorPattern(
+        BitTrieNode root, Int32BitsKey key, Int32BitsKey complement) =>
+        MaxXorWalk<BitTrieNode>.Pattern(root, key, complement);
 }

@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.CountedBitTrie;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 
 namespace DSAExperimentation.LeetCode.Solutions.CountPairsWithXorInARange;
 
@@ -7,7 +7,7 @@ namespace DSAExperimentation.LeetCode.Solutions.CountPairsWithXorInARange;
 //
 // Both strategies answer the same counting question and differ only in how they
 // find the pairs: rescanning every earlier value, or this repo's own
-// CountedBitTrie, which counts a whole same-bit subtree in one step.
+// PooledCountedBitTrie, which counts a whole same-bit subtree in one step.
 [LeetCodeQuestion("count-pairs-with-xor-in-a-range", LeetCodeAnswerOrder.AsWritten)]
 internal static class CountPairsWithXorInARangeSolution
 {
@@ -34,16 +34,17 @@ internal static class CountPairsWithXorInARangeSolution
         return pairs;
     }
 
-    // This repo's own CountedBitTrie (DataStructures/CountedBitTrie/CountedBitTrie.cs), whose
-    // every node counts the values passing through it: CountXorBelow descends once per query
-    // toward the bit that keeps the running XOR equal to the limit and, at every level where the
+    // This repo's own PooledCountedBitTrie, the XOR multiset this arm measured best on
+    // (ARCHITECTURE 13.9), whose every node counts the values passing through it: CountXorBelow
+    // descends once per query toward the bit that keeps the running XOR equal to the limit and,
+    // at every level where the
     // limit's bit is 1, adds the whole same-bit subtree's count in one read - the classic trie
     // range-count technique, O(32) per insert and query instead of an O(n) pairwise rescan.
     // low <= xor <= high pairs = CountXorBelow(high + 1) - CountXorBelow(low), summed while
     // inserting one value at a time so every i < j pair is counted exactly once.
     public static int CountPairsByBitTrieRangeCount(int[] nums, int low, int high)
     {
-        var earlier = new CountedBitTrie();
+        var earlier = new PooledCountedBitTrie();
         var pairs = 0;
 
         foreach (var value in nums)
