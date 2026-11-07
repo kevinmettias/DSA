@@ -22,8 +22,8 @@ public class OnlineStockSpanBenchmarks
     public void Setup() => _prices = Enumerable.Range(1, Length).ToArray();
 
     [Benchmark(Baseline = true)]
-    public int[] BruteForceBackwardScan() => OnlineStockSpanSolution.SpansByBackwardScan(_prices);
+    public int[] BruteForceBackwardScan() => OnlineStockSpanSolution.BackwardScan.Spans(_prices);
 
     [Benchmark]
-    public int[] MonotonicStackSweep() => OnlineStockSpanSolution.SpansByMonotonicStack(_prices);
+    public int[] MonotonicStackSweep() => OnlineStockSpanSolution.MonotonicStack.Spans(_prices);
 }

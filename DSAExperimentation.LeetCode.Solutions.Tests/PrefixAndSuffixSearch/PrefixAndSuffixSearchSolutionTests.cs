@@ -4,11 +4,11 @@ using DSAExperimentation.LeetCode.Solutions.PrefixAndSuffixSearch;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.PrefixAndSuffixSearch;
 
 // Harness only. Both search strategies are PrefixAndSuffixSearchSolution's - these
-// rows query the WordFilter each one's factory makes: a prefix no word has, a match
-// on a later word, the earlier word's own match, and a prefix and a suffix that
-// belong to different words. The precomputed index the second strategy looks up is
-// asserted on its own, key by key. LeetCode's published examples run in
-// CatalogCaseTests.
+// rows query the WordFilter each one's CreateBy factory makes: a prefix no word has,
+// a match on a later word, the earlier word's own match, and a prefix and a suffix
+// that belong to different words. The precomputed index the second strategy looks
+// up, PrecomputedHashMap.BuildPrefixSuffixIndex's, is asserted on its own, key by
+// key. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class PrefixAndSuffixSearchSolutionTests
 {
     public static TheoryData<PrefixAndSuffixCase> Cases =>
@@ -22,9 +22,9 @@ public sealed partial class PrefixAndSuffixSearchSolutionTests
 
     [Theory]
     [MemberData(nameof(Cases))]
-    public void SearchByLinearScan_Cases_ReturnsLargestMatchingIndex(PrefixAndSuffixCase testCase)
+    public void CreateByLinearScan_Cases_ReturnsLargestMatchingIndex(PrefixAndSuffixCase testCase)
     {
-        var filter = PrefixAndSuffixSearchSolution.SearchByLinearScan(testCase.Words);
+        var filter = PrefixAndSuffixSearchSolution.CreateByLinearScan(testCase.Words);
         var actual = filter.Search(new SearchPrefix(testCase.Prefix), new SearchSuffix(testCase.Suffix));
 
         Assert.Equal(testCase.ExpectedIndex, actual);
@@ -32,9 +32,9 @@ public sealed partial class PrefixAndSuffixSearchSolutionTests
 
     [Theory]
     [MemberData(nameof(Cases))]
-    public void SearchByPrecomputedHashMap_Cases_ReturnsLargestMatchingIndex(PrefixAndSuffixCase testCase)
+    public void CreateByPrecomputedHashMap_Cases_ReturnsLargestMatchingIndex(PrefixAndSuffixCase testCase)
     {
-        var filter = PrefixAndSuffixSearchSolution.SearchByPrecomputedHashMap(testCase.Words);
+        var filter = PrefixAndSuffixSearchSolution.CreateByPrecomputedHashMap(testCase.Words);
         var actual = filter.Search(new SearchPrefix(testCase.Prefix), new SearchSuffix(testCase.Suffix));
 
         Assert.Equal(testCase.ExpectedIndex, actual);
@@ -44,9 +44,9 @@ public sealed partial class PrefixAndSuffixSearchSolutionTests
     // '#' occurs in no word, so the 6 * 6 = 36 joined keys are all distinct and all name
     // word 0; a key whose prefix "apple" lacks is absent.
     [Fact]
-    public void BuildPrefixSuffixIndex_SingleWord_StoresEveryPrefixSuffixPairOnce()
+    public void PrecomputedHashMap_PrefixSuffixIndexOfOneWord_StoresEveryPrefixSuffixPairOnce()
     {
-        var index = PrefixAndSuffixSearchSolution.BuildPrefixSuffixIndex(["apple"]);
+        var index = PrefixAndSuffixSearchSolution.PrecomputedHashMap.BuildPrefixSuffixIndex(["apple"]);
         var stored = new[] { "#", "a#e", "apple#apple" }.Select(key => WordIndexAt(index, key));
 
         Assert.Equal(36, index.Count);
@@ -61,9 +61,9 @@ public sealed partial class PrefixAndSuffixSearchSolutionTests
     // earlier one on a shared key, so "#" and "ap#" name apricot (2) and "#e" orange (1),
     // while "app#" and "a#e" are apple's alone (0).
     [Fact]
-    public void BuildPrefixSuffixIndex_LeetCodeDictionary_KeepsTheLargestWordIndexOnASharedKey()
+    public void PrecomputedHashMap_PrefixSuffixIndexOfLeetCodeDictionary_KeepsTheLargestWordIndexOnASharedKey()
     {
-        var index = PrefixAndSuffixSearchSolution.BuildPrefixSuffixIndex(["apple", "orange", "apricot"]);
+        var index = PrefixAndSuffixSearchSolution.PrecomputedHashMap.BuildPrefixSuffixIndex(["apple", "orange", "apricot"]);
         var stored = new[] { "#", "ap#", "#e", "app#", "a#e" }.Select(key => WordIndexAt(index, key));
 
         Assert.Equal(144, index.Count);

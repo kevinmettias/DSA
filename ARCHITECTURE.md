@@ -3414,12 +3414,13 @@ in under 250 ms each, and 509 more:
     maps `f` onto `Search` (`PrefixAndSuffixSearchCalls`). Kth Largest Element in a Stream and the two
     Range Sum Queries bound as they were once the lengths dropped.
 
-  Where a hand-written benchmark calls a strategy's one-shot method (Shuffle an Array, Random Point in
-  Non-overlapping Rectangles, Linked List Random Node, Online Stock Span, Prefix and Suffix Search,
-  Range Frequency Queries, Range Sum Query - Immutable), the factory is an overload of the strategy's
-  own name (§17.4) rather than a `CreateBy` method, since every public `By` method group is a strategy
-  and holds exactly one factory. None of the twelve has a dataset case, so each is judged on
-  LeetCode's examples alone.
+  Where a hand-written benchmark times a strategy's one-shot algorithm (Shuffle an Array, Random Point
+  in Non-overlapping Rectangles, Linked List Random Node, Online Stock Span, Prefix and Suffix Search,
+  Range Frequency Queries, Range Sum Query - Immutable), that algorithm lives in a nested class named
+  for the strategy (`FisherYatesDynamicArray.Shuffle`, `BackwardScan.Spans`, ...), which the
+  benchmark and the strategy's object both call, and the strategy itself is its `CreateBy` factory,
+  as in every other design question: every public `By` method group is a strategy and holds exactly
+  one factory. None of the twelve has a dataset case, so each is judged on LeetCode's examples alone.
 - 12 more, once corrections could record what a source lacks, a signature correction could fix
   LeetCode's metaData, and a JsonNode could take an input the notation reads into no type of this
   repository's own:

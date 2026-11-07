@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RandomPointInNonOverlappingRectanglesSolution's, the
 // same methods RandomPointInNonOverlappingRectanglesSolutionTests proves correct. Each arm
-// is handed the prepared prefix-sum array its hoisted overload takes, so building
+// is handed the prepared prefix-sum array its strategy's Pick takes, so building
 // it is charged to [GlobalSetup] rather than to the picks being measured. Both
 // draw from a fresh, identically-seeded Random per invocation so neither benefits
 // from a luckier draw order; each returns every point it picked, in call order.
@@ -52,7 +52,7 @@ public class RandomPointInNonOverlappingRectanglesBenchmarks
         for (var call = 0; call < PickCalls; call++)
         {
             _points[call] =
-                RandomPointInNonOverlappingRectanglesSolution.PickByLinearScan(_rects, _prefixAreas, random);
+                RandomPointInNonOverlappingRectanglesSolution.LinearScan.Pick(_rects, _prefixAreas, random);
         }
 
         return _points;
@@ -65,7 +65,7 @@ public class RandomPointInNonOverlappingRectanglesBenchmarks
 
         for (var call = 0; call < PickCalls; call++)
         {
-            _points[call] = RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound(
+            _points[call] = RandomPointInNonOverlappingRectanglesSolution.BinarySearchUpperBound.Pick(
                 _rects, _prefixAreas, random);
         }
 

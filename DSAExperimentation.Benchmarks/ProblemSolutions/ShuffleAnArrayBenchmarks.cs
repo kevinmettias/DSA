@@ -23,9 +23,9 @@ public class ShuffleAnArrayBenchmarks
 
     [Benchmark(Baseline = true)]
     public int[] RemoveRandomRemaining() =>
-        ShuffleAnArraySolution.ShuffleByRemoveRandomRemaining(_original, new Random(1));
+        ShuffleAnArraySolution.RemoveRandomRemaining.Shuffle(_original, new Random(1));
 
     [Benchmark]
     public int[] FisherYatesDynamicArray() =>
-        ShuffleAnArraySolution.ShuffleByFisherYatesDynamicArray(_original, new Random(1));
+        ShuffleAnArraySolution.FisherYatesDynamicArray.Shuffle(_original, new Random(1));
 }

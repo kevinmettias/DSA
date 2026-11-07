@@ -51,7 +51,7 @@ public class RangeSumQueryImmutableBenchmarks
     {
         for (var i = 0; i < _queries.Length; i++)
         {
-            _sums[i] = RangeSumQueryImmutableSolution.SumRangeByBruteForceRescan(_nums, _queries[i].Left, _queries[i].Right);
+            _sums[i] = RangeSumQueryImmutableSolution.BruteForceRescan.SumRange(_nums, _queries[i].Left, _queries[i].Right);
         }
 
         return _sums;
@@ -64,7 +64,7 @@ public class RangeSumQueryImmutableBenchmarks
 
         for (var i = 0; i < _queries.Length; i++)
         {
-            _sums[i] = RangeSumQueryImmutableSolution.SumRangeByFenwickTree(tree, _queries[i].Left, _queries[i].Right);
+            _sums[i] = RangeSumQueryImmutableSolution.FenwickTree.SumRange(tree, _queries[i].Left, _queries[i].Right);
         }
 
         return _sums;
@@ -77,7 +77,7 @@ public class RangeSumQueryImmutableBenchmarks
 
         for (var i = 0; i < _queries.Length; i++)
         {
-            _sums[i] = RangeSumQueryImmutableSolution.SumRangeByPrefixSums(sums, _queries[i].Left, _queries[i].Right);
+            _sums[i] = RangeSumQueryImmutableSolution.PrefixSums.SumRange(sums, _queries[i].Left, _queries[i].Right);
         }
 
         return _sums;

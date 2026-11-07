@@ -4,8 +4,9 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.RandomPointInNonOverlappin
 
 // Harness only. Both strategies are
 // RandomPointInNonOverlappingRectanglesSolution's, each held here as LeetCode's
-// Solution object its factory makes from rects - the object whose pick() calls the
-// strategy's one-pick algorithm - and pinned to LeetCode's published example and to
+// Solution object its CreateBy factory makes from rects - the object whose pick()
+// calls the strategy's one-pick algorithm, Pick on the nested class named for the
+// strategy - and pinned to LeetCode's published example and to
 // added rectangle sets: every drawn point must land inside one of the given
 // rectangles, and picks must be weighted by rectangle area rather than uniform over
 // rectangles.
@@ -35,56 +36,56 @@ public sealed partial class RandomPointInNonOverlappingRectanglesSolutionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PickByLinearScan_LeetCodeExamples_AlwaysLandsInsideSomeRectangle(int[][] rects)
+    public void CreateByLinearScan_LeetCodeExamples_AlwaysLandsInsideSomeRectangle(int[][] rects)
     {
-        var picker = RandomPointInNonOverlappingRectanglesSolution.PickByLinearScan(rects);
+        var picker = RandomPointInNonOverlappingRectanglesSolution.CreateByLinearScan(rects);
 
         AssertEveryPickLandsInsideARectangle(rects, picker);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PickByBinarySearchUpperBound_LeetCodeExamples_AlwaysLandsInsideSomeRectangle(int[][] rects)
+    public void CreateByBinarySearchUpperBound_LeetCodeExamples_AlwaysLandsInsideSomeRectangle(int[][] rects)
     {
-        var picker = RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound(rects);
+        var picker = RandomPointInNonOverlappingRectanglesSolution.CreateByBinarySearchUpperBound(rects);
 
         AssertEveryPickLandsInsideARectangle(rects, picker);
     }
 
     [Theory]
     [MemberData(nameof(PublishedExamples))]
-    public void PickByLinearScan_PublishedExamples_EachPickLandsInsideARectangleAsThePublishedOnesDo(
+    public void CreateByLinearScan_PublishedExamples_EachPickLandsInsideARectangleLikeThePublishedPicks(
         int[][] rects, int[][] publishedPicks)
     {
-        var picker = RandomPointInNonOverlappingRectanglesSolution.PickByLinearScan(rects);
+        var picker = RandomPointInNonOverlappingRectanglesSolution.CreateByLinearScan(rects);
 
         AssertEachScriptedPickLandsInsideARectangle(rects, publishedPicks, picker);
     }
 
     [Theory]
     [MemberData(nameof(PublishedExamples))]
-    public void PickByBinarySearchUpperBound_PublishedExamples_EachPickLandsInsideARectangleAsThePublishedOnesDo(
+    public void CreateByBinarySearchUpperBound_PublishedExamples_EachPickLandsInsideARectangleLikeThePublishedPicks(
         int[][] rects, int[][] publishedPicks)
     {
-        var picker = RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound(rects);
+        var picker = RandomPointInNonOverlappingRectanglesSolution.CreateByBinarySearchUpperBound(rects);
 
         AssertEachScriptedPickLandsInsideARectangle(rects, publishedPicks, picker);
     }
 
     [Fact]
-    public void PickByLinearScan_OneRectangleFarLargerByArea_LandsThereFarMoreOften()
+    public void CreateByLinearScan_OneRectangleFarLargerByArea_LandsThereFarMoreOften()
     {
         int[][] rects = [[0, 0, 0, 0], [0, 0, 100, 100]];
-        var picker = RandomPointInNonOverlappingRectanglesSolution.PickByLinearScan(rects);
+        var picker = RandomPointInNonOverlappingRectanglesSolution.CreateByLinearScan(rects);
 
         AssertLargeRectangleDominates(picker);
     }
 
     [Fact]
-    public void PickByBinarySearchUpperBound_OneRectangleFarLargerByArea_LandsThereFarMoreOften()
+    public void CreateByBinarySearchUpperBound_OneRectangleFarLargerByArea_LandsThereFarMoreOften()
     {
         int[][] rects = [[0, 0, 0, 0], [0, 0, 100, 100]];
-        var picker = RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound(rects);
+        var picker = RandomPointInNonOverlappingRectanglesSolution.CreateByBinarySearchUpperBound(rects);
 
         AssertLargeRectangleDominates(picker);
     }

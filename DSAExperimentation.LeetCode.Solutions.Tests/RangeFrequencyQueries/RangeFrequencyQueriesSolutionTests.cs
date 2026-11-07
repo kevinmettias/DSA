@@ -5,11 +5,11 @@ using DSAExperimentation.LeetCode.Solutions.RangeFrequencyQueries;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.RangeFrequencyQueries;
 
 // Harness only. Both strategies are RangeFrequencyQueriesSolution's - these rows
-// query the RangeFreqQuery each one's factory makes: more queries on LeetCode's
-// array, among them a window that excludes some occurrences and a single-index
-// window, then a value that never occurs and a one-element array. The value index
-// the second strategy bisects is asserted on its own. LeetCode's published
-// examples run in CatalogCaseTests.
+// query the RangeFreqQuery each one's CreateBy factory makes: more queries on
+// LeetCode's array, among them a window that excludes some occurrences and a
+// single-index window, then a value that never occurs and a one-element array. The
+// value index the second strategy bisects, BinarySearchIndex.BuildValueIndex's, is
+// asserted on its own. LeetCode's published examples run in CatalogCaseTests.
 public sealed partial class RangeFrequencyQueriesSolutionTests
 {
     public static TheoryData<RangeFrequencyCase> Cases =>
@@ -24,9 +24,9 @@ public sealed partial class RangeFrequencyQueriesSolutionTests
 
     [Theory]
     [MemberData(nameof(Cases))]
-    public void QueryByBinarySearchIndex_Cases_ReturnsFrequencyOfValueInSubarray(RangeFrequencyCase testCase)
+    public void CreateByBinarySearchIndex_Cases_ReturnsFrequencyOfValueInSubarray(RangeFrequencyCase testCase)
     {
-        var rangeFreqQuery = RangeFrequencyQueriesSolution.QueryByBinarySearchIndex(testCase.Arr);
+        var rangeFreqQuery = RangeFrequencyQueriesSolution.CreateByBinarySearchIndex(testCase.Arr);
         var actual = rangeFreqQuery.Query(testCase.Left, testCase.Right, testCase.Value);
 
         Assert.Equal(testCase.Expected, actual);
@@ -34,9 +34,9 @@ public sealed partial class RangeFrequencyQueriesSolutionTests
 
     [Theory]
     [MemberData(nameof(Cases))]
-    public void QueryByBruteForceRescan_Cases_ReturnsFrequencyOfValueInSubarray(RangeFrequencyCase testCase)
+    public void CreateByBruteForceRescan_Cases_ReturnsFrequencyOfValueInSubarray(RangeFrequencyCase testCase)
     {
-        var rangeFreqQuery = RangeFrequencyQueriesSolution.QueryByBruteForceRescan(testCase.Arr);
+        var rangeFreqQuery = RangeFrequencyQueriesSolution.CreateByBruteForceRescan(testCase.Arr);
         var actual = rangeFreqQuery.Query(testCase.Left, testCase.Right, testCase.Value);
 
         Assert.Equal(testCase.Expected, actual);
@@ -46,9 +46,9 @@ public sealed partial class RangeFrequencyQueriesSolutionTests
     // 2, 56 at 3 and 11, 22 at 4 and 8, 2 at 5, 34 at 6 and 10. In ascending value order
     // that is 2: [5], 4: [2], 12: [0, 9], 22: [4, 8], 33: [1, 7], 34: [6, 10], 56: [3, 11].
     [Fact]
-    public void BuildValueIndex_LeetCodeExample_ListsEachValuesPositionsInAscendingOrder()
+    public void BinarySearchIndex_ValueIndexOfLeetCodeExample_ListsEachValuesPositionsInAscendingOrder()
     {
-        var index = RangeFrequencyQueriesSolution.BuildValueIndex([12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56]);
+        var index = RangeFrequencyQueriesSolution.BinarySearchIndex.BuildValueIndex([12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56]);
         var values = index.Keys.Order().ToArray();
         var positionsByValue = values.Select(value => PositionsOf(index, value));
 

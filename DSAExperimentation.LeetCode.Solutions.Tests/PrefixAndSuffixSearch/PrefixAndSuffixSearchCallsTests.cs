@@ -24,5 +24,5 @@ public sealed partial class PrefixAndSuffixSearchCallsTests
         Assert.Equal(-1, PrefixAndSuffixSearchCalls.F(filter, Tail, Head));
     }
 
-    private static IWordFilter Filter() => PrefixAndSuffixSearchSolution.SearchByLinearScan([Head + Tail]);
+    private static IWordFilter Filter() => PrefixAndSuffixSearchSolution.CreateByLinearScan([Head + Tail]);
 }

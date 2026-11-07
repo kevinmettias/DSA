@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // after which every query is a single lookup. Both arms are
 // PrefixAndSuffixSearchSolution's own strategies, the same methods
 // PrefixAndSuffixSearchSolutionTests proves correct; the precomputed arm is handed the
-// index its hoisted overload takes, built once in [GlobalSetup], so the one-time
+// index PrecomputedHashMap.Search takes, built once in [GlobalSetup], so the one-time
 // precompute LeetCode's own constructor/query split represents isn't charged to
 // every measured query. Words are random fixed-length strings, and each query is one
 // word's own prefix and suffix, so every query has an answer; both strategies report
@@ -42,7 +42,7 @@ public class PrefixAndSuffixSearchBenchmarks
             .Select(_ => new string(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray()))
             .ToArray();
         _queries = _words.Select(word => (word[..QueryAffixLength], word[^QueryAffixLength..])).ToArray();
-        _index = PrefixAndSuffixSearchSolution.BuildPrefixSuffixIndex(_words);
+        _index = PrefixAndSuffixSearchSolution.PrecomputedHashMap.BuildPrefixSuffixIndex(_words);
         _answers = new int[_queries.Length];
     }
 
@@ -52,7 +52,7 @@ public class PrefixAndSuffixSearchBenchmarks
         for (var i = 0; i < _queries.Length; i++)
         {
             var (prefix, suffix) = _queries[i];
-            _answers[i] = PrefixAndSuffixSearchSolution.SearchByLinearScan(
+            _answers[i] = PrefixAndSuffixSearchSolution.LinearScan.Search(
                 _words, new SearchPrefix(prefix), new SearchSuffix(suffix));
         }
 
@@ -65,7 +65,7 @@ public class PrefixAndSuffixSearchBenchmarks
         for (var i = 0; i < _queries.Length; i++)
         {
             var (prefix, suffix) = _queries[i];
-            _answers[i] = PrefixAndSuffixSearchSolution.SearchByPrecomputedHashMap(
+            _answers[i] = PrefixAndSuffixSearchSolution.PrecomputedHashMap.Search(
                 _index, new SearchPrefix(prefix), new SearchSuffix(suffix));
         }
 

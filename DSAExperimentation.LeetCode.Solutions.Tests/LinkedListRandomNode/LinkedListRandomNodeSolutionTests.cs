@@ -3,14 +3,16 @@ using DSAExperimentation.LeetCode.Solutions.LinkedListRandomNode;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.LinkedListRandomNode;
 
-// Harness only: both strategies live in LinkedListRandomNodeSolution.
-// SinglyLinkedListNode<int> is internal, so it cannot appear in a public
-// TheoryData<...> member (CS0053) - the same reason BinarySearchTreeIteratorTests
-// and BalancedBinaryTreeTests use one [Fact] per case rather than [Theory]. Each
-// scenario is asserted against both strategies so a failure names which one broke;
-// GetRandomByDynamicArrayCache is exercised through its LeetCode-shaped overload,
-// which itself delegates to the prepared-cache overload (CacheValues + the
-// DynamicArray<int> overload), so both are covered transitively - the same
+// Harness only: both strategies live in LinkedListRandomNodeSolution, their draw
+// functions as GetRandom on its nested ReservoirSampling and DynamicArrayCache classes,
+// which the objects its CreateBy factories make call (CatalogCaseTests replays
+// LeetCode's scripts on those objects). SinglyLinkedListNode<int> is internal, so it
+// cannot appear in a public TheoryData<...> member (CS0053) - the same reason
+// BinarySearchTreeIteratorTests and BalancedBinaryTreeTests use one [Fact] per case
+// rather than [Theory]. Each scenario is asserted against both strategies so a failure
+// names which one broke; DynamicArrayCache.GetRandom is exercised through its overload
+// taking the head, which itself delegates to the prepared-cache overload (CacheValues +
+// the DynamicArray<int> overload), so both are covered transitively - the same
 // pattern OpenTheLockTests uses for MinTurnsByReduceGraph - and CacheValues also
 // has a test of its own that reads the cache back. The repeated-draw
 // cases share one assertion helper, which takes the strategy as the named
@@ -18,49 +20,49 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.LinkedListRandomNode;
 public sealed partial class LinkedListRandomNodeSolutionTests
 {
     [Fact]
-    public void GetRandomByReservoirSampling_SingleNodeList_AlwaysReturnsThatValue()
+    public void ReservoirSamplingGetRandom_SingleNodeList_AlwaysReturnsThatValue()
     {
         var head = new SinglyLinkedListNode<int>(42);
         var random = new Random(1);
 
         for (var i = 0; i < 20; i++)
         {
-            var value = LinkedListRandomNodeSolution.GetRandomByReservoirSampling(head, random);
+            var value = LinkedListRandomNodeSolution.ReservoirSampling.GetRandom(head, random);
 
             Assert.Equal(42, value);
         }
     }
 
     [Fact]
-    public void GetRandomByReservoirSampling_MultiNodeList_EventuallyReturnsEveryValue()
+    public void ReservoirSamplingGetRandom_MultiNodeList_EventuallyReturnsEveryValue()
         => AssertEventuallyReturnsEveryValue(new ReservoirSamplingDraw());
 
     [Fact]
-    public void GetRandomByDynamicArrayCache_SingleNodeList_AlwaysReturnsThatValue()
+    public void DynamicArrayCacheGetRandom_SingleNodeList_AlwaysReturnsThatValue()
     {
         var head = new SinglyLinkedListNode<int>(42);
         var random = new Random(1);
 
         for (var i = 0; i < 20; i++)
         {
-            var value = LinkedListRandomNodeSolution.GetRandomByDynamicArrayCache(head, random);
+            var value = LinkedListRandomNodeSolution.DynamicArrayCache.GetRandom(head, random);
 
             Assert.Equal(42, value);
         }
     }
 
     [Fact]
-    public void GetRandomByDynamicArrayCache_MultiNodeList_EventuallyReturnsEveryValue()
+    public void DynamicArrayCacheGetRandom_MultiNodeList_EventuallyReturnsEveryValue()
         => AssertEventuallyReturnsEveryValue(new DynamicArrayCacheDraw());
 
     // LeetCode's example list 1 -> 2 -> 3: the walk appends each value once, in list
     // order.
     [Fact]
-    public void CacheValues_LeetCodeExampleList_HoldsEveryValueInListOrder()
+    public void DynamicArrayCacheCacheValues_LeetCodeExampleList_HoldsEveryValueInListOrder()
     {
         var third = new SinglyLinkedListNode<int>(3);
         var second = new SinglyLinkedListNode<int>(2) { Next = third };
-        var cache = LinkedListRandomNodeSolution.CacheValues(new SinglyLinkedListNode<int>(1) { Next = second });
+        var cache = LinkedListRandomNodeSolution.DynamicArrayCache.CacheValues(new SinglyLinkedListNode<int>(1) { Next = second });
 
         Assert.Equal([1, 2, 3], Enumerable.Range(0, cache.Count).Select(cache.Get));
     }
@@ -97,17 +99,17 @@ public sealed partial class LinkedListRandomNodeSolutionTests
         int Draw(SinglyLinkedListNode<int> head, Random random);
     }
 
-    // GetRandomByReservoirSampling, as one draw from the list.
+    // ReservoirSampling.GetRandom, as one draw from the list.
     private sealed class ReservoirSamplingDraw : IRandomDraw
     {
         public int Draw(SinglyLinkedListNode<int> head, Random random) =>
-            LinkedListRandomNodeSolution.GetRandomByReservoirSampling(head, random);
+            LinkedListRandomNodeSolution.ReservoirSampling.GetRandom(head, random);
     }
 
-    // GetRandomByDynamicArrayCache, the same draw answered from the cached value array.
+    // DynamicArrayCache.GetRandom, the same draw answered from the cached value array.
     private sealed class DynamicArrayCacheDraw : IRandomDraw
     {
         public int Draw(SinglyLinkedListNode<int> head, Random random) =>
-            LinkedListRandomNodeSolution.GetRandomByDynamicArrayCache(head, random);
+            LinkedListRandomNodeSolution.DynamicArrayCache.GetRandom(head, random);
     }
 }

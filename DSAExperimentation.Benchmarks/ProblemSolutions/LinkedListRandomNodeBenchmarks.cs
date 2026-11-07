@@ -42,7 +42,7 @@ public class LinkedListRandomNodeBenchmarks
 
         for (var call = 0; call < CallCount; call++)
         {
-            _draws[call] = LinkedListRandomNodeSolution.GetRandomByReservoirSampling(_head, random);
+            _draws[call] = LinkedListRandomNodeSolution.ReservoirSampling.GetRandom(_head, random);
         }
 
         return _draws;
@@ -52,11 +52,11 @@ public class LinkedListRandomNodeBenchmarks
     public int[] DynamicArrayCache()
     {
         var random = new Random(1);
-        var cache = LinkedListRandomNodeSolution.CacheValues(_head);
+        var cache = LinkedListRandomNodeSolution.DynamicArrayCache.CacheValues(_head);
 
         for (var call = 0; call < CallCount; call++)
         {
-            _draws[call] = LinkedListRandomNodeSolution.GetRandomByDynamicArrayCache(cache, random);
+            _draws[call] = LinkedListRandomNodeSolution.DynamicArrayCache.GetRandom(cache, random);
         }
 
         return _draws;

@@ -3,11 +3,12 @@ using DSAExperimentation.LeetCode.Solutions.OnlineStockSpan;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.OnlineStockSpan;
 
 // Harness only: both strategies live in OnlineStockSpanSolution, and these rows
-// feed each one's whole-stream overload, the one the hand-written benchmark times -
-// a strictly increasing stream, a single day, a strictly decreasing stream where
-// no day ever spans another, and a flat stream where every day spans all of them
-// (prices are compared with <=, not <). LeetCode's published examples run in
-// CatalogCaseTests.
+// feed each one's whole-stream Spans, in the nested class named for the strategy,
+// the method the hand-written benchmark times - a strictly increasing stream, a
+// single day, a strictly decreasing stream where no day ever spans another, and a
+// flat stream where every day spans all of them (prices are compared with <=, not
+// <). Spans feeds every price to the object the strategy's CreateBy factory makes;
+// LeetCode's published examples run that object in CatalogCaseTests.
 public sealed partial class OnlineStockSpanSolutionTests
 {
     public static TheoryData<int[], int[]> Cases =>
@@ -21,11 +22,11 @@ public sealed partial class OnlineStockSpanSolutionTests
 
     [Theory]
     [MemberData(nameof(Cases))]
-    public void SpansByBackwardScan_Cases_ReturnsSpanPerDay(int[] prices, int[] expected) =>
-        Assert.Equal(expected, OnlineStockSpanSolution.SpansByBackwardScan(prices));
+    public void BackwardScanSpans_Cases_ReturnsSpanPerDay(int[] prices, int[] expected) =>
+        Assert.Equal(expected, OnlineStockSpanSolution.BackwardScan.Spans(prices));
 
     [Theory]
     [MemberData(nameof(Cases))]
-    public void SpansByMonotonicStack_Cases_ReturnsSpanPerDay(int[] prices, int[] expected) =>
-        Assert.Equal(expected, OnlineStockSpanSolution.SpansByMonotonicStack(prices));
+    public void MonotonicStackSpans_Cases_ReturnsSpanPerDay(int[] prices, int[] expected) =>
+        Assert.Equal(expected, OnlineStockSpanSolution.MonotonicStack.Spans(prices));
 }

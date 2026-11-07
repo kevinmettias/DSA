@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Solutions.RangeSumQueryImmutable;
 namespace DSAExperimentation.LeetCode.Solutions.Tests.RangeSumQueryImmutable;
 
 // Harness only. All three strategies are RangeSumQueryImmutableSolution's - this row
-// asks the NumArray each one's factory makes for a one-element window of a negative
+// asks the NumArray each one's CreateBy factory makes for a one-element window of a negative
 // value inside a three-element array. LeetCode's published examples run in
 // CatalogCaseTests.
 public sealed partial class RangeSumQueryImmutableSolutionTests
@@ -16,9 +16,9 @@ public sealed partial class RangeSumQueryImmutableSolutionTests
 
     [Theory]
     [MemberData(nameof(Cases))]
-    public void SumRangeByFenwickTree_Cases_ReturnsRangeSum(int[] nums, int left, int right, int expected)
+    public void CreateByFenwickTree_Cases_ReturnsRangeSum(int[] nums, int left, int right, int expected)
     {
-        var numArray = RangeSumQueryImmutableSolution.SumRangeByFenwickTree(nums);
+        var numArray = RangeSumQueryImmutableSolution.CreateByFenwickTree(nums);
         var actual = numArray.SumRange(left, right);
 
         Assert.Equal(expected, actual);
@@ -26,9 +26,9 @@ public sealed partial class RangeSumQueryImmutableSolutionTests
 
     [Theory]
     [MemberData(nameof(Cases))]
-    public void SumRangeByPrefixSums_Cases_ReturnsRangeSum(int[] nums, int left, int right, int expected)
+    public void CreateByPrefixSums_Cases_ReturnsRangeSum(int[] nums, int left, int right, int expected)
     {
-        var numArray = RangeSumQueryImmutableSolution.SumRangeByPrefixSums(nums);
+        var numArray = RangeSumQueryImmutableSolution.CreateByPrefixSums(nums);
         var actual = numArray.SumRange(left, right);
 
         Assert.Equal(expected, actual);
@@ -36,9 +36,9 @@ public sealed partial class RangeSumQueryImmutableSolutionTests
 
     [Theory]
     [MemberData(nameof(Cases))]
-    public void SumRangeByBruteForceRescan_Cases_ReturnsRangeSum(int[] nums, int left, int right, int expected)
+    public void CreateByBruteForceRescan_Cases_ReturnsRangeSum(int[] nums, int left, int right, int expected)
     {
-        var numArray = RangeSumQueryImmutableSolution.SumRangeByBruteForceRescan(nums);
+        var numArray = RangeSumQueryImmutableSolution.CreateByBruteForceRescan(nums);
         var actual = numArray.SumRange(left, right);
 
         Assert.Equal(expected, actual);

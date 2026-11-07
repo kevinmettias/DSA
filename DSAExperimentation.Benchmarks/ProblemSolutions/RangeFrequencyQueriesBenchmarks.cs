@@ -53,7 +53,7 @@ public class RangeFrequencyQueriesBenchmarks
         for (var i = 0; i < _queries.Length; i++)
         {
             var (left, right, value) = _queries[i];
-            _frequencies[i] = RangeFrequencyQueriesSolution.QueryByBruteForceRescan(_arr, left, right, value);
+            _frequencies[i] = RangeFrequencyQueriesSolution.BruteForceRescan.Query(_arr, left, right, value);
         }
 
         return _frequencies;
@@ -62,12 +62,12 @@ public class RangeFrequencyQueriesBenchmarks
     [Benchmark]
     public int[] HashMapWithBinarySearch()
     {
-        var indicesByValue = RangeFrequencyQueriesSolution.BuildValueIndex(_arr);
+        var indicesByValue = RangeFrequencyQueriesSolution.BinarySearchIndex.BuildValueIndex(_arr);
 
         for (var i = 0; i < _queries.Length; i++)
         {
             var (left, right, value) = _queries[i];
-            _frequencies[i] = RangeFrequencyQueriesSolution.QueryByBinarySearchIndex(indicesByValue, left, right, value);
+            _frequencies[i] = RangeFrequencyQueriesSolution.BinarySearchIndex.Query(indicesByValue, left, right, value);
         }
 
         return _frequencies;
