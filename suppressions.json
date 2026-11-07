@@ -2,6 +2,49 @@
   "schema": 1,
   "waivers": [
     {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/Algorithms/ExactCover/DancingLinks.cs",
+      "reason": "DancingLinks is one data structure, Knuth's sparse 0/1 matrix whose rows and columns are taken out and put back in place, and its nine public members are the operations Algorithm X makes on it: laying a problem out (Of), choosing the column to branch on (ColumnWithFewestRows), walking down a column and back from a node to its row (Below, RowOf), covering and uncovering a column (Cover, Uncover) and the rest of a chosen row (CoverRestOfRow, UncoverRestOfRow), and choosing rows before a search (TryChooseAll). Every one reads and writes the same private link arrays, so a split would have to expose those arrays to a second type, the extra object hop the flat layout exists to avoid (ARCHITECTURE section 20's queue-family measurements). The type is internal to Algorithms/ExactCover, so its whole surface is AlgorithmX's own use.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/Algorithms/ExactCover/AlgorithmX.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls a prefix cluster a review rather than an automatic defect, and `Try` is the BCL's attempt-returns-success shape (TryParse, TryGetValue), absent from the check's conventional-prefix table only by omission - the same reading as DataStructures/CircularBuffer/CircularBuffer.cs's own check-responsibility-extraction waiver. TryFindCover and TrySearch are Algorithm X's entry points that can come back empty (no cover, or a visitor that stopped the search), and TrySearchFrom is one level of the same recursion, public only inside the private nested CoverSearch so that AlgorithmX can call it. The three are one algorithm, not a hidden module.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/SudokuSolverBenchmarks.cs",
+      "message": "`Try` names",
+      "reason": "The shared prefix is another check's requirement and the strategies' own names, the argument of the glob entry for `Can` names in these classes. Each arm returns the bool its strategy returns, so check-boolean-predicate wants it to open with Try, and each is named for the SudokuSolverSolution strategy it times (TrySolveBySpecializedRecursion, TrySolveByBacktrackEngine, TrySolveByExactCover), whose names section 17.3's <Operation>By<Strategy> convention fixes and the catalog harness binds as LeetCode's in-place Try shape. The third arm, the exact-cover strategy, is what made the count three; the locality the check reads as a hidden module is 17.3's requirement that every arm for one problem live in its one benchmark class.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation/Algorithms/ExactCover/CoverCount.cs",
+      "reason": "ICoverVisitor is an instance contract that AlgorithmX takes as a type argument constrained to struct and by ref, so each visitor compiles into the search with no interface call (ARCHITECTURE section 5, the owner's static-dispatch ruling of 2026-10-03), and the count travels in the caller's own copy with no allocation. Its setter is private and only ShouldStopAfter changes it, so the `items[0].Count = x` hazard this rule names cannot be written outside the type, and the search passes the visitor by ref, never by in or through a readonly field, so no defensive copy drops a count.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation/Algorithms/ExactCover/FirstCover.cs",
+      "reason": "ICoverVisitor is an instance contract that AlgorithmX takes as a type argument constrained to struct and by ref, so each visitor compiles into the search with no interface call (ARCHITECTURE section 5, the owner's static-dispatch ruling of 2026-10-03), and the first cover travels in the caller's own copy. Its field is private and only ShouldStopAfter sets it, so the `items[0]._rows = x` hazard this rule names cannot be written outside the type, and the search passes the visitor by ref, never by in or through a readonly field, so no defensive copy drops the cover.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-value-sharing",
+      "path": "DSAExperimentation/Algorithms/ExactCover/FirstCover.cs",
+      "reason": "A visitor is a struct by design: AlgorithmX takes it as a type argument constrained to struct and by ref, so the search compiles its call in (ARCHITECTURE section 5). The array it holds is the copy it made of the first cover, assigned once and never written through, so copies that share it share an answer nobody changes; and the visitor is not copied on purpose, living in TryFindCover's local and reaching the search by ref.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-instance-free-members",
       "path": "DSAExperimentation/Algorithms/GameSearch/DepthLimitedSearch.cs",
       "anchor": "`UnsearchedValue`",

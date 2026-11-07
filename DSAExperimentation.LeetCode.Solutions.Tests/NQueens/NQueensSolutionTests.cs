@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.NQueens;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.NQueens;
 
-// Harness only. Both strategies are NQueensSolution's; this file just pins them to
+// Harness only. Every strategy is NQueensSolution's; this file just pins them to
 // LeetCode's published examples - the solution count for boardSize, plus one board
 // LeetCode itself publishes as a valid placement.
 public sealed partial class NQueensSolutionTests
@@ -31,6 +31,17 @@ public sealed partial class NQueensSolutionTests
         int boardSize, int expectedCount, string[] sampleBoard)
     {
         var solutions = NQueensSolution.SolveByBacktrackEngine(boardSize);
+
+        Assert.Equal(expectedCount, solutions.Count);
+        Assert.Contains(solutions, board => board.SequenceEqual(sampleBoard));
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SolveByExactCover_LeetCodeExamples_ReturnsExpectedSolutions(
+        int boardSize, int expectedCount, string[] sampleBoard)
+    {
+        var solutions = NQueensSolution.SolveByExactCover(boardSize);
 
         Assert.Equal(expectedCount, solutions.Count);
         Assert.Contains(solutions, board => board.SequenceEqual(sampleBoard));

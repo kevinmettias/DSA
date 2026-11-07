@@ -2,9 +2,11 @@ using DSAExperimentation.LeetCode.Solutions.NQueens;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are NQueensSolution's, the same methods NQueensSolutionTests
-// proves correct. Both build LeetCode's actual answer shape - the list of boards -
-// rather than only counting solutions as the pre-migration arms did.
+// Harness only: every arm is NQueensSolution's, the same methods NQueensSolutionTests
+// proves correct. Each builds LeetCode's actual answer shape - the list of boards -
+// rather than only counting solutions as the pre-migration arms did. The exact-cover
+// arm lists the boards in another order, which LC 51 allows, and builds its dancing
+// links on every call.
 public class NQueensBenchmarks
 {
     // The search tree grows super-exponentially in Size, so even these close sizes are far
@@ -17,4 +19,7 @@ public class NQueensBenchmarks
 
     [Benchmark]
     public List<List<string>> BacktrackEngine() => NQueensSolution.SolveByBacktrackEngine(Size);
+
+    [Benchmark]
+    public List<List<string>> ExactCover() => NQueensSolution.SolveByExactCover(Size);
 }

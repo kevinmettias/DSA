@@ -8,9 +8,9 @@ namespace DSAExperimentation.Domain.Games.Sudoku;
 // symbol once. These are the problems' *what* (ARCHITECTURE §17.6). Which cell a solver fills next,
 // the order it tries symbols in and how a validator tracks what it has seen are each strategy's
 // *how*, and stay with the solutions; the baselines keep their own copies of the rules (§17.5).
-// Solving and generating are algorithms, not the rule: Sudoku is an exact cover problem, which
-// Knuth's Algorithm X with dancing links solves, and that is recorded as a later Algorithms/ item
-// rather than built here. The grid's numbers are static abstract members of a struct, so they fold
+// Solving and generating are algorithms, not the rule: Sudoku is an exact cover problem, whose
+// matrix SudokuCover states, and Knuth's Algorithm X with dancing links (Algorithms/ExactCover)
+// finds a cover of it. The grid's numbers are static abstract members of a struct, so they fold
 // to constants in each caller.
 /// <summary>The Sudoku board's size, and the rule a placed symbol obeys, on any grid.</summary>
 /// <typeparam name="TGrid">The grid, such as <see cref="ClassicSudoku"/>.</typeparam>

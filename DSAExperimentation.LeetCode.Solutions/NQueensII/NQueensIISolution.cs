@@ -1,4 +1,6 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.Algorithms.ExactCover;
+using DSAExperimentation.Domain.Games.Chess;
 
 namespace DSAExperimentation.LeetCode.Solutions.NQueensII;
 
@@ -50,6 +52,13 @@ internal static class NQueensIISolution
     // seen reopening a column before the next candidate is asked for.
     private static IEnumerable<int> OpenColumns(BoardState state, int columnCount) =>
         Enumerable.Range(0, columnCount).Where(state.CanPlace);
+
+    // Knuth's Algorithm X counting the puzzle's exact covers (Domain/Games/Chess's NQueensCover):
+    // the rows and columns primary, each holding one queen, and the diagonals secondary, each
+    // holding one or none. The count is a long; LC 52's boards, at most 9 x 9, have at most 352
+    // solutions, so the cast to int loses nothing.
+    public static int TotalNQueensByExactCover(int boardSize) =>
+        (int)AlgorithmX.CountCovers(new NQueensCover(boardSize), []);
 
     // How many placements complete the board from `row` down, given the occupancy
     // the caller has already established. Getting past the last row means every row

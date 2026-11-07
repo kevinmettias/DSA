@@ -2,12 +2,20 @@ using DSAExperimentation.LeetCode.Solutions.SudokuSolver;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.SudokuSolver;
 
-// Harness only. Both strategies are SudokuSolverSolution's; LeetCode does not
+// Harness only. Every strategy is SudokuSolverSolution's; LeetCode does not
 // read a return value - it inspects `board` after the call - so each theory
 // mutates its own parsed copy and checks the mutated board is a complete,
-// valid solution.
+// valid solution. Only the exact-cover arm is also handed a board with no
+// solution, which it rules out without guessing; the two arms that fill the
+// next empty cell would search for minutes before giving up on it.
 public sealed partial class SudokuSolverSolutionTests
 {
+    private const string EmptyRow = ".........";
+
+    // No given repeats, but the first row's last cell can take only 9, which its column holds.
+    private static readonly string[] Unsolvable =
+        ["12345678.", "........9", EmptyRow, EmptyRow, EmptyRow, EmptyRow, EmptyRow, EmptyRow, EmptyRow];
+
     public static TheoryData<string[]> Examples =>
         new()
         {
@@ -61,6 +69,29 @@ public sealed partial class SudokuSolverSolutionTests
 
         Assert.True(found);
         AssertIsCompleteAndValid(board);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TrySolveByExactCover_LeetCodeExamples_FillsBoardWithCompleteValidSolution(string[] rows)
+    {
+        var board = ParseBoard(rows);
+
+        var found = SudokuSolverSolution.TrySolveByExactCover(board);
+
+        Assert.True(found);
+        AssertIsCompleteAndValid(board);
+    }
+
+    [Fact]
+    public void TrySolveByExactCover_BoardWithNoSolution_ReturnsFalseAndLeavesItAsItWas()
+    {
+        var board = ParseBoard(Unsolvable);
+
+        var found = SudokuSolverSolution.TrySolveByExactCover(board);
+
+        Assert.False(found);
+        Assert.Equal(Unsolvable, board.Select(row => new string(row)));
     }
 
     private static char[][] ParseBoard(string[] rows) => rows.Select(r => r.ToCharArray()).ToArray();

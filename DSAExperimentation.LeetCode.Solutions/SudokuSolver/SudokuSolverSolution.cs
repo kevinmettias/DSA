@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.Algorithms.ExactCover;
 using DSAExperimentation.Domain.Games.Sudoku;
 
 namespace DSAExperimentation.LeetCode.Solutions.SudokuSolver;
@@ -6,8 +7,8 @@ namespace DSAExperimentation.LeetCode.Solutions.SudokuSolver;
 // LeetCode 37. Sudoku Solver: fill every '.' cell of a partially filled 9x9
 // board so every row, column, and 3x3 box holds each digit 1-9 exactly once.
 // LeetCode does not read a return value - it inspects `board` after the call
-// - so both strategies leave the caller's array holding the solved puzzle and
-// return whether a solution was found.
+// - so every strategy leaves the caller's array holding the solved puzzle and
+// returns whether a solution was found.
 //
 // The composed strategy is this repo's generic Backtrack.TrySearch engine
 // (choose/explore/unchoose over one shared mutable state), closed over a 9x9
@@ -28,6 +29,11 @@ namespace DSAExperimentation.LeetCode.Solutions.SudokuSolver;
 // to branch on next (FindEmptyCell) is the search's own choice and stays here.
 // The specialized recursion reads the board's size there too, and keeps its own
 // placement check, the simple form (ARCHITECTURE §17.5).
+//
+// The third strategy is Sudoku as exact cover (Domain/Games/Sudoku's SudokuCover)
+// solved by Knuth's Algorithm X over dancing links (Algorithms/ExactCover): it
+// branches on the constraint the fewest placements still meet, not on the next
+// empty cell.
 [LeetCodeQuestion("sudoku-solver", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true, Promise = typeof(SudokuSolverPromise))]
 internal static class SudokuSolverSolution
 {
@@ -91,6 +97,25 @@ internal static class SudokuSolverSolution
         {
             Array.Copy(source[row], target[row], ClassicSudoku.Size);
         }
+    }
+
+    // Knuth's Algorithm X over Sudoku's exact cover: every placement of a digit in a cell a row of
+    // the matrix, every cell, row-digit, column-digit and box-digit constraint a column, and the
+    // givens chosen before the search. The search takes the constraint the fewest placements still
+    // meet, which on a classic puzzle is most often a cell or a unit with one place left, so it
+    // seldom guesses. A board with no solution is left as it was.
+    public static bool TrySolveByExactCover(char[][] board)
+    {
+        var givens = SudokuCover<ClassicSudoku>.GivenRows<SudokuDigits>(board);
+
+        if (!AlgorithmX.TryFindCover(default(SudokuCover<ClassicSudoku>), givens, out var cover))
+        {
+            return false;
+        }
+
+        SudokuCover<ClassicSudoku>.Fill<SudokuDigits>(board, cover);
+
+        return true;
     }
 
     private static bool TrySolveBoard(char[][] board)

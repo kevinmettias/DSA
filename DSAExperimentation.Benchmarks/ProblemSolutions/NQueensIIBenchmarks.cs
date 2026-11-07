@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.NQueensII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are NQueensIISolution's, the same methods
+// Harness only: every arm is NQueensIISolution's, the same methods
 // CatalogCaseTests proves correct.
 public class NQueensIIBenchmarks
 {
@@ -16,4 +16,7 @@ public class NQueensIIBenchmarks
 
     [Benchmark]
     public int BacktrackSearch() => NQueensIISolution.TotalNQueensByBacktrackSearch(Size);
+
+    [Benchmark]
+    public int ExactCover() => NQueensIISolution.TotalNQueensByExactCover(Size);
 }

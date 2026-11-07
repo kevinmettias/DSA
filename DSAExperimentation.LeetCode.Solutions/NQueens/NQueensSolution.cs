@@ -1,4 +1,6 @@
 using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.Algorithms.ExactCover;
+using DSAExperimentation.Domain.Games.Chess;
 
 namespace DSAExperimentation.LeetCode.Solutions.NQueens;
 
@@ -7,7 +9,9 @@ namespace DSAExperimentation.LeetCode.Solutions.NQueens;
 //
 // Two strategies over the same column/diagonal occupancy state: a hand-rolled
 // recursive DFS (the textbook baseline) and this repo's own Backtrack.Search engine
-// driving row-by-row placement.
+// driving row-by-row placement. A third is the puzzle as exact cover, solved by
+// Knuth's Algorithm X, which places a queen in whichever row or column has the
+// fewest squares left rather than in the next row.
 [LeetCodeQuestion("n-queens", LeetCodeAnswerOrder.AnyOrder)]
 internal static class NQueensSolution
 {
@@ -57,6 +61,21 @@ internal static class NQueensSolution
     // The columns a row can still take: every column no already-placed queen attacks.
     private static IEnumerable<int> CandidateColumns(QueensState state, int boardSize) =>
         Enumerable.Range(0, boardSize).Where(state.CanPlace);
+
+    // Knuth's Algorithm X over the puzzle as exact cover (Domain/Games/Chess's NQueensCover): a
+    // square per row of the matrix, its row and column primary columns, met by exactly one queen,
+    // and its two diagonals secondary ones, met by one queen or none. Each cover is one board,
+    // built as the search finds it.
+    public static List<List<string>> SolveByExactCover(int boardSize)
+    {
+        var queens = new NQueensCover(boardSize);
+        var boards = new List<List<string>>();
+        var collector = new BoardCollector(queens, boards);
+
+        AlgorithmX.TrySearch(queens, [], ref collector);
+
+        return boards;
+    }
 
     // One row of the recursion: `row` is the row being decided, `placed` holds the
     // column every earlier row chose (so its length is the board's own size),
@@ -108,6 +127,28 @@ internal static class NQueensSolution
     // One row as the puzzle prints it, given the column that row's queen holds.
     private static string BoardRow(int boardSize, int queenColumn) =>
         new string(Enumerable.Range(0, boardSize).Select(col => col == queenColumn ? 'Q' : '.').ToArray());
+
+    // Turns each cover, a queen's square per row in the order the search chose them, into the
+    // board LeetCode prints, and lets the search go on to the next.
+    private readonly struct BoardCollector(NQueensCover queens, List<List<string>> boards)
+        : ICoverVisitor
+    {
+        public bool ShouldStopAfter(ReadOnlySpan<int> cover)
+        {
+            var placed = new int[queens.BoardSize];
+
+            foreach (var square in cover)
+            {
+                var (row, col) = queens.SquareOf(square);
+                placed[row] = col;
+            }
+
+            var board = Board(queens.BoardSize, placed);
+            boards.Add(board);
+
+            return false;
+        }
+    }
 
     private sealed class QueensState(int boardSize)
     {

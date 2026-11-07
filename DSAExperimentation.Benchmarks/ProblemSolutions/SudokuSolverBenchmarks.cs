@@ -2,15 +2,18 @@ using DSAExperimentation.LeetCode.Solutions.SudokuSolver;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are SudokuSolverSolution's, the same methods
-// SudokuSolverSolutionTests proves correct. Both walk the identical search tree over
-// the same fixed puzzle (there is no natural "size" axis to scale the way
+// Harness only: every arm is SudokuSolverSolution's, the same methods
+// SudokuSolverSolutionTests proves correct. The first two walk the identical search
+// tree over the same fixed puzzle (there is no natural "size" axis to scale the way
 // TwoSum's input length does - the board is always 9x9, the same reason
-// NQueensBenchmarks fixes Size rather than [Params]-ing it), so this isolates
+// NQueensBenchmarks fixes Size rather than [Params]-ing it), so they isolate
 // the constant-factor cost of Backtrack.TrySearch's generic delegate dispatch
-// from an equivalent purpose-built recursion. The puzzle is LeetCode 37's own
-// example, kept because the input space is fixed at one 9x9 board. Both
-// strategies fill their board argument in place, so every iteration needs a
+// from an equivalent purpose-built recursion. The third searches a different
+// tree, Algorithm X's over Sudoku's exact cover, branching on the constraint
+// fewest placements still meet, and builds its dancing links on every call, so
+// it times that build as well as the search. The puzzle is LeetCode 37's own
+// example, kept because the input space is fixed at one 9x9 board. Every
+// strategy fills its board argument in place, so every iteration needs a
 // pristine copy: each arm copies the parsed puzzle into a scratch board
 // [GlobalSetup] allocated once. The copy is timed on purpose because the
 // strategies mutate their input, and every arm pays the same cost.
@@ -51,6 +54,13 @@ public class SudokuSolverBenchmarks
     {
         ResetBoard();
         return SudokuSolverSolution.TrySolveByBacktrackEngine(_board);
+    }
+
+    [Benchmark]
+    public bool TrySolveByExactCover()
+    {
+        ResetBoard();
+        return SudokuSolverSolution.TrySolveByExactCover(_board);
     }
 
     private void ResetBoard()

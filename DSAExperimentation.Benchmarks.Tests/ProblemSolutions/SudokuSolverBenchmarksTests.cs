@@ -2,13 +2,13 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SudokuSolverBenchmarks (ARCHITECTURE 17.9): both arms are
-// SudokuSolverSolution's, so a harness whose arms disagree is timing two different questions. The
+// Harness coverage for SudokuSolverBenchmarks (ARCHITECTURE 17.9): every arm is
+// SudokuSolverSolution's, so a harness whose arms disagree is timing different questions. The
 // class carries no [Params] at all - the board is always the same 9x9 puzzle, so there is nothing to
-// tune and the harness is a bare initializer plus Setup. Both arms answer with a bare bool and both
-// mutate the board they are handed, but each arm copies the puzzle back into its scratch board before
-// solving, so one harness is safe to call twice in either order and the single-harness rule holds.
-// Each test below calls both arms on one harness in turn, as BenchmarkDotNet reuses one across
+// tune and the harness is a bare initializer plus Setup. Every arm answers with a bare bool and
+// mutates the board it is handed, but each arm copies the puzzle back into its scratch board before
+// solving, so one harness is safe to call twice in any order and the single-harness rule holds.
+// Each test below calls arms on one harness in turn, as BenchmarkDotNet reuses one across
 // iterations - the generic arm check hands every arm a fresh harness, so it never sees a call land
 // on a board an earlier call solved.
 //
@@ -33,6 +33,16 @@ public sealed partial class SudokuSolverBenchmarksTests
 
         Assert.Equal(harness.TrySolveBySpecializedRecursion(), harness.TrySolveByBacktrackEngine());
         Assert.True(harness.TrySolveByBacktrackEngine());
+    }
+
+    [Fact]
+    public void TrySolveByExactCover_LeetCodeExamplePuzzle_AgreesWithTheOtherArms()
+    {
+        var harness = BuildHarness();
+
+        Assert.Equal(harness.TrySolveBySpecializedRecursion(), harness.TrySolveByExactCover());
+        Assert.Equal(harness.TrySolveByBacktrackEngine(), harness.TrySolveByExactCover());
+        Assert.True(harness.TrySolveByExactCover());
     }
 
     private static SudokuSolverBenchmarks BuildHarness()
