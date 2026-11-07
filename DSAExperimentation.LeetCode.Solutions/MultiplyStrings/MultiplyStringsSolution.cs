@@ -19,7 +19,8 @@ namespace DSAExperimentation.LeetCode.Solutions.MultiplyStrings;
 [LeetCodeQuestion("multiply-strings", LeetCodeAnswerOrder.AsWritten)]
 internal static class MultiplyStringsSolution
 {
-    private const string ZeroDigitString = "0";
+    // Zero written as a numeral: DecimalDigits' zero, as the string the stack arm adds to.
+    private static readonly string ZeroDigitString = DecimalDigits.Zero.ToString();
 
     // The textbook baseline: num1[i] * num2[j] belongs to column i + j + 1 of
     // an (m + n)-column int[], so every digit pair's product is added straight
@@ -85,7 +86,7 @@ internal static class MultiplyStringsSolution
         for (var i = num2.Length - 1; i >= 0; i--)
         {
             var partial = MultiplyBySingleDigit(num1, num2[i] - '0');
-            var shifted = partial + new string('0', num2.Length - 1 - i);
+            var shifted = partial + new string(DecimalDigits.Zero, num2.Length - 1 - i);
             result = AddDecimalStrings(result, shifted);
         }
 
@@ -160,7 +161,7 @@ internal static class MultiplyStringsSolution
     private static string TrimLeadingZeros(string digits)
     {
         var start = 0;
-        while (start < digits.Length - 1 && digits[start] == '0')
+        while (start < digits.Length - 1 && digits[start] == DecimalDigits.Zero)
         {
             start++;
         }
