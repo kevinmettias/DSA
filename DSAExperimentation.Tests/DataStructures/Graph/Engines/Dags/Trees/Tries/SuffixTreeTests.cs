@@ -1,10 +1,11 @@
 using DSAExperimentation.DataStructures.SubstringIndex;
-using DSAExperimentation.DataStructures.SuffixTree;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 using DSAExperimentation.Tests.DataStructures.SubstringIndex.Fixtures;
 using SuffixArrayStructure = DSAExperimentation.DataStructures.SuffixArray.SuffixArray;
-using SuffixTreeStructure = DSAExperimentation.DataStructures.SuffixTree.SuffixTree;
+using SuffixTreeStructure =
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.SuffixTree;
 
-namespace DSAExperimentation.Tests.DataStructures.SuffixTree;
+namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees.Tries;
 
 public sealed partial class SuffixTreeTests
 {

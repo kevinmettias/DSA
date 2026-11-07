@@ -1,6 +1,6 @@
-using DSAExperimentation.DataStructures.SuffixTree;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 
-namespace DSAExperimentation.Tests.DataStructures.SuffixTree;
+namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees.Tries;
 
 // The walk's bookkeeping on its own: two suffixes taken in turn share the shallowest depth passed
 // between them, never more than the first one's own depth.

@@ -5,7 +5,8 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 // The one trie's walk down a key, written once for every configuration: one edge per letter, each
 // child found, or added, by the letter in the node's store. A configuration supplies the node
 // class, which carries its payload, the store, and the letter type that joins a key to the store;
-// what a key's end means, a value or a count or nothing, is the configuration's own.
+// what a key's end means, a value or a count or nothing, is the configuration's own. A trie whose
+// edges carry runs of letters, the suffix tree, walks them with Find's edge-label overload.
 //
 // Each method is generic over the key it walks, so it is compiled for a configuration's own key, a
 // text key's loop bounded by its string's length and read with no bounds check as a foreach over
@@ -76,5 +77,59 @@ internal static class TrieWalk<TNode, TStore, TLetter>
         }
 
         return current;
+    }
+
+    // The node on whose edge a key's path ends, in a trie whose edges each carry a run of letters,
+    // or null where the path leaves the trie. The store finds a child by the first letter on its
+    // edge, so the walk matches the rest of the edge here, as far as the key reaches. A key that
+    // ends partway along an edge is a prefix of every key below it, so the node below is the one
+    // returned. The key is a span of letters, read from the first: a substring index's pattern
+    // arrives as one, so a query copies nothing. An ITrieKey cannot carry a span, since only a
+    // ref struct holds one, and a walk generic over a ref struct key needs `allows ref struct`,
+    // which the repository's lint cannot yet parse (ARCHITECTURE §13.8).
+    //
+    // A trie of one letter per edge matches nothing past the first, and that walk is Find above,
+    // kept a method of its own so that no such configuration inlines an edge match it never takes,
+    // as GetOrAddPath keeps its step to itself.
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static TNode? Find<TLabels>(TNode root, ReadOnlySpan<TLetter> key, TLabels labels)
+        where TLabels : struct, ITrieEdgeLabels<TNode, TLetter>
+    {
+        var current = root;
+        var position = 0;
+
+        while (position < key.Length)
+        {
+            current = current.Children.ChildFor(key[position]);
+
+            if (current is null || !IsEdgeMatched(current, key, position, labels))
+            {
+                return null;
+            }
+
+            position = Math.Min(position + labels.LengthOf(current), key.Length);
+        }
+
+        return current;
+    }
+
+    // Whether the edge into a node agrees with the key from a position, as far as the key reaches:
+    // its first letter is the one the store found the node by, so the match starts at the second.
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static bool IsEdgeMatched<TLabels>(
+        TNode node, ReadOnlySpan<TLetter> key, int position, TLabels labels)
+        where TLabels : struct, ITrieEdgeLabels<TNode, TLetter>
+    {
+        var end = Math.Min(position + labels.LengthOf(node), key.Length);
+
+        for (var next = position + 1; next < end; next++)
+        {
+            if (!labels.HasLetterAt(node, next - position, key[next]))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

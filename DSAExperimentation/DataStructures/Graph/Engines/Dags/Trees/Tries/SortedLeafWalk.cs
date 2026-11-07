@@ -1,4 +1,4 @@
-namespace DSAExperimentation.DataStructures.SuffixTree;
+namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 
 // What SuffixTree.ToSuffixArray's walk has taken so far: the suffixes in the order met, each
 // neighbour pair's common prefix length, and the shallowest depth passed since the last suffix

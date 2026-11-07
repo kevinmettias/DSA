@@ -8,7 +8,10 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 //   end anywhere, one a prefix of another.
 // - BitTrieNode carries nothing: every key of a bit trie is 32 letters long, so a node at that
 //   depth is a key's end and no node above it is, and presence is implied by the path.
-// The store names its node class, and a node is made only by its store, through New.
+// - SuffixTreeNode carries the edge into it, a range of the suffix tree's text, the suffix that
+//   ends on it and how many suffixes run through it.
+// The store names its node class, and a walk makes a node only through its store, by New; the
+// suffix tree's build from its suffix array, which is no walk, makes its own.
 /// <summary>A trie node: an object holding its children in an inline store.</summary>
 /// <typeparam name="TSelf">The node type itself.</typeparam>
 /// <typeparam name="TStore">How the node keeps its children.</typeparam>

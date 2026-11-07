@@ -826,7 +826,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `Graph/Contracts/Topologies/` | `IGraphTopology`, `IEdgeTopology`, `EdgeTopologyAsGraphTopology` (§3.2) |
 | `Graph/Engines/Dags/` | `IDagTopology` (§3.2) |
 | `Graph/Engines/Dags/Trees/` | `ITreeTopology`; the binary tree (`BinaryTreeNode`, `BinaryTreeChildren`, `BinaryTreeTopology`, `ChildSide`, `BinarySearchTree`, `InOrderTraversal`, `IInOrderHooks`, `FindClosest`); the rooted tree (`RootedTreeNode`, `RootedTreeTopology`, `ParentArrayTree`, `EdgeListTree`, `PreOrderTour`, `PreOrderLowestCommonAncestor`); the quad tree (`QuadTreeNode`, `QuadTreeGrid`). `EdgeListTree` roots LeetCode's undirected edge list with a breadth-first walk, returning the parent array `ParentArrayTree` reads and, for each node, the index of the edge that joins it to its parent - the one thing a parent array cannot recover. `PreOrderTour` lays a `RootedTreeNode` tree out in pre-order, so every subtree is one contiguous range of positions; `PreOrderLowestCommonAncestor` reads ancestors off that layout with one range minimum, O(log n) per query after O(n) preparation. It is hardwired to the tour, so it lives here rather than beside `Algorithms/Ancestry/LowestCommonAncestor`, which is generic over `ITreeTopology` (§13.5) |
-| `Graph/Engines/Dags/Trees/Tries/` | The one trie (§13.8): `IPrefixMap`, the map's contract, and `IPrefixSet`, the set's, which the trie meets through `PrefixSet`, its view of a map to `bool`; `TrieWalk`, the walk down a key written once for every configuration; the key each configuration injects, `ITrieKey`: `TextKey`, a string's characters, `Int32BitsKey`, an int's 32 bits from the most significant, and `KeyPrefix`, a key's first letters, which a prefix query walks; the node, `ITrieNode`, whose class is the configuration's payload: `TrieNode`, a value and whether a key ends there, `BitTrieNode`, nothing, and `CountedBitTrieNode`, a count of the values whose path passes through it; the map, `Trie<TKey, TLetter, TStore, TValue>`, with the word trie `Trie<TStore, TValue>` as its configuration, and the set `BitTrie`, the trie over an int's bits with its maximum-XOR walk; the maximum-XOR set's contract, `IMaxXorSet`, which `BitTrie` meets through its view `BitTrieSet` and `TwoFieldBitTrie`, the hand-specialized strategy for that layer, meets on its own (§13.9); the counted bit trie `CountedBitTrie`, the trie over an int's bits with a count per node, so values can be removed, and the XOR multiset's contract, `IXorMultiset`, which `CountedBitTrie` meets through its view `CountedBitTrieMultiset` and `PooledCountedBitTrie`, the hand-specialized strategy whose nodes are slots in shared arrays, through `PooledCountedBitTrieMultiset` (§13.9); `IBitTrieNode`, a bit trie's node, whose payload says which children hold a value, `MaxXorWalk`, the maximum-XOR walk both bit tries share, and `ITrieStep`, what a walk does to each node on a key's path; and the child store each configuration injects, `ITrieChildStore`, or `IOrderedTrieChildStore` for a store whose children have an order. `AlphabetSlots` (with `AlphabetSlotsEnumerator`) keeps a node's children in slots over any `IAlphabet` of up to 64 letters, in letter order, so its trie has a real witness (`TrieTopology`, `TrieChildren`); `HashedChildren` takes any `char` and has no order, so its trie has none. `BinarySlots` keeps a node's two children inline, one per binary digit, 0 before 1, for any node class, so the bit trie has a witness too, `TrieNodeTopology` with `TrieNodeChildren`, the witness for a node class other than `TrieNode` (§13.9). `ITrieLayout`, `DenseTrieLayout`, `PackedTrieLayout` — where the slot store keeps its children, a type argument each trie names |
+| `Graph/Engines/Dags/Trees/Tries/` | The one trie (§13.8): `IPrefixMap`, the map's contract, and `IPrefixSet`, the set's, which the trie meets through `PrefixSet`, its view of a map to `bool`; `TrieWalk`, the walk down a key written once for every configuration; the key each configuration injects, `ITrieKey`: `TextKey`, a string's characters, `Int32BitsKey`, an int's 32 bits from the most significant, and `KeyPrefix`, a key's first letters, which a prefix query walks; the node, `ITrieNode`, whose class is the configuration's payload: `TrieNode`, a value and whether a key ends there, `BitTrieNode`, nothing, and `CountedBitTrieNode`, a count of the values whose path passes through it; the map, `Trie<TKey, TLetter, TStore, TValue>`, with the word trie `Trie<TStore, TValue>` as its configuration, and the set `BitTrie`, the trie over an int's bits with its maximum-XOR walk; the maximum-XOR set's contract, `IMaxXorSet`, which `BitTrie` meets through its view `BitTrieSet` and `TwoFieldBitTrie`, the hand-specialized strategy for that layer, meets on its own (§13.9); the counted bit trie `CountedBitTrie`, the trie over an int's bits with a count per node, so values can be removed, and the XOR multiset's contract, `IXorMultiset`, which `CountedBitTrie` meets through its view `CountedBitTrieMultiset` and `PooledCountedBitTrie`, the hand-specialized strategy whose nodes are slots in shared arrays, through `PooledCountedBitTrieMultiset` (§13.9); `IBitTrieNode`, a bit trie's node, whose payload says which children hold a value, `MaxXorWalk`, the maximum-XOR walk both bit tries share, and `ITrieStep`, what a walk does to each node on a key's path; `ITrieEdgeLabels`, how a trie whose edges each carry a run of letters reads the label on an edge, which `TrieWalk`'s edge-label `Find` takes; the suffix tree `SuffixTree`, the one trie with compressed edges over ranges of one text, with its node `SuffixTreeNode` (the edge's range, the suffix ending there and how many suffixes run through it), its labels `SuffixTreeEdges`, and `SortedLeafWalk`, the state of its conversion to a suffix array (§13.8, §13.12); and the child store each configuration injects, `ITrieChildStore`, or `IOrderedTrieChildStore` for a store whose children have an order. `AlphabetSlots` (with `AlphabetSlotsEnumerator`) keeps a node's children in slots over any `IAlphabet` of up to 64 letters, in letter order, so its trie has a real witness (`TrieTopology`, `TrieChildren`); `HashedChildren` takes any `char` and has no order, so its trie has none; `HashedNodeChildren` is the same store for a node class that is not generic over its store, the suffix tree's, with `SetChildFor` for a build that splits edges. `BinarySlots` keeps a node's two children inline, one per binary digit, 0 before 1, for any node class, so the bit trie has a witness too, `TrieNodeTopology` with `TrieNodeChildren`, the witness for a node class other than `TrieNode` (§13.9). `ITrieLayout`, `DenseTrieLayout`, `PackedTrieLayout` — where the slot store keeps its children, a type argument each trie names |
 | `Graph/Grids/` | `Grid`, `GridNode`, `GridChildren`, `GridSize`, `GridNeighbors`, `IGridCellFilter`, `GridTopology`, `IGridNodeSource` with `NodePerCell` and `NodePerStep`, and the weighted `WeightedGrid*` (§17.6). The steps they walk by, `GridStep` and `GridDirections`, are facts about the square lattice, in `Domain/Mathematics/Lattices`; a `Grid` carries the table its cells are joined by (`Steps`, the orthogonal four unless it is built with others, such as the octilinear eight LC 1091 moves by), and `GridChildren` reads which of them lead somewhere open into a mask once per node, so its `Count` is a population count and `Get` a set bit. `GridSize` is a board's extent and its one bounds rule, the bounded rectangle's (`Domain/Mathematics/Surfaces`); a walk's `IGridNodeSource` says whether a cell's node is the board's one node for it or a new one per step; `GridNeighbors` is a cell's on-board neighbours in a direction table's order, filtered by an `IGridCellFilter`, for a `DepthFirstSearch.Traverse` successor whose "open" is decided by the problem's cells rather than a fixed map like `Grid`'s |
 | `Graph/Hamming/` | `HammingNode`, `HammingTopology`, `HammingGraph`, `HammingSearch`, `MutationStart`, `MutationTarget` (§17.6); the letters a mutation writes are an `IAlphabet` type argument (§19.6) |
 | `Graph/ShortestPaths/` | `ByPriorityOrder` (§13.2) |
@@ -846,7 +846,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `SinglyLinkedList/` | `SinglyLinkedListNode`, `RandomLinkedListNode`, the one linked node with `Random` added (§13.7, §13.11) |
 | `Stack/` | `Stack` — composes `DynamicArray` (§4.1) |
 | `SubstringIndex/` | `ISubstringIndex`, `ICountingSubstringIndex`, `ILocatingSubstringIndex`, `ILongestRepeatIndex`, `SubstringOccurrence` — the substring-index contracts, split by capability (§13.12) |
-| `SuffixArray/`, `SuffixAutomaton/`, `SuffixTree/` | `SuffixArray`, `SuffixArrayIndex` (the array kept with its text, for pattern queries), `LongestCommonPrefixQueries` (a range minimum beside the array); `SuffixAutomaton`, `SuffixAutomatonState`; `SuffixTree`, `SuffixTreeNode` — witness-less, for §13.8's reasons; each implements the substring-index contracts it answers well, and `SuffixTree.ToSuffixArray` (with `SortedLeafWalk`, its walk's state) and the tree's constructor convert between tree and array (§13.12) |
+| `SuffixArray/`, `SuffixAutomaton/` | `SuffixArray`, `SuffixArrayIndex` (the array kept with its text, for pattern queries), `LongestCommonPrefixQueries` (a range minimum beside the array); `SuffixAutomaton`, `SuffixAutomatonState`; each implements the substring-index contracts it answers well, as does the suffix tree, which lives in `Graph/Engines/Dags/Trees/Tries/` as the one trie with compressed edges (§13.8), and whose `ToSuffixArray` and constructor convert between tree and array (§13.12) |
 
 **`Algorithms/`** is organized by utility, and holds the Operations not hardwired to one of this
 repo's Representations (§13.5). `Searching` and `Sorting` have no topology axis (§4.1/§10.2) but
@@ -1063,7 +1063,7 @@ The real question is Representation, checked directly rather than assumed: every
 `IChildren<TNode>.Get(int)` in this repo (`DepthFirstWalk.cs`, `BreadthFirstWalk.cs`,
 `TopDownWalk.cs`) drives it in a plain sequential `for i in 0..Count-1` sweep, never random access —
 but the interface's own doc comment still states an O(1)-*per-call* obligation, and a node's
-children kept in a `HashMap<char,·>` (`HashedChildren`, `SuffixTreeNode.Children`) cannot honestly
+children kept in a `HashMap<char,·>` (`HashedChildren`, `HashedNodeChildren`) cannot honestly
 promise indexed O(1) `Get` the way a fixed slot array can. That is a §8 Representation/
 Complexity-law mismatch — and it is fixable, by bounding the alphabet:
 the one trie, `Graph/Engines/Dags/Trees/Tries/Trie<TStore, TValue>`, takes where a node keeps its
@@ -1099,16 +1099,17 @@ A trie over `HashedChildren<TValue>`, keyed by any `char`, correctly stays witne
 value is *not* being bounded to a small alphabet, so narrowing it to gain a witness would defeat its
 purpose rather than just cost something. Its store has no order, and `TrieTopology` asks for an
 `IOrderedTrieChildStore`, so it is the compiler that withholds the tree engines from it. `BitTrie`
-earns one (§13.9). `SuffixTree`,
-`SuffixAutomaton` and `AhoCorasick` are not yet reviewed under this test, and each raises a question
-of its own: `SuffixTree`'s edge-compression (substring-range labels, not one-char-per-edge) is a
-second, independent representation question on top of the alphabet one; `AhoCorasick`'s trie
+earns one (§13.9). `SuffixTree` is
+the one trie with compressed edges, its store hashed, so it has none either (the end of this
+section). `SuffixAutomaton` and `AhoCorasick` are not yet reviewed under this test, and each
+raises a question of its own: `AhoCorasick`'s trie
 portion has the same bounded-alphabet shape `BitTrie`/`AlphabetSlots` do, but its runtime matching
 walks `Fail`/`OutputLink` edges that aren't tree edges at all, so at most its construction-time trie
 would earn a witness, not the automaton itself; `SuffixAutomaton`'s transition graph is a DAG, not
 a tree, though its suffix-link parent pointers form a separate, real tree that's a plausible
 witness candidate in its own right.
-What these three answer as substring indexes, and what `AhoCorasick` does not, is a separate
+What the suffix tree and these two answer as substring indexes, and what `AhoCorasick` does not,
+is a separate
 question from whether any of them earns a tree witness, and §13.12 answers it.
 
 There is one trie, not two (the owner's ruling of 2026-11-02, quoted in §17.5). Until then a
@@ -1182,6 +1183,78 @@ unchanged: the dense set's replay is the same instructions (969 and 953 bytes, t
 differently), the packed set's differs in register allocation and spills only (1,761 and 1,685
 bytes), `Set` is 940 and 934 bytes packed and 300 dense on both sides, `FindNode` the same 135
 bytes, and neither allocates a byte more.
+
+Path compression is the one trie's fourth axis, and `SuffixTree` is its configuration (the
+composition plan's C1, its last part). A suffix tree is the trie of a text's suffixes with every
+chain of single children folded into one edge, so an edge carries a run of letters, a range of the
+text by its start and length. That changes the edge and nothing else the one trie is made of: a
+store still finds a child by the first letter on its edge, a node class still carries the payload,
+and a walk still makes one store lookup a node. So the label on an edge is a witness,
+`ITrieEdgeLabels<TNode, TLetter>`, which says how many letters label the edge into a node and
+whether one of them is a given letter, and `TrieWalk` has an edge-label overload of `Find` that,
+after each lookup, matches the rest of the edge as far as the key reaches. A key that stops partway
+along an edge ends on the node below it, since every key below that edge starts with it: the
+substring walk a suffix tree answers with. `SuffixTree` is the one trie with three injections:
+`SuffixTreeNode`, a payload of the edge's range, the suffix ending at the node and how many suffixes
+run through it; `HashedNodeChildren`, its children keyed by any character in the repository's hash
+map; and `SuffixTreeEdges`, which reads an edge's letters from the text it holds. It moved into
+`Tries/`, as `BitTrie` did, and keeps its build from the suffix array and its conversion back, which
+are its own, as `CountXorBelow` is the counted trie's.
+
+The overload takes its key as a span of letters, where the trie's other walks take an `ITrieKey`. A
+pattern arrives as a span, and an `ITrieKey` that carries one must be a ref struct, which a generic
+walk takes only under `allows ref struct`. The repository's lint could not parse that constraint
+and skipped `TrieWalk.cs` whole, for every check, so the overload keeps to plain constraints.
+
+Three reasons a suffix tree might have stayed apart were checked, and none holds. The walk is not
+one per edge rather than per node: it is the one trie's walk with the rest of each edge matched,
+and the uncompressed trie is the case of one letter per edge, which `TrieWalkTests` runs over a word
+trie with a test's one-letter witness, finding every node plain `Find` finds. Edges that point into
+one text rather than holding a key's letters say where the labels live, which is the witness's to
+know, so the witness holds the text. And the build's edge splits need nothing the contracts lack:
+a build from a sorted array is no walk and makes its own nodes, and a split re-hangs a node that
+already exists, which `GetOrAddChildFor` cannot do since it makes the node it adds, so
+`HashedNodeChildren` puts a given node under a letter with `SetChildFor`, a store member beyond the
+contract as `AlphabetSlots.ChildAt` is. The tree has no suffix links, having declined Ukkonen's
+build. `HashedNodeChildren` is `HashedChildren` for a node class that is not generic over its store.
+A store names its node class, and `TrieNode` is generic over its store, so `TrieNode`'s stores name
+it and are generic over the value, while the suffix tree's node takes a store generic over the node
+class, as the bit tries' nodes take `BinarySlots`; `TrieChildren` and `TrieNodeChildren` are the
+same pair. The store keeps no order, so the compiler still withholds `TrieNodeTopology` from the
+tree.
+
+The uncompressed configurations keep their own walk: plain `Find` is a method beside the overload,
+as `GetOrAddPath` without a step is beside the one with, and no configuration of one letter per
+edge calls the overload. Routed through it with a one-letter witness, which the compiler allows and
+every test passes, the word tries' and the counted bit trie's lookups did not compile to the walk
+they have. Read with the `inlining` verb, 15 s an arm, LC 208's three replays each tried 10 more
+inlines and grew 74-101 bytes (dense 953 to 1,054, packed 1,752 to 1,846, hashed 2,559 to 2,633),
+and `CountedBitTrie.TryRemoveCopy` grew from 166 bytes to 204: the JIT does not see that the
+minimum of one past a position and the key's length leaves the edge match nothing to do. With the
+overload kept apart, every uncompressed root read here tries the inlines it tried at `a42166dd` and
+fails the same ones: LC 208's three replays (114, 142 and 167 tried), LC 421's root and its two
+walks, LC 1707's `ResolveQuery`, LC 1032's stream query, and the counted trie's walks in
+`XorMultisetBenchmarks`. Their bytes are the same but for what profile counts move between runs on
+either side of the change: LC 208's packed replay read 1,678-1,762 bytes, LC 1032's 999-1,021.
+
+The tree's own code, read in `SubstringIndexBenchmarks`' presence arm at 1,000 letters: the batch
+loop still inlines the whole walk and calls only what it called, the hash map's comparer arms that
+a `char` key never takes and the range-check throw. It tries 40 inlines rather than 32 and is 693
+bytes rather than 556, since the JIT clones the edge match: the copy that runs reads the pattern
+with no bounds check, one check a letter where there were two, with the text held in a register,
+and a node costs one null check more, the store's field read off the node. BenchmarkDotNet,
+two passes against `a42166dd`, allocation identical in every row: the queries at 1,000 letters
+5-16% faster in both (presence 36.5 -> 32.5 and 35.5 -> 32.0 us), at 100,000 letters either way
+by pass (presence +16% then -39%), and the build at 1,000 letters +6% and +5%, at 100,000 +24%
+then +5%, the unchanged suffix automaton's build moving +13% and +20% beside it. The build's root
+now inlines the hash map's `Set` at every site, 5,483 bytes rather than 4,792.
+
+A compressed word trie, a radix tree over strings, is the axis's obvious second configuration, and
+it is not free. Its labels would be ranges of each key it was given, a string reference beside
+each node's range, since its keys share no one text; and it needs an insert that splits an edge
+where a key leaves it partway, a walk the suffix tree never needed, building from its suffix array.
+Packed slots already keep a chain of single children at one slot a node (above), so it waits for
+keys long and sparse enough to need it.
 
 ### 13.9 The two-part witness test, and `BitTrie`
 

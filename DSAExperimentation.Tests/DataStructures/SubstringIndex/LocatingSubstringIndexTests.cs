@@ -1,7 +1,8 @@
 using DSAExperimentation.DataStructures.SubstringIndex;
 using DSAExperimentation.Tests.DataStructures.SubstringIndex.Fixtures;
 using SuffixArrayIndex = DSAExperimentation.DataStructures.SuffixArray.SuffixArrayIndex;
-using SuffixTreeStructure = DSAExperimentation.DataStructures.SuffixTree.SuffixTree;
+using SuffixTreeStructure =
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.SuffixTree;
 
 namespace DSAExperimentation.Tests.DataStructures.SubstringIndex;
 

@@ -1,6 +1,6 @@
-using DSAExperimentation.DataStructures.SuffixTree;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 
-namespace DSAExperimentation.Tests.DataStructures.SuffixTree;
+namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees.Tries;
 
 public sealed partial class SuffixTreeNodeTests
 {

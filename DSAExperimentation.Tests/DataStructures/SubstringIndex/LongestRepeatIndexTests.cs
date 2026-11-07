@@ -2,7 +2,8 @@ using DSAExperimentation.DataStructures.SubstringIndex;
 using DSAExperimentation.Tests.DataStructures.SubstringIndex.Fixtures;
 using SuffixArrayStructure = DSAExperimentation.DataStructures.SuffixArray.SuffixArray;
 using SuffixAutomatonStructure = DSAExperimentation.DataStructures.SuffixAutomaton.SuffixAutomaton;
-using SuffixTreeStructure = DSAExperimentation.DataStructures.SuffixTree.SuffixTree;
+using SuffixTreeStructure =
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.SuffixTree;
 
 namespace DSAExperimentation.Tests.DataStructures.SubstringIndex;
 

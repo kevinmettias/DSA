@@ -6,16 +6,31 @@ using DSAExperimentation.DataStructures.SubstringIndex;
 // triggered here by a genuine cross-domain composition rather than same-namespace self-reference
 // (which never collides, see RollingHash.cs referencing RollingHash from within its own namespace).
 using SuffixArrayStructure = DSAExperimentation.DataStructures.SuffixArray.SuffixArray;
+using SuffixWalk = DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.TrieWalk<
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.SuffixTreeNode,
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.HashedNodeChildren<
+        DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.SuffixTreeNode>,
+    char>;
 
-namespace DSAExperimentation.DataStructures.SuffixTree;
+namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 
-// The compressed trie of every suffix of a fixed text, each edge labeled by a (Start, Length) index
-// range into that text rather than a copied substring. Built once from a SuffixArray (composing its
-// already-public Suffixes/LongestCommonPrefixArray - licensed by the same rule DynamicArraySequence uses to compose
-// DynamicArray, ARCHITECTURE.md §5 step 5/§9.4: composing another domain's already-public concrete
-// representation is fine, only forcing that domain to implement your own interface is prohibited),
-// then answering the substring-index queries (ARCHITECTURE §8) repeatedly: presence, counting and
-// locating in time linear in the pattern, and the longest repeat in time linear in the tree.
+// The compressed trie of every suffix of a fixed text: the one trie (§13.8) with its edges
+// compressed, each labelled by a (Start, Length) range of that text rather than a copied
+// substring. Three injections make it one, and they are what tells it from the other
+// configurations:
+// - its node class, SuffixTreeNode, carries the edge into each node, the suffix ending there and
+//   how many suffixes run through it;
+// - its store, HashedNodeChildren, keys a node's children by the first letter on each edge, any
+//   character, in a hash map;
+// - its edges are read through SuffixTreeEdges, so a pattern walks it by TrieWalk's edge-label
+//   walk, which finds each child by its edge's first letter as every trie does and matches the
+//   rest of the edge against the text.
+// Built once from a SuffixArray (composing its already-public Suffixes/LongestCommonPrefixArray -
+// licensed by the same rule DynamicArraySequence uses to compose DynamicArray, ARCHITECTURE.md §5
+// step 5/§9.4: composing another domain's already-public concrete representation is fine, only
+// forcing that domain to implement your own interface is prohibited), then answering the
+// substring-index queries (ARCHITECTURE §8) repeatedly: presence, counting and locating in time
+// linear in the pattern, and the longest repeat in time linear in the tree.
 //
 // The two conversions between this tree and a suffix array are both standard and cheap. A suffix
 // array with its common prefix lengths becomes this tree through the constructor, by the stack
@@ -33,10 +48,8 @@ namespace DSAExperimentation.DataStructures.SuffixTree;
 // presentation for a simpler, equally-correct alternative when one exists) - and is hand-traceable,
 // unlike Ukkonen's own canonical teaching examples.
 //
-// No Topology witness: exactly one tree shape exists for a given text (a deterministic function of
-// it), the same "nothing for a witness to parametrize" reasoning Trie.cs already gives for itself -
-// and stronger than Trie's own guarantee, since SuffixTree exposes no public mutation API at all
-// after construction.
+// No Topology witness: its store is hashed and keeps no order, so the compiler withholds
+// TrieNodeTopology, which asks for an ordered store, as it does from every hashed trie (§13.8).
 /// <summary>
 /// The compressed trie of every suffix of a fixed text, built from its suffix array at construction.
 /// </summary>
@@ -65,9 +78,9 @@ public sealed class SuffixTree
         _root = BuildFromSuffixArray(_text, suffixArray);
     }
 
-    // O(pattern.Length) average, independent of text length, contingent on SuffixTreeNode.Children
-    // giving O(1)-average per-character dispatch - a slower Children representation would silently
-    // degrade this with no compiler error. The empty pattern trivially occurs.
+    // O(pattern.Length) average, independent of text length, contingent on the hashed store giving
+    // O(1)-average per-character dispatch - a slower store would silently degrade this with no
+    // compiler error. The empty pattern trivially occurs.
     /// <summary>Tests whether a pattern occurs in the text, in time linear in the pattern's length.</summary>
     /// <param name="pattern">The characters to look for, compared exactly.</param>
     /// <returns>True when the pattern occurs in the text; always true for an empty pattern.</returns>
@@ -138,7 +151,7 @@ public sealed class SuffixTree
                 yield return node.SuffixStart;
             }
 
-            foreach (var key in node.Children.Keys)
+            foreach (var key in node.Children.Letters)
             {
                 var child = RequireChild(node, key);
                 pending.Push(child);
@@ -193,7 +206,7 @@ public sealed class SuffixTree
     private static void PushChildren(
         Stack<(SuffixTreeNode Node, int Depth)> pending, SuffixTreeNode node, int depth)
     {
-        foreach (var child in node.Children.Values)
+        foreach (var child in node.Children.Nodes)
         {
             pending.Push((child, depth + child.Length));
         }
@@ -234,7 +247,7 @@ public sealed class SuffixTree
     private static void PushChildrenInReverseOrder(
         Stack<(SuffixTreeNode Node, int Depth)> pending, SuffixTreeNode node, int depth)
     {
-        var keys = node.Children.Keys.ToArray();
+        var keys = node.Children.Letters.ToArray();
         Array.Sort(keys);
 
         for (var i = keys.Length - 1; i >= 0; i--)
@@ -284,7 +297,7 @@ public sealed class SuffixTree
 
         var firstSuffixStart = context.Suffixes[0];
         var firstLeaf = CreateLeaf(firstSuffixStart, firstSuffixStart, context.TextLength);
-        root.Children.Set(context.Text[firstLeaf.Start], firstLeaf);
+        root.Children.SetChildFor(context.Text[firstLeaf.Start], firstLeaf);
         stack.Push(new PathNode(firstLeaf, context.TextLength - firstSuffixStart, 0));
 
         return stack;
@@ -318,10 +331,13 @@ public sealed class SuffixTree
     }
 
     // Splits child's edge at the given offset, inserting a new branch node between parent and
-    // child. InsertSplitNode's read of the ORIGINAL first character must happen (and does, by
-    // running to completion first) before ReparentShrunkChild mutates Start/Length - reversing
-    // that order would silently key the parent/child maps on the wrong characters, since both
-    // keys are derived from the same mutable field.
+    // child: the child keeps its identity and its subtree, so the stores put the branch in its
+    // place under the parent (SetChildFor, since the store's GetOrAddChildFor makes a node of its
+    // own) and hang the child under the branch. InsertSplitNode's read of the ORIGINAL first
+    // character must happen (and does, by running to completion first) before
+    // ReparentShrunkChild mutates Start/Length - reversing that order would silently key the
+    // parent/child maps on the wrong characters, since both keys are derived from the same
+    // mutable field.
     private static SuffixTreeNode SplitEdge(string text, SuffixTreeNode parent, SuffixTreeNode child, int offset)
     {
         var splitNode = InsertSplitNode(text, parent, child, offset);
@@ -333,7 +349,7 @@ public sealed class SuffixTree
     {
         var originalKey = text[child.Start];
         var splitNode = new SuffixTreeNode { Start = child.Start, Length = offset };
-        parent.Children.Set(originalKey, splitNode);
+        parent.Children.SetChildFor(originalKey, splitNode);
         return splitNode;
     }
 
@@ -341,7 +357,7 @@ public sealed class SuffixTree
     {
         child.Start += offset;
         child.Length -= offset;
-        splitNode.Children.Set(text[child.Start], child);
+        splitNode.Children.SetChildFor(text[child.Start], child);
     }
 
     private static PathNode AttachLeaf(
@@ -349,18 +365,15 @@ public sealed class SuffixTree
     {
         var suffixStart = context.Suffixes[rank];
         var leaf = CreateLeaf(suffixStart, suffixStart + branchDepth, context.TextLength);
-        parent.Children.Set(context.Text[leaf.Start], leaf);
+        parent.Children.SetChildFor(context.Text[leaf.Start], leaf);
         return new PathNode(leaf, context.TextLength - suffixStart, rank);
     }
 
-    // presumption: allow -- key is only ever drawn from node.Children.Keys immediately before this
-    // call, so it is guaranteed present in node.Children; TryGetValue's own bool result is
-    // redundant at this exact call shape, not a real "might be missing" check.
-    private static SuffixTreeNode RequireChild(SuffixTreeNode node, char key)
-    {
-        node.Children.TryGetValue(key, out var child);
-        return child!;
-    }
+    // presumption: allow -- key is only ever drawn from node.Children.Letters immediately before
+    // this call, so it is guaranteed present in node.Children; ChildFor's null is the "might be
+    // missing" answer this exact call shape never gets.
+    private static SuffixTreeNode RequireChild(SuffixTreeNode node, char key) =>
+        node.Children.ChildFor(key)!;
 
     // Finish is shared by InsertSuffix and BuildFromSuffixArray's last pass: the suffixes below a
     // node are the ranks from its first up to the rank that ended it.
@@ -368,45 +381,11 @@ public sealed class SuffixTree
         pathNode.Node.SuffixCount = endRank - pathNode.FirstRank;
 
     // Walk is shared by HasSubstring, CountOccurrences and FindOccurrences, placed here last for
-    // that reason.
-    private SuffixTreeNode? Walk(ReadOnlySpan<char> pattern)
-    {
-        var current = _root;
-        var consumed = 0;
-
-        while (consumed < pattern.Length)
-        {
-            if (!current.Children.TryGetValue(pattern[consumed], out var next))
-            {
-                return null;
-            }
-
-            var edgeMatchLength = Math.Min(next.Length, pattern.Length - consumed);
-
-            if (!HasMatchingEdgeCharacters(next, consumed, edgeMatchLength, pattern))
-            {
-                return null;
-            }
-
-            consumed += edgeMatchLength;
-            current = next;
-        }
-
-        return current;
-    }
-
-    private bool HasMatchingEdgeCharacters(SuffixTreeNode edge, int consumed, int edgeMatchLength, ReadOnlySpan<char> pattern)
-    {
-        for (var offset = 0; offset < edgeMatchLength; offset++)
-        {
-            if (_text[edge.Start + offset] != pattern[consumed + offset])
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    // that reason. It is the one trie's walk along compressed edges: the pattern, walked as the
+    // span it arrives as, ends on the node whose edge it stops in, partway along it or at its
+    // end, and every suffix through that node starts with the pattern.
+    private SuffixTreeNode? Walk(ReadOnlySpan<char> pattern) =>
+        SuffixWalk.Find(_root, pattern, new SuffixTreeEdges(_text));
 
     private static SuffixTreeNode CreateLeaf(int suffixStart, int edgeStart, int textLength)
         => new() { Start = edgeStart, Length = textLength - edgeStart, SuffixStart = suffixStart };

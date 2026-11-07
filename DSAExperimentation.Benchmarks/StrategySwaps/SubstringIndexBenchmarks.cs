@@ -2,7 +2,8 @@ using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Domain.Science.Dna;
 using SuffixArrayIndex = DSAExperimentation.DataStructures.SuffixArray.SuffixArrayIndex;
 using SuffixAutomatonStructure = DSAExperimentation.DataStructures.SuffixAutomaton.SuffixAutomaton;
-using SuffixTreeStructure = DSAExperimentation.DataStructures.SuffixTree.SuffixTree;
+using SuffixTreeStructure =
+    DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries.SuffixTree;
 
 namespace DSAExperimentation.Benchmarks.StrategySwaps;
 

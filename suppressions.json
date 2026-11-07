@@ -865,8 +865,15 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/SuffixTree/SuffixTree.cs",
-      "reason": "RequireChild's child! is named inline as a `presumption: allow` comment stating the invariant that makes it true (key freshly enumerated from Children.Keys immediately before the call) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/SuffixTree.cs",
+      "reason": "RequireChild's ChildFor(key)! is named inline as a `presumption: allow` comment stating the invariant that makes it true (key freshly enumerated from the store's Letters immediately before the call) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-readonly-fields",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/SuffixTreeNode.cs",
+      "reason": "_children is returned by ref from Children, which ITrieNode asks of every node class so that adding a child through the store changes the node's own field, as TrieNode's waiver says. A readonly field can only be returned as ref readonly, which does not meet that contract. This node's store is a hash map behind a reference, so a copy would share its children, but the contract is the one walk's for every store, slots kept inline among them.",
       "owner": "@kmettias",
       "expires": "2027-05-01"
     },
