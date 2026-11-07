@@ -23,9 +23,8 @@ namespace DSAExperimentation.LeetCode.Solutions.FindSubstringWithGivenHashValue;
 // no window has, so both strategies use this repo's ordinary Try shape instead of
 // throwing, as TwoSumSolution.TryFindIndicesBy* does.
 //
-// A letter's value is its number, a as 1 through z as 26 (Domain/Language/English's EnglishLetters):
-// the rolling-hash arm reads it, and the window-rehash baseline keeps its own LetterValue
-// (ARCHITECTURE §17.5).
+// A letter's value is its number, a as 1 through z as 26 (Domain/Language/English's EnglishLetters),
+// and both arms read it there (ARCHITECTURE §17.5).
 [LeetCodeQuestion("find-substring-with-given-hash-value", LeetCodeAnswerOrder.AsWritten, Promise = typeof(FindSubstringWithGivenHashValuePromise))]
 internal static class FindSubstringWithGivenHashValueSolution
 {
@@ -66,15 +65,13 @@ internal static class FindSubstringWithGivenHashValueSolution
 
         for (var offset = 0; offset < windowLength; offset++)
         {
-            hash = (hash + (LetterValue(text[start + offset]) * powerTerm)) % lane.Modulus;
+            hash = (hash + (EnglishLetters.NumberOf(text[start + offset]) * powerTerm))
+                % lane.Modulus;
             powerTerm = powerTerm * lane.Base % lane.Modulus;
         }
 
         return hash;
     }
-
-    // The baseline's own copy of a letter's number.
-    private static int LetterValue(char letter) => letter - 'a' + 1;
 
     // This repo's own RollingHash, built once in O(n) and then queried in O(1) per
     // window - queried over the REVERSED text, because the two hash formulas
