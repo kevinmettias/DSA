@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<(int Price, int Span)>;
 
 namespace DSAExperimentation.LeetCode.Solutions.OnlineStockSpan;
@@ -7,10 +8,12 @@ namespace DSAExperimentation.LeetCode.Solutions.OnlineStockSpan;
 // than or equal to today's. LeetCode's shape is that object and its next(price)
 // calls, so each strategy is a factory, CreateBy<Strategy>, that makes one: the
 // object the catalog harness replays LeetCode's call scripts on (ARCHITECTURE
-// 17.13). The strategy's algorithm lives in a nested class named for it, whose
-// Spans takes the whole price stream and returns its spans in order by feeding
-// every price to that same object - the method the hand-written benchmark times -
-// so each strategy is written once whichever shape a caller wants.
+// 17.13). The strategy's algorithm lives in a nested class named for it: the one
+// step that answers a day, which the object takes on each next(price) call, and
+// Spans, which takes the whole price stream and returns its spans in order by
+// taking that same step over the stream as given - the method the hand-written
+// benchmark times. Each strategy is written once whichever shape a caller wants,
+// and the whole-stream shape pays for no object it does not need.
 //
 // BackwardScan is the textbook per-call rescan: walk backwards from today until a
 // strictly greater price stops you (O(n) per day, O(n^2) over the stream).
@@ -33,39 +36,70 @@ internal static class OnlineStockSpanSolution
     // popped day's span folds into the span of the day that dominated it.
     public static IStockSpanner CreateByMonotonicStack() => new MonotonicStackSpanner();
 
-    // The backward-scan strategy over a whole stream.
+    // The backward-scan strategy: one day's rescan, and the whole stream's spans.
     internal static class BackwardScan
     {
-        // The whole stream's spans, each price fed to one backward-scan spanner in turn.
+        // The whole stream's spans, each day rescanned over the input array itself.
         public static int[] Spans(int[] prices)
         {
-            var spanner = new BackwardScanSpanner();
             var spans = new int[prices.Length];
 
             for (var day = 0; day < prices.Length; day++)
             {
-                spans[day] = spanner.Next(prices[day]);
+                spans[day] = ScanBackFrom(prices, day);
             }
 
             return spans;
         }
+
+        // Counts today plus every immediately preceding day whose price never
+        // exceeds today's, stopping at the first strictly greater price.
+        public static int ScanBackFrom(ReadOnlySpan<int> prices, int day)
+        {
+            var span = 1;
+            var previous = day - 1;
+
+            while (previous >= 0 && prices[previous] <= prices[day])
+            {
+                span++;
+                previous--;
+            }
+
+            return span;
+        }
     }
 
-    // The monotonic-stack strategy over a whole stream.
+    // The monotonic-stack strategy: one day's absorption, and the whole stream's spans.
     internal static class MonotonicStack
     {
-        // The whole stream's spans, each price fed to one monotonic-stack spanner in turn.
+        // The whole stream's spans, every day absorbed into one stack of standing days.
         public static int[] Spans(int[] prices)
         {
-            var spanner = new MonotonicStackSpanner();
             var spans = new int[prices.Length];
+            var standing = new RepoStack();
 
             for (var day = 0; day < prices.Length; day++)
             {
-                spans[day] = spanner.Next(prices[day]);
+                spans[day] = AbsorbDominated(standing, prices[day]);
             }
 
             return spans;
+        }
+
+        // Pops every standing day today's price is at least as high as, accumulating
+        // their spans, then pushes today with the span it just earned.
+        public static int AbsorbDominated(RepoStack standing, int price)
+        {
+            var span = 1;
+
+            while (standing.TryPeek(out var top) && top.Price <= price)
+            {
+                standing.TryPop(out _);
+                span += top.Span;
+            }
+
+            standing.Push((price, span));
+            return span;
         }
     }
 
@@ -80,23 +114,7 @@ internal static class OnlineStockSpanSolution
             _prices.Add(price);
 
             var today = _prices.Count - 1;
-            return ScanBackFrom(today);
-        }
-
-        // Counts today plus every immediately preceding day whose price never
-        // exceeds today's, stopping at the first strictly greater price.
-        private int ScanBackFrom(int day)
-        {
-            var span = 1;
-            var previous = day - 1;
-
-            while (previous >= 0 && _prices[previous] <= _prices[day])
-            {
-                span++;
-                previous--;
-            }
-
-            return span;
+            return BackwardScan.ScanBackFrom(CollectionsMarshal.AsSpan(_prices), today);
         }
     }
 
@@ -106,20 +124,6 @@ internal static class OnlineStockSpanSolution
     {
         private readonly RepoStack _standing = new();
 
-        // Pops every standing day today's price is at least as high as,
-        // accumulating their spans, then pushes today with the span it just earned.
-        public int Next(int price)
-        {
-            var span = 1;
-
-            while (_standing.TryPeek(out var top) && top.Price <= price)
-            {
-                _standing.TryPop(out _);
-                span += top.Span;
-            }
-
-            _standing.Push((price, span));
-            return span;
-        }
+        public int Next(int price) => MonotonicStack.AbsorbDominated(_standing, price);
     }
 }
