@@ -1,0 +1,26 @@
+[
+  {
+    "Inputs": [
+      "[3,2,0,-4]",
+      "1"
+    ],
+    "ExpectedOutput": "1",
+    "Reason": "The catalog records no output, the statement printing it in prose: \"tail connects to node index 1\", the index of the cycle's entry node, which each strategy's LeetCode-shaped overload returns. Walking the list with the tail linked back to index 1 meets index 1 again first."
+  },
+  {
+    "Inputs": [
+      "[1,2]",
+      "0"
+    ],
+    "ExpectedOutput": "0",
+    "Reason": "The catalog records no output, the statement printing it in prose: \"tail connects to node index 0\", the index of the cycle's entry node, which each strategy's LeetCode-shaped overload returns. Walking the list with the tail linked back to the head meets the head again first."
+  },
+  {
+    "Inputs": [
+      "[1]",
+      "-1"
+    ],
+    "ExpectedOutput": "-1",
+    "Reason": "The catalog records no output, the statement printing it in prose: \"no cycle\", which each strategy's LeetCode-shaped overload returns as -1, an index no node has. With pos -1 the judge links nothing, and the walk runs off the list's end."
+  }
+]

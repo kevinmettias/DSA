@@ -35,6 +35,35 @@ public sealed partial class LinkedListCycleIISolutionTests
         Assert.Same(expectedEntry, LinkedListCycleIISolution.DetectCycleByFloydCycleDetection(head));
     }
 
+    // LeetCode's judge inputs beyond its examples: a cycle into the middle, a single node looping on itself, an
+    // empty list and a long list with no cycle, each with the index the judge prints.
+    public static TheoryData<int[], int> JudgeInputs =>
+        new()
+        {
+            { [1, 2, 3, 4, 5], 2 },
+            { [5], 0 },
+            { [], LinkedListCycleIISolution.NoCycle },
+            { [1, 2, 3, 4], LinkedListCycleIISolution.NoCycle },
+        };
+
+    [Theory]
+    [MemberData(nameof(JudgeInputs))]
+    public void DetectCycleByVisitedSet_LeetCodeShape_PrintsTheEntrysIndex(int[] values, int pos)
+    {
+        var head = LeetCodeWireFormat.ToLinkedList(values);
+
+        Assert.Equal(pos, LinkedListCycleIISolution.DetectCycleByVisitedSet(head, pos));
+    }
+
+    [Theory]
+    [MemberData(nameof(JudgeInputs))]
+    public void DetectCycleByFloydCycleDetection_LeetCodeShape_PrintsTheEntrysIndex(int[] values, int pos)
+    {
+        var head = LeetCodeWireFormat.ToLinkedList(values);
+
+        Assert.Equal(pos, LinkedListCycleIISolution.DetectCycleByFloydCycleDetection(head, pos));
+    }
+
     private static (SinglyLinkedListNode<int>? Head, SinglyLinkedListNode<int>? EntryNode) BuildList(
         int[] values, int pos)
     {
