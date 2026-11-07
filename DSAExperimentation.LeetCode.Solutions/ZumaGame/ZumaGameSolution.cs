@@ -1,4 +1,3 @@
-using System.Text;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Games.Zuma;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<string>;
@@ -10,13 +9,11 @@ namespace DSAExperimentation.LeetCode.Solutions.ZumaGame;
 // hand runs out. Both strategies search the same (board, remaining-hand) state
 // space; they differ only in search order and how repeated states are handled.
 //
-// The cascade collapse is the game's (Domain/Games/Zuma): the BFS arm calls ZumaRow<ClassicZuma>.Collapse, and
-// the DFS baseline keeps its own Collapse, CollapseOnePass and run length (ARCHITECTURE §17.5).
+// The cascade collapse is the game's (Domain/Games/Zuma), and both arms collapse a row by
+// ZumaRow<ClassicZuma>.Collapse (ARCHITECTURE §17.5).
 [LeetCodeQuestion("zuma-game", LeetCodeAnswerOrder.AsWritten)]
 internal static class ZumaGameSolution
 {
-    // The baseline's own copy of the shortest group that vanishes.
-    private const int MinCollapseRunLength = 3;
     private const char StateSeparator = '|';
 
     // The textbook baseline: branch-and-bound DFS over every (position, hand-ball)
@@ -153,50 +150,9 @@ internal static class ZumaGameSolution
     private static int TryInsertAndRecurse(int pos, int handIndex, DfsSearchState state)
     {
         var inserted = state.Board.Insert(pos, state.Hand[handIndex].ToString());
-        var nextBoard = Collapse(inserted);
+        var nextBoard = ZumaRow<ClassicZuma>.Collapse(inserted);
         var nextHand = state.Hand.Remove(handIndex, 1);
         return SearchMinSteps(state with { Board = nextBoard, Hand = nextHand, Used = state.Used + 1 });
-    }
-
-    private static string Collapse(string board)
-    {
-        // Stops at the first cascade pass that changes nothing: no run of 3+ remains and the stable board is returned.
-        while (true)
-        {
-            var next = CollapseOnePass(board);
-
-            if (next == board)
-            {
-                return next;
-            }
-
-            board = next;
-        }
-    }
-
-    private static string CollapseOnePass(string board)
-    {
-        var builder = new StringBuilder();
-        var i = 0;
-
-        while (i < board.Length)
-        {
-            var j = i;
-
-            while (j < board.Length && board[j] == board[i])
-            {
-                j++;
-            }
-
-            if (j - i < MinCollapseRunLength)
-            {
-                builder.Append(board, i, j - i);
-            }
-
-            i = j;
-        }
-
-        return builder.ToString();
     }
 
     private readonly record struct DfsSearchState(string Board, string Hand, int Used, int Best);

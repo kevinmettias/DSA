@@ -6,7 +6,7 @@ namespace DSAExperimentation.Domain.Games.Zuma;
 // vanishes, the balls either side then touch, and a group those form vanishes in turn, until none is
 // left. This is the game's *what* (ARCHITECTURE §17.6). The colour letters are LeetCode's spelling,
 // and the collapse only asks whether two balls match, so no colour is named here. How a strategy
-// searches its insertions stays with it, and LC 488's baseline keeps its own copy (§17.5).
+// searches its insertions stays with it, and both of LC 488's arms collapse through this (§17.5).
 //
 // Each pass removes every vanishing group at once, and passes repeat until one changes nothing. That
 // is the game's one-group-at-a-time cascade only while the row holds at most one such group to begin
