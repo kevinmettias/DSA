@@ -1,17 +1,18 @@
 namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 
-// One node of a Trie<TStore, TValue>: its children, kept however the store keeps them, and an optional
-// value. The store is a struct field handed out by reference, so a child added through Children is added
-// to this node's own store, not to a copy of it.
+// One node of a Trie<TStore, TValue>: its children, kept however the store keeps them, and the
+// value payload, a value and whether a key ends here, which a map needs because one key may end on
+// the path of another (ITrieNode). The store is a struct field handed out by reference, so a child
+// added through Children is added to this node's own store, not to a copy of it.
 /// <summary>A node of a trie: its children, kept by the trie's child store, and an optional value.</summary>
 /// <typeparam name="TStore">How the node keeps its children.</typeparam>
 /// <typeparam name="TValue">The value the trie stores under each key.</typeparam>
-public sealed class TrieNode<TStore, TValue>
-    where TStore : struct, ITrieChildStore<TStore, TValue>
+public sealed class TrieNode<TStore, TValue> : ITrieNode<TrieNode<TStore, TValue>, TStore>
+    where TStore : struct, ITrieChildStore<TStore, TrieNode<TStore, TValue>>
 {
     private TStore _children = TStore.Empty();
 
-    /// <summary>Gets the node's children, by reference, so that adding a child changes this node's own store.</summary>
+    /// <inheritdoc/>
     public ref TStore Children => ref _children;
 
     /// <summary>Gets or sets whether a key ends at this node.</summary>
@@ -25,4 +26,7 @@ public sealed class TrieNode<TStore, TValue>
     internal TrieNode()
     {
     }
+
+    /// <inheritdoc/>
+    static TrieNode<TStore, TValue> ITrieNode<TrieNode<TStore, TValue>, TStore>.New() => new();
 }

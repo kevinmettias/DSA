@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using BitStack = System.Collections.Generic.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfStepsToReduceANumberInBinaryRepresentationToOne;
@@ -12,7 +13,6 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfStepsToReduceANumberInBi
 [LeetCodeQuestion("number-of-steps-to-reduce-a-number-in-binary-representation-to-one", LeetCodeAnswerOrder.AsWritten)]
 internal static class NumberOfStepsToReduceANumberInBinaryRepresentationToOneSolution
 {
-    private const int BinaryBase = 2;
     private const int StepsForOddDigit = 2;
     private const string SingleBitOne = "1";
 
@@ -49,8 +49,8 @@ internal static class NumberOfStepsToReduceANumberInBinaryRepresentationToOneSol
         while (cursorIndex >= 0 || carry > 0)
         {
             var sum = carry + (cursorIndex >= 0 ? NextDigit(binaryString, ref cursorIndex) : 0);
-            stack.Push((char)('0' + (sum % BinaryBase)));
-            carry = sum / BinaryBase;
+            stack.Push((char)('0' + (sum % BinaryDigits.Size)));
+            carry = sum / BinaryDigits.Size;
         }
 
         var chars = new List<char>();
@@ -80,7 +80,7 @@ internal static class NumberOfStepsToReduceANumberInBinaryRepresentationToOneSol
         {
             var digit = (binaryString[i] - '0') + carry;
 
-            if (digit % BinaryBase == 1)
+            if (digit % BinaryDigits.Size == 1)
             {
                 steps += StepsForOddDigit;
                 carry = 1;
@@ -88,7 +88,7 @@ internal static class NumberOfStepsToReduceANumberInBinaryRepresentationToOneSol
             else
             {
                 steps += 1;
-                carry = digit / BinaryBase;
+                carry = digit / BinaryDigits.Size;
             }
         }
 

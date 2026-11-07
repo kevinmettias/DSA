@@ -7,7 +7,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 /// <typeparam name="TStore">The trie's ordered child store.</typeparam>
 /// <typeparam name="TValue">The value the trie stores under each key.</typeparam>
 public readonly struct TrieTopology<TStore, TValue> : ITreeTopology<TrieNode<TStore, TValue>, TrieChildren<TStore, TValue>>
-    where TStore : struct, IOrderedTrieChildStore<TStore, TValue>
+    where TStore : struct, IOrderedTrieChildStore<TStore, TrieNode<TStore, TValue>>
 {
     /// <inheritdoc/>
     public static TrieChildren<TStore, TValue> GetChildren(TrieNode<TStore, TValue> node) => new(node);

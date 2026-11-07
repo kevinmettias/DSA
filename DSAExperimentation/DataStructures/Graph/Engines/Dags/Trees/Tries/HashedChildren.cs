@@ -8,7 +8,8 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 // witness.
 /// <summary>A trie node's children keyed by any character, in a hash map.</summary>
 /// <typeparam name="TValue">The value the trie stores under each key.</typeparam>
-public readonly struct HashedChildren<TValue> : ITrieChildStore<HashedChildren<TValue>, TValue>
+public readonly struct HashedChildren<TValue>
+    : ILetteredTrieChildStore<HashedChildren<TValue>, TrieNode<HashedChildren<TValue>, TValue>, char>
 {
     private readonly HashMap<char, TrieNode<HashedChildren<TValue>, TValue>> _children;
 

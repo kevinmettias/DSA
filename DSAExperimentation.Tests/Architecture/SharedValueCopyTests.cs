@@ -48,6 +48,18 @@ public sealed partial class SharedValueCopyTests
             "The most stage assignments whose cases every strategy of LC 3317 finishes in time, its reach, not the parts a whole holds per million.",
         ["DSAExperimentation.LeetCode.Solutions.CatAndMouseII.CatAndMouseIISolution.TurnLimit"] =
             "LC 1728's 1,000 turns, after which the cat wins, not the parts a whole holds per mille.",
+        ["DSAExperimentation.LeetCode.Solutions.DecodeWays.DecodeWaysSolution.TwoDigitGroupLength"] =
+            "How many decimal digits LC 91's two-digit code spans, not how many binary digits there are.",
+        ["DSAExperimentation.LeetCode.Solutions.DecodeWaysII.DecodeWaysIIRecurrence.StarThenSmallDigitWays"] =
+            "The codes LC 639's '*x' stands for while x is at most 6, 1x and 2x, not how many binary digits there are.",
+        ["DSAExperimentation.LeetCode.Solutions.LeastOperatorsToExpressNumber.LeastOperatorsToExpressNumberSolution.UnitsDigitWeight"] =
+            "The operators LC 964 spends on a units digit, x / x, not how many binary digits there are.",
+        ["DSAExperimentation.LeetCode.Solutions.LongestCommonSubpath.LongestCommonSubpathSolution.BinarySearchMidpointDivisor"] =
+            "The halving a binary search makes, not how many binary digits there are.",
+        ["DSAExperimentation.LeetCode.Solutions.NumberOfStepsToReduceANumberInBinaryRepresentationToOne.NumberOfStepsToReduceANumberInBinaryRepresentationToOneSolution.StepsForOddDigit"] =
+            "The two steps LC 1404 takes on an odd number, add one then halve, not how many binary digits there are.",
+        ["DSAExperimentation.LeetCode.Solutions.NumberOfWaysToReorderArrayToGetSameBST.NumberOfWaysToReorderArrayToGetSameBSTSolution.BinaryChildCount"] =
+            "The children a binary tree's node has, not how many binary digits there are.",
     };
 
     private static readonly Lazy<IReadOnlyList<LibraryValueCopies.Copy>> Copies =

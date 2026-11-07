@@ -7,7 +7,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 /// <typeparam name="TStore">How each node keeps its children.</typeparam>
 /// <param name="keys">The trie that holds the keys, read and written in place.</param>
 public readonly struct PrefixSet<TStore>(Trie<TStore, bool> keys) : IPrefixSet
-    where TStore : struct, ITrieChildStore<TStore, bool>
+    where TStore : struct, ILetteredTrieChildStore<TStore, TrieNode<TStore, bool>, char>
 {
     /// <inheritdoc/>
     public int Count => keys.Count;

@@ -9,15 +9,15 @@ namespace DSAExperimentation.DataStructures.CountedBitTrie;
 // (LeetCode 3845), a depth-first walk that undoes on the way back up (1938), and a range count
 // (1803).
 //
-// A new type beside BitTrie (Graph/Engines/Dags/Trees/BitTrie.cs), not a Remove bolted onto it,
-// because the two hold different things. BitTrie is insert-only: its structure IS its content -
-// a node exists exactly when some inserted value's path passes through it - its Count counts
-// Insert calls, and its TryMaxXor walk leans on that, since every node it reaches has a child.
+// A new type beside BitTrie (Graph/Engines/Dags/Trees/Tries/BitTrie.cs), not a Remove bolted onto
+// it, because the two hold different things. BitTrie is insert-only: its structure IS its content -
+// a node exists exactly when some inserted value's path passes through it - and its TryMaxXor walk
+// leans on that, since every node it reaches has a child.
 // Here a removal leaves the nodes in place and lowers the counts, so a node's existence says only
 // that some value once passed through it; liveness is the count, and every walk reads it.
 // Putting a count on BitTrie would hand its insert-only users (LeetCode 421, 1707, 2932, 2935) a
-// count per node and a count test per step that none of them reads. BitTrie, its
-// BitTrieNode/BitTrieChildren/BitTrieTopology witness and every one of those users are untouched.
+// count per node and a count test per step that none of them reads. BitTrie, its tree-topology
+// witness and every one of those users are untouched.
 //
 // No ITreeTopology witness, for both reasons ARCHITECTURE.md §13.9's test names. Nodes are slots
 // in shared arrays, not objects with an identity of their own - the Heap/DisjointSet case, not

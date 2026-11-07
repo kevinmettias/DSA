@@ -804,8 +804,8 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `Graph/Contracts/Ordering/` | `IChildren`, `IEdges`, `IChildOrder` and their witnesses (§3.1) |
 | `Graph/Contracts/Topologies/` | `IGraphTopology`, `IEdgeTopology`, `EdgeTopologyAsGraphTopology` (§3.2) |
 | `Graph/Engines/Dags/` | `IDagTopology` (§3.2) |
-| `Graph/Engines/Dags/Trees/` | `ITreeTopology`; the binary tree (`BinaryTreeNode`, `BinaryTreeChildren`, `BinaryTreeTopology`, `ChildSide`, `BinarySearchTree`, `InOrderTraversal`, `IInOrderHooks`, `FindClosest`); the bit trie with its real witness (`BitTrie*`, §13.9); the rooted tree (`RootedTreeNode`, `RootedTreeTopology`, `ParentArrayTree`, `EdgeListTree`, `PreOrderTour`, `PreOrderLowestCommonAncestor`); the quad tree (`QuadTreeNode`, `QuadTreeGrid`). `EdgeListTree` roots LeetCode's undirected edge list with a breadth-first walk, returning the parent array `ParentArrayTree` reads and, for each node, the index of the edge that joins it to its parent - the one thing a parent array cannot recover. `PreOrderTour` lays a `RootedTreeNode` tree out in pre-order, so every subtree is one contiguous range of positions; `PreOrderLowestCommonAncestor` reads ancestors off that layout with one range minimum, O(log n) per query after O(n) preparation. It is hardwired to the tour, so it lives here rather than beside `Algorithms/Ancestry/LowestCommonAncestor`, which is generic over `ITreeTopology` (§13.5) |
-| `Graph/Engines/Dags/Trees/Tries/` | The one trie (§13.8): `IPrefixMap`, the map's contract, and `IPrefixSet`, the set's, which the trie meets through `PrefixSet`, its view of a map to `bool`; `Trie<TStore, TValue>`, its key walk written once, and `TrieNode`; and the child store each configuration injects, `ITrieChildStore`, or `IOrderedTrieChildStore` for a store whose children have an order. `AlphabetSlots` (with `AlphabetSlotsEnumerator`) keeps a node's children in slots over any `IAlphabet` of up to 64 letters, in letter order, so its trie has a real witness (`TrieTopology`, `TrieChildren`); `HashedChildren` takes any `char` and has no order, so its trie has none. `ITrieLayout`, `DenseTrieLayout`, `PackedTrieLayout` — where the slot store keeps its children, a type argument each trie names |
+| `Graph/Engines/Dags/Trees/` | `ITreeTopology`; the binary tree (`BinaryTreeNode`, `BinaryTreeChildren`, `BinaryTreeTopology`, `ChildSide`, `BinarySearchTree`, `InOrderTraversal`, `IInOrderHooks`, `FindClosest`); the rooted tree (`RootedTreeNode`, `RootedTreeTopology`, `ParentArrayTree`, `EdgeListTree`, `PreOrderTour`, `PreOrderLowestCommonAncestor`); the quad tree (`QuadTreeNode`, `QuadTreeGrid`). `EdgeListTree` roots LeetCode's undirected edge list with a breadth-first walk, returning the parent array `ParentArrayTree` reads and, for each node, the index of the edge that joins it to its parent - the one thing a parent array cannot recover. `PreOrderTour` lays a `RootedTreeNode` tree out in pre-order, so every subtree is one contiguous range of positions; `PreOrderLowestCommonAncestor` reads ancestors off that layout with one range minimum, O(log n) per query after O(n) preparation. It is hardwired to the tour, so it lives here rather than beside `Algorithms/Ancestry/LowestCommonAncestor`, which is generic over `ITreeTopology` (§13.5) |
+| `Graph/Engines/Dags/Trees/Tries/` | The one trie (§13.8): `IPrefixMap`, the map's contract, and `IPrefixSet`, the set's, which the trie meets through `PrefixSet`, its view of a map to `bool`; `TrieWalk`, the walk down a key written once for every configuration; the key each configuration injects, `ITrieKey`: `TextKey`, a string's characters, `Int32BitsKey`, an int's 32 bits from the most significant, and `KeyPrefix`, a key's first letters, which a prefix query walks; the node, `ITrieNode`, whose class is the configuration's payload: `TrieNode`, a value and whether a key ends there, and `BitTrieNode`, nothing; the map, `Trie<TKey, TLetter, TStore, TValue>`, with the word trie `Trie<TStore, TValue>` as its configuration, and the set `BitTrie`, the trie over an int's bits with its maximum-XOR walk; the maximum-XOR set's contract, `IMaxXorSet`, which `BitTrie` meets through its view `BitTrieSet` and `TwoFieldBitTrie`, the hand-specialized strategy for that layer, meets on its own (§13.9); and the child store each configuration injects, `ITrieChildStore`, or `IOrderedTrieChildStore` for a store whose children have an order. `AlphabetSlots` (with `AlphabetSlotsEnumerator`) keeps a node's children in slots over any `IAlphabet` of up to 64 letters, in letter order, so its trie has a real witness (`TrieTopology`, `TrieChildren`); `HashedChildren` takes any `char` and has no order, so its trie has none. `BinarySlots` keeps a node's two children inline, one per binary digit, 0 before 1, for any node class, so the bit trie has a witness too, `TrieNodeTopology` with `TrieNodeChildren`, the witness for a node class other than `TrieNode` (§13.9). `ITrieLayout`, `DenseTrieLayout`, `PackedTrieLayout` — where the slot store keeps its children, a type argument each trie names |
 | `Graph/Grids/` | `Grid`, `GridNode`, `GridChildren`, `GridSize`, `GridNeighbors`, `IGridCellFilter`, `GridTopology`, `IGridNodeSource` with `NodePerCell` and `NodePerStep`, and the weighted `WeightedGrid*` (§17.6). The steps they walk by, `GridStep` and `GridDirections`, are facts about the square lattice, in `Domain/Mathematics/Lattices`; a `Grid` carries the table its cells are joined by (`Steps`, the orthogonal four unless it is built with others, such as the octilinear eight LC 1091 moves by), and `GridChildren` reads which of them lead somewhere open into a mask once per node, so its `Count` is a population count and `Get` a set bit. `GridSize` is a board's extent and its one bounds rule, the bounded rectangle's (`Domain/Mathematics/Surfaces`); a walk's `IGridNodeSource` says whether a cell's node is the board's one node for it or a new one per step; `GridNeighbors` is a cell's on-board neighbours in a direction table's order, filtered by an `IGridCellFilter`, for a `DepthFirstSearch.Traverse` successor whose "open" is decided by the problem's cells rather than a fixed map like `Grid`'s |
 | `Graph/Hamming/` | `HammingNode`, `HammingTopology`, `HammingGraph`, `HammingSearch`, `MutationStart`, `MutationTarget` (§17.6); the letters a mutation writes are an `IAlphabet` type argument (§19.6) |
 | `Graph/ShortestPaths/` | `ByPriorityOrder` (§13.2) |
@@ -902,7 +902,7 @@ specifically:
 | `Mathematics/Lattices/` | `IPlanarLatticeStep<TSelf>`, `LatticeSymmetry`, `GridStep`, `GridDirections` — a step of the square lattice a grid's cells sit on, each named (`Up` is (-1, 0)), with the lattice's algebra (steps add and negate, a quarter turn and a mirror), its orbits, its neighbour tables in a fixed order (orthogonal, diagonal, octilinear, L-shaped, and the distance neighbourhoods), and the clockwise turning cycle. Read by tier 1's grid engines, `ChessPiece`'s moves and the grid solutions, baselines among them. `LineDirections` is the four directions a line of cells runs in, along which `MnkGame` generates its winning lines |
 | `Mathematics/Surfaces/` | `ISurface`, `GluedRectangle<TRows, TCols>`, `MirroredAxes`, the presets `BoundedRectangle`, `Cylinder`, `Torus`, `MobiusStrip`, `KleinBottle`, and in `Gluings/` `IEdgeGluing`, `Unglued`, `Straight`, `Twisted` — a board's global shape, a rectangle with each pair of opposite edges left open, glued straight or glued twisted; `GridSize.HasCell` is the bounded rectangle's rule |
 | `Mathematics/Modular/` | `IModulus`, `IPrimeModulus` — a modulus as a struct witness, and a prime one, under which every nonzero residue has a Fermat inverse; the algorithms over them are `Algorithms/NumberTheory`'s, and LeetCode's 10^9 + 7 is `LeetCodeModulus` at the LeetCode tier's root |
-| `Mathematics/Numerals/` | `DecimalDigits` — the ten digits as an alphabet whose slot is a digit's value, carried by `FourDigitLock`'s wheels and read by `LifeLike`'s rulestrings; `IPartsPerNotation`, `Percent`, `Permille`, `Permyriad`, `PartsPerMillion` — a proportion written as parts of a fixed whole, with the per cent LC 1357's discount and LC 2303's tax rates are stated in; `RomanSymbol`, `RomanPair`, `RomanNumerals` — the Roman numerals' seven symbols and six subtractive pairs as named values, and the numbers 1 to 3,999 written and read in standard form; `IDigitGrouping`, `ThousandsGrouping`, `IndianGrouping`, `MyriadGrouping`, `DigitGrouping<TGrouping>` — how a numeral's digits are grouped, 3 then 3, 3 then 2 (1,00,00,000) or 4 then 4, as struct witnesses whose sizes fold. No solution writes a Roman numeral: LC 12 and LC 13 are not covered |
+| `Mathematics/Numerals/` | `DecimalDigits` — the ten digits as an alphabet whose slot is a digit's value, carried by `FourDigitLock`'s wheels and read by `LifeLike`'s rulestrings; `BinaryDigits` — the two binary digits as an alphabet, whose count sizes `BinarySlots`' inline pair and is the base LC 67's and LC 1404's arms divide by; `IPartsPerNotation`, `Percent`, `Permille`, `Permyriad`, `PartsPerMillion` — a proportion written as parts of a fixed whole, with the per cent LC 1357's discount and LC 2303's tax rates are stated in; `RomanSymbol`, `RomanPair`, `RomanNumerals` — the Roman numerals' seven symbols and six subtractive pairs as named values, and the numbers 1 to 3,999 written and read in standard form; `IDigitGrouping`, `ThousandsGrouping`, `IndianGrouping`, `MyriadGrouping`, `DigitGrouping<TGrouping>` — how a numeral's digits are grouped, 3 then 3, 3 then 2 (1,00,00,000) or 4 then 4, as struct witnesses whose sizes fold. No solution writes a Roman numeral: LC 12 and LC 13 are not covered |
 | `Mathematics/NumberSystems/` | `NumberSystem`, `AlgebraicLaws` — the number systems from the naturals to the sedenions as named values, each the laws its arithmetic keeps and its size: the hierarchy naturals, integers, rationals, reals, complex, and the Cayley-Dickson doublings, each giving up a law. No solution reads them |
 | `Mathematics/NumberTheory/` | `Primes` — what every primality test, sieve and factorization agrees on: the smallest prime, 2, the only even one, which every sieve and factorization starts from, read by `PrimeSieve` and eleven problems; the smallest odd prime, 3, the first odd divisor LC 866's trial division tries; and the 6k ± 1 form of every prime above 3. Unique factorization is the contract the sieve's and trial division's factorizations are held to |
 | `Mathematics/SetTheory/` | `Cardinal`, `Ordinal` — cardinals, finite or a beth number (ℵ0, the continuum), with ZFC's sum, product and power set, and the ordinals below ω² in Cantor normal form with their addition, which does not commute: 1 + ω = ω, and ω + 1 is longer. No solution reads them |
@@ -1099,13 +1099,60 @@ strategy behind the contract for exactly the layer it replaces, and is benchmark
 template (§17.5): `IPrefixMap` for a map, or `IPrefixSet` for a trie that keeps keys and no values,
 as LC 208's textbook trie does. The one trie is a set through `PrefixSet`, a struct view of a map to
 `bool` that holds one reference and walks nothing itself, so one contract suite, `PrefixSetTests`,
-runs over the textbook trie and the view under each store. Moving the bounded-alphabet trie's 12
-problems onto the one trie changed no allocation, and no time beyond what identical code reads
-apart, once the slot store's enumerator held a reference to the store rather than a copy: a copy is
-two values a recursive walk keeps alive across its calls, and it cost LC 676 12-30%. Moving the
-general trie's ten problems onto it made every one faster, 13-94%, since each keeps its children in
-slots over the small alphabet LeetCode bounds its keys to rather than in a hash map, and the general
-trie was deleted.
+runs over the textbook trie and the view under each store. The bit trie's layer is the maximum-XOR
+set, `IMaxXorSet`: `BitTrie` meets it through `BitTrieSet`, the same kind of view, and
+`TwoFieldBitTrie` is the hand-specialized strategy for it, with one contract suite,
+`MaxXorSetContractTests`, over both (§13.9). Moving the bounded-alphabet trie's 12 problems onto the
+one trie changed no allocation, and no time beyond what identical code reads apart, once the slot
+store's enumerator held a reference to the store rather than a copy: a copy is two values a
+recursive walk keeps alive across its calls, and it cost LC 676 12-30%. Moving the general trie's
+ten problems onto it made every one faster, 13-94%, since each keeps its children in slots over the
+small alphabet LeetCode bounds its keys to rather than in a hash map, and the general trie was
+deleted.
+
+The key and the node's payload are the one trie's other two axes (the composition plan's C1,
+approved 2026-11-05). A key is a run of letters read from the first, `ITrieKey<TLetter>`: `TextKey`
+reads a string's characters, `Int32BitsKey` an int's 32 bits from the most significant, its length a
+constant. The letter type joins the key to the store, so a key of bits cannot be walked over a store
+keyed by characters: the compiler refuses the pair. The walk down a key is `TrieWalk`'s, written
+once and generic over the node class, the store and the letter, and each configuration calls it. A
+prefix query takes a key and a length and walks `KeyPrefix`, the key's first letters as a key of
+their own, so a bit trie, whose keys are all 32 letters long, has prefixes at all, and a word trie
+can ask about a word's first letters without cutting the word. `TextKey` converts from a string
+implicitly, so no word trie's caller changed.
+
+The payload is what a node carries besides its children, and it is the node class, because a payload
+a configuration does not need must cost it nothing: an empty struct field still takes a byte, which
+pads a node of two children from 32 bytes to 40. A map's keys end anywhere, one on another's path,
+so the map, `Trie<TKey, TLetter, TStore, TValue>`, and its word trie keep `TrieNode`, a value and
+whether a key ends there, laid out as before. `BitTrie`'s keys all end at depth 32, so a node there
+is a key's end and none above it is, and its node, `BitTrieNode`, carries nothing: its 32 bytes are
+the object header and the two child references. A store names the node class its children are
+(`ITrieChildStore<TSelf, TNode>`), so `AlphabetSlots` and `HashedChildren` name `TrieNode` as
+before, and `BinarySlots<TNode>` takes the node class as a type argument, so a node with a count can
+reuse it. A node class is a reference type, so `TrieWalk`'s code is shared across node classes
+wherever it is not inlined, and calls through the node and store contracts in shared code are
+lookups at run time. Its two methods are marked to inline, which holds only while the method they
+inline into has inlining budget left: inlined into LC 2932's whole bucket sweep, a bit-trie insert
+left the walk, the store's lookup and a span constructor as calls into shared code, and LC 2932 ran
+8-59% slower at 10 and 50 values in both A/B passes. So a configuration calls the walk from a method
+compiled on its own, where the walk always inlines and its node class is exact (§13.9), and no
+tier-1 root read here calls shared trie code. A word trie's walk has the same exposure, since its
+walk and its key add inlinees to a caller's budget: LC 208's benchmark replayed its workload in a
+method its one-line arms inlined, and there the budget ran out a step earlier than at the commit
+before, leaving one more call per letter: the alphabet's letter lookup beside the slot read for the
+packed store, the slot read for the dense one. The replay is compiled on its own now, where every
+lookup inlines.
+
+Generic over the key it walks, the walk is compiled once for a configuration's own key, bounded by
+the key's length, and once for a prefix. Written with the bound passed as a separate length, a text
+key's walk lost what a foreach over the string gives, a loop the JIT knows stays inside the string:
+the JIT cloned the loop to prove it, `FindNode` 262 bytes rather than 135. Read in tier-1 code with
+the `inlining` verb (§19.8), 15 s an arm, against the commit before, LC 208's word sets are
+unchanged: the dense set's replay is the same instructions (969 and 953 bytes, the jumps encoded
+differently), the packed set's differs in register allocation and spills only (1,761 and 1,685
+bytes), `Set` is 940 and 934 bytes packed and 300 dense on both sides, `FindNode` the same 135
+bytes, and neither allocates a byte more.
 
 ### 13.9 The two-part witness test, and `BitTrie`
 
@@ -1119,27 +1166,75 @@ balance invariant, ...) is what to name and isolate, the same "inject the one ne
 `IPathHeuristic`/`IHeapOrder`/`TOperation` already use elsewhere in this repo. Either false → the
 structure stays domain-local, correctly, for a stated reason — not a default.
 
-`BitTrie` passes both. `BitTrieNode` has real identity (a `class`, not an index into shared storage,
-unlike `Heap`/`DisjointSet`), and its two named `Zero`/`One` slots already give `IChildren`'s
-O(1)-indexed-`Get` obligation honestly, with no alphabet-bounding work needed the way `AlphabetSlots`
-required.
+`BitTrie` passes both, and it is the one trie now: `Int32BitsKey` over `BinarySlots`, a store that
+keeps a node's two children inline, one per binary digit (`BinaryDigits`), with `BitTrieNode`, which
+carries no payload. A `BitTrieNode` is an object with an identity of its own, and the store's two
+slots give `IChildren`'s O(1) indexed `Get` honestly, 0 before 1, so its witness is
+`TrieNodeTopology`, the one trie's witness for a node class other than `TrieNode`. `TrieTopology`
+stays for `TrieNode`: it is generic over value types only, so a word trie's engines are compiled for
+its exact node, while a witness generic over the node class shares their code. The old node's
+`Zero`/`One` fields, `BitTrieChildren` and `BitTrieTopology` are gone, and
+`BitTrieTests.Size_ViaTreeMetrics_CountsEveryNodeAcrossASharedBitPrefixChain` counts the same 34
+nodes through `TreeMetrics.Size` with no bit-trie code. `Insert`, `HasKey` and `HasPrefix` are
+`TrieWalk`'s walk; a value counts once, when its last node is added, so `Count` counts distinct
+values, where the old trie counted insert calls, and its users only asked whether it was zero.
+`TryMaxXor` is the one walk the configuration adds, taking the opposite bit's child wherever there
+is one. It walks the query's complement beside the query, so each digit it reads arrives as a top
+bit shifted down, which the JIT knows is 0 or 1 and indexes the inline pair by with no bounds check,
+and it builds the XOR from the top, a shift and an or a level. The two walks, an insert's and the
+query's, are static methods over the root that are never inlined (§13.8 says why): the public
+`Insert` and `TryMaxXor` that call them still inline, and since the trie object is never handed to a
+call, the JIT still keeps a trie that does not escape off the heap, as it does LC 421's.
 
-`BitTrieChildren` follows `BinaryTreeChildren`'s shape — computed on demand from two named
-fields, no backing array at all. `BitTrieNode` has exactly `BinaryTreeNode`'s "two named slots"
-shape (deliberately, per its own doc comment, to avoid a `HashMap`'s cost for a fixed 2-key
-alphabet); switching it to an actual 2-element array to reuse `SparseArrayChildren` verbatim would
-be a real, unforced representation regression (an allocation per node) purely to match another
-trie's file shape rather than its reasoning. `BinaryTreeChildren`'s own "compaction loses
-positional identity" carve-out (why `InOrderTraversal` bypasses it) doesn't apply here either:
-`Insert`/`TryMaxXor` never go through `IChildren` at all, so nothing downstream needs "this was
-specifically the 0-branch vs. the 1-branch" preserved — only generic Tree-tier engines consume the
-witness, and they only ever ask "how many children, and give me each one."
+The slots are an inline array rather than the old `Zero` and `One` fields, so a step picks a child
+by arithmetic on the digit. In tier-1 code against the commit before (LC 421, LC 1707 and LC 2935),
+the old walks branched on each bit's value to choose between the two fields, `bt`/`jb` when
+inserting and `sete`/`test`/`jne` when querying, a branch random data decides at random; the new
+ones load the chosen slot, which leaves one data-dependent branch a query level, whether the
+opposite child exists. A query level that finds it is 13 instructions rather than 17, paying one
+explicit null check (`cmp byte ptr [node], node`), since a load at a scaled index cannot double as
+one, and a new node is allocated with no stores after it, as before. The insert walk is 162 bytes
+and the query walk 68, each called directly; the roots that inlined the old walks shrink to call
+them: LC 421's 375 to 144 bytes, LC 1707's `ResolveQuery` 380 to 154 and LC 2935's `SweepBucket`
+1,415 to 1,191. Every node is 32 bytes, as before, and the problems allocate exactly what they did:
+LC 421's solution at 5,000 values 3,168,768 bytes on both sides.
 
-`Insert`/`TryMaxXor` themselves stay hand-written against `Zero`/`One` directly — the witness
-doesn't replace them, it opens the trie to generic Tree-tier engines for free.
-`BitTrieTests.Size_ViaTreeMetrics_CountsEveryNodeAcrossASharedBitPrefixChain` proves the witness is
-real the same way `TrieTests` does: `TreeMetrics.Size` (`Algorithms/Metrics`, generic over
-any `ITreeTopology`) counts every node of a two-value trie with no `BitTrie`-specific code at all.
+`TwoFieldBitTrie` is the hand-specialized strategy for exactly one layer, the maximum-XOR set,
+`IMaxXorSet`, under §17.5's rule (the owner's ruling of 2026-11-06). The contract states that
+layer's invariants: `Count` counts distinct values, `HasKey` and `HasPrefix` answer for the values
+inserted and their high bits, a prefix of 0 to 32 bits, and `TryMaxXor` is false on an empty set and
+otherwise gives the largest XOR with a held value, compared as unsigned bit patterns.
+`TwoFieldBitTrie` is the old flat bit trie: a concrete node with two named fields, `Zero` and `One`,
+and walks written out for an int's 32 bits with nothing generic in them. The one trie meets the
+contract through `BitTrieSet`, a struct view that holds a `BitTrie` and forwards each member, as
+`PrefixSet` makes the word trie a set. Both are structs and `Empty` is static, so code generic over
+the set is compiled for each one and calls it directly. One contract suite holds the two to the same
+answers: `MaxXorSetContractTests`, whose maximum XOR is checked against a scan of every value
+inserted, configured by `BitTrieSetTests` and `TwoFieldBitTrieTests`, and `TrieContractTests` over
+an int's bits, configured by `OverInt32Bits` and `OverTwoFieldBits`, for which the key-set contract
+now takes a struct trie. `MaxXorSetInsertBenchmarks` and `MaxXorSetQueryBenchmarks`
+(`StrategySwaps`) time the two at LC 2932's bound on n and at LC 2935's, the specialized set as the
+baseline, as LC 208's textbook trie is.
+
+It exists for LC 2932, whose benchmarked root inlines the whole bucket sweep. At the commit before,
+that root made 78 inlines, the old trie's walks among them, and none failed. The one trie's layered
+walk needs 122-138 there and runs out of the JIT's inlining budget (§13.8), which
+`[AggressiveInlining]` does not lift; called instead from a method compiled on its own, it still
+left LC 2932 slower in both of BenchmarkDotNet's passes. Over `TwoFieldBitTrie` the same root tries
+106 inlines and none fails: 1,391 bytes that call nothing but the allocator and the write barrier,
+against 1,419 at the commit before, allocating the same bytes a call. LC 421, 1707 and 2935 keep the
+template, whose indexed slots pick a child without branching on the bit and made them 13-51% faster;
+their tier-1 code is what it was before the specialized set existed, LC 2935's root the same 250
+instructions as then but for how its jumps are encoded and one address computation.
+
+LC 2932 runs LC 2935's bucket strategy (§17.3), so the strategy is written once over the set:
+`StrongPairBuckets<TSet>`, generic over a struct `IMaxXorSet`, whose `MaxXor` LC 2935's arm calls
+with `BitTrieSet` and LC 2932's with `TwoFieldBitTrie`. A path of LC 2932's own would copy the sort,
+the bucket sweep and the two-pointer pass across adjacent buckets, about a hundred lines, only to
+change the set, and a struct type argument costs nothing at run time, since each instantiation is
+compiled for its set and calls it directly. The strategy is a class of its own beside LC 2935's
+solution rather than methods of it, because the catalog makes every static method of a solution
+class an arm, and a method over any set is no one arm (DSACAT001).
 `CountedBitTrie` fails both halves of the test, and §13.3 records why.
 
 ### 13.10 One segment tree: the range action is a witness
@@ -1787,7 +1882,10 @@ So a baseline may read what the library *states*, and may not use what it *imple
   strategy benchmark compares the two. The suite is an abstract test class in
   `DSAExperimentation.Tests` whose abstract member builds the set or map it judges. The library's
   configurations derive from it there, and a baseline from the LeetCode tests, which reference the
-  library's tests for that alone: LC 208's `ArrayNodeTrieTests` derives from `PrefixSetTests`.
+  library's tests for that alone: LC 208's `ArrayNodeTrieTests` derives from `PrefixSetTests`. A
+  specialized form that more than one problem's strategy takes lives in the library beside its
+  template, and its configuration of the suite beside the template's: `TwoFieldBitTrieTests` and
+  `BitTrieSetTests` both derive from `MaxXorSetContractTests` (§13.9).
 - **It may not use an implementation.** A type or member of `DataStructures`, `Algorithms` or
   `Mechanisms` that is neither a contract nor a constant or enum - a container, an engine, a
   mechanism, a layout witness - is the library doing the work, and a baseline that used one would no
@@ -1969,7 +2067,7 @@ about LeetCode rather than about any problem's world, and one problem's own spel
 | `Domain/Mathematics/Metrics/` | `ILpNorm`, `LpNorm`, `L1Norm`, `L2Norm`, `LInfinityNorm` | The Lp norms on R^n, the space of n real coordinates: a vector's length is (|x1|^p + ... + |xn|^p)^(1/p), and the distance between two points is the length of their difference. For every p of at least 1 that distance is a metric, the triangle inequality being Minkowski's inequality; below 1 it fails, so `LpNorm`, the general form for any p by powers, refuses a smaller exponent or NaN, and reaches p = ∞, the limit, through L∞'s code. L1, L2 and L∞ are presets of `ILpNorm`, a struct witness whose exponent is its one fact, each with code of its own: L1 is a sum of sizes and L∞ a maximum, with no power taken, and L2 is the square root of a sum of squares, whose squared length and distance are offered too, since a comparison needs no root. L1 and L∞ are exact in any number type, so their members are generic over it, with a planar form for a displacement's two coordinates; the contract's members over doubles read them. A preset's exponent is a property, not a public constant, because a public double constant would be read as the source of every solution's own 1.0 or 2.0 (`SharedValueCopyTests`). The tests hold every preset, and the general form at p = 3 through a test-only witness, to the metric axioms on sampled points in one, two, three and five dimensions; each preset to the general form at its exponent; L∞ to the limit, between the largest size and n^(1/p) times it; and the presets to their order, L∞ ≤ L2 ≤ L1 ≤ n · L∞. Euclidean distance is L2 on R^n, not a distance any set of grid steps counts, and a weighted distance is a path's cost, which `Algorithms/ShortestPaths` computes. |
 | `Domain/Mathematics/Surfaces/` | `ISurface`, `GluedRectangle<TRows, TCols>`, `MirroredAxes`, `BoundedRectangle`, `Cylinder`, `Torus`, `MobiusStrip`, `KleinBottle`; `Gluings/`: `IEdgeGluing`, `Unglued`, `Straight`, `Twisted` | The board's topology, as the lattice is its local structure: a rectangle of cells with each pair of opposite edges left open, a boundary no step crosses, or glued, so a step off one edge comes back in at the other, the same way round (straight) or the opposite way (twisted). The choice is per pair, so `GluedRectangle` composes two gluings and the presets name the common ones: nothing glued is the rectangle LeetCode's grids are, a disk; one pair straight is the cylinder, both the torus; one pair twisted is the Mobius strip, and with the other straight, the Klein bottle. A glued edge is crossed as many times as a step needs and the gluing counts the crossings, so a knight on a board two cells wide lands right. Crossing a twisted pair an odd number of times mirrors the other axis, and `TryLand` reports it (`MirroredAxes`): a set of steps closed under the mirror, such as the orthogonal ones, is unchanged, while an ordered one, such as a heading or `Clockwise`, has its left and right swapped. `GridSize.HasCell` is the bounded rectangle's rule, one unsigned comparison per axis, and the JIT inlines the whole chain. A grid without defects is flat, so by Gauss-Bonnet its closed surfaces have Euler characteristic 0, the torus and the Klein bottle. Two twisted pairs would make the projective plane, which needs cone points, and a diagonal step out of a corner comes back to its own cell, which a test shows; the sphere needs them too, as a cube's corners are. Neither is offered. The tests read each preset back as a cell complex built from where its steps land, and check its Euler characteristic and boundary circles: 1 and one for the rectangle, 0 and two for the cylinder, 0 and one for the Mobius strip, 0 and none for the torus and the Klein bottle, which orientation tells apart, since once round the Klein bottle a walker comes back mirrored. |
 | `Domain/Mathematics/Modular/` | `IModulus`, `IPrimeModulus` | What a modulus is, as mathematics rather than LeetCode's convention: the residues 0 to m - 1, the bound that keeps the product of two residues inside a long, and for a prime, Fermat's inverse a^(p - 2). An algorithm over them is swappable, so `ModularInverse.ByFermat` and `FactorialTable<TModulus>` are `Algorithms/NumberTheory`'s, beside `ModularPower`. A modulus that is a compile-time constant is a struct witness the JIT folds. LeetCode's own prime, 10^9 + 7, is `LeetCodeModulus` at the LeetCode tier's root, since it is LeetCode's choice; its tests check it is prime and within the bound. |
-| `Domain/Mathematics/Numerals/` | `DecimalDigits`, `IPartsPerNotation`, `Percent`, `Permille`, `Permyriad`, `PartsPerMillion`, `RomanSymbol`, `RomanPair`, `RomanNumerals`, `IDigitGrouping`, `ThousandsGrouping`, `IndianGrouping`, `MyriadGrouping`, `DigitGrouping<TGrouping>` | The ten decimal digits, '0' to '9', as an alphabet (§19.6): a digit's slot is its value, since the digits are one run of character codes. A lock's wheels carry them and a numeral is written in them.`Zero` and `Nine` name the two digits a wheel turns between. A proportion written as parts of a fixed whole is a notation too: per cent counts hundredths, per mille thousandths, per myriad (finance's basis point) ten-thousandths and parts per million millionths, and the whole is each one's constant. Taking a share of an amount is not stated, because in floating point dividing by the whole last and multiplying by a rate worked out once round differently, and which a problem does is its arms' choice. The Roman numerals in standard form: seven symbols, I V X L C D M, each a named value carrying its letter and number, and six subtractive pairs, a power of ten written before the next two symbols up (IV, IX, XL, XC, CD, CM), named values too. A symbol repeats at most three times, so the largest numeral is MMMCMXCIX, 3,999, derived from that limit. Writing takes the largest symbol or pair that fits; `TryRead` accepts only a numeral in standard form, so every number from 1 to 3,999 makes a round trip, which the tests check, and IIII or IC is refused. A numeral's digits are grouped for reading from the right: 3 then 3 in the West, 3 then 2 in India (1,00,00,000), 4 then 4 by myriads in China and Japan, each a struct witness whose sizes are properties over constants, which `DigitGrouping<TGrouping>` writes with the caller's separator. The groups a language's number names follow are `Language/English/NumberNames`'s. No solution writes a Roman numeral: LC 12 and LC 13 are not covered. |
+| `Domain/Mathematics/Numerals/` | `DecimalDigits`, `BinaryDigits`, `IPartsPerNotation`, `Percent`, `Permille`, `Permyriad`, `PartsPerMillion`, `RomanSymbol`, `RomanPair`, `RomanNumerals`, `IDigitGrouping`, `ThousandsGrouping`, `IndianGrouping`, `MyriadGrouping`, `DigitGrouping<TGrouping>` | The ten decimal digits, '0' to '9', as an alphabet (§19.6): a digit's slot is its value, since the digits are one run of character codes. A lock's wheels carry them and a numeral is written in them.`Zero` and `Nine` name the two digits a wheel turns between. The two binary digits, '0' and '1', are the same kind of alphabet: every bit is one, so the bit trie keeps a child for each and reads a bit's value as its slot. A proportion written as parts of a fixed whole is a notation too: per cent counts hundredths, per mille thousandths, per myriad (finance's basis point) ten-thousandths and parts per million millionths, and the whole is each one's constant. Taking a share of an amount is not stated, because in floating point dividing by the whole last and multiplying by a rate worked out once round differently, and which a problem does is its arms' choice. The Roman numerals in standard form: seven symbols, I V X L C D M, each a named value carrying its letter and number, and six subtractive pairs, a power of ten written before the next two symbols up (IV, IX, XL, XC, CD, CM), named values too. A symbol repeats at most three times, so the largest numeral is MMMCMXCIX, 3,999, derived from that limit. Writing takes the largest symbol or pair that fits; `TryRead` accepts only a numeral in standard form, so every number from 1 to 3,999 makes a round trip, which the tests check, and IIII or IC is refused. A numeral's digits are grouped for reading from the right: 3 then 3 in the West, 3 then 2 in India (1,00,00,000), 4 then 4 by myriads in China and Japan, each a struct witness whose sizes are properties over constants, which `DigitGrouping<TGrouping>` writes with the caller's separator. The groups a language's number names follow are `Language/English/NumberNames`'s. No solution writes a Roman numeral: LC 12 and LC 13 are not covered. |
 | `Domain/Mathematics/NumberSystems/` | `NumberSystem`, `AlgebraicLaws` | A number system as mathematics sees it: the laws its arithmetic keeps, flags of `AlgebraicLaws` (subtraction, division, completeness, order, commutativity, associativity, alternativity), and its size, a `Cardinal`. The systems are named values, each built from the one before by what it adds or gives up, so no law is written twice. The hierarchy: the integers add subtraction to the naturals, the rationals add division and lose completeness, which the naturals and integers have because their points stand apart, the reals restore it and have the continuum's size, and the complex numbers add a square root of -1 and give up order. The Cayley-Dickson construction doubles a system from the reals, each doubling doubling the dimension and giving up a law: the complex numbers order, the quaternions commutativity, the octonions associativity, the sedenions alternativity and division. Algebraic closure is not a law here, since the quaternions and octonions are not fields. The tests write the property table out row by row, and hold every Cayley-Dickson row to exact integer arithmetic: the laws on the basis (the product is linear in each factor, so the basis decides them), i·j = k against j·i = -k, the norm multiplying through the octonions, and the sedenions' zero divisor (e1 + e10)(e4 - e15) = 0. A system's name is `Language/English/NumberNames`', and its double-struck symbol a notation's. |
 | `Domain/Mathematics/NumberTheory/` | `Primes` | What every primality test, sieve and factorization agrees on; the procedures themselves are `Algorithms/NumberTheory`'s (`Primality`, `PrimeSieve`, `PrimeFactorization`). The smallest prime, 2, and the only even one: where a search for primes begins and a sieve's first crossing-out. The smallest odd prime, 3, the only one 3 divides, so every prime above 3 is coprime to 6 and is 6k - 1 or 6k + 1, a necessary form (25 is 6·4 + 1), which `IsSixKPlusOrMinusOne` states for integers of either sign. Every integer above 1 is a product of primes in one way only, so every factorization finds the same primes the same number of times: the tests hold the sieve's smallest factors and trial division to it over 2 to 20,000, with every factor prime by both procedures, and both procedures to the even-prime and 6k ± 1 facts. |
 | `Domain/Mathematics/SetTheory/` | `Cardinal`, `Ordinal` | A cardinal is a set's size: a finite count, or a beth number, ℶ0 = ℵ0 the size of the naturals and each next beth the size of the previous one's subsets, so ℶ1 is the continuum. Whether the continuum is ℵ1 is independent of ZFC (Gödel 1940, Cohen 1963), so it is named as a beth, where it is exact. Sum and product follow ZFC with choice: either infinite, the larger, so 1 + ℵ0 = ℵ0 + 1 = ℵ0; the power set is the next beth. An ordinal is a well-ordered list's length, here those below ω², ω·a + b in Cantor normal form. Addition puts one list after another and does not commute: 1 + ω = ω, while ω + 1 is longer, though both have ℵ0 elements, so an ordinal's cardinality forgets its order. Below ω² is as far as this goes exactly: addition stays inside and ω·ω does not, so multiplication is not offered. The tests state 1 + ω = ω ≠ ω + 1, ordinal addition's associativity, and the cardinals' commuting sums. |

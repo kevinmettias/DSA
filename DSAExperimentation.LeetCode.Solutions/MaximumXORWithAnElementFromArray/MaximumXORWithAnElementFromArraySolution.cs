@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumXORWithAnElementFromArray;
 
@@ -52,7 +52,7 @@ internal static class MaximumXORWithAnElementFromArraySolution
     // orders nums ascending and orders the query indices by their own limit mi,
     // then one pass over the queries in increasing-limit order inserts every
     // newly eligible num into this repo's own BitTrie
-    // (DataStructures/Graph/Engines/Dags/Trees/BitTrie.cs - the same MaxXor-family
+    // (DataStructures/Graph/Engines/Dags/Trees/Tries/BitTrie.cs - the same MaxXor-family
     // primitive MaximumXOROfTwoNumbersInAnArraySolution composes) before answering
     // that query with TryMaxXor in O(32). O((n + q) log(n + q)) overall.
     public static int[] MaximizeXorByOfflineBitTrieSweep(int[] nums, int[][] queries)

@@ -1,7 +1,6 @@
-using System.Numerics;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.CountedBitTrie;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximumStrongPairXORII;
@@ -23,7 +22,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumStrongPairXORII;
 // Sorting turns each bucket into one contiguous slice:
 //   - Within a bucket, every pair already qualifies, so that slice is exactly
 //     LC 421's Maximum XOR of Two Numbers - insert the whole slice into one
-//     BitTrie (DataStructures/Graph/Engines/Dags/Trees/BitTrie.cs) and query
+//     BitTrie (DataStructures/Graph/Engines/Dags/Trees/Tries/BitTrie.cs) and query
 //     every element against it, the same composition
 //     MaximumXOROfTwoNumbersInAnArraySolutionTests uses.
 //   - Between adjacent buckets, only y <= 2x qualifies; because x only grows
@@ -33,7 +32,10 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumStrongPairXORII;
 //     offline-sweep shape MaximumXORWithAnElementFromArraySolutionTests uses for LC
 //     1707, just keyed by "2x" instead of a query's own limit.
 // Insert-only is why the bucket strategy composes with BitTrie as it stands:
-// BitTrie has no delete. The more obvious shape - sort, then one window of
+// BitTrie has no delete. The strategy itself is StrongPairBuckets, written once
+// over any IMaxXorSet: LC 2935 runs it over the one trie's BitTrie (BitTrieSet),
+// and LC 2932 over TwoFieldBitTrie, the hand-specialized set (ARCHITECTURE 13.9).
+// The more obvious shape - sort, then one window of
 // partners that grows on the right and shrinks on the left - needs a trie that
 // can take a value back out, and that is the sliding-window strategy below, over
 // CountedBitTrie (DataStructures/CountedBitTrie/CountedBitTrie.cs).
@@ -69,107 +71,16 @@ internal static class MaximumStrongPairXORIISolution
         return large - small <= small;
     }
 
-    public static int MaximumStrongPairXorByBitTrieBuckets(int[] nums)
-    {
-        var sorted = new ArrayIndexedSequence<int>((int[])nums.Clone());
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(sorted);
-
-        return MaximumStrongPairXorByBitTrieBuckets(sorted);
-    }
+    public static int MaximumStrongPairXorByBitTrieBuckets(int[] nums) =>
+        StrongPairBuckets<BitTrieSet>.MaxXor(nums);
 
     // Prepared-input overload: `sortedNums` must already be sorted ascending -
     // the benchmark's own [GlobalSetup] calls MergeSort once so this overload
     // measures only the bucket sweep itself, ArrayIndexedSequence<int> (not
     // int[] or IEnumerable<int>) is what keeps it from ever being the overload
     // an unsorted LeetCode-shaped call silently binds to.
-    public static int MaximumStrongPairXorByBitTrieBuckets(ArrayIndexedSequence<int> sortedNums)
-    {
-        var best = 0;
-        var previousBucketStart = -1;
-        var bucketStart = 0;
-
-        while (bucketStart < sortedNums.Length)
-        {
-            (best, previousBucketStart, bucketStart) = SweepBucket(
-                sortedNums, best, previousBucketStart, bucketStart);
-        }
-
-        return best;
-    }
-
-    // Advances past one bucket: scores the XORs it holds within itself, scores the
-    // ones it holds against the bucket just before it, then hands back the three
-    // threaded locals so the sweep can step on to the next bucket.
-    private static (int Best, int PreviousBucketStart, int BucketStart) SweepBucket(
-        ArrayIndexedSequence<int> sortedNums, int best, int previousBucketStart, int bucketStart)
-    {
-        var bucketEnd = bucketStart + 1;
-
-        while (bucketEnd < sortedNums.Length &&
-               HighestBit(sortedNums.Get(bucketEnd)) == HighestBit(sortedNums.Get(bucketStart)))
-        {
-            bucketEnd++;
-        }
-
-        var withinBucket = MaxXorWithinBucket(sortedNums, bucketStart, bucketEnd);
-
-        best = Math.Max(best, withinBucket);
-
-        if (previousBucketStart >= 0)
-        {
-            var acrossAdjacent = MaxXorAcrossAdjacentBuckets(
-                sortedNums, previousBucketStart, bucketStart, bucketEnd);
-
-            best = Math.Max(best, acrossAdjacent);
-        }
-
-        return (best, bucketStart, bucketEnd);
-    }
-
-    private static int HighestBit(int value) => 31 - BitOperations.LeadingZeroCount((uint)value);
-
-    private static int MaxXorWithinBucket(ArrayIndexedSequence<int> nums, int start, int end)
-    {
-        if (end - start < 2)
-        {
-            return 0;
-        }
-
-        var trie = BuildBucketTrie(nums, start, end);
-
-        return MaxXorAgainstTrie(nums, start, end, trie);
-    }
-
-    // The bucket's own slice inserted into one BitTrie: within a bucket every pair is
-    // already a strong pair, so this is exactly LC 421's problem.
-    private static BitTrie BuildBucketTrie(ArrayIndexedSequence<int> nums, int start, int end)
-    {
-        var trie = new BitTrie();
-
-        for (var i = start; i < end; i++)
-        {
-            trie.Insert(nums.Get(i));
-        }
-
-        return trie;
-    }
-
-    // The best XOR any value of [start, end) can make against the trie.
-    private static int MaxXorAgainstTrie(
-        ArrayIndexedSequence<int> nums, int start, int end, BitTrie trie)
-    {
-        var best = 0;
-
-        for (var i = start; i < end; i++)
-        {
-            if (trie.TryMaxXor(nums.Get(i), out var candidate))
-            {
-                best = Math.Max(best, candidate);
-            }
-        }
-
-        return best;
-    }
+    public static int MaximumStrongPairXorByBitTrieBuckets(ArrayIndexedSequence<int> sortedNums) =>
+        StrongPairBuckets<BitTrieSet>.MaxXor(sortedNums);
 
     public static int MaximumStrongPairXorBySlidingWindow(int[] nums)
     {
@@ -204,34 +115,6 @@ internal static class MaximumStrongPairXORIISolution
             }
 
             if (window.TryMaxXor(larger, out var candidate))
-            {
-                best = Math.Max(best, candidate);
-            }
-        }
-
-        return best;
-    }
-
-    // Lower bucket is [lowerStart, upperStart); upper bucket is [upperStart,
-    // upperEnd).
-    private static int MaxXorAcrossAdjacentBuckets(
-        ArrayIndexedSequence<int> nums, int lowerStart, int upperStart, int upperEnd)
-    {
-        var trie = new BitTrie();
-        var best = 0;
-        var y = upperStart;
-
-        for (var x = lowerStart; x < upperStart; x++)
-        {
-            var limit = 2L * nums.Get(x);
-
-            while (y < upperEnd && nums.Get(y) <= limit)
-            {
-                trie.Insert(nums.Get(y));
-                y++;
-            }
-
-            if (trie.TryMaxXor(nums.Get(x), out var candidate))
             {
                 best = Math.Max(best, candidate);
             }

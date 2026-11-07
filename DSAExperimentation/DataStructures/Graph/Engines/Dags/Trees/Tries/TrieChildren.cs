@@ -10,7 +10,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 /// <typeparam name="TValue">The value the trie stores under each key.</typeparam>
 /// <param name="node">The node whose children to list.</param>
 public readonly struct TrieChildren<TStore, TValue>(TrieNode<TStore, TValue> node) : IChildren<TrieNode<TStore, TValue>>
-    where TStore : struct, IOrderedTrieChildStore<TStore, TValue>
+    where TStore : struct, IOrderedTrieChildStore<TStore, TrieNode<TStore, TValue>>
 {
     /// <inheritdoc/>
     public int Count => node.Children.Count;

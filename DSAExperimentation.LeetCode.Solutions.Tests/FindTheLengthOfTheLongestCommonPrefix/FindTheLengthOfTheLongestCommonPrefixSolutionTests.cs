@@ -15,8 +15,8 @@ public sealed partial class FindTheLengthOfTheLongestCommonPrefixSolutionTests
     public void BuildDigitTrie_LeetCodeFirstExample_HoldsEachValueAsItsDigitString()
     {
         var trie = FindTheLengthOfTheLongestCommonPrefixSolution.BuildDigitTrie([1, 10, 100]);
-        var keys = new[] { "1", "10", "100", "1000" }.Select(trie.HasKey);
-        var prefixes = new[] { "100", "1000", "0" }.Select(trie.HasPrefix);
+        var keys = new[] { "1", "10", "100", "1000" }.Select(key => trie.HasKey(key));
+        var prefixes = new[] { "100", "1000", "0" }.Select(prefix => trie.HasPrefix(prefix));
 
         Assert.Equal(3, trie.Count);
         Assert.Equal([true, true, true, false], keys);

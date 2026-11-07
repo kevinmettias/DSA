@@ -19,13 +19,14 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 /// <typeparam name="TAlphabet">The letters a key is drawn from, and the slot each takes.</typeparam>
 /// <typeparam name="TLayout">Where in the slot array each child is kept.</typeparam>
 /// <typeparam name="TValue">The value the trie stores under each key.</typeparam>
-public struct AlphabetSlots<TAlphabet, TLayout, TValue> : IOrderedTrieChildStore<AlphabetSlots<TAlphabet, TLayout, TValue>, TValue>
+public struct AlphabetSlots<TAlphabet, TLayout, TValue>
+    : IOrderedTrieChildStore<AlphabetSlots<TAlphabet, TLayout, TValue>, TrieNode<AlphabetSlots<TAlphabet, TLayout, TValue>, TValue>>,
+        ILetteredTrieChildStore<AlphabetSlots<TAlphabet, TLayout, TValue>, TrieNode<AlphabetSlots<TAlphabet, TLayout, TValue>, TValue>, char>
     where TAlphabet : struct, IAlphabet
     where TLayout : struct, ITrieLayout
 {
     private const int MaxAlphabetSize = sizeof(ulong) * 8;
     private const string AlphabetTooLargeMessage = "A trie's slots keep one mask bit per letter, so its alphabet has at most 64 letters.";
-    private const string NotAChildRankMessage = "Expected a rank below the node's child count.";
 
     private static readonly TrieNode<AlphabetSlots<TAlphabet, TLayout, TValue>, TValue>?[] NoSlots = [];
 
@@ -79,7 +80,7 @@ public struct AlphabetSlots<TAlphabet, TLayout, TValue> : IOrderedTrieChildStore
     {
         if ((uint)rank >= (uint)Count)
         {
-            throw new ArgumentOutOfRangeException(nameof(rank), rank, NotAChildRankMessage);
+            TrieFailures.ThrowNotAChildRank(rank);
         }
 
         // presumption: allow -- the rank is below the child count, and the layout stores every child

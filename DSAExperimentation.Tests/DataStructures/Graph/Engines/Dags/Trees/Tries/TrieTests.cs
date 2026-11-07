@@ -1,17 +1,21 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using DSAExperimentation.Domain.Science.Dna;
 using DSAExperimentation.Tests.DataStructures.Alphabets.Fixtures;
 using DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees.Tries.Fixtures;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees.Tries;
 
-// IPrefixMap's contract, run over every configuration of the one trie: the slot store under both
+// IPrefixMap's contract, run over every configuration of the word trie: the slot store under both
 // layouts and the hashed store. Each fact holds for every configuration, and in each a seeded script of
 // sets and lookups must answer as a dictionary of the same keys does, so a store that answers wrongly
 // anywhere a map can see shows up here. What only one store promises is checked beside the contract: the characters each takes, and
 // the slot store over other alphabets (case folded, a table alphabet with a letter out of code order,
-// DNA's bases). The slot store's tree-topology witness is TrieTopologyTests'.
+// DNA's bases). The slot store's tree-topology witness is TrieTopologyTests'. The nested classes
+// run TrieContractTests, the one trie's contract over any kind of key, for words, binary text and
+// an int's bits, and over the int's bits for TwoFieldBitTrie too, the hand-specialized set that
+// layer may swap in.
 public sealed partial class TrieTests
 {
     private const int ScriptLength = 2_000;
@@ -207,6 +211,13 @@ public sealed partial class TrieTests
     private static string RandomKey(Random random) =>
         new([.. Enumerable.Range(0, random.Next(LongestScriptKey)).Select(_ => EnglishLowercase.LetterAt(random.Next(EnglishLetters.Size)))]);
 
+    private static (TextKey Key, string Spelling) RandomWord(Random random)
+    {
+        var word = RandomKey(random);
+
+        return (word, word);
+    }
+
     // A prefix is a prefix of some stored key, so the empty prefix is one only once a key is stored.
     private static (bool HasKey, bool HasPrefix, int Value, int Count) ModelAnswers(Dictionary<string, int> model, string probe)
     {
@@ -226,4 +237,93 @@ public sealed partial class TrieTests
         nameof(PackedTrieLayout) => new Trie<AlphabetSlots<EnglishLowercase, PackedTrieLayout, int>, int>(),
         _ => new Trie<HashedChildren<int>, int>(),
     };
+
+    public sealed class OverDenseSlots : WordTrieContract<AlphabetSlots<EnglishLowercase, DenseTrieLayout, int>>;
+
+    public sealed class OverPackedSlots : WordTrieContract<AlphabetSlots<EnglishLowercase, PackedTrieLayout, int>>;
+
+    public sealed class OverHashedChildren : WordTrieContract<HashedChildren<int>>;
+
+    // Binary text, '0' and '1', over the slot store: the same digits a bit trie reads, as
+    // characters.
+    public sealed class OverBinaryText : WordTrieContract<AlphabetSlots<BinaryDigits, DenseTrieLayout, int>>
+    {
+        private const int LongestText = 12;
+
+        protected override (TextKey Key, string Spelling) RandomKey(Random random)
+        {
+            var text = new string([.. Enumerable.Range(0, random.Next(LongestText)).Select(_ => BinaryDigits.LetterAt(random.Next(BinaryDigits.Size)))]);
+
+            return (text, text);
+        }
+    }
+
+    // An int's bits over the inline binary store, with no payload: BitTrie itself.
+    public sealed class OverInt32Bits : Int32BitsContract<BitTrie>
+    {
+        protected override BitTrie CreateTrie() => new();
+
+        protected override void Add(BitTrie trie, Int32BitsKey key) => trie.Insert(ValueOf(key));
+
+        protected override bool HasKey(BitTrie trie, Int32BitsKey key) => trie.HasKey(key);
+
+        protected override bool HasPrefix(BitTrie trie, Int32BitsKey key, int length) => trie.HasPrefix(key, length);
+
+        protected override int CountOf(BitTrie trie) => trie.Count;
+    }
+
+    // An int's bits in TwoFieldBitTrie, the hand-specialized set that swaps in for BitTrie, asked
+    // by the int each key spells, as LC 2932 asks it.
+    public sealed class OverTwoFieldBits : Int32BitsContract<TwoFieldBitTrie>
+    {
+        protected override TwoFieldBitTrie CreateTrie() => TwoFieldBitTrie.Empty();
+
+        protected override void Add(TwoFieldBitTrie trie, Int32BitsKey key) => trie.Insert(ValueOf(key));
+
+        protected override bool HasKey(TwoFieldBitTrie trie, Int32BitsKey key) => trie.HasKey(ValueOf(key));
+
+        protected override bool HasPrefix(TwoFieldBitTrie trie, Int32BitsKey key, int length) =>
+            trie.HasPrefix(ValueOf(key), length);
+
+        protected override int CountOf(TwoFieldBitTrie trie) => trie.Count;
+    }
+
+    // An int's bits as keys, for any set of them. Each value is spelled by the framework's own
+    // binary formatting, most significant first. The values are drawn so that they repeat and share
+    // long runs of high bits, and a set sign bit makes half of them negative.
+    public abstract class Int32BitsContract<TTrie> : TrieContractTests<TTrie, Int32BitsKey, int>
+    {
+        private const int HighBits = 3;
+        private const int LowBits = 3;
+
+        protected override (Int32BitsKey Key, string Spelling) RandomKey(Random random)
+        {
+            var value = (random.Next(1 << HighBits) << (Int32BitsKey.Bits - HighBits)) | random.Next(1 << LowBits);
+
+            return (value, Convert.ToString(value, 2).PadLeft(Int32BitsKey.Bits, BinaryDigits.Zero));
+        }
+
+        // The int a key reads, back from its letters, so the set is handed the value the key
+        // spells.
+        protected static int ValueOf(Int32BitsKey key) =>
+            Enumerable.Range(0, Int32BitsKey.Bits).Aggregate(0, (value, position) => (value << 1) | key.LetterAt(position));
+    }
+
+    // The word trie with the value payload, a value of 1 under each key added: the configurations
+    // above differ only in their store and, for binary text, their keys.
+    public abstract class WordTrieContract<TStore> : TrieContractTests<Trie<TStore, int>, TextKey, char>
+        where TStore : struct, ILetteredTrieChildStore<TStore, TrieNode<TStore, int>, char>
+    {
+        protected override Trie<TStore, int> CreateTrie() => new();
+
+        protected override (TextKey Key, string Spelling) RandomKey(Random random) => RandomWord(random);
+
+        protected override void Add(Trie<TStore, int> trie, TextKey key) => trie.Set(key, 1);
+
+        protected override bool HasKey(Trie<TStore, int> trie, TextKey key) => trie.HasKey(key);
+
+        protected override bool HasPrefix(Trie<TStore, int> trie, TextKey key, int length) => trie.HasPrefix(key, length);
+
+        protected override int CountOf(Trie<TStore, int> trie) => trie.Count;
+    }
 }

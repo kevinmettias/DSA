@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Numerals;
 using BitStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.Solutions.AddBinary;
@@ -11,8 +12,6 @@ namespace DSAExperimentation.LeetCode.Solutions.AddBinary;
 [LeetCodeQuestion("add-binary", LeetCodeAnswerOrder.AsWritten)]
 internal static class AddBinarySolution
 {
-    private const int BinaryBase = 2;
-
     // Accumulate digits least-significant first, then reverse the buffer in place.
     public static string AddByCharArrayReverse(string firstOperand, string secondOperand)
     {
@@ -76,8 +75,8 @@ internal static class AddBinarySolution
                 sum += _secondOperand[_secondIndex--] - '0';
             }
 
-            _carry = sum / BinaryBase;
-            return (char)('0' + sum % BinaryBase);
+            _carry = sum / BinaryDigits.Size;
+            return (char)('0' + sum % BinaryDigits.Size);
         }
     }
 }

@@ -2,6 +2,58 @@
   "schema": 1,
   "waivers": [
     {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/BitTrie.cs",
+      "reason": "MaxXorPattern's ChildFor(...)! promises the same bit's child is present once the opposite bit's child is absent: every Set walks all 32 levels before it returns and nothing is ever removed, so every node the walk reaches above the last level has a child, and with the opposite one absent the same one is present by elimination between exactly two. TryMaxXor walks only once Count \u003e 0. Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/BinarySlots.cs",
+      "reason": "ChildOfRank's _slots[digit]! reads the slot a rank below the child count maps to: rank 0 is the 0 slot when it holds a child and the 1 slot otherwise, and rank 1 exists only when both do, so the slot read is one the count counted. Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/BinarySlots.cs",
+      "reason": "BinarySlots is a trie node's own child store, kept inline as a field of its TrieNode so that a step from a node to its child reads the child straight from the node, as AlphabetSlots' waiver says of the slot store. Adding a child writes a slot, so the store changes; TrieNode hands it out only by ref, so the change lands in the node's own field. Its nested DigitSlots is the C# inline array that holds the two slots, and an inline array is a struct of writable elements by the language's own definition; a class would put an object between each node and its children, the hop this store exists to avoid.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/TwoFieldBitTrie.cs",
+      "reason": "DescendOneLevel's (...)! promises the same bit's child is present once the opposite bit's child is absent: every Insert walks all 32 levels before it returns and nothing is ever removed, so every node the walk reaches above the last level has a child, and with the opposite one absent the same one is present by elimination between exactly two. TryMaxXor walks only once Count \u003e 0. It is the old flat BitTrie's walk and the reasoning its waiver gave. Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/BitTrie.cs",
+      "message": "is exercised by a test, and NO TEST NAMES IT",
+      "reason": "BitTrie's Insert, HasKey, HasPrefix and TryMaxXor are held to IMaxXorSet's contract by MaxXorSetContractTests, the layer's one contract suite, which BitTrieSetTests runs over BitTrie through its view BitTrieSet, and to the key-set contract by TrieContractTests' OverInt32Bits configuration in TrieTests. check-test-coverage reads a test's subject from the class that declares the test method, so facts a configuration inherits from a contract suite never reach the type it configures, and it reports members that the contract's run exercises and names. Writing the facts again in each configuration would be a second copy of the contract, the duplication one suite per layer exists to avoid (ARCHITECTURE 17.5). Scoped by message to exercised-but-unnamed findings: a member no test runs is still reported.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/BitTrieSet.cs",
+      "message": "is exercised by a test, and NO TEST NAMES IT",
+      "reason": "BitTrieSet's Count, Empty, HasKey, HasPrefix and TryMaxXor are held to IMaxXorSet's contract by MaxXorSetContractTests, the layer's one contract suite, whose every fact BitTrieSetTests inherits; BitTrieSetTests' own fact is that the view holds no state of its own. check-test-coverage reads a test's subject from the class that declares the test method, so facts a configuration inherits from a contract suite never reach the type it configures, and it reports members that the contract's run exercises and names. Writing the facts again in each configuration would be a second copy of the contract, the duplication one suite per layer exists to avoid (ARCHITECTURE 17.5). Scoped by message to exercised-but-unnamed findings: a member no test runs is still reported.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/Tries/TwoFieldBitTrie.cs",
+      "message": "is exercised by a test, and NO TEST NAMES IT",
+      "reason": "TwoFieldBitTrie's Count, Empty, HasKey, HasPrefix and TryMaxXor are held to IMaxXorSet's contract by MaxXorSetContractTests, the layer's one contract suite, whose every fact TwoFieldBitTrieTests inherits, and to the key-set contract by TrieContractTests' OverTwoFieldBits configuration in TrieTests, the same two suites the template meets. check-test-coverage reads a test's subject from the class that declares the test method, so facts a configuration inherits from a contract suite never reach the type it configures, and it reports members that the contract's run exercises and names. Writing the facts again in each configuration would be a second copy of the contract, the duplication one suite per layer exists to avoid (ARCHITECTURE 17.5). Scoped by message to exercised-but-unnamed findings: a member no test runs is still reported.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-value-sharing",
       "path": "DSAExperimentation/Domain/Language/English/NumberNames/Composition/NumberWordList.cs",
       "reason": "A word sink is a struct by design: the composer EnglishNumberNames<TScale> takes it as a type argument constrained to struct and by ref, so each caller's sink compiles into the composer with no interface call, the repo's static-dispatch rule for every axis (ARCHITECTURE section 5, the owner's ruling of 2026-10-03). The reference it holds is the point of the sink: the caller made it, the composer appends to it, and the caller reads it afterwards, so a copy sharing it is the intended reading, as a List<T>.Enumerator copy shares its list. The sink is never stored or compared, only passed by ref for one composition. Its list is made by its constructor and never replaced.",
@@ -527,13 +579,6 @@
       "check": "check-parameter-count",
       "path": "DSAExperimentation/Algorithms/Backtracking/Backtrack.cs",
       "reason": "the 6-parameter Search overload (state plus 5 delegates) is a deliberate ergonomic surface, not an accidental one - its own doc comment explains why: it exists specifically so exhaustive-enumeration callers (Subsets, Permutations, N-Queens counting) get a void onSolution and can't accidentally truncate their own search by returning the wrong bool, the exact footgun the canonical BacktrackingSteps\u003cTState,TChoice\u003e-based overload's bool-returning OnSolution invites. Collapsing this overload's parameters into a record struct, as the mechanical fix suggests, would just move that same footgun back onto every caller of this overload - the same 'this broad surface is the type's actual minimum complete API' shape CircularBuffer.cs's own check-responsibility-extraction waiver already establishes for a structurally-necessary parameter/member count.",
-      "owner": "@kmettias",
-      "expires": "2027-05-01"
-    },
-    {
-      "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/BitTrie.cs",
-      "reason": "DescendOneLevel's ! promises the same-bit child is present once the opposite child is absent - true because every node reached mid-walk already has \u003e=1 non-null child by construction (every Insert walks all 32 levels before returning, and Walk is only ever called once Count \u003e 0), so 'opposite absent' plus 'at least one child exists' forces 'same-bit present' by elimination between exactly two possible children; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2027-05-01"
     },

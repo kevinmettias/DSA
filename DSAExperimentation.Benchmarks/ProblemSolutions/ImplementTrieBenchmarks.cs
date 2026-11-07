@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.Tries;
 using DSAExperimentation.Domain.Language.English;
 using DSAExperimentation.LeetCode.Solutions.ImplementTrie;
@@ -86,7 +87,11 @@ public class ImplementTrieBenchmarks
     public bool[] HashedChildren() => Replay(ImplementTrieSolution.CreateByHashedChildren());
 
     // The one workload, compiled once for each set: every set passed here is a struct, so each call is
-    // direct.
+    // direct. It is compiled on its own, never inlined into the arm: an arm is a one-line forwarder,
+    // and the JIT's inlining budget is sized by the method it inlines into, so the whole replay
+    // inlined into an arm ran out of budget and left the store's lookups as a call per letter, a
+    // cost of the arm's shape that ArrayNodes, written out in full, does not pay (ARCHITECTURE 13.8).
+    [MethodImpl(MethodImplOptions.NoInlining)]
     private bool[] Replay<TSet>(TSet words)
         where TSet : IPrefixSet
     {
