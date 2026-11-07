@@ -2,6 +2,34 @@
   "schema": 1,
   "waivers": [
     {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/Domain/Mathematics/ExtendedReals/AffinelyExtendedReal.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls a prefix cluster a review rather than an automatic defect, and `Try` is the BCL's attempt-returns-success shape (TryParse, TryGetValue), absent from the check's conventional-prefix table only by omission - the same reading as DataStructures/CircularBuffer/CircularBuffer.cs's own check-responsibility-extraction waiver. The five Try members (TryAdd, TrySubtract, TryMultiply, TryDivide, TryGetFinite) are this number type's whole arithmetic: each operation is undefined on some operands (infinity minus infinity, zero times infinity, a quotient of infinities), so a Try form answering false there is the only exact signature, and the type's subject is that one arithmetic. Extracting the operations would separate them from the private ends and finite value they read. The ninth public declaration is CompareTo, the order the affine extension keeps and the projective one lacks, so the count past eight is the subject itself, not a second one.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/Domain/Mathematics/ExtendedReals/ProjectivelyExtendedReal.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls a prefix cluster a review rather than an automatic defect, and `Try` is the BCL's attempt-returns-success shape (TryParse, TryGetValue), absent from the check's conventional-prefix table only by omission - the same reading as DataStructures/CircularBuffer/CircularBuffer.cs's own check-responsibility-extraction waiver. The five Try members (TryAdd, TrySubtract, TryMultiply, TryDivide, TryGetFinite) are this number type's whole arithmetic: each operation is undefined on some operands (infinity minus infinity, zero times infinity, a quotient of infinities), so a Try form answering false there is the only exact signature, and the type's subject is that one arithmetic. Extracting the operations would separate them from the private ends and finite value they read.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-primary-constructor",
+      "path": "DSAExperimentation/Domain/Mathematics/SetTheory/Cardinal.cs",
+      "reason": "The constructor is deliberately private, as HammingGraph.cs's own waiver states for its type: every cardinal is made through Finite or Beth, which refuse a negative count or index, and the beth index is stored one higher so that the default value is the empty set's size, 0. A C# primary constructor is always as accessible as its type, so taking the check's advice would expose a second construction path that skips both checks and the offset.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-primary-constructor",
+      "path": "DSAExperimentation/Domain/Mathematics/SetTheory/Ordinal.cs",
+      "reason": "The constructor is deliberately private, as HammingGraph.cs's own waiver states for its type: every ordinal is made through Of or Finite, which refuse a negative part, or as Plus's result. A primary constructor on this record struct would make its parameters public positional members and its constructor public, a second construction path that skips the checks.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-presumption",
       "path": "DSAExperimentation/DataStructures/LinkedList/CycleDetection.cs",
       "reason": "each ! is Floyd's tortoise-and-hare's own invariant: head! in FindCycleStart is safe because FindMeetingPoint only returns non-null after its walk advanced at least once, which requires a non-null head; fromHead.Next!/fromMeetingPoint.Next! are safe because every node walked from head must reach the cycle FindMeetingPoint already proved exists (a node has exactly one forward link, no branch off that path) and .Next never terminates once inside a cycle; slow! is safe because fast always leads slow by construction (two steps per iteration vs. one), so the loop condition proving fast/fast.Next non-null already proves slow reached that same position non-null on an earlier or equal iteration. The waiver moved with the file from SinglyLinkedList/, when the walk came to ask for the forward-linked node alone (ARCHITECTURE.md section 13.11). Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",

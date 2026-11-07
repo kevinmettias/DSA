@@ -22,7 +22,6 @@ namespace DSAExperimentation.LeetCode.Solutions.PrimePalindrome;
 internal static class PrimePalindromeSolution
 {
     private const int OddDivisorStep = 2;
-    private const long FirstOddDivisor = 3L;
     private const int MirrorStartOffset = 2;
 
     // Every prime palindrome below 12. No even-length palindrome other than 11 is
@@ -157,7 +156,7 @@ internal static class PrimePalindromeSolution
             return value == Primes.Smallest;
         }
 
-        for (var divisor = FirstOddDivisor; divisor * divisor <= value; divisor += OddDivisorStep)
+        for (long divisor = Primes.SmallestOdd; divisor * divisor <= value; divisor += OddDivisorStep)
         {
             if (value % divisor == 0)
             {
