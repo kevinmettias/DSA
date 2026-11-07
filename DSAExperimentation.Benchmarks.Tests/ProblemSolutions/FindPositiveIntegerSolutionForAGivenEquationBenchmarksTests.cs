@@ -7,8 +7,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // any arm, so the baseline is held to them. It returns the solving pairs, walking x ascending and finding at most
 // one y per x.
 //
-// The target is LC 1237's largest z, 100, which the benchmark's own sum oracle, f(x, y) = x + y, hits with exactly
-// the 99 pairs (x, 100 - x) for x from 1 to 99 - every one inside 1..Bound, since Bound is at least 300.
+// The target is LC 1237's largest z, 100, which the statement's sum, f(x, y) = x + y (StatedCustomFunctions), hits
+// with exactly the 99 pairs (x, 100 - x) for x from 1 to 99 - every one inside 1..Bound, since Bound is at least 300.
 public sealed partial class FindPositiveIntegerSolutionForAGivenEquationBenchmarksTests
 {
     // The smaller of Setup's [Params(300, 1_000)] bounds.
@@ -30,16 +30,4 @@ public sealed partial class FindPositiveIntegerSolutionForAGivenEquationBenchmar
 
     private static FindPositiveIntegerSolutionForAGivenEquationBenchmarks BuildHarness() =>
         new() { Bound = SmallestBound };
-
-    // The benchmark hoists one ICustomFunction - its own private nested SumFunction, f(x, y) = x + y -
-    // and every arm answers through it, so every answer above is a statement about that oracle rather
-    // than about a sum computed inline. Its companion is this nested class, named for the type that
-    // declares Evaluate and carrying the test that addresses it: the arithmetic is reachable only
-    // through the arms, and it is the arithmetic the answers depend on.
-    public sealed partial class SumFunctionTests
-    {
-        [Fact]
-        public void Evaluate_SumOfTwoPositiveIntegers_ReturnsEveryPairSummingToTheTarget() =>
-            Assert.Equal(ExpectedSolutionCount, BuildHarness().BruteForceEveryPair().Count);
-    }
 }

@@ -22,10 +22,11 @@ public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
 {
     private const int TargetValue = 100;
 
-    // Hoisted so the oracle's construction is not charged to any measured method - and
-    // all three arms pay the same one call-through-the-interface cost the hidden
+    // LeetCode example 1's function_id, f(x, y) = x + y, as the statement states it
+    // (StatedCustomFunctions). Hoisted so no measured method is charged for looking it up -
+    // and all three arms pay the same one call-through-the-interface cost the hidden
     // CustomFunction imposes.
-    private static readonly ICustomFunction Sum = new SumFunction();
+    private static readonly ICustomFunction Sum = StatedCustomFunctions.Of(StatedCustomFunctions.SumId);
 
     [Params(300, 1_000)]
     public int Bound { get; set; }
@@ -44,12 +45,4 @@ public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
     public List<(int X, int Y)> BinarySearchPerRow() =>
         FindPositiveIntegerSolutionForAGivenEquationSolution
             .FindSolutionsByBinarySearchPerRow(Sum, TargetValue, Bound);
-
-    // LeetCode example 1's function_id, f(x, y) = x + y, as a named implementation
-    // because the three arms now take an ICustomFunction and C# converts no lambda to an
-    // interface - the same thing LeetCode's own CustomFunction object asks of a caller.
-    private sealed class SumFunction : ICustomFunction
-    {
-        public int Evaluate(int xValue, int yValue) => xValue + yValue;
-    }
 }
