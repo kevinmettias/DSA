@@ -15,7 +15,8 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfVisiblePoints;
 // sliding.
 //
 // A turn's degrees are geometry's (Domain/Mathematics/Geometry): both arms read AngleUnits for the
-// full turn a bearing wraps at and the half turn Atan2's radians convert by (ARCHITECTURE §17.5).
+// full turn a bearing wraps at and the degrees in a radian, which Atan2's answer converts by
+// (ARCHITECTURE §17.5).
 [LeetCodeQuestion("maximum-number-of-visible-points", LeetCodeAnswerOrder.AsWritten)]
 internal static class MaximumNumberOfVisiblePointsSolution
 {
@@ -131,7 +132,7 @@ internal static class MaximumNumberOfVisiblePointsSolution
                 continue;
             }
 
-            angles.Add(Math.Atan2(dy, dx) * AngleUnits.HalfTurnDegrees / Math.PI);
+            angles.Add(Math.Atan2(dy, dx) * AngleUnits.DegreesPerRadian);
         }
 
         return ([.. angles], atLocation);

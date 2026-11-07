@@ -8,9 +8,9 @@ namespace DSAExperimentation.LeetCode.Solutions.FindPolygonWithTheLargestPerimet
 // side is smaller than the sum of the rest, maximizing total perimeter, or
 // report -1 if no such choice exists.
 //
-// When sides close into a polygon is the flat plane's (Domain/Mathematics/Geometry): the
-// running-sum arm asks EuclideanPolygons, and the subset baseline keeps its own test
-// (ARCHITECTURE §17.5).
+// When sides close into a polygon is the flat plane's (Domain/Mathematics/Geometry): both arms ask
+// EuclideanPolygons, the running-sum arm of each side from the top and the subset baseline of each
+// subset's longest side (ARCHITECTURE §17.5).
 [LeetCodeQuestion("find-polygon-with-the-largest-perimeter", LeetCodeAnswerOrder.AsWritten, Reach = typeof(FindPolygonWithTheLargestPerimeterReach))]
 internal static class FindPolygonWithTheLargestPerimeterSolution
 {
@@ -53,7 +53,8 @@ internal static class FindPolygonWithTheLargestPerimeterSolution
             count++;
         }
 
-        return count >= 3 && longest < perimeter - longest;
+        return count >= EuclideanPolygons.FewestSides
+            && EuclideanPolygons.CanClose(longest, perimeter - longest);
     }
 
     // Sort with this repo's own MergeSort over an ArrayIndexedSequence<int> -

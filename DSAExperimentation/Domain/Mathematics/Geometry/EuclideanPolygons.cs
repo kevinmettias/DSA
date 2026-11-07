@@ -2,8 +2,10 @@ namespace DSAExperimentation.Domain.Mathematics.Geometry;
 
 // When side lengths close into a polygon on the flat (Euclidean) plane, as LC 976, LC 2971 and
 // LC 3024 state it. This is a mathematical fact no data structure or algorithm represents, so it is
-// Domain's (ARCHITECTURE §17.6). Sorting the sides and scanning for the largest perimeter stay with
-// each strategy, and each baseline keeps its own copy (§17.5).
+// Domain's (ARCHITECTURE §17.6). Sorting the sides and scanning for the largest perimeter stay
+// with each strategy. LC 2971's and LC 3899's baselines ask this test; LC 976's and LC 3024's keep
+// the three triangle inequalities, which compile tighter where the longest side is not at hand,
+// and their tests hold them to it (§17.5).
 //
 // It is stated for the flat plane because it is the flat plane's: a sphere has two-sided polygons
 // (lunes), and its side lengths are bounded by the sphere's size. On the flat plane, sides close

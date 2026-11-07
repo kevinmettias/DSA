@@ -13,8 +13,8 @@ namespace DSAExperimentation.LeetCode.Solutions.AnglesOfATriangle;
 // triangle's angle sum already guarantees, saving one transcendental call.
 //
 // That angle sum is the flat plane's (Domain/Mathematics/Geometry): the angle-sum arm reads
-// EuclideanPlane. The shared validity check and law of cosines stay here, as the baseline reads
-// them too, and both arms convert radians by AngleUnits (ARCHITECTURE §17.5).
+// EuclideanPlane. Both arms ask EuclideanPolygons whether the sides close, of the longest, and
+// convert radians by AngleUnits; the law of cosines they share stays here (ARCHITECTURE §17.5).
 [LeetCodeQuestion("angles-of-a-triangle", LeetCodeAnswerOrder.AsWritten, Tolerance = 1e-5)]
 internal static class AnglesOfATriangleSolution
 {
@@ -66,7 +66,7 @@ internal static class AnglesOfATriangleSolution
         var sorted = new[] { sideA, sideB, sideC };
         Array.Sort(sorted);
 
-        return (sorted[0] + sorted[1] > sorted[2], sideA, sideB, sideC);
+        return (EuclideanPolygons.CanClose(sorted[2], sorted[0] + sorted[1]), sideA, sideB, sideC);
     }
 
     // Law of cosines: the angle opposite "opposite", given the two sides

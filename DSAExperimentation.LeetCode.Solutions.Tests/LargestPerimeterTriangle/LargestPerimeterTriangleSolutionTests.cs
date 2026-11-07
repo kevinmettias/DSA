@@ -1,3 +1,4 @@
+using DSAExperimentation.Domain.Mathematics.Geometry;
 using DSAExperimentation.LeetCode.Solutions.LargestPerimeterTriangle;
 
 namespace DSAExperimentation.LeetCode.Solutions.Tests.LargestPerimeterTriangle;
@@ -9,6 +10,9 @@ namespace DSAExperimentation.LeetCode.Solutions.Tests.LargestPerimeterTriangle;
 // in CatalogCaseTests.
 public sealed partial class LargestPerimeterTriangleSolutionTests
 {
+    // Every triple of sides from 1 to this, flat, closing and unable to meet among them.
+    private const int LongestSmallSide = 8;
+
     public static TheoryData<int[], int> Cases =>
         new()
         {
@@ -26,4 +30,28 @@ public sealed partial class LargestPerimeterTriangleSolutionTests
     public void LargestPerimeterBySortedScan_Cases_ReturnsSumOfBestValidTriple(
         int[] nums, int expected) =>
         Assert.Equal(expected, LargestPerimeterTriangleSolution.LargestPerimeterBySortedScan(nums));
+
+    // The brute-force baseline keeps its own three triangle inequalities (its solution says why),
+    // so this holds them to EuclideanPolygons: a lone triple scores its perimeter exactly when its
+    // longest side is shorter than the other two together, and 0 otherwise.
+    [Fact]
+    public void LargestPerimeterByBruteForceTriples_SmallTriples_ScoresWhatCanClose() =>
+        Assert.All(SmallTriples(), sides => Assert.Equal(
+            ClosingPerimeter(sides),
+            LargestPerimeterTriangleSolution.LargestPerimeterByBruteForceTriples(sides)));
+
+    private static IEnumerable<int[]> SmallTriples()
+    {
+        var sides = Enumerable.Range(1, LongestSmallSide).ToArray();
+
+        return sides.SelectMany(first => sides.SelectMany(second =>
+            sides.Select(third => new[] { first, second, third })));
+    }
+
+    private static int ClosingPerimeter(int[] sides)
+    {
+        var (longest, perimeter) = (sides.Max(), sides.Sum());
+
+        return EuclideanPolygons.CanClose(longest, perimeter - longest) ? perimeter : 0;
+    }
 }

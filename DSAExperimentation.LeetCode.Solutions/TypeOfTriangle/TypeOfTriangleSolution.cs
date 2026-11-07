@@ -12,8 +12,9 @@ namespace DSAExperimentation.LeetCode.Solutions.TypeOfTriangle;
 // comparison against the largest side.
 //
 // The triangle inequality is the flat plane's (Domain/Mathematics/Geometry): the sorted arm
-// asks EuclideanPolygons of its largest side, and the pairwise baseline keeps its own
-// IsTriangleInequalityViolated (ARCHITECTURE §17.5). The four answer strings are LeetCode's.
+// asks EuclideanPolygons of its largest side. The pairwise baseline keeps its three
+// inequalities, which compile tighter than finding the largest side to ask, and its tests hold
+// them to EuclideanPolygons (ARCHITECTURE §17.5). The four answer strings are LeetCode's.
 [LeetCodeQuestion("type-of-triangle", LeetCodeAnswerOrder.AsWritten)]
 internal static class TypeOfTriangleSolution
 {
