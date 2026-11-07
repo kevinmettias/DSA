@@ -15,13 +15,11 @@ namespace DSAExperimentation.LeetCode.Solutions.NumberOfDistinctRollSequences;
 // (exponential in n), the composed arm routes it through this repo's own Memoizer
 // and visits each of the O(n) reachable states once.
 //
-// The die's faces are Domain/Games/Dice's: the memoized arm rolls a SixSidedDie, and the baseline
-// keeps its own DieFaces. Which roll may follow which is this problem's game and stays here.
+// The die's faces are Domain/Games/Dice's, and both arms roll a SixSidedDie (ARCHITECTURE §17.5).
+// Which roll may follow which is this problem's game and stays here.
 [LeetCodeQuestion("number-of-distinct-roll-sequences", LeetCodeAnswerOrder.AsWritten, Reach = typeof(NumberOfDistinctRollSequencesReach))]
 internal static class NumberOfDistinctRollSequencesSolution
 {
-    // The baseline's own copy of the die's faces, 1 through DieFaces.
-    private const int DieFaces = 6;
     private const int FirstDay = 1;
 
     // Stands in for "no roll yet" in the first two positions. Real faces are 1-6,
@@ -52,7 +50,7 @@ internal static class NumberOfDistinctRollSequencesSolution
 
         var total = 0L;
 
-        for (var face = 1; face <= DieFaces; face++)
+        for (var face = Die<SixSidedDie>.LowestFace; face <= Die<SixSidedDie>.HighestFace; face++)
         {
             if (!CanFollow(face, secondLastRoll, lastRoll))
             {
