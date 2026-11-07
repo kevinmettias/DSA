@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Games.Turns;
+
 namespace DSAExperimentation.LeetCode.Solutions.FindTheScoreDifferenceInAGame;
 
 // LeetCode 3847. Find the Score Difference in a Game: two players, the first one
@@ -10,19 +12,20 @@ namespace DSAExperimentation.LeetCode.Solutions.FindTheScoreDifferenceInAGame;
 // simulation keeps who is active and both totals, as the statement tells it. The
 // parity pass keeps only whether an odd number of swaps has happened, and adds
 // nums[i] into one running difference with the sign that parity gives it.
+//
+// How many players there are is Domain/Games/Turns' TwoPlayers, which the simulation
+// reads (ARCHITECTURE §17.5). The swaps are this problem's own rule and stay here.
 [LeetCodeQuestion("find-the-score-difference-in-a-game", LeetCodeAnswerOrder.AsWritten)]
 internal static class FindTheScoreDifferenceInAGameSolution
 {
     // Every 6th game swaps the players: games 5, 11, 17, ...
     private const int SwapPeriod = 6;
 
-    private const int PlayerCount = 2;
-
     // The statement's own rules, step for step: the active player's index (0 for the
     // first player, 1 for the second), moved by each swap, and a running total per player.
     public static int ScoreDifferenceByRoleSimulation(int[] nums)
     {
-        var totals = new int[PlayerCount];
+        var totals = new int[TwoPlayers.Players];
         var activePlayer = 0;
 
         for (var game = 0; game < nums.Length; game++)
@@ -55,7 +58,7 @@ internal static class FindTheScoreDifferenceInAGameSolution
 
     private static bool IsOdd(int points) => (points & 1) == 1;
 
-    private static int OtherPlayer(int player) => PlayerCount - 1 - player;
+    private static int OtherPlayer(int player) => TwoPlayers.Players - 1 - player;
 
     // The first player is active exactly when an even number of swaps has happened, so
     // game i adds nums[i] to the difference when that count is even and subtracts it

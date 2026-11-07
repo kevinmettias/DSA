@@ -15,8 +15,8 @@ namespace DSAExperimentation.LeetCode.Solutions.FindWinnerOnATicTacToeGame;
 // column and diagonal, or keep running +/-1 tallies and touch only the lines the
 // new move actually falls on. Both play LC 1275's fixed 3 x 3 board. The game's
 // rules are Domain/Games/TicTacToe's, which the running-counts arm reads; the
-// board-rescan baseline reads the board's size there and writes its own rescan
-// (ARCHITECTURE §17.5). A third arm hands the moves to those rules whole: the
+// board-rescan baseline reads the board's size and who moves there and writes its
+// own rescan (ARCHITECTURE §17.5). A third arm hands the moves to those rules whole: the
 // 3,3,3 positional game's own referee, unspecialized.
 [LeetCodeQuestion("find-winner-on-a-tic-tac-toe-game", LeetCodeAnswerOrder.AsWritten, Promise = typeof(FindWinnerOnATicTacToeGamePromise))]
 internal static class FindWinnerOnATicTacToeGameSolution
@@ -196,8 +196,9 @@ internal static class FindWinnerOnATicTacToeGameSolution
         IsPlayerATurn(moveIndex) ? Vocabulary.MarkA : Vocabulary.MarkB;
 
     // Named because it is a question the alternation above keeps asking, not a quantity
-    // the board itself ever holds.
-    private static bool IsPlayerATurn(int moveIndex) => moveIndex % Vocabulary.PlayerCount == 0;
+    // the board itself ever holds. LC 1275's A is the game's X, who moves first.
+    private static bool IsPlayerATurn(int moveIndex) =>
+        TicTacToeRules.PlayerMaking(moveIndex) == TicTacToePlayer.X;
 
     private static string PlayerFor(int mark) =>
         mark == Vocabulary.MarkA ? Vocabulary.PlayerA : Vocabulary.PlayerB;

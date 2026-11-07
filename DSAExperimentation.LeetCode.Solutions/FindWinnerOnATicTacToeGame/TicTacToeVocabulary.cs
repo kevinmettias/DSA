@@ -10,12 +10,9 @@ namespace DSAExperimentation.LeetCode.Solutions.FindWinnerOnATicTacToeGame;
 //
 // The game's rules - the board size, the turn order, the diagonals, how a game ends - are
 // Domain/Games/TicTacToe's (ARCHITECTURE §17.6), and the board-rescan baseline reads the board's
-// size there too (§17.5).
+// size and who makes each move there too (§17.5).
 internal static class TicTacToeVocabulary
 {
-    // The two players the board-rescan baseline tallies a move for.
-    internal const int PlayerCount = 2;
-
     // LC 1275 names the game's X "A" and its O "B".
     internal const string PlayerA = "A";
     internal const string PlayerB = "B";

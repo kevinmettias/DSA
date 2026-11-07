@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.Algorithms.GameSearch;
 using DSAExperimentation.DataStructures.Graph.Grids;
+using DSAExperimentation.Domain.Games.Turns;
 using DSAExperimentation.Domain.Mathematics.GameTheory;
 using DSAExperimentation.Domain.Mathematics.Lattices;
 
@@ -26,10 +27,6 @@ internal static class CatAndMouseIISolution
     private const char MouseMark = 'M';
     private const char CatMark = 'C';
     private const char FoodMark = 'F';
-
-    // Mouse and Cat alternate turns, so parity of the turn counter selects whose
-    // move it is.
-    private const int PlayerCount = 2;
 
     // Turn count is capped at rows*cols*2 - the standard bound for this problem. If
     // neither side has forced a decision within twice the number of cells, some
@@ -120,7 +117,9 @@ internal static class CatAndMouseIISolution
             return decided;
         }
 
-        var mouseToMove = state.Turn % PlayerCount == 0;
+        // Mouse and Cat alternate turns, the mouse first, so the seat making this
+        // turn's move says whose move it is.
+        var mouseToMove = TwoPlayersAlternating.SeatMaking(state.Turn) == CatAndMouseGame.MouseSeat;
 
         return mouseToMove ? CanMouseWinWithSomeMove(state, context) : CanMouseWinAfterEveryCatMove(state, context);
     }
@@ -433,7 +432,7 @@ internal static class CatAndMouseIISolution
                 return decided;
             }
 
-            if (state.Turn % PlayerCount == 0)
+            if (TwoPlayersAlternating.SeatMaking(state.Turn) == CatAndMouseGame.MouseSeat)
             {
                 return ReachableCells(state.Mouse, new StepLimit(context.MouseJump, Blocker: null), context.Board)
                     .Any(next => rest.Replay(state with { Mouse = next, Turn = state.Turn + 1 }, rest));
