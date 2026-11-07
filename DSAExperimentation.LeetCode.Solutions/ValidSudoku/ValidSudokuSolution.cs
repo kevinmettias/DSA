@@ -12,8 +12,8 @@ namespace DSAExperimentation.LeetCode.Solutions.ValidSudoku;
 // box) unit a digit already occupies; they differ only in what tracks
 // "already seen" - three dense bool grids sized to the fixed 9-cell axes, or
 // this repo's own Set<string> keyed by a composed row/col/box tag. The board's
-// dimensions and notation are Domain/Games/Sudoku's, and both arms read them there
-// (ARCHITECTURE §17.5).
+// dimensions, notation and boxes are Domain/Games/Sudoku's, and both arms read them
+// there (ARCHITECTURE §17.5).
 [LeetCodeQuestion("valid-sudoku", LeetCodeAnswerOrder.AsWritten)]
 internal static class ValidSudokuSolution
 {
@@ -54,13 +54,13 @@ internal static class ValidSudokuSolution
     {
         var digit = board[row][col];
 
-        if (digit == '.')
+        if (digit == ClassicSudoku.EmptyCell)
         {
             return true;
         }
 
-        var value = digit - '0';
-        var box = (row / ClassicSudoku.BoxSize * ClassicSudoku.BoxSize) + (col / ClassicSudoku.BoxSize);
+        var value = digit - DecimalDigits.Zero;
+        var box = Sudoku<ClassicSudoku>.RegionOf(row, col);
 
         if (IsDigitAlreadyPlaced(units, (row, col, box, value)))
         {

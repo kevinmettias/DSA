@@ -19,4 +19,11 @@ public sealed partial class SudokuDigitsTests
 
     [Fact]
     public void LetterAt_LastSlot_IsNine() => Assert.Equal('9', SudokuDigits.LetterAt(8));
+
+    // The two ends are constants; each must be the digit its slot holds.
+    [Fact]
+    public void FirstDigitAndLastDigit_AreTheDigitsInTheFirstAndLastSlots() =>
+        Assert.Equal(
+            (SudokuDigits.LetterAt(0), SudokuDigits.LetterAt(SudokuDigits.Size - 1)),
+            (SudokuDigits.FirstDigit, SudokuDigits.LastDigit));
 }

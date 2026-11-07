@@ -24,11 +24,10 @@ namespace DSAExperimentation.LeetCode.Solutions.SudokuSolver;
 // snapshot is copied back into the caller's own array once the search
 // returns, so the mutation LeetCode actually checks still happens.
 //
-// The engine arm reads the board's rules from Domain/Games/Sudoku: which digits a cell
-// may take, when a placement is legal and when the board is solved. Which cell
-// to branch on next (FindEmptyCell) is the search's own choice and stays here.
-// The specialized recursion reads the board's size there too, and keeps its own
-// placement check, the simple form (ARCHITECTURE §17.5).
+// Both arms read the board's rules from Domain/Games/Sudoku: its size, its digits and
+// empty-cell mark, and when a placement is legal; the engine arm also asks when the
+// board is solved. Which cell to branch on next (FindEmptyCell) is the search's own
+// choice and stays here (ARCHITECTURE §17.5).
 //
 // The third strategy is Sudoku as exact cover (Domain/Games/Sudoku's SudokuCover)
 // solved by Knuth's Algorithm X over dancing links (Algorithms/ExactCover): it
@@ -128,7 +127,7 @@ internal static class SudokuSolverSolution
 
         var (row, col) = cell.Value;
 
-        for (var digit = '1'; digit <= '9'; digit++)
+        for (var digit = SudokuDigits.FirstDigit; digit <= SudokuDigits.LastDigit; digit++)
         {
             if (TryPlaceDigit(board, row, col, digit))
             {
@@ -141,7 +140,7 @@ internal static class SudokuSolverSolution
 
     private static bool TryPlaceDigit(char[][] board, int row, int col, char digit)
     {
-        if (!IsValidPlacement(board, row, col, digit))
+        if (!Sudoku<ClassicSudoku>.CanPlace(board, row, col, digit))
         {
             return false;
         }
@@ -153,7 +152,7 @@ internal static class SudokuSolverSolution
             return true;
         }
 
-        board[row][col] = '.';
+        board[row][col] = ClassicSudoku.EmptyCell;
         return false;
     }
 
@@ -163,7 +162,7 @@ internal static class SudokuSolverSolution
         {
             for (var col = 0; col < ClassicSudoku.Size; col++)
             {
-                if (board[row][col] == '.')
+                if (board[row][col] == ClassicSudoku.EmptyCell)
                 {
                     return (row, col);
                 }
@@ -171,41 +170,6 @@ internal static class SudokuSolverSolution
         }
 
         return null;
-    }
-
-    private static bool IsValidPlacement(char[][] board, int row, int col, char digit) =>
-        !HasRowOrColumnConflict(board, row, col, digit) && !HasBoxConflict(board, row, col, digit);
-
-    private static bool HasRowOrColumnConflict(char[][] board, int row, int col, char digit)
-    {
-        for (var i = 0; i < ClassicSudoku.Size; i++)
-        {
-            if (board[row][i] == digit || board[i][col] == digit)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static bool HasBoxConflict(char[][] board, int row, int col, char digit)
-    {
-        var boxRow = row / ClassicSudoku.BoxSize * ClassicSudoku.BoxSize;
-        var boxCol = col / ClassicSudoku.BoxSize * ClassicSudoku.BoxSize;
-
-        for (var r = boxRow; r < boxRow + ClassicSudoku.BoxSize; r++)
-        {
-            for (var c = boxCol; c < boxCol + ClassicSudoku.BoxSize; c++)
-            {
-                if (board[r][c] == digit)
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     private sealed record State(char[][] Board);

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Domain.Games.Sudoku;
 // regions (IRegionPartition), and a solved board is a Latin square whose every region holds each
 // symbol once. These are the problems' *what* (ARCHITECTURE §17.6). Which cell a solver fills next,
 // the order it tries symbols in and how a validator tracks what it has seen are each strategy's
-// *how*, and stay with the solutions; the baselines keep their own copies of the rules (§17.5).
+// *how*, and stay with the solutions; every arm reads the rules here, baselines included (§17.5).
 // Solving and generating are algorithms, not the rule: Sudoku is an exact cover problem, whose
 // matrix SudokuCover states, and Knuth's Algorithm X with dancing links (Algorithms/ExactCover)
 // finds a cover of it. The grid's numbers are static abstract members of a struct, so they fold

@@ -4,11 +4,16 @@ namespace DSAExperimentation.Domain.Games.Sudoku;
 
 // Classic Sudoku's nine symbols, the digits '1' to '9', as an alphabet: '1' in slot 0 through '9' in
 // slot 8. There are as many as the board is wide (ClassicSudoku.Size). A 16x16 board writes its
-// sixteen symbols differently, so the digits are the classic grid's, not every grid's.
+// sixteen symbols differently, so the digits are the classic grid's, not every grid's. The run's
+// two ends are constants, so a loop from FirstDigit to LastDigit folds to the literals.
 /// <summary>Classic Sudoku's digits, '1' in slot 0 through '9' in slot 8.</summary>
 public readonly struct SudokuDigits : IAlphabet
 {
-    private const char FirstDigit = '1';
+    /// <summary>The first digit, '1', in slot 0.</summary>
+    public const char FirstDigit = '1';
+
+    /// <summary>The last digit, '9', in slot 8.</summary>
+    public const char LastDigit = (char)(FirstDigit + ClassicSudoku.Size - 1);
 
     private static LetterRun Run => new(FirstDigit, ClassicSudoku.Size);
 
