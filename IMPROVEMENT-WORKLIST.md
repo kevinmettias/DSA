@@ -91,8 +91,13 @@ commit beside it, as the rest of this file does.
   - the trie family: BitTrie as the one trie over bits with no payload — DONE (`f034152b`), its
     key and node payload axes; LC 2932 runs on TwoFieldBitTrie, the flat bit set as a specialized
     strategy behind the max-XOR set contract (the owner's L6 choice, 2026-11-06), since its
-    caller ran out of JIT inlining budget over the unified trie. Left: CountedBitTrie, and
-    SuffixTree as a compressed layout;
+    caller ran out of JIT inlining budget over the unified trie. CountedBitTrie — DONE
+    (`9013b12b`): the one trie's count payload (CountedBitTrieNode over BinarySlots, its walks
+    shared with BitTrie through TrieWalk's stepped walk and MaxXorWalk), with the pooled layout
+    kept as PooledCountedBitTrie behind the XOR multiset contract (IXorMultiset), which all four
+    users take: 40-byte object nodes allocated 14-64% more than 12-byte array slots in every one
+    and ran 10-30% slower at LC 1803's and LC 2935's larger sizes (§13.9). Left: SuffixTree as a
+    compressed layout;
   - the index-space trees: LazySegmentTree as SegmentTree with propagation a witness that
     compiles out is DONE (`dcdfa62d`, §13.10); the range Fenwick tree is the point tree over a
     product group, its two implicit trees named as step functions (`99374aaf`, §13.13). No segment
@@ -108,8 +113,9 @@ commit beside it, as the rest of this file does.
 - **L6. A contract for every specialized layer.** 2026-11-03: a hand-written specialized structure
   "must create a interface or contract for exactly the layer it wants to swap in for and what
   invariantes that layer guarantees", with one contract suite and a strategy benchmark against the
-  modular template. Done for LC 208's trie (`5bb34a09`) and LC 2932's bit set (`f034152b`). Left:
-  find the other hand-written structures in the solutions and give each its layer's contract.
+  modular template. Done for LC 208's trie (`5bb34a09`), LC 2932's bit set (`f034152b`) and the
+  counted bit trie's pooled layout (`9013b12b`). Left: find the other hand-written structures in
+  the solutions and give each its layer's contract.
 - **L7. The most general form, beyond what is done.** 2026-11-02: "do the most general form for a
   die, and do the same for other things too." Done: dice, keypads, path notations, locks, Life and
   Sudoku's names. Left: a compass rose of N points (4 and 8 as presets), Java-package path notation,
@@ -543,8 +549,8 @@ using) removed from 1,111 files.
   a pre-order with subtree ranges was hand-written in it, in ShortestPathInAWeightedTree and in
   KthSmallestPathXORSum. The core `LowestCommonAncestor.Find` is O(n) per query and recursive.
   Both are now core types, each beside the type it differs from:
-  - **`CountedBitTrie`** holds a multiset with removal. It keeps a count in every node, in flat
-    arrays.
+  - **`CountedBitTrie`** (since `9013b12b` `PooledCountedBitTrie`, the XOR multiset's strategy)
+    holds a multiset with removal. It keeps a count in every node, in flat arrays.
     - It is a type of its own because `BitTrie`'s four insert-only users would otherwise pay for
       counts they never read. It has no witness, for §13.9's reasons.
     - Measured beside the alternatives: a HashMap of counts was 5-10x slower than counts in the
