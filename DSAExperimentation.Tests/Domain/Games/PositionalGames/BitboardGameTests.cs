@@ -173,4 +173,13 @@ public sealed partial class BitboardGameTests
 
     private static int Solved(FreeGame game) =>
         Negamax.Value<FreeGame, BitboardPosition, int>(game, default);
+
+    // The layer's contract, on Connect Four's 7 by 6 board with four in a row under free placement,
+    // the game judged by the masks of its winning sets.
+    public sealed partial class FreePlacementContractTests
+        : BitboardGameContractTests<ConnectFourBoard, FreeGame, BitboardPosition>
+    {
+        protected override FreeGame GameOn(BoardMask board) =>
+            new(board, MnkGame<ConnectFourBoard>.Lines);
+    }
 }

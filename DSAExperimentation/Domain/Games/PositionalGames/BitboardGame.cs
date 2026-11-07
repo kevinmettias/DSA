@@ -16,22 +16,23 @@ namespace DSAExperimentation.Domain.Games.PositionalGames;
 // A win is worth WinValue less one for every claimed cell, the winning piece included, and a loss
 // the negation, so a quicker win is worth more and a longer defence less bad, and best play hurries
 // a win as it puts off a loss. WinValue is far beyond any count of cells or any estimate a search
-// puts in place of a value, so a forced result outranks every guess.
+// puts in place of a value, so a forced result outranks every guess. The layer it meets,
+// IBitboardGame, is the one InARowGame meets on m,n,k boards of more than 64 cells.
 /// <summary>
 /// A two-player positional game on at most 64 cells, played by a placement rule, as an alternating
 /// game over bit-mask positions.
 /// </summary>
 /// <typeparam name="TPlacement">Which cell a choice claims, read on a bit mask.</typeparam>
-public readonly struct BitboardGame<TPlacement> : IAlternatingGame<BitboardPosition, int>
+public readonly struct BitboardGame<TPlacement> : IBitboardGame<BitboardPosition>
     where TPlacement : struct, IBitboardPlacement
 {
     /// <summary>What a win is worth before one is taken off for each claimed cell.</summary>
     public const int WinValue = 1_000_000;
 
     private const int MaskBits = 64;
-    private const int Draw = 0;
+    internal const int Draw = 0;
     private const string TooManyCells = "A bit-mask board holds at most 64 cells.";
-    private const string NotOpen = "is not open, or follows the end of the game.";
+    internal const string NotOpen = "is not open, or follows the end of the game.";
 
     // The cells on the board, holes left out.
     private readonly ulong _board;
@@ -73,10 +74,7 @@ public readonly struct BitboardGame<TPlacement> : IAlternatingGame<BitboardPosit
     /// <returns>The open choices; move m is the m-th set bit, lowest first.</returns>
     public ulong ChoicesOf(BitboardPosition position) => TPlacement.Choices(OpenCells(position));
 
-    /// <summary>Names the choice a move makes, as the placement rule names it.</summary>
-    /// <param name="position">A position of this game.</param>
-    /// <param name="move">The move's number, from 0 below <see cref="MoveCount"/>.</param>
-    /// <returns>The choice: a column under gravity, a cell under free placement.</returns>
+    /// <inheritdoc/>
     public int ChoiceOf(BitboardPosition position, int move) =>
         NthSetBit(ChoicesOf(position), move);
 
@@ -90,12 +88,7 @@ public readonly struct BitboardGame<TPlacement> : IAlternatingGame<BitboardPosit
         return BitOperations.TrailingZeroCount(bits);
     }
 
-    /// <summary>Plays choices from the empty board and returns the position they reach.</summary>
-    /// <param name="choices">The choices in order, named as the placement rule names them.</param>
-    /// <returns>The position after the last choice.</returns>
-    /// <exception cref="ArgumentException">
-    /// A choice is not open, or follows the end of the game.
-    /// </exception>
+    /// <inheritdoc/>
     public BitboardPosition Replay(ReadOnlySpan<int> choices)
     {
         var position = default(BitboardPosition);

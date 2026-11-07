@@ -11,7 +11,8 @@ namespace DSAExperimentation.Domain.Games.PositionalGames;
 /// </summary>
 public sealed class WinningSets
 {
-    private const string DifferentBoard = "The board numbers a different count of cells.";
+    // Internal, and read by InARowLines, which refuses the same mismatch.
+    internal const string DifferentBoard = "The board numbers a different count of cells.";
 
     // Every set's cells, set after set; set s runs from _setStarts[s] to _setStarts[s + 1].
     private readonly int[] _cells;

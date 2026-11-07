@@ -3,6 +3,49 @@
   "waivers": [
     {
       "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/Domain/Games/PositionalGames/Bitboard256.cs",
+      "reason": "Bitboard256 is a value type, and its public surface is its arithmetic, as ulong's is: the four bitwise operators and the two shifts that carry bits across its words; the reads by which a game numbers its moves by the open cells (Count, LowestCell, NthCell, CountBelow, WithoutLowestCell); and Cell, Of and HasCell, which make and test a mask of cells. Its words are private so that no other type depends on the representation, and every operation reads them, so moving any out would expose the words or give a second type the same four fields. Counted the way the check counts, nine declarations of one subject.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/Domain/Games/PositionalGames/InARow/InARowLines.cs",
+      "reason": "InARowLines is one subject, the lines of an m,n,k game on its padded 256-bit layout: the layout itself (the constructor, Board, BitOf, CellOf, MaskOf) and the rule's reads on it (HasWinningRun, CellsLacking, CountLines, Around). Every read shifts by the layout's line steps, 1, 16, 17 and 15, which follow from the stride, so splitting the layout from the reads would give two types the stride and the steps to agree on, the drift one source per fact exists to prevent. Stride and the shortfall constants are internal, as SharedValueCopyTests requires of small numbers (ARCHITECTURE 17.9).",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/Domain/Games/PositionalGames/InARow/InARowGame.cs",
+      "reason": "As BitboardGame.cs's own waiver for the same layer: four of the nine public declarations are IAlternatingGame's members (MoveCount, Next, Gain, ValueWhenOver), which the game must have to be searched, two are IBitboardGame's (ChoiceOf, Replay), the layer both bit-mask forms meet, and the others are the type's constructor, WinValue and the two reads its strong play takes from it: Lines, the board's lines, which the evaluation, the move ordering and the search read, and OpenCells, the open cells a move number counts. Moving them out would leave another type reading the game's board.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-primary-constructor",
+      "path": "DSAExperimentation/Domain/Games/PositionalGames/Bitboard256.cs",
+      "reason": "The constructor is deliberately private, as Ordinal.cs's and Cardinal.cs's own waivers state for theirs: a mask is made from cells (Cell, Of) or by the type's own operations, so its four words are the representation and never part of the contract. A primary constructor on this record struct would make the words public positional members and its constructor public, a second way to make a mask that the cell-numbered surface is there to keep out.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-folder-organization",
+      "path": "DSAExperimentation/Domain/Games/PositionalGames",
+      "reason": "The folder is one subject, the positional game: its winning sets, board, rules and placement (WinningSets, BoardMask, PositionalGame, PositionalOutcome, IPlacementRule, FreePlacement) and the bit-mask forms a solver plays it in (IBitboardPlacement, BitboardPosition, BitboardGame, IBitboardGame, Bitboard256, Bitboard256Position), with InARow/ the k-in-a-row family. The twelfth file came with Gomoku's 256-bit board. A Bitboards/ subfolder for the six bit-mask types would move Connect Four's game, position and placement interface out of the namespace its solutions, tests and benchmark read, in a batch whose bar was that Connect Four's code not change; it is offered to the owner as a follow-up of its own (ARCHITECTURE 17.9).",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Domain/Games/PositionalGames/Bitboard256.cs",
+      "message": "`operator ",
+      "reason": "check-test-coverage names a C# operator by its spelling, `operator &`, and a test method's name cannot spell it, so no test can ever name the mask's four operators. They are held, all four, to the same operators on a BigInteger of the same bits by Bitboard256Tests.Operators_RandomMasks_AreTheNumbersBitwiseOperators, over forty random masks and the full ones, and every line rule's tests run through them. Scoped by message to the operators: any other member no test names is still reported.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-responsibility-extraction",
       "path": "DSAExperimentation/Algorithms/ExactCover/DancingLinks.cs",
       "reason": "DancingLinks is one data structure, Knuth's sparse 0/1 matrix whose rows and columns are taken out and put back in place, and its nine public members are the operations Algorithm X makes on it: laying a problem out (Of), choosing the column to branch on (ColumnWithFewestRows), walking down a column and back from a node to its row (Below, RowOf), covering and uncovering a column (Cover, Uncover) and the rest of a chosen row (CoverRestOfRow, UncoverRestOfRow), and choosing rows before a search (TryChooseAll). Every one reads and writes the same private link arrays, so a split would have to expose those arrays to a second type, the extra object hop the flat layout exists to avoid (ARCHITECTURE section 20's queue-family measurements). The type is internal to Algorithms/ExactCover, so its whole surface is AlgorithmX's own use.",
       "owner": "@kmettias",
