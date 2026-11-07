@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using RepoRangeFenwickTree = DSAExperimentation.DataStructures.RangeFenwickTree.RangeFenwickTree<
+using RepoRangeFenwickTree = DSAExperimentation.DataStructures.FenwickTree.RangeFenwickTree<
     long, DSAExperimentation.Domain.Mathematics.Algebra.Addition<long>>;
 
 namespace DSAExperimentation.LeetCode.Solutions.MaximizeTheMinimumPoweredCity;

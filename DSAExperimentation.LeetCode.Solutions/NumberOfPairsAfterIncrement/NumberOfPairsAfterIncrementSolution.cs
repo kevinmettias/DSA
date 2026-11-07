@@ -1,5 +1,5 @@
 using DSAExperimentation.Domain.Mathematics.Algebra;
-using DSAExperimentation.DataStructures.RangeFenwickTree;
+using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.NumberOfPairsAfterIncrement;
 
@@ -72,8 +72,8 @@ internal static class NumberOfPairsAfterIncrementSolution
     }
 
     // Composed: nums2's running values live in a RangeFenwickTree<long,
-    // Addition<long>> - the classic two-Fenwick-tree range-add/point-
-    // query pair (see RangeFenwickTree.cs's own doc comment) - so a type-1 query
+    // Addition<long>> - the Fenwick tree configured for range adds, read
+    // here by point (see RangeFenwickTree.cs's own doc comment) - so a type-1 query
     // is one O(log n) RangeAdd instead of an O(range) walk. A type-2 query still
     // has to materialize every current value once to build its frequency map
     // (this repo has nothing that answers "count equal to v" without doing

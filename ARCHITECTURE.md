@@ -602,10 +602,10 @@ thirty solutions' composed arms wrote by hand, six of them as a helper of their 
 
 ### 11.4 Element algebras: one chain across three structures, and why §11.1 does not split it
 
-`SegmentTree` (in both its configurations, §13.10), `FenwickTree` and `RangeFenwickTree` each need an algebra over
+`SegmentTree` (in both its configurations, §13.10), `FenwickTree` and `RangeFenwickTree` (one tree in two configurations, §13.13) each need an algebra over
 their elements, and they share one chain in `Domain/Mathematics/Algebra/` — `IMonoid`
 (monoid) ← `IAbelianGroup` (+ `Invert`) ← `IIntegerModule` (+ `Scale`) — with `Addition` at the
-deepest position its arithmetic reaches, plus `Minimum`, `Maximum` and `BitwiseXor`. `IRangeUpdateOperation` refines `IMonoid` with a range action, `IRangeAction`, but stays in
+deepest position its arithmetic reaches, plus `Minimum`, `Maximum` and `BitwiseXor`. `DirectProduct` makes one abelian group of two, which is how the range Fenwick tree keeps two values in a node (§13.13). `IRangeUpdateOperation` refines `IMonoid` with a range action, `IRangeAction`, but stays in
 `SegmentTree/`.
 
 **Why §5 step 5 does not fire.** Step 5 forbids reusing another domain's *Representation or
@@ -799,7 +799,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `DisjointSet/` | `DisjointSetForest`, `DisjointSet` (§10) |
 | `DoublyLinkedList/` | `DoublyLinkedList`, `DoublyLinkedListNode`, the one linked node with `Previous` added (§13.7, §13.11) |
 | `DynamicArray/` | `DynamicArrayStorage`, `DynamicArray` (§14.3) |
-| `FenwickTree/` | `FenwickArray`, `FenwickTree` |
+| `FenwickTree/` | `FenwickArray`, `FenwickIndex`, `FenwickTree` and `RangeFenwickTree` — the one Fenwick tree and its range configuration, the tree over the direct product of its group with itself; `FenwickIndex` steps through the two trees the array holds implicitly (§13.13) |
 | `Graph/Adjacency/` | `AdjacencyNode`, `AdjacencyTopology`, `WeightedAdjacencyNode`, `WeightedAdjacencyTopology` — the general-graph sibling of `RootedTreeNode`/`RootedTreeTopology`, graph tier only: an adjacency list promises no acyclicity, so a DAG or tree witness over it is written by the caller who can vouch for one. A LeetCode problem whose node is exactly this shape uses it through a per-file `using` alias that keeps the problem's own name (`using CourseNode = …AdjacencyNode;`), and the file that wires the edges says what an edge means there, since that is the caller's reading of the list, not a property of the node |
 | `Graph/Contracts/Ordering/` | `IChildren`, `IEdges`, `IChildOrder` and their witnesses (§3.1) |
 | `Graph/Contracts/Topologies/` | `IGraphTopology`, `IEdgeTopology`, `EdgeTopologyAsGraphTopology` (§3.2) |
@@ -818,7 +818,6 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `MonotonicDeque/` | `IWindowOrder`, `MaxWindowOrder`, `MinWindowOrder`, `MonotonicDeque` — composes the unbounded `CircularBuffer` (§19.1, §20); `MinMaxWindow` — one `MonotonicDeque` per order (§19.1) |
 | `PrefixSums/` | `PrefixSums`, `MatrixPrefixSums` — consume `Domain/Mathematics/Algebra`'s `IAbelianGroup` (§19.2) |
 | `Queue/` | `Queue`, `BoundedQueue` — `CircularBuffer` unbounded and bounded, restricted to FIFO's ends (§20) |
-| `RangeFenwickTree/` | `RangeFenwickTree` |
 | `RollingHash/` | `RollingHash`, `RollingHashLane`, `RollingHashValue` |
 | `SegmentTree/` | `SegmentTree` and its array, build, index and range helpers; the one tree in two configurations (§13.10): `SegmentTree<Element, TUpdate, TOperation, TAction>`, abstract, and the two that derive from it, `SegmentTree<Element, TOperation>` with the trivial action (`NoAction`, whose update type `NoUpdate` has one value) and `SegmentTree<Element, TUpdate, TOperation>` with `TOperation`'s own; the action contract `IRangeAction`, and `IRangeUpdateOperation`, a monoid and its action in one witness, with `RangeAddSumOperation` and `RangeAssignMaxOperation` (§11.4) |
 | `Sequence/` | `IRandomAccessSequence`, `ArraySequence`, `DynamicArraySequence`, `OffsetSequence`, `MatrixSequence`, `IIndexedSequence`, `ArrayIndexedSequence`, `DynamicArrayIndexedSequence` (§9, §11, §13.6) |
@@ -894,7 +893,7 @@ specifically:
 | `Language/English/Phonology/` | `ReceivedPronunciation` — Received Pronunciation's 44 phonemes as a configuration of the IPA, each vowel named by its lexical set; `LetterY` — y, a consonant letter that spells the consonant j and the vowels of KIT and PRICE |
 | `Language/Phonetics/` | `IPhonemeInventory`, `PhonemicTranscription<TInventory>`; in `Vowels/` `Vowel`, `VowelHeight`, `VowelBackness`, `Rounding`, `VowelLength`, `Monophthong`, `Diphthong`, `IpaVowels`; in `Consonants/` `Consonant`, `Voicing`, `Place`, `Manner`, `IpaConsonants` — the IPA's vowel chart, its pulmonic consonant chart with the chart's other symbols and the common affricates, each sound a named value; a language's phonemes as a selection of them; and a transcription read back into an inventory's phonemes |
 | `Language/Scripts/Latin/` | `Diacritic`, `DecomposedLetter`, `LatinScript`, `IAccentedAlphabet`, `AccentedLetters<TAlphabet>`, and the presets `SpanishAlphabet`, `FrenchAlphabet`, `GermanAlphabet` — the Latin script's 17 named diacritics, a letter taken apart into its basic letter and marks through Unicode's canonical decomposition, and the accented alphabets that reach it; English's alphabets never do |
-| `Mathematics/Algebra/` | `IMonoid`, `IAbelianGroup`, `IIntegerModule`, `Addition`, `Minimum`, `Maximum`, `BitwiseXor` — the laws a range structure needs of its elements, one chain under the mathematics' names (§11.4), drawn on by the segment trees, the Fenwick trees and `PrefixSums` |
+| `Mathematics/Algebra/` | `IMonoid`, `IAbelianGroup`, `IIntegerModule`, `Addition`, `Minimum`, `Maximum`, `BitwiseXor`, `DirectProduct` — the laws a range structure needs of its elements, one chain under the mathematics' names (§11.4), drawn on by the segment trees, the Fenwick trees and `PrefixSums` |
 | `Mathematics/Combinatorics/` | `LatinSquares/{ILatinSquare,LatinSquare}` — an n x n square holding n symbols, each once in every row and every column, the square Sudoku's grids are (`Games/Sudoku/`) |
 | `Mathematics/ExtendedReals/` | `AffinelyExtendedReal<TNumber>`, `ProjectivelyExtendedReal<TNumber>`, `IndeterminateForm`, `LimitOperation` — the real line with two ends, -∞ and +∞, ordered, and with one, ∞, unsigned, each with its arithmetic and the operations it leaves undefined, over any number type; and the seven indeterminate forms of limits as named values. No solution reads them |
 | `Mathematics/GameTheory/` | `IAlternatingGame`, `IImpartialGame`, `IGameGraph`, `GameOutcome`, `MinimumExcludant`, `IStaticEvaluation`, `IMoveOrdering` — what a game is to a solver: two players alternating, every value the mover's, so win-or-lose and scoring games are one contract; an impartial game, whose players share their moves; a game graph, whose positions are numbered and whose play may return to one, valued as a win, a loss or a draw; and the minimum excludant a Grundy number is made from; and what a search that stops before the end needs beyond the rules, a static evaluation in the game's units and a move ordering, which changes how much a search with cutoffs looks at but never the value |
@@ -1008,7 +1007,10 @@ move, and is a deliberate future exercise. C2's plan offered `SegmentTree` one, 
 2i+1", if it fell out naturally, and it did not: the engines take `ITreeTopology<TNode,
 TChildren>` with `TNode : class`, and a segment tree's node is an index into its arena, which fails
 §13.9's first test. Walking it would mean an object per node or a struct-node engine, a redesign
-of its own. `SinglyLinkedList`/`DoublyLinkedList` stay out for the
+of its own. The plan's other two fail at the same place:
+the Fenwick array's two implicit trees and the heap's children 2i+1 and 2i+2 (§13.13).
+`FenwickIndex` and `HeapArrayIndex` name their steps instead.
+`SinglyLinkedList`/`DoublyLinkedList` stay out for the
 same reason: no `IChildren`, no `ITreeTopology`, and their O(1) pointer-splice operations
 (`AddFront`/`Remove`/`PopBack`, Floyd's cycle detection) don't route through Graph's generic
 traversal engines. They are configurations of one linked node, the family's own composition
@@ -1493,6 +1495,86 @@ bytes without PGO (`BuildSuffixArray` 300, `BuildRank` 72, `BuildLongestCommonPr
 with it `BuildSuffixArray` read 561 in four runs of five before and 561 to 604 after, the spread
 profile counts give one method between runs. LC 899's and the `AhoCorasick` users' code did not
 change.
+
+### 13.13 One Fenwick tree: range updates are the point tree over a product group
+
+`RangeFenwickTree` was two `FenwickTree`s, the classic construction: a difference array in one and
+each difference weighted by its position in the other. Every range add walked the update tree four
+times, once per tree at each end of the range, and every prefix walked the query tree twice, and
+each index was checked once by the range tree and again by each tree it handed it to. It is now the
+one Fenwick tree configured for range updates (the composition plan's C2, second part): one
+`FenwickTree` whose elements are pairs, over `DirectProduct<Element, Element, TOperation,
+TOperation>`, the direct product of the group with itself (`Domain/Mathematics/Algebra`). Each law
+of an abelian group holds of a pair because it holds of both components, so the point tree's two
+walks, written once, carry both values at a time:
+
+| Configuration | Elements, algebra | Operations | Adds |
+| --- | --- | --- | --- |
+| `FenwickTree<Element, TOperation>` | `Element`, an `IAbelianGroup` | point `Add`, `PrefixQuery`, `Query` | nothing: one element per node |
+| `RangeFenwickTree<Element, TOperation>` | `(Element, Element)`, the direct product of an `IIntegerModule` with itself | `RangeAdd`, `PrefixQuery`, `Query` | a second component per node, and `Scale`, which encodes a range add as two point adds of a pair and decodes a prefix of pairs |
+
+A range add of d over [l, r] adds the pair (d, Scale(d, l)) at l and its inverse at r + 1, and the
+prefix through i of the pairs, (D, W), decodes as Combine(Scale(D, i + 1), Invert(W)).
+
+**The range configuration composes; it does not derive.** The segment tree's configurations derive
+from one abstract tree (§13.10), because both have the same public operations over the same elements
+and differ in how an update acts. Here the elements differ: the range tree's are pairs, its
+`PrefixQuery` decodes one, and a point `Add` of a bare delta has no meaning in it, so it holds the
+point tree as a field and exposes only its own operations (§20's rule for an operation a
+configuration lacks). That is one object more than deriving would make, and the point tree pays
+nothing for it: its code is what it was. The `RangeFenwickTree/` folder is gone; the type sits
+beside the tree in `FenwickTree/`.
+
+**Two implicit trees, named as steps, not witnesses.** A Fenwick array holds two trees over its
+1-based positions. Node i covers the elements (i - (i & -i), i]. An update climbs the update tree,
+whose parent of i is i + (i & -i), until it passes the end; a prefix query climbs the query tree,
+whose parent of i is i - (i & -i), down to its root, 0. `FenwickIndex.UpdateTreeParent` and
+`FenwickIndex.QueryTreeParent` name the two steps, as `HeapArrayIndex` names a heap's, and the point
+tree's loops step by them. Neither tree is a topology witness the generic engines walk. §13.9's test
+fails at its first part, as the segment tree's did (§13.7): a node is a position in the array, with
+no identity apart from its storage, and the engines take `ITreeTopology<TNode, TChildren>` with
+`TNode : class` and a static `GetChildren(node)`. Which children a node has depends on the array's
+length too: in the query tree the children of i are i + 2^k for each 2^k below its lowest set bit,
+as far as n reaches, and in the update tree the nodes whose parents pass n are roots of a forest.
+Walking either would take an object per position, or an engine over struct nodes that carry the
+length, a redesign of its own.
+
+**The heap fails the same test.** The plan gave `Heap` a topology witness, children 2i+1 and 2i+2.
+Its node is a slot of `HeapArray`, an index whose occupant changes with every sift, and which
+children a slot has depends on `Count`, which a static `GetChildren` cannot read. `HeapArrayIndex`
+already names its steps (§4), so the heap is unchanged.
+
+**What the JIT made of it.** Tier-1 code read with `DOTNET_JitDisasm` under the `inlining` verb
+(§19.8), 15 s an arm, twice a side with dynamic PGO and once without, against 6645be36:
+- The point tree: on LC 315 and LC 493, `Add` (180 bytes), `PrefixQuery` (162), `Query` (472 with
+  PGO, 168 without), the validators and the constructor are the same instructions, the only change
+  the metadata token of an exception message's string, on the throwing path. LC 315's solution
+  method, which inlines both walks, is the same instructions (1,072 bytes with PGO, 503 without),
+  and LC 493's is without PGO (814); with PGO its size moves between runs of one build (2,429 and
+  2,431 before, 2,417 and 2,424 after) with the same calls. Each solution method's inline report is
+  identical, 81 and 143 inlines, `FenwickIndex`'s steps taking `LowestSetBit`'s place one for one.
+- The range configuration: on LC 2916 and LC 3515 every range add makes two walks where it made four
+  and checks three indices where it checked five, every prefix one walk and one check where it made
+  two and three, and a range query two walks and three checks where it made four and seven. A walk
+  over pairs reads and writes both components in one pass of the loop. With PGO, `RangeAdd` is 533
+  bytes (863 before), `PrefixQuery` 205 (449), `Query` 551 (1,028); LC 2916's solution method, which
+  inlines them all, is 3,057 to 3,062 bytes (4,012 to 4,031), with 195 inlines tried where it had
+  216 and the same two failures, both in `HashMap`. LC 3515's query loop is 1,450 to 1,455 bytes
+  (2,245 to 2,258) and its root's inline report is unchanged.
+- `DirectProduct.Identity` is always inlined. Without PGO the JIT called it, "unprofitable inline",
+  from the constructor once per node and from `PrefixQuery` once per query, where the point tree's
+  `Element.Zero` is no call at all; inlined, those two are 141 and 201 bytes and call nothing.
+- The heap, LC 1046: every method is the same bytes as before (`Push` 249, `TryPop` 426, `SiftDown`
+  232 with PGO).
+
+The contract suite, `FenwickTreeTests`, runs over four configurations, the point tree under addition
+and under exclusive or and the range configuration under addition of ints and of longs: every range
+and prefix of a fresh tree, and a seeded script of point adds, hold to the group's fold of a plain
+array that took the same updates, and a script of range adds mixed with point adds does for the
+range configurations. That the point tree keeps no second component is read off its allocation.
+`FenwickIndexTests` holds the two trees to what the walks rely on: an update from a position reaches
+exactly the nodes whose ranges hold it, and a prefix reads each element up to it once, in as many
+nodes as the position has set bits.
 
 ## 14. Worked example: the three Storage/Operations decompositions
 
@@ -2058,7 +2140,7 @@ about LeetCode rather than about any problem's world, and one problem's own spel
 | `Domain/Language/English/Phonology/` | `ReceivedPronunciation`, `LetterY` | English's sounds, as a configuration of the IPA (`Phonetics`). Received Pronunciation, the accent British dictionaries transcribe, has 44 phonemes in their traditional transcription: 12 single vowels, 8 diphthongs and 24 consonants. Each vowel is a named value called by its lexical set (Wells), the keyword that names it in every accent, so KIT is ɪ here; another accent, such as General American with its r-coloured vowels, would be another configuration. Two conventions are the IPA's rather than the dictionaries': r is ɹ, since the IPA's r is a trill, and the affricates carry the tie bar, t͡ʃ and d͡ʒ. `LetterY` states y's two roles: a consonant letter that spells the consonant j ("yes"), the KIT vowel ("gym") and the PRICE diphthong ("my"). |
 | `Domain/Language/Phonetics/` | `IPhonemeInventory`, `PhonemicTranscription<TInventory>`; `Vowels/`: `Vowel`, `VowelHeight`, `VowelBackness`, `Rounding`, `VowelLength`, `Monophthong`, `Diphthong`, `IpaVowels`; `Consonants/`: `Consonant`, `Voicing`, `Place`, `Manner`, `IpaConsonants` | The International Phonetic Alphabet, which no language owns. A vowel is a cell of the 2020 chart, its height, backness and rounding, and the 28 symbols are named values named as the IPA names them; ə and ɐ leave rounding unspecified, as the chart does. A consonant is its voicing, place and manner: the pulmonic chart's 59, the chart's other symbols (w, ʍ, ɥ, the epiglottals, ɕ, ʑ, ɺ), and the affricates t͡s, d͡z, t͡ʃ and d͡ʒ, each built from its stop and fricative so its symbol cannot disagree with theirs. The voiced velar plosive is the IPA's ɡ, U+0261, not a keyboard's g. A language's single vowel is a quality and a length (ː long, ˑ half-long), and a diphthong one sound gliding between two qualities. An inventory is what a language configures: its monophthongs, diphthongs and consonants. A phonemic transcription reads back into an inventory's phonemes by taking the longest at each place, so /maɪ/ is m and aɪ; a symbol the inventory lacks is refused. The non-pulmonic consonants need an airstream axis, and ɧ has no single place on the chart, so neither is stated. |
 | `Domain/Language/Scripts/Latin/` | `Diacritic`, `DecomposedLetter`, `LatinScript`, `IAccentedAlphabet`, `AccentedLetters<TAlphabet>`, `SpanishAlphabet`, `FrenchAlphabet`, `GermanAlphabet` | The Latin script's letters as basic letters with diacritics: accented letters are another alphabet's, not English's (the owner's ruling, 2026-11-05). The 17 marks, grave to ogonek, are named values held as their Unicode combining characters; the diaeresis and German's umlaut are one mark, U+0308. `LatinScript` takes a letter apart through Unicode's canonical decomposition (`string.Normalize` with `NormalizationForm.FormD`), so é is e and the acute, and ế e, the circumflex and the acute, in canonical order. ø and ł (a stroke), ß, æ and œ are letters of their own that do not decompose, and neither do ǿ or Greek ά, whose bases are no basic Latin letter. An accented alphabet lists its accented letters and its other letters: Spanish á é í ó ú ü ñ, French fourteen with æ and œ, German ä ö ü with ß. `AccentedLetters` decomposes each and its capital once into a table, so folding "café" to "cafe" is a lookup; it is the only path to Unicode's decomposition, and English's alphabets, runs of character codes, never take it. Whether a language counts ñ as a letter of its own or á as a marked a is its collation, and is not stated. |
-| `Domain/Mathematics/Algebra/` | `IMonoid`, `IAbelianGroup`, `IIntegerModule`, `Addition`, `Minimum`, `Maximum`, `BitwiseXor` | The laws a range structure needs of its elements, as the mathematics names them: a monoid, an associative combine with an identity; an abelian group, a monoid whose combine commutes and can be undone; and an integer module, an abelian group whose integer multiple is a member of its own, held to an O(1) cost. Addition, minimum, maximum and bitwise exclusive or are presets, each at the deepest link its arithmetic reaches: minimum and maximum have no inverse, so a Fenwick tree over either does not compile. Each is a struct witness with static members, so a structure generic over one compiles its own arithmetic (§11.4). |
+| `Domain/Mathematics/Algebra/` | `IMonoid`, `IAbelianGroup`, `IIntegerModule`, `Addition`, `Minimum`, `Maximum`, `BitwiseXor`, `DirectProduct` | The laws a range structure needs of its elements, as the mathematics names them: a monoid, an associative combine with an identity; an abelian group, a monoid whose combine commutes and can be undone; and an integer module, an abelian group whose integer multiple is a member of its own, held to an O(1) cost. Addition, minimum, maximum and bitwise exclusive or are presets, each at the deepest link its arithmetic reaches: minimum and maximum have no inverse, so a Fenwick tree over either does not compile. The direct product of two abelian groups is one, pairs combined component by component, and lets a structure over one group carry two values through one walk. Each is a struct witness with static members, so a structure generic over one compiles its own arithmetic (§11.4). |
 | `Domain/Mathematics/Combinatorics/LatinSquares/` | `ILatinSquare`, `LatinSquare<TSquare>` | A Latin square of order n is an n x n square holding n symbols, each exactly once in every row and every column, so the order is its one number, a static abstract constant its loops run to. `IsInRowOrColumn` is a placement's half of the rule, which Sudoku's `CanPlace` reads, and `IsLatinSquare` the whole definition, the symbols read off the first row, since a square may be written in any n symbols and which ones is a puzzle's notation. Every order has a Latin square: the cyclic one, each row the one above shifted a place, is the addition table of the integers mod n, and the tests hold one of order 5 to the rule. Sudoku's grids are Latin squares with regions (`Domain/Games/Sudoku/`). |
 | `Domain/Mathematics/ExtendedReals/` | `AffinelyExtendedReal<TNumber>`, `ProjectivelyExtendedReal<TNumber>`, `IndeterminateForm`, `LimitOperation` | The affinely extended reals add two ends to the line, -∞ below every number and +∞ above, and keep its order; the projectively extended reals add one point, ∞, its own negative, where the line closes into a circle, and have no order. The arithmetic extends where the limits agree, and each `Try` operation answers false where they do not. In both, ∞ - ∞, 0 times ∞ and ∞ over ∞ are undefined; the affine extension leaves anything over 0 undefined, its limit's sign depending on the side, while the projective one makes a nonzero number over 0 ∞ and leaves 0 over 0 and ∞ + ∞ undefined. The finite values are any number type's, so the arithmetic is exact when the type's is, and a type's own infinity or NaN is refused. The seven indeterminate forms of limits are named values, each an operation on two limits: the four of arithmetic are exactly the operations the affine extension leaves undefined, which the tests check, and the three of powers are forms of limits only. Measure theory's 0 times ∞ = 0 is a convention for integrals, and IEEE 754's 1/0 = +∞ comes from its signed zero, so neither is this arithmetic. |
 | `Domain/Mathematics/GameTheory/` | `IAlternatingGame`, `IImpartialGame`, `IGameGraph`, `GameOutcome`, `MinimumExcludant` | What a game is to a solver, since game theory is mathematics. `IAlternatingGame` is two players taking turns, every value the mover's: a move gains a score and a finished position is worth what its rules say, so a win-or-lose game (no gain, -1 to the player left without a move) and a scoring game (the stone games) are one contract. `IImpartialGame` is a game whose players have the same moves, as in Nim, and `MinimumExcludant` is the least natural number a list lacks, from which a Grundy number is made. `IGameGraph` is a finite game whose play may return to a position, so a position can be drawn: it numbers its positions, so a solver keeps what it learns in arrays, and `GameOutcome` is a position's win, loss or draw for the player to move. A game's rules are an instance struct, so they carry a problem's input (a row of stones), and a solver generic over them compiles each game's rules into its own code. Moves are numbered, so no move list is allocated, and a position is an immutable value the rules map to the next: the functional form, which the owner chose on 2026-11-05 unless it measures slower than making and unmaking a move. `IStaticEvaluation` is Shannon's evaluation function: what a search that stops before the end takes a position to be worth, in the game's units and from the mover's side, strictly between its loss and its win so that a forced result outranks any guess. `IMoveOrdering` is the order to try a position's moves in, a permutation written into a buffer the search provides. Both stand beside `IAlternatingGame` rather than in it, since a game's rules need neither: only a search that stops short does. The procedures that solve a game are `Algorithms/GameSearch`'s. |

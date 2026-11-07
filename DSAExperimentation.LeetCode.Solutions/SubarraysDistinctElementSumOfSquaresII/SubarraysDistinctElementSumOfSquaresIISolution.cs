@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
-using RepoRangeFenwickTree = DSAExperimentation.DataStructures.RangeFenwickTree.RangeFenwickTree<long, DSAExperimentation.Domain.Mathematics.Algebra.Addition<long>>;
+using RepoRangeFenwickTree = DSAExperimentation.DataStructures.FenwickTree.RangeFenwickTree<long, DSAExperimentation.Domain.Mathematics.Algebra.Addition<long>>;
 
 namespace DSAExperimentation.LeetCode.Solutions.SubarraysDistinctElementSumOfSquaresII;
 

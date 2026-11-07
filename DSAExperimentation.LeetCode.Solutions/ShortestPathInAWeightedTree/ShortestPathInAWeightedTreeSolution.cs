@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Domain.Mathematics.Algebra;
-using DSAExperimentation.DataStructures.RangeFenwickTree;
+using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.Solutions.ShortestPathInAWeightedTree;
 

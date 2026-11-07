@@ -1,7 +1,7 @@
 using DSAExperimentation.Domain.Mathematics.Algebra;
-using DSAExperimentation.DataStructures.RangeFenwickTree;
+using DSAExperimentation.DataStructures.FenwickTree;
 
-namespace DSAExperimentation.Tests.DataStructures.RangeFenwickTree;
+namespace DSAExperimentation.Tests.DataStructures.FenwickTree;
 
 public sealed partial class RangeFenwickTreeTests
 {

@@ -1,34 +1,38 @@
 using DSAExperimentation.Domain.Mathematics.Algebra;
-using DSAExperimentation.DataStructures.FenwickTree;
 
-namespace DSAExperimentation.DataStructures.RangeFenwickTree;
+namespace DSAExperimentation.DataStructures.FenwickTree;
 
-// Composes two internal FenwickTree<Element,TOperation> instances directly (the classic two-Fenwick-
-// tree range-update/range-query trick) - precedented by Collections/Queue/Queue.cs composing
-// Collections/Deque/Deque.cs, itself Operations-composing-Operations rather than raw
-// Representation. RangeAdd/PrefixQuery/Query are O(log n) - depends on FenwickArray<Element>.Get/Set
-// being O(1) (see ARCHITECTURE.md §8) and on TOperation.Scale being O(1) or cheap (see
-// IIntegerModule<Element>'s own doc comment).
+// The one Fenwick tree configured for range updates (ARCHITECTURE.md §13.13): FenwickTree over the
+// direct product of TOperation with itself, so every node holds a pair and one walk of either tree
+// reaches both values, where the classic construction keeps two trees and walks each in turn. What
+// it adds over the point tree is that type argument and the encoding below, which needs Scale, an
+// integer module rather than an abelian group. The point tree has no second component to allocate,
+// store or walk.
 //
-// Derivation, 0-indexed inclusive ranges: RangeAdd(l, r, val) posts val into B1's difference
-// array at position l (and -val at r+1, if in bounds) the same way a plain difference-array
-// range-update works, and posts the position-weighted term Scale(val, l) / Scale(-val, r+1) into
-// B2. Then PrefixQuery(i) = Combine(Scale(B1.PrefixQuery(i), i+1), Invert(B2.PrefixQuery(i))) -
-// the standard identity that turns a sum of per-position deltas into a prefix sum without
-// re-walking every position individually.
+// The encoding, 0-indexed inclusive ranges: RangeAdd(l, r, d) adds the pair (d, Scale(d, l)) at l,
+// and its inverse at r + 1 when that is in bounds - a difference array in the first component, each
+// difference weighted by its position in the second. A prefix of those pairs through i, (D, W),
+// gives the elements' prefix as Combine(Scale(D, i + 1), Invert(W)): a difference d added at p <= i
+// reaches the i + 1 - p elements from p through i, which is Scale(d, i + 1) less Scale(d, p).
 //
-// Range-update only, deliberately: no point-Add method. Point-update/range-query is FenwickTree's
-// job - mixing that usage pattern onto this type would silently redefine what PrefixQuery means.
-// A point query is just Query(i, i) - no separate method needed.
+// RangeAdd/PrefixQuery/Query are O(log n), assuming FenwickArray's Get/Set are O(1) (§8) and
+// TOperation.Scale is O(1) or cheap (IIntegerModule's own law). This type checks a range, and the
+// tree checks each position it is handed, so PrefixQuery leaves its index to the tree.
+//
+// Range updates only, deliberately: no point Add. A point update is RangeAdd(i, i, delta). A point
+// query is just Query(i, i) - no separate method needed.
 /// <summary>A fixed-length sequence with range-add updates and range queries, each in O(log n).</summary>
 public sealed class RangeFenwickTree<Element, TOperation>
     where TOperation : struct, IIntegerModule<Element>
 {
-    private const string IndexOutOfBoundsMessage = "Index was outside the bounds of the range Fenwick tree.";
     private const string RangeOutOfBoundsMessage = "Range was outside the bounds of the range Fenwick tree, or left exceeded right.";
 
-    private readonly FenwickTree<Element, TOperation> _b1;
-    private readonly FenwickTree<Element, TOperation> _b2;
+    // Each node's pair: the combination of the differences it covers, and of those differences
+    // weighted by their positions.
+    private readonly FenwickTree<
+        (Element Difference, Element Weighted),
+        DirectProduct<Element, Element, TOperation, TOperation>> _pairs;
+
     private readonly int _size;
 
     /// <summary>The number of elements, fixed at construction.</summary>
@@ -37,8 +41,7 @@ public sealed class RangeFenwickTree<Element, TOperation>
     public RangeFenwickTree(int size)
     {
         _size = size;
-        _b1 = new FenwickTree<Element, TOperation>(size);
-        _b2 = new FenwickTree<Element, TOperation>(size);
+        _pairs = new(size);
     }
 
     public RangeFenwickTree(IReadOnlyList<Element> initial)
@@ -59,20 +62,18 @@ public sealed class RangeFenwickTree<Element, TOperation>
     {
         ValidateRange(left, right);
 
-        ApplyDelta(left, delta);
+        AddDifference(left, delta);
 
         if (right + 1 < _size)
         {
-            ApplyDelta(right + 1, TOperation.Invert(delta));
+            AddDifference(right + 1, TOperation.Invert(delta));
         }
     }
 
-    private void ApplyDelta(int position, Element delta)
+    private void AddDifference(int position, Element delta)
     {
-        _b1.Add(position, delta);
-
-        var scaledDelta = TOperation.Scale(delta, position);
-        _b2.Add(position, scaledDelta);
+        var weighted = TOperation.Scale(delta, position);
+        _pairs.Add(position, (delta, weighted));
     }
 
     /// <summary>Combines every element from index 0 through <paramref name="index"/>.</summary>
@@ -81,11 +82,10 @@ public sealed class RangeFenwickTree<Element, TOperation>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is outside [0, Count).</exception>
     public Element PrefixQuery(int index)
     {
-        ValidateIndex(index);
+        var (difference, weighted) = _pairs.PrefixQuery(index);
+        var scaled = TOperation.Scale(difference, index + 1);
 
-        var scaledB1 = TOperation.Scale(_b1.PrefixQuery(index), index + 1);
-
-        return TOperation.Combine(scaledB1, TOperation.Invert(_b2.PrefixQuery(index)));
+        return TOperation.Combine(scaled, TOperation.Invert(weighted));
     }
 
     /// <summary>Combines the elements of the inclusive range [left, right].</summary>
@@ -101,8 +101,6 @@ public sealed class RangeFenwickTree<Element, TOperation>
 
         return left == 0 ? rightPrefix : TOperation.Combine(rightPrefix, TOperation.Invert(PrefixQuery(left - 1)));
     }
-
-    private void ValidateIndex(int index) => RangeBounds.ValidateIndex(index, _size, IndexOutOfBoundsMessage);
 
     private void ValidateRange(int left, int right) => RangeBounds.ValidateRange(left, right, _size, RangeOutOfBoundsMessage);
 }

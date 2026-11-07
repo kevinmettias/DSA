@@ -2,6 +2,10 @@ using DSAExperimentation.Domain.Mathematics.Algebra;
 
 namespace DSAExperimentation.DataStructures.FenwickTree;
 
+// The one Fenwick tree (ARCHITECTURE.md §13.13): Add climbs the update tree and PrefixQuery the
+// query tree, the two trees FenwickIndex names. RangeFenwickTree is this tree configured for range
+// updates, over the direct product of TOperation with itself, so the walks are written here once.
+//
 // Add/PrefixQuery/Query are O(log n) - depends on FenwickArray<Element>.Get/Set being O(1). See
 // ARCHITECTURE.md §8.
 //
@@ -13,8 +17,8 @@ namespace DSAExperimentation.DataStructures.FenwickTree;
 // Add, not Set, deliberately: Fenwick's native operation is "combine this delta into every
 // ancestor," which only makes sense as an increment, not an overwrite (a Set would need first
 // reading the old value out via a PrefixQuery-shaped lookup this type intentionally keeps out of
-// scope). Point-update/range-query only - see RangeFenwickTree for the range-update/range-query
-// variant; mixing that scheme's usage pattern onto this type would silently redefine what
+// scope). Point-update/range-query only - RangeFenwickTree is the range-update/range-query
+// configuration; mixing that scheme's usage pattern onto this type would silently redefine what
 // PrefixQuery even means.
 /// <summary>
 /// A Fenwick tree over an abelian group operation that adds to one element or combines a range in O(log n).
@@ -61,7 +65,9 @@ public sealed class FenwickTree<Element, TOperation>
     {
         ValidateIndex(index);
 
-        for (var oneBasedIndex = index + 1; oneBasedIndex <= _size; oneBasedIndex += LowestSetBit(oneBasedIndex))
+        for (var oneBasedIndex = index + 1;
+            oneBasedIndex <= _size;
+            oneBasedIndex = FenwickIndex.UpdateTreeParent(oneBasedIndex))
         {
             var combined = TOperation.Combine(_nodes.Get(oneBasedIndex), delta);
             _nodes.Set(oneBasedIndex, combined);
@@ -80,7 +86,9 @@ public sealed class FenwickTree<Element, TOperation>
 
         var result = TOperation.Identity;
 
-        for (var oneBasedIndex = index + 1; oneBasedIndex > 0; oneBasedIndex -= LowestSetBit(oneBasedIndex))
+        for (var oneBasedIndex = index + 1;
+            oneBasedIndex > 0;
+            oneBasedIndex = FenwickIndex.QueryTreeParent(oneBasedIndex))
         {
             result = TOperation.Combine(result, _nodes.Get(oneBasedIndex));
         }
@@ -108,8 +116,6 @@ public sealed class FenwickTree<Element, TOperation>
     }
 
     private void ValidateRange(int left, int right) => RangeBounds.ValidateRange(left, right, _size, RangeOutOfBoundsMessage);
-
-    private static int LowestSetBit(int value) => value & -value;
 
     private void ValidateIndex(int index) => RangeBounds.ValidateIndex(index, _size, IndexOutOfBoundsMessage);
 }

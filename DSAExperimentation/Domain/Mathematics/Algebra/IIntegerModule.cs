@@ -4,8 +4,8 @@ namespace DSAExperimentation.Domain.Mathematics.Algebra;
 // addition scalar multiplication over the group. Every abelian group is a module over the integers
 // this way, which gives the contract its name; what it adds to IAbelianGroup is that the integer
 // multiple is a member of its own, held to the cost law below. RangeFenwickTree needs it because the
-// two-Fenwick-tree range-update/range-query trick multiplies a running combined value by an integer
-// position count.
+// Fenwick tree's range-update/range-query encoding multiplies a running combined value by an
+// integer position count.
 //
 // Complexity law, obligation stated here and consequence on RangeFenwickTree: Scale must be O(1) or
 // cheap - real multiplication for a numeric sum, not O(log count) repeated doubling - or the tree's
