@@ -2,6 +2,20 @@
   "schema": 1,
   "waivers": [
     {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/LinkedList/CycleDetection.cs",
+      "reason": "each ! is Floyd's tortoise-and-hare's own invariant: head! in FindCycleStart is safe because FindMeetingPoint only returns non-null after its walk advanced at least once, which requires a non-null head; fromHead.Next!/fromMeetingPoint.Next! are safe because every node walked from head must reach the cycle FindMeetingPoint already proved exists (a node has exactly one forward link, no branch off that path) and .Next never terminates once inside a cycle; slow! is safe because fast always leads slow by construction (two steps per iteration vs. one), so the loop condition proving fast/fast.Next non-null already proves slow reached that same position non-null on an earlier or equal iteration. The waiver moved with the file from SinglyLinkedList/, when the walk came to ask for the forward-linked node alone (ARCHITECTURE.md section 13.11). Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/LinkedList/LinkedNode.cs",
+      "reason": "Value's default! is the starting value of a node built without one: the doubly linked node, filled by its object initializer immediately after construction, and a list's permanent sentinels, whose value nothing reads. It is the same 'not meaningful until set' contract the doubly linked node's own waiver recorded before the value moved into the node template, and the compiler emits no store for a default initializer. Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-abbreviations",
       "path": "DSAExperimentation/Domain/Games/PositionalGames/InARow/MnkGame.cs",
       "reason": "m,n,k is the name the game family has in the literature (the m,n,k-game: an m by n board, k in a row to win), and the owner named the type MnkGame<TShape> in the approved plan (2026-11-05). It is three letters standing for the three numbers, not an abbreviation of a longer word; the shape's members spell them out as Columns, Rows and InARow.",
@@ -238,13 +252,6 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/DoublyLinkedList/DoublyLinkedListNode.cs",
-      "reason": "Value's default! is only ever a transient initializer - every node is fully populated via its object initializer immediately after construction (DoublyLinkedList.AddFront's only caller pattern), the same out-parameter-shaped contract HashMap.TryGetValue uses for 'not meaningful until set.' Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
-      "owner": "@kmettias",
-      "expires": "2027-05-01"
-    },
-    {
-      "check": "check-presumption",
       "path": "DSAExperimentation/Mechanisms/Cache/LruCache/LruCache.cs",
       "reason": "TryGetValue's default! is the standard out-parameter contract, the same as HashMap.TryGetValue's; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
@@ -450,13 +457,6 @@
       "check": "check-naming-clarity",
       "path": "DSAExperimentation.Tests/Algorithms/Bipartiteness/BipartiteCheckTests.cs",
       "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after the Is*-prefixed IsBipartite production method is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for DisjointSetTests.cs and check-responsibility-extraction.",
-      "owner": "@kmettias",
-      "expires": "2027-05-01"
-    },
-    {
-      "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/SinglyLinkedList/CycleDetection.cs",
-      "reason": "each ! is Floyd's tortoise-and-hare's own invariant, named inline as a `presumption: allow` comment beside each site and recorded here too since the default marker policy only honours safety-critical checks: head! in FindCycleStart is safe because FindMeetingPoint only returns non-null after its walk advanced at least once, which requires a non-null head; fromHead.Next!/fromMeetingPoint.Next! are safe because every node walked from head must reach the cycle FindMeetingPoint already proved exists (a singly linked node has exactly one successor, no branch off that path) and .Next never terminates once inside a cycle; slow! is safe because fast always leads slow by construction (two steps per iteration vs. one), so the loop condition proving fast/fast.Next non-null already proves slow reached that same position non-null on an earlier or equal iteration.",
       "owner": "@kmettias",
       "expires": "2027-05-01"
     },

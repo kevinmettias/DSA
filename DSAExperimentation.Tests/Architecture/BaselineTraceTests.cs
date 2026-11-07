@@ -299,6 +299,58 @@ public sealed partial class BaselineTraceTests
             "public static int Baseline(int[] values) => new BinaryTreeNode<int>(values.Length).Value;",
             ArmCalling("ProbeSolution.Baseline(_values)")));
 
+    // The singly linked node's Next and Value are declared by its base class, the one linked node,
+    // and reading them reads LeetCode's ListNode all the same.
+    [Fact]
+    public void From_LeetCodesListNodeTheBaselineWalks_IsNotCharged()
+        => Assert.Empty(ReachedLibraryNames(
+            """
+            public static int Baseline(int[] values)
+            {
+                var head = new DSAExperimentation.DataStructures.SinglyLinkedList
+                    .SinglyLinkedListNode<int>(1)
+                {
+                    Next = new(values.Length),
+                };
+
+                return head.Value + head.Next.Value;
+            }
+            """,
+            ArmCalling("ProbeSolution.Baseline(_values)")));
+
+    // A library structure keyed by list nodes names the node only as a type argument, and is
+    // charged like any other implementation, its members as well as its type.
+    [Fact]
+    public void From_LibraryMapKeyedByLeetCodesListNode_IsCharged()
+        => Assert.Contains(
+            "DSAExperimentation.DataStructures.HashMap.HashMap<TKey, TValue>.Count",
+            ReachedLibraryNames(
+                """
+                public static int Baseline(int[] values)
+                    => new DSAExperimentation.DataStructures.HashMap.HashMap<
+                        DSAExperimentation.DataStructures.SinglyLinkedList
+                            .SinglyLinkedListNode<int>,
+                        int>().Count
+                        + values.Length;
+                """,
+                ArmCalling("ProbeSolution.Baseline(_values)")));
+
+    // The doubly linked node is no LeetCode shape, so what its base class declares is charged.
+    [Fact]
+    public void From_DoublyLinkedNodeTheBaselineBuilds_IsCharged()
+        => Assert.Contains(
+            "DSAExperimentation.DataStructures.LinkedList.LinkedNode<TNode, TValue>.Value",
+            ReachedLibraryNames(
+                """
+                public static int Baseline(int[] values)
+                    => new DSAExperimentation.DataStructures.DoublyLinkedList
+                        .DoublyLinkedListNode<int>
+                    {
+                        Value = values.Length,
+                    }.Value;
+                """,
+                ArmCalling("ProbeSolution.Baseline(_values)")));
+
     // The harness's own code - the arm, and the fixtures that lay its input out - hands the input
     // over, and is not the baseline.
     [Fact]

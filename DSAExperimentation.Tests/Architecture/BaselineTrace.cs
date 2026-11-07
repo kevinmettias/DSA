@@ -28,7 +28,9 @@ namespace DSAExperimentation.Tests.Architecture;
 // - a virtual or interface call, resolved against the types the trace has seen created (rapid type
 //   analysis), and each created solution type's overrides of members declared outside the source,
 //   which the runtime calls back into.
-// LeetCode's own I/O shapes (ContractTypes) are input wherever they appear.
+// LeetCode's own I/O shapes (ContractTypes) are input wherever they appear, and so is a base class
+// one derives from with the type arguments that base names: the singly linked node's Next and Value
+// are declared by LinkedNode<SinglyLinkedListNode<int>, int> (ARCHITECTURE.md section 13.11).
 internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownInput)
 {
     // The library types that stand for LeetCode's own I/O shapes. A baseline that takes, returns or
@@ -109,7 +111,7 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
     {
         var definition = member.OriginalDefinition;
 
-        if (IsInput(definition.ContainingType))
+        if (IsInput(definition.ContainingType) || IsContractTypeBase(member.ContainingType))
         {
             InputMemberRead(member);
         }
@@ -131,7 +133,7 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
     // method's type arguments, each of which is a witness the code chose.
     private void TypesOfMemberBound(ISymbol member, ISymbol site, ReachMode mode)
     {
-        if (member.ContainingType is { } owner && !RepositoryTiers.IsStatedValue(member))
+        if (member.ContainingType is { } owner && IsOwnerNamedByBinding(member, owner))
         {
             TypeBound(owner, site, mode);
         }
@@ -273,9 +275,38 @@ internal sealed class BaselineTrace(SourceModels models, HashSet<ISymbol> knownI
         }
     }
 
+    // Binding a member names the type that declares it, unless the member is a value the library
+    // states or the type is a contract type's own base class.
+    private static bool IsOwnerNamedByBinding(ISymbol member, INamedTypeSymbol owner)
+        => !RepositoryTiers.IsStatedValue(member) && !IsContractTypeBase(owner);
+
     private bool IsInput(INamedTypeSymbol? type)
         => type is not null
-            && (_knownInput.Contains(type.OriginalDefinition) || (ContractTypes.Contains(type.Name) && RepositoryTiers.IsLibrary(type)));
+            && (_knownInput.Contains(type.OriginalDefinition) || IsContractType(type));
+
+    private static bool IsContractType(INamedTypeSymbol type)
+        => ContractTypes.Contains(type.Name) && RepositoryTiers.IsLibrary(type);
+
+    // A constructed base class of a contract type that names it among its type arguments, the way a
+    // configuration of the one linked node names itself: what that base declares is the contract
+    // type's own member, so reading it reads input, and the types it names are that shape's.
+    private static bool IsContractTypeBase(INamedTypeSymbol? type)
+        => type is not null
+            && type.TypeArguments.OfType<INamedTypeSymbol>()
+                .Any(argument => IsContractType(argument) && IsDerivedFrom(argument, type));
+
+    private static bool IsDerivedFrom(INamedTypeSymbol type, INamedTypeSymbol baseType)
+    {
+        for (var current = type.BaseType; current is not null; current = current.BaseType)
+        {
+            if (SymbolEqualityComparer.Default.Equals(current, baseType))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     private void Reach(ISymbol member, ISymbol? from)
     {

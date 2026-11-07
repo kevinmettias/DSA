@@ -790,7 +790,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `CursorSequence/` | `CursorSequence` — a sequence edited and read at a cursor between two `DynamicArray`s, the composition `Stack` makes with a cursor in place of LIFO (§4.1). LC 2296's text editor uses it; LC 1472's browser history declined it, measured, because its jumps of k pages cost O(k) transfers here against an index's O(1) |
 | `Deque/` | `Deque`, `BoundedDeque` — `CircularBuffer` unbounded and bounded (§20) |
 | `DisjointSet/` | `DisjointSetForest`, `DisjointSet` (§10) |
-| `DoublyLinkedList/` | `DoublyLinkedList`, `DoublyLinkedListNode` (§13.7) |
+| `DoublyLinkedList/` | `DoublyLinkedList`, `DoublyLinkedListNode`, the one linked node with `Previous` added (§13.7, §13.11) |
 | `DynamicArray/` | `DynamicArrayStorage`, `DynamicArray` (§14.3) |
 | `FenwickTree/` | `FenwickArray`, `FenwickTree` |
 | `Graph/Adjacency/` | `AdjacencyNode`, `AdjacencyTopology`, `WeightedAdjacencyNode`, `WeightedAdjacencyTopology` — the general-graph sibling of `RootedTreeNode`/`RootedTreeTopology`, graph tier only: an adjacency list promises no acyclicity, so a DAG or tree witness over it is written by the caller who can vouch for one. A LeetCode problem whose node is exactly this shape uses it through a per-file `using` alias that keeps the problem's own name (`using CourseNode = …AdjacencyNode;`), and the file that wires the edges says what an edge means there, since that is the caller's reading of the list, not a property of the node |
@@ -807,6 +807,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `Heap/` | `IHeapOrder`, `MinHeapOrder`, `MaxHeapOrder`, `HeapArrayIndex`, `HeapArray`, `Heap` (§4) |
 | `IntervalSet/` | `IntervalSet` — the one sanctioned upward reference, to `Algorithms/Searching` (§17.6a) |
 | `KeyedDisjointSet/` | `KeyedDisjointSet` — composes `DisjointSet` and `HashMap` (§10.4) |
+| `LinkedList/` | `LinkedNode` — the one linked node: a value and the forward link every list has, from which the singly, doubly and random-pointer nodes derive; `CycleDetection`, Floyd's walk over the forward link alone (§13.11) |
 | `MonotonicDeque/` | `IWindowOrder`, `MaxWindowOrder`, `MinWindowOrder`, `MonotonicDeque` — composes the unbounded `CircularBuffer` (§19.1, §20); `MinMaxWindow` — one `MonotonicDeque` per order (§19.1) |
 | `PrefixSums/` | `PrefixSums`, `MatrixPrefixSums` — consume `Domain/Mathematics/Algebra`'s `IAbelianGroup` (§19.2) |
 | `Queue/` | `Queue`, `BoundedQueue` — `CircularBuffer` unbounded and bounded, restricted to FIFO's ends (§20) |
@@ -815,7 +816,7 @@ Representations (§5 step 7, §13.5) co-locates with it:
 | `SegmentTree/` | `SegmentTree` and its array, build, index and range helpers; the one tree in two configurations (§13.10): `SegmentTree<Element, TUpdate, TOperation, TAction>`, abstract, and the two that derive from it, `SegmentTree<Element, TOperation>` with the trivial action (`NoAction`, whose update type `NoUpdate` has one value) and `SegmentTree<Element, TUpdate, TOperation>` with `TOperation`'s own; the action contract `IRangeAction`, and `IRangeUpdateOperation`, a monoid and its action in one witness, with `RangeAddSumOperation` and `RangeAssignMaxOperation` (§11.4) |
 | `Sequence/` | `IRandomAccessSequence`, `ArraySequence`, `DynamicArraySequence`, `OffsetSequence`, `MatrixSequence`, `IIndexedSequence`, `ArrayIndexedSequence`, `DynamicArrayIndexedSequence` (§9, §11, §13.6) |
 | `Set/` | `Set` — composes `HashMap<T,bool>` (§4.1) |
-| `SinglyLinkedList/` | `SinglyLinkedListNode`, `RandomLinkedListNode`, `CycleDetection` (§13.7) |
+| `SinglyLinkedList/` | `SinglyLinkedListNode`, `RandomLinkedListNode`, the one linked node with `Random` added (§13.7, §13.11) |
 | `Stack/` | `Stack` — composes `DynamicArray` (§4.1) |
 | `SuffixArray/`, `SuffixAutomaton/`, `SuffixTree/` | `SuffixArray`; `SuffixAutomaton`, `SuffixAutomatonState`; `SuffixTree`, `SuffixTreeNode` — witness-less, for §13.8's reasons |
 
@@ -997,7 +998,8 @@ TChildren>` with `TNode : class`, and a segment tree's node is an index into its
 of its own. `SinglyLinkedList`/`DoublyLinkedList` stay out for the
 same reason: no `IChildren`, no `ITreeTopology`, and their O(1) pointer-splice operations
 (`AddFront`/`Remove`/`PopBack`, Floyd's cycle detection) don't route through Graph's generic
-traversal engines. Tries are decided case by case (§13.8, §13.9).
+traversal engines. They are configurations of one linked node, the family's own composition
+(§13.11). Tries are decided case by case (§13.8, §13.9).
 
 `LruCache`/`LfuCache` sit in `Mechanisms/Cache/LruCache/` and `Mechanisms/Cache/LfuCache/` beside
 `Mechanisms/Cache/ICache.cs`, which both implement; §17.6b says why they are mechanisms rather than
@@ -1194,6 +1196,80 @@ The contract suite, `SegmentTreeTests`, runs over five configurations, the trivi
 after a seeded script to the monoid's fold of a plain array that took the same updates, a range
 update reaching each element as the action's own `ApplyUpdate` over a range of one. That the trivial
 action keeps no tags is read off what its constructor allocates.
+
+### 13.11 One linked node: the forward link is the template's, a configuration adds its own
+
+The singly and doubly linked nodes were two classes with the same value and the same forward link,
+the second adding a back link, and the random-pointer node a third with a random link instead. They
+are one node now (the composition plan's C4, approved 2026-11-05), and what a configuration adds
+over the singly linked node is what it declares:
+
+| Configuration | Derives from | Adds |
+| --- | --- | --- |
+| `SinglyLinkedListNode<TValue>` | `LinkedNode<TNode, TValue>` | nothing: a value and `Next` |
+| `DoublyLinkedListNode<TValue>` | `LinkedNode<TNode, TValue>` | `Previous`, the back link `DoublyLinkedList`'s O(1) unlink needs |
+| `RandomLinkedListNode<TValue>` | `LinkedNode<TNode, TValue>` | `Random`, LC 138's pointer to any node |
+
+**The forward link is the template's.** Every list links forward, so `Value` and `Next` are
+auto-properties of `LinkedNode<TNode, TValue>`, which is the forward contract: `CycleDetection` asks
+for that class and nothing more, so it walks all three configurations and a back link is not a
+member it could reach. The singly linked node declares nothing, so it has no back-link field, member
+or write to compile: `LinkedNodeTests` reads off the allocation count that it takes what a class
+with an int and one reference takes, a reference less than the doubly linked node. The
+configurations derive with `TNode` fixed to themselves, so `Next` is typed as the configuration and
+every name the users wrote, `SinglyLinkedListNode<int>`, `new DoublyLinkedListNode<T> { Value = ...
+}`, `node.Previous`, is unchanged; the constructors are `private protected`, so the three are the
+whole set, §13.10's arrangement. There is no singly linked list class: no user needs one, and the
+three operations `DoublyLinkedList` has are the ones a back link makes O(1).
+
+**Why an added link is a plain property.** The plan said "links are structs" and that `Previous`
+would be a C# 14 extension member over a back-link contract. Each was built and read in tier-1 code
+against 08214dd8, and each cost the users' code work the old nodes did not:
+- All links, `Next` included, in a link struct generic over the node: the struct is shared code,
+  since the node is a class, and `CycleDetection`, itself shared over the node, called the struct's
+  getter through a runtime lookup on every step (`FindMeetingPoint` 50 to 214 bytes, seven calls).
+- Generic over the value instead, the walk was back to 50 bytes, but every `Next` was two inlinees,
+  the template's getter (18 bytes of IL, through the contract) and the struct's, and the inliner
+  charges each against a fixed budget (§19.8): LC 3510's arm newly refused
+  `ObjectEqualityComparer.GetHashCode`. With `Next` and `Previous` in one struct field the JIT,
+  which tells two fields of an object apart but not two fields of a struct field, read
+  `node.Previous` again after writing `previous.Next` in `DoublyLinkedList.Remove`.
+- `Next` the template's and only the added link a struct (`BackLink`, `RandomLink`), with `Previous`
+  the extension member: the instructions were the old ones, but `node.Previous` was an inlinee of 18
+  bytes of IL where the property had been 7, and in roots already near their budget the inliner left
+  it a call. LC 146's arm refused the `Previous` getter and setter in three of four runs, and the
+  two-pass A/B read LC 381 9-15% slower at 200 operations.
+
+So every link is a field of the node and every access is an auto-property's, as before. The back
+link is the doubly linked node's own `Previous`, which is what distinguishes it, and the random link
+the random-pointer node's `Random`; there is no back-link contract, since nothing is written over
+one.
+
+**What the JIT made of it.** Tier-1 code read with `DOTNET_JitDisasm` under the `inlining` verb
+(§19.8), 15 s an arm, twice a side with dynamic PGO and once without, against 08214dd8:
+- Singly linked: LC 206's `ReverseListByIterativeRewire` (46 bytes) and
+  `LeetCodeWireFormat.ToLinkedList` are identical byte for byte, LC 21's `MergeByDummyHeadSplice`
+  (152) identical to one of the two runs before, as the two runs before differ.
+- `CycleDetection`: `FindMeetingPoint` (50 bytes) and `FindEntryNode` (24, 22 without PGO) are the
+  same instructions with the registers moved by one, for the generic context the shared method now
+  takes. With PGO both are inlined into LC 141's and LC 142's methods, which are the same size (59,
+  81 bytes). Without PGO those call them, passing the instantiation as a constant: two instructions
+  more per call (LC 141 24 to 37 bytes, LC 142 47 to 67).
+- Doubly linked and random-pointer: `DoublyLinkedList`'s `AddFront` (74 bytes), `Remove` (49),
+  `PopBack` (57, 31 without PGO) and constructor (99), the methods of `LruCache`, `LfuCache` and LC
+  381's collection and LC 432's splices are the same instructions with the fields at other offsets,
+  and `Previous`'s getter and setter (5 and 11 bytes) are the old auto-property's. What differs, the
+  benchmark roots that inline a whole replay (LC 146, 381 and 460) and LC 432's `Inc`, differs
+  between PGO runs on both sides, and no link accessor is left a call in any of them. LC 3510's
+  `MergeCandidate` keeps an array's length in a register in an inlined heap push with PGO (4 bytes),
+  and LC 138's `Clone`, in one PGO run of each pair, has a 16-byte larger frame and one more bounds
+  check in an inlined `HashMap` insert (1171 bytes for 1154); both are the same instructions without
+  PGO.
+
+The contract suites run over all three configurations: `LinkedNodeTests` (value, forward link, chain
+walk, allocation) and `CycleDetectionTests` (every chain of up to nine nodes, acyclic and with its
+tail rejoining each node, and a doubly linked chain whose back links close a ring but whose forward
+links end).
 
 ## 14. Worked example: the three Storage/Operations decompositions
 
@@ -1645,7 +1721,9 @@ Besides the facts and contracts above, what a baseline may meet without offence 
 - every type its entries' parameters name, and whatever a member of that input hands back, since
   the container the harness chose holds it;
 - the types that stand for LeetCode's own I/O shapes: `BinaryTreeNode`, `SinglyLinkedListNode`,
-  `QuadTreeNode`, and the `ICache` the LRU and LFU design problems are driven through.
+  `QuadTreeNode`, and the `ICache` the LRU and LFU design problems are driven through. A base class
+  one of them derives from with its own type as an argument is part of that shape: the singly linked
+  node's `Next` and `Value` are declared by `LinkedNode<SinglyLinkedListNode<int>, int>` (§13.11).
 
 A reach through code the baseline never runs goes in `AllowedReaches` with the reason. An entry the
 trace no longer needs fails the suite.

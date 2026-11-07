@@ -59,6 +59,24 @@ public sealed partial class DoublyLinkedListTests
         Assert.Equal(3, list.PopBack().Value);
     }
 
+    // AddFront puts last before middle before first, so taking out middle leaves last and first
+    // linked to each other in both directions.
+    [Fact]
+    public void Remove_MiddleNode_LinksItsNeighboursToEachOtherBothWays()
+    {
+        var list = new DoublyLinkedList<int>();
+        var first = new DoublyLinkedListNode<int> { Value = 1 };
+        var middle = new DoublyLinkedListNode<int> { Value = 2 };
+        var last = new DoublyLinkedListNode<int> { Value = 3 };
+        list.AddFront(first);
+        list.AddFront(middle);
+        list.AddFront(last);
+
+        list.Remove(middle);
+
+        Assert.Equal((first, last), (last.Next, first.Previous));
+    }
+
     [Fact]
     public void Remove_HeadNode_SplicesRemainingNodesCorrectly()
     {
