@@ -60,6 +60,12 @@ public sealed partial class SharedValueCopyTests
             "The two steps LC 1404 takes on an odd number, add one then halve, not how many binary digits there are.",
         ["DSAExperimentation.LeetCode.Solutions.NumberOfWaysToReorderArrayToGetSameBST.NumberOfWaysToReorderArrayToGetSameBSTSolution.BinaryChildCount"] =
             "The children a binary tree's node has, not how many binary digits there are.",
+        ["DSAExperimentation.LeetCode.Solutions.QueriesOnAPermutationWithKey.QueriesOnAPermutationWithKeyConstants.FirstPermutationValue"] =
+            "The first value of LC 1409's list P = [1..m], not a permutation's sign.",
+        ["DSAExperimentation.LeetCode.Solutions.StringTransformation.StringTransformationSolution.EvenExponentSign"] =
+            "(-1)^k for even k, a residue in LC 2851's closed form, not a permutation's sign.",
+        ["DSAExperimentation.LeetCode.Solutions.LinkedListCycleII.LinkedListCycleIISolution.NoCycle"] =
+            "LC 142's answer for a list with no cycle, not a permutation's sign.",
     };
 
     private static readonly Lazy<IReadOnlyList<LibraryValueCopies.Copy>> Copies =

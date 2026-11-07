@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Solutions.CouplesHoldingHands;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are CouplesHoldingHandsSolution's, the same methods
+// Harness only: every arm is CouplesHoldingHandsSolution's, the same methods
 // CouplesHoldingHandsSolutionTests proves correct. The row is a random permutation of
 // every seat so most couples start scattered instead of already paired.
 public class CouplesHoldingHandsBenchmarks
@@ -42,4 +42,8 @@ public class CouplesHoldingHandsBenchmarks
 
     [Benchmark]
     public int DisjointSetComponentCounting() => CouplesHoldingHandsSolution.MinSwapsByDisjointSet(_row);
+
+    [Benchmark]
+    public int PermutationCycleCounting() =>
+        CouplesHoldingHandsSolution.MinSwapsByPermutationCycles(_row);
 }

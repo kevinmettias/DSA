@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.Domain.Mathematics.Groups;
 
 namespace DSAExperimentation.LeetCode.Solutions.CouplesHoldingHands;
 
@@ -14,10 +15,17 @@ namespace DSAExperimentation.LeetCode.Solutions.CouplesHoldingHands;
 // structure instead of an adjacency matrix. A permutation decomposed into cycles
 // needs exactly (cycleLength - 1) swaps per cycle to fix, and summing that over
 // every component simplifies to coupleCount minus the distinct-root count, counted
-// with this repo's own Set<int>.
-[LeetCodeQuestion("couples-holding-hands", LeetCodeAnswerOrder.AsWritten)]
+// with this repo's own Set<int>. A third strategy reads the same cycles off one
+// permutation of the seats, composed and counted by Domain's Permutation.
+[LeetCodeQuestion(
+    "couples-holding-hands",
+    LeetCodeAnswerOrder.AsWritten,
+    Promise = typeof(CouplesHoldingHandsPromise))]
 internal static class CouplesHoldingHandsSolution
 {
+    // Each cycle of couples is walked twice by the seat permutation below, once each way round.
+    private const int WaysRoundACycle = 2;
+
     // The greedy swap simulation every LeetCode editorial leads with. Deliberately
     // written without this repo's primitives - it is the arm the composed solution
     // below has to justify itself against.
@@ -96,5 +104,37 @@ internal static class CouplesHoldingHandsSolution
         }
 
         return coupleCount - roots.Count;
+    }
+
+    // The same cycles in the group of permutations of the seats. X swaps seats 2k and 2k + 1, which
+    // pairs a couple's two people as well as a bench's two seats, and the seating R sends each seat
+    // to the person in it. From a seat, R^-1 X R is the seat of its occupant's partner, and X then
+    // crosses to that bench's other seat, so f = X R^-1 X R, the commutator of the partner swap and
+    // the seating, walks from bench to bench along a cycle of couples. A cycle of k couples is two
+    // of f's cycles of k seats, one each way round, and a couple already together is two fixed
+    // seats, so couples minus cycles of couples is couples minus half of f's cycles.
+    public static int MinSwapsByPermutationCycles(int[] row)
+    {
+        var seating = Permutation.FromImages(row);
+        var partnerSwap = PartnerSwap(row.Length);
+        var nextSeat = partnerSwap.After(seating.Inverse()).After(partnerSwap).After(seating);
+        var coupleCount = row.Length / CouplesHoldingHandsConstants.SeatsPerCouple;
+        var coupleCycles = PermutationCycles.Count(nextSeat) / WaysRoundACycle;
+
+        return coupleCount - coupleCycles;
+    }
+
+    // X: seats 2k and 2k + 1 swapped, which also sends each person to their partner.
+    private static Permutation PartnerSwap(int seatCount)
+    {
+        var partners = new int[seatCount];
+
+        for (var seat = 0; seat < seatCount; seat += CouplesHoldingHandsConstants.SeatsPerCouple)
+        {
+            partners[seat] = seat + 1;
+            partners[seat + 1] = seat;
+        }
+
+        return Permutation.FromImages(partners);
     }
 }

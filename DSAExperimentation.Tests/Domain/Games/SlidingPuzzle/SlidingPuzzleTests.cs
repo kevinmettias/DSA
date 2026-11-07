@@ -2,6 +2,7 @@ using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.States;
 using DSAExperimentation.Domain.Games.SlidingPuzzle;
+using DSAExperimentation.Domain.Mathematics.Groups;
 
 namespace DSAExperimentation.Tests.Domain.Games.SlidingPuzzle;
 
@@ -55,6 +56,40 @@ public sealed partial class SlidingPuzzleTests
 
     [Fact]
     public void InversionCount_LeavesTheEmptyCellOut() => Assert.Equal(1, SlidingPuzzle<TwoByThree>.InversionCount("213045"));
+
+    [Fact]
+    public void TilePermutation_OfTheSolvedBoard_IsTheIdentity() =>
+        Assert.Equal(
+            Permutation.Identity(15),
+            SlidingPuzzle<FifteenPuzzle>.TilePermutation("123456789ABCDEF0"));
+
+    // Tiles 14 and 15 are points 13 and 14, read in each other's places.
+    [Fact]
+    public void TilePermutation_OfLoydsFourteenFifteen_SwapsTheLastTwoTiles() =>
+        Assert.Equal(
+            Permutation.FromCycles(15, [13, 14]),
+            SlidingPuzzle<FifteenPuzzle>.TilePermutation("123456789ABCDFE0"));
+
+    [Fact]
+    public void TilePermutation_LeavesTheEmptyCellOut() =>
+        Assert.Equal(
+            Permutation.FromImages([1, 0, 2, 3, 4]),
+            SlidingPuzzle<TwoByThree>.TilePermutation("213045"));
+
+    [Fact]
+    public void TilePermutation_IsEvenExactlyWhenTheInversionsAre()
+    {
+        var space = new PuzzleSlides<TwoByThree>();
+
+        Assert.All(Enumerable.Range(0, space.StateCount).Select(space.StateAt), board =>
+            Assert.Equal(
+                int.IsEvenInteger(SlidingPuzzle<TwoByThree>.InversionCount(board)),
+                PermutationCycles.IsEven(SlidingPuzzle<TwoByThree>.TilePermutation(board))));
+    }
+
+    [Fact]
+    public void TilePermutation_WithATileTwice_Throws() =>
+        Assert.Throws<ArgumentException>(() => SlidingPuzzle<TwoByThree>.TilePermutation("113045"));
 
     [Theory]
     [MemberData(nameof(SolvableTwoByThreeBoards))]

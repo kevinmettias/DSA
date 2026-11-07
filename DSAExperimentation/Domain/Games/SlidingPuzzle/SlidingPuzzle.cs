@@ -1,3 +1,5 @@
+using DSAExperimentation.Domain.Mathematics.Groups;
+
 namespace DSAExperimentation.Domain.Games.SlidingPuzzle;
 
 // What every sliding puzzle does, for the board TBoard names. A board is spelled row by row, one
@@ -7,14 +9,18 @@ namespace DSAExperimentation.Domain.Games.SlidingPuzzle;
 // read in order with the empty cell last.
 //
 // Which arrangements can be solved is the puzzle's parity law, which holds for every rectangular
-// board. A slide along a row leaves the tiles' order, so the number of pairs out of order (the
-// inversions) is unchanged; a slide along a column moves one tile past Columns - 1 others. On a
-// board an odd number of cells wide that is an even change, so the inversions' parity never changes,
-// and an arrangement is solvable exactly when its inversions are even, as the solved board's are. On
-// an even width each column move flips the inversions' parity and moves the empty cell one row, so
-// inversions plus the empty cell's row, counted from the bottom, keeps its parity: an arrangement is
-// solvable exactly when that sum is odd, as the solved board's 0 + 1 is. Half of all arrangements are
-// solvable either way.
+// board. The tiles read row by row, the empty cell left out, come in an order that is a permutation
+// of them, the tiles' permutation, and the solved board's is the identity. A slide along a row
+// leaves the order alone. A slide along a column moves one tile past Columns - 1 others, a cycle of
+// Columns tiles in the order, whose sign is (-1)^(Columns - 1). On a board an odd number of cells
+// wide that sign is +1, so the permutation's parity never changes, and an arrangement is solvable
+// exactly when its tiles' permutation is even, as the identity is. On an even width each column
+// slide flips the parity and moves the empty cell one row, so the two flip together: an arrangement
+// is solvable exactly when the permutation is even with the empty cell on an odd row counted from
+// the bottom, or odd with it on an even row, as the solved board's identity on row 1 is. Half of
+// all arrangements are solvable either way. The parity comes from the permutation's cycles
+// (Domain/Mathematics/Groups), and is the parity of the inversions, the pairs of tiles out of
+// order, which InversionCount counts.
 /// <summary>The arrangements of a sliding puzzle, the slides between them, and which can be solved.</summary>
 /// <typeparam name="TBoard">The board's shape.</typeparam>
 public static class SlidingPuzzle<TBoard>
@@ -25,6 +31,10 @@ public static class SlidingPuzzle<TBoard>
 
     // A cell's symbol by what it holds: the empty cell, then the tiles in order.
     private const string Symbols = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    // Where the tiles start among the symbols: after the empty cell's. Tile k is point k - 1 of the
+    // tiles' permutation, so the solved board's is the identity.
+    private const int FirstTile = 1;
 
     // The most cells the empty cell can trade places with: one each way along a row and a column.
     private const int MostNeighbours = 4;
@@ -80,18 +90,41 @@ public static class SlidingPuzzle<TBoard>
     /// <summary>Tells whether slides can bring an arrangement to <see cref="Solved"/>, by the parity law.</summary>
     /// <param name="board">An arrangement, spelled row by row.</param>
     /// <returns>True when the arrangement can be solved.</returns>
+    /// <exception cref="ArgumentException">
+    /// The board does not hold each of its tiles once.
+    /// </exception>
     public static bool IsSolvable(string board)
     {
-        var inversions = InversionCount(board);
+        var tiles = TilePermutation(board);
+        var tilesAreEven = PermutationCycles.IsEven(tiles);
 
         if (int.IsOddInteger(TBoard.Columns))
         {
-            return int.IsEvenInteger(inversions);
+            return tilesAreEven;
         }
 
         var emptyRowFromBottom = TBoard.Rows - (board.IndexOf(Empty) / TBoard.Columns);
+        var emptyRowIsOdd = int.IsOddInteger(emptyRowFromBottom);
 
-        return int.IsOddInteger(inversions + emptyRowFromBottom);
+        return tilesAreEven == emptyRowIsOdd;
+    }
+
+    /// <summary>
+    /// Reads the tiles' permutation: the order the tiles come in, row by row with the empty cell
+    /// left out, tile k as point k - 1, so the solved board's is the identity.
+    /// </summary>
+    /// <param name="board">An arrangement, spelled row by row.</param>
+    /// <returns>The permutation sending each tile's place in the reading to its point.</returns>
+    /// <exception cref="ArgumentException">
+    /// The board does not hold each of its tiles once.
+    /// </exception>
+    public static Permutation TilePermutation(string board)
+    {
+        var tiles = board.Where(symbol => symbol != Empty)
+            .Select(symbol => Symbols.IndexOf(symbol) - FirstTile)
+            .ToArray();
+
+        return Permutation.FromImages(tiles);
     }
 
     /// <summary>Counts the pairs of tiles out of order, the empty cell left out.</summary>

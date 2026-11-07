@@ -16,5 +16,8 @@ public readonly struct BitwiseXor<Element> : IAbelianGroup<Element>
     /// <returns>The bitwise XOR of <paramref name="left"/> and <paramref name="right"/>.</returns>
     public static Element Combine(Element left, Element right) => left ^ right;
 
+    /// <summary>Inverts a value under XOR, which leaves it as it is.</summary>
+    /// <param name="value">The value to invert.</param>
+    /// <returns>The value itself, since XOR-ing it with itself gives zero.</returns>
     public static Element Invert(Element value) => value;
 }

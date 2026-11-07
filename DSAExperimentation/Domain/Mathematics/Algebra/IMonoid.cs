@@ -5,9 +5,10 @@ namespace DSAExperimentation.Domain.Mathematics.Algebra;
 // structure demanding exactly the position its own arithmetic needs:
 //
 //   IMonoid                  SegmentTree         merge two adjacent ranges' values
-//   - IAbelianGroup          FenwickTree,        + Invert: a range is a difference of two prefixes
+//   - IGroup                 (none yet)          + Invert: a combination can be undone
+//     - IAbelianGroup        FenwickTree,        + commuting: a range is a difference of prefixes
 //                            PrefixSums
-//     - IIntegerModule       RangeFenwickTree    + Scale: a range update is a scaled prefix
+//       - IIntegerModule     RangeFenwickTree    + Scale: a range update is a scaled prefix
 //   IRangeUpdateOperation    SegmentTree with    + an update action, kept structure-local
 //                            range updates
 //
