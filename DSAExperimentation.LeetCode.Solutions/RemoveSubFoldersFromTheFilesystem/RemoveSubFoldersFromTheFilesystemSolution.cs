@@ -11,22 +11,19 @@ namespace DSAExperimentation.LeetCode.Solutions.RemoveSubFoldersFromTheFilesyste
 // ordinal-sorted order.
 //
 // Both strategies hinge on the same containment rule: "/a/b/ca" is not a subfolder of
-// "/a/b/c" even though it shares that raw string prefix, so every prefix test is
-// against "<folder>/" rather than "<folder>".
+// "/a/b/c" even though it shares that raw string prefix, so a folder lies inside
+// another only where the separator follows that prefix.
 //
-// That rule and the separator are the filesystem's (Domain/Computing/Filesystem): the sort-then-scan
-// arm asks NamePath<FolderPaths>, which reads the separator in place instead of building "<folder>/",
-// and the pairwise baseline keeps its own copy (ARCHITECTURE §17.5).
+// That rule and the separator are the filesystem's (Domain/Computing/Filesystem), and both arms
+// ask it of NamePath<FolderPaths>, which reads the separator in place instead of building
+// "<folder>/" (ARCHITECTURE §17.5). What they differ in is which pairs they ask about.
 [LeetCodeQuestion("remove-sub-folders-from-the-filesystem", LeetCodeAnswerOrder.AnyOrder)]
 internal static class RemoveSubFoldersFromTheFilesystemSolution
 {
-    // The baseline's own copy of the separator LC 1233 writes folder paths with.
-    private const string PathSeparator = "/";
-
     // The textbook answer: for every folder, scan every other folder and ask whether
-    // it is an ancestor - O(n^2) prefix comparisons, no ordering assumed and nothing
-    // from this repo involved. This is the arm the sort-then-scan below has to
-    // justify itself against.
+    // it is an ancestor - O(n^2) containment tests, no ordering assumed and no
+    // structure from this repo involved. This is the arm the sort-then-scan below has
+    // to justify itself against.
     public static List<string> RemoveSubfoldersByPairwisePrefixCheck(string[] folders)
     {
         var kept = new List<string>();
@@ -47,7 +44,7 @@ internal static class RemoveSubFoldersFromTheFilesystemSolution
         for (var other = 0; other < folders.Length; other++)
         {
             if (other != index &&
-                folders[index].StartsWith(folders[other] + PathSeparator, StringComparison.Ordinal))
+                new NamePath<FolderPaths>(folders[other]).HasInside(folders[index]))
             {
                 return true;
             }

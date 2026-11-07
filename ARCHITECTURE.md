@@ -893,7 +893,7 @@ specifically:
 | Folder | Holds |
 | --- | --- |
 | `Computing/Binary/` | `BitWidths` — how many bits a machine integer holds, read by the bit tries and by LC 191, LC 190 and LC 137 |
-| `Computing/Filesystem/` | `FolderPaths`, `WindowsPaths` — the folder-path notation, `/` between names with the root first, read by LC 1233's sort-then-scan arm through `NamePath<FolderPaths>`, and Windows', `\` with the drive first |
+| `Computing/Filesystem/` | `FolderPaths`, `WindowsPaths` — the folder-path notation, `/` between names with the root first, read by both of LC 1233's arms through `NamePath<FolderPaths>`, and Windows', `\` with the drive first |
 | `Computing/FloatingPoint/` | `Binary64`, `FloatingPointClass` — IEEE 754's binary64 format, .NET's `double`: its field widths, the machine epsilon (2^-52, not .NET's `double.Epsilon`, which is the smallest subnormal), the smallest normal number, and a double's class among IEEE's ten, read from `double`'s own constants and encoding. No solution reads it |
 | `Computing/Networking/` | `DomainNames` — labels joined by `.` with the root last, the root-last notation `NamePath` reads at the back |
 | `Computing/Paths/` | `IPathNotation`, `NamePath` — a path through a tree of names in a notation, and whether another path lies inside it, one rule for root-first notations (folder paths) and root-last ones (domain names) |
