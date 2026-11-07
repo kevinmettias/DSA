@@ -47,6 +47,17 @@ public sealed partial class CatalogStrategyTests
     }
 
     [Fact]
+    public void AnswerTo_TryMethodAnsweringInPlace_AnswersWithItsInputNotItsResult()
+    {
+        var strategy = CatalogStrategy.Of(typeof(TryInPlaceProbeSolution)).Single();
+        var columns = strategy.Columns();
+
+        var answer = strategy.AnswerTo(columns, 0);
+
+        Assert.Equal(columns.Cases[0].ExpectedOutput, answer.ToJsonString());
+    }
+
+    [Fact]
     public void Of_DesignSolution_FindsTheFactoriesThatMakeItsInstance() =>
         Assert.Equal([nameof(ScriptProbeSolution.CreateByDictionary)], CatalogStrategy.Of(typeof(ScriptProbeSolution)).Select(strategy => strategy.Name));
 

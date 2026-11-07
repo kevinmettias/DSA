@@ -2740,8 +2740,8 @@ call to find these, and each of the 27 now says `RewritesInput = true`.
 A solution that passes every case still stays out when its question has no recorded output to judge,
 since a check over none would pass whatever the strategy did, until a correction records one.
 
-**Enrolled.** 1,102 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 506 more:
+**Enrolled.** 1,103 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 507 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -3110,6 +3110,15 @@ since a check over none would pass whatever the strategy did, until a correction
     narrowing now counts a JsonNode as the declared type when the notation reads that type into none of
     this repository's own, LeetCode's NestedInteger being the one, in the harness and the generator
     alike. Its factories took the name `FlattenBy`, beside their LeetCode shape.
+- Sudoku Solver, once an in-place strategy could be a Try method: it returns whether it solved the
+  board, which LeetCode's judge never reads, and leaves its answer in the board, in the harness and the
+  generator alike. Of the dataset's 19 generated boards, 11 have no solution and four more than one, so
+  a promise keeps the boards with exactly one, as LeetCode guarantees, counting each board's solutions
+  to two with the library's backtracking engine over Sudoku's rule, branching on the most constrained
+  cell (`SudokuSolverPromise`). The dataset records no board for the four it keeps, its reference
+  printing nothing for a function answered in place, so a correction records each one's solution, from
+  a brute force run outside the repository. The slow arm measured before no longer shows: both
+  strategies answer all 20 cases in 25 ms.
 
 Open items:
 
@@ -3128,16 +3137,10 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 3 solutions are left (2026-11-06):
+- **Enrolling the rest.** 2 solutions are left (2026-11-06):
   - A slow strategy no reach can bound: Maximum Number of Moves to Kill All Pawns' graph arm spends
     about 35 ms on every case, two pawns or fifteen, so no bound on its input keeps more than 4 of its
     96 cases.
-  - Sudoku Solver's strategies return whether they solved the board, where LeetCode's answers in place
-    and returns nothing, as `AnswersInPlace` requires. Letting an in-place strategy return a value
-    besides would bind them, but would enroll little: only LeetCode's example records an output, the
-    dataset recording no changed board; of its 19 generated puzzles at least 8 have no solution at all;
-    and two of them, each with 60 empty cells, run the backtracking-engine arm past 0.8 s and 3 s where
-    another with 60 empty cells takes 12 ms, so no count of empty cells bounds them.
   - Linked List Cycle II records no output, its examples stating the answer in prose; a correction and
     a LeetCode shape returning the cycle's entry index would enroll it, as they did Intersection of Two
     Linked Lists. It waits on another session's open linked-list change to the same solution.

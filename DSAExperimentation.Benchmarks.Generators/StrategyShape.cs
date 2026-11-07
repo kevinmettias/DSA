@@ -11,7 +11,7 @@ internal sealed class StrategyShape
 {
     private const string Generic = "it is generic, so no one instantiation is the strategy";
     private const string NoStoredValue = "it answers in place or by reference, and an arm stores each case's answer by value";
-    private const string NoInPlaceAnswer = "its question answers in place, and it returns a value or takes no input to answer with";
+    private const string NoInPlaceAnswer = "its question answers in place, and it returns a value other than whether it succeeded, or takes no input to answer with";
     private const string TooManyOutputs = "its return value and out parameters are more than one tuple holds";
     private const string ItemSeparator = ", ";
 
@@ -98,9 +98,13 @@ internal sealed class StrategyShape
     private static bool HasNoAnswerToStore(IMethodSymbol method) =>
         method.ReturnsVoid || method.ReturnsByRef || method.ReturnType.IsRefLikeType;
 
-    // Returns nothing, and leaves its answer in a first parameter that a case fills.
+    // Returns nothing - or, as a Try method does, whether it succeeded, which LeetCode's judge never reads - and
+    // leaves its answer in a first parameter that a case fills.
     private static bool IsInPlaceAnswer(IMethodSymbol method) =>
-        method.ReturnsVoid && method.Parameters.Length > 0 && method.Parameters[0].RefKind == RefKind.None;
+        IsUnreadByTheJudge(method) && method.Parameters.Length > 0 && method.Parameters[0].RefKind == RefKind.None;
+
+    private static bool IsUnreadByTheJudge(IMethodSymbol method) =>
+        method.ReturnsVoid || method.ReturnType.SpecialType == SpecialType.System_Boolean;
 
     private static string? ReasonUnbound(IParameterSymbol parameter) => parameter.RefKind switch
     {

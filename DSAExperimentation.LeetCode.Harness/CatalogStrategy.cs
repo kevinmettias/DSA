@@ -137,9 +137,12 @@ internal sealed class CatalogStrategy
         return parameters.All(parameter => parameter.IsOut || IsReadableInput(parameter.ParameterType));
     }
 
-    // Returns nothing, and leaves its answer in a first parameter that a case fills.
+    // Returns nothing - or, as a Try method does, whether it succeeded, which LeetCode's judge never reads - and
+    // leaves its answer in a first parameter that a case fills.
     private static bool IsInPlaceAnswer(MethodInfo method, ParameterInfo[] parameters) =>
-        method.ReturnType == typeof(void) && parameters is [{ IsOut: false }, ..];
+        IsUnreadByTheJudge(method.ReturnType) && parameters is [{ IsOut: false }, ..];
+
+    private static bool IsUnreadByTheJudge(Type returnType) => returnType == typeof(void) || returnType == typeof(bool);
 
     // The one overload that makes a design question's object: taking the constructor's inputs, each of them
     // readable, and returning the object its calls are made on.

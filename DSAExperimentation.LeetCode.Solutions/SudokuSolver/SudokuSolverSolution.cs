@@ -28,6 +28,7 @@ namespace DSAExperimentation.LeetCode.Solutions.SudokuSolver;
 // to branch on next (FindEmptyCell) is the search's own choice and stays here.
 // The specialized recursion reads the board's size there too, and keeps its own
 // placement check, the simple form (ARCHITECTURE §17.5).
+[LeetCodeQuestion("sudoku-solver", LeetCodeAnswerOrder.AsWritten, AnswersInPlace = true, Promise = typeof(SudokuSolverPromise))]
 internal static class SudokuSolverSolution
 {
     // The textbook answer: a hand-specialized recursion that places a digit,
