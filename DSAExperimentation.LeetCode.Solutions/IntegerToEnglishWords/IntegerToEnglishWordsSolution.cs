@@ -1,3 +1,7 @@
+using System.Text;
+using DSAExperimentation.Domain.Language.English.NumberNames;
+using DSAExperimentation.Domain.Language.English.NumberNames.Composition;
+using DSAExperimentation.Domain.Language.English.NumberNames.Scales;
 using DSAExperimentation.Domain.Mathematics.Numerals;
 using Vocabulary = DSAExperimentation.LeetCode.Solutions.IntegerToEnglishWords.IntegerToEnglishWordsVocabulary;
 using WordStack = DSAExperimentation.DataStructures.Stack.Stack<string>;
@@ -15,6 +19,11 @@ namespace DSAExperimentation.LeetCode.Solutions.IntegerToEnglishWords;
 // Stack<string>, pushed bottom-up and popped once into reading order in a
 // single string.Join - the same "build reversed, un-reverse through a
 // stack" composition AddBinarySolution uses for carry digits.
+//
+// A third strategy, instructive beside them, hands the whole number to English's
+// own rules for composing number words (Domain/Language/English/NumberNames),
+// configured with the short scale: they read the groups highest first, so nothing
+// is reversed, and the words go straight into LC 273's notation through a sink.
 [LeetCodeQuestion("integer-to-english-words", LeetCodeAnswerOrder.AsWritten)]
 internal static class IntegerToEnglishWordsSolution
 {
@@ -101,6 +110,15 @@ internal static class IntegerToEnglishWordsSolution
         }
 
         stack.Push(GroupToWords(group));
+    }
+
+    // English's composer in the short scale writes the words in reading order into a
+    // sink that spells them as LC 273 does.
+    public static string NumberToWordsByShortScaleComposer(int num)
+    {
+        var sink = new LeetCodeNumberWordSink(new StringBuilder());
+        EnglishNumberNames<ShortScale>.Compose((ulong)num, ref sink);
+        return sink.Text.ToString();
     }
 
     private static string GroupToWords(int group)

@@ -1,17 +1,19 @@
 using System.Collections.Immutable;
 
-namespace DSAExperimentation.Domain.Language.English;
+namespace DSAExperimentation.Domain.Language.English.NumberNames;
 
-// English's words for numbers, each a named value carrying its number. Every number below twenty has a
-// word of its own, the tens from twenty to ninety have theirs, and then come a hundred and a word for
-// each power of a thousand, thousand through quintillion, the last a long reaches. Those powers are the
-// short scale, the one English uses today. The long scale, in which a billion is a million million,
-// and Indian English's lakh (100,000) and crore (10,000,000) group a number's digits differently, and
-// how the words are put together follows the grouping, so composing them is left to the caller and
-// only the words are stated here (ARCHITECTURE §17.10). The words are lowercase, as written within a
-// sentence; a notation that capitalizes them is its user's. Each list is sorted by number as it is
-// built, so the order the words are written in below cannot misplace one.
-/// <summary>English's number words: zero to nineteen, the tens, a hundred, and the short scale's powers of a thousand.</summary>
+// English's words for numbers, each a named value carrying its number. Every number below twenty
+// has a word of its own, the tens from twenty to ninety have theirs, and then come a hundred and a
+// word for each power of a thousand, thousand through quintillion, the last a long reaches. Those
+// powers are the short scale, the one English uses today; the long scale and Indian English's lakh
+// and crore name the groups of a number's digits differently, and each is a scale of its own
+// (INumberScale) that EnglishNumberNames composes words by. The words are lowercase, as written
+// within a sentence; a notation that capitalizes them is its user's. Each list is sorted by number
+// as it is built, so the order the words are written in below cannot misplace one.
+/// <summary>
+/// English's number words: zero to nineteen, the tens, a hundred, and the short scale's powers of a
+/// thousand.
+/// </summary>
 public static class EnglishNumberWords
 {
     /// <summary>Zero, 0.</summary>
@@ -119,57 +121,25 @@ public static class EnglishNumberWords
     /// <summary>A quintillion on the short scale, 10^18.</summary>
     public static NumberWord Quintillion { get; } = new(1_000_000_000_000_000_000, "quintillion");
 
-    /// <summary>Zero to nineteen, the numbers with a word of their own, each at the index of its number.</summary>
+    /// <summary>
+    /// Zero to nineteen, the numbers with a word of their own, each at the index of its number.
+    /// </summary>
     public static ImmutableArray<NumberWord> OwnWords { get; } = SortedByNumber(
         Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine,
         Ten, Eleven, Twelve, Thirteen, Fourteen, Fifteen, Sixteen, Seventeen, Eighteen, Nineteen);
 
-    /// <summary>The tens a larger number is composed from, twenty to ninety, in increasing order.</summary>
+    /// <summary>
+    /// The tens a larger number is composed from, twenty to ninety, in increasing order.
+    /// </summary>
     public static ImmutableArray<NumberWord> Tens { get; } = SortedByNumber(
         Twenty, Thirty, Forty, Fifty, Sixty, Seventy, Eighty, Ninety);
 
-    /// <summary>The short scale's word for each power of a thousand, thousand to quintillion, in increasing order.</summary>
+    /// <summary>
+    /// The short scale's word for each power of a thousand, thousand to quintillion, in increasing
+    /// order.
+    /// </summary>
     public static ImmutableArray<NumberWord> ShortScale { get; } = SortedByNumber(
         Thousand, Million, Billion, Trillion, Quadrillion, Quintillion);
-
-    // TODO: SHOULD WE CONTINUE WITH THE LONG SCALE (SEXTILLION, SEPTILLION, GOOGOL, GOOGOLPLEX, ETC.)?
-
-    // TODO: CONSIDER WHETHER TO INCLUDE ORDINAL NUMBER WORDS (FIRST, SECOND, THIRD, ETC.).
-
-    // TODO: CONSIDER WHETHER TO INCLUDE FRACTIONAL NUMBER WORDS (HALF, THIRD, QUARTER, ETC.).
-
-    // TODO: CONSIDER WHETHER TO INCLUDE FUNCTION TO GENERATE COMPOUND NUMBER WORDS (TWENTY-ONE, THIRTY-TWO, ETC.).
-
-    // TODO: CONSIDER WHETHER TO INCLUDE FUNCTION FOR NEGATIVE NUMBER WORDS (MINUS ONE, MINUS TWO, ETC.).
-
-    // TODO: CONSIDER WHETHER TO INCLUDE FUNCTION FOR DECIMAL NUMBER WORDS (POINT ONE, POINT TWO, ETC.).
-
-    // TODO: CONSIDER WHETHER TO INCLUDE FUNCTION FOR PERCENTAGE NUMBER WORDS (TEN PERCENT, TWENTY PERCENT, ETC.).
-
-    // TODO: CONSIDER WHETHER TO INCLUDE FUNCTION FOR ORDINAL PERCENTAGE NUMBER WORDS (TENTH PERCENT, TWENTIETH PERCENT, ETC.).
-    // TODO: CONSIDER WHETHER TO INCLUDE FUNCTION FOR COMPOUND PERCENTAGE NUMBER WORDS (TWENTY-FIRST PERCENT, THIRTY-SECOND PERCENT, ETC.).
-
-    // TODO: CONSIDER WHETHER TO INCLUDE FUNCTION FOR COMPOUND ORDINAL NUMBER WORDS (TWENTY-FIRST, THIRTY-SECOND, ETC.).
-
-    // TODO: CONSIDER WHETHER TO INCLUDE FUNCTION FOR COMPOUND FRACTIONAL NUMBER WORDS (ONE AND A HALF, TWO AND A THIRD, ETC.).
-
-    // TODO: CONSIDER WHETHER TO INCLUDE FUNCTION FOR MIXED NUMBER WORDS (ONE AND ONE-HALF, TWO AND TWO-THIRDS, ETC.).
-
-    // TODO: CONSIDER WHETHER TO INCLUDE INFINITE NUMBER WORDS (INFINITY, NEGATIVE INFINITY, ETC.), AND NAN (NOT A NUMBER).
-
-    // TODO: CONSIDER WHETHER TO INCLUDE COMPLEX AND HYPERCOMPLEX NUMBER WORDS (E.G., COMPLEX NUMBERS LIKE "THREE PLUS FOUR I").
-
-    // TODO: CONSIDER WHETHER TO INCLUDE FUNCTION FOR HYPERCOMPLEX NUMBER WORDS (E.G., QUATERNION NUMBERS LIKE "ONE PLUS TWO I PLUS THREE J PLUS FOUR K").
-
-    // TODO: CONSIDER WHETHER TO INCLUDE FUNCTION FOR TRANSFINITE NUMBER WORDS (E.G., ALEPH-NULL, ALEPH-ONE, ETC.), AND TRANSFINITE ORDINALS.
-
-    // TODO: CONSIDER WHETHER TO INCLUDE FUNCTION FOR GENERALIZED NUMBER WORDS (E.G., COMBINATIONS OF INFINITE, COMPLEX, AND HYPERCOMPLEX NUMBERS).
-
-    // TODO: MAYBE ONE GENERAL COMPOUND FUNCTION TO HANDLE ALL TYPES OF NUMBER WORDS.
-
-    // TODO: CONSIDER GROUPING NUMBER TYPES INTO CATEGORIES LIKE FINITE, INFINITE, COMPLEX, HYPERCOMPLEX, TRANSFINITE, ETC. CLASSES OR ENUMS. THAT CAN INCLUDE TENS, HUNDREDS, THOUSANDS, AND OTHER SCALES OF NUMBER WORDS.
-
-    // TODO: CONSIDER WHETHER TO SEPARATE THE NUMBERAL FROM THE NAME, SINCE WE HAVE ARABIC NUMERALS WITH ENGLISH NUMBER WORDS. MAYBE WE NEED A COMPOSITE STRUCTURE THAT HOLDS BOTH THE NUMERAL AND ITS CORRESPONDING WORD.
 
     private static ImmutableArray<NumberWord> SortedByNumber(params NumberWord[] words)
         => [.. words.OrderBy(word => word.Value)];

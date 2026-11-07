@@ -2,6 +2,20 @@
   "schema": 1,
   "waivers": [
     {
+      "check": "check-value-sharing",
+      "path": "DSAExperimentation/Domain/Language/English/NumberNames/Composition/NumberWordList.cs",
+      "reason": "A word sink is a struct by design: the composer EnglishNumberNames<TScale> takes it as a type argument constrained to struct and by ref, so each caller's sink compiles into the composer with no interface call, the repo's static-dispatch rule for every axis (ARCHITECTURE section 5, the owner's ruling of 2026-10-03). The reference it holds is the point of the sink: the caller made it, the composer appends to it, and the caller reads it afterwards, so a copy sharing it is the intended reading, as a List<T>.Enumerator copy shares its list. The sink is never stored or compared, only passed by ref for one composition. Its list is made by its constructor and never replaced.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
+      "check": "check-value-sharing",
+      "path": "DSAExperimentation.LeetCode.Solutions/IntegerToEnglishWords/LeetCodeNumberWordSink.cs",
+      "reason": "A word sink is a struct by design: the composer EnglishNumberNames<TScale> takes it as a type argument constrained to struct and by ref, so each caller's sink compiles into the composer with no interface call, the repo's static-dispatch rule for every axis (ARCHITECTURE section 5, the owner's ruling of 2026-10-03). The reference it holds is the point of the sink: the caller made it, the composer appends to it, and the caller reads it afterwards, so a copy sharing it is the intended reading, as a List<T>.Enumerator copy shares its list. The sink is never stored or compared, only passed by ref for one composition. LC 273's composer arm makes the StringBuilder, hands the sink over by ref and reads the builder once the words are in.",
+      "owner": "@kmettias",
+      "expires": "2027-05-01"
+    },
+    {
       "check": "check-responsibility-extraction",
       "path": "DSAExperimentation/Domain/Mathematics/ExtendedReals/AffinelyExtendedReal.cs",
       "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls a prefix cluster a review rather than an automatic defect, and `Try` is the BCL's attempt-returns-success shape (TryParse, TryGetValue), absent from the check's conventional-prefix table only by omission - the same reading as DataStructures/CircularBuffer/CircularBuffer.cs's own check-responsibility-extraction waiver. The five Try members (TryAdd, TrySubtract, TryMultiply, TryDivide, TryGetFinite) are this number type's whole arithmetic: each operation is undefined on some operands (infinity minus infinity, zero times infinity, a quotient of infinities), so a Try form answering false there is the only exact signature, and the type's subject is that one arithmetic. Extracting the operations would separate them from the private ends and finite value they read. The ninth public declaration is CompareTo, the order the affine extension keeps and the projective one lacks, so the count past eight is the subject itself, not a second one.",

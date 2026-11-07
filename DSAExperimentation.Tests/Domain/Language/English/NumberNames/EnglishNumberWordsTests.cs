@@ -1,7 +1,7 @@
 using DSAExperimentation.Domain.Language;
-using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.Domain.Language.English.NumberNames;
 
-namespace DSAExperimentation.Tests.Domain.Language.English;
+namespace DSAExperimentation.Tests.Domain.Language.English.NumberNames;
 
 // The words are the fact itself, so the tests state every one with the number it names, and check
 // that each table holds its words in order of number.

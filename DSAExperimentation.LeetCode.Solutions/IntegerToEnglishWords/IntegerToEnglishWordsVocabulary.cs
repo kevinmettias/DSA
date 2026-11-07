@@ -1,12 +1,12 @@
 using DSAExperimentation.Domain.Language;
-using DSAExperimentation.Domain.Language.English;
+using DSAExperimentation.Domain.Language.English.NumberNames;
 using DSAExperimentation.Domain.Mathematics.Numerals;
 
 namespace DSAExperimentation.LeetCode.Solutions.IntegerToEnglishWords;
 
 // LC 273's spelling of English's number words - data both strategies read, neither
 // carries. The words and the numbers they name are English's, in
-// Domain/Language/English's EnglishNumberWords; what is LC 273's own is the notation:
+// Domain/Language/English/NumberNames' EnglishNumberWords; what is LC 273's own is the notation:
 // every word capitalized, single spaces between them, and no hyphen in a compound
 // such as "Twenty One". The tables are built in that notation once, from the Domain
 // words, and the numbers the strategies split by are read from the words that name
