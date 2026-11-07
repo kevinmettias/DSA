@@ -2740,8 +2740,8 @@ call to find these, and each of the 27 now says `RewritesInput = true`.
 A solution that passes every case still stays out when its question has no recorded output to judge,
 since a check over none would pass whatever the strategy did, until a correction records one.
 
-**Enrolled.** 1,103 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
-250 ms each, and 507 more:
+**Enrolled.** 1,104 solutions: the 3 of the pilot, 593 of the 619 that every case passes in under
+250 ms each, and 508 more:
 
 - 14 were found once the importer's first two fixes landed or their folder was matched to its slug
   by hand (`3sum`, `01-matrix`, `132-pattern`, ...).
@@ -3119,6 +3119,13 @@ since a check over none would pass whatever the strategy did, until a correction
   printing nothing for a function answered in place, so a correction records each one's solution, from
   a brute force run outside the repository. The slow arm measured before no longer shows: both
   strategies answer all 20 cases in 25 ms.
+- Maximum Number of Moves to Kill All Pawns, on a reach of two pawns, which keeps 4 of its 96 cases,
+  two of them LeetCode's examples, as Cat and Mouse II keeps 2 of its 57. Its composed arm runs one
+  BreadthFirstDistances search over the whole 50 x 50 board for the knight and for each pawn, so even
+  a case of one pawn costs it 6 to 45 ms, and the catalog's cases 2.9 s in all; the brute-force arm,
+  a BFS per point over an array, takes 1.3 s, most of it on the 15-pawn cases' memo of 2^15 masks.
+  Up to three pawns, 17 cases, the composed arm takes 712 ms (measured 2026-11-06, Release, on the
+  slower cores while another session's benchmark ran).
 
 Open items:
 
@@ -3137,10 +3144,7 @@ Open items:
   arms that allocate, Delete Nodes from Linked List Present in Array's array scan at 59% and two more
   past 25%. A difference under about 10% in one of these classes needs a second run before it means
   anything. More copies per iteration would narrow the interval, at the cost of memory and setup time.
-- **Enrolling the rest.** 2 solutions are left (2026-11-06):
-  - A slow strategy no reach can bound: Maximum Number of Moves to Kill All Pawns' graph arm spends
-    about 35 ms on every case, two pawns or fifteen, so no bound on its input keeps more than 4 of its
-    96 cases.
+- **Enrolling the rest.** 1 solution is left (2026-11-06):
   - Linked List Cycle II records no output, its examples stating the answer in prose; a correction and
     a LeetCode shape returning the cycle's entry index would enroll it, as they did Intersection of Two
     Linked Lists. It waits on another session's open linked-list change to the same solution.

@@ -119,11 +119,10 @@ commit beside it, as the rest of this file does.
   LeetCode's fastest C# (L9) becomes the baseline, so the question enrolls at once; then a gated,
   scheduled agent composes library strategies from a capability index, and a gap report turns a
   missing primitive into a library proposal for the owner.
-- **L11. Catalog enrollment** (another session's area). 1,103 solutions enrolled as of 2026-11-06,
-  95 of them design questions run through call scripts and 124 with a reach (a case limit);
-  2 left, each with its reason in ARCHITECTURE 17.13 "Enrolling the rest": Linked List Cycle II
-  (waiting on another session's change to it) and Maximum Number of Moves to Kill All Pawns' slow
-  graph arm.
+- **L11. Catalog enrollment** (another session's area). 1,104 solutions enrolled as of 2026-11-06,
+  95 of them design questions run through call scripts and 125 with a reach (a case limit);
+  1 left, Linked List Cycle II, which waits on another session's open change to it (ARCHITECTURE
+  17.13 "Enrolling the rest").
 
 ### Deferred loose ends
 

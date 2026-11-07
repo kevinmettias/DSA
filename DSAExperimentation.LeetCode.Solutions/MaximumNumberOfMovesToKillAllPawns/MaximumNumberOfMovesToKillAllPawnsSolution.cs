@@ -24,6 +24,7 @@ namespace DSAExperimentation.LeetCode.Solutions.MaximumNumberOfMovesToKillAllPaw
 // recursion, or this repo's own BreadthFirstDistances (over a knight-move
 // IGraphTopology local to this problem, since GridChildren's 4-orthogonal offsets
 // don't fit a knight) plus Memoizer.
+[LeetCodeQuestion("maximum-number-of-moves-to-kill-all-pawns", LeetCodeAnswerOrder.AsWritten, Reach = typeof(MaximumNumberOfMovesToKillAllPawnsReach))]
 internal static class MaximumNumberOfMovesToKillAllPawnsSolution
 {
     private const int BoardSize = 50;
