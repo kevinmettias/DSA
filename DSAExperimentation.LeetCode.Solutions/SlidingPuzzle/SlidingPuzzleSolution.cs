@@ -14,83 +14,56 @@ namespace DSAExperimentation.LeetCode.Solutions.SlidingPuzzle;
 // shortest-path query on their state graph - the same BreadthFirstDistances
 // composition OpenTheLockSolution uses for LC 752's wheel-turn graph, just over a
 // 720-node board-permutation graph instead of a 10,000-combination lock.
-// MinMovesByMutationQueue is the textbook alternative: BFS over boards mutated on
-// the fly, never materializing the graph - the arm the composed solution has to
-// justify itself against.
+// MinMovesByMutationQueue is the textbook alternative: BFS over boards slid on the
+// fly, never materializing the graph - the arm the composed solution has to justify
+// itself against. Both arms read the puzzle's rules from SlidingPuzzle: how a board
+// is spelled, which boards one slide reaches, and what "solved" means (ARCHITECTURE
+// §17.5).
 [LeetCodeQuestion("sliding-puzzle", LeetCodeAnswerOrder.AsWritten)]
 internal static class SlidingPuzzleSolution
 {
-    // LeetCode's own definition of "solved".
-    private const string Target = "123450";
-
-    // The empty cell, the only tile that moves.
-    private const char Blank = '0';
-
-    // The cells a blank at each position of the row-major 2x3 board can slide into.
-    private static readonly int[][] SlideTargets =
-    [
-        [1, 3],
-        [0, 2, 4],
-        [1, 5],
-        [0, 4],
-        [1, 3, 5],
-        [2, 4],
-    ];
-
     // Deliberately written without this repo's primitives - BCL Queue + HashSet,
-    // generating each candidate slide on the fly with its own board arithmetic rather
-    // than SlidingPuzzle's, whose model a baseline may not read (ARCHITECTURE 17.5), is
-    // what you would write without this repo.
+    // asking the puzzle for each board's slides as the search reaches it, is what you
+    // would write without this repo.
     public static int MinMovesByMutationQueue(int[][] board) => MinMovesByMutationQueue(Flatten(board));
 
     public static int MinMovesByMutationQueue(string start)
     {
         var visited = new HashSet<string> { start };
         var queue = new Queue<(string State, int Moves)>();
+        var slides = new string[SlidingPuzzle<TwoByThreeBoard>.MostSlides];
         queue.Enqueue((start, 0));
 
         while (queue.Count > 0)
         {
             var (state, moves) = queue.Dequeue();
 
-            if (state == Target)
+            if (state == SlidingPuzzle<TwoByThreeBoard>.Solved)
             {
                 return moves;
             }
 
-            ExpandNeighbors(state, moves, visited, queue);
+            var count = SlidingPuzzle<TwoByThreeBoard>.WriteOneSlideAway(state, slides);
+            var neighbors = slides.AsSpan(0, count);
+            QueueUnreached(neighbors, moves + 1, visited, queue);
         }
 
         return LeetCodeAnswer.None;
     }
 
-    // Queues every slide of this board that the search has not reached yet.
-    private static void ExpandNeighbors(
-        string state,
-        int moves,
+    // Queues every board one slide away that the search has not reached yet.
+    private static void QueueUnreached(
+        ReadOnlySpan<string> neighbors,
+        int neighborMoves,
         HashSet<string> visited,
         Queue<(string State, int Moves)> queue)
     {
-        foreach (var neighbor in OneSlideAway(state))
+        foreach (var neighbor in neighbors)
         {
             if (visited.Add(neighbor))
             {
-                queue.Enqueue((neighbor, moves + 1));
+                queue.Enqueue((neighbor, neighborMoves));
             }
-        }
-    }
-
-    // Every board one slide of the blank away, in the order SlidingPuzzle writes them.
-    private static IEnumerable<string> OneSlideAway(string state)
-    {
-        var blank = state.IndexOf(Blank);
-
-        foreach (var target in SlideTargets[blank])
-        {
-            var cells = state.ToCharArray();
-            (cells[blank], cells[target]) = (cells[target], cells[blank]);
-
-            yield return new string(cells);
         }
     }
 
@@ -118,14 +91,14 @@ internal static class SlidingPuzzleSolution
 
     private static string Flatten(int[][] board)
     {
-        var chars = new char[6];
+        var chars = new char[SlidingPuzzle<TwoByThreeBoard>.CellCount];
         var index = 0;
 
         foreach (var row in board)
         {
             foreach (var cell in row)
             {
-                chars[index++] = (char)('0' + cell);
+                chars[index++] = SlidingPuzzle<TwoByThreeBoard>.CellSymbols[cell];
             }
         }
 

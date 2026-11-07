@@ -40,7 +40,7 @@ public static class SlidingPuzzle<TBoard>
     private const int MostNeighbours = 4;
 
     // The cells a tile can slide into the empty cell from, by the empty cell's index: worked out once
-    // per board, as a table like the one LC 773's baseline keeps for its own.
+    // per board, so a slide reads one row of it.
     private static readonly int[][] SourcesByEmptyCell = [.. Enumerable.Range(0, CellCount).Select(NeighboursOf)];
 
     /// <summary>How many cells the board has.</summary>
