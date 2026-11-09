@@ -35,7 +35,7 @@
     "0 <= ui, vi <= n - 1",
     "ui != vi",
     "1 <= costi <= 10^9",
-    "​​​​​​​1 <= tax​​​​​​​i <= 100​​​​​​​",
+    "1 <= taxi <= 100",
     "There are no repeated edges."
   ],
   "Signature": {

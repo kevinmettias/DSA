@@ -24,7 +24,7 @@
     "Initialize <code>dp[0] = 0</code> and compute up to <code>dp[n]</code>; the answer is <code>dp[n]</code>."
   ],
   "Constraints": [
-    "1 <= n == costs.length <= 10^5​​​​​​​",
+    "1 <= n == costs.length <= 10^5",
     "1 <= costs[i] <= 10^4"
   ],
   "Signature": {

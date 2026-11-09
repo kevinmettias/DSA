@@ -52,7 +52,7 @@
     "0 <= ui, vi <= n - 1",
     "s consists of lowercase English letters.",
     "The input is generated such that edges represents a valid tree.",
-    "1 <= queries.length <= 5 * 10^4​​​​​​​ queries[i] = \"update ui c\" or",
+    "1 <= queries.length <= 5 * 10^4 queries[i] = \"update ui c\" or",
     "queries[i] = \"query ui vi\"",
     "0 <= ui, vi <= n - 1",
     "c is a lowercase English letter."

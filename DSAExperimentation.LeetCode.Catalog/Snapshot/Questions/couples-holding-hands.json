@@ -50,7 +50,7 @@
   ],
   "Constraints": [
     "2n == row.length",
-    "2 <= n <= 30​​​​​​​",
+    "2 <= n <= 30",
     "0 <= row[i] < 2n",
     "All the elements of row are unique."
   ],

@@ -39,7 +39,7 @@
   ],
   "Constraints": [
     "1 <= s.length <= 3000",
-    "s​​​​​​ consists only of lowercase English letters."
+    "s consists only of lowercase English letters."
   ],
   "Signature": {
     "FunctionName": "makeStringSorted",
