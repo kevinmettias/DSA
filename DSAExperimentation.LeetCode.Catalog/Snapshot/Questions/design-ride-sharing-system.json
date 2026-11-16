@@ -34,7 +34,7 @@
     "1 <= riderId, driverId <= 1000",
     "Each riderId is unique among riders and is added at most once.",
     "Each driverId is unique among drivers and is added at most once.",
-    "At most 1000 calls will be made in total to addRider​​​​​​​, addDriver, matchDriverWithRider, and cancelRider."
+    "At most 1000 calls will be made in total to addRider, addDriver, matchDriverWithRider, and cancelRider."
   ],
   "Signature": {
     "FunctionName": null,

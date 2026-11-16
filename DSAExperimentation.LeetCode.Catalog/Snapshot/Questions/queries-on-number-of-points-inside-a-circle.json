@@ -44,7 +44,7 @@
   "Constraints": [
     "1 <= points.length <= 500",
     "points[i].length == 2",
-    "0 <= x​​​​​​i, y​​​​​​i <= 500",
+    "0 <= xi, yi <= 500",
     "1 <= queries.length <= 500",
     "queries[j].length == 3",
     "0 <= xj, yj <= 500",

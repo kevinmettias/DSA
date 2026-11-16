@@ -43,7 +43,7 @@
   ],
   "Constraints": [
     "1 <= nums.length <= 1000",
-    "1 <= nums[i] <= 10^​​​​​​​9",
+    "1 <= nums[i] <= 10^9",
     "1 <= target <= 10^9"
   ],
   "Signature": {

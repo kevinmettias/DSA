@@ -44,7 +44,7 @@
   ],
   "Constraints": [
     "3 <= s.length <= 2000",
-    "s​​​​​​ consists only of lowercase English letters."
+    "s consists only of lowercase English letters."
   ],
   "Signature": {
     "FunctionName": "checkPartitioning",

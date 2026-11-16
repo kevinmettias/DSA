@@ -25,7 +25,7 @@
     "Use divide and conquer: recursively evaluate each segment; if its length is even you may split it into two equal halves.",
     "For a segment, let <code>cost_no_split = (X == 0 ? flatCost : L * X * encCost)</code>. If length is even, compute <code>cost_split = cost(left) + cost(right)</code> and take the minimum.",
     "Precompute prefix sums of ones so <code>X</code> (number of '1's) for any segment is O(1).",
-    "Memoize results for segments."
+    "Each segment is processed only once during recursive splitting, so memoization is unnecessary. Use divide and conquer to compute the minimum cost directly."
   ],
   "Constraints": [
     "1 <= s.length <= 10^5",

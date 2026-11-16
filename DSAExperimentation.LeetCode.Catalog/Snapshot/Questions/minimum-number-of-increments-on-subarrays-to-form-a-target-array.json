@@ -35,7 +35,7 @@
   "Constraints": [
     "1 <= target.length <= 10^5",
     "1 <= target[i] <= 10^5",
-    "​​​​​​​The input is generated such that the answer fits inside a 32 bit integer."
+    "The input is generated such that the answer fits inside a 32 bit integer."
   ],
   "Signature": {
     "FunctionName": "minNumberOperations",

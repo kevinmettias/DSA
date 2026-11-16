@@ -41,10 +41,10 @@
   ],
   "Constraints": [
     "1 <= n == nums.length <= 4 × 10^4",
-    "1 <= nums[i] <= 10^9​​​​​​​",
+    "1 <= nums[i] <= 10^9",
     "1 <= k <= 10^9",
     "1 <= queries.length <= 4 × 10^4",
-    "^​​​​​​​queries[i] = [li, ri]",
+    "^queries[i] = [li, ri]",
     "0 <= li <= ri <= n - 1"
   ],
   "Signature": {

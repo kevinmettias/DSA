@@ -44,7 +44,7 @@
   "Constraints": [
     "1 <= boxes.length <= 10^5",
     "1 <= portsCount, maxBoxes, maxWeight <= 10^5",
-    "1 <= ports​​i <= portsCount",
+    "1 <= portsi <= portsCount",
     "1 <= weightsi <= maxWeight"
   ],
   "Signature": {

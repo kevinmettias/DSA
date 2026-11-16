@@ -31,7 +31,7 @@
     "Use a max-heap with <code>v(l,n-1)</code> for all <code>l</code>; pop the largest <code>k</code> times, and after popping an entry from <code>(l,r)</code> push <code>(l,r-1)</code> if <code>r>l</code>."
   ],
   "Constraints": [
-    "1 <= n == nums.length <= 5 * 10^​​​​​​​4",
+    "1 <= n == nums.length <= 5 * 10^4",
     "0 <= nums[i] <= 10^9",
     "1 <= k <= min(10^5, n * (n + 1) / 2)"
   ],

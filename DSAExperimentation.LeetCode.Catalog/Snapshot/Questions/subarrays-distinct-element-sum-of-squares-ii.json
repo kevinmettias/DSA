@@ -52,13 +52,13 @@
   "Examples": [
     {
       "Inputs": [
-        "[1,2,1]"
+        "[1,2,1]\r"
       ],
       "ExpectedOutput": "15"
     },
     {
       "Inputs": [
-        "[2,2]"
+        "[2,2]\r"
       ],
       "ExpectedOutput": "3"
     }
